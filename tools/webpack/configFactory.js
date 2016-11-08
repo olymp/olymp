@@ -11,6 +11,8 @@ const { removeEmpty, ifElse, merge, happyPackPlugin } = require('../utils');
 const envVars = require('../config/envVars');
 const appName = require('../../package.json').name;
 const CodeSplitPlugin = require('code-split-component/webpack');
+const sw = require(path.resolve(appRootPath, 'sw.json'));
+const modules = require(path.resolve(appRootPath, 'modules.json'));
 
 function webpackConfigFactory({ target, mode }, { json }) {
   if (!target || ['client', 'server', 'universalMiddleware'].findIndex(valid => target === valid) === -1) {
@@ -77,6 +79,11 @@ function webpackConfigFactory({ target, mode }, { json }) {
   const ifDevServer = ifElse(isDev && isServer);
   const ifDevClient = ifElse(isDev && isClient);
   const ifProdClient = ifElse(isProd && isClient);
+
+  if (isNodeTarget) {
+    require.extensions['.less'] = () => undefined;
+    require.extensions['.css'] = () => undefined;
+  }
 
   return {
     // We need to state that we are targetting "node" for our server bundle.
@@ -171,6 +178,11 @@ function webpackConfigFactory({ target, mode }, { json }) {
       libraryTarget: ifNodeTarget('commonjs2', 'var'),
     },
     resolve: {
+      alias: merge({
+        server_alias: path.resolve(appRootPath, 'server'),
+        app_alias: path.resolve(appRootPath, 'app'),
+        universalDevMiddleware_alias: path.resolve(appRootPath, 'build', 'universalMiddleware'),
+      }, Object.keys(modules.alias).reduce((state, key) => merge(state, { [key]: path.resolve(appRootPath, modules.alias[key]) }), {})),
       // These extensions are tried when resolving a file.
       extensions: [
         '.js',
@@ -365,7 +377,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
         loaders: [{
           path: 'babel',
           query: {
-            presets: [
+            presets: removeEmpty([
               // JSX
               'react',
               // All the latest JS goodies, except for ES6 modules which
@@ -374,13 +386,15 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // TODO: When babel-preset-latest-minimal has stabilised use it
               // for our node targets so that only the missing features for
               // our respective node version will be transpiled.
+              // ifProd('babel-preset-react-optimize'),
               ['latest', { es2015: { modules: false } }],
-            ],
+            ]),
             plugins: removeEmpty([
               ifDevClient('react-hot-loader/babel'),
               // We are adding the experimental "object rest spread" syntax as
               // it is super useful.  There is a caviat with the plugin that
               // requires us to include the destructuring plugin too.
+              // 'add-module-exports',
               'transform-object-rest-spread',
               'transform-es2015-destructuring',
               // The class properties plugin is really useful for react components.
@@ -389,6 +403,8 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // instances, taking care of all the heavy boilerplate that we
               // would have had to do ourselves to get code splitting w/SSR
               // support working.
+              'transform-decorators-legacy',
+              ifClient(['import', { libraryName: 'antd', style: 'css' }]),
               // @see https://github.com/ctrlplusb/code-split-component
               [
                 'code-split-component/babel',
@@ -421,6 +437,19 @@ function webpackConfigFactory({ target, mode }, { json }) {
           ],
         })
       ),
+
+      ifDevClient(
+        happyPackPlugin({
+          name: 'happypack-devclient-less',
+          // We will use a straight style & css loader along with source maps.
+          // This combo gives us a better development experience.
+          loaders: [
+            'style-loader',
+            'css-loader',
+            { path: 'less-loader', query: { sourceMap: true } },
+          ],
+        })
+      ),
     ]),
     module: {
       rules: removeEmpty([
@@ -432,7 +461,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // See the respective plugin within the plugins section for full
           // details on what loader is being implemented.
           loader: 'happypack/loader?id=happypack-javascript',
-          include: [path.resolve(appRootPath, './src')],
+          include: [path.resolve(appRootPath, './src')].concat(modules.client.map(p => path.resolve(appRootPath, p))),
         },
 
         // CSS
@@ -462,6 +491,37 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // details on what loader is being implemented.
           ifDevClient({
             loaders: ['happypack/loader?id=happypack-devclient-css'],
+          })
+        ),
+
+        // LESS
+        merge(
+          {
+            test: /\.less$/,
+          },
+          // For a production client build we use the ExtractTextPlugin which
+          // will extract our CSS into CSS files.
+          // The plugin needs to be registered within the plugins section too.
+          // Also, as we are using the ExtractTextPlugin we can't use happypack
+          // for this case.
+          ifProdClient({
+            loader: ExtractTextPlugin.extract({
+              fallbackLoader: 'style-loader',
+              loader: 'css-loader!less-loader',
+            }),
+          }),
+          // When targetting the server we use the "/locals" version of the
+          // css loader, as we don't need any css files for the server.
+          ifNodeTarget({
+            // loaders: ['css-loader/locals', 'less-loader'],
+            loaders: ['empty-loader'],
+          }),
+          // For development clients we will defer all our css processing to the
+          // happypack plugin named "happypack-devclient-css".
+          // See the respective plugin within the plugins section for full
+          // details on what loader is being implemented.
+          ifDevClient({
+            loaders: ['happypack/loader?id=happypack-devclient-less'],
           })
         ),
 

@@ -11,10 +11,13 @@ import appRoot from 'app-root-path';
 import express from 'express';
 import type { $Request, $Response, NextFunction } from 'express';
 import compression from 'compression';
+import bodyParser from 'body-parser';
+import session from 'express-session';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import universalMiddleware from './middleware/universalMiddleware';
 import { notEmpty } from '../shared/universal/utils/guards';
+import server from '../../server';
 
 const appRootPath = appRoot.toString();
 
@@ -72,13 +75,13 @@ const cspConfig = {
       // $FlowFixMe
       (req, res) => `'nonce-${res.locals.nonce}'`,
     ],
-    styleSrc: ["'self'", "'unsafe-inline'", 'blob:'],
-    imgSrc: ["'self'", 'data:'],
+    styleSrc: ["'self'", "'unsafe-inline'", 'blob:', 'at.alicdn.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com'],
+    imgSrc: ["'self'", 'data:', 'res.cloudinary.com'],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
     // implementation that is kinder to service workers please let me know.
     connectSrc: ['*'], // ["'self'", 'ws:'],
-    fontSrc: ["'self'"],
+    fontSrc: ["'self'", 'at.alicdn.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
     objectSrc: ["'none'"],
     mediaSrc: ["'none'"],
     childSrc: ["'self'"],
@@ -116,6 +119,8 @@ app.use(helmet.ieNoOpen());
 app.use(helmet.noSniff());
 
 // Gzip compress the responses.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(compression());
 
 // Configure static serving of our webpack bundled client files.
@@ -142,6 +147,19 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
+app.useSession = (url, getArgs) => {
+  app.set('trust proxy', 1);
+  if (!getArgs) {
+    getArgs = url;
+    url = null;
+  }
+  const args = getArgs(session);
+  if (url) app.use(url, session(args));
+  else app.use(session(args));
+};
+app.useStatic = url => express.static(url);
+server(app);
+
 // The universal middleware for our React application.
 app.get('*', universalMiddleware);
 
@@ -165,7 +183,7 @@ app.use((err: ?Error, req: $Request, res: $Response, next: NextFunction) => { //
 });
 
 // Create an http listener for our express app.
-const port = parseInt(notEmpty(process.env.SERVER_PORT), 10);
+const port = parseInt(notEmpty(process.env.PORT || process.env.SERVER_PORT), 10);
 const listener = app.listen(port, () =>
   console.log(`Server listening on port ${port}`)
 );

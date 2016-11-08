@@ -1,0 +1,17 @@
+{
+  "alias": {
+    "@olymp/adonis": "./@adonis",
+    "@olymp/apollo": "./@apollo",
+    "@olymp/athena": "./@athena"
+  },
+  "server": [
+    "./server",
+    "./@apollo"
+  ],
+  "client": [
+    "./@adonis/src",
+    "./@apollo/src",
+    "./@athena/src",
+    "./app"
+  ]
+}

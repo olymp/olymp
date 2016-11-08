@@ -2,12 +2,16 @@
 
 import type { $Request, $Response, Middleware } from 'express';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { ServerRouter, createServerRenderContext } from 'react-router';
 import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import Helmet from 'react-helmet';
+import { ServerRouter, createServerRenderContext } from 'react-router';
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient, createNetworkInterface } from 'apollo-client';
+import { renderToStringWithData } from '@olymp/apollo/server-fix';
 import render from './render';
-import App from '../shared/universal/components/App';
+import fetch from 'node-fetch';
+
+global.fetch = fetch;
 
 /**
  * An express middleware that is capabable of doing React server side rendering.
@@ -36,6 +40,21 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
     return;
   }
 
+  const uri = process.env.NODE_ENV === 'production' ? `${process.env.URL}/graphql` : `http://localhost:${process.env.SERVER_PORT}/graphql`;
+  const networkInterface = createNetworkInterface({
+    uri,
+    opts: {
+      credentials: 'same-origin',
+      headers: request.headers,
+    },
+  });
+  const client = new ApolloClient({
+    networkInterface,
+    dataIdFromObject: o => o.id,
+    ssrMode: true,
+  });
+
+  const App = require('app_alias').default;
   // First create a context for <ServerRouter>, which will allow us to
   // query for the results of the render.
   const reactRouterContext = createServerRenderContext();
@@ -44,19 +63,23 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   // to query which chunks/modules were used during the render process.
   const codeSplitContext = createRenderContext();
 
-  // Create our application and render it into a string.
-  const app = renderToString(
+  // Create the application react element.
+  const app = (
     <CodeSplitProvider context={codeSplitContext}>
-      <ServerRouter location={request.url} context={reactRouterContext}>
-        <App />
+      <ServerRouter location={decodeURI(request.url)} context={reactRouterContext}>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
       </ServerRouter>
     </CodeSplitProvider>
   );
 
+  renderToStringWithData(app).then((app) => {
   // Generate the html response.
   const html = render({
     // Provide the full app react element.
     app,
+    initialState: client.store.getState().apollo.data,
     // Nonce which allows us to safely declare inline scripts.
     nonce,
     // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
@@ -90,6 +113,12 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
         : 200
     )
     .send(html);
+  }).catch((err) => {
+    console.log(err);
+    response
+      .status(500)
+      .send(err);
+  });
 }
 
 export default (universalReactAppMiddleware : Middleware);

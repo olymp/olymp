@@ -3,16 +3,33 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router';
 // This library provides us with the capability to have declerative code
 // splitting within our application.
 // @see https://github.com/ctrlplusb/code-split-component
 import { CodeSplitProvider, rehydrateState } from 'code-split-component';
+import BrowserRouter from '@olymp/apollo/router/BrowserRouter';
 import ReactHotLoader from './components/ReactHotLoader';
-import App from '../shared/universal/components/App';
+import App from 'app_alias';
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
+
+const networkInterface = createBatchingNetworkInterface({
+  uri: '/graphql',
+  batchInterval: 5,
+  opts: {
+    credentials: 'same-origin',
+  },
+});
+
+const client = new ApolloClient({
+  networkInterface,
+  dataIdFromObject: o => o.id,
+  ssrForceFetchDelay: 100,
+  initialState: window.APP_STATE ? { apollo: { data: window.APP_STATE } } : null,
+});
 
 function renderApp(TheApp) {
   // Firstly we ensure that we rehydrate any code split state provided to us
@@ -25,7 +42,9 @@ function renderApp(TheApp) {
       <ReactHotLoader>
         <CodeSplitProvider state={codeSplitState}>
           <BrowserRouter>
-            <TheApp />
+            <ApolloProvider client={client}>
+              <TheApp />
+            </ApolloProvider>
           </BrowserRouter>
         </CodeSplitProvider>
       </ReactHotLoader>,
@@ -42,6 +61,18 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept(
     '../shared/universal/components/App',
     () => renderApp(require('../shared/universal/components/App').default)
+  );
+  module.hot.accept(
+    'app_alias',
+    () => renderApp(require('app_alias').default)
+  );
+  module.hot.accept(
+    '@olymp/athena',
+    () => renderApp(require('app_alias').default)
+  );
+  module.hot.accept(
+    '@olymp/adonis',
+    () => renderApp(require('app_alias').default)
   );
 }
 

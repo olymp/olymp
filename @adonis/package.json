@@ -1,0 +1,36 @@
+{
+  "name": "@olymp/adonis",
+  "version": "0.0.4",
+  "description": "adonis framework",
+  "scripts": {
+    "test": "mocha",
+    "build": "gulp build",
+    "patch": "npm version patch --force & npm publish",
+    "autofix": "eslint --fix ./src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryogon/youi.git"
+  },
+  "main": "./src",
+  "devDependencies": {},
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "dependencies": {
+    "google-map-react": "^0.20.1",
+    "moment": "^2.15.2",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-addons-transition-group": "^15.3.2",
+    "react-day-picker": "^3.1.1",
+    "react-portal": "^2.2.1",
+    "react-select": "^1.0.0-rc.2",
+    "react-sortable-hoc": "^0.1.0",
+    "reactstrap": "^3.6.0",
+    "react-draggable": "^2.2.2",
+    "react-frame-aware-selection-plugin": "^0.0.5",
+    "hoist-non-react-statics": "1.2.0",
+    "slate": "^0.14.15"
+  }
+}

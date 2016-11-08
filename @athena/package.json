@@ -1,0 +1,28 @@
+{
+  "name": "@olymp/athena",
+  "version": "0.0.2",
+  "description": "",
+  "main": "./src",
+  "scripts": {
+    "start": "node server",
+    "inspect": "node --inspect server/server.js",
+    "build": "gulp build",
+    "patch": "npm version patch --force & npm publish",
+    "stats": "analyze-bundle-size stats.json",
+    "watch": "gulp watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryogon/powr.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "capitalize": "^1.0.0",
+    "cropperjs": "^0.8.1",
+    "moment": "^2.15.2",
+    "react-gateway": "^2.3.0",
+    "shortid": "^2.2.6",
+    "superagent": "^2.3.0"
+  }
+}
