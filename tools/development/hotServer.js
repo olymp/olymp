@@ -4,7 +4,7 @@ const envVars = require('../config/envVars');
 const ListenerManager = require('./listenerManager');
 const { createNotification } = require('../utils');
 const appRootPath = require('app-root-path').toString();
-const modules = require(path.resolve(appRootPath, 'modules.json'));
+const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
 
 class HotServer {
   constructor(compiler) {
@@ -79,7 +79,7 @@ class HotServer {
       }
     };
 
-    this.watcher = chokidar.watch([path.resolve(__dirname, '../../src/server')].concat(modules.server || []));
+    this.watcher = chokidar.watch([path.resolve(__dirname, '../../src/server'), path.resolve(appRootPath, 'server'), path.resolve(__dirname, '..', '..', 'graphql')].concat((modules && modules.server) || []));
     this.watcher.on('ready', () => {
       this.watcher
         .on('add', compileHotServer)

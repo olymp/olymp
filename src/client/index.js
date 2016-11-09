@@ -7,7 +7,7 @@ import { render } from 'react-dom';
 // splitting within our application.
 // @see https://github.com/ctrlplusb/code-split-component
 import { CodeSplitProvider, rehydrateState } from 'code-split-component';
-import BrowserRouter from '@olymp/apollo/router/BrowserRouter';
+import BrowserRouter from 'react_router_fixed_browser';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from 'app_alias';
 import { ApolloProvider } from 'react-apollo';
@@ -64,14 +64,6 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
   );
   module.hot.accept(
     'app_alias',
-    () => renderApp(require('app_alias').default)
-  );
-  module.hot.accept(
-    '@olymp/athena',
-    () => renderApp(require('app_alias').default)
-  );
-  module.hot.accept(
-    '@olymp/adonis',
     () => renderApp(require('app_alias').default)
   );
 }

@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === 'development') {
 
   tempUniversalMiddleware =
     // This require should be relative to {projectroot}/build/server
-    require('../../tools/development/universalDevMiddleware');
+    require('universalDevMiddleware_alias');
 } else {
   // In production we will just import our universal middleware directly.
   // Our server bundle will be flattened and in "build/server", therfore to import

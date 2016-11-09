@@ -11,8 +11,19 @@ const { removeEmpty, ifElse, merge, happyPackPlugin } = require('../utils');
 const envVars = require('../config/envVars');
 const appName = require('../../package.json').name;
 const CodeSplitPlugin = require('code-split-component/webpack');
-const sw = require(path.resolve(appRootPath, 'sw.json'));
-const modules = require(path.resolve(appRootPath, 'modules.json'));
+
+const sw = require('fs').existsSync(path.resolve(appRootPath, 'sw.json')) ? require(path.resolve(appRootPath, 'sw.json')) : null;
+const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
+const alias = {
+  olymp: path.resolve(__dirname, '..', '..'),
+  app_alias: path.resolve(appRootPath, 'app'),
+  server_alias: path.resolve(appRootPath, 'server'),
+  universalDevMiddleware_alias: path.resolve(__dirname, '..', 'development', 'universalDevMiddleware'),
+  universalDevMiddleware_build: path.resolve(appRootPath, envVars.BUNDLE_OUTPUT_PATH, 'universalMiddleware'),
+  react_router_fixed_browser: path.resolve(__dirname, '..', '..', 'react-router-url-fix', 'BrowserRouter'),
+}; if (modules && modules.alias) Object.keys(modules.alias).forEach(key => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
+const include = [path.resolve(appRootPath, './app'), path.resolve(appRootPath, './server'), path.resolve(__dirname, '../../src'), path.resolve(__dirname, '../../src2')];
+if (modules && modules.client) modules.client.map(p => include.push(path.resolve(appRootPath, p)));
 
 function webpackConfigFactory({ target, mode }, { json }) {
   if (!target || ['client', 'server', 'universalMiddleware'].findIndex(valid => target === valid) === -1) {
@@ -113,6 +124,10 @@ function webpackConfigFactory({ target, mode }, { json }) {
         // SASS. For these cases please make sure that the file extensions
         // are added to the below list. We have added the most common formats.
         whitelist: [
+          (val) => {
+            if (val === 'olymp') return true;
+            if (val.indexOf('olymp/') === 0) return true;
+          },
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
           /\.(mp4|mp3|ogg|swf|webp)$/,
@@ -144,7 +159,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // Therefore we need to add the regenerator-runtime as the babel-polyfill
           // included this, which polyfill.io doesn't include.
           ifClient('regenerator-runtime/runtime'),
-          path.resolve(appRootPath, `./src/${target}/index.js`),
+          path.resolve(__dirname, `../../src/${target}/index.js`),
         ]),
       }
     ),
@@ -178,11 +193,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       libraryTarget: ifNodeTarget('commonjs2', 'var'),
     },
     resolve: {
-      alias: merge({
-        server_alias: path.resolve(appRootPath, 'server'),
-        app_alias: path.resolve(appRootPath, 'app'),
-        universalDevMiddleware_alias: path.resolve(appRootPath, 'build', 'universalMiddleware'),
-      }, Object.keys(modules.alias).reduce((state, key) => merge(state, { [key]: path.resolve(appRootPath, modules.alias[key]) }), {})),
+      alias,
       // These extensions are tried when resolving a file.
       extensions: [
         '.js',
@@ -404,7 +415,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // would have had to do ourselves to get code splitting w/SSR
               // support working.
               'transform-decorators-legacy',
-              ifClient(['import', { libraryName: 'antd', style: 'css' }]),
+              ifClient([path.resolve(__dirname, '..', '..', 'babel-plugin-import'), { libraryName: 'antd', style: 'css' }]),
               // @see https://github.com/ctrlplusb/code-split-component
               [
                 'code-split-component/babel',
@@ -461,7 +472,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // See the respective plugin within the plugins section for full
           // details on what loader is being implemented.
           loader: 'happypack/loader?id=happypack-javascript',
-          include: [path.resolve(appRootPath, './src')].concat(modules.client.map(p => path.resolve(appRootPath, p))),
+          include,
         },
 
         // CSS

@@ -17,7 +17,7 @@ import hpp from 'hpp';
 import helmet from 'helmet';
 import universalMiddleware from './middleware/universalMiddleware';
 import { notEmpty } from '../shared/universal/utils/guards';
-import server from '../../server';
+import server from 'server_alias';
 
 const appRootPath = appRoot.toString();
 
@@ -67,21 +67,22 @@ const cspConfig = {
       "'self'",
       // Allow scripts from cdn.polyfill.io so that we can import the polyfill.
       'cdn.polyfill.io',
+      'cdn.jsdelivr.net',
       // Note: We will execution of any inline scripts that have the following
       // nonce identifier attached to them.
       // This is useful for guarding your application whilst allowing an inline
       // script to do data store rehydration (redux/mobx/apollo) for example.
       // @see https://helmetjs.github.io/docs/csp/
       // $FlowFixMe
-      (req, res) => `'nonce-${res.locals.nonce}'`,
+      process.env.NODE_ENV === 'development' ? "'unsafe-inline'" : (req, res) => `'nonce-${res.locals.nonce}'`,
     ],
-    styleSrc: ["'self'", "'unsafe-inline'", 'blob:', 'at.alicdn.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com'],
+    styleSrc: ["'self'", "'unsafe-inline'", 'blob:', 'at.alicdn.com', 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com'],
     imgSrc: ["'self'", 'data:', 'res.cloudinary.com'],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
     // implementation that is kinder to service workers please let me know.
     connectSrc: ['*'], // ["'self'", 'ws:'],
-    fontSrc: ["'self'", 'at.alicdn.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
+    fontSrc: ["'self'", 'at.alicdn.com', 'cdnjs.cloudflare.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
     objectSrc: ["'none'"],
     mediaSrc: ["'none'"],
     childSrc: ["'self'"],

@@ -7,7 +7,7 @@
 // Having this wrapped version allows us to "dodge" webpack taking over the
 // module resolution.
 const universalDevMiddleware = (req, resp) => {
-  const wrappedMiddleware = require('../../build/universalMiddleware').default;
+  const wrappedMiddleware = require('universalDevMiddleware_build').default;
 
   wrappedMiddleware(req, resp);
 };

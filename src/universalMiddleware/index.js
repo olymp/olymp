@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import { renderToStringWithData } from '@olymp/apollo/server-fix';
+import { renderToStringWithData } from 'olymp/graphql/apollo-server-fix';
 import render from './render';
 import fetch from 'node-fetch';
 

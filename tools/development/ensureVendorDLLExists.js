@@ -48,7 +48,7 @@ function webpackConfigFactory(modules) {
 }
 
 function getJsFilesFromSrcDir(srcPath) {
-  return globSync(`${pathResolve(appRootPath, 'src', srcPath)}/**/*.js`);
+  return globSync(`${pathResolve(__dirname, '..', '..', 'src', srcPath)}/**/*.js`);
 }
 
 function buildVendorDLL() {
@@ -60,6 +60,7 @@ function buildVendorDLL() {
     Promise.all([
       Promise.resolve(getJsFilesFromSrcDir('client')),
       Promise.resolve(getJsFilesFromSrcDir('shared/universal')),
+      globSync(`${pathResolve(appRootPath, 'app')}/**/*.js`)
     ])
     .then(([clientFiles, universalFiles]) => {
       const isJsFile = file => pathExtName(file) === '.js';
