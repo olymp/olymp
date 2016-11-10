@@ -16,6 +16,7 @@ const sw = require('fs').existsSync(path.resolve(appRootPath, 'sw.json')) ? requ
 const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
 const alias = {
   react: path.resolve(appRootPath, 'node_modules', 'react'),
+  moment: path.resolve(appRootPath, 'node_modules', 'moment'),
   olymp: path.resolve(__dirname, '..', '..'),
   app_alias: path.resolve(appRootPath, 'app'),
   server_alias: path.resolve(appRootPath, 'server'),
