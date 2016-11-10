@@ -24,5 +24,7 @@ export { default as flatten } from './utils/flatten';
 export { default as lorem } from './utils/lorem';
 export { default as throttleInput } from './utils/throttle-input';
 export { default as traverse } from './utils/traverse';
+export { makeTree } from './tree-utils';
+export { default as withState } from './with-state';
 
 export * from './auth';
