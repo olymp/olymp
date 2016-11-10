@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { withApollo, graphql } from 'react-apollo';
-import withItem from './item';
-import gql from 'graphql-tag';
+import { withItem, gql, withApollo, graphql } from 'olymp';
 
 export const attributes = 'id, height, width, url, type, colors, tags';
 export default WrappedComponent => {

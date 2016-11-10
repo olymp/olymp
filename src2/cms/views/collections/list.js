@@ -4,9 +4,9 @@ import capitalize from 'capitalize';
 import gql from 'graphql-tag';
 import { Table, Menu, Icon } from 'antd';
 import { Link } from 'react-router';
-import { sortBy } from 'lodash';
 
 import { withRouter, withCollection } from '../../decorators';
+import columnHelper from './columns.js';
 
 @withCollection
 @withApollo
@@ -22,7 +22,7 @@ export default class MainList extends Component {
     super(props);
     this.items = null;
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
     };
   }
 
@@ -68,24 +68,6 @@ export default class MainList extends Component {
     }
   }
 
-  resolveFieldValue(value, meta) {
-    if (meta.type === 'one') {
-      if (value) return value.name || 'Ja';
-      return 'Null';
-    } else if (meta.type === 'many') {
-      if (value && value.length && value.map(x => x.name).join('').length > 0) return value.map(x => x.name).join(', ');
-      if (value && value.length) return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
-      return 'Keine Elemente';
-    } else if (meta.type.kind === 'LIST') {
-      if (value && value.length && value.map(x => x.name).join('').length > 0) return value.map(x => x.name).join(', ');
-      if (value && value.length) return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
-      return '';
-    } else if (meta.type.kind === 'OBJECT') {
-      return value ? (value.name || 'Ja') : '';
-    }
-    return value;
-  }
-
   removeItem = (e, id) => {
   };
 
@@ -96,34 +78,14 @@ export default class MainList extends Component {
 
     const fields = collection.fields.filter(({description}) => description.indexOf('list:') !== -1);
 
-    const columns = fields.map(({name}) => {
-      // Filter ermitteln
-      const filtersCount = {};
-      (items || []).map(item=> {
-        filtersCount[item[name]] = !filtersCount[item[name]] ? 1 : filtersCount[item[name]] + 1;
-      });
-      const filterCategories = Object.keys(filtersCount).map(value=>({
-        text: `${capitalize(value)} (${filtersCount[value]})`,
-        value: value,
-        count: filtersCount[value]
-      }));
-      const filters = sortBy(filterCategories.filter(item => item.count > 1), 'count').reverse()
+    const columns = fields.map((meta) => {
+      const { name } = meta;
 
       return {
         title: capitalize(name),
-        sorter: (a, b) => (a[name] < b[name] ? -1 : (a[name] > b[name] ? 1 : 0)),
         dataIndex: name,
         key: name,
-        render: text => <span>{text}</span>,
-
-        filters: filters.length && filters.length !== filterCategories.length ? [
-          ...filters,
-          {
-            text: `Sonstige (${filterCategories.filter(item => item.count <= 1).length})`,
-            value: '#sonstige#'
-          }
-        ] : filters,
-        onFilter: (value, record) => value !== '#sonstige#' ? record[name] === value : !filters.filter(item=>item.value === record[name]).length,
+        ...columnHelper(meta, items)
       }
     });
 
@@ -186,28 +148,28 @@ export default class MainList extends Component {
     };
 
     return (
-      <div style={{paddingTop: '38px'}}>
+      <div style={{ paddingTop: '38px' }}>
         <Menu
           selectedKeys={['0']}
           mode="horizontal"
           theme="dark"
           style={{ fontSize: '13px', lineHeight: '38px', position: 'fixed', top: '48px', left: 0, width: '100%', zIndex: 1 }}
-        >
+          >
           <Menu theme="dark" style={{ width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto', lineHeight: '38px' }}>
             <Menu.Item key="0">{capitalize(name)}</Menu.Item>
             <Menu.Item key="1">Veröffentlicht</Menu.Item>
             <Menu.Item key="3">Archiv</Menu.Item>
             <Menu.Item key="4">Gelöscht</Menu.Item>
 
-            <Menu.Item style={{float: 'right'}} key="14">
+            <Menu.Item style={{ float: 'right' }} key="14">
               <Icon type="download" />Exportieren ({selectedRowKeys.length})
             </Menu.Item>
-            <Menu.Item style={{float: 'right'}} key="13">Löschen ({selectedRowKeys.length})</Menu.Item>
-            <Menu.Item style={{float: 'right'}} key="12">Archivieren ({selectedRowKeys.length})</Menu.Item>
-            <Menu.Item style={{float: 'right'}} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
-            <Menu.Item style={{float: 'right'}} key="10">
+            <Menu.Item style={{ float: 'right' }} key="13">Löschen ({selectedRowKeys.length})</Menu.Item>
+            <Menu.Item style={{ float: 'right' }} key="12">Archivieren ({selectedRowKeys.length})</Menu.Item>
+            <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
+            <Menu.Item style={{ float: 'right' }} key="10">
               <Link to={{ pathname, query: { [name]: null } }}>
-                <Icon type="plus" /> {capitalize(name)} hinzufügen
+                <Icon type="plus" /> {capitalize(name)}hinzufügen
               </Link>
             </Menu.Item>
           </Menu>
@@ -222,8 +184,8 @@ export default class MainList extends Component {
           dataSource={items}
           pagination={pagination}
           onChange={onTableChange}
-          style={{clear: 'both'}}
-        />
+          style={{ clear: 'both' }}
+          />
       </div>
     );
   }

@@ -1,12 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import cloudinaryUrl from '@olymp/adonis/src/cloudinary-url';
-import cn from 'classnames';
+import React, { Component } from 'react';
+import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
 
 export default class CoolImage extends Component {
   // Fill: true => width: 100%, height: auto
   // Mode: fill (width)
-  // Mode: 
+  // Mode:
   static defaultProps = {
     cloudinary: {},
   };

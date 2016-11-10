@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Media from '../../views/media/list';
-import Upload from '../../views/media/upload';
 import { Modal } from 'antd';
 import ReactCrop from 'react-image-crop';
-import cloudinaryUrl from '@olymp/adonis/src/cloudinary-url';
+import { cloudinaryUrl } from 'olymp';
 import 'react-image-crop/dist/ReactCrop.css';
+
+import Media from '../../views/media/list';
+import Upload from '../../views/media/upload';
 
 const defaultGetImage = props => props.value;
 export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload extends Component {

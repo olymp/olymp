@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
+import { withLocale } from 'olymp/locale-de';
+import { graphql, Link, Match, Redirect, CodeSplit, gql } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
+import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'capitalize';
-import { Link, Match, Redirect } from 'react-router';
-import CodeSplit from 'code-split-component';
-import gql from 'graphql-tag';
 import { Menu, Affix } from 'antd';
-import enUS from 'antd/lib/locale-provider/en_US';
-import LocaleProvider from 'antd/lib/locale-provider';
-import moment from 'moment';
-import 'moment/locale/de';
 
 import { auth, withRouter } from '../decorators';
 import { useLightboxes } from '../edits/image/with-lightbox';
-import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from './auth';
 import PageModal from './pages/modals/page';
 import MediaDetail from './media/detail';
 import UploadModal from './media/upload';
@@ -22,9 +16,9 @@ import './container.less';
 
 const SubMenu = Menu.SubMenu;
 // const MenuItemGroup = Menu.ItemGroup;
-moment.locale('de');
 
 @auth
+@withLocale
 @useLightboxes
 @withRouter
 @graphql(gql`
@@ -166,127 +160,125 @@ export default class Container extends Component {
 
     return (
       <GatewayProvider>
-        <LocaleProvider locale={enUS}>
-          <div className="full">
-            {modal}
-            <Affix>
-              <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal">
-                <Menu.Item key="mail" className="ant-menu-item-brand">
-                  <i className="fa fa-institution" /> Athena
-                </Menu.Item>
-                <Menu.Item key="/">
-                  <Link to="/">
-                    Website
-                  </Link>
-                </Menu.Item>
-                {(collections || []).map(({ name }, i) => (
-                  <SubMenu key={i} title={<Link to={`/@/${name}`}>{capitalize(name)}</Link>}>
-                    <Menu.Item className="display-none" key={`/@/${name}`} />
-                    <SubMenu title={<Link to={`/@/${name}`} style={{ color: '#666' }}>{capitalize(name)} ansehen</Link>}>
-                      <Menu.Item>Veröffentlicht</Menu.Item>
-                      <Menu.Item>Entwurf</Menu.Item>
-                      <Menu.Item>Archiviert</Menu.Item>
-                      <Menu.Item>Gelöscht</Menu.Item>
-                    </SubMenu>
-                    <Menu.Item>
-                      <Link to={{ pathname, query: { [name]: null } }}>
-                        {capitalize(name)} hinzufügen
-                      </Link>
-                    </Menu.Item>
+        <div className="full">
+          {modal}
+          <Affix>
+            <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal">
+              <Menu.Item key="mail" className="ant-menu-item-brand">
+                <i className="fa fa-institution" /> Athena
+              </Menu.Item>
+              <Menu.Item key="/">
+                <Link to="/">
+                  Website
+                </Link>
+              </Menu.Item>
+              {(collections || []).map(({ name }, i) => (
+                <SubMenu key={i} title={<Link to={`/@/${name}`}>{capitalize(name)}</Link>}>
+                  <Menu.Item className="display-none" key={`/@/${name}`} />
+                  <SubMenu title={<Link to={`/@/${name}`} style={{ color: '#666' }}>{capitalize(name)} ansehen</Link>}>
+                    <Menu.Item>Veröffentlicht</Menu.Item>
+                    <Menu.Item>Entwurf</Menu.Item>
+                    <Menu.Item>Archiviert</Menu.Item>
+                    <Menu.Item>Gelöscht</Menu.Item>
                   </SubMenu>
-                ))}
-                <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
-                  <Menu.Item className="display-none" key="/@/media" />
                   <Menu.Item>
-                    <Link to="/@/media">
-                      Mediathek ansehen
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <Link to={{ pathname, query: { upload: null } }}>
-                      Neue Datei hochladen
+                    <Link to={{ pathname, query: { [name]: null } }}>
+                      {capitalize(name)} hinzufügen
                     </Link>
                   </Menu.Item>
                 </SubMenu>
-                <Menu.Item key="/@/users">
-                  <Link to="/@/users">
-                    {/* <i className="fa fa-users" />  */}Benutzer
+              ))}
+              <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
+                <Menu.Item className="display-none" key="/@/media" />
+                <Menu.Item>
+                  <Link to="/@/media">
+                    Mediathek ansehen
                   </Link>
                 </Menu.Item>
-                <Menu.Item key="/@/analytics">
-                  <Link to="/@/analytics">
-                    {/* <i className="fa fa-area-chart" />  */}Analytics
+                <Menu.Item>
+                  <Link to={{ pathname, query: { upload: null } }}>
+                    Neue Datei hochladen
                   </Link>
                 </Menu.Item>
+              </SubMenu>
+              <Menu.Item key="/@/users">
+                <Link to="/@/users">
+                  {/* <i className="fa fa-users" />  */}Benutzer
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/@/analytics">
+                <Link to="/@/analytics">
+                  {/* <i className="fa fa-area-chart" />  */}Analytics
+                </Link>
+              </Menu.Item>
+              <GatewayDest
+                name="button1"
+                component={props => (props.children ? (
+                  <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item ant-menu-item-separated">
+                    {props.children}
+                  </div>
+              ) : null)}
+              />
+              <SubMenu className="ant-menu-submenu-right" title={<span><fa className="fa fa-cog" /></span>}>
+                <Menu.Item key="page-settings">Globale Einstellungen</Menu.Item>
                 <GatewayDest
-                  name="button1"
+                  name="button2"
                   component={props => (props.children ? (
-                    <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item ant-menu-item-separated">
+                    <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item">
                       {props.children}
                     </div>
-                ) : null)}
+                  ) : null)}
                 />
-                <SubMenu className="ant-menu-submenu-right" title={<span><fa className="fa fa-cog" /></span>}>
-                  <Menu.Item key="page-settings">Globale Einstellungen</Menu.Item>
-                  <GatewayDest
-                    name="button2"
-                    component={props => (props.children ? (
-                      <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item">
-                        {props.children}
-                      </div>
-                    ) : null)}
-                  />
-                </SubMenu>
-                <SubMenu className="ant-menu-submenu-right" title={<span>{auth.user.name}</span>}>
-                  <Menu.Item key="setting:1">Profil</Menu.Item>
-                  <Menu.Item key="logout">Abmelden</Menu.Item>
-                </SubMenu>
-              </Menu>
-            </Affix>
-            {children}
-            <GatewayDest name="global" />
-            <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
+              </SubMenu>
+              <SubMenu className="ant-menu-submenu-right" title={<span>{auth.user.name}</span>}>
+                <Menu.Item key="setting:1">Profil</Menu.Item>
+                <Menu.Item key="logout">Abmelden</Menu.Item>
+              </SubMenu>
+            </Menu>
+          </Affix>
+          {children}
+          <GatewayDest name="global" />
+          <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
+            <Match
+              pattern="/@/media"
+              render={routerProps =>
+                <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
+                  { ({ View }) => View && <View
+                    {...routerProps}
+                    tag={query ? query.tag : undefined}
+                    onImageChange={({ id }) => router.push({
+                      pathname,
+                      query: { media: id },
+                    })}
+                    tagLink={tag => ({
+                      pathname,
+                      query: { ...query, tag: tag ? tag.tag : undefined },
+                    })}
+                    imageLink={image => ({
+                      pathname,
+                      query: { ...query, media: image ? image.id : undefined },
+                    })}
+                  /> }
+                </CodeSplit>
+              }
+            />
+            {(collections || []).map(({ name }) => (
               <Match
-                pattern="/@/media"
-                render={routerProps =>
-                  <CodeSplit module={System.import('./media/list')}>
-                    { Media => Media && <Media
+                key={name}
+                pattern={`/@/${name}`}
+                render={routerProps => (
+                  <CodeSplit chunkName="collections" modules={{ View: require('./collections/list') }}>
+                    { ({ View }) => View && <View
                       {...routerProps}
-                      tag={query ? query.tag : undefined}
-                      onImageChange={({ id }) => router.push({
-                        pathname,
-                        query: { media: id },
-                      })}
-                      tagLink={tag => ({
-                        pathname,
-                        query: { ...query, tag: tag ? tag.tag : undefined },
-                      })}
-                      imageLink={image => ({
-                        pathname,
-                        query: { ...query, media: image ? image.id : undefined },
-                      })}
+                      name={name}
+                      onClick={({ id }) => router.push({ pathname, query: { [name]: id } })}
                     /> }
                   </CodeSplit>
-                }
+                )}
               />
-              {(collections || []).map(({ name }) => (
-                <Match
-                  key={name}
-                  pattern={`/@/${name}`}
-                  render={routerProps => (
-                    <CodeSplit module={System.import('./collections/list')}>
-                      { List => List && <List
-                        {...routerProps}
-                        name={name}
-                        onClick={({ id }) => router.push({ pathname, query: { [name]: id } })}
-                      /> }
-                    </CodeSplit>
-                  )}
-                />
-              ))}
-            </div>
+            ))}
           </div>
-        </LocaleProvider>
+        </div>
       </GatewayProvider>
     );
   }

@@ -142,38 +142,23 @@ const defaultScalars = {
       return ast.value;
     },
   },
-  DateClassic: {
-    name: 'DateClassic',
-    serialize: (value) => {
-      if (!(value instanceof Date)) throw new TypeError('Field error: value is not an instance of Date');
-      if (isNaN(value.getTime())) throw new TypeError('Field error: value is an invalid Date');
-      return value.toJSON();
+  Date: {
+    description: 'DateType as Integer (without time)',
+    parseValue(value) {
+      return parseInt(value);
     },
-    /**
-     * Parse value into date
-     * @param  {*} value serialized date value
-     * @return {Date} date value
-     */
-    parseValue: (value) => {
-      const date = new Date(value);
-      if (isNaN(value.getTime())) throw new TypeError('Field error: value is an invalid Date');
-      return date;
+    serialize(value) {
+      return value;
     },
-    /**
-     * Parse ast literal to date
-     * @param  {Object} ast graphql ast
-     * @return {Date} date value
-     */
-    parseLiteral: (ast) => {
-      if (ast.kind !== Kind.STRING) throw new GraphQLError('Query error: Can only parse strings to dates but got a: ' + ast.kind);
-      const result = new Date(ast.value);
-      if (isNaN(result.getTime())) throw new TypeError('Field error: value is an invalid Date');
-      if (!ast.value === result.toJSON()) throw new TypeError('Query error: Invalid date format, only accepts: YYYY-MM-DDTHH:MM:SS.SSSZ');
-      return result;
+    parseLiteral(ast) {
+      if (ast.kind !== Kind.INT) {
+        throw new GraphQLError(`Query error: Can only parse INT got a: ${ast.kind}.`, [ast]);
+      }
+      return ast.value;
     },
   },
-  Date: {
-    description: 'The website scalar type represents website url.',
+  DateTime: {
+    description: 'DateType as Integer',
     parseValue(value) {
       return parseInt(value);
     },
@@ -202,6 +187,13 @@ const defaultTypes = {
       PATCH
       REMOVE
       REPLACE
+    }
+  `,
+  dateRange: `
+    type {
+      from: Date
+      to: Date
+      duration: Int
     }
   `,
 };

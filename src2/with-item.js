@@ -1,11 +1,11 @@
-import React, {Component, PropTypes} from 'react';
-import {withApollo} from 'react-apollo';
-import {notification} from 'antd';
+import React, { Component, PropTypes } from 'react';
+import { withApollo } from 'react-apollo';
+import { notification } from 'antd';
 import gql from 'graphql-tag';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
 
-export const mutateItem = (client, name, {attributes}) => props => client.mutate({
+export const mutateItem = (client, name, { attributes }) => props => client.mutate({
   mutation: gql`
     mutation set_${name}($id:String, $type:OPERATION_TYPE!, $input:${name}Input!) {
       ${name}(id:$id, input:$input, operationType:$type) {
@@ -16,8 +16,8 @@ export const mutateItem = (client, name, {attributes}) => props => client.mutate
   ...props,
 });
 
-export const removeItem = (id, name, client, {onRemoved, attributes}) => {
-  return mutateItem(client, name, {attributes})({
+export const removeItem = (id, name, client, { onRemoved, attributes }) =>
+  mutateItem(client, name, { attributes })({
     variables: {
       id,
       type: 'REMOVE',
@@ -29,14 +29,14 @@ export const removeItem = (id, name, client, {onRemoved, attributes}) => {
         items: previousQueryResult.items.filter(x => x.id !== id),
       }),
     },
-  }).then(({data}) => {
-    notification.success({message: 'Gelöscht', description: 'Der Eintrag wurde gelöscht!'});
+  }).then(({ data }) => {
+    notification.success({ message: 'Gelöscht', description: 'Der Eintrag wurde gelöscht!' });
     if (onRemoved) onRemoved(data, this.props);
-  }).catch(err => {
+  }).catch((err) => {
     console.error(err);
-    notification.error({message: 'Fehler', description: 'Fehler beim Löschen!'});
-  });
-};
+    notification.error({ message: 'Fehler', description: 'Fehler beim Löschen!' });
+  })
+;
 
 const strip = (obj) => {
   if (!obj) return;
@@ -46,36 +46,34 @@ const strip = (obj) => {
     Object.keys(obj).forEach(x => strip(obj[x]));
   }
 };
-export const saveItem = (body, name, client, {onSaved, attributes, id}) => {
+export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
   const input = JSON.parse(JSON.stringify(body));
   strip(input);
-  return mutateItem(client, name, {attributes})({
+  return mutateItem(client, name, { attributes })({
     variables: {
       id,
       input,
       type: 'PATCH',
     },
-    /*optimisticResponse1: {
+    /* optimisticResponse1: {
      [name]: body,
      },*/
     updateQueries: !id ? {
-      [`${name}List`]: (previousQueryResult, {mutationResult}) => {
-        return {
-          ...previousQueryResult,
-          items: [...previousQueryResult.items, mutationResult.data[name]],
-        };
-      },
+      [`${name}List`]: (previousQueryResult, { mutationResult }) => ({
+        ...previousQueryResult,
+        items: [...previousQueryResult.items, mutationResult.data[name]],
+      }),
     } : {},
-  }).then(({data}) => {
-    notification.success({message: 'Gespeichert', description: 'Änderungen wurden gespeichert!'});
+  }).then(({ data }) => {
+    notification.success({ message: 'Gespeichert', description: 'Änderungen wurden gespeichert!' });
     if (onSaved) onSaved(data, this.props);
-  }).catch(err => {
+  }).catch((err) => {
     console.error(err);
-    notification.error({message: 'Fehler', description: 'Fehler beim Speichern.'});
+    notification.error({ message: 'Fehler', description: 'Fehler beim Speichern.' });
   });
 };
 
-export default ({attributes, name}) => WrappedComponent => {
+export default ({ attributes, name }) => (WrappedComponent) => {
   @withApollo
   class WithItemComponent extends Component {
     static defaultProps = {
@@ -90,7 +88,7 @@ export default ({attributes, name}) => WrappedComponent => {
 
     state = {
       isDirty: false,
-      saving: false
+      saving: false,
     };
 
     componentWillReceiveProps(props) {
@@ -102,7 +100,7 @@ export default ({attributes, name}) => WrappedComponent => {
     }
 
     update = (nextProps, lastProps) => {
-      let {name, client, attributes, initialData, id, slug} = nextProps;
+      let { name, client, attributes, initialData, id, slug } = nextProps;
       if (!lastProps || name !== lastProps.name || attributes !== lastProps.attributes || id !== lastProps.id || slug !== lastProps.slug || (nextProps.data && nextProps.data[name] !== lastProps.data[name])) {
         if (!attributes || !name) return;
         const capitalized = capitalize(name);
@@ -121,9 +119,9 @@ export default ({attributes, name}) => WrappedComponent => {
             variables: {
               id,
             },
-          }).then(({data}) => {
+          }).then(({ data }) => {
             this.data = data[name];
-            this.patchedItem = {...initialData, ...this.data};
+            this.patchedItem = { ...initialData, ...this.data };
             this.setState({
               isDirty: false,
             });
@@ -140,55 +138,58 @@ export default ({attributes, name}) => WrappedComponent => {
             variables: {
               slug,
             },
-          }).then(({data}) => {
+          }).then(({ data }) => {
             this.data = data[name];
-            this.patchedItem = {...initialData, ...this.data};
+            this.patchedItem = { ...initialData, ...this.data };
             this.setState({
               isDirty: false,
             });
           });
         } else {
-          this.patchedItem = {...initialData};
-          this.data = {...this.patchedItem};
+          this.patchedItem = { ...initialData };
+          this.data = { ...this.patchedItem };
         }
       }
     };
-    refetch = attributes => {
-      this.update({...this.props, attributes}, this.props);
+    refetch = (attributes) => {
+      this.update({ ...this.props, attributes }, this.props);
     };
-    patch = patch => {
+    patch = (patch) => {
       if (this.unmount) return;
       this.patchedItem = {
         ...this.patchedItem,
         ...patch,
       };
-      this.data = {...this.data, ...this.patchedItem};
+      this.data = { ...this.data, ...this.patchedItem };
       this.setState({
         isDirty: true,
       });
     };
     save = (data, opt) => {
-      const {onSaved, name, client, attributes} = this.props;
-      this.setState({saving: true});
+      const { onSaved, name, client, attributes } = this.props;
+      this.setState({ saving: true });
       const then = (x) => {
-        this.setState({saving: false});
+        this.setState({ saving: false });
         return x;
       };
-      if (opt && opt.commit === false) return saveItem(data, name, client, {
-        id: this.data.id,
-        onSaved,
-        attributes
-      }).then(then);
-      return saveItem(this.data, name, client, {id: this.data.id, onSaved, attributes}).then(then);
+      if (opt && opt.commit === false) {
+        return saveItem(data, name, client, {
+          id: this.data.id,
+          onSaved,
+          attributes,
+        }).then(then);
+      }
+      return saveItem(this.data, name, client, { id: this.data.id, onSaved, attributes }).then(then);
     };
     remove = () => {
-      const {onRemoved, name, client, attributes} = this.props;
-      return removeItem(this.data.id, name, client, {onRemoved, attributes});
+      const { onRemoved, name, client, attributes } = this.props;
+      return removeItem(this.data.id, name, client, { onRemoved, attributes });
     };
 
     render() {
-      return <WrappedComponent {...this.state} {...this.props} saving={this.state.saving} item={this.data}
-                               patch={this.patch} save={this.save} remove={this.remove}/>;
+      return (
+        <WrappedComponent {...this.state} {...this.props} saving={this.state.saving} item={this.data} patch={this.patch} save={this.save} remove={this.remove} />
+      );
     }
   }
   return WithItemComponent;

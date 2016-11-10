@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from '@olymp/adonis/slate';
+import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from 'olymp/slate';
 
 const defaultVideo = 'https://www.youtube.com/embed/zalYJacOhpo';
 const actions = props => [{

@@ -4,4 +4,4 @@ export { default as AuthConfirm } from './confirm';
 export { default as AuthForgot } from './forgot';
 export { default as AuthReset } from './reset';
 export { default as AuthInvite } from './invite';
-export { default as withAuth } from './with-auth';
+export { auth, default as withAuth } from './with-auth';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'olymp';
 import MediaList from '../list';
-import { withRouter } from '@olymp/adonis';
 
 export default class MediaListState extends Component {
   state = {

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import capitalize from 'capitalize';
 import { withItem, withCollection } from '../../decorators';
 import { Modal, Form, Input, DatePicker, Select, Slider, Tabs, Collapse } from 'antd';
-import Image from '../../edits/image';
-import Slate from '@olymp/adonis/src/edits/slate';
+import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
+import Image from '../../edits/image';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -36,7 +36,7 @@ const MultiSlider = ({ value = [] }) => {
     <div>
       {value.map((v, i) => (
         <div style={{ marginBottom: '30px' }} key={i}>
-          <Slider marks={{ 8: '08:00', 13: '13:00', 18: '18:00' }} range={3} min={7} max={19} step={0.5} 
+          <Slider marks={{ 8: '08:00', 13: '13:00', 18: '18:00' }} range={3} min={7} max={19} step={0.5}
                   tipFormatter={v => v % 1 === 0 ? `${v}:00` : `${Math.floor(v)}:30`} />
         </div>
       ))}
@@ -67,7 +67,7 @@ const getFormEditor = (type, name, props = {}) => {
   if (type.kind === 'LIST' && type.ofType.name === 'String') {
     return <Select {...props} tags searchPlaceholder="Suche ..." />;
   } else if (type.name === 'Json') {
-    return <Slate {...props} className="form-control" placeholder={name} />;
+    return <SlateMate {...props} className="form-control" placeholder={name} />;
   } else if (type.name === 'Date') {
     return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
   } else if (type.name === 'Color') {

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { cloudinaryUrl } from '@olymp/adonis';
-import { graphql, withApollo } from 'react-apollo';
+import { Link, cloudinaryUrl, gql, graphql, withApollo } from 'olymp';
 import { getImages, getTags, getColors } from './utils';
-import gql from 'graphql-tag';
 import { Spin } from 'antd';
 
 export const OptionalLink = ({ to, onClick, arg, ...rest }) => {

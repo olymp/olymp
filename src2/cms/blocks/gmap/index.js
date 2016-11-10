@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { GoogleMap } from '@olymp/adonis';
-import { Input } from '@olymp/adonis/edits';
-import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from '@olymp/adonis/slate';
-import { withApollo } from 'react-apollo';
-import gql from 'graphql-tag';
+import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from 'olymp/slate';
+import { GoogleMap, gql, withApollo } from 'olymp';
 
 const Marker = ({ lat, lng }) => <i style={{marginTop:'-20px'}} className="fa fa-map-marker fa-2x text-primary" />
 

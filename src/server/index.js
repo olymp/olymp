@@ -67,6 +67,7 @@ const cspConfig = {
       "'self'",
       // Allow scripts from cdn.polyfill.io so that we can import the polyfill.
       'cdn.polyfill.io',
+      'maps.googleapis.com',
       'cdn.jsdelivr.net',
       // Note: We will execution of any inline scripts that have the following
       // nonce identifier attached to them.
@@ -77,7 +78,7 @@ const cspConfig = {
       process.env.NODE_ENV === 'development' ? "'unsafe-inline'" : (req, res) => `'nonce-${res.locals.nonce}'`,
     ],
     styleSrc: ["'self'", "'unsafe-inline'", 'blob:', 'at.alicdn.com', 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com'],
-    imgSrc: ["'self'", 'data:', 'res.cloudinary.com'],
+    imgSrc: ["'self'", 'data:', 'res.cloudinary.com', 'csi.gstatic.com', 'maps.gstatic.com', 'maps.googleapis.com'],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
     // implementation that is kinder to service workers please let me know.

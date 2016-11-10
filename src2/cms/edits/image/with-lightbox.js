@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'antd';
-import cloudinaryUrl from '@olymp/adonis/src/cloudinary-url';
+import { cloudinaryUrl } from 'olymp';
 
 const defaultGetImage = props => props.value;
 export default ({ getImage } = {}) => WrappedComponent => class Lightbox extends Component {

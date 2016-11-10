@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import withItem from '../../../decorators/item';
+import { withItem } from 'olymp';
 import { Modal, Form, Input, Spin } from 'antd';
+
 const FormItem = Form.Item;
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
@@ -55,7 +56,7 @@ export default class PageSettings extends Component {
 
   render() {
     return (
-      <PageForm 
+      <PageForm
         {...this.props}
         ref={form => this.form = form}
         onCancel={this.handleCancel}
