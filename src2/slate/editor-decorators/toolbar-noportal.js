@@ -1,5 +1,4 @@
 import React, { Component, Children, PropTypes } from 'react';
-import Portal from 'react-portal';
 import { getVisibleSelectionRect } from '../utils/range';
 import { hasBlock, hasMark } from '../utils/has';
 import addBlock from '../utils/add-block';
@@ -23,9 +22,8 @@ export default (options = {}) => {
       toolbarTypes: [],
       children: [],
     }
-    state = { menu: null };
     componentDidMount() {
-      const { menu } = this.state;
+      const menu = this.gwRef;
       const { value } = this.props;
       if (!menu) return;
 
@@ -35,9 +33,10 @@ export default (options = {}) => {
       }
 
       const rect = getVisibleSelectionRect();
+      const parentRect = menu.parentNode.parentNode.getBoundingClientRect();
+      const top = rect.top - parentRect.top - menu.offsetHeight;
+      const left = rect.left - parentRect.left - menu.offsetWidth / 2 + rect.width / 2 - window.scrollX;
       if (!rect) return;
-      const top = (rect.top + window.scrollY) - menu.offsetHeight;
-      const left = rect.left + window.scrollX - menu.offsetWidth / 2 + rect.width / 2; // eslint-disable-line
       menu.style.opacity = 1;
       menu.style.top = `${top}px`;
       menu.style.left = `${left}px`;
@@ -84,20 +83,14 @@ export default (options = {}) => {
         </span>
       );
     }
-    onOpen = ({ firstChild: menu }) => {
-      this.setState({ menu });
-    }
     renderMenu = () => {
       const theToolbarMarks = [...toolbarMarks, ...this.props.toolbarMarks];
       const theToolbarTypes = [...toolbarTypes, ...this.props.toolbarTypes];
-      // const isOpen = editorState.isExpanded && editorState.isFocused;
       return (
-        <Portal isOpened onOpen={this.onOpen} key="toolbar-0">
-          <div className="slate-toolbar slate-text-toolbar">
-            {theToolbarMarks.map(this.renderMarkButton)}
-            {theToolbarTypes.map(this.renderBlockButton)}
-          </div>
-        </Portal>
+        <div className="slate-toolbar slate-text-toolbar" ref={ref => this.gwRef = ref} key="gw-sidebar">
+          {theToolbarMarks.map(this.renderMarkButton)}
+          {theToolbarTypes.map(this.renderBlockButton)}
+        </div>
       );
     }
     render() {
