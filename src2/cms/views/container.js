@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withLocale } from 'olymp/locale-de';
 import { graphql, Link, Match, Redirect, CodeSplit, gql } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
@@ -18,7 +17,6 @@ const SubMenu = Menu.SubMenu;
 // const MenuItemGroup = Menu.ItemGroup;
 
 @auth
-@withLocale
 @useLightboxes
 @withRouter
 @graphql(gql`
