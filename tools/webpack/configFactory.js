@@ -5,7 +5,7 @@ const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const appRootPath = require('app-root-path').toString();
+const appRootPath = require('app-root-dir').get();
 const WebpackMd5Hash = require('webpack-md5-hash');
 const { removeEmpty, ifElse, merge, happyPackPlugin } = require('../utils');
 const envVars = require('../config/envVars');
@@ -15,6 +15,7 @@ const CodeSplitPlugin = require('code-split-component/webpack');
 const sw = require('fs').existsSync(path.resolve(appRootPath, 'sw.json')) ? require(path.resolve(appRootPath, 'sw.json')) : null;
 const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
 const alias = {
+  react: path.resolve(appRootPath, 'node_modules', 'react'),
   olymp: path.resolve(__dirname, '..', '..'),
   app_alias: path.resolve(appRootPath, 'app'),
   server_alias: path.resolve(appRootPath, 'server'),

@@ -3,7 +3,7 @@ const chokidar = require('chokidar');
 const envVars = require('../config/envVars');
 const ListenerManager = require('./listenerManager');
 const { createNotification } = require('../utils');
-const appRootPath = require('app-root-path').toString();
+const appRootPath = require('app-root-dir').get();
 const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
 
 class HotServer {

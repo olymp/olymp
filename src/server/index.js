@@ -7,7 +7,7 @@ import 'source-map-support/register';
 
 import path from 'path';
 import uuid from 'node-uuid';
-import appRoot from 'app-root-path';
+import appRoot from 'app-root-dir';
 import express from 'express';
 import type { $Request, $Response, NextFunction } from 'express';
 import compression from 'compression';
@@ -19,7 +19,7 @@ import universalMiddleware from './middleware/universalMiddleware';
 import { notEmpty } from '../shared/universal/utils/guards';
 import server from 'server_alias';
 
-const appRootPath = appRoot.toString();
+const appRootPath = appRoot.get();
 
 // Create our express based server.
 const app = express();

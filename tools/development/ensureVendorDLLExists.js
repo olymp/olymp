@@ -4,7 +4,7 @@ const pathResolve = require('path').resolve;
 const md5 = require('md5');
 const fs = require('fs');
 const globSync = require('glob').sync;
-const appRootPath = require('app-root-path').toString();
+const appRootPath = require('app-root-dir').get();
 const vendorDLLPaths = require('../config/vendorDLLPaths');
 const { createNotification } = require('../utils');
 const envVars = require('../config/envVars');
@@ -55,12 +55,13 @@ function buildVendorDLL() {
   const ignoreModules = envVars.DEV_DLL_IGNORES
     ? envVars.DEV_DLL_IGNORES.split(',')
     : [];
+  ignoreModules.push('app_alias'); ignoreModules.push('server_alias');
 
   return new Promise((resolve, reject) => {
     Promise.all([
       Promise.resolve(getJsFilesFromSrcDir('client')),
       Promise.resolve(getJsFilesFromSrcDir('shared/universal')),
-      globSync(`${pathResolve(appRootPath, 'app')}/**/*.js`)
+      globSync(`${pathResolve(appRootPath, 'app')}/**/*.js`),
     ])
     .then(([clientFiles, universalFiles]) => {
       const isJsFile = file => pathExtName(file) === '.js';
