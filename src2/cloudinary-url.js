@@ -17,7 +17,8 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
   if (cropX && cropY) {
     part += `,x_${cropX},y_${cropY},w_${width},h_${height},c_crop`;
   } else if (width && height) {
-    part += `,w_${width},h_${height},c_fill`;
+    //part += `,w_${width},h_${height},c_fill`;
+    part += `,w_${width},h_${height},c_thumb,g_face`;
   } else if (maxWidth && maxHeight) {
     if (part.length > 0) part += ',';
     part += `,w_${maxWidth},h_${maxHeight},c_fit`;
