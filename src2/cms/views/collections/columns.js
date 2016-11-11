@@ -30,27 +30,36 @@ const getCategory = (meta) => {
       case 'Date':
       case 'DateTime':
         return {
-          getCategory: item => item ? moment(item).format('YYYY') : 'Kein Datum',
-          getSubCategory: item => item ? moment(item).format('MMMM') : undefined,
-          getCategoryFilter: item => true, // Alle Kategorien
-          getSubCategoryFilter: item => true, // Alle Kategorien
+          getCategory: item => (item ? moment(item).format('YYYY') : 'Kein Datum'),
+          getSubCategory: item => (item ? moment(item).format('MMMM') : undefined),
+          getCategoryFilter: () => true, // Alle Kategorien
+          getSubCategoryFilter: () => true, // Alle Kategorien
           getCategorySortOrder: item => -item.value, // = reverse()
           getSubCategorySortOrder: item => ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'].indexOf(item.value), // = reverse()
         };
+
+      default:
+        return {};
     }
   } else if (meta.type.kind === 'LIST') {
     // noch nichts
 
-  } else /*if (meta.type.kind === 'OBJECT')*/ {
+  } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
       case 'image':
         return {
-          getCategory: (item) => item ? (item.width * item.height > 500000 ? 'HD-Bild' : 'SD-Bild') : 'Kein Bild',
-          getCategoryFilter: (item) => true,
+          getCategory: (item) => {
+            if (item) {
+              return (item.width * item.height > 500000 ? 'HD-Bild' : 'SD-Bild');
+            }
+
+            return 'Kein Bild';
+          },
+          getCategoryFilter: () => true,
         };
 
       default:
-        return { getCategory: (item) => item ? item.name || 'Ja' : 'Sonstige' };
+        return { getCategory: item => (item ? item.name || 'Ja' : 'Sonstige') };
     }
   }
 
@@ -71,13 +80,14 @@ const getFilters = (filters, category, subCategory) => {
       count: 0,
     });
   }
+  const filter = filters[index];
 
   // Kategorie-Text updaten und Counter erhöhen
-  filters[index].count++;
-  filters[index].text = `${category} (${filters[index].count})`;
+  filter.count += 1;
+  filter.text = `${category} (${filters[index].count})`;
 
   if (subCategory) {
-    getFilters(filters[index].children, subCategory);
+    getFilters(filter.children, subCategory);
   }
 };
 
@@ -85,23 +95,25 @@ const sortFilters = (meta, filters, sorting) => {
   const categoryFnc = { ...defaultCategory, ...getCategory(meta) };
 
   // Nächste Ebene filtern und sortieren
-  let _filters = (filters || []).map(filter => ({
+  let sortedFilters = (filters || []).map(filter => ({
     ...filter,
-    children: filter.children ? sortFilters(meta, filter.children, categoryFnc.getSubCategorySortOrder) : []
+    children: filter.children ?
+    sortFilters(meta, filter.children, categoryFnc.getSubCategorySortOrder) :
+    [],
   }));
 
   // Aktuelle Ebene filtern
-  _filters = _filters.filter(f => categoryFnc.getCategoryFilter(f));
+  sortedFilters = sortedFilters.filter(f => categoryFnc.getCategoryFilter(f));
 
-  const count = (filters || []).length - _filters.length;
+  const count = (filters || []).length - sortedFilters.length;
   if (count) {
-    _filters.push({
+    sortedFilters.push({
       text: `Sonstige (${count})`,
       value: '__sonstige',
-    })
+    });
   }
 
-  return sortBy(_filters, sorting);
+  return sortBy(sortedFilters, sorting);
 };
 
 const onFilter = (meta, filters, selection, item) => {
@@ -114,13 +126,13 @@ const onFilter = (meta, filters, selection, item) => {
     subCategory: selection,
   }) >= 0;
 
-  return isCategory || isSubCategory || ( selection === '__sonstige' && !isCategory && !isSubCategory );
-}
+  return isCategory || isSubCategory || (selection === '__sonstige' && !isCategory && !isSubCategory);
+};
 
 const resolveFilter = (meta, items, filters) => {
   const { name, type } = meta;
   const categoryFnc = { ...defaultCategory, ...getCategory(meta) };
-  const _filters = [];
+  const filterArray = [];
 
   // Filter gruppieren
   (items || []).map((item) => {
@@ -133,12 +145,12 @@ const resolveFilter = (meta, items, filters) => {
       subCategory,
     });
 
-    getFilters(_filters, category, subCategory);
+    getFilters(filterArray, category, subCategory);
 
     return false;
   });
 
-  return sortFilters(meta, _filters, categoryFnc.getCategorySortOrder);
+  return sortFilters(meta, filterArray, categoryFnc.getCategorySortOrder);
 };
 
 const resolveFieldValue = (value, meta) => {
@@ -146,33 +158,30 @@ const resolveFieldValue = (value, meta) => {
     switch (meta.type.name) {
       case 'Date':
         return value ? moment(value).format('DD.MM.YYYY') : '';
-        break;
 
       case 'DateTime':
         return value ? `${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr` : '';
-        break;
-    }
 
+      default:
+        return value;
+    }
   } else if (meta.type.kind === 'LIST') {
     if (value && value.length && value.map(x => x.name).join('').length > 0) return value.map(x => x.name).join(', ');
     if (value && value.length) return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
     return '';
-
-  } else /*if (meta.type.kind === 'OBJECT')*/ {
+  } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
       case 'image':
-        return value ? <img src={cloudinaryUrl(value.url, { width: 50, height: 50 })} /> : '';
-        break;
+        return value ? <img alt={value.url} src={cloudinaryUrl(value.url, { width: 50, height: 50 })} /> : '';
 
       default:
         return value ? (value.name || 'Ja') : '';
     }
   }
-
-  return value;
 };
 
 export default (meta, items) => {
+  const { name } = meta;
   const filters = {};
 
   if (!filters[meta.type.kind]) {
@@ -185,7 +194,13 @@ export default (meta, items) => {
   return {
     filters: resolveFilter(meta, items, filters),
     onFilter: (selection, item) => onFilter(meta, filters, selection, item),
-    sorter: (a, b) => (a[name] < b[name] ? -1 : (a[name] > b[name] ? 1 : 0)),
+    sorter: (a, b) => {
+      if (a[name] >= b[name]) {
+        return a[name] > b[name] ? 1 : 0;
+      }
+
+      return -1;
+    },
     render: text => resolveFieldValue(text, meta),
   };
 };
