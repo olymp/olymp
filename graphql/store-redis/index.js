@@ -1,5 +1,6 @@
 const shortID = require('shortid');
 const bluebird = require('bluebird');
+const lodash = require('lodash');
 const redis = require('redis');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
@@ -43,6 +44,13 @@ module.exports = config => {
       let list = Object.keys(obj).map(x => JSON.parse(obj[x]));
       if (options.filter) {
         list = s.matchArray(list, options.filter);
+      } if (options.sort) {
+        const payload = options.sort.reduce((store, item) => {
+          store.properties.push(item.replace('-', ''));
+          store.orders.push(item.indexOf('-') === 0 || item.indexOf(' desc') !== -1 ? 'desc' : 'asc');
+          return store;
+        }, { properties: [], orders: [] });
+        list = lodash.orderBy(list, payload.properties, payload.orders);
       } return list;
     });
   };
