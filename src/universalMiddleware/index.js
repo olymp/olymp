@@ -4,7 +4,7 @@ import type { $Request, $Response, Middleware } from 'express';
 import React from 'react';
 import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import Helmet from 'react-helmet';
-import { ServerRouter, createServerRenderContext } from 'react-router';
+import { ServerRouter, createServerRenderContext } from 'react-router-v4-decode-uri';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { renderToStringWithData } from 'olymp/graphql/apollo-server-fix';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-v4-decode-uri';
 import withAuth from './with-auth';
 import { notification } from 'antd';
 

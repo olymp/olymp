@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import invariant from 'invariant';
 import hoistStatics from 'hoist-non-react-statics';
-import { routerContext } from 'react-router/PropTypes';
-import { LocationSubscriber } from 'react-router/Broadcasts';
+import { routerContext } from 'react-router-v4-decode-uri/PropTypes';
+import { LocationSubscriber } from 'react-router-v4-decode-uri/Broadcasts';
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
