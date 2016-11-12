@@ -35,6 +35,7 @@ export const removeItem = (id, name, client, { onRemoved, attributes }) =>
   }).catch((err) => {
     console.error(err);
     notification.error({ message: 'Fehler', description: 'Fehler beim Löschen!' });
+    throw err;
   })
 ;
 
@@ -70,6 +71,7 @@ export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
   }).catch((err) => {
     console.error(err);
     notification.error({ message: 'Fehler', description: 'Fehler beim Speichern.' });
+    throw err;
   });
 };
 
@@ -177,9 +179,15 @@ export default ({ attributes, name }) => (WrappedComponent) => {
           id: this.data.id,
           onSaved,
           attributes,
-        }).then(then);
+        }).then(then).catch(err => {
+          this.setState({ saving: false });
+          throw err;
+        });
       }
-      return saveItem(this.data, name, client, { id: this.data.id, onSaved, attributes }).then(then);
+      return saveItem(this.data, name, client, { id: this.data.id, onSaved, attributes }).then(then).catch(err => {
+        this.setState({ saving: false });
+        throw err;
+      });
     };
     remove = () => {
       const { onRemoved, name, client, attributes } = this.props;
