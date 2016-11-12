@@ -37,20 +37,21 @@ const getCategory = (meta) => {
           getCategorySortOrder: item => -item.value, // = reverse()
           getSubCategorySortOrder: item => ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'].indexOf(item.value), // = reverse()
         };
+      default:
+        break;
     }
   } else if (meta.type.kind === 'LIST') {
     // noch nichts
-
   } else /*if (meta.type.kind === 'OBJECT')*/ {
     switch (meta.type.name) {
       case 'image':
         return {
-          getCategory: (item) => item ? (item.width * item.height > 500000 ? 'HD-Bild' : 'SD-Bild') : 'Kein Bild',
-          getCategoryFilter: (item) => true,
+          getCategory: item => item ? (item.width * item.height > 500000 ? 'HD-Bild' : 'SD-Bild') : 'Kein Bild',
+          getCategoryFilter: item => true,
         };
 
       default:
-        return { getCategory: (item) => item ? item.name || 'Ja' : 'Sonstige' };
+        return { getCategory: item => item ? item.name || 'Ja' : 'Sonstige' };
     }
   }
 
@@ -98,7 +99,7 @@ const sortFilters = (meta, filters, sorting) => {
     _filters.push({
       text: `Sonstige (${count})`,
       value: '__sonstige',
-    })
+    });
   }
 
   return sortBy(_filters, sorting);
@@ -114,7 +115,7 @@ const onFilter = (meta, filters, selection, item) => {
     subCategory: selection,
   }) >= 0;
 
-  return isCategory || isSubCategory || ( selection === '__sonstige' && !isCategory && !isSubCategory );
+  return isCategory || isSubCategory || (selection === '__sonstige' && !isCategory && !isSubCategory);
 }
 
 const resolveFilter = (meta, items, filters) => {
@@ -146,24 +147,19 @@ const resolveFieldValue = (value, meta) => {
     switch (meta.type.name) {
       case 'Date':
         return value ? moment(value).format('DD.MM.YYYY') : '';
-        break;
-
       case 'DateTime':
         return value ? `${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr` : '';
+      default:
         break;
     }
-
   } else if (meta.type.kind === 'LIST') {
     if (value && value.length && value.map(x => x.name).join('').length > 0) return value.map(x => x.name).join(', ');
     if (value && value.length) return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
     return '';
-
   } else /*if (meta.type.kind === 'OBJECT')*/ {
     switch (meta.type.name) {
       case 'image':
         return value ? <img src={cloudinaryUrl(value.url, { width: 50, height: 50 })} /> : '';
-        break;
-
       default:
         return value ? (value.name || 'Ja') : '';
     }
