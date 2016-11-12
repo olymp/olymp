@@ -244,7 +244,7 @@ module.exports = ({ scalars = {}, types = {}, interfaces = {} } = {}) => {
       if (tableName) {
         moduleQueries.push(`
           ${key}(id: String, slug: String): ${key}
-          ${key}List: [${key}]
+          ${key}List(sort: [String]): [${key}]
         `);
         moduleMutations.push(`
           ${key}(id: String, input: ${key}Input, operationType: OPERATION_TYPE): ${key}
@@ -297,23 +297,23 @@ module.exports = ({ scalars = {}, types = {}, interfaces = {} } = {}) => {
         .concat(Object.keys(schemas).map(key => schemas[key].type).filter(x => x))
         .concat([`
           type Query {
-            ${moduleQueries.join("\n")}
+            ${moduleQueries.join('\n')}
           }
           type Mutation {
-            ${moduleMutations.join("\n")}
+            ${moduleMutations.join('\n')}
           }
           schema {
             query: Query
             mutation: Mutation
           }
-        `
-      ]),
+        `,
+        ]),
       resolvers: moduleResolvers,
       allowUndefinedInResolve: true,
       resolverValidationOptions: {
         requireResolversForArgs: false,
         requireResolversForNonScalar: false,
-      }
+      },
     });
     Object.keys(scalars).forEach(key => Object.assign(schema.getType(key), scalars[key]));
     return schema;
