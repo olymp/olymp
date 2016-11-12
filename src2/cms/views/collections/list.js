@@ -3,7 +3,7 @@ import { withApollo } from 'react-apollo';
 import capitalize from 'capitalize';
 import gql from 'graphql-tag';
 import { Table, Menu, Icon } from 'antd';
-import { Link } from 'react-router';
+import { Link } from 'react-router-v4-decode-uri';
 
 import { withRouter, withCollection } from '../../decorators';
 import columnHelper from './columns.js';

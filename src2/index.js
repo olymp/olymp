@@ -7,7 +7,7 @@ export { default as GoogleMap } from './google-map';
 
 export { default as cn } from 'classnames';
 export { default as classname } from 'classnames';
-export { Miss, Match, Link, Redirect } from 'react-router';
+export { Miss, Match, Link, Redirect } from 'react-router-v4-decode-uri';
 export { default as Helmet } from 'react-helmet';
 export { default as cloudinaryUrl } from './cloudinary-url';
 export { default as trackScrollY } from './track-scroll-y';

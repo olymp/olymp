@@ -1,7 +1,7 @@
 /* @flow */
 
 import React from 'react';
-import { Match, Miss } from 'react-router';
+import { Match, Miss } from 'react-router-v4-decode-uri';
 import Helmet from 'react-helmet';
 import { CodeSplit } from 'code-split-component';
 import 'normalize.css/normalize.css';

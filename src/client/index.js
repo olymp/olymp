@@ -7,7 +7,7 @@ import { render } from 'react-dom';
 // splitting within our application.
 // @see https://github.com/ctrlplusb/code-split-component
 import { CodeSplitProvider, rehydrateState } from 'code-split-component';
-import BrowserRouter from 'react_router_fixed_browser';
+import { BrowserRouter } from 'react-router-v4-decode-uri';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from 'app_alias';
 import { ApolloProvider } from 'react-apollo';

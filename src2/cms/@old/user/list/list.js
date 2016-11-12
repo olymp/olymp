@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Check } from '../../../edits';
-import { Link } from 'react-router';
+import { Link } from 'react-router-v4-decode-uri';
 import { observer } from 'mobx-react';
 
 class User extends Component {

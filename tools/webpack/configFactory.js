@@ -12,18 +12,20 @@ const envVars = require('../config/envVars');
 const appName = require('../../package.json').name;
 const CodeSplitPlugin = require('code-split-component/webpack');
 
+const isLinked = path.resolve(__dirname, '..', '..', '..') !== path.resolve(appRootPath, 'node_modules');
 const sw = require('fs').existsSync(path.resolve(appRootPath, 'sw.json')) ? require(path.resolve(appRootPath, 'sw.json')) : null;
 const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
 const alias = {
-  react: path.resolve(appRootPath, 'node_modules', 'react'),
-  moment: path.resolve(appRootPath, 'node_modules', 'moment'),
-  olymp: path.resolve(__dirname, '..', '..'),
   app_alias: path.resolve(appRootPath, 'app'),
   server_alias: path.resolve(appRootPath, 'server'),
   universalDevMiddleware_alias: path.resolve(__dirname, '..', 'development', 'universalDevMiddleware'),
   universalDevMiddleware_build: path.resolve(appRootPath, envVars.BUNDLE_OUTPUT_PATH, 'universalMiddleware'),
-  react_router_fixed_browser: path.resolve(__dirname, '..', '..', 'react-router-url-fix', 'BrowserRouter'),
-}; if (modules && modules.alias) Object.keys(modules.alias).forEach(key => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
+}; if (isLinked) {
+  alias.react = path.resolve(appRootPath, 'node_modules', 'react');
+  alias.moment = path.resolve(appRootPath, 'node_modules', 'moment');
+  alias.olymp = path.resolve(__dirname, '..', '..');
+  console.warn('TAKE CARE, you are using linked olymp, dont do this for production builds!');
+} if (modules && modules.alias) Object.keys(modules.alias).forEach(key => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
 const include = [path.resolve(appRootPath, './app'), path.resolve(appRootPath, './server'), path.resolve(__dirname, '../../src'), path.resolve(__dirname, '../../src2')];
 if (modules && modules.client) modules.client.map(p => include.push(path.resolve(appRootPath, p)));
 
