@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
 
+const defaultImage = {
+  url: 'http://placehold.it/350x150',
+  width: 350,
+  height: 150,
+}
 export default class CoolImage extends Component {
   // Fill: true => width: 100%, height: auto
   // Mode: fill (width)
@@ -11,10 +16,10 @@ export default class CoolImage extends Component {
   };
 
   renderImg = () => {
-    const { value, width, height, cloudinary, className, children, onClick, ...rest } = this.props;
+    let { value, width, height, cloudinary, className, children, onClick, ...rest } = this.props;
 
     if (!value) {
-      return <span>No image</span>;
+      value = defaultImage;
     }
 
     const crop = value.crop && Array.isArray(value.crop) ? { width: value.crop[0], height: value.crop[1], cropX: value.crop[2], cropY: value.crop[3] } : {};
@@ -54,7 +59,7 @@ export default class CoolImage extends Component {
     let { value, width, height, cloudinary, className, children, onClick, container, style, ...rest } = this.props;
 
     if (!value) {
-      return null;
+      value = defaultImage;
     } else if (typeof value === 'string') {
       value = {
         url: value,
