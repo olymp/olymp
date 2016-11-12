@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import capitalize from 'capitalize';
 import { withItem, withCollection } from '../../decorators';
-import { Modal, Form, Input, DatePicker, Select, Slider, Tabs, Collapse } from 'antd';
+import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse } from 'antd';
 import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
@@ -63,11 +63,25 @@ class DatePickerInt extends Component {
   }
 }
 
+class SlateMateExt extends Component {
+  state = { show: false };
+  onChange = (e) => {
+    const { onChange } = this.props;
+    onChange(e);
+  }
+  render() {
+    const { show } = this.state;
+    const { value } = this.props;
+    if (show) return <SlateMate {...this.props} value={value} onChange={this.onChange} />;
+    return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
+  }
+}
+
 const getFormEditor = (type, name, props = {}) => {
   if (type.kind === 'LIST' && type.ofType.name === 'String') {
     return <Select {...props} tags searchPlaceholder="Suche ..." />;
   } else if (type.name === 'Json') {
-    return <SlateMate {...props} className="form-control" placeholder={name} />;
+    return <SlateMateExt {...props} className="form-control" placeholder={name} />;
   } else if (type.name === 'Date') {
     return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
   } else if (type.name === 'Color') {
@@ -142,16 +156,12 @@ const CollectionCreateForm = Form.create()(
 @withCollection
 @withItem({})
 export default class MainDetail extends Component {
-  /*static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    patch: PropTypes.func.isRequired,
-    save: PropTypes.func.isRequired,
-  }*/
   handleCancel = () => {
     this.props.onClose();
   }
 
   handleCreate = () => {
+    const { save, onClose } = this.props;
     const form = this.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -159,12 +169,13 @@ export default class MainDetail extends Component {
       }
 
       // console.log('Received values of form: ', values);
-      this.props.save(values, { commit: false }).then(this.props.onClose);
+      save(values, { commit: false }).then(onClose);
     });
   }
 
   render() {
-    if (!this.props.item) return null;
+    const { item } = this.props;
+    if (!item) return null;
     return (
       <CollectionCreateForm
         {...this.props}

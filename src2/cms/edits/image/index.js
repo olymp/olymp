@@ -9,7 +9,6 @@ const defaultImageClick = ({ showMediathek }) => showMediathek();
 @withImageUpload()
 export default class ImageComponent extends Component {
   static defaultProps = {
-    value: null,
     readOnly: false,
   };
 
@@ -20,10 +19,10 @@ export default class ImageComponent extends Component {
   }
 
   render() {
-    const { value, readOnly, className, children, showLightbox, showMediathek, lightbox, onImageClick, ...rest } = this.props;
+    const { readOnly, className, children, showLightbox, showMediathek, lightbox, onImageClick, ...rest } = this.props;
 
     return (
-      <Image {...rest} value={value || defaultImage} className={className} onClick={this.onImageClick}>
+      <Image {...rest} className={className} onClick={this.onImageClick}>
         {children}
       </Image>
     );
