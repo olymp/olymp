@@ -66,6 +66,8 @@ export default class CoolImage extends Component {
     const url = cloudinaryUrl(value.url, options);
     style = { ...style };
     style.backgroundImage = `url(${url})`;
+    style.backgroundSize = 'cover';
+    style.backgroundPosition = 'center center';
     if (height) style.height = height;
     if (width) style.width = width;
     if (options.width && options.height && !height) {
