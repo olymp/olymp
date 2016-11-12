@@ -57,9 +57,7 @@ class DatePickerInt extends Component {
     return value ? moment(value) : undefined;
   }
   render() {
-    return (
-      <DatePicker {...this.props} value={this.getValue()} onChange={this.onChange} />
-    );
+    return <DatePicker {...this.props} value={this.getValue()} onChange={this.onChange} />;
   }
 }
 
@@ -84,6 +82,8 @@ const getFormEditor = (type, name, props = {}) => {
     return <SlateMateExt {...props} className="form-control" placeholder={name} />;
   } else if (type.name === 'Date') {
     return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
+  } else if (type.name === 'DateTime') {
+    return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
   } else if (type.name === 'Color') {
     return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
   } else if (type.kind === 'OBJECT' && type.name === 'image') {
