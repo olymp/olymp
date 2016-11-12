@@ -115,8 +115,9 @@ export default class MainList extends Component {
 
     const pagination = items ? {
       total: items.length,
-      showSizeChanger: true,
+      // showSizeChanger: true,
       defaultPageSize: 30,
+      pageSize: 30,
       // showQuickJumper: true,
       onShowSizeChange(current, pageSize) {
         console.log('Aktuell: ', current, '; Seitengröße: ', pageSize);
@@ -130,7 +131,6 @@ export default class MainList extends Component {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-
         this.setState({ selectedRowKeys });
       },
       onSelect: (record, selected, selectedRows) => {
