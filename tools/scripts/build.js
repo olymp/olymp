@@ -7,8 +7,8 @@ const webpackConfigs = pathResolve(__dirname, '../webpack');
 const clientConfig = pathResolve(webpackConfigs, 'client.config.js');
 const middlewareConfig = pathResolve(webpackConfigs, 'universalMiddleware.config.js');
 const serverConfig = pathResolve(webpackConfigs, 'server.config.js');
-const webpack = pathResolve(__dirname, '..', '..', 'node_modules', '.bin', 'webpack');
+const webpack = pathResolve(__dirname, '..', '..', '..', 'webpack', 'bin', 'webpack');
 
-const cmd = `npm run clean && ${webpack} --config ${clientConfig} && ${webpack} --config ${middlewareConfig} && ${webpack} --config ${serverConfig}`;
+const cmd = `npm run clean && node ${webpack} --config ${clientConfig} && node ${webpack} --config ${middlewareConfig} && node ${webpack} --config ${serverConfig}`;
 
 exec(cmd);
