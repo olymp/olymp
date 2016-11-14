@@ -358,7 +358,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
                   // Our index.html page will be precatched and it will be
                   // invalidated and refetched any time our client bundle
                   // assets change.
-                  '/': clientBundleAssets,
+                  // '/': clientBundleAssets,
                   // Lets cache the call to the polyfill.io service too.
                   'https://cdn.polyfill.io/v2/polyfill.min.js': clientBundleAssets,
                 });
