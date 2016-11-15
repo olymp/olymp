@@ -75,7 +75,7 @@ module.exports = function (session) {
     if(options.logErrors){
       // if options.logErrors is function, allow it to override. else provide default logger. useful for large scale deployment
       // which may need to write to a distributed log
-      if(typeof options.logErrors != 'function'){
+      if (typeof options.logErrors != 'function') {
         options.logErrors = function (err) {
   			  console.error('Warning: connect-redis reported a client error: ' + err);
   		  };

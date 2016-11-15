@@ -68,11 +68,8 @@ export default class MainList extends Component {
     }
   }
 
-  removeItem = (e, id) => {
-  };
-
   render() {
-    const {onClick, collection, name, pathname} = this.props;
+    const {onClick, collection, name, removeCollectionItem, pathname} = this.props;
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
@@ -164,7 +161,7 @@ export default class MainList extends Component {
             <Menu.Item style={{ float: 'right' }} key="14">
               <Icon type="download" />Exportieren ({selectedRowKeys.length})
             </Menu.Item>
-            <Menu.Item style={{ float: 'right' }} key="13">Löschen ({selectedRowKeys.length})</Menu.Item>
+            <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
             <Menu.Item style={{ float: 'right' }} key="12">Archivieren ({selectedRowKeys.length})</Menu.Item>
             <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
             <Menu.Item style={{ float: 'right' }} key="10">
