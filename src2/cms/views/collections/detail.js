@@ -14,21 +14,37 @@ const Panel = Collapse.Panel;
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
 
-const SubForm = withCollection(({ value = [], collection, ...rest }) => {
+const preventDefaultAnd = (func, args) => e => {
+  e.preventDefault();
+  func(args);
+};
+const SubForm = withCollection(({ value = [], collection, onChange, ...rest }) => {
+  const removeItem = index => onChange(value.filter((x, i) => i !== index));
+  const createItem = () => onChange([...value, {}]);
+  const patchItem = (index, nestedValue) => onChange(value.map((x, i) => i === index ? nestedValue : x));
+  const getHeader = (title, index) => (
+    <div>
+      {title}
+      <i className="fa fa-close pull-right" onMouseDown={preventDefaultAnd(removeItem, index)} />
+    </div>
+  );
   return (
-    <Collapse accordion>
-      {value.map((v, i) => (
-        <Panel header={v.name || `Eintrag ${i}`} key={i}>
-          <div className="ant-form">
-            {collection.fields.filter(({ name }) => name !== 'id').map(({ type, name }) =>
-              <FormItem key={name}>
-                {getFormEditor(type, name, { value: v[name] })}
-              </FormItem>
-            )}
-          </div>
-        </Panel>
-      ))}
-    </Collapse>
+    <div>
+      <Collapse accordion>
+        {value.map((value, i) => (
+          <Panel header={getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
+            <div className="ant-form">
+              {collection.fields.filter(({ name }) => name !== 'id').map(({ type, name }) =>
+                <FormItem key={name}>
+                  {getFormEditor(type, name, { value: value[name], onChange: v => patchItem(i, { ...value, [name]: v && v.target ? v.target.value : v }) })}
+                </FormItem>
+              )}
+            </div>
+          </Panel>
+        ))}
+      </Collapse>
+      <Button onClick={createItem}>Erstellen</Button>
+    </div>
   );
 });
 const MultiSlider = ({ value = [] }) => {
@@ -107,9 +123,7 @@ const getFormEditor = (type, name, props = {}) => {
       </Select>
     );
   } else if (type.kind === 'LIST' && type.ofType.name.indexOf('nested') === 0) {
-    return (
-      <SubForm {...props} name={type.ofType.name} type={type} />
-    );
+    return <SubForm {...props} name={type.ofType.name} type={type} />;
   } return <Input {...props} placeholder={name} />;
 };
 

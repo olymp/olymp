@@ -83,10 +83,10 @@ export default WrappedComponent => {
       name: PropTypes.string,
     }
     save = item => {
-      return saveItem(item, 'collection', this.props.client, { id: item.id, attributes: this.getAttributes() });
+      return saveItem(item, this.props.name, this.props.client, { id: item.id, attributes: this.getAttributes() });
     }
     remove = id => {
-      return removeItem(id, 'collection', this.props.client, { attributes: this.getAttributes() });
+      return removeItem(id, this.props.name, this.props.client, { attributes: this.getAttributes() });
     }
     getAttributes = (col) => {
       const collection = col || this.props.data.type || this.props.collection || null;
@@ -106,7 +106,8 @@ export default WrappedComponent => {
         {...rest}
         collectionLoading={data.loading}
         collection={collection}
-        collectionController={{save: this.save, remove: this.remove}}
+        saveCollectionItem={this.save}
+        removeCollectionItem={this.remove}
         attributes={this.getAttributes()}
       />;
     }
