@@ -6,8 +6,8 @@ import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import Helmet from 'react-helmet';
 import { ServerRouter, createServerRenderContext } from 'react-router-v4-decode-uri';
 import { ApolloProvider } from 'react-apollo';
+import { renderToStringWithData } from 'react-apollo/server';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import { renderToStringWithData } from 'olymp/graphql/apollo-server-fix';
 import render from './render';
 import fetch from 'node-fetch';
 
