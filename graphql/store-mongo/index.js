@@ -30,8 +30,9 @@ module.exports = config => {
       prev[next] = 1;
       return prev;
     }, {});
+    if (!filter) filter = {};
     if (!filter.state) {
-      filter.state = { $or: [null, 'PUBLISHED'] };
+      filter.state = null;
     }
     const cursor = returnArgs.db.collection(kind).findAsync(filter, attributes);
     return cursor.then(c => c.toArrayAsync());

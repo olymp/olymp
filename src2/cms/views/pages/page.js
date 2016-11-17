@@ -1,6 +1,6 @@
 import React from 'react';
 import { Gateway } from 'react-gateway';
-import { graphql, Link, gql, withAuth, withItem } from 'olymp';
+import { graphql, Link, gql, withAuth, withItem, Helmet } from 'olymp';
 import { SlateMate } from 'olymp/slate';
 
 const attributes = 'id, slug, order, name, parentId, blocks, templateName';
@@ -11,6 +11,7 @@ const CmsPage = ({ auth, item, patch, save, blocks, location }) => {
 
   return (
     <div>
+      <Helmet title={item.name} />
       <SlateMate className="frontend-editor" readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} blockTypes={blocks} />
       {auth.user && !item.computed ? <Gateway into="button1">
         <a href="javascript:;" onClick={save}>
