@@ -9,7 +9,7 @@ import { ApolloProvider } from 'react-apollo';
 import { renderToStringWithData } from 'react-apollo/server';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import render from './render';
-import fetch from 'node-fetch';
+import fetch from '../../node-fetch';
 
 global.fetch = fetch;
 
@@ -20,7 +20,7 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   // We should have had a nonce provided to us.  See the server/index.js for
   // more information on what this is.
   if (typeof response.locals.nonce !== 'string') {
-    // throw new Error('A "nonce" value has not been attached to the response');
+    throw new Error('A "nonce" value has not been attached to the response');
   }
   const nonce = response.locals.nonce;
 
@@ -45,7 +45,7 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
     uri,
     opts: {
       credentials: 'same-origin',
-      headers: Object.assign(request.headers || {}, { 'User-Agent': 'foo' }),
+      headers: request.headers,
     },
   });
   const client = new ApolloClient({

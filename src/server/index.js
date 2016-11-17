@@ -27,17 +27,17 @@ const app = express();
 // Attach a unique "nonce" to every response.  This allows use to declare
 // inline scripts as being safe for execution against our content security policy.
 // @see https://helmetjs.github.io/docs/csp/
-/*app.use((req: $Request, res: $Response, next: NextFunction) => {
+app.use((req: $Request, res: $Response, next: NextFunction) => {
   res.locals.nonce = uuid.v4(); // eslint-disable-line no-param-reassign
   next();
-});*/
+});
 
 // Don't expose any software information to potential hackers.
 app.disable('x-powered-by');
 
 // Prevent HTTP Parameter pollution.
 // @see http://bit.ly/2f8q7Td
-/*app.use(hpp());
+app.use(hpp());
 
 // Content Security Policy (CSP)
 //
@@ -118,7 +118,7 @@ app.use(helmet.ieNoOpen());
 // to guess (“sniff”) the MIME type, which can have security implications. It
 // does this by setting the X-Content-Type-Options header to nosniff.
 // @see https://helmetjs.github.io/docs/dont-sniff-mimetype/
-app.use(helmet.noSniff());*/
+app.use(helmet.noSniff());
 
 // Gzip compress the responses.
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -150,7 +150,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.useSession = (url, getArgs) => {
-  app.set('trust proxy', 1);
+  app.set('trust proxy', 2);
   if (!getArgs) {
     getArgs = url;
     url = null;
