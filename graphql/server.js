@@ -16,7 +16,7 @@ module.exports = (server, options) => {
   if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
 
-  if (options.sessions) {
+  if (options.sessions && adapter) {
     server.useSession('/graphql', session => ({
       store: adapter.createSessionStore(session),
       resave: false,
