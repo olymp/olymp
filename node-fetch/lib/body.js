@@ -38,7 +38,6 @@ function Body(body, opts) {
  * @return  Promise
  */
 Body.prototype.json = function() {
-  console.log(this.body);
 
 	// for 204 No Content response, buffer will be empty, parsing it will throw error
 	if (this.status === 204) {
@@ -46,6 +45,7 @@ Body.prototype.json = function() {
 	}
 
 	return this._decode().then(function(buffer) {
+  console.log(buffer.toString());
 		return JSON.parse(buffer.toString());
 	});
 
