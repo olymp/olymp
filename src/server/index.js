@@ -127,7 +127,7 @@ app.use(compression());
 
 // Configure static serving of our webpack bundled client files.
 app.use(
-  notEmpty(process.env.CLIENT_BUNaDLE_HTTP_PATH),
+  notEmpty(process.env.CLIENT_BUNDLE_HTTP_PATH),
   express.static(
     path.resolve(appRootPath, notEmpty(process.env.BUNDLE_OUTPUT_PATH), './client'),
     { maxAge: notEmpty(process.env.CLIENT_BUNDLE_CACHE_MAXAGE) }
