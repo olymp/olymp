@@ -47,7 +47,11 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
       <WrappedComponent {...this.props} showMediathek={() => this.show(value)}>
         {this.props.children}
         {visible && !image ? <Modal visible onCancel={this.hide} onOk={this.hide}>
-          <Media tag={undefined} onImageChange={this.show} />
+          <Media
+            tags={this.state.tags}
+            onTagsChange={tags => this.setState({ tags })}
+            onImageChange={this.show}
+          />
           <Upload onClose={this.show} />
         </Modal> : null}
         {visible && image ? <Modal visible onCancel={() => this.show()} onOk={this.onOk} okText="Speichern" cancelText="Mediathek">

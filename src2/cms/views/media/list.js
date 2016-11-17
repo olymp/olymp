@@ -59,13 +59,9 @@ const getTagTree = (images) => {
 
 const getNode = (tree, tags) => {
   if (tags.length) {
-    return getNode(
-      tree.children.filter(item => item.label === tags[0])[0],
-      tags.filter((tag, index) => index)
-    );
-  }
-
-  return tree;
+    const nextTree = tree.children.filter(item => item.label === tags[0])[0];
+    if (nextTree) return getNode(nextTree, tags.filter((tag, index) => index));
+  } return tree;
 };
 
 const attributes = 'id, url, tags, colors, width, height';
@@ -87,6 +83,10 @@ export default class MediaList extends Component {
       items: React.PropTypes.arrayOf(React.PropTypes.object),
     }),
   };
+
+  static defaultProps = {
+    tags: [],
+  }
 
   onUploadClick = () => {
     // todo: const { dropzone } = this.refs;
@@ -170,7 +170,7 @@ export default class MediaList extends Component {
           <div className="card card-block directory">
             <div className="overlay">
               <a href="javascript:;" onClick={() => onTagsChange([])}>
-                <h6>Alle</h6>
+                <h6><i className="fa fa-rotate-left" /></h6>
               </a>
             </div>
             <div className="boxed">
