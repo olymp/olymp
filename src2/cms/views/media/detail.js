@@ -18,7 +18,7 @@ const ModalForm = Form.create()(
       return (
         <Modal {...modalSettings} confirmLoading={saving} title="Media" onCancel={onCancel} onOk={onCreate}>
           <FormItem key="id" label="ID" {...formItemLayout}>
-            {getFieldDecorator('email', {
+            {getFieldDecorator('id', {
               initialValue: item.id,
             })(
               <Input disabled placeholder="ID" />

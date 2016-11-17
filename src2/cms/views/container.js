@@ -243,18 +243,14 @@ export default class Container extends Component {
                 <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
                   { ({ View }) => View && <View
                     {...routerProps}
-                    tag={query ? query.tag : undefined}
+                    tags={query && query.tag ? query.tag.split('/') : []}
+                    onTagsChange={tags => router.push({
+                      pathname,
+                      query: { ...query, tag: tags ? tags.join('/') : undefined },
+                    })}
                     onImageChange={({ id }) => router.push({
                       pathname,
                       query: { media: id },
-                    })}
-                    tagLink={tag => ({
-                      pathname,
-                      query: { ...query, tag: tag ? tag.tag : undefined },
-                    })}
-                    imageLink={image => ({
-                      pathname,
-                      query: { ...query, media: image ? image.id : undefined },
                     })}
                   /> }
                 </CodeSplit>
