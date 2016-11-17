@@ -1,5 +1,5 @@
 {
-  "version": "9.0.0-22",
+  "version": "9.0.0-23",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -91,6 +91,7 @@
     "searchjs": "^0.8.0",
     "serialize-javascript": "1.3.0",
     "shortid": "^2.2.6",
+    "sitemap-generator": "^5.0.0",
     "slate": "^0.14.15",
     "source-map-support": "0.4.6",
     "superagent": "^2.3.0"

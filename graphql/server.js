@@ -5,6 +5,7 @@ const createGoogleGql = require('./google');
 const createMediaGql = require('./media');
 const createAuthGql = require('./auth');
 const createPagesGql = require('./pages');
+const createSitemap = require('./sitemap');
 
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 
@@ -30,6 +31,7 @@ module.exports = (server, options) => {
   }
 
   const mail = options.mail ? createMail(options.mail) : null;
+  createSitemap(schema, {});
   if (options.google) createGoogleGql(schema, typeof options.google === 'object' ? options.google : {});
   if (options.pages) createPagesGql(schema, typeof options.pages === 'object' ? Object.assign({ adapter }, options.pages) : { adapter });
   if (options.media) createMediaGql(schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
