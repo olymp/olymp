@@ -37,7 +37,7 @@ app.disable('x-powered-by');
 
 // Prevent HTTP Parameter pollution.
 // @see http://bit.ly/2f8q7Td
-app.use(hpp());
+/*app.use(hpp());
 
 // Content Security Policy (CSP)
 //
@@ -118,7 +118,7 @@ app.use(helmet.ieNoOpen());
 // to guess (“sniff”) the MIME type, which can have security implications. It
 // does this by setting the X-Content-Type-Options header to nosniff.
 // @see https://helmetjs.github.io/docs/dont-sniff-mimetype/
-app.use(helmet.noSniff());
+app.use(helmet.noSniff());*/
 
 // Gzip compress the responses.
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -127,7 +127,7 @@ app.use(compression());
 
 // Configure static serving of our webpack bundled client files.
 app.use(
-  notEmpty(process.env.CLIENT_BUNDLE_HTTP_PATH),
+  notEmpty(process.env.CLIENT_BUNaDLE_HTTP_PATH),
   express.static(
     path.resolve(appRootPath, notEmpty(process.env.BUNDLE_OUTPUT_PATH), './client'),
     { maxAge: notEmpty(process.env.CLIENT_BUNDLE_CACHE_MAXAGE) }
