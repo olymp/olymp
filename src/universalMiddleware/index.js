@@ -44,8 +44,8 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   const networkInterface = createNetworkInterface({
     uri,
     opts: {
-      credentials: 'include',
-      headers: request.headers,
+      credentials: 'same-origin',
+      headers: Object.assign(request.headers || {}, { 'User-Agent': 'foo' }),
     },
   });
   const client = new ApolloClient({
