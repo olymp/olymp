@@ -166,7 +166,7 @@ export default class MainList extends Component {
             <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
             <Menu.Item style={{ float: 'right' }} key="10">
               <Link to={{ pathname, query: { [name]: null } }}>
-                <Icon type="plus" /> {capitalize(name)}hinzufügen
+                <Icon type="plus" /> {capitalize(name)} hinzufügen
               </Link>
             </Menu.Item>
           </Menu>
