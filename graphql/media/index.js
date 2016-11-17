@@ -68,15 +68,12 @@ const getSignedRequest = (config) => {
   });
 };
 
-const updateImage = (id)=> {
-  return new Promise((yay, nay) => {
-    console.log(id);
-    /*return cloudinary.api.update(id, (result) => {
-      if (result.next_cursor) console.error('WARNING, MORE THAN 100 IMAGES!!!');
-      yay(result.resources.map(transform));
-    });*/
+const updateImage = (id, tags, config) =>
+  new Promise((yay) => {
+    cloudinary.api.update(id, result => yay(transform(result)), Object.assign({}, config, {
+      tags: (tags || []).join(','),
+    }));
   });
-};
 
 module.exports = (schema, {uri} = {}) => {
   let config = {};
@@ -100,8 +97,9 @@ module.exports = (schema, {uri} = {}) => {
       cloudinaryRequest: cloudinaryRequest
     `,
     mutation: `
-      file(id: String, payload: fileInput, operationType: OPERATION_TYPE): file
+      file(id: String, input: fileInput, operationType: OPERATION_TYPE): file
       cloudinaryRequestDone(id: String, token: String): file
+
     `,
     resolvers: {
       Query: {
@@ -112,6 +110,7 @@ module.exports = (schema, {uri} = {}) => {
             imageCache[args.id] = image;
             return image;
           });
+
         },
         fileList: (source, args, x, {fieldASTs}) => {
           // if (imagesCache) return imagesCache;
@@ -128,16 +127,15 @@ module.exports = (schema, {uri} = {}) => {
         },
       },
       Mutation: {
-        file: (source, args, x, {fieldASTs}) => {
-          console.log(source, args, x, fieldASTs);
-          //updateImage();
-          throw new Error('Not implemented');
+        file: (source, args) => {
           imagesCache = null;
           imageCache = null;
+
+          return updateImage(args.id, args.input.tags, config);
         },
-        /*fileList: (source, args, x, {fieldASTs}) => {
+        /* fileList: (source, args, x, {fieldASTs}) => {
           console.log("test");
-        },*/
+        }, */
         cloudinaryRequestDone: (source, args, x, {fieldASTs}) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
             imagesCache = null;
