@@ -9,7 +9,7 @@ import { ApolloProvider } from 'react-apollo';
 import { renderToStringWithData } from 'react-apollo/server';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import render from './render';
-import fetch from 'node-fetch';
+import fetch from '../../node-fetch';
 
 global.fetch = fetch;
 
