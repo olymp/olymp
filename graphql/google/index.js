@@ -27,7 +27,6 @@ module.exports = (schema, { config } = {}) => {
   const maps = require('./maps')(config);
   schema.addSchema({
     name: 'geocode',
-    auto: false,
     query: `
       geocode(address: String, region: String, language: String): geocode
       geocodeList(address: String, region: String, language: String): [geocode]
