@@ -44,7 +44,7 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   const networkInterface = createNetworkInterface({
     uri,
     opts: {
-      credentials: 'same-origin',
+      credentials: 'include',
       headers: request.headers,
     },
   });
