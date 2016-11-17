@@ -250,7 +250,7 @@ export default class Container extends Component {
                     })}
                     onImageChange={({ id }) => router.push({
                       pathname,
-                      query: { media: id },
+                      query: { ...query, media: id },
                     })}
                   /> }
                 </CodeSplit>
