@@ -127,9 +127,25 @@ const getFormEditor = (type, name, props = {}) => {
   } return <Input {...props} placeholder={name} />;
 };
 
+const getInitialValue = ({ item, form }, fieldName) => {
+  if (item[fieldName]) return item[fieldName];
+  else if (fieldName === 'slug' && form.getFieldValue('name')) {
+    let url = '/' + encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
+      .split('%C3%A4').join('ä')
+      .split('%C3%B6').join('ö')
+      .split('%C3%BC').join('ü')
+      .split('%C3%A4').join('Ä')
+      .split('%C3%B6').join('Ö')
+      .split('%C3%BC').join('Ü');
+    if (form.getFieldValue('date')) {
+      url = moment(form.getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
+    }
+    return url;
+  } return undefined;
+};
 const CollectionCreateForm = Form.create()(
   (props) => {
-    const { collection, item, form, onCreate, onCancel, saving } = props;
+    const { collection, form, onCreate, onCancel, saving } = props;
     const { getFieldDecorator } = form;
 
     const fields = collection.fields.filter(({ name }) => name !== 'id').reduce((state, item) => {
@@ -143,7 +159,7 @@ const CollectionCreateForm = Form.create()(
       <Form horizontal>
         {fields.filter(({ name }) => name !== 'id').map(field =>
           <FormItem key={field.name} label={toLabel(field.name)} {...formItemLayout}>
-            {getFieldDecorator(field.name, { initialValue: item[field.name] || undefined })(
+            {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field.name) })(
               getFormEditor(field.type, name)
             )}
           </FormItem>

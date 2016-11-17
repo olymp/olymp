@@ -189,6 +189,13 @@ const defaultTypes = {
       REPLACE
     }
   `,
+  DOCUMENT_STATE: `
+    enum {
+      DEFAULT
+      ARCHIVED
+      REMOVED
+    }
+  `,
   dateRange: `
     type {
       from: Date
@@ -228,7 +235,7 @@ module.exports = ({ scalars = {}, types = {}, interfaces = {} } = {}) => {
     let moduleResolvers = { Query: { hello: () => 'World!' }, Mutation: { hello: () => 'World!' } };
 
     Object.keys(schemas).map(key => {
-      const { query, mutation, typeDefs, resolvers, tableName, adapter } = schemas[key];
+      const { query, mutation, typeDefs, resolvers, auto } = schemas[key];
       if (typeDefs) Object.keys(typeDefs).forEach(key => {
         const typeDef = typeDefs[key].replace('type ', `type ${key} `).replace('enum ', `enum ${key} `);
         moduleTypeDefinitions.push(typeDef);
@@ -236,42 +243,13 @@ module.exports = ({ scalars = {}, types = {}, interfaces = {} } = {}) => {
           typesArray.push(key);
           let typeInput = typeDefs[key].replace('type ', `input ${key}Input `);
           if (typeInput.indexOf(' implements ') !== -1) {
-            typeInput = typeInput.slice(0, typeInput.indexOf(' implements ')) + typeInput.slice(typeInput.indexOf('{'))
+            typeInput = typeInput.slice(0, typeInput.indexOf(' implements ')) + typeInput.slice(typeInput.indexOf('{'));
           }
           moduleInputDefinitions.push(typeInput);
         }
       });
-      if (tableName) {
-        moduleQueries.push(`
-          ${key}(id: String, slug: String): ${key}
-          ${key}List(sort: [String]): [${key}]
-        `);
-        moduleMutations.push(`
-          ${key}(id: String, input: ${key}Input, operationType: OPERATION_TYPE): ${key}
-        `);
-        moduleResolvers.Query[key] = (source, args, x, { fieldASTs }) => {
-          const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          if (args.slug) {
-            return adapter.read(tableName, { filter: { slug: args.slug }, attributes });
-          }
-          return adapter.read(tableName, Object.assign({}, args, { attributes }));
-        };
-        moduleResolvers.Query[`${key}List`] = (source, args, x, { fieldASTs }) => {
-          const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          return adapter.list(tableName, Object.assign({}, args, { attributes }));
-        };
-        moduleResolvers.Mutation[key] = (source, args, x, { fieldASTs }, x2, x3, x4) => {
-          const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          if (args.operationType && args.operationType === 'REMOVE') {
-            return adapter.remove(tableName, Object.assign({}, args));
-          }
-          if (args.input) {
-            args = Object.assign({}, args, args.input);
-            delete args.input;
-          }
-          delete args.operationType;
-          return adapter.write(tableName, Object.assign({}, args), { attributes });
-        };
+      if (auto && auto.adapter && auto.adapter.graphql) {
+        auto.adapter.graphql(Object.assign({}, auto, { moduleQueries, moduleResolvers, moduleMutations, key }));
       }
       if (query) moduleQueries.push(query);
       if (mutation) moduleMutations.push(mutation);

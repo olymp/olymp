@@ -61,6 +61,7 @@ module.exports = config => {
   });
 
   return {
+    graphql: require('./graphql'),
     read,
     write,
     list,

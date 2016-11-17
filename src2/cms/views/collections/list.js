@@ -175,6 +175,7 @@ export default class MainList extends Component {
         <Table
           rowSelection={rowSelection}
           size="middle"
+          rowKey="id"
           onRowClick={onClick}
           loading={!items}
           columns={columns}

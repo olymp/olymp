@@ -6,13 +6,16 @@ const createMediaGql = require('./media');
 const createAuthGql = require('./auth');
 const createPagesGql = require('./pages');
 
-const createAdapter = require('./store-redis');
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 
 module.exports = (server, options) => {
   const schema = createSchema();
+  let adapter;
 
-  const adapter = options.adapter ? createAdapter(options.adapter) : null;
+  if (options.adapter && options.adapter.indexOf('mongodb') === 0) adapter = require('./store-mongo')(options.adapter);
+  if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
+  server.adapter = adapter;
+
   if (options.sessions) {
     server.useSession('/graphql', session => ({
       store: adapter.createSessionStore(session),

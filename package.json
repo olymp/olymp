@@ -65,6 +65,7 @@
     "less": "2.7.1",
     "less-loader": "2.2.3",
     "moment": "^2.15.2",
+    "mongodb": "^2.2.11",
     "node-fetch": "1.6.3",
     "normalize.css": "5.0.0",
     "path": "0.12.7",
