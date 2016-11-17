@@ -40,7 +40,7 @@ module.exports = config => {
 
   const remove = (kind, { id }) => {
     const collection = returnArgs.db.collection(kind);
-    return read(kind, { id }).then(item => write(kind, Object.assign({}, item, { state: 'DELETED' })));
+    return read(kind, { id }).then(item => write(kind, Object.assign({}, item, { state: 'REMOVED' })));
     // return collection.deleteOneAsync({ id });
   };
 
