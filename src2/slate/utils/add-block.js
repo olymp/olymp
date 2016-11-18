@@ -17,7 +17,6 @@ export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }
         .unwrapBlock('bulleted-list')
         .unwrapBlock('numbered-list');
     } else if (isAtomic) {
-      console.log(defaultNodes);
       transform = transform.insertBlock({ type, isVoid, data: { }, nodes: defaultNodes });
     } else {
       transform = transform.setBlock(isActive ? defaultNode : type);
