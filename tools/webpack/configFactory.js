@@ -419,7 +419,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // would have had to do ourselves to get code splitting w/SSR
               // support working.
               'transform-decorators-legacy',
-              ifClient([path.resolve(__dirname, '..', '..', 'babel-plugin-import'), { libraryName: 'antd', style: 'css' }]),
+              ifClient(['babel-plugin-import', { libraryName: 'antd', style: 'css' }]),
               // @see https://github.com/ctrlplusb/code-split-component
               [
                 'code-split-component/babel',
