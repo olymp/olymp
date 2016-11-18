@@ -69,6 +69,7 @@ const cspConfig = {
       'cdn.polyfill.io',
       'maps.googleapis.com',
       'cdn.jsdelivr.net',
+      'www.google-analytics.com',
       // Note: We will execution of any inline scripts that have the following
       // nonce identifier attached to them.
       // This is useful for guarding your application whilst allowing an inline
