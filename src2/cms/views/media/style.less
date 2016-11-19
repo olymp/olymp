@@ -1,29 +1,6 @@
 .olymp-media {
   padding-top: 38px;
 
-  .ant-cascader-picker {
-    background-color: transparent;
-    vertical-align: inherit;
-
-    input {
-      border: none;
-      padding: 0;
-    }
-
-    i {
-      background-color: transparent;
-    }
-
-    .ant-cascader-picker-label {
-      overflow: inherit;
-      padding: 0;
-
-      span:not(:last-child)::after {
-        content: ' > '
-      }
-    }
-  }
-
   .card.card-block {
     border: none;
     float: left;
@@ -32,7 +9,7 @@
     margin: 5px;
     cursor: pointer;
 
-    &:hover {
+    &:not(.directory):hover {
       transform: scale(1.1);
     }
 
@@ -51,11 +28,13 @@
         z-index: 1;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 255, 255, .5);
-        border: 1px solid black;
+        background-color: rgba(255, 255, 255, .7);
+        border: 1px solid fade(#2db7f5, 40%);
+        border-radius: 50%;
 
         &:hover {
-          background-color: rgba(255, 255, 255, .25);
+          background-color: rgba(255, 255, 255, .4);
+          border: 1px solid fade(#2db7f5, 70%);
         }
       }
 
@@ -68,7 +47,7 @@
         max-width: 90%;
         max-height: 90%;
         transform: translate(-50%, -50%);
-        color: #000;
+        color: darken(#2db7f5, 15%);
         text-decoration: none;
       }
 
@@ -81,6 +60,9 @@
       .boxed {
         width: 100%;
         height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #2db7f5;
       }
     }
 
