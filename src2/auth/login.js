@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router-v4-decode-uri';
 import { Modal, Form, Input, notification } from 'antd';
 import withAuth from './with-auth';
@@ -19,14 +20,37 @@ const ModalForm = Form.create()(
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
           })(
-            <Input size="large" addonBefore={<i className="fa fa-envelope-o" />} type="email" placeholder="E-Mail" />
+            <Input
+              size="large"
+              addonBefore={<i className="fa fa-envelope-o" />}
+              type="email"
+              placeholder="E-Mail"
+              onKeyPress={(element) => {
+                if (element.key === 'Enter') {
+                  return this.input && this.input.refs.input && this.input.refs.input.focus();
+                }
+
+                return false;
+              }}
+            />
           )}
         </FormItem>
         <FormItem key="password" label="Name" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
           })(
-            <Input size="large" addonBefore={<i className="fa fa-lock" />} type="password" placeholder="Password" />
+            <Input
+              size="large"
+              addonBefore={<i className="fa fa-lock" />}
+              type="password"
+              placeholder="Password"
+              onKeyPress={(element) => {
+                if (element.key === 'Enter') {
+                  onCreate();
+                }
+              }}
+              ref={(input) => { this.input = input; }}
+            />
           )}
         </FormItem>
         <Link to={{ pathname, query: { forgot: null } }}>Passwort vergessen?</Link>
