@@ -87,7 +87,7 @@ const cspConfig = {
     fontSrc: ["'self'", 'at.alicdn.com', 'cdnjs.cloudflare.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
     objectSrc: ["'none'"],
     mediaSrc: ["'none'"],
-    childSrc: ["'self'", 'youtube.com', 'youtu.be'],
+    childSrc: ["'self'", 'www.youtube.com'],
   },
 };
 if (process.env.NODE_ENV === 'development') {
