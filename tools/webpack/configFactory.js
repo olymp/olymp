@@ -420,6 +420,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // support working.
               'transform-decorators-legacy',
               ifClient(['babel-plugin-import', { libraryName: 'antd', style: 'css' }]),
+              ifServer(['babel-plugin-import', { libraryName: 'antd' }]),
               // @see https://github.com/ctrlplusb/code-split-component
               [
                 'code-split-component/babel',
