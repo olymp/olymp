@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, Link, Match, Redirect, CodeSplit, gql } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
-import GoogleAnalytics from 'olymp/google-analytics';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'capitalize';
 import { Menu, Affix } from 'antd';
@@ -161,7 +160,6 @@ export default class Container extends Component {
     return (
       <GatewayProvider>
         <div className="full">
-          <GoogleAnalytics path={pathname} id={process.env.GA_TRACKING_ID} />
           {modal}
           <Affix>
             <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal">

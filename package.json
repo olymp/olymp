@@ -1,5 +1,5 @@
 {
-  "version": "9.0.0-30",
+  "version": "9.0.0-31",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -78,7 +78,6 @@
     "react-dom": "15.3.2",
     "react-draggable": "2.2.2",
     "react-frame-aware-selection-plugin": "0.0.5",
-    "react-ga": "2.1.2",
     "react-gateway": "2.3.0",
     "react-helmet": "3.1.0",
     "react-image-crop": "1.0.3",
