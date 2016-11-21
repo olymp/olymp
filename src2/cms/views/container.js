@@ -106,7 +106,6 @@ export default class Container extends Component {
     if (!auth || !auth.user || !data) {
       return (
         <div className="full">
-          <GoogleAnalytics path={pathname} id={process.env.GA_TRACKING_ID} />
           {modal}
           {children}
           {auth && auth.loading ? null : <Match
