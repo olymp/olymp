@@ -3,10 +3,10 @@ import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
 
 const defaultImage = {
-  url: 'http://placehold.it/350x150',
+  url: '/img/350x150.png',
   width: 350,
   height: 150,
-}
+};
 export default class CoolImage extends Component {
   // Fill: true => width: 100%, height: auto
   // Mode: fill (width)
