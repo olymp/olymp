@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link, cloudinaryUrl, gql, graphql, withApollo } from 'olymp';
-import { getColors } from './utils';
 import { Spin, Cascader, Menu } from 'antd';
 import { sortBy } from 'lodash';
 import './style.less';
@@ -16,7 +15,7 @@ const getTagTree = (images) => {
   const createTreeItem = (image, treeNode, iterateTags, prevTags = []) => {
     const tempTreeNode = { ...treeNode };
 
-    iterateTags.forEach((currentTag) => {
+    (iterateTags || []).forEach((currentTag) => {
       // Wenn nicht vorhanden, neuen Knoten im Tree anlegen
       if (!tempTreeNode[currentTag]) {
         tempTreeNode[currentTag] = {
@@ -27,7 +26,7 @@ const getTagTree = (images) => {
         };
       }
 
-      const nextTags = iterateTags.filter(tag => tag !== currentTag);
+      const nextTags = (iterateTags || []).filter(tag => tag !== currentTag);
       if (nextTags.length === 0) {
         tempTreeNode[currentTag].images.push(image);
       } else {
@@ -58,7 +57,7 @@ const getTagTree = (images) => {
 
   return {
     children: mapOverTree(tree),
-    images: images.filter(image => !image.tags.length),
+    images: images.filter(image => !image.tags || !image.tags.length),
   };
 };
 
@@ -69,7 +68,7 @@ const getNode = (tree, tags) => {
   } return tree;
 };
 
-const attributes = 'id, url, tags, colors, width, height';
+const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source';
 @withApollo
 @graphql(gql`
   query fileList {
@@ -96,6 +95,7 @@ export default class MediaList extends Component {
   state = {
     solution: [],
     sortByState: [],
+    source: [],
   }
 
   onUploadClick = () => {
@@ -104,7 +104,7 @@ export default class MediaList extends Component {
   };
 
   render() {
-    const { solution, sortByState } = this.state;
+    const { solution, sortByState, source } = this.state;
     const { onImageChange, onTagsChange, tags } = this.props;
     const { loading, items } = this.props.data;
 
@@ -123,6 +123,11 @@ export default class MediaList extends Component {
 
       default:
         filteredItems = items;
+    }
+
+    // Quellen-Filter
+    if (source && source.length && source[0] !== 'Alle Quellen') {
+      filteredItems = items.filter(item => item.source === source[0] || source[0] === 'Keine Quelle');
     }
 
     // Sortierung
@@ -144,12 +149,8 @@ export default class MediaList extends Component {
         sortByKey = item => item.width;
         break;
 
-      case 'Anzahl Tags':
-        sortByKey = item => item.tags.count;
-        break;
-
-      case 'Zuletzt hinzugefügt':
-        sortByKey = item => item.tags.count; // todo!
+      case 'Hinzugefügt':
+        sortByKey = item => item.createdAt;
         break;
 
       default:
@@ -183,20 +184,38 @@ export default class MediaList extends Component {
 
     const tree = getTagTree(filteredItems);
     const currentNode = getNode(tree, tags);
-    const directories = currentNode && currentNode.children ? sortBy(currentNode.children, sortByKey).map(getDirectory) : undefined;
+    const directories = currentNode && currentNode.children ? sortBy(currentNode.children, 'label').map(getDirectory) : undefined;
 
-    const images = currentNode && currentNode.images ? currentNode.images.map(item => ({
-      ...item,
-      src: item.url,
-      thumbnail: cloudinaryUrl(item.url, { maxWidth: 500, maxHeight: 500 }),
-      thumbnailWidth: 100,
-      thumbnailHeight: 100 * (item.height / item.width),
-      caption: item.comment,
-    })).map((item, index) => (
+    const images = currentNode && currentNode.images ? sortBy(currentNode.images, sortByKey).map(
+      item => ({
+        ...item,
+        src: item.url,
+        thumbnail: cloudinaryUrl(item.url, { maxWidth: 500, maxHeight: 500 }),
+        thumbnailWidth: 100,
+        thumbnailHeight: 100 * (item.height / item.width),
+        caption: item.comment,
+      })
+    ).map((item, index) => (
       <div key={index} className="card card-block file" onClick={() => onImageChange(item)}>
         <img alt={item.caption} className="boxed" src={item.thumbnail} />
       </div>
     )) : undefined;
+
+    // Quellen zusammensuchen
+    const sources = {};
+    const getSources = (tree) => {
+      (tree.images || []).forEach(item => {
+        const source = item.source || 'Keine Quelle';
+        if (!sources[source]) {
+          sources[source] = 0;
+        }
+
+        sources[source] += 1;
+      });
+
+      (tree.children || []).forEach(item => getSources(item));
+    };
+    getSources(tree);
 
     return (
       <div className="olymp-media">
@@ -204,12 +223,12 @@ export default class MediaList extends Component {
           selectedKeys={['0']}
           mode="horizontal"
           theme="dark"
-          style={{ fontSize: '13px', lineHeight: '38px', position: 'fixed', top: '48px', left: 0, width: '100%', zIndex: 1 }}
+          style={{ fontSize: '13px', lineHeight: '38px', width: '100%', zIndex: 1 }}
         >
-          <Menu theme="dark" style={{ width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto', lineHeight: '38px' }}>
+          <Menu theme="dark" style={{ maxWidth: '1600px', margin: '0 auto', lineHeight: '38px' }}>
             <Menu.Item key="tags">
               <Cascader
-                options={sortBy(tree.children, sortByKey)}
+                options={sortBy(tree.children, 'label')}
                 defaultValue={tags}
                 value={tags}
                 changeOnSelect
@@ -222,6 +241,10 @@ export default class MediaList extends Component {
             <Menu.Item key="solution">
               <Cascader
                 options={[
+                  {
+                    value: 'Alle Auflösungen',
+                    label: 'Alle Auflösungen',
+                  },
                   {
                     value: 'Hohe Auflösung',
                     label: 'Hohe Auflösung',
@@ -239,25 +262,19 @@ export default class MediaList extends Component {
 
             <Menu.Item key="source">
               <Cascader
-                options={(tree.children)}
-                defaultValue={tags}
-                value={tags}
-                changeOnSelect
-                onChange={onTagsChange}
+                options={[
+                  {
+                    value: 'Alle Quellen',
+                    label: 'Alle Quellen',
+                  },
+                  ...Object.keys(sources).map(key => ({
+                    value: key,
+                    label: `${key} (${sources[key]})`,
+                  }))
+                ]}
+                onChange={selection => this.setState({ source: selection })}
               >
-                <span>{tags && tags.length ? tags.join(' > ') : 'Quelle'}</span>
-              </Cascader>
-            </Menu.Item>
-
-            <Menu.Item key="color">
-              <Cascader
-                options={(tree.children)}
-                defaultValue={tags}
-                value={tags}
-                changeOnSelect
-                onChange={onTagsChange}
-              >
-                <span>{tags && tags.length ? tags.join(' > ') : 'Farbe'}</span>
+                <span>{source && source.length ? source[0] : 'Quelle'}</span>
               </Cascader>
             </Menu.Item>
 
@@ -269,8 +286,8 @@ export default class MediaList extends Component {
                     label: 'Name',
                   },
                   {
-                    value: 'Zuletzt Hinzugefügt',
-                    label: 'Zuletzt Hinzugefügt',
+                    value: 'Hinzugefügt',
+                    label: 'Hinzugefügt',
                   },
                   {
                     value: 'Auflösung',
@@ -284,10 +301,6 @@ export default class MediaList extends Component {
                     value: 'Breite',
                     label: 'Breite',
                   },
-                  {
-                    value: 'Anzahl Tags',
-                    label: 'Anzahl Tags',
-                  },
                 ]}
                 onChange={selection => this.setState({ sortByState: selection })}
               >
@@ -297,22 +310,24 @@ export default class MediaList extends Component {
           </Menu>
         </Menu>
 
-        { tags.length ? (
-          <div className="card card-block directory" onClick={() => onTagsChange([])}>
-            <div className="overlay">
-              <h6><i className="fa fa-rotate-left" /></h6>
+        <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', margin: '0 auto' }}>
+          { tags.length ? (
+            <div className="card card-block directory" onClick={() => onTagsChange([])}>
+              <div className="overlay">
+                <h6><i className="fa fa-rotate-left" /></h6>
+              </div>
+              <div className="boxed">
+                {tree.images.filter((item, index) => index < 9).map(({ id, url }) => (
+                  <img key={id} alt={url} src={cloudinaryUrl(url, { width: 100, height: 100 })} />
+                ))}
+              </div>
             </div>
-            <div className="boxed">
-              {tree.images.filter((item, index) => index < 9).map(({ id, url }) => (
-                <img key={id} alt={url} src={cloudinaryUrl(url, { width: 100, height: 100 })} />
-              ))}
-            </div>
-          </div>
-        ) : undefined }
+          ) : undefined }
 
-        {directories}
-        {images}
-        <div style={{ clear: 'both' }} />
+          {directories}
+          {images}
+          <div style={{ clear: 'both' }} />
+        </div>
       </div>
     );
   }

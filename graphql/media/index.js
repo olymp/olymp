@@ -14,8 +14,13 @@ const transform = image => {
       return;
     } else if (key === 'colors') {
       return;
+    } else if (key === 'context' && image[key].custom) {
+      newImage.caption = image[key].custom.caption;
+      newImage.source = image[key].custom.source;
+      return;
     } else if (key === 'predominant') {
-      newImage['colors'] = image.predominant.google.map(x => x[0]);
+      // Geht nur bei Single Pictures!!!
+      newImage.colors = image.predominant.google.map(x => x[0]);
       return;
     }
     newImage[lodash.camelCase(key)] = image[key];
@@ -37,6 +42,7 @@ const getImages = (config) => {
       yay(result.resources.map(transform));
     }, Object.assign({}, config, {
       tags: true,
+      context: true,
       type: 'upload',
       colors: true,
       max_results: 100,
@@ -53,6 +59,7 @@ const getImageById = (config, id) => {
           yay(transform(result));
         }, Object.assign({}, config, {
           tags: true,
+          context: true,
           type: 'upload',
           colors: true,
           //prefix: ''
@@ -68,10 +75,11 @@ const getSignedRequest = (config) => {
   });
 };
 
-const updateImage = (id, tags, config) =>
+const updateImage = (id, tags, source, caption, config) =>
   new Promise((yay) => {
     cloudinary.api.update(id, result => yay(transform(result)), Object.assign({}, config, {
       tags: (tags || []).join(','),
+      context: `source=${source}|caption=${caption}`,
     }));
   });
 
@@ -131,7 +139,7 @@ module.exports = (schema, {uri} = {}) => {
           imagesCache = null;
           imageCache = null;
 
-          return updateImage(args.id, args.input.tags, config);
+          return updateImage(args.id, args.input.tags, args.input.source, args.input.caption, config);
         },
         /* fileList: (source, args, x, {fieldASTs}) => {
           console.log("test");
@@ -172,6 +180,8 @@ module.exports = (schema, {uri} = {}) => {
           bytes: Int
           tags: [String]
           url: String
+          caption: String
+          source: String
           colors: [String]
         }
       `,

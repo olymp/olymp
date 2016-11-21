@@ -239,42 +239,40 @@ export default class Container extends Component {
           </Affix>
           {children}
           <GatewayDest name="global" />
-          <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
+          <Match
+            pattern="/@/media"
+            render={routerProps =>
+              <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
+                { ({ View }) => View && <View
+                  {...routerProps}
+                  tags={query && query.tag ? query.tag.split('/') : []}
+                  onTagsChange={tags => router.push({
+                    pathname,
+                    query: { ...query, tag: tags ? tags.join('/') : undefined },
+                  })}
+                  onImageChange={({ id }) => router.push({
+                    pathname,
+                    query: { ...query, media: id },
+                  })}
+                /> }
+              </CodeSplit>
+            }
+          />
+          {(collections || []).map(({ name }) => (
             <Match
-              pattern="/@/media"
-              render={routerProps =>
-                <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
+              key={name}
+              pattern={`/@/${name}`}
+              render={routerProps => (
+                <CodeSplit chunkName="collections" modules={{ View: require('./collections/list') }}>
                   { ({ View }) => View && <View
                     {...routerProps}
-                    tags={query && query.tag ? query.tag.split('/') : []}
-                    onTagsChange={tags => router.push({
-                      pathname,
-                      query: { ...query, tag: tags ? tags.join('/') : undefined },
-                    })}
-                    onImageChange={({ id }) => router.push({
-                      pathname,
-                      query: { ...query, media: id },
-                    })}
+                    name={name}
+                    onClick={({ id }) => router.push({ pathname, query: { [name]: id } })}
                   /> }
                 </CodeSplit>
-              }
+              )}
             />
-            {(collections || []).map(({ name }) => (
-              <Match
-                key={name}
-                pattern={`/@/${name}`}
-                render={routerProps => (
-                  <CodeSplit chunkName="collections" modules={{ View: require('./collections/list') }}>
-                    { ({ View }) => View && <View
-                      {...routerProps}
-                      name={name}
-                      onClick={({ id }) => router.push({ pathname, query: { [name]: id } })}
-                    /> }
-                  </CodeSplit>
-                )}
-              />
-            ))}
-          </div>
+          ))}
         </div>
       </GatewayProvider>
     );
