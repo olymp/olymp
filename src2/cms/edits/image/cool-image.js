@@ -32,13 +32,13 @@ export default class CoolImage extends Component {
     if (width === '100%') {
       return (
         <div {...rest} onClick={onClick} style={style} className={cn(className, 'athena-img-container-simple')}>
-          <img className="athena-img" style={{ width }} src={url} />
+          <img className="athena-img" style={{ width }} src={url} alt={value.caption} />
           {children}
         </div>
       );
     } else if (!options.width || !options.height) {
       return (
-        <img {...rest} style={style} className="athena-img" src={url} onClick={onClick} />
+        <img {...rest} style={style} className="athena-img" src={url} onClick={onClick} alt={value.caption} />
       );
     }
 

@@ -145,45 +145,47 @@ export default class MainList extends Component {
     };
 
     return (
-      <div style={{ paddingTop: '38px' }}>
-        <Menu
-          selectedKeys={['0']}
-          mode="horizontal"
-          theme="dark"
-          style={{ fontSize: '13px', lineHeight: '38px', position: 'fixed', top: '48px', left: 0, width: '100%', zIndex: 1 }}
-          >
-          <Menu theme="dark" style={{ width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto', lineHeight: '38px' }}>
-            <Menu.Item key="0">{capitalize(name)}</Menu.Item>
-            <Menu.Item key="1">Veröffentlicht</Menu.Item>
-            <Menu.Item key="3">Archiv</Menu.Item>
-            <Menu.Item key="4">Gelöscht</Menu.Item>
+      <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ paddingTop: '38px' }}>
+          <Menu
+            selectedKeys={['0']}
+            mode="horizontal"
+            theme="dark"
+            style={{ fontSize: '13px', lineHeight: '38px', position: 'fixed', top: '48px', left: 0, width: '100%', zIndex: 1 }}
+            >
+            <Menu theme="dark" style={{ width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto', lineHeight: '38px' }}>
+              <Menu.Item key="0">{capitalize(name)}</Menu.Item>
+              <Menu.Item key="1">Veröffentlicht</Menu.Item>
+              <Menu.Item key="3">Archiv</Menu.Item>
+              <Menu.Item key="4">Gelöscht</Menu.Item>
 
-            <Menu.Item style={{ float: 'right' }} key="14">
-              <Icon type="download" />Exportieren ({selectedRowKeys.length})
-            </Menu.Item>
-            <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
-            <Menu.Item style={{ float: 'right' }} key="12">Archivieren ({selectedRowKeys.length})</Menu.Item>
-            <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
-            <Menu.Item style={{ float: 'right' }} key="10">
-              <Link to={{ pathname, query: { [name]: null } }}>
-                <Icon type="plus" /> {capitalize(name)} hinzufügen
-              </Link>
-            </Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="14">
+                <Icon type="download" />Exportieren ({selectedRowKeys.length})
+              </Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="12">Archivieren ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="10">
+                <Link to={{ pathname, query: { [name]: null } }}>
+                  <Icon type="plus" /> {capitalize(name)} hinzufügen
+                </Link>
+              </Menu.Item>
+            </Menu>
           </Menu>
-        </Menu>
 
-        <Table
-          rowSelection={rowSelection}
-          size="middle"
-          rowKey="id"
-          onRowClick={onClick}
-          loading={!items}
-          columns={columns}
-          dataSource={items}
-          pagination={pagination}
-          onChange={onTableChange}
-          style={{ clear: 'both' }}
-          />
+          <Table
+            rowSelection={rowSelection}
+            size="middle"
+            rowKey="id"
+            onRowClick={onClick}
+            loading={!items}
+            columns={columns}
+            dataSource={items}
+            pagination={pagination}
+            onChange={onTableChange}
+            style={{ clear: 'both' }}
+            />
+        </div>
       </div>
     );
   }
