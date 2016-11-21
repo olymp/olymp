@@ -132,6 +132,15 @@ function render(args: RenderArgs) {
             ? inlineScript(`window.${STATE_IDENTIFIER}=${serialize(codeSplitState)};`)
             : ''
           }
+         ${process.env.GA_TRACKING_ID
+            ? inlineScript(`
+              <script>
+                window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', '${process.env.GA_TRACKING_ID}', 'auto');
+                ga('send', 'pageview');
+              </script>
+              <script async src='https://www.google-analytics.com/analytics.js'></script>
+            `) : ''}
         ${polyfillIoScript()}
         ${serviceWorkerScript(nonce)}
         ${developmentVendorDLL()}
