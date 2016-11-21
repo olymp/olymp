@@ -120,6 +120,7 @@ function render(args: RenderArgs) {
         ${helmet ? helmet.link.toString() : ''}
         ${styleTags(assetsForRender.css)}
         ${helmet ? helmet.style.toString() : ''}
+        ${process.env.GA_TRACKING_ID ? '<script async src="https://www.google-analytics.com/analytics.js"></script>' : ''}
       </head>
       <body>
         <div id='app'>${app || ''}</div>
@@ -134,12 +135,9 @@ function render(args: RenderArgs) {
           }
          ${process.env.GA_TRACKING_ID
             ? inlineScript(`
-              <script>
-                window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-                ga('create', '${process.env.GA_TRACKING_ID}', 'auto');
-                ga('send', 'pageview');
-              </script>
-              <script async src='https://www.google-analytics.com/analytics.js'></script>
+              window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+              ga('create', '${process.env.GA_TRACKING_ID}', 'auto');
+              ga('send', 'pageview');
             `) : ''}
         ${polyfillIoScript()}
         ${serviceWorkerScript(nonce)}
