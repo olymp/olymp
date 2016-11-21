@@ -11,10 +11,19 @@ export default class GoogleMap extends Component {
     greatPlaceCoords: {lat: 59.724465, lng: 30.080121}
   }
   render() {
-    const { children, center, zoom, ...rest } = this.props;
+    const { children, center, zoom, key, ...rest } = this.props;
 
     return (
-      <Map defaultCenter={center} center={center} defaultZoom={zoom} zoom={zoom} {...rest}>
+      <Map
+        defaultCenter={center}
+        center={center}
+        defaultZoom={zoom}
+        zoom={zoom}
+        bootstrapURLKeys={{
+          key: key || process.env.GM_KEY,
+        }}
+        {...rest}
+      >
         {children}
       </Map>
     );
