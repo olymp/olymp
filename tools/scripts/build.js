@@ -10,6 +10,6 @@ const middlewareConfig = pathResolve(webpackConfigs, 'universalMiddleware.config
 const serverConfig = pathResolve(webpackConfigs, 'server.config.js');
 const webpack = pathResolve(appRoot, 'node_modules', 'webpack', 'bin', 'webpack');
 
-const cmd = `node ${webpack} --config ${clientConfig} && node ${webpack} --config ${middlewareConfig} && node ${webpack} --config ${serverConfig}`;
+const cmd = `npm run clean && node ${webpack} --config ${clientConfig} && node ${webpack} --config ${middlewareConfig} && node ${webpack} --config ${serverConfig}`;
 
 exec(cmd);
