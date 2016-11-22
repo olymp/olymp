@@ -11,6 +11,7 @@ const { removeEmpty, ifElse, merge, happyPackPlugin } = require('../utils');
 const envVars = require('../config/envVars');
 const appName = require('../../package.json').name;
 const CodeSplitPlugin = require('code-split-component/webpack');
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const isLinked = path.resolve(__dirname, '..', '..', '..') !== path.resolve(appRootPath, 'node_modules');
 const sw = require('fs').existsSync(path.resolve(appRootPath, 'sw.json')) ? require(path.resolve(appRootPath, 'sw.json')) : null;
@@ -21,14 +22,11 @@ const alias = {
   universalDevMiddleware_alias: path.resolve(__dirname, '..', 'development', 'universalDevMiddleware'),
   universalDevMiddleware_build: path.resolve(appRootPath, envVars.BUNDLE_OUTPUT_PATH, 'universalMiddleware'),
 }; if (isLinked) {
-  alias.react = path.resolve(appRootPath, 'node_modules', 'react');
-  alias.moment = path.resolve(appRootPath, 'node_modules', 'moment');
   alias.olymp = path.resolve(__dirname, '..', '..');
   console.warn('TAKE CARE, you are using linked olymp, dont do this for production builds!');
 } if (modules && modules.alias) Object.keys(modules.alias).forEach(key => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
 const include = [path.resolve(appRootPath, './app'), path.resolve(appRootPath, './server'), path.resolve(__dirname, '../../src'), path.resolve(__dirname, '../../src2')];
 if (modules && modules.client) modules.client.map(p => include.push(path.resolve(appRootPath, p)));
-
 function webpackConfigFactory({ target, mode }, { json }) {
   if (!target || ['client', 'server', 'universalMiddleware'].findIndex(valid => target === valid) === -1) {
     throw new Error(
@@ -67,6 +65,18 @@ function webpackConfigFactory({ target, mode }, { json }) {
   const isServer = target === 'server';
   const isUniversalMiddleware = target === 'universalMiddleware';
   const isNodeTarget = isServer || isUniversalMiddleware;
+
+  alias['electrode-react-ssr-caching'] = path.resolve(__dirname, '..', 'ssr-cache');
+  if (isProd) {
+    /*if (isClient) {
+      alias['react'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
+      alias['react-dom'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
+      include.push(path.resolve(appRootPath, 'node_modules', 'preact-compat'))
+    }*/
+    alias.react = path.resolve(appRootPath, 'node_modules', 'react');
+    alias.moment = path.resolve(appRootPath, 'node_modules', 'moment');
+    alias['moment/locale/zh-cn'] = 'moment/locale/de';
+  }
 
   // These are handy little helpers that use the boolean flags above.
   // They allow you to wrap a value with an condition check. It the condition
@@ -206,6 +216,8 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ],
     },
     plugins: removeEmpty([
+      ifProdClient(new LodashModuleReplacementPlugin()),
+      ifProdClient(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/)),
       new CodeSplitPlugin({
         // The code-split-component doesn't work nicely with hot module reloading,
         // which we use in our development builds, so we will disable it (which
@@ -284,7 +296,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ifDevClient(new webpack.HotModuleReplacementPlugin()),
 
       // Adds options to all of our loaders.
-      ifProdClient(
+      /*ifProdClient(
         new webpack.LoaderOptionsPlugin({
           // Indicates to our loaders that they should minify their output
           // if they have the capability to do so.
@@ -311,7 +323,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
             screw_ie8: true,
           },
         })
-      ),
+      ),*/
 
       ifProdClient(
         // This is actually only useful when our deps are installed via npm2.
@@ -340,18 +352,18 @@ function webpackConfigFactory({ target, mode }, { json }) {
         new SWPrecacheWebpackPlugin(merge(
           {
             // Note: The default cache size is 2mb. This can be reconfigured:
-            // maximumFileSizeToCacheInBytes: 2097152,
+            // maximumFileSizeToCacheInBytes: 2097152 * 3,
             cacheId: `${appName}-sw`,
             filepath: path.resolve(envVars.BUNDLE_OUTPUT_PATH, './serviceWorker/sw.js'),
             dynamicUrlToDependencies: (() => {
               const clientBundleAssets = globSync(
                 path.resolve(appRootPath, envVars.BUNDLE_OUTPUT_PATH, './client/*.js')
               );
-              return globSync(path.resolve(appRootPath, './public/*'))
+              return globSync(path.resolve(appRootPath, './public/**/*.*'))
                 .reduce((acc, cur) => {
                   // We will precache our public asset, with it being invalidated
                   // any time our client bundle assets change.
-                  acc[`/${path.basename(cur)}`] = clientBundleAssets; // eslint-disable-line no-param-reassign,max-len
+                  acc[`/${path.relative(path.resolve(appRootPath, 'public'), cur)}`] = clientBundleAssets; // eslint-disable-line no-param-reassign,max-len
                   return acc;
                 },
                 {
@@ -401,7 +413,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // TODO: When babel-preset-latest-minimal has stabilised use it
               // for our node targets so that only the missing features for
               // our respective node version will be transpiled.
-              ifProd('react-optimize'),
+              // ifProd('react-optimize'),
               // ifProd('babili'),
               ['latest', { es2015: { modules: false } }],
             ]),
@@ -420,6 +432,29 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // would have had to do ourselves to get code splitting w/SSR
               // support working.
               'transform-decorators-legacy',
+
+              // 'transform-react-constant-elements', will break with <Menu.Item /> https://github.com/babel/babel/pull/4787
+              ifProdClient('lodash'),
+              ifProd('transform-react-inline-elements'),
+              ifProd('transform-react-remove-prop-types'),
+              ifProd('transform-react-pure-class-to-function'),
+
+              ifProd('minify-constant-folding'),
+              ifProd('minify-dead-code-elimination'),
+              ifProd('minify-flip-comparisons'),
+              ifProd('minify-guarded-expressions'),
+              ifProd('minify-infinity'),
+              // ifProd('minify-mangle-names'), Error App not defined
+              ifProd('minify-replace'),
+              // ifProd('minify-simplify'), TypeError: /Users/bkniffler/Projects/olymp-gzk/node_modules/olymp/src2/slate/editor.js: Cannot read property 'file' of undefined
+              ifProd('minify-type-constructors'),
+              ifProd('transform-member-expression-literals'),
+              ifProd('transform-merge-sibling-variables'),
+              ifProd('transform-minify-booleans'),
+              ifProd('transform-property-literals'),
+              ifProd('transform-simplify-comparison-operators'),
+              ifProd('transform-undefined-to-void'),
+
               ifClient(['babel-plugin-import', { libraryName: 'antd', style: 'css' }]),
               ifServer(['babel-plugin-import', { libraryName: 'antd' }]),
               // @see https://github.com/ctrlplusb/code-split-component

@@ -11,7 +11,7 @@ const unflatten = (array, options, parentId, level) => {
 
   let parent = parentId ? array.filter(x => x[options.id] == parentId)[0] : null;
   let children = array.filter(item => item[options.parentId] == parentId).map(item => mapper(item, parent));
-  children = sortBy(children, item => item.order);
+  children = sortBy(children, [item => item.order]);
   children.forEach(item => {
     item.children = unflatten(array, options, item[options.id], level + 1);
   });

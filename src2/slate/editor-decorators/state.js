@@ -7,7 +7,7 @@ const parseValue = (value, initialState, terse) => {
   catch (err) {
     try { return Raw.deserialize(value, { terse: !terse }); }
     catch(err){
-      return initialState ? Raw.deserialize(initialState, { terse }) : Plain.deserialize('');
+      return initialState ? parseValue(initialState, undefined, { terse }) : Plain.deserialize('');
     }
   }
 };
