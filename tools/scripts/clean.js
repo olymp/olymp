@@ -8,6 +8,6 @@ const rimraf = pathResolve(appRootPath, 'node_modules', 'rimraf');
 
 const buildOutput = pathResolve(appRootPath, envVars.BUNDLE_OUTPUT_PATH);
 
-const cmd = `node ${rimraf} ${buildOutput}`;
+const cmd = `rm -rf ${buildOutput}`;
 
 exec(cmd);

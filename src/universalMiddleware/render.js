@@ -114,7 +114,8 @@ function render(args: RenderArgs) {
   return `<!DOCTYPE html>
     <html ${helmet ? helmet.htmlAttributes.toString() : ''}>
       <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
+        <link rel="manifest" href="/manifest.json" />
         ${helmet ? helmet.title.toString() : ''}
         ${helmet ? helmet.meta.toString() : ''}
         ${helmet ? helmet.link.toString() : ''}

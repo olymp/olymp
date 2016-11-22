@@ -1,5 +1,6 @@
 /* @flow */
 
+import SSRCaching from 'electrode-react-ssr-caching';
 import type { $Request, $Response, Middleware } from 'express';
 import React from 'react';
 import { CodeSplitProvider, createRenderContext } from 'code-split-component';
@@ -12,6 +13,8 @@ import render from './render';
 import fetch from 'node-fetch';
 
 global.fetch = fetch;
+
+SSRCaching.enableCaching(process.env.CACHING);
 
 /**
  * An express middleware that is capabable of doing React server side rendering.
