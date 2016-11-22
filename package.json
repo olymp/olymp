@@ -1,5 +1,5 @@
 {
-  "version": "9.0.0-40",
+  "version": "9.0.0-41",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -64,6 +64,7 @@
     "jsonwebtoken": "7.1.9",
     "less": "2.7.1",
     "less-loader": "2.2.3",
+    "node-uuid": "1.4.7",
     "moment": "2.15.2",
     "mongodb": "2.2.11",
     "node-fetch": "1.6.3",
