@@ -52,6 +52,7 @@
     "babel-preset-latest": "6.16.0",
     "babel-preset-react": "6.16.0",
     "babel-preset-react-optimize": "1.0.1",
+    "babili": "0.0.9",
     "chai": "3.5.0",
     "chokidar": "1.6.1",
     "colors": "1.1.2",
