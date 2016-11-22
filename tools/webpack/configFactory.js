@@ -402,7 +402,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // for our node targets so that only the missing features for
               // our respective node version will be transpiled.
               ifProd('react-optimize'),
-              ifProd('babili'),
+              // ifProd('babili'),
               ['latest', { es2015: { modules: false } }],
             ]),
             plugins: removeEmpty([
