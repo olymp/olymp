@@ -401,7 +401,8 @@ function webpackConfigFactory({ target, mode }, { json }) {
               // TODO: When babel-preset-latest-minimal has stabilised use it
               // for our node targets so that only the missing features for
               // our respective node version will be transpiled.
-              // ifProd('babel-preset-react-optimize'),
+              ifProd('react-optimize'),
+              ifProd('babili'),
               ['latest', { es2015: { modules: false } }],
             ]),
             plugins: removeEmpty([
