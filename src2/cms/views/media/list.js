@@ -80,8 +80,14 @@ const attributes = 'id, url, tags, colors, width, height, createdAt, caption, so
 export default class MediaList extends Component {
   static propTypes = {
     onImageChange: React.PropTypes.func,
-    onTagsChange: React.PropTypes.func,
+    onTagsFilterChange: React.PropTypes.func,
+    onSolutionFilterChange: React.PropTypes.func,
+    onSourceFilterChange: React.PropTypes.func,
+    onResetFilters: React.PropTypes.func,
+    onSortByChange: React.PropTypes.func,
     tags: React.PropTypes.arrayOf(React.PropTypes.string),
+    solution: React.PropTypes.arrayOf(React.PropTypes.string),
+    source: React.PropTypes.arrayOf(React.PropTypes.string),
     data: React.PropTypes.shape({
       loading: React.PropTypes.bool,
       items: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -90,11 +96,7 @@ export default class MediaList extends Component {
 
   static defaultProps = {
     tags: [],
-  }
-
-  state = {
     solution: [],
-    sortByState: [],
     source: [],
   }
 
@@ -104,8 +106,7 @@ export default class MediaList extends Component {
   };
 
   render() {
-    const { solution, sortByState, source } = this.state;
-    const { onImageChange, onTagsChange, tags } = this.props;
+    const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onResetFilters, onSortByChange, tags, solution, source, sortByState } = this.props;
     const { loading, items } = this.props.data;
 
     let filteredItems;
@@ -126,8 +127,8 @@ export default class MediaList extends Component {
     }
 
     // Quellen-Filter
-    if (source && source.length && source[0] !== 'Alle Quellen') {
-      filteredItems = items.filter(item => item.source === source[0] || source[0] === 'Keine Quelle');
+    if (source && source.length) {
+      filteredItems = filteredItems.filter(item => item.source === source[0] || source[0] === 'Keine Quelle');
     }
 
     // Sortierung
@@ -160,6 +161,7 @@ export default class MediaList extends Component {
 
     if (loading || !filteredItems) return <Spin />;
 
+    // Bilder aus allen Unterordnern holen
     const getDirectory = ({ label, images, children }) => {
       const allImages = [...images];
       const getAllImages = children => children && children.length ? children.forEach((image) => {
@@ -168,14 +170,24 @@ export default class MediaList extends Component {
       }) : undefined;
       getAllImages(children);
 
+      // Bilder solange wiederholen, bis auf jeden Fall 9 Bilder im Ordner angezeigt werden
+      const dirImages = [];
+      const fillWithImages = images => {
+        images.map(image => dirImages.push(image));
+        if (dirImages.length < 9) {
+          fillWithImages(images);
+        }
+      };
+      fillWithImages(allImages.filter((item, index) => index < 9));
+
       return (
-        <div key={label} className="card card-block directory" onClick={() => onTagsChange([...tags, label])}>
+        <div key={label} className="card card-block directory" onClick={() => onTagsFilterChange([...tags.filter(tag => tag !== label), label])}>
           <div className="overlay">
             <h6>{label}<br /><small>({allImages.length})</small></h6>
           </div>
           <div className="boxed">
-            {allImages.filter((item, index) => index < 9).map(({ id, url }) => (
-              <img key={id} alt={url} src={cloudinaryUrl(url, { width: 100, height: 100 })} />
+            {dirImages.map(({ url }, index) => (
+              <img key={index} alt={url} src={cloudinaryUrl(url, { width: 100, height: 100 })} />
             ))}
           </div>
         </div>
@@ -215,7 +227,7 @@ export default class MediaList extends Component {
 
       (tree.children || []).forEach(item => getSources(item));
     };
-    getSources(tree);
+    getSources(currentNode);
 
     return (
       <div className="olymp-media">
@@ -232,19 +244,16 @@ export default class MediaList extends Component {
                 defaultValue={tags}
                 value={tags}
                 changeOnSelect
-                onChange={onTagsChange}
+                onChange={onTagsFilterChange}
               >
                 <span>{tags && tags.length ? tags.join(' > ') : 'Tags'}</span>
               </Cascader>
+              {tags && tags.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTagsFilterChange([])} /> : undefined}
             </Menu.Item>
 
             <Menu.Item key="solution">
               <Cascader
                 options={[
-                  {
-                    value: 'Alle Auflösungen',
-                    label: 'Alle Auflösungen',
-                  },
                   {
                     value: 'Hohe Auflösung',
                     label: 'Hohe Auflösung',
@@ -254,28 +263,30 @@ export default class MediaList extends Component {
                     label: 'Niedrige Auflösung',
                   },
                 ]}
-                onChange={selection => this.setState({ solution: selection })}
+                defaultValue={solution}
+                value={solution}
+                onChange={onSolutionFilterChange}
               >
                 <span>{solution && solution.length ? solution[0] : 'Auflösung'}</span>
               </Cascader>
+              {solution && solution.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSolutionFilterChange([])} /> : undefined}
             </Menu.Item>
 
             <Menu.Item key="source">
               <Cascader
                 options={[
-                  {
-                    value: 'Alle Quellen',
-                    label: 'Alle Quellen',
-                  },
                   ...Object.keys(sources).map(key => ({
                     value: key,
                     label: `${key} (${sources[key]})`,
-                  }))
+                  })),
                 ]}
-                onChange={selection => this.setState({ source: selection })}
+                defaultValue={source}
+                value={source}
+                onChange={onSourceFilterChange}
               >
                 <span>{source && source.length ? source[0] : 'Quelle'}</span>
               </Cascader>
+              {source && source.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSourceFilterChange([])} /> : undefined}
             </Menu.Item>
 
             <Menu.Item key="sortBy" style={{ float: 'right' }}>
@@ -302,9 +313,9 @@ export default class MediaList extends Component {
                     label: 'Breite',
                   },
                 ]}
-                onChange={selection => this.setState({ sortByState: selection })}
+                onChange={onSortByChange}
               >
-                <span>{sortByState && sortByState.length ? sortByState[0] : 'Sortierung'}</span>
+                <span>{sortByState && sortByState.length ? sortByState[0] : 'Name'}</span>
               </Cascader>
             </Menu.Item>
           </Menu>
@@ -312,7 +323,7 @@ export default class MediaList extends Component {
 
         <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', margin: '0 auto' }}>
           { tags.length ? (
-            <div className="card card-block directory" onClick={() => onTagsChange([])}>
+            <div className="card card-block directory" onClick={onResetFilters}>
               <div className="overlay">
                 <h6><i className="fa fa-rotate-left" /></h6>
               </div>
