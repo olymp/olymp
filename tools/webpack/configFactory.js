@@ -11,10 +11,9 @@ const { removeEmpty, ifElse, merge, happyPackPlugin } = require('../utils');
 const envVars = require('../config/envVars');
 const appName = require('../../package.json').name;
 const CodeSplitPlugin = require('code-split-component/webpack');
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const isLinked = path.resolve(__dirname, '..', '..', '..') !== path.resolve(appRootPath, 'node_modules');
-const sw = require('fs').existsSync(path.resolve(appRootPath, 'sw.json')) ? require(path.resolve(appRootPath, 'sw.json')) : null;
 const modules = require('fs').existsSync(path.resolve(appRootPath, 'modules.json')) ? require(path.resolve(appRootPath, 'modules.json')) : null;
 const alias = {
   app_alias: path.resolve(appRootPath, 'app'),
@@ -24,7 +23,7 @@ const alias = {
 }; if (isLinked) {
   alias.olymp = path.resolve(__dirname, '..', '..');
   console.warn('TAKE CARE, you are using linked olymp, dont do this for production builds!');
-} if (modules && modules.alias) Object.keys(modules.alias).forEach(key => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
+} if (modules && modules.alias) Object.keys(modules.alias).forEach((key) => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
 const include = [path.resolve(appRootPath, './app'), path.resolve(appRootPath, './server'), path.resolve(__dirname, '../../src'), path.resolve(__dirname, '../../src2')];
 if (modules && modules.client) modules.client.map(p => include.push(path.resolve(appRootPath, p)));
 function webpackConfigFactory({ target, mode }, { json }) {
@@ -66,15 +65,15 @@ function webpackConfigFactory({ target, mode }, { json }) {
   const isUniversalMiddleware = target === 'universalMiddleware';
   const isNodeTarget = isServer || isUniversalMiddleware;
 
-  alias['electrode-react-ssr-caching'] = path.resolve(__dirname, '..', 'ssr-cache');
+  alias.react = path.resolve(appRootPath, 'node_modules', 'react');
+  alias['react-dom'] = path.resolve(appRootPath, 'node_modules', 'react-dom');
+  alias.moment = path.resolve(appRootPath, 'node_modules', 'moment');
   if (isProd) {
-    /*if (isClient) {
+    /* if (isClient) {
       alias['react'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
       alias['react-dom'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
       include.push(path.resolve(appRootPath, 'node_modules', 'preact-compat'))
     }*/
-    alias.react = path.resolve(appRootPath, 'node_modules', 'react');
-    alias.moment = path.resolve(appRootPath, 'node_modules', 'moment');
     alias['moment/locale/zh-cn'] = 'moment/locale/de';
   }
 
@@ -141,6 +140,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           (val) => {
             if (val === 'olymp') return true;
             if (val.indexOf('olymp/') === 0) return true;
+            return undefined;
           },
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
@@ -207,6 +207,11 @@ function webpackConfigFactory({ target, mode }, { json }) {
       libraryTarget: ifNodeTarget('commonjs2', 'var'),
     },
     resolve: {
+      symlinks: false,
+      modules: [
+        path.resolve(appRootPath, 'node_modules'),
+        path.resolve(__dirname, 'node_modules'),
+      ],
       alias,
       // These extensions are tried when resolving a file.
       extensions: [
@@ -217,7 +222,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
     },
     plugins: removeEmpty([
       ifProdClient(new LodashModuleReplacementPlugin()),
-      ifProdClient(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/)),
+      ifProdClient(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/)),
       new CodeSplitPlugin({
         // The code-split-component doesn't work nicely with hot module reloading,
         // which we use in our development builds, so we will disable it (which
@@ -296,7 +301,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ifDevClient(new webpack.HotModuleReplacementPlugin()),
 
       // Adds options to all of our loaders.
-      /*ifProdClient(
+      /* ifProdClient(
         new webpack.LoaderOptionsPlugin({
           // Indicates to our loaders that they should minify their output
           // if they have the capability to do so.
