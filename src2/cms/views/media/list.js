@@ -63,7 +63,7 @@ const getTagTree = (images) => {
 
 const getNode = (tree, tags) => {
   if (tags.length) {
-    const nextTree = tree.children.filter(item => item.label === tags[0])[0];
+    const nextTree = (tree.children || []).filter(item => item.label === tags[0])[0];
     if (nextTree) return getNode(nextTree, tags.filter((tag, index) => index));
   } return tree;
 };
@@ -213,21 +213,27 @@ export default class MediaList extends Component {
       </div>
     )) : undefined;
 
-    // Quellen zusammensuchen
+    // Auflösungen/Quellen zusammensuchen
     const sources = {};
-    const getSources = (tree) => {
+    const solutions = {};
+    const getOtherFilters = (tree) => {
       (tree.images || []).forEach(item => {
         const source = item.source || 'Keine Quelle';
         if (!sources[source]) {
           sources[source] = 0;
         }
-
         sources[source] += 1;
+
+        const solution = item.width * item.height < 500000 ? 'Niedrige Auflösung' : 'Hohe Auflösung';
+        if (!solutions[solution]) {
+          solutions[solution] = 0;
+        }
+        solutions[solution] += 1;
       });
 
-      (tree.children || []).forEach(item => getSources(item));
+      (tree.children || []).forEach(item => getOtherFilters(item));
     };
-    getSources(currentNode);
+    getOtherFilters(currentNode);
 
     return (
       <div className="olymp-media">
@@ -254,14 +260,10 @@ export default class MediaList extends Component {
             <Menu.Item key="solution">
               <Cascader
                 options={[
-                  {
-                    value: 'Hohe Auflösung',
-                    label: 'Hohe Auflösung',
-                  },
-                  {
-                    value: 'Niedrige Auflösung',
-                    label: 'Niedrige Auflösung',
-                  },
+                  ...Object.keys(solutions).map(key => ({
+                    value: key,
+                    label: `${key} (${solutions[key]})`,
+                  })),
                 ]}
                 defaultValue={solution}
                 value={solution}

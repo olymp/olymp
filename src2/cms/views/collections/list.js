@@ -42,18 +42,21 @@ export default class MainList extends Component {
   update = (nextProps, lastProps) => {
     if (!lastProps || nextProps.collection !== lastProps.collection) {
       if (this.subscription) this.subscription.unsubscribe();
-      const { client, collection, attributes } = nextProps;
+      const { client, collection, attributes, location } = nextProps;
       this.items = null;
 
       const query = client.watchQuery({
         /* eslint-disable no-undef */
         query: gql`
-          query ${collection.name}List {
-            items: ${collection.name}List {
+          query ${collection.name}List($state: [DOCUMENT_STATE]) {
+            items: ${collection.name}List(documentState: $state) {
               ${attributes}
             }
           }
         `, /* eslint-disable */
+        variables: {
+          state: location.query ? location.query.state.split('-') : null
+        }
       });
       this.subscription = query.subscribe({
         next: ({data}) => {
@@ -90,24 +93,28 @@ export default class MainList extends Component {
     columns.push({
       title: 'Status',
       sorter: (a, b) => (a < b ? -1 : (a > b ? 1 : 0)),
-      dataIndex: '#status#',
-      key: '#status#',
-      render: text => <span>{text}</span>,
+      dataIndex: 'state',
+      key: 'state',
+      render: text => <span>{text || 'PUBLISHED'}</span>,
       filters: [
         {
-          text: `Veröffentlicht (${'...'})`,
-          value: '#veröffentlicht#'
+          text: `Veröffentlicht (${(items || []).filter(item => !item.state || item.state === 'PUBLISHED').length})`,
+          value: 'PUBLISHED'
         },
         {
-          text: `Archiviert (${'...'})`,
-          value: '#archiviert#'
+          text: `Entworfen (${(items || []).filter(item => item.state === 'DRAFT').length})`,
+          value: 'DRAFT'
         },
         {
-          text: `Gelöscht (${'...'})`,
-          value: '#gelöscht#'
+          text: `Archiviert (${(items || []).filter(item => item.state === 'ARCHIVED').length})`,
+          value: 'ARCHIVED'
+        },
+        {
+          text: `Gelöscht (${(items || []).filter(item => item.state === 'REMOVED').length})`,
+          value: 'REMOVED'
         }
       ],
-      onFilter: (value, record) => value === record.status,
+      onFilter: (value, record) => value === record.state || !record.state && value === 'PUBLISHED',
     });
 
     const pagination = items ? {
@@ -159,15 +166,19 @@ export default class MainList extends Component {
               <Menu.Item key="3">Archiv</Menu.Item>
               <Menu.Item key="4">Gelöscht</Menu.Item>
 
-              <Menu.Item style={{ float: 'right' }} key="14">
+              <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="13">Archivieren ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="12">als Entwurf ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="16">
                 <Icon type="download" />Exportieren ({selectedRowKeys.length})
               </Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="12">Archivieren ({selectedRowKeys.length})</Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="15">
+                <Icon type="upload" />Importieren
+              </Menu.Item>
               <Menu.Item style={{ float: 'right' }} key="10">
                 <Link to={{ pathname, query: { [name]: null } }}>
-                  <Icon type="plus" /> {capitalize(name)} hinzufügen
+                  <Icon type="plus" />Hinzufügen
                 </Link>
               </Menu.Item>
             </Menu>
