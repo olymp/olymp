@@ -14,12 +14,38 @@ import fetch from 'node-fetch';
 
 global.fetch = fetch;
 
-SSRCaching.enableCaching(process.env.CACHING);
+if (process.env.NODE_ENV === 'production') {
+  SSRCaching.enableCaching();
+  SSRCaching.setCachingConfig({
+    components: {
+      ServerRouter: {
+        strategy: 'simple',
+        enable: true,
+      },
+      CodeSplitProvider: {
+        strategy: 'simple',
+        enable: true,
+      },
+      ApolloProvider: {
+        strategy: 'template',
+        enable: true,
+      },
+      GraphQL: {
+        strategy: 'template',
+        enable: true,
+      },
+    },
+  });
+}
 
 /**
  * An express middleware that is capabable of doing React server side rendering.
  */
 function universalReactAppMiddleware(request: $Request, response: $Response) {
+  if (process.env.NODE_ENV === 'production') {
+    SSRCaching.clearProfileData();
+    SSRCaching.enableProfiling();
+  }
   // We should have had a nonce provided to us.  See the server/index.js for
   // more information on what this is.
   if (typeof response.locals.nonce !== 'string') {
@@ -106,6 +132,10 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
     return;
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    SSRCaching.enableProfiling(false);
+    console.log(request.url, JSON.stringify(SSRCaching.profileData, null, 2));
+  }
   response
     .status(
       renderResult.missed

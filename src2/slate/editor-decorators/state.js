@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { Raw, Plain } from 'slate';
+import { Raw, Plain, setKeyGenerator } from 'slate';
 import { batch } from '../utils/batch';
 
+let getCounter = () => {
+  let count = 0;
+  return () => `${count++}`;
+};
 const parseValue = (value, initialState, terse) => {
+  setKeyGenerator(getCounter());
   try { return Raw.deserialize(value, { terse }); }
-  catch (err) {
+  catch(err) {
     try { return Raw.deserialize(value, { terse: !terse }); }
-    catch(err){
+    catch(err) {
       return initialState ? parseValue(initialState, undefined, { terse }) : Plain.deserialize('');
     }
   }
