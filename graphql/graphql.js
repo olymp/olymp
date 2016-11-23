@@ -191,9 +191,11 @@ const defaultTypes = {
   `,
   DOCUMENT_STATE: `
     enum {
-      DEFAULT
+      PUBLISHED
+      DRAFT
       ARCHIVED
       REMOVED
+      ALL
     }
   `,
   dateRange: `

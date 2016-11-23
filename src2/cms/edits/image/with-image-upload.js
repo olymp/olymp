@@ -35,6 +35,8 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
   };
 
   render() {
+    const { tags, solution, source, sortByState } = this.state;
+
     if (this.props.disableUpload || this.props.readOnly) {
       return <WrappedComponent {...this.props} />;
     }
@@ -48,8 +50,14 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
         {this.props.children}
         {visible && !image ? <Modal visible onCancel={this.hide} onOk={this.hide} closable={false}>
           <Media
-            tags={this.state.tags}
-            onTagsChange={tags => this.setState({ tags })}
+            tags={tags}
+            solution={solution}
+            source={source}
+            sortByState={sortByState}
+            onTagsFilterChange={tags => this.setState({ tags })}
+            onSolutionFilterChange={solution => this.setState({ solution })}
+            onSourceFilterChange={source => this.setState({ source })}
+            onSortByChange={sortByState => this.setState({ sortByState })}
             onImageChange={this.show}
           />
           <Upload onClose={this.show} />

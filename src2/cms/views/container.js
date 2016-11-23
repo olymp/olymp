@@ -242,10 +242,28 @@ export default class Container extends Component {
               <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
                 { ({ View }) => View && <View
                   {...routerProps}
-                  tags={query && query.tag ? query.tag.split('/') : []}
-                  onTagsChange={tags => router.push({
+                  tags={query && query.tags ? query.tags.split('/') : []}
+                  solution={query && query.solution ? [query.solution] : []}
+                  source={query && query.source ? [query.source] : []}
+                  sortByState={query && query.sortBy ? [query.sortBy] : []}
+                  onTagsFilterChange={tags => router.push({
                     pathname,
-                    query: { ...query, tag: tags ? tags.join('/') : undefined },
+                    query: { ...query, tags: tags ? tags.join('/') : undefined },
+                  })}
+                  onSolutionFilterChange={solution => router.push({
+                    pathname,
+                    query: { ...query, solution: solution ? solution.join('') : undefined },
+                  })}
+                  onSourceFilterChange={source => router.push({
+                    pathname,
+                    query: { ...query, source: source ? source.join('') : undefined },
+                  })}
+                  onResetFilters={() => router.push({
+                    pathname,
+                  })}
+                  onSortByChange={sortBy => router.push({
+                    pathname,
+                    query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
                   })}
                   onImageChange={({ id }) => router.push({
                     pathname,
