@@ -195,7 +195,6 @@ const defaultTypes = {
       DRAFT
       ARCHIVED
       REMOVED
-      ALL
     }
   `,
   dateRange: `
