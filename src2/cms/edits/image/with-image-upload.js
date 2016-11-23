@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import ReactCrop from 'react-image-crop';
 import { cloudinaryUrl } from 'olymp';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -62,9 +62,22 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
           />
           <Upload onClose={this.show} />
         </Modal> : null}
-        {visible && image ? <Modal visible onCancel={() => this.show()} onOk={this.onOk} okText="Speichern" cancelText="Mediathek">
-          <ReactCrop src={cloudinaryUrl(image.url)} onChange={this.onCrop} />
-        </Modal> : null}
+        {visible && image ? (
+          <Modal
+            visible
+            onCancel={this.hide}
+            footer={[
+              <Button key="back" type="ghost" size="large" onClick={this.show}>
+                Mediathek
+              </Button>,
+              <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.onOk}>
+                Speichern
+              </Button>,
+            ]}
+          >
+            <ReactCrop src={cloudinaryUrl(image.url)} onChange={this.onCrop} />
+          </Modal>
+        ) : null}
       </WrappedComponent>
     );
   }

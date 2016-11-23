@@ -173,11 +173,19 @@ export default class Container extends Component {
               {(collections || []).map(({ name }, i) => (
                 <SubMenu key={i} title={<Link to={`/@/${name}`}>{capitalize(name)}</Link>}>
                   <Menu.Item className="display-none" key={`/@/${name}`} />
-                  <SubMenu title={<Link to={`/@/${name}`} style={{ color: '#666' }}>{capitalize(name)} ansehen</Link>}>
-                    <Menu.Item>Veröffentlicht</Menu.Item>
-                    <Menu.Item>Entwurf</Menu.Item>
-                    <Menu.Item>Archiviert</Menu.Item>
-                    <Menu.Item>Gelöscht</Menu.Item>
+                  <SubMenu title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }} style={{ color: '#666' }}>{capitalize(name)} ansehen</Link>}>
+                    <Menu.Item>
+                      <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>Veröffentlicht</Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link to={{ pathname: `/@/${name}`, query: { state: 'DRAFT' } }}>Entwurf</Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link to={{ pathname: `/@/${name}`, query: { state: 'ARCHIVED' } }}>Archiviert</Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>Gelöscht</Link>
+                    </Menu.Item>
                   </SubMenu>
                   <Menu.Item>
                     <Link to={{ pathname, query: { [name]: null } }}>
@@ -242,13 +250,13 @@ export default class Container extends Component {
               <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
                 { ({ View }) => View && <View
                   {...routerProps}
-                  tags={query && query.tags ? query.tags.split('/') : []}
+                  tags={query && query.tags ? query.tags.split('-') : []}
                   solution={query && query.solution ? [query.solution] : []}
                   source={query && query.source ? [query.source] : []}
                   sortByState={query && query.sortBy ? [query.sortBy] : []}
                   onTagsFilterChange={tags => router.push({
                     pathname,
-                    query: { ...query, tags: tags ? tags.join('/') : undefined },
+                    query: { ...query, tags: tags ? tags.join('-') : undefined },
                   })}
                   onSolutionFilterChange={solution => router.push({
                     pathname,
