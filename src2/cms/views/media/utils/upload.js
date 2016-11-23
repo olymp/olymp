@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import superagent from 'superagent';
+import fetch from 'whatwg-fetch';
 import gql from 'graphql-tag';
 
 export default ({ files, onImageChange, client, refetch }) => {
@@ -11,14 +11,15 @@ export default ({ files, onImageChange, client, refetch }) => {
     forceFetch: true,
   }).then(({ data }) => {
     cloudinary = data.cloudinaryRequest;
-    const request = superagent
-      .post(cloudinary.url)
-      // .on('progress', ({ percent }) => notification.update(`Datei(en) werden hochgeladen (${percent}%)`))
-      .field('api_key', cloudinary.apiKey)
-      .field('signature', cloudinary.signature)
-      .field('timestamp', cloudinary.timestamp);
-    [].slice.call(files).forEach(file => request.attach('file', file));
-    return request;
+    const body = new FormData();
+    body.append('api_key', cloudinary.apiKey);
+    body.append('signature', cloudinary.signature);
+    body.append('timestamp', cloudinary.timestamp);
+    [].slice.call(files).forEach(file => body.attach('file', file));
+    return fetch(cloudinary.url, {
+      method: 'POST',
+      body,
+    });
   }).then(({ body }) => {
     body.id = body.public_id;
     notification.close(key);
