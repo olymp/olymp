@@ -1,10 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import { Editor } from 'slate';
-import { setKeyGenerator } from 'slate/lib/utils/generate-key';
-import shortId from 'shortid';
 import './style.less';
-setKeyGenerator(shortId.generate);
 
 const options = {
   defaultNode: 'paragraph',
