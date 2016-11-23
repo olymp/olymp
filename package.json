@@ -1,5 +1,5 @@
 {
-  "version": "9.0.0-43",
+  "version": "9.0.0-44",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -130,7 +130,7 @@
     "flow-coverage-report": "0.1.0",
     "flow-remove-types": "1.0.4",
     "flow-typed": "2.0.0",
-    "fsevents": "1.0.15",
+    "fs-extra": "1.0.0",
     "glob": "7.1.1",
     "happypack": "2.2.1",
     "jsdom": "9.8.3",
