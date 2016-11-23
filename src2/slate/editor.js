@@ -78,7 +78,7 @@ export default class SlateEditor extends Component {
   render = () => {
     const { children, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck } = this.props;
     return (
-      <div className={className} style={{position: 'relative'}}>
+      <div className={className} style={{ position: 'relative' }}>
         {children}
         <Editor
           spellcheck={spellcheck || false}
