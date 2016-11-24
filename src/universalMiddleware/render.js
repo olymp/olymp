@@ -116,6 +116,11 @@ function render(args: RenderArgs) {
       <head>
         <meta charset="utf-8" />
         <link rel="manifest" href="/manifest.json" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
+        <![endif]-->
         ${helmet ? helmet.title.toString() : ''}
         ${helmet ? helmet.meta.toString() : ''}
         ${helmet ? helmet.link.toString() : ''}
@@ -137,7 +142,7 @@ function render(args: RenderArgs) {
          ${process.env.GA_TRACKING_ID
             ? inlineScript(`
               window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-              ga('create', '${process.env.GA_TRACKING_ID}', 'auto');
+              ga('create', '${process.env.GA_TRACKING_ID}', 'auto', { anonymizeIp: true });
               ga('send', 'pageview');
             `) : ''}
         ${polyfillIoScript()}
