@@ -1,5 +1,5 @@
 {
-  "version": "9.0.0-52",
+  "version": "9.0.0-53",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -51,6 +51,7 @@
     "compression": "1.6.2",
     "cropperjs": "0.8.1",
     "empty-loader": "1.0.1",
+    "es6-symbol": "^3.1.0",
     "express": "4.14.0",
     "express-session": "1.14.1",
     "google-map-react": "0.20.1",

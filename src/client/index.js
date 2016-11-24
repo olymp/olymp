@@ -12,6 +12,7 @@ import ReactHotLoader from './components/ReactHotLoader';
 import App from 'app_alias';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
+import 'es6-symbol/implement';
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
