@@ -65,10 +65,10 @@
     "jsonwebtoken": "7.1.9",
     "less": "2.7.1",
     "less-loader": "2.2.3",
+    "lodash": "^4.17.2",
     "moment": "2.15.2",
     "mongodb": "2.2.11",
     "node-fetch": "1.6.3",
-    "node-uuid": "1.4.7",
     "normalize.css": "5.0.0",
     "path": "0.12.7",
     "raf": "3.3.0",
@@ -95,6 +95,7 @@
     "sitemap-generator": "5.0.0",
     "slate": "0.15.8",
     "source-map-support": "0.4.6",
+    "uuid": "3.0.0",
     "whatwg-fetch": "2.0.1"
   },
   "devDependencies": {
