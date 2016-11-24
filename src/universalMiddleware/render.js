@@ -145,7 +145,7 @@ function render(args: RenderArgs) {
               ga('create', '${process.env.GA_TRACKING_ID}', 'auto', { anonymizeIp: true });
               ga('send', 'pageview');
             `) : ''}
-        ${polyfillIoScript()}
+        ${true ? '' : polyfillIoScript()}
         ${serviceWorkerScript(nonce)}
         ${developmentVendorDLL()}
         ${scriptTags(assetsForRender.js)}
