@@ -43,6 +43,7 @@
     "antd": "2.2.1",
     "apollo-client": "0.5.3",
     "app-root-dir": "1.0.2",
+    "babel-polyfill": "^6.16.0",
     "bluebird": "3.4.6",
     "body-parser": "1.15.2",
     "capitalize": "1.0.0",
