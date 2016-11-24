@@ -127,7 +127,6 @@ function render(args: RenderArgs) {
         ${styleTags(assetsForRender.css)}
         ${helmet ? helmet.style.toString() : ''}
         ${process.env.GA_TRACKING_ID ? '<script type="text/javascript" async src="https://www.google-analytics.com/analytics.js"></script>' : ''}
-        ${polyfillIoScript()}
       </head>
       <body>
         <div id='app'>${app || ''}</div>
@@ -146,6 +145,7 @@ function render(args: RenderArgs) {
               ga('create', '${process.env.GA_TRACKING_ID}', 'auto', { anonymizeIp: true });
               ga('send', 'pageview');
             `) : ''}
+        ${polyfillIoScript()}
         ${serviceWorkerScript(nonce)}
         ${developmentVendorDLL()}
         ${scriptTags(assetsForRender.js)}
