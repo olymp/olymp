@@ -167,7 +167,6 @@ function webpackConfigFactory({ target, mode }, { json }) {
     entry: merge(
       {
         index: removeEmpty([
-          ifClient('babel-polyfill'),
           ifDevClient('react-hot-loader/patch'),
           ifDevClient(`webpack-hot-middleware/client?reload=true&path=http://localhost:${envVars.CLIENT_DEVSERVER_PORT}/__webpack_hmr`),
           // We are using polyfill.io instead of the very heavy babel-polyfill.
