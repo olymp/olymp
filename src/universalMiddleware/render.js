@@ -11,7 +11,7 @@ import getAssetsForClientChunks from './getAssetsForClientChunks';
 // Note: this has to be included here, rather than imported via react-helmet
 // as we may need the polyfills to load our app in the first place! :)
 function polyfillIoScript() {
-  return '<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>';
+  return '<script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>';
 }
 
 // We use a service worker configured created by the sw-precache webpack plugin,
@@ -118,15 +118,15 @@ function render(args: RenderArgs) {
         <link rel="manifest" href="/manifest.json" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!--[if lt IE 9]>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
         <![endif]-->
         ${helmet ? helmet.title.toString() : ''}
         ${helmet ? helmet.meta.toString() : ''}
         ${helmet ? helmet.link.toString() : ''}
         ${styleTags(assetsForRender.css)}
         ${helmet ? helmet.style.toString() : ''}
-        ${process.env.GA_TRACKING_ID ? '<script async src="https://www.google-analytics.com/analytics.js"></script>' : ''}
+        ${process.env.GA_TRACKING_ID ? '<script type="text/javascript" async src="https://www.google-analytics.com/analytics.js"></script>' : ''}
       </head>
       <body>
         <div id='app'>${app || ''}</div>
