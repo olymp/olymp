@@ -11,7 +11,7 @@ import getAssetsForClientChunks from './getAssetsForClientChunks';
 // Note: this has to be included here, rather than imported via react-helmet
 // as we may need the polyfills to load our app in the first place! :)
 function polyfillIoScript() {
-  return '<script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>';
+  return '<script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6"></script>';
 }
 
 // We use a service worker configured created by the sw-precache webpack plugin,
@@ -115,12 +115,8 @@ function render(args: RenderArgs) {
     <html ${helmet ? helmet.htmlAttributes.toString() : ''}>
       <head>
         <meta charset="utf-8" />
-        <link rel="manifest" href="/manifest.json" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!--[if lt IE 9]>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
-        <![endif]-->
+        <link rel="manifest" href="/manifest.json" />
         ${helmet ? helmet.title.toString() : ''}
         ${helmet ? helmet.meta.toString() : ''}
         ${helmet ? helmet.link.toString() : ''}
@@ -145,7 +141,7 @@ function render(args: RenderArgs) {
               ga('create', '${process.env.GA_TRACKING_ID}', 'auto', { anonymizeIp: true });
               ga('send', 'pageview');
             `) : ''}
-        ${true ? '' : polyfillIoScript()}
+        ${polyfillIoScript()}
         ${serviceWorkerScript(nonce)}
         ${developmentVendorDLL()}
         ${scriptTags(assetsForRender.js)}
