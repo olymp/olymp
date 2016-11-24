@@ -301,7 +301,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ifDevClient(new webpack.HotModuleReplacementPlugin()),
 
       // Adds options to all of our loaders.
-      ifProdClient(
+      process.env.UGLIFY !== 'false' && process.env.UGLIFY !== false ? ifProdClient(
         new webpack.LoaderOptionsPlugin({
           // Indicates to our loaders that they should minify their output
           // if they have the capability to do so.
@@ -310,10 +310,10 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // should they support it.
           debug: false,
         })
-      ),
+      ) : null,
 
       // JS Minification.
-      ifProdClient(
+      process.env.UGLIFY !== 'false' && process.env.UGLIFY !== false ? ifProdClient(
         new webpack.optimize.UglifyJsPlugin({
           // sourceMap: true,
           compress: {
@@ -328,7 +328,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
             screw_ie8: true,
           },
         })
-      ),
+      ) : null,
 
       ifProdClient(
         // This is actually only useful when our deps are installed via npm2.
