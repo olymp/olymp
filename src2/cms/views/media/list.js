@@ -327,7 +327,7 @@ export default class MediaList extends Component {
               >
                 <span>{type && type.length ? type[0] : 'Typ'}</span>
               </Cascader>
-              {source && source.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSourceFilterChange([])} /> : undefined}
+              {type && type.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTypeFilterChange([])} /> : undefined}
             </Menu.Item>
 
             <Menu.Item key="sortBy" style={{ float: 'right' }}>
@@ -370,7 +370,7 @@ export default class MediaList extends Component {
 
         <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', margin: '0 auto' }}>
           { tags.length ? (
-            <div className="card card-block directory" onClick={onResetFilters}>
+            <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([])}>
               <div className="overlay">
                 <h6><i className="fa fa-rotate-left" /></h6>
               </div>
