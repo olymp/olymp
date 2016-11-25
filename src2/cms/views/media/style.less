@@ -2,19 +2,64 @@
   .card.card-block {
     border: none;
     float: left;
-    height: 100px;
-    width: 100px;
-    margin: 5px;
+    min-height: 100px;
+    width: 11%;
+    margin: .75%;
     cursor: pointer;
+    border-radius: 0;
+    background-color: transparent;
 
-    &:not(.directory):hover {
+    &:before{
+      content: "";
+      display: block;
+      padding-top: 100%; 	/* initial ratio of 1:1*/
+    }
+
+    &:hover {
+      animation: none;
       transform: scale(1.1);
+      transition: all .15s ease-in-out;
+      z-index: 3;
+
+      &.file img, .overlay {
+        box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75) !important;
+      }
     }
 
     &.file {
       img {
         max-width: 100%;
         max-height: 100%;
+        box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.5);
+      }
+
+      /* Jiggling-Animation */
+      &.selected {
+        animation-name: jiggle;
+        animation-iteration-count: infinite;
+        animation-duration: 1.2s;
+        transform-origin: 50% 50%;
+        opacity: 0.75;
+        z-index: 2;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        @keyframes jiggle {
+          0% {
+            transform: rotate(-2deg) scale(1.25);
+            animation-timing-function: linear;
+          }
+          50% {
+            transform: rotate(2deg) scale(1.25);
+            animation-timing-function: linear;
+          }
+          100% {
+            transform: rotate(-2deg) scale(1.25);
+            animation-timing-function: linear;
+          }
+        }
       }
     }
 
@@ -27,12 +72,13 @@
         width: 100%;
         height: 100%;
         background-color: rgba(255, 255, 255, .7);
-        border: 1px solid fade(#2db7f5, 40%);
+        // border: 1px solid fade(#2db7f5, 40%);
         border-radius: 50%;
+        box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.5);
 
         &:hover {
-          background-color: rgba(255, 255, 255, .4);
-          border: 1px solid fade(#2db7f5, 70%);
+          background-color: rgba(255, 255, 255, .6);
+          // border: 1px solid fade(#2db7f5, 70%);
         }
       }
 
@@ -45,7 +91,7 @@
         max-width: 90%;
         max-height: 90%;
         transform: translate(-50%, -50%);
-        color: darken(#2db7f5, 15%);
+        color: #333;
         text-decoration: none;
       }
 
@@ -71,4 +117,21 @@
       transform: translate(-50%, -50%);
     }
   }
+}
+
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #900090;
+  color: #FFF;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 40px;
+  width: 50px;
+  height: 50px;
+  line-height: 1.25;
+  padding-left: 1px;
 }

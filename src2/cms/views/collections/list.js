@@ -55,7 +55,7 @@ export default class MainList extends Component {
           }
         `, /* eslint-disable */
         variables: {
-          state: location.query ? location.query.state.split('-') : null
+          state: location.query && location.query.state ? location.query.state.split('-') : null
         }
       });
       this.subscription = query.subscribe({

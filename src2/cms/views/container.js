@@ -253,6 +253,7 @@ export default class Container extends Component {
                   tags={query && query.tags ? query.tags.split('-') : []}
                   solution={query && query.solution ? [query.solution] : []}
                   source={query && query.source ? [query.source] : []}
+                  type={query && query.type ? [query.type] : []}
                   sortByState={query && query.sortBy ? [query.sortBy] : []}
                   onTagsFilterChange={tags => router.push({
                     pathname,
@@ -265,6 +266,10 @@ export default class Container extends Component {
                   onSourceFilterChange={source => router.push({
                     pathname,
                     query: { ...query, source: source ? source.join('') : undefined },
+                  })}
+                  onTypeFilterChange={type => router.push({
+                    pathname,
+                    query: { ...query, type: type ? type.join('') : undefined },
                   })}
                   onResetFilters={() => router.push({
                     pathname,
