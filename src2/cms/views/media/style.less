@@ -33,6 +33,22 @@
         box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.5);
       }
 
+      .label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #900090;
+        color: #FFF;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 40px;
+        width: 50px;
+        height: 50px;
+        line-height: 1.25;
+        padding-left: 1px;
+      }
+
       /* Jiggling-Animation */
       &.selected {
         animation-name: jiggle;
@@ -117,21 +133,4 @@
       transform: translate(-50%, -50%);
     }
   }
-}
-
-
-.label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #900090;
-  color: #FFF;
-  border-radius: 50%;
-  text-align: center;
-  font-size: 40px;
-  width: 50px;
-  height: 50px;
-  line-height: 1.25;
-  padding-left: 1px;
 }

@@ -3,7 +3,8 @@ import { graphql, Link, Match, Redirect, CodeSplit, gql } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'capitalize';
-import { Menu, Affix } from 'antd';
+import { Menu, Affix, Icon } from 'antd';
+import { sortBy } from 'lodash';
 
 import { auth, withRouter } from '../decorators';
 import { useLightboxes } from '../edits/image/with-lightbox';
@@ -156,6 +157,54 @@ export default class Container extends Component {
       );
     }
 
+    // Von Collections Attribute (icon, group, order) extrahieren und Collections gruppieren
+    const groups = {};
+    // const groupOrder = {};
+    (collections || []).map(({ name, description }, i) => {
+      const attributes = {};
+      description.split('\n').forEach((x) => {
+        const y = x.split(':');
+
+        if (y.length === 2) {
+          attributes[y[0]] = y[1];
+        }
+      });
+
+      // Attribute verfügbar machen
+      collections[i] = {
+        ...collections[i],
+        ...attributes,
+      };
+
+      // Gruppieren
+      if (!groups[attributes.group]) groups[attributes.group] = [];
+      groups[attributes.group].push(collections[i]);
+      // groupOrder[attributes.group] = attributes.order ? attributes.order;
+    });
+
+    // Collections sortieren
+    Object.keys(groups).forEach((key) => {
+      groups[key] = sortBy(groups[key], ['order', 'name']);
+    });
+
+    // Undefined-Gruppe auflösen
+    if (groups.undefined) {
+      /*
+      groups.undefined.forEach((collection) => {
+        if (!groups[collection.name]) groups[collection.name] = [];
+
+        groups[collection.name].push(collection);
+      });
+      */
+      groups.undefined.forEach((collection) => {
+        if (!groups.collections) groups.collections = [];
+
+        groups.collections.push(collection);
+      });
+
+      delete groups.undefined;
+    }
+
     return (
       <GatewayProvider>
         <div className="full">
@@ -170,42 +219,52 @@ export default class Container extends Component {
                   Website
                 </Link>
               </Menu.Item>
-              {(collections || []).map(({ name }, i) => (
-                <SubMenu key={i} title={<Link to={`/@/${name}`}>{capitalize(name)}</Link>}>
-                  <Menu.Item className="display-none" key={`/@/${name}`} />
-                  <SubMenu title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }} style={{ color: '#666' }}>{capitalize(name)} ansehen</Link>}>
-                    <Menu.Item>
-                      <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>Veröffentlicht</Link>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <Link to={{ pathname: `/@/${name}`, query: { state: 'DRAFT' } }}>Entwurf</Link>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <Link to={{ pathname: `/@/${name}`, query: { state: 'ARCHIVED' } }}>Archiviert</Link>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>Gelöscht</Link>
-                    </Menu.Item>
-                  </SubMenu>
-                  <Menu.Item>
-                    <Link to={{ pathname, query: { [name]: null } }}>
-                      {capitalize(name)} hinzufügen
-                    </Link>
-                  </Menu.Item>
+              {Object.keys(groups).map(key => (
+                <SubMenu key={key} title={capitalize(key)}>
+                  {
+                    (groups[key] || []).map(({ name, description }, i) => (
+                      <SubMenu key={i} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>{capitalize(name)}<Icon type="right" style={{ paddingLeft: '.5rem' }} /></Link>}>
+                        <Menu.Item>
+                          <Link to={{ pathname, query: { [name]: null } }}>
+                            <Icon type="plus" />{capitalize(name)} hinzufügen
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
+                            <Icon type="export" />Veröffentlichte
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <Link to={{ pathname: `/@/${name}`, query: { state: 'DRAFT' } }}>
+                            <Icon type="folder" />Entwürfe
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <Link to={{ pathname: `/@/${name}`, query: { state: 'ARCHIVED' } }}>
+                            <Icon type="inbox" />Archiv
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>
+                            <Icon type="like" />Papierkorb
+                          </Link>
+                        </Menu.Item>
+                      </SubMenu>
+                    ))
+                  }
                 </SubMenu>
               ))}
               <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
-                <Menu.Item className="display-none" key="/@/media" />
                 <Menu.Item>
+                  <Link to={{ pathname, query: { upload: null } }}>
+                    <Icon type="plus" />Datei hochladen
+                  </Link>
+                </Menu.Item>
+                {/* <Menu.Item>
                   <Link to="/@/media">
                     Mediathek ansehen
                   </Link>
-                </Menu.Item>
-                <Menu.Item>
-                  <Link to={{ pathname, query: { upload: null } }}>
-                    Neue Datei hochladen
-                  </Link>
-                </Menu.Item>
+                </Menu.Item> */}
               </SubMenu>
               <Menu.Item key="/@/users">
                 <Link to="/@/users">
@@ -214,7 +273,7 @@ export default class Container extends Component {
               </Menu.Item>
               <Menu.Item key="/@/analytics">
                 <Link to="/@/analytics">
-                  {/* <i className="fa fa-area-chart" />  */}Analytics
+                  {/* <i className="fa fa-area-chart" />  */}Statistik
                 </Link>
               </Menu.Item>
               <GatewayDest
