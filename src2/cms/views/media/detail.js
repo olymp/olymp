@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Select, Spin } from 'antd';
+import { Modal, Form, Input, Select, Spin, Button } from 'antd';
 import moment from 'moment';
 import withFile from '../../decorators/file';
 import Image from '../../edits/image';
@@ -10,7 +10,7 @@ const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
 
 const ModalForm = Form.create()(
     (props) => {
-      const { item, form, onCreate, onCancel, saving } = props;
+      const { item, form, onCreate, onCancel, onDelete, saving } = props;
       const { getFieldDecorator } = form;
 
       if (!item) {
@@ -18,7 +18,23 @@ const ModalForm = Form.create()(
       }
 
       return (
-        <Modal {...modalSettings} confirmLoading={saving} title="Media" onCancel={onCancel} onOk={onCreate}>
+        <Modal
+          {...modalSettings}
+          confirmLoading={saving}
+          title="Media"
+          onCancel={onCancel}
+          footer={[
+            <Button key="back" type="ghost" size="large" onClick={onCancel}>
+              Abbrechen
+            </Button>,
+            <Button key="delete" size="large" onClick={onDelete}>
+              Löschen
+            </Button>,
+            <Button key="submit" type="primary" size="large" loading={saving} onClick={onCreate}>
+              Speichern
+            </Button>,
+          ]}
+        >
           <FormItem key="id" label="ID" {...formItemLayout}>
             {getFieldDecorator('id', {
               initialValue: item.id,
@@ -73,6 +89,21 @@ export default class MediaModal extends Component {
     this.props.onClose();
   };
 
+  handleDelete = () => {
+    const { id, remove, onClose } = this.props;
+
+    console.log(this.props);
+
+    Modal.confirm({
+      title: 'Diese Datei wirklich löschen?',
+      content: 'Wollen Sie diese Datei wirklich löschen?',
+      onOk() {
+        remove({ id }).then(onClose);
+      },
+      onCancel() {},
+    });
+  };
+
   handleCreate = () => {
     const { save, onClose } = this.props;
 
@@ -89,6 +120,7 @@ export default class MediaModal extends Component {
         {...this.props}
         ref={form => this.form = form}
         onCancel={this.handleCancel}
+        onDelete={this.handleDelete}
         onCreate={this.handleCreate}
       />
     );
