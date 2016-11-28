@@ -6,7 +6,7 @@ import capitalize from 'capitalize';
 import { Menu, Affix, Icon } from 'antd';
 import { sortBy } from 'lodash';
 
-import { auth, withRouter } from '../decorators';
+import { withRouter } from '../decorators';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaDetail from './media/detail';
@@ -17,7 +17,6 @@ import './container.less';
 const SubMenu = Menu.SubMenu;
 // const MenuItemGroup = Menu.ItemGroup;
 
-@auth
 @useLightboxes
 @withRouter
 @graphql(gql`

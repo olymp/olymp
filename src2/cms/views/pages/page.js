@@ -4,21 +4,22 @@ import { graphql, Link, gql, withAuth, withItem, Helmet } from 'olymp';
 import { SlateMate } from 'olymp/slate';
 
 const attributes = 'id, slug, order, name, parentId, blocks, templateName';
-const CmsPage = ({ auth, item, patch, save, blocks, location }) => {
+const CmsPage = (props) => {
+  let { auth, item, patch, save, blocks, location, readOnly, getReadOnly } = props;
   if (!item) return null;
 
-  const readOnly = !auth.user || !!item.computed;
+  readOnly = readOnly !== undefined ? readOnly : getReadOnly ? getReadOnly(props) : (!auth.user || !!item.computed);
 
   return (
     <div>
       <Helmet title={item.name} />
       <SlateMate className="frontend-editor" readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} blockTypes={blocks} />
-      {auth.user && !item.computed ? <Gateway into="button1">
+      {!readOnly ? <Gateway into="button1">
         <a href="javascript:;" onClick={save}>
           Seite speichern
         </a>
       </Gateway> : null}
-      {auth.user && !item.computed ? <Gateway into="button2">
+      {!readOnly ? <Gateway into="button2">
         <Link to={{ ...location, query: { page: item.id } }}>
           Seite bearbeiten
         </Link>
