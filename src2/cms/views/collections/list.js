@@ -76,6 +76,8 @@ export default class MainList extends Component {
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
+    console.log(this.props);
+
     const fields = collection.fields.filter(({description}) => description.indexOf('list:') !== -1);
 
     const columns = fields.map((meta) => {
