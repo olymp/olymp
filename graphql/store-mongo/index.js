@@ -33,11 +33,19 @@ module.exports = config => {
       return newPrev;
     }, {}) : undefined;
 
+    const sortObj = {};
+    (sort || []).forEach((item) => {
+      if (item.substring(0, 1) === '-') {
+        sortObj[item.substring(1, item.length - 1)] = -1;
+      } else {
+        sortObj[item] = 1;
+      }
+    });
+
     return returnArgs.db
       .collection(kind)
       .findAsync(!filter ? {} : filter, newAttributes)
-      // .sort({ name: 1 })
-      .then(c => c.toArrayAsync());
+      .then(c => c.sort(sortObj).toArrayAsync());
   };
 
   const remove = (kind, { id }) => {
