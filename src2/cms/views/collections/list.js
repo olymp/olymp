@@ -73,7 +73,7 @@ export default class MainList extends Component {
   }
 
   render() {
-    const {onClick, collection, name, saveCollectionItem, removeCollectionItem, pathname} = this.props;
+    const {onClick, collection, name, saveCollectionItem, removeCollectionItem, pathname, location} = this.props;
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
@@ -153,12 +153,12 @@ export default class MainList extends Component {
     };
 
     const changeState = (state) =>
-      saveCollectionItem(
+      selectedRowKeys.forEach(key => saveCollectionItem(
         {
-          ...find(items, obj => obj.id === selectedRowKeys[0]),
+          ...find(items, obj => obj.id === key),
           state,
         }
-      );
+      ))
 
     return (
       <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
@@ -175,7 +175,8 @@ export default class MainList extends Component {
               <Menu.Item key="3">Archiv</Menu.Item>
               <Menu.Item key="4">Gelöscht</Menu.Item>
 
-              <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
+              { location.query && location.query.state === 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => selectedRowKeys.forEach(key => removeCollectionItem(key))}>Dauerhaft löschen ({selectedRowKeys.length})</span></Menu.Item> :
+              <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => changeState('REMOVED')}>Löschen ({selectedRowKeys.length})</span></Menu.Item>}
               <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => changeState('ARCHIVED')}>Archivieren ({selectedRowKeys.length})</span></Menu.Item>
               <Menu.Item style={{ float: 'right' }} key="12"><span onClick={() => changeState('DRAFT')}>als Entwurf ({selectedRowKeys.length})</span></Menu.Item>
               <Menu.Item style={{ float: 'right' }} key="11"><span onClick={() => changeState('PUBLISHED')}>Veröffentlichen ({selectedRowKeys.length})</span></Menu.Item>
