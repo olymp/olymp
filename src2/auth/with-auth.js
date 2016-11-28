@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const attributes = 'id, name, email';
+const baseAttributes = 'id, name, email';
+let attributes = baseAttributes;
 
-export const auth = WrappedComponent => {
+export const auth = ({ extraAttributes }) => WrappedComponent => {
+  if (extraAttributes) attributes = `${baseAttributes}, ${extraAttributes}`;
   const inner = WrappedComponent => {
     const component = props => {
       const auth = {
@@ -50,8 +52,6 @@ export default WrappedComponent => {
   };
   return withUserRenderer;
 };
-
-
 
 /////////////////
 const authMethods = (client, refetch) => ({
