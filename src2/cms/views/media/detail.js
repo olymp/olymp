@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Select, Spin } from 'antd';
+import { Modal, Form, Input, Select, Spin, Button } from 'antd';
 import moment from 'moment';
 import withFile from '../../decorators/file';
 import Image from '../../edits/image';
@@ -10,7 +10,7 @@ const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
 
 const ModalForm = Form.create()(
     (props) => {
-      const { item, form, onCreate, onCancel, saving } = props;
+      const { item, form, onCreate, onCancel, onDelete, saving } = props;
       const { getFieldDecorator } = form;
 
       if (!item) {
@@ -18,7 +18,23 @@ const ModalForm = Form.create()(
       }
 
       return (
-        <Modal {...modalSettings} confirmLoading={saving} title="Media" onCancel={onCancel} onOk={onCreate}>
+        <Modal
+          {...modalSettings}
+          confirmLoading={saving}
+          title="Media"
+          onCancel={onCancel}
+          footer={[
+            <Button key="back" type="ghost" size="large" onClick={onCancel}>
+              Abbrechen
+            </Button>,
+            <Button key="delete" type="primary" size="large" onClick={onDelete} style={{ backgroundColor: 'red', borderColor: 'red' }}>
+              Löschen
+            </Button>,
+            <Button key="submit" type="primary" size="large" loading={saving} onClick={onCreate}>
+              Speichern
+            </Button>,
+          ]}
+        >
           <FormItem key="id" label="ID" {...formItemLayout}>
             {getFieldDecorator('id', {
               initialValue: item.id,
@@ -47,8 +63,15 @@ const ModalForm = Form.create()(
               <Select {...props} tags searchPlaceholder="Suche ..." />
             )}
           </FormItem>
+          <FormItem key="preview" label="Preview" {...formItemLayout}>
+            {getFieldDecorator('preview', {
+              initialValue: item.preview,
+            })(
+              <Image width="33%" />
+            )}
+          </FormItem>
 
-          <Image value={{ ...item }} width="100%" />
+          <Image value={{ ...item }} width="100%" readOnly noPreview />
 
           <FormItem key="size" label="Größe" {...formItemLayout} style={{ marginTop: '24px', marginBottom: '0' }}>
             <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />
@@ -59,6 +82,11 @@ const ModalForm = Form.create()(
           <FormItem key="format" label="Format" {...formItemLayout} style={{ marginBottom: '0' }}>
             <Input disabled placeholder="Format" defaultValue={item.format} />
           </FormItem>
+          { item.format === 'pdf' ? (
+            <FormItem key="pages" label="Seiten" {...formItemLayout} style={{ marginBottom: '0' }}>
+              <Input disabled placeholder="Seiten" defaultValue={item.pages} />
+            </FormItem>
+          ) : undefined }
           <FormItem key="bytes" label="Dateigröße" {...formItemLayout} style={{ marginBottom: '0' }}>
             <Input disabled placeholder="Dateigröße" defaultValue={`${item.bytes / 1000} kB`} />
           </FormItem>
@@ -71,6 +99,19 @@ const ModalForm = Form.create()(
 export default class MediaModal extends Component {
   handleCancel = () => {
     this.props.onClose();
+  };
+
+  handleDelete = () => {
+    const { id, remove, onClose } = this.props;
+
+    Modal.confirm({
+      title: 'Diese Datei wirklich löschen?',
+      content: 'Wollen Sie diese Datei wirklich löschen?',
+      onOk() {
+        remove({ id }).then(onClose);
+      },
+      onCancel() {},
+    });
   };
 
   handleCreate = () => {
@@ -89,6 +130,7 @@ export default class MediaModal extends Component {
         {...this.props}
         ref={form => this.form = form}
         onCancel={this.handleCancel}
+        onDelete={this.handleDelete}
         onCreate={this.handleCreate}
       />
     );

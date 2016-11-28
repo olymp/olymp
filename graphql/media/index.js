@@ -1,9 +1,9 @@
 const cloudinary = require('cloudinary');
 const lodash = require('lodash');
 
-const transform = image => {
+const transform = (image) => {
   const newImage = {};
-  Object.keys(image).forEach(key => {
+  Object.keys(image).forEach((key) => {
     if (key === 'public_id') {
       newImage.id = image.public_id;
       return;
@@ -17,10 +17,21 @@ const transform = image => {
     } else if (key === 'context' && image[key].custom) {
       newImage.caption = image[key].custom.caption;
       newImage.source = image[key].custom.source;
+      newImage.removed = image[key].custom.removed;
+      newImage.preview = {
+        url: image[key].custom.p_url,
+        crop: image[key].custom.p_crop ? image[key].custom.p_crop.split(',') : undefined,
+        height: image[key].custom.p_height,
+        width: image[key].custom.p_width,
+      };
       return;
     } else if (key === 'predominant') {
       // Geht nur bei Single Pictures!!!
       newImage.colors = image.predominant.google.map(x => x[0]);
+      return;
+    } else if (key === 'pages') {
+      // Geht nur bei Single Pictures und PDFs!!!
+      newImage.pages = image.pages;
       return;
     }
     newImage[lodash.camelCase(key)] = image[key];
@@ -28,63 +39,102 @@ const transform = image => {
   return newImage;
 };
 
-const transformSignature = ({signature, api_key, timestamp}) => ({
+const transformSignature = ({ signature, api_key, timestamp }) => ({
   url: 'https://api.cloudinary.com/v1_1/djyenzorc/auto/upload',
   signature,
   timestamp,
   apiKey: api_key,
 });
 
-const getImages = (config) => {
-  return new Promise((yay, nay) => {
-    return cloudinary.api.resources((result) => {
-      if (result.next_cursor) console.error('WARNING, MORE THAN 100 IMAGES!!!');
-      yay(result.resources.map(transform));
-    }, Object.assign({}, config, {
-      tags: true,
-      context: true,
-      type: 'upload',
-      colors: true,
-      max_results: 100,
-      //prefix: ''
-    }));
-  });
+const getImages = (config, images, nextCursor) => {
+  const deferred = Promise.defer();
+
+  cloudinary.api.resources((result) => {
+    if (result.error) {
+      console.error(result.error.message);
+      deferred.resolve();
+    }
+
+    // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
+    if (result.resources && result.resources.length) {
+      images.push(...result.resources.map(transform));
+    }
+
+    // Falls noch weitere Bilder in Mediathek sind, diese auch laden
+    if (result.next_cursor) {
+      console.error('WARNING, MORE THAN 500 IMAGES!');
+      getImages(config, images, result.next_cursor).then(() => deferred.resolve());
+    } else {
+      deferred.resolve();
+    }
+  }, Object.assign({}, config, {
+    tags: true,
+    context: true,
+    type: 'upload',
+    colors: true,
+    max_results: 500,
+    next_cursor: nextCursor,
+  }));
+
+  return deferred.promise;
 };
 
-const getImageById = (config, id) => {
-  return new Promise((yay, nay) => {
-    return cloudinary.api.resource(
-        id,
-        (result) => {
-          yay(transform(result));
-        }, Object.assign({}, config, {
-          tags: true,
-          context: true,
-          type: 'upload',
-          colors: true,
-          //prefix: ''
-        }));
-  });
-};
+const getImageById = (config, id) =>
+  new Promise(yay =>
+    cloudinary.api.resource(
+      id,
+      (result) => {
+        yay(transform(result));
+      }, Object.assign({}, config, {
+        tags: true,
+        context: true,
+        type: 'upload',
+        colors: true,
+        pages: true,
+        //prefix: ''
+      }))
+  );
 
-const getSignedRequest = (config) => {
-  return new Promise((yay, nay) => {
-    return yay(transformSignature(cloudinary.utils.sign_request({
+const getSignedRequest = config =>
+  new Promise(yay =>
+    yay(transformSignature(cloudinary.utils.sign_request({
       timestamp: Math.round(new Date().getTime() / 1000),
-    }, config)));
-  });
-};
+    }, config)))
+  );
 
-const updateImage = (id, tags, source, caption, config) =>
-  new Promise((yay) => {
+const updateImage = (id, tags, source, caption, preview, config, removed) => {
+  const context = [];
+
+  if (source) {
+    context.push(`source=${source}`);
+  }
+
+  if (caption) {
+    context.push(`caption=${caption}`);
+  }
+
+  if (removed) {
+    context.push('removed=true');
+  }
+
+  if (preview) {
+    context.push(`p_url=${preview.url}|p_height=${preview.height}|p_width=${preview.width}`);
+
+    if (preview.crop && preview.crop.length) {
+      context.push(`p_crop=${preview.crop.join(',')}`);
+    }
+  }
+
+  return new Promise((yay) => {
     cloudinary.api.update(id, result => yay(transform(result)), Object.assign({}, config, {
       tags: (tags || []).join(','),
-      context: `source=${source}|caption=${caption}`,
+      context: context.join('|'),
     }));
   });
+};
 
-module.exports = (schema, {uri} = {}) => {
-  let config = {};
+module.exports = (schema, { uri } = {}) => {
+  const config = {};
   if (uri) {
     const split1 = uri.split('@');
     const split2 = split1[0].split('://');
@@ -107,49 +157,70 @@ module.exports = (schema, {uri} = {}) => {
     mutation: `
       file(id: String, input: fileInput, operationType: OPERATION_TYPE): file
       cloudinaryRequestDone(id: String, token: String): file
-
     `,
     resolvers: {
       Query: {
-        file: (source, args, x, {fieldASTs}) => {
+        file: (source, args) => {
           if (imageCache && imageCache[args.id]) return imageCache[args.id];
           if (!imageCache) imageCache = {};
-          return getImageById(config, args.id).then(image => {
+          return getImageById(config, args.id).then((image) => {
             imageCache[args.id] = image;
             return image;
           });
-
         },
-        fileList: (source, args, x, {fieldASTs}) => {
-          // if (imagesCache) return imagesCache;
-          return getImages(config).then(images => {
-            imagesCache = images;
-            return images;
+        fileList: () => {
+          const images = [];
+          return getImages(config, images).then(() => {
+            // Gelöschte ausschließen
+            const newImages = [];
+            images.forEach((image) => {
+              if (!image.removed) {
+                newImages.push(image);
+              }
+            });
+
+            imagesCache = newImages;
+            return newImages;
           });
         },
-        cloudinaryRequest: (source, args, x, {fieldASTs}) => {
-          return getSignedRequest(config).then(signed => {
+        cloudinaryRequest: () =>
+          getSignedRequest(config).then((signed) => {
             invalidationTokens.push(signed.signature);
             return signed;
-          });
-        },
+          }),
       },
       Mutation: {
         file: (source, args) => {
           imagesCache = null;
           imageCache = null;
 
-          return updateImage(args.id, args.input.tags, args.input.source, args.input.caption, config);
+          if (args.operationType && args.operationType === 'REMOVE') {
+            return updateImage(
+              args.id,
+              args.input.tags,
+              args.input.source,
+              args.input.caption,
+              args.input.preview,
+              config,
+              true
+            );
+          }
+
+          return updateImage(
+            args.id,
+            args.input.tags,
+            args.input.source,
+            args.input.caption,
+            args.input.preview,
+            config
+          );
         },
-        /* fileList: (source, args, x, {fieldASTs}) => {
-          console.log("test");
-        }, */
-        cloudinaryRequestDone: (source, args, x, {fieldASTs}) => {
+        cloudinaryRequestDone: (source, args) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
             imagesCache = null;
             invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
             if (!imageCache) imageCache = {};
-            return getImageById(config, args.id).then(image => {
+            return getImageById(config, args.id).then((image) => {
               imageCache[args.id] = image;
               return image;
             });
@@ -182,6 +253,9 @@ module.exports = (schema, {uri} = {}) => {
           url: String
           caption: String
           source: String
+          removed: Boolean
+          preview: image
+          pages: Int
           colors: [String]
         }
       `,
