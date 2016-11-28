@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
-import { Editor } from 'slate';
+import { Editor, Html, Plain } from 'slate';
 import './style.less';
+
 
 const options = {
   defaultNode: 'paragraph',
@@ -20,24 +21,24 @@ const options = {
   ],
   sidebarTypes: [],
   nodes: {
-    paragraph: ({ children }) => <p>{children}</p>,
-    'block-quote': ({ children }) => <blockquote>{children}</blockquote>,
-    'bulleted-list': ({ children }) => <ul>{children}</ul>,
+    paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
+    'block-quote': ({ children, attributes }) => <blockquote {...attributes}>{children}</blockquote>,
+    'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
     'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
-    'heading-one': ({ children }) => <h1>{children}</h1>,
-    'heading-two': ({ children }) => <h2>{children}</h2>,
-    'heading-three': ({ children }) => <h3>{children}</h3>,
-    'heading-four': ({ children }) => <h4>{children}</h4>,
-    'heading-five': ({ children }) => <h5>{children}</h5>,
-    'heading-six': ({ children }) => <h6>{children}</h6>,
-    'bulleted-list-item': ({ children }) => <li>{children}</li>,
-    'numbered-list-item': ({ children }) => <li>{children}</li>,
+    'heading-one': ({ children, attributes }) => <h1 {...attributes}>{children}</h1>,
+    'heading-two': ({ children, attributes }) => <h2 {...attributes}>{children}</h2>,
+    'heading-three': ({ children, attributes }) => <h3 {...attributes}>{children}</h3>,
+    'heading-four': ({ children, attributes }) => <h4 {...attributes}>{children}</h4>,
+    'heading-five': ({ children, attributes }) => <h5 {...attributes}>{children}</h5>,
+    'heading-six': ({ children, attributes }) => <h6 {...attributes}>{children}</h6>,
+    'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+    'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
   },
   marks: {
-    bold: ({ children }) => <strong>{children}</strong>,
-    code: ({ children }) => <code>{children}</code>,
-    italic: ({ children }) => <em>{children}</em>,
-    underlined: ({ children }) => <u>{children}</u>,
+    bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
+    code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
+    italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
+    underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
   },
   getMarkdownType: (chars) => {
     switch (chars) {
@@ -57,6 +58,78 @@ const options = {
   },
 };
 
+const rules = [
+  {
+    serialize(obj, children) {
+      if (obj.kind == 'block' && options.nodes[obj.type]) {
+        return options.nodes[obj.type]({ children, attributes: {} });
+      }
+      if (obj.kind == 'block') {
+        return <div data-type={obj.type}>{children}</div>;
+      }
+      if (obj.kind == 'inline' && obj.type == 'link') {
+        return <a>{children}</a>;
+      }
+    },
+  },
+  {
+    deserialize(el, next) {
+      const block = options.nodes[el.tagName]
+      if (!block) return
+      return {
+        kind: 'block',
+        type: block,
+        nodes: next(el.children)
+      }
+    }
+  },
+  {
+    deserialize(el, next) {
+      const mark = options.marks[el.tagName]
+      if (!mark) return
+      return {
+        kind: 'mark',
+        type: mark,
+        nodes: next(el.children)
+      }
+    }
+  },
+  {
+    // Special case for code blocks, which need to grab the nested children.
+    deserialize(el, next) {
+      if (el.tagName != 'pre') return
+      const code = el.children[0]
+      const children = code && code.tagName == 'code'
+        ? code.children
+        : el.children
+
+      return {
+        kind: 'block',
+        type: 'code',
+        nodes: next(children)
+      }
+    }
+  },
+  {
+    // Special case for links, to grab their href.
+    deserialize(el, next) {
+      if (el.tagName != 'a') return
+      return {
+        kind: 'inline',
+        type: 'link',
+        nodes: next(el.children),
+        data: {
+          href: el.attribs.href
+        }
+      }
+    }
+  }
+]
+
+const html = new Html({
+  rules,
+});
+
 @withUniqueId()
 @withState({ terse: true })
 @useBlocks(options)
@@ -64,6 +137,7 @@ const options = {
 @withToolbar(options)
 @withSidebar(options)
 export default class SlateEditor extends Component {
+  state = {};
   static propTypes = {
     readOnly: PropTypes.bool,
     children: PropTypes.node,
@@ -75,19 +149,33 @@ export default class SlateEditor extends Component {
     plugins: PropTypes.array,
     className: PropTypes.string,
   }
+  keyup = event => {
+    return;
+    if (event.keyCode === 65 && event.ctrlKey) {
+      this.setState({
+        mode: Plain.deserialize(html.serialize(this.props.value, { terse: true }), { terse: true }),
+      });
+        // ctrl+a was typed.
+    }
+  }
   render = () => {
     const { children, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck } = this.props;
     return (
-      <div className={className} style={{ position: 'relative' }}>
+      <div className={className} style={{ position: 'relative' }} onKeyUp={this.keyup}>
         {children}
-        <Editor
+        {this.state.mode ? <Editor
+          spellcheck={spellcheck || false}
+          readOnly={readOnly}
+          state={this.state.mode}
+          onChange={mode => this.setState({ mode })}
+        /> : <Editor
           spellcheck={spellcheck || false}
           readOnly={readOnly}
           plugins={plugins}
           schema={{ marks, nodes }}
           state={value}
           onChange={onChange}
-        />
+        />}
       </div>
     );
   }
