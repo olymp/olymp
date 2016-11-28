@@ -35,7 +35,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
   };
 
   render() {
-    const { tags, solution, source, sortByState } = this.state;
+    const { tags, solution, source, type, sortByState } = this.state;
 
     if (this.props.disableUpload || this.props.readOnly) {
       return <WrappedComponent {...this.props} />;
@@ -53,10 +53,13 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
             tags={tags}
             solution={solution}
             source={source}
+            type={type}
             sortByState={sortByState}
             onTagsFilterChange={tags => this.setState({ tags })}
             onSolutionFilterChange={solution => this.setState({ solution })}
             onSourceFilterChange={source => this.setState({ source })}
+            onTypeFilterChange={type => this.setState({ type })}
+            onResetFilters={() => this.setState({ tags: [], solution: [], source: [], type: [] })}
             onSortByChange={sortByState => this.setState({ sortByState })}
             onImageChange={this.show}
           />

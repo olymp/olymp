@@ -3,9 +3,9 @@ import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
 
 const defaultImage = {
-  url: '/img/350x150.png',
-  width: 350,
-  height: 150,
+  url: '/img/placeholder.jpg',
+  width: 1680,
+  height: 578,
 };
 export default class CoolImage extends Component {
   // Fill: true => width: 100%, height: auto
@@ -15,48 +15,50 @@ export default class CoolImage extends Component {
     cloudinary: {},
   };
 
-  renderImg = () => {
-    let { value, width, height, cloudinary, className, children, onClick, ...rest } = this.props;
+  renderImg = (props) => {
+    let { readOnly, url, crop, caption, ratio, width, height, color, className, children, onClick, ...rest } = props;
 
-    if (!value) {
-      value = defaultImage;
-    }
-
-    const crop = value.crop && Array.isArray(value.crop) ? { width: value.crop[0], height: value.crop[1], cropX: value.crop[2], cropY: value.crop[3] } : {};
-    const options = { ...crop, ...cloudinary };
-    const url = cloudinaryUrl(value.url, options);
     const style = {};
     if (height) style.height = height;
     if (width) style.width = width;
+    style.backgroundColor = color;
 
-    if (width === '100%') {
+    if (!readOnly) {
+      style.paddingTop = `${ratio * parseFloat(style.width)}%`;
+
       return (
-        <div {...rest} onClick={onClick} style={style} className={cn(className, 'athena-img-container-simple')}>
-          <img className="athena-img" style={{ width }} src={url} alt={value.caption} />
+        <div {...rest} onClick={onClick} style={style} className={cn(className, 'athena-img-container')}>
+          <img className="athena-img" src={url} alt={caption} />
           {children}
         </div>
       );
-    } else if (!options.width || !options.height) {
-      return (
-        <img {...rest} style={style} className="athena-img" src={url} onClick={onClick} alt={value.caption} />
-      );
     }
 
-    const ratio = options.height / options.width;
+    return (
+      <img {...rest} style={style} className="athena-img" src={url} alt={caption} />
+    );
+  }
 
-    style.paddingTop = `${ratio * 100}%`;
-    style.backgroundColor = options.color || (options.colors && options.colors[0]) || 'whitesmoke';
+  renderContainer = (props) => {
+    const { url, crop, caption, ratio, width, height, className, children, onClick, style, ...rest } = props;
+
+    const containerStyle = { ...style };
+    containerStyle.backgroundImage = `url(${url})`;
+    containerStyle.backgroundSize = 'cover';
+    containerStyle.backgroundPosition = 'center center';
+    if (height) containerStyle.height = height;
+    if (width) containerStyle.width = width;
+    if (ratio && !height) containerStyle.paddingTop = `${ratio * parseFloat(containerStyle.width)}%`;
 
     return (
-      <div {...rest} onClick={onClick} className={cn(className, 'athena-img-container')} style={style}>
-        <img src={url} className="athena-img" />
+      <div {...rest} onClick={onClick} className={cn(className, 'athena-background-img')} style={containerStyle}>
         {children}
       </div>
     );
   }
 
-  renderContainer = () => {
-    let { value, width, height, cloudinary, className, children, onClick, container, style, ...rest } = this.props;
+  render() {
+    let { container, value, cloudinary, noPreview, ...rest } = this.props;
 
     if (!value) {
       value = defaultImage;
@@ -66,30 +68,22 @@ export default class CoolImage extends Component {
       };
     }
 
-    const crop = value.crop && Array.isArray(value.crop) ? { width: value.crop[0], height: value.crop[1], cropX: value.crop[2], cropY: value.crop[3] } : {};
+    const url = (!noPreview && value.preview && value.preview.url) ? value.preview.url : value.url;
+    const crop = (!noPreview && value.preview && value.preview.crop) ? value.preview.crop : value.crop;
     const options = { ...value, ...crop, ...cloudinary };
-    const url = cloudinaryUrl(value.url, options);
-    style = { ...style };
-    style.backgroundImage = `url(${url})`;
-    style.backgroundSize = 'cover';
-    style.backgroundPosition = 'center center';
-    if (height) style.height = height;
-    if (width) style.width = width;
-    if (options.width && options.height && !height) {
-      const ratio = options.height / options.width;
-      style.paddingTop = `${ratio * 100}%`;
-    }
+    const ratio = (options.height && options.width) ? options.height / options.width : 0;
 
-    return (
-      <div {...rest} onClick={onClick} className={cn(className, 'athena-background-img')} style={style}>
-        {children}
-      </div>
-    );
-  }
+    const props = {
+      caption: value ? value.caption : '',
+      crop: crop && Array.isArray(crop) ? { width: crop[0], height: crop[1], cropX: crop[2], cropY: crop[3] } : {},
+      url: cloudinaryUrl(url, options),
+      color: options.color || (options.colors && options.colors[0]) || 'whitesmoke',
+      ratio,
+      ...rest,
+    };
 
-  render() {
-    if (this.props.container) {
-      return this.renderContainer(this.props.container);
-    } return this.renderImg();
+    if (container) {
+      return this.renderContainer(props);
+    } return this.renderImg(props);
   }
 }

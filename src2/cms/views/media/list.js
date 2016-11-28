@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, cloudinaryUrl, gql, graphql, withApollo } from 'olymp';
-import { Spin, Cascader, Menu } from 'antd';
+import { Spin, Cascader, Menu, Icon, Badge } from 'antd';
 import { sortBy } from 'lodash';
 import './style.less';
 
@@ -68,7 +68,7 @@ const getNode = (tree, tags) => {
   } return tree;
 };
 
-const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source';
+const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
 @withApollo
 @graphql(gql`
   query fileList {
@@ -83,11 +83,14 @@ export default class MediaList extends Component {
     onTagsFilterChange: React.PropTypes.func,
     onSolutionFilterChange: React.PropTypes.func,
     onSourceFilterChange: React.PropTypes.func,
+    onTypeFilterChange: React.PropTypes.func,
     onResetFilters: React.PropTypes.func,
     onSortByChange: React.PropTypes.func,
     tags: React.PropTypes.arrayOf(React.PropTypes.string),
     solution: React.PropTypes.arrayOf(React.PropTypes.string),
     source: React.PropTypes.arrayOf(React.PropTypes.string),
+    type: React.PropTypes.arrayOf(React.PropTypes.string),
+    sortByState: React.PropTypes.arrayOf(React.PropTypes.string),
     data: React.PropTypes.shape({
       loading: React.PropTypes.bool,
       items: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -106,7 +109,7 @@ export default class MediaList extends Component {
   };
 
   render() {
-    const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onResetFilters, onSortByChange, tags, solution, source, sortByState } = this.props;
+    const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, tags, solution, source, type, sortByState } = this.props;
     const { loading, items } = this.props.data;
 
     let filteredItems;
@@ -129,6 +132,11 @@ export default class MediaList extends Component {
     // Quellen-Filter
     if (source && source.length) {
       filteredItems = filteredItems.filter(item => item.source === source[0] || source[0] === 'Keine Quelle');
+    }
+
+    // Type-Filter
+    if (type && type.length) {
+      filteredItems = filteredItems.filter(item => item.format === type[0] || type[0] === 'Andere');
     }
 
     // Sortierung
@@ -208,27 +216,41 @@ export default class MediaList extends Component {
         caption: item.comment,
       })
     ).map((item, index) => (
-      <div key={index} className="card card-block file" onClick={() => onImageChange(item)}>
+      <div key={index} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => onImageChange(item)}>
         <img alt={item.caption} className="boxed" src={item.thumbnail} />
+        {
+          item.format === 'pdf' ? (
+            <span className="label">
+              <Icon type="file-pdf" />
+            </span>
+          ) : undefined
+        }
       </div>
     )) : undefined;
 
     // Auflösungen/Quellen zusammensuchen
-    const sources = {};
     const solutions = {};
+    const sources = {};
+    const types = {};
     const getOtherFilters = (tree) => {
       (tree.images || []).forEach(item => {
+        const solution = item.width * item.height < 500000 ? 'Niedrige Auflösung' : 'Hohe Auflösung';
+        if (!solutions[solution]) {
+          solutions[solution] = 0;
+        }
+        solutions[solution] += 1;
+
         const source = item.source || 'Keine Quelle';
         if (!sources[source]) {
           sources[source] = 0;
         }
         sources[source] += 1;
 
-        const solution = item.width * item.height < 500000 ? 'Niedrige Auflösung' : 'Hohe Auflösung';
-        if (!solutions[solution]) {
-          solutions[solution] = 0;
+        const type = item.format || 'Andere';
+        if (!types[type]) {
+          types[type] = 0;
         }
-        solutions[solution] += 1;
+        types[type] += 1;
       });
 
       (tree.children || []).forEach(item => getOtherFilters(item));
@@ -291,6 +313,23 @@ export default class MediaList extends Component {
               {source && source.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSourceFilterChange([])} /> : undefined}
             </Menu.Item>
 
+            <Menu.Item key="type">
+              <Cascader
+                options={[
+                  ...Object.keys(types).map(key => ({
+                    value: key,
+                    label: `${key} (${types[key]})`,
+                  })),
+                ]}
+                defaultValue={type}
+                value={type}
+                onChange={onTypeFilterChange}
+              >
+                <span>{type && type.length ? type[0] : 'Typ'}</span>
+              </Cascader>
+              {type && type.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTypeFilterChange([])} /> : undefined}
+            </Menu.Item>
+
             <Menu.Item key="sortBy" style={{ float: 'right' }}>
               <Cascader
                 options={[
@@ -320,12 +359,18 @@ export default class MediaList extends Component {
                 <span>{sortByState && sortByState.length ? sortByState[0] : 'Name'}</span>
               </Cascader>
             </Menu.Item>
+            {/* <Menu.Item style={{ float: 'right', color: 'red' }} key="delete">
+              <Icon type="delete" />Löschen
+            </Menu.Item>
+            <Menu.Item style={{ float: 'right' }} key="select">
+              <Icon type="select" />Auswählen
+            </Menu.Item> */}
           </Menu>
         </Menu>
 
         <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', margin: '0 auto' }}>
           { tags.length ? (
-            <div className="card card-block directory" onClick={onResetFilters}>
+            <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([])}>
               <div className="overlay">
                 <h6><i className="fa fa-rotate-left" /></h6>
               </div>
