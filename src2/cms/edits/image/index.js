@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Image from './cool-image';
 import withImageUpload from './with-image-upload';
 import withLightbox from './with-lightbox';
+import { cloudinaryUrl } from 'olymp';
 
 const defaultImage = { url: '/img/placeholder.jpg', width: 1680, height: 578 };
 const defaultImageClick = ({ showMediathek }) => showMediathek();
@@ -10,6 +11,7 @@ const defaultImageClick = ({ showMediathek }) => showMediathek();
 export default class ImageComponent extends Component {
   static defaultProps = {
     readOnly: false,
+    noPreview: false,
   };
 
   onImageClick = () => {
@@ -19,12 +21,10 @@ export default class ImageComponent extends Component {
   }
 
   render() {
-    const { readOnly, className, children, showLightbox, showMediathek, lightbox, onImageClick, ...rest } = this.props;
+    const { showLightbox, showMediathek, onImageClick, lightbox, ...rest } = this.props; // muss hier stehen, sonst wird beim rendern ein Fehler geworfen
 
-    return (
-      <Image {...rest} className={className} onClick={this.onImageClick}>
-        {children}
-      </Image>
-    );
+    // todo: newReadOnly = !isLoggedin/isAdmin || readObnly;
+
+    return <Image {...rest} onClick={this.onImageClick} />;
   }
 }

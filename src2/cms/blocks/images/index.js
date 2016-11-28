@@ -51,9 +51,9 @@ export default class Gallery extends Component {
             <div className="image">
               <Image value={{
                 sid: ShortId.generate(),
-                url: '/img/350x150.png',
-                width: 400,
-                height: 400,
+                url: '/img/placeholder.jpg',
+                width: 1680,
+                height: 578,
               }} updateValue={v => this.addImage(v)}
               />
             </div>
