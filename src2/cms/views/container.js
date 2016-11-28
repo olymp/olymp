@@ -158,7 +158,6 @@ export default class Container extends Component {
 
     // Von Collections Attribute (icon, group, order) extrahieren und Collections gruppieren
     const groups = {};
-    // const groupOrder = {};
     (collections || []).map(({ name, description }, i) => {
       const attributes = {};
       description.split('\n').forEach((x) => {
@@ -178,7 +177,6 @@ export default class Container extends Component {
       // Gruppieren
       if (!groups[attributes.group]) groups[attributes.group] = [];
       groups[attributes.group].push(collections[i]);
-      // groupOrder[attributes.group] = attributes.order ? attributes.order;
     });
 
     // Collections sortieren
@@ -188,17 +186,10 @@ export default class Container extends Component {
 
     // Undefined-Gruppe auflösen
     if (groups.undefined) {
-      /*
       groups.undefined.forEach((collection) => {
         if (!groups[collection.name]) groups[collection.name] = [];
 
         groups[collection.name].push(collection);
-      });
-      */
-      groups.undefined.forEach((collection) => {
-        if (!groups.collections) groups.collections = [];
-
-        groups.collections.push(collection);
       });
 
       delete groups.undefined;
@@ -218,41 +209,56 @@ export default class Container extends Component {
                   Website
                 </Link>
               </Menu.Item>
-              {Object.keys(groups).map(key => (
-                <SubMenu key={key} title={capitalize(key)}>
-                  {
-                    (groups[key] || []).map(({ name, description }, i) => (
-                      <SubMenu key={i} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>{capitalize(name)}<Icon type="right" style={{ paddingLeft: '.5rem' }} /></Link>}>
-                        <Menu.Item>
-                          <Link to={{ pathname, query: { [name]: null } }}>
-                            <Icon type="plus" />{capitalize(name)} hinzufügen
-                          </Link>
-                        </Menu.Item>
-                        <Menu.Item>
-                          <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
-                            <Icon type="export" />Veröffentlichte
-                          </Link>
-                        </Menu.Item>
-                        <Menu.Item>
-                          <Link to={{ pathname: `/@/${name}`, query: { state: 'DRAFT' } }}>
-                            <Icon type="folder" />Entwürfe
-                          </Link>
-                        </Menu.Item>
-                        <Menu.Item>
-                          <Link to={{ pathname: `/@/${name}`, query: { state: 'ARCHIVED' } }}>
-                            <Icon type="inbox" />Archiv
-                          </Link>
-                        </Menu.Item>
-                        <Menu.Item>
-                          <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>
-                            <Icon type="like" />Papierkorb
-                          </Link>
-                        </Menu.Item>
-                      </SubMenu>
-                    ))
-                  }
-                </SubMenu>
-              ))}
+              {Object.keys(groups).map(key => {
+
+                const wrapper = (children) => (
+                  <SubMenu key={key} title={capitalize(key)}>
+                    {children}
+                  </SubMenu>
+                );
+
+                const groupItem = (
+                  (groups[key] || []).map(({ name }) => (
+                    <SubMenu key={name} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>
+                      {capitalize(name)}
+                      {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
+                    </Link>}>
+                      <Menu.Item>
+                        <Link to={{ pathname, query: { [name]: null } }}>
+                          <Icon type="plus" />{capitalize(name)} hinzufügen
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>
+                          <Icon type="appstore" />Alle
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
+                          <Icon type="export" />Veröffentlichte
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <Link to={{ pathname: `/@/${name}`, query: { state: 'DRAFT' } }}>
+                          <Icon type="folder" />Entwürfe
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <Link to={{ pathname: `/@/${name}`, query: { state: 'ARCHIVED' } }}>
+                          <Icon type="inbox" />Archiv
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>
+                          <Icon type="delete" />Papierkorb
+                        </Link>
+                      </Menu.Item>
+                    </SubMenu>
+                  ))
+                );
+
+                return groups[key].length === 1 ? groupItem : wrapper(groupItem);
+              })}
               <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
                 <Menu.Item>
                   <Link to={{ pathname, query: { upload: null } }}>
@@ -315,7 +321,7 @@ export default class Container extends Component {
                   sortByState={query && query.sortBy ? [query.sortBy] : []}
                   onTagsFilterChange={tags => router.push({
                     pathname,
-                    query: { ...query, tags: tags ? tags.join('-') : undefined },
+                    query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
                   })}
                   onSolutionFilterChange={solution => router.push({
                     pathname,

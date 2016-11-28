@@ -4,6 +4,7 @@ import capitalize from 'capitalize';
 import gql from 'graphql-tag';
 import { Table, Menu, Icon } from 'antd';
 import { Link } from 'react-router-v4-decode-uri';
+import { find } from 'lodash';
 
 import { withRouter, withCollection } from '../../decorators';
 import columnHelper from './columns.js';
@@ -72,7 +73,7 @@ export default class MainList extends Component {
   }
 
   render() {
-    const {onClick, collection, name, removeCollectionItem, pathname} = this.props;
+    const {onClick, collection, name, saveCollectionItem, removeCollectionItem, pathname} = this.props;
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
@@ -151,6 +152,14 @@ export default class MainList extends Component {
       this.setState({ selectedRowKeys: [] });
     };
 
+    const changeState = (state) =>
+      saveCollectionItem(
+        {
+          ...find(items, obj => obj.id === selectedRowKeys[0]),
+          state,
+        }
+      );
+
     return (
       <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
         <div style={{ paddingTop: '38px' }}>
@@ -167,9 +176,9 @@ export default class MainList extends Component {
               <Menu.Item key="4">Gelöscht</Menu.Item>
 
               <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => removeCollectionItem(selectedRowKeys[0])}>Löschen ({selectedRowKeys.length})</span></Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="13">Archivieren ({selectedRowKeys.length})</Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="12">als Entwurf ({selectedRowKeys.length})</Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="11">Veröffentlichen ({selectedRowKeys.length})</Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => changeState('ARCHIVED')}>Archivieren ({selectedRowKeys.length})</span></Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="12"><span onClick={() => changeState('DRAFT')}>als Entwurf ({selectedRowKeys.length})</span></Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="11"><span onClick={() => changeState('PUBLISHED')}>Veröffentlichen ({selectedRowKeys.length})</span></Menu.Item>
               <Menu.Item style={{ float: 'right' }} key="16">
                 <Icon type="download" />Exportieren ({selectedRowKeys.length})
               </Menu.Item>
