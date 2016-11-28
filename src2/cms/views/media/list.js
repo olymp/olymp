@@ -370,7 +370,7 @@ export default class MediaList extends Component {
 
         <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', margin: '0 auto' }}>
           { tags.length ? (
-            <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([])}>
+            <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([...tags].slice(0, -1))}>
               <div className="overlay">
                 <h6><i className="fa fa-rotate-left" /></h6>
               </div>
