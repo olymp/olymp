@@ -103,7 +103,7 @@ const getFormEditor = (type, name, props = {}) => {
   } else if (type.name === 'Color') {
     return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
   } else if (type.kind === 'OBJECT' && type.name === 'image') {
-    return <Image {...props} width="100%" />;
+    return <Image {...props} width="100%" noPreview />;
   } else if (type.name === 'Markdown') {
     return <Input {...props} placeholder={name} type="textarea" autosize />;
   } else if (type.name === 'Slug') {

@@ -27,7 +27,7 @@ const ModalForm = Form.create()(
             <Button key="back" type="ghost" size="large" onClick={onCancel}>
               Abbrechen
             </Button>,
-            <Button key="delete" size="large" onClick={onDelete}>
+            <Button key="delete" type="primary" size="large" onClick={onDelete} style={{ backgroundColor: 'red', borderColor: 'red' }}>
               Löschen
             </Button>,
             <Button key="submit" type="primary" size="large" loading={saving} onClick={onCreate}>
@@ -63,8 +63,15 @@ const ModalForm = Form.create()(
               <Select {...props} tags searchPlaceholder="Suche ..." />
             )}
           </FormItem>
+          <FormItem key="preview" label="Preview" {...formItemLayout}>
+            {getFieldDecorator('preview', {
+              initialValue: item.preview,
+            })(
+              <Image width="33%" />
+            )}
+          </FormItem>
 
-          <Image value={{ ...item }} width="100%" />
+          <Image value={{ ...item }} width="100%" readOnly noPreview />
 
           <FormItem key="size" label="Größe" {...formItemLayout} style={{ marginTop: '24px', marginBottom: '0' }}>
             <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />
@@ -75,6 +82,11 @@ const ModalForm = Form.create()(
           <FormItem key="format" label="Format" {...formItemLayout} style={{ marginBottom: '0' }}>
             <Input disabled placeholder="Format" defaultValue={item.format} />
           </FormItem>
+          { item.format === 'pdf' ? (
+            <FormItem key="pages" label="Seiten" {...formItemLayout} style={{ marginBottom: '0' }}>
+              <Input disabled placeholder="Seiten" defaultValue={item.pages} />
+            </FormItem>
+          ) : undefined }
           <FormItem key="bytes" label="Dateigröße" {...formItemLayout} style={{ marginBottom: '0' }}>
             <Input disabled placeholder="Dateigröße" defaultValue={`${item.bytes / 1000} kB`} />
           </FormItem>
@@ -91,8 +103,6 @@ export default class MediaModal extends Component {
 
   handleDelete = () => {
     const { id, remove, onClose } = this.props;
-
-    console.log(this.props);
 
     Modal.confirm({
       title: 'Diese Datei wirklich löschen?',
