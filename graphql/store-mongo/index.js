@@ -25,14 +25,19 @@ module.exports = config => {
     return collection.insertOneAsync(data).then(() => read(kind, { id: data.id, attributes }));
   };
 
-  const list = (kind, { filter, attributes } = {}) => {
-    if (attributes) attributes = attributes.reduce((prev, next) => {
-      prev[next] = 1;
-      return prev;
-    }, {});
-    if (!filter) filter = {};
-    const cursor = returnArgs.db.collection(kind).findAsync(filter, attributes);
-    return cursor.then(c => c.toArrayAsync());
+  const list = (kind, { sort, filter, attributes } = {}) => {
+    const newAttributes = attributes ? attributes.reduce((prev, next) => {
+      const newPrev = prev;
+      newPrev[next] = 1;
+
+      return newPrev;
+    }, {}) : undefined;
+
+    return returnArgs.db
+      .collection(kind)
+      .findAsync(!filter ? {} : filter, newAttributes)
+      // .sort({ name: 1 })
+      .then(c => c.toArrayAsync());
   };
 
   const remove = (kind, { id }) => {

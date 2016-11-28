@@ -151,7 +151,7 @@ module.exports = (schema, { uri } = {}) => {
     name: 'file',
     query: `
       file(id: String): file
-      fileList: [file]
+      fileList(tags: [String]): [file]
       cloudinaryRequest: cloudinaryRequest
     `,
     mutation: `
@@ -168,8 +168,11 @@ module.exports = (schema, { uri } = {}) => {
             return image;
           });
         },
-        fileList: () => {
+        fileList: (source, { tags }) => {
+          const getFiltered = items => tags ? items.filter(item => lodash.intersection(tags, item.tags).length > 0) : items;
+
           const images = [];
+          if (imagesCache) return getFiltered(imagesCache);
           return getImages(config, images).then(() => {
             // Gelöschte ausschließen
             const newImages = [];
@@ -180,7 +183,7 @@ module.exports = (schema, { uri } = {}) => {
             });
 
             imagesCache = newImages;
-            return newImages;
+            return getFiltered(newImages);
           });
         },
         cloudinaryRequest: () =>
