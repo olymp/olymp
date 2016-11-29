@@ -5,8 +5,8 @@ import gql from 'graphql-tag';
 const baseAttributes = 'id, name, email';
 let attributes = baseAttributes;
 
-export const auth = ({ extraAttributes }) => WrappedComponent => {
-  if (extraAttributes) attributes = `${baseAttributes}, ${extraAttributes}`;
+export const auth = (obj) => WrappedComponent => {
+  if (obj && obj.extraAttributes) attributes = `${baseAttributes}, ${obj.extraAttributes}`;
   const inner = WrappedComponent => {
     const component = props => {
       const auth = {

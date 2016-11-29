@@ -14,7 +14,7 @@ const ModalForm = Form.create()(
       const { getFieldDecorator } = form;
 
       if (!item) {
-        return <Modal {...modalSettings} title="Media"><Spin /></Modal>;
+        return <Modal {...modalSettings} title="Media" style={{ minHeight: '150px' }}><Spin /></Modal>;
       }
 
       return (
@@ -65,7 +65,7 @@ const ModalForm = Form.create()(
           </FormItem>
           <FormItem key="preview" label="Vorschaubild" {...formItemLayout}>
             {getFieldDecorator('preview', {
-              initialValue: item.preview,
+              initialValue: item.preview && item.preview.url ? item.preview : undefined,
             })(
               <Image width="33%" />
             )}

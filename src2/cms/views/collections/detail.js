@@ -6,7 +6,6 @@ import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
 
-const Option = Select.Option;
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
@@ -119,7 +118,7 @@ const getFormEditor = (type, name, props = {}) => {
   } else if (type.kind === 'ENUM' && type.enumValues) {
     return (
       <Select {...props}>
-        {type.enumValues.map(x => <Option key={x.name} value={x.name}>{x.name}</Option>)}
+        {type.enumValues.map(x => <Select.Option key={x.name} value={x.name}>{x.name}</Select.Option>)}
       </Select>
     );
   } else if (type.kind === 'LIST' && type.ofType.name.indexOf('nested') === 0) {
@@ -127,9 +126,18 @@ const getFormEditor = (type, name, props = {}) => {
   } return <Input {...props} placeholder={name} />;
 };
 
-const getInitialValue = ({ item, form }, fieldName) => {
-  if (item[fieldName]) return item[fieldName];
-  else if (fieldName === 'slug' && form.getFieldValue('name')) {
+const getInitialValue = ({ item, form }, { name, description }) => {
+  if (item[name]) {
+    // Wenn Item schon existiert, den vorhandenen Wert nehmen
+    return item[name];
+  } else if (description && description.indexOf('default:') !== -1) {
+    // Wenn ein default-Wert existiert
+    return description.split('default:')[1].split(' ')[0].split('\n')[0];
+  } else if (name === 'state') {
+    // Bei State
+    return 'DRAFT';
+  } else if (name === 'slug' && form.getFieldValue('name')) {
+    // Bei Slug
     let url = '/' + encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
       .split('%C3%A4').join('ä')
       .split('%C3%B6').join('ö')
@@ -141,7 +149,9 @@ const getInitialValue = ({ item, form }, fieldName) => {
       url = moment(form.getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
     }
     return url;
-  } return undefined;
+  }
+
+  return undefined;
 };
 const CollectionCreateForm = Form.create()(
   (props) => {
@@ -152,6 +162,7 @@ const CollectionCreateForm = Form.create()(
       const group = item.description && item.description.indexOf('detail:') !== -1 ? item.description.split('detail:')[1].split(' ')[0].split('\n')[0] : 'Allgemein';
       if (!state[group]) state[group] = [];
       state[group].push(item);
+
       return state;
     }, {});
 
@@ -159,7 +170,7 @@ const CollectionCreateForm = Form.create()(
       <Form horizontal>
         {fields.filter(({ name }) => name !== 'id').map(field =>
           <FormItem key={field.name} label={toLabel(field.name)} {...formItemLayout}>
-            {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field.name) })(
+            {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
               getFormEditor(field.type, name)
             )}
           </FormItem>
