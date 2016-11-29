@@ -162,7 +162,7 @@ export default class MainList extends Component {
 
     return (
       <div>
-        <Affix offsetTop={49}>
+        <Affix offsetTop={48}>
           <Menu
             selectedKeys={['0']}
             mode="horizontal"
