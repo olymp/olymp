@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, cloudinaryUrl, gql, graphql, withApollo } from 'olymp';
-import { Spin, Cascader, Menu, Icon, Badge } from 'antd';
+import { Affix, Spin, Cascader, Menu, Icon, Badge } from 'antd';
 import { sortBy } from 'lodash';
 import './style.less';
 
@@ -259,116 +259,118 @@ export default class MediaList extends Component {
 
     return (
       <div className="olymp-media">
-        <Menu
-          selectedKeys={['0']}
-          mode="horizontal"
-          theme="dark"
-          style={{ fontSize: '13px', lineHeight: '38px', width: '100%', zIndex: 1 }}
-        >
-          <Menu theme="dark" style={{ maxWidth: '1600px', margin: '0 auto', lineHeight: '38px' }}>
-            <Menu.Item key="tags">
-              <Cascader
-                options={sortBy(tree.children, 'label')}
-                defaultValue={tags}
-                value={tags}
-                changeOnSelect
-                onChange={onTagsFilterChange}
-              >
-                <span>{tags && tags.length ? tags.join(' > ') : 'Tags'}</span>
-              </Cascader>
-              {tags && tags.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTagsFilterChange([])} /> : undefined}
-            </Menu.Item>
+        <Affix offsetTop={49}>
+          <Menu
+            selectedKeys={['0']}
+            mode="horizontal"
+            theme="dark"
+            className="olymp-submenu"
+          >
+            <Menu theme="dark">
+              <Menu.Item key="tags">
+                <Cascader
+                  options={sortBy(tree.children, 'label')}
+                  defaultValue={tags}
+                  value={tags}
+                  changeOnSelect
+                  onChange={onTagsFilterChange}
+                >
+                  <span>{tags && tags.length ? tags.join(' > ') : 'Tags'}</span>
+                </Cascader>
+                {tags && tags.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTagsFilterChange([])} /> : undefined}
+              </Menu.Item>
 
-            <Menu.Item key="solution">
-              <Cascader
-                options={[
-                  ...Object.keys(solutions).map(key => ({
-                    value: key,
-                    label: `${key} (${solutions[key]})`,
-                  })),
-                ]}
-                defaultValue={solution}
-                value={solution}
-                onChange={onSolutionFilterChange}
-              >
-                <span>{solution && solution.length ? solution[0] : 'Auflösung'}</span>
-              </Cascader>
-              {solution && solution.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSolutionFilterChange([])} /> : undefined}
-            </Menu.Item>
+              <Menu.Item key="solution">
+                <Cascader
+                  options={[
+                    ...Object.keys(solutions).map(key => ({
+                      value: key,
+                      label: `${key} (${solutions[key]})`,
+                    })),
+                  ]}
+                  defaultValue={solution}
+                  value={solution}
+                  onChange={onSolutionFilterChange}
+                >
+                  <span>{solution && solution.length ? solution[0] : 'Auflösung'}</span>
+                </Cascader>
+                {solution && solution.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSolutionFilterChange([])} /> : undefined}
+              </Menu.Item>
 
-            <Menu.Item key="source">
-              <Cascader
-                options={[
-                  ...Object.keys(sources).map(key => ({
-                    value: key,
-                    label: `${key} (${sources[key]})`,
-                  })),
-                ]}
-                defaultValue={source}
-                value={source}
-                onChange={onSourceFilterChange}
-              >
-                <span>{source && source.length ? source[0] : 'Quelle'}</span>
-              </Cascader>
-              {source && source.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSourceFilterChange([])} /> : undefined}
-            </Menu.Item>
+              <Menu.Item key="source">
+                <Cascader
+                  options={[
+                    ...Object.keys(sources).map(key => ({
+                      value: key,
+                      label: `${key} (${sources[key]})`,
+                    })),
+                  ]}
+                  defaultValue={source}
+                  value={source}
+                  onChange={onSourceFilterChange}
+                >
+                  <span>{source && source.length ? source[0] : 'Quelle'}</span>
+                </Cascader>
+                {source && source.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onSourceFilterChange([])} /> : undefined}
+              </Menu.Item>
 
-            <Menu.Item key="type">
-              <Cascader
-                options={[
-                  ...Object.keys(types).map(key => ({
-                    value: key,
-                    label: `${key} (${types[key]})`,
-                  })),
-                ]}
-                defaultValue={type}
-                value={type}
-                onChange={onTypeFilterChange}
-              >
-                <span>{type && type.length ? type[0] : 'Typ'}</span>
-              </Cascader>
-              {type && type.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTypeFilterChange([])} /> : undefined}
-            </Menu.Item>
+              <Menu.Item key="type">
+                <Cascader
+                  options={[
+                    ...Object.keys(types).map(key => ({
+                      value: key,
+                      label: `${key} (${types[key]})`,
+                    })),
+                  ]}
+                  defaultValue={type}
+                  value={type}
+                  onChange={onTypeFilterChange}
+                >
+                  <span>{type && type.length ? type[0] : 'Typ'}</span>
+                </Cascader>
+                {type && type.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTypeFilterChange([])} /> : undefined}
+              </Menu.Item>
 
-            <Menu.Item key="sortBy" style={{ float: 'right' }}>
-              <Cascader
-                options={[
-                  {
-                    value: 'Name',
-                    label: 'Name',
-                  },
-                  {
-                    value: 'Hinzugefügt',
-                    label: 'Hinzugefügt',
-                  },
-                  {
-                    value: 'Auflösung',
-                    label: 'Auflösung',
-                  },
-                  {
-                    value: 'Höhe',
-                    label: 'Höhe',
-                  },
-                  {
-                    value: 'Breite',
-                    label: 'Breite',
-                  },
-                ]}
-                onChange={onSortByChange}
-              >
-                <span>{sortByState && sortByState.length ? sortByState[0] : 'Name'}</span>
-              </Cascader>
-            </Menu.Item>
-            {/* <Menu.Item style={{ float: 'right', color: 'red' }} key="delete">
-              <Icon type="delete" />Löschen
-            </Menu.Item>
-            <Menu.Item style={{ float: 'right' }} key="select">
-              <Icon type="select" />Auswählen
-            </Menu.Item> */}
+              <Menu.Item key="sortBy" style={{ float: 'right' }}>
+                <Cascader
+                  options={[
+                    {
+                      value: 'Name',
+                      label: 'Name',
+                    },
+                    {
+                      value: 'Hinzugefügt',
+                      label: 'Hinzugefügt',
+                    },
+                    {
+                      value: 'Auflösung',
+                      label: 'Auflösung',
+                    },
+                    {
+                      value: 'Höhe',
+                      label: 'Höhe',
+                    },
+                    {
+                      value: 'Breite',
+                      label: 'Breite',
+                    },
+                  ]}
+                  onChange={onSortByChange}
+                >
+                  <span>{sortByState && sortByState.length ? sortByState[0] : 'Name'}</span>
+                </Cascader>
+              </Menu.Item>
+              {/* <Menu.Item style={{ float: 'right', color: 'red' }} key="delete">
+                <Icon type="delete" />Löschen
+              </Menu.Item>
+              <Menu.Item style={{ float: 'right' }} key="select">
+                <Icon type="select" />Auswählen
+              </Menu.Item> */}
+            </Menu>
           </Menu>
-        </Menu>
+        </Affix>
 
-        <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', margin: '0 auto' }}>
+        <div className="olymp-container">
           { tags.length ? (
             <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([...tags].slice(0, -1))}>
               <div className="overlay">
