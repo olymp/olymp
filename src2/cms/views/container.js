@@ -199,10 +199,8 @@ export default class Container extends Component {
         <div className="full">
           {modal}
           <Affix>
-            <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal">
-              <Menu.Item key="mail" className="ant-menu-item-brand">
-                <i className="fa fa-institution" /> Athena
-              </Menu.Item>
+            <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal" className="main-nav">
+              <Menu.Item key="mail" className="ant-menu-item-brand"><img src="/logo-wf-white-notext.png" height="45" alt="Athena CMS" /></Menu.Item>
               <Menu.Item key="/">
                 <Link to="/">
                   Website

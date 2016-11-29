@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withApollo } from 'react-apollo';
 import capitalize from 'capitalize';
 import gql from 'graphql-tag';
-import { Table, Menu, Icon } from 'antd';
+import { Table, Menu, Icon, Affix } from 'antd';
 import { Link } from 'react-router-v4-decode-uri';
 import { find } from 'lodash';
 
@@ -161,28 +161,48 @@ export default class MainList extends Component {
       ))
 
     return (
-      <div style={{ padding: '15px', width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ paddingTop: '38px' }}>
+      <div>
+        <Affix offsetTop={49}>
           <Menu
             selectedKeys={['0']}
             mode="horizontal"
             theme="dark"
-            style={{ fontSize: '13px', lineHeight: '38px', position: 'fixed', top: '48px', left: 0, width: '100%', zIndex: 1 }}
+            className="olymp-submenu"
             >
-            <Menu theme="dark" style={{ width: '80%', maxWidth: '1600px', minWidth: '1200px', margin: '0 auto', lineHeight: '38px' }}>
-              <Menu.Item key="0">{capitalize(name)}</Menu.Item>
-              <Menu.Item key="1">Veröffentlicht</Menu.Item>
-              <Menu.Item key="3">Archiv</Menu.Item>
-              <Menu.Item key="4">Gelöscht</Menu.Item>
-
-              { location.query && location.query.state === 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => selectedRowKeys.forEach(key => removeCollectionItem(key))}>Dauerhaft löschen ({selectedRowKeys.length})</span></Menu.Item> :
-              <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => changeState('REMOVED')}>Löschen ({selectedRowKeys.length})</span></Menu.Item>}
-              <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => changeState('ARCHIVED')}>Archivieren ({selectedRowKeys.length})</span></Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="12"><span onClick={() => changeState('DRAFT')}>als Entwurf ({selectedRowKeys.length})</span></Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="11"><span onClick={() => changeState('PUBLISHED')}>Veröffentlichen ({selectedRowKeys.length})</span></Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="16">
-                <Icon type="download" />Exportieren ({selectedRowKeys.length})
+            <Menu theme="dark">
+              <Menu.Item key="0">
+                <Link to={{ pathname, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' }}}>
+                  {/* capitalize(name) */}
+                  Alle
+                </Link>
               </Menu.Item>
+              <Menu.Item key="1">
+                <Link to={{ pathname, query: { state: 'PUBLISHED' }}}>
+                  Veröffentlichte
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Link to={{ pathname, query: { state: 'DRAFT' }}}>
+                  Entwürfe
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Link to={{ pathname, query: { state: 'ARCHIVED' }}}>
+                  Archivierte
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="4">
+                <Link to={{ pathname, query: { state: 'REMOVED' }}}>
+                  Gelöschte
+                </Link>
+              </Menu.Item>
+
+              { selectedRowKeys.length && location.query && location.query.state === 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => selectedRowKeys.forEach(key => removeCollectionItem(key))}>Dauerhaft löschen ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length && location.query && location.query.state !== 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => changeState('REMOVED')}>Löschen ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => changeState('ARCHIVED')}>Archivieren ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="12"><span onClick={() => changeState('DRAFT')}>als Entwurf ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="11"><span onClick={() => changeState('PUBLISHED')}>Veröffentlichen ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="16"><Icon type="download" />Exportieren ({selectedRowKeys.length})</Menu.Item> : undefined }
               <Menu.Item style={{ float: 'right' }} key="15">
                 <Icon type="upload" />Importieren
               </Menu.Item>
@@ -193,7 +213,9 @@ export default class MainList extends Component {
               </Menu.Item>
             </Menu>
           </Menu>
+        </Affix>
 
+        <div className="olymp-container">
           <Table
             rowSelection={rowSelection}
             size="middle"
