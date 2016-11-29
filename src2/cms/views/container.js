@@ -15,7 +15,6 @@ import CollectionDetail from './collections/detail';
 import './container.less';
 
 const SubMenu = Menu.SubMenu;
-// const MenuItemGroup = Menu.ItemGroup;
 
 @useLightboxes
 @withRouter
@@ -179,7 +178,7 @@ export default class Container extends Component {
       groups[attributes.group].push(collections[i]);
     });
 
-    // Collections sortieren
+    // Collections innerhalb Gruppe sortieren
     Object.keys(groups).forEach((key) => {
       groups[key] = sortBy(groups[key], ['order', 'name']);
     });

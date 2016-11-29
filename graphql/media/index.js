@@ -117,7 +117,7 @@ const updateImage = (id, tags, source, caption, preview, config, removed) => {
     context.push('removed=true');
   }
 
-  if (preview) {
+  if (preview && preview.url && preview.height && preview.width) {
     context.push(`p_url=${preview.url}|p_height=${preview.height}|p_width=${preview.width}`);
 
     if (preview.crop && preview.crop.length) {
