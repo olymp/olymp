@@ -46,15 +46,19 @@
 
 
 .main-nav {
-  //background: linear-gradient(230deg,#900024,#900090,#240090);
-  //animation: MoveBG 60s ease infinite;
-  //background-size: 500% 500%;
-  background-color: #900090;
+  background: linear-gradient(230deg,#900024,#900090,#240090);
+  animation: MoveBG 60s ease infinite;
+  background-size: 500% 500%;
   border-bottom: 0;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, .4);
 
-  & > .ant-menu-item:not(.ant-menu-item-brand):hover, & > .ant-menu-item-selected, & > .ant-menu-submenu:hover  {
-    border-bottom: 2px solid #FFF;
+  & > .ant-menu-item:not(.ant-menu-item-brand):hover, & > .ant-menu-item-selected, & > .ant-menu-item-active, & > .ant-menu-submenu:hover  {
+    &:not(.ant-menu-item-brand) {
+      border-bottom: 2px solid #FFF;
+    }
+    &.ant-menu-item-brand {
+      border-bottom: 2px solid transparent;
+    }
   }
 
   & > .ant-menu-submenu-active {
@@ -66,6 +70,18 @@
 
     &:hover {
       color: #FFF !important;
+    }
+  }
+
+  @keyframes MoveBG {
+    0% {
+      background-position: -200% -200%;
+    }
+    50% {
+      background-position: -200% -100%;
+    }
+    100% {
+      background-position: -200% -200%;
     }
   }
 }
