@@ -259,7 +259,7 @@ export default class MediaList extends Component {
 
     return (
       <div className="olymp-media">
-        <Affix offsetTop={49}>
+        <Affix offsetTop={48}>
           <Menu
             selectedKeys={['0']}
             mode="horizontal"
