@@ -178,6 +178,8 @@ const defaultInterfaces = {
     interface CollectionInterface {
       id: String
       name: String
+      tags: [String]
+      state: DOCUMENT_STATE
     }
   `
 };

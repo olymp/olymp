@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import capitalize from 'capitalize';
 import { withItem, withCollection } from '../../decorators';
-import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse } from 'antd';
+import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
 import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
@@ -95,6 +95,8 @@ const getFormEditor = (type, name, props = {}) => {
     return <Select {...props} tags searchPlaceholder="Suche ..." />;
   } else if (type.name === 'Json') {
     return <SlateMateExt {...props} className="form-control" placeholder={name} />;
+  } else if (type.name === 'Boolean') {
+    return <Checkbox {...props} />;
   } else if (type.name === 'Date') {
     return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
   } else if (type.name === 'DateTime') {

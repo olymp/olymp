@@ -239,6 +239,8 @@ module.exports = (schema, { uri } = {}) => {
           crop: [Int]
           width: Int
           height: Int
+          caption: String
+          source: String
         }
       `,
       file: `
