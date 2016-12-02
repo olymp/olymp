@@ -216,7 +216,7 @@ export default class Container extends Component {
 
                 const groupItem = (
                   (groups[key] || []).map(({ name }) => (
-                    <SubMenu title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
+                    <SubMenu key={name} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
                       {capitalize(name)}
                       {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
                     </Link>}>
