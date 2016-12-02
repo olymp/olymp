@@ -27,10 +27,10 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
 
     return adapter.list(tableName, Object.assign({}, args, { attributes, filter }));
   };
-  moduleResolvers.Mutation[key] = (source, args, x, { fieldASTs }) => {
+  moduleResolvers.Mutation[key] = (source, args, context, { fieldASTs }) => {
     const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
     if (args.operationType && args.operationType === 'REMOVE') {
-      return adapter.write(tableName, { id: args.id, state: 'REMOVED' }, { patch: true });
+      return adapter.write(tableName, { id: args.id, state: 'REMOVED' }, { patch: true, stamp: context.user });
       // return adapter.remove(tableName, Object.assign({}, args));
     }
     if (args.input) {
@@ -39,6 +39,6 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
     }
     delete args.operationType;
     if (!args.documentState) args.documentState = ['DRAFT'];
-    return adapter.write(tableName, Object.assign({}, args), { attributes });
+    return adapter.write(tableName, Object.assign({}, args), { attributes, stamp: context.user });
   };
 };

@@ -11,7 +11,7 @@ const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
 const preventDefaultAnd = (func, args) => e => {
   e.preventDefault();
@@ -35,7 +35,18 @@ const SubForm = withCollection(({ value = [], collection, onChange, ...rest }) =
             <div className="ant-form">
               {collection.fields.filter(({ name }) => name !== 'id').map(({ type, name }) =>
                 <FormItem key={name}>
-                  {getFormEditor(type, name, { value: value[name], onChange: v => patchItem(i, { ...value, [name]: v && v.target ? v.target.value : v }) })}
+                  {getFormEditor(
+                    type,
+                    name,
+                    {
+                      value: value[name],
+                      onChange: v => patchItem(i, {
+                        ...value,
+                        [name]: v && v.target ? v.target.value : v,
+                      }),
+                      disabled: (name === 'createdAt' || name === 'createdBy' || name === 'updatedAt' || name === 'updatedBy'),
+                    }
+                  )}
                 </FormItem>
               )}
             </div>
@@ -91,41 +102,69 @@ class SlateMateExt extends Component {
 }
 
 const getFormEditor = (type, name, props = {}) => {
-  if (type.kind === 'LIST' && type.ofType.name === 'String') {
-    return <Select {...props} tags searchPlaceholder="Suche ..." />;
-  } else if (type.name === 'Json') {
-    return <SlateMateExt {...props} className="form-control" placeholder={name} />;
-  } else if (type.name === 'Boolean') {
-    return <Checkbox {...props} />;
-  } else if (type.name === 'Date') {
-    return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
-  } else if (type.name === 'DateTime') {
-    return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
-  } else if (type.name === 'Color') {
-    return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
-  } else if (type.kind === 'OBJECT' && type.name === 'image') {
-    return <Image {...props} width="100%" noPreview />;
-  } else if (type.name === 'Markdown') {
-    return <Input {...props} placeholder={name} type="textarea" autosize />;
-  } else if (type.name === 'Slug') {
-    return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-globe" />} />;
-  } else if (type.name === 'Email') {
-    return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-envelope-o" />} />;
-  } else if (type.name === 'PhoneNumber') {
-    return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-phone" />} />;
-  } else if (type.name === 'Website') {
-    return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-link" />} />;
-  } else if (type.name === 'TimeRange') {
-    return <MultiSlider {...props} />;
-  } else if (type.kind === 'ENUM' && type.enumValues) {
+  if (type.kind === 'LIST') {
+    if (type.ofType.name === 'String') {
+      return <Select {...props} tags searchPlaceholder="Suche ..." />;
+    } else if (type.ofType.name.indexOf('nested') === 0) {
+      return <SubForm {...props} name={type.ofType.name} type={type} />;
+    }
+  }
+
+  if (type.kind === 'ENUM' && type.enumValues) {
     return (
       <Select {...props}>
-        {type.enumValues.map(x => <Select.Option key={x.name} value={x.name}>{x.name}</Select.Option>)}
+        {type.enumValues.map(x => (
+          <Select.Option key={x.name} value={x.name}>{x.name}</Select.Option>
+        ))}
       </Select>
     );
-  } else if (type.kind === 'LIST' && type.ofType.name.indexOf('nested') === 0) {
-    return <SubForm {...props} name={type.ofType.name} type={type} />;
-  } return <Input {...props} placeholder={name} />;
+  }
+
+  switch (type.name) {
+    case 'Json':
+      return <SlateMateExt {...props} className="form-control" placeholder={name} />;
+
+    case 'Boolean':
+      return <Checkbox {...props} />;
+
+    case 'Date':
+      return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
+
+    case 'DateTime':
+      return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
+
+    case 'Color':
+      return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
+
+    case 'Markdown':
+      return <Input {...props} placeholder={name} type="textarea" autosize />;
+
+    case 'Slug':
+      return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-globe" />} />;
+
+    case 'Email':
+      return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-envelope-o" />} />;
+
+    case 'PhoneNumber':
+      return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-phone" />} />;
+
+    case 'Website':
+      return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-link" />} />;
+
+    case 'TimeRange':
+      return <MultiSlider {...props} />;
+
+    case 'image':
+      return <Image {...props} width="100%" noPreview />;
+
+    /* case 'user':
+      return type.fields.map(field => (
+        <Select.Option key={field.name} value={field.name}>{field.name}</Select.Option>
+      )); */
+
+    default:
+      return <Input {...props} placeholder={name} />;
+  }
 };
 
 const getInitialValue = ({ item, form }, { name, description }) => {
@@ -161,7 +200,7 @@ const CollectionCreateForm = Form.create()(
     const { getFieldDecorator } = form;
 
     const fields = collection.fields.filter(({ name }) => name !== 'id').reduce((state, item) => {
-      const group = item.description && item.description.indexOf('detail:') !== -1 ? item.description.split('detail:')[1].split(' ')[0].split('\n')[0] : 'Allgemein';
+      const group = item.description && item.description.indexOf('detail:') !== -1 ? item.description.split('detail:')[1].split('\n')[0] : 'Allgemein';
       if (!state[group]) state[group] = [];
       state[group].push(item);
 
@@ -170,13 +209,21 @@ const CollectionCreateForm = Form.create()(
 
     const renderForm = fields => (
       <Form horizontal>
-        {fields.filter(({ name }) => name !== 'id').map(field =>
-          <FormItem key={field.name} label={toLabel(field.name)} {...formItemLayout}>
-            {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
-              getFormEditor(field.type, name)
-            )}
-          </FormItem>
-        )}
+        {fields.filter(({ name }) => name !== 'id').map((field) => {
+          const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
+
+          return (
+            <FormItem key={field.name} label={title} {...formItemLayout}>
+              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
+                getFormEditor(
+                  field.type,
+                  name,
+                  (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {}
+                )
+              )}
+            </FormItem>
+          );
+        })}
       </Form>
     );
 

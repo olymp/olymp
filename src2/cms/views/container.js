@@ -194,19 +194,13 @@ export default class Container extends Component {
       delete groups.undefined;
     }
 
-    let logoComponent = <img src="/logo-wf-white-notext.png" height="45" alt="Athena CMS" />;
-    if (logo && typeof logo === 'string') logoComponent = <img src="/logo-wf-white-notext.png" height="45" alt="Athena CMS" />;
-    else if (logo) logoComponent = logo;
-
     return (
       <GatewayProvider>
         <div className="full">
           {modal}
           <Affix>
             <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal" className="main-nav">
-              <Menu.Item key="mail" className="ant-menu-item-brand">
-                {logoComponent}
-              </Menu.Item>
+              <Menu.Item key="mail" className="ant-menu-item-brand">{logo || 'ATHENA'}</Menu.Item>
               <Menu.Item key="/">
                 <Link to="/">
                   Website
