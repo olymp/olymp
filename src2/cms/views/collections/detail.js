@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
-const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
+const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
 const preventDefaultAnd = (func, args) => e => {
