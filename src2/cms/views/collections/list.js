@@ -172,7 +172,6 @@ export default class MainList extends Component {
             <Menu theme="dark">
               <Menu.Item key="0">
                 <Link to={{ pathname, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' }}}>
-                  {/* capitalize(name) */}
                   Alle
                 </Link>
               </Menu.Item>
