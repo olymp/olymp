@@ -11,7 +11,7 @@ const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
 const preventDefaultAnd = (func, args) => e => {
   e.preventDefault();

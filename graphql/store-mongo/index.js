@@ -16,13 +16,26 @@ module.exports = config => {
 
   const write = (kind, data, { patch, attributes } = {}) => {
     const collection = returnArgs.db.collection(kind);
-    if (patch && data.id) {
-      return read(kind, { id: data.id }).then(item => write(kind, Object.assign({}, item, data)));
-    } else if (data.id) {
-      return collection.replaceOneAsync({ id: data.id }, data).then(() => read(kind, { id: data.id, attributes }));
+    const newData = { ...data };
+
+    if (patch && newData.id) {
+      // patch (daten holen, ändern, speichern)
+      return read(kind, { id: newData.id })
+        .then(item => write(kind, Object.assign({}, item, newData)));
+    } else if (newData.id) {
+      // update (vorhandes ersetzen)
+      newData.updatedAt = new Date();
+
+      return collection.replaceOneAsync({ id: newData.id }, newData)
+        .then(() => read(kind, { id: newData.id, attributes }));
     }
-    data.id = ShortId.generate();
-    return collection.insertOneAsync(data).then(() => read(kind, { id: data.id, attributes }));
+
+    // insert (neu anlegen)
+    newData.id = ShortId.generate();
+    newData.createdAt = new Date();
+
+    return collection.insertOneAsync(newData)
+      .then(() => read(kind, { id: newData.id, attributes }));
   };
 
   const list = (kind, { sort, filter, attributes } = {}) => {

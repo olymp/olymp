@@ -57,7 +57,7 @@ export default class Container extends Component {
   };
 
   render() {
-    const { children, router, location, auth, data } = this.props;
+    const { children, router, location, auth, data, logo } = this.props;
     const { pathname, query } = location;
 
     let modal;
@@ -200,7 +200,7 @@ export default class Container extends Component {
           {modal}
           <Affix>
             <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal" className="main-nav">
-              <Menu.Item key="mail" className="ant-menu-item-brand"><img src="/logo-wf-white-notext.png" height="45" alt="Athena CMS" /></Menu.Item>
+              <Menu.Item key="mail" className="ant-menu-item-brand">{logo || 'ATHENA'}</Menu.Item>
               <Menu.Item key="/">
                 <Link to="/">
                   Website
