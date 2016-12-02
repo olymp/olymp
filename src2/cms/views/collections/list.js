@@ -73,7 +73,8 @@ export default class MainList extends Component {
   }
 
   render() {
-    const {onClick, collection, name, saveCollectionItem, removeCollectionItem, pathname, location} = this.props;
+    const {onClick, collection, name, saveCollectionItem, removeCollectionItem, location} = this.props;
+    const {pathname, query} = location;
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
@@ -164,33 +165,33 @@ export default class MainList extends Component {
       <div>
         <Affix offsetTop={48}>
           <Menu
-            selectedKeys={['0']}
+            selectedKeys={query && query.state ? [query.state] : []}
             mode="horizontal"
             theme="dark"
             className="olymp-submenu"
             >
             <Menu theme="dark">
-              <Menu.Item key="1">
+              <Menu.Item key="PUBLISHED">
                 <Link to={{ pathname, query: { state: 'PUBLISHED' }}}>
                   Veröffentlichte
                 </Link>
               </Menu.Item>
-              <Menu.Item key="2">
+              <Menu.Item key="DRAFT">
                 <Link to={{ pathname, query: { state: 'DRAFT' }}}>
                   Entwürfe
                 </Link>
               </Menu.Item>
-              <Menu.Item key="3">
+              <Menu.Item key="ARCHIVED">
                 <Link to={{ pathname, query: { state: 'ARCHIVED' }}}>
                   Archivierte
                 </Link>
               </Menu.Item>
-              <Menu.Item key="4">
+              <Menu.Item key="REMOVED">
                 <Link to={{ pathname, query: { state: 'REMOVED' }}}>
                   Gelöschte
                 </Link>
               </Menu.Item>
-              <Menu.Item key="5">
+              <Menu.Item key="PUBLISHED-DRAFT-ARCHIVED-REMOVED">
                 <Link to={{ pathname, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' }}}>
                   Alle
                 </Link>
