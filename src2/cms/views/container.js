@@ -126,7 +126,7 @@ export default class Container extends Component {
     if (collection !== undefined) {
       const { name } = collection;
       modal = (
-        <CollectionDetail name={name} id={query[name]} onClose={() => router.push(pathname)} />
+        <CollectionDetail name={name} id={query[name]} onClose={() => router.push({ pathname, query: { ...query, [name]: undefined } })} />
       );
     } else if (query && query.media !== undefined) {
       modal = (
@@ -331,7 +331,7 @@ export default class Container extends Component {
                   { ({ View }) => View && <View
                     {...routerProps}
                     name={name}
-                    onClick={({ id }) => router.push({ pathname, query: { [name]: id } })}
+                    onClick={({ id }) => router.push({ pathname, query: { ...query, [name]: id } })}
                   /> }
                 </CodeSplit>
               )}
