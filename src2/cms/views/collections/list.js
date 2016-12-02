@@ -170,11 +170,6 @@ export default class MainList extends Component {
             className="olymp-submenu"
             >
             <Menu theme="dark">
-              <Menu.Item key="0">
-                <Link to={{ pathname, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' }}}>
-                  Alle
-                </Link>
-              </Menu.Item>
               <Menu.Item key="1">
                 <Link to={{ pathname, query: { state: 'PUBLISHED' }}}>
                   Veröffentlichte
@@ -193,6 +188,11 @@ export default class MainList extends Component {
               <Menu.Item key="4">
                 <Link to={{ pathname, query: { state: 'REMOVED' }}}>
                   Gelöschte
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="5">
+                <Link to={{ pathname, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' }}}>
+                  Alle
                 </Link>
               </Menu.Item>
 
