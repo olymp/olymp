@@ -277,7 +277,7 @@ export default class MediaList extends Component {
                 >
                   <span>{tags && tags.length ? tags.join(' > ') : 'Tags'}</span>
                 </Cascader>
-                {tags && tags.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTagsFilterChange([])} /> : undefined}
+                {tags && tags.length ? <i className="anticon anticon-cross-circle" style={{ paddingLeft: '5px' }} onClick={() => onTagsFilterChange()} /> : undefined}
               </Menu.Item>
 
               <Menu.Item key="solution">
