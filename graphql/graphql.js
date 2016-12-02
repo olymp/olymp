@@ -180,6 +180,10 @@ const defaultInterfaces = {
       name: String
       tags: [String]
       state: DOCUMENT_STATE
+      createdAt: Date
+      createdBy: user
+      updatedAt: Date
+      updatedBy: user
     }
   `
 };
