@@ -216,7 +216,7 @@ export default class Container extends Component {
 
                 const groupItem = (
                   (groups[key] || []).map(({ name }) => (
-                    <SubMenu key={name} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>
+                    <SubMenu key={name} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
                       {capitalize(name)}
                       {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
                     </Link>}>
@@ -225,7 +225,7 @@ export default class Container extends Component {
                           <Icon type="plus" />{capitalize(name)} hinzufügen
                         </Link>
                       </Menu.Item>
-                      <Menu.Item>
+                      {/* <Menu.Item>
                         <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>
                           <Icon type="appstore" />Alle
                         </Link>
@@ -249,7 +249,7 @@ export default class Container extends Component {
                         <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>
                           <Icon type="delete" />Papierkorb
                         </Link>
-                      </Menu.Item>
+                      </Menu.Item> */}
                     </SubMenu>
                   ))
                 );
