@@ -14,9 +14,12 @@ module.exports = config => {
     return returnArgs.db.collection(kind).findOneAsync(filter, attributes);
   };
 
-  const write = (kind, data, { patch, attributes } = {}) => {
+  const write = (kind, data, { patch, attributes, stamp } = {}) => {
     const collection = returnArgs.db.collection(kind);
-    const newData = { ...data };
+    const newData = data;
+
+    if (stamp) newData.updatedAt = new Date();
+    if (typeof stamp === 'object') newData.updatedBy = stamp;
 
     if (patch && newData.id) {
       // patch (daten holen, ändern, speichern)
@@ -24,16 +27,15 @@ module.exports = config => {
         .then(item => write(kind, Object.assign({}, item, newData)));
     } else if (newData.id) {
       // update (vorhandes ersetzen)
-      newData.updatedAt = new Date();
-
       return collection.replaceOneAsync({ id: newData.id }, newData)
         .then(() => read(kind, { id: newData.id, attributes }));
     }
 
-    // insert (neu anlegen)
     newData.id = ShortId.generate();
-    newData.createdAt = new Date();
+    if (stamp) newData.createdAt = new Date();
+    if (typeof stamp === 'object') newData.createdBy = stamp;
 
+    // insert (neu anlegen)
     return collection.insertOneAsync(newData)
       .then(() => read(kind, { id: newData.id, attributes }));
   };
