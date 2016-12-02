@@ -216,40 +216,15 @@ export default class Container extends Component {
 
                 const groupItem = (
                   (groups[key] || []).map(({ name }) => (
-                    <SubMenu key={name} title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
+                    <SubMenu title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
                       {capitalize(name)}
                       {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
                     </Link>}>
-                      <Menu.Item>
+                      <Menu.Item key={`/@/${name}`}>
                         <Link to={{ pathname, query: { [name]: null } }}>
                           <Icon type="plus" />{capitalize(name)} hinzufügen
                         </Link>
                       </Menu.Item>
-                      {/* <Menu.Item>
-                        <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED-DRAFT-ARCHIVED-REMOVED' } }}>
-                          <Icon type="appstore" />Alle
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
-                          <Icon type="export" />Veröffentlichte
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <Link to={{ pathname: `/@/${name}`, query: { state: 'DRAFT' } }}>
-                          <Icon type="folder" />Entwürfe
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <Link to={{ pathname: `/@/${name}`, query: { state: 'ARCHIVED' } }}>
-                          <Icon type="inbox" />Archiv
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <Link to={{ pathname: `/@/${name}`, query: { state: 'REMOVED' } }}>
-                          <Icon type="delete" />Papierkorb
-                        </Link>
-                      </Menu.Item> */}
                     </SubMenu>
                   ))
                 );
@@ -257,7 +232,7 @@ export default class Container extends Component {
                 return groups[key].length === 1 ? groupItem : wrapper(groupItem);
               })}
               <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
-                <Menu.Item>
+                <Menu.Item key="/@/media">
                   <Link to={{ pathname, query: { upload: null } }}>
                     <Icon type="plus" />Datei hochladen
                   </Link>
