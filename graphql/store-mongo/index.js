@@ -14,15 +14,30 @@ module.exports = config => {
     return returnArgs.db.collection(kind).findOneAsync(filter, attributes);
   };
 
-  const write = (kind, data, { patch, attributes } = {}) => {
+  const write = (kind, data, { patch, attributes, stamp } = {}) => {
     const collection = returnArgs.db.collection(kind);
-    if (patch && data.id) {
-      return read(kind, { id: data.id }).then(item => write(kind, Object.assign({}, item, data)));
-    } else if (data.id) {
-      return collection.replaceOneAsync({ id: data.id }, data).then(() => read(kind, { id: data.id, attributes }));
+    const newData = data;
+
+    if (stamp) newData.updatedAt = new Date();
+    if (typeof stamp === 'object') newData.updatedBy = stamp;
+
+    if (patch && newData.id) {
+      // patch (daten holen, ändern, speichern)
+      return read(kind, { id: newData.id })
+        .then(item => write(kind, Object.assign({}, item, newData)));
+    } else if (newData.id) {
+      // update (vorhandes ersetzen)
+      return collection.replaceOneAsync({ id: newData.id }, newData)
+        .then(() => read(kind, { id: newData.id, attributes }));
     }
-    data.id = ShortId.generate();
-    return collection.insertOneAsync(data).then(() => read(kind, { id: data.id, attributes }));
+
+    newData.id = ShortId.generate();
+    if (stamp) newData.createdAt = new Date();
+    if (typeof stamp === 'object') newData.createdBy = stamp;
+
+    // insert (neu anlegen)
+    return collection.insertOneAsync(newData)
+      .then(() => read(kind, { id: newData.id, attributes }));
   };
 
   const list = (kind, { sort, filter, attributes } = {}) => {
