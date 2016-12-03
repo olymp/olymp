@@ -98,11 +98,11 @@ const moveActions = ({ editor, state, node }) => ([{
   separated: true,
   toggle: () => {
     const { document } = state;
-    const parent = document.getParent(node);
+    const parent = document.getParent(node.key);
     const index = parent.nodes.indexOf(node) - 1;
     let newState = state
       .transform()
-      .moveNodeByKey(node, parent, index === -1 ? 0 : index)
+      .moveNodeByKey(node.key, parent.key, index === -1 ? 0 : index)
       .apply();
     editor.onChange(newState);
   },
@@ -111,11 +111,11 @@ const moveActions = ({ editor, state, node }) => ([{
   icon: 'arrow-down',
   toggle: () => {
     const { document } = state;
-    const parent = document.getParent(node);
+    const parent = document.getParent(node.key);
     const index = parent.nodes.indexOf(node) + 1;
     let newState = state
       .transform()
-      .moveNodeByKey(node, parent, index > parent.nodes.count() ? parent.nodes.count() : index)
+      .moveNodeByKey(node.key, parent.key, index > parent.nodes.count() ? parent.nodes.count() : index)
       .apply();
     editor.onChange(newState);
   },
