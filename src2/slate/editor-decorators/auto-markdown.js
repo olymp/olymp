@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+// State from: 14 Aug
 
 const defaultEmptyFunc = () => null;
 export default (options = {}) => {
@@ -11,39 +12,83 @@ export default (options = {}) => {
     static defaultProps = {
       plugins: [],
     }
+    render() {
+      const plugins = [...this.props.plugins, this];
+      return (
+        <Editor {...this.props} plugins={plugins} />
+      );
+    }
+
+    getType = (chars) => {
+      if (getMarkdownType && getMarkdownType(chars)) return getMarkdownType(chars);
+      if (this.props.getMarkdownType && this.props.getMarkdownType(chars)) return this.props.getMarkdownType(chars);
+      switch (chars) {
+        case '*':
+        case '-':
+        case '+': return 'list-item';
+        case '>': return 'block-quote';
+        case '#': return 'heading-one';
+        case '##': return 'heading-two';
+        case '###': return 'heading-three';
+        case '####': return 'heading-four';
+        case '#####': return 'heading-five';
+        case '######': return 'heading-six';
+        default: return null;
+      }
+    }
+
+    onKeyDown = (e, data, state) => {
+      switch (data.key) {
+        case 'space': return this.onSpace(e, state);
+        case 'backspace': return this.onBackspace(e, state);
+        case 'enter': return this.onEnter(e, state);
+      }
+    }
+
     onSpace = (e, state) => {
       if (state.isExpanded) return undefined;
-      const { startBlock, startOffset } = state;
+      let { selection } = state;
+      const { startText, startBlock, startOffset } = state;
       const chars = startBlock.text.slice(0, startOffset).replace(/\s*/g, '');
-      const getType = getMarkdownType || this.props.getMarkdownType || defaultEmptyFunc;
-      const type = getType(chars);
+      const type = this.getType(chars);
 
       if (!type) return undefined;
-      if (type === 'bulleted-list-item' && startBlock.type === 'bulleted-list-item') return undefined;
-      if (type === 'numbered-list-item' && startBlock.type === 'numbered-list-item') return undefined;
+      if (type === 'list-item' && startBlock.type === 'list-item') return undefined;
       e.preventDefault();
 
       let transform = state
         .transform()
         .setBlock(type);
 
-      if (type === 'bulleted-list-item') transform = transform.wrapBlock('bulleted-list');
-      if (type === 'numbered-list-item') transform = transform.wrapBlock('numbered-list');
+      if (type === 'list-item') transform = transform.wrapBlock('bulleted-list');
 
       return transform
         .extendToStartOf(startBlock)
         .delete()
         .apply();
     }
+
+    onBackspace = (e, state) => {
+      if (state.isExpanded) return undefined;
+      if (state.startOffset !== 0) return undefined;
+      const { startBlock } = state;
+
+      if (startBlock.type === 'paragraph') return undefined;
+      e.preventDefault();
+
+      let transform = state
+        .transform()
+        .setBlock('paragraph');
+
+      if (startBlock.type === 'list-item') transform = transform.unwrapBlock('bulleted-list');
+      return transform.apply();
+    }
+
     onEnter = (e, state) => {
       if (state.isExpanded) return undefined;
       const { startBlock, startOffset, endOffset } = state;
-      if (startOffset === 0 && startBlock.length === 0) {
-        return this.onBackspace(e, state);
-      }
-      if (endOffset !== startBlock.length) {
-        return undefined;
-      }
+      if (startOffset === 0 && startBlock.length === 0) return this.onBackspace(e, state);
+      if (endOffset !== startBlock.length) return undefined;
 
       if (
         startBlock.type !== 'heading-one' &&
@@ -63,60 +108,6 @@ export default (options = {}) => {
         .splitBlock()
         .setBlock('paragraph')
         .apply();
-    }
-    onBackspace = (e, state) => {
-      if (state.isExpanded) return undefined;
-      if (state.startOffset !== 0) return undefined;
-      const { startBlock } = state;
-
-      if (startBlock.type === 'paragraph') return undefined;
-      e.preventDefault();
-
-      let transform = state
-        .transform()
-        .setBlock('paragraph');
-
-      if (startBlock.type === 'bulleted-list-item') {
-        transform = transform.unwrapBlock('bulleted-list');
-      } else if (startBlock.type === 'numbered-list-item') {
-        transform = transform.unwrapBlock('numbered-list');
-      }
-
-      return transform.apply();
-    }
-    onBackspace = (e, state) => {
-      if (state.isExpanded) return undefined;
-      if (state.startOffset !== 0) return undefined;
-      const { startBlock } = state;
-
-      if (startBlock.type === 'paragraph') return undefined;
-      e.preventDefault();
-
-      let transform = state
-        .transform()
-        .setBlock('paragraph');
-
-      if (startBlock.type === 'bulleted-list-item') {
-        transform = transform.unwrapBlock('bulleted-list');
-      } else if (startBlock.type === 'numbered-list-item') {
-        transform = transform.unwrapBlock('numbered-list');
-      }
-
-      return transform.apply();
-    }
-    onKeyDown = (e, data, state) => {
-      switch (data.key) {
-        case 'space': return this.onSpace(e, state);
-        case 'backspace': return this.onBackspace(e, state);
-        case 'enter': return this.onEnter(e, state);
-        default: return undefined;
-      }
-    }
-    render() {
-      const plugins = [...this.props.plugins, this];
-      return (
-        <Editor {...this.props} plugins={plugins} />
-      );
     }
   };
 };
