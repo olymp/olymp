@@ -135,13 +135,13 @@ export default class Container extends Component {
           onClose={() => router.push({ pathname, query: { ...query, media: undefined } })}
         />
       );
-    } else if (query && query.page !== undefined) {
+    } else if (query && (query.page !== undefined || query['new-page'] !== undefined)) {
       modal = (
         <PageModal
           id={query.page}
-          initialData={{ parentId: pathname, order: 0 }}
+          initialData={{ parentId: query['new-page'], order: 0 }}
           attributes="id, slug, order, name, parentId, blocks, templateName"
-          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, page: undefined } })}
+          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, page: undefined, 'new-page': undefined } })}
         />
       );
     } else if (query && query.upload !== undefined) {
