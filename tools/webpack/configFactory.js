@@ -69,11 +69,10 @@ function webpackConfigFactory({ target, mode }, { json }) {
   alias['react-dom'] = path.resolve(appRootPath, 'node_modules', 'react-dom');
   alias.moment = path.resolve(appRootPath, 'node_modules', 'moment');
   if (isProd) {
-    /* if (isClient) {
-      alias['react'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
-      alias['react-dom'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
-      include.push(path.resolve(appRootPath, 'node_modules', 'preact-compat'))
-    }*/
+    /* alias['react'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
+    alias['react-dom'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
+    alias['react-dom/server'] = path.resolve(appRootPath, 'node_modules', 'preact-compat');
+    include.push(path.resolve(appRootPath, 'node_modules', 'preact-compat'));*/
     alias['moment/locale/zh-cn'] = 'moment/locale/de';
   }
 
@@ -146,6 +145,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
           /\.(mp4|mp3|ogg|swf|webp)$/,
           /\.(css|scss|sass|sss|less)$/,
+          /react/,
         ],
       })),
     ]),
@@ -440,7 +440,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
 
               // 'transform-react-constant-elements', will break with <Menu.Item /> https://github.com/babel/babel/pull/4787
               ifProdClient('lodash'),
-              ifProd('transform-react-inline-elements'),
+              /* ifProd('transform-react-inline-elements'),
               ifProd('transform-react-remove-prop-types'),
               ifProd('transform-react-pure-class-to-function'),
 
@@ -458,7 +458,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               ifProd('transform-minify-booleans'),
               ifProd('transform-property-literals'),
               ifProd('transform-simplify-comparison-operators'),
-              ifProd('transform-undefined-to-void'),
+              ifProd('transform-undefined-to-void'),*/
 
               ifClient(['babel-plugin-import', { libraryName: 'antd', style: 'css' }]),
               ifServer(['babel-plugin-import', { libraryName: 'antd' }]),
