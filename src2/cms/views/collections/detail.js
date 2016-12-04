@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import capitalize from 'capitalize';
-import { withItem, withCollection } from '../../decorators';
+import { withItem, withCollection, withItems } from '../../decorators';
 import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
 import { SlateMate } from 'olymp/slate';
+import { graphql, gql } from 'olymp';
 import moment from 'moment';
 import Image from '../../edits/image';
 
@@ -101,6 +102,18 @@ class SlateMateExt extends Component {
   }
 }
 
+@withItems()
+class DetailEditor extends Component {
+  render() {
+    const { data, collection, items, children, ...rest } = this.props;
+    return (
+      <Select {...rest}>
+        {items && items.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+      </Select>
+    );
+  }
+}
+
 const getFormEditor = (type, name, props = {}) => {
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
@@ -109,7 +122,15 @@ const getFormEditor = (type, name, props = {}) => {
       return <SubForm {...props} name={type.ofType.name} type={type} />;
     }
   }
-
+  if (type.kind === 'OBJECT') {
+    if (type.name === 'image') {
+      return <Image {...props} width="100%" noPreview />;
+    } else {
+      return (
+        <DetailEditor name={type.name} />
+      );
+    }
+  }
   if (type.kind === 'ENUM' && type.enumValues) {
     return (
       <Select {...props}>
@@ -119,49 +140,33 @@ const getFormEditor = (type, name, props = {}) => {
       </Select>
     );
   }
-
   switch (type.name) {
     case 'Json':
       return <SlateMateExt {...props} className="form-control" placeholder={name} />;
-
     case 'Boolean':
       return <Checkbox {...props} />;
-
     case 'Date':
       return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY" />;
-
     case 'DateTime':
       return <DatePickerInt {...props} placeholder={name} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
-
     case 'Color':
       return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
-
     case 'Markdown':
       return <Input {...props} placeholder={name} type="textarea" autosize />;
-
     case 'Slug':
       return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-globe" />} />;
-
     case 'Email':
       return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-envelope-o" />} />;
-
     case 'PhoneNumber':
       return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-phone" />} />;
-
     case 'Website':
       return <Input {...props} placeholder={name} addonBefore={<i className="fa fa-link" />} />;
-
     case 'TimeRange':
       return <MultiSlider {...props} />;
-
-    case 'image':
-      return <Image {...props} width="100%" noPreview />;
-
     /* case 'user':
       return type.fields.map(field => (
         <Select.Option key={field.name} value={field.name}>{field.name}</Select.Option>
       )); */
-
     default:
       return <Input {...props} placeholder={name} />;
   }
