@@ -6,7 +6,7 @@ import Image from '../../edits/image';
 
 const FormItem = Form.Item;
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
 const ModalForm = Form.create()(
     (props) => {
@@ -63,13 +63,15 @@ const ModalForm = Form.create()(
               <Select {...props} tags searchPlaceholder="Suche ..." />
             )}
           </FormItem>
-          {/*<FormItem key="preview" label="Vorschaubild" {...formItemLayout}>
-            {getFieldDecorator('preview', {
-              initialValue: item.preview && item.preview.url ? item.preview : undefined,
-            })(
-              <Image width="33%" />
-            )}
-          </FormItem>*/}
+          { item.format === 'pdf' ? (
+            <FormItem key="preview" label="Vorschaubild" {...formItemLayout}>
+              {getFieldDecorator('preview', {
+                initialValue: item.preview && item.preview.url ? item.preview : undefined,
+              })(
+                <Image width="33%" />
+              )}
+            </FormItem>
+          ) : undefined }
 
           <Image value={{ ...item }} width="100%" readOnly noPreview />
 
