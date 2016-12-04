@@ -63,13 +63,13 @@ const ModalForm = Form.create()(
               <Select {...props} tags searchPlaceholder="Suche ..." />
             )}
           </FormItem>
-          <FormItem key="preview" label="Vorschaubild" {...formItemLayout}>
+          {/*<FormItem key="preview" label="Vorschaubild" {...formItemLayout}>
             {getFieldDecorator('preview', {
               initialValue: item.preview && item.preview.url ? item.preview : undefined,
             })(
               <Image width="33%" />
             )}
-          </FormItem>
+          </FormItem>*/}
 
           <Image value={{ ...item }} width="100%" readOnly noPreview />
 
