@@ -29,7 +29,7 @@ const PageForm = Form.create()(
     const { item, data, form, onCreate, onCancel, saving } = props;
     const { getFieldDecorator } = form;
 
-    if (!item || !data.navigation) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
+    if (!item || !data.items) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
 
     return (
       <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
@@ -42,7 +42,7 @@ const PageForm = Form.create()(
           {getFieldDecorator('parentId', { initialValue: item.parentId })(
             <Select>
               <Select.Option key="null" value={null}>Leer</Select.Option>
-              {data.navigation && data.navigation.map(item => <Select.Option key={item.id} value={item.id}>{item.slug}</Select.Option>)}
+              {data.items && data.items.map(item => <Select.Option key={item.id} value={item.id}>{item.slug}</Select.Option>)}
             </Select>
           )}
         </FormItem>
@@ -59,8 +59,8 @@ const PageForm = Form.create()(
 @withRouter()
 @withItem({ name: 'page' })
 @graphql(gql`
-  query appRoot {
-    navigation: pageList {
+  query pageList {
+    items: pageList {
       id,
       slug,
       name
@@ -82,6 +82,7 @@ export default class PageSettings extends Component {
 
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(({ page }) => {
+        console.log(item.slug, location.pathname, item.id, item.slug === location.pathname && item.id ? page.slug : null);
         onClose(item.slug === location.pathname && item.id ? page.slug : null);
       });
     });
