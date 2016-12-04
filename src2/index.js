@@ -2,6 +2,7 @@ export { default as purify } from './purify';
 
 export { default as withCollection } from './with-collection';
 export { default as withItem } from './with-item';
+export { default as withItems } from './with-items';
 export { default as withRouter } from './with-router';
 export { default as GoogleMap } from './google-map';
 
