@@ -5,8 +5,9 @@ import { hasBlock, hasMark } from '../utils/has';
 import addBlock from '../utils/add-block';
 
 export default (options = {}) => {
-  let { defaultNode, toolbarTypes, toolbarMarks } = options;
+  let { defaultNode, toolbarTypes, toolbarMarks, toolbarActions } = options;
   if (!defaultNode) defaultNode = 'paragraph';
+  if (!toolbarActions) toolbarActions = [];
   if (!toolbarTypes) toolbarTypes = [];
   if (!toolbarMarks) toolbarMarks = [];
 
@@ -14,6 +15,7 @@ export default (options = {}) => {
     static propTypes = {
       toolbarMarks: PropTypes.array,
       toolbarTypes: PropTypes.array,
+      toolbarActions: PropTypes.array,
       children: PropTypes.node,
       value: PropTypes.object,
       onChange: PropTypes.func,
@@ -21,6 +23,7 @@ export default (options = {}) => {
     static defaultProps = {
       toolbarMarks: [],
       toolbarTypes: [],
+      toolbarActions: [],
       children: [],
     }
     state = { menu: null };
@@ -84,18 +87,28 @@ export default (options = {}) => {
         </span>
       );
     }
+    renderActionButton = (props) => {
+      const isActive = props.isActive ? props.isActive(this.props) : false;
+      return (
+        <span key={props.type} className="slate-toolbar-item" onMouseDown={e => props.onClick(this.props, isActive, e)} data-active={isActive}>
+          <i className={`fa fa-${props.icon}`} />
+        </span>
+      );
+    }
     onOpen = ({ firstChild: menu }) => {
       this.setState({ menu });
     }
     renderMenu = () => {
       const theToolbarMarks = [...toolbarMarks, ...this.props.toolbarMarks];
       const theToolbarTypes = [...toolbarTypes, ...this.props.toolbarTypes];
+      const theToolbarActions = [...toolbarActions, ...this.props.toolbarActions];
       // const isOpen = editorState.isExpanded && editorState.isFocused;
       return (
         <Portal isOpened onOpen={this.onOpen} key="toolbar-0">
           <div className="slate-toolbar slate-text-toolbar">
             {theToolbarMarks.map(this.renderMarkButton)}
             {theToolbarTypes.map(this.renderBlockButton)}
+            {theToolbarActions.map(this.renderActionButton)}
           </div>
         </Portal>
       );

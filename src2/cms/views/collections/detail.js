@@ -13,6 +13,7 @@ const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
+const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt'];
 
 const preventDefaultAnd = (func, args) => e => {
   e.preventDefault();
@@ -34,7 +35,7 @@ const SubForm = withCollection(({ value = [], collection, onChange, ...rest }) =
         {value.map((value, i) => (
           <Panel header={getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
             <div className="ant-form">
-              {collection.fields.filter(({ name }) => name !== 'id').map(({ type, name }) =>
+              {collection.fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map(({ type, name }) =>
                 <FormItem key={name}>
                   {getFormEditor(
                     type,
@@ -214,7 +215,7 @@ const CollectionCreateForm = Form.create()(
 
     const renderForm = fields => (
       <Form horizontal>
-        {fields.filter(({ name }) => name !== 'id').map((field) => {
+        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
 
           return (
