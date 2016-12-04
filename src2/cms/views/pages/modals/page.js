@@ -30,7 +30,7 @@ const PageForm = Form.create()(
     const { item, data, form, onCreate, onCancel, saving } = props;
     const { getFieldDecorator } = form;
 
-    if (!item || !data.navigation) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
+    if (!item || !data.items) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
 
     const items = (data.navigation || []).map(({ id, name, parentId }) => ({
       value: id,
@@ -69,8 +69,8 @@ const PageForm = Form.create()(
 @withRouter()
 @withItem({ name: 'page' })
 @graphql(gql`
-  query appRoot {
-    navigation: pageList {
+  query pageList {
+    items: pageList {
       id,
       slug,
       name,
@@ -93,6 +93,7 @@ export default class PageSettings extends Component {
 
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(({ page }) => {
+        console.log(item.slug, location.pathname, item.id, item.slug === location.pathname && item.id ? page.slug : null);
         onClose(item.slug === location.pathname && item.id ? page.slug : null);
       });
     });
