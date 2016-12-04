@@ -7,15 +7,13 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
   moduleMutations.push(`
     ${key}(id: String, input: ${key}Input, operationType: OPERATION_TYPE): ${key}
   `);
-  moduleResolvers.Query[key] = (source, args, x, { fieldASTs }) => {
-    const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+  moduleResolvers.Query[key] = (root, args) => {
     if (args.slug) {
-      return adapter.read(tableName, { filter: { slug: args.slug }, attributes });
+      return adapter.read(tableName, { filter: { slug: args.slug } });
     }
-    return adapter.read(tableName, Object.assign({}, args, { attributes }));
+    return adapter.read(tableName, Object.assign({}, args, { }));
   };
-  moduleResolvers.Query[`${key}List`] = (source, args, x, { fieldASTs }) => {
-    const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+  moduleResolvers.Query[`${key}List`] = (root, args) => {
     const filter = {};
 
     if (!args.documentState) {
@@ -25,12 +23,11 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
     filter.state = { $in: args.documentState };
     if (args.documentState.indexOf('PUBLISHED') !== -1) filter.state.$in.push(null);
 
-    return adapter.list(tableName, Object.assign({}, args, { attributes, filter }));
+    return adapter.list(tableName, Object.assign({}, args, { filter }));
   };
-  moduleResolvers.Mutation[key] = (source, args, context, { fieldASTs }) => {
-    const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+  moduleResolvers.Mutation[key] = (root, args, { user, schema }) => {
     if (args.operationType && args.operationType === 'REMOVE') {
-      return adapter.write(tableName, { id: args.id, state: 'REMOVED' }, { patch: true, stamp: context.user });
+      return adapter.write(tableName, { id: args.id, state: 'REMOVED' }, { patch: true, stamp: user });
       // return adapter.remove(tableName, Object.assign({}, args));
     }
     if (args.input) {
@@ -39,6 +36,13 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
     }
     delete args.operationType;
     if (!args.documentState) args.documentState = ['DRAFT'];
-    return adapter.write(tableName, Object.assign({}, args), { attributes, stamp: context.user });
+
+    /*Object.keys(args).filter(x => x.name !== 'image').forEach((property) => {
+      const type = schema._typeMap[key]._fields[property].type;
+      if (type.constructor.name === 'GraphQLObjectType' && args[property] && args[property].id) {
+        args[property] = args[property].id;
+      }
+    });*/
+    return adapter.write(tableName, Object.assign({}, args), { stamp: user });
   };
 };
