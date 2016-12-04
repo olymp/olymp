@@ -3,6 +3,7 @@ import { withApollo, graphql } from 'react-apollo';
 import { saveItem, removeItem } from './with-item';
 import gql from 'graphql-tag';
 
+const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt'];
 const imageFields = `
   url
   crop
@@ -89,6 +90,7 @@ export default WrappedComponent => {
       client: PropTypes.object,
       attributes: PropTypes.string,
       name: PropTypes.string,
+      includeStamps: PropTypes.bool,
     }
     save = item => {
       return saveItem(item, this.props.name, this.props.client, { id: item.id, attributes: this.getAttributes() });
@@ -99,13 +101,14 @@ export default WrappedComponent => {
     getAttributes = (col) => {
       const collection = col || this.props.data.type || this.props.collection || null;
       return `${collection.fields.map(field => {
+        if (stampAttributes.indexOf(field.name) !== -1 && !this.props.includeStamps) return '';
         if (field.type.kind === 'ENUM' || field.type.kind === 'SCALAR') return field.name;
         else if (field.type.kind === 'LIST' && field.type.ofType && (field.type.ofType.kind === 'ENUM' || field.type.ofType.kind === 'SCALAR')) return field.name;
         else if (field.type.kind === 'LIST' && field.type.ofType && field.type.ofType.kind === 'OBJECT' && field.type.ofType.fields) return `${field.name} { ${this.getAttributes({ fields: field.type.ofType.fields })} }`;
         else if (field.type.kind === 'OBJECT' && field.type.name === 'image') return `${field.name} { ${imageFields} }`;
         else if (field.type.kind === 'OBJECT' && field.type.fields) return `${field.name} { ${this.getAttributes({ fields: field.type.fields })} }`;
         return `${field.name} { id, name }`;
-      }).join(', ')}`;
+      }).filter(x => x).join(', ')}`;
     }
     render() {
       const { data, ...rest } = this.props;
