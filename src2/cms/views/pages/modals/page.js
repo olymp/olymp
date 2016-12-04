@@ -82,7 +82,7 @@ export default class PageSettings extends Component {
 
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(({ page }) => {
-        onClose(item.slug === location.pathname ? page.slug : null);
+        onClose(item.slug === location.pathname && item.id ? page.slug : null);
       });
     });
   }
