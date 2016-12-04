@@ -141,7 +141,7 @@ export default class Container extends Component {
           id={query.page}
           initialData={{ parentId: pathname, order: 0 }}
           attributes="id, slug, order, name, parentId, blocks, templateName"
-          onClose={() => router.push({ pathname, query: { ...query, page: undefined } })}
+          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, page: undefined } })}
         />
       );
     } else if (query && query.upload !== undefined) {
