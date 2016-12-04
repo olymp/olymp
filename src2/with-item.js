@@ -68,6 +68,7 @@ export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
   }).then(({ data }) => {
     notification.success({ message: 'Gespeichert', description: 'Änderungen wurden gespeichert!' });
     if (onSaved) onSaved(data, this.props);
+    return data;
   }).catch((err) => {
     console.error(err);
     notification.error({ message: 'Fehler', description: 'Fehler beim Speichern.' });
