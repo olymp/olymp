@@ -19,9 +19,34 @@ const options = {
     { type: 'numbered-list', icon: 'list-ol' },
     { type: 'bulleted-list', icon: 'list-ul' },
   ],
+  toolbarActions: [
+    { type: 'link', icon: 'link', onClick: ({ value, onChange }, isActive) => {
+      if (isActive) {
+        value = value
+          .transform()
+          .unwrapInline('link')
+          .apply();
+      } else {
+        let href = window.prompt('URL');
+        if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) href = `http://${href}`;
+        value = value
+          .transform()
+          .wrapInline({
+            type: 'link',
+            data: { href, target: '_blank' },
+          })
+          .collapseToEnd()
+          .apply();
+      }
+      onChange(value);
+    }, isActive: ({ value }) => {
+      return value.inlines.some(inline => inline.type === 'link');
+    } },
+  ],
   sidebarTypes: [],
   nodes: {
     paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
+    link: ({ node, attributes, children }) => <a {...attributes} href={node.data.get('href')} target={node.data.get('target')} rel="noopener noreferrer">{children}</a>,
     'block-quote': ({ children, attributes }) => <blockquote {...attributes}>{children}</blockquote>,
     'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
     'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
