@@ -17,14 +17,14 @@ module.exports = (schema, { adapter, Query, Mutation }) => {
     resolvers: {
       Query: {
         page: (source, args, context, { fieldASTs }) => {
-          const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
           if (args.slug) {
-            return adapter.read('page', { attributes, filter: { slug: args.slug } });
-          } return adapter.read('page', Object.assign({}, args, { attributes }));
+            return adapter.read('page', { filter: { slug: args.slug } });
+          } return adapter.read('page', Object.assign({}, args, { }));
         },
         pageList: (source, args, context, { fieldASTs }) => {
-          const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          return adapter.list('page', Object.assign({}, args, { attributes }));
+          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+          return adapter.list('page', Object.assign({}, args, { }));
         },
       },
       Mutation: {
@@ -45,9 +45,9 @@ module.exports = (schema, { adapter, Query, Mutation }) => {
             return adapter.write('page', args, { patch: operationType === 'PATCH' });
           });
         },
-        reorderPages: (source, args, context, { fieldASTs }) => {
-          const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          return Promise.all(args.ids.map((id, order) => adapter.write('page', { id, order }, { attributes, patch: true })));
+        reorderPages: (source, args) => {
+          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+          return Promise.all(args.ids.map((id, order) => adapter.write('page', { id, order }, { patch: true })));
         },
       },
     },
