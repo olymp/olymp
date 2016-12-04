@@ -61,5 +61,7 @@ module.exports = (server, options) => {
   if (process.env.NODE_ENV !== 'production') {
     server.get('/graphql', graphiqlExpress({ endpointURL: '/graphql' }));
   }
-  server.post('/graphql', graphqlExpress(request => ({ schema: schema.getSchema(), context: Object.assign({ adapter }, request) })));
+
+  const Schema = schema.getSchema();
+  server.post('/graphql', graphqlExpress(request => ({ schema: Schema, context: Object.assign({ adapter, schema: Schema }, request) })));
 };

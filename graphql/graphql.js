@@ -269,7 +269,7 @@ module.exports = ({ scalars = {}, types = {}, interfaces = {} } = {}) => {
         def = def.split(`: ${key} `).join(`: ${key}Input `)
             .split(`: [${key}] `).join(`: [${key}Input] `)
             .split(`: ${key}\n`).join(`: ${key}Input\n`)
-            .split(`: [${key}]\n`).join(`: [${key}Input]\n`)
+            .split(`: [${key}]\n`).join(`: [${key}Input]\n`);
       });
       return def;
     });
@@ -305,28 +305,6 @@ module.exports = ({ scalars = {}, types = {}, interfaces = {} } = {}) => {
   };
   return {
     getSchema: () => getFinalSchema(),
-    /* runQuery: ({ query, variables, operationName }, context) => {
-      if (!schema) schema = getFinalSchema();
-      if (variables && typeof variables === 'string') variables = JSON.parse(variables);
-      const params = {
-        schema, query, variables, operationName,
-        formatError: err => {
-          if (err.originalError) {
-            console.error(err.originalError);
-          } else {
-            console.error(err);
-          }
-          return err;
-        },
-        context,
-        // rootValue: optionsObject.rootValue,
-        // logFunction: (x, y) => console.log(x, y),
-        // validationRules: optionsObject.validationRules,
-        // formatResponse: optionsObject.formatResponse,
-      };
-
-      return runQuery(params);
-    },*/
     addSchema: args => {
       if (schemas[args.name]) return schemas[args.name];
       schemas[args.name] = args;

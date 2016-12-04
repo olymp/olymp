@@ -3,6 +3,14 @@ import { withApollo, graphql } from 'react-apollo';
 import { saveItem, removeItem } from './with-item';
 import gql from 'graphql-tag';
 
+const imageFields = `
+  url
+  crop
+  width
+  height
+  caption
+  source
+`;
 export default WrappedComponent => {
   @withApollo
   @graphql(gql`
@@ -94,6 +102,7 @@ export default WrappedComponent => {
         if (field.type.kind === 'ENUM' || field.type.kind === 'SCALAR') return field.name;
         else if (field.type.kind === 'LIST' && field.type.ofType && (field.type.ofType.kind === 'ENUM' || field.type.ofType.kind === 'SCALAR')) return field.name;
         else if (field.type.kind === 'LIST' && field.type.ofType && field.type.ofType.kind === 'OBJECT' && field.type.ofType.fields) return `${field.name} { ${this.getAttributes({ fields: field.type.ofType.fields })} }`;
+        else if (field.type.kind === 'OBJECT' && field.type.name === 'image') return `${field.name} { ${imageFields} }`;
         else if (field.type.kind === 'OBJECT' && field.type.fields) return `${field.name} { ${this.getAttributes({ fields: field.type.fields })} }`;
         return `${field.name} { id, name }`;
       }).join(', ')}`;
