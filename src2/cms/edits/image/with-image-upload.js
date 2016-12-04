@@ -21,11 +21,14 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
 
   onOk = () => {
     const { onChange } = this.props;
+
     onChange({
       url: this.image.url,
       height: this.image.height,
       width: this.image.width,
       crop: this.image.crop,
+      caption: this.image.caption,
+      source: this.image.source,
     });
     this.hide();
   };
