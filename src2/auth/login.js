@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Link } from 'react-router-v4-decode-uri';
 import { Modal, Form, Input, notification } from 'antd';
 import withAuth from './with-auth';
 
 const FormItem = Form.Item;
-const modalSettings = { visible: true, style: { top: 20 }, okText: 'Login', cancelText: 'Abbruch' };
+const modalSettings = { visible: true, style: { top: 20 }, okText: 'Login', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
 
 const ModalForm = Form.create()(
