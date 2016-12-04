@@ -221,7 +221,10 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ],
     },
     plugins: removeEmpty([
-      ifProdClient(new LodashModuleReplacementPlugin()),
+      ifProdClient(new LodashModuleReplacementPlugin({
+        'collections': true,
+        'shorthands': true
+      })),
       ifProdClient(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/)),
       new CodeSplitPlugin({
         // The code-split-component doesn't work nicely with hot module reloading,
@@ -330,13 +333,14 @@ function webpackConfigFactory({ target, mode }, { json }) {
         })
       ),
 
-      ifProdClient(
+      // PooledClass.addPoolingTo error!!
+      /*ifProdClient(
         // This is actually only useful when our deps are installed via npm2.
         // In npm2 its possible to get duplicates of dependencies bundled
         // given the nested module structure. npm3 is flat, so this doesn't
         // occur.
         new webpack.optimize.DedupePlugin()
-      ),
+      ),*/
 
       ifProdClient(
         // This is a production client so we will extract our CSS into
@@ -440,7 +444,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
 
               // 'transform-react-constant-elements', will break with <Menu.Item /> https://github.com/babel/babel/pull/4787
               ifProdClient('lodash'),
-              /* ifProd('transform-react-inline-elements'),
+              // ifProd('transform-react-inline-elements'), Antd ReferenceError undefined!! https://github.com/ant-design/babel-plugin-import/issues/64
               ifProd('transform-react-remove-prop-types'),
               ifProd('transform-react-pure-class-to-function'),
 
@@ -458,7 +462,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               ifProd('transform-minify-booleans'),
               ifProd('transform-property-literals'),
               ifProd('transform-simplify-comparison-operators'),
-              ifProd('transform-undefined-to-void'),*/
+              ifProd('transform-undefined-to-void'),
 
               ifClient(['babel-plugin-import', { libraryName: 'antd', style: 'css' }]),
               ifServer(['babel-plugin-import', { libraryName: 'antd' }]),
