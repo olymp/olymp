@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { Table, Menu, Icon, Affix } from 'antd';
 import { Link } from 'react-router-v4-decode-uri';
 import { find } from 'lodash';
+import moment from 'moment';
 
 import { withRouter, withCollection } from '../../decorators';
 import columnHelper from './columns.js';
@@ -78,20 +79,20 @@ export default class MainList extends Component {
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
-    const fields = collection.fields.filter(({description}) => description.indexOf('list:') !== -1);
+    const fields = collection.fields.filter(({description, name}) => description.indexOf('list:') !== -1 || name === 'updatedAt' || name === 'updatedBy');
 
     const columns = fields.map((meta) => {
-      const { name } = meta;
+      const { name, description } = meta;
 
       return {
-        title: capitalize(name),
+        title: description && description.indexOf('title:') !== -1 ? description.split('title:')[1].split('\n')[0] : capitalize(name),
         dataIndex: name,
         key: name,
         ...columnHelper(meta, items)
       }
     });
 
-    // Status hinzufügen, todo: nur bei "Alle"
+    // Status hinzufügen
     columns.push({
       title: 'Status',
       sorter: (a, b) => (a < b ? -1 : (a > b ? 1 : 0)),
