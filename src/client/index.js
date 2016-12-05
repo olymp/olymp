@@ -10,6 +10,7 @@ import { CodeSplitProvider, rehydrateState } from 'code-split-component';
 import { BrowserRouter } from 'react-router-v4-decode-uri';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from 'app_alias';
+import { parse, stringify } from 'olymp/query-string';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 
@@ -41,7 +42,7 @@ function renderApp(TheApp) {
     render(
       <ReactHotLoader>
         <CodeSplitProvider state={codeSplitState}>
-          <BrowserRouter>
+          <BrowserRouter stringifyQuery={stringify} parseQueryString={parse}>
             <ApolloProvider client={client}>
               <TheApp />
             </ApolloProvider>

@@ -117,40 +117,37 @@ export default class Container extends Component {
 
     const { schema } = data;
     const collections = schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
-    const collection = query ? (collections || []).filter(
-      c => query[c.name] !== undefined
-    )[0] : undefined;
+    const collection = query ? (collections || []).filter(c => query[`@${c.name}`] !== undefined)[0] : undefined;
     // const colSchema = query && query.schema ? (collections || []).filter(
     // c => c.name === query.schema
     // )[0] : undefined;
     if (collection !== undefined) {
       const { name } = collection;
       modal = (
-        <CollectionDetail name={name} id={query[name]} onClose={() => router.push({ pathname, query: { ...query, [name]: undefined } })} />
+        <CollectionDetail name={name} id={query[name]} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
       );
-    } else if (query && query.media !== undefined) {
+    } else if (query && query['@media'] !== undefined) {
       modal = (
         <MediaDetail
-          id={query.media}
-          onClose={() => router.push({ pathname, query: { ...query, media: undefined } })}
+          id={query['@media']}
+          onClose={() => router.push({ pathname, query: { ...query, '@media': undefined } })}
         />
       );
-    } else if (query && (query.page !== undefined || query['new-page'] !== undefined)) {
+    } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
         <PageModal
-          id={query.page}
-          initialData={{ parentId: query['new-page'], order: 0 }}
+          id={query['@page']}
+          initialData={{ parentId: query['@new-page'], order: 0 }}
           attributes="id, slug, order, name, parentId, blocks, templateName"
-          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, page: undefined, 'new-page': undefined } })}
+          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
         />
       );
-    } else if (query && query.upload !== undefined) {
+    } else if (query && query['@upload'] !== undefined) {
       modal = (
         <UploadModal
-          onSave={
-            ({ id }) => router.push({ pathname, query: { ...query, upload: undefined, media: id } })
-          }
-          onClose={() => router.push({ pathname, query: { ...query, upload: undefined } })}
+          modal
+          onSave={({ id }) => router.push({ pathname, query: { ...query, '@upload': undefined, '@media': id } })}
+          onClose={() => router.push({ pathname, query: { ...query, '@upload': undefined } })}
         />
       );
     }
@@ -221,7 +218,7 @@ export default class Container extends Component {
                       {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
                     </Link>}>
                       <Menu.Item key={`/@/${name}`}>
-                        <Link to={{ pathname, query: { [name]: null } }}>
+                        <Link to={{ pathname, query: { [`@${name}`]: null } }}>
                           <Icon type="plus" />{capitalize(name)} hinzufügen
                         </Link>
                       </Menu.Item>
@@ -233,7 +230,7 @@ export default class Container extends Component {
               })}
               <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
                 <Menu.Item key="/@/media">
-                  <Link to={{ pathname, query: { upload: null } }}>
+                  <Link to={{ pathname, query: { '@upload': null } }}>
                     <Icon type="plus" />Datei hochladen
                   </Link>
                 </Menu.Item>
@@ -316,7 +313,7 @@ export default class Container extends Component {
                   })}
                   onImageChange={({ id }) => router.push({
                     pathname,
-                    query: { ...query, media: id },
+                    query: { ...query, '@media': id },
                   })}
                 /> }
               </CodeSplit>
@@ -331,7 +328,7 @@ export default class Container extends Component {
                   { ({ View }) => View && <View
                     {...routerProps}
                     name={name}
-                    onClick={({ id }) => router.push({ pathname, query: { ...query, [name]: id } })}
+                    onClick={({ id }) => router.push({ pathname, query: { ...query, [`@${name}`]: id } })}
                   /> }
                 </CodeSplit>
               )}
