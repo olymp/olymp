@@ -16,7 +16,7 @@ export default class CoolImage extends Component {
   };
 
   renderImg = (props) => {
-    let { readOnly, url, crop, caption, ratio, width, height, color, className, children, onClick, ...rest } = props;
+    let { readOnly, url, caption, ratio, width, height, color, className, children, onClick, ...rest } = props;
 
     const style = {};
     if (height) style.height = height;
@@ -40,7 +40,7 @@ export default class CoolImage extends Component {
   }
 
   renderContainer = (props) => {
-    const { url, crop, caption, ratio, width, height, className, children, onClick, style, ...rest } = props;
+    const { url, caption, ratio, width, height, className, children, onClick, style, ...rest } = props;
 
     const containerStyle = { ...style };
     containerStyle.backgroundImage = `url(${url})`;
@@ -75,8 +75,7 @@ export default class CoolImage extends Component {
 
     const props = {
       caption: value ? value.caption : '',
-      crop: crop && Array.isArray(crop) ? { width: crop[0], height: crop[1], cropX: crop[2], cropY: crop[3] } : {},
-      url: cloudinaryUrl(url, options),
+      url: cloudinaryUrl(url, options, crop),
       color: options.color || (options.colors && options.colors[0]) || 'whitesmoke',
       ratio,
       ...rest,
