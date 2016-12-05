@@ -20,7 +20,7 @@ const CmsPage = (props) => {
         </a>
       </Gateway> : null}
       {!readOnly ? <Gateway into="button2">
-        <Link to={{ ...location, query: { page: item.id } }}>
+        <Link to={{ ...location, query: { '@page': item.id } }}>
           Seite bearbeiten
         </Link>
       </Gateway> : null}
