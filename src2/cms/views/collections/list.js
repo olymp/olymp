@@ -4,8 +4,7 @@ import capitalize from 'capitalize';
 import gql from 'graphql-tag';
 import { Table, Menu, Icon, Affix } from 'antd';
 import { Link } from 'react-router-v4-decode-uri';
-import { find } from 'lodash';
-import moment from 'moment';
+import { find, sortBy } from 'lodash';
 
 import { withRouter, withCollection } from '../../decorators';
 import columnHelper from './columns.js';
@@ -79,7 +78,20 @@ export default class MainList extends Component {
     const {selectedRowKeys} = this.state;
     const {items} = this;
 
-    const fields = collection.fields.filter(({description, name}) => description.indexOf('list:') !== -1 || name === 'updatedAt' || name === 'updatedBy');
+    // Sortierung nach #list
+    let fields = [];
+    collection.fields.forEach((field) => {
+      const { name, description } = field;
+      const index = description && description.indexOf('list:') !== -1 ? description.split('list:')[1].split('\n')[0] : undefined;
+
+      if (index !== undefined || name === 'updatedAt' || name === 'updatedBy') {
+        fields.push({
+          ...field,
+          index,
+        });
+      }
+    });
+    fields = sortBy(fields, 'index');
 
     const columns = fields.map((meta) => {
       const { name, description } = meta;
