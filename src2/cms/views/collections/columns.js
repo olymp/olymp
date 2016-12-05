@@ -2,6 +2,7 @@ import React from 'react';
 import { sortBy, findIndex } from 'lodash';
 import moment from 'moment';
 import { cloudinaryUrl } from 'olymp';
+import { Checkbox } from 'antd';
 
 const defaultCategory = {
   // Funktion die Items Kategorie zuweist
@@ -161,6 +162,9 @@ const resolveFieldValue = (value, meta) => {
 
       case 'DateTime':
         return value ? `${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr` : '';
+
+      case 'Boolean':
+        return <Checkbox checked={value} disabled>{value ? 'Ja' : 'Nein'}</Checkbox>;
 
       default:
         return value;
