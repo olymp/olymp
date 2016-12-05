@@ -11,6 +11,7 @@ import { renderToStringWithData } from 'react-apollo/server';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import render from './render';
 import fetch from 'node-fetch';
+import { parse, stringify } from 'olymp/query-string';
 
 global.fetch = fetch;
 
@@ -95,7 +96,7 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   // Create the application react element.
   const app = (
     <CodeSplitProvider context={codeSplitContext}>
-      <ServerRouter location={decodeURI(request.url)} context={reactRouterContext}>
+      <ServerRouter stringifyQuery={stringify} parseQueryString={parse} location={decodeURI(request.url)} context={reactRouterContext}>
         <ApolloProvider client={client}>
           <App />
         </ApolloProvider>
