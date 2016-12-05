@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { withItem, withRouter, graphql, gql } from 'olymp';
-import { Modal, Form, Input, Spin, Select } from 'antd';
+import { withItem, withRouter, graphql, gql, unflatten } from 'olymp';
+import { Modal, Form, Input, Spin, TreeSelect } from 'antd';
+// import { map, groupBy, extend, pick } from 'lodash';
 
 const FormItem = Form.Item;
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
 const getInitialValue = ({ item, form }, name) => {
   if (item[name]) {
@@ -31,6 +32,14 @@ const PageForm = Form.create()(
 
     if (!item || !data.items) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
 
+    const items = (data.navigation || []).map(({ id, name, parentId }) => ({
+      value: id,
+      label: name,
+      parent: parentId,
+      children: [],
+    }));
+    unflatten(items, { id: 'value', parentId: 'parent' });
+
     return (
       <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
         <FormItem key="name" label="Name" {...formItemLayout}>
@@ -40,10 +49,11 @@ const PageForm = Form.create()(
         </FormItem>
         <FormItem key="parentId" label="Übergeordnet" {...formItemLayout}>
           {getFieldDecorator('parentId', { initialValue: item.parentId })(
-            <Select>
-              <Select.Option key="null" value={null}>Leer</Select.Option>
-              {data.items && data.items.map(item => <Select.Option key={item.id} value={item.id}>{item.slug}</Select.Option>)}
-            </Select>
+            <TreeSelect
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              treeData={items}
+            />
           )}
         </FormItem>
         <FormItem key="slug" label="Slug" {...formItemLayout}>
@@ -63,7 +73,8 @@ const PageForm = Form.create()(
     items: pageList {
       id,
       slug,
-      name
+      name,
+      parentId
     }
   }
 `)

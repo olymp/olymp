@@ -90,36 +90,21 @@ export const useLightboxes = WrappedComponent => class WithLightbox extends Comp
     return (
       <WrappedComponent {...this.props}>
         {children}
-        {visible !== false ? <Modal
-          visible
-          width="100xd"
-          className="athena-lightbox"
-          footer={false}
-          mainSrc={images[visible].url}
-          imageTitle={images[visible].caption}
-          nextSrc={images[(visible + 1) % images.length]}
-          prevSrc={images[(visible + images.length - 1) % images.length]}
-          onCancel={this.hide}
-        ><img src={cloudinaryUrl(images[visible].url)} width="100%" height="auto" /></Modal> : null}
-      </WrappedComponent>
-    );
-
-    return (
-      <WrappedComponent {...this.props}>
-        {children}
-        {visible !== false ? <Modal
-          wrapClassName="lala"
-          style={{ color: 'red' }}
-          mainSrc={images[visible].url}
-          imageTitle={images[visible].caption}
-          nextSrc={images[(visible + 1) % images.length]}
-          prevSrc={images[(visible + images.length - 1) % images.length]}
-          onClose={this.hide}
-          enableZoom={false}
-          discourageDownloads
-          onMovePrevRequest={() => this.setState({ visible: (visible + images.length - 1) % images.length })}
-          onMoveNextRequest={() => this.setState({ visible: (visible + 1) % images.length })}
-        /> : null}
+        {visible !== false ? (
+          <Modal
+            visible
+            width="100xd"
+            className="athena-lightbox"
+            footer={false}
+            mainSrc={images[visible].url}
+            imageTitle={images[visible].caption}
+            nextSrc={images[(visible + 1) % images.length]}
+            prevSrc={images[(visible + images.length - 1) % images.length]}
+            onCancel={this.hide}
+          >
+            <img src={cloudinaryUrl(images[visible].url)} width="100%" height="auto" />
+          </Modal>
+        ) : null}
       </WrappedComponent>
     );
   }
