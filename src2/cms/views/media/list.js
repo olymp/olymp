@@ -213,7 +213,6 @@ export default class MediaList extends Component {
         thumbnail: cloudinaryUrl(item.url, { maxWidth: 500, maxHeight: 500 }),
         thumbnailWidth: 100,
         thumbnailHeight: 100 * (item.height / item.width),
-        caption: item.comment,
       })
     ).map((item, index) => (
       <div key={index} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => onImageChange(item)}>
