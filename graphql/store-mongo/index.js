@@ -49,13 +49,7 @@ module.exports = config => {
     }, {}) : undefined;
 
     const sortObj = {};
-    (sort || []).forEach((item) => {
-      if (item.substring(0, 1) === '-') {
-        sortObj[item.substring(1, item.length - 1)] = -1;
-      } else {
-        sortObj[item] = 1;
-      }
-    });
+    (sort || []).forEach((item) => sortObj[item.replace('-', '')] = item.indexOf('-') === 0 ? -1 : 1);
 
     return returnArgs.db
       .collection(kind)
