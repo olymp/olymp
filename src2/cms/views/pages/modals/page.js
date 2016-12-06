@@ -40,8 +40,6 @@ const PageForm = Form.create()(
     }));
     items = unflatten(items, { id: 'value', parentId: 'parent' });
 
-    console.log(props, items);
-
     return (
       <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
         <FormItem key="name" label="Name" {...formItemLayout}>
