@@ -1,6 +1,6 @@
 const sortBy = require('lodash/sortBy');
 
-const unflatten = (items, { id = 'id', parentId = 'parentId', mapper = item => item } = {}, parent = null, level = 0) => {
+const unflatten = (items, { id = 'id', parentId = 'parentId', setPath, pathProp = 'path', mapper = item => item } = {}, parent = null, level = 0, currentPath = '') => {
   let children = items
     .filter(item => item[parentId] === parent)
     .map(item => mapper(
@@ -13,7 +13,8 @@ const unflatten = (items, { id = 'id', parentId = 'parentId', mapper = item => i
 
   // Rekursion
   children.forEach((item) => {
-    item.children = unflatten(items, { id, parentId, mapper }, item[id], level + 1);
+    if (setPath) item[pathProp] = setPath(currentPath, item);
+    item.children = unflatten(items, { id, parentId, mapper, pathProp, setPath }, item[id], level + 1, item[pathProp]);
   });
 
   return children;
