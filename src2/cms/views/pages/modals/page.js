@@ -32,13 +32,15 @@ const PageForm = Form.create()(
 
     if (!item || !data.items) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
 
-    const items = (data.navigation || []).map(({ id, name, parentId }) => ({
+    let items = (data.items || []).map(({ id, name, parentId }) => ({
       value: id,
       label: name,
       parent: parentId,
       children: [],
     }));
-    unflatten(items, { id: 'value', parentId: 'parent' });
+    items = unflatten(items, { id: 'value', parentId: 'parent' });
+
+    console.log(props, items);
 
     return (
       <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
