@@ -1,5 +1,5 @@
 {
-  "version": "9.0.0-62",
+  "version": "9.0.0-63",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -94,6 +94,7 @@
     "sitemap-generator": "5.0.0",
     "slate": "0.16.1",
     "source-map-support": "0.4.6",
+    "styled-components": "^1.1.2",
     "uuid": "3.0.0",
     "whatwg-fetch": "2.0.1"
   },

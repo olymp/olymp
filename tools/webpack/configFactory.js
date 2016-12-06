@@ -75,6 +75,9 @@ function webpackConfigFactory({ target, mode }, { json }) {
     include.push(path.resolve(appRootPath, 'node_modules', 'preact-compat'));*/
     alias['moment/locale/zh-cn'] = 'moment/locale/de';
   }
+  /* alias['react'] = 'inferno-compat';
+  alias['react-dom'] = 'inferno-compat';
+  alias['react-dom/server'] = 'inferno-compat';*/
 
   // These are handy little helpers that use the boolean flags above.
   // They allow you to wrap a value with an condition check. It the condition
@@ -222,8 +225,8 @@ function webpackConfigFactory({ target, mode }, { json }) {
     },
     plugins: removeEmpty([
       ifProdClient(new LodashModuleReplacementPlugin({
-        'collections': true,
-        'shorthands': true
+        collections: true,
+        shorthands: true,
       })),
       ifProdClient(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/)),
       new CodeSplitPlugin({
@@ -334,7 +337,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ),
 
       // PooledClass.addPoolingTo error!!
-      /*ifProdClient(
+      /* ifProdClient(
         // This is actually only useful when our deps are installed via npm2.
         // In npm2 its possible to get duplicates of dependencies bundled
         // given the nested module structure. npm3 is flat, so this doesn't
@@ -427,6 +430,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               ['latest', { es2015: { modules: false } }],
             ]),
             plugins: removeEmpty([
+              'styled-components',
               ifDevClient('react-hot-loader/babel'),
               // We are adding the experimental "object rest spread" syntax as
               // it is super useful.  There is a caviat with the plugin that
