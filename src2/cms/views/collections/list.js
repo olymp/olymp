@@ -220,7 +220,7 @@ export default class MainList extends Component {
                 <Icon type="upload" />Importieren
               </Menu.Item>
               <Menu.Item style={{ float: 'right' }} key="10">
-                <Link to={{ pathname, query: { [name]: null } }}>
+                <Link to={{ pathname, query: { [`@${name}`]: null } }}>
                   <Icon type="plus" />Hinzufügen
                 </Link>
               </Menu.Item>
