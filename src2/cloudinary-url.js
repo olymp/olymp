@@ -1,7 +1,7 @@
 // http://res.cloudinary.com/demo/image/upload/f_auto,q_auto,w_250,h_250,c_fit/sample.jpg
 const defaultState = 'f_auto,q_auto,fl_lossy';
 
-export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality } = {}, crop) => {
+export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality, blur } = {}, crop) => {
   if (!url) return url;
   if (crop) {
     width = crop[0];
@@ -26,6 +26,10 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
 
   if (quality) {
     part += `,q_${quality}`;
+  }
+
+  if (blur) {
+    part += `,e_${blur}`;
   }
 
   if (part === defaultState) {
