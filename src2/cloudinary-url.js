@@ -29,7 +29,7 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
   }
 
   if (blur) {
-    part += `,e_${blur}`;
+    part += `,e_blur:${blur}`;
   }
 
   if (part === defaultState) {
