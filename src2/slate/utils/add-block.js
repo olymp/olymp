@@ -1,4 +1,6 @@
 import { hasBlock } from './has';
+import { Raw, Block } from 'slate';
+const createP = () => Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
 
 export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }) => {
   if (!defaultNode) defaultNode = 'paragraph';
@@ -17,7 +19,7 @@ export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }
         .unwrapBlock('bulleted-list')
         .unwrapBlock('numbered-list');
     } else if (isAtomic) {
-      transform = transform.insertBlock({ type, isVoid, data: { }, nodes: defaultNodes });
+      transform = transform.insertBlock({ type, isVoid, data: { }, nodes: defaultNodes || Block.createList([createP()]) });
     } else {
       transform = transform.setBlock(isActive ? defaultNode : type);
     }
