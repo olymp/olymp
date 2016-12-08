@@ -20,7 +20,7 @@ export default (options = {}) => Block => {
         return node.data.get(name) || defaultValue;
       };
       const blockProps = (props || []).reduce((state, prop) => {
-        state[prop] = getData(prop);
+        if (getData(prop) !== undefined) state[prop] = getData(prop);
         return state;
       }, {});
       const children = isVoid === false ? [this.props.children] : [];
