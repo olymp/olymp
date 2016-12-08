@@ -146,36 +146,25 @@ const addAction = ({ editor, state, node }) => {
   const next = state.document.getNextSibling(node.key);
   const first = node.nodes.first();
   const last = node.nodes.last();
+  const options = [];
+  if (!prev || prev.type !== 'paragraph') options.push({ label: 'Neuer Paragraph darüber', value: '+<<' });
+  else options.push({ label: 'Paragraph darüber löschen', value: '-<<' });
+
+  if (!node.isVoid) {
+    if (!first || first.type !== 'paragraph') options.push({ label: 'An Anfang', value: '+<' });
+    else options.push({ label: 'Anfang löschen', value: '-<' });
+    if (!last || last.type !== 'paragraph') options.push({ label: 'Ans Ende', value: '+>' });
+    else options.push({ label: 'Ende löschen', value: '->' });
+  }
+
+  if (!next || next.type !== 'paragraph') options.push({ label: 'Neuer Paragraph darunter', value: '+>>' });
+  else options.push({ label: 'Paragraph darunter löschen', value: '->>' });
   return {
     type: 'block.add',
     icon: 'paragraph',
     right: true,
     separated: true,
-    options: [!prev || prev.type !== 'paragraph' ? {
-      label: 'Neuer Paragraph darüber',
-      value: '+<<',
-    } : {
-      label: 'Paragraph darüber löschen',
-      value: '-<<',
-    }, !first || first.type !== 'paragraph' ? {
-      label: 'An Anfang',
-      value: '+<',
-    } : {
-      label: 'Anfang löschen',
-      value: '-<',
-    }, !last || last.type !== 'paragraph' ? {
-      label: 'Ans Ende',
-      value: '+>',
-    } : {
-      label: 'Ende löschen',
-      value: '->',
-    }, !next || next.type !== 'paragraph' ? {
-      label: 'Neuer Paragraph darunter',
-      value: '+>>',
-    } : {
-      label: 'Paragraph darunter löschen',
-      value: '->>',
-    }],
+    options,
     toggle: ({ key }) => {
       const p = Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
       if (key === '+<<') {
