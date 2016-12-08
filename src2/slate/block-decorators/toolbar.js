@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
 export default (options = {}) => Block => {
-  let { actions, manual, remove, move } = options;
+  let { actions, manual, remove, move, type } = options;
   if (!actions) actions = () => [];
   return class BlockToolbarDecorator extends Component {
     static slate = Block.slate;
@@ -42,16 +42,32 @@ export default (options = {}) => Block => {
       e.preventDefault();
       action();
     }
-    renderToolbar = () => {
+    renderToolbar = (styles = {}) => {
+      if (this.props.editor.props.readOnly) return null;
       // Get actions from props and from decorator arguments
       const allActions = [...this.props.actions, ...actions(this.props)];
       // Add remove action if (remove = true)
       if (remove) allActions.push(removeAction(this.props));
       // Add move up/down actions if (move = true)
       if (move) moveActions(this.props).forEach(action => allActions.push(action));
+
+      if (type === 'fix') {
+        return (
+          <div className="slate-fix-toolbar" style={styles} contentEditable={false}>
+            {allActions.map(({ toggle, type, active, icon, separated }) => (
+              <span key={type} className={classNames('slate-toolbar-item', { separated })} onMouseDown={this.onClick(toggle)} data-active={active}>
+                <i className={`fa fa-${icon}`} />
+              </span>
+            ))}
+            <span className="slate-toolbar-type">
+              {this.props.node.type}
+            </span>
+          </div>
+        );
+      }
       return (
         <Portal onOpen={this.onOpen} isOpened={!!allActions.length} key="toolbar-0">
-          <div className="slate-toolbar">
+          <div className="slate-toolbar" style={styles}>
             {allActions.map(({ toggle, type, active, icon, separated }) => (
               <span key={type} className={classNames('slate-toolbar-item', { separated })} onMouseDown={this.onClick(toggle)} data-active={active}>
                 <i className={`fa fa-${icon}`} />
@@ -63,7 +79,7 @@ export default (options = {}) => Block => {
     }
     render() {
       const { isFocused } = this.props;
-      const children = isFocused
+      const children = isFocused && type !== 'fix'
         ? [...this.props.children, this.renderToolbar()]
         : this.props.children;
 
@@ -71,6 +87,7 @@ export default (options = {}) => Block => {
         <Block
           {...this.props}
           children={children}
+          renderToolbar={this.renderToolbar}
           setToolbarPosition={this.setToolbarPosition}
         />
       );
