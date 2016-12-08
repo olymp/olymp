@@ -13,7 +13,7 @@ const CmsPage = (props) => {
   return (
     <div>
       <Helmet title={item.name} />
-      <SlateMate className="frontend-editor" readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} blockTypes={blocks} />
+      <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} blockTypes={blocks} />
       {!readOnly ? <Gateway into="button1">
         <a href="javascript:;" onClick={save}>
           Seite speichern
