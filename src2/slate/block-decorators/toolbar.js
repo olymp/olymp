@@ -88,6 +88,7 @@ export default (options = {}) => Block => {
           {...this.props}
           children={children}
           renderToolbar={this.renderToolbar}
+          toolbarType={type}
           setToolbarPosition={this.setToolbarPosition}
         />
       );

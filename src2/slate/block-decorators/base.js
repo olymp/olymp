@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export default (options = {}) => Block => {
-  const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes } = options;
+  const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes, props } = options;
 
   return class BaseDecorator extends Component {
     static slate = { isVoid: isVoid !== false, isAtomic: isAtomic !== false, sidebar, label, category, icon, defaultNodes };
@@ -19,9 +19,13 @@ export default (options = {}) => Block => {
       const getData = (name, defaultValue) => {
         return node.data.get(name) || defaultValue;
       };
+      const blockProps = (props || []).reduce((state, prop) => {
+        state[prop] = getData(prop);
+        return state;
+      }, {});
       const children = isVoid === false ? [this.props.children] : [];
       // Empty children!!
-      return <Block {...this.props} children={children} isFocused={isFocused} getData={getData} setData={setData} readOnly={editor.readOnly} />;
+      return <Block {...this.props} children={children} isFocused={isFocused} getData={getData} setData={setData} readOnly={editor.readOnly} {...blockProps} />;
     }
   };
 };
