@@ -6,7 +6,7 @@ const Cover = ({ children, style }) => (
 );
 
 export default (options = {}) => Block => {
-  const { ratio, relative, coverOnResize } = options;
+  const { ratio, relative, coverOnResize, enable } = options;
   return class ResizeableDecorator extends Component {
     static slate = Block.slate;
     static propTypes = {
@@ -45,6 +45,7 @@ export default (options = {}) => Block => {
       this.setState(this.getSize({ width, height }));
     }
     render() {
+      if (enable === false) return <Block {...this.props} />;
       const { editor } = this.props;
       const { resize } = this.state;
       const { width, height } = this.getSize();

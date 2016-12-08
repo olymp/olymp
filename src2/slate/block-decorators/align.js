@@ -19,7 +19,7 @@ const getStyle = align => {
 };
 
 export default (options = {}) => Block => {
-  const { ratio, relative, actions } = options;
+  const { ratio, relative, actions, enable } = options;
   return class AlignmentDecorator extends Component {
     static slate = Block.slate;
     static propTypes = {
@@ -35,6 +35,7 @@ export default (options = {}) => Block => {
       else setData({ align: null });
     }
     render() {
+      if (enable === false) return <Block {...this.props} />;
       const { getData } = this.props;
       const alignment = getData('align');
       const style = {
