@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
-import { Editor, Html, Plain, Block } from 'slate';
+import { Button } from 'antd';
+import { Editor } from 'slate';
 import './style.less';
 
 
@@ -183,16 +184,19 @@ export default class SlateEditor extends Component {
     }
   }*/
   render = () => {
-    const { children, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck } = this.props;
+    const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, ...rest } = this.props;
     return (
       <div className={className} style={{ position: 'relative' }}>
+        {value && showUndo && value.hasUndos && <Button type="default" shape="circle" onClick={() => onChange(value.transform().undo().apply())} style={{ position: 'fixed', bottom: 30, right: 30, zIndex: 1 }}><i className="fa fa-undo" /></Button>}
         {children}
         {this.state.mode ? <Editor
+          {...rest}
           spellcheck={spellcheck || false}
           readOnly={readOnly}
           state={this.state.mode}
           onChange={mode => this.setState({ mode })}
         /> : <Editor
+          {...rest}
           spellcheck={spellcheck || false}
           readOnly={readOnly}
           plugins={plugins}

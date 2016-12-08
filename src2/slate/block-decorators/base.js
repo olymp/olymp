@@ -25,7 +25,7 @@ export default (options = {}) => Block => {
       }, {});
       const children = isVoid === false ? [this.props.children] : [];
       // Empty children!!
-      return <Block {...this.props} children={children} isFocused={isFocused} getData={getData} setData={setData} readOnly={editor.readOnly} {...blockProps} />;
+      return <Block {...this.props} children={children} isFocused={isFocused} getData={getData} setData={setData} readOnly={editor.props.readOnly} {...blockProps} />;
     }
   };
 };
