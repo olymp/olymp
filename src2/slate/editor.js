@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
-import { Editor, Html, Plain } from 'slate';
+import { Editor, Html, Plain, Block } from 'slate';
 import './style.less';
 
 
@@ -81,9 +81,10 @@ const options = {
       default: return null;
     }
   },
+  rules: [],
 };
 
-const rules = [
+/* const rules = [
   {
     serialize(obj, children) {
       if (obj.kind == 'block' && options.nodes[obj.type]) {
@@ -94,66 +95,64 @@ const rules = [
       }
       if (obj.kind == 'inline' && obj.type == 'link') {
         return <a>{children}</a>;
-      }
+      } return undefined;
     },
   },
   {
     deserialize(el, next) {
-      const block = options.nodes[el.tagName]
-      if (!block) return
+      const block = options.nodes[el.tagName];
+      if (!block) return undefined;
       return {
         kind: 'block',
         type: block,
-        nodes: next(el.children)
-      }
-    }
+        nodes: next(el.children),
+      };
+    },
   },
   {
     deserialize(el, next) {
-      const mark = options.marks[el.tagName]
-      if (!mark) return
+      const mark = options.marks[el.tagName];
+      if (!mark) return undefined;
       return {
         kind: 'mark',
         type: mark,
-        nodes: next(el.children)
-      }
-    }
+        nodes: next(el.children),
+      };
+    },
   },
   {
     // Special case for code blocks, which need to grab the nested children.
     deserialize(el, next) {
-      if (el.tagName != 'pre') return
-      const code = el.children[0]
-      const children = code && code.tagName == 'code'
+      if (el.tagName !== 'pre') return undefined;
+      const code = el.children[0];
+      const children = code && code.tagName === 'code'
         ? code.children
-        : el.children
+        : el.children;
 
       return {
         kind: 'block',
         type: 'code',
-        nodes: next(children)
-      }
-    }
+        nodes: next(children),
+      };
+    },
   },
   {
     // Special case for links, to grab their href.
     deserialize(el, next) {
-      if (el.tagName != 'a') return
+      if (el.tagName !== 'a') return undefined;
       return {
         kind: 'inline',
         type: 'link',
         nodes: next(el.children),
         data: {
-          href: el.attribs.href
-        }
-      }
-    }
-  }
-]
+          href: el.attribs.href,
+        },
+      };
+    },
+  },
+];
 
-const html = new Html({
-  rules,
-});
+const html = new Html({ rules });*/
 
 @withUniqueId()
 @withState({ terse: true })
@@ -174,7 +173,7 @@ export default class SlateEditor extends Component {
     plugins: PropTypes.array,
     className: PropTypes.string,
   }
-  keyup = event => {
+  /* keyup = event => {
     return;
     if (event.keyCode === 65 && event.ctrlKey) {
       this.setState({
@@ -182,11 +181,11 @@ export default class SlateEditor extends Component {
       });
         // ctrl+a was typed.
     }
-  }
+  }*/
   render = () => {
     const { children, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck } = this.props;
     return (
-      <div className={className} style={{ position: 'relative' }} onKeyUp={this.keyup}>
+      <div className={className} style={{ position: 'relative' }}>
         {children}
         {this.state.mode ? <Editor
           spellcheck={spellcheck || false}

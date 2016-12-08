@@ -72,6 +72,32 @@ blockquote {
   }
 
   /* Toolbar */
+  .slate-fix-toolbar {
+    color: #444;
+    cursor: auto;
+    /* border-radius: 5px; */
+    margin: -1px -1px 0 -1px;
+    background-image: linear-gradient(180deg, #ffffff, #f3f3f3);
+    // box-shadow: 0px 1px 9px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d8d8d8;
+    // margin: 0 10px;
+    .slate-toolbar-item {
+      cursor: pointer;
+      display: inline-block;
+      padding: 6px 10px;
+      font-size: 10px;
+      &.separated {
+        border-left: 1px solid rgba(255, 255, 255, 0.25);
+      }
+    }
+    .slate-toolbar-type {
+      font-size: 10px;
+      padding: 6px 10px;
+      float: right;
+    }
+  }
+
+  /* Toolbar */
   .slate-toolbar {
     position: absolute;
     top: -10000px;
@@ -114,7 +140,13 @@ blockquote {
   }
 
   [data-block-active=true] {
-    outline: 3px solid black;
+    // outline: 3px solid black;
+    // outline: 1px solid #eeeeee;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    /* border-radius: 3px; */
+    /* background-color: rgba(2, 2, 2, 0.04); */
+    // background-image: linear-gradient(180deg, #e8e8e8, #fbfbfb);
   }
 
   /* Resize */
