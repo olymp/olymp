@@ -79,16 +79,25 @@ blockquote {
     margin: -1px -1px 0 -1px;
     background-image: linear-gradient(180deg, #ffffff, #f3f3f3);
     // box-shadow: 0px 1px 9px 0px rgba(0, 0, 0, 0.1);
-    border: 1px solid #d8d8d8;
+    // border: 1px solid #d8d8d8;
     // margin: 0 10px;
+    padding: 1px .25rem;
+
+    .ant-btn {
+      border: none;
+      border-radius: 0;
+      background-color: rgba(0, 0, 0, .05);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, .15);
+      }
+    }
+
     .slate-toolbar-item {
       cursor: pointer;
       display: inline-block;
       padding: 6px 10px;
       font-size: 10px;
-      &.separated {
-        border-left: 1px solid rgba(255, 255, 255, 0.25);
-      }
     }
     .slate-toolbar-type {
       margin: 3px 3px 3px 0;
@@ -96,10 +105,28 @@ blockquote {
     }
     .slate-toolbar-button {
       margin: 3px 0 3px 3px;
+      float: left;
+
       &.right {
         margin: 3px 3px 3px 0;
         float: right;
       }
+
+      &:hover {
+        color: #000;
+      }
+
+      &.separated {
+        margin-left: -3px !important;
+      }
+
+      &:not(.right):first-of-type.separated, &.right:last-of-type.separated {
+        border-left: 0;
+      }
+    }
+
+    .separated {
+      border-left: 1px solid rgba(0, 0, 0, .1);
     }
   }
 
@@ -148,11 +175,15 @@ blockquote {
   [data-block-active=true] {
     // outline: 3px solid black;
     // outline: 1px solid #eeeeee;
-    border: 1px solid #ddd;
+    // border: 1px solid #ddd;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
     /* border-radius: 3px; */
     /* background-color: rgba(2, 2, 2, 0.04); */
     // background-image: linear-gradient(180deg, #e8e8e8, #fbfbfb);
+
+    border: 0;
+    margin: 3px 2px;
+    outline: 1px solid #ddd;
   }
 
   /* Resize */
