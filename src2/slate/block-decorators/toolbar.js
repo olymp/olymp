@@ -107,6 +107,7 @@ export default (options = {}) => Block => {
             {/*<span className="slate-toolbar-type">
               {this.props.node.type}
             </span>*/}
+            <div style={{ clear: 'both' }} />
           </div>
         );
       }
