@@ -165,6 +165,7 @@ export default class SlateEditor extends Component {
   state = {};
   static propTypes = {
     readOnly: PropTypes.bool,
+    showUndo: PropTypes.bool,
     children: PropTypes.node,
     value: PropTypes.object,
     onChange: PropTypes.func,
@@ -183,11 +184,17 @@ export default class SlateEditor extends Component {
         // ctrl+a was typed.
     }
   }*/
+
   render = () => {
     const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, ...rest } = this.props;
+
     return (
       <div className={className} style={{ position: 'relative' }}>
-        {value && showUndo && value.hasUndos && <Button type="default" shape="circle" onClick={() => onChange(value.transform().undo().apply())} style={{ position: 'fixed', bottom: 30, right: 30, zIndex: 1 }}><i className="fa fa-undo" /></Button>}
+        {value && showUndo && value.hasUndos && (
+          <Button type="default" shape="circle" onClick={() => onChange(value.transform().undo().apply())} style={{ position: 'fixed', bottom: 30, right: 30, zIndex: 1 }}>
+            <i className="fa fa-undo" />
+          </Button>
+        )}
         {children}
         {this.state.mode ? <Editor
           {...rest}
