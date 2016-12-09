@@ -104,9 +104,9 @@ export default (options = {}) => Block => {
               </Button>
             </Dropdown>
             {allActions.map(this.renderAction)}
-            {/*<span className="slate-toolbar-type">
+            {/* <span className="slate-toolbar-type">
               {this.props.node.type}
-            </span>*/}
+            </span> */}
             <div style={{ clear: 'both' }} />
           </div>
         );
