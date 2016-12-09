@@ -3,6 +3,7 @@ import Portal from 'react-portal';
 import ReactDOM from 'react-dom';
 import { Raw } from 'slate';
 import { Dropdown, Menu, Button } from 'antd';
+import { sortBy } from 'lodash';
 import classNames from 'classnames';
 
 export default (options = {}) => Block => {
@@ -90,9 +91,28 @@ export default (options = {}) => Block => {
       if (type === 'fix') {
         const blockTypes = editor.props.sidebarTypes || [];
         const block = blockTypes.find(({ type }) => type === node.type) || node;
+        const categories = {};
+        const menuItems = [];
+
+        sortBy(blockTypes, ['category', 'label']).forEach(({ type, label, category }) => {
+          const element = <Menu.Item key={type}>{label || type}</Menu.Item>;
+
+          if (category) {
+            if (!categories[category]) categories[category] = [];
+            categories[category].push(element);
+          } else {
+            menuItems.push(element);
+          }
+        });
+
         const menu = (
           <Menu onClick={this.onChangeType}>
-            {blockTypes.map(({ type, label }) => <Menu.Item key={type}>{label || type}</Menu.Item>)}
+            {Object.keys(categories).map(key => (
+              <Menu.SubMenu title={key} key={key}>
+                {categories[key].map(item => item)}
+              </Menu.SubMenu>
+            ))}
+            {menuItems.map(item => item)}
           </Menu>
         );
         return (

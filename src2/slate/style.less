@@ -33,10 +33,20 @@ blockquote {
   .slate-sidebar-item {
     cursor: pointer;
     white-space: nowrap;
-  }
 
-  .slate-sidebar-item:hover {
-    color: limegreen;
+    &:hover {
+      color: limegreen;
+
+      .slate-sidebar-submenu {
+        display: block;
+      }
+    }
+
+    .slate-sidebar-submenu {
+      display: none;
+      padding-left: 15px;
+      font-size: 80%;
+    }
   }
 
   .slate-sidebar-menu {
@@ -46,13 +56,13 @@ blockquote {
     border-radius: 3px;
     border-top-left-radius: 0px;
     padding: 5px;
-    font-size: 16px;
+    font-size: 1.1rem;
     /* width: 32px; */
     background-image: linear-gradient(180deg,rgb(70, 70, 70),#151515);
   }
 
   .fa.slate-sidebar-icon {
-    border-radius: 20px;
+    border-radius: 50%;
     border-bottom-right-radius: 0px;
     cursor: default;
     padding: 7px 7px;

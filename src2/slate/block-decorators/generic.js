@@ -21,7 +21,7 @@ export const GenericBlock = (props) => {
   );
 };
 
-export const useGenericBlock = ({ label, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true }) => WrappedComponent => {
+export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true }) => WrappedComponent => {
   let component = props => <WrappedComponent {...props} />;
   component = useBlockToolbar({ actions, type: 'fix', remove, move, add })(component);
 
@@ -31,7 +31,7 @@ export const useGenericBlock = ({ label, editable = true, align, props, resize, 
   if (resize && typeof resize === 'object') component = useBlockResize(resize)(component);
   else if (resize) component = useBlockResize({ })(component);
 
-  component = useBlockBase({ label, isVoid: !editable, props, defaultNodes })(component);
+  component = useBlockBase({ label, category, isVoid: !editable, props, defaultNodes })(component);
   return component;
 };
 

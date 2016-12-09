@@ -3,6 +3,7 @@ import { useGenericBlock, GenericBlock } from 'olymp/cms';
 
 @useGenericBlock({
   label: 'Container',
+  category: 'Template',
   resize: {
     coverOnResize: true,
     width: '100%',

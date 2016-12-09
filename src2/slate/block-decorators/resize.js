@@ -43,6 +43,11 @@ export default (options = {}) => Block => {
         height = this.elementHeight;
       }
 
+      if (this.elementWidth === undefined || this.elementHeight === undefined) {
+        // Einmal rerendern, da es sonst Probleme mit ratio in Verbindung mit einer prozentualen Breite gibt
+        this.forceUpdate();
+      }
+
       return {
         width,
         height: ratio ? (width / ratio) : height,
