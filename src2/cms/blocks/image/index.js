@@ -18,9 +18,7 @@ const actions = props => [{
   props: ['image'],
   category: 'Media',
   editable: false,
-  resize: {
-    coverOnResize: true,
-  },
+  resize: { coverOnResize: true },
   actions,
 })
 export default class ImageBlock extends Component {
@@ -32,12 +30,10 @@ export default class ImageBlock extends Component {
     attributes: PropTypes.object,
     getData: PropTypes.func,
   }
-  static title = 'Bild';
-  static icon = 'image';
-  static category = 'Media';
 
   render() {
-    const { style, setData, getData, editor, className, children } = this.props;
+    const { setData, getData, editor, className } = this.props;
+    const { style, children, ...rest } = this.props;
     const value = getData('image', { url: defaultImage });
     const { readOnly } = editor.props;
     const height = style.height.replace('-', '');
@@ -46,8 +42,7 @@ export default class ImageBlock extends Component {
       backgroundColor: 'gray',
       position: 'relative',
       zIndex: 2,
-      ...style,
-      height: 'auto',
+      ...style
     };
 
     const innerStyle = {
@@ -55,23 +50,22 @@ export default class ImageBlock extends Component {
     };
 
     return (
-      <GenericBlock {...this.props} style={{ ...style, height: 'auto' }}>
-        <figure className={className} style={{ margin: 0 }}>
-          <div style={styles}>
-            <Image
-              container="div"
-              onChange={image => setData({ showMedia: undefined, image })}
-              lightbox
-              onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => {}}
-              showMediathek={getData('showMedia')}
-              height={height}
-              width="100%"
-              value={value}
-              style={innerStyle}
-            />
-            {children}
-          </div>
+      <GenericBlock {...rest} style={{ ...styles, height: 'auto' }}>
+        <figure className={className} style={{ margin: 0, ...styles }}>
+          <Image
+            container="div"
+            onChange={image => setData({ showMedia: undefined, image })}
+            lightbox
+            onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => {}}
+            showMediathek={getData('showMedia')}
+            height={height}
+            width="100%"
+            value={value}
+            style={innerStyle}
+          />
         </figure>
+
+        {children}
       </GenericBlock>
     );
   }

@@ -1,4 +1,5 @@
 import React, { Component, Children, PropTypes } from 'react';
+import { sortBy } from 'lodash';
 import { getCollapsedClientRect } from '../utils/range';
 import addBlock from '../utils/add-block';
 import { hasBlock } from '../utils/has';
@@ -67,11 +68,31 @@ export default (options = {}) => {
     }
     renderSidebar = () => {
       const theSidebarTypes = [...sidebarTypes, ...this.props.sidebarTypes];
+      const categories = {};
+      const menuItems = [];
+
+      sortBy(theSidebarTypes, ['category', 'label']).forEach((x) => {
+        if (x.category) {
+          if (!categories[x.category]) categories[x.category] = [];
+          categories[x.category].push(this.renderButton(x));
+        } else {
+          menuItems.push(this.renderButton(x));
+        }
+      });
+
       return (
         <div className="slate-sidebar" ref={ref => this.gwRef = ref} key="gw-sidebar">
           <i className="fa fa-plus slate-sidebar-icon" />
           <div className="slate-sidebar-menu">
-            {theSidebarTypes.map(this.renderButton)}
+            {Object.keys(categories).map(key => (
+              <div className="slate-sidebar-item" key={key}>
+                {key}
+                <div className="slate-sidebar-submenu">
+                  {categories[key].map(x => x)}
+                </div>
+              </div>
+            ))}
+            {menuItems.map(x => x)}
           </div>
         </div>
       );
