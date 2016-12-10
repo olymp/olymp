@@ -30,9 +30,20 @@ blockquote {
     opacity: 0;
   }
 
+  .slate-sidebar-menu, .slate-sidebar-submenu {
+    display: none;
+    position: absolute;
+    border: none;
+    font-size: 1.1rem;
+    /* width: 32px; */
+    background-image: linear-gradient(180deg,rgb(70, 70, 70),#151515);
+  }
+
   .slate-sidebar-item {
     cursor: pointer;
     white-space: nowrap;
+    position: relative;
+    padding: 5px;
 
     &:hover {
       color: limegreen;
@@ -43,22 +54,10 @@ blockquote {
     }
 
     .slate-sidebar-submenu {
+      top: 0;
+      left: 100%;
       display: none;
-      padding-left: 15px;
-      font-size: 80%;
     }
-  }
-
-  .slate-sidebar-menu {
-    display: none;
-    position: absolute;
-    border: none;
-    border-radius: 3px;
-    border-top-left-radius: 0px;
-    padding: 5px;
-    font-size: 1.1rem;
-    /* width: 32px; */
-    background-image: linear-gradient(180deg,rgb(70, 70, 70),#151515);
   }
 
   .fa.slate-sidebar-icon {
