@@ -24,60 +24,20 @@ blockquote {
   /* Sidebar */
   .slate-sidebar {
     margin-left: -2px;
-    color: white;
+    color: #444;
     position: absolute;
     z-index: 2000;
     opacity: 0;
-  }
-
-  .slate-sidebar-menu, .slate-sidebar-submenu {
-    display: none;
-    position: absolute;
-    border: none;
-    font-size: 1.1rem;
-    /* width: 32px; */
-    background-image: linear-gradient(180deg,rgb(70, 70, 70),#151515);
-  }
-
-  .slate-sidebar-item {
-    cursor: pointer;
-    white-space: nowrap;
-    position: relative;
-    padding: 5px;
+    font-size: 2rem;
 
     &:hover {
-      color: limegreen;
-
-      .slate-sidebar-submenu {
-        display: block;
-      }
+      color: #222;
     }
 
-    .slate-sidebar-submenu {
-      top: 0;
-      left: 100%;
-      display: none;
+    i.slate-sidebar-icon {
+      background-color: rgba(255, 255, 255, .7);
+      border-radius: 50%;
     }
-  }
-
-  .fa.slate-sidebar-icon {
-    border-radius: 50%;
-    border-bottom-right-radius: 0px;
-    cursor: default;
-    padding: 7px 7px;
-    width: 24px;
-    height: 24px;
-    background-image: linear-gradient(0deg, #464646, #1d1d1d);
-    font-size: 12px;
-  }
-
-  .slate-sidebar:hover .slate-sidebar-icon {
-    border-bottom-left-radius: 0px;
-    color: limegreen;
-  }
-
-  .slate-sidebar:hover .slate-sidebar-menu, .slate-sidebar-menu:hover {
-    display: block
   }
 
   /* Toolbar */
