@@ -1,5 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react';
 import { sortBy } from 'lodash';
+import { Dropdown, Menu, Icon } from 'antd';
 import { getCollapsedClientRect } from '../utils/range';
 import addBlock from '../utils/add-block';
 import { hasBlock } from '../utils/has';
@@ -61,9 +62,11 @@ export default (options = {}) => {
       const onMouseDown = e => this.onClickBlock(e, props);
 
       return (
-        <div onMouseDown={onMouseDown} data-active={isActive} key={props.type} className="slate-sidebar-item">
-          {props.icon ? <i className={`fa fa-${props.icon}`} /> : null}{props.icon ? ' ' : null}{props.label || props.type}
-        </div>
+        <Menu.Item key={props.type} style={{ minWidth: '150px' }}>
+          <a href="javascript:;" onMouseDown={onMouseDown} data-active={isActive} style={{ display: 'block' }}>
+            {props.icon ? <i className={`fa fa-${props.icon}`} /> : null}{props.icon ? ' ' : null}{props.label || props.type}
+          </a>
+        </Menu.Item>
       );
     }
     renderSidebar = () => {
@@ -80,30 +83,36 @@ export default (options = {}) => {
         }
       });
 
+      const menu = (
+        <Menu>
+          {Object.keys(categories).map(key => (
+            <Menu.SubMenu title={key} key={key}>
+              {categories[key].map(x => x)}
+            </Menu.SubMenu>
+          ))}
+          <Menu.Divider />
+          {menuItems.map(x => x)}
+        </Menu>
+      );
+
       return (
         <div className="slate-sidebar" ref={ref => this.gwRef = ref} key="gw-sidebar">
-          <i className="fa fa-plus slate-sidebar-icon" />
-          <div className="slate-sidebar-menu">
-            {Object.keys(categories).map(key => (
-              <div className="slate-sidebar-item" key={key}>
-                {key}
-                <div className="slate-sidebar-submenu">
-                  {categories[key].map(x => x)}
-                </div>
-              </div>
-            ))}
-            {menuItems.map(x => x)}
-          </div>
+          <Dropdown overlay={menu}>
+            <Icon type="plus-circle-o" className="slate-sidebar-icon" />
+          </Dropdown>
         </div>
       );
     }
+
     render() {
       const children = [
         ...Children.toArray(this.props.children),
         this.renderSidebar(),
       ];
       return (
-        <Editor {...this.props} children={children} />
+        <Editor {...this.props}>
+          {children}
+        </Editor>
       );
     }
   };
