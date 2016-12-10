@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import { Button } from 'antd';
-import { Editor } from 'slate';
+import { Editor, Html } from 'slate';
 import './style.less';
 
 
@@ -85,75 +85,15 @@ const options = {
   rules: [],
 };
 
-/* const rules = [
-  {
-    serialize(obj, children) {
-      if (obj.kind == 'block' && options.nodes[obj.type]) {
-        return options.nodes[obj.type]({ children, attributes: {} });
-      }
-      if (obj.kind == 'block') {
-        return <div data-type={obj.type}>{children}</div>;
-      }
-      if (obj.kind == 'inline' && obj.type == 'link') {
-        return <a>{children}</a>;
-      } return undefined;
-    },
-  },
-  {
-    deserialize(el, next) {
-      const block = options.nodes[el.tagName];
-      if (!block) return undefined;
-      return {
-        kind: 'block',
-        type: block,
-        nodes: next(el.children),
-      };
-    },
-  },
-  {
-    deserialize(el, next) {
-      const mark = options.marks[el.tagName];
-      if (!mark) return undefined;
-      return {
-        kind: 'mark',
-        type: mark,
-        nodes: next(el.children),
-      };
-    },
-  },
-  {
-    // Special case for code blocks, which need to grab the nested children.
-    deserialize(el, next) {
-      if (el.tagName !== 'pre') return undefined;
-      const code = el.children[0];
-      const children = code && code.tagName === 'code'
-        ? code.children
-        : el.children;
-
-      return {
-        kind: 'block',
-        type: 'code',
-        nodes: next(children),
-      };
-    },
-  },
-  {
-    // Special case for links, to grab their href.
-    deserialize(el, next) {
-      if (el.tagName !== 'a') return undefined;
-      return {
-        kind: 'inline',
-        type: 'link',
-        nodes: next(el.children),
-        data: {
-          href: el.attribs.href,
-        },
-      };
-    },
-  },
-];
-
-const html = new Html({ rules });*/
+const serializer = new Html({
+  rules: [{
+    deserialize: (el, next) => ({
+      kind: 'block',
+      type: 'paragraph',
+      nodes: next(el.children),
+    }),
+  }],
+});
 
 @withUniqueId()
 @withState({ terse: true })
@@ -175,15 +115,55 @@ export default class SlateEditor extends Component {
     plugins: PropTypes.array,
     className: PropTypes.string,
   }
-  /* keyup = event => {
+
+  onPaste = (e, data, state) => {
     return;
-    if (event.keyCode === 65 && event.ctrlKey) {
-      this.setState({
-        mode: Plain.deserialize(html.serialize(this.props.value, { terse: true }), { terse: true }),
-      });
-        // ctrl+a was typed.
+    /* if (data.type !== 'html') return;
+    if (data.isShift) return;
+
+    const { document } = serializer.deserialize(data.html);
+
+    return state
+      .transform()
+      .insertFragment(document)
+      .apply(); */
+  }
+
+  onKeyDown = (e, data, state) => {
+    if (e.shiftKey && data.key === 'enter') {
+      // shift + enter
+      return state
+        .transform()
+        .insertText('\n')
+        .apply();
+    } else if (e.metaKey || e.ctrlKey) {
+      // cmd/ctrl + ???
+      switch (data.key) {
+        case 'b':
+          return state
+            .transform()
+            .toggleMark('bold')
+            .apply();
+
+        case 'u':
+          return state
+            .transform()
+            .toggleMark('underlined')
+            .apply();
+
+        case 'i':
+          return state
+            .transform()
+            .toggleMark('italic')
+            .apply();
+
+        default:
+          return;
+      }
     }
-  }*/
+
+    return;
+  }
 
   render = () => {
     const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, ...rest } = this.props;
@@ -202,6 +182,8 @@ export default class SlateEditor extends Component {
           readOnly={readOnly}
           state={this.state.mode}
           onChange={mode => this.setState({ mode })}
+          onPaste={this.onPaste}
+          onKeyDown={this.onKeyDown}
         /> : <Editor
           {...rest}
           spellcheck={spellcheck || false}
@@ -210,6 +192,8 @@ export default class SlateEditor extends Component {
           schema={{ marks, nodes }}
           state={value}
           onChange={onChange}
+          onPaste={this.onPaste}
+          onKeyDown={this.onKeyDown}
         />}
       </div>
     );

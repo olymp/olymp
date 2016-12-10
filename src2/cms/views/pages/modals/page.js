@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withItem, withRouter, graphql, gql, unflatten } from 'olymp';
+import { withItem, withRouter, graphql, gql, unflatten, flatten } from 'olymp';
 import { Modal, Form, Input, Spin, TreeSelect } from 'antd';
 // import { map, groupBy, extend, pick } from 'lodash';
 
@@ -84,7 +84,7 @@ export default class PageSettings extends Component {
   }
 
   handleCreate = () => {
-    const { location, router, item, onClose, save } = this.props;
+    const { location, router, item, onClose, save, data } = this.props;
     const form = this.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -93,8 +93,10 @@ export default class PageSettings extends Component {
 
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(({ page }) => {
-        console.log(item.slug, location.pathname, item.id, item.slug === location.pathname && item.id ? page.slug : null);
-        onClose(item.slug === location.pathname && item.id ? page.slug : null);
+        // Pfad ermitteln
+        const items = flatten(unflatten([...data.items, page], { setPath: (current, { slug }) => `${current}${slug}` }));
+        // onClose(item.slug === location.pathname && item.id ? page.slug : null);
+        onClose(items.find(x => x.id === page.id).path);
       });
     });
   }
