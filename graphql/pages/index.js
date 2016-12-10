@@ -4,25 +4,24 @@ const defaultHook = (source, args, context) => {
 };
 
 module.exports = (schema, { adapter, Query, Mutation }) => {
-  schema.addSchema({
+  const theSchema = {
     name: 'page',
     query: `
-      page(id: String, slug: String): page
-      pageList: [page]
+      page: Page @resolve
+      pageList: [Page] @resolve
     `,
     mutation: `
-      page(id: String, input: pageInput, operationType: OPERATION_TYPE): page
-      reorderPages(id: String, ids: [String], order: [Int]): [page]
+      page: Page @resolve
+      reorderPages(id: String, ids: [String], order: [Int]): [Page]
     `,
     resolvers: {
       Query: {
-        page: (source, args, context, { fieldASTs }) => {
-          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
+        page: (source, args, context, info) => {
           if (args.slug) {
             return adapter.read('page', { filter: { slug: args.slug } });
           } return adapter.read('page', Object.assign({}, args, { }));
         },
-        pageList: (source, args, context, { fieldASTs }) => {
+        pageList: (source, args, context, info) => {
           // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
           return adapter.list('page', Object.assign({}, args, { }));
         },
@@ -50,24 +49,28 @@ module.exports = (schema, { adapter, Query, Mutation }) => {
           return Promise.all(args.ids.map((id, order) => adapter.write('page', { id, order }, { patch: true })));
         },
       },
+      Page: {
+        parent: (source, args, context, info) => {
+          if (!source || !source.parentId) return null;
+          return adapter.read('page', Object.assign({}, args, { id: source.parentId }));
+        },
+      },
     },
-    typeDefs: {
-      page: `
-        type {
-          id: String
-          menu: String
-          aliasId: String
-          href: String
-          parentId: String
-          order: Int
-          name: String
-          description: String
-          slug: String
-          blocks: Json
-          templateName: String
-          templateData: Json
-        }
-      `,
-    },
-  });
+    schema: `
+      type Page @collection(name: "Page") @stamps {
+        menu: String
+        alias: Page @relation(type: "one-to-one")
+        href: String
+        parent: Page @relation(type: "one-to-one")
+        order: Int
+        name: String
+        description: String
+        slug: String
+        blocks: Json
+        templateName: String
+        templateData: Json
+      }
+    `,
+  };
+  schema.addSchema(theSchema);
 };

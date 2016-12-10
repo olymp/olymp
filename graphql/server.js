@@ -10,11 +10,10 @@ const createSitemap = require('./sitemap');
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 
 module.exports = (server, options) => {
-  const schema = createSchema();
   let adapter;
 
   if (options.adapter && options.adapter.indexOf('mongodb') === 0) adapter = require('./store-mongo')(options.adapter);
-  if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
+  // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
 
   if (options.sessions && adapter) {
@@ -30,6 +29,7 @@ module.exports = (server, options) => {
     }));
   }
 
+  const schema = createSchema({ adapter });
   const mail = options.mail ? createMail(options.mail) : null;
   createSitemap(schema, {});
   if (options.google) createGoogleGql(schema, typeof options.google === 'object' ? options.google : {});
