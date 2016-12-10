@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import Portal from 'react-portal';
 import ReactDOM from 'react-dom';
 import { Raw } from 'slate';
-import { Dropdown, Menu, Button } from 'antd';
+import { Dropdown, Menu, Button, Icon, Modal, Table } from 'antd';
 import { sortBy } from 'lodash';
 import classNames from 'classnames';
+import capitalize from 'capitalize';
 
 export default (options = {}) => Block => {
   let { actions, manual, remove, move, type, add } = options;
@@ -19,15 +20,19 @@ export default (options = {}) => Block => {
     static defaultProps = {
       actions: [],
     }
-    state = { menu: null };
+
+    state = { menu: null, modal: {} };
+
     componentDidMount() {
       if (manual) return;
       const rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
       this.setToolbarPosition(rect);
     }
+
     componentDidUpdate() {
       this.componentDidMount();
     }
+
     setToolbarPosition = (rect) => {
       const { menu } = this.state;
       if (!menu) return;
@@ -38,21 +43,32 @@ export default (options = {}) => Block => {
       menu.style.top = `${top - 3}px`;
       menu.style.left = `${left}px`;
     }
+
     onOpen = ({ firstChild: menu }) => {
       this.setState({ menu });
     }
+
     onClick = action => e => {
       e.preventDefault();
       action();
     }
+
     renderAction = (props) => {
-      const { toggle, type, active, icon, separated, options, right } = props;
-      if (options) {
+      const { toggle, type, active, icon, separated, options, right, multi, showModal } = props;
+      const { modal } = this.state;
+
+      if (options && options.length < 10 && !multi && !showModal) {
         const menu = (
           <Menu onClick={toggle}>
-            {options.map(({ value, label }) => <Menu.Item key={value}>{label}</Menu.Item>)}
+            {options.map(({ value, label, active }) => active ? (
+              <Menu.Item key={value} style={{ fontWeight: 'bold' }}><Icon type="check" /> {label}</Menu.Item>
+            ) : (
+              <Menu.Item key={value}>{label}</Menu.Item>
+            )
+            )}
           </Menu>
         );
+
         return (
           <Dropdown overlay={menu} key={type}>
             <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} data-active={active}>
@@ -60,13 +76,72 @@ export default (options = {}) => Block => {
             </Button>
           </Dropdown>
         );
+      } else if (options) {
+        let attributes;
+        const selectedRowKeys = [];
+        const data = options.map(({ value, label, active, ...rest }) => {
+          attributes = rest;
+
+          if (active) {
+            selectedRowKeys.push(value);
+          }
+
+          return {
+            key: value,
+            name: label,
+            ...rest
+          };
+        });
+        const columns = Object.keys(attributes).map(key => ({
+          title: capitalize(key),
+          dataIndex: key,
+        }));
+        const rowSelection = multi ? {
+          type: 'select',
+          selectedRowKeys,
+          onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows),
+        } : {
+          type: 'radio',
+          selectedRowKeys,
+          onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows[0]),
+        };
+
+        return (
+          <div>
+            <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onClick={() => this.setState({ modal: { ...modal, [type]: true } })} data-active={active}>
+              <i className={`fa fa-${icon}`} />
+            </Button>
+
+            <Modal
+              title="Bitte wählen"
+              visible={modal[type]}
+              onOk={() => this.setState({ modal: { ...modal, [type]: false } })}
+              onCancel={() => this.setState({ modal: { ...modal, [type]: false } })}
+            >
+              <Table
+                dataSource={data}
+                columns={[{
+                  title: 'Name',
+                  dataIndex: 'name',
+                },
+                  ...columns,
+                ]}
+                rowSelection={rowSelection}
+                size="middle"
+                pagination={false}
+              />
+            </Modal>
+          </div>
+        );
       }
+
       return (
         <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onMouseDown={this.onClick(toggle)} data-active={active}>
           <i className={`fa fa-${icon}`} />
         </Button>
       );
     }
+
     onChangeType = ({ key }) => {
       const { editor, readOnly, node, state } = this.props;
       const blockTypes = editor.props.sidebarTypes || [];
@@ -78,6 +153,7 @@ export default (options = {}) => Block => {
           .apply()
       );
     }
+
     renderToolbar = (styles = {}) => {
       const { editor, readOnly, node } = this.props;
       if (readOnly) return null;
