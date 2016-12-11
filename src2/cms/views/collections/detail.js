@@ -119,12 +119,12 @@ const getFormEditor = (type, name, props = {}) => {
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
       return <Select {...props} tags searchPlaceholder="Suche ..." />;
-    } else if (type.ofType.name.indexOf('nested') === 0) {
+    } else if (type.ofType.name.indexOf('Nested') === 0) {
       return <SubForm {...props} name={type.ofType.name} type={type} />;
     }
   }
   if (type.kind === 'OBJECT') {
-    if (type.name === 'image') {
+    if (type.name === 'Image') {
       return <Image {...props} width="100%" noPreview />;
     } else {
       return (

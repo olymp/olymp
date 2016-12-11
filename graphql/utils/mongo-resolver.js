@@ -10,15 +10,18 @@ export const list = model => (source, args, context, fieldASTs) => {
     const projection = getProjection(fieldASTs);
     let cursor = adapter.db.collection(model.toLowerCase());
     if (args.query) cursor = cursor.find(adaptQuery(args.query), projection);
+    else cursor = cursor.find({}, projection);
     if (args.sort) cursor = cursor.sort(adaptSort(args.sort));
     return afterQuery(model, cursor.toArray());
   });
 };
 
 export const one = (model, propertyKey) => (source, args, context, fieldASTs) => {
+  console.log('mongo-resolver', model, propertyKey);
   const { adapter, beforeQuery, afterQuery } = context;
   return beforeQuery(model, args).then((args) => {
     const projection = getProjection(fieldASTs);
+    console.log(projection);
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
       if (source[`${propertyKey}Id`]) return cursor.findOne({ id: source[`${propertyKey}Id`] }, projection);
@@ -26,7 +29,10 @@ export const one = (model, propertyKey) => (source, args, context, fieldASTs) =>
     }
     if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
     if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
-    return afterQuery(model, cursor);
+    return afterQuery(model, cursor).then(x => {
+      console.log(x);
+      return x;
+    });
   });
 };
 

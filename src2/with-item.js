@@ -7,8 +7,8 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
 
 export const mutateItem = (client, name, { attributes }) => props => client.mutate({
   mutation: gql`
-    mutation set_${name}($id:String, $type:OPERATION_TYPE!, $input:${name}Input!) {
-      ${name}(id:$id, input:$input, operationType:$type) {
+    mutation set_${name.toLowerCase()}($id:String, $type:OPERATION_TYPE!, $input:${name}Input!) {
+      ${name.toLowerCase()}(id:$id, input:$input, operationType:$type) {
         ${attributes || 'id'}
       }
     }
@@ -24,7 +24,7 @@ export const removeItem = (id, name, client, { onRemoved, attributes }) =>
       input: {},
     },
     updateQueries: {
-      [`${name}List`]: previousQueryResult => ({
+      [`${name.toLowerCase()}List`]: previousQueryResult => ({
         ...previousQueryResult,
         items: previousQueryResult.items.filter(x => x.id !== id),
       }),
@@ -60,7 +60,7 @@ export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
      [name]: body,
      },*/
     updateQueries: !id ? {
-      [`${name}List`]: (previousQueryResult, { mutationResult }) => ({
+      [`${name.toLowerCase()}List`]: (previousQueryResult, { mutationResult }) => ({
         ...previousQueryResult,
         items: [...previousQueryResult.items, mutationResult.data[name]],
       }),
@@ -113,8 +113,8 @@ export default ({ attributes, name }) => (WrappedComponent) => {
         } else if (id) {
           client.query({
             query: gql`
-              query get_${name}($id:String!) {
-                ${name}(id:$id) {
+              query get_${name.toLowerCase()}($id:String!) {
+                item: ${name.toLowerCase()}(query: { id: {eq: $id} }) {
                   ${attributes}
                 }
               }
@@ -123,7 +123,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
               id,
             },
           }).then(({ data }) => {
-            this.data = data[name];
+            this.data = data.item;
             this.patchedItem = { ...initialData, ...this.data };
             this.setState({
               isDirty: false,
@@ -132,8 +132,8 @@ export default ({ attributes, name }) => (WrappedComponent) => {
         } else if (slug) {
           client.query({
             query: gql`
-              query get_${name}($slug:String!) {
-                ${name}(slug:$slug) {
+              query get_${name.toLowerCase()}($slug:String!) {
+                item: ${name.toLowerCase()}(query: { slug: {eq: $slug} }) {
                   ${attributes}
                 }
               }
@@ -142,7 +142,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
               slug,
             },
           }).then(({ data }) => {
-            this.data = data[name];
+            this.data = data.item;
             this.patchedItem = { ...initialData, ...this.data };
             this.setState({
               isDirty: false,

@@ -1,6 +1,7 @@
 import combineASTSchemas from './combine-ast';
 import applyDirectivesToAST from './apply-directives';
 import transformASTTypeToInput from './type-to-input';
+import addDefinition from './add-definition';
 
 const { parse } = require('graphql/language');
 const { buildASTSchema } = require('graphql/utilities');
@@ -11,18 +12,17 @@ export default (schemaFragments, resolvers, directives) => {
   initialAST.forEach(({ definitions }) => definitions.filter(x => x.kind === 'ObjectTypeDefinition').forEach((definition) => {
     if (['Query', 'Mutation'].includes(definition.name.value)) return;
     const input = transformASTTypeToInput(definition, { newName: `${definition.name.value}Input`, ast: initialAST });
-    definitions.push(input);
+    addDefinition(definitions, input);
   }));
   const combinedAST = combineASTSchemas(initialAST);
-  const transformedAST = applyDirectivesToAST(combinedAST, directives, { resolvers });
+  const transformedAST = applyDirectivesToAST(combinedAST, directives, resolvers);
   transformedAST.definitions.filter(x => x.kind === 'ObjectTypeDefinition').forEach((definition) => {
     if (['Query', 'Mutation'].includes(definition.name.value)) return;
     const input = transformASTTypeToInput(definition, { newName: `${definition.name.value}Input`, ast: initialAST });
-    const index = transformedAST.definitions.indexOf(transformedAST.definitions.find(x => x.name.value === input.name.value));
-    if (index === undefined || index === -1) transformedAST.definitions.push(input);
-    else transformedAST.definitions[index] = input;
+    addDefinition(transformedAST, input);
   });
   const builtSchema = buildASTSchema(transformedAST);
   addResolveFunctionsToSchema(builtSchema, resolvers);
+  console.log(resolvers)
   return { schema: builtSchema, ast: transformedAST };
 };
