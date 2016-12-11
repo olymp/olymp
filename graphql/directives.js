@@ -58,19 +58,34 @@ export default ({ adapter, resolvers }) => ({
     name: 'relation',
     description: 'Marks a type as a relative.',
     resolveStatic: {
-      enter(node, directive, { resolvers, parent, ancestors }) {
+      enter(node, directive, { resolvers, parent, ancestors, ast }) {
         const parentName = ancestors[ancestors.length - 1].name.value;
         const isList = node.type.kind === 'ListType';
         const type = isList ? node.type.type : node.type;
         const collectionName = type.name.value;
-        const idType = parse(`
-          type ___Field {
-            ${node.name.value}Id: String
-          }
-        `).definitions[0];
-        idType.fields.forEach(field => parent.push(field));
+        if (!isList) {
+          const idType = parse(`
+            type ___Field {
+              ${node.name.value}Id: String
+            }
+          `).definitions[0];
+          idType.fields.forEach(field => parent.push(field));
+        } else {
+          addInputTypes(collectionName, ast);
+          const argType = parse(`
+            type Query {
+              func(query: ${collectionName}Query, sort: ${collectionName}Sort, limit: Int, skip: Int): [${collectionName}]
+            }
+          `).definitions[0].fields[0];
+          argType.arguments.forEach(field => node.arguments.push(field));
+          const idType = parse(`
+            type ___Field {
+              ${node.name.value}Ids: [String]
+            }
+          `).definitions[0];
+          idType.fields.forEach(field => parent.push(field));
+        }
         if (!resolvers[parentName]) resolvers[parentName] = {};
-        console.log(parentName, node.name.value, collectionName, isList);
         resolvers[parentName][node.name.value] = isList
           ? list(collectionName, node.name.value)
           : one(collectionName, node.name.value);
