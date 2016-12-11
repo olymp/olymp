@@ -188,9 +188,44 @@ export const defaultTypes = `
     ARCHIVED
     REMOVED
   }
+  enum SORT_DIRECTION {
+    ASCENDING,
+    DESCENDING
+  }
   type dateRange {
     from: Date
     to: Date
     duration: Int
+  }
+  input StringOperatorInput {
+    eq: String,
+    ne: String,
+    in: [String],
+    nin: [String],
+    startsWith: String,
+    contains: String,
+  }
+  input IntOperatorInput {
+    eq: Int,
+    ne: Int,
+    in: [Int],
+    nin: [Int],
+    lt: Int,
+    gt: Int,
+    gte: Int,
+    lte: Int,
+    between: [Int]
+  }
+  input DateOperatorInput {
+    eq: Date,
+    ne: Date,
+    lt: Date,
+    gt: Date,
+    gte: Date,
+    lte: Date,
+    day: Date,
+    year: Date,
+    month: Date,
+    between: [Date]
   }
 `;

@@ -1,4 +1,5 @@
-const { parse, visit, BREAK } = require('graphql/language');
+import { parse } from 'graphql/language';
+import { list, one, write, getInputTypes } from './utils';
 
 export default ({ adapter, resolvers }) => ({
   // Type
@@ -39,58 +40,78 @@ export default ({ adapter, resolvers }) => ({
     },
   },
   // Field
-  relation: {
+  relation: { // aggregation
     name: 'relation',
     description: 'Marks a type as a relative.',
     resolveStatic: {
-      enter(node, directive, { resolvers, parent }) {
-        const type = parse(`
+      enter(node, directive, { resolvers, parent, ancestors }) {
+        const parentName = ancestors[ancestors.length - 1].name.value;
+        const isList = node.type.kind === 'ListType';
+        const type = isList ? node.type.type : node.type;
+        const collectionName = type.name.value;
+        const idType = parse(`
           type ___Field {
             ${node.name.value}Id: String
           }
         `).definitions[0];
-        type.fields.forEach(field => parent.push(field));
+        idType.fields.forEach(field => parent.push(field));
+        if (!resolvers[parentName]) resolvers[parentName] = {};
+        resolvers[parentName][node.name.value] = isList
+          ? list(collectionName, adapter, { key: node.name.value })
+          : one(collectionName, adapter, { key: node.name.value });
       },
     },
   },
   // Query/Mutation
-  resolve: {
-    name: 'resolve',
+  query: {
+    name: 'query',
     description: 'Marks a type as a relative.',
     resolveStatic: {
-      enter(node, directive, { ast }) {
+      enter2(node, directive, { ast }) {
         const isList = node.type.kind === 'ListType';
         const type = isList ? node.type.type : node.type;
         const collectionName = type.name.value;
-        let collectionAst = null;
-        visit(ast, {
-          enter(node) {
-            if (node.kind.endsWith('TypeDefinition') && node.name && node.name.value === collectionName) {
-              collectionAst = node;
-              return BREAK;
-            } return undefined;
-          },
-        });
+        const { queryType, sortType } = getInputTypes(collectionName, ast);
+        ast.definitions.push(queryType);
+        ast.definitions.push(sortType);
 
-        const filterType = parse(`
-          input ${node.name.value}Filter {
-            ${collectionAst.fields.map(getArgument).join(', ')}
-          }
-        `).definitions[0];
-        ast.definitions.push(filterType);
-
-        const field = parse(`
+        const field = isList ? parse(`
           type Query {
-            func(filter: ${filterType.name.value}): [Page]
+            func(query: ${queryType.name.value}, sort: ${sortType.name.value}, limit: Int, skip: Int): [${type.name.value}]
+          }
+        `).definitions[0].fields[0] : parse(`
+          type Query {
+            func(id: String, query: ${queryType.name.value}): ${type.name.value}
           }
         `).definitions[0].fields[0];
 
         node.arguments = node.arguments.concat(field.arguments);
+        resolvers.Query[node.name.value] = isList
+          ? list(collectionName, adapter)
+          : one(collectionName, adapter);
+      },
+    },
+  },
+  mutate: {
+    name: 'mutate',
+    description: 'Marks a type as a relative.',
+    resolveStatic: {
+      enter2(node, directive, { ast }) {
+        const type = node.type;
+        const collectionName = type.name.value;
+
+        const { inputType } = getInputTypes(collectionName, ast);
+        ast.definitions.push(inputType);
+        const field = parse(`
+          type Mutation {
+            func(id: String, input: ${type.name.value}Input, operationType: OPERATION_TYPE): ${type.name.value}
+          }
+        `).definitions[0].fields[0];
+
+        node.arguments = node.arguments.concat(field.arguments);
+        resolvers.Mutation[node.name.value] = write(collectionName, adapter, { ast, key: node.name.value });
       },
     },
   },
 });
 
-const getArgument = (field) => {
-  return `${field.name.value}: String`;
-};
