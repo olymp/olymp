@@ -115,7 +115,7 @@ class DetailEditor extends Component {
   }
 }
 
-const getFormEditor = (type, name, props = {}) => {
+const getFormEditor = (type, name, props = {}, subField) => {
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
       return <Select {...props} tags searchPlaceholder="Suche ..." />;
@@ -127,10 +127,13 @@ const getFormEditor = (type, name, props = {}) => {
     if (type.name === 'Image') {
       return <Image {...props} width="100%" noPreview />;
     } else {
-      return (
-        <DetailEditor name={type.name} />
-      );
+      return null;
     }
+  }
+  if (subField && subField.type) {
+    return (
+      <DetailEditor {...props} name={subField.type.name} />
+    );
   }
   if (type.kind === 'ENUM' && type.enumValues) {
     return (
@@ -217,16 +220,16 @@ const CollectionCreateForm = Form.create()(
       <Form horizontal>
         {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
-
+          const editor = getFormEditor(
+            field.type,
+            name,
+            (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {},
+            field.name.endsWith('Id') ? fields.find(({ name }) => `${name}Id` === field.name) : null
+          );
+          if (!editor) return null;
           return (
-            <FormItem key={field.name} label={title} {...formItemLayout}>
-              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
-                getFormEditor(
-                  field.type,
-                  name,
-                  (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {}
-                )
-              )}
+            <FormItem key={field.name} label={title.replace('-Id', '')} {...formItemLayout}>
+              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(editor)}
             </FormItem>
           );
         })}

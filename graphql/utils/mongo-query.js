@@ -1,5 +1,4 @@
 const { parse, visit, BREAK, Kind } = require('graphql/language');
-const transformASTTypeToInput = require('./type-to-input').default;
 const addDefinition = require('./add-definition').default;
 
 export const adaptQuery = (obj) => {
@@ -169,7 +168,5 @@ export const addInputTypes = (collectionName, ast) => {
       ${collectionAst.fields.map(getSort).filter(x => x).join(', ')}
     }
   `).definitions[0]);
-  const input = transformASTTypeToInput(collectionAst, { newName: `${collectionName}Input`, ast });
-  if (input) addDefinition(ast, input);
 };
 
