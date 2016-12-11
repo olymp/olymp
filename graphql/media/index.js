@@ -150,13 +150,13 @@ module.exports = (schema, { uri } = {}) => {
   schema.addSchema({
     name: 'file',
     query: `
-      file(id: String): file
-      fileList(tags: [String]): [file]
-      cloudinaryRequest: cloudinaryRequest
+      file(id: String): File
+      fileList(tags: [String]): [File]
+      cloudinaryRequest: CloudinaryRequest
     `,
     mutation: `
-      file(id: String, input: fileInput, operationType: OPERATION_TYPE): file
-      cloudinaryRequestDone(id: String, token: String): file
+      file(id: String, input: FileInput, operationType: OPERATION_TYPE): File
+      cloudinaryRequestDone(id: String, token: String): File
     `,
     resolvers: {
       Query: {
@@ -232,47 +232,41 @@ module.exports = (schema, { uri } = {}) => {
         },
       },
     },
-    typeDefs: {
-      image: `
-        type {
-          url: String
-          crop: [Int]
-          width: Int
-          height: Int
-          caption: String
-          source: String
-        }
-      `,
-      file: `
-        type {
-          id: String
-          format: String
-          version: Int
-          resourceType: String
-          type: String
-          createdAt: String
-          height: Int
-          width: Int
-          bytes: Int
-          tags: [String]
-          url: String
-          caption: String
-          source: String
-          removed: Boolean
-          preview: image
-          pages: Int
-          colors: [String]
-        }
-      `,
-      cloudinaryRequest: `
-        type {
-          url: String
-          signature: String
-          timestamp: String
-          apiKey: String
-        }
-      `,
-    },
+    schema: `
+      type Image {
+        url: String
+        crop: [Int]
+        width: Int
+        height: Int
+        caption: String
+        source: String
+      }
+      type File {
+        id: String
+        format: String
+        version: Int
+        resourceType: String
+        type: String
+        createdAt: String
+        height: Int
+        width: Int
+        bytes: Int
+        tags: [String]
+        url: String
+        caption: String
+        source: String
+        removed: Boolean
+        preview: Image
+        pages: Int
+        colors: [String]
+      }
+      type CloudinaryRequest {
+        url: String
+        signature: String
+        timestamp: String
+        apiKey: String
+      }
+    `,
   });
 };
 

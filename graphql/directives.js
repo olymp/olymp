@@ -17,8 +17,22 @@ export default ({ adapter, resolvers }) => ({
       },
     },
   },
-  stamps: {
-    name: 'stamps',
+  state: {
+    name: 'state',
+    description: 'Marks a type as a relative.',
+    resolveStatic: {
+      enter(node) {
+        const type = parse(`
+          type ___Model {
+            state: DOCUMENT_STATE
+          }
+        `).definitions[0];
+        node.fields = node.fields.concat(type.fields);
+      },
+    },
+  },
+  stamp: {
+    name: 'stamp',
     description: 'Marks a type as a relative.',
     resolveStatic: {
       enter(node) {
@@ -57,8 +71,8 @@ export default ({ adapter, resolvers }) => ({
         idType.fields.forEach(field => parent.push(field));
         if (!resolvers[parentName]) resolvers[parentName] = {};
         resolvers[parentName][node.name.value] = isList
-          ? list(collectionName, adapter, { key: node.name.value })
-          : one(collectionName, adapter, { key: node.name.value });
+          ? list(collectionName, node.name.value)
+          : one(collectionName, node.name.value);
       },
     },
   },
@@ -87,8 +101,8 @@ export default ({ adapter, resolvers }) => ({
 
         node.arguments = node.arguments.concat(field.arguments);
         resolvers.Query[node.name.value] = isList
-          ? list(collectionName, adapter)
-          : one(collectionName, adapter);
+          ? list(collectionName)
+          : one(collectionName);
       },
     },
   },
@@ -100,8 +114,8 @@ export default ({ adapter, resolvers }) => ({
         const type = node.type;
         const collectionName = type.name.value;
 
-        const { inputType } = getInputTypes(collectionName, ast);
-        ast.definitions.push(inputType);
+        // const { inputType } = getInputTypes(collectionName, ast);
+        // ast.definitions.push(inputType);
         const field = parse(`
           type Mutation {
             func(id: String, input: ${type.name.value}Input, operationType: OPERATION_TYPE): ${type.name.value}
@@ -109,7 +123,7 @@ export default ({ adapter, resolvers }) => ({
         `).definitions[0].fields[0];
 
         node.arguments = node.arguments.concat(field.arguments);
-        resolvers.Mutation[node.name.value] = write(collectionName, adapter, { ast, key: node.name.value });
+        resolvers.Mutation[node.name.value] = write(collectionName, node.name.value);
       },
     },
   },
