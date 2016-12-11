@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Select } from 'antd';
 import ReactCrop from 'react-image-crop';
 import { cloudinaryUrl } from 'olymp';
+import { isEqual } from 'lodash';
 import 'react-image-crop/dist/ReactCrop.css';
 
 import Media from '../../views/media/list';
@@ -33,46 +34,79 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
     this.hide();
   };
 
+  onCancel = () => {
+    const { onCancel } = this.props;
+
+    if (onCancel) onCancel();
+    this.hide();
+  };
+
   onCrop = (p, { width, height, x, y }) => {
     this.image.crop = [width, height, x, y];
   };
 
-  render() {
-    const { tags, solution, source, type, sortByState } = this.state;
+  componentWillReceiveProps = (nextProps) => {
+    const nextGivenImage = (getImage || defaultGetImage)(nextProps);
 
-    if (this.props.disableUpload || this.props.readOnly) {
+    if (!this.image) {
+      this.image = { ...nextGivenImage };
+    }
+  }
+
+  render() {
+    const { tags, solution, source, type, sortByState, aspect } = this.state;
+    const { disableUpload, readOnly, showMediathek, children } = this.props;
+    const visible = this.state.visible || showMediathek;
+
+    if (disableUpload || readOnly) {
       return <WrappedComponent {...this.props} />;
     }
 
-    const visible = this.state.visible || this.props.showMediathek;
-    const image = this.image || (this.props.showMediathek && typeof this.props.showMediathek === 'object' ? this.props.showMediathek : null);
-    const value = (getImage || defaultGetImage)(this.props);
+    const image = this.image;// || (showMediathek && typeof showMediathek === 'object' ? showMediathek : null);
+    const crop = image && image.crop ? {
+      width: (image.crop[0] / image.width) * 100,
+      height: (image.crop[1] / image.height) * 100,
+      x: (image.crop[2] / image.width) * 100,
+      y: (image.crop[3] / image.height) * 100,
+      aspect,
+    } : { aspect };
 
     return (
-      <WrappedComponent {...this.props} showMediathek={() => this.show(value)}>
-        {this.props.children}
-        {visible && !image ? <Modal visible onCancel={this.hide} onOk={this.hide} closable={false}>
-          <Media
-            tags={tags}
-            solution={solution}
-            source={source}
-            type={type}
-            sortByState={sortByState}
-            onTagsFilterChange={tags => this.setState({ tags })}
-            onSolutionFilterChange={solution => this.setState({ solution })}
-            onSourceFilterChange={source => this.setState({ source })}
-            onTypeFilterChange={type => this.setState({ type })}
-            onResetFilters={() => this.setState({ tags: [], solution: [], source: [], type: [] })}
-            onSortByChange={sortByState => this.setState({ sortByState })}
-            onImageChange={this.show}
-          />
-          <Upload onClose={this.show} />
-        </Modal> : null}
+      <WrappedComponent {...this.props} showMediathek={() => this.show(image)}>
+        {children}
+        {visible && !image ? (
+          <Modal visible title="Mediathek" onCancel={this.onCancel} onOk={this.hide}>
+            <Media
+              tags={tags}
+              solution={solution}
+              source={source}
+              type={type}
+              sortByState={sortByState}
+              onTagsFilterChange={tags => this.setState({ tags })}
+              onSolutionFilterChange={solution => this.setState({ solution })}
+              onSourceFilterChange={source => this.setState({ source })}
+              onTypeFilterChange={type => this.setState({ type })}
+              onResetFilters={() => this.setState({ tags: [], solution: [], source: [], type: [] })}
+              onSortByChange={sortByState => this.setState({ sortByState })}
+              onImageChange={this.show}
+            />
+            <Upload onClose={this.show} />
+          </Modal>
+        ) : null}
         {visible && image ? (
           <Modal
             visible
-            onCancel={this.hide}
+            title="Bildbereich auswählen"
+            onCancel={this.onCancel}
             footer={[
+              <Select defaultValue={`${aspect ? aspect.toString() : '0'}`} style={{ width: 150, float: 'left' }} size="large" onChange={option => this.setState({ aspect: parseFloat(option, 10) })}>
+                <Select.Option value="0">Freie Auswahl</Select.Option>
+                <Select.Option value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
+                <Select.Option value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>
+                <Select.Option value="1">Quadratisch 1:1</Select.Option>
+                <Select.Option value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
+                <Select.Option value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
+              </Select>,
               <Button key="back" type="ghost" size="large" onClick={this.show}>
                 Mediathek
               </Button>,
@@ -81,7 +115,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
               </Button>,
             ]}
           >
-            <ReactCrop src={cloudinaryUrl(image.url)} onChange={this.onCrop} />
+            <ReactCrop src={cloudinaryUrl(image.url)} onChange={this.onCrop} crop={crop} />
           </Modal>
         ) : null}
       </WrappedComponent>

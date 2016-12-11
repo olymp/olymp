@@ -21,9 +21,9 @@ export default class ImageComponent extends Component {
   }
 
   render() {
-    const { showLightbox, showMediathek, onImageClick, lightbox, ...rest } = this.props; // muss hier stehen, sonst wird beim rendern ein Fehler geworfen
+    const { showLightbox, showMediathek, onImageClick, lightbox, onCancel, ...rest } = this.props; // muss hier stehen, sonst wird beim rendern ein Fehler geworfen
 
-    // todo: newReadOnly = !isLoggedin/isAdmin || readObnly;
+    // todo: newReadOnly = !isLoggedin/isAdmin || readOnly;
 
     return <Image {...rest} onClick={this.onImageClick} />;
   }

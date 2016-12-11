@@ -7,7 +7,7 @@ const Cover = ({ children, style }) => (
 );
 
 export default (options = {}) => Block => {
-  const { ratio, relative, coverOnResize, enable, stepX, stepY, width: initialWidth, height: initialHeight } = options;
+  const { ratio, coverOnResize, enable, stepX, stepY, width: initialWidth, height: initialHeight } = options;
   return class ResizeableDecorator extends Component {
     static slate = Block.slate;
     static propTypes = {
@@ -43,14 +43,14 @@ export default (options = {}) => Block => {
         height = this.elementHeight;
       }
 
-      if (this.elementWidth === undefined || this.elementHeight === undefined) {
+      if (ratio && (this.elementWidth === undefined || this.elementHeight === undefined)) {
         // Einmal rerendern, da es sonst Probleme mit ratio in Verbindung mit einer prozentualen Breite gibt
-        this.forceUpdate();
+        // this.forceUpdate();
       }
 
       return {
         width,
-        height: ratio ? (width / ratio) : height,
+        height: ratio && parseInt(ratio, 10) === ratio ? (width / ratio) : height,
       };
     }
 
