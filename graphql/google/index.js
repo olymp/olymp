@@ -1,7 +1,7 @@
-const convertGeocode = result => {
+const convertGeocode = (result) => {
   const newResult = { };
-  (result.address_components || []).forEach(component => {
-    component.types.forEach(type => {
+  (result.address_components || []).forEach((component) => {
+    component.types.forEach((type) => {
       const newType = type.split('_')
         .map((frag, i) => i > 0 ? `${frag[0].toUpperCase()}${frag.substr(1)}` : frag) // eslint-disable-line
         .join('');
@@ -28,8 +28,8 @@ module.exports = (schema, { config } = {}) => {
   schema.addSchema({
     name: 'geocode',
     query: `
-      geocode(address: String, region: String, language: String): geocode
-      geocodeList(address: String, region: String, language: String): [geocode]
+      geocode(address: String, region: String, language: String): Geocode
+      geocodeList(address: String, region: String, language: String): [Geocode]
     `,
     resolvers: {
       Query: {
@@ -39,25 +39,23 @@ module.exports = (schema, { config } = {}) => {
           .then(result => result.json.results.map(convertGeocode)),
       },
     },
-    typeDefs: {
-      geocode: `
-        type {
-          streetNumber: String
-          route: String
-          locality: String
-          administrativeAreaLevel1: String
-          administrativeAreaLevel2: String
-          country: String
-          postalCode: String
-          formattedAddress: String
-          lat: Float
-          lng: Float
-          locationType: String
-          partialMatch: Boolean
-          placeId: String
-          types: [String]
-        }
-      `,
-    },
+    schema: `
+      type Geocode {
+        streetNumber: String
+        route: String
+        locality: String
+        administrativeAreaLevel1: String
+        administrativeAreaLevel2: String
+        country: String
+        postalCode: String
+        formattedAddress: String
+        lat: Float
+        lng: Float
+        locationType: String
+        partialMatch: Boolean
+        placeId: String
+        types: [String]
+      }
+    `,
   });
 };

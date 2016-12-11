@@ -42,21 +42,21 @@ export default ({ attributes, name } = {}) => (WrappedComponent) => {
         const { client, collection, attributes, location } = nextProps;
         this.items = null;
 
-        const query = attributes.indexOf('documentState') !== -1 ? client.watchQuery({
+        const query = attributes.indexOf('state') !== -1 ? client.watchQuery({
           query: gql`
-            query ${collection.name}List($state: [DOCUMENT_STATE]) {
-              items: ${collection.name}List(documentState: $state) {
+            query ${collection.name.toLowerCase()}List($state: [DOCUMENT_STATE]) {
+              items: ${collection.name.toLowerCase()}List(query: {state: {in: $state}}) {
                 ${attributes}
               }
             }
           `,
           variables: {
-            state: location.query && location.query.state ? location.query.state.split('-') : null,
+            state: location.query && location.query.state ? location.query.state.split('-') : [],
           },
         }) : client.watchQuery({
           query: gql`
-            query ${collection.name}List {
-              items: ${collection.name}List {
+            query ${collection.name.toLowerCase()}List {
+              items: ${collection.name.toLowerCase()}List {
                 ${attributes}
               }
             }
