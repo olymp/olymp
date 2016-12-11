@@ -1,5 +1,5 @@
 import { parse } from 'graphql/language';
-import { list, one, write, getInputTypes } from './utils';
+import { list, one, write, addInputTypes } from './utils';
 
 export default ({ adapter, resolvers }) => ({
   // Type
@@ -70,6 +70,7 @@ export default ({ adapter, resolvers }) => ({
         `).definitions[0];
         idType.fields.forEach(field => parent.push(field));
         if (!resolvers[parentName]) resolvers[parentName] = {};
+        console.log(parentName, node.name.value, collectionName, isList);
         resolvers[parentName][node.name.value] = isList
           ? list(collectionName, node.name.value)
           : one(collectionName, node.name.value);
@@ -85,17 +86,15 @@ export default ({ adapter, resolvers }) => ({
         const isList = node.type.kind === 'ListType';
         const type = isList ? node.type.type : node.type;
         const collectionName = type.name.value;
-        const { queryType, sortType } = getInputTypes(collectionName, ast);
-        ast.definitions.push(queryType);
-        ast.definitions.push(sortType);
+        addInputTypes(collectionName, ast);
 
         const field = isList ? parse(`
           type Query {
-            func(query: ${queryType.name.value}, sort: ${sortType.name.value}, limit: Int, skip: Int): [${type.name.value}]
+            func(query: ${collectionName}Query, sort: ${collectionName}Sort, limit: Int, skip: Int): [${collectionName}]
           }
         `).definitions[0].fields[0] : parse(`
           type Query {
-            func(id: String, query: ${queryType.name.value}): ${type.name.value}
+            func(id: String, query: ${collectionName}Query): ${collectionName}
           }
         `).definitions[0].fields[0];
 
@@ -114,8 +113,6 @@ export default ({ adapter, resolvers }) => ({
         const type = node.type;
         const collectionName = type.name.value;
 
-        // const { inputType } = getInputTypes(collectionName, ast);
-        // ast.definitions.push(inputType);
         const field = parse(`
           type Mutation {
             func(id: String, input: ${type.name.value}Input, operationType: OPERATION_TYPE): ${type.name.value}

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import { saveItem, removeItem } from './with-item';
+import capitalize from 'capitalize';
 import gql from 'graphql-tag';
 
 const imageFields = `
@@ -86,7 +87,7 @@ export default WrappedComponent => {
     options: ({ routeParams = {}, collection, name }) => ({
       skip: !!collection,
       variables: {
-        name: routeParams.model || name,
+        name: capitalize(routeParams.model || name),
       },
     }),
   })

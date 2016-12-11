@@ -46,17 +46,18 @@ export default class MainList extends Component {
       const { client, collection, attributes, location } = nextProps;
       this.items = null;
 
+      const lname = collection.name[0].toLowerCase() + collection.name.substr(1);
       const query = client.watchQuery({
         /* eslint-disable no-undef */
         query: gql`
-          query ${collection.name}List($state: [DOCUMENT_STATE]) {
-            items: ${collection.name}List(documentState: $state) {
+          query ${lname}List($state: [DOCUMENT_STATE]) {
+            items: ${lname}List(query: {state: {in: $state}}) {
               ${attributes}
             }
           }
         `, /* eslint-disable */
         variables: {
-          state: location.query && location.query.state ? location.query.state.split('-') : null
+          state: location.query && location.query.state ? location.query.state.split('-') : []
         }
       });
       this.subscription = query.subscribe({
