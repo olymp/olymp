@@ -15,6 +15,7 @@ function fetchType(name, ast) {
 }
 
 const transformASTTypeToInput = (type, { newName, ast, exclude = [], optional = [] }, generatedInputHistory = []) => {
+  const definitions = ast.definitions || ast;
   return visit(type, {
     enter(node /* , key, parent, path, ancestors*/) {
       let copy = Object.assign({}, node);
@@ -40,7 +41,7 @@ const transformASTTypeToInput = (type, { newName, ast, exclude = [], optional = 
               generatedInputHistory.push(inputName);
               if (!fetchType(inputName, ast) && fieldType.name.value !== type.name.value) {
                 const newInput = transformASTTypeToInput(fieldType, { newName: inputName, ast }, generatedInputHistory);
-                ast.definitions.push(newInput);
+                definitions.push(newInput);
               }
             }
             copy = visit(copy, {

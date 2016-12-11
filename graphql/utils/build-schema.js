@@ -11,18 +11,17 @@ export default (schemaFragments, resolvers, directives) => {
   const initialAST = schemaFragments.map(fragment => parse(fragment));
   initialAST.forEach(({ definitions }) => definitions.filter(x => x.kind === 'ObjectTypeDefinition').forEach((definition) => {
     if (['Query', 'Mutation'].includes(definition.name.value)) return;
-    const input = transformASTTypeToInput(definition, { newName: `${definition.name.value}Input`, ast: initialAST });
+    const input = transformASTTypeToInput(definition, { newName: `${definition.name.value}Input`, ast: definitions });
     addDefinition(definitions, input);
   }));
   const combinedAST = combineASTSchemas(initialAST);
   const transformedAST = applyDirectivesToAST(combinedAST, directives, resolvers);
   transformedAST.definitions.filter(x => x.kind === 'ObjectTypeDefinition').forEach((definition) => {
     if (['Query', 'Mutation'].includes(definition.name.value)) return;
-    const input = transformASTTypeToInput(definition, { newName: `${definition.name.value}Input`, ast: initialAST });
+    const input = transformASTTypeToInput(definition, { newName: `${definition.name.value}Input`, ast: transformedAST });
     addDefinition(transformedAST, input);
   });
   const builtSchema = buildASTSchema(transformedAST);
   addResolveFunctionsToSchema(builtSchema, resolvers);
-  console.log(resolvers)
   return { schema: builtSchema, ast: transformedAST };
 };

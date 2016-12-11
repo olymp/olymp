@@ -232,7 +232,7 @@ export default class MainList extends Component {
         <div className="olymp-container">
           <Table
             rowSelection={rowSelection}
-            size="middle"
+            size="small"
             rowKey="id"
             onRowClick={onClick}
             loading={!items}

@@ -17,11 +17,9 @@ export const list = model => (source, args, context, fieldASTs) => {
 };
 
 export const one = (model, propertyKey) => (source, args, context, fieldASTs) => {
-  console.log('mongo-resolver', model, propertyKey);
   const { adapter, beforeQuery, afterQuery } = context;
   return beforeQuery(model, args).then((args) => {
     const projection = getProjection(fieldASTs);
-    console.log(projection);
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
       if (source[`${propertyKey}Id`]) return cursor.findOne({ id: source[`${propertyKey}Id`] }, projection);
@@ -30,7 +28,6 @@ export const one = (model, propertyKey) => (source, args, context, fieldASTs) =>
     if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
     if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
     return afterQuery(model, cursor).then(x => {
-      console.log(x);
       return x;
     });
   });
@@ -44,15 +41,15 @@ export const write = model => (source, args, context, fieldASTs) => {
     let node;
     visit(ast, {
       enter(_node) {
-        if (_node.kind.endsWith('TypeDefinition') && _node.name && _node.name.value === model) {
+        if (_node && _node.name && _node.kind.endsWith('TypeDefinition') && _node.name.value === model) {
           node = _node;
           return BREAK;
         } return undefined;
       },
     });
 
-    const state = node.directives.find(x => x.name.value === 'state');
-    const stamp = node.directives.find(x => x.name.value === 'stamp');
+    const state = node.directives.find(x => x.name && x.name.value === 'state');
+    const stamp = node.directives.find(x => x.name && x.name.value === 'stamp');
     if (stamp && args.input) {
       delete args.input.createdAt;
       delete args.input.updatedAt;
@@ -79,12 +76,12 @@ export const write = model => (source, args, context, fieldASTs) => {
 
     const promises = [];
     Object.keys(args.input || {}).forEach((key) => {
-      const type = node.fields.find(({ name }) => name.value === key);
-      const relation = type.directives.find(x => x.name.value === 'relation');
+      const type = node.fields.find(({ name }) => name && name.value === key);
+      const relation = type.directives.find(x => x.name && x.name.value === 'relation');
       if (relation) {
         if (!args.input[key]) {
           args.input[`${key}Id`] = null;
-        } else {
+        } else if (type.type.name) {
           promises.push(write(type.type.name.value)(args, {
             input: args.input[key],
             operationType: args.operationType,
