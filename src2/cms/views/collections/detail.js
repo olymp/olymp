@@ -3,7 +3,6 @@ import capitalize from 'capitalize';
 import { withItem, withCollection, withItems } from '../../decorators';
 import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
 import { SlateMate } from 'olymp/slate';
-import { graphql, gql } from 'olymp';
 import moment from 'moment';
 import Image from '../../edits/image';
 
@@ -13,7 +12,7 @@ const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
-const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt'];
+const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
 const preventDefaultAnd = (func, args) => e => {
   e.preventDefault();
@@ -116,24 +115,28 @@ class DetailEditor extends Component {
 }
 
 const getFormEditor = (type, name, props = {}, subField) => {
+  if (subField && subField.type) {
+    if (subField.type.kind === 'LIST' && subField.type.ofType) {
+      return (
+        <DetailEditor {...props} tags name={subField.type.ofType.name} />
+      );
+    } else {
+      return (
+        <DetailEditor {...props} name={subField.type.name} />
+      );
+    }
+  }
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
       return <Select {...props} tags searchPlaceholder="Suche ..." />;
     } else if (type.ofType.name.indexOf('Nested') === 0) {
       return <SubForm {...props} name={type.ofType.name} type={type} />;
-    }
+    } return null;
   }
   if (type.kind === 'OBJECT') {
     if (type.name === 'Image') {
       return <Image {...props} width="100%" noPreview />;
-    } else {
-      return null;
-    }
-  }
-  if (subField && subField.type) {
-    return (
-      <DetailEditor {...props} name={subField.type.name} />
-    );
+    } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
     return (
@@ -224,11 +227,15 @@ const CollectionCreateForm = Form.create()(
             field.type,
             name,
             (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {},
-            field.name.endsWith('Id') ? fields.find(({ name }) => `${name}Id` === field.name) : null
+            field.name.endsWith('Id')
+              ? fields.find(({ name }) => `${name}Id` === field.name)
+              : field.name.endsWith('Ids')
+              ? fields.find(({ name }) => `${name}Ids` === field.name)
+              : null
           );
           if (!editor) return null;
           return (
-            <FormItem key={field.name} label={title.replace('-Id', '')} {...formItemLayout}>
+            <FormItem key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...formItemLayout}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(editor)}
             </FormItem>
           );

@@ -4,11 +4,18 @@ const { visit, BREAK } = require('graphql/language');
 const ShortId = require('shortid');
 const moment = require('moment');
 
-export const list = model => (source, args, context, fieldASTs) => {
+export const list = (model, propertyKey) => (source, args, context, fieldASTs) => {
   const { adapter, beforeQuery, afterQuery } = context;
   return beforeQuery(model, args).then((args) => {
     const projection = getProjection(fieldASTs);
     let cursor = adapter.db.collection(model.toLowerCase());
+    if (source && propertyKey) {
+      if (source[`${propertyKey}Ids`]) {
+        if (!args.query) args.query = {};
+        delete args.query.id;
+        args.query.id = { in: source[`${propertyKey}Ids`] };
+      } else return [];
+    }
     if (args.query) cursor = cursor.find(adaptQuery(args.query), projection);
     else cursor = cursor.find({}, projection);
     if (args.sort) cursor = cursor.sort(adaptSort(args.sort));
@@ -27,9 +34,9 @@ export const one = (model, propertyKey) => (source, args, context, fieldASTs) =>
     }
     if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
     if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
-    return afterQuery(model, cursor).then(x => {
-      return x;
-    });
+    if (args.skip) cursor = cursor.skip(args.skip);
+    if (args.limit) cursor = cursor.limit(args.limit);
+    return afterQuery(model, cursor);
   });
 };
 
