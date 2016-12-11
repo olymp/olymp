@@ -10,15 +10,17 @@ module.exports = ({ adapter } = {}) => {
   const getFinalSchema = () => {
     let moduleQueries = ['hello: String'];
     let moduleTypeDefinitions = [];
+    let moduleHooks = { before: [], after: [] };
     let moduleMutations = ['hello: String'];
     let moduleResolvers = { Query: { hello: () => 'World!' }, Mutation: { hello: () => 'World!' } };
 
     Object.keys(_schemas).forEach((schemaName) => {
-      if (schemaName.toLowerCase() !== 'page' && schemaName.toLowerCase() !== 'user') return;
-      const { query, mutation, resolvers, schema } = _schemas[schemaName];
+      const { query, mutation, resolvers, schema, hooks } = _schemas[schemaName];
       if (schema) moduleTypeDefinitions.push(schema);
       if (query) moduleQueries.push(query);
       if (mutation) moduleMutations.push(mutation);
+      if (hooks && hooks.before) moduleHooks.before.push(hooks.before);
+      if (hooks && hooks.after) moduleHooks.after.push(hooks.after);
       Object.keys(resolvers || {}).forEach((name) => {
         if (name === 'Query') Object.keys(resolvers.Query).forEach((key) => { moduleResolvers.Query[key] = resolvers.Query[key]; });
         else if (name === 'Mutation') Object.keys(resolvers.Mutation).forEach((key) => { moduleResolvers.Mutation[key] = resolvers.Mutation[key]; });
@@ -26,7 +28,7 @@ module.exports = ({ adapter } = {}) => {
       });
     });
 
-    const schema = buildSchema(
+    const { schema, ast } = buildSchema(
       moduleTypeDefinitions.concat([
         defaultTypes, `
           type Query {
@@ -45,7 +47,15 @@ module.exports = ({ adapter } = {}) => {
       directives({ adapter, resolvers: moduleResolvers })
     );
     Object.keys(defaultScalars).forEach(key => Object.assign(schema.getType(key), defaultScalars[key]));
-    return schema;
+    const getContext = (ctx) => {
+      const context = Object.assign({ schema, resolvers: moduleResolvers, adapter, ast }, ctx);
+      context.beforeQuery = getHook(moduleHooks.before, false, context);
+      context.afterQuery = getHook(moduleHooks.after, false, context);
+      context.beforeMutation = getHook(moduleHooks.before, true, context);
+      context.afterMutation = getHook(moduleHooks.after, true, context);
+      return context;
+    };
+    return { schema, getContext };
   };
   return {
     getSchema: () => getFinalSchema(),
@@ -57,3 +67,20 @@ module.exports = ({ adapter } = {}) => {
   };
 };
 
+const getHook = (hooks, mutation, context) => {
+  return (model, args) => {
+    let promise = Promise.resolve(args);
+    let currentArgs;
+    let error;
+    hooks.forEach((hook) => {
+      promise = promise.then((newArgs) => {
+        if (newArgs) currentArgs = newArgs;
+        return hook(model, mutation, currentArgs, context);
+      });
+    });
+    return promise.then((newArgs) => {
+      if (error) throw error;
+      return newArgs || currentArgs;
+    });
+  };
+};

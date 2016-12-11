@@ -1,6 +1,6 @@
 const { visit } = require('graphql/language');
 
-const getFunc = (ast, directives, resolvers, context, throwOnMissing) => (node, key, parent, path, ancestors, method) => {
+const getFunc = (ast, directives, resolvers, throwOnMissing) => (node, key, parent, path, ancestors, method) => {
   if (node.directives && node.directives.length) {
     let current = node;
     node.directives.forEach((directive) => {
@@ -9,9 +9,9 @@ const getFunc = (ast, directives, resolvers, context, throwOnMissing) => (node, 
       if (directiveName in directives) {
         const staticFunctions = directives[directiveName].resolveStatic;
         if (staticFunctions[method]) {
-          const ret = staticFunctions[method].call(context, current, directive, {
-            key, parent, path, ancestors, resolvers, ast,
-          });
+          const ret = staticFunctions[method].call({}, current, directive, Object.assign({
+            key, parent, path, ancestors, ast, resolvers,
+          }));
           if (typeof ret !== typeof undefined) current = ret;
         }
       } else if (throwOnMissing) throw new Error(`Unknown directive '${directiveName}'`);
@@ -20,8 +20,8 @@ const getFunc = (ast, directives, resolvers, context, throwOnMissing) => (node, 
   } return undefined;
 };
 
-export default (ast, directives, resolvers = {}, context = {}, throwOnMissing = true) => {
-  const func = getFunc(ast, directives, resolvers, context, throwOnMissing);
+export default (ast, directives, resolvers, throwOnMissing = true) => {
+  const func = getFunc(ast, directives, resolvers, throwOnMissing);
   const transformedAST = visit(ast, {
     enter(node, key, parent, path, ancestors) {
       return func(node, key, parent, path, ancestors, 'enter');
@@ -30,7 +30,8 @@ export default (ast, directives, resolvers = {}, context = {}, throwOnMissing = 
       return func(node, key, parent, path, ancestors, 'leave');
     },
   });
-  const func2 = getFunc(transformedAST, directives, resolvers, context, throwOnMissing);
+
+  const func2 = getFunc(transformedAST, directives, resolvers, throwOnMissing);
   const transformedAST2 = visit(transformedAST, {
     enter(node, key, parent, path, ancestors) {
       return func2(node, key, parent, path, ancestors, 'enter2');
@@ -40,6 +41,6 @@ export default (ast, directives, resolvers = {}, context = {}, throwOnMissing = 
     },
   });
   Object.keys(directives || {}).map(key => directives[key]).forEach(({ resolveStatic }) =>
-    resolveStatic.finalize && resolveStatic.finalize.apply(context, transformedAST2));
+    resolveStatic.finalize && resolveStatic.finalize.apply({}, transformedAST2));
   return transformedAST2;
 };

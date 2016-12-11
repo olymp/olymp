@@ -1,8 +1,3 @@
-const defaultHook = (source, args, context) => {
-  if (!context.user) throw new Error('Must be authenticated');
-  return Promise.resolve(args);
-};
-
 module.exports = (schema, { adapter }) => {
   schema.addSchema({
     name: 'page',
@@ -21,8 +16,15 @@ module.exports = (schema, { adapter }) => {
         },
       },
     },
+    hooks: {
+      before: (model, isMutation, args, { user }) => {
+        if (isMutation && model === 'Page' && !user) {
+          throw new Error('Please log in');
+        }
+      },
+    },
     schema: `
-      type Page @collection(name: "Page") @stamps {
+      type Page @collection(name: "Page") @stamp @state {
         menu: String
         alias: Page @relation
         href: String
