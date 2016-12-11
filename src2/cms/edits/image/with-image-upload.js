@@ -74,7 +74,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
     return (
       <WrappedComponent {...this.props} showMediathek={() => this.show(image)}>
         {children}
-        {visible && !image ? (
+        {visible && !(image && image.url) ? (
           <Modal visible title="Mediathek" onCancel={this.onCancel} onOk={this.hide}>
             <Media
               tags={tags}
@@ -93,7 +93,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
             <Upload onClose={this.show} />
           </Modal>
         ) : null}
-        {visible && image ? (
+        {visible && image && image.url ? (
           <Modal
             visible
             title="Bildbereich auswählen"
