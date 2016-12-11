@@ -1,4 +1,4 @@
-const MongoClient = require('bluebird').promisifyAll(require("mongodb")).MongoClient;
+const MongoClient = require('bluebird').promisifyAll(require('mongodb')).MongoClient;
 const createSessionStore = require('./session');
 const ShortId = require('shortid');
 

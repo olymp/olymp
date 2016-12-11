@@ -10,11 +10,10 @@ const createSitemap = require('./sitemap');
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 
 module.exports = (server, options) => {
-  const schema = createSchema();
   let adapter;
 
   if (options.adapter && options.adapter.indexOf('mongodb') === 0) adapter = require('./store-mongo')(options.adapter);
-  if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
+  // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
 
   if (options.sessions && adapter) {
@@ -30,22 +29,23 @@ module.exports = (server, options) => {
     }));
   }
 
+  const Schema = createSchema({ adapter });
   const mail = options.mail ? createMail(options.mail) : null;
-  createSitemap(schema, {});
-  if (options.google) createGoogleGql(schema, typeof options.google === 'object' ? options.google : {});
-  if (options.pages) createPagesGql(schema, typeof options.pages === 'object' ? Object.assign({ adapter }, options.pages) : { adapter });
-  if (options.media) createMediaGql(schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
+  createSitemap(Schema, {});
+  if (options.google) createGoogleGql(Schema, typeof options.google === 'object' ? options.google : {});
+  if (options.pages) createPagesGql(Schema, typeof options.pages === 'object' ? Object.assign({ adapter }, options.pages) : { adapter });
+  if (options.media) createMediaGql(Schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
   if (options.schemas) {
     if (typeof options.schemas === 'function') {
-      options.schemas({ schema, adapter });
+      options.schemas({ schema: Schema, adapter });
     } else if (Array.isArray(options.schemas)) {
-      options.schemas.forEach(s => s(schema, { adapter }));
+      options.schemas.forEach(s => s(Schema, { adapter }));
     }
   }
 
   if (options.auth) {
     if (typeof options.auth === 'string') options.auth = { secret: options.auth };
-    const { auth } = createAuthGql(schema, Object.assign({ adapter, mail }, options.auth));
+    const { auth } = createAuthGql(Schema, Object.assign({ adapter, mail }, options.auth));
     server.all('/graphql', (req, res, next) => {
       if (req.session && req.session.userId) {
         auth.getUser(req.session.userId).then(x => {
@@ -62,6 +62,6 @@ module.exports = (server, options) => {
     server.get('/graphql', graphiqlExpress({ endpointURL: '/graphql' }));
   }
 
-  const Schema = schema.getSchema();
-  server.post('/graphql', graphqlExpress(request => ({ schema: Schema, context: Object.assign({ adapter, schema: Schema }, request) })));
+  const { schema, getContext } = Schema.getSchema();
+  server.post('/graphql', graphqlExpress(request => ({ schema, context: getContext(request) })));
 };
