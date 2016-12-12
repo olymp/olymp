@@ -184,11 +184,8 @@ export default class SlateEditor extends Component {
   }
 
   onPaste = (e, data, state) => {
-    if (data.type !== 'html') return;
+    if (data.type !== 'html') return undefined;
     const { document } = serializer.deserialize(data.html);
-
-    console.log(data.html, document);
-
     return state
       .transform()
       .insertFragment(document)
