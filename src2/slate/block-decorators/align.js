@@ -13,7 +13,6 @@ const getStyle = align => {
     };
   } return {
     display: 'block',
-    height: 'auto',
     margin: '0px auto',
   };
 };
