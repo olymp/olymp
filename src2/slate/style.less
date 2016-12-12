@@ -1,3 +1,14 @@
+.fullscreen {
+  top: 0!important;
+  width: 70%!important;
+  padding: 10px!important;
+  min-height: 400px!important;
+  background-color: transparent!important;
+  .ant-modal-content {
+    border-radius: 0!important;
+  }
+}
+
 blockquote {
   border-left: 2px solid #ddd;
   margin-left: 0;
@@ -106,11 +117,12 @@ blockquote[dir="rtl"] {
   opacity: 0;
   z-index: 2000;
   margin-top: -6px;
-  color: #fff;
+  color: #444;
   cursor: auto;
   border-radius: 5px;
   // transition: all .1s ease;
-  background-image: linear-gradient(180deg,rgb(70, 70, 70),#151515);
+  background-image: linear-gradient(180deg, #ffffff, #f3f3f3);
+  box-shadow: 0px 1px 9px 0px rgba(0, 0, 0, 0.1);
   &:after {
     top: 100%;
     left: 50%;
@@ -121,7 +133,7 @@ blockquote[dir="rtl"] {
     position: absolute;
     pointer-events: none;
     // border-color: #151515;
-    border-top-color: #151515;
+    border-top-color: #f3f3f3;
     border-width: 5px;
     margin-left: -5px;
   }

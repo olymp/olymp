@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import capitalize from 'capitalize';
 import { withItem, withCollection, withItems } from '../../decorators';
 import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
-import { SlateMate } from 'olymp/slate';
+import { SlateMate, SlateModal } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
 
@@ -90,14 +90,14 @@ class DatePickerInt extends Component {
 
 class SlateMateExt extends Component {
   state = { show: false };
-  onChange = (e) => {
+  onClose = (e) => {
     const { onChange } = this.props;
-    onChange(e);
+    this.setState({ show: false });
+    if (e) onChange(e);
   }
   render() {
     const { show } = this.state;
-    const { value } = this.props;
-    if (show) return <SlateMate {...this.props} value={value} onChange={this.onChange} />;
+    if (show) return <SlateModal className="form-controlxx" {...this.props} onClose={this.onClose} />;
     return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
   }
 }
@@ -149,7 +149,7 @@ const getFormEditor = (type, name, props = {}, subField) => {
   }
   switch (type.name) {
     case 'Json':
-      return <SlateMateExt {...props} className="form-control" placeholder={name} />;
+      return <SlateMateExt {...props} placeholder={name} />;
     case 'Boolean':
       return <Checkbox {...props} />;
     case 'Date':

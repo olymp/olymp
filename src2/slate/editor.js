@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import { Button } from 'antd';
 import { Editor, Html } from 'slate';
+import withBlockTypes from './decorators';
 import './style.less';
 
 
@@ -95,6 +96,7 @@ const serializer = new Html({
   }],
 });
 
+@withBlockTypes
 @withUniqueId()
 @withState({ terse: true })
 @useBlocks(options)
@@ -114,6 +116,9 @@ export default class SlateEditor extends Component {
     autoMarkDownKeyDown: PropTypes.func,
     plugins: PropTypes.array,
     className: PropTypes.string,
+  }
+  static defaultProps = {
+    readOnly: false,
   }
 
   onPaste = (e, data, state) => {
@@ -179,7 +184,7 @@ export default class SlateEditor extends Component {
         {this.state.mode ? <Editor
           {...rest}
           spellcheck={spellcheck || false}
-          readOnly={readOnly}
+          readOnly={!!readOnly}
           state={this.state.mode}
           onChange={mode => this.setState({ mode })}
           onPaste={this.onPaste}
@@ -187,7 +192,7 @@ export default class SlateEditor extends Component {
         /> : <Editor
           {...rest}
           spellcheck={spellcheck || false}
-          readOnly={readOnly}
+          readOnly={!!readOnly}
           plugins={plugins}
           schema={{ marks, nodes }}
           state={value}
