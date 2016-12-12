@@ -211,10 +211,10 @@ export default class MainList extends Component {
               </Menu.Item>
 
               { selectedRowKeys.length && location.query && location.query.state === 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => selectedRowKeys.forEach(key => removeCollectionItem(key))}>Dauerhaft löschen ({selectedRowKeys.length})</span></Menu.Item> : undefined }
-              { selectedRowKeys.length && location.query && location.query.state !== 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => changeState('REMOVED')}>Löschen ({selectedRowKeys.length})</span></Menu.Item> : undefined }
-              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => changeState('ARCHIVED')}>Archivieren ({selectedRowKeys.length})</span></Menu.Item> : undefined }
-              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="12"><span onClick={() => changeState('DRAFT')}>als Entwurf ({selectedRowKeys.length})</span></Menu.Item> : undefined }
-              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="11"><span onClick={() => changeState('PUBLISHED')}>Veröffentlichen ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length && location.query && location.query.state !== 'REMOVED' ? <Menu.Item style={{ float: 'right' }} key="14"><span onClick={() => changeState('REMOVED')}>Papierkorb ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="13"><span onClick={() => changeState('ARCHIVED')}>Archiv ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="12"><span onClick={() => changeState('DRAFT')}>Entwurf ({selectedRowKeys.length})</span></Menu.Item> : undefined }
+              { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="11"><span onClick={() => changeState('PUBLISHED')}>Veröffentlicht ({selectedRowKeys.length})</span></Menu.Item> : undefined }
               { selectedRowKeys.length ? <Menu.Item style={{ float: 'right' }} key="16"><Icon type="download" />Exportieren ({selectedRowKeys.length})</Menu.Item> : undefined }
               <Menu.Item style={{ float: 'right' }} key="15">
                 <Icon type="upload" />Importieren
