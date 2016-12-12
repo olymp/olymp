@@ -9,11 +9,12 @@ const CmsPage = (props) => {
   if (!item) return null;
 
   readOnly = readOnly !== undefined ? readOnly : getReadOnly ? getReadOnly(props) : (!auth.user || !!item.computed);
+  if (location && location.query && Object.keys(location.query).find(x => location.query[x] !== undefined)) readOnly = true;
 
   return (
     <div>
       <Helmet title={item.name} />
-      <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} blockTypes={blocks} />
+      <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} />
       {!readOnly ? <Gateway into="button1">
         <a href="javascript:;" onClick={save}>
           Seite speichern

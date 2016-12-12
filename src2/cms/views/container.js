@@ -7,6 +7,7 @@ import { Menu, Affix, Icon } from 'antd';
 import { sortBy } from 'lodash';
 
 import { withRouter } from '../decorators';
+import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaDetail from './media/detail';
@@ -18,6 +19,7 @@ const SubMenu = Menu.SubMenu;
 
 @useLightboxes
 @withRouter
+@useBlockTypes()
 @graphql(gql`
   query schema {
     schema: __schema {
@@ -117,7 +119,7 @@ export default class Container extends Component {
 
     const { schema } = data;
     const collections = schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
-    const collection = query ? (collections || []).filter(c => query[`@${c.name}`] !== undefined)[0] : undefined;
+    const collection = query ? (collections || []).find(c => query[`@${c.name}`] !== undefined) : undefined;
     // const colSchema = query && query.schema ? (collections || []).filter(
     // c => c.name === query.schema
     // )[0] : undefined;
