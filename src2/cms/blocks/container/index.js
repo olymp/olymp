@@ -10,7 +10,7 @@ import { useGenericBlock, GenericBlock } from 'olymp/cms';
     stepX: '10%',
   },
 })
-export default class GZContainer extends Component {
+export default class ContainerBlock extends Component {
   render() {
     return (
       <GenericBlock {...this.props} style={{ ...this.props.style, position: 'relative', minHeight: 30, overflow: 'hidden' }} />
