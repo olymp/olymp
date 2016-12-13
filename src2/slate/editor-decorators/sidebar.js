@@ -69,6 +69,7 @@ export default (options = {}) => {
         </Menu.Item>
       );
     }
+
     renderSidebar = () => {
       const theSidebarTypes = [...sidebarTypes, ...this.props.sidebarTypes];
       const categories = {};
@@ -98,14 +99,14 @@ export default (options = {}) => {
       return (
         <div className="slate-sidebar" ref={ref => this.gwRef = ref} key="gw-sidebar">
           <Dropdown overlay={menu}>
-            <Icon type="plus-circle-o" className="slate-sidebar-icon" />
+            <Icon type="plus" className="slate-sidebar-icon" />
           </Dropdown>
         </div>
       );
     }
 
     render() {
-      const children = [
+      const children = this.props.readOnly ? this.props.children : [
         ...Children.toArray(this.props.children),
         this.renderSidebar(),
       ];

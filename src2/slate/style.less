@@ -37,6 +37,7 @@ blockquote[dir="rtl"] {
   i.slate-sidebar-icon {
     background-color: rgba(255, 255, 255, .7);
     border-radius: 50%;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .75);
   }
 }
 
@@ -106,12 +107,9 @@ blockquote[dir="rtl"] {
   opacity: 0;
   z-index: 2000;
   margin-top: -6px;
-  color: #444;
+  border-bottom: none;
   cursor: auto;
-  border-radius: 5px;
-  // transition: all .1s ease;
-  background-image: linear-gradient(180deg, #ffffff, #f3f3f3);
-  box-shadow: 0px 1px 9px 0px rgba(0, 0, 0, 0.1);
+
   &:after {
     top: 100%;
     left: 50%;
@@ -121,36 +119,19 @@ blockquote[dir="rtl"] {
     width: 0;
     position: absolute;
     pointer-events: none;
-    // border-color: #151515;
-    border-top-color: #f3f3f3;
+    border-top-color: #404040;
     border-width: 5px;
     margin-left: -5px;
   }
-}
 
-.slate-toolbar .slate-toolbar-item {
-  cursor: pointer;
-  display: inline-block;
-  padding: 6px 10px;
-  font-size: 14px;
-  &.separated {
-    border-left: 1px solid rgba(255, 255, 255, 0.25);
+  .active, [data-active=true] {
+    background-color: rgba(255, 255, 255, .1);
+    color: #FFF;
   }
 }
 
-[data-active=true], .slate-toolbar .slate-toolbar-item:hover {
-  color: limegreen;
-}
-
 [data-block-active=true] {
-  // outline: 3px solid black;
-  // outline: 1px solid #eeeeee;
-  // border: 1px solid #ddd;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-  /* border-radius: 3px; */
-  /* background-color: rgba(2, 2, 2, 0.04); */
-  // background-image: linear-gradient(180deg, #e8e8e8, #fbfbfb);
-
   border: 0;
   margin: 3px 2px;
   outline: 1px solid #ddd;

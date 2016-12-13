@@ -37,7 +37,11 @@ module.exports = config => {
 
     // insert (neu anlegen)
     return collection.insertOneAsync(newData)
-      .then(() => read(kind, { id: newData.id, attributes }));
+      .then(() => write(kind, Object.assign({}, newData))
+        .then(() => read(kind, {
+          id: newData.id,
+          attributes,
+        })));
   };
 
   const list = (kind, { sort, filter, attributes } = {}) => {
