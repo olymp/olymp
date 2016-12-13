@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import { Button } from 'antd';
-import { Editor, Html } from 'slate';
+import { Editor, Html, Raw } from 'slate';
 import withBlockTypes from './decorators';
 import './style.less';
-
 
 const options = {
   defaultNode: 'paragraph',
@@ -157,6 +156,9 @@ const serializer = new Html({
     },
   }],
 });
+
+export const htmlSerializer = serializer;
+export const rawSerializer = Raw;
 
 @withBlockTypes
 @withUniqueId()

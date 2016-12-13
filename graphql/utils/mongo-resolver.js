@@ -4,6 +4,34 @@ const { visit, BREAK } = require('graphql/language');
 const ShortId = require('shortid');
 const moment = require('moment');
 
+/* const DataLoader = require('dataloader');
+
+const loaders = {};
+var userLoader = new DataLoader(ids => {
+  var params = ids.map(id => '?' ).join();
+  var query = `SELECT * FROM users WHERE id IN (${params})`;
+  return queryLoader.load([query, ids]).then(
+    rows => ids.map(
+      id => rows.find(row => row.id === id) || new Error(`Row not found: ${id}`)
+    )
+  );
+});
+
+var queryLoader = new DataLoader(queries => new Promise(resolve => {
+  var waitingOn = queries.length;
+  var results = [];
+  db.parallelize(() => {
+    queries.forEach((query, index) => {
+      db.all.apply(db, query.concat((error, result) => {
+        results[index] = error || result;
+        if (--waitingOn === 0) {
+          resolve(results);
+        }
+      }));
+    });
+  });
+}), { cache: false });*/
+
 export const list = (model, propertyKey) => (source, args, context, fieldASTs) => {
   const { adapter, beforeQuery, afterQuery } = context;
   return beforeQuery(model, args).then((args) => {
