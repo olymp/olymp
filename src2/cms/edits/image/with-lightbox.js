@@ -87,6 +87,11 @@ export const useLightboxes = WrappedComponent => class WithLightbox extends Comp
     const { visible } = this.state;
     const { children } = this.props;
     const images = Object.keys(this.lightboxes).map(key => this.lightboxes[key]);
+    const image = visible ? images[visible] : {};
+    const footer = image.caption ? (
+      <span>{image.caption} <span className="source">{image.source}</span></span>
+    ) : false;
+
     return (
       <WrappedComponent {...this.props}>
         {children}
@@ -95,14 +100,14 @@ export const useLightboxes = WrappedComponent => class WithLightbox extends Comp
             visible
             width="100xd"
             className="athena-lightbox"
-            footer={false}
-            mainSrc={images[visible].url}
-            imageTitle={images[visible].caption}
+            footer={footer}
+            mainSrc={image.url}
+            imageTitle={image.caption}
             nextSrc={images[(visible + 1) % images.length]}
             prevSrc={images[(visible + images.length - 1) % images.length]}
             onCancel={this.hide}
           >
-            <img src={cloudinaryUrl(images[visible].url)} width="100%" height="auto" />
+            <img src={cloudinaryUrl(image.url)} width="100%" height="auto" />
           </Modal>
         ) : null}
       </WrappedComponent>

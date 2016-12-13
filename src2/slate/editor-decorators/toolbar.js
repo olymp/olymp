@@ -1,5 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react';
 import Portal from 'react-portal';
+import { Menu, Icon } from 'antd';
 import { getVisibleSelectionRect } from '../utils/range';
 import { hasBlock, hasMark } from '../utils/has';
 import addBlock from '../utils/add-block';
@@ -54,15 +55,7 @@ export default (options = {}) => {
       onChange(addBlock(value, props, defaultNode));
     }
     renderBlockButton = (props) => {
-      const { value } = this.props;
-      const isActive = hasBlock(value, props.type);
-      const onMouseDown = e => this.onClickBlock(e, props);
-
-      return (
-        <span key={props.type} className="slate-toolbar-item" onMouseDown={onMouseDown} data-active={isActive}>
-          <i className={`fa fa-${props.icon}`} />
-        </span>
-      );
+      return this.renderOptionButton(props, hasBlock, this.onClickBlock);
     }
     onClickMark = (e, type) => {
       e.stopPropagation();
@@ -77,24 +70,45 @@ export default (options = {}) => {
       this.props.onChange(value);
     }
     renderMarkButton = (props) => {
-      const { value } = this.props;
-      const isActive = hasMark(value, props.type);
-      const onMouseDown = e => this.onClickMark(e, props);
-
-      return (
-        <span key={props.type} className="slate-toolbar-item" onMouseDown={onMouseDown} data-active={isActive}>
-          <i className={`fa fa-${props.icon}`} />
-        </span>
-      );
+      return this.renderOptionButton(props, hasMark, this.onClickMark);
     }
     renderActionButton = (props) => {
       const isActive = props.isActive ? props.isActive(this.props) : false;
-      return (
-        <span key={props.type} className="slate-toolbar-item" onMouseDown={e => props.onClick(this.props, isActive, e)} data-active={isActive}>
-          <i className={`fa fa-${props.icon}`} />
-        </span>
-      );
+      const isActiveFn = () => isActive;
+      const test = e => props.onClick(this.props, isActive, e);
+
+      return this.renderOptionButton(props, isActiveFn, test);
     }
+    renderOptionButton = (props, isActiveFn, onMouseDownFn, label) => {
+      const { value } = this.props;
+      const { type } = props;
+      const isActive = isActiveFn(value, type);
+      const onMouseDown = e => onMouseDownFn(e, props);
+
+      if (type && Array.isArray(type)) {
+        return (
+          <Menu.SubMenu key={type.join('-')} title={<i className={`fa fa-${props.icon}`} />}>
+            {type.map((subType, index) => {
+              const subLabel = props.description && props.description[index] ?
+                props.description[index] :
+                  label || subType;
+
+              return this.renderOptionButton(
+                { ...props, type: subType }, isActiveFn, onMouseDownFn, subLabel
+              );
+            })}
+          </Menu.SubMenu>
+        );
+      }
+
+      return (
+        <Menu.Item key={type} className={isActive ? 'active' : ''} data-active={isActive}>
+          <div style={{ margin: '0 -20px', padding: '0 20px', textAlign: 'center' }} onMouseDown={onMouseDown}>
+            {label || <i className={`fa fa-${props.icon}`} />}
+          </div>
+        </Menu.Item>
+      );
+    };
     onOpen = ({ firstChild: menu }) => {
       this.setState({ menu });
     }
@@ -105,11 +119,15 @@ export default (options = {}) => {
       // const isOpen = editorState.isExpanded && editorState.isFocused;
       return (
         <Portal isOpened onOpen={this.onOpen} key="toolbar-0">
-          <div className="slate-toolbar slate-text-toolbar">
+          <Menu
+            mode="horizontal"
+            theme="dark"
+            className="slate-toolbar slate-text-toolbar"
+          >
             {theToolbarMarks.map(this.renderMarkButton)}
             {theToolbarTypes.map(this.renderBlockButton)}
             {theToolbarActions.map(this.renderActionButton)}
-          </div>
+          </Menu>
         </Portal>
       );
     }

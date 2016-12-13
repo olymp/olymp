@@ -79,7 +79,7 @@ export default (options = {}) => Block => {
       } else if (options) {
         let attributes;
         const selectedRowKeys = [];
-        const data = options.map(({ value, label, active, ...rest }) => {
+        const data = options.map(({ value, label, active, disabled, ...rest }) => {
           attributes = rest;
 
           if (active) {
@@ -105,9 +105,12 @@ export default (options = {}) => Block => {
           selectedRowKeys,
           onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows[0]),
         };
+        rowSelection.getCheckboxProps = record => ({
+          disabled: record.disabled,
+        });
 
         return (
-          <div>
+          <div key={type}>
             <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onClick={() => this.setState({ modal: { ...modal, [type]: true } })} data-active={active}>
               <i className={`fa fa-${icon}`} />
             </Button>

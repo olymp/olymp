@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { useGenericBlock, GenericBlock, Image } from 'olymp/cms';
 
 const actions = props => [{
-  type: 'image.src',
+  type: 'image-src',
   icon: 'picture-o',
   toggle: () => {
     const { setData } = props;
@@ -13,12 +13,12 @@ const actions = props => [{
 
 @useGenericBlock({
   label: 'Bild',
-  props: ['image'],
+  props: ['image', 'showMedia', 'full'],
   category: 'Media',
   editable: false,
   resize: {
     coverOnResize: true,
-    ratio: true,
+    stepX: '10%',
   },
   align: true,
   actions,
@@ -34,7 +34,7 @@ export default class ImageBlock extends Component {
   }
 
   render() {
-    const { setData, getData, className } = this.props;
+    const { setData, getData, className, readOnly } = this.props;
     const { style, children, ...rest } = this.props;
     const value = getData('image', undefined);
 
@@ -60,10 +60,10 @@ export default class ImageBlock extends Component {
             onChange={image => setData({ showMedia: undefined, image })}
             onCancel={() => setData({ showMedia: false })}
             lightbox
-            onImageClick={({ showLightbox }) => showLightbox()}
-            showMediathek={getData('showMedia') /* !getData('showMedia') ? false : (value ? value : true) */}
+            onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
+            showMediathek={getData('showMedia')}
             width={styles.width}
-            height={(parseInt(styles.width, 10) / width) * height}
+            height={value ? (parseInt(styles.width, 10) / width) * height : height}
             value={value}
             style={innerStyle}
           />

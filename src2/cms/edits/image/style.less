@@ -45,9 +45,27 @@
     margin: auto;
     width: auto;
     height: auto;
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90%;
+    max-height: 90%;
     opacity: 1;
     z-index: 2001;
+  }
+  .ant-modal-footer {
+    border: none;
+    color: white;
+    position: fixed;
+    z-index: 2002;
+    bottom: 8px;
+    text-align: left;
+    width: 100%;
+
+    .source {
+      float: right;
+
+      &:before {
+        content: 'Quelle: ';
+        color: #CCC;
+      }
+    }
   }
 }
