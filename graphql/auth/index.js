@@ -15,20 +15,20 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
     name: 'user',
     query: `
       checkToken(token: String): Boolean
-      verify(token: String): userAndToken
-      verifyCookie: user
-      userList: [user]
-      user(id: String): user
+      verify(token: String): UserAndToken
+      verifyCookie: User
+      userList: [User]
+      user(id: String): User
     `,
     mutation: `
       confirm(token: String): Boolean
       forgot(email: String): Boolean
-      register(input: userInput, password: String): user
+      register(input: UserInput, password: String): User
       reset(token: String, password: String): Boolean
-      login(email: String, password: String): userAndToken
-      loginCookie(email: String, password: String): user
+      login(email: String, password: String): UserAndToken
+      loginCookie(email: String, password: String): User
       logoutCookie: Boolean
-      user(input: userInput, operationType: OPERATION_TYPE): user
+      user(input: UserInput, operationType: OPERATION_TYPE): User
     `,
     resolvers: {
       Query: {
@@ -75,23 +75,19 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         },
       },
     },
-    typeDefs: {
-      user: `
-        type {
-          id: String
-          email: String
-          token: String
-          name: String
-          ${attributes}
-        }
-      `,
-      userAndToken: `
-        type {
-          user: user
-          token: String
-        }
-      `,
-    },
+    schema: `
+      type User {
+        id: String
+        email: String
+        token: String
+        name: String
+        ${attributes}
+      }
+      type UserAndToken {
+        user: User
+        token: String
+      }
+    `,
   });
   return { auth };
 };

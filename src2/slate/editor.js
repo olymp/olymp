@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import { Button } from 'antd';
-import { Editor, Html } from 'slate';
+import { Editor, Html, Raw } from 'slate';
+import withBlockTypes from './decorators';
 import './style.less';
-
 
 const options = {
   defaultNode: 'paragraph',
@@ -87,19 +87,85 @@ const options = {
       default: return null;
     }
   },
-  rules: [],
 };
 
 const serializer = new Html({
   rules: [{
-    deserialize: (el, next) => ({
-      kind: 'block',
-      type: 'paragraph',
-      nodes: next(el.children),
-    }),
+    deserialize(el, next) {
+      const types = {
+        p: 'paragraph',
+        li: 'list-item',
+        ul: 'bulleted-list',
+        ol: 'numbered-list',
+        blockquote: 'quote',
+        pre: 'code',
+        h1: 'heading-one',
+        h2: 'heading-two',
+        h3: 'heading-three',
+        h4: 'heading-four',
+        h5: 'heading-five',
+        h6: 'heading-six',
+      };
+      const block = types[el.tagName];
+      if (!block) return undefined;
+      return {
+        kind: 'block',
+        type: block,
+        nodes: next(el.children),
+      };
+    },
+  }, {
+    deserialize(el, next) {
+      const marks = {
+        strong: 'bold',
+        em: 'italic',
+        u: 'underline',
+        s: 'strikethrough',
+        code: 'code',
+      };
+      const mark = marks[el.tagName];
+      if (!mark) return undefined;
+      return {
+        kind: 'mark',
+        type: mark,
+        nodes: next(el.children),
+      };
+    },
+  }, {
+    // Special case for code blocks, which need to grab the nested children.
+    deserialize(el, next) {
+      if (el.tagName !== 'pre') return undefined;
+      const code = el.children[0];
+      const children = code && code.tagName === 'code'
+        ? code.children
+        : el.children;
+
+      return {
+        kind: 'block',
+        type: 'code',
+        nodes: next(children),
+      };
+    },
+  }, {
+    // Special case for links, to grab their href.
+    deserialize(el, next) {
+      if (el.tagName !== 'a') return undefined;
+      return {
+        kind: 'inline',
+        type: 'link',
+        nodes: next(el.children),
+        data: {
+          href: el.attribs.href,
+        },
+      };
+    },
   }],
 });
 
+export const htmlSerializer = serializer;
+export const rawSerializer = Raw;
+
+@withBlockTypes
 @withUniqueId()
 @withState({ terse: true })
 @useBlocks(options)
@@ -120,18 +186,17 @@ export default class SlateEditor extends Component {
     plugins: PropTypes.array,
     className: PropTypes.string,
   }
+  static defaultProps = {
+    readOnly: false,
+  }
 
   onPaste = (e, data, state) => {
-    return;
-    /* if (data.type !== 'html') return;
-    if (data.isShift) return;
-
+    if (data.type !== 'html') return undefined;
     const { document } = serializer.deserialize(data.html);
-
     return state
       .transform()
       .insertFragment(document)
-      .apply(); */
+      .apply();
   }
 
   onKeyDown = (e, data, state) => {
@@ -184,7 +249,7 @@ export default class SlateEditor extends Component {
         {this.state.mode ? <Editor
           {...rest}
           spellcheck={spellcheck || false}
-          readOnly={readOnly}
+          readOnly={!!readOnly}
           state={this.state.mode}
           onChange={mode => this.setState({ mode })}
           onPaste={this.onPaste}
@@ -192,7 +257,7 @@ export default class SlateEditor extends Component {
         /> : <Editor
           {...rest}
           spellcheck={spellcheck || false}
-          readOnly={readOnly}
+          readOnly={!!readOnly}
           plugins={plugins}
           schema={{ marks, nodes }}
           state={value}

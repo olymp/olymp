@@ -1,73 +1,42 @@
-const defaultHook = (source, args, context) => {
-  if (!context.user) throw new Error('Must be authenticated');
-  return Promise.resolve(args);
-};
-
-module.exports = (schema, { adapter, Query, Mutation }) => {
+module.exports = (schema, { adapter }) => {
   schema.addSchema({
     name: 'page',
     query: `
-      page(id: String, slug: String): page
-      pageList: [page]
+      page: Page @query
+      pageList: [Page] @query
     `,
     mutation: `
-      page(id: String, input: pageInput, operationType: OPERATION_TYPE): page
-      reorderPages(id: String, ids: [String], order: [Int]): [page]
+      page: Page @mutate
+      reorderPages(id: String, ids: [String], order: [Int]): [Page]
     `,
     resolvers: {
-      Query: {
-        page: (source, args, context, { fieldASTs }) => {
-          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          if (args.slug) {
-            return adapter.read('page', { filter: { slug: args.slug } });
-          } return adapter.read('page', Object.assign({}, args, { }));
-        },
-        pageList: (source, args, context, { fieldASTs }) => {
-          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
-          return adapter.list('page', Object.assign({}, args, { }));
-        },
-      },
       Mutation: {
-        page: (source, args, context) => {
-          const hook = Mutation && Mutation.page ? Mutation.page : defaultHook;
-          return hook(source, Object.assign({}, args), context).then((args) => {
-            const { operationType } = args;
-            delete args.operationType;
-
-            if (operationType === 'REMOVE') {
-              return adapter.remove('page', Object.assign({}, args));
-            }
-            if (args.input) {
-              args = Object.assign({}, args, args.input);
-              delete args.input;
-            }
-
-            return adapter.write('page', args, { patch: operationType === 'PATCH' });
-          });
-        },
         reorderPages: (source, args) => {
-          // const attributes = fieldASTs[0].selectionSet.selections.map(x => x.name.value);
           return Promise.all(args.ids.map((id, order) => adapter.write('page', { id, order }, { patch: true })));
         },
       },
     },
-    typeDefs: {
-      page: `
-        type {
-          id: String
-          menu: String
-          aliasId: String
-          href: String
-          parentId: String
-          order: Int
-          name: String
-          description: String
-          slug: String
-          blocks: Json
-          templateName: String
-          templateData: Json
+    hooks: {
+      before: (model, isMutation, args, { user }) => {
+        if (isMutation && model === 'Page' && !user) {
+          throw new Error('Please log in');
         }
-      `,
+      },
     },
+    schema: `
+      type Page @collection(name: "Page") @stamp @state {
+        menu: String
+        alias: Page @relation
+        href: String
+        parent: Page @relation
+        order: Int
+        name: String
+        description: String
+        slug: String
+        blocks: Json
+        templateName: String
+        templateData: Json
+      }
+    `,
   });
 };
