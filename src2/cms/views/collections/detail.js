@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import capitalize from 'capitalize';
 import { withItem, withCollection, withItems } from '../../decorators';
 import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
-import { SlateMate } from 'olymp/slate';
-import { graphql, gql } from 'olymp';
+import { SlateMate, SlateModal } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
 
@@ -13,7 +12,7 @@ const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
-const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt'];
+const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
 const preventDefaultAnd = (func, args) => e => {
   e.preventDefault();
@@ -91,14 +90,14 @@ class DatePickerInt extends Component {
 
 class SlateMateExt extends Component {
   state = { show: false };
-  onChange = (e) => {
+  onClose = (e) => {
     const { onChange } = this.props;
-    onChange(e);
+    this.setState({ show: false });
+    if (e) onChange(e);
   }
   render() {
     const { show } = this.state;
-    const { value } = this.props;
-    if (show) return <SlateMate {...this.props} value={value} onChange={this.onChange} />;
+    if (show) return <SlateModal className="form-controlxx" {...this.props} onClose={this.onClose} />;
     return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
   }
 }
@@ -115,22 +114,29 @@ class DetailEditor extends Component {
   }
 }
 
-const getFormEditor = (type, name, props = {}) => {
+const getFormEditor = (type, name, props = {}, subField) => {
+  if (subField && subField.type) {
+    if (subField.type.kind === 'LIST' && subField.type.ofType) {
+      return (
+        <DetailEditor {...props} tags name={subField.type.ofType.name} />
+      );
+    } else {
+      return (
+        <DetailEditor {...props} name={subField.type.name} />
+      );
+    }
+  }
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
       return <Select {...props} tags searchPlaceholder="Suche ..." />;
-    } else if (type.ofType.name.indexOf('nested') === 0) {
+    } else if (type.ofType.name.indexOf('Nested') === 0) {
       return <SubForm {...props} name={type.ofType.name} type={type} />;
-    }
+    } return null;
   }
   if (type.kind === 'OBJECT') {
-    if (type.name === 'image') {
+    if (type.name === 'Image') {
       return <Image {...props} width="100%" noPreview />;
-    } else {
-      return (
-        <DetailEditor name={type.name} />
-      );
-    }
+    } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
     return (
@@ -143,7 +149,7 @@ const getFormEditor = (type, name, props = {}) => {
   }
   switch (type.name) {
     case 'Json':
-      return <SlateMateExt {...props} className="form-control" placeholder={name} />;
+      return <SlateMateExt {...props} placeholder={name} />;
     case 'Boolean':
       return <Checkbox {...props} />;
     case 'Date':
@@ -217,16 +223,20 @@ const CollectionCreateForm = Form.create()(
       <Form horizontal>
         {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
-
+          const editor = getFormEditor(
+            field.type,
+            name,
+            (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {},
+            field.name.endsWith('Id')
+              ? fields.find(({ name }) => `${name}Id` === field.name)
+              : field.name.endsWith('Ids')
+              ? fields.find(({ name }) => `${name}Ids` === field.name)
+              : null
+          );
+          if (!editor) return null;
           return (
-            <FormItem key={field.name} label={title} {...formItemLayout}>
-              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
-                getFormEditor(
-                  field.type,
-                  name,
-                  (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {}
-                )
-              )}
+            <FormItem key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...formItemLayout}>
+              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(editor)}
             </FormItem>
           );
         })}

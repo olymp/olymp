@@ -34,10 +34,12 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
       if (newValue !== oldValue && this.rawValue !== newValue) {
         this.value = parseValue(newValue, undefined, terse);
         return true;
-      } return false;
+      }
+      if (props.readOnly !== this.props.readOnly) return true;
+      return false;
     }
 
-    changeValue = value => {
+    changeValue = (value) => {
       this.value = value;
       this.forceUpdate();
       if (changeValue) {
