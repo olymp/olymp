@@ -45,6 +45,9 @@ export default class CoolImage extends Component {
     const containerStyle = { ...style };
     containerStyle.backgroundImage = `url(${url})`;
     containerStyle.backgroundSize = 'cover';
+    containerStyle.WebkitBackgroundSize = 'cover';
+    containerStyle.MozBackgroundSize = 'cover';
+    containerStyle.OBackgroundSize = 'cover';
     containerStyle.backgroundPosition = 'center center';
     if (height) containerStyle.height = height;
     if (width) containerStyle.width = width;
