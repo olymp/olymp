@@ -86,16 +86,16 @@ export const addInputTypes = (collectionName, ast) => {
     if (['Date', 'DateTime'].includes(field.type.name.value)) {
       addDefinition(ast, parse(`
         input DateQuery {
-          eq: Date,
-          ne: Date,
-          lt: Date,
-          gt: Date,
-          gte: Date,
-          lte: Date,
-          day: Date,
-          year: Date,
-          month: Date,
-          between: [Date],
+          eq: Float,
+          ne: Float,
+          lt: Float,
+          gt: Float,
+          gte: Float,
+          lte: Float,
+          day: Float,
+          year: Float,
+          month: Float,
+          between: [Float],
           null: Boolean
         }
       `).definitions[0]);

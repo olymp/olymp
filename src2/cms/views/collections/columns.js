@@ -47,7 +47,7 @@ const getCategory = (meta) => {
 
   } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
-      case 'image':
+      case 'Image':
         return {
           getCategory: (item) => {
             if (item) {
@@ -175,7 +175,7 @@ const resolveFieldValue = (value, meta) => {
     return '';
   } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
-      case 'image':
+      case 'Image':
         return value ? <img alt={value.url} src={cloudinaryUrl(value.url, { width: 50, height: 50 })} /> : '';
 
       default:

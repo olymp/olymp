@@ -44,10 +44,11 @@ export const list = (model, propertyKey) => (source, args, context, fieldASTs) =
         args.query.id = { in: source[`${propertyKey}Ids`] };
       } else return [];
     }
-    console.log(adaptQuery(args.query));
     if (args.query) cursor = cursor.find(adaptQuery(args.query), projection);
     else cursor = cursor.find({}, projection);
     if (args.sort) cursor = cursor.sort(adaptSort(args.sort));
+    if (args.skip) cursor = cursor.skip(args.skip);
+    if (args.limit) cursor = cursor.limit(args.limit);
     return afterQuery(model, cursor.toArray());
   });
 };
@@ -63,8 +64,6 @@ export const one = (model, propertyKey) => (source, args, context, fieldASTs) =>
     }
     if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
     if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
-    if (args.skip) cursor = cursor.skip(args.skip);
-    if (args.limit) cursor = cursor.limit(args.limit);
     return afterQuery(model, cursor);
   });
 };

@@ -79,7 +79,7 @@ export default (options = {}) => Block => {
       } else if (options) {
         let attributes;
         const selectedRowKeys = [];
-        const data = options.map(({ value, label, active, disabled, ...rest }) => {
+        const data = options.map(({ value, label, active, ...rest }) => {
           attributes = rest;
 
           if (active) {
@@ -92,6 +92,7 @@ export default (options = {}) => Block => {
             ...rest
           };
         });
+        delete attributes.disabled;
         const columns = Object.keys(attributes).map(key => ({
           title: capitalize(key),
           dataIndex: key,
