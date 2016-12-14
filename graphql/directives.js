@@ -1,4 +1,5 @@
 import { parse } from 'graphql/language';
+import capitalize from 'capitalize';
 import { list, one, write, addInputTypes } from './utils';
 
 export default ({ adapter, resolvers }) => ({
@@ -130,7 +131,7 @@ export default ({ adapter, resolvers }) => ({
 
         const field = parse(`
           type Mutation {
-            func(id: String, input: ${type.name.value}Input, operationType: OPERATION_TYPE): ${type.name.value}
+            func(id: String, input: ${capitalize(type.name.value)}Input, operationType: OPERATION_TYPE): ${type.name.value}
           }
         `).definitions[0].fields[0];
 

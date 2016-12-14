@@ -1,3 +1,5 @@
+import capitalize from 'capitalize';
+
 const { visit, Kind, BREAK } = require('graphql/language');
 // https://gist.github.com/voodooattack/ce5f0afb5515ab5a153e535ac20698da thanks!!
 
@@ -36,7 +38,7 @@ const transformASTTypeToInput = (type, { newName, ast, exclude = [], optional = 
           });
           const fieldType = fetchType(typeName, ast);
           if (fieldType && fieldType.kind === Kind.OBJECT_TYPE_DEFINITION) {
-            const inputName = `${fieldType.name.value}Input`;
+            const inputName = `${capitalize(fieldType.name.value)}Input`;
             if (generatedInputHistory.indexOf(inputName) === -1) {
               generatedInputHistory.push(inputName);
               if (!fetchType(inputName, ast) && fieldType.name.value !== type.name.value) {

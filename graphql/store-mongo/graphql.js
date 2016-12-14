@@ -1,3 +1,5 @@
+import capitalize from 'capitalize';
+
 /* eslint-disable no-param-reassign */
 module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableName, adapter }) => {
   moduleQueries.push(`
@@ -5,7 +7,7 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
     ${key}List(sort: [String], documentState: [DOCUMENT_STATE]): [${key}]
   `);
   moduleMutations.push(`
-    ${key}(id: String, input: ${key}Input, operationType: OPERATION_TYPE): ${key}
+    ${key}(id: String, input: ${capitalize(key)}Input, operationType: OPERATION_TYPE): ${key}
   `);
   moduleResolvers.Query[key] = (root, args) => {
     if (args.slug) {
@@ -37,7 +39,7 @@ module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableN
     delete args.operationType;
     if (!args.documentState) args.documentState = ['DRAFT'];
 
-    /*Object.keys(args).filter(x => x.name !== 'image').forEach((property) => {
+    /*Object.keys(args).filter(x => x.name !== 'Image').forEach((property) => {
       const type = schema._typeMap[key]._fields[property].type;
       if (type.constructor.name === 'GraphQLObjectType' && args[property] && args[property].id) {
         args[property] = args[property].id;
