@@ -44,6 +44,7 @@ export const list = (model, propertyKey) => (source, args, context, fieldASTs) =
         args.query.id = { in: source[`${propertyKey}Ids`] };
       } else return [];
     }
+    console.log(adaptQuery(args.query));
     if (args.query) cursor = cursor.find(adaptQuery(args.query), projection);
     else cursor = cursor.find({}, projection);
     if (args.sort) cursor = cursor.sort(adaptSort(args.sort));
