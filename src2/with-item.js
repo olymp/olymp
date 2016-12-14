@@ -1,13 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { notification } from 'antd';
 import gql from 'graphql-tag';
-
-const capitalize = str => str.charAt(0).toUpperCase() + str.substr(1);
+import capitalize from 'capitalize';
 
 export const mutateItem = (client, name, { attributes }) => props => client.mutate({
   mutation: gql`
-    mutation set_${name.toLowerCase()}($id:String, $type:OPERATION_TYPE!, $input:${name}Input!) {
+    mutation set_${name.toLowerCase()}($id:String, $type:OPERATION_TYPE!, $input:${capitalize(name)}Input!) {
       ${name.toLowerCase()}(id:$id, input:$input, operationType:$type) {
         ${attributes || 'id'}
       }
