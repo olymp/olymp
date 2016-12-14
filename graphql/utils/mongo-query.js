@@ -1,34 +1,61 @@
 const { parse, visit, BREAK, Kind } = require('graphql/language');
 const addDefinition = require('./add-definition').default;
 
+const attribs = [
+  'eq',
+  'ne',
+  'lt',
+  'gt',
+  'gte',
+  'lte',
+  'in',
+  'nin',
+];
 export const adaptQuery = (obj) => {
+  obj = Object.assign({}, obj);
   Object.keys(obj).forEach((key) => {
-    Object.keys(obj[key]).forEach((key2) => {
-      if (key2 === 'between') {
-        obj[key].$gte = obj[key][key2][0];
-        obj[key].$lt = obj[key][key2][1];
-        delete obj[key][key2];
-        return;
-      }
-      if (key2 === 'startsWith') {
-        obj[key].$regex = new RegExp(`^${obj[key][key2]}.*`, 'i');
-        delete obj[key][key2];
-        return;
-      }
-      if (key2 === 'contains') {
-        obj[key].$regex = new RegExp(`.*${obj[key][key2]}.*`, 'i');
-        delete obj[key][key2];
-        return;
-      }
-      if (key2 === 'null') {
-        if (obj[key].null) obj[key].$eq = null;
-        if (!obj[key].null) obj[key].$ne = null;
-        delete obj[key].null;
-        return;
-      }
-      obj[key][`$${key2}`] = obj[key][key2];
-      delete obj[key][key2];
-    });
+    if (obj[key] && Array.isArray(obj[key])) {
+      obj[key] = obj[key].map(item => typeof item === 'object' ? adaptQuery(item) : item);
+    }
+    else if (obj[key] && typeof obj[key] === 'object') {
+      obj[key] = adaptQuery(obj[key]);
+    }
+    if (key === 'and') {
+      obj.$and = obj.and;
+      delete obj.and;
+      return;
+    }
+    if (key === 'or') {
+      obj.$or = obj.or;
+      delete obj.or;
+      return;
+    }
+    if (key === 'between') {
+      obj.$gte = obj[key][0];
+      obj.$lt = obj[key][1];
+      delete obj[key];
+      return;
+    }
+    if (key === 'startsWith') {
+      obj.$regex = new RegExp(`^${obj[key]}.*`, 'i');
+      delete obj[key];
+      return;
+    }
+    if (key === 'contains') {
+      obj.$regex = new RegExp(`.*${obj[key]}.*`, 'i');
+      delete obj[key];
+      return;
+    }
+    if (key === 'null') {
+      if (obj.null) obj.$eq = null;
+      if (!obj.null) obj.$ne = null;
+      delete obj.null;
+      return;
+    }
+    if (attribs.indexOf(key) !== -1) {
+      obj[`$${key}`] = obj[key];
+      delete obj[key];
+    }
   });
   return obj;
 };
@@ -160,12 +187,14 @@ export const addInputTypes = (collectionName, ast) => {
 
   addDefinition(ast, parse(`
     input ${collectionName}Query {
-      ${collectionAst.fields.map(getArgument).filter(x => x).join(', ')}
+      ${collectionAst.fields.map(getArgument).filter(x => x).join('\n')}
+      and: [${collectionName}Query]
+      or: [${collectionName}Query]
     }
   `).definitions[0]);
   addDefinition(ast, parse(`
     input ${collectionName}Sort {
-      ${collectionAst.fields.map(getSort).filter(x => x).join(', ')}
+      ${collectionAst.fields.map(getSort).filter(x => x).join('\n')}
     }
   `).definitions[0]);
 };
