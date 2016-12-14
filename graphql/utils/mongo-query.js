@@ -14,6 +14,7 @@ const attribs = [
 export const adaptQuery = (obj) => {
   obj = Object.assign({}, obj);
   if (obj.skipQuery) return {};
+  delete obj.skipQuery;
   Object.keys(obj).forEach((key) => {
     if (obj[key] && Array.isArray(obj[key])) {
       obj[key] = obj[key].map(item => typeof item === 'object' ? adaptQuery(item) : item);
@@ -63,6 +64,7 @@ export const adaptQuery = (obj) => {
 
 export const adaptSort = (obj) => {
   if (obj.skipSort) return {};
+  delete obj.skipSort;
   Object.keys(obj).forEach((key) => {
     obj[key] = obj[key] === 'DESC' ? -1 : 1;
   });
