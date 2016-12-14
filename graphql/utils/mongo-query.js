@@ -13,6 +13,7 @@ const attribs = [
 ];
 export const adaptQuery = (obj) => {
   obj = Object.assign({}, obj);
+  if (obj.skipQuery) return {};
   Object.keys(obj).forEach((key) => {
     if (obj[key] && Array.isArray(obj[key])) {
       obj[key] = obj[key].map(item => typeof item === 'object' ? adaptQuery(item) : item);
@@ -61,6 +62,7 @@ export const adaptQuery = (obj) => {
 };
 
 export const adaptSort = (obj) => {
+  if (obj.skipSort) return {};
   Object.keys(obj).forEach((key) => {
     obj[key] = obj[key] === 'DESC' ? -1 : 1;
   });
@@ -187,6 +189,7 @@ export const addInputTypes = (collectionName, ast) => {
 
   addDefinition(ast, parse(`
     input ${collectionName}Query {
+      skipQuery: Boolean
       ${collectionAst.fields.map(getArgument).filter(x => x).join('\n')}
       and: [${collectionName}Query]
       or: [${collectionName}Query]
@@ -194,6 +197,7 @@ export const addInputTypes = (collectionName, ast) => {
   `).definitions[0]);
   addDefinition(ast, parse(`
     input ${collectionName}Sort {
+      skipSort: Boolean
       ${collectionAst.fields.map(getSort).filter(x => x).join('\n')}
     }
   `).definitions[0]);
