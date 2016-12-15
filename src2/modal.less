@@ -1,0 +1,49 @@
+.fullscreen-modal-wrap {
+  background-color: white!important;
+  .fullscreen-modal {
+    top: 0!important;
+    width: 100%!important;
+    padding: 0!important;
+    .ant-modal-content {
+      .ant-modal-close {
+        position: fixed;
+        color: white;
+      }
+      box-shadow: none;
+      border-radius: 0!important;
+      .ant-modal-header {
+        border-radius: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 3;
+        padding: 14px 16px;
+        background: #359cde;
+        color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.74);
+      }
+      .ant-modal-footer {
+        border: 0;
+      }
+      .ant-modal-body {
+        margin-top: 60px;
+        margin-left: 240px;
+        .ant-menu-root {
+          .ant-menu-submenu-open {
+            background-color: white;
+          }
+          background-color: whitesmoke;
+          width: 240px;
+          position: fixed;
+          top: 50px;
+          left: 0;
+          height: 100%;
+          z-index: 1;
+        }
+        padding: 0;
+      }
+      // max-width: 1200px;
+      // margin: 0 auto 0 auto;
+    }
+  }
+}
