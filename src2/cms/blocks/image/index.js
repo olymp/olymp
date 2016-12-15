@@ -56,7 +56,6 @@ export default class ImageBlock extends Component {
       <GenericBlock {...rest} style={{ ...styles, height: 'auto' }}>
         <figure className={className} style={{ margin: 0 }}>
           <Image
-            container="div"
             onChange={image => setData({ showMedia: undefined, image })}
             onCancel={() => setData({ showMedia: false })}
             lightbox

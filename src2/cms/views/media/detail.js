@@ -63,17 +63,8 @@ const ModalForm = Form.create()(
               <Select {...props} tags searchPlaceholder="Suche ..." />
             )}
           </FormItem>
-          { item.format === 'pdf' ? (
-            <FormItem key="preview" label="Vorschaubild" {...formItemLayout}>
-              {getFieldDecorator('preview', {
-                initialValue: item.preview && item.preview.url ? item.preview : undefined,
-              })(
-                <Image width="33%" />
-              )}
-            </FormItem>
-          ) : undefined }
 
-          <Image value={{ ...item }} width="100%" readOnly noPreview />
+          <Image value={{ ...item }} width="100%" readOnly />
 
           <FormItem key="size" label="Größe" {...formItemLayout} style={{ marginTop: '24px', marginBottom: '0' }}>
             <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />

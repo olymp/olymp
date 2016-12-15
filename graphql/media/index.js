@@ -18,12 +18,6 @@ const transform = (image) => {
       newImage.caption = image[key].custom.caption;
       newImage.source = image[key].custom.source;
       newImage.removed = image[key].custom.removed;
-      newImage.preview = {
-        url: image[key].custom.p_url,
-        crop: image[key].custom.p_crop ? image[key].custom.p_crop.split(',') : undefined,
-        height: image[key].custom.p_height,
-        width: image[key].custom.p_width,
-      };
       return;
     } else if (key === 'predominant') {
       // Geht nur bei Single Pictures!!!
@@ -102,7 +96,7 @@ const getSignedRequest = config =>
     }, config)))
   );
 
-const updateImage = (id, tags, source, caption, preview, config, removed) => {
+const updateImage = (id, tags, source, caption, config, removed) => {
   const context = [];
 
   if (source) {
@@ -115,14 +109,6 @@ const updateImage = (id, tags, source, caption, preview, config, removed) => {
 
   if (removed) {
     context.push('removed=true');
-  }
-
-  if (preview && preview.url && preview.height && preview.width) {
-    context.push(`p_url=${preview.url}|p_height=${preview.height}|p_width=${preview.width}`);
-
-    if (preview.crop && preview.crop.length) {
-      context.push(`p_crop=${preview.crop.join(',')}`);
-    }
   }
 
   return new Promise((yay) => {
@@ -203,7 +189,6 @@ module.exports = (schema, { uri } = {}) => {
               args.input.tags,
               args.input.source,
               args.input.caption,
-              args.input.preview,
               config,
               true
             );
@@ -214,7 +199,6 @@ module.exports = (schema, { uri } = {}) => {
             args.input.tags,
             args.input.source,
             args.input.caption,
-            args.input.preview,
             config
           );
         },
@@ -256,7 +240,6 @@ module.exports = (schema, { uri } = {}) => {
         caption: String
         source: String
         removed: Boolean
-        preview: Image
         pages: Int
         colors: [String]
       }

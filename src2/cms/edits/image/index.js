@@ -1,30 +1,56 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { withAuth } from 'olymp';
 import Image from './cool-image';
 import withImageUpload from './with-image-upload';
 import withLightbox from './with-lightbox';
-import { cloudinaryUrl } from 'olymp';
 
-const defaultImage = { url: '/img/placeholder.jpg', width: 1680, height: 578 };
-const defaultImageClick = ({ showMediathek }) => showMediathek();
+const defaultImage = {
+  url: '/img/placeholder.jpg',
+  width: 1680,
+  height: 578,
+};
+
+@withAuth
 @withLightbox()
 @withImageUpload()
 export default class ImageComponent extends Component {
-  static defaultProps = {
-    readOnly: false,
-    noPreview: false,
-  };
-
   onImageClick = () => {
-    const { showLightbox, showMediathek, onImageClick } = this.props;
-    if (onImageClick) onImageClick({ showLightbox, showMediathek });
-    else defaultImageClick({ showLightbox, showMediathek });
+    const { showLightbox, showMediathek, onImageClick, readOnly, auth } = this.props;
+
+    if (!readOnly && onImageClick) {
+      return () => onImageClick({ showLightbox, showMediathek });
+    }
+
+    return !readOnly && auth && auth.user ?
+      () => showMediathek({ showMediathek }) :
+      () => {};
   }
 
   render() {
-    const { showLightbox, showMediathek, onImageClick, lightbox, onCancel, ...rest } = this.props; // muss hier stehen, sonst wird beim rendern ein Fehler geworfen
+    const { cloudinary, style, className, width, height, ratio, children } = this.props;
+    let { value } = this.props;
 
-    // todo: newReadOnly = !isLoggedin/isAdmin || readOnly;
+    if (!value) {
+      value = defaultImage;
+    } else if (typeof value === 'string') {
+      value = {
+        url: value,
+      };
+    }
 
-    return <Image {...rest} onClick={this.onImageClick} />;
+    return (
+      <Image
+        value={value}
+        cloudinary={cloudinary}
+        style={style}
+        className={className}
+        width={width}
+        height={height}
+        ratio={ratio}
+        onClick={this.onImageClick}
+      >
+        {children}
+      </Image>
+    );
   }
 }
