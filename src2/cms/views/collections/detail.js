@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import capitalize from 'capitalize';
 import { withItem, withCollection, withItems } from '../../decorators';
-import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
+import { Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox, Menu, Dropdown } from 'antd';
 import { SlateMate, SlateModal } from 'olymp/slate';
+import { Modal } from 'olymp';
 import moment from 'moment';
 import Image from '../../edits/image';
 
@@ -11,7 +12,7 @@ const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
+const formItemLayout = { labelCol: { span: 3 }, wrapperCol: { span: 12 } };
 const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
 const preventDefaultAnd = (func, args) => e => {
@@ -97,8 +98,13 @@ class SlateMateExt extends Component {
   }
   render() {
     const { show } = this.state;
-    if (show) return <SlateModal className="form-controlxx" {...this.props} onClose={this.onClose} />;
-    return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
+    return (
+      <div className="frontend">
+        <SlateMate className="frontend-editor form-controlxx" {...this.props} />
+      </div>
+    );
+    // if (show) return <SlateModal className="form-controlxx" {...this.props} onClose={this.onClose} />;
+    // return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
   }
 }
 
@@ -220,7 +226,7 @@ const CollectionCreateForm = Form.create()(
     }, {});
 
     const renderForm = fields => (
-      <Form horizontal>
+      <Form horizontal className="container">
         {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
@@ -243,8 +249,61 @@ const CollectionCreateForm = Form.create()(
       </Form>
     );
 
+    const menu = (
+      <Menu onClick={x => console.log(x)}>
+        <Menu.Item key="1">1st item</Menu.Item>
+        <Menu.Item key="2">2nd item</Menu.Item>
+        <Menu.Item key="3">3rd item</Menu.Item>
+      </Menu>
+    );
     return (
       <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
+        <Menu
+          onClick={this.handleClick}
+          style={{ width: 240 }}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+        >
+          <div className="p-1" style={{ textAlign: 'center' }}>
+            <Dropdown overlay={menu}>
+              <Button type="ghost">
+                Veröffentlichen <i className="fa fa-caret-down" />
+              </Button>
+            </Dropdown>
+          </div>
+          <Menu.SubMenu key="sub1" title={<span><i className="fa fa-tags" />  <span>Schlagworte</span></span>}>
+            <div className="p-1 pt-0">
+              <Select tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
+            </div>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="sub2" title={<span><i className="fa fa-image" />  <span>Bild</span></span>}>
+            <Menu.Item key="5">Option 5</Menu.Item>
+            <Menu.Item key="6">Option 6</Menu.Item>
+            <Menu.SubMenu key="sub3" title="Submenu">
+              <Menu.Item key="7">Option 7</Menu.Item>
+              <Menu.Item key="8">Option 8</Menu.Item>
+            </Menu.SubMenu>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="sub4" title={<span><i className="fa fa-calendar" />  <span>Planen</span></span>}>
+            <Menu.Item key="9">Option 9</Menu.Item>
+            <Menu.Item key="10">Option 10</Menu.Item>
+            <Menu.Item key="11">Option 11</Menu.Item>
+            <Menu.Item key="12">Option 12</Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="sub5" title={<span><i className="fa fa-link" />  <span>Teilen</span></span>}>
+            <Menu.Item key="9">Option 9</Menu.Item>
+            <Menu.Item key="10">Option 10</Menu.Item>
+            <Menu.Item key="11">Option 11</Menu.Item>
+            <Menu.Item key="12">Option 12</Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="sub6" title={<span><i className="fa fa-history" />  <span>Versionen</span></span>}>
+            <Menu.Item key="9">Option 9</Menu.Item>
+            <Menu.Item key="10">Option 10</Menu.Item>
+            <Menu.Item key="11">Option 11</Menu.Item>
+            <Menu.Item key="12">Option 12</Menu.Item>
+          </Menu.SubMenu>
+        </Menu>
+        <div className="container">
         {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
           <Tabs defaultActiveKey="0" type="card">
             {Object.keys(fields).map((key, i) => (
@@ -254,6 +313,7 @@ const CollectionCreateForm = Form.create()(
             ))}
           </Tabs>
         )}
+      </div>
       </Modal>
     );
   }
