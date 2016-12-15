@@ -54,6 +54,21 @@ export const adaptQuery = (obj) => {
       delete obj.null;
       return;
     }
+    /* if (key === 'day') {
+      obj.$where = `return this.ende.getDate() == ${obj[key]}`;
+      delete obj[key];
+      return;
+    }
+    if (key === 'month') {
+      obj.$where = `return this.ende.getMonth() == ${obj[key]}`;
+      delete obj[key];
+      return;
+    }
+    if (key === 'year') {
+      obj.$where = `return this.ende.getFullYear() == ${obj[key]}`;
+      delete obj[key];
+      return;
+    } */
     if (attribs.indexOf(key) !== -1) {
       obj[`$${key}`] = obj[key];
       delete obj[key];
