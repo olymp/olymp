@@ -1,27 +1,31 @@
-.athena-img-container-simple {
-  position: relative;
-}
+/* IMG-CONTAINER */
 .athena-img-container {
   position: relative;
+  background-color: whitesmoke;
+
+  & > .athena-img {
+    width: 100%;
+    transition: opacity 1s ease-out;
+  }
+
+  &.relative {
+    overflow: hidden;
+
+    & > * {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    & > .athena-img {
+      min-width: calc(100% + 1px);
+      min-height: calc(100% + 1px);
+    }
+  }
 }
-.athena-img-container-fill {
-  width: 100%;
-}
-.athena-img {
-  transition: opacity 1s ease-out;
-}
-.athena-img-fill {
-  width: 100%;
-}
-.athena-img-container > .athena-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-}
+
+/* LIGHTBOX */
 .athena-lightbox {
   z-index: 2001;
   transform-origin: initial !important;

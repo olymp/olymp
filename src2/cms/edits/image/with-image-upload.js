@@ -100,12 +100,12 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
             onCancel={this.onCancel}
             footer={[
               <Select defaultValue={`${aspect ? aspect.toString() : '0'}`} style={{ width: 150, float: 'left' }} size="large" onChange={option => this.setState({ aspect: parseFloat(option, 10) })}>
-                <Select.Option value="0">Freie Auswahl</Select.Option>
-                <Select.Option value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
-                <Select.Option value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>
-                <Select.Option value="1">Quadratisch 1:1</Select.Option>
-                <Select.Option value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
-                <Select.Option value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
+                <Select.Option key="0" value="0">Freie Auswahl</Select.Option>
+                <Select.Option key="1" value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
+                <Select.Option key="2" value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>
+                <Select.Option key="3" value="1">Quadratisch 1:1</Select.Option>
+                <Select.Option key="4" value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
+                <Select.Option key="5" value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
               </Select>,
               <Button key="back" type="ghost" size="large" onClick={this.show}>
                 Mediathek

@@ -430,7 +430,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
               ['latest', { es2015: { modules: false } }],
             ]),
             plugins: removeEmpty([
-              'styled-components',
+              // 'styled-components',
               ifDevClient('react-hot-loader/babel'),
               // We are adding the experimental "object rest spread" syntax as
               // it is super useful.  There is a caviat with the plugin that
