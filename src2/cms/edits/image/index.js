@@ -15,13 +15,13 @@ const defaultImage = {
 @withImageUpload()
 export default class ImageComponent extends Component {
   onImageClick = () => {
-    const { showLightbox, showMediathek, onImageClick, readOnly, auth } = this.props;
+    const { showLightbox, showMediathek, onImageClick, readOnly, auth, onChange } = this.props;
 
     if (!readOnly && onImageClick) {
       return () => onImageClick({ showLightbox, showMediathek });
     }
 
-    return !readOnly && auth && auth.user ?
+    return !readOnly && auth && auth.user && onChange ?
       () => showMediathek({ showMediathek }) :
       () => {};
   }
@@ -47,7 +47,7 @@ export default class ImageComponent extends Component {
         width={width}
         height={height}
         ratio={ratio}
-        onClick={this.onImageClick}
+        onClick={this.onImageClick()}
       >
         {children}
       </Image>

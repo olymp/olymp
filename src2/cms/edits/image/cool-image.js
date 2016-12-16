@@ -51,25 +51,46 @@ export default class CoolImage extends Component {
     }
 
     const { url, crop, caption } = value;
-    const containerStyle = {
+    const styles = {
       width,
       height,
       ...style,
     };
     const options = { ...value, ...crop, ...cloudinary };
 
+    let containerCrop;
     if (ratio) {
-      // => Container-Mode!
-      if (containerStyle.width === parseInt(containerStyle.width, 10)) {
-        containerStyle.height = containerStyle.width * ratio;
+      if (styles.width === parseInt(styles.width, 10)) {
+        containerCrop = [styles.width, styles.width * ratio, 0, 0];
       } else {
-        containerStyle.paddingTop = `${(parseInt(containerStyle.width, 10) * ratio)}%`;
+        const size = (parseInt(styles.width, 10) / 100);
+        containerCrop = [size.toFixed(2), (size * ratio).toFixed(2), 0, 0];
       }
     }
 
+    const src = cloudinaryUrl(url, options, containerCrop || crop);
+
+    if (!children) {
+      return (
+        <img
+          className={cn(className, 'athena-img')}
+          onClick={onClick}
+          src={src}
+          alt={caption}
+          style={styles}
+        />
+      );
+    }
+
+    styles.backgroundImage = `url(${src})`;
+    if (styles.width === parseInt(styles.width, 10)) {
+      styles.height = styles.width * ratio;
+    } else {
+      styles.paddingTop = `${(parseInt(styles.width, 10) * ratio)}%`;
+    }
+
     return (
-      <div onClick={onClick} style={containerStyle} className={cn(className, `athena-img-container ${ratio ? 'relative' : ''}`)}>
-        <img className="athena-img" src={cloudinaryUrl(url, options, crop)} alt={caption} />
+      <div onClick={onClick} style={styles} className={cn(className, 'athena-img-container')}>
         {children}
       </div>
     );
