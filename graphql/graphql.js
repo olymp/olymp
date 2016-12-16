@@ -44,7 +44,8 @@ module.exports = ({ adapter } = {}) => {
         `,
       ]),
       moduleResolvers,
-      directives({ adapter, resolvers: moduleResolvers })
+      directives({ adapter, resolvers: moduleResolvers }),
+      moduleHooks
     );
     Object.keys(defaultScalars).forEach(key => Object.assign(schema.getType(key), defaultScalars[key]));
     const getContext = (ctx) => {

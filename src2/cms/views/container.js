@@ -12,7 +12,7 @@ import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaDetail from './media/detail';
 import UploadModal from './media/upload';
-import CollectionDetail from './collections/detail';
+import Collection from './collections/view';
 import './container.less';
 
 const SubMenu = Menu.SubMenu;
@@ -119,21 +119,15 @@ export default class Container extends Component {
 
     const { schema } = data;
     const collections = schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
-    const collection = query ? (collections || []).find(c => query[`@${c.name}`] !== undefined) : undefined;
-    // const colSchema = query && query.schema ? (collections || []).filter(
-    // c => c.name === query.schema
-    // )[0] : undefined;
+    const collection = query && query['@collection'];
     if (collection !== undefined) {
-      const { name } = collection;
+      console.log(collection);
       modal = (
-        <CollectionDetail name={name} id={query[`@${name}`]} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
+        <Collection collection={collection} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
       );
     } else if (query && query['@media'] !== undefined) {
       modal = (
-        <MediaDetail
-          id={query['@media']}
-          onClose={() => router.push({ pathname, query: { ...query, '@media': undefined } })}
-        />
+        <MediaDetail id={query['@media']} onClose={() => router.push({ pathname, query: { ...query, '@media': undefined } })} />
       );
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
@@ -275,82 +269,6 @@ export default class Container extends Component {
               </Button>
             </Dropdown>
           </Affix>
-          {/*<Affix>
-            <Menu onClick={this.handleClick} selectedKeys={[pathname]} mode="horizontal" className="main-nav">
-              <Menu.Item key="mail" className="ant-menu-item-brand">{logo || 'ATHENA'}</Menu.Item>
-              <Menu.Item key="/">
-                <Link to="/">
-                  Website
-                </Link>
-              </Menu.Item>
-              {Object.keys(groups).map(key => {
-                const wrapper = children => (
-                  <SubMenu key={key} title={capitalize(key)}>
-                    {children}
-                  </SubMenu>
-                );
-                const groupItem = (
-                  (groups[key] || []).map(({ name, title }) => (
-                    <SubMenu
-                      key={name}
-                      title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}
-                    >
-                      {capitalize(title || name)}
-                      {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
-                    </Link>}>
-                      <Menu.Item key={`/@/${name}`}>
-                        <Link to={{ pathname, query: { [`@${name}`]: null } }}>
-                          <Icon type="plus" />{capitalize(title || name)} hinzufügen
-                        </Link>
-                      </Menu.Item>
-                    </SubMenu>
-                  ))
-                );
-
-                return groups[key].length === 1 ? groupItem : wrapper(groupItem);
-              })}
-              <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
-                <Menu.Item key="/@/media">
-                  <Link to={{ pathname, query: { '@upload': null } }}>
-                    <Icon type="plus" />Datei hochladen
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
-              <Menu.Item key="/@/users">
-                <Link to="/@/users">
-                  Benutzer
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/@/analytics">
-                <Link to="/@/analytics">
-                  Statistik
-                </Link>
-              </Menu.Item>
-              <GatewayDest
-                name="button1"
-                component={props => (props.children ? (
-                  <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item ant-menu-item-separated">
-                    {props.children}
-                  </div>
-              ) : null)}
-              />
-              <SubMenu className="ant-menu-submenu-right" title={<span><fa className="fa fa-cog" /></span>}>
-                <Menu.Item key="page-settings">Globale Einstellungen</Menu.Item>
-                <GatewayDest
-                  name="button2"
-                  component={props => (props.children ? (
-                    <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item">
-                      {props.children}
-                    </div>
-                  ) : null)}
-                />
-              </SubMenu>
-              <SubMenu className="ant-menu-submenu-right" title={<span>{auth.user.name}</span>}>
-                <Menu.Item key="setting:1">Profil</Menu.Item>
-                <Menu.Item key="logout">Abmelden</Menu.Item>
-              </SubMenu>
-            </Menu>
-          </Affix>*/}
           {children}
           <GatewayDest name="global" />
           <Match
@@ -395,21 +313,6 @@ export default class Container extends Component {
               </CodeSplit>
             }
           />
-          {(collections || []).map(({ name }) => (
-            <Match
-              key={name}
-              pattern={`/@/${name}`}
-              render={routerProps => (
-                <CodeSplit chunkName="collections" modules={{ View: require('./collections/list') }}>
-                  { ({ View }) => View && <View
-                    {...routerProps}
-                    name={name}
-                    onClick={({ id }) => router.push({ pathname, query: { ...query, [`@${name}`]: id } })}
-                  /> }
-                </CodeSplit>
-              )}
-            />
-          ))}
         </div>
       </GatewayProvider>
     );

@@ -31,6 +31,16 @@ export default ({ adapter, resolvers }) => ({
         node.fields = node.fields.concat(type.fields);
       },
     },
+    hooks: {
+      before: (model, isMutation, args) => {
+        if (!isMutation) {
+          const query = (args.query || {});
+          if (!query.state) {
+            query.state = { eq: 'PUBLISHED' };
+          }
+        }
+      },
+    },
   },
   stamp: {
     name: 'stamp',

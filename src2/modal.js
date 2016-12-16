@@ -14,5 +14,5 @@ const modalSettings = {
 };
 
 export default props => (
-  <Modal {...modalSettings} {...props} footer={() => null} header={() => null} />
+  <Modal {...modalSettings} {...props} footer={() => <div />} />
 );
