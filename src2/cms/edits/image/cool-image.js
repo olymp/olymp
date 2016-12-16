@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
 
@@ -50,7 +50,7 @@ export default class CoolImage extends Component {
       return <div />;
     }
 
-    const { url, crop, caption } = value;
+    let { url, crop, caption } = value;
     const styles = {
       width,
       height,
@@ -58,35 +58,67 @@ export default class CoolImage extends Component {
     };
     const options = { ...value, ...crop, ...cloudinary };
 
-    let containerCrop;
-    if (ratio) {
-      if (styles.width === parseInt(styles.width, 10)) {
-        containerCrop = [styles.width, styles.width * ratio, 0, 0];
+    // Max-Width/Height
+    /* if (options.maxWidth && options.maxWidth < options.width) {
+      options.height = (options.height / options.width) * options.maxWidth;
+      options.width = options.maxWidth;
+    }
+    if (options.maxHeight && options.maxHeight < options.height) {
+      options.width = (options.width / options.height) * options.maxHeight;
+      options.height = options.maxHeight;
+    }
+
+    // Min-Width/Height
+    if (options.minWidth && options.minWidth > options.width) {
+      options.height = (options.height / options.width) * options.minWidth;
+      options.width = options.minWidth;
+    }
+    if (options.minHeight && options.minHeight > options.height) {
+      options.width = (options.width / options.height) * options.minHeight;
+      options.height = options.minHeight;
+    }*/
+
+    // if (options.url === 'http://res.cloudinary.com/dhsf4vjjc/image/upload/v1467133060/ekgd/ueypsnpljftyetr3j0jv.jpg') console.log(value, cloudinary);
+
+    if (ratio && ratio !== options.height / options.width) {
+      if (styles.width.indexOf('%') >= 0) {
+        const size = parseInt(options.width, 10);
+        crop = [size, size * ratio, 0, 0];
       } else {
-        const size = (parseInt(styles.width, 10) / 100);
-        containerCrop = [size.toFixed(2), (size * ratio).toFixed(2), 0, 0];
+        const size = parseInt(styles.width, 10);
+        crop = [size, size * ratio, 0, 0];
       }
     }
 
-    const src = cloudinaryUrl(url, options, containerCrop || crop);
+    url = cloudinaryUrl(url, options, crop);
 
-    if (!children) {
+    if (!Children.toArray(children).filter(x => x).length) {
       return (
         <img
           className={cn(className, 'athena-img')}
           onClick={onClick}
-          src={src}
+          src={url}
           alt={caption}
           style={styles}
         />
       );
     }
+    styles.backgroundImage = `url(${url})`;
 
-    styles.backgroundImage = `url(${src})`;
-    if (styles.width === parseInt(styles.width, 10)) {
-      styles.height = styles.width * ratio;
-    } else {
-      styles.paddingTop = `${(parseInt(styles.width, 10) * ratio)}%`;
+    // width && ratio
+    if (ratio) {
+      if (styles.width.indexOf('%') >= 0) {
+        styles.paddingTop = `${(parseInt(styles.width, 10) * ratio)}%`;
+      } else {
+        styles.height = parseInt(styles.width, 10) * ratio;
+      }
+
+      // height && ratio
+      if (styles.height.indexOf('%') >= 0) {
+        styles.width = `${(parseInt(styles.height, 10) / ratio)}%`;
+      } else {
+        styles.width = styles.height / ratio;
+      }
     }
 
     return (
