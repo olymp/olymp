@@ -2,27 +2,21 @@
 .athena-img-container {
   position: relative;
   background-color: whitesmoke;
+  background-position: center center;
+  background-size: cover;
+  overflow: hidden;
 
-  & > .athena-img {
-    width: 100%;
-    transition: opacity 1s ease-out;
+  & > * {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+}
 
-  &.relative {
-    overflow: hidden;
-
-    & > * {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    & > .athena-img {
-      min-width: calc(100% + 1px);
-      min-height: calc(100% + 1px);
-    }
-  }
+/* IMG */
+.athena-img {
+  transition: opacity 1s ease-out;
 }
 
 /* LIGHTBOX */

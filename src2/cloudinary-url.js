@@ -9,15 +9,20 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
     cropX = crop[2];
     cropY = crop[3];
   }
+  /* Ältere iOS-Geräte können keine eingebetteten https-Bilder anzeigen!
   if (url.indexOf('http://res.cloudinary.com/') === 0) {
     url = url.split('ttp://res.cloudinary.com/').join('ttps://res.cloudinary.com/');
-  }
-  if (url.indexOf('https://res.cloudinary.com/') !== 0) return url;
+  } */
+  if (url.indexOf('http://res.cloudinary.com/') !== 0) return url;
   let part = defaultState;
-  if (cropX && cropY) {
-    part += `,x_${cropX},y_${cropY},w_${width},h_${height},c_crop`;
+  if (cropX !== undefined && cropY !== undefined) {
+    if (!cropX && !cropY) {
+      // 0,0 => Zentrierter Ausschnitt aus der Mitte
+      part += `,w_${width},h_${height},c_fill`;
+    } else {
+      part += `,x_${cropX},y_${cropY},w_${width},h_${height},c_crop`;
+    }
   } else if (width && height) {
-    //part += `,w_${width},h_${height},c_fill`;
     part += `,w_${width},h_${height},c_fit`;
   } else if (maxWidth && maxHeight) {
     if (part.length > 0) part += ',';
