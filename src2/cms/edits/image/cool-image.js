@@ -2,90 +2,76 @@ import React, { Component } from 'react';
 import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
 
-const defaultImage = {
-  url: '/img/placeholder.jpg',
-  width: 1680,
-  height: 578,
-};
 export default class CoolImage extends Component {
-  // Fill: true => width: 100%, height: auto
-  // Mode: fill (width)
-  // Mode:
   static defaultProps = {
     cloudinary: {},
   };
+  static propTypes = {
+    /* Value includes all data (including width, height, crop)
+    from the image as it comes from the database */
+    value: React.PropTypes.instanceOf(Object),
 
-  renderImg = (props) => {
-    let { readOnly, url, caption, ratio, width, height, color, className, children, onClick, ...rest } = props;
+    /* Using cloudinary, you can override the width/height-data set in Value (only absolute!) */
+    cloudinary: React.PropTypes.shape({
+      width: React.PropTypes.number,
+      height: React.PropTypes.number,
+      minWidth: React.PropTypes.number,
+      minHeight: React.PropTypes.number,
+      maxWidth: React.PropTypes.number,
+      maxHeight: React.PropTypes.number,
+    }),
+    onClick: React.PropTypes.func,
 
-    const style = {};
-    if (height) style.height = height;
-    if (width) style.width = width;
-    style.backgroundColor = color;
+    /* Width, height, ratio refer to the container of the image and are identical
+    to the dimensions of the image (absolute or relative) */
+    width: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]),
+    height: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]),
+    ratio: React.PropTypes.number,
+    className: React.PropTypes.string,
+    style: React.PropTypes.instanceOf(Object),
 
-    if (!readOnly) {
-      style.paddingTop = `${ratio * parseFloat(style.width)}%`;
-
-      return (
-        <div {...rest} onClick={onClick} style={style} className={cn(className, 'athena-img-container')}>
-          <img className="athena-img" src={url} alt={caption} />
-          {children}
-        </div>
-      );
-    }
-
-    return (
-      <img {...rest} style={style} className="athena-img" src={url} alt={caption} />
-    );
-  }
-
-  renderContainer = (props) => {
-    const { url, caption, ratio, width, height, className, children, onClick, style, ...rest } = props;
-
-    const containerStyle = { ...style };
-    containerStyle.backgroundImage = `url(${url})`;
-    containerStyle.backgroundSize = 'cover';
-    containerStyle.WebkitBackgroundSize = 'cover';
-    containerStyle.MozBackgroundSize = 'cover';
-    containerStyle.OBackgroundSize = 'cover';
-    containerStyle.backgroundPosition = 'center center';
-    if (height) containerStyle.height = height;
-    if (width) containerStyle.width = width;
-    if (ratio && !height) containerStyle.paddingTop = `${ratio * parseFloat(containerStyle.width)}%`;
-
-    return (
-      <div {...rest} onClick={onClick} className={cn(className, 'athena-background-img')} style={containerStyle}>
-        {children}
-      </div>
-    );
+    /* Others */
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.arrayOf(React.PropTypes.node),
+      React.PropTypes.node,
+    ]),
   }
 
   render() {
-    let { container, value, cloudinary, noPreview, ...rest } = this.props;
+    const { value, cloudinary, width = '100%', height = 'auto', ratio, className, style = {}, children, onClick } = this.props;
 
     if (!value) {
-      value = defaultImage;
-    } else if (typeof value === 'string') {
-      value = {
-        url: value,
-      };
+      return <div />;
     }
 
-    const url = (!noPreview && value.preview && value.preview.url) ? value.preview.url : value.url;
-    const crop = (!noPreview && value.preview && value.preview.crop) ? value.preview.crop : value.crop;
-    const options = { ...value, ...crop, ...cloudinary };
-    const ratio = (options.height && options.width) ? options.height / options.width : 0;
-
-    const props = {
-      caption: value ? value.caption : '',
-      url: cloudinaryUrl(url, options, crop),
-      color: options.color || (options.colors && options.colors[0]) || 'whitesmoke',
-      ratio,
-      ...rest,
+    const { url, crop, caption } = value;
+    const containerStyle = {
+      width,
+      height,
+      ...style,
     };
+    const options = { ...value, ...crop, ...cloudinary };
 
-    if (container) {
-      return this.renderContainer(props);
-    } return this.renderImg(props);
+    if (ratio) {
+      // => Container-Mode!
+      if (containerStyle.width === parseInt(containerStyle.width, 10)) {
+        containerStyle.height = containerStyle.width * ratio;
+      } else {
+        containerStyle.paddingTop = `${(parseInt(containerStyle.width, 10) * ratio)}%`;
+      }
+    }
+
+    return (
+      <div onClick={onClick} style={containerStyle} className={cn(className, `athena-img-container ${ratio ? 'relative' : ''}`)}>
+        <img className="athena-img" src={cloudinaryUrl(url, options, crop)} alt={caption} />
+        {children}
+      </div>
+    );
   }
 }

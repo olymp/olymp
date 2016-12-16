@@ -123,18 +123,20 @@ blockquote[dir="rtl"] {
     border-width: 5px;
     margin-left: -5px;
   }
-
-  .active, [data-active=true] {
-    background-color: rgba(255, 255, 255, .1);
-    color: #FFF;
-  }
 }
 
-[data-block-active=true] {
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-  border: 0;
-  margin: 3px 2px;
-  outline: 1px solid #ddd;
+.slate-fix-toolbar, .slate-toolbar {
+  .active, [data-active=true] {
+    background-color: rgba(0, 0, 0, .2);
+    color: #000;
+  }
+
+  [data-block-active=true] {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    border: 0;
+    margin: 3px 2px;
+    outline: 1px solid #ddd;
+  }
 }
 
 /* Resize */
