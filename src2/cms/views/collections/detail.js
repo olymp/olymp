@@ -257,7 +257,7 @@ const CollectionCreateForm = Form.create()(
       </Menu>
     );
     return (
-      <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
+      <div>
         <Menu
           onClick={this.handleClick}
           style={{ width: 240 }}
@@ -304,17 +304,17 @@ const CollectionCreateForm = Form.create()(
           </Menu.SubMenu>
         </Menu>
         <div className="container">
-        {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
-          <Tabs defaultActiveKey="0" type="card">
-            {Object.keys(fields).map((key, i) => (
-              <TabPane tab={key} key={i}>
-                {renderForm(fields[key])}
-              </TabPane>
-            ))}
-          </Tabs>
-        )}
+          {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
+            <Tabs defaultActiveKey="0" type="card">
+              {Object.keys(fields).map((key, i) => (
+                <TabPane tab={key} key={i}>
+                  {renderForm(fields[key])}
+                </TabPane>
+              ))}
+            </Tabs>
+          )}
+        </div>
       </div>
-      </Modal>
     );
   }
 );
