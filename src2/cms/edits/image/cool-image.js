@@ -94,11 +94,11 @@ export default class CoolImage extends Component {
     // Wenn Containerbreite oder -höhe fix, dann soll Bild auch nur maximal so groß sein
     if (getDim(style.width) === 'px' && parseInt(style.width, 10) < width) {
       width = parseInt(style.width, 10);
-      height = width * ratio;
+      height = Math.round(width * ratio);
     }
     if (getDim(style.height) === 'px' && parseInt(style.height, 10) < height) {
       height = parseInt(style.height, 10);
-      width = height / ratio;
+      width = Math.round(height / ratio);
     }
 
     url = cloudinaryUrl(
