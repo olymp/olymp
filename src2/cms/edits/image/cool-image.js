@@ -91,13 +91,21 @@ export default class CoolImage extends Component {
       ...style,
     };
 
+    // Wenn Containerbreite oder -höhe fix, dann soll Bild auch nur maximal so groß sein
+    if (getDim(style.width) === 'px' && parseInt(style.width, 10) < width) {
+      width = parseInt(style.width, 10);
+      height = width * ratio;
+    }
+    if (getDim(style.height) === 'px' && parseInt(style.height, 10) < height) {
+      height = parseInt(style.height, 10);
+      width = height / ratio;
+    }
+
     url = cloudinaryUrl(
       url,
       { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, ...cloudinary },
       crop
     );
-
-    console.log(containerStyles);
 
     /*
     es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
