@@ -49,8 +49,8 @@ export default class ImageBlock extends Component {
       display: 'block',
     };
 
-    const width = !value ? styles.width : (value.crop ? value.crop[0] : value.width);
-    const height = !value ? styles.height : (value.crop ? value.crop[1] : value.height);
+    // const width = !value ? styles.width : (value.crop ? value.crop[0] : value.width);
+    // const height = !value ? styles.height : (value.crop ? value.crop[1] : value.height);
 
     return (
       <GenericBlock {...rest} style={{ ...styles, height: 'auto' }}>
@@ -62,7 +62,6 @@ export default class ImageBlock extends Component {
             onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
             showMediathek={getData('showMedia')}
             width={styles.width}
-            height={value ? (parseInt(styles.width, 10) / width) * height : height}
             value={value}
             style={innerStyle}
           />

@@ -1,6 +1,18 @@
-import React, { Component, Children } from 'react';
+import React, { Component, PropTypes, Children } from 'react';
 import { cloudinaryUrl, cn } from 'olymp';
 import './style.less';
+
+const getDim = (dim) => {
+  if (dim) {
+    if (typeof dim === 'number' || dim.indexOf('px') !== -1) {
+      return 'px';
+    } else if (dim.indexOf('%') !== -1) {
+      return '%';
+    }
+  }
+
+  return false;
+};
 
 export default class CoolImage extends Component {
   static defaultProps = {
@@ -9,76 +21,87 @@ export default class CoolImage extends Component {
   static propTypes = {
     /* Value includes all data (including width, height, crop)
     from the image as it comes from the database */
-    value: React.PropTypes.instanceOf(Object),
+    value: PropTypes.instanceOf(Object),
 
     /* Using cloudinary, you can override the width/height-data set in Value (only absolute!) */
-    cloudinary: React.PropTypes.shape({
-      width: React.PropTypes.number,
-      height: React.PropTypes.number,
-      minWidth: React.PropTypes.number,
-      minHeight: React.PropTypes.number,
-      maxWidth: React.PropTypes.number,
-      maxHeight: React.PropTypes.number,
+    cloudinary: PropTypes.shape({
+      width: PropTypes.number,
+      height: PropTypes.number,
+      minWidth: PropTypes.number,
+      minHeight: PropTypes.number,
+      maxWidth: PropTypes.number,
+      maxHeight: PropTypes.number,
     }),
-    onClick: React.PropTypes.func,
+    onClick: PropTypes.func,
 
     /* Width, height, ratio refer to the container of the image and are identical
     to the dimensions of the image (absolute or relative) */
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
+    width: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
     ]),
-    height: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
+    height: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
     ]),
-    ratio: React.PropTypes.number,
-    className: React.PropTypes.string,
-    style: React.PropTypes.instanceOf(Object),
+    ratio: PropTypes.number,
+    className: PropTypes.string,
+    style: PropTypes.instanceOf(Object),
 
     /* Others */
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.arrayOf(React.PropTypes.node),
-      React.PropTypes.node,
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
     ]),
   }
 
   render() {
-    const { value, cloudinary, width = '100%', height = 'auto', ratio, className, style = {}, children, onClick } = this.props;
+    const { value, cloudinary, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
+    let { ratio } = this.props;
 
     if (!value) {
       return <div />;
     }
 
-    let { url, crop, caption } = value;
-    const styles = {
-      width,
-      height,
+    let { url, width, height, crop, caption } = value;
+
+    // wenn crop gesetzt, dann Ausschnitt als neues Bild festlegen
+    if (crop) {
+      width = crop[0];
+      height = crop[1];
+    }
+
+    // style mit width- und height-props überschreiben
+    if (containerWidth) style.width = containerWidth;
+    if (containerHeight) style.height = containerHeight;
+
+    // Ratio ermitteln
+    if (!ratio) {
+      if (getDim(style.width) && getDim(style.width) === getDim(style.height)) {
+        // wenn style.width/height und beide vom selben gültigen Typen sind
+        ratio = parseInt(style.height, 10) / parseInt(style.width, 10);
+      } else {
+        ratio = height / width;
+      }
+    }
+
+    const containerStyles = {
+      width: '100%',
+      height: 'auto',
       ...style,
     };
-    const options = { ...value, ...crop, ...cloudinary };
 
-    // Max-Width/Height
-    /* if (options.maxWidth && options.maxWidth < options.width) {
-      options.height = (options.height / options.width) * options.maxWidth;
-      options.width = options.maxWidth;
-    }
-    if (options.maxHeight && options.maxHeight < options.height) {
-      options.width = (options.width / options.height) * options.maxHeight;
-      options.height = options.maxHeight;
-    }
+    url = cloudinaryUrl(
+      url,
+      { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, ...cloudinary },
+      crop
+    );
 
-    // Min-Width/Height
-    if (options.minWidth && options.minWidth > options.width) {
-      options.height = (options.height / options.width) * options.minWidth;
-      options.width = options.minWidth;
-    }
-    if (options.minHeight && options.minHeight > options.height) {
-      options.width = (options.width / options.height) * options.minHeight;
-      options.height = options.minHeight;
-    }*/
+    console.log(containerStyles);
 
-    // if (options.url === 'http://res.cloudinary.com/dhsf4vjjc/image/upload/v1467133060/ekgd/ueypsnpljftyetr3j0jv.jpg') console.log(value, cloudinary);
+    /*
+    es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
+    bei einem Container schneidet er einfach das „Überflüssige“ ab, aber bei einem <img> müssen wir das mittels neuem crop machen 😟
 
     if (ratio && ratio !== options.height / options.width) {
       if (styles.width.indexOf('%') >= 0) {
@@ -89,9 +112,6 @@ export default class CoolImage extends Component {
         crop = [size, size * ratio, 0, 0];
       }
     }
-
-    url = cloudinaryUrl(url, options, crop);
-
     if (!Children.toArray(children).filter(x => x).length) {
       return (
         <img
@@ -99,30 +119,29 @@ export default class CoolImage extends Component {
           onClick={onClick}
           src={url}
           alt={caption}
-          style={styles}
+          style={containerStyles}
         />
       );
-    }
-    styles.backgroundImage = `url(${url})`;
+    } */
 
-    // width && ratio
-    if (ratio) {
-      if (styles.width.indexOf('%') >= 0) {
-        styles.paddingTop = `${(parseInt(styles.width, 10) * ratio)}%`;
-      } else {
-        styles.height = parseInt(styles.width, 10) * ratio;
+    // Container-Styles Höhe und Background
+    if (!getDim(containerStyles.height)) {
+      if (getDim(containerStyles.width) === 'px') {
+        containerStyles.height = parseInt(containerStyles.width, 10) * ratio;
+      } else if (getDim(containerStyles.width) === '%') {
+        containerStyles.paddingTop = `${(parseInt(containerStyles.width, 10) * ratio)}%`;
       }
-
-      // height && ratio
-      if (styles.height.indexOf('%') >= 0) {
-        styles.width = `${(parseInt(styles.height, 10) / ratio)}%`;
-      } else {
-        styles.width = styles.height / ratio;
+    } else if (!getDim(containerStyles.width)) {
+      if (getDim(containerStyles.height) === 'px') {
+        containerStyles.width = parseInt(containerStyles.height, 10) / ratio;
+      } else if (getDim(containerStyles.height) === '%') {
+        containerStyles.paddingTop = `${(parseInt(containerStyles.height, 10) / ratio)}%`;
       }
     }
+    containerStyles.backgroundImage = `url(${url})`;
 
     return (
-      <div onClick={onClick} style={styles} className={cn(className, 'athena-img-container')}>
+      <div onClick={onClick} style={containerStyles} className={cn(className, 'athena-img-container')}>
         {children}
       </div>
     );

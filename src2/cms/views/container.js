@@ -126,7 +126,11 @@ export default class Container extends Component {
     if (collection !== undefined) {
       const { name } = collection;
       modal = (
-        <CollectionDetail name={name} id={query[`@${name}`]} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
+        <CollectionDetail
+          name={name}
+          id={query[`@${name}`]}
+          onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })}
+        />
       );
     } else if (query && query['@media'] !== undefined) {
       modal = (
@@ -217,13 +221,15 @@ export default class Container extends Component {
                   (groups[key] || []).map(({ name, title }) => (
                     <SubMenu
                       key={name}
-                      title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}
+                      title={
+                        <Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}>
+                          {capitalize(title || name)}
+                          {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
+                        </Link>
+                      }
                     >
-                      {capitalize(title || name)}
-                      {groups[key].length > 1 ? <Icon type="right" style={{ paddingLeft: '.5rem' }} /> : undefined}
-                    </Link>}>
                       <Menu.Item key={`/@/${name}`}>
-                        <Link to={{ pathname, query: { [`@${name}`]: null } }}>
+                        <Link to={{ pathname, query: { ...query, [`@${name}`]: null } }}>
                           <Icon type="plus" />{capitalize(title || name)} hinzufügen
                         </Link>
                       </Menu.Item>
