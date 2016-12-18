@@ -9,11 +9,10 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
     cropX = crop[2];
     cropY = crop[3];
   }
-  /* Ältere iOS-Geräte können keine eingebetteten https-Bilder anzeigen!
   if (url.indexOf('http://res.cloudinary.com/') === 0) {
     url = url.split('ttp://res.cloudinary.com/').join('ttps://res.cloudinary.com/');
-  } */
-  if (url.indexOf('http://res.cloudinary.com/') !== 0) return url;
+  }
+  if (url.indexOf('https://res.cloudinary.com/') !== 0) return url;
   let part = defaultState;
   if (cropX !== undefined && cropY !== undefined) {
     if (!cropX && !cropY) {
