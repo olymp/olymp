@@ -28,5 +28,6 @@ export { default as traverse } from './utils/traverse';
 export { makeTree } from './tree-utils';
 export { default as withState } from './with-state';
 export { default as slugify } from './slugify';
+export { default as sortBy } from './sort-by';
 
 export * from './auth';
