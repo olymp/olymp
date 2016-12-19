@@ -19,18 +19,17 @@ export default class CollectionView extends Component {
     const { query } = location;
 
     const id = query && query[`@${collection}`];
-    const to = id ? { ...location, query: { ...location.query, [`@${collection}`]: null } } : { ...location, query: { ...location.query, [`@${collection}`]: undefined } };
+    const to = { ...location, query: { ...location.query, [`@${collection}`]: undefined } };
     return (
       <Modal title={<Title text={id ? 'Bearbeiten' : collection} to={to} />} onCancel={onClose} onOk={onClose}>
         <Link style={{ position: 'fixed', top: 5, left: 5, zIndex: 3 }} to={to}>
           <Button type="default" shape="circle" style={{ fontSize: 20, width: 40, height: 40 }}>
-            {id ? <i className="fa fa-arrow-left" /> : <i className="fa fa-close" />}
+            <i className="fa fa-close" />
           </Button>
         </Link>
         <List name={collection} />
         <div className="container">
-          {id ? <span style={{ fontWeight: 100, fontSize: 60, margin: '15px 0 15px 0', display: 'block' }}>{collection} bearbeiten</span> : null}
-          {id ? <Detail name={collection} id={id} /> : null}
+          {id ? <Detail style={{ maxWidth: 600, margin: '30px auto' }} name={collection} id={id} /> : null}
         </div>
       </Modal>
     );
