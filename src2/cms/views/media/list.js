@@ -131,7 +131,7 @@ export default class MediaList extends Component {
 
     // Quellen-Filter
     if (source && source.length) {
-      filteredItems = filteredItems.filter(item => item.source === source[0] || source[0] === 'Keine Quelle');
+      filteredItems = filteredItems.filter(item => item.source === source[0] || (!item.source && source[0] === 'Keine Quelle'));
     }
 
     // Type-Filter
