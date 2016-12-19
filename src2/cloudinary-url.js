@@ -17,7 +17,7 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
   if (cropX !== undefined && cropY !== undefined) {
     part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
   } else if (width && height) {
-    part += `w_${width},h_${height},c_fit/${part}`;
+    part = `w_${width},h_${height},c_fit/${part}`;
   }
 
   if (maxWidth && maxHeight) {
