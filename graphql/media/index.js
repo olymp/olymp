@@ -33,8 +33,8 @@ const transform = (image) => {
   return newImage;
 };
 
-const transformSignature = ({ signature, api_key, timestamp }) => ({
-  url: 'https://api.cloudinary.com/v1_1/djyenzorc/auto/upload',
+const transformSignature = ({ cloud_name }, { signature, api_key, timestamp }) => ({
+  url: `https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`,
   signature,
   timestamp,
   apiKey: api_key,
@@ -91,7 +91,7 @@ const getImageById = (config, id) =>
 
 const getSignedRequest = config =>
   new Promise(yay =>
-    yay(transformSignature(cloudinary.utils.sign_request({
+    yay(transformSignature(config, cloudinary.utils.sign_request({
       timestamp: Math.round(new Date().getTime() / 1000),
     }, config)))
   );
