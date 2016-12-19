@@ -1,6 +1,6 @@
 const { visit } = require('graphql/language');
 
-const getFunc = (ast, directives, resolvers, throwOnMissing) => (node, key, parent, path, ancestors, method) => {
+const getFunc = (ast, directives, resolvers, hooks, throwOnMissing) => (node, key, parent, path, ancestors, method) => {
   if (node.directives && node.directives.length) {
     let current = node;
     node.directives.forEach((directive) => {
@@ -20,8 +20,14 @@ const getFunc = (ast, directives, resolvers, throwOnMissing) => (node, key, pare
   } return undefined;
 };
 
-export default (ast, directives, resolvers, throwOnMissing = true) => {
-  const func = getFunc(ast, directives, resolvers, throwOnMissing);
+export default (ast, directives, resolvers, hooks, throwOnMissing = true) => {
+  Object.keys(directives).forEach((key) => {
+    const directiveHooks = directives[key] && directives[key].hooks;
+    if (directiveHooks && directiveHooks.before) hooks.before.push(directiveHooks.before);
+    if (directiveHooks && directiveHooks.after) hooks.after.push(directiveHooks.after);
+  });
+
+  const func = getFunc(ast, directives, resolvers, hooks, throwOnMissing);
   const transformedAST = visit(ast, {
     enter(node, key, parent, path, ancestors) {
       return func(node, key, parent, path, ancestors, 'enter');
@@ -31,7 +37,7 @@ export default (ast, directives, resolvers, throwOnMissing = true) => {
     },
   });
 
-  const func2 = getFunc(transformedAST, directives, resolvers, throwOnMissing);
+  const func2 = getFunc(transformedAST, directives, resolvers, hooks, throwOnMissing);
   const transformedAST2 = visit(transformedAST, {
     enter(node, key, parent, path, ancestors) {
       return func2(node, key, parent, path, ancestors, 'enter2');

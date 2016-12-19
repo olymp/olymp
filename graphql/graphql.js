@@ -44,15 +44,14 @@ module.exports = ({ adapter } = {}) => {
         `,
       ]),
       moduleResolvers,
-      directives({ adapter, resolvers: moduleResolvers })
+      directives({ adapter, resolvers: moduleResolvers }),
+      moduleHooks
     );
     Object.keys(defaultScalars).forEach(key => Object.assign(schema.getType(key), defaultScalars[key]));
     const getContext = (ctx) => {
       const context = Object.assign({ schema, resolvers: moduleResolvers, adapter, ast }, ctx);
-      context.beforeQuery = getHook(moduleHooks.before, false, context);
-      context.afterQuery = getHook(moduleHooks.after, false, context);
-      context.beforeMutation = getHook(moduleHooks.before, true, context);
-      context.afterMutation = getHook(moduleHooks.after, true, context);
+      context.beforeHook = getHook(moduleHooks.before, context);
+      context.afterHook = getHook(moduleHooks.after, context);
       return context;
     };
     return { schema, getContext };
@@ -67,15 +66,15 @@ module.exports = ({ adapter } = {}) => {
   };
 };
 
-const getHook = (hooks, mutation, context) => {
-  return (model, args) => {
+const getHook = (hooks, context) => {
+  return (args, info) => {
     let promise = Promise.resolve(args);
     let currentArgs;
     let error;
     hooks.forEach((hook) => {
       promise = promise.then((newArgs) => {
         if (newArgs) currentArgs = newArgs;
-        return hook(model, mutation, currentArgs, context);
+        return hook(currentArgs, info, context);
       });
     });
     return promise.then((newArgs) => {

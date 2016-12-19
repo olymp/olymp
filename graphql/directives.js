@@ -1,7 +1,11 @@
 import { parse } from 'graphql/language';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/capitalize';
 import { list, one, write, addInputTypes } from './utils';
 
+const hasDirective = (ast, model, directive) => {
+  const schema = ast.definitions.find(({ name }) => name && name.value === model);
+  return schema.directives.filter(({ name }) => name && name.value === 'state').length;
+};
 export default ({ adapter, resolvers }) => ({
   // Type
   collection: {
@@ -29,6 +33,18 @@ export default ({ adapter, resolvers }) => ({
           }
         `).definitions[0];
         node.fields = node.fields.concat(type.fields);
+      },
+    },
+    hooks: {
+      before: (args, { model, isMutation, returnType }, { ast }) => {
+        if (!isMutation && returnType.toString().indexOf('[') === 0 && hasDirective(ast, model, 'state')) {
+          const query = (args.query || {});
+          if (!query.state) {
+            query.state = { eq: 'PUBLISHED' };
+            args.query = query;
+          }
+          return args;
+        }
       },
     },
   },

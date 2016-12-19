@@ -17,7 +17,7 @@ module.exports = (schema, { adapter }) => {
       },
     },
     hooks: {
-      before: (model, isMutation, args, { user }) => {
+      before: (args, { model, isMutation }, { user }) => {
         if (isMutation && model === 'Page' && !user) {
           throw new Error('Please log in');
         }

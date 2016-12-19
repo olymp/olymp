@@ -33,8 +33,9 @@ var queryLoader = new DataLoader(queries => new Promise(resolve => {
 }), { cache: false });*/
 
 export const list = (model, propertyKey) => (source, args, context, fieldASTs) => {
-  const { adapter, beforeQuery, afterQuery } = context;
-  return beforeQuery(model, args).then((args) => {
+  const { adapter, beforeHook, afterHook } = context;
+  const hookArgs = Object.assign({ model, propertyKey, isMutation: false }, fieldASTs);
+  return beforeHook(args, hookArgs).then((args) => {
     const projection = getProjection(fieldASTs);
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
@@ -49,13 +50,14 @@ export const list = (model, propertyKey) => (source, args, context, fieldASTs) =
     if (args.sort) cursor = cursor.sort(adaptSort(args.sort));
     if (args.skip) cursor = cursor.skip(args.skip);
     if (args.limit) cursor = cursor.limit(args.limit);
-    return afterQuery(model, cursor.toArray());
+    return afterHook(cursor.toArray(), hookArgs);
   });
 };
 
 export const one = (model, propertyKey) => (source, args, context, fieldASTs) => {
-  const { adapter, beforeQuery, afterQuery } = context;
-  return beforeQuery(model, args).then((args) => {
+  const { adapter, beforeHook, afterHook } = context;
+  const hookArgs = Object.assign({ model, propertyKey, isMutation: false }, fieldASTs);
+  return beforeHook(args, hookArgs).then((args) => {
     const projection = getProjection(fieldASTs);
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
@@ -63,15 +65,15 @@ export const one = (model, propertyKey) => (source, args, context, fieldASTs) =>
       return null;
     }
     if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
-    if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
-    return afterQuery(model, cursor);
+    else if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
+    return afterHook(cursor, hookArgs);
   });
 };
 
 export const write = model => (source, args, context, fieldASTs) => {
-  const { beforeMutation, afterMutation, user, adapter, ast } = context;
-
-  return beforeMutation(model, args).then((args) => {
+  const { beforeHook, afterHook, user, adapter, ast } = context;
+  const hookArgs = Object.assign({ model, isMutation: true }, fieldASTs);
+  return beforeHook(args, hookArgs).then((args) => {
     if (!args.operationType) args.operationType = 'PATCH';
     let node;
     visit(ast, {
