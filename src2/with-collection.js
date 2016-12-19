@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withApollo, graphql } from 'react-apollo';
 import { saveItem, removeItem } from './with-item';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/capitalize';
 import gql from 'graphql-tag';
 
 const imageFields = `
