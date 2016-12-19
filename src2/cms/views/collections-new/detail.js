@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/capitalize';
 import { withItem, withCollection, withItems } from '../../decorators';
-import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
-import { SlateMate, SlateModal } from 'olymp/slate';
+import { Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox, Menu, Dropdown } from 'antd';
+import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
+import './detail.less';
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
-const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
+const formItemLayout = { labelCol: { span: 5 }, wrapperCol: { span: 19 } };
+const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
 const preventDefaultAnd = (func, args) => e => {
@@ -70,6 +71,11 @@ const MultiSlider = ({ value = [] }) => {
     </div>
   );
 };
+const Slug = ({ url, ...props }) => {
+  return (
+    <span className="slug-editor">{url}<Input {...props} /></span>
+  );
+};
 
 class DatePickerInt extends Component {
   onChange = (e) => {
@@ -97,8 +103,13 @@ class SlateMateExt extends Component {
   }
   render() {
     const { show } = this.state;
-    if (show) return <SlateModal className="form-controlxx" {...this.props} onClose={this.onClose} />;
-    return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
+    return (
+      <div className="frontend">
+        <SlateMate className="frontend-editor form-controlxx" {...this.props} />
+      </div>
+    );
+    // if (show) return <SlateModal className="form-controlxx" {...this.props} onClose={this.onClose} />;
+    // return <Button onClick={() => this.setState({ show: true })}>Anzeigen</Button>;
   }
 }
 
@@ -135,7 +146,7 @@ const getFormEditor = (type, name, props = {}, subField) => {
   }
   if (type.kind === 'OBJECT') {
     if (type.name === 'Image') {
-      return <Image {...props} width="100%" />;
+      return <Image {...props} asImg style={{ maxWidth: 300, maxHeight: 300, width: 'initial' }} />;
     } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
@@ -208,7 +219,7 @@ const getInitialValue = ({ item, form }, { name, description }) => {
 };
 const CollectionCreateForm = Form.create()(
   (props) => {
-    const { collection, form, onCreate, onCancel, saving } = props;
+    const { collection, form, onCreate, onCancel, saving, item, className, style } = props;
     const { getFieldDecorator } = form;
 
     const fields = collection.fields.filter(({ name }) => name !== 'id').reduce((state, item) => {
@@ -220,8 +231,8 @@ const CollectionCreateForm = Form.create()(
     }, {});
 
     const renderForm = fields => (
-      <Form horizontal>
-        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
+      <Form horizontal className="container">
+        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'description', 'slug'].includes(name)).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
             field.type,
@@ -235,7 +246,7 @@ const CollectionCreateForm = Form.create()(
           );
           if (!editor) return null;
           return (
-            <FormItem key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...formItemLayout}>
+            <FormItem key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...(title === 'Text' ? formItemLayout0 : formItemLayout)}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(editor)}
             </FormItem>
           );
@@ -244,7 +255,15 @@ const CollectionCreateForm = Form.create()(
     );
 
     return (
-      <Modal {...modalSettings} confirmLoading={saving} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}>
+      <div className={className} style={style}>
+        <Form horizontal className="container">
+          <FormItem key="name" label="Name" {...formItemLayout0}>
+            {getFieldDecorator('name', { initialValue: item && item.name })(<Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." />)}
+          </FormItem>
+          <FormItem key="slug" label="Slug" {...formItemLayout0}>
+            {getFieldDecorator('slug', { initialValue: item && item.slug })(<Slug url="https://gz-kelkheim.de" />)}
+          </FormItem>
+        </Form>
         {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
           <Tabs defaultActiveKey="0" type="card">
             {Object.keys(fields).map((key, i) => (
@@ -254,7 +273,7 @@ const CollectionCreateForm = Form.create()(
             ))}
           </Tabs>
         )}
-      </Modal>
+      </div>
     );
   }
 );
