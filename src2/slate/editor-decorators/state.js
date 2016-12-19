@@ -46,7 +46,16 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
         const rawValue = Raw.serialize(value, { terse });
         if (JSON.stringify(this.rawValue) !== JSON.stringify(rawValue)) {
           this.rawValue = rawValue;
-          this.batch(() => changeValue(this.props, rawValue));
+          this.batch(() => {
+            if (rawValue.nodes.length === 1 && rawValue.nodes[0].nodes.length === 1 && (!rawValue.nodes[0].nodes[0].text && !rawValue.nodes[0].nodes[0].isVoid)) {
+            // if (rawValue.nodes.length === 1 && rawValue.nodes[0].kind === 'text' && !rawValue.nodes[0].text) {
+              changeValue(this.props, null);
+            // } else if (rawValue.nodes.length === 1 && rawValue.nodes[0].type === 'paragraph' && (!rawValue.nodes.length || (rawValue.nodes[0].nodes[0].kind === 'text' && !rawValue.nodes[0].nodes[0].text))) {
+            //   changeValue(this.props, null);
+            } else {
+              changeValue(this.props, rawValue);
+            }
+          });
         }
       }
     }
