@@ -51,7 +51,7 @@ export default ({ attributes, name } = {}) => (WrappedComponent) => {
             }
           `,
           variables: {
-            state: location.query && location.query.state ? location.query.state.split('-') : [],
+            state: location.query && location.query.state ? location.query.state.split('-') : ['PUBLISHED'],
           },
         }) : client.watchQuery({
           query: gql`
@@ -63,7 +63,8 @@ export default ({ attributes, name } = {}) => (WrappedComponent) => {
           `,
         });
         this.subscription = query.subscribe({
-          next: ({data}) => {
+          next: ({ data }) => {
+            console.log(data);
             if (this.unmount) return;
             this.items = data.items;
             this.setState({});
