@@ -5,12 +5,14 @@ import { Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkb
 import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import Image from '../../edits/image';
+import './detail.less';
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
-const formItemLayout = { labelCol: { span: 2 }, wrapperCol: { span: 12 } };
+const formItemLayout = { labelCol: { span: 5 }, wrapperCol: { span: 19 } };
+const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
 const preventDefaultAnd = (func, args) => e => {
@@ -67,6 +69,11 @@ const MultiSlider = ({ value = [] }) => {
         </div>
       ))}
     </div>
+  );
+};
+const Slug = ({ url, ...props }) => {
+  return (
+    <span className="slug-editor">{url}<Input {...props} /></span>
   );
 };
 
@@ -139,7 +146,7 @@ const getFormEditor = (type, name, props = {}, subField) => {
   }
   if (type.kind === 'OBJECT') {
     if (type.name === 'Image') {
-      return <Image {...props} maxWidth={300} maxHeight={300} />;
+      return <Image {...props} asImg style={{ maxWidth: 300, maxHeight: 300, width: 'initial' }} />;
     } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
@@ -212,7 +219,7 @@ const getInitialValue = ({ item, form }, { name, description }) => {
 };
 const CollectionCreateForm = Form.create()(
   (props) => {
-    const { collection, form, onCreate, onCancel, saving } = props;
+    const { collection, form, onCreate, onCancel, saving, item, className, style } = props;
     const { getFieldDecorator } = form;
 
     const fields = collection.fields.filter(({ name }) => name !== 'id').reduce((state, item) => {
@@ -225,7 +232,7 @@ const CollectionCreateForm = Form.create()(
 
     const renderForm = fields => (
       <Form horizontal className="container">
-        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
+        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'description', 'slug'].includes(name)).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
             field.type,
@@ -239,7 +246,7 @@ const CollectionCreateForm = Form.create()(
           );
           if (!editor) return null;
           return (
-            <FormItem key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...formItemLayout}>
+            <FormItem key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...(title === 'Text' ? formItemLayout0 : formItemLayout)}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(editor)}
             </FormItem>
           );
@@ -247,71 +254,25 @@ const CollectionCreateForm = Form.create()(
       </Form>
     );
 
-    const menu = (
-      <Menu onClick={x => console.log(x)}>
-        <Menu.Item key="1">1st item</Menu.Item>
-        <Menu.Item key="2">2nd item</Menu.Item>
-        <Menu.Item key="3">3rd item</Menu.Item>
-      </Menu>
-    );
     return (
-      <div>
-        <Menu
-          onClick={this.handleClick}
-          style={{ width: 240 }}
-          defaultOpenKeys={['sub1']}
-          mode="inline"
-        >
-          <div className="p-1" style={{ textAlign: 'center' }}>
-            <Dropdown overlay={menu}>
-              <Button type="ghost">
-                Veröffentlichen <i className="fa fa-caret-down" />
-              </Button>
-            </Dropdown>
-          </div>
-          <Menu.SubMenu key="sub1" title={<span><i className="fa fa-tags" />  <span>Schlagworte</span></span>}>
-            <div className="p-1 pt-0">
-              <Select tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
-            </div>
-          </Menu.SubMenu>
-          <Menu.SubMenu key="sub2" title={<span><i className="fa fa-image" />  <span>Bild</span></span>}>
-            <Menu.Item key="5">Option 5</Menu.Item>
-            <Menu.Item key="6">Option 6</Menu.Item>
-            <Menu.SubMenu key="sub3" title="Submenu">
-              <Menu.Item key="7">Option 7</Menu.Item>
-              <Menu.Item key="8">Option 8</Menu.Item>
-            </Menu.SubMenu>
-          </Menu.SubMenu>
-          <Menu.SubMenu key="sub4" title={<span><i className="fa fa-calendar" />  <span>Planen</span></span>}>
-            <Menu.Item key="9">Option 9</Menu.Item>
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <Menu.Item key="11">Option 11</Menu.Item>
-            <Menu.Item key="12">Option 12</Menu.Item>
-          </Menu.SubMenu>
-          <Menu.SubMenu key="sub5" title={<span><i className="fa fa-link" />  <span>Teilen</span></span>}>
-            <Menu.Item key="9">Option 9</Menu.Item>
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <Menu.Item key="11">Option 11</Menu.Item>
-            <Menu.Item key="12">Option 12</Menu.Item>
-          </Menu.SubMenu>
-          <Menu.SubMenu key="sub6" title={<span><i className="fa fa-history" />  <span>Versionen</span></span>}>
-            <Menu.Item key="9">Option 9</Menu.Item>
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <Menu.Item key="11">Option 11</Menu.Item>
-            <Menu.Item key="12">Option 12</Menu.Item>
-          </Menu.SubMenu>
-        </Menu>
-        <div className="container">
-          {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
-            <Tabs defaultActiveKey="0" type="card">
-              {Object.keys(fields).map((key, i) => (
-                <TabPane tab={key} key={i}>
-                  {renderForm(fields[key])}
-                </TabPane>
-              ))}
-            </Tabs>
-          )}
-        </div>
+      <div className={className} style={style}>
+        <Form horizontal className="container">
+          <FormItem key="name" label="Name" {...formItemLayout0}>
+            {getFieldDecorator('name', { initialValue: item && item.name })(<Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." />)}
+          </FormItem>
+          <FormItem key="slug" label="Slug" {...formItemLayout0}>
+            {getFieldDecorator('slug', { initialValue: item && item.slug })(<Slug url="https://gz-kelkheim.de" />)}
+          </FormItem>
+        </Form>
+        {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
+          <Tabs defaultActiveKey="0" type="card">
+            {Object.keys(fields).map((key, i) => (
+              <TabPane tab={key} key={i}>
+                {renderForm(fields[key])}
+              </TabPane>
+            ))}
+          </Tabs>
+        )}
       </div>
     );
   }
