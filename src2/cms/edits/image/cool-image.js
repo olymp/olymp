@@ -56,7 +56,7 @@ export default class CoolImage extends Component {
   }
 
   render() {
-    const { value, cloudinary, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
+    const { value, asImg, cloudinary, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
     let { ratio } = this.props;
 
     if (!value) {
@@ -107,8 +107,8 @@ export default class CoolImage extends Component {
       crop
     );
 
-    /*
-    es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
+
+    /*es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
     bei einem Container schneidet er einfach das „Überflüssige“ ab, aber bei einem <img> müssen wir das mittels neuem crop machen 😟
 
     if (ratio && ratio !== options.height / options.width) {
@@ -119,8 +119,8 @@ export default class CoolImage extends Component {
         const size = parseInt(styles.width, 10);
         crop = [size, size * ratio, 0, 0];
       }
-    }
-    if (!Children.toArray(children).filter(x => x).length) {
+    }*/
+    if (asImg && !Children.toArray(children).filter(x => x).length) {
       return (
         <img
           className={cn(className, 'athena-img')}
@@ -130,7 +130,7 @@ export default class CoolImage extends Component {
           style={containerStyles}
         />
       );
-    } */
+    }
 
     // Container-Styles Höhe und Background
     if (!getDim(containerStyles.height)) {
