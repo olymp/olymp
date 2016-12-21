@@ -17,8 +17,9 @@ const actions = props => [{
   category: 'Media',
   editable: false,
   resize: {
+    bootstrap: true,
     coverOnResize: true,
-    stepX: '10%',
+    resizeY: false,
   },
   align: true,
   actions,
@@ -34,7 +35,7 @@ export default class ImageBlock extends Component {
   }
 
   render() {
-    const { setData, getData, className, readOnly } = this.props;
+    const { setData, getData, className, readOnly, attributes, isFocused, renderToolbar, toolbarStyle } = this.props;
     const { style, children, ...rest } = this.props;
     const value = getData('image', undefined);
 
@@ -53,9 +54,12 @@ export default class ImageBlock extends Component {
     // const height = !value ? styles.height : (value.crop ? value.crop[1] : value.height);
 
     return (
-      <GenericBlock {...rest} style={{ ...styles, height: 'auto' }}>
-        <figure className={className} style={{ margin: 0 }}>
+      <figure {...attributes}>
+        <div style={styles} className={className} data-block-active={!readOnly}>
+          {renderToolbar(toolbarStyle)}
+          {children}
           <Image
+            asImg
             onChange={image => setData({ showMedia: undefined, image })}
             onCancel={() => setData({ showMedia: false })}
             lightbox
@@ -65,10 +69,8 @@ export default class ImageBlock extends Component {
             value={value}
             style={innerStyle}
           />
-        </figure>
-
-        {children}
-      </GenericBlock>
+        </div>
+      </figure>
     );
   }
 }
