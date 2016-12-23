@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { notification } from 'antd';
 import gql from 'graphql-tag';
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 
 export const mutateItem = (client, name, { attributes }) => props => client.mutate({
   mutation: gql`
