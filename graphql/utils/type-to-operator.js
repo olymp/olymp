@@ -1,4 +1,4 @@
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 
 const { visit, Kind, BREAK } = require('graphql/language');
 // https://gist.github.com/voodooattack/ce5f0afb5515ab5a153e535ac20698da thanks!!

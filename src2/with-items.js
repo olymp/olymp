@@ -64,7 +64,6 @@ export default ({ attributes, name } = {}) => (WrappedComponent) => {
         });
         this.subscription = query.subscribe({
           next: ({ data }) => {
-            console.log(data);
             if (this.unmount) return;
             this.items = data.items;
             this.setState({});

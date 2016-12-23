@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 
 export default (propertyName, defaultValue) => WrappedComponent => class WithStateComponent extends Component {
   state = {

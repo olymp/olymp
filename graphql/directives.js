@@ -1,5 +1,5 @@
 import { parse } from 'graphql/language';
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 import { list, one, write, addInputTypes } from './utils';
 
 const hasDirective = (ast, model, directive) => {

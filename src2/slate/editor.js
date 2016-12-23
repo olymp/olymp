@@ -214,25 +214,21 @@ export default class SlateEditor extends Component {
             .transform()
             .toggleMark('bold')
             .apply();
-
         case 'u':
           return state
             .transform()
             .toggleMark('underlined')
             .apply();
-
         case 'i':
           return state
             .transform()
             .toggleMark('italic')
             .apply();
-
         default:
-          return;
+          return undefined;
       }
     }
-
-    return;
+    return undefined;
   }
 
   render = () => {
