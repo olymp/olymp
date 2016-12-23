@@ -57,8 +57,6 @@ export default class GoogleMapBlock extends Component {
       ...style,
     };
 
-    console.log(style);
-
     return (
       <GenericBlock {...rest} style={styles}>
         <GoogleMap center={address} zoom={zoom}>
