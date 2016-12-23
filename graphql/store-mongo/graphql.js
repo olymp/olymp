@@ -1,4 +1,4 @@
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 
 /* eslint-disable no-param-reassign */
 module.exports = ({ moduleQueries, moduleResolvers, moduleMutations, key, tableName, adapter }) => {

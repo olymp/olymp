@@ -145,7 +145,6 @@ blockquote[dir="rtl"] {
   width: 10px;
   height: 10px;
   bottom: 0;
-  right: 0;
   // background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/…yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=');
   background-color: black;
   background-position: bottom right;
@@ -154,6 +153,12 @@ blockquote[dir="rtl"] {
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
+  &.handle-left {
+    left: 0;
+  }
+  &.handle-right {
+    right: 0;
+  }
 }
 
 /* Tooltip */

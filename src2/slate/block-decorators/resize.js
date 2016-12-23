@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { DraggableCore } from 'react-draggable';
+import cn from 'classnames';
 
 const Cover = ({ children, style }) => (
   <div style={{ backgroundColor: 'black', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 3 }}>{children}</div>
 );
 
 export default (options = {}) => Block => {
-  const { ratio, coverOnResize, enable, stepX, stepY, width: initialWidth, height: initialHeight } = options;
+  const { coverOnResize, enable, resizeX, resizeY, width: initialWidth, height: initialHeight } = options;
   return class ResizeableDecorator extends Component {
     static slate = Block.slate;
     static propTypes = {
@@ -17,116 +18,71 @@ export default (options = {}) => Block => {
       style: PropTypes.object,
     }
 
-    state = {
-      resize: false,
-      width: null,
-      height: null,
-    };
-
-    componentDidMount() {
-      const elementDimensions = findDOMNode(this.block).getBoundingClientRect();
-      this.elementWidth = elementDimensions.width;
-      this.elementHeight = elementDimensions.height;
+    static defaultProps = {
+      style: {},
     }
 
-    getSize = (args = {}) => {
-      const { getData } = this.props;
-      let width = args.width || this.state.width || getData('width', initialWidth || 200);
-      let height = args.height || this.state.height || getData('height', initialHeight || 200);
-
-      if (/^\d+(\.\d+)?%$/.test(width)) {
-        // Bei %-Wert
-        width = this.elementWidth;
-      }
-      if (/^\d+(\.\d+)?%$/.test(height)) {
-        // Bei %-Wert
-        height = this.elementHeight;
-      }
-
-      if (ratio && (this.elementWidth === undefined || this.elementHeight === undefined)) {
-        // Einmal rerendern, da es sonst Probleme mit ratio in Verbindung mit einer prozentualen Breite gibt
-        // this.forceUpdate();
-      }
-
-      return {
-        width,
-        height: ratio && parseInt(ratio, 10) === ratio ? (width / ratio) : height,
+    constructor(props) {
+      super(props);
+      const { getData } = props;
+      this.state = {
+        resize: false,
+        width: getData('width', initialWidth),
+        height: getData('height', initialHeight),
       };
     }
 
+    componentDidMount() {
+      this.element = findDOMNode(this.block);
+    }
+
     onResizeStart = () => {
-      this.setState({ resize: true, ...this.getSize() });
+      this.setState({ resize: true });
     }
 
     onResizeStop = (event, { deltaX, deltaY }) => {
       const { setData } = this.props;
-      const width = this.state.width + deltaX;
-      const height = this.state.height + deltaY;
-      setData({ width, height });
-      this.setState({ resize: false, width: null, height: null });
+      const newState = {};
+      if (this.state.width) newState.width = this.state.width;
+      if (this.state.height) newState.height = this.state.height;
+      setData(newState);
+      this.setState({ resize: false });
     }
 
     onResize = (event, { deltaX, deltaY, x, y }) => {
-      let width;
-      let height;
+      const { getData, alignment } = this.props;
+      const elementDimensions = this.element.getBoundingClientRect();
 
-      if (this.state.width === parseInt(this.state.width, 10)) {
-        width = this.state.width + deltaX;
-      }
-      if (stepX === parseInt(stepX, 10)) {
-        // z.B. steps: 100
-        width = Math.round(x / stepX) * stepX;
-      } else if (/^\d+(\.\d+)?%$/.test(stepX)) {
-        // z.B. steps: '100%'
-        const newStepX = (this.elementWidth * parseInt(stepX, 10)) / 100;
-        width = Math.round(x / newStepX) * newStepX;
-      }
+      const newState = {};
 
-      if (this.state.height === parseInt(this.state.height, 10)) {
-        height = this.state.height + deltaY;
-      }
-      if (stepY === parseInt(stepY, 10)) {
-        // z.B. steps: 100
-        height = Math.round(y / stepY) * stepY;
-      } else if (/^\d+(\.\d+)?%$/.test(stepY)) {
-        // z.B. steps: '100%'
-        const newStepY = (this.elementHeight * parseInt(stepY, 10)) / 100;
-        height = Math.round(y / newStepY) * newStepY;
-      }
+      if (resizeX !== false) {
+        const width = x ? (alignment === 'right' ? (elementDimensions.width - x) : x) : getData('width', initialWidth);
+        const relWidth = Math.round(12 / elementDimensions.width * width);
 
-      this.setState(this.getSize({ width, height }));
+        if (relWidth >= 0) newState.width = relWidth;
+      }
+      if (resizeY !== false) {
+        const height = y || getData('width', initialWidth);
+        if (height >= 0) newState.height = height;
+      }
+      this.setState(newState);
     }
 
     render() {
       if (enable === false) return <Block {...this.props} />;
-      const { editor } = this.props;
-      const { resize } = this.state;
-      const { width, height } = this.getSize();
-      const style = {
-        ...this.props.style,
-        height: `${height}px`,
-        width: `${width}px`,
-      };
+      const { editor, alignment, style } = this.props;
+      const { resize, height, width } = this.state;
 
       const children = editor.props.readOnly ? this.props.children : [
         ...this.props.children,
-        resize && coverOnResize ? <Cover key="resizableCover" style={style} children={children} /> : null,
-        <DraggableCore
-          key="resizableHandle"
-          onStop={this.onResizeStop}
-          onStart={this.onResizeStart}
-          onDrag={this.onResize}
-        >
-          <span className="react-resizable-handle" />
-        </DraggableCore>
+        resize && coverOnResize ? <Cover key="resizableCover" /> : null,
+        <DraggableCore key="resizableHandle" onStop={this.onResizeStop} onStart={this.onResizeStart} onDrag={this.onResize}>
+          <span className={cn('react-resizable-handle', alignment === 'right' ? 'handle-left' : 'handle-right')} />
+        </DraggableCore>,
       ];
 
       return (
-        <Block
-          {...this.props}
-          style={style}
-          ref={e => this.block = e}
-        >
+        <Block {...this.props} style={height ? { ...style, height: `${height}px` } : style} className={cn(width && `p-0 col-md-${width}`)} ref={e => this.block = e}>
           {children}
         </Block>
       );

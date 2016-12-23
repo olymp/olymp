@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-const getStyle = align => {
+const getStyle = (align) => {
   if (align === 'left') {
     return {
       float: 'left',
@@ -12,12 +12,13 @@ const getStyle = align => {
       marginLeft: '10px',
     };
   } return {
+    float: 'initial',
     display: 'block',
     margin: '0px auto',
   };
 };
 
-export default (options = {}) => Block => {
+export default (options = {}) => (Block) => {
   const { actions = true, enable } = options;
   return class AlignmentDecorator extends Component {
     static slate = Block.slate;

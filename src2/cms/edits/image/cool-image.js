@@ -101,12 +101,11 @@ export default class CoolImage extends Component {
       width = Math.round(height / ratio);
     }
 
-    url = cloudinaryUrl(
-      url,
-      { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, ...cloudinary },
-      crop
-    );
-
+    const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, ...cloudinary };
+    if (cloudinary && cloudinary.width && !cloudinary.height) delete cloudinaryProps.height;
+    if (cloudinary && cloudinary.height && !cloudinary.width) delete cloudinaryProps.width;
+    url = cloudinaryUrl(url, cloudinaryProps, crop);
+    const url300 = url, url600 = url, url1200 = url, url1920 = url;
 
     /*es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
     bei einem Container schneidet er einfach das „Überflüssige“ ab, aber bei einem <img> müssen wir das mittels neuem crop machen 😟
@@ -128,6 +127,12 @@ export default class CoolImage extends Component {
           src={url}
           alt={caption}
           style={containerStyles}
+          srcSet={`
+            ${url300} 300w,
+            ${url600} 600w,
+            ${url1200} 1200w,
+            ${url1920} 1920w
+          `}
         />
       );
     }

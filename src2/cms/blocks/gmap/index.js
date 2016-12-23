@@ -29,6 +29,7 @@ const actions = props => [{
   category: 'Media',
   props: ['address'],
   editable: false,
+  align: true,
   resize: {
     coverOnResize: true,
     ratio: 7 / 4,
@@ -52,15 +53,15 @@ export default class GoogleMapBlock extends Component {
 
     const styles = {
       backgroundColor: 'gray',
+      position: 'relative',
       ...style,
     };
 
     return (
-      <GenericBlock {...rest} style={{ ...styles, height: 'auto' }}>
-        <GoogleMap center={address} zoom={zoom} style={styles}>
+      <GenericBlock {...rest} style={styles}>
+        <GoogleMap center={address} zoom={zoom}>
           <Marker {...address} />
         </GoogleMap>
-
         {children}
       </GenericBlock>
     );
