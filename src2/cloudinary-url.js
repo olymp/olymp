@@ -17,11 +17,11 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
   if (cropX !== undefined && cropY !== undefined) {
     part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
   } else if (width && height) {
-    part = `w_${width},h_${height},c_fit/${part}`;
+    part = `w_${width},h_${height},c_fill/${part}`;
   }
 
   if (maxWidth && maxHeight) {
-    part += `,w_${maxWidth},h_${maxHeight},c_fit`;
+    part += `,w_${maxWidth},h_${maxHeight},c_fill`;
   }
   if (quality) {
     part += `,q_${quality}`;
