@@ -102,6 +102,8 @@ export default class CoolImage extends Component {
     }
 
     const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, ...cloudinary };
+    if (cloudinary && cloudinary.width && !cloudinary.height) delete cloudinaryProps.height;
+    if (cloudinary && cloudinary.height && !cloudinary.width) delete cloudinaryProps.width;
     url = cloudinaryUrl(url, cloudinaryProps, crop);
     const url300 = url, url600 = url, url1200 = url, url1920 = url;
 
