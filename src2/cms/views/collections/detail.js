@@ -135,7 +135,7 @@ const getFormEditor = (type, name, props = {}, subField) => {
   }
   if (type.kind === 'OBJECT') {
     if (type.name === 'Image') {
-      return <Image {...props} width="100%" />;
+      return <Image {...props} asImg width="100%" />;
     } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
