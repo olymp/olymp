@@ -5,7 +5,7 @@ import { Raw } from 'slate';
 import { Dropdown, Menu, Button, Icon, Modal, Table } from 'antd';
 import { sortBy } from 'lodash';
 import classNames from 'classnames';
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 
 export default (options = {}) => Block => {
   let { actions, manual, remove, move, type, add } = options;

@@ -1,4 +1,4 @@
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 import combineASTSchemas from './combine-ast';
 import applyDirectivesToAST from './apply-directives';
 import transformASTTypeToInput from './type-to-input';

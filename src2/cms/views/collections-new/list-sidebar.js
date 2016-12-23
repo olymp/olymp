@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { withApollo } from 'react-apollo';
-import capitalize from 'lodash/capitalize';
+import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 import { Table, Menu, Icon, Affix, Dropdown, Button } from 'antd';
 import { withRouter, withCollection, withItems } from '../../decorators';
