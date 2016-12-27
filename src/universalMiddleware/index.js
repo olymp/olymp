@@ -70,7 +70,7 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
     return;
   }
 
-  const uri = process.env.GRAPHQL_URL || `${process.env.URL}/graphql`;
+  const uri = process.env.GRAPHQL_URL || `${process.env.URL || process.env.SERVER_URL}/graphql`;
   const networkInterface = createNetworkInterface({
     uri,
     opts: {

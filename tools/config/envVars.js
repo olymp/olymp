@@ -37,10 +37,10 @@ const finalEnvVars = Object.keys(mergedEnvVars)
     return acc;
   }, {});
 
-if (!finalEnvVars.SERVER_PORT) finalEnvVars.SERVER_PORT = 3000;
-if (!finalEnvVars.CLIENT_DEVSERVER_PORT) finalEnvVars.CLIENT_DEVSERVER_PORT = 3001;
-if (!finalEnvVars.URL) finalEnvVars.URL = `http://localhost:${finalEnvVars.SERVER_PORT}`;
-if (finalEnvVars.URL.indexOf('http') !== 0) finalEnvVars.URL = process.env.NODE_ENV === 'production' ? `https://${finalEnvVars.URL}` : `http://${finalEnvVars.URL}`;
+if (!finalEnvVars.SERVER_PORT) finalEnvVars.SERVER_PORT = process.env.PORT || 3000;
+if (!finalEnvVars.CLIENT_DEVSERVER_PORT) finalEnvVars.CLIENT_DEVSERVER_PORT = finalEnvVars.SERVER_PORT + 1;
+if (!finalEnvVars.SERVER_URL) finalEnvVars.SERVER_URL = `http://localhost:${finalEnvVars.SERVER_PORT}`;
+if (finalEnvVars.SERVER_URL.indexOf('http') !== 0) finalEnvVars.SERVER_URL = process.env.NODE_ENV === 'production' ? `https://${finalEnvVars.SERVER_URL}` : `http://${finalEnvVars.SERVER_URL}`;
 if (!finalEnvVars.BUNDLE_OUTPUT_PATH) finalEnvVars.BUNDLE_OUTPUT_PATH = './.build';
 if (!finalEnvVars.BUNDLE_ASSETS_FILENAME) finalEnvVars.BUNDLE_ASSETS_FILENAME = 'assets.json';
 if (!finalEnvVars.CLIENT_BUNDLE_HTTP_PATH) finalEnvVars.CLIENT_BUNDLE_HTTP_PATH = '/client/';
