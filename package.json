@@ -1,5 +1,5 @@
 {
-  "version": "9.0.1-7",
+  "version": "9.0.1-8",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
