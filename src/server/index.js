@@ -188,7 +188,7 @@ app.use((err: ?Error, req: $Request, res: $Response, next: NextFunction) => { //
 // Create an http listener for our express app.
 const port = parseInt(notEmpty(process.env.PORT || process.env.SERVER_PORT), 10);
 const listener = app.listen(port, () =>
-  console.log(`Server listening on port ${port}`)
+  console.log(`Server listening on port ${port} and URL ${process.env.URL}`)
 );
 
 // We export the listener as it will be handy for our development hot reloader.
