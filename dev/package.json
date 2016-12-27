@@ -11,7 +11,7 @@
     "development": "node tools/development",
     "build": "node tools/scripts/build",
     "analyze": "node tools/scripts/analyze",
-    "start": "node build/server",
+    "start": "node ./build/server",
     "deploy": "node tools/scripts/deploy",
     "lint": "eslint src",
     "flow": "node tools/scripts/flow",

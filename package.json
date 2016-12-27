@@ -1,5 +1,5 @@
 {
-  "version": "9.0.1-9",
+  "version": "9.0.1-10",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -11,7 +11,7 @@
     "development": "node tools/development",
     "build": "node tools/scripts/build",
     "analyze": "node tools/scripts/analyze",
-    "start": "node build/server",
+    "start": "node ./build/server",
     "deploy": "node tools/scripts/deploy",
     "lint": "eslint src",
     "flow": "node tools/scripts/flow",
