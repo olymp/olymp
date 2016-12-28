@@ -44,6 +44,7 @@ export default class ImageBlock extends Component {
       position: 'relative',
       zIndex: 2,
       ...style,
+      height: 'auto',
     };
 
     const innerStyle = {
