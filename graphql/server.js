@@ -56,6 +56,7 @@ module.exports = (server, options) => {
         next();
       }
     });
+    server.auth = auth;
   }
 
   if (process.env.NODE_ENV !== 'production') {

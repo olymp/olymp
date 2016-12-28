@@ -91,6 +91,7 @@ export default class PageSettings extends Component {
         return;
       }
 
+      values.state = 'PUBLISHED';
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(({ page }) => {
         // Pfad ermitteln
