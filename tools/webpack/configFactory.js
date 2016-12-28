@@ -175,6 +175,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // We are using polyfill.io instead of the very heavy babel-polyfill.
           // Therefore we need to add the regenerator-runtime as the babel-polyfill
           // included this, which polyfill.io doesn't include.
+          // ifClient('babel-polyfill'),
           ifClient('regenerator-runtime/runtime'),
           path.resolve(__dirname, `../../src/${target}/index.js`),
         ]),
