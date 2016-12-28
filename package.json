@@ -1,5 +1,5 @@
 {
-  "version": "9.0.1-13",
+  "version": "9.0.1-15",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -47,7 +47,7 @@
     "body-parser": "1.15.2",
     "capitalize": "1.0.0",
     "cloudinary": "1.4.3",
-    "code-split-component": "2.0.0-alpha.5",
+    "code-split-component": "2.0.0-alpha.2",
     "compression": "1.6.2",
     "cropperjs": "0.8.1",
     "empty-loader": "1.0.1",
