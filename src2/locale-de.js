@@ -11,7 +11,7 @@ export const withLocale = WrappedComponent => props => (
   </LocaleProvider>
 );
 
-export const moment = () => momento().utcOffset('+01:00');
+export const moment = (x1, x2, x3, x4, x5) => momento(x1, x2, x3, x4, x5).utcOffset('+01:00');
 
 export default props => (
   <LocaleProvider locale={enUS}>

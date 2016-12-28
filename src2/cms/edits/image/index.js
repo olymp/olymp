@@ -15,7 +15,7 @@ const defaultImage = {
 @withImageUpload()
 export default class ImageComponent extends Component {
   onImageClick = () => {
-    const { showLightbox, showMediathek, onImageClick, readOnly, auth, onChange } = this.props;
+    const { showLightbox, showMediathek, onImageClick, readOnly, auth, onChange, lightbox } = this.props;
 
     if (!readOnly) {
       if (onImageClick) {
@@ -23,6 +23,10 @@ export default class ImageComponent extends Component {
       } else if (/* auth && auth.user && */ onChange) {
         showMediathek({ showMediathek });
       }
+    }
+
+    if (lightbox) {
+      showLightbox();
     }
   }
 
