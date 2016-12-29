@@ -20,8 +20,10 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
     part = `w_${width},h_${height},c_fill/${part}`;
   }
 
-  if (maxWidth && maxHeight) {
-    part += `,w_${maxWidth},h_${maxHeight},c_fill`;
+  if (maxWidth || maxHeight) {
+    if (maxWidth) part += `,w_${maxWidth}`;
+    if (maxHeight) part += `,h_${maxHeight}`;
+    part += ',c_fill';
   }
   if (quality) {
     part += `,q_${quality}`;
