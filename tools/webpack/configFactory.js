@@ -483,7 +483,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
                   // When a node target (i.e. a server rendering bundle) then
                   // we will set the role as being server which will ensure that
                   // our code split components are resolved synchronously.
-                  role: isNodeTarget ? 'server' : 'client',
+                  mode: isNodeTarget ? 'server' : 'client',
                 },
               ],
             ]),
