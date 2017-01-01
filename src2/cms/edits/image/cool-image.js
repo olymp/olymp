@@ -142,13 +142,13 @@ export default class CoolImage extends Component {
       if (getDim(containerStyles.width) === 'px') {
         containerStyles.height = parseInt(containerStyles.width, 10) * ratio;
       } else if (getDim(containerStyles.width) === '%') {
-        containerStyles.paddingTop = `${(parseInt(containerStyles.width, 10) * ratio)}%`;
+        containerStyles.paddingBottom = `${(parseInt(containerStyles.width, 10) * ratio)}%`;
       }
     } else if (!getDim(containerStyles.width)) {
       if (getDim(containerStyles.height) === 'px') {
         containerStyles.width = parseInt(containerStyles.height, 10) / ratio;
       } else if (getDim(containerStyles.height) === '%') {
-        containerStyles.paddingTop = `${(parseInt(containerStyles.height, 10) / ratio)}%`;
+        containerStyles.paddingBottom = `${(parseInt(containerStyles.height, 10) / ratio)}%`;
       }
     }
     containerStyles.backgroundImage = `url(${url})`;
