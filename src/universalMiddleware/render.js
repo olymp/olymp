@@ -11,8 +11,7 @@ import getAssetsForClientChunks from './getAssetsForClientChunks';
 // Note: this has to be included here, rather than imported via react-helmet
 // as we may need the polyfills to load our app in the first place! :)
 function polyfillIoScript() {
-  return '';
-  // return '<script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6"></script>';
+  return '<script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,es5,es6&flags=gated"></script>';
 }
 
 // We use a service worker configured created by the sw-precache webpack plugin,

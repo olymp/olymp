@@ -26,6 +26,13 @@ const alias = {
 } if (modules && modules.alias) Object.keys(modules.alias).forEach((key) => { alias[key] = path.resolve(appRootPath, modules.alias[key]); });
 const include = [path.resolve(appRootPath, './app'), path.resolve(appRootPath, './server'), path.resolve(__dirname, '../../src'), path.resolve(__dirname, '../../src2')];
 if (modules && modules.client) modules.client.map(p => include.push(path.resolve(appRootPath, p)));
+globSync('olymp-*/', {
+  cwd: path.resolve(appRootPath, 'node_modules'),
+}).forEach((module) => {
+  const modulePath = path.resolve(appRootPath, 'node_modules', module);
+  include.push(path.resolve(appRootPath, 'node_modules', modulePath, 'server'));
+  include.push(path.resolve(appRootPath, 'node_modules', modulePath, 'src'));
+});
 function webpackConfigFactory({ target, mode }, { json }) {
   if (!target || ['client', 'server', 'universalMiddleware'].findIndex(valid => target === valid) === -1) {
     throw new Error(
@@ -142,6 +149,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
           (val) => {
             if (val === 'olymp') return true;
             if (val.indexOf('olymp/') === 0) return true;
+            if (val.indexOf('olymp-') === 0) return true;
             return undefined;
           },
           /\.(eot|woff|woff2|ttf|otf)$/,
@@ -175,8 +183,8 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // We are using polyfill.io instead of the very heavy babel-polyfill.
           // Therefore we need to add the regenerator-runtime as the babel-polyfill
           // included this, which polyfill.io doesn't include.
-          ifClient('babel-polyfill'),
-          // ifClient('regenerator-runtime/runtime'),
+          // ifClient('babel-polyfill'),
+          ifClient('regenerator-runtime/runtime'),
           path.resolve(__dirname, `../../src/${target}/index.js`),
         ]),
       }
