@@ -24,11 +24,17 @@ module.exports = (schema, { adapter }) => {
       },
     },
     schema: `
+      enum PAGE_TYPE {
+        DEFAULT
+        CHAPTERS
+        ALIAS
+        LINK
+      }
       type Page @collection(name: "Page") @stamp @state {
         menu: String
         alias: Page @relation
         href: String
-        parent: Page @relation
+        parent: Page @relation(property: "children", type: "one-to-many")
         order: Int
         name: String
         description: String
@@ -36,6 +42,7 @@ module.exports = (schema, { adapter }) => {
         blocks: Json
         templateName: String
         templateData: Json
+        type: PAGE_TYPE
       }
     `,
   });
