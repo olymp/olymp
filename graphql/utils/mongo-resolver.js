@@ -32,17 +32,33 @@ var queryLoader = new DataLoader(queries => new Promise(resolve => {
   });
 }), { cache: false });*/
 
-export const list = (model, propertyKey) => (source, args, context, fieldASTs) => {
-  const { adapter, beforeHook, afterHook } = context;
+export const list = (model, propertyKey, propertyKey2) => (source, args, context, fieldASTs) => {
+  const { adapter, beforeHook, afterHook, ast } = context;
+  const type = ast.definitions.find(x => x.name && x.name.value === model);
   const hookArgs = Object.assign({ model, propertyKey, isMutation: false }, fieldASTs);
   return beforeHook(args, hookArgs).then((args) => {
     const projection = getProjection(fieldASTs);
+    /*const include = {};
+    Object.keys(projection).map((key) => {
+      const field = type.fields.find(x => x.name && x.name.value === key);
+      if (field) {
+        const relation = field.directives.find(x => x.name && x.name.value === 'relation');
+        if (relation) {
+          const arg = relation.arguments.find(x => x.name && x.name.value === 'ignore');
+          if (arg) include[key] = field.type;
+        }
+      }
+    });*/
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
-      if (source[`${propertyKey}Ids`]) {
+      if (source[`${propertyKey}Ids`]) { // include xxxIds
         if (!args.query) args.query = {};
         delete args.query.id;
         args.query.id = { in: source[`${propertyKey}Ids`] };
+      } else if (source.id && propertyKey2) { // include
+        if (!args.query) args.query = {};
+        delete args.query.id;
+        args.query[`${propertyKey2}Id`] = { eq: source.id };
       } else return [];
     }
     if (args.query) cursor = cursor.find(adaptQuery(args.query), projection);

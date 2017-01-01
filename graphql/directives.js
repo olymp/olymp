@@ -22,6 +22,20 @@ export default ({ adapter, resolvers }) => ({
       },
     },
   },
+  tags: {
+    name: 'mongodb',
+    description: 'Marks a type as a relative.',
+    resolveStatic: {
+      enter(node) {
+        const type = parse(`
+          type ___Model {
+            tags: [String]
+          }
+        `).definitions[0];
+        node.fields = node.fields.concat(type.fields);
+      },
+    },
+  },
   state: {
     name: 'state',
     description: 'Marks a type as a relative.',
@@ -80,6 +94,11 @@ export default ({ adapter, resolvers }) => ({
         const isList = node.type.kind === 'ListType';
         const type = isList ? node.type.type : node.type;
         const collectionName = type.name.value;
+
+        if (directive.arguments.find(x => x.name.value === 'ignore')) return;
+        if (!resolvers[parentName]) resolvers[parentName] = {};
+
+        // one-to-one / one-to-many
         if (!isList) {
           const idType = parse(`
             type ___Field {
@@ -87,6 +106,28 @@ export default ({ adapter, resolvers }) => ({
             }
           `).definitions[0];
           idType.fields.forEach(field => parent.push(field));
+
+          // one-to-many property set (parent -> [children])
+          if (directive.arguments.length > 0) {
+            const property = directive.arguments.find(x => x.name.value === 'property');
+            const relationType = directive.arguments.find(x => x.name.value === 'type');
+            if (property && relationType && relationType.value.value) {
+              const relIsList = relationType.value.value === 'one-to-many';
+              const propType = relIsList ? parse(`
+                type ___Field {
+                  ${property.value.value}: [${parentName}]
+                }
+              `).definitions[0] : parse(`
+                type ___Field {
+                  ${property.value.value}: ${parentName}
+                }
+              `).definitions[0];
+
+              const def = ast.definitions.find(x => x.name && x.name.value === node.type.name.value);
+              propType.fields.forEach(field => def.fields.push(field));
+              resolvers[parentName][property.value.value] = relIsList ? list(collectionName, property.value.value, node.name.value) : one(collectionName, property.value.value, node.name.value);
+            }
+          }
         } else {
           addInputTypes(collectionName, ast);
           const argType = parse(`
@@ -102,7 +143,6 @@ export default ({ adapter, resolvers }) => ({
           `).definitions[0];
           idType.fields.forEach(field => parent.push(field));
         }
-        if (!resolvers[parentName]) resolvers[parentName] = {};
         resolvers[parentName][node.name.value] = isList
           ? list(collectionName, node.name.value)
           : one(collectionName, node.name.value);
