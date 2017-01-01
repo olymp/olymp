@@ -1,5 +1,5 @@
 {
-  "version": "9.0.1-17",
+  "version": "9.0.1-18",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src2/index.js",
@@ -40,7 +40,7 @@
   "homepage": "https://github.com/ctrlplusb/react-universally#readme",
   "dependencies": {
     "@google/maps": "0.3.0",
-    "antd": "2.5.0",
+    "antd": "2.6.0",
     "apollo-client": "0.5.10",
     "app-root-dir": "1.0.2",
     "bluebird": "3.4.6",
