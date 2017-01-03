@@ -47,7 +47,7 @@
     "body-parser": "1.15.2",
     "capitalize": "1.0.0",
     "cloudinary": "1.4.3",
-    "code-split-component": "2.0.0-alpha.2",
+    "code-split-component": "2.0.0-alpha.5",
     "compression": "1.6.2",
     "cropperjs": "0.8.1",
     "empty-loader": "1.0.1",
