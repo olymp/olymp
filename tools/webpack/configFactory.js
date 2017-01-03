@@ -316,7 +316,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ifDevClient(new webpack.HotModuleReplacementPlugin()),
 
       // Adds options to all of our loaders.
-      envVars.MINIFY !== false && envVars.MINIFY !== 'false' ? ifProdClient(
+      ifProdClient(
         new webpack.LoaderOptionsPlugin({
           // Indicates to our loaders that they should minify their output
           // if they have the capability to do so.
@@ -325,10 +325,10 @@ function webpackConfigFactory({ target, mode }, { json }) {
           // should they support it.
           debug: false,
         })
-      ) : null,
+      ),
 
       // JS Minification.
-      envVars.MINIFY !== false && envVars.MINIFY !== 'false' ? ifProdClient(
+      ifProdClient(
         new webpack.optimize.UglifyJsPlugin({
           // sourceMap: true,
           compress: {
@@ -343,7 +343,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
             screw_ie8: true,
           },
         })
-      ) : null,
+      ),
 
       // PooledClass.addPoolingTo error!!
       /* ifProdClient(
