@@ -316,7 +316,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ifDevClient(new webpack.HotModuleReplacementPlugin()),
 
       // Adds options to all of our loaders.
-      envVars.MINIFY !== false ? ifProdClient(
+      envVars.MINIFY !== false && envVars.MINIFY !== 'false' ? ifProdClient(
         new webpack.LoaderOptionsPlugin({
           // Indicates to our loaders that they should minify their output
           // if they have the capability to do so.
@@ -328,7 +328,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
       ) : null,
 
       // JS Minification.
-      envVars.MINIFY !== false ? ifProdClient(
+      envVars.MINIFY !== false && envVars.MINIFY !== 'false' ? ifProdClient(
         new webpack.optimize.UglifyJsPlugin({
           // sourceMap: true,
           compress: {
