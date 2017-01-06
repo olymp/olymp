@@ -86,6 +86,7 @@ export default class MediaList extends Component {
     onTypeFilterChange: React.PropTypes.func,
     onResetFilters: React.PropTypes.func,
     onSortByChange: React.PropTypes.func,
+    onShowAll: React.PropTypes.func,
     tags: React.PropTypes.arrayOf(React.PropTypes.string),
     solution: React.PropTypes.arrayOf(React.PropTypes.string),
     source: React.PropTypes.arrayOf(React.PropTypes.string),
@@ -109,7 +110,7 @@ export default class MediaList extends Component {
   };
 
   render() {
-    const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, tags, solution, source, type, sortByState } = this.props;
+    const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, onShowAll, showAll, tags, solution, source, type, sortByState, uploadLink } = this.props;
     const { loading, items } = this.props.data;
 
     let filteredItems;
@@ -169,6 +170,10 @@ export default class MediaList extends Component {
 
     if (loading || !filteredItems) return <Spin />;
 
+    // Bisher gefilterte Ergebnisse zwischenspiechern für "Alle-Ansicht"
+    // (dort kann man nicht nach tags filtern, aber nach dem Rest)
+    const preFilteredItems = filteredItems;
+
     // Bilder aus allen Unterordnern holen
     const getDirectory = ({ label, images, children }) => {
       const allImages = [...images];
@@ -206,7 +211,7 @@ export default class MediaList extends Component {
     const currentNode = getNode(tree, tags);
     const directories = currentNode && currentNode.children ? sortBy(currentNode.children, 'label').map(getDirectory) : undefined;
 
-    const images = currentNode && currentNode.images ? sortBy(currentNode.images, sortByKey).map(
+    const images = currentNode && currentNode.images ? sortBy(showAll ? preFilteredItems : currentNode.images, sortByKey).map(
       item => ({
         ...item,
         src: item.url,
@@ -258,7 +263,7 @@ export default class MediaList extends Component {
 
     return (
       <div className="olymp-media">
-        <Affix offsetTop={48}>
+        <Affix>
           <Menu
             selectedKeys={['0']}
             mode="horizontal"
@@ -359,6 +364,11 @@ export default class MediaList extends Component {
                   <span>{sortByState && sortByState.length ? sortByState[0] : 'Name'}</span>
                 </Cascader>
               </Menu.Item>
+              <Menu.Item key="add" style={{ float: 'right' }}>
+                {uploadLink(
+                  <span><Icon type="plus" />Hinzufügen</span>
+                )}
+              </Menu.Item>
               {/* <Menu.Item style={{ float: 'right', color: 'red' }} key="delete">
                 <Icon type="delete" />Löschen
               </Menu.Item>
@@ -370,7 +380,7 @@ export default class MediaList extends Component {
         </Affix>
 
         <div className="olymp-container">
-          { tags.length ? (
+          { showAll || tags.length ? (
             <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([...tags].slice(0, -1))}>
               <div className="overlay">
                 <h6><i className="fa fa-rotate-left" /></h6>
@@ -381,9 +391,20 @@ export default class MediaList extends Component {
                 ))}
               </div>
             </div>
-          ) : undefined }
+          ) : (
+            <div className="card card-block directory" onClick={() => onShowAll()}>
+              <div className="overlay">
+                <h6>Alle<br /><small>({items.length})</small></h6>
+              </div>
+              <div className="boxed">
+                {tree.images.filter((item, index) => index < 9).map(({ id, url }) => (
+                  <img key={id} alt={url} src={cloudinaryUrl(url, { width: 100, height: 100 })} />
+                ))}
+              </div>
+            </div>
+          ) }
 
-          {directories}
+          {!showAll ? directories : null}
           {images}
           <div style={{ clear: 'both' }} />
         </div>

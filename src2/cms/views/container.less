@@ -4,10 +4,14 @@
   left: initial;
 }
 .ant-form-item-label label, .ant-input, .ant-tabs-tab, .ant-menu-item, .ant-menu-submenu-title, .ant-btn {
-  font-size: 14px!important;
+  font-size: 14px !important;
 }
-.ant-form-item-label label {
-  line-height: 18px;
+.ant-form-item-label {
+  text-align: left;
+
+  label {
+    line-height: 18px;
+  }
 }
 .ant-menu-item-brand > i.fa {
   float: left;
@@ -105,4 +109,72 @@
 
 .ant-form-item-label label {
   white-space: initial;
+}
+
+/* new */
+@margin: 15px;
+.athena-cms-menu {
+  & div > * {
+    position: fixed;
+    top: @margin;
+    z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
+
+    &:nth-child(1) {
+      top: calc(@margin - 5px);
+      left: calc(@margin - 5px);
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .5);
+      height: 58px !important;
+      width: 58px !important;
+      font-size: 31px !important;
+    }
+
+    &:nth-child(2) {
+      left: calc(48px + 2 * @margin);
+    }
+
+    &:nth-child(3) {
+      left: calc(2 * 48px + 3 * @margin);
+    }
+  }
+  &.inner div > * {
+    &:nth-child(1) {
+      left: calc(320px + @margin - 5px);
+    }
+
+    &:nth-child(2) {
+      left: calc(320px + 48px + 2 * @margin);
+    }
+
+    &:nth-child(3) {
+      left: calc(320px + 2 * 48px + 3 * @margin);
+    }
+  }
+
+  .ant-btn {
+    border: none;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
+    height: 48px !important;
+    width: 48px !important;
+    font-size: 21px !important;
+
+    &.ant-btn-primary {
+      z-index: 1002;
+    }
+
+    img {
+      position: absolute;
+      top: 15%;
+      left: 15%;
+      width: 70%;
+      height: 70%;
+    }
+  }
+
+  & > .ant-affix {
+    z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
+  }
+}
+
+.ant-affix {
+  z-index: 2;
 }

@@ -262,7 +262,7 @@ export default class Container extends Component {
                 </Link>
               </Menu.Item>
               <GatewayDest
-                name="button1"
+                name="button_save"
                 component={props => (props.children ? (
                   <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item ant-menu-item-separated">
                     {props.children}
@@ -272,7 +272,7 @@ export default class Container extends Component {
               <SubMenu className="ant-menu-submenu-right" title={<span><fa className="fa fa-cog" /></span>}>
                 <Menu.Item key="page-settings">Globale Einstellungen</Menu.Item>
                 <GatewayDest
-                  name="button2"
+                  name="button_settings"
                   component={props => (props.children ? (
                     <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item">
                       {props.children}

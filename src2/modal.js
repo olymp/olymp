@@ -4,7 +4,6 @@ import './modal.less';
 
 const modalSettings = {
   visible: true,
-  style: { top: 20 },
   okText: 'Speichern',
   cancelText: 'Abbruch',
   transitionName: 'fade',

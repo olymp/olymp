@@ -1,16 +1,21 @@
 .fullscreen-modal-wrap {
-  background-color: white!important;
+  background-color: whitesmoke !important;
+
   .fullscreen-modal {
-    top: 0!important;
-    width: 100%!important;
-    padding: 0!important;
+    top: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+
     .ant-modal-content {
+      box-shadow: none;
+      border-radius: 0!important;
+      background-color: transparent;
+
       .ant-modal-close {
         position: fixed;
         color: white;
       }
-      box-shadow: none;
-      border-radius: 0!important;
+
       .ant-modal-header {
         border-radius: 0;
         position: fixed;
@@ -22,17 +27,29 @@
         color: #fff;
         border-bottom: 1px solid rgba(0, 0, 0, 0.74);
       }
-      .ant-modal-footer {
-        border: 0;
-      }
+
       .ant-modal-body {
-        // margin-top: 60px;
         margin-left: 320px;
-        .ant-menu-root {
-          .ant-menu-submenu-open {
-            background-color: white;
+        padding: 0;
+
+        .ant-tabs-bar, .ant-form {
+          background: #FFF;
+          border: 1px solid #e5e5e5;
+        }
+        .ant-tabs {
+          overflow: visible;
+
+          .ant-tabs-bar {
+            margin-top: 16px;
           }
-          background-color: whitesmoke;
+        }
+        .ant-form {
+          padding: 15px 15px 0 15px;
+        }
+
+        .ant-menu-root {
+          background-color: #e5e5e5;
+          border-right: 1px solid #d5d5d5;
           width: 320px;
           position: fixed;
           // top: 50px;
@@ -42,10 +59,11 @@
           bottom: 0;
           z-index: 1;
         }
-        padding: 0;
       }
-      // max-width: 1200px;
-      // margin: 0 auto 0 auto;
+
+      .ant-modal-footer {
+        border: 0;
+      }
     }
   }
 }
