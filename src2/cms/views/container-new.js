@@ -3,7 +3,7 @@ import { graphql, Link, Match, Redirect, CodeSplit, gql } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'lodash/upperFirst';
-import { Menu, Affix, Button, Dropdown } from 'antd';
+import { Menu, Affix, Button, Dropdown, Icon } from 'antd';
 import { sortBy } from 'lodash';
 
 import { withRouter } from '../decorators';
@@ -189,9 +189,8 @@ export default class Container extends Component {
       delete groups.undefined;
     }
 
-    const menu = (
-      <Menu>
-        {/*<Menu.Item key="mail" className="ant-menu-item-brand">{logo || 'ATHENA'}</Menu.Item>*/}
+    const mainMenu = (
+      <Menu style={{ minWidth: 150 }}>
         {Object.keys(groups).map((key) => {
           const wrapper = children => (
             <SubMenu key={key} title={capitalize(key)}>
@@ -200,78 +199,60 @@ export default class Container extends Component {
           );
           const groupItem = (
             (groups[key] || []).map(({ name, title }) => (
-              <SubMenu
-                key={name}
-                title={<Link to={{ pathname: `/@/${name}`, query: { state: 'PUBLISHED' } }}
-              >
-                {capitalize(title || name)}
-                {groups[key].length > 1 ? <i className="fa fa-arrow-right" style={{ paddingLeft: '.5rem' }} /> : undefined}
-              </Link>}>
-                <Menu.Item key={`/@/${name}`}>
-                  <Link to={{ pathname, query: { [`@${name}`]: null } }}>
-                    <i className="fa fa-plus" />{capitalize(title || name)} hinzufügen
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
+              <Menu.Item key={`/@/${name}`}>
+                <Link to={{ pathname, query: { [`@${name}`]: null } }}>
+                  {capitalize(title || name)}
+                </Link>
+              </Menu.Item>
             ))
           );
 
           return groups[key].length === 1 ? groupItem : wrapper(groupItem);
         })}
-        <SubMenu title={<Link to="/@/media">Mediathek</Link>}>
-          <Menu.Item key="/@/media">
+        <Menu.Divider />
+        <SubMenu title="Mediathek">
+          <Menu.Item key="media">
+            <Link to="/@/media">
+              Ansehen
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="upload">
             <Link to={{ pathname, query: { '@upload': null } }}>
-              <i className="fa fa-plus" />Datei hochladen
+              Datei hochladen
             </Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item key="/@/users">
-          <Link to="/@/users">
-            Benutzer
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="/@/analytics">
-          <Link to="/@/analytics">
-            Statistik
-          </Link>
-        </Menu.Item>
-        <GatewayDest
-          name="button1"
-          component={props => (props.children ? (
-            <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item ant-menu-item-separated">
-              {props.children}
-            </div>
-        ) : null)}
-        />
-        <SubMenu className="ant-menu-submenu-right" title={<span><fa className="fa fa-cog" /></span>}>
-          <Menu.Item key="page-settings">Globale Einstellungen</Menu.Item>
-          <GatewayDest
-            name="button2"
-            component={props => (props.children ? (
-              <div className="ant-menu-item-right ant-menu-item-horizontal ant-menu-item">
-                {props.children}
-              </div>
-            ) : null)}
-          />
-        </SubMenu>
-        <SubMenu className="ant-menu-submenu-right" title={<span>{auth.user.name}</span>}>
-          <Menu.Item key="setting:1">Profil</Menu.Item>
-          <Menu.Item key="logout">Abmelden</Menu.Item>
-        </SubMenu>
+        <Menu.Item key="/@/users" disabled>Benutzer</Menu.Item>
+        <Menu.Item key="/@/analytics" disabled>Statistik</Menu.Item>
+        <Menu.Item key="page-settings" disabled>Einstellungen</Menu.Item>
+        <Menu.Item key="user" disabled>Profil</Menu.Item>
+        <Menu.Divider />
+        <Menu.Item key="logout">Abmelden</Menu.Item>
       </Menu>
     );
+
     return (
       <GatewayProvider>
         <div className="full">
           {modal}
-          <Affix>
-            <Dropdown overlay={menu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
-              <Button type="default" shape="circle" style={{ position: 'fixed', top: 5, left: 5, zIndex: 1, fontSize: 20, width: 40, height: 40 }}>
-                A
+          <Affix className={`athena-cms-menu ${modal ? 'inner' : ''}`}>
+            <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+              <Button type="primary" shape="circle" size="large">
+                {logo || <Icon type="menu-unfold" />}
               </Button>
             </Dropdown>
+            <GatewayDest
+              name="action"
+              component={props => (props.children ? props.children : null)}
+            />
+            <GatewayDest
+              name="close"
+              component={props => (props.children ? props.children : null)}
+            />
           </Affix>
+
           {children}
+
           <GatewayDest name="global" />
           <Match
             pattern="/@/media"
@@ -283,11 +264,21 @@ export default class Container extends Component {
                   solution={query && query.solution ? [query.solution] : []}
                   source={query && query.source ? [query.source] : []}
                   type={query && query.type ? [query.type] : []}
+                  showAll={query && query.all === null}
+                  uploadLink={link => (
+                    <Link to={{ pathname, query: { ...query, '@upload': null } }}>
+                      {link}
+                    </Link>
+                  )}
                   sortByState={query && query.sortBy ? [query.sortBy] : []}
-                  onTagsFilterChange={tags => router.push({
-                    pathname,
-                    query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
-                  })}
+                  onTagsFilterChange={(tags) => {
+                    delete query.all;
+
+                    return router.push({
+                      pathname,
+                      query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
+                    });
+                  }}
                   onSolutionFilterChange={solution => router.push({
                     pathname,
                     query: { ...query, solution: solution ? solution.join('') : undefined },
@@ -306,6 +297,10 @@ export default class Container extends Component {
                   onSortByChange={sortBy => router.push({
                     pathname,
                     query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
+                  })}
+                  onShowAll={() => router.push({
+                    pathname,
+                    query: { all: null },
                   })}
                   onImageChange={({ id }) => router.push({
                     pathname,

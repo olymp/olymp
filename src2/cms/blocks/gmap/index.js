@@ -7,7 +7,7 @@ const Marker = ({ lat, lng }) => <i style={{ marginTop: '-20px' }} className="fa
 const defaultAddress = { lat: 59.724465, lng: 30.080121 };
 const actions = props => [{
   type: 'gmap.url',
-  icon: 'picture-o',
+  icon: 'map-marker',
   toggle: () => {
     const { setData, getData, client } = props;
     const current = getData('address');

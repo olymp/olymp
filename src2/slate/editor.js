@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
-import { Button } from 'antd';
+import { Gateway } from 'react-gateway';
 import { Editor, Html, Raw } from 'slate';
+import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
 import './style.less';
 
@@ -237,9 +237,11 @@ export default class SlateEditor extends Component {
     return (
       <div className={className} style={{ position: 'relative' }}>
         {value && showUndo && value.hasUndos && (
-          <Button type="default" shape="circle" onClick={() => onChange(value.transform().undo().apply())} style={{ position: 'fixed', bottom: 30, right: 30, zIndex: 1 }}>
-            <i className="fa fa-undo" />
-          </Button>
+          <Gateway into="button_undo">
+            <a href="javascript:;" onClick={() => onChange(value.transform().undo().apply())}>
+              Rückgängig
+            </a>
+          </Gateway>
         )}
         {children}
         {this.state.mode ? <Editor
