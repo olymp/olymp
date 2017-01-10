@@ -16,7 +16,6 @@ import serviceWorker from './middleware/serviceWorker';
 import offlinePage from './middleware/offlinePage';
 import errorHandlers from './middleware/errorHandlers';
 import config from '../../config';
-import server from '_server_';
 import session from 'express-session';
 
 // Create our express based server.
@@ -63,7 +62,15 @@ app.useSession = (url, getArgs) => {
   else app.use(session(args));
 };
 app.useStatic = url => express.static(url);
-server(app);
+
+try {
+  const server = require('_server_');
+  if (server.default) {
+    server.default(app);
+  } else {
+    server(app);
+  }
+} catch (err) { }
 // The React application middleware.
 app.get('*', reactApplication);
 

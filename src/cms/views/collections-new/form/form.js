@@ -68,6 +68,7 @@ export default Form.create()(
               {getFieldDecorator('slug', { initialValue: item.slug })(<SlugEditor url={item.slug} />)}
             </Form.Item>
           ) : null}
+          <button onClick={onCreate}>Speichern</button>
           {item && item.state !== undefined ? (
             <Form.Item key="state" label="State" {...formItemLayout0}>
               {getFieldDecorator('state', { initialValue: item.state })(getFormEditor(collection.fields.find(x => x.name === 'state').type))}

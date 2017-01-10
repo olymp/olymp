@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { graphql, Link, Match, Redirect, CodeSplit, gql, withRouter } from 'olymp';
+import { graphql, Link, Match, Redirect, gql, withRouter } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'lodash/upperFirst';
+import uncapitalize from 'lodash/lowerFirst';
 import { Menu, Affix, Button, Dropdown, Icon } from 'antd';
 import sortBy from 'lodash/sortBy';
-
 import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaDetail from './media/detail';
+import MediaList from './media/list';
+import ModalView from './modal';
 import UploadModal from './media/upload';
 import Collection from './collections-new/view';
 import './container.less';
@@ -119,7 +121,7 @@ export default class Container extends Component {
     const { schema } = data;
     const collections = schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
     // const collection = !query ? undefined : query['@collection'];
-    const collection = query ? (collections || []).find(c => query[`@${c.name}`] !== undefined) : undefined;
+    const collection = query ? (collections || []).find(c => query[`@${c.name}`] !== undefined || query[`@${uncapitalize(c.name)}`] !== undefined) : undefined;
 
     if (collection !== undefined) {
       const { name } = collection;
@@ -128,8 +130,60 @@ export default class Container extends Component {
       );
     } else if (query && query['@media'] !== undefined) {
       modal = (
+        <ModalView location={location}>
+          <MediaList
+            tags={query && query.tags ? query.tags.split('-') : []}
+            solution={query && query.solution ? [query.solution] : []}
+            source={query && query.source ? [query.source] : []}
+            type={query && query.type ? [query.type] : []}
+            showAll={query && query.all === null}
+            uploadLink={link => (
+              <Link to={{ pathname, query: { ...query, '@upload': null } }}>
+                {link}
+              </Link>
+            )}
+            sortByState={query && query.sortBy ? [query.sortBy] : []}
+            onTagsFilterChange={(tags) => {
+              delete query.all;
+
+              return router.push({
+                pathname,
+                query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
+              });
+            }}
+            onSolutionFilterChange={solution => router.push({
+              pathname,
+              query: { ...query, solution: solution ? solution.join('') : undefined },
+            })}
+            onSourceFilterChange={source => router.push({
+              pathname,
+              query: { ...query, source: source ? source.join('') : undefined },
+            })}
+            onTypeFilterChange={type => router.push({
+              pathname,
+              query: { ...query, type: type ? type.join('') : undefined },
+            })}
+            onResetFilters={() => router.push({
+              pathname,
+            })}
+            onSortByChange={sortBy => router.push({
+              pathname,
+              query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
+            })}
+            onShowAll={() => router.push({
+              pathname,
+              query: { all: null },
+            })}
+            onImageChange={({ id }) => router.push({
+              pathname,
+              query: { ...query, '@media': id },
+            })}
+          />
+        </ModalView>
+      )
+      /*modal = (
         <MediaDetail id={query['@media']} onClose={() => router.push({ pathname, query: { ...query, '@media': undefined } })} />
-      );
+      );*/
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
         <PageModal
@@ -189,7 +243,7 @@ export default class Container extends Component {
     }
 
     const mainMenu = (
-      <Menu style={{ minWidth: 150 }}>
+      <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
         {Object.keys(groups).map((key) => {
           const wrapper = children => (
             <SubMenu key={key} title={capitalize(key)}>
@@ -199,7 +253,7 @@ export default class Container extends Component {
           const groupItem = (
             (groups[key] || []).map(({ name, title }) => (
               <Menu.Item key={`/@/${name}`}>
-                <Link to={{ pathname, query: { [`@${name}`]: null } }}>
+                <Link to={{ pathname, query: { [`@${uncapitalize(name)}`]: null } }}>
                   {capitalize(title || name)}
                 </Link>
               </Menu.Item>
@@ -209,18 +263,11 @@ export default class Container extends Component {
           return groups[key].length === 1 ? groupItem : wrapper(groupItem);
         })}
         <Menu.Divider />
-        <SubMenu title="Mediathek">
-          <Menu.Item key="media">
-            <Link to="/@/media">
-              Ansehen
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="upload">
-            <Link to={{ pathname, query: { '@upload': null } }}>
-              Datei hochladen
-            </Link>
-          </Menu.Item>
-        </SubMenu>
+        <Menu.Item key="mediathek">
+          <Link to={{ pathname, query: { '@media': null } }}>
+            Mediathek
+          </Link>
+        </Menu.Item>
         <Menu.Item key="/@/users" disabled>Benutzer</Menu.Item>
         <Menu.Item key="/@/analytics" disabled>Statistik</Menu.Item>
         <Menu.Item key="page-settings" disabled>Einstellungen</Menu.Item>
@@ -253,62 +300,6 @@ export default class Container extends Component {
           {children}
 
           <GatewayDest name="global" />
-          <Match
-            pattern="/@/media"
-            render={routerProps =>
-              <CodeSplit chunkName="media" modules={{ View: require('./media/list') }}>
-                { ({ View }) => View && <View
-                  {...routerProps}
-                  tags={query && query.tags ? query.tags.split('-') : []}
-                  solution={query && query.solution ? [query.solution] : []}
-                  source={query && query.source ? [query.source] : []}
-                  type={query && query.type ? [query.type] : []}
-                  showAll={query && query.all === null}
-                  uploadLink={link => (
-                    <Link to={{ pathname, query: { ...query, '@upload': null } }}>
-                      {link}
-                    </Link>
-                  )}
-                  sortByState={query && query.sortBy ? [query.sortBy] : []}
-                  onTagsFilterChange={(tags) => {
-                    delete query.all;
-
-                    return router.push({
-                      pathname,
-                      query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
-                    });
-                  }}
-                  onSolutionFilterChange={solution => router.push({
-                    pathname,
-                    query: { ...query, solution: solution ? solution.join('') : undefined },
-                  })}
-                  onSourceFilterChange={source => router.push({
-                    pathname,
-                    query: { ...query, source: source ? source.join('') : undefined },
-                  })}
-                  onTypeFilterChange={type => router.push({
-                    pathname,
-                    query: { ...query, type: type ? type.join('') : undefined },
-                  })}
-                  onResetFilters={() => router.push({
-                    pathname,
-                  })}
-                  onSortByChange={sortBy => router.push({
-                    pathname,
-                    query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
-                  })}
-                  onShowAll={() => router.push({
-                    pathname,
-                    query: { all: null },
-                  })}
-                  onImageChange={({ id }) => router.push({
-                    pathname,
-                    query: { ...query, '@media': id },
-                  })}
-                /> }
-              </CodeSplit>
-            }
-          />
         </div>
       </GatewayProvider>
     );

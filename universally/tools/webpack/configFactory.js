@@ -344,6 +344,7 @@ export default function webpackConfigFactory(buildOptions: BuildOptions) {
       // HappyPack 'javascript' instance.
       happyPackPlugin({
         name: 'happypack-javascript',
+        tempDir: config.happypackOutputPath,
         // We will use babel to do all our JS processing.
         loaders: [{
           path: require.resolve('babel-loader'),
@@ -355,6 +356,7 @@ export default function webpackConfigFactory(buildOptions: BuildOptions) {
       ifDevClient(
         () => happyPackPlugin({
           name: 'happypack-devclient-css',
+          tempDir: config.happypackOutputPath,
           loaders: [
             require.resolve('style-loader'),
             {
@@ -368,6 +370,7 @@ export default function webpackConfigFactory(buildOptions: BuildOptions) {
       ifDevClient(
         () => happyPackPlugin({
           name: 'happypack-devclient-less',
+          tempDir: config.happypackOutputPath,
           loaders: [
             require.resolve('style-loader'),
             require.resolve('css-loader'),

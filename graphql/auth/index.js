@@ -89,5 +89,14 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
       }
     `,
   });
+  setTimeout(() => {
+    const collection = adapter.client.collection('user');
+    collection.findOne({ }).then((one) => {
+      if (one) return;
+      auth.register({ email: 'bkniffler@me.com', name: 'Benjamin Kniffler' }, 'bkniffler').then(({ token }) => {
+        auth.confirm(token);
+      });
+    }).catch(err => console.log(err));
+  }, 3000);
   return { auth };
 };

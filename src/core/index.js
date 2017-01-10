@@ -10,7 +10,6 @@ export { default as GoogleMap } from './google-map';
 
 export { default as cn } from 'classnames';
 export { default as classname } from 'classnames';
-// export { Miss, Match, Link, Redirect } from 'react-router';
 export { default as Helmet } from 'react-helmet';
 export { default as cloudinaryUrl } from './cloudinary-url';
 export { default as trackScrollY } from './track-scroll-y';
@@ -33,7 +32,7 @@ export { default as withAuth, auth } from './with-auth';
 export { default as slugify } from './slugify';
 export { default as sortBy } from './sort-by';
 
-export const Miss = require('react-router').Miss;
-export const Match = require('react-router').Match;
-export const Link = require('react-router').Link;
-export const Redirect = require('react-router').Redirect;
+export const Miss = require('react-router-v4-decode-uri').Miss;
+export const Match = require('react-router-v4-decode-uri').Match;
+export const Link = require('react-router-v4-decode-uri').Link;
+export const Redirect = require('react-router-v4-decode-uri').Redirect;
