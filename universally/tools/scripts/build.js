@@ -12,7 +12,7 @@ import config from '../../config';
 
 // First clear the build output dir.
 if (fs.existsSync(pathResolve(appRootDir.get(), config.buildOutputPath))) {
-  exec(`rimraf ${pathResolve(appRootDir.get(), config.buildOutputPath)}`);
+  exec(`rm -rf ${pathResolve(appRootDir.get(), config.buildOutputPath)}`);
 }
 
 // Get our "fixed" bundle names
