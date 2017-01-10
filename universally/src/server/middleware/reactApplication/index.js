@@ -44,9 +44,14 @@ function reactApplicationMiddleware(request: $Request, response: $Response) {
     return;
   }
 
-  const uri = process.env.GRAPHQL_URL || `${process.env.URL || process.env.SERVER_URL}/graphql`;
+  const port = process.env.PORT || config.port;
+
+  const getUri = () => {
+    if (process.env.GRAPHQL_URL) return process.env.GRAPHQL_URL;
+    return process.env.URL || `http://localhost:${port}`;
+  };
   const networkInterface = createNetworkInterface({
-    uri,
+    uri: process.env.GRAPHQL_URL || `${getUri()}/graphql`,
     opts: {
       credentials: 'same-origin',
       headers: request.headers,
