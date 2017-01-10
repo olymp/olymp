@@ -53,11 +53,12 @@ module.exports = (schema, { adapter }) => {
   });*/
   setTimeout(() => {
     const collection = adapter.client.collection('page');
+    console.log(process.env);
     collection.findOne({ }).then((one) => {
       if (one) return;
       adapter.client.collection('page').insertOne(
         { id: require('shortid').generate(), slug: '/', state: 'PUBLISHED' }
       );
     }).catch(err => console.log(err));
-  }, 3000);
+  }, 10000);
 };
