@@ -362,7 +362,9 @@ const config = {
           // ES201X code into ES5, safe for browsers.  We exclude module
           // transilation as webpack takes care of this for us, doing
           // tree shaking in the process.
-          [require.resolve('babel-preset-latest'), { es2015: { modules: false } }]
+          target === 'client'
+            ? [require.resolve('babel-preset-latest'), { es2015: { modules: false } }]
+            : null,
           // For our server bundle we use the awesome babel-preset-env which
           // acts like babel-preset-latest in that it supports the latest
           // ratified ES201X syntax, however, it will only transpile what
@@ -373,6 +375,9 @@ const config = {
           // take care of that for us ensuring tree shaking takes place.
           // NOTE: Make sure you use the same node version for development
           // and production.
+          target === 'server'
+            ? [require.resolve('babel-preset-env'), { targets: { node: true }, modules: false }]
+            : null,
         ].filter(x => x != null),
 
         plugins: [
@@ -380,7 +385,7 @@ const config = {
           require.resolve('babel-plugin-transform-es2015-destructuring'),
           require.resolve('babel-plugin-transform-decorators-legacy'),
           require.resolve('babel-plugin-transform-class-properties'),
-          target === 'client' ? [require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }] : null,
+          target === 'client' ? [require.resolve('babel-plugin-import'), { libraryName: 'antd', style: 'css' }] : null,
           // Required to support react hot loader.
           mode === 'development'
             ? require.resolve('react-hot-loader/babel')
