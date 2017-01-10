@@ -14,15 +14,15 @@ const exists = (p, throwError) => {
 exists('server');
 exists('app', true);
 
+require('babel-register')({
+  presets: [
+    [require.resolve('babel-preset-env'), { targets: { node: true } }],
+    require.resolve('babel-preset-stage-3'),
+    require.resolve('babel-preset-react'),
+  ],
+  only: path.resolve(__dirname, 'universally'),
+});
 if (command === 'dev') {
-  require('babel-register')({
-    presets: [
-      [require.resolve('babel-preset-env'), { targets: { node: true } }],
-      require.resolve('babel-preset-stage-3'),
-      require.resolve('babel-preset-react'),
-    ],
-    only: path.resolve(__dirname, 'universally'),
-  });
   require('./universally/tools/development').default;
 } else if (command === 'build') {
   require(path.resolve(__dirname, 'universally', 'tools', 'scripts', 'build'));
