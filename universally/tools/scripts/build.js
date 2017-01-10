@@ -2,6 +2,7 @@
 
 // This script builds a production output of all of our bundles.
 
+import fs from 'fs';
 import webpack from 'webpack';
 import appRootDir from 'app-root-dir';
 import { resolve as pathResolve } from 'path';
@@ -10,7 +11,9 @@ import { exec } from '../utils';
 import config from '../../config';
 
 // First clear the build output dir.
-exec(`rimraf ${pathResolve(appRootDir.get(), config.buildOutputPath)}`);
+if (fs.existsSync(pathResolve(appRootDir.get(), config.buildOutputPath))) {
+  exec(`rimraf ${pathResolve(appRootDir.get(), config.buildOutputPath)}`);
+}
 
 // Get our "fixed" bundle names
 Object.keys(config.bundles)
