@@ -12,7 +12,7 @@ heroku config:set AUTH_SECRET=${GENERATE_SECRET}
 heroku config:set SESSION_SECRET=${GENERATE_SECRET}
 heroku config:set GM_KEY=${GOOGLE_MAP_KEY}
 heroku config:set NODE_TLS_REJECT_UNAUTHORIZED=0
-heroku config:set NPM_CONFIG_PRODUCTION=false
+heroku config:set YARN_PRODUCTION=false
 heroku config:set URL=https://${APP_NAME}.herokuapp.com
 
 // create .env
