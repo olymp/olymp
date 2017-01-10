@@ -111,6 +111,7 @@
     "babel-preset-latest": "6.16.0",
     "babel-preset-react": "6.16.0",
     "babel-preset-stage-3": "6.17.0",
+    "babel-register": "^6.18.0",
     "babel-template": "6.16.0",
     "chokidar": "1.6.1",
     "css-loader": "0.26.1",
