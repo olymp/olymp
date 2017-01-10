@@ -48,7 +48,8 @@ const config = {
   publicAssetsPath: './public',
 
   // Where does our build output live?
-  buildOutputPath: './build',
+  buildOutputPath: './.build',
+  happypackOutputPath: './.build/happypack',
 
   // Should we optimize production builds (i.e. minify etc).
   // Sometimes you don't want this to happen to aid in debugging complex
@@ -225,7 +226,7 @@ const config = {
       ],
 
       // Where does the client bundle output live?
-      outputPath: './build/client',
+      outputPath: './.build/client',
 
       // What is the public http path at which we must serve the bundle from?
       webPath: '/client/',
@@ -299,7 +300,7 @@ const config = {
       ],
 
       // Where does the server bundle output live?
-      outputPath: './build/server',
+      outputPath: './.build/server',
     },
   },
 

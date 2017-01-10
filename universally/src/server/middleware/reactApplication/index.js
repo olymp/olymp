@@ -3,7 +3,7 @@
 import type { $Request, $Response, Middleware } from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { ServerRouter, createServerRenderContext } from 'react-router';
+import { ServerRouter, createServerRenderContext } from 'react-router-v4-decode-uri';
 import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import Helmet from 'react-helmet';
 import generateHTML from './generateHTML';

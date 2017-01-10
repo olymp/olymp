@@ -18,10 +18,11 @@ type HappyPackConfig = {
 
 // Generates a HappyPack plugin.
 // @see https://github.com/amireh/happypack/
-export function happyPackPlugin({ name, loaders } : HappyPackConfig) {
+export function happyPackPlugin({ name, loaders, tempDir } : HappyPackConfig) {
   return new HappyPack({
     id: name,
     verbose: false,
+    tempDir,
     threads: 5,
     loaders,
   });

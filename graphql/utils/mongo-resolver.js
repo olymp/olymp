@@ -156,7 +156,7 @@ exports.write = model => (source, args, context, fieldASTs) => {
       }
     }
     const then = () => {
-      if (fieldASTs) return one(model, adapter, { ast })(source, args, context, fieldASTs);
+      if (fieldASTs) return exports.one(model, adapter, { ast })(source, args, context, fieldASTs);
       return { id: args.id };
     };
     if (!args.id) args.id = ShortId.generate();

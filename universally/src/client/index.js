@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-v4-decode-uri';
 import { CodeSplitProvider, rehydrateState } from 'code-split-component';
 import ReactHotLoader from './components/ReactHotLoader';
 import DemoApp from '_app_';

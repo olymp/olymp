@@ -46,4 +46,18 @@ module.exports = (schema, { adapter }) => {
       }
     `,
   });
+
+  /*const db = server.adapter.client;
+  server.auth.register({ email: 'bkniffler@me.com', name: 'Benjamin Kniffler' }, 'asd').then(({ token }) => {
+    server.auth.confirm(token);
+  });*/
+  setTimeout(() => {
+    const collection = adapter.client.collection('page');
+    collection.findOne({ }).then((one) => {
+      if (one) return;
+      adapter.client.collection('page').insertOne(
+        { id: require('shortid').generate(), slug: '/', state: 'PUBLISHED' }
+      );
+    }).catch(err => console.log(err));
+  }, 3000);
 };
