@@ -1,6 +1,3 @@
-
-require('dotenv').config();
-
 const bodyparser = require('body-parser');
 const createSchema = require('./graphql');
 const createMail = require('./mail');
