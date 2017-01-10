@@ -97,6 +97,6 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         auth.confirm(token);
       });
     }).catch(err => console.log(err));
-  }, 3000);
+  }, 5000);
   return { auth };
 };
