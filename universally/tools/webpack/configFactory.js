@@ -258,11 +258,6 @@ export default function webpackConfigFactory(buildOptions: BuildOptions) {
       // use in each respective bundle.  For example, don't accidentally
       // expose a database connection string within your client bundle src!
       new webpack.DefinePlugin({
-        'process.env.URL': JSON.stringify(config.url),
-        ...Object.keys(process.env).reduce((state, key) => {
-          state[key] = JSON.stringify(process.env[key]);
-          return state;
-        }, {}),
         // Adding the NODE_ENV key is especially important as React relies
         // on it to optimize production builds.
         'process.env.NODE_ENV': JSON.stringify(mode),
