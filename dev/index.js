@@ -54,5 +54,5 @@ module.exports = (config) => {
     if (target === 'client') babelConfig.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
     return babelConfig;
   };
-  return config;
+  return less(apollo(config));
 };

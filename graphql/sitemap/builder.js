@@ -5,8 +5,8 @@ var EventEmitter = require('events').EventEmitter;
 var Crawler = require('simplecrawler');
 var cheerio = require('cheerio');
 var xmlbuilder = require('xmlbuilder');
-var assign = require('lodash.assign');
-var forIn = require('lodash.forin');
+var assign = require('lodash/assign');
+var forIn = require('lodash/forIn');
 var moment = require('moment');
 
 /**
