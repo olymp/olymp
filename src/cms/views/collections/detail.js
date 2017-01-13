@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/upperFirst';
 import { withItem, withCollection, withItems } from 'olymp';
 import { Modal, Button, Form, Input, DatePicker, Select, Slider, Tabs, Collapse, Checkbox } from 'antd';
 import { SlateMate, SlateModal } from 'olymp/slate';

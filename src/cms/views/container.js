@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql, Link, Match, Redirect, CodeSplit, gql, withRouter } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from '../../auth';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/upperFirst';
 import { Menu, Affix, Icon } from 'antd';
 import sortBy from 'lodash/sortBy';
 

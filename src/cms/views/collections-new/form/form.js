@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Tabs } from 'antd';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/upperFirst';
 import { SlugEditor } from './editors';
 import getInitialValue from './initial-value';
 import getFormEditor from './form-editor';

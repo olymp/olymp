@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { withApollo } from 'react-apollo';
-import capitalize from 'capitalize';
+import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 import { Table, Menu, Icon, Affix } from 'antd';
 import { sortBy } from 'lodash/sortBy';
