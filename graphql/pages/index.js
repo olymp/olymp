@@ -1,4 +1,4 @@
-module.exports = (schema, { adapter }) => {
+module.exports = (schema, { adapter, attributes }) => {
   schema.addSchema({
     name: 'page',
     query: `
@@ -43,6 +43,7 @@ module.exports = (schema, { adapter }) => {
         templateName: String
         templateData: Json
         type: PAGE_TYPE
+        ${attributes || ''}
       }
     `,
   });

@@ -12,7 +12,6 @@ export { default as cn } from 'classnames';
 export { default as classname } from 'classnames';
 export { default as Helmet } from 'react-helmet';
 export { default as cloudinaryUrl } from './cloudinary-url';
-export { default as trackScrollY } from './track-scroll-y';
 
 export { default as gql } from 'graphql-tag';
 export { withApollo, graphql } from 'react-apollo';

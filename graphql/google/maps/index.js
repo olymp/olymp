@@ -1,4 +1,3 @@
-const request = require('request');
 const maps = require('@google/maps');
 module.exports = key => {
   const googleMapsClient = maps.createClient({

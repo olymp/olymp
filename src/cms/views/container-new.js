@@ -9,7 +9,6 @@ import sortBy from 'lodash/sortBy';
 import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
-import MediaDetail from './media/detail';
 import MediaList from './media/list';
 import ModalView from './modal';
 import UploadModal from './media/upload';
@@ -65,62 +64,34 @@ export default class Container extends Component {
 
     let modal;
     if (query && query.confirm !== undefined) {
-      modal = (
-        <AuthConfirm
-          token={query.confirm}
-          pathname={pathname}
-          onClose={() => router.push(pathname)}
-        />
-      );
+      modal = (<AuthConfirm token={query.confirm} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
     if (query && query.register !== undefined) {
-      modal = (
-        <AuthRegister
-          email={query.register}
-          pathname={pathname}
-          onClose={() => router.push(pathname)}
-        />
-      );
+      modal = (<AuthRegister email={query.register} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
     if (query && query.login !== undefined) {
-      modal =
-        <AuthLogin email={query.email} pathname={pathname} onClose={() => router.push(pathname)} />;
+      modal = (<AuthLogin email={query.email} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
     if (query && query.forgot !== undefined) {
-      modal = (
-        <AuthForgot
-          email={query.forgot}
-          pathname={pathname}
-          onClose={() => router.push(pathname)}
-        />
-      );
+      modal = (<AuthForgot email={query.forgot} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
     if (query && query.reset !== undefined) {
-      modal = (
-        <AuthReset
-          token={query.reset}
-          pathname={pathname}
-          onClose={() => router.push(pathname)}
-        />
-      );
+      modal = (<AuthReset token={query.reset} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
 
     if (!auth || !auth.user || !data) {
+      const inner = <Match pattern="/@/*" render={() => <Redirect to={{ pathname: '/', query: { login: null, pathname } }} />} />;
       return (
         <div className="full">
           {modal}
           {children}
-          {auth && auth.loading ? null : <Match
-            pattern="/@/*"
-            render={() => <Redirect to={{ pathname: '/', query: { login: null, pathname } }} />}
-          />}
+          {auth && auth.loading ? null : inner}
         </div>
       );
     }
 
     const { schema } = data;
     const collections = schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
-    // const collection = !query ? undefined : query['@collection'];
     const collection = query ? (collections || []).find(c => query[`@${c.name}`] !== undefined || query[`@${uncapitalize(c.name)}`] !== undefined) : undefined;
 
     if (collection !== undefined) {
@@ -180,10 +151,7 @@ export default class Container extends Component {
             })}
           />
         </ModalView>
-      )
-      /*modal = (
-        <MediaDetail id={query['@media']} onClose={() => router.push({ pathname, query: { ...query, '@media': undefined } })} />
-      );*/
+      );
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
         <PageModal
@@ -279,7 +247,7 @@ export default class Container extends Component {
 
     return (
       <GatewayProvider>
-        <div className="full">
+        <div>
           {modal}
           <Affix className={`athena-cms-menu ${modal ? 'inner' : ''}`}>
             <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
