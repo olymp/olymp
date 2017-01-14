@@ -1,5 +1,5 @@
 {
-  "version": "12.0.0-5",
+  "version": "12.0.0-6",
   "name": "olymp-dev",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./index.js",
@@ -14,6 +14,6 @@
     "babel-plugin-transform-es2015-destructuring": "6.19.0",
     "babel-plugin-transform-object-rest-spread": "6.20.2",
     "universally-dev": "12.0.0-1",
-    "universally-dev-less": "12.0.0"
+    "universally-dev-less": "12.0.0-1"
   }
 }
