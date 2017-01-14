@@ -14,7 +14,6 @@ export { default as Helmet } from 'react-helmet';
 export { default as cloudinaryUrl } from './cloudinary-url';
 
 export { default as gql } from 'graphql-tag';
-export { withApollo, graphql } from 'react-apollo';
 
 export { CodeSplit } from 'code-split-component';
 export { default as moment } from 'moment';
@@ -35,3 +34,6 @@ export const Miss = require('react-router-v4-decode-uri').Miss;
 export const Match = require('react-router-v4-decode-uri').Match;
 export const Link = require('react-router-v4-decode-uri').Link;
 export const Redirect = require('react-router-v4-decode-uri').Redirect;
+
+export const withApollo = require('react-apollo').withApollo;
+export const graphql = require('react-apollo').graphql;
