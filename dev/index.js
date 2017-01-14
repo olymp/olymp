@@ -7,6 +7,7 @@ const rootPath = require('app-root-dir');
 module.exports = (config) => {
   const prevBabelConfig = config.plugins.babelConfig;
   config.port = process.env.PORT || 1337;
+  config.publicAssetsPath = './public';
   config.bundlesSharedSrcPath = './app';
   config.happypackOutputPath = './.build/happypack';
   config.buildOutputPath = './.build';
