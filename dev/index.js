@@ -13,8 +13,8 @@ module.exports = (config) => {
   config.buildOutputPath = './.build';
   config.clientDevServerPort = process.env.PORT ? (process.env.PORT + 1) : 7331;
   config.url = process.env.SERVER_URL || `http://localhost:${process.env.PORT || 1337}`;
-  config.env['SERVER_URL'] = config.url;
-  config.env['GRAPHQL_URL'] = process.env.GRAPHQL_URL || (config.url + '/graphql');
+  config.env['URL'] = config.url;
+  config.env['API'] = process.env.API || (config.url + '/graphql');
   config.env['GM_KEY'] = process.env.GM_KEY;
   if (!config.alias) config.alias = {}
   config.alias['react-router'] = path.resolve(rootPath.get(), 'node_modules', 'react-router-v4-decode-uri');
