@@ -12,7 +12,7 @@ module.exports = (config) => {
   config.happypackOutputPath = './.build/happypack';
   config.buildOutputPath = './.build';
   config.clientDevServerPort = process.env.PORT ? (process.env.PORT + 1) : 7331;
-  config.url = process.env.SERVER_URL || `http://localhost:${process.env.PORT || 1337}`;
+  config.url = process.env.URL || `http://localhost:${process.env.PORT || 1337}`;
   config.env['URL'] = config.url;
   config.env['API'] = process.env.API || (config.url + '/graphql');
   config.env['GM_KEY'] = process.env.GM_KEY;
@@ -44,8 +44,8 @@ module.exports = (config) => {
     imgSrc: ["'self'", 'data:', 'res.cloudinary.com', 'csi.gstatic.com', 'maps.gstatic.com', 'maps.googleapis.com', 'www.google-analytics.com', 'scontent.cdninstagram.com'],
     connectSrc: ['*'], // ["'self'", 'ws:'],
     fontSrc: ["'self'", 'at.alicdn.com', 'cdnjs.cloudflare.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
-    objectSrc: ["'none'"],
-    mediaSrc: ["'none'"],
+    objectSrc: [],
+    mediaSrc: [],
     childSrc: ["'self'", 'www.youtube.com'],
   };
   config.plugins.babelConfig = (babelConfig, buildOptions) => {
