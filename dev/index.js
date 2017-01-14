@@ -15,6 +15,7 @@ module.exports = (config) => {
   config.url = process.env.SERVER_URL || `http://localhost:${process.env.PORT || 1337}`;
   config.env['SERVER_URL'] = config.url;
   config.env['GRAPHQL_URL'] = process.env.GRAPHQL_URL || (config.url + '/graphql');
+  config.env['GM_KEY'] = process.env.GM_KEY;
   if (!config.alias) config.alias = {}
   config.alias['react-router'] = path.resolve(rootPath.get(), 'node_modules', 'react-router-v4-decode-uri');
   config.alias['olymp'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'olymp'));
