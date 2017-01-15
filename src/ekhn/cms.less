@@ -1,0 +1,88 @@
+@import "./vars";
+
+/*.main-nav {
+  .specificBackground();
+
+  & > .ant-menu-item:not(.ant-menu-item-brand):hover, & > .ant-menu-item-selected, & > .ant-menu-item-active, & > .ant-menu-submenu:hover, & > .ant-menu-submenu-selected {
+    &:not(.ant-menu-item-brand) {
+      border-bottom: 2px solid #FFF;
+    }
+  }
+
+  & > .ant-menu-submenu-active {
+    background-color: darken(@brand-primary, 5%);
+  }
+
+  & > .ant-menu-item > a, & > .ant-menu-submenu > .ant-menu-submenu-title, & > .ant-menu-submenu > .ant-menu-submenu-title > a {
+    color: #DDD;
+
+    &:hover {
+      color: #FFF;
+    }
+  }
+}*/
+.athena-cms-menu {
+  .ant-btn-primary {
+    .specificBackground();
+  }
+}
+
+/* SIDEBAR */
+.slate-sidebar {
+    &:hover i.slate-sidebar-icon {
+      color: rgba(255, 255, 255, .75);
+    }
+
+    i.slate-sidebar-icon {
+      .specificBackground();
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+
+/* TOOLBARD */
+.slate-fix-toolbar {
+  .specificBackground();
+
+  .ant-btn {
+    color: #FFF;
+    background-color: rgba(255, 255, 255, .15);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .3);
+    }
+  }
+}
+
+.slate-fix-toolbar, .slate-toolbar {
+  .active, [data-active=true] {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-block-active=true] {
+    box-shadow: none;
+    outline: 1px solid darken(@brand-primary, 20%);
+  }
+}
+
+/* FUNCTIONS */
+.specificBackground {
+  background-image: none;
+  background: linear-gradient(230deg, @brand-secondary, @brand-primary, @brand-tertiary);
+  // animation: MoveBG 60s ease infinite;
+  background-size: 500% 500%;
+  background-position: -200% -200%;
+  color: #FFF;
+
+  @keyframes MoveBG {
+    0% {
+      background-position: -200% -200%;
+    }
+    50% {
+      background-position: -200% -100%;
+    }
+    100% {
+      background-position: -200% -200%;
+    }
+  }
+}

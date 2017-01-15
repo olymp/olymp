@@ -1,0 +1,22 @@
+// @import (less, reference) "~bootstrap/dist/css/bootstrap.min.css";
+@import (less, reference) "bootstrap.css";
+
+@import "button";
+
+html {
+    &:extend(html all);
+}
+
+body {
+    &:extend(body all);
+}
+
+.ant-table {
+  table {
+    &:extend(table all, .table all);
+  }
+
+  &.ant-table-bordered {
+    &:extend(.table-bordered all);
+  }
+}
