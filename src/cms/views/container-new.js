@@ -79,7 +79,6 @@ export default class Container extends Component {
       modal = (<AuthReset token={query.reset} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
 
-    console.log(children);
     if (!auth || !auth.user || !data) {
       return (
         <div>
