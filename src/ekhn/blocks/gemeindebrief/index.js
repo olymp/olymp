@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql, gql, Link, withRouter } from 'olymp';
 import './gemeindebriefe.less';
 
-@withRouter()
+@withRouter
 @graphql(gql`
   query gemeindebriefList {
     items: gemeindebriefList(sort: {datum: DESC}, limit: 4, query: { state: { eq: PUBLISHED } }) {
