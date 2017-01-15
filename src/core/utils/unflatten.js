@@ -1,6 +1,6 @@
 const sortBy = require('lodash/sortBy');
 
-const unflatten = (items, { id = 'id', parentId = 'parentId', setPath, pathProp = 'path', mapper = item => item } = {}, parent = null, level = 0, currentPath = '') => {
+const unflatten = (items, { id, parentId, setPath, pathProp, mapper }, parent, level, currentPath) => {
   let children = items
     .filter(item => item[parentId] === parent)
     .map(item => mapper(
@@ -20,4 +20,6 @@ const unflatten = (items, { id = 'id', parentId = 'parentId', setPath, pathProp 
   return children;
 };
 
-export default unflatten;
+export default (items, { id = 'id', parentId = 'parentId', setPath, pathProp = 'path', mapper = item => item } = {}, parent = null, level = 0, currentPath = '') => {
+  return unflatten(items.map(x => Object.assign({}, x)), { id, parentId, setPath, pathProp, mapper }, parent, level, currentPath);
+};
