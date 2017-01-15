@@ -80,12 +80,10 @@ export default class Container extends Component {
     }
 
     if (!auth || !auth.user || !data) {
-      const inner = <Match pattern="/@/*" render={() => <Redirect to={{ pathname: '/', query: { login: null, pathname } }} />} />;
       return (
-        <div className="full">
-          {modal}
+        <div>
           {children}
-          {auth && auth.loading ? null : inner}
+          {modal}
         </div>
       );
     }
@@ -248,6 +246,7 @@ export default class Container extends Component {
     return (
       <GatewayProvider>
         <div>
+          {children}
           {modal}
           <Affix className={`athena-cms-menu ${modal ? 'inner' : ''}`}>
             <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
@@ -264,9 +263,6 @@ export default class Container extends Component {
               component={props => (props.children ? props.children : null)}
             />
           </Affix>
-
-          {children}
-
           <GatewayDest name="global" />
         </div>
       </GatewayProvider>

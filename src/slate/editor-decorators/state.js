@@ -2,16 +2,20 @@ import React, { Component } from 'react';
 import { Raw, Plain, resetKeyGenerator } from 'slate';
 import { batch } from '../utils/batch';
 
-const parseValue = (value, initialState, terse) => {
+const parseValue = (v, initialState, terse) => {
   resetKeyGenerator();
+  if (!v) return Plain.deserialize('');
+  const value = JSON.parse(JSON.stringify(v));
   try { return Raw.deserialize(value, { terse }); }
-  catch(err) {
+  catch(err1) {
     try { return Raw.deserialize(value, { terse: !terse }); }
-    catch(err) {
+    catch(err2) {
+      console.error('Couldnt parse value in slate', err1, err2);
       return initialState ? parseValue(initialState, undefined, { terse }) : Plain.deserialize('');
     }
   }
 };
+
 const defaultGetValue = ({ value }) => value;
 const defaultChangeValue = ({ onChange }, value) => onChange ? onChange(value) : null;
 
