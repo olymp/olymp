@@ -1,0 +1,65 @@
+@import "../../vars";
+
+.termin {
+  border-bottom: 1px solid @brand-primary;
+
+  &:not(.mini) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  &:first-of-type {
+    border-top: 1px solid @brand-primary;
+  }
+  h3, h4, h5 {
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  h4, h5 {
+    margin-bottom: 0 !important;
+  }
+  h3, h4, h5 {
+    color: darken(@brand-primary, 12%);
+
+    span {
+      font-size: 70%;
+      color: #666;
+    }
+  }
+
+  h3 + h3:before, h4 + h4:before, h5 + h5:before {
+    content: '- ';
+    color: #666;
+  }
+
+  .date {
+    color: @brand-primary;
+    text-align: left;
+    padding: .5em;
+
+    p {
+      line-height: 1.2;
+    }
+  }
+
+  .description {
+    float: left;
+    padding: .5em;
+    line-height: initial;
+    @media (min-width: 1200px) {
+      max-width: 75%;
+    }
+  }
+
+  .eyecatcher {
+    min-width: 25%;
+
+    .athena-img-container, .athena-img {
+      float: right;
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
+      margin: .5rem .25rem .5rem -.75rem;
+      transform: rotate(-5deg);
+    }
+  }
+}
