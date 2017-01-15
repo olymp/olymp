@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql, gql, withRouter } from 'olymp';
 import './links.less';
 
-@withRouter()
+@withRouter
 @graphql(gql`
   query linkList {
     links: linkList(query: { state: { eq: PUBLISHED } }) {
