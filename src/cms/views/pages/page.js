@@ -81,6 +81,11 @@ export default class CmsPage extends Component {
                       Einstellungen
                     </Link>
                   </Menu.Item>
+                  <Menu.Item key="page:delete" disabled>
+                    <Link to={{ ...location, query: { '@page': item.id } }}>
+                      Seite löschen
+                    </Link>
+                  </Menu.Item>
                 </Menu>
               )}
               overlayClassName="ant-dropdown-left"
