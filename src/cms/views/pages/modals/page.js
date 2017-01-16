@@ -66,7 +66,7 @@ const PageForm = Form.create()(
   }
 );
 
-@withRouter()
+@withRouter
 @withItem({ name: 'page' })
 @graphql(gql`
   query pageList {

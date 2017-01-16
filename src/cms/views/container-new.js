@@ -4,7 +4,7 @@ import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
-import { Menu, Affix, Button, Dropdown, Icon } from 'antd';
+import { Menu, Affix, Button, Dropdown, Icon, notification } from 'antd';
 import sortBy from 'lodash/sortBy';
 import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
@@ -159,6 +159,27 @@ export default class Container extends Component {
           onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
         />
       );
+    } else if (query && (query['@del-page'] !== undefined)) {
+      const openNotification = () => {
+        const btnClick = function () {
+          // to hide notification box
+          notification.close(key);
+        };
+        const btn = (
+          <Button onClick={btnClick} type="primary">
+            Löschen
+          </Button>
+        );
+        notification.warning({
+          message: 'Seite wirklich löschen',
+          description: 'Möchten Sie diese Seite wirklich löschen?',
+          btn,
+          key: `open${Date.now()}`,
+          onClose: close,
+          duration: 0,
+        });
+      };
+      openNotification();
     } else if (query && query['@upload'] !== undefined) {
       modal = (
         <UploadModal

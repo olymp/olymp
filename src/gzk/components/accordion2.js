@@ -7,7 +7,7 @@ export class AccordionItem extends Component {
   }
 }
 
-@withRouter()
+@withRouter
 export default class Accordion extends Component {
   static Item = AccordionItem;
 
