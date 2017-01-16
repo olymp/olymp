@@ -13,6 +13,8 @@ module.exports = (config) => {
   config.buildOutputPath = './.build';
   config.clientDevServerPort = process.env.PORT ? (process.env.PORT + 1) : 7331;
   config.url = process.env.URL || `http://localhost:${process.env.PORT || 1337}`;
+  config.disableSSR = process.env.SSR === false || process.env.SSR === 'false';
+  console.log(config.disableSSR);
   config.env['URL'] = config.url;
   config.env['API'] = process.env.API;
   config.env['GM_KEY'] = process.env.GM_KEY;
