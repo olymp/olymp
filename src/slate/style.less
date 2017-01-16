@@ -199,3 +199,42 @@ blockquote[dir="rtl"] {
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* ITEM-DECORATORS */
+.block-item {
+  & > .ant-btn, & > a > .ant-btn {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .75);
+  }
+
+  &:hover > .ant-btn, &:hover > a > .ant-btn {
+    display: inherit;
+  }
+
+  .block-item-edit {
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+  .block-item-delete {
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  .block-item-order {
+    top: 50%;
+    right: 0;
+
+    &:first-of-type {
+      transform: translate(50%, -160%);
+    }
+
+    &:last-of-type {
+      transform: translate(50%, 60%);
+    }
+  }
+}
