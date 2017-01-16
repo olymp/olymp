@@ -14,7 +14,7 @@ export default class Items extends Component {
   masonryWrapper = (children, isMasonry) => isMasonry ? (
     <MasonryLayout
       className="items masonry"
-      options={{ columnWidth: '.item', itemSelector: '.item', gutter: 16 }}
+      options={{ columnWidth: '.item:not(.leading)', itemSelector: '.item', gutter: 16 }}
     >
       {children}
     </MasonryLayout>
@@ -38,19 +38,6 @@ export default class Items extends Component {
       );
     }
 
-    // Edit-Button
-    if (auth && auth.user) {
-      items.forEach((item) => {
-        const edit = (
-          <Link to={{ pathname, query: { ...query, [`@${capitalize(identifier)}`]: item.id } }}>
-            <i className="fa fa-pencil" /> Bearbeiten
-          </Link>
-        );
-
-        item.subheader = <span>{item.subheader}<br />{edit}</span>;
-      });
-    }
-
     const queryId = location && location.query ? location.query[capitalize(identifier)] : undefined;
     const selectedItem = selectedId || queryId ?
       items.find(x => x.id === (selectedId || queryId)) :
@@ -62,6 +49,7 @@ export default class Items extends Component {
             {...selectedItem}
             location={location}
             identifier={identifier}
+            className="item leading"
           />
         </div>
       ) : <div />;
@@ -73,12 +61,14 @@ export default class Items extends Component {
           {...item}
           location={location}
           identifier={identifier}
+          className="item leading"
           key={index}
         /> :
           <ItemSmall
             {...item}
             location={location}
             identifier={identifier}
+            className={`item ${item.leading ? 'colored' : ''}`}
             key={index}
           />
       )

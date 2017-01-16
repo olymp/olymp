@@ -61,11 +61,10 @@ import Items from '../../components/items';
     options: (props.data.rollen || []).map(rolle => ({
       value: rolle.id,
       label: rolle.name,
-      active: rolle.id === props.getData('rolle', {}).id,
+      active: rolle.id === props.getData('rolle'),
     })),
     toggle: ({ key }) => {
-      const { setData } = props;
-      setData({ rolle: props.data.rollen.find(rolle => rolle.id === key) });
+      props.setData({ rolle: key });
     },
   }],
 })
@@ -73,7 +72,7 @@ export default class RollenBlock extends Component {
   render() {
     const { data, children, getData, location } = this.props;
     let { personen } = data;
-    const rolle = getData('rolle', undefined);
+    const rolle = (data.rollen || []).find(x => x.id === getData('rolle'));
 
     // Rollenfilter
     personen = rolle ?
