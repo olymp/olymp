@@ -4,7 +4,7 @@ import ReactCrop from 'react-image-crop';
 import {cloudinaryUrl} from 'olymp';
 import 'react-image-crop/dist/ReactCrop.css';
 
-// import Media from '../../views/media/list';
+import Media from '../../views/media/list';
 import Upload from '../../views/media/upload';
 
 const defaultGetImage = props => props.value;

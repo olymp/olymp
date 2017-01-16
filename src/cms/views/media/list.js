@@ -365,7 +365,7 @@ export default class MediaList extends Component {
                 </Cascader>
               </Menu.Item>
               <Menu.Item key="add" style={{ float: 'right' }}>
-                {uploadLink(
+                {uploadLink && uploadLink(
                   <span><Icon type="plus" />Hinzufügen</span>
                 )}
               </Menu.Item>
