@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql, cn } from 'olymp';
 import { useBlockBase, useGenericBlock, GenericBlock, Block } from 'olymp/slate';
 import { Image } from 'olymp/cms';
+import { Spin } from 'antd';
 
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
@@ -85,7 +86,7 @@ export default class TermineBlock extends Component {
     const { pathname, query } = location;
     // const src = getData('src');
 
-    if (data.loading || !data.items) return <div>Lädt...</div>;
+    if (data.loading || !data.items) return <Spin size="large" />;
 
     const anstehend = data.items.filter(x => ['VORTRAG', 'VERANSTALTUNG'].includes(x.art) && moment().isBefore(x.date));
     const zuletzt = take(data.items.filter(x => ['VORTRAG', 'VERANSTALTUNG'].includes(x.art) && !moment().isBefore(x.date)), 5);

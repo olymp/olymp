@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, graphql, gql, withItem, withAuth, Helmet } from 'olymp';
+import { Spin } from 'antd';
 import { Image, SlateMate } from 'olymp/cms';
 import { Gateway } from 'react-gateway';
 
@@ -19,7 +20,7 @@ export default class Artikel extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;
     const readOnly = !auth.user || auth.user.einrichtung;
-    if (!item) return <span>Lädt...</span>
+    if (!item) return <Spin size="large" />;
 
     const meta = [
       { name: 'description', content: item.extrakt || 'Ein neuer Artikel in unserem Gesundheitsmagazin!' },

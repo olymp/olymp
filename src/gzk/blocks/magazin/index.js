@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql } from 'olymp';
 import { useBlockBase, useGenericBlock, GenericBlock, Block } from 'olymp/slate';
 import { Image } from 'olymp/cms';
+import { Spin } from 'antd';
 import capitalize from 'lodash/upperFirst';
 
 const attributes = 'id name slug farbe bild { url, height, width, crop } extrakt tags';
@@ -40,8 +41,7 @@ export default class MagazinBlock extends Component {
     const { children, style, data } = this.props;
     const { items, pdfs } = data;
 
-    if (data.loading || !items) return <div>Lädt...</div>;
-
+    if (data.loading || !items) return <Spin size="large" />;
     // Tags ermitteln
     const tags = {};
     items.filter(x => x.tags).forEach(item =>

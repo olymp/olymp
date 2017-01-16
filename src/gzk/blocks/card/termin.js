@@ -46,11 +46,11 @@ import capitalize from 'lodash/upperFirst';
     icon: 'eyedropper',
     type: 'set-color',
     options: [{
-      value: 'rgb(126, 189, 72)',
-      label: 'Grün',
-    }, {
-      value: 'rgb(21, 182, 232)',
+      value: '#4992c3',
       label: 'Blau',
+    }, {
+      value: '#3ea73e',
+      label: 'Grün',
     }],
     toggle: ({ key }) => {
       const { setData, getData } = props;
@@ -66,7 +66,7 @@ import capitalize from 'lodash/upperFirst';
   }],
 })
 export default class GzCardTermin extends Component {
-  static defaultProps = { title: 'Termine', size: 1, max: 5, color: 'rgb(126, 189, 72)', types: 'PUBLIKATION,PRESSE,VERANSTALTUNG,VORTRAG' };
+  static defaultProps = { title: 'Termine', size: 1, max: 5, color: '#4992c3', types: 'PUBLIKATION,PRESSE,VERANSTALTUNG,VORTRAG' };
   render() {
     const { children, title, data, router, size, color, types, max } = this.props;
     const cloudinary = { width: (300 * 1.2) * size, height: 250 };
