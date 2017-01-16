@@ -1,5 +1,5 @@
 {
-  "version": "12.0.0-12",
+  "version": "12.0.0-13",
   "name": "olymp",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./src/core/index.js",
@@ -49,6 +49,7 @@
     "react-draggable": "2.2.2",
     "react-gateway": "2.3.0",
     "react-image-crop": "1.0.3",
+    "react-image-gallery": "0.7.10",
     "react-portal": "3.0.0",
     "react-router-v4-decode-uri": "4.0.0-alpha.5",
     "react-sortable-hoc": "0.1.0",

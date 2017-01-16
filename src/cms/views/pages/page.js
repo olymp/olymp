@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Gateway, GatewayDest } from 'react-gateway';
-import { Anchor as AnchorCreator, Menu, Icon, Dropdown, Button } from 'antd';
+import { Anchor as AnchorCreator, Menu, Icon, Dropdown, Button, Spin } from 'antd';
 import { graphql, Link, gql, withAuth, withItem, Helmet } from 'olymp';
 import { SlateMate } from 'olymp/slate';
 import sortBy from 'lodash/sortBy';
@@ -33,7 +33,7 @@ export default class CmsPage extends Component {
   }
   render() {
     let { auth, item, patch, save, blocks, location, readOnly, getReadOnly } = this.props;
-    if (!item) return null;
+    if (!item) return <Spin size="large" />;
 
     readOnly = readOnly !== undefined ? readOnly : getReadOnly ? getReadOnly(this.props) : (!auth.user || !!item.computed);
     if (location && location.query && Object.keys(location.query).find(x => location.query[x] !== undefined)) readOnly = true;
