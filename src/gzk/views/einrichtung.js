@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, graphql, gql, cloudinaryUrl, withItem, withAuth, Helmet } from 'olymp';
 import { SlateMate, Image } from 'olymp/cms';
+import { Spin } from 'antd';
 import { Gateway } from 'react-gateway';
 import Accordion from '../components/accordion2';
 
@@ -24,7 +25,7 @@ export default class Praxis extends Component {
   render() {
     const { item, location, patch, save, auth } = this.props;
     const tage = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-    if (!item) return <span>Lädt...</span>;
+    if (!item) return <Spin size="large" />;
     const readOnly = !auth || !auth.user || (auth.user.einrichtung && auth.user.einrichtung !== item.id);
     // console.log(item.personen);
     return (

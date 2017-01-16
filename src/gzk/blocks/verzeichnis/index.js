@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql, sortBy } from 'olymp';
 import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
 import { Image } from 'olymp/cms';
-import Carousel from '../../components/slider';
+import { Spin } from 'antd';
+import Carousel from '../../components/carousel';
 import './theme.less';
 
 const attributes = 'id slug peak { url } telefon farbe name kurz fachrichtungen personen { name }';
@@ -47,15 +48,14 @@ export default class VerzeichnisBlock extends Component {
   onMouseOver = item => () => {
     this.setState({ hover: item.einrichtungId || item.id });
   }
-  renderImage = (item) => {
+  renderImage = ({ slug, kurz, name, farbe, id }) => ({ original, srcSet }) => {
     return (
-      <div key={item.id} className="gz-height-200">
-        <Image onImageClick={() => this.props.router.push(item.slug)} value={item.peak} style={{ width: '100%', height: '100%' }} className="gz-image-box" cloudinary={{ width: (300 * 1.2) * 1, height: 200 }}>
-          <Link to={item.slug} className="gz-image-content" style={{ backgroundColor: item.farbe }}>{item.name}</Link>
-        </Image>
+      <div className="image-gallery-image gz-image-box">
+        <img src={original} srcSet={srcSet} />
+        <Link to={slug} className="gz-image-content" style={{backgroundColor: farbe}}>{kurz || name}</Link>
       </div>
-    );
-  };
+    )
+  }
   renderItem = (item, i) => {
     const style = {};
     if (this.state.hover === (item.einrichtungId || item.id)) {
@@ -86,19 +86,21 @@ export default class VerzeichnisBlock extends Component {
   }
   render() {
     const { attributes, getData, isFocused, children, style, data } = this.props;
-    if (data.loading) return <div>Lädt...</div>;
-
+    if (data.loading) return <Spin size="large" />;
     let personen = [], spezial = [];
     data.items.forEach((item) => {
       if (item.personen) item.personen.forEach(person => personen.push({ ...person, einrichtungId: item.id, farbe: item.farbe, einrichtung: item.kurz || item.name, slug: item.slug }));
       if (item.fachrichtungen) item.fachrichtungen.forEach(leistung => spezial.push({ id: leistung, name: leistung, einrichtungId: item.id, farbe: item.farbe, einrichtung: item.kurz || item.name, slug: item.slug }));
     });
 
+    const items = data && data.items && data.items.filter(x => x.peak).map(item => ({
+      url: item.peak.url,
+      render: this.renderImage(item),
+    }));
+
     return (
       <div className="gz-big-element" {...attributes} style={{ width: '100%' }} data-block-active={isFocused}>
-        <Carousel slidesToShow={3} slidesToScroll={3} className="mt-1 mb-1 row" innerClassName="col-md-4">
-          {data.items.map(this.renderImage)}
-        </Carousel>
+        <Carousel items={items} slideInterval={6000} ratio={1.5 * 3} />
         <div className="row" style={{ ...style, margin: 'auto -15px', height: 'auto', position: 'relative' }}>
           {this.renderSection(0, 'Einrichtungen', sortBy(data.items, x => x.kurz || x.name))}
           {this.renderSection(1, 'Spezialitäten', sortBy(spezial, 'name'))}

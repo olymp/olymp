@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { gql, graphql, Link } from 'olymp';
 import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
 import { Image } from 'olymp/cms';
-import Carousel from '../../components/slider';
+import Carousel from '../../components/carousel';
 
 @graphql(gql`
   query artikelList {
@@ -17,7 +17,7 @@ import Carousel from '../../components/slider';
   category: 'Karte',
   label: 'Artikel',
   editable: false,
-  props: ['title'],
+  props: ['title', 'size'],
   actions: props => [{
     icon: 'header',
     type: 'set-title',
@@ -31,19 +31,24 @@ import Carousel from '../../components/slider';
 export default class GzCardArtikel extends Component {
   static defaultProps = { title: 'Magazin', size: 1 };
   onImageClick = (slug) => () => this.props.router.push(`/artikel${slug}`);
+  renderItem = ({ slug, peak, kurz, name, farbe, id }) => ({ original, srcSet }) => {
+    return (
+      <div className="image-gallery-image gz-image-box">
+        <img src={original} srcSet={srcSet} />
+        <Link to={`/artikel${slug}`} className="gz-image-content" style={{backgroundColor: farbe}}>{name}</Link>
+      </div>
+    )
+  }
   render() {
     const { children, title, data, router, size } = this.props;
-    const cloudinary = { width: (300 * 1.2) * size, height: 250 };
+    const items = data && data.items && data.items.filter(x => x.bild).map(item => ({
+      url: item.bild.url,
+      render: this.renderItem(item),
+    }));
     return (
       <GenericBlock {...this.props} className="gz-big-element col-md-4" toolbarStyle={{ marginLeft: -11, marginRight: -11 }}>
         <h2>{title}</h2>
-        <Carousel className="mt-1">
-          {data.items && data.items.map(({ slug, bild, id, name, farbe }) =>
-            <Image onImageClick={this.onImageClick(slug)} value={bild} key={id} container="div" className="gz-image-box gz-height-250" cloudinary={cloudinary}>
-              <Link to={`/artikel${slug}`} className="gz-image-content" style={{backgroundColor: farbe}}>{name}</Link>
-            </Image>
-          )}
-        </Carousel>
+        <Carousel items={items} slideInterval={7500} ratio={1.5 * this.props.size} />
       </GenericBlock>
     );
   }

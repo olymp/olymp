@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { gql, graphql, Link } from 'olymp';
+import { gql, graphql, Link, cloudinaryUrl, cn } from 'olymp';
 import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
 import { Image } from 'olymp/cms';
-import Carousel from '../../components/slider';
+import Carousel from '../../components/carousel';
 
 @graphql(gql`
   query einrichtungList {
@@ -38,19 +38,26 @@ import Carousel from '../../components/slider';
 export default class GzCardArtikel extends Component {
   static defaultProps = { title: 'Einrichtungen', size: 1 };
   onImageClick = (slug) => () => this.props.router.push(slug);
+  renderItem = ({ slug, peak, kurz, name, farbe, id }) => ({ original, srcSet }) => {
+    return (
+      <div className="image-gallery-image gz-image-box">
+        <img src={original} srcSet={srcSet} />
+        <Link to={slug} className="gz-image-content" style={{backgroundColor: farbe}}>{kurz || name}</Link>
+      </div>
+    )
+  }
   render() {
     const { children, title, data, router, size } = this.props;
-    const cloudinary = { width: (300 * 1.2) * size, height: 250 };
+
+    const items = data && data.items && data.items.filter(x => x.peak).map(item => ({
+      url: item.peak.url,
+      render: this.renderItem(item),
+    }));
+
     return (
       <GenericBlock {...this.props} className={`gz-big-element col-md-${4 * size}`} toolbarStyle={{ marginLeft: -11, marginRight: -11 }}>
         <h2>{title}</h2>
-        <Carousel className="mt-1">
-          {data.items && data.items.map(({ slug, peak, id, name, farbe, kurz }) =>
-            <Image onImageClick={this.onImageClick(slug)} value={peak} key={id} container="div" className="gz-image-box gz-height-250" cloudinary={cloudinary}>
-              <Link to={slug} className="gz-image-content" style={{backgroundColor: farbe}}>{kurz || name}</Link>
-            </Image>
-          )}
-        </Carousel>
+        <Carousel items={items} slideInterval={6000} ratio={1.5 * this.props.size} />
       </GenericBlock>
     );
   }
