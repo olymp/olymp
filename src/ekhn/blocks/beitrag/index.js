@@ -105,7 +105,7 @@ const now = moment().format('x');
     {
       icon: 'columns',
       type: 'toggle-masonry',
-      active: getData('masonry', false),
+      active: !!getData('masonry', false),
       toggle: () => {
         setData({ masonry: !getData('masonry', false) });
       },
@@ -140,10 +140,10 @@ const now = moment().format('x');
       options: (data.beitragList || []).map(beitrag => ({
         value: beitrag.id,
         label: beitrag.name,
-        active: getData('placeholder', {}).id === beitrag.id,
+        active: getData('placeholder') === beitrag.id,
       })),
       toggle: ({ key }) => {
-        setData({ placeholder: (data.beitragList || []).find(beitrag => beitrag.id === key) });
+        setData({ placeholder: key });
       },
     }];
   },
@@ -154,7 +154,7 @@ export default class BeitragBlock extends Component {
     const { beitragList } = data;
     const masonry = getData('masonry', false);
     const tags = getData('tags', ['Alle']);
-    const placeholder = getData('placeholder', undefined);
+    const placeholder = (beitragList || []).find(beitrag => beitrag.id === getData('placeholder'));
     const archive = getData('archive', false);
     let beitraege = beitragList && Array.isArray(beitragList) ? beitragList : [];
 

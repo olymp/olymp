@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp';
 import { moment } from 'olymp/locale-de';
-import Mini from './mini';
+import Termin from './index';
 
 const now = moment().format('x');
 
@@ -33,6 +33,6 @@ export default class TerminBlock extends Component {
     const { data } = this.props;
     const { termine } = data;
 
-    return <Mini items={termine} />;
+    return <Termin items={termine} />;
   }
 }

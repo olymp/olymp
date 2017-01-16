@@ -12,14 +12,16 @@ const unflatten = (items, { id, parentId, setPath, pathProp, mapper }, parent, l
   children = sortBy(children, [item => item.order]);
 
   // Rekursion
-  children.forEach((item) => {
-    if (setPath) item[pathProp] = setPath(currentPath, item);
-    item.children = unflatten(items, { id, parentId, mapper, pathProp, setPath }, item[id], level + 1, item[pathProp]);
+  return children.map((item) => {
+    const path = setPath ? setPath(currentPath, item) : undefined;
+    return {
+      ...item,
+      [pathProp]: path,
+      children: unflatten(items, { id, parentId, mapper, pathProp, setPath }, item[id], level + 1, path),
+    };
   });
-
-  return children;
 };
 
 export default (items, { id = 'id', parentId = 'parentId', setPath, pathProp = 'path', mapper = item => item } = {}, parent = null, level = 0, currentPath = '') => {
-  return unflatten(items.map(x => Object.assign({}, x)), { id, parentId, setPath, pathProp, mapper }, parent, level, currentPath);
+  return unflatten(items, { id, parentId, setPath, pathProp, mapper }, parent, level, currentPath);
 };

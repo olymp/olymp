@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Image } from 'olymp/cms';
+import { Image, useItemEdit } from 'olymp/cms';
 import './vcard.less';
 
+@useItemEdit
 export default class VCardBlock extends Component {
   render() {
     const { vcard, id } = this.props;

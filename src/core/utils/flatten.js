@@ -1,11 +1,10 @@
-module.exports = function flatten(l, options) {
+const flatten = (l, options) => {
    if(!options) options = {};
    if(!options.parentId) options.parentId = "parentId";
    if(!options.id) options.id = "id";
 
    var graph = l.slice();
-   var i, l,
-      nodes=[];
+   var i, l, nodes=[];
 
    function helper (node, parent, index) {
       var i, limit;
@@ -26,8 +25,12 @@ module.exports = function flatten(l, options) {
    }
 
    for (i = 0, l = graph.length; i < l; i++) {
-      helper(graph[i], null, i);
+      helper({ ...graph[i] }, null, i);
    }
 
    return nodes;
 }
+
+export default (l, options) => {
+  return flatten(l, options);
+};

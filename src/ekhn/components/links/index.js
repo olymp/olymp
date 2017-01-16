@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter } from 'olymp';
+import LinksItem from './item';
 import './links.less';
 
 @withRouter
@@ -34,13 +35,7 @@ export default class LinksBlock extends Component {
           <div key={tag}>
             <h4 style={{ margin: 0 }}>{tag}</h4>
             <ul>
-              {tags[tag].map(link => (
-                <li key={link.id}>
-                  <a href={link.url} target="_blank" rel="noopener noreferrer" >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
+              {tags[tag].map(link => <LinksItem {...link} key={link.id} />)}
             </ul>
           </div>
         ))}

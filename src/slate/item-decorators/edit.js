@@ -1,39 +1,22 @@
 import React from 'react';
-import { Link } from 'olymp';
+import { withAuth, withRouter, cn } from 'olymp';
 import { Button, Icon } from 'antd';
 
 export default (Item) => {
-  const EditDecorator = props => (
-    <div style={{ position: 'relative' }} className="block-item">
-      <Button shape="circle" className="block-item-order">
-        <Icon type="up" />
-      </Button>
-      <Link
-        to={{
-          pathname: props.location && props.location.pathname,
-          query: { ...(props.location && props.location.query), [`@Termin`]: props.id },
-        }}
-      >
-        <Button type="primary" shape="circle" className="block-item-edit">
+  const EditDecorator = (props) => {
+    const { id, __typename, location, router, auth, getData, className, hasParentItemDecorator } = props;
+    const { pathname, query } = location;
+
+    return auth.user && __typename ? (
+      <div className={cn(className, !hasParentItemDecorator && 'block-item')}>
+        <Button type="primary" shape="circle" className="block-item-edit" onClick={() => router.push({ pathname, query: { ...query, [`@${__typename}`]: id } })}>
           <Icon type="edit" />
         </Button>
-      </Link>
-      { true ? (
-        <Button shape="circle" className="block-item-delete">
-          <Icon type="eye-o" />
-        </Button>
-      ) : (
-        <Button type="primary" shape="circle" className="block-item-delete">
-          <Icon type="eye" />
-        </Button>
-      )}
-      <Button shape="circle" className="block-item-order">
-        <Icon type="down" />
-      </Button>
 
-      <Item {...props} />
-    </div>
-  );
+        <Item {...props} hasParentItemDecorator className="" />
+      </div>
+    ) : <Item {...props} />;
+  };
 
-  return EditDecorator;
+  return withAuth(withRouter(EditDecorator));
 };
