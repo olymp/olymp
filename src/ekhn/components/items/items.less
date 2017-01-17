@@ -33,10 +33,10 @@
     table-layout: fixed;
     width: 100%;
 
-    /* FULL SIZE */
-    &.full {
+    /* leading SIZE */
+    &.leading {
       display: block;
-      margin-bottom: 1rem;
+      // margin-bottom: 1rem;
       padding: 0;
 
       .text {
@@ -60,7 +60,7 @@
         box-shadow: 0 0 20px 1px rgba(0, 0, 0, .5);
       }
     }
-    &:not(.full) {
+    &:not(.leading) {
       background-color: #FFF;
       box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33)!important;
 
@@ -127,6 +127,7 @@
     /* IMAGE */
     .athena-img-container {
       & > div {
+        position: absolute;
         top: initial;
         right: 0;
         bottom: 0;
@@ -139,8 +140,8 @@
     }
   }
 
-  /* LEADING */
-  .leading {
+  /* colored */
+  .colored {
     background-color: lighten(@brand-primary, 40%) !important;
   }
 }

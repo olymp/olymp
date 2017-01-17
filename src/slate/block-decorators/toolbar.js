@@ -232,11 +232,12 @@ export default (options = {}) => Block => {
       return (
         <Block
           {...this.props}
-          children={children}
           renderToolbar={this.renderToolbar}
           toolbarType={type}
           setToolbarPosition={this.setToolbarPosition}
-        />
+        >
+          {children}
+        </Block>
       );
     }
   };

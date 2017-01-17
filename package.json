@@ -44,6 +44,7 @@
     "jsonwebtoken": "7.1.9",
     "lodash": "4.17.2",
     "moment": "2.15.2",
+    "moment-timezone": "^0.5.11",
     "mongodb": "2.2.11",
     "react-day-picker": "3.1.1",
     "react-draggable": "2.2.2",

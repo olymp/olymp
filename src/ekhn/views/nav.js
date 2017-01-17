@@ -63,7 +63,7 @@ const UlWrapped = (props) => {
   if (props.page && props.page.name === 'Über Uns') {
     (items || []).forEach(page =>
       (rollen[page.name] || []).forEach((person) => {
-        if (page.children.findIndex(x => x.id === person.id) === -1) {
+        if ((page.children || []).findIndex(x => x.id === person.id) === -1) {
           page.children.push({
             id: person.id,
             name: person.name,
@@ -78,7 +78,7 @@ const UlWrapped = (props) => {
 
   return (
     <Ul {...props}>
-      {items.map((page, index) => (
+      {(items || []).map((page, index) => (
         <Li
           {...props}
           collection={`list${level}`}
