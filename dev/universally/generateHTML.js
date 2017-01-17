@@ -10,7 +10,7 @@
 import serialize from 'serialize-javascript';
 import { STATE_IDENTIFIER } from 'code-split-component';
 import getAssetsForClientChunks from 'universally/src/server/middleware/reactApplication/getAssetsForClientChunks';
-import config from 'universally/config';
+import config, { clientConfig } from 'universally/config';
 
 function styleTags(styles) {
   return styles
