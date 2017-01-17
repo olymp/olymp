@@ -2,7 +2,7 @@ import React from 'react';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import Helmet from 'react-helmet';
-import generateHTML from 'universally/src/server/middleware/reactApplication/generateHTML';
+import generateHTML from './generateHTML';
 import DemoApp from '@app';
 import config from 'universally/config';
 import fetch from 'node-fetch';
