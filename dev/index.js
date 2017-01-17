@@ -42,7 +42,7 @@ module.exports = (config) => {
       process.env.NODE_ENV === 'development' ? "'unsafe-inline'" : (req, res) => `'nonce-${res.locals.nonce}'`,
     ],
     styleSrc: ["'self'", "'unsafe-inline'", 'blob:', 'at.alicdn.com', 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com'],
-    imgSrc: ["'self'", 'data:', 'res.cloudinary.com', 'csi.gstatic.com', 'maps.gstatic.com', 'maps.googleapis.com', 'www.google-analytics.com', 'scontent.cdninstagram.com'],
+    imgSrc: ["'self'", 'data:', 'stats.g.doubleclick.net', 'res.cloudinary.com', 'csi.gstatic.com', 'maps.gstatic.com', 'maps.googleapis.com', 'www.google-analytics.com', 'scontent.cdninstagram.com'],
     connectSrc: ['*'], // ["'self'", 'ws:'],
     fontSrc: ["'self'", 'at.alicdn.com', 'cdnjs.cloudflare.com', 'maxcdn.bootstrapcdn.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
     objectSrc: [],
