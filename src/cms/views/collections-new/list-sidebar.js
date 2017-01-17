@@ -58,6 +58,12 @@ const StyledButton = createComponent(({ theme }) => ({
   },
 }), props => <Button {...props} />, ['placeholder']);
 
+const states = {
+  PUBLISHED: 'Öffentlich',
+  DRAFT: 'Entwurf',
+  ARCHIVED: 'Archiv',
+  REMOVED: 'Papierkorb',
+}
 @withItems()
 @withApollo
 @withRouter
@@ -69,7 +75,7 @@ export default class CollectionListSidebar extends Component {
   getLink = (item) => {
     const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
     const { pathname } = location;
-    return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item.id } };
+    return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item ? item.id : null } };
   }
 
   render() {
@@ -78,16 +84,16 @@ export default class CollectionListSidebar extends Component {
     return (
       <Sidebar>
         <Panel align="center" padding="10px 10px">
-          <Title>Mediathek</Title>
-          <StyledButton><i className="fa fa-plus" /> Neu erstellen</StyledButton>
+          <Title>{collection.name}</Title>
+          <StyledButton><Link to={this.getLink()}><i className="fa fa-plus" /> Neu erstellen</Link></StyledButton>
         </Panel>
         <Panel seperator>
           <StyledInput placeholder="Suche ..." />
         </Panel>
         <Panel seperator padding="0px 10px">
           <Tabs>
-            {['Öffentlich', 'Entwurf', 'Archiv', 'Papierkorb'].map(name =>
-              <Tabs.TabPane tab={name} key={name}>
+            {Object.keys(states).map(name =>
+              <Tabs.TabPane tab={states[name]} key={name}>
                 <Panel>
                   <ul>
                     {items && items.map(item => (
@@ -95,6 +101,10 @@ export default class CollectionListSidebar extends Component {
                         <Link to={this.getLink(item)}>
                           {item.kurz || item.name}
                         </Link>
+                        {name !== 'REMOVED'
+                          ? <i className="fa fa-trash" style={{ float: 'right' }} />
+                          : <i className="fa fa-undo" style={{ float: 'right' }} />
+                        }
                       </Li>
                     ))}
                   </ul>
