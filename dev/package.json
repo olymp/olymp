@@ -1,5 +1,5 @@
 {
-  "version": "12.0.0-22",
+  "version": "12.0.0-23",
   "name": "olymp-dev",
   "description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
   "main": "./index.js",
