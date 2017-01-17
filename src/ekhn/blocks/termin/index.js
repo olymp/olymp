@@ -84,7 +84,8 @@ const now = moment().format('x');
   label: 'Termine',
   props: ['tags', 'mode'],
   editable: false,
-  placeholder: ['termine', 'gottesdienste'],
+  hasContent: ['termine', 'gottesdienste'],
+  placeholder: 'Keine Termine vorhanden',
   actions: (props) => {
     const { setData, getData } = props;
 

@@ -45,7 +45,8 @@ import Items from '../../components/items';
   label: 'Über Uns',
   props: ['rolle'],
   editable: false,
-  placeholder: ['rollen', 'personen'],
+  hasContent: ['rollen', 'personen'],
+  placeholder: 'Keine Rollen/Personen vorhanden',
   actions: props => [{
     icon: 'users',
     type: 'choose-rolle',
