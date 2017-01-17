@@ -84,8 +84,7 @@ const now = moment().format('x');
   label: 'Termine',
   props: ['tags', 'mode'],
   editable: false,
-  hasContent: ['termine', 'gottesdienste'],
-  placeholder: 'Keine Termine vorhanden',
+  loader: { trigger: ['termine', 'gottesdienste'], placeholder: 'Keine Termine vorhanden' },
   actions: (props) => {
     const { setData, getData } = props;
 

@@ -1,32 +1,29 @@
 import React from 'react';
 import { Spin } from 'antd';
 
-export default (hasContent, placeholder = 'Keine Daten vorhanden') => (Block) => {
-  let hasContentFn;
-  switch (typeof hasContent) {
+export default (trigger, placeholder = 'Keine Daten vorhanden') => (Block) => {
+  let triggerFn;
+  switch (typeof trigger) {
     case 'string':
-      hasContentFn = props => props.data[hasContent] && props.data[hasContent];
+      triggerFn = props => props.data[trigger] && props.data[trigger];
       break;
 
     case 'object':
-      hasContentFn = hasContent.reduce(
+      triggerFn = props => trigger.reduce(
         (result, type) => result && props.data[type] && props.data[type].length, true
       );
       break;
 
     case 'function':
-      hasContentFn = hasContent;
+      triggerFn = trigger;
       break;
 
     default:
-      hasContentFn = () => true;
+      triggerFn = () => true;
   }
 
-  // if (typeof dataType === 'function') return dataType(this.props);
-  // else if (typeof dataType === 'string') return this.props[dataType];
-
   const LoaderDecorator = (props) => {
-    if (!props.data || hasContentFn(props)) {
+    if (triggerFn(props)) {
       return <Block {...props} />;
     }
 
@@ -35,10 +32,10 @@ export default (hasContent, placeholder = 'Keine Daten vorhanden') => (Block) =>
         {placeholder}
       </h1>
     );
-    const style = { margin: '1.5em 0', width: '100%', minHeight: 100, ...props.style };
+    const style = { width: '100%', minHeight: 100, ...props.style };
 
     return props.data.loading ? (
-      <Spin style={style}>
+      <Spin style={style} size="large">
         {text}
       </Spin>
     ) : (
