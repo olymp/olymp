@@ -1,5 +1,4 @@
 const less = require('universally-dev-less');
-const apollo = require('universally-apollo');
 const path = require('path');
 const fs = require('fs');
 const rootPath = require('app-root-dir');
@@ -33,6 +32,11 @@ module.exports = (config) => {
   config.bundles.server.srcPaths.push('./app');
   config.bundles.server.outputPath = './.build/server';
 
+  config.bundles.client.srcEntryFile = path.resolve(__dirname, 'universally', 'client.js');
+  config.bundles.client.srcPaths.push(path.resolve(__dirname, 'universally'));
+  config.bundles.server.srcEntryFile = path.resolve(__dirname, 'universally', 'server.js');
+  config.bundles.server.srcPaths.push(path.resolve(__dirname, 'universally'));
+
   config.cspExtensions = {
     manifestSrc: [],
     defaultSrc: ["'self'"],
@@ -61,6 +65,7 @@ module.exports = (config) => {
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-class-properties'));
     if (target === 'client') babelConfig.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
     if (mode === 'production' && target === 'server') babelConfig.plugins.push(require.resolve('babel-plugin-lodash'));
+    if (mode === 'production' && target === 'server') babelConfig.plugins.push(require.resolve('babel-plugin-lodash'));
     /*ifProd('transform-react-remove-prop-types'),
     ifProd('transform-react-pure-class-to-function'),
     ifProd('minify-constant-folding'),
@@ -88,5 +93,5 @@ module.exports = (config) => {
     );
     return webpackConfig;
   };
-  return less(apollo(config));
+  return less(config);
 };
