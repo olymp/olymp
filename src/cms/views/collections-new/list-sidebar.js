@@ -66,10 +66,15 @@ export default class CollectionListSidebar extends Component {
     const { location, router, collection } = this.props;
   }
 
+  getLink = (item) => {
+    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
+    const { pathname } = location;
+    return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item.id } };
+  }
+
   render() {
     const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
 
-    console.log('jadda');
     return (
       <Sidebar>
         <Panel align="center" padding="10px 10px">
@@ -87,7 +92,7 @@ export default class CollectionListSidebar extends Component {
                   <ul>
                     {items && items.map(item => (
                       <Li key={item.id}>
-                        <Link to={{ ...location, query: { ...location.query, [`@${collection.name}`]: item.id } }}>
+                        <Link to={this.getLink(item)}>
                           {item.kurz || item.name}
                         </Link>
                       </Li>
