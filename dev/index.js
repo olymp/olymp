@@ -80,10 +80,13 @@ module.exports = (config) => {
     ifProd('transform-undefined-to-void'),*/
     return babelConfig;
   };
+  const prevConf = config.plugins.webpackConfig;
   config.plugins.webpackConfig = (webpackConfig, buildOptions, config, utils) => {
+    if (prevConf) webpackConfig = prevConf(webpackConfig, buildOptions, config, utils);
     webpackConfig.plugins.push(
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/)
     );
+    return webpackConfig;
   };
   return less(apollo(config));
 };
