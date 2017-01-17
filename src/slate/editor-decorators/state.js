@@ -51,13 +51,37 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
         if (JSON.stringify(this.rawValue) !== JSON.stringify(rawValue)) {
           this.rawValue = rawValue;
           this.batch(() => {
-            if (rawValue.nodes.length === 1 && rawValue.nodes[0].nodes.length === 1 && (!rawValue.nodes[0].nodes[0].text && !rawValue.nodes[0].nodes[0].isVoid)) {
-            // if (rawValue.nodes.length === 1 && rawValue.nodes[0].kind === 'text' && !rawValue.nodes[0].text) {
-              changeValue(this.props, null);
-            // } else if (rawValue.nodes.length === 1 && rawValue.nodes[0].type === 'paragraph' && (!rawValue.nodes.length || (rawValue.nodes[0].nodes[0].kind === 'text' && !rawValue.nodes[0].nodes[0].text))) {
-            //   changeValue(this.props, null);
-            } else {
+            // Flatten & filter
+            const flattenNodes = nodes => nodes.reduce((arr, node) => {
+              const { type, kind, text } = node;
+              let newArr = [...arr];
+              const newNode = { ...node };
+              if (newNode.nodes) {
+                newArr = arr.concat(flattenNodes(newNode.nodes));
+                delete newNode.nodes;
+              }
+
+              // Filter empty Blocks
+              if (
+                !(type === 'paragraph') &&
+                !(type === 'line') &&
+                !(kind === 'text' && text === '')
+              ) {
+                newArr.push(newNode);
+              }
+
+              return newArr;
+            }, []);
+
+            /* if (rawValue) {
+              const test = flattenNodes(rawValue.nodes);
+              console.log(rawValue, test);
+            } */
+
+            if (rawValue && flattenNodes(rawValue.nodes).length) {
               changeValue(this.props, rawValue);
+            } else {
+              changeValue(this.props, null);
             }
           });
         }
