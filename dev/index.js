@@ -53,7 +53,7 @@ module.exports = (config) => {
     childSrc: ["'self'", 'www.youtube.com'],
   };
   config.plugins.babelConfig = (babelConfig, buildOptions) => {
-    const { target,  } = buildOptions;
+    const { target, mode } = buildOptions;
     if (prevBabelConfig) babelConfig = prevBabelConfig(babelConfig, buildOptions);
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-object-rest-spread'));
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-es2015-destructuring'));
