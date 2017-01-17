@@ -195,6 +195,7 @@ export default (options = {}) => Block => {
             {menuItems.map(item => item)}
           </Menu>
         );
+
         return (
           <div className="slate-fix-toolbar" style={styles} contentEditable={false}>
             {move && moveActions(this.props).map(this.renderAction)}
