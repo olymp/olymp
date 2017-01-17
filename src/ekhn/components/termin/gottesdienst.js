@@ -33,7 +33,7 @@ import Gottesdienst from './index';
 `, {
   options: () => ({ }),
 })
-@gqlLoader('gottesdienste')
+@gqlLoader('gottesdienste', 'Keine Gottesdienste vorhanden')
 export default class GottesdienstBlock extends Component {
   render() {
     const { data } = this.props;

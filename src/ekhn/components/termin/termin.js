@@ -28,7 +28,7 @@ const now = moment().format('x');
 `, {
   options: () => ({ }),
 })
-@gqlLoader('termine')
+@gqlLoader('termine', 'Keine Termine vorhanden')
 export default class TerminBlock extends Component {
   render() {
     const { data } = this.props;

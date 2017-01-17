@@ -22,10 +22,16 @@ export const GenericBlock = (props) => {
   );
 };
 
-export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true, placeholder = false }) => (WrappedComponent) => {
+export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true, hasContent = false, placeholder }) => (WrappedComponent) => {
   let component = props => <WrappedComponent {...props} />;
 
-  if (placeholder) component = gqlLoader(placeholder, true)(component);
+  if (hasContent) {
+    component = props => (
+      <GenericBlock {...props}>
+        {gqlLoader(hasContent, placeholder)(component)(props)}
+      </GenericBlock>
+    );
+  }
 
   component = useBlockToolbar({ actions, type: 'fix', remove, move, add })(component);
 
