@@ -11,7 +11,7 @@ export default class CollectionView extends Component {
     const { collection, onClose, saving, children, name, location } = this.props;
     const { query, pathname } = location;
 
-    const id = query && query[`@${collection}`];
+    const id = query && query[`@${collection.toLowerCase()}`];
     const to = { pathname };
 
     return (
