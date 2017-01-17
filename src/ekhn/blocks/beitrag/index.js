@@ -79,9 +79,9 @@ const now = moment().format('x');
   },
 })
 @useGenericBlock({
-  label: 'Beiträge',
-  props: ['masonry', 'tags', 'placeholder', 'archive'],
-  editable: false,
+  label: 'Beiträge',
+  props: ['masonry', 'tags', 'placeholder', 'archive'],
+  placeholder: 'beitragList',
   actions: (props) => {
     const { setData, getData, data } = props;
     const selectedTags = getData('tags', ['Alle']);
@@ -93,16 +93,6 @@ const now = moment().format('x');
     tags = orderBy(tags, ['key', 'count'], ['asc', 'desc']);
 
     return [{
-      icon: 'plus',
-      type: 'add-beitrag',
-      toggle: () => {
-        props.router.push({
-          pathname: window.location.pathname,
-          query: { '@Beitrag': null },
-        });
-      },
-    },
-    {
       icon: 'columns',
       type: 'toggle-masonry',
       active: !!getData('masonry', false),

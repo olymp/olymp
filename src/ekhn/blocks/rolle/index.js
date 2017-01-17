@@ -42,20 +42,11 @@ import Items from '../../components/items';
   options: () => ({ }),
 })
 @useGenericBlock({
-  label: 'Über Uns',
-  props: ['rolle'],
+  label: 'Über Uns',
+  props: ['rolle'],
   editable: false,
+  placeholder: ['rollen', 'personen'],
   actions: props => [{
-    icon: 'plus',
-    type: 'add-beitrag',
-    toggle: () => {
-      props.router.push({
-        pathname: window.location.pathname,
-        query: { '@Person': null },
-      });
-    },
-  },
-  {
     icon: 'users',
     type: 'choose-rolle',
     options: (props.data.rollen || []).map(rolle => ({
@@ -71,8 +62,18 @@ import Items from '../../components/items';
 export default class RollenBlock extends Component {
   render() {
     const { data, children, getData, location } = this.props;
-    let { personen } = data;
-    const rolle = (data.rollen || []).find(x => x.id === getData('rolle'));
+    let { rollen, personen } = data;
+    const rolle = rollen.find(x => x.id === getData('rolle'));
+
+    if (!rolle) {
+      return (
+        <GenericBlock {...this.props}>
+          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
+            Keine Rolle gewählt!
+          </h1>
+        </GenericBlock>
+      );
+    }
 
     // Rollenfilter
     personen = rolle ?

@@ -81,23 +81,14 @@ const now = moment().format('x');
   options: () => ({ }),
 })
 @useGenericBlock({
-  label: 'Termine',
-  props: ['tags', 'mode'],
+  label: 'Termine',
+  props: ['tags', 'mode'],
   editable: false,
+  placeholder: ['termine', 'gottesdienste'],
   actions: (props) => {
     const { setData, getData } = props;
 
     return [{
-      icon: 'plus',
-      type: 'add-termin',
-      toggle: () => {
-        props.router.push({
-          pathname: window.location.pathname,
-          query: { '@termin': null },
-        });
-      },
-    },
-    {
       icon: !getData('mode', 0) ? 'calendar' : (getData('mode', 0) === 1 ? 'calendar-o' : 'calendar-plus-o'),
       type: 'toggle-mode',
       toggle: () => {
@@ -119,18 +110,6 @@ export default class TerminBlock extends Component {
     const page = query ? parseInt(query.page || 1, 10) : 1;
     const steps = query ? parseInt(query.steps || 10, 10) : 10;
     const mode = getData('mode', 0); // 0: Alle, 1: Termine, 2: Gottesdienste
-
-    if (!data.termine && !data.gottesdienste) {
-      return (
-        <GenericBlock {...rest} style={{ width: '100%' }}>
-          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
-            <i className="fa fa-refresh fa-spin fa-fw" />
-          </h1>
-
-          {children}
-        </GenericBlock>
-      );
-    }
 
     let { termine = [], gottesdienste = [] } = data;
 
@@ -156,23 +135,25 @@ export default class TerminBlock extends Component {
     ];
     termine = sortBy(termine, termin => termin.start);
 
-    if (!termine.length) {
-      return (
-        <GenericBlock {...rest} style={{ width: '100%' }}>
-          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
-            Keine Termine vorhanden!
-          </h1>
+    let type;
+    switch (mode) {
+      case 1:
+        type = 'Termine';
+        break;
 
-          {children}
-        </GenericBlock>
-      );
+      case 2:
+        type = 'Gottesdienste';
+        break;
+
+      default:
+        type = 'Termine und Gottesdienste';
     }
 
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
         <div className="items">
           <div className="item">
-            <h1>{!mode || mode === 1 ? 'Termine' : 'Gottesdienste'} der nächsten Zeit</h1>
+            <h1>{type} der nächsten Zeit</h1>
 
             {termine.slice((page - 1) * steps, page * steps).map(x => <TerminItem {...x} key={x.id} />)}
           </div>
