@@ -1,41 +1,70 @@
 import React, { Component } from 'react';
-import { graphql, gql, Link, withRouter } from 'olymp';
-import './gemeindebriefe.less';
+import { graphql, gql, withRouter } from 'olymp';
+import { useGenericBlock, GenericBlock } from 'olymp/cms';
+import orderBy from 'lodash/orderBy';
+import { moment } from 'olymp/locale-de';
+import Items from '../../components/items';
 
 @withRouter
 @graphql(gql`
   query gemeindebriefList {
-    items: gemeindebriefList(sort: {datum: DESC}, limit: 4, query: { state: { eq: PUBLISHED } }) {
+    gemeindebriefe: gemeindebriefList(sort: {datum: DESC}, query: { state: { eq: PUBLISHED } }) {
       id
       name
       gemeindebrief {
         url
+        width
+        height
+        crop
+        caption
+        source
       }
       datum
+      tags
     }
   }
-`)
-export default class GemeindebriefBlock extends Component {
+`, {
+  options: () => ({ }),
+})
+@useGenericBlock({
+  label: 'Gemeindebriefe',
+  props: ['masonry', 'tags'],
+  editable: false,
+  actions: props => [{
+    icon: 'plus',
+    type: 'add-gemeindebrief',
+    toggle: () => {
+      props.router.push({
+        pathname: window.location.pathname,
+        query: { '@Gemeindebrief': null },
+      });
+    },
+  }],
+})
+export default class GemeindebriefeBlock extends Component {
   render() {
-    const { data, location } = this.props;
+    const { data, children, ...rest } = this.props;
+    let { gemeindebriefe = [] } = data;
 
-    if (location && location.pathname !== '/') return <div />;
+    // Beiträge für Item-Komp. vorbereiten
+    gemeindebriefe = gemeindebriefe.map((x) => {
+      const date = x.datum || x.createdAt || x.updatedAt;
+
+      return {
+        ...x,
+        bild: x.gemeindebrief,
+        date: moment(date).format('X'),
+        shortText: x.zusammenfassung || x.text,
+        header: <a href={x.gemeindebrief.url} target="_blank" rel="noopener noreferrer">{x.name}</a>,
+        subheader: <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr`}</span>,
+      };
+    });
 
     return (
-      <div className="gemeindebriefe-block block">
-        <h3 style={{ margin: 0 }}>Gemeindebrief</h3>
-        <ul>
-          {(data.items || []).map(brief =>
-            <li key={brief.id}>
-              <a href={brief.gemeindebrief.url} target="_blank" rel="noopener noreferrer">
-                {brief.name}
-              </a>
-            </li>
-          )}
-        </ul>
-
-        <h5><Link to="/gemeinde/gemeindebriefe">Weitere Gemeindebriefe</Link></h5>
-      </div>
+      <GenericBlock {...rest}>
+        <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
+        {children}
+      </GenericBlock>
     );
   }
 }

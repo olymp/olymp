@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { SlateMate } from 'olymp/cms';
+import { SlateMate, useItemEdit } from 'olymp/cms';
 import { moment } from 'olymp/locale-de';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';
 import tinycolor from 'tinycolor2';
-import './mini.less';
 
-export default class TerminMiniBlock extends Component {
-  renderOne = (item) => {
-    const { start, ende, name, kommentar, farbe, ganztaegig, id, additional } = item;
+@useItemEdit
+export default class TerminMiniItem extends Component {
+  render() {
+    const { start, ende, name, kommentar, farbe, ganztaegig, additional } = this.props;
     const hypher = new Hypher(german);
 
     const backgroundColor = farbe ? tinycolor(farbe).toRgbString() : null;
@@ -40,7 +40,7 @@ export default class TerminMiniBlock extends Component {
     }
 
     return (
-      <div className="termin mini" style={{ backgroundColor }} key={id}>
+      <div className="termin mini" style={{ backgroundColor }}>
         <div className="header">
           <h4>{hypher.hyphenateText(name || 'Termin')}</h4>
           {dateString}
@@ -52,38 +52,6 @@ export default class TerminMiniBlock extends Component {
             {additional}
           </div>
         ) : null}
-      </div>
-    );
-  }
-
-  render() {
-    const { items } = this.props;
-
-    if (!items) {
-      return (
-        <div style={{ width: '100%' }}>
-          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
-            <i className="fa fa-refresh fa-spin fa-fw" />
-          </h1>
-        </div>
-      );
-    }
-
-    if (!items.length) {
-      return (
-        <div style={{ width: '100%' }}>
-          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
-            Keine Termine vorhanden!
-          </h1>
-        </div>
-      );
-    }
-
-    return (
-      <div style={{ width: '100%', marginTop: '.5rem' }}>
-        <div>
-          {items.map(x => this.renderOne(x))}
-        </div>
       </div>
     );
   }

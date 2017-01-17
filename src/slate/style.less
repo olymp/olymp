@@ -202,27 +202,32 @@ blockquote[dir="rtl"] {
 
 /* ITEM-DECORATORS */
 .block-item {
-  & > .ant-btn, & > a > .ant-btn {
+  position: relative;
+
+  .block-item-edit, .block-item-order, .block-item-hide {
     position: absolute;
     z-index: 1;
     display: none;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, .75);
   }
 
-  &:hover > .ant-btn, &:hover > a > .ant-btn {
-    display: inherit;
+  &:hover {
+    // transform: scale(1.01);
+    // opacity: 0.8;
+
+    .block-item-edit, .block-item-order, .block-item-hide {
+      display: inherit;
+    }
+  }
+
+  &.hidden {
+    display: none;
   }
 
   .block-item-edit {
     top: 50%;
     right: 0;
     transform: translate(50%, -50%);
-  }
-
-  .block-item-delete {
-    top: 50%;
-    left: 0;
-    transform: translate(-50%, -50%);
   }
 
   .block-item-order {
@@ -236,5 +241,11 @@ blockquote[dir="rtl"] {
     &:last-of-type {
       transform: translate(50%, 60%);
     }
+  }
+
+  .block-item-hide {
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
   }
 }
