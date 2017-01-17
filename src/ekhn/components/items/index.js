@@ -27,17 +27,6 @@ export default class Items extends Component {
     const { pathname, query } = location;
     const page = query ? parseInt(query.page || 1, 10) : 1;
     const steps = query ? parseInt(query.steps || 10, 10) : pageSize;
-
-    if (!items) {
-      return (
-        <div className="items">
-          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem' }}>
-            <i className="fa fa-refresh fa-spin fa-fw" />
-          </h1>
-        </div>
-      );
-    }
-
     const queryId = location && location.query ? location.query[capitalize(identifier)] : undefined;
     const selectedItem = selectedId || queryId ?
       items.find(x => x.id === (selectedId || queryId)) :
@@ -55,7 +44,7 @@ export default class Items extends Component {
       ) : <div />;
     }
 
-    const content = items && items.length ? this.masonryWrapper((
+    const content = this.masonryWrapper((
       items.slice((page - 1) * steps, page * steps).map((item, index) => item.leading && !index ?
         <ItemLarge
           {...item}
@@ -72,11 +61,7 @@ export default class Items extends Component {
             key={index}
           />
       )
-    ), masonry) : (
-      <div className="items">
-        <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem' }}>Keine Einträge vorhanden</h1>
-      </div>
-    );
+    ), masonry);
 
     return (
       <div className={className} style={style}>

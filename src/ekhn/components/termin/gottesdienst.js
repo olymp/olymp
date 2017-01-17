@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql, gqlLoader } from 'olymp';
 import { moment } from 'olymp/locale-de';
 import Gottesdienst from './index';
 
@@ -33,6 +33,7 @@ import Gottesdienst from './index';
 `, {
   options: () => ({ }),
 })
+@gqlLoader('gottesdienste')
 export default class GottesdienstBlock extends Component {
   render() {
     const { data } = this.props;

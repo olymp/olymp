@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql, gqlLoader } from 'olymp';
 import { moment } from 'olymp/locale-de';
 import Termin from './index';
 
@@ -28,6 +28,7 @@ const now = moment().format('x');
 `, {
   options: () => ({ }),
 })
+@gqlLoader('termine')
 export default class TerminBlock extends Component {
   render() {
     const { data } = this.props;
