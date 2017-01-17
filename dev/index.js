@@ -3,6 +3,7 @@ const apollo = require('universally-apollo');
 const path = require('path');
 const fs = require('fs');
 const rootPath = require('app-root-dir');
+const webpack = require("webpack");
 
 module.exports = (config) => {
   const prevBabelConfig = config.plugins.babelConfig;
@@ -19,6 +20,8 @@ module.exports = (config) => {
   config.env['GM_KEY'] = process.env.GM_KEY;
   if (!config.alias) config.alias = {}
   config.alias['react-router'] = path.resolve(rootPath.get(), 'node_modules', 'react-router-v4-decode-uri');
+  config.alias['moment'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'moment'));
+  config.alias['lodash'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'lodash'));
   config.alias['olymp'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'olymp'));
   config.nodeBundlesIncludeNodeModuleFileTypes.push(v => v === 'olymp' || v.indexOf('olymp/') === 0 || v.indexOf('olymp-') === 0);
 
@@ -50,14 +53,37 @@ module.exports = (config) => {
     childSrc: ["'self'", 'www.youtube.com'],
   };
   config.plugins.babelConfig = (babelConfig, buildOptions) => {
-    const { target } = buildOptions;
+    const { target,  } = buildOptions;
     if (prevBabelConfig) babelConfig = prevBabelConfig(babelConfig, buildOptions);
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-object-rest-spread'));
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-es2015-destructuring'));
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-decorators-legacy'));
     babelConfig.plugins.push(require.resolve('babel-plugin-transform-class-properties'));
     if (target === 'client') babelConfig.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
+    if (mode === 'production' && target === 'server') babelConfig.plugins.push(require.resolve('babel-plugin-lodash'));
+    /*ifProd('transform-react-remove-prop-types'),
+    ifProd('transform-react-pure-class-to-function'),
+    ifProd('minify-constant-folding'),
+    ifProd('minify-dead-code-elimination'),
+    ifProd('minify-flip-comparisons'),
+    ifProd('minify-guarded-expressions'),
+    ifProd('minify-infinity'),
+    // ifProd('minify-mangle-names'), Error App not defined
+    ifProd('minify-replace'),
+    // ifProd('minify-simplify'), TypeError: /Users/bkniffler/Projects/olymp-gzk/node_modules/olymp/src2/slate/editor.js: Cannot read property 'file' of undefined
+    ifProd('minify-type-constructors'),
+    ifProd('transform-member-expression-literals'),
+    ifProd('transform-merge-sibling-variables'),
+    ifProd('transform-minify-booleans'),
+    ifProd('transform-property-literals'),
+    ifProd('transform-simplify-comparison-operators'),
+    ifProd('transform-undefined-to-void'),*/
     return babelConfig;
+  };
+  config.plugins.webpackConfig = (webpackConfig, buildOptions, config, utils) => {
+    webpackConfig.plugins.push(
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/)
+    );
   };
   return less(apollo(config));
 };
