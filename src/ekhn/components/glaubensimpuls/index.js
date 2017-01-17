@@ -33,7 +33,7 @@ import Tags from '../../components/tags';
 `, {
   options: () => ({ }),
 })
-@gqlLoader('glaubensimpuls')
+@gqlLoader('glaubensimpuls', 'Kein Glaubensimpuls vorhanden')
 export default class GlaubensimpulsBlock extends Component {
   render() {
     const { data, style } = this.props;

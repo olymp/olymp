@@ -29,7 +29,8 @@ import Items from '../../components/items';
 @useGenericBlock({
   label: 'Gemeindebriefe',
   editable: false,
-  placeholder: 'gemeindebriefe',
+  hasContent: 'gemeindebriefe',
+  placeholder: 'Keine Gemeindebriefe vorhanden',
 })
 export default class GemeindebriefeBlock extends Component {
   render() {
