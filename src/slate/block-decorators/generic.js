@@ -1,4 +1,5 @@
 import React from 'react';
+import { gqlLoader } from 'olymp';
 import useBlockBase from './base';
 import useBlockAlign from './align';
 import useBlockToolbar from './toolbar';
@@ -21,8 +22,11 @@ export const GenericBlock = (props) => {
   );
 };
 
-export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true }) => (WrappedComponent) => {
+export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true, placeholder = false }) => (WrappedComponent) => {
   let component = props => <WrappedComponent {...props} />;
+
+  if (placeholder) component = gqlLoader(placeholder, true)(component);
+
   component = useBlockToolbar({ actions, type: 'fix', remove, move, add })(component);
 
   if (resize && typeof resize === 'object') component = useBlockResize(resize)(component);

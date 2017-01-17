@@ -27,19 +27,9 @@ import Items from '../../components/items';
   options: () => ({ }),
 })
 @useGenericBlock({
-  label: 'Gemeindebriefe',
-  props: ['masonry', 'tags'],
+  label: 'Gemeindebriefe',
   editable: false,
-  actions: props => [{
-    icon: 'plus',
-    type: 'add-gemeindebrief',
-    toggle: () => {
-      props.router.push({
-        pathname: window.location.pathname,
-        query: { '@Gemeindebrief': null },
-      });
-    },
-  }],
+  placeholder: 'gemeindebriefe',
 })
 export default class GemeindebriefeBlock extends Component {
   render() {
