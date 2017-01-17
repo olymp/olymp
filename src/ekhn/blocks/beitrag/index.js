@@ -81,8 +81,7 @@ const now = moment().format('x');
 @useGenericBlock({
   label: 'Beiträge',
   props: ['masonry', 'tags', 'placeholder', 'archive'],
-  hasContent: 'beitragList',
-  placeholder: 'Keine Beiträge vorhanden',
+  loader: { trigger: 'beitragList', placeholder: 'Keine Beiträge vorhanden' },
   actions: (props) => {
     const { setData, getData, data } = props;
     const selectedTags = getData('tags', ['Alle']);
