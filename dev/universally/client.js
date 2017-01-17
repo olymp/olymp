@@ -31,7 +31,7 @@ const client = new ApolloClient({
 });
 
 const renderer = createRenderer();
-const mountNode = document.getElementById('stylesheet');
+const mountNode = document.getElementById('css-markup');
 
 function renderApp(TheApp) {
   // We use the code-split-component library to provide us with code splitting
