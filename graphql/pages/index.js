@@ -49,6 +49,7 @@ module.exports = (schema, { adapter, attributes }) => {
   });
 
   setTimeout(() => {
+    if (!adapter.client) return;
     const collection = adapter.client.collection('page');
     collection.findOne({ }).then((one) => {
       if (one) return;
