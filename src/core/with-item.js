@@ -91,6 +91,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
     state = {
       isDirty: false,
       saving: false,
+      loading: false,
     };
 
     componentWillReceiveProps(props) {
@@ -110,6 +111,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
           this.patchedItem = {};
           this.data = nextProps.data[name];
         } else if (id) {
+          this.setState({ loading: true });
           client.query({
             query: gql`
               query get_${name.toLowerCase()}($id:String!) {
@@ -126,9 +128,11 @@ export default ({ attributes, name }) => (WrappedComponent) => {
             this.patchedItem = { ...initialData, ...this.data };
             this.setState({
               isDirty: false,
+              loading: false
             });
           });
         } else if (slug) {
+          this.setState({ loading: true });
           client.query({
             query: gql`
               query get_${name.toLowerCase()}($slug:String!) {
@@ -145,6 +149,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
             this.patchedItem = { ...initialData, ...this.data };
             this.setState({
               isDirty: false,
+              loading: false
             });
           });
         } else {
