@@ -10,7 +10,7 @@ const getTags = (items) => {
   const tags = { Alle: 0 };
   (items || []).forEach((item) => {
     if (item.tags && item.tags.length) {
-      (item.tags || []).forEach(tag => {
+      (item.tags || []).forEach((tag) => {
         if (!tags[tag]) tags[tag] = 0;
 
         tags[tag] += 1;
