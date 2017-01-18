@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Table, Menu, Icon, Affix, Dropdown, Button, Tabs, Input } from 'antd';
-import { withRouter, withCollection, withItems, Link, gql, withApollo } from 'olymp';
+import { Table, Menu, Icon, Affix, Dropdown, Button, Tabs, Input, Col } from 'antd';
+import { withRouter, withCollection, withItems, Link, gql, withApollo, throttleInput } from 'olymp';
 import { createComponent } from 'react-fela';
+import Filter from './filter';
+
+
 function hexToRgba(hex, a) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${a || 1})` : null;
@@ -38,6 +41,10 @@ const Li = createComponent(({ active }) => ({
   },
 }), 'li');
 
+const StyledLink = createComponent(({ active }) => ({
+  fontWeight: active && 'bold',
+}), props => <Link {...props} />, ['to']);
+
 const StyledInput = createComponent(({ theme }) => ({
   display: 'block',
   margin: '10px auto',
@@ -58,28 +65,88 @@ const StyledButton = createComponent(({ theme }) => ({
   },
 }), props => <Button {...props} />, ['placeholder']);
 
-const states = {
-  PUBLISHED: 'Öffentlich',
-  DRAFT: 'Entwurf',
-  ARCHIVED: 'Archiv',
-  REMOVED: 'Papierkorb',
-}
-@withItems({ state: Object.keys(states) })
-@withApollo
-@withRouter
-export default class CollectionListSidebar extends Component {
-  handleClick = (e) => {
-    const { location, router, collection } = this.props;
-  }
-
+@withItems({ })
+class CollectionList extends Component {
   getLink = (item) => {
     const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
     const { pathname } = location;
     return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item ? item.id : null } };
   }
 
+  renderRow = (text, record, index) => {
+    const { id } = this.props;
+    return (
+      <StyledLink to={this.getLink(record)} active={record.id === id}>
+        {record.kurz || record.name}
+      </StyledLink>
+    );
+  }
+
+  rowClick = (item, index) => {
+    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
+    const { pathname } = location;
+    this.props.router.push({
+      pathname,
+      query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item ? item.id : null }
+    })
+  }
   render() {
     const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items, id } = this.props;
+    const columns = [{ title: 'Name', dataIndex: 'name', render: this.renderRow }];
+    return (
+      <Table onRowClick={this.rowClick} rowKey="id" columns={columns} pagination={false} dataSource={items} size="small" />
+    )
+  }
+}
+
+const states = {
+  PUBLISHED: 'Öffentlich',
+  DRAFT: 'Entwurf',
+  ARCHIVED: 'Archiv',
+  REMOVED: 'Papierkorb',
+}
+@withApollo
+@withRouter
+@withCollection
+export default class CollectionListSidebar extends Component {
+  state = { query: { state: { eq: 'PUBLISHED' } }, filtering: false, searchText: '' };
+  throttle = throttleInput();
+  setQuery = (query) => {
+    this.setState({
+      filtering: true,
+      searchText: '',
+      query,
+    });
+  }
+  setQueryToState = (eq = 'PUBLISHED') => {
+    this.setState({
+      filtering: false,
+      query: { state: { eq } },
+      searchText: '',
+    });
+  }
+  search = (e) => {
+    if (!e.target.value) return this.setQueryToState();
+    const searchText = e.target.value;
+    this.setState({
+      searchText,
+    });
+    this.throttle(() => {
+      if (!this.state.searchText) return;
+      this.setState({
+        filtering: true,
+        query: { name: { contains: searchText } },
+      });
+    });
+  }
+  getLink = (item) => {
+    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
+    const { pathname } = location;
+    return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item ? item.id : null } };
+  }
+  render() {
+    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items, id } = this.props;
+    const { query, filtering, searchText } = this.state;
     return (
       <Sidebar>
         <Panel align="center" padding="10px 10px">
@@ -87,30 +154,25 @@ export default class CollectionListSidebar extends Component {
           <StyledButton><Link to={this.getLink()}><i className="fa fa-plus" /> Neu erstellen</Link></StyledButton>
         </Panel>
         <Panel seperator>
-          <StyledInput placeholder="Suche ..." />
+          <Input.Group size="large">
+            <Col span="18">
+              <Input placeholder="Suche ..." onChange={this.search} value={searchText} />
+            </Col>
+            <Col span="4">
+              {!filtering && <Filter onFilter={this.setQuery} collection={collection} />}
+              {filtering && <Button onClick={e => this.setQueryToState()}>Reset <i className="fa fa-clear" /></Button>}
+            </Col>
+          </Input.Group>
         </Panel>
-        <Panel seperator padding="0px 10px">
-          <Tabs>
+        {!filtering && <Panel seperator padding="0px 10px">
+          <Tabs onChange={eq => this.setQueryToState(eq)}>
             {Object.keys(states).map(name =>
-              <Tabs.TabPane tab={states[name]} key={name}>
-                <Panel>
-                  <ul>
-                    {items && items.filter(x => x.state === name).map(item => (
-                      <Li key={item.id} active={item.id === id}>
-                        <Link to={this.getLink(item)}>
-                          {item.kurz || item.name}
-                        </Link>
-                        {name !== 'REMOVED'
-                          ? <i className="fa fa-trash" style={{ float: 'right' }} />
-                          : <i className="fa fa-undo" style={{ float: 'right' }} />
-                        }
-                      </Li>
-                    ))}
-                  </ul>
-                </Panel>
-              </Tabs.TabPane>
+              <Tabs.TabPane tab={states[name]} key={name} />
             )}
           </Tabs>
+        </Panel>}
+        <Panel>
+          <CollectionList collection={collection} location={location} id={id} query={query} />
         </Panel>
       </Sidebar>
     );
