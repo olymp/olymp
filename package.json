@@ -41,9 +41,9 @@
     "express-session": "1.14.1",
     "fela": "4.1.2",
     "google-map-react": "0.20.1",
-    "graphql-tag": "1.2.3",
     "graphql": "0.8.2",
     "graphql-server-express": "0.4.3",
+    "graphql-tag": "1.2.3",
     "graphql-tools": "0.8.3",
     "hoist-non-react-statics": "1.2.0",
     "jsonwebtoken": "7.1.9",
@@ -66,6 +66,7 @@
     "shortid": "2.2.6",
     "sitemap-generator": "5.0.0",
     "slate": "0.16.9",
+    "tinycolor2": "^1.4.1",
     "whatwg-fetch": "2.0.1"
   }
 }
