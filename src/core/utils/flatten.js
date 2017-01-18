@@ -1,36 +1,26 @@
-const flatten = (l, options) => {
-   if(!options) options = {};
-   if(!options.parentId) options.parentId = "parentId";
-   if(!options.id) options.id = "id";
+const flatten = (items = [], options = {}) => {
+  const flattenArr = [];
+  const helper = (node, parent, order) => {
+    const newNode = {
+      ...node,
+      [options.parentId]: parent && parent[options.id],
+      order,
+    };
 
-   var graph = l.slice();
-   var i, l, nodes=[];
+    newNode.children.forEach((node, index) => helper(node, newNode, index));
+    delete newNode.children;
 
-   function helper (node, parent, index) {
-      var i, limit;
-      if(parent){
-         node[options.parentId] = parent[options.id];
-      }
-      else{
-         node[options.parentId] = null;
-      }
-      node.order = !index ? 0 : index;
-      if( node.children) {
-         for (i = 0, limit = node.children.length; i < limit; i++) {
-            helper(node.children[i], node, i);
-         }
-      }
-      delete node.children;
-      nodes.push(node);
-   }
+    flattenArr.push(newNode);
+  };
 
-   for (i = 0, l = graph.length; i < l; i++) {
-      helper({ ...graph[i] }, null, i);
-   }
+  items.forEach((item, index) => helper(item, null, index, {
+    parentId: 'parentId',
+    id: 'id',
+    ...options,
+  }));
 
-   return nodes;
-}
-
-export default (l, options) => {
-  return flatten(l, options);
+  return flattenArr;
 };
+
+export default (items, options) =>
+  flatten(items, options);
