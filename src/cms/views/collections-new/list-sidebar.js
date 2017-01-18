@@ -47,8 +47,8 @@ const StyledCard = createComponent(({ isActive, color }) => {
   const activeStyle = {};
   if (isActive) {
     activeStyle.left = '15px';
-    activeStyle.borderWidth = '0!important';
-    activeStyle.boxShadow = '0 0 5px 0 rgba(0, 0, 0, .33)';
+    // activeStyle.borderWidth = '0!important';
+    // activeStyle.boxShadow = '0 0 5px 0 rgba(0, 0, 0, .33)';
   }
 
   return {
