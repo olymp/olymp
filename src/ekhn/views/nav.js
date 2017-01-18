@@ -61,10 +61,11 @@ const UlWrapped = (props) => {
 
   // Personen den Rollen-Seiten zuordnen
   if (props.page && props.page.name === 'Über Uns') {
-    (items || []).forEach(page =>
+    items = (items || []).map((page) => {
+      const children = [...(page.children || [])];
       (rollen[page.name] || []).forEach((person) => {
-        if ((page.children || []).findIndex(x => x.id === person.id) === -1) {
-          page.children.push({
+        if (children.findIndex(x => x.id === person.id) === -1) {
+          children.push({
             id: person.id,
             name: person.name,
             path: `${page.path}?Person=${person.id}`,
@@ -72,8 +73,9 @@ const UlWrapped = (props) => {
             blocks: true,
           });
         }
-      })
-    );
+      });
+      return { ...page, children };
+    });
   }
 
   return (
