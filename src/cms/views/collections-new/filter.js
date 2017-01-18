@@ -104,9 +104,7 @@ export default class FilterComponent extends Component {
     const { collection, onFilter } = this.props;
     return (
       <Dropdown overlay={getFilterMenu(collection, onFilter)}>
-        <Button type="ghost">
-          Filter <i className="fa fa-search" />
-        </Button>
+        <Button>Filter</Button>
       </Dropdown>
     );
   }
