@@ -101,10 +101,10 @@ export const getFilterMenu = (collection, onFilter) => {
 }
 export default class FilterComponent extends Component {
   render() {
-    const { collection, onFilter } = this.props;
+    const { collection, onFilter, style, className } = this.props;
     return (
       <Dropdown overlay={getFilterMenu(collection, onFilter)}>
-        <Button>Filter</Button>
+        <Button style={style} className={className}>Filter</Button>
       </Dropdown>
     );
   }
