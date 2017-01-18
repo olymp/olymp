@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import withCollection from './with-collection';
 import withRouter from './with-router';
 
-export default ({ attributes, name } = {}) => (WrappedComponent) => {
+export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
   @withCollection
   @withApollo
   @withRouter
@@ -51,7 +51,7 @@ export default ({ attributes, name } = {}) => (WrappedComponent) => {
             }
           `,
           variables: {
-            state: location.query && location.query.state ? location.query.state.split('-') : ['PUBLISHED'],
+            state: state || (location.query && location.query.state ? location.query.state.split('-') : ['PUBLISHED']),
           },
         }) : client.watchQuery({
           query: gql`

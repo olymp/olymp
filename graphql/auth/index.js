@@ -90,6 +90,7 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
     `,
   });
   setTimeout(() => {
+    if (!adapter.client) return;
     const collection = adapter.client.collection('user');
     collection.findOne({ }).then((one) => {
       if (one) return;

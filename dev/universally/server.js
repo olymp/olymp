@@ -13,12 +13,34 @@ import errorHandlers from 'universally/src/server/middleware/errorHandlers';
 import config from 'universally/config';
 import session from 'express-session';
 
+const launchAPI = () => {
+  app.useSession = (url, getArgs) => {
+    app.set('trust proxy', 2);
+    if (!getArgs) {
+      getArgs = url;
+      url = null;
+    }
+    const args = getArgs(session);
+    if (url) app.use(url, session(args));
+    else app.use(session(args));
+  };
+  try {
+    const server = require('@root/server');
+    if (server.default) {
+      server.default(app);
+    } else {
+      server(app);
+    }
+  } catch (err) { console.log('No server.js or server/index.js file found, using default settings'); }
+}
+
 // Create our express based server.
 const app = express();
 
 // Don't expose any software information to potential hackers.
 app.disable('x-powered-by');
 
+if (process.env.NODE_ENV !== 'production') launchAPI();
 // Security middlewares.
 app.use(...security);
 
@@ -45,26 +67,9 @@ app.use(config.bundles.client.webPath, clientBundle);
 // Note: these will be served off the root (i.e. '/') of our application.
 app.use(express.static(pathResolve(appRootDir.get(), config.publicAssetsPath)));
 
-app.useSession = (url, getArgs) => {
-  app.set('trust proxy', 2);
-  if (!getArgs) {
-    getArgs = url;
-    url = null;
-  }
-  const args = getArgs(session);
-  if (url) app.use(url, session(args));
-  else app.use(session(args));
-};
 app.useStatic = url => express.static(url);
 
-try {
-  const server = require('@root/server');
-  if (server.default) {
-    server.default(app);
-  } else {
-    server(app);
-  }
-} catch (err) { console.log('No server.js or server/index.js file found, using default settings'); }
+if (process.env.NODE_ENV === 'production') launchAPI();
 // The React application middleware.
 app.get('*', reactApplication);
 
