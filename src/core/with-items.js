@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import withCollection from './with-collection';
 import withRouter from './with-router';
 import isEqual from 'lodash/isEqual';
+import lowerFirst from 'lodash/lowerFirst';
 
 export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
   @withCollection
@@ -42,13 +43,14 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
         if (this.subscription) this.subscription.unsubscribe();
         const { client, collection, attributes, location, query } = nextProps;
         this.items = null;
+        const queryName = `${lowerFirst(collection.name)}List`;
 
         let watchQuery;
         if (query) {
           watchQuery = client.watchQuery({
             query: gql`
-              query ${collection.name.toLowerCase()}List($query: ${collection.name}Query) {
-                items: ${collection.name.toLowerCase()}List(query: $query) {
+              query ${queryName}($query: ${collection.name}Query) {
+                items: ${queryName}(query: $query) {
                   ${attributes}
                 }
               }
@@ -60,8 +62,8 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
         } else if (attributes.indexOf('state') !== -1) {
           watchQuery = client.watchQuery({
             query: gql`
-              query ${collection.name.toLowerCase()}List($state: [DOCUMENT_STATE]) {
-                items: ${collection.name.toLowerCase()}List(query: {state: {in: $state}}) {
+              query ${queryName}($state: [DOCUMENT_STATE]) {
+                items: ${queryName}(query: {state: {in: $state}}) {
                   ${attributes}
                 }
               }
@@ -73,8 +75,8 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
         } else {
           watchQuery = client.watchQuery({
             query: gql`
-              query ${collection.name.toLowerCase()}List {
-                items: ${collection.name.toLowerCase()}List {
+              query ${queryName} {
+                items: ${queryName} {
                   ${attributes}
                 }
               }
