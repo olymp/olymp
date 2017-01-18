@@ -76,7 +76,7 @@ export default Form.create()(
           ) : null}
           {item && item.tags !== undefined ? (
             <Form.Item key="tags" label="Schlagworte" {...formItemLayout0}>
-              {getFieldDecorator('tags', { initialValue: item.tags })(getFormEditor(collection.fields.find(x => x.name === 'tags').type))}
+              {getFieldDecorator('tags', { initialValue: item.tags || [] })(getFormEditor(collection.fields.find(x => x.name === 'tags').type))}
             </Form.Item>
           ) : null}
         </Form>

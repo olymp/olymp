@@ -105,7 +105,7 @@ export default WrappedComponent => {
       return removeItem(id, this.props.name, this.props.client, { attributes: this.getAttributes() });
     }
     getAttributes = (col) => {
-      const collection = col || this.props.data.type || this.props.collection || null;
+      const collection = col || (this.props.data && this.props.data.type) || this.props.collection || null;
 
       return `${collection.fields.map(field => {
         if (field.type.kind === 'ENUM' || field.type.kind === 'SCALAR') return field.name;
@@ -119,11 +119,11 @@ export default WrappedComponent => {
     }
     render() {
       const { data, ...rest } = this.props;
-      const collection = this.props.data.type || this.props.collection || null;
+      const collection = (this.props.data && this.props.data.type) || this.props.collection || null;
       if (!collection) return null;
       return <WrappedComponent
         {...rest}
-        collectionLoading={data.loading}
+        collectionLoading={data && data.loading}
         collection={collection}
         saveCollectionItem={this.save}
         removeCollectionItem={this.remove}
