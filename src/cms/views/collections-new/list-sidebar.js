@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Table, Menu, Icon, Affix, Dropdown, Button, Tabs, Input, Col } from 'antd';
+import { Table, Menu, Icon, Affix, Dropdown, Button, Tabs, Input, Col, Spin } from 'antd';
 import { withRouter, withCollection, withItems, Link, gql, withApollo, throttleInput } from 'olymp';
 import { createComponent } from 'react-fela';
 import Filter from './filter';
@@ -91,7 +91,8 @@ class CollectionList extends Component {
     })
   }
   render() {
-    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items, id } = this.props;
+    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items, id, isLoading } = this.props;
+    if (isLoading) return <Spin />;
     const columns = [{ title: 'Name', dataIndex: 'name', render: this.renderRow }];
     return (
       <Table onRowClick={this.rowClick} rowKey="id" columns={columns} pagination={false} dataSource={items} size="small" />
@@ -135,7 +136,7 @@ export default class CollectionListSidebar extends Component {
       if (!this.state.searchText) return;
       this.setState({
         filtering: true,
-        query: { name: { contains: searchText } },
+        query: { name: { contains: this.state.searchText } },
       });
     });
   }
