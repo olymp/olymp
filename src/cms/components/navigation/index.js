@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, cn, withApollo, withAuth, gql } from 'olymp';
-import { SortableContainer as sortableContainer, SortableElement as sortableElement, SortableHandle as sortableHandle, arrayMove } from 'react-Sortable-hoc';
+import { SortableContainer as sortableContainer, SortableElement as sortableElement, SortableHandle as sortableHandle, arrayMove } from 'react-sortable-hoc';
 import './nav.less';
 
 const Plus = ({ location, page }) => (
