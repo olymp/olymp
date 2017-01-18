@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withItem, withCollection } from 'olymp';
+import { Spin } from 'antd';
 import { Form } from './form';
 import './detail.less';
 
@@ -25,7 +26,9 @@ export default class MainDetail extends Component {
 
   render() {
     const { item } = this.props;
-    if (!item) return null;
+    if (!item || this.props.loading) return (
+      <Spin size="large" />
+    )
     return (
       <Form
         {...this.props}
