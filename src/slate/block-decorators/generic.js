@@ -1,5 +1,4 @@
 import React from 'react';
-import { gqlLoader } from 'olymp';
 import useBlockBase from './base';
 import useBlockAlign from './align';
 import useBlockToolbar from './toolbar';
@@ -22,13 +21,8 @@ export const GenericBlock = (props) => {
   );
 };
 
-export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true, loader = { trigger: undefined, placeholder: undefined } }) => (WrappedComponent) => {
+export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true }) => (WrappedComponent) => {
   let component = props => <WrappedComponent {...props} />;
-
-  if (loader.trigger) {
-    component = gqlLoader(loader.trigger, loader.placeholder)(component);
-    // todo: Hier muss irgendwie der GenericBlock gewrapped werden!!! :(
-  }
 
   component = useBlockToolbar({ actions, type: 'fix', remove, move, add })(component);
 

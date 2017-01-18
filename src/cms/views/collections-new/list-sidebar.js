@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import capitalize from 'lodash/upperFirst';
 import { Table, Menu, Icon, Affix, Dropdown, Button, Tabs, Input } from 'antd';
 import { withRouter, withCollection, withItems, Link, gql, withApollo } from 'olymp';
 import { createComponent } from 'react-fela';

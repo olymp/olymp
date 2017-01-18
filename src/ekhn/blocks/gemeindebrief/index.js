@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter } from 'olymp';
+import { graphql, gql, withRouter, DataLoader } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
 import orderBy from 'lodash/orderBy';
 import { moment } from 'olymp/locale-de';
@@ -29,7 +29,6 @@ import Items from '../../components/items';
 @useGenericBlock({
   label: 'Gemeindebriefe',
   editable: false,
-  loader: { trigger: 'gemeindebriefe', placeholder: 'Keine Gemeindebriefe vorhanden' },
 })
 export default class GemeindebriefeBlock extends Component {
   render() {
@@ -52,8 +51,10 @@ export default class GemeindebriefeBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
-        {children}
+        <DataLoader data={data} trigger="gemeindebriefe" placeholder="Keine Gemeindebriefe vorhanden">
+          <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
+          {children}
+        </DataLoader>
       </GenericBlock>
     );
   }

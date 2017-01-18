@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter } from 'olymp';
+import { graphql, gql, withRouter, DataLoader } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
 import { Pagination } from 'antd';
 import sortBy from 'lodash/sortBy';
@@ -84,7 +84,6 @@ const now = moment().format('x');
   label: 'Termine',
   props: ['tags', 'mode'],
   editable: false,
-  loader: { trigger: ['termine', 'gottesdienste'], placeholder: 'Keine Termine vorhanden' },
   actions: (props) => {
     const { setData, getData } = props;
 
@@ -151,7 +150,7 @@ export default class TerminBlock extends Component {
 
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
-        <div className="items">
+        <DataLoader data={data} trigger={['termine', 'gottesdienste']} placeholder="Keine Termine vorhanden" className="items">
           <div className="item">
             <h1>{type} der nächsten Zeit</h1>
 
@@ -172,7 +171,7 @@ export default class TerminBlock extends Component {
               )}
             />
           ) : null}
-        </div>
+        </DataLoader>
 
         {children}
       </GenericBlock>

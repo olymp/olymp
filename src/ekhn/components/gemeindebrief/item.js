@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useItemEdit } from 'olymp/cms';
 
-@useItemEdit
-export default class GemeindebriefItem extends Component {
-  render() {
-    const { id, gemeindebrief, name } = this.props;
+export default useItemEdit(({ children, className, gemeindebrief, name }) => (
+  <li className={className}>
+    {children}
 
-    return (
-      <li>
-        <a href={gemeindebrief.url} target="_blank" rel="noopener noreferrer">
-          {name}
-        </a>
-      </li>
-    );
-  }
-}
+    <a href={gemeindebrief.url} target="_blank" rel="noopener noreferrer">
+      {name}
+    </a>
+  </li>
+));

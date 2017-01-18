@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, gqlLoader } from 'olymp';
+import { graphql, gql, DataLoader } from 'olymp';
 import { moment } from 'olymp/locale-de';
 import Termin from './index';
 
@@ -28,12 +28,15 @@ const now = moment().format('x');
 `, {
   options: () => ({ }),
 })
-@gqlLoader('termine', 'Keine Termine vorhanden')
 export default class TerminBlock extends Component {
   render() {
     const { data } = this.props;
     const { termine } = data;
 
-    return <Termin items={termine} />;
+    return (
+      <DataLoader data={data} trigger="termine" placeholder="Keine Termine vorhanden">
+        <Termin items={termine} />
+      </DataLoader>
+    );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter, Link, slugify } from 'olymp';
+import { graphql, gql, withRouter, Link, slugify, DataLoader } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
 import sortBy from 'lodash/sortBy';
 import Items from '../../components/items';
@@ -45,7 +45,6 @@ import Items from '../../components/items';
   label: 'Über Uns',
   props: ['rolle'],
   editable: false,
-  loader: { trigger: ['rollen', 'personen'], placeholder: 'Keine Rollen/Personen vorhanden' },
   actions: props => [{
     icon: 'users',
     type: 'choose-rolle',
@@ -62,22 +61,12 @@ import Items from '../../components/items';
 export default class RollenBlock extends Component {
   render() {
     const { data, children, getData, location } = this.props;
-    let { rollen, personen } = data;
+    let { rollen = [], personen = [] } = data;
     const rolle = rollen.find(x => x.id === getData('rolle'));
-
-    if (!rolle) {
-      return (
-        <GenericBlock {...this.props}>
-          <h1 style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
-            Keine Rolle gewählt!
-          </h1>
-        </GenericBlock>
-      );
-    }
 
     // Rollenfilter
     personen = rolle ?
-      (personen || []).filter(person => person.rollen.findIndex(x => x.id === rolle.id) !== -1) :
+      personen.filter(person => person.rollen.findIndex(x => x.id === rolle.id) !== -1) :
         [];
 
     // Nach Nachname und Vorname sortieren
@@ -86,30 +75,36 @@ export default class RollenBlock extends Component {
     return (
       <GenericBlock {...this.props}>
         {!location.query || !location.query.Person ? (
-          <Items
-            items={rolle ? [{
-              ...rolle,
-              shortText: rolle.text,
-              text: rolle.text,
-              header: rolle.name,
-            }] : []}
-            selectedId={rolle ? rolle.id : undefined}
-            identifier="rolle"
-          />
+          <DataLoader data={data} trigger={!!rolle} placeholder="Keine Rollen vorhanden">
+            <Items
+              items={rolle ? [{
+                ...rolle,
+                shortText: rolle.text,
+                text: rolle.text,
+                header: rolle.name,
+              }] : []}
+              selectedId={rolle ? rolle.id : undefined}
+              identifier="rolle"
+            />
+          </DataLoader>
         ) : null}
 
-        <Items
-          items={(personen || []).map(person => ({
-            ...person,
-            shortText: person.text,
-            text: person.text,
-            header: person.name,
-            subheader: <span>{person.rollen.map(({ id, name }) => <Link key={id} to={`/über-uns/${slugify(name)}`}>{name}</Link>)}</span>,
-          }))}
-          identifier="person"
-          pageSize={20}
-          style={{ marginTop: '2rem' }}
-        />
+        {rolle ? (
+          <DataLoader data={data} trigger={!!(personen && personen.length)} placeholder="Keine Personen zu dieser Rolle gefunden">
+            <Items
+              items={(personen || []).map(person => ({
+                ...person,
+                shortText: person.text,
+                text: person.text,
+                header: person.name,
+                subheader: <span>{person.rollen.map(({ id, name }) => <Link key={id} to={`/über-uns/${slugify(name)}`}>{name}</Link>)}</span>,
+              }))}
+              identifier="person"
+              pageSize={20}
+              style={{ marginTop: '2rem' }}
+            />
+          </DataLoader>
+        ) : null}
 
         {children}
       </GenericBlock>

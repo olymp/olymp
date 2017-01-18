@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter } from 'olymp';
+import { graphql, gql, withRouter, DataLoader } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
 import difference from 'lodash/difference';
 import orderBy from 'lodash/orderBy';
@@ -81,7 +81,6 @@ const now = moment().format('x');
 @useGenericBlock({
   label: 'Beiträge',
   props: ['masonry', 'tags', 'placeholder', 'archive'],
-  loader: { trigger: 'beitragList', placeholder: 'Keine Beiträge vorhanden' },
   actions: (props) => {
     const { setData, getData, data } = props;
     const selectedTags = getData('tags', ['Alle']);
@@ -190,9 +189,11 @@ export default class BeitragBlock extends Component {
 
     return (
       <GenericBlock {...this.props}>
-        <Items items={beitraege} masonry={masonry} identifier="beitrag" />
+        <DataLoader data={data} trigger="beitragList" placeholder="Keine Beiträge vorhanden">
+          <Items items={beitraege} masonry={masonry} identifier="beitrag" />
 
-        {children}
+          {children}
+        </DataLoader>
       </GenericBlock>
     );
   }
