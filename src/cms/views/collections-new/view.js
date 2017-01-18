@@ -23,7 +23,7 @@ export default class CollectionView extends Component {
             </Button>
           </Link>
         </Gateway>
-        <List name={collection} />
+        <List name={collection} id={id} />
         <div className="container" style={{ maxWidth: 600, margin: '30px auto' }}>
           {id && <Detail name={collection} id={id} />}
           {!id && <div>
