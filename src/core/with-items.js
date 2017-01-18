@@ -81,12 +81,14 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
             `,
           });
         }
+        this.isLoading = true;
 
         this.subscription = watchQuery.subscribe({
           next: ({ data }) => {
             if (this.unmount) return;
             this.items = data.items;
-            this.setState({});
+            this.isLoading = false;
+            this.setState({ });
           },
           error: (error) => {
             console.log('there was an error sending the query', error);
@@ -97,7 +99,7 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
 
     render() {
       return (
-        <WrappedComponent {...this.props} items={this.items} />
+        <WrappedComponent {...this.props} items={this.items} isLoading={this.isLoading} />
       );
     }
   }
