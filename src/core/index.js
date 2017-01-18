@@ -29,7 +29,7 @@ export { default as withState } from './with-state';
 export { default as withAuth, auth } from './with-auth';
 export { default as slugify } from './slugify';
 export { default as sortBy } from './sort-by';
-export { default as gqlLoader } from './graphql-loader';
+export { default as DataLoader } from './data-loader';
 
 export const Miss = require('react-router-v4-decode-uri').Miss;
 export const Match = require('react-router-v4-decode-uri').Match;

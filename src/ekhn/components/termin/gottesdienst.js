@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, gqlLoader } from 'olymp';
+import { graphql, gql, DataLoader } from 'olymp';
 import { moment } from 'olymp/locale-de';
 import Gottesdienst from './index';
 
@@ -33,7 +33,6 @@ import Gottesdienst from './index';
 `, {
   options: () => ({ }),
 })
-@gqlLoader('gottesdienste', 'Keine Gottesdienste vorhanden')
 export default class GottesdienstBlock extends Component {
   render() {
     const { data } = this.props;
@@ -56,6 +55,10 @@ export default class GottesdienstBlock extends Component {
       };
     });
 
-    return <Gottesdienst items={items} />;
+    return (
+      <DataLoader data={data} trigger="gottesdienste" placeholder="Keine Gottesdienste vorhanden">
+        <Gottesdienst items={items} />
+      </DataLoader>
+    );
   }
 }
