@@ -3,10 +3,28 @@ import { graphql, gql, withRouter, DataLoader } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
 import { Pagination } from 'antd';
 import sortBy from 'lodash/sortBy';
+import difference from 'lodash/difference';
+import orderBy from 'lodash/orderBy';
 import { moment } from 'olymp/locale-de';
 import TerminItem from './item';
 import './termine.less';
 
+const getTags = (items) => {
+  const tags = { Alle: 0 };
+  (items || []).forEach((item) => {
+    if (item.tags && item.tags.length) {
+      (item.tags || []).forEach((tag) => {
+        if (!tags[tag]) tags[tag] = 0;
+
+        tags[tag] += 1;
+      });
+    } else {
+      tags.Alle += 1;
+    }
+  });
+
+  return tags;
+};
 const now = moment().format('x');
 
 @withRouter
@@ -85,9 +103,31 @@ const now = moment().format('x');
   props: ['tags', 'mode'],
   editable: false,
   actions: (props) => {
-    const { setData, getData } = props;
+    const { setData, getData, data } = props;
+    const selectedTags = getData('tags', ['Alle']);
+
+    const tagObj = getTags(data.beitragList);
+    tagObj.Alle += Object.keys(tagObj).reduce((val, key) => val + tagObj[key], 0);
+
+    let tags = Object.keys(tagObj).map(key => ({ key, count: tagObj[key] }));
+    tags = orderBy(tags, ['key', 'count'], ['asc', 'desc']);
 
     return [{
+      icon: 'tags',
+      type: 'choose-tags',
+      multi: true,
+      options: tags.map(({ key, count }) => ({
+        value: key,
+        label: key,
+        active: selectedTags.findIndex(tag => tag === key) !== -1,
+        disabled: (key !== 'Alle' && selectedTags.findIndex(tag => tag === 'Alle') !== -1) ||
+          (key === 'Alle' && selectedTags.length && selectedTags.findIndex(tag => tag === 'Alle') === -1),
+        anzahl: count,
+      })),
+      toggle: (tags) => {
+        setData({ tags: tags.map(tag => tag.key) });
+      },
+    }, {
       icon: !getData('mode', 0) ? 'calendar' : (getData('mode', 0) === 1 ? 'calendar-o' : 'calendar-plus-o'),
       type: 'toggle-mode',
       toggle: () => {
@@ -109,6 +149,7 @@ export default class TerminBlock extends Component {
     const page = query ? parseInt(query.page || 1, 10) : 1;
     const steps = query ? parseInt(query.steps || 10, 10) : 10;
     const mode = getData('mode', 0); // 0: Alle, 1: Termine, 2: Gottesdienste
+    const tags = getData('tags', ['Alle']);
 
     let { termine = [], gottesdienste = [] } = data;
 
@@ -133,6 +174,13 @@ export default class TerminBlock extends Component {
       ...(!mode || mode === 2 ? gottesdienste : []),
     ];
     termine = sortBy(termine, termin => termin.start);
+
+    // Tags filtern
+    if (tags.findIndex(tag => tag === 'Alle') === -1) {
+      termine = termine.filter(
+        termin => difference(tags, termin.tags || []).length !== tags.length
+      );
+    }
 
     let type;
     switch (mode) {
