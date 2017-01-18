@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Tag } from 'antd';
 import './tags.less';
 
 export default class Tags extends Component {
@@ -7,7 +8,7 @@ export default class Tags extends Component {
 
     return tags && tags.length ? (
       <div className="tags">
-        {(tags || []).map(tag => <div key={tag}>{tag}</div>)}
+        {(tags || []).map(tag => <Tag key={tag}>{tag}</Tag>)}
       </div>
     ) : <div />;
   }
