@@ -269,12 +269,12 @@ export default class Container extends Component {
         <div>
           {children}
           {modal}
-          <Affix className={`athena-cms-menu ${modal ? 'inner' : ''}`}>
-            <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+          <Affix className={`athena-cms-menu`}>
+            {!modal && <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
               <Button type="primary" shape="circle" size="large">
                 {logo || <Icon type="menu-unfold" />}
               </Button>
-            </Dropdown>
+            </Dropdown>}
             <GatewayDest
               name="action"
               component={props => (props.children ? props.children : null)}
