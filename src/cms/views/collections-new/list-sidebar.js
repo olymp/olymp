@@ -31,7 +31,8 @@ const Title = createComponent(() => ({
   paddingBottm: '5px',
 }), 'h1');
 
-const Li = createComponent(() => ({
+const Li = createComponent(({ active }) => ({
+  fontWeight: active && 'bold',
   fontSize: '16px',
   ':hover': {
     backgroundColor: 'white',
@@ -64,7 +65,7 @@ const states = {
   ARCHIVED: 'Archiv',
   REMOVED: 'Papierkorb',
 }
-@withItems()
+@withItems({ state: Object.keys(states) })
 @withApollo
 @withRouter
 export default class CollectionListSidebar extends Component {
@@ -79,8 +80,7 @@ export default class CollectionListSidebar extends Component {
   }
 
   render() {
-    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
-
+    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items, id } = this.props;
     return (
       <Sidebar>
         <Panel align="center" padding="10px 10px">
@@ -96,8 +96,8 @@ export default class CollectionListSidebar extends Component {
               <Tabs.TabPane tab={states[name]} key={name}>
                 <Panel>
                   <ul>
-                    {items && items.map(item => (
-                      <Li key={item.id}>
+                    {items && items.filter(x => x.state === name).map(item => (
+                      <Li key={item.id} active={item.id === id}>
                         <Link to={this.getLink(item)}>
                           {item.kurz || item.name}
                         </Link>
