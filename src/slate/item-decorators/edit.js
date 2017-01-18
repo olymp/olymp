@@ -57,7 +57,7 @@ old.Test = (Item) => {
     );
 
     const children = auth.user && __typename ? [...(props.children || []),
-      <Dropdown overlay={menu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+      <Dropdown key="edit-decorator" overlay={menu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
         <Button type="primary" shape="circle" size="large" className="block-item-edit">
           <Icon type="edit" />
         </Button>
