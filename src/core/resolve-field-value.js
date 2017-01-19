@@ -10,10 +10,10 @@ export default (value, meta, fieldProps) => {
   if ((meta.type.kind === 'SCALAR' && meta.type.name !== 'Json') || meta.type.kind === 'ENUM') {
     switch (meta.type.name) {
       case 'Date':
-        return value ? moment(value).format('DD.MM.YYYY') : '';
+        return value ? moment(value).format('DD.MM.YYYY') : null;
 
       case 'DateTime':
-        return value ? `${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr` : '';
+        return value ? `${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr` : null;
 
       case 'Boolean':
         return <Checkbox checked={value} disabled {...fieldProps}>{value ? 'Ja' : 'Nein'}</Checkbox>;
@@ -28,7 +28,7 @@ export default (value, meta, fieldProps) => {
   } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
       case 'Image':
-        return value ? <Image value={value} {...fieldProps} /> : '';
+        return value ? <Image value={value} {...fieldProps} /> : null;
 
       default:
         return value ? (value.name || 'Ja') : null;

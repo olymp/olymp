@@ -130,12 +130,24 @@ class CollectionList extends Component {
     return resolveFieldValue(value, meta, fieldProps);
   }
 
+  resolveColor = (item) => {
+    const { collection } = this.props;
+    const { specialFields, fields } = collection;
+
+    const colorFieldName = (!!specialFields.color && specialFields.color.field) || 'farbe';
+    const colorFieldType = fields.find(x => x.name === colorFieldName);
+    return colorFieldType && colorFieldType.type.name !== 'Color' && specialFields.color && item[colorFieldName] ?
+        specialFields.color.arg0 :
+          item[colorFieldName];
+  }
+
   renderCard = (item) => {
     const { id, router } = this.props;
 
     const name = this.resolveFieldValue(item, 'name', { defaultFieldName: 'name', defaultValue: item.kurz || item.name || 'Kein Titel' });
     const bild = this.resolveFieldValue(item, 'image', { defaultFieldName: 'bild' }, { width: 60, ratio: 1, style: { float: 'left' } });
     const description = this.resolveFieldValue(item, 'description', {});
+    const color = this.resolveColor(item);
 
     return (
       <StyledCard
@@ -143,7 +155,7 @@ class CollectionList extends Component {
         key={item.id}
         extra={<Dropdown overlay={this.renderMenu()}><Icon type="edit" /></Dropdown>}
         isActive={item.id === id}
-        color={item.farbe}
+        color={color}
       >
         {bild}
         {bild === null && <StyledCardImagePlaceholder />}
