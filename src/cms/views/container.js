@@ -42,7 +42,7 @@ const SubMenu = Menu.SubMenu;
   options: ({ auth }) => ({
     skip: !auth || !auth.user,
   }),
-})
+}) // todo: mit withCollections statt query!
 export default class Container extends Component {
   isActive = (href) => {
     const { pathname } = this.props.location;

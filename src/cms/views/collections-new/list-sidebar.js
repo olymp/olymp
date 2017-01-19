@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Dropdown, Button, Tabs, Input, Card, Menu, Icon, Col, Spin } from 'antd';
-import { withRouter, withCollection, withItems, Link, withApollo, throttleInput } from 'olymp';
+import { Dropdown, Button, Tabs, Input, Card, Menu, Icon, Col, Spin, Select, Form, Checkbox } from 'antd';
+import { withRouter, withCollection, withCollections, withItems, Link, withApollo, throttleInput, resolveFieldValue } from 'olymp';
 import Image from '../../edits/image';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
+import capitalize from 'lodash/upperFirst';
 import Filter from './filter';
 
 const StyledSidebar = createComponent(() => ({
@@ -24,41 +25,32 @@ const StyledPanel = createComponent(({ seperator, align, padding, background }) 
   backgroundColor: background,
 }));
 
-const StyledTitle = createComponent(() => ({
-  paddingTop: '10px',
-  paddingBottm: '5px',
-  display: 'inline-block',
-  marginLeft: '48px',
-}), 'h6');
+const StyledForm = createComponent(() => ({
+  padding: '20px!important',
+  borderWidth: '0!important',
+  marginLeft: '53px',
+}), props => <Form {...props} />, ['inline']);
 
-const StyledButton = createComponent(({ theme }) => ({
-  float: 'right',
-  marginTop: '2px',
-  ':hover': {
-    color: `${theme.color}!important`,
-    borderColor: `${theme.color}!important`,
-  },
-}), props => <Button {...props} />, ['placeholder']);
+const StyledButton = createComponent(() => ({
+  width: '110px',
+  // borderWidth: '0!important',
+  marginRight: '-10px',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+}), props => <Button {...props} />);
 
 const StyledCard = createComponent(({ isActive, color }) => {
   const colorStyle = {};
   if (color) {
-    colorStyle.backgroundColor = tinycolor(color).setAlpha(0.33).toRgbString();
-    // colorStyle.color = tinycolor(item.farbe).isLight ? '#333' : '#CCC';
-    colorStyle.color = '#333';
-  }
-
-  const activeStyle = {};
-  if (isActive) {
-    activeStyle.left = '15px';
-    // activeStyle.borderWidth = '0!important';
-    // activeStyle.boxShadow = '0 0 5px 0 rgba(0, 0, 0, .33)';
+    colorStyle.backgroundColor = `${tinycolor(color).setAlpha(0.33).toRgbString()}!important`;
+    // colorStyle.color = tinycolor(item.farbe).isLight ? '#222' : '#DDD';
+    colorStyle.color = '#222';
   }
 
   return {
     cursor: 'pointer',
     margin: '3px 0',
-    ...activeStyle,
+    left: isActive ? '15px' : 0,
     ...colorStyle,
     '> .ant-card-extra': {
       top: '5px',
@@ -76,10 +68,16 @@ const StyledCardContent = createComponent(() => ({
   float: 'left',
 }));
 
+const StyledCardImagePlaceholder = createComponent(() => ({
+  width: '60px',
+  height: '60px',
+  float: 'left',
+}));
+
 const StyledCardTitle = createComponent(() => ({
+  width: '200px',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
-  width: '200px',
   whiteSpace: 'nowrap',
 }), 'h6');
 
@@ -121,8 +119,23 @@ class CollectionList extends Component {
     );
   }
 
+  resolveFieldValue = (item, field, { defaultFieldName, defaultValue }, fieldProps) => {
+    const { collection } = this.props;
+    const { specialFields, fields } = collection;
+
+    const fieldName = (!!specialFields[field] && specialFields[field].field) || defaultFieldName;
+    const value = item[fieldName] ? item[fieldName] : defaultValue;
+    const meta = fields.find(x => x.name === fieldName);
+
+    return resolveFieldValue(value, meta, fieldProps);
+  }
+
   renderCard = (item) => {
     const { id, router } = this.props;
+
+    const name = this.resolveFieldValue(item, 'name', { defaultFieldName: 'name', defaultValue: item.kurz || item.name || 'Kein Titel' });
+    const bild = this.resolveFieldValue(item, 'image', { defaultFieldName: 'bild' }, { width: 60, ratio: 1, style: { float: 'left' } });
+    const description = this.resolveFieldValue(item, 'description', {});
 
     return (
       <StyledCard
@@ -132,10 +145,11 @@ class CollectionList extends Component {
         isActive={item.id === id}
         color={item.farbe}
       >
-        {item.bild && <Image value={item.bild} width={60} ratio={1} style={{ float: 'left' }} />}
+        {bild}
+        {bild === null && <StyledCardImagePlaceholder />}
         <StyledCardContent>
-          <StyledCardTitle>{item.kurz || item.name || 'Kein Titel'}</StyledCardTitle>
-          <StyledCardParagraph>weitere Infos</StyledCardParagraph>
+          <StyledCardTitle>{name}</StyledCardTitle>
+          {!!description && <StyledCardParagraph>{description}</StyledCardParagraph>}
         </StyledCardContent>
       </StyledCard>
     );
@@ -164,6 +178,7 @@ const states = {
 @withApollo
 @withRouter
 @withCollection
+@withCollections
 export default class CollectionListSidebar extends Component {
   state = { query: { state: { eq: 'PUBLISHED' } }, filtering: false, searchText: '' };
   throttle = throttleInput();
@@ -200,23 +215,55 @@ export default class CollectionListSidebar extends Component {
   }
 
   getLink = (item) => {
-    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items } = this.props;
+    const { collection, location } = this.props;
     const { pathname } = location;
     return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: item ? item.id : null } };
   }
 
+  getCollectionLink = (collection) => {
+    const { location } = this.props;
+    const { pathname } = location;
+    return { pathname, query: { [`@${collection.toLowerCase()}`]: null } };
+  }
+
   render() {
-    const { onClick, collection, name, saveCollectionItem, removeCollectionItem, location, items, id, router } = this.props;
+    const { collection, location, id, router, collectionList, collectionTree } = this.props;
     const { query, filtering, searchText } = this.state;
+
+    const select = (
+      <Select
+        defaultValue={collection.name}
+        style={{ width: '126px' }}
+        filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        showSearch
+        onSelect={value => router.push(this.getCollectionLink(value))}
+      >
+        {Object.keys(collectionTree).map((key) => {
+          const group = collectionTree[key];
+
+          return (
+            <Select.OptGroup label={capitalize(key)} key={key}>
+              {group.map(item => <Select.Option value={item.name} key={item.name}>{item.name}</Select.Option>)}
+            </Select.OptGroup>
+          );
+        })}
+        <Select.Option value={'media'}>Mediathek</Select.Option>
+        <Select.Option value={'user'} disabled>User</Select.Option>
+      </Select>
+    );
 
     return (
       <StyledSidebar>
-        <StyledPanel padding="10px 10px" background="white">
-          <StyledTitle>{collection.name}</StyledTitle>
-          <Button style={{ float: 'right', marginTop: 2 }}>
-            <Link to={this.getLink()}><i className="fa fa-plus" /> Neu</Link>
-          </Button>
-        </StyledPanel>
+        <StyledForm inline>
+          <Form.Item>
+            {select}
+          </Form.Item>
+          <Form.Item>
+            <StyledButton>
+              <Link to={this.getLink()}>Hinzufügen</Link>
+            </StyledButton>
+          </Form.Item>
+        </StyledForm>
         <StyledPanel seperator>
           <Input.Group size="large">
             <Col span="18">
