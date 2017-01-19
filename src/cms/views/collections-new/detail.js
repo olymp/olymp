@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withItem, withCollection } from 'olymp';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 import { Form } from './form';
+import { createComponent } from 'react-fela';
 import './detail.less';
 
 @withCollection
@@ -30,12 +31,14 @@ export default class MainDetail extends Component {
       <Spin size="large" />
     )
     return (
-      <Form
-        {...this.props}
-        ref={form => this.form = form}
-        onCancel={this.handleCancel}
-        onCreate={this.handleCreate}
-      />
+      <div className="container" style={{ maxWidth: 600, margin: '30px auto' }}>
+        <Form
+          {...this.props}
+          ref={form => this.form = form}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
+        />
+      </div>
     );
   }
 }

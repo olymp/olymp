@@ -17,10 +17,11 @@ const StyledSidebar = createComponent(() => ({
   zIndex: 3,
 }));
 
-const StyledPanel = createComponent(({ seperator, align, padding }) => ({
+const StyledPanel = createComponent(({ seperator, align, padding, background }) => ({
   padding: padding || '5px 10px',
   borderTop: seperator ? '1px solid #e6e6e6' : 0,
   textAlign: align,
+  backgroundColor: background,
 }));
 
 const StyledTitle = createComponent(() => ({
@@ -210,9 +211,11 @@ export default class CollectionListSidebar extends Component {
 
     return (
       <StyledSidebar>
-        <StyledPanel padding="10px 10px">
+        <StyledPanel padding="10px 10px" background="white">
           <StyledTitle>{collection.name}</StyledTitle>
-          <StyledButton><Link to={this.getLink()}><i className="fa fa-plus" /> Erstellen</Link></StyledButton>
+          <Button style={{ float: 'right', marginTop: 2 }}>
+            <Link to={this.getLink()}><i className="fa fa-plus" /> Neu</Link>
+          </Button>
         </StyledPanel>
         <StyledPanel seperator>
           <Input.Group size="large">
