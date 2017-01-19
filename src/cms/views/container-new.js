@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { graphql, Link, Match, Redirect, gql, withRouter } from 'olymp';
+import { Link, withRouter, withCollections } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
 import { Menu, Affix, Button, Dropdown, Icon, notification } from 'antd';
-import sortBy from 'lodash/sortBy';
 import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
@@ -20,30 +19,7 @@ const SubMenu = Menu.SubMenu;
 @useLightboxes
 @withRouter
 @useBlockTypes()
-@graphql(gql`
-  query schema {
-    schema: __schema {
-      types {
-        name
-        description
-        interfaces {
-          name
-        }
-        fields {
-          name
-          type {
-            kind
-            name
-          }
-        }
-      }
-    }
-  }
-`, {
-  options: ({ auth }) => ({
-    skip: !auth || !auth.user,
-  }),
-})
+@withCollections
 export default class Container extends Component {
   isActive = (href) => {
     const { pathname } = this.props.location;
@@ -59,7 +35,7 @@ export default class Container extends Component {
   };
 
   render() {
-    const { children, router, location, auth, data, logo } = this.props;
+    const { children, router, location, auth, logo, collectionList, collectionTree } = this.props;
     const { pathname, query } = location;
 
     let modal;
@@ -79,7 +55,7 @@ export default class Container extends Component {
       modal = (<AuthReset token={query.reset} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
 
-    if (!auth || !auth.user || !data) {
+    if (!auth || !auth.user) {
       return (
         <div>
           {children}
@@ -88,9 +64,7 @@ export default class Container extends Component {
       );
     }
 
-    const { schema } = data;
-    const collections = schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
-    const collection = query ? (collections || []).find(c => query[`@${c.name}`] !== undefined || query[`@${uncapitalize(c.name)}`] !== undefined) : undefined;
+    const collection = query ? (collectionList || []).find(c => query[`@${c.name}`] !== undefined || query[`@${uncapitalize(c.name)}`] !== undefined) : undefined;
 
     if (collection !== undefined) {
       const { name } = collection;
@@ -190,55 +164,16 @@ export default class Container extends Component {
       );
     }
 
-   // Von Collections Attribute (icon, group, order) extrahieren und Collections gruppieren
-    const groups = {};
-    (collections || []).map(({ name, description }, i) => {
-      const attributes = {};
-      description.split('\n').forEach((x) => {
-        const y = x.split(':');
-
-        if (y.length === 2) {
-          attributes[y[0]] = y[1];
-        }
-      });
-
-      // Attribute verfügbar machen
-      collections[i] = {
-        ...collections[i],
-        ...attributes,
-      };
-
-      // Gruppieren
-      if (!groups[attributes.group]) groups[attributes.group] = [];
-      groups[attributes.group].push(collections[i]);
-    });
-
-    // Collections innerhalb Gruppe sortieren
-    Object.keys(groups).forEach((key) => {
-      groups[key] = sortBy(groups[key], ['order', 'name']);
-    });
-
-    // Undefined-Gruppe auflösen
-    if (groups.undefined) {
-      groups.undefined.forEach((collection) => {
-        if (!groups[collection.name]) groups[collection.name] = [];
-
-        groups[collection.name].push(collection);
-      });
-
-      delete groups.undefined;
-    }
-
     const mainMenu = (
       <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
-        {Object.keys(groups).map((key) => {
+        {Object.keys(collectionTree).map((key) => {
           const wrapper = children => (
             <SubMenu key={key} title={capitalize(key)}>
               {children}
             </SubMenu>
           );
           const groupItem = (
-            (groups[key] || []).map(({ name, title }) => (
+            (collectionTree[key] || []).map(({ name, title }) => (
               <Menu.Item key={`/@/${name}`}>
                 <Link to={{ pathname, query: { [`@${uncapitalize(name)}`]: null } }}>
                   {capitalize(title || name)}
@@ -247,7 +182,7 @@ export default class Container extends Component {
             ))
           );
 
-          return groups[key].length === 1 ? groupItem : wrapper(groupItem);
+          return collectionTree[key].length === 1 ? groupItem : wrapper(groupItem);
         })}
         <Menu.Divider />
         <Menu.Item key="mediathek">
@@ -270,11 +205,13 @@ export default class Container extends Component {
           {children}
           {modal}
           <Affix className={`athena-cms-menu`}>
-            {!modal && <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
-              <Button type="primary" shape="circle" size="large">
-                {logo || <Icon type="menu-unfold" />}
-              </Button>
-            </Dropdown>}
+            {!modal && (
+              <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+                <Button type="primary" shape="circle" size="large">
+                  {logo || <Icon type="menu-unfold" />}
+                </Button>
+              </Dropdown>
+            )}
             <GatewayDest
               name="action"
               component={props => (props.children ? props.children : null)}

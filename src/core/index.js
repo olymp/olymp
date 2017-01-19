@@ -2,6 +2,7 @@ export { default as purify } from './purify';
 export { default as capitalize } from 'lodash/upperFirst';
 
 export { default as withCollection } from './with-collection';
+export { default as withCollections } from './with-collections';
 export { default as Modal } from './modal';
 export { default as withItem } from './with-item';
 export { default as withItems } from './with-items';
@@ -12,6 +13,7 @@ export { default as cn } from 'classnames';
 export { default as classname } from 'classnames';
 export { default as Helmet } from 'react-helmet';
 export { default as cloudinaryUrl } from './cloudinary-url';
+export { default as resolveFieldValue } from './resolve-field-value';
 
 export { default as gql } from 'graphql-tag';
 
