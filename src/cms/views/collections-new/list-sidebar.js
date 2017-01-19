@@ -24,12 +24,15 @@ const StyledPanel = createComponent(({ seperator, align, padding }) => ({
 }));
 
 const StyledTitle = createComponent(() => ({
-  fontSize: '20px',
   paddingTop: '10px',
   paddingBottm: '5px',
-}), 'h1');
+  display: 'inline-block',
+  marginLeft: '48px',
+}), 'h6');
 
 const StyledButton = createComponent(({ theme }) => ({
+  float: 'right',
+  marginTop: '2px',
   ':hover': {
     color: `${theme.color}!important`,
     borderColor: `${theme.color}!important`,
@@ -68,11 +71,8 @@ const StyledCard = createComponent(({ isActive, color }) => {
 }, props => <Card {...props} />, ['onClick', 'extra']);
 
 const StyledCardContent = createComponent(() => ({
-  padding: '5px',
-  position: 'absolute',
-  left: '65px',
-  top: '50%',
-  transform: 'translateY(-50%)',
+  padding: '8px',
+  float: 'left',
 }));
 
 const StyledCardTitle = createComponent(() => ({
@@ -131,7 +131,7 @@ class CollectionList extends Component {
         isActive={item.id === id}
         color={item.farbe}
       >
-        {item.bild && <Image value={item.bild} width={60} ratio={1} />}
+        {item.bild && <Image value={item.bild} width={60} ratio={1} style={{ float: 'left' }} />}
         <StyledCardContent>
           <StyledCardTitle>{item.kurz || item.name || 'Kein Titel'}</StyledCardTitle>
           <StyledCardParagraph>weitere Infos</StyledCardParagraph>
@@ -210,9 +210,9 @@ export default class CollectionListSidebar extends Component {
 
     return (
       <StyledSidebar>
-        <StyledPanel align="center" padding="10px 10px">
+        <StyledPanel padding="10px 10px">
           <StyledTitle>{collection.name}</StyledTitle>
-          <StyledButton><Link to={this.getLink()}><i className="fa fa-plus" /> Neu erstellen</Link></StyledButton>
+          <StyledButton><Link to={this.getLink()}><i className="fa fa-plus" /> Erstellen</Link></StyledButton>
         </StyledPanel>
         <StyledPanel seperator>
           <Input.Group size="large">
