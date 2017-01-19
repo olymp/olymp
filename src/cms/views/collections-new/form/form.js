@@ -48,8 +48,6 @@ export default Form.create()(
 
           if (!editor) return null;
 
-          console.log(field, props);
-
           return (
             <Form.Item key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...(field.type.name === 'Json' ? formItemLayout0 : formItemLayout)}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value' })(editor)}
