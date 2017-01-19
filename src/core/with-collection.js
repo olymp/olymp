@@ -4,6 +4,7 @@ import { saveItem, removeItem } from './with-item';
 import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 
+const specialFieldsMemo = {};
 const imageFields = `
   url
   crop
@@ -117,6 +118,48 @@ export default WrappedComponent => {
         return `${field.name} { id, name }`;
       }).filter(x => x).join(', ')}`;
     }
+    getWithSpecialFields = (collection) => {
+      if (!collection) return;
+      let specialFields = {};
+      if (!specialFieldsMemo[collection.name]) {
+        collection.fields.forEach(field => {
+          if (!field.description) return;
+          field.description.replace(/\@\w+(\[[0-9]+\])?(\(.+\))?/gi, (match, text, urlId) => {
+            if (!match) return;
+            let [split0, values] = match.split('(');
+            let [name, index = null] = split0.split('[');
+            name = name.substr(1);
+            if (index) {
+              try {
+                index = parseInt(index.substr(index, index.length - 1));
+              } catch(err) {
+                index = null;
+              }
+            }
+            const specialField = {
+              field: field.name,
+            };
+            try {
+              values.substr(0, values.length - 1).split(',').forEach((x, i) => {
+                specialField[`arg${i}`] = JSON.parse(x);
+              });
+            } catch(err) { }
+
+            if (index  || index === 0) {
+              if (!specialFields[name]) specialFields[name] = [];
+              specialFields[name].splice(index >= specialFields[name].length ? specialFields[name].length : index, 0, specialField);
+            } else {
+              specialFields[name] = specialField;
+            }
+          });
+        });
+        specialFieldsMemo[collection.name] = specialFields;
+      } else {
+        specialFields = specialFieldsMemo[collection.name]
+      }
+      return { ...collection, specialFields };
+    }
+
     render() {
       const { data, ...rest } = this.props;
       const collection = (this.props.data && this.props.data.type) || this.props.collection || null;
@@ -124,7 +167,7 @@ export default WrappedComponent => {
       return <WrappedComponent
         {...rest}
         collectionLoading={data && data.loading}
-        collection={collection}
+        collection={this.getWithSpecialFields(collection)}
         saveCollectionItem={this.save}
         removeCollectionItem={this.remove}
         attributes={this.getAttributes()}
