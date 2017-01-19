@@ -24,14 +24,7 @@ export default class CollectionView extends Component {
           </Link>
         </Gateway>
         <List name={collection} id={id} />
-        <div className="container" style={{ maxWidth: 600, margin: '30px auto' }}>
-          {id && <Detail name={collection} id={id} />}
-          {!id && <div>
-            <h1>Links auswählen oder unten erstellen.</h1>
-            <br />
-            <Detail name={collection} />
-          </div>}
-        </div>
+        <Detail name={collection} id={id} />
       </Modal>
     );
   }
