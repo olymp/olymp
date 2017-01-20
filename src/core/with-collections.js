@@ -93,7 +93,7 @@ export default (WrappedComponent) => {
       const list = this.list();
       const group = this.group();
 
-      return list.length && Object.keys(group).length ? <WrappedComponent {...rest} collectionList={list} collectionTree={group} /> : <div />;
+      return <WrappedComponent {...rest} collectionList={list} collectionTree={group} />;
     }
   }
 
