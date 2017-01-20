@@ -72,8 +72,8 @@ export default Form.create()(
               {getFieldDecorator('tags', { initialValue: item.tags || [] })(getFormEditor(collection.fields.find(x => x.name === 'tags').type, 'Schlagworte'))}
             </Menu.Item>
 
-            <Menu.Item onClick={onCreate} style={{ float: 'right' }} key="save">
-              <Icon type="save" /> Speichern
+            <Menu.Item style={{ float: 'right' }} key="save">
+              <a href="javascript:;" onClick={onCreate}><Icon type="save" /> Speichern</a>
             </Menu.Item>
           </Menu>
         </Form>
