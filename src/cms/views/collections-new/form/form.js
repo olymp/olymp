@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Tabs } from 'antd';
+import { Form, Input, Tabs, Menu, Icon } from 'antd';
 import capitalize from 'lodash/upperFirst';
 import { SlugEditor } from './editors';
 import getInitialValue from './initial-value';
@@ -12,7 +12,7 @@ const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'up
 
 export default Form.create()(
   (props) => {
-    const { collection, form, onCreate, onCancel, saving, item, className, style } = props;
+    const { collection, form, onCreate, item, className, style } = props;
     const { getFieldDecorator } = form;
 
     const fields = collection.fields.filter(({ name }) => name !== 'id').reduce((state, item) => {
@@ -33,7 +33,7 @@ export default Form.create()(
 
     const renderForm = fields => (
       <Form horizontal>
-        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'description', 'slug', 'state', 'tags'].includes(name)).map((field) => {
+        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'description', 'state', 'tags'].includes(name)).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
             field.type,
@@ -63,33 +63,32 @@ export default Form.create()(
           <Form.Item key="name" label="Name" {...formItemLayout0}>
             {getFieldDecorator('name', { initialValue: item && item.name })(<Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." style={{ textAlign: 'center' }} />)}
           </Form.Item>
-          {item && item.slug !== undefined ? (
-            <Form.Item key="slug" label="Slug" {...formItemLayout0}>
-              {getFieldDecorator('slug', { initialValue: item.slug })(<SlugEditor url={item.slug} />)}
-            </Form.Item>
-          ) : null}
-          <button onClick={onCreate}>Speichern</button>
-          {item && item.state !== undefined ? (
-            <Form.Item key="state" label="State" {...formItemLayout0}>
-              {getFieldDecorator('state', { initialValue: item.state })(getFormEditor(collection.fields.find(x => x.name === 'state').type))}
-            </Form.Item>
-          ) : null}
-          {item && item.tags !== undefined ? (
-            <Form.Item key="tags" label="Schlagworte" {...formItemLayout0}>
-              {getFieldDecorator('tags', { initialValue: item.tags || [] })(getFormEditor(collection.fields.find(x => x.name === 'tags').type))}
-            </Form.Item>
-          ) : null}
+
+          <Menu mode="horizontal">
+            <Menu.Item style={{ width: 150 }} key="state">
+              {getFieldDecorator('state', { initialValue: item.state || 'DRAFT' })(getFormEditor(collection.fields.find(x => x.name === 'state').type))}
+            </Menu.Item>
+            <Menu.Item style={{ minWidth: 200 }} key="tags">
+              {getFieldDecorator('tags', { initialValue: item.tags || [] })(getFormEditor(collection.fields.find(x => x.name === 'tags').type, 'Schlagworte'))}
+            </Menu.Item>
+
+            <Menu.Item onClick={onCreate} style={{ float: 'right' }} key="save">
+              <Icon type="save" /> Speichern
+            </Menu.Item>
+          </Menu>
         </Form>
 
-        {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
-          <Tabs defaultActiveKey="0" animated={false}>
-            {Object.keys(fields).map((key, i) => (
-              <Tabs.TabPane tab={key} key={i}>
-                {renderForm(fields[key])}
-              </Tabs.TabPane>
-            ))}
-          </Tabs>
-        )}
+        <div className="ant-form-content">
+          {Object.keys(fields).length === 1 ? renderForm(fields.Allgemein) : (
+            <Tabs defaultActiveKey="0" animated={false} tabPosition="right">
+              {Object.keys(fields).map((key, i) => (
+                <Tabs.TabPane tab={key} key={i}>
+                  {renderForm(fields[key])}
+                </Tabs.TabPane>
+              ))}
+            </Tabs>
+          )}
+        </div>
       </div>
     );
   }

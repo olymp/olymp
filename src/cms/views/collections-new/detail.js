@@ -27,11 +27,11 @@ export default class MainDetail extends Component {
 
   render() {
     const { item } = this.props;
-    if (!item || this.props.loading) return (
-      <Spin size="large" />
-    )
+
+    if (!item || this.props.loading) return <Spin size="large" />;
+
     return (
-      <div className="container" style={{ maxWidth: 600, margin: '30px auto' }}>
+      <div className="container" style={{ maxWidth: 880, margin: '30px auto', padding: 0 }}>
         <Form
           {...this.props}
           ref={form => this.form = form}

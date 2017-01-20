@@ -3,19 +3,26 @@ import { Input, Select, Checkbox } from 'antd';
 import { DetailEditor, SlateEditor, DateEditor, SliderEditor, FormEditor } from './editors';
 import Image from '../../../edits/image';
 
+const states = {
+  PUBLISHED: 'Öffentlich',
+  DRAFT: 'Entwurf',
+  ARCHIVED: 'Archiv',
+  REMOVED: 'Papierkorb',
+};
+
 export default (type, name, props = {}, subField) => {
   if (subField && subField.type) {
     if (subField.type.kind === 'LIST' && subField.type.ofType) {
       return (
-        <DetailEditor {...props} tags name={subField.type.ofType.name} />
+        <DetailEditor {...props} placeholder={name} tags name={subField.type.ofType.name} />
       );
-    } return (<DetailEditor {...props} name={subField.type.name} />);
+    } return (<DetailEditor {...props} placeholder={name} name={subField.type.name} />);
   }
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
-      return <Select {...props} tags searchPlaceholder="Suche ..." />;
+      return <Select {...props} placeholder={name} tags searchPlaceholder="Suche ..." />;
     } if (type.ofType.name.indexOf('Nested') === 0) {
-      return <FormEditor {...props} name={type.ofType.name} type={type} />;
+      return <FormEditor {...props} placeholder={name} name={type.ofType.name} type={type} />;
     } return null;
   }
   if (type.kind === 'OBJECT') {
@@ -24,10 +31,16 @@ export default (type, name, props = {}, subField) => {
     } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
+    let resolveName = item => item;
+
+    if (type.name === 'DOCUMENT_STATE') {
+      resolveName = item => states[item];
+    }
+
     return (
-      <Select {...props}>
+      <Select {...props} placeholder={name}>
         {type.enumValues.map(x => (
-          <Select.Option key={x.name} value={x.name}>{x.name}</Select.Option>
+          <Select.Option key={x.name} value={x.name}>{resolveName(x.name)}</Select.Option>
         ))}
       </Select>
     );
