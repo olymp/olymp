@@ -41,9 +41,10 @@ const StyledButton = createComponent(() => ({
 const StyledCard = createComponent(({ isActive, color }) => {
   const colorStyle = {};
   if (color) {
-    colorStyle.backgroundColor = `${tinycolor(color).setAlpha(0.33).toRgbString()}!important`;
-    // colorStyle.color = tinycolor(item.farbe).isLight ? '#222' : '#DDD';
-    colorStyle.color = '#222';
+    colorStyle.backgroundColor = `${tinycolor(color).toRgbString()}!important`;
+    colorStyle.color = tinycolor.isReadable('#FFF', color) ? '#FFF' : '#333';
+    colorStyle.borderColor = `${tinycolor(color).darken(5).toRgbString()}!important`;
+    // colorStyle.color = '#222';
   }
 
   return {
