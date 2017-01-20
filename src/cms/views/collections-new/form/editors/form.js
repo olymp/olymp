@@ -32,8 +32,6 @@ export default class SubForm extends Component {
   render() {
     const { value, collection, onChange, ...rest } = this.props;
 
-    console.log(this.props);
-
     return (
       <div>
         <Collapse accordion>

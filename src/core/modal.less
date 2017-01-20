@@ -12,8 +12,9 @@
       background-color: transparent;
 
       .ant-modal-close {
-        position: fixed;
-        color: white;
+        // position: fixed;
+        // color: white;
+        display: none;
       }
 
       .ant-modal-header {
@@ -29,35 +30,34 @@
       }
 
       .ant-modal-body {
-        margin-left: 320px;
+        margin-left: 340px;
         padding: 0;
 
-        .ant-tabs-bar, .ant-form {
+        & > .container {
           background: #FFF;
           border: 1px solid #e5e5e5;
-        }
-        .ant-tabs {
-          overflow: visible;
 
-          .ant-tabs-bar {
-            margin-top: 16px;
+          .ant-form {
+            padding: 15px 15px 0 15px;
+
+            .ant-row {
+              margin: 0;
+            }
+
+            .ant-menu {
+              .ant-select-selection {
+                border: none;
+              }
+            }
           }
-        }
-        .ant-form {
-          padding: 15px 15px 0 15px;
-        }
 
-        .ant-menu-root {
-          background-color: #e5e5e5;
-          border-right: 1px solid #d5d5d5;
-          width: 320px;
-          position: fixed;
-          // top: 50px;
-          top: 0;
-          overflow-y: auto;
-          left: 0;
-          bottom: 0;
-          z-index: 1;
+          .ant-form-content {
+            padding: 20px 40px;
+
+            .ant-form {
+              padding: 0;
+            }
+          }
         }
       }
 
