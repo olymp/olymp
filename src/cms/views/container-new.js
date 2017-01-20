@@ -130,14 +130,14 @@ export default class Container extends Component {
           id={query['@page']}
           initialData={{ parentId: query['@new-page'], order: 0 }}
           attributes="id, slug, order, name, parentId, blocks, templateName"
-          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
+          onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
         />
       );
     } else if (query && (query['@del-page'] !== undefined)) {
       const openNotification = () => {
         const btnClick = function () {
           // to hide notification box
-          notification.close(key);
+          notification.close();
         };
         const btn = (
           <Button onClick={btnClick} type="primary">
@@ -204,7 +204,7 @@ export default class Container extends Component {
         <div>
           {children}
           {modal}
-          <Affix className={`athena-cms-menu`}>
+          <Affix className="athena-cms-menu">
             {!modal && (
               <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
                 <Button type="primary" shape="circle" size="large">

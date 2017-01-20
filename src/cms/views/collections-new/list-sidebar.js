@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown, Button, Tabs, Input, Card, Menu, Icon, Col, Spin, Select, Form, Checkbox } from 'antd';
 import { withRouter, withCollection, withCollections, withItems, Link, withApollo, throttleInput, resolveFieldValue } from 'olymp';
-import Image from '../../edits/image';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
 import capitalize from 'lodash/upperFirst';
