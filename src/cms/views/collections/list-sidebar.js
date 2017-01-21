@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Dropdown, Button, Tabs, Input, Card, Menu, Icon, Col, Spin, Select, Form, Checkbox } from 'antd';
-import { withRouter, withCollection, withCollections, withItems, Link, withApollo, throttleInput, resolveFieldValue } from 'olymp';
+import { Dropdown, Button, Tabs, Input, Card, Menu, Icon, Col, Spin, Select, Form, Pagination } from 'antd';
+import { withRouter, withCollections, Link, withApollo, throttleInput, resolveFieldValue } from 'olymp';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
 import capitalize from 'lodash/upperFirst';
 import Filter from './filter';
+
+const PAGE_SIZE = 25;
 
 const StyledSidebar = createComponent(() => ({
   left: 0,
@@ -15,6 +17,8 @@ const StyledSidebar = createComponent(() => ({
   backgroundColor: '#f9f9f9',
   borderRight: '1px solid #e0e0e0',
   zIndex: 3,
+  display: 'flex',
+  flexDirection: 'column',
 }));
 
 const StyledPanel = createComponent(({ seperator, align, padding, background }) => ({
@@ -36,7 +40,11 @@ const StyledButton = createComponent(() => ({
   marginRight: '-10px',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
-}), props => <Button {...props} />);
+  '> button': {
+    width: '33%',
+    padding: '4px 0!important',
+  },
+}), props => <Button.Group {...props} />);
 
 const StyledCard = createComponent(({ isActive, color }) => {
   const colorStyle = {};
@@ -49,7 +57,7 @@ const StyledCard = createComponent(({ isActive, color }) => {
 
   return {
     cursor: 'pointer',
-    margin: '3px 0',
+    margin: '3px 10px 3px 0',
     left: isActive ? '15px' : 0,
     ...colorStyle,
     '> .ant-card-extra': {
@@ -59,6 +67,9 @@ const StyledCard = createComponent(({ isActive, color }) => {
     '> .ant-card-body': {
       padding: 0,
       ...colorStyle,
+    },
+    ':hover': {
+      left: '15px',
     },
   };
 }, props => <Card {...props} />, ['onClick', 'extra']);
@@ -189,7 +200,12 @@ const states = {
 @withApollo
 @withCollections
 export default class CollectionListSidebar extends Component {
-  state = { query: { state: { eq: 'PUBLISHED' } }, filtering: false, searchText: '' };
+  state = {
+    query: { state: { eq: 'PUBLISHED' } },
+    filtering: false,
+    searchText: '',
+    page: 1,
+  };
   throttle = throttleInput();
 
   setQuery = (query) => {
@@ -242,8 +258,8 @@ export default class CollectionListSidebar extends Component {
   }
 
   render() {
-    const { collection, location, id, router, collectionList, collectionTree } = this.props;
-    const { query, filtering, searchText } = this.state;
+    const { collection, location, id, router, collectionList, collectionTree, items } = this.props;
+    const { query, filtering, searchText, page } = this.state;
 
     const select = (
       <Select
@@ -271,38 +287,57 @@ export default class CollectionListSidebar extends Component {
       </Select>
     );
 
+    const filter = filtering ? (
+      <Button onClick={e => this.setQueryToState()} style={{ width: '100%' }}>Reset</Button>
+    ) : (
+      <Filter onFilter={this.setQuery} collection={collection} style={{ width: '100%' }} />
+    );
+
     return (
       <StyledSidebar>
-        <StyledForm inline>
-          <Form.Item>
-            {select}
-          </Form.Item>
-          <Form.Item>
-            <StyledButton>
-              <Link to={this.getLink()}>Hinzufügen</Link>
-            </StyledButton>
-          </Form.Item>
-        </StyledForm>
-        <StyledPanel seperator>
-          <Input.Group size="large">
-            <Col span="18">
-              <Input placeholder="Suche ..." onChange={this.search} value={searchText} />
-            </Col>
-            <Col span="6" className="pr-0">
-              {!filtering && <Filter onFilter={this.setQuery} collection={collection} style={{ width: '100%' }} />}
-              {filtering && <Button onClick={e => this.setQueryToState()} style={{ width: '100%' }}>Reset</Button>}
-            </Col>
-          </Input.Group>
-        </StyledPanel>
-        {!filtering && (
+        <div>
+          <StyledForm inline>
+            <Form.Item>
+              {select}
+            </Form.Item>
+            <Form.Item>
+              <StyledButton>
+                <Button type="primary">
+                  <Link to={this.getLink()}><Icon type="plus" /></Link>
+                </Button>
+                <Button>
+                  <Link to={this.getLink()}><Icon type="upload" /></Link>
+                </Button>
+                <Button>
+                  <Link to={this.getLink()}><Icon type="download" /></Link>
+                </Button>
+              </StyledButton>
+            </Form.Item>
+          </StyledForm>
           <StyledPanel seperator>
-            <Tabs onChange={eq => this.setQueryToState(eq)} style={{ marginBottom: -16 }}>
-              {Object.keys(states).map(name => <Tabs.TabPane tab={states[name]} key={name} />)}
-            </Tabs>
+            <Input.Group>
+              <Col span="18">
+                <Input onChange={this.search} value={searchText} placeholder="Suche ..." />
+              </Col>
+              <Col span="6" className="pr-0">
+                {filter}
+              </Col>
+            </Input.Group>
           </StyledPanel>
-        )}
-        <StyledPanel>
-          <CollectionList {...this.props} />
+          {!filtering && (
+            <StyledPanel seperator>
+              <Tabs onChange={eq => this.setQueryToState(eq)} style={{ marginBottom: -16 }}>
+                {Object.keys(states).map(name => <Tabs.TabPane tab={states[name]} key={name} />)}
+              </Tabs>
+            </StyledPanel>
+          )}
+          <StyledPanel>
+            <Pagination size="small" current={page} onChange={page => this.setState({ page })} defaultPageSize={PAGE_SIZE} total={(items || []).length} />
+          </StyledPanel>
+        </div>
+
+        <StyledPanel style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+          <CollectionList {...this.props} items={(items || []).slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)} />
         </StyledPanel>
       </StyledSidebar>
     );
