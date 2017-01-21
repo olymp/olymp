@@ -19,7 +19,7 @@ import sortBy from 'lodash/sortBy';
 export default class Header extends Component {
   render() {
     const { location, data } = this.props;
-    let { pages } = this.props;
+    let { pages = [] } = this.props;
     let { personen } = data;
     const nav = {};
 

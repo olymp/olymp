@@ -12,14 +12,14 @@ import MediaList from './media/list';
 import ModalView from './modal';
 import UploadModal from './media/upload';
 import Collection from './collections-new';
+import { useColors } from '../decorators';
 import './container.less';
-
-const SubMenu = Menu.SubMenu;
 
 @useLightboxes
 @withRouter
 @useBlockTypes()
 @withCollections
+@useColors()
 export default class Container extends Component {
   isActive = (href) => {
     const { pathname } = this.props.location;
@@ -168,9 +168,9 @@ export default class Container extends Component {
       <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
         {Object.keys(collectionTree).map((key) => {
           const wrapper = children => (
-            <SubMenu key={key} title={capitalize(key)}>
+            <Menu.SubMenu key={key} title={capitalize(key)}>
               {children}
-            </SubMenu>
+            </Menu.SubMenu>
           );
           const groupItem = (
             (collectionTree[key] || []).map(({ name, title }) => (
