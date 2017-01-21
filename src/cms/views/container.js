@@ -8,10 +8,9 @@ import { Menu, Affix, Button, Dropdown, Icon } from 'antd';
 import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
-import MediaList from './media/list';
-import ModalView from './modal';
+import MediaModal from './media/view';
 import UploadModal from './media/upload';
-import Collection from './collections';
+import CollectionModal from './collections';
 import { useColors } from '../decorators';
 import './container.less';
 
@@ -69,61 +68,62 @@ export default class Container extends Component {
     if (collection !== undefined) {
       const { name } = collection;
       modal = (
-        <Collection typeName={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
+        <CollectionModal typeName={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
       );
     } else if (query && query['@media'] !== undefined) {
       modal = (
-        <ModalView location={location}>
-          <MediaList
-            tags={query && query.tags ? query.tags.split('-') : []}
-            solution={query && query.solution ? [query.solution] : []}
-            source={query && query.source ? [query.source] : []}
-            type={query && query.type ? [query.type] : []}
-            showAll={query && query.all === null}
-            uploadLink={link => (
-              <Link to={{ pathname, query: { ...query, '@upload': null } }}>
-                {link}
-              </Link>
-            )}
-            sortByState={query && query.sortBy ? [query.sortBy] : []}
-            onTagsFilterChange={(tags) => {
-              delete query.all;
-
-              return router.push({
-                pathname,
-                query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
-              });
-            }}
-            onSolutionFilterChange={solution => router.push({
-              pathname,
-              query: { ...query, solution: solution ? solution.join('') : undefined },
-            })}
-            onSourceFilterChange={source => router.push({
-              pathname,
-              query: { ...query, source: source ? source.join('') : undefined },
-            })}
-            onTypeFilterChange={type => router.push({
-              pathname,
-              query: { ...query, type: type ? type.join('') : undefined },
-            })}
-            onResetFilters={() => router.push({
-              pathname,
-            })}
-            onSortByChange={sortBy => router.push({
-              pathname,
-              query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
-            })}
-            onShowAll={() => router.push({
-              pathname,
-              query: { all: null },
-            })}
-            onImageChange={({ id }) => router.push({
-              pathname,
-              query: { ...query, '@media': id },
-            })}
-          />
-        </ModalView>
+        <MediaModal />
       );
+      /* modal = (
+        <MediaModal
+          tags={query && query.tags ? query.tags.split('-') : []}
+          solution={query && query.solution ? [query.solution] : []}
+          source={query && query.source ? [query.source] : []}
+          type={query && query.type ? [query.type] : []}
+          showAll={query && query.all === null}
+          uploadLink={link => (
+            <Link to={{ pathname, query: { ...query, '@upload': null } }}>
+              {link}
+            </Link>
+          )}
+          sortByState={query && query.sortBy ? [query.sortBy] : []}
+          onTagsFilterChange={(tags) => {
+            delete query.all;
+
+            return router.push({
+              pathname,
+              query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
+            });
+          }}
+          onSolutionFilterChange={solution => router.push({
+            pathname,
+            query: { ...query, solution: solution ? solution.join('') : undefined },
+          })}
+          onSourceFilterChange={source => router.push({
+            pathname,
+            query: { ...query, source: source ? source.join('') : undefined },
+          })}
+          onTypeFilterChange={type => router.push({
+            pathname,
+            query: { ...query, type: type ? type.join('') : undefined },
+          })}
+          onResetFilters={() => router.push({
+            pathname,
+          })}
+          onSortByChange={sortBy => router.push({
+            pathname,
+            query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
+          })}
+          onShowAll={() => router.push({
+            pathname,
+            query: { all: null },
+          })}
+          onImageChange={({ id }) => router.push({
+            pathname,
+            query: { ...query, '@media': id },
+          })}
+        />
+      ); */
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
         <PageModal

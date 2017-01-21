@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, resolveFieldValue, Link } from 'olymp';
-import { Dropdown, Menu, Icon, Button } from 'antd';
+import { Dropdown, Menu, Icon } from 'antd';
 import Sidebar from '../sidebar';
 
 @withRouter
@@ -71,17 +71,7 @@ export default class CollectionListSidebar extends Component {
     });
 
     return (
-      <Sidebar collection={collection} items={items} isLoading={isLoading} refetch={refetch} activePage={collection.name}>
-        <Button type="primary">
-          <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
-        </Button>
-        <Button disabled>
-          <Icon type="upload" />
-        </Button>
-        <Button disabled>
-          <Icon type="download" />
-        </Button>
-      </Sidebar>
+      <Sidebar collection={collection} items={items} isLoading={isLoading} refetch={refetch} activePage="media" />
     );
   }
 }
