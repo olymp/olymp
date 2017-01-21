@@ -11,7 +11,7 @@ import PageModal from './pages/modals/page';
 import MediaList from './media/list';
 import ModalView from './modal';
 import UploadModal from './media/upload';
-import Collection from './collections-new/view';
+import Collection from './collections-new';
 import './container.less';
 
 const SubMenu = Menu.SubMenu;
