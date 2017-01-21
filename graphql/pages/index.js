@@ -54,7 +54,7 @@ module.exports = (schema, { adapter, attributes }) => {
     collection.findOne({ }).then((one) => {
       if (one) return;
       adapter.client.collection('page').insertOne(
-        { id: require('shortid').generate(), slug: '/', state: 'PUBLISHED' }
+        { id: require('shortid').generate(), name: 'Home', slug: '/', state: 'PUBLISHED' }
       );
     }).catch(err => console.log(err));
   }, 5000);

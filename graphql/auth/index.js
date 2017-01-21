@@ -94,7 +94,7 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
     const collection = adapter.client.collection('user');
     collection.findOne({ }).then((one) => {
       if (one) return;
-      auth.register({ email: 'bkniffler@me.com', name: 'Benjamin Kniffler' }, 'bkniffler').then(({ token }) => {
+      auth.register({ email: 'admin@olymp-cms.com', name: 'Administrator' }, 'admin').then(({ token }) => {
         auth.confirm(token);
       });
     }).catch(err => console.log(err));
