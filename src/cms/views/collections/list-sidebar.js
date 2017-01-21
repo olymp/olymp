@@ -89,8 +89,6 @@ const StyledCardParagraph = createComponent(() => ({
   whiteSpace: 'nowrap',
 }), 'p');
 
-@withItems({ })
-@withRouter
 class CollectionList extends Component {
   getLink = (item) => {
     const { collection, location } = this.props;
@@ -187,15 +185,16 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-@withApollo
 @withRouter
-@withCollection
+@withApollo
 @withCollections
 export default class CollectionListSidebar extends Component {
   state = { query: { state: { eq: 'PUBLISHED' } }, filtering: false, searchText: '' };
   throttle = throttleInput();
 
   setQuery = (query) => {
+    const { refetch } = this.props;
+    refetch(query);
     this.setState({
       filtering: true,
       searchText: '',
@@ -204,6 +203,8 @@ export default class CollectionListSidebar extends Component {
   }
 
   setQueryToState = (eq = 'PUBLISHED') => {
+    const { refetch } = this.props;
+    refetch({ state: { eq } });
     this.setState({
       filtering: false,
       query: { state: { eq } },
@@ -212,6 +213,7 @@ export default class CollectionListSidebar extends Component {
   }
 
   search = (e) => {
+    const { refetch } = this.props;
     if (!e.target.value) return this.setQueryToState();
     const searchText = e.target.value;
     this.setState({
@@ -219,6 +221,7 @@ export default class CollectionListSidebar extends Component {
     });
     this.throttle(() => {
       if (!this.state.searchText) return;
+      refetch({ name: { contains: this.state.searchText } });
       this.setState({
         filtering: true,
         query: { name: { contains: this.state.searchText } },
@@ -299,7 +302,7 @@ export default class CollectionListSidebar extends Component {
           </StyledPanel>
         )}
         <StyledPanel>
-          <CollectionList collection={collection} location={location} id={id} query={query} />
+          <CollectionList {...this.props} />
         </StyledPanel>
       </StyledSidebar>
     );

@@ -69,7 +69,7 @@ export default class Container extends Component {
     if (collection !== undefined) {
       const { name } = collection;
       modal = (
-        <Collection collection={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
+        <Collection typeName={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
       );
     } else if (query && query['@media'] !== undefined) {
       modal = (

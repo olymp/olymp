@@ -85,10 +85,10 @@ export default WrappedComponent => {
       }
     }
   `, { /* eslint-disable */
-    options: ({ routeParams = {}, collection, name }) => ({
+    options: ({ routeParams = {}, collection, typeName }) => ({
       skip: !!collection,
       variables: {
-        name: capitalize(routeParams.model || name),
+        name: capitalize(routeParams.model || typeName),
       },
     }),
   })
@@ -96,14 +96,14 @@ export default WrappedComponent => {
     static propTypes = {
       client: PropTypes.object,
       attributes: PropTypes.string,
-      name: PropTypes.string,
+      typeName: PropTypes.string,
       includeStamps: PropTypes.bool,
     }
     save = item => {
-      return saveItem(item, this.props.name, this.props.client, { id: item.id, attributes: this.getAttributes() });
+      return saveItem(item, this.props.typeName, this.props.client, { id: item.id, attributes: this.getAttributes() });
     }
     remove = id => {
-      return removeItem(id, this.props.name, this.props.client, { attributes: this.getAttributes() });
+      return removeItem(id, this.props.typeName, this.props.client, { attributes: this.getAttributes() });
     }
     getAttributes = (col) => {
       const collection = col || (this.props.data && this.props.data.type) || this.props.collection || null;
