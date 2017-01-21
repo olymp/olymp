@@ -255,7 +255,11 @@ export default class CollectionListSidebar extends Component {
 
           return (
             <Select.OptGroup label={capitalize(key)} key={key}>
-              {group.map(item => <Select.Option value={item.name} key={item.name}>{item.name}</Select.Option>)}
+              {group.map(item => (
+                <Select.Option value={item.name} key={item.name}>
+                  {item.description && item.description.indexOf('title:') !== -1 ? item.description.split('title:')[1].split('\n')[0] : item.name}
+                </Select.Option>
+              ))}
             </Select.OptGroup>
           );
         })}

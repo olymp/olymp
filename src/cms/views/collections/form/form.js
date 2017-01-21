@@ -33,7 +33,7 @@ export default Form.create()(
 
     const renderForm = fields => (
       <Form horizontal>
-        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'description', 'state', 'tags'].includes(name)).map((field) => {
+        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'state', 'tags'].includes(name)).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
             field.type,
@@ -61,19 +61,34 @@ export default Form.create()(
       <div className={className} style={style}>
         <Form horizontal>
           <Form.Item key="name" label="Name" {...formItemLayout0}>
-            {getFieldDecorator('name', { initialValue: item && item.name })(<Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." style={{ textAlign: 'center' }} />)}
+            {getFieldDecorator(
+              'name',
+              { initialValue: getInitialValue(props, collection.fields.find(field => field.name === 'name')) }
+            )(
+              <Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." style={{ textAlign: 'center' }} />
+            )}
           </Form.Item>
 
           <Menu mode="horizontal">
             <Menu.Item style={{ width: 150 }} key="state">
-              {getFieldDecorator('state', { initialValue: item.state || 'DRAFT' })(getFormEditor(collection.fields.find(x => x.name === 'state').type))}
+              {getFieldDecorator(
+                'state',
+                { initialValue: getInitialValue(props, collection.fields.find(field => field.name === 'state')) }
+              )(
+                getFormEditor(collection.fields.find(x => x.name === 'state').type)
+              )}
             </Menu.Item>
             <Menu.Item style={{ minWidth: 200 }} key="tags">
-              {getFieldDecorator('tags', { initialValue: item.tags || [] })(getFormEditor(collection.fields.find(x => x.name === 'tags').type, 'Schlagworte'))}
+              {getFieldDecorator(
+                'tags',
+                { initialValue: getInitialValue(props, collection.fields.find(field => field.name === 'tags')) }
+              )(
+                getFormEditor(collection.fields.find(x => x.name === 'tags').type, 'Schlagworte')
+              )}
             </Menu.Item>
 
             <Menu.Item style={{ float: 'right' }} key="save">
-              <a href="javascript:;" onClick={onCreate}><Icon type="save" /> Speichern</a>
+              <span onClick={onCreate}><Icon type="save" /> Speichern</span>
             </Menu.Item>
           </Menu>
         </Form>
