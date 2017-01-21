@@ -21,7 +21,6 @@ export default class MainDetail extends Component {
 
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(() => {
-        console.log('SAVED', query);
         if (refetch) refetch(query);
       });
     });
