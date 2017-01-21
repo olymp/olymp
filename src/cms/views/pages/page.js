@@ -82,9 +82,7 @@ export default class CmsPage extends Component {
                     </Link>
                   </Menu.Item>
                   <Menu.Item key="page:delete" disabled>
-                    <Link to={{ ...location, query: { '@del-page': item.id } }}>
-                      Seite löschen
-                    </Link>
+                    Seite löschen
                   </Menu.Item>
                 </Menu>
               )}
