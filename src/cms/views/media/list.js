@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, cloudinaryUrl, gql, graphql, withApollo } from 'olymp';
-import { Affix, Spin, Cascader, Menu, Icon, Badge } from 'antd';
+import { Affix, Spin, Cascader, Menu, Icon } from 'antd';
 import sortBy from 'lodash/sortBy';
 import './style.less';
 
