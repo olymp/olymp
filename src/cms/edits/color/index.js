@@ -17,7 +17,7 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
     }
   }
 
-  return value === 'other' ? (
+  return !colors.length || value === 'other' ? (
     <Input {...rest} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />
   ) : (
     <Select
