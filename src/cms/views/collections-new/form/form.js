@@ -73,7 +73,7 @@ export default Form.create()(
             </Menu.Item>
 
             <Menu.Item style={{ float: 'right' }} key="save">
-              <span onClick={onCreate}><Icon type="save" /> Speichern</span>
+              <a href="javascript:;" onClick={onCreate}><Icon type="save" /> Speichern</a>
             </Menu.Item>
           </Menu>
         </Form>

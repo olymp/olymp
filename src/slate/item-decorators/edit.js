@@ -27,7 +27,7 @@ export default (Item) => {
           {children}
 
           <Dropdown overlay={menu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
-            <Button type="primary" shape="circle" size="large" className="block-item-edit" key="edit">
+            <Button type="primary" shape="circle" size="large" className="block-item-edit" onClick={() => router.push({ pathname, query: { ...query, [`@${__typename.toLowerCase()}`]: id } })} key="edit">
               <Icon type="edit" />
             </Button>
           </Dropdown>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Input, Select, Checkbox } from 'antd';
 import { DetailEditor, SlateEditor, DateEditor, SliderEditor, FormEditor } from './editors';
 import Image from '../../../edits/image';
+import ColorEditor from '../../../edits/color';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -55,7 +56,8 @@ export default (type, name, props = {}, subField) => {
     case 'DateTime':
       return <DateEditor {...props} placeholder={name} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
     case 'Color':
-      return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
+      return <ColorEditor {...props} placeholder={name} addonBefore={<i className="fa fa-eyedropper" />} />;
+      // return <Input {...props} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />;
     case 'Markdown':
       return <Input {...props} placeholder={name} type="textarea" autosize />;
     case 'Slug':
