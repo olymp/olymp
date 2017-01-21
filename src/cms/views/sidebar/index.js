@@ -83,8 +83,6 @@ export default class SidebarComponent extends Component {
     const { items, activePage, isLoading, children } = this.props;
     const { page, searchText, filtering } = this.state;
 
-    console.log(this.props);
-
     return (
       <Sidebar>
         <SidebarHeader
