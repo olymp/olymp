@@ -53,7 +53,6 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
         const queryName = `${lowerFirst(collection.name)}List`;
 
         let watchQuery;
-        console.log('REFETCH!!', query);
         if (query) {
           watchQuery = client.watchQuery({
             forceFetch: force,
