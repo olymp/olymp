@@ -23,7 +23,7 @@ export default (type, name, props = {}, subField) => {
     if (type.ofType.name === 'String') {
       return <Select {...props} placeholder={name} tags searchPlaceholder="Suche ..." />;
     } if (type.ofType.name.indexOf('Nested') === 0) {
-      return <FormEditor {...props} placeholder={name} name={type.ofType.name} type={type} />;
+      return <FormEditor {...props} placeholder={name} typeName={type.ofType.name} type={type} />;
     } return null;
   }
   if (type.kind === 'OBJECT') {

@@ -17,7 +17,7 @@ export default WrappedComponent => {
       },
     }),
   })
-  @withItem({ name: 'file', attributes })
+  @withItem({ typeName: 'file', attributes })
   class WithFileComponent extends Component {
     render() {
       return <WrappedComponent {...this.props} />;

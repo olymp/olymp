@@ -4,10 +4,10 @@ import { notification } from 'antd';
 import gql from 'graphql-tag';
 import capitalize from 'lodash/upperFirst';
 
-export const mutateItem = (client, typeName, { attributes }) => props => client.mutate({
+export const mutateItem = (client, name, { attributes }) => props => client.mutate({
   mutation: gql`
-    mutation set_${typeName.toLowerCase()}($id:String, $type:OPERATION_TYPE!, $input:${capitalize(typeName)}Input!) {
-      ${typeName.toLowerCase()}(id:$id, input:$input, operationType:$type) {
+    mutation set_${name.toLowerCase()}($id:String, $type:OPERATION_TYPE!, $input:${capitalize(name)}Input!) {
+      ${name.toLowerCase()}(id:$id, input:$input, operationType:$type) {
         ${attributes || 'id'}
       }
     }
@@ -15,15 +15,15 @@ export const mutateItem = (client, typeName, { attributes }) => props => client.
   ...props,
 });
 
-export const removeItem = (id, typeName, client, { onRemoved, attributes }) =>
-  mutateItem(client, typeName, { attributes })({
+export const removeItem = (id, name, client, { onRemoved, attributes }) =>
+  mutateItem(client, name, { attributes })({
     variables: {
       id,
       type: 'REMOVE',
       input: {},
     },
     updateQueries: {
-      [`${typeName.toLowerCase()}List`]: previousQueryResult => ({
+      [`${name.toLowerCase()}List`]: previousQueryResult => ({
         ...previousQueryResult,
         items: previousQueryResult.items.filter(x => x.id !== id),
       }),
@@ -46,10 +46,10 @@ const strip = (obj) => {
     Object.keys(obj).forEach(x => strip(obj[x]));
   }
 };
-export const saveItem = (body, typeName, client, { onSaved, attributes, id }) => {
+export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
   const input = JSON.parse(JSON.stringify(body));
   strip(input);
-  return mutateItem(client, typeName, { attributes })({
+  return mutateItem(client, name, { attributes })({
     variables: {
       id,
       input,
@@ -59,9 +59,9 @@ export const saveItem = (body, typeName, client, { onSaved, attributes, id }) =>
      [name]: body,
      },*/
     updateQueries: !id ? {
-      [`${typeName.toLowerCase()}List`]: (previousQueryResult, { mutationResult }) => ({
+      [`${name.toLowerCase()}List`]: (previousQueryResult, { mutationResult }) => ({
         ...previousQueryResult,
-        items: [...previousQueryResult.items, mutationResult.data[typeName]],
+        items: [...previousQueryResult.items, mutationResult.data[name]],
       }),
     } : {},
   }).then(({ data }) => {
@@ -75,11 +75,82 @@ export const saveItem = (body, typeName, client, { onSaved, attributes, id }) =>
   });
 };
 
-export default ({ attributes, typeName }) => (WrappedComponent) => {
+export default ({ attributes, name }) => (WrappedComponent) => {
   @withApollo
+  @graphql(gql`
+    query getType($name: String!) {
+      type: __type(name:$name) {
+        name
+        description
+        fields {
+          description
+          name
+          type {
+            description
+            kind
+            name
+            enumValues {
+              name
+            }
+            fields {
+              description
+              name
+              type {
+                description
+                kind
+                name
+                ofType {
+                  kind
+                  name
+                }
+              }
+            }
+            ofType {
+              description
+              kind
+              name
+              fields {
+                description
+                name
+                type {
+                  description
+                  kind
+                  name
+                  fields {
+                    description
+                    name
+                    type {
+                      description
+                      kind
+                      name
+                      ofType {
+                        kind
+                        name
+                      }
+                    }
+                  }
+                  ofType {
+                    kind
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `, { /* eslint-disable */
+    options: ({ routeParams = {}, collection, name }) => ({
+      skip: !!collection,
+      variables: {
+        name: capitalize(routeParams.model || name),
+      },
+    }),
+  })
   class WithItemComponent extends Component {
     static defaultProps = {
-      typeName,
+      name,
       attributes,
     };
 
@@ -103,19 +174,19 @@ export default ({ attributes, typeName }) => (WrappedComponent) => {
     }
 
     update = (nextProps, lastProps) => {
-      let { typeName, client, attributes, initialData, id, slug } = nextProps;
-      if (!lastProps || typeName !== lastProps.typeName || attributes !== lastProps.attributes || id !== lastProps.id || slug !== lastProps.slug || (nextProps.data && nextProps.data[typeName] !== lastProps.data[typeName])) {
-        if (!attributes || !typeName) return;
-        const capitalized = capitalize(typeName);
+      let { name, client, attributes, initialData, id, slug } = nextProps;
+      if (!lastProps || name !== lastProps.name || attributes !== lastProps.attributes || id !== lastProps.id || slug !== lastProps.slug || (nextProps.data && nextProps.data[name] !== lastProps.data[name])) {
+        if (!attributes || !name) return;
+        const capitalized = capitalize(name);
         if (nextProps.data) {
           this.patchedItem = {};
-          this.data = nextProps.data[typeName];
+          this.data = nextProps.data[name];
         } else if (id) {
           this.setState({ loading: true });
           client.query({
             query: gql`
-              query get_${typeName.toLowerCase()}($id:String!) {
-                item: ${typeName.toLowerCase()}(query: { id: {eq: $id} }) {
+              query get_${name.toLowerCase()}($id:String!) {
+                item: ${name.toLowerCase()}(query: { id: {eq: $id} }) {
                   ${attributes}
                 }
               }
@@ -135,8 +206,8 @@ export default ({ attributes, typeName }) => (WrappedComponent) => {
           this.setState({ loading: true });
           client.query({
             query: gql`
-              query get_${typeName.toLowerCase()}($slug:String!) {
-                item: ${typeName.toLowerCase()}(query: { slug: {eq: $slug} }) {
+              query get_${name.toLowerCase()}($slug:String!) {
+                item: ${name.toLowerCase()}(query: { slug: {eq: $slug} }) {
                   ${attributes}
                 }
               }
@@ -173,14 +244,14 @@ export default ({ attributes, typeName }) => (WrappedComponent) => {
       });
     };
     save = (data, opt) => {
-      const { onSaved, typeName, client, attributes } = this.props;
+      const { onSaved, name, client, attributes } = this.props;
       this.setState({ saving: true });
       const then = (x) => {
         this.setState({ saving: false });
         return x;
       };
       if (opt && opt.commit === false) {
-        return saveItem(data, typeName, client, {
+        return saveItem(data, name, client, {
           id: this.data.id,
           onSaved,
           attributes,
@@ -189,14 +260,14 @@ export default ({ attributes, typeName }) => (WrappedComponent) => {
           throw err;
         });
       }
-      return saveItem(this.data, typeName, client, { id: this.data.id, onSaved, attributes }).then(then).catch(err => {
+      return saveItem(this.data, name, client, { id: this.data.id, onSaved, attributes }).then(then).catch(err => {
         this.setState({ saving: false });
         throw err;
       });
     };
     remove = () => {
-      const { onRemoved, typeName, client, attributes } = this.props;
-      return removeItem(this.data.id, typeName, client, { onRemoved, attributes });
+      const { onRemoved, name, client, attributes } = this.props;
+      return removeItem(this.data.id, name, client, { onRemoved, attributes });
     };
 
     render() {

@@ -38,16 +38,25 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
       this.unmount = true;
     }
 
+    setQuery = (query) => {
+      this.newQuery = query;
+      this.update({ ...this.props, force: true });
+      this.forceUpdate();
+    }
+
     update = (nextProps, lastProps) => {
       if (!lastProps || nextProps.collection !== lastProps.collection || !isEqual(nextProps.query, lastProps.query)) {
         if (this.subscription) this.subscription.unsubscribe();
-        const { client, collection, attributes, location, query } = nextProps;
+        const { client, collection, attributes, location, force } = nextProps;
+        const query = this.newQuery || this.props.query;
         this.items = null;
         const queryName = `${lowerFirst(collection.name)}List`;
 
         let watchQuery;
+        console.log('REFETCH!!', query);
         if (query) {
           watchQuery = client.watchQuery({
+            forceFetch: force,
             query: gql`
               query ${queryName}($query: ${collection.name}Query) {
                 items: ${queryName}(query: $query) {
@@ -61,6 +70,7 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
           });
         } else if (attributes.indexOf('state') !== -1) {
           watchQuery = client.watchQuery({
+            forceFetch: force,
             query: gql`
               query ${queryName}($state: [DOCUMENT_STATE]) {
                 items: ${queryName}(query: {state: {in: $state}}) {
@@ -74,6 +84,7 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
           });
         } else {
           watchQuery = client.watchQuery({
+            forceFetch: force,
             query: gql`
               query ${queryName} {
                 items: ${queryName} {
@@ -101,7 +112,7 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
 
     render() {
       return (
-        <WrappedComponent {...this.props} items={this.items} isLoading={this.isLoading} />
+        <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} query={this.newQuery || this.props.query} isLoading={this.isLoading} />
       );
     }
   }

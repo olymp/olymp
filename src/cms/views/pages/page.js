@@ -19,7 +19,7 @@ const attributes = 'id, type, slug, order, name, parentId, blocks, children { id
 `, {
   options: ({ id }) => ({ variables: { id } }),
 })
-@withItem({ name: 'page', attributes })
+@withItem({ typeName: 'page', attributes })
 @withAuth
 export default class CmsPage extends Component {
   constructor() {

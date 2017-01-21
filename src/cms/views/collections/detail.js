@@ -5,7 +5,6 @@ import { Form } from './form';
 import { createComponent } from 'react-fela';
 import './detail.less';
 
-@withCollection
 @withItem({})
 export default class MainDetail extends Component {
   handleCancel = () => {
@@ -13,7 +12,7 @@ export default class MainDetail extends Component {
   }
 
   handleCreate = () => {
-    const { save, onClose } = this.props;
+    const { save, onClose, refetch, query } = this.props;
     const form = this.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -21,7 +20,10 @@ export default class MainDetail extends Component {
       }
 
       // console.log('Received values of form: ', values);
-      save(values, { commit: false }).then(onClose);
+      save(values, { commit: false }).then(() => {
+        console.log('SAVED', query);
+        if (refetch) refetch(query);
+      });
     });
   }
 
