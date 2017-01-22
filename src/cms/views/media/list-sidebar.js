@@ -1,37 +1,28 @@
 import React, { Component } from 'react';
-import { withRouter, resolveFieldValue, Link } from 'olymp';
+import { gql, graphql, withRouter, Link } from 'olymp';
 import { Dropdown, Menu, Icon } from 'antd';
 import Sidebar from '../sidebar';
 
+const states = {
+  PUBLISHED: 'Öffentlich',
+  REMOVED: 'Papierkorb',
+};
+const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
+
 @withRouter
-export default class CollectionListSidebar extends Component {
+@graphql(gql`
+  query fileList {
+    items: fileList {
+      ${attributes}
+    }
+  }
+`)
+export default class MediaListSidebar extends Component {
   getLink = ({ id }) => {
-    const { collection, location } = this.props;
+    const { location } = this.props;
     const { pathname } = location;
 
-    return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: id } };
-  }
-
-  resolveFieldValue = (item, field, { defaultFieldName, defaultValue }, fieldProps) => {
-    const { collection } = this.props;
-    const { specialFields, fields } = collection;
-
-    const fieldName = (!!specialFields[field] && specialFields[field].field) || defaultFieldName;
-    const value = item[fieldName] ? item[fieldName] : defaultValue;
-    const meta = fields.find(x => x.name === fieldName);
-
-    return resolveFieldValue(value, meta, fieldProps);
-  }
-
-  resolveColor = (item) => {
-    const { collection } = this.props;
-    const { specialFields, fields } = collection;
-
-    const colorFieldName = (!!specialFields.color && specialFields.color.field) || 'farbe';
-    const colorFieldType = fields.find(x => x.name === colorFieldName);
-    return colorFieldType && colorFieldType.type.name !== 'Color' && specialFields.color && item[colorFieldName] ?
-        specialFields.color.arg0 :
-          item[colorFieldName];
+    return { pathname, query: { ...location.query, ['@media']: id } };
   }
 
   renderMenu = ({ id, state }) => (
@@ -52,26 +43,47 @@ export default class CollectionListSidebar extends Component {
   )
 
   render() {
-    const { router, id, collection, isLoading, refetch } = this.props;
-    const items = (this.props.items || []).map((item) => {
-      const name = this.resolveFieldValue(item, 'name', { defaultFieldName: 'name', defaultValue: item.kurz || item.name || 'Kein Titel' });
-      const image = this.resolveFieldValue(item, 'image', { defaultFieldName: 'bild' }, { width: 60, ratio: 1, style: { float: 'left' } });
-      const description = this.resolveFieldValue(item, 'description', {});
-      const color = this.resolveColor(item);
+    const { router, id, isLoading, refetch, data } = this.props;
+
+    const items = (data.items || []).map((item) => {
+      const name = item.caption;
+      const description = !!item.source && `© ${item.source}`;
+      const image = item;
+      const color = undefined;
 
       return {
         name,
-        image,
         description,
+        image,
         color,
-        menu: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
+        extra: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
         isActive: item.id === id,
         onClick: () => router.push(this.getLink(item)),
       };
     });
 
+    const menu = (
+      <Menu>
+        <Menu.Item key="1">Import</Menu.Item>
+        <Menu.Item key="2">Export</Menu.Item>
+      </Menu>
+    );
+    const actions = (
+      <Dropdown.Button overlay={menu}>
+        <Icon type="plus" />
+      </Dropdown.Button>
+    );
+
     return (
-      <Sidebar collection={collection} items={items} isLoading={isLoading} refetch={refetch} activePage="media" />
+      <Sidebar
+        items={items}
+        isLoading={isLoading}
+        refetch={refetch}
+        activePage="media"
+        actions={actions}
+        filter={undefined}
+        states={states}
+      />
     );
   }
 }

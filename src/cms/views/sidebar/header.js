@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Tabs, Input, Col, Select, Form, Pagination } from 'antd';
+import { Button, Tabs, Input, Col, Select, Form, Pagination, Dropdown } from 'antd';
 import { withRouter, withCollections } from 'olymp';
 import { createComponent } from 'react-fela';
 import capitalize from 'lodash/upperFirst';
-import Filter from './filter';
-
-const states = {
-  PUBLISHED: 'Öffentlich',
-  DRAFT: 'Entwurf',
-  ARCHIVED: 'Archiv',
-  REMOVED: 'Papierkorb',
-};
 
 const StyledForm = createComponent(() => ({
   padding: '20px!important',
@@ -70,13 +62,7 @@ export default class SidebarHeader extends Component {
   }
 
   render() {
-    const { items, page, pageSize, setPage, searchFn, searchText, filtering, setQuery, setQueryToState, children } = this.props;
-
-    /* const filter = filtering ? (
-      <Button onClick={e => setQueryToState()} style={{ width: '100%' }}>Reset</Button>
-    ) : (
-      <Filter onFilter={setQuery} collection={collection} style={{ width: '100%' }} />
-    ); */
+    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, setQueryToState, actions, states } = this.props;
 
     return (
       <div>
@@ -86,7 +72,7 @@ export default class SidebarHeader extends Component {
           </Form.Item>
           <Form.Item>
             <StyledButtonGroup>
-              {children}
+              {actions}
             </StyledButtonGroup>
           </Form.Item>
         </StyledForm>
@@ -97,12 +83,18 @@ export default class SidebarHeader extends Component {
               <Input onChange={searchFn} value={searchText} placeholder="Suche ..." />
             </Col>
             <Col span="6" className="pr-0">
-              {/* filter */}
+              {filter && (filtering ? (
+                <Button onClick={e => setQueryToState()} style={{ width: '100%' }}>Reset</Button>
+              ) : (
+                <Dropdown overlay={filter}>
+                  <Button style={{ width: '100%' }}>Filter</Button>
+                </Dropdown>
+              ))}
             </Col>
           </Input.Group>
         </Panel>
 
-        {!filtering && (
+        {!filtering && !!states && (
           <Panel seperator>
             <Tabs onChange={eq => setQueryToState(eq)} style={{ marginBottom: -16 }}>
               {Object.keys(states).map(name => <Tabs.TabPane tab={states[name]} key={name} />)}
