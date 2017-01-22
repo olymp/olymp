@@ -22,8 +22,6 @@ export default class MediaView extends Component {
   };
 
   getNode = (tree, tags) => {
-    console.log(tags);
-
     if (tags.length) {
       const nextTree = (tree.children || []).find(item => item.label === tags[0]);
       if (nextTree) return this.getNode(nextTree, tags.filter((tag, index) => index));
@@ -33,20 +31,37 @@ export default class MediaView extends Component {
   }
 
   // Bilder aus allen Unterordnern holen
-  getDirectory = ({ label, images, children = [] }) => {
-    const allImages = [...images];
-    const getAllImages = children => children.forEach((image) => {
-      image.images.forEach(item => allImages.push(item));
-      getAllImages(image.children || []);
-    });
-    getAllImages(children);
+  getDirectory = (node) => {
+    const { label, images, children = [] } = node;
+    const { tags } = this.state;
+    const index = tags.findIndex(tag => tag === label);
+    const allImages = this.getDirectoryImages(node);
 
     return {
       name: capitalize(label),
       description: `${allImages.length} Bilder in ${children.length + 1} Ordnern`,
       image: allImages[Math.floor(Math.random() * allImages.length)],
-      onClick: () => this.setState({ tags: ['Beitrag'] }),
+      onClick: () => this.setState(
+        { tags: (index === -1) ? [...tags, label] : tags.splice(index, 1) }
+      ),
+      isActive: index !== -1,
     };
+  }
+
+  getDirectoryImages = (node) => {
+    let arr = [...node.images];
+
+    if (Array.isArray(node.children)) {
+      node.children.map((childNode) => {
+        const childNodeImages = this.getDirectoryImages(childNode);
+
+        arr = arr.concat(
+          childNodeImages.filter(image => arr.findIndex(x => x.id === image.id) === -1)
+        );
+      });
+    }
+
+    return arr;
   }
 
   getTagTree = (images) => {
@@ -84,10 +99,10 @@ export default class MediaView extends Component {
 
     const mapOverTree = (children) => {
       return Object.keys(children).map((key) => {
-        const test = mapOverTree(children[key].childrenAsObj);
+        const mapper = mapOverTree(children[key].childrenAsObj);
 
-        if (test.length) {
-          children[key].children = test;
+        if (mapper.length) {
+          children[key].children = mapper;
         }
 
         return children[key];
@@ -106,11 +121,21 @@ export default class MediaView extends Component {
     const { items, loading } = data;
 
     const tree = this.getTagTree(items || []);
-
     const currentNode = this.getNode(tree, tags);
-    const directories = currentNode && currentNode.children ? sortBy(currentNode.children, item => capitalize(item.label)).map(this.getDirectory) : undefined;
 
-    console.log(currentNode);
+    let directories = tags.length ? [
+      {
+        name: 'Zurück',
+        description: `zu '${tags.slice(0, -1).join('/') || 'Übersicht'}'`,
+        image: null,
+        color: '#DDD',
+        onClick: () => this.setState({ tags: tags.slice(0, -1) }),
+      },
+    ] : [];
+    directories = [
+      ...directories,
+      ...(currentNode && !!currentNode.children && sortBy(currentNode.children, item => capitalize(item.label)).map(this.getDirectory)),
+    ];
 
     return (
       <Modal>
@@ -120,7 +145,7 @@ export default class MediaView extends Component {
         />
         {loading ? <Spin /> : (
           <List
-            images={tree.images}
+            images={this.getDirectoryImages(currentNode)}
           />
         )}
         {/* <Detail typeName={typeName} collection={collection} attributes={attributes} location={location} id={id} refetch={refetch} query={this.props.query} /> */}

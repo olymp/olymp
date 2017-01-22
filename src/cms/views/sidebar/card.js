@@ -27,7 +27,7 @@ const StyledCard = createComponent(({ isActive, color }) => {
       ...colorStyle,
     },
     ':hover': {
-      left: '15px',
+      left: isActive ? '-5px' : '10px',
     },
   };
 }, props => <Card {...props} />, ['onClick', 'extra']);
