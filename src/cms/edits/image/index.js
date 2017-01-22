@@ -30,7 +30,7 @@ export default class ImageComponent extends Component {
   }
 
   render() {
-    const { cloudinary, asImg, style, className, width, height, ratio, children } = this.props;
+    const { cloudinary, asImg, style, className, width, height, ratio, children, retina } = this.props;
     let { value } = this.props;
 
     if (!value) {
@@ -43,6 +43,7 @@ export default class ImageComponent extends Component {
 
     return (
       <Image
+        retina={retina}
         asImg={asImg}
         value={value}
         cloudinary={cloudinary}
