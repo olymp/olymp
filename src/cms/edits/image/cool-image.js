@@ -56,7 +56,7 @@ export default class CoolImage extends Component {
   }
 
   render() {
-    const { value, asImg, cloudinary, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
+    const { value, asImg, cloudinary, retina, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
     let { ratio } = this.props;
 
     if (!value) {
@@ -101,7 +101,7 @@ export default class CoolImage extends Component {
       width = Math.round(height / ratio);
     }
 
-    const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, ...cloudinary };
+    const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, retina, ...cloudinary };
     if (cloudinary && cloudinary.width && !cloudinary.height) delete cloudinaryProps.height;
     if (cloudinary && cloudinary.height && !cloudinary.width) delete cloudinaryProps.width;
     url = cloudinaryUrl(url, cloudinaryProps, crop);

@@ -60,7 +60,7 @@ const StyledCardParagraph = createComponent(() => ({
 
 export default ({ name, description, image, ...rest }) => (
   <StyledCard {...rest}>
-    {!!image && <Image value={image} width={60} ratio={1} style={{ float: 'left' }} />}
+    {!!image && <Image value={image} width={60} retina ratio={1} style={{ float: 'left' }} />}
     {image === null && <StyledCardImagePlaceholder />}
 
     <StyledCardContent>
