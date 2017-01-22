@@ -19,15 +19,7 @@ const StyledForm = createComponent(() => ({
 }), props => <Form {...props} />, ['inline']);
 
 const StyledButtonGroup = createComponent(() => ({
-  width: '110px',
   // borderWidth: '0!important',
-  marginRight: '-10px',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  '> button': {
-    width: '33%',
-    padding: '4px 0!important',
-  },
 }), props => <Button.Group {...props} />);
 
 const Panel = createComponent(({ seperator, align, padding, background }) => ({
@@ -53,7 +45,7 @@ export default class SidebarHeader extends Component {
     return (
       <Select
         defaultValue={activePage}
-        style={{ width: '126px' }}
+        style={{ width: '159px' }}
         filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         showSearch
         onSelect={value => router.push(this.getCollectionLink(value))}
