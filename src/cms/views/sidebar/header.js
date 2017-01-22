@@ -79,7 +79,7 @@ export default class SidebarHeader extends Component {
               <Dropdown overlay={this.renderSelect()}>
                 <a className="ant-dropdown-link" href="javascript:;">
                   <StyledHeader>
-                    {capitalize(activePage)}
+                    {capitalize(activePage)} <i className="fa fa-angle-down" />
                   </StyledHeader>
                 </a>
               </Dropdown>
