@@ -1,122 +1,18 @@
 import React, { Component } from 'react';
-import { Link, cloudinaryUrl, gql, graphql, withApollo } from 'olymp';
-import { Affix, Spin, Cascader, Menu, Icon } from 'antd';
-import sortBy from 'lodash/sortBy';
+import { cloudinaryUrl } from 'olymp';
+import { Affix, Cascader, Menu, Icon } from 'antd';
+import { Image } from '../../edits';
 import './style.less';
 
-export const OptionalLink = ({ to, onClick, arg, ...rest }) => {
-  if (to && typeof to === 'function' && to(arg)) return <Link {...rest} to={to(arg)} />;
-  else if (to && typeof to !== 'function') return <Link {...rest} to={to} />;
-  return <a href="javascript:;" onClick={() => onClick(arg)} {...rest} />;
-};
-
-const getTagTree = (images) => {
-  let tree = {};
-  const createTreeItem = (image, treeNode, iterateTags, prevTags = []) => {
-    const tempTreeNode = { ...treeNode };
-
-    (iterateTags || []).forEach((currentTag) => {
-      // Wenn nicht vorhanden, neuen Knoten im Tree anlegen
-      if (!tempTreeNode[currentTag]) {
-        tempTreeNode[currentTag] = {
-          label: currentTag,
-          value: currentTag,
-          childrenAsObj: {},
-          images: [],
-        };
-      }
-
-      const nextTags = (iterateTags || []).filter(tag => tag !== currentTag);
-      if (nextTags.length === 0) {
-        tempTreeNode[currentTag].images.push(image);
-      } else {
-        tempTreeNode[currentTag].childrenAsObj = createTreeItem(
-          image, tempTreeNode[currentTag].childrenAsObj, nextTags, [...prevTags, currentTag]
-        );
-      }
-    });
-
-    return tempTreeNode;
-  };
-
-  images.forEach((image) => {
-    tree = createTreeItem(image, tree, image.tags);
-  });
-
-  const mapOverTree = (children) => {
-    return Object.keys(children).map((key) => {
-      const test = mapOverTree(children[key].childrenAsObj);
-
-      if (test.length) {
-        children[key].children = test;
-      }
-
-      return children[key];
-    });
-  };
-
-  return {
-    children: mapOverTree(tree),
-    images: images.filter(image => !image.tags || !image.tags.length),
-  };
-};
-
-const getNode = (tree, tags) => {
-  if (tags.length) {
-    const nextTree = (tree.children || []).filter(item => item.label === tags[0])[0];
-    if (nextTree) return getNode(nextTree, tags.filter((tag, index) => index));
-  } return tree;
-};
-
-const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
-@withApollo
-@graphql(gql`
-  query fileList {
-    items: fileList {
-      ${attributes}
-    }
-  }
-`)
 export default class MediaList extends Component {
-  static propTypes = {
-    onImageChange: React.PropTypes.func,
-    onTagsFilterChange: React.PropTypes.func,
-    onSolutionFilterChange: React.PropTypes.func,
-    onSourceFilterChange: React.PropTypes.func,
-    onTypeFilterChange: React.PropTypes.func,
-    onResetFilters: React.PropTypes.func,
-    onSortByChange: React.PropTypes.func,
-    onShowAll: React.PropTypes.func,
-    tags: React.PropTypes.arrayOf(React.PropTypes.string),
-    solution: React.PropTypes.arrayOf(React.PropTypes.string),
-    source: React.PropTypes.arrayOf(React.PropTypes.string),
-    type: React.PropTypes.arrayOf(React.PropTypes.string),
-    sortByState: React.PropTypes.arrayOf(React.PropTypes.string),
-    data: React.PropTypes.shape({
-      loading: React.PropTypes.bool,
-      items: React.PropTypes.arrayOf(React.PropTypes.object),
-    }),
-  };
-
-  static defaultProps = {
-    tags: [],
-    solution: [],
-    source: [],
-  }
-
-  onUploadClick = () => {
-    // todo: const { dropzone } = this.refs;
-    // dropzone.open();
-  };
-
   render() {
-    const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, onShowAll, showAll, tags, solution, source, type, sortByState, uploadLink } = this.props;
-    const { loading, items } = this.props.data;
+    // const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, onShowAll, showAll, tags = [], solution, source, type, sortByState, uploadLink, items, tree, images } = this.props;
+    const { images = [] } = this.props;
 
-    let filteredItems;
+    // let filteredItems = items;
 
     // Auflösungs-Filter
-    const solutionString = solution && solution.length ? solution[0] : undefined;
+    /* const solutionString = solution && solution.length ? solution[0] : undefined;
     switch (solutionString) {
       case 'Hohe Auflösung':
         filteredItems = items.filter(item => item.height * item.width > 500000);
@@ -139,10 +35,11 @@ export default class MediaList extends Component {
     if (type && type.length) {
       filteredItems = filteredItems.filter(item => item.format === type[0] || type[0] === 'Andere');
     }
+    */
 
     // Sortierung
-    let sortByKey = sortByState && sortByState.length ? sortByState[0] : undefined;
-    switch (sortByKey) {
+    // let sortByKey = sortByState && sortByState.length ? sortByState[0] : undefined;
+    /* switch (sortByKey) {
       case 'Name':
         sortByKey = 'label';
         break;
@@ -166,74 +63,14 @@ export default class MediaList extends Component {
       default:
         sortByKey = 'label';
     }
-    sortByKey = [sortByKey];
-
-    if (loading || !filteredItems) return <Spin />;
+    sortByKey = [sortByKey]; */
 
     // Bisher gefilterte Ergebnisse zwischenspiechern für "Alle-Ansicht"
     // (dort kann man nicht nach tags filtern, aber nach dem Rest)
-    const preFilteredItems = filteredItems;
-
-    // Bilder aus allen Unterordnern holen
-    const getDirectory = ({ label, images, children }) => {
-      const allImages = [...images];
-      const getAllImages = children => children && children.length ? children.forEach((image) => {
-        image.images.forEach(item => allImages.push(item));
-        getAllImages(image.children);
-      }) : undefined;
-      getAllImages(children);
-
-      // Bilder solange wiederholen, bis auf jeden Fall 9 Bilder im Ordner angezeigt werden
-      const dirImages = [];
-      const fillWithImages = images => {
-        images.map(image => dirImages.push(image));
-        if (dirImages.length < 9) {
-          fillWithImages(images);
-        }
-      };
-      fillWithImages(allImages.filter((item, index) => index < 9));
-
-      return (
-        <div key={label} className="card card-block directory" onClick={() => onTagsFilterChange([...tags.filter(tag => tag !== label), label])}>
-          <div className="overlay">
-            <h6>{label}<br /><small>({allImages.length})</small></h6>
-          </div>
-          <div className="boxed">
-            {dirImages.map(({ url }, index) => (
-              <img key={index} alt={url} src={cloudinaryUrl(url, { width: 100, height: 100 })} />
-            ))}
-          </div>
-        </div>
-      );
-    };
-
-    const tree = getTagTree(filteredItems);
-    const currentNode = getNode(tree, tags);
-    const directories = currentNode && currentNode.children ? sortBy(currentNode.children, 'label').map(getDirectory) : undefined;
-
-    const images = currentNode && currentNode.images ? sortBy(showAll ? preFilteredItems : currentNode.images, sortByKey).map(
-      item => ({
-        ...item,
-        src: item.url,
-        thumbnail: cloudinaryUrl(item.url, { maxWidth: 500, maxHeight: 500 }),
-        thumbnailWidth: 100,
-        thumbnailHeight: 100 * (item.height / item.width),
-      })
-    ).map((item, index) => (
-      <div key={index} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => onImageChange(item)}>
-        <img alt={item.caption} className="boxed" src={item.thumbnail} />
-        {
-          item.format === 'pdf' ? (
-            <span className="label">
-              <Icon type="file-pdf" />
-            </span>
-          ) : undefined
-        }
-      </div>
-    )) : undefined;
+    // const preFilteredItems = filteredItems;
 
     // Auflösungen/Quellen zusammensuchen
-    const solutions = {};
+    /* const solutions = {};
     const sources = {};
     const types = {};
     const getOtherFilters = (tree) => {
@@ -259,11 +96,11 @@ export default class MediaList extends Component {
 
       (tree.children || []).forEach(item => getOtherFilters(item));
     };
-    getOtherFilters(currentNode);
+    getOtherFilters(currentNode); */
 
     return (
-      <div className="olymp-media">
-        <Affix>
+      <div className="olymp-media" style={{ width: 880 }}>
+        {/* <Affix>
           <Menu
             selectedKeys={['0']}
             mode="horizontal"
@@ -369,19 +206,13 @@ export default class MediaList extends Component {
                   <span><Icon type="plus" />Hinzufügen</span>
                 )}
               </Menu.Item>
-              {/* <Menu.Item style={{ float: 'right', color: 'red' }} key="delete">
-                <Icon type="delete" />Löschen
-              </Menu.Item>
-              <Menu.Item style={{ float: 'right' }} key="select">
-                <Icon type="select" />Auswählen
-              </Menu.Item> */}
             </Menu>
           </Menu>
-        </Affix>
+        </Affix> */}
 
-        <div className="olymp-container">
-          { showAll || tags.length ? (
-            <div className="card card-block directory" onClick={/* onResetFilters */() => onTagsFilterChange([...tags].slice(0, -1))}>
+        <div>
+          {/* showAll || tags.length ? (
+            <div className="card card-block directory" onClick={() => onTagsFilterChange([...tags].slice(0, -1))}>
               <div className="overlay">
                 <h6><i className="fa fa-rotate-left" /></h6>
               </div>
@@ -402,10 +233,19 @@ export default class MediaList extends Component {
                 ))}
               </div>
             </div>
-          ) }
-
-          {!showAll ? directories : null}
-          {images}
+          ) */}
+          {images.map((item, index) => (
+            <div key={index} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => {}/* onImageChange(item) */}>
+              <Image value={item} className="boxed" width={200} ratio={1} />
+              {
+                item.format === 'pdf' ? (
+                  <span className="label">
+                    <Icon type="file-pdf" />
+                  </span>
+                ) : undefined
+              }
+            </div>
+          ))}
           <div style={{ clear: 'both' }} />
         </div>
       </div>
