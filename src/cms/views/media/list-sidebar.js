@@ -14,7 +14,7 @@ export default class MediaListSidebar extends Component {
     const { location } = this.props;
     const { pathname } = location;
 
-    return { pathname, query: { ...location.query, ['@media']: id } };
+    return { pathname, query: { ...location.query, ['@mediathek']: id } };
   }
 
   renderMenu = ({ id, state }) => (
@@ -37,13 +37,13 @@ export default class MediaListSidebar extends Component {
   render() {
     const { router, id, isLoading, refetch } = this.props;
 
-    const items = (this.props.items || []).map(({ name, description, image }) => {
+    const items = (this.props.items || []).map(({ name, description, image, onClick }) => {
       return {
         name,
         description,
         image,
         isActive: false,
-        onClick: () => {},
+        onClick,
       };
     });
 
@@ -64,7 +64,7 @@ export default class MediaListSidebar extends Component {
         items={items}
         isLoading={isLoading}
         refetch={refetch}
-        activePage="media"
+        activePage="mediathek"
         actions={actions}
         filter={undefined}
         states={states}

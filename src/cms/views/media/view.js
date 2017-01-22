@@ -17,11 +17,19 @@ const attributes = 'id, url, tags, colors, width, height, createdAt, caption, so
   }
 `)
 export default class MediaView extends Component {
+  state = {
+    tags: [],
+  };
+
   getNode = (tree, tags) => {
+    console.log(tags);
+
     if (tags.length) {
-      const nextTree = (tree.children || []).filter(item => item.label === tags[0])[0];
+      const nextTree = (tree.children || []).find(item => item.label === tags[0]);
       if (nextTree) return this.getNode(nextTree, tags.filter((tag, index) => index));
-    } return tree;
+    }
+
+    return tree;
   }
 
   // Bilder aus allen Unterordnern holen
@@ -37,6 +45,7 @@ export default class MediaView extends Component {
       name: capitalize(label),
       description: `${allImages.length} Bilder in ${children.length + 1} Ordnern`,
       image: allImages[Math.floor(Math.random() * allImages.length)],
+      onClick: () => this.setState({ tags: ['Beitrag'] }),
     };
   }
 
@@ -92,7 +101,8 @@ export default class MediaView extends Component {
   }
 
   render() {
-    const { data, tags = [] } = this.props;
+    const { data } = this.props;
+    const { tags } = this.state;
     const { items, loading } = data;
 
     const tree = this.getTagTree(items || []);

@@ -70,7 +70,7 @@ export default class Container extends Component {
       modal = (
         <CollectionModal typeName={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
       );
-    } else if (query && query['@media'] !== undefined) {
+    } else if (query && query['@mediathek'] !== undefined) {
       modal = (
         <MediaModal />
       );
@@ -120,7 +120,7 @@ export default class Container extends Component {
           })}
           onImageChange={({ id }) => router.push({
             pathname,
-            query: { ...query, '@media': id },
+            query: { ...query, '@mediathek': id },
           })}
         />
       ); */
@@ -137,7 +137,7 @@ export default class Container extends Component {
       modal = (
         <UploadModal
           modal
-          onSave={({ id }) => router.push({ pathname, query: { ...query, '@upload': undefined, '@media': id } })}
+          onSave={({ id }) => router.push({ pathname, query: { ...query, '@upload': undefined, '@mediathek': id } })}
           onClose={() => router.push({ pathname, query: { ...query, '@upload': undefined } })}
         />
       );
@@ -165,7 +165,7 @@ export default class Container extends Component {
         })}
         <Menu.Divider />
         <Menu.Item key="mediathek">
-          <Link to={{ pathname, query: { '@media': null } }}>
+          <Link to={{ pathname, query: { '@mediathek': null } }}>
             Mediathek
           </Link>
         </Menu.Item>

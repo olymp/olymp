@@ -55,7 +55,7 @@ export default class SidebarHeader extends Component {
         })}
         <Menu.Divider />
         <Menu.Item key="mediathek">
-          <Link to={{ pathname, query: { '@media': null } }}>
+          <Link to={{ pathname, query: { '@mediathek': null } }}>
             Mediathek
           </Link>
         </Menu.Item>
