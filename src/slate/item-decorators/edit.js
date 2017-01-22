@@ -30,11 +30,11 @@ export default (Item) => {
               onClick={() => router.push({ pathname, query: { ...query, [`@${__typename.toLowerCase()}`]: id } })} key="edit">
               <i className="fa fa-edit" />
             </Button>
-            <Button shape="circle" size="medium"
+            <Button shape="circle"
               onClick={() => router.push({ pathname, query: { ...query, [`@${__typename.toLowerCase()}`]: id } })} key="add">
               <i className="fa fa-clone" />
             </Button>
-            <Button shape="circle" size="medium"
+            <Button shape="circle"
               onClick={() => router.push({ pathname, query: { ...query, [`@${__typename.toLowerCase()}`]: id } })} key="del">
               <i className="fa fa-trash-o" />
             </Button>
