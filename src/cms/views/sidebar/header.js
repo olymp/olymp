@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import { Button, Tabs, Input, Col, Select, Form, Pagination, Dropdown } from 'antd';
-import { withRouter, withCollections } from 'olymp';
+import { Button, Tabs, Input, Col, Select, Form, Pagination, Dropdown, Menu } from 'antd';
+import { withRouter, withCollections, Link } from 'olymp';
 import { createComponent } from 'react-fela';
 import capitalize from 'lodash/upperFirst';
 
+const StyledHeader = createComponent(() => ({
+  marginBottom: '0px',
+  marginTop: '6px',
+  fontSize: '1.25rem'
+}), props => <h5 {...props} />);
 const StyledForm = createComponent(() => ({
   padding: '20px!important',
+  paddingBottom: '14px!important',
   borderWidth: '0!important',
-  marginLeft: '53px',
-}), props => <Form {...props} />, ['inline']);
+}), props => <div {...props} />);
 
 const StyledButtonGroup = createComponent(() => ({
   // borderWidth: '0!important',
@@ -35,29 +40,29 @@ export default class SidebarHeader extends Component {
     const { collectionTree, router, activePage } = this.props;
 
     return (
-      <Select
-        defaultValue={activePage}
-        style={{ width: '159px' }}
-        filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        showSearch
-        onSelect={value => router.push(this.getCollectionLink(value))}
-      >
+      <Menu>
         {Object.keys(collectionTree).map((key) => {
           const group = collectionTree[key];
 
           return (
-            <Select.OptGroup label={capitalize(key)} key={key}>
+            <Menu.SubMenu title={capitalize(key)} key={key}>
               {group.map(item => (
-                <Select.Option value={item.name} key={item.name}>
-                  {item.description && item.description.indexOf('title:') !== -1 ? item.description.split('title:')[1].split('\n')[0] : item.name}
-                </Select.Option>
+                <Menu.Item key={item.name}>
+                  <Link to={this.getCollectionLink(item.name)}>
+                    {item.description && item.description.indexOf('title:') !== -1 ? item.description.split('title:')[1].split('\n')[0] : item.name}
+                  </Link>
+                </Menu.Item>
               ))}
-            </Select.OptGroup>
+            </Menu.SubMenu>
           );
         })}
-        <Select.Option value={'media'}>Mediathek</Select.Option>
-        <Select.Option value={'user'} disabled>User</Select.Option>
-      </Select>
+        <Menu.Item key="media">
+          <Link to={this.getCollectionLink('media')}>Mediathek</Link>
+        </Menu.Item>
+        <Menu.Item key="user" disabled>
+          <Link to={this.getCollectionLink('user')}>User</Link>
+        </Menu.Item>
+      </Menu>
     );
   }
 
@@ -66,15 +71,24 @@ export default class SidebarHeader extends Component {
 
     return (
       <div>
-        <StyledForm inline>
-          <Form.Item>
-            {this.renderSelect()}
-          </Form.Item>
-          <Form.Item>
-            <StyledButtonGroup>
-              {actions}
-            </StyledButtonGroup>
-          </Form.Item>
+        <StyledForm>
+          <Input.Group>
+            <Col span="4" />
+            <Col span="15">
+              <Dropdown overlay={this.renderSelect()}>
+                <a className="ant-dropdown-link" href="javascript:;">
+                  <StyledHeader>
+                    Mediathek
+                  </StyledHeader>
+                </a>
+              </Dropdown>
+            </Col>
+            <Col span="5">
+              <StyledButtonGroup>
+                {actions}
+              </StyledButtonGroup>
+            </Col>
+          </Input.Group>
         </StyledForm>
 
         <Panel seperator>
