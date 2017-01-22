@@ -68,7 +68,7 @@ export default class SidebarHeader extends Component {
   }
 
   render() {
-    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, setQueryToState, actions, states } = this.props;
+    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, setQueryToState, actions, states, activePage } = this.props;
 
     return (
       <div>
@@ -79,7 +79,7 @@ export default class SidebarHeader extends Component {
               <Dropdown overlay={this.renderSelect()}>
                 <a className="ant-dropdown-link" href="javascript:;">
                   <StyledHeader>
-                    Mediathek
+                    {capitalize(activePage)}
                   </StyledHeader>
                 </a>
               </Dropdown>
