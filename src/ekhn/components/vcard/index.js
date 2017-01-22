@@ -3,7 +3,7 @@ import { DataLoader, cn } from 'olymp';
 import { Image, useItemEdit } from 'olymp/cms';
 import './vcard.less';
 
-export default useItemEdit(({ children, className, vcard = {} }) => {
+export default useItemEdit()(({ children, className, vcard = {} }) => {
   const { name, bild, ort, telefon, mobil, fax, email, website } = vcard;
 
   return (

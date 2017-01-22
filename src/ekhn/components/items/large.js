@@ -4,7 +4,7 @@ import { SlateMate, Image, useItemEdit } from 'olymp/cms';
 import capitalize from 'lodash/upperFirst';
 import Tags from '../tags';
 
-export default useItemEdit(({ children, className, id, header, subheader, text, bild, tags, location, identifier, leading, more }) => {
+export default useItemEdit()(({ children, className, id, header, subheader, text, bild, tags, location, identifier, leading, more }) => {
   const { pathname, query } = location;
 
   let ratio = 0.5;

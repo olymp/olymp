@@ -6,7 +6,7 @@ import Hypher from 'hypher';
 import german from 'hyphenation.de';
 import tinycolor from 'tinycolor2';
 
-export default useItemEdit(({ children, className, start, ende, name, kommentar, farbe, ganztaegig, additional }) => {
+export default useItemEdit()(({ children, className, start, ende, name, kommentar, farbe, ganztaegig, additional }) => {
   const hypher = new Hypher(german);
 
   const backgroundColor = farbe ? tinycolor(farbe).toRgbString() : null;
