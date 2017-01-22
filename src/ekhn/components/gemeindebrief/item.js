@@ -1,7 +1,7 @@
 import React from 'react';
 import { useItemEdit } from 'olymp/cms';
 
-export default useItemEdit(({ children, className, gemeindebrief, name }) => (
+export default useItemEdit()(({ children, className, gemeindebrief, name }) => (
   <li className={className}>
     {children}
 
