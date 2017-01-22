@@ -204,18 +204,17 @@ blockquote[dir="rtl"] {
 .block-item {
   position: relative;
 
-  .block-item-edit, .block-item-order, .block-item-hide {
+  .block-item-edit, .block-item-order, .block-item-hide, .block-actions {
     position: absolute;
-    z-index: 1;
+    z-index: 3;
     display: none;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .75);
   }
 
   &:hover {
     // transform: scale(1.01);
     // opacity: 0.8;
 
-    .block-item-edit, .block-item-order, .block-item-hide {
+    .block-item-edit, .block-item-order, .block-item-hide, .block-actions {
       display: inherit;
     }
   }
@@ -224,10 +223,15 @@ blockquote[dir="rtl"] {
     display: none;
   }
 
-  .block-item-edit {
+  .block-actions {
+    width: 50px;
     top: 50%;
     right: 0;
     transform: translate(50%, -50%);
+    > * {
+      box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
+      margin: 2px;
+    }
   }
 
   .block-item-order {
