@@ -29,39 +29,40 @@ const Panel = createComponent(({ seperator, align, padding, background }) => ({
 @withRouter
 @withCollections
 export default class SidebarHeader extends Component {
-  getCollectionLink = (collection) => {
-    const { location } = this.props;
+  renderSelect() {
+    const { collectionTree, router, activePage, location } = this.props;
     const { pathname } = location;
 
-    return { pathname, query: { [`@${collection.toLowerCase()}`]: null } };
-  }
-
-  renderSelect() {
-    const { collectionTree, router, activePage } = this.props;
-
     return (
-      <Menu>
+      <Menu style={{ minWidth: 150 }}>
         {Object.keys(collectionTree).map((key) => {
-          const group = collectionTree[key];
-
-          return (
-            <Menu.SubMenu title={capitalize(key)} key={key}>
-              {group.map(item => (
-                <Menu.Item key={item.name}>
-                  <Link to={this.getCollectionLink(item.name)}>
-                    {item.description && item.description.indexOf('title:') !== -1 ? item.description.split('title:')[1].split('\n')[0] : item.name}
-                  </Link>
-                </Menu.Item>
-              ))}
+          const wrapper = children => (
+            <Menu.SubMenu key={key} title={capitalize(key)}>
+              {children}
             </Menu.SubMenu>
           );
+          const groupItem = (
+            (collectionTree[key] || []).map(({ name, title }) => (
+              <Menu.Item key={`/@/${name}`}>
+                <Link to={{ pathname, query: { [`@${name.toLowerCase()}`]: null } }}>
+                  {capitalize(title || name)}
+                </Link>
+              </Menu.Item>
+            ))
+          );
+
+          return collectionTree[key].length === 1 ? groupItem : wrapper(groupItem);
         })}
-        <Menu.Item key="media">
-          <Link to={this.getCollectionLink('media')}>Mediathek</Link>
+        <Menu.Divider />
+        <Menu.Item key="mediathek">
+          <Link to={{ pathname, query: { '@media': null } }}>
+            Mediathek
+          </Link>
         </Menu.Item>
-        <Menu.Item key="user" disabled>
-          <Link to={this.getCollectionLink('user')}>User</Link>
-        </Menu.Item>
+        <Menu.Item key="/@/users" disabled>Benutzer</Menu.Item>
+        <Menu.Item key="/@/analytics" disabled>Statistik</Menu.Item>
+        <Menu.Item key="page-settings" disabled>Einstellungen</Menu.Item>
+        <Menu.Item key="user" disabled>Profil</Menu.Item>
       </Menu>
     );
   }
