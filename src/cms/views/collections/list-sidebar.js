@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import { withRouter, resolveFieldValue, Link } from 'olymp';
-import { Dropdown, Menu, Icon, Button } from 'antd';
+import { withRouter, Link } from 'olymp';
+import { Dropdown, Menu, Icon } from 'antd';
+import { resolveFieldValue } from '../../edits';
 import Sidebar from '../sidebar';
+import { getFilterMenu } from './filter';
+
+const states = {
+  PUBLISHED: 'Öffentlich',
+  DRAFT: 'Entwurf',
+  ARCHIVED: 'Archiv',
+  REMOVED: 'Papierkorb',
+};
 
 @withRouter
 export default class CollectionListSidebar extends Component {
@@ -13,25 +22,24 @@ export default class CollectionListSidebar extends Component {
   }
 
   resolveFieldValue = (item, field, { defaultFieldName, defaultValue }, fieldProps) => {
-    const { collection } = this.props;
-    const { specialFields, fields } = collection;
+    const fieldName = this.resolveFieldName(item, field, defaultFieldName);
+    const meta = this.resolveField(fieldName);
 
-    const fieldName = (!!specialFields[field] && specialFields[field].field) || defaultFieldName;
-    const value = item[fieldName] ? item[fieldName] : defaultValue;
-    const meta = fields.find(x => x.name === fieldName);
-
-    return resolveFieldValue(value, meta, fieldProps);
+    return resolveFieldValue(item[fieldName] || defaultValue, meta, fieldProps);
   }
 
-  resolveColor = (item) => {
+  resolveFieldName = (item, field, defaultFieldName) => {
     const { collection } = this.props;
-    const { specialFields, fields } = collection;
+    const { specialFields } = collection;
 
-    const colorFieldName = (!!specialFields.color && specialFields.color.field) || 'farbe';
-    const colorFieldType = fields.find(x => x.name === colorFieldName);
-    return colorFieldType && colorFieldType.type.name !== 'Color' && specialFields.color && item[colorFieldName] ?
-        specialFields.color.arg0 :
-          item[colorFieldName];
+    return (!!specialFields[field] && specialFields[field].field) || defaultFieldName;
+  }
+
+  resolveField = (fieldName) => {
+    const { collection } = this.props;
+    const { fields } = collection;
+
+    return fields.find(x => x.name === fieldName);
   }
 
   renderMenu = ({ id, state }) => (
@@ -55,33 +63,45 @@ export default class CollectionListSidebar extends Component {
     const { router, id, collection, isLoading, refetch } = this.props;
     const items = (this.props.items || []).map((item) => {
       const name = this.resolveFieldValue(item, 'name', { defaultFieldName: 'name', defaultValue: item.kurz || item.name || 'Kein Titel' });
-      const image = this.resolveFieldValue(item, 'image', { defaultFieldName: 'bild' }, { width: 60, ratio: 1, style: { float: 'left' } });
       const description = this.resolveFieldValue(item, 'description', {});
-      const color = this.resolveColor(item);
+      const image = item[this.resolveFieldName(item, 'image', 'bild')];
+      const color = (
+        collection.specialFields && collection.specialFields.color && !!item[collection.specialFields.color.field] && collection.specialFields.color.arg0
+      ) || item[this.resolveFieldName(item, 'color', 'farbe')];
 
       return {
         name,
-        image,
         description,
+        image,
         color,
-        menu: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
+        extra: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
         isActive: item.id === id,
         onClick: () => router.push(this.getLink(item)),
       };
     });
 
     const menu = (
-      <Menu onClick={() => console.log('Click')}>
+      <Menu>
         <Menu.Item key="1">Import</Menu.Item>
         <Menu.Item key="2">Export</Menu.Item>
       </Menu>
     );
+    const actions = (
+      <Dropdown.Button overlay={menu}>
+        <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
+      </Dropdown.Button>
+    );
+
     return (
-      <Sidebar collection={collection} items={items} isLoading={isLoading} refetch={refetch} activePage={collection.name}>
-        <Dropdown.Button overlay={menu} type="primary">
-          <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
-        </Dropdown.Button>
-      </Sidebar>
+      <Sidebar
+        items={items}
+        isLoading={isLoading}
+        refetch={refetch}
+        activePage={collection.name}
+        actions={actions}
+        filter={onFilter => getFilterMenu(collection, onFilter)}
+        states={states}
+      />
     );
   }
 }

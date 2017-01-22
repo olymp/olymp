@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image } from '../../edits';
 import { Card } from 'antd';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
@@ -57,14 +58,9 @@ const StyledCardParagraph = createComponent(() => ({
   whiteSpace: 'nowrap',
 }), 'p');
 
-export default ({ isActive, item, onClick, name, image, description, color, menu }) => (
-  <StyledCard
-    onClick={onClick}
-    extra={menu}
-    isActive={isActive}
-    color={color}
-  >
-    {image}
+export default ({ name, description, image, ...rest }) => (
+  <StyledCard {...rest}>
+    {!!image && <Image value={image} width={60} ratio={1} style={{ float: 'left' }} />}
     {image === null && <StyledCardImagePlaceholder />}
 
     <StyledCardContent>

@@ -1,6 +1,5 @@
 import React from 'react';
-import { cloudinaryUrl } from 'olymp';
-import Image from '../cms/edits/image';
+import Image from './image';
 import { Checkbox } from 'antd';
 import moment from 'moment';
 

@@ -80,26 +80,23 @@ export default class SidebarComponent extends Component {
   }
 
   render() {
-    const { items, activePage, isLoading, children } = this.props;
-    const { page, searchText, filtering } = this.state;
+    const { items, isLoading, filter } = this.props;
+    const { page } = this.state;
 
     return (
       <Sidebar>
         <SidebarHeader
+          {...this.props}
+          {...this.state}
           searchFn={this.search}
           setPage={page => this.setState({ page })}
           pageSize={PAGE_SIZE}
-          setQuery={this.setQuery}
+          filter={typeof filter === 'function' ? filter(this.setQuery) : undefined}
           setQueryToState={this.setQueryToState}
-          activePage={activePage}
-          {...this.props}
-          {...this.state}
-        >
-          {children}
-        </SidebarHeader>
+        />
 
         <Panel>
-          {isLoading ? <Spin /> : items.map((item, index) => (
+          {isLoading ? <Spin /> : items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((item, index) => (
             <SidebarCard {...item} key={index} />
           ))}
         </Panel>

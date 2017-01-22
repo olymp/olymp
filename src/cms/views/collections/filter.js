@@ -77,7 +77,8 @@ const getMenuItem = (field) => {
     );
   }
   return null;
-}
+};
+
 export const handleFilterClick = (collection, onFilter, key) => {
   if (!onFilter || !key) return;
   const field = key.indexOf('-') !== -1 && collection.fields.find(x => x.name === key.split('-')[0]);
@@ -91,14 +92,16 @@ export const handleFilterClick = (collection, onFilter, key) => {
       onFilter(query, field);
     }
   }
-}
+};
+
 export const getFilterMenu = (collection, onFilter) => {
   return (
     <Menu onClick={e => handleFilterClick(collection, onFilter, e.key)}>
       {collection.fields.filter(({ name }) => name !== 'id').map(getMenuItem)}
     </Menu>
   );
-}
+};
+
 export default class FilterComponent extends Component {
   render() {
     const { collection, onFilter, style, className } = this.props;

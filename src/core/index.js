@@ -13,7 +13,6 @@ export { default as cn } from 'classnames';
 export { default as classname } from 'classnames';
 export { default as Helmet } from 'react-helmet';
 export { default as cloudinaryUrl } from './cloudinary-url';
-export { default as resolveFieldValue } from './resolve-field-value';
 
 export { default as gql } from 'graphql-tag';
 

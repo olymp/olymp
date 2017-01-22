@@ -1,7 +1,7 @@
 import sortBy from 'lodash/sortBy';
 import findIndex from 'lodash/findIndex';
 import moment from 'moment';
-import { resolveFieldValue } from 'olymp';
+import { resolveFieldValue } from 'olymp/cms';
 
 const defaultCategory = {
   // Funktion die Items Kategorie zuweist
