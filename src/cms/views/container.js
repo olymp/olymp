@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter, withCollections } from 'olymp';
-import { GatewayProvider, GatewayDest } from 'react-gateway';
+import { Gateway, GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
@@ -184,19 +184,21 @@ export default class Container extends Component {
           {children}
           {modal}
           <Affix className="athena-cms-menu">
-            {!modal && (
+            {!modal ? (
               <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
                 <Button type="primary" shape="circle" size="large">
                   {logo || <Icon type="menu-unfold" />}
                 </Button>
               </Dropdown>
+            ) : (
+              <Link to={{ pathname }}>
+                <Button type="primary" shape="circle" size="large">
+                  <Icon type="close" />
+                </Button>
+              </Link>
             )}
             <GatewayDest
               name="action"
-              component={props => (props.children ? props.children : null)}
-            />
-            <GatewayDest
-              name="close"
               component={props => (props.children ? props.children : null)}
             />
           </Affix>
