@@ -35,18 +35,6 @@ export default class MediaListSidebar extends Component {
   )
 
   render() {
-    const { router, id, isLoading, refetch } = this.props;
-
-    const items = (this.props.items || []).map(({ name, description, image, onClick }) => {
-      return {
-        name,
-        description,
-        image,
-        isActive: false,
-        onClick,
-      };
-    });
-
     const menu = (
       <Menu>
         <Menu.Item key="1">Import</Menu.Item>
@@ -61,9 +49,7 @@ export default class MediaListSidebar extends Component {
 
     return (
       <Sidebar
-        items={items}
-        isLoading={isLoading}
-        refetch={refetch}
+        {...this.props}
         activePage="mediathek"
         actions={actions}
         filter={undefined}
