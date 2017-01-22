@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Gateway } from 'react-gateway';
-import { Button, Icon, Spin } from 'antd';
-import { gql, graphql, Modal, Link, withRouter } from 'olymp';
+import { Spin } from 'antd';
+import { gql, graphql, Modal } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
 // import Detail from './detail';
@@ -17,7 +16,6 @@ const attributes = 'id, url, tags, colors, width, height, createdAt, caption, so
     }
   }
 `)
-@withRouter
 export default class MediaView extends Component {
   getNode = (tree, tags) => {
     if (tags.length) {
@@ -94,11 +92,9 @@ export default class MediaView extends Component {
   }
 
   render() {
-    const { location, data, tags = [] } = this.props;
-    const { query, pathname } = location;
+    const { data, tags = [] } = this.props;
     const { items, loading } = data;
 
-    const to = { pathname };
     const tree = this.getTagTree(items || []);
 
     const currentNode = this.getNode(tree, tags);
@@ -108,13 +104,6 @@ export default class MediaView extends Component {
 
     return (
       <Modal>
-        <Gateway into="close">
-          <Link to={to}>
-            <Button shape="circle" size="large">
-              <Icon type="close" />
-            </Button>
-          </Link>
-        </Gateway>
         <Sidebar
           items={directories}
           isLoading={loading}
