@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { gql, graphql, withRouter, Link } from 'olymp';
+import { withRouter, Link } from 'olymp';
 import { Dropdown, Menu, Icon } from 'antd';
 import Sidebar from '../sidebar';
 
@@ -7,16 +7,8 @@ const states = {
   PUBLISHED: 'Öffentlich',
   REMOVED: 'Papierkorb',
 };
-const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
 
 @withRouter
-@graphql(gql`
-  query fileList {
-    items: fileList {
-      ${attributes}
-    }
-  }
-`)
 export default class MediaListSidebar extends Component {
   getLink = ({ id }) => {
     const { location } = this.props;
@@ -43,22 +35,15 @@ export default class MediaListSidebar extends Component {
   )
 
   render() {
-    const { router, id, isLoading, refetch, data } = this.props;
+    const { router, id, isLoading, refetch } = this.props;
 
-    const items = (data.items || []).map((item) => {
-      const name = item.caption;
-      const description = !!item.source && `© ${item.source}`;
-      const image = item;
-      const color = undefined;
-
+    const items = (this.props.items || []).map(({ name, description, image }) => {
       return {
         name,
         description,
         image,
-        color,
-        extra: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
-        isActive: item.id === id,
-        onClick: () => router.push(this.getLink(item)),
+        isActive: false,
+        onClick: () => {},
       };
     });
 
