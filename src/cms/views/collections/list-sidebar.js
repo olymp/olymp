@@ -70,17 +70,17 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
+    const menu = (
+      <Menu onClick={() => console.log('Click')}>
+        <Menu.Item key="1">Import</Menu.Item>
+        <Menu.Item key="2">Export</Menu.Item>
+      </Menu>
+    );
     return (
       <Sidebar collection={collection} items={items} isLoading={isLoading} refetch={refetch} activePage={collection.name}>
-        <Button type="primary">
+        <Dropdown.Button overlay={menu} type="primary">
           <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
-        </Button>
-        <Button disabled>
-          <Icon type="upload" />
-        </Button>
-        <Button disabled>
-          <Icon type="download" />
-        </Button>
+        </Dropdown.Button>
       </Sidebar>
     );
   }
