@@ -72,58 +72,8 @@ export default class Container extends Component {
       );
     } else if (query && query['@mediathek'] !== undefined) {
       modal = (
-        <MediaModal />
+        <MediaModal id={query['@mediathek']} />
       );
-      /* modal = (
-        <MediaModal
-          tags={query && query.tags ? query.tags.split('-') : []}
-          solution={query && query.solution ? [query.solution] : []}
-          source={query && query.source ? [query.source] : []}
-          type={query && query.type ? [query.type] : []}
-          showAll={query && query.all === null}
-          uploadLink={link => (
-            <Link to={{ pathname, query: { ...query, '@upload': null } }}>
-              {link}
-            </Link>
-          )}
-          sortByState={query && query.sortBy ? [query.sortBy] : []}
-          onTagsFilterChange={(tags) => {
-            delete query.all;
-
-            return router.push({
-              pathname,
-              query: { ...query, tags: tags && Array.isArray(tags) ? tags.join('-') : undefined },
-            });
-          }}
-          onSolutionFilterChange={solution => router.push({
-            pathname,
-            query: { ...query, solution: solution ? solution.join('') : undefined },
-          })}
-          onSourceFilterChange={source => router.push({
-            pathname,
-            query: { ...query, source: source ? source.join('') : undefined },
-          })}
-          onTypeFilterChange={type => router.push({
-            pathname,
-            query: { ...query, type: type ? type.join('') : undefined },
-          })}
-          onResetFilters={() => router.push({
-            pathname,
-          })}
-          onSortByChange={sortBy => router.push({
-            pathname,
-            query: { ...query, sortBy: sortBy ? sortBy.join('') : undefined },
-          })}
-          onShowAll={() => router.push({
-            pathname,
-            query: { all: null },
-          })}
-          onImageChange={({ id }) => router.push({
-            pathname,
-            query: { ...query, '@mediathek': id },
-          })}
-        />
-      ); */
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
         <PageModal
@@ -131,14 +81,6 @@ export default class Container extends Component {
           initialData={{ parentId: query['@new-page'], order: 0 }}
           attributes="id, slug, order, name, parentId, blocks, templateName"
           onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
-        />
-      );
-    } else if (query && query['@upload'] !== undefined) {
-      modal = (
-        <UploadModal
-          modal
-          onSave={({ id }) => router.push({ pathname, query: { ...query, '@upload': undefined, '@mediathek': id } })}
-          onClose={() => router.push({ pathname, query: { ...query, '@upload': undefined } })}
         />
       );
     }

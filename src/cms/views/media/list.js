@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { cloudinaryUrl } from 'olymp';
+import { cloudinaryUrl, Link, withRouter, cn } from 'olymp';
 import { Affix, Cascader, Menu, Icon } from 'antd';
 import { Image } from '../../edits';
 import './style.less';
 
+@withRouter
 export default class MediaList extends Component {
   render() {
     // const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, onShowAll, showAll, tags = [], solution, source, type, sortByState, uploadLink, items, tree, images } = this.props;
-    const { images = [] } = this.props;
+    const { images = [], location, className, onClick } = this.props;
 
     // let filteredItems = items;
 
@@ -99,7 +100,7 @@ export default class MediaList extends Component {
     getOtherFilters(currentNode); */
 
     return (
-      <div className="olymp-media" style={{ width: 880 }}>
+      <div className={cn(className, 'olymp-media')} style={{ width: 880 }}>
         {/* <Affix>
           <Menu
             selectedKeys={['0']}
@@ -235,15 +236,17 @@ export default class MediaList extends Component {
             </div>
           ) */}
           {images.map((item, index) => (
-            <div key={index} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => {}/* onImageChange(item) */}>
-              <Image value={item} className="boxed" width={200} ratio={1} />
-              {
-                item.format === 'pdf' ? (
-                  <span className="label">
-                    <Icon type="file-pdf" />
-                  </span>
-                ) : undefined
-              }
+            <div onClick={() => onClick(item)} key={index}>
+              <Link to={onClick ? location : { pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } }} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => {}/* onImageChange(item) */}>
+                <Image value={item} className="boxed" width={200} ratio={1} />
+                {
+                  item.format === 'pdf' ? (
+                    <span className="label">
+                      <Icon type="file-pdf" />
+                    </span>
+                  ) : undefined
+                }
+              </Link>
             </div>
           ))}
           <div style={{ clear: 'both' }} />

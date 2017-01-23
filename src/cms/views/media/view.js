@@ -3,9 +3,11 @@ import { Spin } from 'antd';
 import { gql, graphql, Modal } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
-// import Detail from './detail';
+import Form from './form';
 import Sidebar from './list-sidebar';
 import List from './list';
+import Upload from './upload';
+import Crop from './crop';
 
 const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
 
@@ -116,9 +118,10 @@ export default class MediaView extends Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, location, onChange } = this.props;
     const { tags } = this.state;
     const { items, loading } = data;
+    const id = this.state.selected || this.props.id;
 
     const tree = this.getTagTree(items || []);
     const currentNode = this.getNode(tree, tags);
@@ -136,19 +139,24 @@ export default class MediaView extends Component {
       ...directories,
       ...(currentNode && !!currentNode.children && sortBy(currentNode.children, item => capitalize(item.label)).map(this.getDirectory)),
     ];
-
     return (
       <Modal>
-        <Sidebar
-          items={directories}
-          isLoading={loading}
-        />
-        {loading ? <Spin /> : (
-          <List
-            images={this.getDirectoryImages(currentNode)}
-          />
-        )}
-        {/* <Detail typeName={typeName} collection={collection} attributes={attributes} location={location} id={id} refetch={refetch} query={this.props.query} /> */}
+        <Sidebar items={directories} isLoading={loading} />
+        <div>
+          {loading ? <Spin /> : (
+            <List
+              className="col-md-8"
+              onClick={onChange && (selected => this.setState({ selected: selected.id }))}
+              location={location}
+              images={this.getDirectoryImages(currentNode)}
+            />
+          )}
+          <div className="col-md-4">
+            {!id && <Upload modal={false} onClose={() => console.log('jo')} />}
+            {id && !onChange && <Form id={id} />}
+            {id && onChange && <Crop onChange={onChange} id={id} />}
+          </div>
+        </div>
       </Modal>
     );
   }
