@@ -147,9 +147,17 @@
 }
 
 /* PAGINATION */
-.ant-pagination:not(.mini) {
+.ant-pagination {
   margin-left: 0 !important;
   margin-right: 0 !important;
+
+  &.mini {
+    margin-bottom: 0;
+
+    li {
+      margin-right: .5rem !important;
+    }
+  }
 
   li, .ant-select-selection {
     border-radius: 0;
