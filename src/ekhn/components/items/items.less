@@ -155,14 +155,20 @@
     margin-bottom: 0;
 
     li {
-      margin-right: .5rem !important;
+      // margin-right: .5rem !important;
+      background-color: transparent;
+    }
+  }
+
+  &:not(.mini) {
+    li, .ant-select-selection {
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
     }
   }
 
   li, .ant-select-selection {
     border-radius: 0;
     border: none;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
     padding-top: 1px;
 
     &.ant-pagination-item-active {
