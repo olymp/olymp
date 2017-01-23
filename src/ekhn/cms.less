@@ -1,5 +1,21 @@
 @import "./vars";
 
+a h5, .ant-tabs-nav .ant-tabs-tab-active {
+  color: @brand-primary;
+}
+
+a:focus, a:hover {
+  text-decoration: none !important;
+}
+
+.ant-tabs-nav .ant-tabs-tab:hover {
+  color: lighten(@brand-primary, 5%);
+}
+
+.ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
+  background-color: @brand-primary;
+}
+
 // .athena-cms-menu {
   .ant-btn-primary {
     .specificBackground();

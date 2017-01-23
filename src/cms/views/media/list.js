@@ -8,7 +8,7 @@ import './style.less';
 export default class MediaList extends Component {
   render() {
     // const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, onShowAll, showAll, tags = [], solution, source, type, sortByState, uploadLink, items, tree, images } = this.props;
-    const { images = [], location, className, onClick } = this.props;
+    const { images = [], className, onClick, selected } = this.props;
 
     // let filteredItems = items;
 
@@ -100,7 +100,7 @@ export default class MediaList extends Component {
     getOtherFilters(currentNode); */
 
     return (
-      <div className={cn(className, 'olymp-media')} style={{ width: 880 }}>
+      <div className={cn(className, 'olymp-media')}>
         {/* <Affix>
           <Menu
             selectedKeys={['0']}
@@ -235,10 +235,12 @@ export default class MediaList extends Component {
               </div>
             </div>
           ) */}
-          {images.map((item, index) => (
-            <div onClick={() => onClick(item)} key={index}>
-              <Link to={onClick ? location : { pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } }} className={`card card-block file ${false ? 'selected' : ''}`} onClick={() => {}/* onImageChange(item) */}>
-                <Image value={item} className="boxed" width={200} ratio={1} />
+          {images.map((item, index) => {
+            const isActive = selected.findIndex(x => x === item.id) !== -1;
+
+            return (
+              <div onClick={typeof onClick === 'function' && (() => onClick(item, isActive))} key={index} className={`card card-block file ${isActive ? 'selected' : ''}`}>
+                <Image value={item} width={200} ratio={1} />
                 {
                   item.format === 'pdf' ? (
                     <span className="label">
@@ -246,9 +248,9 @@ export default class MediaList extends Component {
                     </span>
                   ) : undefined
                 }
-              </Link>
-            </div>
-          ))}
+              </div>
+            );
+          })}
           <div style={{ clear: 'both' }} />
         </div>
       </div>
