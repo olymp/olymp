@@ -62,7 +62,16 @@ export default class Artikel extends Component {
             </div>
           </div>
         )}
-        <SlateMate className="frontend-editor mt-2 mb-3" value={item.text} onChange={text => patch({ text })} readOnly={readOnly} />
+        <div className="container">
+          <div className="row">
+            <aside className="col-sm-4">
+
+            </aside>
+            <div className="col-sm-8">
+              <SlateMate className="frontend-editor mt-2 mb-3" value={item.text} onChange={text => patch({ text })} readOnly={readOnly} />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
