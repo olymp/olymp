@@ -3,6 +3,42 @@
 
 body, html {
   .frontend {
+    .image-gallery-thumbnail img {
+      border-bottom-right-radius: 30px;
+    }
+
+    .ant-card-bordered {
+      overflow: visible;
+      border-radius: 3px;
+      border-bottom-right-radius: 90px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      border: 0;
+      &:hover {
+        box-shadow: 0 14px 25px rgba(0,0,0,0.16);
+        border: 0;
+      }
+      img {
+        display: block;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        background-color: @color;
+        border-radius: 3px;
+        border-top-left-radius: 40px;
+      }
+    }
+
+    .gz-card-body {
+      padding: 10px 16px;
+      font-size: 16px;
+      color: #33241d;
+    }
+
     .anchor-menu {
       .ant-anchor-link-title {
         line-height: 1.2;
