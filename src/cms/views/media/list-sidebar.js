@@ -43,7 +43,7 @@ export default class MediaListSidebar extends Component {
     );
     const actions = (
       <Dropdown.Button overlay={menu}>
-        <Icon type="plus" />
+        <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
       </Dropdown.Button>
     );
 
