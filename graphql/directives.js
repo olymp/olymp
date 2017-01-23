@@ -59,7 +59,7 @@ module.exports = ({ adapter, resolvers }) => ({
           }
           return args;
         }
-        else if (isMutation && args.input && !args.input.state) {
+        else if (isMutation && args.input && !args.input.state && !args.input.id) {
           args.input.state = 'DRAFT';
           return args;
         }
