@@ -34,7 +34,7 @@ export default class MediaView extends Component {
     const tree = {};
 
     images.forEach((image) => {
-      image.tags.forEach((tag) => {
+      (image.tags || []).forEach((tag) => {
         const isActive = tags.findIndex(x => x === tag) !== -1;
 
         if (!tree[tag]) {

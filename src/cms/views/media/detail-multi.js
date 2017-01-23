@@ -15,7 +15,7 @@ const MediaForm = Form.create()(
       if (source === undefined) source = image.source;
       source = (image.source === source) && source;
 
-      image.tags.forEach(tag => {
+      (image.tags || []).forEach(tag => {
         if (!tags[tag]) tags[tag] = 0;
         tags[tag] += 1;
       });
