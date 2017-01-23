@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 import { gql, graphql, Modal, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
@@ -29,112 +29,56 @@ export default class MediaView extends Component {
     selectable: false,
   };
 
-  getNode = (tree, tags) => {
-    if (tags.length) {
-      const nextTree = (tree.children || []).find(item => item.label === tags[0]);
-      if (nextTree) return this.getNode(nextTree, tags.filter((tag, index) => index));
-    }
+  getNode = (images) => {
+    const { tags } = this.state;
+    const tree = {};
+
+    images.forEach((image) => {
+      image.tags.forEach((tag) => {
+        const isActive = tags.findIndex(x => x === tag) !== -1;
+
+        if (!tree[tag]) {
+          tree[tag] = {
+            name: !isActive ? capitalize(tag) : `'${capitalize(tag)}' entfernen`,
+            onClick: () => this.setState(
+              { tags: !isActive ? [...tags, tag] : tags.filter(x => x !== tag) }
+            ),
+            color: isActive && ACTIVE_COLOR,
+            isActive,
+            image,
+            images: [],
+            tags: [...image.tags],
+          };
+        }
+
+        tree[tag].images.push(image);
+        tree[tag].tags = [
+          ...tree[tag].tags,
+          ...image.tags.filter(x => tree[tag].tags.findIndex(y => y === x) === -1),
+        ];
+        tree[tag].description = `${tree[tag].images.length} Bilder mit ${tree[tag].tags.length} Schlagworten`;
+      });
+    });
 
     return tree;
   }
 
-  // Bilder aus allen Unterordnern holen
-  getDirectory = (node) => {
-    const { label, children = [] } = node;
-    const { tags } = this.state;
-    const isActive = tags.findIndex(tag => tag === label) !== -1;
-    const allImages = this.getDirectoryImages(node);
-
-    return {
-      name: capitalize(label),
-      description: `${allImages.length} Bilder in ${children.length + 1} Ordnern`,
-      image: allImages[0], // allImages[Math.floor(Math.random() * allImages.length)],
-      onClick: () => this.setState(
-        { tags: !isActive ? [...tags, label] : tags.filter(tag => tag !== label) }
-      ),
-      color: isActive && ACTIVE_COLOR,
-      isActive,
-    };
-  }
-
-  getDirectoryImages = (node) => {
-    let arr = [...node.images];
-
-    if (Array.isArray(node.children)) {
-      node.children.map((childNode) => {
-        const childNodeImages = this.getDirectoryImages(childNode);
-
-        arr = arr.concat(
-          childNodeImages.filter(image => arr.findIndex(x => x.id === image.id) === -1)
-        );
-      });
-    }
-
-    return arr;
-  }
-
-  getTagTree = (images) => {
-    let tree = {};
-    const createTreeItem = (image, treeNode, iterateTags, prevTags = []) => {
-      const tempTreeNode = { ...treeNode };
-
-      (iterateTags || []).forEach((currentTag) => {
-        // Wenn nicht vorhanden, neuen Knoten im Tree anlegen
-        if (!tempTreeNode[currentTag]) {
-          tempTreeNode[currentTag] = {
-            label: currentTag,
-            value: currentTag,
-            childrenAsObj: {},
-            images: [],
-          };
-        }
-
-        const nextTags = (iterateTags || []).filter(tag => tag !== currentTag);
-        if (nextTags.length === 0) {
-          tempTreeNode[currentTag].images.push(image);
-        } else {
-          tempTreeNode[currentTag].childrenAsObj = createTreeItem(
-            image, tempTreeNode[currentTag].childrenAsObj, nextTags, [...prevTags, currentTag]
-          );
-        }
-      });
-
-      return tempTreeNode;
-    };
-
-    images.forEach((image) => {
-      tree = createTreeItem(image, tree, image.tags);
-    });
-
-    const mapOverTree = (children) => {
-      return Object.keys(children).map((key) => {
-        const newChildren = { ...children[key] };
-        const mapper = mapOverTree(newChildren.childrenAsObj);
-
-        if (mapper.length) {
-          newChildren.children = mapper;
-        }
-
-        return newChildren;
-      });
-    };
-
-    return {
-      children: mapOverTree(tree),
-      images: images.filter(image => !image.tags || !image.tags.length),
-    };
-  }
-
   render() {
-    const { data, location, router, onChange } = this.props;
+    const { id, data, location, router, onChange } = this.props;
     const { selected, tags, selectable } = this.state;
     const { items, loading } = data;
-    const id = (!!selected.length && selected[0]) || this.props.id;
 
-    const tree = this.getTagTree(items || []);
-    const currentNode = this.getNode(tree, tags);
+    let currentNode = this.getNode(items || []);
+    let images = items;
+    tags.forEach((tag) => {
+      images = currentNode[tag].images;
+      currentNode = this.getNode(images, currentNode);
+    });
 
-    let directories = tags.length ? [
+    const directories = sortBy(
+      Object.keys(currentNode).map(key => currentNode[key]),
+      'name' /* images.length */
+    ); /* tags.length ? [
       {
         name: 'Zurück',
         description: `zu '${tags.slice(0, -1).join('/') || 'Übersicht'}'`,
@@ -142,12 +86,8 @@ export default class MediaView extends Component {
         color: GOBACK_COLOR,
         onClick: () => this.setState({ tags: tags.slice(0, -1) }),
       },
-    ] : [];
-    directories = [
-      // ...(tree.children.map(this.getDirectory).filter(item => item.isActive)),
-      ...directories,
-      ...(currentNode && !!currentNode.children && sortBy(currentNode.children, item => capitalize(item.label)).map(this.getDirectory)),
-    ];
+      ...Object.keys(currentNode).map(key => currentNode[key]),
+    ] : Object.keys(currentNode).map(key => currentNode[key]); */
 
     return (
       <Modal>
@@ -164,7 +104,7 @@ export default class MediaView extends Component {
                   ) :
                     item => router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } })
               }
-              images={this.getDirectoryImages(currentNode)}
+              images={images}
             />
           )}
           <div className="col-md-4 py-1">
@@ -197,6 +137,10 @@ export default class MediaView extends Component {
                   <div>
                     <h3>Bild auswählen oder hochladen</h3>
                     <Upload modal={false} onClose={() => console.log('jo')} />
+
+                    <div style={{ float: 'right', marginTop: '1rem' }}>
+                      <Button onClick={() => this.setState({ selectable: true })} type="primary">Mehrere auswählen</Button>
+                    </div>
                   </div>
                 )
             )}
