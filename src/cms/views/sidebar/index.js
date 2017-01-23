@@ -5,7 +5,7 @@ import { createComponent } from 'react-fela';
 import SidebarHeader from './header';
 import SidebarCard from './card';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 25;
 
 const Sidebar = createComponent(() => ({
   left: 0,

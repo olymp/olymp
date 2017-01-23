@@ -128,7 +128,7 @@ export default class SidebarHeader extends Component {
         <Panel>
           <Input.Group>
             <Col span="18">
-              <Input onChange={searchFn} value={searchText} placeholder="Suche ..." />
+              <Input size="large" onChange={searchFn} value={searchText} placeholder="Suche ..." />
             </Col>
             <Col span="6" className="pr-0">
               {filter && (filtering ? (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Form, Select, Input, Button } from 'antd';
+import { Spin } from 'antd';
 import { gql, graphql, Modal, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
@@ -9,12 +9,10 @@ import Sidebar from './list-sidebar';
 import List from './list';
 import Upload from './upload';
 import Crop from './crop';
-import { Image } from '../../edits';
 
 const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
 const ACTIVE_COLOR = '#EEE';
 const GOBACK_COLOR = '#333';
-const SELECTABLE = true;
 
 @graphql(gql`
   query fileList {
@@ -28,6 +26,7 @@ export default class MediaView extends Component {
   state = {
     tags: [],
     selected: [],
+    selectable: false,
   };
 
   getNode = (tree, tags) => {
@@ -109,13 +108,14 @@ export default class MediaView extends Component {
 
     const mapOverTree = (children) => {
       return Object.keys(children).map((key) => {
-        const mapper = mapOverTree(children[key].childrenAsObj);
+        const newChildren = { ...children[key] };
+        const mapper = mapOverTree(newChildren.childrenAsObj);
 
         if (mapper.length) {
-          children[key].children = mapper;
+          newChildren.children = mapper;
         }
 
-        return children[key];
+        return newChildren;
       });
     };
 
@@ -127,7 +127,7 @@ export default class MediaView extends Component {
 
   render() {
     const { data, location, router, onChange } = this.props;
-    const { selected, tags } = this.state;
+    const { selected, tags, selectable } = this.state;
     const { items, loading } = data;
     const id = (!!selected.length && selected[0]) || this.props.id;
 
@@ -144,7 +144,7 @@ export default class MediaView extends Component {
       },
     ] : [];
     directories = [
-      ...(tree.children.map(this.getDirectory).filter(item => item.isActive)),
+      // ...(tree.children.map(this.getDirectory).filter(item => item.isActive)),
       ...directories,
       ...(currentNode && !!currentNode.children && sortBy(currentNode.children, item => capitalize(item.label)).map(this.getDirectory)),
     ];
@@ -158,7 +158,7 @@ export default class MediaView extends Component {
               selected={selected && selected.length ? selected : [id]}
               className="col-md-8 py-1 px-0"
               onClick={
-                SELECTABLE ?
+                selectable ?
                   (item, isActive) => this.setState(
                     { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
                   ) :
@@ -168,20 +168,37 @@ export default class MediaView extends Component {
             />
           )}
           <div className="col-md-4 py-1">
-            {selected ? (
+            {selectable || selected.length ? (
               <div>
                 <h3>{selected.length} Bilder ausgewählt</h3>
-                <DetailMulti />
-                {selected.map(x => (
-                  <Image value={items.find(item => item.id === x)} width={60} style={{ marginRight: '.5rem', marginBottom: '.5rem', float: 'left' }} />
-                ))}
+                <DetailMulti
+                  images={selected.map(x => items.find(item => item.id === x))}
+                  deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
+                  onClose={() => this.setState({ selected: [], selectable: false })}
+                />
               </div>
               ) : (
-                <div>
-                  {!id && <Upload modal={false} onClose={() => console.log('jo')} />}
-                  {id && !onChange && <Detail id={id} />}
-                  {id && onChange && <Crop onChange={onChange} id={id} />}
-                </div>
+                id ? (
+                  onChange ? (
+                    <div>
+                      <h3>Bild zurechtschneiden</h3>
+                      <Crop onChange={onChange} id={id} />
+                    </div>
+                  ) : (
+                    <div>
+                      <h3>Bild bearbeiten</h3>
+                      <Detail
+                        id={id}
+                        onClose={() => router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } })}
+                      />
+                    </div>
+                  )
+                ) : (
+                  <div>
+                    <h3>Bild auswählen oder hochladen</h3>
+                    <Upload modal={false} onClose={() => console.log('jo')} />
+                  </div>
+                )
             )}
           </div>
         </div>
