@@ -4,89 +4,7 @@ import moment from 'moment';
 import withFile from '../../decorators/file';
 import Image from '../../edits/image';
 
-const FormItem = Form.Item;
-const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
-
-const ModalForm = Form.create()(
-    (props) => {
-      const { item, form, onCreate, onCancel, onDelete, saving } = props;
-      const { getFieldDecorator } = form;
-
-      if (!item) {
-        return <Modal {...modalSettings} title="Media" style={{ minHeight: '150px' }}><Spin /></Modal>;
-      }
-
-      return (
-        <Modal
-          {...modalSettings}
-          confirmLoading={saving}
-          title="Media"
-          onCancel={onCancel}
-          footer={[
-            <Button key="back" type="ghost" size="large" onClick={onCancel}>
-              Abbrechen
-            </Button>,
-            <Button key="delete" type="primary" size="large" onClick={onDelete} style={{ backgroundColor: 'red', borderColor: 'red' }}>
-              Löschen
-            </Button>,
-            <Button key="submit" type="primary" size="large" loading={saving} onClick={onCreate}>
-              Speichern
-            </Button>,
-          ]}
-        >
-          <FormItem key="id" label="ID" {...formItemLayout}>
-            {getFieldDecorator('id', {
-              initialValue: item.id,
-            })(
-              <Input disabled placeholder="ID" />
-            )}
-          </FormItem>
-          <FormItem key="caption" label="Bezeichnung" {...formItemLayout}>
-            {getFieldDecorator('caption', {
-              initialValue: item.caption,
-            })(
-              <Input placeholder="Bezeichnung" />
-            )}
-          </FormItem>
-          <FormItem key="source" label="Quelle" {...formItemLayout}>
-            {getFieldDecorator('source', {
-              initialValue: item.source,
-            })(
-              <Input placeholder="Quelle" />
-            )}
-          </FormItem>
-          <FormItem key="tags" label="Tags" {...formItemLayout}>
-            {getFieldDecorator('tags', {
-              initialValue: item.tags || [],
-            })(
-              <Select {...props} tags searchPlaceholder="Suche ..." />
-            )}
-          </FormItem>
-
-          <Image value={{ ...item }} width="100%" readOnly />
-
-          <FormItem key="size" label="Größe" {...formItemLayout} style={{ marginTop: '24px', marginBottom: '0' }}>
-            <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />
-          </FormItem>
-          <FormItem key="date" label="Hinzugefügt" {...formItemLayout} style={{ marginBottom: '0' }}>
-            <Input disabled placeholder="Hinzugefügt" defaultValue={`${moment(item.createdAt).format('DD. MMMM YYYY, HH:mm:ss')} Uhr`} />
-          </FormItem>
-          <FormItem key="format" label="Format" {...formItemLayout} style={{ marginBottom: '0' }}>
-            <Input disabled placeholder="Format" defaultValue={item.format} />
-          </FormItem>
-          { item.format === 'pdf' ? (
-            <FormItem key="pages" label="Seiten" {...formItemLayout} style={{ marginBottom: '0' }}>
-              <Input disabled placeholder="Seiten" defaultValue={item.pages} />
-            </FormItem>
-          ) : undefined }
-          <FormItem key="bytes" label="Dateigröße" {...formItemLayout} style={{ marginBottom: '0' }}>
-            <Input disabled placeholder="Dateigröße" defaultValue={`${item.bytes / 1000} kB`} />
-          </FormItem>
-        </Modal>
-      );
-    }
-);
+const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };
 
 @withFile
 export default class MediaModal extends Component {
@@ -118,14 +36,68 @@ export default class MediaModal extends Component {
   };
 
   render() {
-    return (
-      <ModalForm
-        {...this.props}
-        ref={form => this.form = form}
-        onCancel={this.handleCancel}
-        onDelete={this.handleDelete}
-        onCreate={this.handleCreate}
-      />
+    return Form.create()(
+      (props) => {
+        const { item, form } = props;
+        const { getFieldDecorator } = form;
+
+        if (!item) {
+          return <Spin style={{ minHeight: 400 }} />;
+        }
+
+        return (
+          <div>
+            <Form.Item key="id" label="ID" {...FormItemLayout}>
+              {getFieldDecorator('id', {
+                initialValue: item.id,
+              })(
+                <Input disabled placeholder="ID" />
+              )}
+            </Form.Item>
+            <Form.Item key="caption" label="Bezeichnung" {...FormItemLayout}>
+              {getFieldDecorator('caption', {
+                initialValue: item.caption,
+              })(
+                <Input placeholder="Bezeichnung" />
+              )}
+            </Form.Item>
+            <Form.Item key="source" label="Quelle" {...FormItemLayout}>
+              {getFieldDecorator('source', {
+                initialValue: item.source,
+              })(
+                <Input placeholder="Quelle" />
+              )}
+            </Form.Item>
+            <Form.Item key="tags" label="Tags" {...FormItemLayout}>
+              {getFieldDecorator('tags', {
+                initialValue: item.tags || [],
+              })(
+                <Select {...props} tags searchPlaceholder="Suche ..." />
+              )}
+            </Form.Item>
+
+            <Image value={{ ...item }} width="100%" readOnly />
+
+            <Form.Item key="size" label="Größe" {...FormItemLayout} style={{ marginTop: '24px', marginBottom: '0' }}>
+              <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />
+            </Form.Item>
+            <Form.Item key="date" label="Hinzugefügt" {...FormItemLayout}>
+              <Input disabled placeholder="Hinzugefügt" defaultValue={`${moment(item.createdAt).format('DD. MMMM YYYY, HH:mm:ss')} Uhr`} />
+            </Form.Item>
+            <Form.Item key="format" label="Format" {...FormItemLayout}>
+              <Input disabled placeholder="Format" defaultValue={item.format} />
+            </Form.Item>
+            { item.format === 'pdf' ? (
+              <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
+                <Input disabled placeholder="Seiten" defaultValue={item.pages} />
+              </Form.Item>
+            ) : undefined }
+            <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
+              <Input disabled placeholder="Dateigröße" defaultValue={`${item.bytes / 1000} kB`} />
+            </Form.Item>
+          </div>
+        );
+      }
     );
   }
 }

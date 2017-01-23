@@ -6,9 +6,15 @@ import capitalize from 'lodash/upperFirst';
 
 const StyledHeader = createComponent(() => ({
   marginBottom: '0px',
-  marginTop: '6px',
-  fontSize: '1.25rem'
+  marginTop: '0px',
 }), props => <h5 {...props} />);
+
+const StyledSubheader = createComponent(() => ({
+  marginBottom: '0px',
+  marginTop: '0px',
+  opacity: 0.7,
+}), props => <h6 {...props} />);
+
 const StyledForm = createComponent(() => ({
   padding: '20px!important',
   paddingBottom: '14px!important',
@@ -19,11 +25,10 @@ const StyledButtonGroup = createComponent(() => ({
   // borderWidth: '0!important',
 }), props => <Button.Group {...props} />);
 
-const Panel = createComponent(({ seperator, align, padding, background }) => ({
-  padding: padding || '5px 10px',
-  borderTop: seperator ? '1px solid #e6e6e6' : 0,
-  textAlign: align,
-  backgroundColor: background,
+const Panel = createComponent(() => ({
+  padding: '5px 10px',
+  borderTop: '1px solid #e6e6e6',
+  borderBottom: '1px solid #e6e6e6',
 }));
 
 @withRouter
@@ -67,15 +72,25 @@ export default class SidebarHeader extends Component {
     );
   }
 
+  renderStateMenu() {
+    const { states, setQueryToState } = this.props;
+
+    return (
+      <Menu onClick={state => setQueryToState(state.key)} style={{ minWidth: 150 }}>
+        {Object.keys(states).map(name => <Menu.Item key={name}>{states[name]}</Menu.Item>)}
+      </Menu>
+    );
+  }
+
   render() {
-    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, setQueryToState, actions, states, activePage } = this.props;
+    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, query, setQueryToState } = this.props;
 
     return (
       <div>
         <StyledForm>
-          <Input.Group>
+          <Input.Group style={{ height: 48 }}>
             <Col span="4" />
-            <Col span="15">
+            <Col span="15" style={{ marginTop: -3 }}>
               <Dropdown overlay={this.renderSelect()}>
                 <a className="ant-dropdown-link" href="javascript:;">
                   <StyledHeader>
@@ -83,6 +98,15 @@ export default class SidebarHeader extends Component {
                   </StyledHeader>
                 </a>
               </Dropdown>
+              {!!states && Object.keys(states).length > 1 && (
+                <Dropdown overlay={this.renderStateMenu()}>
+                  <a className="ant-dropdown-link" href="javascript:;">
+                    <StyledSubheader>
+                      {states[query.state.eq]} <i className="fa fa-angle-down" />
+                    </StyledSubheader>
+                  </a>
+                </Dropdown>
+              )}
             </Col>
             <Col span="5">
               <StyledButtonGroup>
@@ -90,9 +114,18 @@ export default class SidebarHeader extends Component {
               </StyledButtonGroup>
             </Col>
           </Input.Group>
+          {!!(page > 1 || (items || []).length > pageSize) && (
+            <Input.Group>
+              <Col span="4" />
+              <Col span="15">
+                <Pagination size="small" current={page} onChange={setPage} defaultPageSize={pageSize} total={items && items.length} />
+              </Col>
+              <Col span="5" />
+            </Input.Group>
+          )}
         </StyledForm>
 
-        <Panel seperator>
+        <Panel>
           <Input.Group>
             <Col span="18">
               <Input onChange={searchFn} value={searchText} placeholder="Suche ..." />
@@ -108,20 +141,6 @@ export default class SidebarHeader extends Component {
             </Col>
           </Input.Group>
         </Panel>
-
-        {!filtering && !!states && (
-          <Panel seperator>
-            <Tabs onChange={eq => setQueryToState(eq)} style={{ marginBottom: -16 }}>
-              {Object.keys(states).map(name => <Tabs.TabPane tab={states[name]} key={name} />)}
-            </Tabs>
-          </Panel>
-        )}
-
-        {!!(page > 1 || (items || []).length > pageSize) && (
-          <Panel>
-            <Pagination size="small" current={page} onChange={setPage} defaultPageSize={pageSize} total={items && items.length} />
-          </Panel>
-        )}
       </div>
     );
   }

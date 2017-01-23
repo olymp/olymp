@@ -3,7 +3,8 @@ import { Spin, Form, Select, Input, Button } from 'antd';
 import { gql, graphql, Modal, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
-import FormComponent from './form';
+import Detail from './detail';
+import DetailMulti from './detail-multi';
 import Sidebar from './list-sidebar';
 import List from './list';
 import Upload from './upload';
@@ -148,35 +149,6 @@ export default class MediaView extends Component {
       ...(currentNode && !!currentNode.children && sortBy(currentNode.children, item => capitalize(item.label)).map(this.getDirectory)),
     ];
 
-    const Test = Form.create()(
-      (props) => {
-        const { item, form } = props;
-        const { getFieldDecorator } = form;
-
-        return (
-          <div style={{ borderBottom: '1px solid #DDD', padding: '1rem 0', marginBottom: '1rem' }}>
-            <Form.Item key="source" label="Quelle">
-              {getFieldDecorator('source', {
-                initialValue: 'item.source',
-              })(
-                <Input placeholder="Quelle" />
-              )}
-            </Form.Item>
-            <Form.Item key="tags" label="Tags">
-              {getFieldDecorator('tags', {
-                initialValue: [],
-              })(
-                <Select {...props} tags searchPlaceholder="Suche ..." />
-              )}
-            </Form.Item>
-
-            <Button>Speichern</Button>
-            <Button>Alle löschen</Button>
-          </div>
-        );
-      }
-    );
-
     return (
       <Modal>
         <Sidebar items={directories} isLoading={loading} />
@@ -199,15 +171,15 @@ export default class MediaView extends Component {
             {selected ? (
               <div>
                 <h3>{selected.length} Bilder ausgewählt</h3>
-                <Test />
+                <DetailMulti />
                 {selected.map(x => (
-                  <Image value={items.find(item => item.id === x)} width={60} ratio={1} style={{ marginRight: '.5rem', marginBottom: '.5rem', float: 'left' }} />
+                  <Image value={items.find(item => item.id === x)} width={60} style={{ marginRight: '.5rem', marginBottom: '.5rem', float: 'left' }} />
                 ))}
               </div>
               ) : (
                 <div>
                   {!id && <Upload modal={false} onClose={() => console.log('jo')} />}
-                  {id && !onChange && <FormComponent id={id} />}
+                  {id && !onChange && <Detail id={id} />}
                   {id && onChange && <Crop onChange={onChange} id={id} />}
                 </div>
             )}
