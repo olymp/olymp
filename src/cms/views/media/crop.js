@@ -39,7 +39,13 @@ export default class WithImageCrop extends Component {
       aspect,
     } : { aspect };
 
-    if (!item) return <Spin />;
+    if (!item) {
+      return (
+        <div style={{ minHeight: 400 }}>
+          <Spin />
+        </div>
+      );
+    }
 
     return (
       <div>

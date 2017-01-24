@@ -81,20 +81,17 @@ export default class MediaView extends Component {
       selected.push(id);
     }
 
-    if (selected.length || onChange) {
-      if (multi) {
-        this.setState(
-          { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
-        );
-      } else {
-        this.setState(
-          { selected: !isActive ? [item.id] : [] }
-        );
-      }
+    if (multi) {
+      this.setState(
+        { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
+      );
 
       if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+    } else if (onChange) {
+      this.setState(
+        { selected: !isActive ? [item.id] : [] }
+      );
     } else {
-      // first picture is choosen
       router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } });
     }
   }
@@ -138,7 +135,7 @@ export default class MediaView extends Component {
           </div>
           <div className="col-md-4 py-1">
             {
-              (!onChange && selected.length) || (onChange && selected.length > 1) ? (
+              selected.length > 1 ? (
                 onChange ? (
                   <div>
                     <h3>{selected.length} Bilder ausgewählt</h3>
@@ -163,6 +160,10 @@ export default class MediaView extends Component {
                       images={selected.map(x => items.find(item => item.id === x))}
                       deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
                       onClose={this.onClose}
+                    />
+                    <ListMini
+                      images={selected.map(x => items.find(item => item.id === x))}
+                      deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
                     />
                   </div>
                 )
