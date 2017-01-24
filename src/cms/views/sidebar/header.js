@@ -92,7 +92,7 @@ export default class SidebarHeader extends Component {
             <Col span="4" />
             <Col span="15" style={{ marginTop: -3 }}>
               <Dropdown overlay={!noChangeAllowed && this.renderSelect()}>
-                <a className="ant-dropdown-link" href="javascript:;" style={noChangeAllowed && { cursor: 'not-allowed' }}>
+                <a className="ant-dropdown-link" href="javascript:;" style={noChangeAllowed ? { cursor: 'not-allowed' } : {}}>
                   <StyledHeader>
                     {capitalize(activePage)} {!noChangeAllowed && <i className="fa fa-angle-down" />}
                   </StyledHeader>
