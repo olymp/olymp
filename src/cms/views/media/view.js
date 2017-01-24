@@ -100,7 +100,7 @@ export default class MediaView extends Component {
   }
 
   render() {
-    const { data, onChange, multi } = this.props;
+    const { data, onChange, onClose, multi } = this.props;
     const { selected, tags } = this.state;
     const { items, loading } = data;
 
@@ -119,7 +119,7 @@ export default class MediaView extends Component {
     );
 
     return (
-      <Modal {...this.props}>
+      <Modal onClose={onClose}>
         <Sidebar
           items={directories}
           isLoading={loading}

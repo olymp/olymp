@@ -20,13 +20,15 @@ const Sidebar = createComponent(() => ({
   flexDirection: 'column',
 }));
 
-const Panel = createComponent(({ seperator, align, padding, background }) => ({
-  padding: padding || '5px 10px',
-  borderTop: seperator ? '1px solid #e6e6e6' : 0,
-  textAlign: align,
-  backgroundColor: background,
+const Panel = createComponent(() => ({
+  padding: '0 10px',
   overflowY: 'auto',
   overflowX: 'hidden',
+}));
+
+const SubPanel = createComponent(({ seperator }) => ({
+  padding: '5px 0',
+  borderBottom: seperator ? '1px solid #e6e6e6' : 0,
 }));
 
 export default class SidebarComponent extends Component {
@@ -83,6 +85,9 @@ export default class SidebarComponent extends Component {
     const { items, isLoading, filter } = this.props;
     const { page } = this.state;
 
+    const activeItems = items.filter(item => item.isActive);
+    const unactiveItems = items.filter(item => !item.isActive);
+
     return (
       <Sidebar>
         <SidebarHeader
@@ -95,11 +100,23 @@ export default class SidebarComponent extends Component {
           setQueryToState={this.setQueryToState}
         />
 
-        <Panel>
-          {isLoading ? <Spin /> : items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((item, index) => (
-            <SidebarCard {...item} key={index} />
-          ))}
-        </Panel>
+        {isLoading ? (
+          <Panel>
+            <Spin />
+          </Panel>
+          ) : (
+            <Panel>
+              {!!activeItems && !!activeItems.length && (
+                <SubPanel seperator>
+                  {activeItems.map((item, index) => <SidebarCard {...item} key={index} />)}
+                </SubPanel>
+              )}
+              <SubPanel>
+                {unactiveItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((item, index) =>
+                  <SidebarCard {...item} key={index} />)}
+              </SubPanel>
+            </Panel>
+        )}
       </Sidebar>
     );
   }
