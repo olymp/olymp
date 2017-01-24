@@ -39,7 +39,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
   }
 
   render() {
-    const { disableUpload, readOnly, showMediathek, children } = this.props;
+    const { disableUpload, readOnly, showMediathek, children, multi } = this.props;
     const visible = this.state.visible || showMediathek;
     const image = this.image;
 
@@ -52,9 +52,10 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
         {children}
         {visible && (
           <MediaModal
-            id={image.id}
+            id={!!image && image.id}
             onChange={this.onOk}
             onClose={this.onCancel}
+            multi={multi}
           />
         )}
       </WrappedComponent>

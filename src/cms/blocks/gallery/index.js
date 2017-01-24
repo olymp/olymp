@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { withAuth } from 'olymp';
+import { withAuth, DataLoader } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import Image from '../../edits/image';
 
@@ -33,6 +33,9 @@ export default class ImagesBlock extends Component {
     const { setData, getData, className, readOnly, auth } = this.props;
     const { style, children, ...rest } = this.props;
     const images = getData('images', []);
+    const showMedia = getData('showMedia');
+
+    console.log(showMedia);
 
     const styles = {
       position: 'relative',
@@ -48,23 +51,19 @@ export default class ImagesBlock extends Component {
       <div style={{ ...styles, height: 'auto', width: '20%', float: 'left', padding: '.5rem' }} key={i}>
         <figure className={className} style={{ margin: 0 }}>
           <Image
-            onChange={(img) => {
-              const newImages = [...images];
-              newImages[i] = img;
-
-              setData({ showMedia: undefined, images: newImages });
-            }}
+            onChange={images => setData({ showMedia: undefined, images })}
+            multi
             onCancel={() => setData({ showMedia: false })}
-            lightbox
-            onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
-            showMediathek={getData('showMedia')}
+            lightbox={!!image}
+            onImageClick={!!image ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
+            showMediathek={!image && showMedia}
             width="100%"
             value={image}
             style={innerStyle}
           />
-          {auth && auth.user && i !== images.length ? (
+          {auth && auth.user && image && i !== images.length ? (
             <figcaption>
-              <a href="javascript:;"  onClick={() => setData({ images: images.splice(i, 1) })}>
+              <a href="javascript:;" onClick={() => setData({ images: images.splice(i, 1) })}>
                 Entfernen
               </a>
             </figcaption>
@@ -75,9 +74,12 @@ export default class ImagesBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        {(images || []).map((image, i) => imageBlock(image, i))}
-        {auth && auth.user ? imageBlock(undefined, images.length) : null}
-        <div style={{ clear: 'both' }} />
+        <DataLoader trigger={showMedia || (!!images && !!images.length)} placeholder="Keine Bilder vorhanden">
+          {(images || []).map((image, i) => imageBlock(image, i))}
+
+          {auth && auth.user ? imageBlock(undefined, images.length) : null}
+          <div style={{ clear: 'both' }} />
+        </DataLoader>
 
         {children}
       </GenericBlock>
