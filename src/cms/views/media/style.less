@@ -53,28 +53,32 @@
 
     /* Jiggling-Animation */
     &.selected {
-      animation-name: jiggle;
-      animation-iteration-count: infinite;
-      animation-duration: 1.2s;
-      transform-origin: 50% 50%;
-      z-index: 2;
+      transform: scale(1.1);
 
-      &:hover {
-        opacity: 1;
-      }
+      &.multi {
+        animation-name: jiggle;
+        animation-iteration-count: infinite;
+        animation-duration: 1.2s;
+        transform-origin: 50% 50%;
+        z-index: 2;
 
-      @keyframes jiggle {
-        0% {
-          transform: rotate(-2deg) scale(1.05);
-          animation-timing-function: linear;
+        &:hover {
+          opacity: 1;
         }
-        50% {
-          transform: rotate(2deg) scale(1.05);
-          animation-timing-function: linear;
-        }
-        100% {
-          transform: rotate(-2deg) scale(1.05);
-          animation-timing-function: linear;
+
+        @keyframes jiggle {
+          0% {
+            transform: rotate(-2deg) scale(1.05);
+            animation-timing-function: linear;
+          }
+          50% {
+            transform: rotate(2deg) scale(1.05);
+            animation-timing-function: linear;
+          }
+          100% {
+            transform: rotate(-2deg) scale(1.05);
+            animation-timing-function: linear;
+          }
         }
       }
     }
