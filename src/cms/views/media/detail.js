@@ -12,7 +12,11 @@ const MediaForm = Form.create()(
     const { getFieldDecorator } = form;
 
     if (!item) {
-      return <Spin style={{ minHeight: 400 }} />;
+      return (
+        <div style={{ minHeight: 400 }}>
+          <Spin />
+        </div>
+      );
     }
 
     return (

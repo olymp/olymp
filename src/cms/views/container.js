@@ -71,7 +71,7 @@ export default class Container extends Component {
       );
     } else if (query && query['@mediathek'] !== undefined) {
       modal = (
-        <MediaModal id={query['@mediathek']} />
+        <MediaModal id={query['@mediathek']} multi />
       );
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
