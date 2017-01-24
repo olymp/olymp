@@ -1,6 +1,8 @@
 export { default as purify } from './purify';
 export { default as capitalize } from 'lodash/upperFirst';
 
+export * from './toolbelt';
+
 export { default as withCollection } from './with-collection';
 export { default as withCollections } from './with-collections';
 export { default as Modal } from './modal';
