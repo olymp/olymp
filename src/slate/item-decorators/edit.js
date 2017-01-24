@@ -9,7 +9,7 @@ export default (options = {}) => (Item) => {
 
     if (auth.user && __typename) {
       const menu = (
-        <Menu style={{ minWidth: 150 }}>
+        <Menu openKeys={[]} style={{ minWidth: 150 }}>
           <Menu.Item key="edit">
             <Link to={{ pathname, query: { ...query, [`@${__typename.toLowerCase()}`]: id } }}>Bearbeiten</Link>
           </Menu.Item>

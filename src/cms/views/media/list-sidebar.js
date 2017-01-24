@@ -18,7 +18,7 @@ export default class MediaListSidebar extends Component {
   }
 
   renderMenu = ({ id, state }) => (
-    <Menu>
+    <Menu openKeys={[]}>
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
@@ -36,7 +36,7 @@ export default class MediaListSidebar extends Component {
 
   render() {
     const menu = (
-      <Menu>
+      <Menu openKeys={[]}>
         <Menu.Item key="1">Import</Menu.Item>
         <Menu.Item key="2">Export</Menu.Item>
       </Menu>
