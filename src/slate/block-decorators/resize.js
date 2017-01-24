@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { throttleInput } from 'olymp';
 import { findDOMNode } from 'react-dom';
 import { DraggableCore } from 'react-draggable';
 import cn from 'classnames';
@@ -10,6 +11,7 @@ const Cover = ({ children, style }) => (
 export default (options = {}) => Block => {
   const { coverOnResize, enable, resizeX, resizeY, width: initialWidth, height: initialHeight } = options;
   return class ResizeableDecorator extends Component {
+    throttle = throttleInput();
     static slate = Block.slate;
     static propTypes = {
       getData: PropTypes.func,
@@ -49,23 +51,25 @@ export default (options = {}) => Block => {
       this.setState({ resize: false });
     }
 
+
     onResize = (event, { deltaX, deltaY, x, y }) => {
       const { getData, alignment } = this.props;
       const elementDimensions = this.element.getBoundingClientRect();
+      throttle(() => {
+        const newState = {};
 
-      const newState = {};
+        if (resizeX !== false) {
+          const width = x ? (alignment === 'right' ? (elementDimensions.width - x) : x) : getData('width', initialWidth);
+          const relWidth = Math.round(12 / elementDimensions.width * width);
 
-      if (resizeX !== false) {
-        const width = x ? (alignment === 'right' ? (elementDimensions.width - x) : x) : getData('width', initialWidth);
-        const relWidth = Math.round(12 / elementDimensions.width * width);
-
-        if (relWidth >= 0) newState.width = relWidth;
-      }
-      if (resizeY !== false) {
-        const height = y || getData('width', initialWidth);
-        if (height >= 0) newState.height = height;
-      }
-      this.setState(newState);
+          if (relWidth >= 0) newState.width = relWidth;
+        }
+        if (resizeY !== false) {
+          const height = y || getData('width', initialWidth);
+          if (height >= 0) newState.height = height;
+        }
+        this.setState(newState);
+      });
     }
 
     render() {
