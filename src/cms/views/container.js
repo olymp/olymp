@@ -85,7 +85,7 @@ export default class Container extends Component {
     }
 
     const mainMenu = (
-      <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
+      <Menu openKeys={[]} style={{ minWidth: 150 }} onClick={this.handleClick}>
         {Object.keys(collectionTree).map((key) => {
           const wrapper = children => (
             <Menu.SubMenu key={key} title={capitalize(key)}>

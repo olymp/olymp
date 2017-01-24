@@ -62,7 +62,7 @@ export default class CmsPage extends Component {
           <Gateway into="action">
             <Dropdown
               overlay={(
-                <Menu>
+                <Menu openKeys={[]}>
                   <Menu.Item key="page:1">
                     <a href="javascript:;" onClick={save}>
                       Speichern
