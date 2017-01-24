@@ -96,7 +96,7 @@ export const handleFilterClick = (collection, onFilter, key) => {
 
 export const getFilterMenu = (collection, onFilter) => {
   return (
-    <Menu onClick={e => handleFilterClick(collection, onFilter, e.key)}>
+    <Menu onClick={e => handleFilterClick(collection, onFilter, e.key)} openKeys={[]}>
       {collection.fields.filter(({ name }) => name !== 'id').map(getMenuItem)}
     </Menu>
   );

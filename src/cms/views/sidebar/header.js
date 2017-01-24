@@ -39,7 +39,7 @@ export default class SidebarHeader extends Component {
     const { pathname } = location;
 
     return (
-      <Menu style={{ minWidth: 150 }}>
+      <Menu openKeys={[]} style={{ minWidth: 150 }}>
         {Object.keys(collectionTree).map((key) => {
           const wrapper = children => (
             <Menu.SubMenu key={key} title={capitalize(key)}>
@@ -76,7 +76,7 @@ export default class SidebarHeader extends Component {
     const { states, setQueryToState } = this.props;
 
     return (
-      <Menu onClick={state => setQueryToState(state.key)} style={{ minWidth: 150 }}>
+      <Menu openKeys={[]} onClick={state => setQueryToState(state.key)} style={{ minWidth: 150 }}>
         {Object.keys(states).map(name => <Menu.Item key={name}>{states[name]}</Menu.Item>)}
       </Menu>
     );
