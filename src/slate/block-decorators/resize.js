@@ -55,19 +55,19 @@ export default (options = {}) => Block => {
     onResize = (event, { deltaX, deltaY, x, y }) => {
       const { getData, alignment } = this.props;
       const elementDimensions = this.element.getBoundingClientRect();
+      const newState = {};
+
+      if (resizeX !== false) {
+        const width = x ? (alignment === 'right' ? (elementDimensions.width - x) : x) : getData('width', initialWidth);
+        const relWidth = Math.round(12 / elementDimensions.width * width);
+
+        if (relWidth >= 0) newState.width = relWidth;
+      }
+      if (resizeY !== false) {
+        const height = y || getData('width', initialWidth);
+        if (height >= 0) newState.height = height;
+      }
       this.throttle(() => {
-        const newState = {};
-
-        if (resizeX !== false) {
-          const width = x ? (alignment === 'right' ? (elementDimensions.width - x) : x) : getData('width', initialWidth);
-          const relWidth = Math.round(12 / elementDimensions.width * width);
-
-          if (relWidth >= 0) newState.width = relWidth;
-        }
-        if (resizeY !== false) {
-          const height = y || getData('width', initialWidth);
-          if (height >= 0) newState.height = height;
-        }
         this.setState(newState);
       });
     }
