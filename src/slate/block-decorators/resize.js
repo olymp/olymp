@@ -55,7 +55,7 @@ export default (options = {}) => Block => {
     onResize = (event, { deltaX, deltaY, x, y }) => {
       const { getData, alignment } = this.props;
       const elementDimensions = this.element.getBoundingClientRect();
-      throttle(() => {
+      this.throttle(() => {
         const newState = {};
 
         if (resizeX !== false) {
