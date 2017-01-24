@@ -33,7 +33,7 @@ export default (options = {}) => {
 
       const rect = getCollapsedClientRect();
       if (!rect) {
-        sideBarMenu.style.opacity = 0;
+        sideBarMenu.style.display = 'none';
         sideBarMenu.style.top = '-10000px';
         sideBarMenu.style.left = '-10000px';
         return;
@@ -42,7 +42,7 @@ export default (options = {}) => {
       const top = rect.top - parentRect.top - sideBarMenu.offsetHeight / 2 + rect.height / 2;
       const left = rect.left - parentRect.left - sideBarMenu.offsetWidth;
 
-      sideBarMenu.style.opacity = 1;
+      sideBarMenu.style.display = 'block';
       //const top = rect.top + window.scrollY - sideBarMenu.offsetHeight / 2 + rect.height / 2; // eslint-disable-line
       //const left = (rect.left + window.scrollX) - sideBarMenu.offsetWidth;
       sideBarMenu.style.top = `${top}px`;

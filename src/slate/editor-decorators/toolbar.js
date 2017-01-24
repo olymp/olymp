@@ -42,7 +42,7 @@ export default (options = {}) => {
       if (!rect) return;
       const top = (rect.top + window.scrollY) - menu.offsetHeight;
       const left = rect.left + window.scrollX - menu.offsetWidth / 2 + rect.width / 2; // eslint-disable-line
-      menu.style.opacity = 1;
+      menu.style.display = 'block';
       menu.style.top = `${top}px`;
       menu.style.left = `${left}px`;
     }
