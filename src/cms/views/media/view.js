@@ -74,7 +74,7 @@ export default class MediaView extends Component {
   }
 
   onClick = (item, isActive) => {
-    const { id, router, location, onChange } = this.props;
+    const { id, router, location, onChange, multi } = this.props;
     const selected = ([...this.state.selected]);
 
     if (id && !selected.length) {
@@ -82,9 +82,15 @@ export default class MediaView extends Component {
     }
 
     if (selected.length || onChange) {
-      this.setState(
-        { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
-      );
+      if (multi) {
+        this.setState(
+          { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
+        );
+      } else {
+        this.setState(
+          { selected: !isActive ? [item.id] : [] }
+        );
+      }
 
       if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
     } else {
@@ -94,7 +100,7 @@ export default class MediaView extends Component {
   }
 
   render() {
-    const { data, onChange } = this.props;
+    const { data, onChange, multi } = this.props;
     const { selected, tags } = this.state;
     const { items, loading } = data;
 
@@ -109,7 +115,7 @@ export default class MediaView extends Component {
 
     const directories = sortBy(
       Object.keys(currentNode).map(key => currentNode[key]),
-      image => image.name /* images.length */
+      image => image.name /* image.length */
     );
 
     return (
@@ -117,7 +123,7 @@ export default class MediaView extends Component {
         <Sidebar
           items={directories}
           isLoading={loading}
-          noChangeAllowed={onChange}
+          noChangeAllowed={!!onChange}
         />
         <div className="container olymp-container pr-0">
           <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
@@ -126,6 +132,7 @@ export default class MediaView extends Component {
                 selected={selected && selected.length ? selected : [id]}
                 onClick={this.onClick}
                 images={images}
+                multi={multi}
               />
             )}
           </div>
@@ -141,7 +148,7 @@ export default class MediaView extends Component {
                     />
 
                     <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
-                      <Button key="submit" type="primary" size="large" onClick={() => onChange(images.find(x => x.id === selected[0]))}>
+                      <Button key="submit" type="primary" size="large" onClick={() => onChange(images.filter(x => selected.findIndex(y => x.id === y) !== -1))}>
                         Übernehmen
                       </Button>&nbsp;
                       <Button onClick={this.onClose}>Abbrechen</Button>

@@ -8,7 +8,7 @@ import './style.less';
 export default class MediaList extends Component {
   render() {
     // const { onImageChange, onTagsFilterChange, onSolutionFilterChange, onSourceFilterChange, onTypeFilterChange, onResetFilters, onSortByChange, onShowAll, showAll, tags = [], solution, source, type, sortByState, uploadLink, items, tree, images } = this.props;
-    const { images = [], className, onClick, selected } = this.props;
+    const { images = [], className, onClick, selected, multi } = this.props;
 
     // let filteredItems = items;
 
@@ -239,7 +239,7 @@ export default class MediaList extends Component {
             const isActive = selected.findIndex(x => x === item.id) !== -1;
 
             return (
-              <div onClick={typeof onClick === 'function' && (() => onClick(item, isActive))} key={index} className={`card card-block file ${isActive ? 'selected' : ''}`}>
+              <div onClick={typeof onClick === 'function' && (() => onClick(item, isActive))} key={index} className={`card card-block file ${isActive ? 'selected' : ''} ${multi ? 'multi' : ''}`}>
                 <Image value={item} width={200} ratio={1} />
                 {
                   item.format === 'pdf' ? (

@@ -13,7 +13,14 @@ export default class WithImageCrop extends Component {
   onOk = () => {
     const { onChange, item } = this.props;
 
-    onChange(item);
+    onChange({
+      url: item.url,
+      height: item.height,
+      width: item.width,
+      crop: this.crop,
+      caption: item.caption,
+      source: item.source,
+    });
   };
 
   onCrop = (p, { width, height, x, y }) => {
@@ -22,9 +29,7 @@ export default class WithImageCrop extends Component {
 
   render() {
     const { aspect } = this.state;
-    const { disableUpload, readOnly, showMediathek, children, item, onClose } = this.props;
-    const visible = this.state.visible || showMediathek;
-
+    const { item, onClose } = this.props;
 
     const crop = item && item.crop ? {
       width: (item.crop[0] / item.width) * 100,
@@ -34,11 +39,7 @@ export default class WithImageCrop extends Component {
       aspect,
     } : { aspect };
 
-    if (!item) {
-      return (
-        <Spin />
-      )
-    }
+    if (!item) return <Spin />;
 
     return (
       <div>
@@ -63,4 +64,4 @@ export default class WithImageCrop extends Component {
       </div>
     );
   }
-};
+}
