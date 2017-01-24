@@ -59,7 +59,7 @@ export default (options = {}) => Block => {
 
       if (options && options.length < 10 && !multi && !showModal) {
         const menu = (
-          <Menu openKeys={[]} onClick={toggle}>
+          <Menu onClick={toggle}>
             {options.map(({ value, label, active }) => active ? (
               <Menu.Item key={value} style={{ fontWeight: 'bold' }}><Icon type="check" /> {label}</Menu.Item>
             ) : (
@@ -186,7 +186,7 @@ export default (options = {}) => Block => {
         });
 
         const menu = (
-          <Menu openKeys={[]} onClick={this.onChangeType}>
+          <Menu onClick={this.onChangeType}>
             {Object.keys(categories).map(key => (
               <Menu.SubMenu title={key} key={key}>
                 {categories[key].map(item => item)}
