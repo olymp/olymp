@@ -118,10 +118,16 @@
 /* new */
 @margin: 15px;
 .athena-cms-menu {
+  &.athena-cms-modal-menu {
+    .ant-btn-primary {
+      z-index: 1001 !important;
+    }
+  }
+
   & div > * {
     position: fixed;
     top: @margin;
-    z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
+    // z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
 
     &:nth-child(1) {
       top: calc(@margin - 5px);
@@ -161,7 +167,7 @@
     font-size: 21px !important;
 
     &.ant-btn-primary {
-      z-index: 1002;
+      z-index: 1000;
     }
 
     img {

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { Spin, Button } from 'antd';
-import { gql, graphql, Modal, withRouter } from 'olymp';
+import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
+import Modal from '../modal';
 import Detail from './detail';
 import DetailMulti from './detail-multi';
 import Sidebar from './list-sidebar';
 import List from './list';
+import ListMini from './list-mini';
 import Upload from './upload';
 import Crop from './crop';
 
 const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
 const ACTIVE_COLOR = '#EEE';
-const GOBACK_COLOR = '#333';
 
 @graphql(gql`
   query fileList {
@@ -26,7 +27,6 @@ export default class MediaView extends Component {
   state = {
     tags: [],
     selected: [],
-    selectable: false,
   };
 
   getNode = (images) => {
@@ -63,10 +63,42 @@ export default class MediaView extends Component {
     return tree;
   }
 
+  onClose = () => {
+    const { id, onClose, router, location } = this.props;
+    const { selected } = this.state;
+
+    this.setState({ selected: [] });
+
+    if (onClose) onClose();
+    if (id) router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+  }
+
+  onClick = (item, isActive) => {
+    const { id, router, location, onChange } = this.props;
+    const selected = ([...this.state.selected]);
+
+    if (id && !selected.length) {
+      selected.push(id);
+    }
+
+    if (selected.length || onChange) {
+      this.setState(
+        { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
+      );
+
+      if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+    } else {
+      // first picture is choosen
+      router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } });
+    }
+  }
+
   render() {
-    const { id, data, location, router, onChange } = this.props;
-    const { selected, tags, selectable } = this.state;
+    const { data, onChange } = this.props;
+    const { selected, tags } = this.state;
     const { items, loading } = data;
+
+    const id = (!!selected && selected[0]) || this.props.id;
 
     let currentNode = this.getNode(items || []);
     let images = items;
@@ -77,59 +109,73 @@ export default class MediaView extends Component {
 
     const directories = sortBy(
       Object.keys(currentNode).map(key => currentNode[key]),
-      'name' /* images.length */
-    ); /* tags.length ? [
-      {
-        name: 'Zurück',
-        description: `zu '${tags.slice(0, -1).join('/') || 'Übersicht'}'`,
-        image: null,
-        color: GOBACK_COLOR,
-        onClick: () => this.setState({ tags: tags.slice(0, -1) }),
-      },
-      ...Object.keys(currentNode).map(key => currentNode[key]),
-    ] : Object.keys(currentNode).map(key => currentNode[key]); */
+      image => image.name /* images.length */
+    );
 
     return (
-      <Modal>
-        <Sidebar items={directories} isLoading={loading} />
+      <Modal {...this.props}>
+        <Sidebar
+          items={directories}
+          isLoading={loading}
+          noChangeAllowed={onChange}
+        />
         <div className="container olymp-container pr-0">
-          {loading ? <Spin className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} /> : (
-            <List
-              selected={selected && selected.length ? selected : [id]}
-              className="col-md-8 py-1 px-0"
-              onClick={
-                selectable ?
-                  (item, isActive) => this.setState(
-                    { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
-                  ) :
-                    item => router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } })
-              }
-              images={images}
-            />
-          )}
+          <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
+            {loading ? <Spin /> : (
+              <List
+                selected={selected && selected.length ? selected : [id]}
+                onClick={this.onClick}
+                images={images}
+              />
+            )}
+          </div>
           <div className="col-md-4 py-1">
-            {selectable || selected.length ? (
-              <div>
-                <h3>{selected.length} Bilder ausgewählt</h3>
-                <DetailMulti
-                  images={selected.map(x => items.find(item => item.id === x))}
-                  deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
-                  onClose={() => this.setState({ selected: [], selectable: false })}
-                />
-              </div>
+            {
+              (!onChange && selected.length) || (onChange && selected.length > 1) ? (
+                onChange ? (
+                  <div>
+                    <h3>{selected.length} Bilder ausgewählt</h3>
+                    <ListMini
+                      images={selected.map(x => items.find(item => item.id === x))}
+                      deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
+                    />
+
+                    <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
+                      <Button key="submit" type="primary" size="large" onClick={() => onChange(images.find(x => x.id === selected[0]))}>
+                        Übernehmen
+                      </Button>&nbsp;
+                      <Button onClick={this.onClose}>Abbrechen</Button>
+                    </div>
+
+                    <div style={{ clear: 'both' }} />
+                  </div>
+                ) : (
+                  <div>
+                    <h3>{selected.length} Bilder ausgewählt</h3>
+                    <DetailMulti
+                      images={selected.map(x => items.find(item => item.id === x))}
+                      deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
+                      onClose={this.onClose}
+                    />
+                  </div>
+                )
               ) : (
                 id ? (
                   onChange ? (
                     <div>
                       <h3>Bild zurechtschneiden</h3>
-                      <Crop onChange={onChange} id={id} />
+                      <Crop
+                        onChange={onChange}
+                        onClose={this.onClose}
+                        id={id}
+                      />
                     </div>
                   ) : (
                     <div>
                       <h3>Bild bearbeiten</h3>
                       <Detail
                         id={id}
-                        onClose={() => router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } })}
+                        onClose={this.onClose}
                       />
                     </div>
                   )
@@ -139,11 +185,13 @@ export default class MediaView extends Component {
                     <Upload modal={false} onClose={() => console.log('jo')} />
 
                     <div style={{ float: 'right', marginTop: '1rem' }}>
-                      <Button onClick={() => this.setState({ selectable: true })} type="primary">Mehrere auswählen</Button>
+                      {!!onChange && <Button onClick={this.onClose}>Abbrechen</Button>}
                     </div>
+                    <div style={{ clear: 'both' }} />
                   </div>
                 )
-            )}
+              )
+            }
           </div>
         </div>
       </Modal>

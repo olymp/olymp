@@ -83,7 +83,7 @@ export default class SidebarHeader extends Component {
   }
 
   render() {
-    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, query, setQueryToState } = this.props;
+    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, query, setQueryToState, noChangeAllowed } = this.props;
 
     return (
       <div>
@@ -91,10 +91,10 @@ export default class SidebarHeader extends Component {
           <Input.Group style={{ height: 48 }}>
             <Col span="4" />
             <Col span="15" style={{ marginTop: -3 }}>
-              <Dropdown overlay={this.renderSelect()}>
-                <a className="ant-dropdown-link" href="javascript:;">
+              <Dropdown overlay={!noChangeAllowed && this.renderSelect()}>
+                <a className="ant-dropdown-link" href="javascript:;" style={noChangeAllowed && { cursor: 'not-allowed' }}>
                   <StyledHeader>
-                    {capitalize(activePage)} <i className="fa fa-angle-down" />
+                    {capitalize(activePage)} {!noChangeAllowed && <i className="fa fa-angle-down" />}
                   </StyledHeader>
                 </a>
               </Dropdown>

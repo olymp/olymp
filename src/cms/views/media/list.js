@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { cloudinaryUrl, Link, withRouter, cn } from 'olymp';
-import { Affix, Cascader, Menu, Icon } from 'antd';
+import { withRouter, cn } from 'olymp';
+import { Icon } from 'antd';
 import { Image } from '../../edits';
 import './style.less';
 
