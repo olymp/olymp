@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
+// import ColorPicker from 'rc-color-picker';
 import { withColors } from '../../decorators';
-// todo: Input ersetzen mit import ColorPicker from 'rc-color-picker';
 
 const ColorEditor = ({ value, colors = [], ...rest }) => {
   const newColors = [...colors];
@@ -17,7 +17,7 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
     }
   }
 
-  return !colors.length || value === 'other' ? (
+  return !colors.length || value === 'other' ? /* <ColorPicker /> */ (
     <Input {...rest} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} />
   ) : (
     <Select
