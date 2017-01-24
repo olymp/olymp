@@ -67,9 +67,10 @@ export default (options = {}) => Block => {
         const height = y || getData('width', initialWidth);
         if (height >= 0) newState.height = height;
       }
-      this.throttle(() => {
+
+      if (newState.height !== this.state.height || newState.width !== this.state.width) {
         this.setState(newState);
-      });
+      }
     }
 
     render() {
