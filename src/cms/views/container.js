@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter, withCollections } from 'olymp';
-import { Gateway, GatewayProvider, GatewayDest } from 'react-gateway';
+import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
@@ -9,7 +9,6 @@ import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
-import UploadModal from './media/upload';
 import CollectionModal from './collections';
 import { useColors } from '../decorators';
 import './container.less';
@@ -126,18 +125,12 @@ export default class Container extends Component {
           {children}
           {modal}
           <Affix className="athena-cms-menu">
-            {!modal ? (
+            {!modal && (
               <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
                 <Button type="primary" shape="circle" size="large">
                   {logo || <Icon type="menu-unfold" />}
                 </Button>
               </Dropdown>
-            ) : (
-              <Link to={{ pathname }}>
-                <Button type="primary" shape="circle" size="large">
-                  <Icon type="close" />
-                </Button>
-              </Link>
             )}
             <GatewayDest
               name="action"

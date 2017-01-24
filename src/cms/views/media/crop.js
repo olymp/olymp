@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Select, Spin } from 'antd';
+import { Button, Select, Spin } from 'antd';
 import ReactCrop from 'react-image-crop';
 import { cloudinaryUrl } from 'olymp';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -8,19 +8,12 @@ import withFile from '../../decorators/file';
 const defaultGetImage = props => props.value;
 
 @withFile
-export default class WithImageUpload extends Component {
+export default class WithImageCrop extends Component {
   state = {};
   onOk = () => {
     const { onChange, item } = this.props;
 
-    onChange({
-      url: item.url,
-      height: item.height,
-      width: item.width,
-      crop: this.crop,
-      caption: item.caption,
-      source: item.source,
-    });
+    onChange(item);
   };
 
   onCrop = (p, { width, height, x, y }) => {
@@ -29,7 +22,7 @@ export default class WithImageUpload extends Component {
 
   render() {
     const { aspect } = this.state;
-    const { disableUpload, readOnly, showMediathek, children, item } = this.props;
+    const { disableUpload, readOnly, showMediathek, children, item, onClose } = this.props;
     const visible = this.state.visible || showMediathek;
 
 
@@ -58,9 +51,15 @@ export default class WithImageUpload extends Component {
           <Select.Option key="4" value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
           <Select.Option key="5" value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
         </Select>
-        <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.onOk}>
-          Speichern
-        </Button>
+
+        <div style={{ float: 'right', marginTop: '1rem' }}>
+          <Button type="primary" onClick={this.onOk}>
+            Übernehmen
+          </Button>&nbsp;
+          <Button onClick={onClose}>Abbrechen</Button>
+        </div>
+
+        <div style={{ clear: 'both' }} />
       </div>
     );
   }

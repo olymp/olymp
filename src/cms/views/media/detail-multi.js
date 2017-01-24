@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Select, Button } from 'antd';
-import { Image } from '../../edits';
+import ListMini from './list-mini';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };
 
 const MediaForm = Form.create()(
   (props) => {
-    const { images = [], form, save, remove, deselect, onClose } = props;
+    const { images = [], form, save, remove, onClose } = props;
     const { getFieldDecorator } = form;
 
     const tags = {};
@@ -48,11 +48,7 @@ const MediaForm = Form.create()(
           <div style={{ clear: 'both' }} />
         </div>
 
-        {images.map(image => (
-          <div onClick={() => deselect(image.id)} key={image.id} style={{ cursor: 'pointer' }}>
-            <Image value={image} width={60} ratio={1} style={{ marginRight: '.5rem', marginBottom: '.5rem', float: 'left' }} />
-          </div>
-        ))}
+        <ListMini {...this.props} />
       </div>
     );
   }
