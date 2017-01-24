@@ -35,8 +35,6 @@ export default class ImagesBlock extends Component {
     const images = getData('images', []);
     const showMedia = getData('showMedia');
 
-    console.log(showMedia);
-
     const styles = {
       position: 'relative',
       zIndex: 2,
