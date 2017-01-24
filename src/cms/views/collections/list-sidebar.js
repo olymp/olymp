@@ -43,7 +43,7 @@ export default class CollectionListSidebar extends Component {
   }
 
   renderMenu = ({ id, state }) => (
-    <Menu openKeys={[]}>
+    <Menu>
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
@@ -81,7 +81,7 @@ export default class CollectionListSidebar extends Component {
     });
 
     const menu = (
-      <Menu openKeys={[]}>
+      <Menu>
         <Menu.Item key="1">Import</Menu.Item>
         <Menu.Item key="2">Export</Menu.Item>
       </Menu>

@@ -69,7 +69,7 @@ export default Form.create()(
             )}
           </Form.Item>
 
-          <Menu mode="horizontal" openKeys={[]}>
+          <Menu mode="horizontal">
             <Menu.Item style={{ width: 150 }} key="state">
               {getFieldDecorator(
                 'state',

@@ -119,7 +119,7 @@ export default (options = {}) => {
       // const isOpen = editorState.isExpanded && editorState.isFocused;
       return (
         <Portal isOpened onOpen={this.onOpen} key="toolbar-0">
-          <Menu openKeys={[]}
+          <Menu
             mode="horizontal"
             theme="dark"
             className="slate-toolbar slate-text-toolbar"
