@@ -1,6 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react';
 import Portal from 'react-portal';
-import { Menu, Icon } from 'antd';
+import { Menu } from 'antd';
 import { getVisibleSelectionRect } from '../utils/range';
 import { hasBlock, hasMark } from '../utils/has';
 import addBlock from '../utils/add-block';
@@ -40,8 +40,11 @@ export default (options = {}) => {
 
       const rect = getVisibleSelectionRect();
       if (!rect) return;
-      const top = (rect.top + window.scrollY) - menu.offsetHeight;
-      const left = rect.left + window.scrollX - menu.offsetWidth / 2 + rect.width / 2; // eslint-disable-line
+      const height = 45; // menu.offsetHeight
+      const width = 402; // menu.offsetWidth
+      const top = (rect.top + window.scrollY) - height;
+      const left = rect.left + window.scrollX - width / 2 + rect.width / 2; // eslint-disable-line
+
       menu.style.display = 'block';
       menu.style.top = `${top}px`;
       menu.style.left = `${left}px`;
