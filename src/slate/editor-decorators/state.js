@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Raw, Plain, resetKeyGenerator } from 'slate';
 import { batch } from '../utils/batch';
+import { getHeaders } from '../utils/get-text';
 
 const parseValue = (v, initialState, terse) => {
   resetKeyGenerator();
@@ -44,6 +45,7 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
     }
 
     changeValue = (value) => {
+      const { onChangeHeadings } = this.props;
       this.value = value;
       this.forceUpdate();
       if (changeValue) {
@@ -52,12 +54,12 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
           this.rawValue = rawValue;
           this.batch(() => {
             // Flatten & filter
-            const flattenNodes = nodes => nodes.reduce((arr, node) => {
+            const flattenNodes = (nodes, level = 0) => nodes.reduce((arr, node) => {
               const { type, kind, text } = node;
               let newArr = [...arr];
               const newNode = { ...node };
               if (newNode.nodes) {
-                newArr = arr.concat(flattenNodes(newNode.nodes));
+                newArr = arr.concat(flattenNodes(newNode.nodes, level + 1));
                 delete newNode.nodes;
               }
 
@@ -79,8 +81,10 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
             } */
 
             if (rawValue && flattenNodes(rawValue.nodes).length) {
+              if (onChangeHeadings) onChangeHeadings(getHeaders(rawValue.nodes));
               changeValue(this.props, rawValue);
             } else {
+              if (onChangeHeadings) onChangeHeadings(null);
               changeValue(this.props, null);
             }
           });

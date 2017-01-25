@@ -8,7 +8,7 @@ import AnchorHelper from 'antd/lib/anchor/anchorHelper';
 const Anchor = AnchorCreator.Link;
 
 const getChildSlug = slug => slug.indexOf('#') === -1 ? slug.substr(1) : slug.split('#')[1];
-const attributes = 'id, type, slug, order, name, parentId, blocks, children { id, type, slug, order, name, parentId, blocks }';
+const attributes = 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }';
 
 @graphql(gql`
   query page($id: String!) {
@@ -31,32 +31,31 @@ export default class CmsPage extends Component {
       this.anchorHelper.scrollTo(location.hash);
     }
   }
+  createAnchors = (nodes) => {
+    return (nodes || []).map((node, i) =>
+      <Anchor key={i} href={`#${node.slug}`} title={node.text}>
+        {this.createAnchors(node.children)}
+      </Anchor>
+    );
+  }
   render() {
-    let { auth, item, patch, save, blocks, location, readOnly, getReadOnly } = this.props;
+    let { auth, item, patch, save, blocks, location, readOnly, getReadOnly, showAnchors } = this.props;
     if (!item) return <Spin size="large" />;
 
     readOnly = readOnly !== undefined ? readOnly : getReadOnly ? getReadOnly(this.props) : (!auth.user || !!item.computed);
     if (location && location.query && Object.keys(location.query).find(x => location.query[x] !== undefined)) readOnly = true;
 
-    const chapters = item.type === 'CHAPTERS' && item.children && sortBy(item.children, 'order');
     return (
       <div>
         <Helmet title={item.name} />
-        <div className="anchor-menu">
-          {chapters && (
+        {item.headings && (
+          <div className="anchor-menu container">
             <AnchorCreator offsetTop={100}>
-              {chapters.map(child => (
-                <Anchor key={child.id} href={`#${getChildSlug(child.slug)}`} title={child.name} />
-              ))}
+              {this.createAnchors(item.headings)}
             </AnchorCreator>
-          )}
-        </div>
-        <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChange={blocks => patch({ blocks })} />
-        {chapters && chapters.map(child => (
-          <div key={child.id} id={getChildSlug(child.slug)}>
-            <SlateMate className="frontend-editor" showUndo readOnly value={child.blocks || null} />
           </div>
-        ))}
+        )}
+        <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings }) } onChange={blocks => patch({ blocks })} />
 
         {!readOnly ? (
           <Gateway into="action">

@@ -33,4 +33,4 @@ export const sortBy = lsortBy;
 export const groupBy = lgroupBy;
 export const isEqual = lisEqual;
 export const take = ltake;
-export const addOrRemove = (arr = [], item, shouldAdd) => shouldPush ? [...arr, item] : arr.filter(x => x !== item);
+export const addOrRemove = (arr = [], item, shouldAdd) => shouldAdd ? [...arr, item] : arr.filter(x => x !== item);
