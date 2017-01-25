@@ -19,7 +19,10 @@ const userFields = `
   token
   name
 `;
-export default WrappedComponent => {
+export const Wrap = (WrappedComponent, typeNameArg) => {
+  if (typeof WrappedComponent === 'string') {
+    return RealComponent => Wrap(RealComponent, WrappedComponent);
+  }
   @withApollo
   @graphql(gql`
     query getType($name: String!) {
@@ -88,7 +91,7 @@ export default WrappedComponent => {
     options: ({ routeParams = {}, collection, typeName }) => ({
       skip: !!collection,
       variables: {
-        name: capitalize(routeParams.model || typeName),
+        name: capitalize(typeNameArg || routeParams.model || typeName),
       },
     }),
   })
@@ -100,10 +103,10 @@ export default WrappedComponent => {
       includeStamps: PropTypes.bool,
     }
     save = item => {
-      return saveItem(item, this.props.typeName, this.props.client, { id: item.id, attributes: this.getAttributes() });
+      return saveItem(item, typeNameArg || this.props.typeName, this.props.client, { id: item.id, attributes: this.getAttributes() });
     }
     remove = id => {
-      return removeItem(id, this.props.typeName, this.props.client, { attributes: this.getAttributes() });
+      return removeItem(id, typeNameArg || this.props.typeName, this.props.client, { attributes: this.getAttributes() });
     }
     getAttributes = (col) => {
       const collection = col || (this.props.data && this.props.data.type) || this.props.collection || null;
@@ -176,3 +179,4 @@ export default WrappedComponent => {
   }
   return WithCollectionComponent;
 };
+export default Wrap;

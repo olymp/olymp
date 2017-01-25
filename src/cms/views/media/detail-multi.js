@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Select, Button } from 'antd';
+import { withCollection } from 'olymp';
 import ListMini from './list-mini';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };
@@ -54,6 +55,7 @@ const MediaForm = Form.create()(
   }
 );
 
+@withCollection('File')
 export default class MultiMediaDetail extends Component {
   remove = () => {
     const { remove, onClose, images } = this.props;
@@ -74,7 +76,7 @@ export default class MultiMediaDetail extends Component {
   };
 
   save = () => {
-    const { save, onClose, images } = this.props;
+    const { save, onClose, images, saveCollectionItem } = this.props;
     const form = this.form;
 
     Modal.confirm({
@@ -82,16 +84,17 @@ export default class MultiMediaDetail extends Component {
       content: 'Vorherige Schlageworte oder Quellen werden damit überschrieben!',
       onOk() {
         form.validateFields((err, { tags, source }) => {
-          images.forEach((image) => {
-            const newImage = {
+          if (err) return;
+          Promise.all(images.map((image) => {
+            return saveCollectionItem({
               ...image,
               source,
               tags,
-            };
-
-            if (err) return;
-            //save(newImage, { commit: false }).then(onClose);
-            console.log(save, newImage);
+            });
+          })).then(x => {
+            console.log('done!');
+          }).catch(err => {
+            console.error(err);
           });
         });
       },
