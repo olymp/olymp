@@ -1,9 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
 import { Editor, Html, Raw } from 'slate';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
+import { getId } from './utils/get-text';
 import './style.less';
+
+const getIdByTag = (children) => {
+  const id = getId(Children.map(children, x => x.props.node));
+  return `${id}`;
+}
 
 const options = {
   defaultNode: 'paragraph',
@@ -58,12 +64,12 @@ const options = {
     'block-quote': ({ children, attributes }) => <blockquote {...attributes}>{children}</blockquote>,
     'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
     'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
-    'heading-one': ({ children, attributes }) => <h1 {...attributes}>{children}</h1>,
-    'heading-two': ({ children, attributes }) => <h2 {...attributes}>{children}</h2>,
-    'heading-three': ({ children, attributes }) => <h3 {...attributes}>{children}</h3>,
-    'heading-four': ({ children, attributes }) => <h4 {...attributes}>{children}</h4>,
-    'heading-five': ({ children, attributes }) => <h5 {...attributes}>{children}</h5>,
-    'heading-six': ({ children, attributes }) => <h6 {...attributes}>{children}</h6>,
+    'heading-one': ({ children, attributes }) => <h1 {...attributes} id={getIdByTag(children)}>{children}</h1>,
+    'heading-two': ({ children, attributes }) => <h2 {...attributes} id={getIdByTag(children)}>{children}</h2>,
+    'heading-three': ({ children, attributes }) => <h3 {...attributes} id={getIdByTag(children)}>{children}</h3>,
+    'heading-four': ({ children, attributes }) => <h4 {...attributes} id={getIdByTag(children)}>{children}</h4>,
+    'heading-five': ({ children, attributes }) => <h5 {...attributes} id={getIdByTag(children)}>{children}</h5>,
+    'heading-six': ({ children, attributes }) => <h6 {...attributes} id={getIdByTag(children)}>{children}</h6>,
     'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
     'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
   },

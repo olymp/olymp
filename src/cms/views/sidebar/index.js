@@ -86,7 +86,7 @@ export default class SidebarComponent extends Component {
     const { page } = this.state;
 
     const activeItems = items.filter(item => item.isActive);
-    const unactiveItems = items.filter(item => !item.isActive);
+    // const unactiveItems = items.filter(item => !item.isActive);
 
     return (
       <Sidebar>
@@ -112,8 +112,8 @@ export default class SidebarComponent extends Component {
                 </SubPanel>
               )}
               <SubPanel>
-                {unactiveItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((item, index) =>
-                  <SidebarCard {...item} key={index} />)}
+                {items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((item, index) =>
+                  <SidebarCard {...item} key={index} isActive={false} />)}
               </SubPanel>
             </Panel>
         )}

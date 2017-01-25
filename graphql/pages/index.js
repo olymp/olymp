@@ -24,15 +24,16 @@ module.exports = (schema, { adapter, attributes }) => {
       },
     },
     schema: `
-      enum PAGE_TYPE {
-        DEFAULT
-        CHAPTERS
-        ALIAS
-        LINK
+      type PageHeading {
+        id: String
+        text: String
+        slug: String
+        children: [PageHeading]
       }
       type Page @collection(name: "Page") @stamp @state {
         menu: String
         alias: Page @relation
+        headings: [PageHeading]
         href: String
         parent: Page @relation(property: "children", type: "one-to-many")
         order: Int
@@ -42,7 +43,7 @@ module.exports = (schema, { adapter, attributes }) => {
         blocks: Json
         templateName: String
         templateData: Json
-        type: PAGE_TYPE
+        showHeadings: Boolean
         ${attributes || ''}
       }
     `,
