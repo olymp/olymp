@@ -20,8 +20,10 @@ const defaultLosung = {
     losung: losung {
       datum
       tag
-      text
-      vers
+      losungtext
+      losungvers
+      lehrtext
+      lehrvers
     }
   }
 `)
@@ -29,7 +31,7 @@ export default class LosungBlock extends Component {
   render() {
     const { data = {}, className } = this.props;
     const { losung = defaultLosung } = data;
-    const { losung: losungObj, lehr: lehrObj } = losung;
+    const { losungtext, losungvers, lehrtext, lehrvers } = losung;
 
     return (
       <div className={cn(className, 'losung')}>
@@ -41,21 +43,21 @@ export default class LosungBlock extends Component {
 
         <div style={{ padding: '0 3px' }}>
           <p>
-            {`"${losungObj.text}"`}
+            {`"${losungtext}"`}
           </p>
 
           <h6 style={{ marginTop: -10, marginBottom: 0 }}>
-            {` - ${losungObj.vers}`}
+            {` - ${losungvers}`}
           </h6>
         </div>
 
         <div style={{ padding: '0 3px' }}>
           <p>
-            {`"${lehrObj.text}"`}
+            {`"${lehrtext}"`}
           </p>
 
           <h6 style={{ marginTop: -10, marginBottom: 0 }}>
-            {` - ${lehrObj.vers}`}
+            {` - ${lehrvers}`}
           </h6>
         </div>
 
