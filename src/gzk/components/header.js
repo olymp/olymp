@@ -27,7 +27,7 @@ const Li = sortableElement((props) => {
           {page.name}
         </Link>
         <i className="dropdown icon" />
-        {renderNav(props) || <UlWrapped {...props} className={null} axis="y" useDragHandle onSortEnd={sortEndCreator(page.children)} level={level + 1} items={page.children} />}
+        {renderNav(props) || <UlWrapped {...props} className={null} axis="y" useDragHandle onSortEnd={sortEndCreator(page.children)} level={level + 1} items={page.children} headings={page.headings} />}
       </li>
     );
   }
@@ -56,12 +56,20 @@ const Ul = sortableContainer((props) => {
 });
 
 const UlWrapped = props => {
-  const { items, level, children } = props;
-  const children2 = items.filter(({ slug }) => slug !== '/').map((page, index) => <Li {...props} className={null} collection={`list${level}`} index={index} key={page.id} page={page} />);
+  const { items, level, children, headings } = props;
+  const children2 = items.filter(({ slug }) => slug !== '/').map((page, index) => (
+    <Li {...props} className={null} collection={`list${level}`} index={index} key={page.id} page={page} />
+  ));
+
+  console.log(headings);
+  const children3 = (headings || []).map((page, index) => (
+    <Li {...props} className={null} collection={`list${level}`} index={index} key={page.id} page={page} />
+  ));
 
   return (
     <Ul {...props}>
       {children2}
+      {children3}
       {level === 0 && children}
     </Ul>
   );
@@ -147,7 +155,7 @@ export default class Header extends Component {
         <div className="dropdown-menu sf-mega" style={{ width: '700px' }}>
           <div className="col-md-3">
             <h6>{props.page.name}</h6>
-            <UlWrapped {...props} className="list-unstyled" level={props.level + 1} items={props.page.children} />
+            <UlWrapped {...props} className="list-unstyled" level={props.level + 1} items={props.page.children} headings={props.page.headings} />
           </div>
           {Object.keys(groups).map(groupKey => (
             <div key={groupKey} className="col-md-3">

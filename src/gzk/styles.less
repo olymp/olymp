@@ -1,8 +1,16 @@
 @import './cms.less';
 @import './app.less';
 
+
 body, html {
   .frontend {
+    .nav > li:last-of-type > a {
+      padding-right: 0;
+    }
+    .ant-tag {
+      padding: 0 3px;
+      margin: 0px 2px 0px 0;
+    }
     .image-gallery-thumbnail img {
       border-bottom-right-radius: 30px;
     }
@@ -48,8 +56,12 @@ body, html {
         position: relative;
         .ant-anchor {
           position: absolute;
-          left: 300px;
+          width: 220px;
+          left: 0;
           z-index: 1;
+          background-color: rgba(255, 255, 255, 0.5);
+          border-radius: 5px;
+          border-bottom-right-radius: 80px;
         }
       }
     }

@@ -20,7 +20,7 @@ import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } f
 export default class GZContainer extends Component {
   render() {
     return (
-      <GenericBlock {...this.props} className="gz-big-element row" style={{ position: 'relative', minHeight: 30, overflow: 'hidden' }} />
+      <GenericBlock {...this.props} className="container" style={{ position: 'relative', minHeight: 30, overflow: 'hidden' }} />
     );
   }
 }
