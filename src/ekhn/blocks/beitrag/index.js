@@ -189,7 +189,7 @@ export default class BeitragBlock extends Component {
 
     return (
       <GenericBlock {...this.props}>
-        <DataLoader data={data} trigger="beitragList" placeholder="Keine Beiträge vorhanden">
+        <DataLoader {...this.props} trigger="beitragList" placeholder="Keine Beiträge vorhanden">
           <Items items={beitraege} masonry={masonry} identifier="beitrag" />
 
           {children}

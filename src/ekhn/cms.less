@@ -1,7 +1,9 @@
-@import "./vars";
+@cms-primary: #9459A2;
+@cms-secondary: #900024;
+@cms-tertiary: #240090;
 
 a h5, a h6, .ant-tabs-nav .ant-tabs-tab-active {
-  color: @brand-primary;
+  color: @cms-primary;
 }
 
 a:focus, a:hover {
@@ -9,11 +11,11 @@ a:focus, a:hover {
 }
 
 .ant-tabs-nav .ant-tabs-tab:hover {
-  color: lighten(@brand-primary, 5%);
+  color: lighten(@cms-primary, 5%);
 }
 
 .ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
-  background-color: @brand-primary;
+  background-color: @cms-primary;
 }
 
 // .athena-cms-menu {
@@ -62,24 +64,24 @@ a:focus, a:hover {
 
   [data-block-active=true] {
     box-shadow: none;
-    outline: 1px solid darken(@brand-primary, 20%);
+    outline: 1px solid darken(@cms-primary, 20%);
   }
 }
 
 /* SPINNER */
 .ant-spin-dot i {
-  background-color: @brand-primary;
+  background-color: @cms-primary;
 }
 
 /* FUNCTIONS */
 .specificBackground {
   background-image: none;
-  background: linear-gradient(230deg, @brand-secondary, @brand-primary, @brand-tertiary);
+  background: linear-gradient(230deg, @cms-secondary, @cms-primary, @cms-tertiary);
   // animation: MoveBG 60s ease infinite;
   background-size: 500% 500%;
   background-position: -200% -200%;
   color: #FFF;
-  border-color: @brand-primary;
+  border-color: @cms-primary;
 
   @keyframes MoveBG {
     0% {

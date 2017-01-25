@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter } from 'olymp';
+import { graphql, gql, withRouter, cn } from 'olymp';
 import LinksItem from './item';
-import './links.less';
 
 @withRouter
 @graphql(gql`
@@ -16,7 +15,7 @@ import './links.less';
 `)
 export default class LinksBlock extends Component {
   render() {
-    const { data, location } = this.props;
+    const { data, location, className } = this.props;
 
     if (location && location.pathname !== '/') return <div />;
 
@@ -29,7 +28,7 @@ export default class LinksBlock extends Component {
     }));
 
     return (
-      <div className="links-block block">
+      <div className={cn(className, 'links-block')}>
         <h3 style={{ margin: 0 }}>Nützliche Links</h3>
         {Object.keys(tags).map(tag => (
           <div key={tag}>

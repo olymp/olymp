@@ -75,7 +75,7 @@ export default class RollenBlock extends Component {
     return (
       <GenericBlock {...this.props}>
         {!location.query || !location.query.Person ? (
-          <DataLoader data={data} trigger={!!rolle} placeholder="Keine Rollen vorhanden">
+          <DataLoader {...this.props} trigger={!!rolle} placeholder="Keine Rollen vorhanden">
             <Items
               items={rolle ? [{
                 ...rolle,
@@ -90,7 +90,7 @@ export default class RollenBlock extends Component {
         ) : null}
 
         {rolle ? (
-          <DataLoader data={data} trigger={!!(personen && personen.length)} placeholder="Keine Personen zu dieser Rolle gefunden">
+          <DataLoader {...this.props} trigger={!!(personen && personen.length)} placeholder="Keine Personen zu dieser Rolle gefunden">
             <Items
               items={(personen || []).map(person => ({
                 ...person,

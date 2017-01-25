@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, Link, withRouter } from 'olymp';
+import { graphql, gql, Link, withRouter, cn } from 'olymp';
 import GemeindebriefItem from './item';
-import './gemeindebriefe.less';
 
 @withRouter
 @graphql(gql`
@@ -18,12 +17,12 @@ import './gemeindebriefe.less';
 `)
 export default class GemeindebriefBlock extends Component {
   render() {
-    const { data, location } = this.props;
+    const { data, location, className } = this.props;
 
     if (location && location.pathname !== '/') return <div />;
 
     return (
-      <div className="gemeindebriefe-block block">
+      <div className={cn(className, 'gemeindebriefe-block')}>
         <h3 style={{ margin: 0 }}>Gemeindebrief</h3>
         <ul>
           {(data.items || []).map(brief =>

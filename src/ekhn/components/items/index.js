@@ -3,7 +3,6 @@ import { withRouter, withAuth, Link } from 'olymp';
 import { Pagination } from 'antd';
 import capitalize from 'lodash/upperFirst';
 import MasonryLayout from 'react-masonry-component';
-import './items.less';
 
 import ItemSmall from './small';
 import ItemLarge from './large';

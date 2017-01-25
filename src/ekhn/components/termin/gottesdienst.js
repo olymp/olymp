@@ -56,7 +56,7 @@ export default class GottesdienstBlock extends Component {
     });
 
     return (
-      <DataLoader data={data} trigger="gottesdienste" placeholder="Keine Gottesdienste vorhanden">
+      <DataLoader {...this.props} trigger="gottesdienste" placeholder="Keine Gottesdienste vorhanden">
         <Gottesdienst items={items} />
       </DataLoader>
     );
