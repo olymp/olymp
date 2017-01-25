@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
-import moment from 'moment';
+import { graphql, gql, cn } from 'olymp';
 
 const defaultLosung = {
   datum: '2016-01-01T00:00:00',
@@ -28,12 +27,12 @@ const defaultLosung = {
 `)
 export default class LosungBlock extends Component {
   render() {
-    const { data = {} } = this.props;
+    const { data = {}, className } = this.props;
     const { losung = defaultLosung } = data;
-    const { datum, tag, sonntag, losung: losungObj, lehr: lehrObj } = losung;
+    const { losung: losungObj, lehr: lehrObj } = losung;
 
     return (
-      <div className="losung block">
+      <div className={cn(className, 'losung')}>
         <h3 style={{ margin: 0 }}>Die Losungen</h3>
         {/* <h6 style={{ margin: 0, marginTop: -10 }}>
           {sonntag || tag},<br />

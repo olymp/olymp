@@ -51,7 +51,7 @@ export default class GemeindebriefeBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader data={data} trigger="gemeindebriefe" placeholder="Keine Gemeindebriefe vorhanden">
+        <DataLoader {...this.props} trigger="gemeindebriefe" placeholder="Keine Gemeindebriefe vorhanden">
           <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
           {children}
         </DataLoader>

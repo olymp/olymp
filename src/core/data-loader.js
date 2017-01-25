@@ -31,7 +31,7 @@ export default ({ trigger = true, loading = false, data = {}, placeholder = 'Kei
   }
 
   const text = (
-    <div style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0 }}>
+    <div className={className} style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0, ...style }}>
       <h1>
         {placeholder}
       </h1>

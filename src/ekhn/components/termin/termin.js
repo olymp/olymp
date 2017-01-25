@@ -34,7 +34,7 @@ export default class TerminBlock extends Component {
     const { termine } = data;
 
     return (
-      <DataLoader data={data} trigger="termine" placeholder="Keine Termine vorhanden">
+      <DataLoader {...this.props} trigger="termine" placeholder="Keine Termine vorhanden">
         <Termin items={termine} />
       </DataLoader>
     );

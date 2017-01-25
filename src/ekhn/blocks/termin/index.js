@@ -7,7 +7,6 @@ import difference from 'lodash/difference';
 import orderBy from 'lodash/orderBy';
 import { moment } from 'olymp/locale-de';
 import TerminItem from './item';
-import './termine.less';
 
 const getTags = (items) => {
   const tags = { Alle: 0 };
@@ -198,7 +197,7 @@ export default class TerminBlock extends Component {
 
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
-        <DataLoader data={data} trigger={['termine', 'gottesdienste']} placeholder="Keine Termine vorhanden" className="items">
+        <DataLoader {...this.props} trigger={['termine', 'gottesdienste']} placeholder="Keine Termine vorhanden" className="items">
           <div className="item">
             <h1>{type} der nächsten Zeit</h1>
 

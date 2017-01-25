@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Tag } from 'antd';
-import './tags.less';
 
 export default class Tags extends Component {
   render() {
