@@ -21,32 +21,34 @@ const options = {
   ],
   toolbarActions: [
     {
-      type: ['link', 'link-page', 'link-media'],
+      type: 'link', // ['link', 'link-page', 'link-media'],
       icon: 'link',
-      description: ['Extern', 'Intern', 'Datei'],
+      description: 'Link', // ['Extern', 'Intern', 'Datei'],
       onClick: ({ value, onChange }, isActive) => {
+        let newVal = value;
+
         if (isActive) {
-          value = value
+          newVal = value
             .transform()
             .unwrapInline('link')
             .apply();
         } else {
           let href = window.prompt('URL');
-          if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) href = `http://${href}`;
-          value = value
-            .transform()
-            .wrapInline({
-              type: 'link',
-              data: { href, target: '_blank' },
-            })
-            .collapseToEnd()
-            .apply();
+          if (href) {
+            if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) href = `http://${href}`;
+            newVal = newVal
+              .transform()
+              .wrapInline({
+                type: 'link',
+                data: { href, target: '_blank' },
+              })
+              .collapseToEnd()
+              .apply();
+          }
         }
-        onChange(value);
+        onChange(newVal);
       },
-      isActive: ({ value }) => {
-        return value.inlines.some(inline => inline.type === 'link');
-      },
+      isActive: ({ value }) => value.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
@@ -244,25 +246,29 @@ export default class SlateEditor extends Component {
           </Gateway>
         )}
         {children}
-        {this.state.mode ? <Editor
-          {...rest}
-          spellcheck={spellcheck || false}
-          readOnly={!!readOnly}
-          state={this.state.mode}
-          onChange={mode => this.setState({ mode })}
-          onPaste={this.onPaste}
-          onKeyDown={this.onKeyDown}
-        /> : <Editor
-          {...rest}
-          spellcheck={spellcheck || false}
-          readOnly={!!readOnly}
-          plugins={plugins}
-          schema={{ marks, nodes }}
-          state={value}
-          onChange={onChange}
-          onPaste={this.onPaste}
-          onKeyDown={this.onKeyDown}
-        />}
+        {this.state.mode ? (
+          <Editor
+            {...rest}
+            spellcheck={spellcheck || false}
+            readOnly={!!readOnly}
+            state={this.state.mode}
+            onChange={mode => this.setState({ mode })}
+            onPaste={this.onPaste}
+            onKeyDown={this.onKeyDown}
+          />
+        ) : (
+          <Editor
+            {...rest}
+            spellcheck={spellcheck || false}
+            readOnly={!!readOnly}
+            plugins={plugins}
+            schema={{ marks, nodes }}
+            state={value}
+            onChange={onChange}
+            onPaste={this.onPaste}
+            onKeyDown={this.onKeyDown}
+          />
+        )}
       </div>
     );
   }

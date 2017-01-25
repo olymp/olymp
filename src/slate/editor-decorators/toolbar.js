@@ -78,9 +78,9 @@ export default (options = {}) => {
     renderActionButton = (props) => {
       const isActive = props.isActive ? props.isActive(this.props) : false;
       const isActiveFn = () => isActive;
-      const test = e => props.onClick(this.props, isActive, e);
+      const fn = e => props.onClick(this.props, isActive, e);
 
-      return this.renderOptionButton(props, isActiveFn, test);
+      return this.renderOptionButton(props, isActiveFn, fn);
     }
     renderOptionButton = (props, isActiveFn, onMouseDownFn, label) => {
       const { value } = this.props;
@@ -97,7 +97,10 @@ export default (options = {}) => {
                   label || subType;
 
               return this.renderOptionButton(
-                { ...props, type: subType }, isActiveFn, onMouseDownFn, subLabel
+                { ...props, type: subType },
+                isActiveFn,
+                Array.isArray(onMouseDownFn) ? onMouseDownFn[index] : onMouseDownFn,
+                subLabel,
               );
             })}
           </Menu.SubMenu>
