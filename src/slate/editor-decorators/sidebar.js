@@ -36,15 +36,16 @@ export default (options = {}) => {
         sideBarMenu.style.display = 'none';
         sideBarMenu.style.top = '-10000px';
         sideBarMenu.style.left = '-10000px';
+
         return;
       }
       const parentRect = sideBarMenu.parentNode.parentNode.getBoundingClientRect();
-      const top = rect.top - parentRect.top - sideBarMenu.offsetHeight / 2 + rect.height / 2;
-      const left = rect.left - parentRect.left - sideBarMenu.offsetWidth;
+      const height = 48; // sideBarMenu.offsetHeight
+      const width = 32; // sideBarMenu.offsetWidth
+      const top = rect.top - parentRect.top - (height / 2) + (rect.height / 2); // eslint-disable-line
+      const left = rect.left - parentRect.left - width;
 
       sideBarMenu.style.display = 'block';
-      //const top = rect.top + window.scrollY - sideBarMenu.offsetHeight / 2 + rect.height / 2; // eslint-disable-line
-      //const left = (rect.left + window.scrollX) - sideBarMenu.offsetWidth;
       sideBarMenu.style.top = `${top}px`;
       sideBarMenu.style.left = `${left}px`;
     }
