@@ -28,22 +28,24 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
           </Image>
         ) : undefined}
 
-        <div className={`text ${leading ? 'colored' : ''}`}>
-          <h2>{header}</h2>
-          {subheader ? <div className="subheader">{subheader}</div> : null}
+        {(!!header || !!text || !!tags) && (
+          <div className={`text ${leading ? 'colored' : ''}`}>
+            <h2>{header}</h2>
+            {subheader ? <div className="subheader">{subheader}</div> : null}
 
-          {text ? <SlateMate key={id} value={text} className="mt-1" readOnly /> : null}
+            {text ? <SlateMate key={id} value={text} className="mt-1" readOnly /> : null}
 
-          {(!query || !query[capitalize(identifier)]) && more ? (
-            <p style={{ marginBottom: '2rem' }}>
-              <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: id } }}>
-                <i className="fa fa-angle-double-right" /> {more}
-              </Link>
-            </p>
-          ) : undefined}
+            {(!query || !query[capitalize(identifier)]) && more ? (
+              <p style={{ marginBottom: '2rem' }}>
+                <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: id } }}>
+                  <i className="fa fa-angle-double-right" /> {more}
+                </Link>
+              </p>
+            ) : undefined}
 
-          <Tags tags={tags} />
-        </div>
+            <Tags tags={tags} />
+          </div>
+        )}
       </div>
 
       {query && query[capitalize(identifier)] ? (
