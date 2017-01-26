@@ -7,11 +7,11 @@ import './style.less';
 @withRouter
 export default class MediaList extends Component {
   render() {
-    const { images = [], className, onClick, selected, multi } = this.props;
+    const { images, className, onClick, selected, multi } = this.props;
 
     return (
       <div className={cn(className, 'olymp-media')}>
-        {images.map((item, index) => {
+        {(images || []).map((item, index) => {
           const isActive = selected.findIndex(x => x === item.id) !== -1;
 
           return (
