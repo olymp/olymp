@@ -172,17 +172,19 @@ export default class BeitragBlock extends Component {
       const date = x.start || x.createdAt || x.updatedAt;
       const archived = !!(x.ende && moment(x.ende).isBefore());
       const archivText = archived ? <span style={{ color: 'red' }}><br />Archiv, gültig bis {moment(x.ende).format('DD. MMMM YYYY, HH:mm')} Uhr</span> : null;
+      const text = x.text || x.zusammenfassung;
+      const more = x.zusammenfassung ? 'Artikel weiterlesen' : 'Artikel ansehen';
 
       return {
         ...x,
         archived,
         date: moment(date).format('X'),
         shortText: x.zusammenfassung || x.text,
-        text: x.text || x.zusammenfassung,
+        text,
         leading: !!(x.hauptbeitrag && !archived),
         header: x.name,
         subheader: <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr - ${autor ? autor.name : 'Redaktion'}`}{archivText}</span>,
-        more: x.zusammenfassung ? 'Artikel weiterlesen' : 'Artikel ansehen',
+        more: !!text && more,
       };
     });
     beitraege = orderBy(beitraege, ['archived', 'leading', 'date'], ['asc', 'desc', 'desc']);
