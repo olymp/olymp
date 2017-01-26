@@ -24,7 +24,6 @@ export default (options = {}) => Block => {
     state = {
       menu: null,
       modal: {},
-      selection: [],
     };
 
     componentDidMount() {
@@ -59,7 +58,7 @@ export default (options = {}) => Block => {
 
     renderAction = (props) => {
       const { toggle, type, active, icon, separated, options, right, multi, showModal } = props;
-      const { modal, selection } = this.state;
+      const { modal } = this.state;
 
       if (options && options.length < 10 && !multi && !showModal) {
         const menu = (
@@ -99,7 +98,7 @@ export default (options = {}) => Block => {
         delete attributes.disabled;
 
         // Alten Wert speichern, für den Fall das Cancel gedrückt wird
-        if (!selection.length) this.setState({ selection: selectedRowKeys });
+        if (!this.selection) this.selection = selectedRowKeys;
 
         const columns = Object.keys(attributes).map(key => ({
           title: capitalize(key),
@@ -128,10 +127,14 @@ export default (options = {}) => Block => {
             <Modal
               title="Bitte wählen"
               visible={modal[type]}
-              onOk={() => this.setState({ selection: [], modal: { ...modal, [type]: false } })}
+              onOk={() => {
+                this.selection = undefined;
+                this.setState({ modal: { ...modal, [type]: false } });
+              }}
               onCancel={() => {
-                toggle(data.find(item => selection.findIndex(key => key === item.key) !== -1));
-                this.setState({ selection: [], modal: { ...modal, [type]: false } });
+                toggle(data.find(item => this.selection.findIndex(key => key === item.key) !== -1));
+                this.selection = undefined;
+                this.setState({ modal: { ...modal, [type]: false } });
               }}
             >
               <Table
