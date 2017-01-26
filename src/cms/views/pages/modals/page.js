@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withItem, withRouter, graphql, gql, unflatten, flatten } from 'olymp';
+import { withItem, graphql, gql, unflatten, flatten } from 'olymp';
 import { Modal, Form, Input, Spin, TreeSelect } from 'antd';
 // import { map, groupBy, extend, pick } from 'lodash';
 
@@ -66,7 +66,6 @@ const PageForm = Form.create()(
   }
 );
 
-@withRouter
 @withItem({ typeName: 'page' })
 @graphql(gql`
   query pageList {
@@ -84,8 +83,9 @@ export default class PageSettings extends Component {
   }
 
   handleCreate = () => {
-    const { location, router, item, onClose, save, data } = this.props;
+    const { item, onClose, save, data } = this.props;
     const form = this.form;
+
     form.validateFields((err, values) => {
       if (err) {
         return;
