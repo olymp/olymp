@@ -31,6 +31,7 @@ export const removeItem = (id, typeName, client, { onRemoved, attributes }) =>
   }).then(({ data }) => {
     notification.success({ message: 'Gelöscht', description: 'Der Eintrag wurde gelöscht!' });
     if (onRemoved) onRemoved(data, this.props);
+    return true;
   }).catch((err) => {
     console.error(err);
     notification.error({ message: 'Fehler', description: 'Fehler beim Löschen!' });
