@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Select, Button } from 'antd';
+import { Modal, Form, Input, Select, Button, Spin } from 'antd';
 import { withCollection } from 'olymp';
 import ListMini from './list-mini';
 
@@ -24,32 +24,28 @@ const MediaForm = Form.create()(
 
     return (
       <div>
-        <div style={{ borderBottom: '1px solid #DDD', padding: '1rem 0', marginBottom: '1rem' }}>
-          <Form.Item key="source" label="Gemeinsame Quelle" {...FormItemLayout}>
-            {getFieldDecorator('source', {
-              initialValue: source || '',
-            })(
-              <Input placeholder="Quelle" />
-            )}
-          </Form.Item>
-          <Form.Item key="tags" label="Gemeinsame Schlagworte" {...FormItemLayout}>
-            {getFieldDecorator('tags', {
-              initialValue: Object.keys(tags).filter(tag => tags[tag] === images.length),
-            })(
-              <Select {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
-            )}
-          </Form.Item>
+        <Form.Item key="source" label="Gemeinsame Quelle" {...FormItemLayout}>
+          {getFieldDecorator('source', {
+            initialValue: source || '',
+          })(
+            <Input placeholder="Quelle" />
+          )}
+        </Form.Item>
+        <Form.Item key="tags" label="Gemeinsame Schlagworte" {...FormItemLayout}>
+          {getFieldDecorator('tags', {
+            initialValue: Object.keys(tags).filter(tag => tags[tag] === images.length),
+          })(
+            <Select {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
+          )}
+        </Form.Item>
 
-          <div style={{ float: 'right' }}>
-            <Button onClick={save} type="primary">Speichern</Button>&nbsp;
-            <Button onClick={remove}>Löschen</Button>&nbsp;
-            <Button onClick={onClose}>Abbrechen</Button>
-          </div>
-
-          <div style={{ clear: 'both' }} />
+        <div style={{ float: 'right' }}>
+          <Button onClick={save} type="primary">Speichern</Button>&nbsp;
+          <Button onClick={remove}>Löschen</Button>&nbsp;
+          <Button onClick={onClose}>Abbrechen</Button>
         </div>
 
-        <ListMini {...this.props} />
+        <div style={{ clear: 'both' }} />
       </div>
     );
   }
@@ -57,16 +53,24 @@ const MediaForm = Form.create()(
 
 @withCollection('File')
 export default class MultiMediaDetail extends Component {
+  state = {
+    loading: false,
+  };
+
   remove = () => {
-    const { remove, onClose, images } = this.props;
+    const { onClose, images, removeCollectionItem } = this.props;
+    const setLoading = state => this.setState({ loading: state });
 
     Modal.confirm({
       title: 'Diese Dateien wirklich löschen?',
       content: `Wollen Sie diese ${images.length} Dateien wirklich löschen?`,
       onOk() {
-        images.forEach(({ id }) => {
-          // remove({ id }).then(onClose);
-          console.log(id);
+        setLoading(true);
+
+        Promise.all(images.map(image => removeCollectionItem(image.id))).then(() => {
+          onClose();
+        }).catch((err) => {
+          console.error(err);
         });
       },
       onCancel() {
@@ -76,24 +80,25 @@ export default class MultiMediaDetail extends Component {
   };
 
   save = () => {
-    const { save, onClose, images, saveCollectionItem } = this.props;
+    const { onClose, images, saveCollectionItem } = this.props;
     const form = this.form;
+    const setLoading = state => this.setState({ loading: state });
 
     Modal.confirm({
       title: `Änderungen für alle ${images.length} Dateien übernehmen?`,
-      content: 'Vorherige Schlageworte oder Quellen werden damit überschrieben!',
+      content: 'Vorherige Schlagworte oder Quellen werden damit überschrieben!',
       onOk() {
         form.validateFields((err, { tags, source }) => {
           if (err) return;
-          Promise.all(images.map((image) => {
-            return saveCollectionItem({
-              ...image,
-              source,
-              tags,
-            });
-          })).then(x => {
-            console.log('done!');
-          }).catch(err => {
+          setLoading(true);
+
+          Promise.all(images.map(image => saveCollectionItem({
+            ...image,
+            source,
+            tags,
+          }))).then(() => {
+            onClose();
+          }).catch((err) => {
             console.error(err);
           });
         });
@@ -105,13 +110,23 @@ export default class MultiMediaDetail extends Component {
   };
 
   render() {
+    const { loading } = this.state;
+
     return (
-      <MediaForm
-        {...this.props}
-        ref={form => this.form = form}
-        save={this.save}
-        remove={this.remove}
-      />
+      <div>
+        <div style={{ borderBottom: '1px solid #DDD', padding: '1rem 0', marginBottom: '1rem', minHeight: 200, position: 'relative' }}>
+          {loading ? <Spin /> : (
+            <MediaForm
+              {...this.props}
+              ref={form => this.form = form}
+              save={this.save}
+              remove={this.remove}
+            />
+          )}
+        </div>
+
+        <ListMini {...this.props} />
+      </div>
     );
   }
 }

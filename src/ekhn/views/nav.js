@@ -18,12 +18,17 @@ import sortBy from 'lodash/sortBy';
 })
 export default class Header extends Component {
   render() {
-    const { location, data } = this.props;
+    const { location, data, showHome = true } = this.props;
     let { pages = [] } = this.props;
     let { personen } = data;
     const nav = {};
 
+    if (!showHome) {
+      pages = pages.filter(page => page.slug !== '/');
+    }
+
     pages = pages.filter(page => page.slug !== '/impressum');
+
     Object.keys(pages).forEach((key) => {
       const page = pages[key];
       if (!nav[page.menu || 'main']) nav[page.menu || 'main'] = [];

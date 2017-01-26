@@ -89,21 +89,19 @@ export default class RollenBlock extends Component {
           </DataLoader>
         ) : null}
 
-        {rolle ? (
-          <DataLoader {...this.props} trigger={!!(personen && personen.length)} placeholder="Keine Personen zu dieser Rolle gefunden">
-            <Items
-              items={(personen || []).map(person => ({
-                ...person,
-                shortText: person.text,
-                text: person.text,
-                header: person.name,
-                subheader: <span>{person.rollen.map(({ id, name }) => <Link key={id} to={`/über-uns/${slugify(name)}`}>{name}</Link>)}</span>,
-              }))}
-              identifier="person"
-              pageSize={20}
-              style={{ marginTop: '2rem' }}
-            />
-          </DataLoader>
+        {rolle && personen && personen.length ? (
+          <Items
+            items={(personen || []).map(person => ({
+              ...person,
+              shortText: person.text,
+              text: person.text,
+              header: person.name,
+              subheader: <span>{person.rollen.map(({ id, name }) => <Link key={id} to={`/über-uns/${slugify(name)}`}>{name}</Link>)}</span>,
+            }))}
+            identifier="person"
+            pageSize={20}
+            style={{ marginTop: '2rem' }}
+          />
         ) : null}
 
         {children}

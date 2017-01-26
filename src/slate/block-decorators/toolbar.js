@@ -21,7 +21,10 @@ export default (options = {}) => Block => {
       actions: [],
     }
 
-    state = { menu: null, modal: {} };
+    state = {
+      menu: null,
+      modal: {},
+    };
 
     componentDidMount() {
       if (manual) return;
@@ -93,10 +96,15 @@ export default (options = {}) => Block => {
           };
         });
         delete attributes.disabled;
+
+        // Alten Wert speichern, für den Fall das Cancel gedrückt wird
+        if (!this.selection) this.selection = selectedRowKeys;
+
         const columns = Object.keys(attributes).map(key => ({
           title: capitalize(key),
           dataIndex: key,
         }));
+
         const rowSelection = multi ? {
           type: 'select',
           selectedRowKeys,
@@ -119,8 +127,15 @@ export default (options = {}) => Block => {
             <Modal
               title="Bitte wählen"
               visible={modal[type]}
-              onOk={() => this.setState({ modal: { ...modal, [type]: false } })}
-              onCancel={() => this.setState({ modal: { ...modal, [type]: false } })}
+              onOk={() => {
+                this.selection = undefined;
+                this.setState({ modal: { ...modal, [type]: false } });
+              }}
+              onCancel={() => {
+                toggle(data.find(item => this.selection.findIndex(key => key === item.key) !== -1));
+                this.selection = undefined;
+                this.setState({ modal: { ...modal, [type]: false } });
+              }}
             >
               <Table
                 dataSource={data}

@@ -33,7 +33,7 @@ export default class MediaView extends Component {
     const { tags } = this.state;
     const tree = {};
 
-    images.forEach((image) => {
+    (images || []).forEach((image) => {
       (image.tags || []).forEach((tag) => {
         const isActive = tags.findIndex(x => x === tag) !== -1;
 
@@ -106,8 +106,10 @@ export default class MediaView extends Component {
     let currentNode = this.getNode(items || []);
     let images = items;
     tags.forEach((tag) => {
-      images = currentNode[tag].images;
-      currentNode = this.getNode(images, currentNode);
+      if (currentNode && currentNode[tag] && currentNode[tag].images && currentNode[tag].images.length) {
+        images = currentNode[tag].images;
+        currentNode = this.getNode(images, currentNode);
+      }
     });
 
     const directories = sortBy(
@@ -160,10 +162,6 @@ export default class MediaView extends Component {
                       images={selected.map(x => items.find(item => item.id === x))}
                       deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
                       onClose={this.onClose}
-                    />
-                    <ListMini
-                      images={selected.map(x => items.find(item => item.id === x))}
-                      deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
                     />
                   </div>
                 )
