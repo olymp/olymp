@@ -15,9 +15,9 @@ export default (type, name, props = {}, subField) => {
   if (subField && subField.type) {
     if (subField.type.kind === 'LIST' && subField.type.ofType) {
       return (
-        <DetailEditor {...props} placeholder={name} tags name={subField.type.ofType.name} />
+        <DetailEditor {...props} placeholder={name} tags typeName={subField.type.ofType.name} />
       );
-    } return (<DetailEditor {...props} placeholder={name} name={subField.type.name} />);
+    } return (<DetailEditor {...props} placeholder={name} typeName={subField.type.name} />);
   }
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'String') {
