@@ -7,6 +7,7 @@ import MasonryLayout from 'react-masonry-component';
 import Item from './item';
 import ItemPanorama from './panorama';
 import ItemCompact from './compact';
+import ItemFile from './file';
 
 @withAuth
 @withRouter
@@ -21,6 +22,40 @@ export default class Items extends Component {
   ) : (
     <div className="items">{children}</div>
   );
+
+  getItem = (item) => {
+    const { identifier = 'item', location, masonry } = this.props;
+    const { bild, shortText, text } = item;
+
+    if (bild && !shortText && !text) {
+      return (
+        <ItemFile
+          {...item}
+          key={item.id}
+        />
+      );
+    }
+
+    if (masonry) {
+      return (
+        <ItemCompact
+          {...item}
+          location={location}
+          identifier={identifier}
+          key={item.id}
+        />
+      );
+    }
+
+    return (
+      <Item
+        {...item}
+        location={location}
+        identifier={identifier}
+        key={item.id}
+      />
+    );
+  }
 
   render() {
     const { items, masonry, router, location, identifier = 'item', selectedId, auth, pageSize = 10, className, style } = this.props;
@@ -38,7 +73,6 @@ export default class Items extends Component {
             {...selectedItem}
             location={location}
             identifier={identifier}
-            className="item leading"
           />
         </div>
       ) : <div />;
@@ -50,16 +84,9 @@ export default class Items extends Component {
           {...item}
           location={location}
           identifier={identifier}
-          className="item leading"
+          className="leading"
           key={index}
-        /> :
-          <Item
-            {...item}
-            location={location}
-            identifier={identifier}
-            className={`item ${item.leading ? 'colored' : ''}`}
-            key={index}
-          />
+        /> : this.getItem(item)
       )
     ), masonry);
 
