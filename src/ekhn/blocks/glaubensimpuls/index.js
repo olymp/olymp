@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
-import Glaubensimpuls from './index';
+import Glaubensimpuls from '../../components/glaubensimpuls';
 
 @useGenericBlock({
   label: 'Glaubensimpuls',
   category: 'Media',
   editable: false,
-  resize: { ratio: 1, coverOnResize: true },
+  resize: {
+    bootstrap: true,
+    coverOnResize: true,
+    resizeY: false,
+  },
+  align: true,
 })
 export default class GlaubensimpulsBlock extends Component {
   render() {
-    const { children, style, ...rest } = this.props;
+    const { children, style, className, ...rest } = this.props;
 
     return (
-      <GenericBlock {...rest} style={{ ...style, height: 'auto' }}>
-        <Glaubensimpuls {...rest} style={{ margin: 0, ...style }} />
+      <GenericBlock {...rest} className={className} style={{ ...style, height: 'auto' }}>
+        <Glaubensimpuls {...rest} isBlock style={{ margin: 0 }} />
 
         {children}
       </GenericBlock>

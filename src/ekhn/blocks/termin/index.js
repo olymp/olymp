@@ -157,7 +157,7 @@ export default class TerminBlock extends Component {
         ...gottesdienst,
         name: gottesdienst.name || 'Gottesdienst',
         start: gottesdienst.datum,
-        farbe: gottesdienst.hervorheben ? '#FCEFEE' : null,
+        className: gottesdienst.hervorheben ? 'special' : null,
         additional: gottesdienst.abendmahl || gottesdienst.kindergottesdienst ? (
           <p style={{ margin: 0 }}>
             Mit
@@ -179,6 +179,11 @@ export default class TerminBlock extends Component {
       termine = termine.filter(
         termin => difference(tags, termin.tags || []).length !== tags.length
       );
+    }
+
+    // Eventuell Gottesdienste ausblenden
+    if (mode < 2) {
+      termine = termine.filter(termin => !termin.keinTermin);
     }
 
     let type;

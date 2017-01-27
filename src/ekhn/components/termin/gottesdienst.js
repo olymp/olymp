@@ -43,7 +43,8 @@ export default class GottesdienstBlock extends Component {
         ...gottesdienst,
         name: gottesdienst.name || 'Gottesdienst',
         start: gottesdienst.datum,
-        farbe: gottesdienst.hervorheben ? '#FCEFEE' : null,
+        // farbe: gottesdienst.hervorheben ? '#FCEFEE' : null,
+        className: gottesdienst.hervorheben ? 'special' : null,
         additional: gottesdienst.abendmahl || gottesdienst.kindergottesdienst ? (
           <p style={{ margin: 0 }}>
             Mit

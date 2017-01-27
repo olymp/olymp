@@ -43,7 +43,7 @@ export default class LosungBlock extends Component {
 
         <div style={{ padding: '0 3px' }}>
           <p>
-            {`"${losungtext}"`}
+            {`"${(losungtext || '').split('/').join('')}"`}
           </p>
 
           <h6 style={{ marginTop: -10, marginBottom: 0 }}>
@@ -53,7 +53,7 @@ export default class LosungBlock extends Component {
 
         <div style={{ padding: '0 3px' }}>
           <p>
-            {`"${lehrtext}"`}
+            {`"${(lehrtext || '').split('/').join('')}"`}
           </p>
 
           <h6 style={{ marginTop: -10, marginBottom: 0 }}>

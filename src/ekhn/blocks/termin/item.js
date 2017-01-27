@@ -9,11 +9,11 @@ import tinycolor from 'tinycolor2';
 export default useItemEdit()(({ children, className, start, ende, name, kommentar, farbe, ganztaegig, bild, pfarrer, organist, additional, ort }) => {
   const hypher = new Hypher(german);
 
-  const backgroundColor = farbe ? tinycolor(farbe)
-    // .setAlpha(0.6)
+  const eqColor = tinycolor.mix(tinycolor(farbe).setAlpha(1), '#FFF', 100 * (1 - tinycolor(farbe).getAlpha())).toRgbString();
+  const backgroundColor = farbe ? tinycolor(eqColor)
     .toRgbString() : null;
-  const color = farbe ? tinycolor(farbe)
-    .darken(33)
+  const color = farbe ? tinycolor(eqColor)
+    .darken(45)
     .toRgbString() : null;
 
   const date = (date, time) => (
@@ -53,7 +53,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
 
       <div className="col-xs-7 col-sm-9 pr-0">
         <div className="description">
-          <h3>{hypher.hyphenateText(name || 'Termin')}</h3>
+          <h3 style={{ color }}>{hypher.hyphenateText(name || 'Termin')}</h3>
           {kommentar ? <SlateMate value={kommentar} readOnly /> : null}
 
           {pfarrer && pfarrer.length ? <span>Mit{pfarrer.reverse().map((x, i) => {

@@ -7,10 +7,11 @@ import tinycolor from 'tinycolor2';
 const StyledCard = createComponent(({ isActive, color }) => {
   const colorStyle = {};
   if (color) {
-    colorStyle.backgroundColor = `${tinycolor(color).toRgbString()}!important`;
-    colorStyle.color = tinycolor.isReadable('#FFF', color) ? '#FFF' : '#333';
-    colorStyle.borderColor = `${tinycolor(color).darken(5).toRgbString()}!important`;
-    // colorStyle.color = '#222';
+    const eqColor = tinycolor.mix(tinycolor(color).setAlpha(1), '#FFF', 100 * (1 - tinycolor(color).getAlpha())).toRgbString();
+
+    colorStyle.backgroundColor = `${eqColor}!important`;
+    colorStyle.color = tinycolor.isReadable(eqColor, '#FFF', { level: 'AAA', size: 'small' }) ? '#FFF' : tinycolor(eqColor).darken(45).toRgbString();
+    colorStyle.borderColor = `${tinycolor(eqColor).darken(5).toRgbString()}!important`;
   }
 
   return {
