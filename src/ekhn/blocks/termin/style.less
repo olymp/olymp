@@ -1,6 +1,18 @@
 .termin {
   border-bottom: 1px solid @brand-primary;
 
+  &.special {
+    background-color: #FCEFEE;
+
+    h3 {
+      color: darken(#FCEFEE, 50%) !important;
+    }
+
+    h4 {
+      color: darken(#FCEFEE, 33%) !important;
+    }
+  }
+
   &:not(.mini) {
     margin-left: 0;
     margin-right: 0;

@@ -4,8 +4,9 @@ import { Pagination } from 'antd';
 import capitalize from 'lodash/upperFirst';
 import MasonryLayout from 'react-masonry-component';
 
-import ItemSmall from './small';
-import ItemLarge from './large';
+import Item from './item';
+import ItemPanorama from './panorama';
+import ItemCompact from './compact';
 
 @withAuth
 @withRouter
@@ -33,7 +34,7 @@ export default class Items extends Component {
     if (selectedItem) {
       return selectedItem ? (
         <div className="items">
-          <ItemLarge
+          <ItemPanorama
             {...selectedItem}
             location={location}
             identifier={identifier}
@@ -45,14 +46,14 @@ export default class Items extends Component {
 
     const content = this.masonryWrapper((
       items.slice((page - 1) * steps, page * steps).map((item, index) => item.leading && !index ?
-        <ItemLarge
+        <ItemPanorama
           {...item}
           location={location}
           identifier={identifier}
           className="item leading"
           key={index}
         /> :
-          <ItemSmall
+          <Item
             {...item}
             location={location}
             identifier={identifier}

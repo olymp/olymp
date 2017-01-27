@@ -9,7 +9,7 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
 
   if (value !== 'other') {
     const valueIndex = colors.findIndex(
-      color => tinycolor(value).toHexString() === tinycolor(color.color).toHexString()
+      color => tinycolor(value).toRgbString() === tinycolor(color.color).toRgbString()
     );
 
     if (valueIndex === -1) {
@@ -29,8 +29,8 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
       }
     >
       {newColors.map((color, i) => (
-        <Select.Option value={tinycolor(color.color).toHexString()} key={i}>
-          <i className="fa fa-square" style={{ color: tinycolor(color.color).toHexString() }} /> {color.name}
+        <Select.Option value={tinycolor(color.color).toRgbString()} key={i}>
+          <i className="fa fa-square" style={{ color: tinycolor(color.color).toRgbString() }} /> {color.name}
         </Select.Option>
       ))}
 

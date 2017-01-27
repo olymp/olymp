@@ -35,7 +35,7 @@ import Tags from '../../components/tags';
 })
 export default class GlaubensimpulsBlock extends Component {
   render() {
-    const { data, style, className } = this.props;
+    const { data, style, className, isBlock } = this.props;
     const { tags } = data.glaubensimpuls || {};
     const bild = (data.glaubensimpuls || {}).small;
     const { caption } = (bild || {});
@@ -43,10 +43,12 @@ export default class GlaubensimpulsBlock extends Component {
     return (
       <DataLoader {...this.props} trigger="glaubensimpuls" placeholder="Kein Glaubensimpuls vorhanden">
         <Image value={bild} width="100%" />
-        <div className="glaubensimpuls_content">
-          <h5 style={{ marginBottom: '1rem' }}>{caption}</h5>
-          <Tags tags={tags} />
-        </div>
+        {!isBlock && (
+          <div className="glaubensimpuls_content">
+            <h5 style={{ marginBottom: '1rem' }}>{caption}</h5>
+            <Tags tags={tags} />
+          </div>
+        )}
       </DataLoader>
     );
   }
