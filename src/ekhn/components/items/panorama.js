@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'olymp';
+import { Link, cn } from 'olymp';
 import { SlateMate, Image, useItemEdit } from 'olymp/cms';
 import capitalize from 'lodash/upperFirst';
 import Tags from '../tags';
@@ -17,7 +17,7 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
 
   return (
     <div key={id}>
-      <div className={className}>
+      <div className={cn(className, 'item panorama')}>
         {children}
 
         { bild && bild.url ? (

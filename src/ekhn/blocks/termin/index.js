@@ -203,7 +203,7 @@ export default class TerminBlock extends Component {
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
         <DataLoader {...this.props} trigger={['termine', 'gottesdienste']} placeholder="Keine Termine vorhanden" className="items">
-          <div className="item">
+          <div className="item" style={{ padding: '.5rem' }}>
             <h1>{type} der nächsten Zeit</h1>
 
             {termine.slice((page - 1) * steps, page * steps).map(x => <TerminItem {...x} key={x.id} />)}
