@@ -4,7 +4,7 @@ export { default as GzBoxSmall } from './gzbox-small';
 export { default as Magazin } from './magazin';
 export { default as Termine } from './termine';
 export { default as Telefon } from './block-telefon';
-export { GZCardArtikel, GZCardTermin, GZCardEinrichtung, GZCardYoutube, GZCard, GZCardImage } from './card';
+export * from './card';
 export { default as GZContainer } from './container';
 export { default as Verzeichnis } from './verzeichnis';
 export { default as Kontakt } from './kontakt';

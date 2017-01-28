@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { useBlockBase, useGenericBlock, GenericBlock, Block } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { Image, MediaModal } from 'olymp/cms';
+import { cloudinaryUrl } from 'olymp';
 import './style.less';
 
 const defaultImage = 'http://www.gz-kelkheim.de/dl/content_homes.image/thumb/ZkzuZVqlYe.jpg';
@@ -40,6 +41,24 @@ export default class GzBox extends Component {
   render() {
     const { children, attributes, showMedia, image, readOnly, setData, style, factor, renderToolbar, color } = this.props;
     const height = style.height ? style.height.replace('-', '') : null;
+    return (
+      <div className="gz-image-box" data-block-active={!readOnly}>
+        {renderToolbar()}
+         {showMedia && (
+          <MediaModal
+            id={!!image && image.id}
+            onChange={image => setData({ showMedia: undefined, image })}
+            onClose={() => setData({ showMedia: undefined })}
+          />
+        )}
+        <div style={{ height: '400px', overflow: 'hidden', position: 'relative' }}>
+          <img style={{position: 'absolute', top: '50%', left: '50%', height: 'auto', width: '100%', zIndex: 5, transform: 'translate(-50%, -50%)' }} src={cloudinaryUrl(image.url, image, image.crop)} />
+        </div>
+        <div className="gz-image-content" style={{ backgroundColor: color }}>
+          {children}
+        </div>
+      </div>
+    )
     return (
       <Image
         {...attributes}

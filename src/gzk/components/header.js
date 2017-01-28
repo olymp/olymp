@@ -39,7 +39,7 @@ class Menu extends Component {
   }
   renderItem = (props, index) => {
     const { renderItem, page, level, disabled, isHeading, parent } = props;
-    const hasChildren = (page.children && !!page.children.length) || (page.headings && !!page.headings.length);
+    const hasChildren = (page.children && !!page.children.length) || (page.headings && page.headings.length > 1);
     const classes = cn({ 'nav-item': !level }, !level && hasChildren && 'dropdown-mainmenu', level && hasChildren && 'dropdown-submenu');
     const classes2 = cn(hasChildren ? 'dropdown-toggle' : 'item');
     const children = hasChildren && <Menu {...props} level={level + 1} />;
@@ -60,9 +60,9 @@ class Menu extends Component {
     if (!page) return null;
     return (
       <SortContainer onSortEnd={sortEndCreator(page.children)} useDragHandle axis={!level ? 'x' : 'y'}>
-        {this.renderUtil(renderMenu, this.props) || <ul className={cn(!level ? 'nav navbar-nav pull-right sf-menu' : 'dropdown-menu')} style={{ top: 'initial' }}>
+        {this.renderUtil(renderMenu, this.props) || <ul className={cn(!level ? 'nav navbar-nav pull-right sf-menu' : 'dropdown-menu pl-1 pr-1')} style={{ top: 'initial' }}>
           {toArray(page.children).map((child, index) => this.renderItem({ ...this.props, parent: page, page: child, children: null }, index))}
-          {toArray(page.headings).map((child, index) => this.renderItem({ ...this.props, parent: page, isHeading: true, page: child, disabled: true, children: null }, index))}
+          {toArray(page.headings).length > 1 && toArray(page.headings).map((child, index) => this.renderItem({ ...this.props, parent: page, isHeading: true, page: child, disabled: true, children: null }, index))}
           {!disabled ? <li className="nav-item" style={{ margin: 0 }}>
             {this.renderPlus({ ...this.props })}
           </li> : null}
