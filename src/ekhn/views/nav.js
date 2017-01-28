@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql, cn } from 'olymp';
 import { Navigation } from 'olymp/cms';
 import sortBy from 'lodash/sortBy';
 
@@ -18,7 +18,7 @@ import sortBy from 'lodash/sortBy';
 })
 export default class Header extends Component {
   render() {
-    const { location, data, showHome = true } = this.props;
+    const { location, data, showHome = true, className } = this.props;
     let { pages = [] } = this.props;
     let { personen } = data;
     const nav = {};
@@ -49,7 +49,7 @@ export default class Header extends Component {
     });
 
     return (
-      <nav className="nav-component">
+      <nav className={cn(className, 'nav-component')}>
         <Navigation nav={nav.main} className="nav navbar-nav pull-right" location={location} rollen={rollen} />
       </nav>
     );
