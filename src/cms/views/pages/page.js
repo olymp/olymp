@@ -48,7 +48,7 @@ export default class CmsPage extends Component {
     return (
       <div>
         <Helmet title={item.name} />
-        {item.headings && (
+        {item.headings && item.headings.length > 1 && (
           <div className="anchor-menu container">
             <AnchorCreator offsetTop={100}>
               {this.createAnchors(item.headings)}

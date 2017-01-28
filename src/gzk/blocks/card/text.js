@@ -26,7 +26,7 @@ export default class GzCard extends Component {
         {title ? <h2 contentEditable={false}>
           {title}
         </h2> : null}
-        <div className={cn('gz-panel', title ? 'mt-1' : null)}>
+        <div className={cn('gz-panel')}>
           {children}
         </div>
       </GenericBlock>
