@@ -44,7 +44,7 @@ export default class GzBox extends Component {
     return (
       <div className="gz-image-box" data-block-active={!readOnly}>
         {renderToolbar()}
-         {showMedia && (
+        {showMedia && (
           <MediaModal
             id={!!image && image.id}
             onChange={image => setData({ showMedia: undefined, image })}

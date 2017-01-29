@@ -32,15 +32,15 @@ export default class Carousel extends Component {
   render() {
     const { items } = this.props;
 
-    const images = items && items.map(({ url, render }) => ({
-      original: cloudinaryUrl(url, { width: 800, height: this.getHeight(800) }),
+    const images = items && items.map(({ url, render, mode }) => ({
+      original: cloudinaryUrl(url, { width: 800, height: this.getHeight(800), mode }),
       srcSet: `
-        ${cloudinaryUrl(url, { width: 400, height: this.getHeight(400) })} 400w,
-        ${cloudinaryUrl(url, { width: 800, height: this.getHeight(800) })} 800w,
-        ${cloudinaryUrl(url, { width: 1200, height: this.getHeight(1200) })} 1200w,
-        ${cloudinaryUrl(url, { width: 1600, height: this.getHeight(1600) })} 1600w
+        ${cloudinaryUrl(url, { width: 400, height: this.getHeight(400), mode })} 400w,
+        ${cloudinaryUrl(url, { width: 800, height: this.getHeight(800), mode })} 800w,
+        ${cloudinaryUrl(url, { width: 1200, height: this.getHeight(1200), mode })} 1200w,
+        ${cloudinaryUrl(url, { width: 1600, height: this.getHeight(1600), mode })} 1600w
       `,
-      thumbnail: cloudinaryUrl(url, { width: 200, height: 100 } ),
+      thumbnail: cloudinaryUrl(url, { width: 150, height: 75, mode } ),
       renderItem: render,
     }));
 
