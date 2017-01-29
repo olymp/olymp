@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { CloudinaryImage } from 'olymp';
 import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
 import { Image } from 'olymp/cms';
 
@@ -40,30 +41,13 @@ export default class GzCardImage extends Component {
     const { children, title, url, editor, setData, getData, ...rest } = this.props;
     const { readOnly } = editor.props;
     const value = getData('image', { url: defaultImage });
-    const wrapper = {
-      paddingBottom: '51.9%',
-      height: 0,
-    };
-    const innerStyle = {
-      display: 'block',
-    };
     return (
       <GenericBlock {...rest} className="gz-big-element col-md-4" toolbarStyle={{ marginLeft: -11, marginRight: -11 }}>
         <h2>
           {title}
         </h2>
-        <div className="gz-panel" style={wrapper}>
-          <Image
-            container="div"
-            onChange={image => setData({ showMedia: undefined, image })}
-            lightbox
-            onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => {}}
-            showMediathek={getData('showMedia')}
-            height={317}
-            width="100%"
-            value={value}
-            style={innerStyle}
-          />
+        <div className="gz-panel" style={{ borderBottomRightRadius: 120 }}>
+          <CloudinaryImage srcSet={false} value={value} options={{ height: 233 }} />
         </div>
         {children}
       </GenericBlock>
