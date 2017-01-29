@@ -1,7 +1,8 @@
 // http://res.cloudinary.com/demo/image/upload/f_auto,q_auto,w_250,h_250,c_fit/sample.jpg
 const defaultState = 'f_auto,q_auto,fl_lossy';
 
-export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality, blur, retina } = {}, crop) => {
+export default (url, { mode, maxWidth, maxHeight, width, height, cropX, cropY, quality, blur, retina } = {}, crop) => {
+  if (!mode) mode = 'fill';
   if (retina && width) width *= 2;
   if (retina && height) height *= 2;
   if (retina && maxWidth) maxWidth *= 2;
@@ -21,13 +22,13 @@ export default (url, { maxWidth, maxHeight, width, height, cropX, cropY, quality
   if (cropX !== undefined && cropY !== undefined) {
     part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
   } else if (width && height) {
-    part = `w_${width},h_${height},c_fill/${part}`;
+    part = `w_${width},h_${height},c_${mode}/${part}`;
   }
 
   if (maxWidth || maxHeight) {
     if (maxWidth) part += `,w_${maxWidth}`;
     if (maxHeight) part += `,h_${maxHeight}`;
-    part += ',c_fill';
+    part += `,c_${mode}`;
   }
   if (quality) {
     part += `,q_${quality}`;
