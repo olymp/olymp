@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Select, Button, Spin } from 'antd';
 import { withCollection } from 'olymp';
 import ListMini from './list-mini';
+import { TagSelect } from '../../edits';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };
 
@@ -12,11 +13,11 @@ const MediaForm = Form.create()(
 
     const tags = {};
     let source;
-    images.forEach(image => {
+    images.forEach((image) => {
       if (source === undefined) source = image.source;
       source = (image.source === source) && source;
 
-      (image.tags || []).forEach(tag => {
+      (image.tags || []).forEach((tag) => {
         if (!tags[tag]) tags[tag] = 0;
         tags[tag] += 1;
       });
@@ -35,7 +36,7 @@ const MediaForm = Form.create()(
           {getFieldDecorator('tags', {
             initialValue: Object.keys(tags).filter(tag => tags[tag] === images.length),
           })(
-            <Select {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
+            <TagSelect {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
           )}
         </Form.Item>
 
