@@ -23,19 +23,11 @@ const getFormSchema = ({ fields }) =>
          end: undefined,
          start: [item.start, item.end]
        }));
-       result.after.push((item) => {
-         console.log(item);
-         return item;
-       });
        result.after.push(item => ({
          ...item,
          end: item.start[1],
          start: item.start[0],
        }));
-       result.after.push((item) => {
-         console.log(item);
-         return item;
-       });
      }
 
      field['@'].disabled = disabledFields.includes(field.name);
@@ -81,7 +73,6 @@ export default class MainDetail extends Component {
         return;
       }
 
-      // console.log('Received values of form: ', values);
       save(this.after.reduce((x, fn) => fn(x), values), { commit: false }).then((obj) => {
         if (!id) {
           router.push({ pathname, query: { [`@${typeName.toLowerCase()}`]: obj[typeName.toLowerCase()].id } });
@@ -97,7 +88,6 @@ export default class MainDetail extends Component {
     if (!item || this.props.loading) return <Spin size="large" />;
     const { before, after, ...schema } = getFormSchema(collection);
     this.after = after;
-    console.log(schema);
     return (
       <div className="container olymp-container">
         <Form
