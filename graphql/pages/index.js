@@ -1,13 +1,16 @@
-module.exports = (schema, { adapter, attributes }) => {
+module.exports = (schema, { adapter, attributes, globalAttributes }) => {
   schema.addSchema({
     name: 'page',
     query: `
       page: Page @query
       pageList: [Page] @query
+      global: Global @query
+      globalList: [Global] @query
     `,
     mutation: `
       page: Page @mutate
       reorderPages(id: String, ids: [String], order: [Int]): [Page]
+      global: Global @mutate
     `,
     resolvers: {
       Mutation: {
@@ -46,6 +49,13 @@ module.exports = (schema, { adapter, attributes }) => {
         showHeadings: Boolean
         ${attributes || ''}
       }
+      type Global implements CollectionInterface @collection(name: "Global") @stamp @state {
+        name: String
+        title: String
+        description: String
+        tags: [String]
+        ${globalAttributes || ''}
+      }
     `,
   });
 
@@ -55,6 +65,16 @@ module.exports = (schema, { adapter, attributes }) => {
     collection.findOne({ }).then((one) => {
       if (one) return;
       adapter.client.collection('page').insertOne(
+        { id: require('shortid').generate(), name: 'Home', slug: '/', state: 'PUBLISHED' }
+      );
+    }).catch(err => console.log(err));
+  }, 5000);
+  setTimeout(() => {
+    if (!adapter.client) return;
+    const collection = adapter.client.collection('global');
+    collection.findOne({ }).then((one) => {
+      if (one) return;
+      adapter.client.collection('global').insertOne(
         { id: require('shortid').generate(), name: 'Home', slug: '/', state: 'PUBLISHED' }
       );
     }).catch(err => console.log(err));
