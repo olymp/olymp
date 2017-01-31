@@ -20,7 +20,7 @@ export default Form.create()(
           const editor = getFormEditor(field, name);
           if (!editor) return null;
           return (
-            <Form.Item key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...(field.type.name === 'Json' ? formItemLayout0 : formItemLayout)}>
+            <Form.Item key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} extra={field['@'].hint && field['@'].hint.arg0} {...(field.type.name === 'Json' ? formItemLayout0 : formItemLayout)}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field), valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value' })(editor)}
             </Form.Item>
           );
@@ -32,7 +32,7 @@ export default Form.create()(
     return (
       <div className={className} style={style}>
         <Form horizontal>
-          {schema.header.map(field => <Form.Item key={field.name} label="Name" {...formItemLayout0}>
+          {schema.header.map(field => <Form.Item key={field.name} label="Name" extra={field['@'].hint && field['@'].hint.arg0} {...formItemLayout0}>
             {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
               <Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." style={{ textAlign: 'center' }} />
             )}
