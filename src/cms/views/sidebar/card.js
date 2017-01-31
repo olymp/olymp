@@ -1,37 +1,24 @@
 import React from 'react';
-import { Image } from '../../edits';
 import { Card } from 'antd';
 import { createComponent } from 'react-fela';
-import tinycolor from 'tinycolor2';
+import { Image } from '../../edits';
 
-const StyledCard = createComponent(({ isActive, color }) => {
-  const colorStyle = {};
-  if (color) {
-    const eqColor = tinycolor.mix(tinycolor(color).setAlpha(1), '#FFF', 100 * (1 - tinycolor(color).getAlpha())).toRgbString();
-
-    colorStyle.backgroundColor = `${eqColor}!important`;
-    colorStyle.color = tinycolor.isReadable(eqColor, '#FFF', { level: 'AAA', size: 'small' }) ? '#FFF' : tinycolor(eqColor).darken(45).toRgbString();
-    colorStyle.borderColor = `${tinycolor(eqColor).darken(5).toRgbString()}!important`;
-  }
-
-  return {
-    cursor: 'pointer',
-    margin: '3px 10px 3px 0',
-    left: isActive ? '15px' : 0,
-    ...colorStyle,
-    '> .ant-card-extra': {
-      top: '5px',
-      right: '5px',
-    },
-    '> .ant-card-body': {
-      padding: 0,
-      ...colorStyle,
-    },
-    ':hover': {
-      left: isActive ? '-5px' : '10px',
-    },
-  };
-}, props => <Card {...props} />, ['onClick', 'extra']);
+const StyledCard = createComponent(({ isActive, color }) => ({
+  cursor: 'pointer',
+  margin: '3px 10px 3px 0',
+  borderRight: color ? `3px solid ${color}!important` : null,
+  left: isActive ? '15px' : 0,
+  '> .ant-card-extra': {
+    top: '5px',
+    right: '5px',
+  },
+  '> .ant-card-body': {
+    padding: 0,
+  },
+  ':hover': {
+    left: isActive ? '-5px' : '10px',
+  },
+}), props => <Card {...props} />, ['onClick', 'extra']);
 
 const StyledCardContent = createComponent(() => ({
   padding: '8px',
@@ -61,9 +48,8 @@ const StyledCardParagraph = createComponent(() => ({
 
 export default ({ name, description, image, ...rest }) => (
   <StyledCard {...rest}>
-    {!!image && <Image value={image} width={60} retina ratio={1} style={{ float: 'left' }} />}
+    {!!image && <Image value={image} width={60} retina mode="lpad" ratio={1} style={{ float: 'left' }} />}
     {image === null && <StyledCardImagePlaceholder />}
-
     <StyledCardContent>
       <StyledCardTitle>{name}</StyledCardTitle>
       {!!description && <StyledCardParagraph>{description}</StyledCardParagraph>}
