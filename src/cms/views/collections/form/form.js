@@ -3,6 +3,7 @@ import { Form, Input, Tabs, Menu, Icon } from 'antd';
 import { SlugEditor } from './editors';
 import getInitialValue from './initial-value';
 import getFormEditor from './form-editor';
+import getValidationRules from './get-validation-rules';
 import toLabel from './to-label';
 
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
@@ -15,12 +16,12 @@ export default Form.create()(
     const renderForm = fields => (
       <Form horizontal>
         {fields.map((field) => {
-          const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
+          const title = field['@'].label ? field['@'].label.arg0 : toLabel(field.name);
           const editor = getFormEditor(field, name);
           if (!editor) return null;
           return (
             <Form.Item key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} {...(field.type.name === 'Json' ? formItemLayout0 : formItemLayout)}>
-              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value' })(editor)}
+              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field), valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value' })(editor)}
             </Form.Item>
           );
         })}
@@ -32,13 +33,13 @@ export default Form.create()(
       <div className={className} style={style}>
         <Form horizontal>
           {schema.header.map(field => <Form.Item key={field.name} label="Name" {...formItemLayout0}>
-            {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
+            {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
               <Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." style={{ textAlign: 'center' }} />
             )}
           </Form.Item>)}
           <Menu mode="horizontal">
             {schema.bar.map(field => <Menu.Item style={{ width: 200 }} key={field.name}>
-              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field) })(
+              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
                 getFormEditor(field)
               )}
             </Menu.Item>)}
