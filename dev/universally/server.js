@@ -31,7 +31,7 @@ const launchAPI = () => {
     } else {
       server(app);
     }
-  } catch (err) { console.log('No server.js or server/index.js file found, using default settings'); }
+  } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
 }
 
 // Create our express based server.
