@@ -32,9 +32,9 @@ const getFormSchema = ({ fields }) =>
 
      field['@'].disabled = disabledFields.includes(field.name);
      if (field.name.endsWith('Id')) {
-       field['@'].idField = fields.find(({ name }) => `${name}Id` === item.name);
+       field['@'].idField = fields.find(({ name }) => `${name}Id` === field.name);
      } else if (field.name.endsWith('Ids')) {
-       field['@'].idField = fields.find(({ name }) => `${name}Ids` === item.name);
+       field['@'].idField = fields.find(({ name }) => `${name}Ids` === field.name);
      }
 
      if (headFields.includes(field.name)) { // Head

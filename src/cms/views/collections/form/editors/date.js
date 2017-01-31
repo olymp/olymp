@@ -5,7 +5,7 @@ import moment from 'moment';
 export default class DatePickerInt extends Component {
   onChange = (e) => {
     const { onChange } = this.props;
-    const value = parseInt(e.format('x'));
+    const value = !e ? null : parseInt(e.format('x'));
     onChange(value);
   }
   getValue = () => {
