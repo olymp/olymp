@@ -10,9 +10,9 @@ export default class DatePickerInt extends Component {
     onChange(value);
   }
   getValue = () => {
-    let { value } = this.props;
+    const { value } = this.props;
     // 2014-09-14T10:32:27.831Z
-    return (value || []).map(value => {
+    return (value || []).map((value) => {
       if (typeof value === 'string') value = parseInt(moment(value.replace(/"/g, '')).format('x'));
       return value ? moment(value) : undefined;
     });
@@ -20,12 +20,11 @@ export default class DatePickerInt extends Component {
   render() {
     return (
       <RangePicker
-        showTime={this.props.showTime}
-        format="YYYY-MM-DD HH:mm:ss"
+        {...this.props}
+        value={this.getValue()}
         placeholder={['Start', 'Ende']}
         onChange={this.onChange}
       />
-    )
-    return <DatePicker {...this.props} value={this.getValue()} onChange={this.onChange} />;
+    );
   }
 }
