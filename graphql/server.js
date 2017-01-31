@@ -7,6 +7,7 @@ const createMediaGql = require('./media');
 const createAuthGql = require('./auth');
 const createPagesGql = require('./pages');
 const createSitemap = require('./sitemap');
+const createTagGql = require('./tags');
 
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 
@@ -34,6 +35,7 @@ module.exports = (server, options) => {
   const Schema = createSchema({ adapter });
   const mail = options.mail ? createMail(options.mail) : null;
   createSitemap(Schema, {});
+  createTagGql(Schema, { adapter });
   if (options.google) createGoogleGql(Schema, typeof options.google === 'object' ? options.google : {});
   if (options.pages) createPagesGql(Schema, typeof options.pages === 'object' ? Object.assign({ adapter }, options.pages) : { adapter });
   if (options.media) createMediaGql(Schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
@@ -50,7 +52,7 @@ module.exports = (server, options) => {
     const { auth } = createAuthGql(Schema, Object.assign({ adapter, mail }, options.auth));
     server.all('/graphql', (req, res, next) => {
       if (req.session && req.session.userId) {
-        auth.getUser(req.session.userId).then(x => {
+        auth.getUser(req.session.userId).then((x) => {
           req.user = x;
           next();
         });
