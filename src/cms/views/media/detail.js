@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Select, Spin, Button } from 'antd';
 import moment from 'moment';
 import withFile from '../../decorators/file';
-import Image from '../../edits/image';
+import { Image, TagSelect } from '../../edits';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };
 
@@ -46,7 +46,7 @@ const MediaForm = Form.create()(
           {getFieldDecorator('tags', {
             initialValue: item.tags || [],
           })(
-            <Select {...props} tags searchPlaceholder="Suche ..." />
+            <TagSelect {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
           )}
         </Form.Item>
 
@@ -120,6 +120,6 @@ export default class MediaDetail extends Component {
         remove={this.handleDelete}
         onClose={this.handleCancel}
       />
-    )
+    );
   }
 }
