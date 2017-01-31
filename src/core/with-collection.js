@@ -123,44 +123,44 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
     }
     getWithSpecialFields = (collection) => {
       if (!collection) return;
-      let specialFields = {};
-      if (!specialFieldsMemo[collection.name]) {
-        collection.fields.forEach(field => {
-          if (!field.description) return;
-          field.description.replace(/\@\w+(\[[0-9]+\])?(\(.+\))?/gi, (match, text, urlId) => {
-            if (!match) return;
-            let [split0, values] = match.split('(');
-            let [name, index = null] = split0.split('[');
-            name = name.substr(1);
-            if (index) {
-              try {
-                index = parseInt(index.substr(index, index.length - 1));
-              } catch(err) {
-                index = null;
-              }
+      const specialFields = {};
+      fields = collection.fields.map(item => {
+        const field = {...item, '@': {}};
+        if (!field.description) return field;
+        field.description.replace(/\@\w+(\[[0-9]+\])?(\(.+\))?/gi, (match, text, urlId) => {
+          if (!match) return;
+          let [split0, values] = match.split('(');
+          let [name, index = null] = split0.split('[');
+          name = name.substr(1);
+          if (index) {
+            try {
+              index = parseInt(index.substr(index, index.length - 1));
+            } catch(err) {
+              index = null;
             }
-            const specialField = {
-              field: field.name,
-            };
-            try {
-              values.substr(0, values.length - 1).split(',').forEach((x, i) => {
-                specialField[`arg${i}`] = JSON.parse(x);
-              });
-            } catch(err) { }
+          }
+          const specialValues = { };
+          try {
+            values.substr(0, values.length - 1).split(',').forEach((x, i) => {
+              specialValues[`arg${i}`] = JSON.parse(x);
+            });
+          } catch(err) { }
+          field['@'][name] = specialValues;
+          const specialField = {
+            ...specialValues,
+            field: field.name,
+          };
 
-            if (index  || index === 0) {
-              if (!specialFields[name]) specialFields[name] = [];
-              specialFields[name].splice(index >= specialFields[name].length ? specialFields[name].length : index, 0, specialField);
-            } else {
-              specialFields[name] = specialField;
-            }
-          });
+          if (index  || index === 0) {
+            if (!specialFields[name]) specialFields[name] = [];
+            specialFields[name].splice(index >= specialFields[name].length ? specialFields[name].length : index, 0, specialField);
+          } else {
+            specialFields[name] = specialField;
+          }
         });
-        specialFieldsMemo[collection.name] = specialFields;
-      } else {
-        specialFields = specialFieldsMemo[collection.name]
-      }
-      return { ...collection, specialFields };
+        return field;
+      });
+      return { ...collection, fields, specialFields };
     }
 
     render() {
