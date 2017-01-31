@@ -56,7 +56,7 @@ export default class CoolImage extends Component {
   }
 
   render() {
-    const { value, asImg, cloudinary, retina, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
+    const { value, asImg, cloudinary, retina, mode, border, className, style = {}, children, onClick, width: containerWidth, height: containerHeight } = this.props;
     let { ratio } = this.props;
 
     if (!value) {
@@ -101,13 +101,16 @@ export default class CoolImage extends Component {
       width = Math.round(height / ratio);
     }
 
-    const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, retina, ...cloudinary };
+    const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, retina, mode, border, ...cloudinary };
     if (cloudinary && cloudinary.width && !cloudinary.height) delete cloudinaryProps.height;
     if (cloudinary && cloudinary.height && !cloudinary.width) delete cloudinaryProps.width;
     url = cloudinaryUrl(url, cloudinaryProps, crop);
-    const url300 = url, url600 = url, url1200 = url, url1920 = url;
+    const url300 = url,
+      url600 = url,
+      url1200 = url,
+      url1920 = url;
 
-    /*es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
+    /* es gibt halt noch das Problem wenn das Bild was ausgegeben werden soll z.B. 2:3 hat, der ratio aber auf 1:1 gesetzt wurde
     bei einem Container schneidet er einfach das „Überflüssige“ ab, aber bei einem <img> müssen wir das mittels neuem crop machen 😟
 
     if (ratio && ratio !== options.height / options.width) {

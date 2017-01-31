@@ -32,7 +32,7 @@ export default (field, label, props = {}, subField) => {
   }
   if (type.kind === 'OBJECT') {
     if (type.name === 'Image') {
-      return <Image {...props} asImg style={{ maxWidth: 300, maxHeight: 300, width: 'initial' }} />;
+      return <Image {...props} asImg mode="fit" retina style={{ maxWidth: 300, maxHeight: 300 }} />;
     } return null;
   }
   if (type.kind === 'ENUM' && type.enumValues) {
