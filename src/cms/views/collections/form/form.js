@@ -36,7 +36,7 @@ export default Form.create()(
         {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1 && !['name', 'state', 'tags'].includes(name)).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
-            field.type,
+            field,
             name,
             (field.name === 'createdAt' || field.name === 'createdBy' || field.name === 'updatedAt' || field.name === 'updatedBy') ? { disabled: true } : {},
             field.name.endsWith('Id')
@@ -75,7 +75,7 @@ export default Form.create()(
                 'state',
                 { initialValue: getInitialValue(props, collection.fields.find(field => field.name === 'state')) }
               )(
-                getFormEditor(collection.fields.find(x => x.name === 'state').type)
+                getFormEditor(collection.fields.find(x => x.name === 'state'))
               )}
             </Menu.Item>
             <Menu.Item style={{ minWidth: 200 }} key="tags">
@@ -83,7 +83,7 @@ export default Form.create()(
                 'tags',
                 { initialValue: getInitialValue(props, collection.fields.find(field => field.name === 'tags')) }
               )(
-                getFormEditor(collection.fields.find(x => x.name === 'tags').type, 'Schlagworte')
+                getFormEditor(collection.fields.find(x => x.name === 'tags'), 'Schlagworte')
               )}
             </Menu.Item>
 
