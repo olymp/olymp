@@ -34,33 +34,26 @@ const transform = (image) => {
 };
 
 const transformSignature = ({ cloud_name }, { signature, api_key, timestamp }) => ({
-  url: `https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`,
+  url: `https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, // eslint-disable-line
   signature,
   timestamp,
   apiKey: api_key,
 });
 
-const getImages = (config, images, nextCursor) => {
-  const deferred = Promise.defer();
-
+const getImages = (config, images = [], nextCursor) => new Promise((yay, nay) => {
   cloudinary.api.resources((result) => {
-    if (result.error) {
-      console.error(result.error.message);
-      deferred.resolve();
-    }
+    if (result.error) return nay(result.error);
 
     // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
-    if (result.resources && result.resources.length) {
-      images.push(...result.resources.map(transform));
-    }
+    const results = result.resources && result.resources.length
+        ? images.concat(result.resources.map(transform))
+        : [];
 
-    // Falls noch weitere Bilder in Mediathek sind, diese auch laden
+      // Falls noch weitere Bilder in Mediathek sind, diese auch laden
     if (result.next_cursor) {
       console.error('WARNING, MORE THAN 500 IMAGES!');
-      getImages(config, images, result.next_cursor).then(() => deferred.resolve());
-    } else {
-      deferred.resolve();
-    }
+      return getImages(config, results, result.next_cursor).then(yay);
+    } return yay(results);
   }, Object.assign({}, config, {
     tags: true,
     context: true,
@@ -69,9 +62,7 @@ const getImages = (config, images, nextCursor) => {
     max_results: 500,
     next_cursor: nextCursor,
   }));
-
-  return deferred.promise;
-};
+});
 
 const getImageById = (config, id) =>
   new Promise(yay =>
@@ -119,7 +110,7 @@ const updateImage = (id, tags, source, caption, config, removed) => {
   });
 };
 
-module.exports = (schema, { uri } = {}) => {
+module.exports = (schema, { uri, adapter } = {}) => {
   const config = {};
   if (uri) {
     const split1 = uri.split('@');
@@ -130,8 +121,6 @@ module.exports = (schema, { uri } = {}) => {
     config.api_secret = split3[1];
   }
 
-  let imagesCache = null;
-  let imageCache = null;
   const invalidationTokens = [];
   schema.addSchema({
     name: 'file',
@@ -146,30 +135,24 @@ module.exports = (schema, { uri } = {}) => {
     `,
     resolvers: {
       Query: {
-        file: (source, args) => {
-          if (imageCache && imageCache[args.id]) return imageCache[args.id];
-          if (!imageCache) imageCache = {};
+        file: (source, args) => adapter.db.collection('file').findOne({ id: args.id }).then((item) => {
+          if (item) return item;
           return getImageById(config, args.id).then((image) => {
-            imageCache[args.id] = image;
+            adapter.db.collection('file').updateOne({ id: args.id }, image, { upsert: true }).catch(err => console.error(err));
             return image;
           });
-        },
+        }),
         fileList: (source, { tags }) => {
-          const getFiltered = items => tags ? items.filter(item => lodash.intersection(tags, item.tags).length > 0) : items;
+          const getFiltered = items => tags // eslint-disable-line
+            ? items.filter(item => lodash.intersection(tags, item.tags).length > 0)
+            : items;
 
-          const images = [];
-          if (imagesCache) return getFiltered(imagesCache);
-          return getImages(config, images).then(() => {
-            // Gelöschte ausschließen
-            const newImages = [];
-            images.forEach((image) => {
-              if (!image.removed) {
-                newImages.push(image);
-              }
-            });
-
-            imagesCache = newImages;
-            return getFiltered(newImages);
+          return getImages(config).then((images) => {
+            const filtered = getFiltered(images.filter(x => !x.removed));
+            Promise.all(
+              filtered.map(item => adapter.db.collection('file').updateOne({ id: item.id }, item, { upsert: true }))
+            ).catch(err => console.error(err));
+            return filtered;
           });
         },
         cloudinaryRequest: () =>
@@ -180,8 +163,8 @@ module.exports = (schema, { uri } = {}) => {
       },
       Mutation: {
         file: (source, args) => {
-          imagesCache = null;
-          imageCache = null;
+          // imagesCache = null;
+          // imageCache = null;
 
           if (args.operationType && args.operationType === 'REMOVE') {
             return updateImage(
@@ -204,13 +187,12 @@ module.exports = (schema, { uri } = {}) => {
         },
         cloudinaryRequestDone: (source, args) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
-            imagesCache = null;
+            // imagesCache = null;
             invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
-            if (!imageCache) imageCache = {};
-            return getImageById(config, args.id).then((image) => {
-              imageCache[args.id] = image;
-              return image;
-            });
+            // if (!imageCache) imageCache = {};
+            return getImageById(config, args.id).then(image =>
+              // imageCache[args.id] = image;
+               image);
           }
           throw new Error('Invalid');
         },
