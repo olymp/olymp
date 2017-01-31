@@ -124,7 +124,7 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
     getWithSpecialFields = (collection) => {
       if (!collection) return;
       const specialFields = {};
-      fields = collection.fields.map(item => {
+      const fields = collection.fields.map(item => {
         const field = {...item, '@': {}};
         if (!field.description) return field;
         field.description.replace(/\@\w+(\[[0-9]+\])?(\(.+\))?/gi, (match, text, urlId) => {
