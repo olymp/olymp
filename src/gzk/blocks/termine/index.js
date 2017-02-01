@@ -25,41 +25,39 @@ const List = ({ list, title, location }) => {
     </div>
   );
 };
-const News = ({ item, highlight }) => {
-  return (
-    <div className="gz-panel mb-2" style={{ borderBottomRightRadius: '110px', width: '100%' }}>
-      <div className="card-block">
-        <div>
-          {item.bild ? <div style={{ float: 'left' }}>
-            <Image container className="mr-1" value={item.bild} width={100} />
-          </div> : null}
-          <h2 className="card-title mb-0 gz-simple-header">{item.name}</h2>
-          <small>
-            <b>
-              {capitalize(item.art.replace('PRESSE', 'PRESSEARTIKEL').toLowerCase())}
-              {item.art.indexOf('P') === 0 ? ' vom ' : ' am '}
-              {moment(item.date).format('DD. MMMM YYYY HH:mm').replace(' 00:00', '')}
+const News = ({ item, highlight }) => (
+  <div className="gz-panel mb-2" style={{ borderBottomRightRadius: '110px', width: '100%' }}>
+    <div className="card-block">
+      <div>
+        {item.bild ? <div style={{ float: 'left' }}>
+          <Image container className="mr-1" value={item.bild} width={100} />
+        </div> : null}
+        <h2 className="card-title mb-0 gz-simple-header">{item.name}</h2>
+        <small>
+          <b>
+            {capitalize(item.art.replace('PRESSE', 'PRESSEARTIKEL').toLowerCase())}
+            {item.art.indexOf('P') === 0 ? ' vom ' : ' am '}
+            {moment(item.date).format('DD. MMMM YYYY HH:mm').replace(' 00:00', '')}
+          </b>
+          {item.tags && item.tags.length ? (
+            <b style={{ float: 'right' }}>
+              {item.tags.join(', ')}
             </b>
-            {item.tags && item.tags.length ? (
-              <b style={{ float: 'right' }}>
-                {item.tags.join(', ')}
-              </b>
             ) : null}
-          </small>
-        </div>
-        {item.extrakt && <p className="mt-1">{item.extrakt}</p>}
-        <Link className="btn btn-secondary mt-1" to={`/news${item.slug}`}>Mehr erfahren</Link>
+        </small>
       </div>
+      {item.extrakt && <p className="mt-1">{item.extrakt}</p>}
+      <Link className="btn btn-secondary mt-1" to={`/news${item.slug}`}>Mehr erfahren</Link>
     </div>
+  </div>
   );
-};
 
-const attributes = 'id name art slug extrakt date bild { url, crop, width, height } ort tags';
+const fieldNames = 'id name art slug extrakt date bild { url, crop, width, height } ort tags';
 @withRouter
 @graphql(gql`
   query terminList {
     items: terminList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {

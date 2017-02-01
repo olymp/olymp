@@ -78,7 +78,7 @@ export default class Container extends Component {
         <PageModal
           id={query['@page']}
           initialData={{ parentId: query['@new-page'], order: 0 }}
-          attributes="id, slug, order, name, parentId, blocks, templateName"
+          fieldNames="id, slug, order, name, parentId, blocks, templateName"
           onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
         />
       );

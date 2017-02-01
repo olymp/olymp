@@ -6,7 +6,7 @@ import withRouter from './with-router';
 import isEqual from 'lodash/isEqual';
 import lowerFirst from 'lodash/lowerFirst';
 
-export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
+export default ({ fieldNames, name, state } = {}) => (WrappedComponent) => {
   @withCollection
   @withApollo
   @withRouter
@@ -47,7 +47,8 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
     update = (nextProps, lastProps) => {
       if (!lastProps || nextProps.collection !== lastProps.collection || !isEqual(nextProps.query, lastProps.query)) {
         if (this.subscription) this.subscription.unsubscribe();
-        const { client, collection, attributes, location, force } = nextProps;
+        const { client, collection, fieldNames, location, force } = nextProps;
+        if (!collection) return;
         const query = this.newQuery || this.props.query;
         this.items = null;
         const queryName = `${lowerFirst(collection.name)}List`;
@@ -59,7 +60,7 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
             query: gql`
               query ${queryName}($query: ${collection.name}Query) {
                 items: ${queryName}(query: $query) {
-                  ${attributes}
+                  ${fieldNames}
                 }
               }
             `,
@@ -67,13 +68,13 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
               query,
             },
           });
-        } else if (attributes.indexOf('state') !== -1) {
+        } else if (fieldNames.indexOf('state') !== -1) {
           watchQuery = client.watchQuery({
             forceFetch: force,
             query: gql`
               query ${queryName}($state: [DOCUMENT_STATE]) {
                 items: ${queryName}(query: {state: {in: $state}}) {
-                  ${attributes}
+                  ${fieldNames}
                 }
               }
             `,
@@ -87,7 +88,7 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
             query: gql`
               query ${queryName} {
                 items: ${queryName} {
-                  ${attributes}
+                  ${fieldNames}
                 }
               }
             `,
@@ -116,4 +117,4 @@ export default ({ attributes, name, state } = {}) => (WrappedComponent) => {
     }
   }
   return WithItemsComponent;
-}
+};

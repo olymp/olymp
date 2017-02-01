@@ -8,15 +8,15 @@ import List from './list-sidebar';
 @withRouter
 export default class CollectionView extends Component {
   render() {
-    const { typeName, collection, attributes, onClose, saving, children, location, items, refetch } = this.props;
+    const { typeName, collection, fieldNames, onClose, saving, children, location, items, refetch } = this.props;
     const { query } = location;
 
     const id = query && query[`@${typeName.toLowerCase()}`];
 
     return (
       <Modal>
-        <List typeName={typeName} collection={collection} attributes={attributes} items={items} id={id} location={location} refetch={refetch} query={this.props.query} />
-        <Detail typeName={typeName} collection={collection} attributes={attributes} location={location} id={id} refetch={refetch} query={this.props.query} />
+        <List typeName={typeName} collection={collection} fieldNames={fieldNames} items={items} id={id} location={location} refetch={refetch} query={this.props.query} />
+        <Detail typeName={typeName} collection={collection} fieldNames={fieldNames} location={location} id={id} refetch={refetch} query={this.props.query} />
       </Modal>
     );
   }

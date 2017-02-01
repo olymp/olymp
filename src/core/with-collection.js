@@ -98,15 +98,15 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
   class WithCollectionComponent extends Component {
     static propTypes = {
       client: PropTypes.object,
-      attributes: PropTypes.string,
+      fieldNames: PropTypes.string,
       typeName: PropTypes.string,
       includeStamps: PropTypes.bool,
     }
     save = item => {
-      return saveItem(item, typeNameArg || this.props.typeName, this.props.client, { id: item.id, attributes: this.getAttributes() });
+      return saveItem(item, typeNameArg || this.props.typeName, this.props.client, { id: item.id, fieldNames: this.getAttributes() });
     }
     remove = id => {
-      return removeItem(id, typeNameArg || this.props.typeName, this.props.client, { attributes: this.getAttributes() });
+      return removeItem(id, typeNameArg || this.props.typeName, this.props.client, { fieldNames: this.getAttributes() });
     }
     getAttributes = (col) => {
       const collection = col || (this.props.data && this.props.data.type) || this.props.collection || null;
@@ -166,14 +166,13 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
     render() {
       const { data, ...rest } = this.props;
       const collection = (this.props.data && this.props.data.type) || this.props.collection || null;
-      if (!collection) return null;
       return <WrappedComponent
         {...rest}
         collectionLoading={data && data.loading}
-        collection={this.getWithSpecialFields(collection)}
+        collection={collection && this.getWithSpecialFields(collection)}
         saveCollectionItem={this.save}
         removeCollectionItem={this.remove}
-        attributes={this.getAttributes()}
+        fieldNames={collection && this.getAttributes()}
       />;
     }
   }

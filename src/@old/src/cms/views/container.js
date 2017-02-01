@@ -143,8 +143,8 @@ export default class Container extends Component {
         <PageModal
           id={query['@page']}
           initialData={{ parentId: query['@new-page'], order: 0 }}
-          attributes="id, slug, order, name, parentId, blocks, templateName"
-          onClose={(newPath) => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
+          fieldNames="id, slug, order, name, parentId, blocks, templateName"
+          onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
         />
       );
     } else if (query && query['@upload'] !== undefined) {
@@ -208,9 +208,8 @@ export default class Container extends Component {
                   Website
                 </Link>
               </Menu.Item>
-              {Object.keys(groups).map(key => {
-
-                const wrapper = (children) => (
+              {Object.keys(groups).map((key) => {
+                const wrapper = children => (
                   <SubMenu key={key} title={capitalize(key)}>
                     {children}
                   </SubMenu>
@@ -353,6 +352,3 @@ export default class Container extends Component {
 /* const lowerCase0 = (value => {
   return value.charAt(0).toLowerCase() + value.slice(1);
 }); */
-
-
-

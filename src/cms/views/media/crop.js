@@ -7,29 +7,39 @@ import withFile from '../../decorators/file';
 
 const defaultGetImage = props => props.value;
 
-@withFile
-export default class WithImageCrop extends Component {
-  state = {};
-  onOk = () => {
-    const { onChange, item } = this.props;
+export const CropSelect = (props) => {
+  const { value, onChange } = props;
+  return (
+    <Select defaultValue={`${value || 0}`} style={{ width: 150, float: 'left' }} size="large" onChange={option => onChange(parseFloat(option, 10))}>
+      <Select.Option key="0" value="0">Freie Auswahl</Select.Option>
+      <Select.Option key="1" value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
+      <Select.Option key="2" value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>
+      <Select.Option key="3" value="1">Quadratisch 1:1</Select.Option>
+      <Select.Option key="4" value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
+      <Select.Option key="5" value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
+    </Select>
+  )
+}
 
+@withFile
+export default class Crop extends Component {
+  state = {};
+
+  onCrop = (p, { width, height, x, y }) => {
+    const { onChange, item } = this.props;
+    const crop = [width, height, x, y];
     onChange({
       url: item.url,
       height: item.height,
       width: item.width,
-      crop: this.crop,
+      crop,
       caption: item.caption,
       source: item.source,
     });
   };
 
-  onCrop = (p, { width, height, x, y }) => {
-    this.crop = [width, height, x, y];
-  };
-
   render() {
-    const { aspect } = this.state;
-    const { item, onClose } = this.props;
+    const { item, onClose, aspect } = this.props;
 
     const crop = item && item.crop ? {
       width: (item.crop[0] / item.width) * 100,
@@ -48,26 +58,7 @@ export default class WithImageCrop extends Component {
     }
 
     return (
-      <div>
-        <ReactCrop src={cloudinaryUrl(item.url)} onChange={this.onCrop} crop={crop} />
-        <Select defaultValue={`${aspect ? aspect.toString() : '0'}`} style={{ width: 150, float: 'left' }} size="large" onChange={option => this.setState({ aspect: parseFloat(option, 10) })}>
-          <Select.Option key="0" value="0">Freie Auswahl</Select.Option>
-          <Select.Option key="1" value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
-          <Select.Option key="2" value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>
-          <Select.Option key="3" value="1">Quadratisch 1:1</Select.Option>
-          <Select.Option key="4" value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
-          <Select.Option key="5" value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
-        </Select>
-
-        <div style={{ float: 'right', marginTop: '1rem' }}>
-          <Button type="primary" onClick={this.onOk}>
-            Übernehmen
-          </Button>&nbsp;
-          <Button onClick={onClose}>Abbrechen</Button>
-        </div>
-
-        <div style={{ clear: 'both' }} />
-      </div>
+      <ReactCrop src={cloudinaryUrl(item.url)} onChange={this.onCrop} crop={crop} />
     );
   }
 }

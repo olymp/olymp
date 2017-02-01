@@ -6,12 +6,12 @@ import { Spin } from 'antd';
 import Carousel from '../../components/carousel';
 import './theme.less';
 
-const attributes = 'id slug peak { url } telefon farbe name kurz fachrichtungen personen { name }';
+const fieldNames = 'id slug peak { url } telefon farbe name kurz fachrichtungen personen { name }';
 @withRouter
 @graphql(gql`
   query einrichtungList {
     items: einrichtungList(query: { state: { eq: PUBLISHED } }) {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {
@@ -48,14 +48,12 @@ export default class VerzeichnisBlock extends Component {
   onMouseOver = item => () => {
     this.setState({ hover: item.einrichtungId || item.id });
   }
-  renderImage = ({ slug, kurz, name, farbe, id }) => ({ original, srcSet }) => {
-    return (
-      <div className="image-gallery-image gz-image-box">
-        <img src={original} srcSet={srcSet} />
-        <Link to={slug} className="gz-image-content" style={{backgroundColor: farbe}}>{kurz || name}</Link>
-      </div>
+  renderImage = ({ slug, kurz, name, farbe, id }) => ({ original, srcSet }) => (
+    <div className="image-gallery-image gz-image-box">
+      <img src={original} srcSet={srcSet} />
+      <Link to={slug} className="gz-image-content" style={{ backgroundColor: farbe }}>{kurz || name}</Link>
+    </div>
     )
-  }
   renderItem = (item, i) => {
     const style = {};
     if (this.state.hover === (item.einrichtungId || item.id)) {
@@ -87,7 +85,8 @@ export default class VerzeichnisBlock extends Component {
   render() {
     const { attributes, getData, isFocused, children, style, data } = this.props;
     if (data.loading) return <Spin size="large" />;
-    let personen = [], spezial = [];
+    let personen = [],
+      spezial = [];
     data.items.forEach((item) => {
       if (item.personen) item.personen.forEach(person => personen.push({ ...person, einrichtungId: item.id, farbe: item.farbe, einrichtung: item.kurz || item.name, slug: item.slug }));
       if (item.fachrichtungen) item.fachrichtungen.forEach(leistung => spezial.push({ id: leistung, name: leistung, einrichtungId: item.id, farbe: item.farbe, einrichtung: item.kurz || item.name, slug: item.slug }));

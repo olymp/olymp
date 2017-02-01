@@ -12,9 +12,9 @@ const Panel = Collapse.Panel;
 
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
-const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
+const stampFields = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
-const preventDefaultAnd = (func, args) => e => {
+const preventDefaultAnd = (func, args) => (e) => {
   e.preventDefault();
   func(args);
 };
@@ -34,7 +34,7 @@ const SubForm = withCollection(({ value = [], collection, onChange, ...rest }) =
         {value.map((value, i) => (
           <Panel header={getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
             <div className="ant-form">
-              {collection.fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map(({ type, name }) =>
+              {collection.fields.filter(({ name }) => name !== 'id' && stampFields.indexOf(name) === -1).map(({ type, name }) =>
                 <FormItem key={name}>
                   {getFormEditor(
                     type,
@@ -58,18 +58,18 @@ const SubForm = withCollection(({ value = [], collection, onChange, ...rest }) =
     </div>
   );
 });
-const MultiSlider = ({ value = [] }) => {
-  return (
-    <div>
-      {value.map((v, i) => (
-        <div style={{ marginBottom: '30px' }} key={i}>
-          <Slider marks={{ 8: '08:00', 13: '13:00', 18: '18:00' }} range={3} min={7} max={19} step={0.5}
-                  tipFormatter={v => v % 1 === 0 ? `${v}:00` : `${Math.floor(v)}:30`} />
-        </div>
+const MultiSlider = ({ value = [] }) => (
+  <div>
+    {value.map((v, i) => (
+      <div style={{ marginBottom: '30px' }} key={i}>
+        <Slider
+          marks={{ 8: '08:00', 13: '13:00', 18: '18:00' }} range={3} min={7} max={19} step={0.5}
+          tipFormatter={v => v % 1 === 0 ? `${v}:00` : `${Math.floor(v)}:30`}
+        />
+      </div>
       ))}
-    </div>
+  </div>
   );
-};
 
 class DatePickerInt extends Component {
   onChange = (e) => {
@@ -191,15 +191,15 @@ const getInitialValue = ({ item, form }, { name, description }) => {
     return 'DRAFT';
   } else if (name === 'slug' && form.getFieldValue('name')) {
     // Bei Slug
-    let url = '/' + encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
+    let url = `/${encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
       .split('%C3%A4').join('ä')
       .split('%C3%B6').join('ö')
       .split('%C3%BC').join('ü')
       .split('%C3%A4').join('Ä')
       .split('%C3%B6').join('Ö')
-      .split('%C3%BC').join('Ü');
+      .split('%C3%BC').join('Ü')}`;
     if (form.getFieldValue('date')) {
-      url = moment(form.getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
+      url = `${moment(form.getFieldValue('date')).format('DD-MM-YYYY')}-${url}`;
     }
     return url;
   }
@@ -221,7 +221,7 @@ const CollectionCreateForm = Form.create()(
 
     const renderForm = fields => (
       <Form horizontal>
-        {fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map((field) => {
+        {fields.filter(({ name }) => name !== 'id' && stampFields.indexOf(name) === -1).map((field) => {
           const title = field.description && field.description.indexOf('title:') !== -1 ? field.description.split('title:')[1].split('\n')[0] : toLabel(field.name);
           const editor = getFormEditor(
             field.type,
@@ -295,7 +295,7 @@ export default class MainDetail extends Component {
 
 const toLabel = (x) => {
   const uml = x.replace(/ae/g, 'ä').replace(/oe/g, 'ö').replace(/ü/g, 'ue').replace(/Ae/g, 'Ä').replace(/Oe/g, 'Ö').replace(/Ue/g, 'Ü');
-  const snake = uml.replace(/([A-Z])/g, ($1) => `-${$1}`);
+  const snake = uml.replace(/([A-Z])/g, $1 => `-${$1}`);
   const capitalized = capitalize(snake);
   return capitalized;
 };

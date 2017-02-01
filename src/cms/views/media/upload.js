@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, withApollo } from 'react-apollo';
-import { attributes } from '../../decorators/file';
+import { fieldNames } from '../../decorators/file';
 import gql from 'graphql-tag';
 import { Modal, Upload } from 'antd';
 const modalSettings = { visible: true, style: { top: 20 }, okText: 'Speichern', cancelText: 'Abbruch' };
@@ -13,7 +13,7 @@ const Dragger = Upload.Dragger;
   }
 )
 @graphql(
-  gql`mutation cloudinaryRequestDone($id: String, $token: String) { cloudinaryRequestDone(id: $id, token: $token) { ${attributes} } }`, {
+  gql`mutation cloudinaryRequestDone($id: String, $token: String) { cloudinaryRequestDone(id: $id, token: $token) { ${fieldNames} } }`, {
     props({ ownProps, mutate }) {
       return {
         done({ id, token }) {
@@ -83,7 +83,7 @@ export default class UploadModal extends Component {
         {uploading === undefined ? <p className="ant-upload-text">Klicken oder Datei hierher ziehen</p> : null}
         {uploading === true ? <p className="ant-upload-text">Bitte warten ...</p> : null}
         {uploading === false ? <p className="ant-upload-text">Fertig!</p> : null}
-        {/*<p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>*/}
+        {/* <p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>*/}
       </Dragger>
     );
     return modal ? (
