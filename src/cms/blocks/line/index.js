@@ -4,7 +4,7 @@ import { useGenericBlock, GenericBlock } from 'olymp/slate';
 
 @useGenericBlock({
   label: 'Linie',
-  category: 'Media',
+  category: 'Template',
   editable: false,
   align: true,
 })

@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import { useGenericBlock, GenericBlock } from 'olymp/cms';
-import Glaubensimpuls from '../../components/glaubensimpuls';
+import Losung from '../../components/losung';
 
 @useGenericBlock({
-  label: 'Glaubensimpuls',
+  label: 'Losung',
   category: 'EKHN',
   editable: false,
-  resize: {
-    bootstrap: true,
-    coverOnResize: true,
-    resizeY: false,
-  },
   align: true,
 })
 export default class GlaubensimpulsBlock extends Component {
@@ -19,7 +14,7 @@ export default class GlaubensimpulsBlock extends Component {
 
     return (
       <GenericBlock {...rest} className={className} style={{ ...style, height: 'auto' }}>
-        <Glaubensimpuls {...rest} isBlock style={{ margin: 0 }} />
+        <Losung {...rest} isBlock />
 
         {children}
       </GenericBlock>

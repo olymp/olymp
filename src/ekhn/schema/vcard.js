@@ -13,7 +13,7 @@ module.exports = ({ schema }) => schema.addSchema({
     # group:über Uns
     # title:Visitenkarte
     type Vcard implements CollectionInterface
-    @collection(name: "Vcard") @stamp @state {
+    @collection(name: "Vcard") @state @stamp {
       name: String
       bild: Image
       # @description
