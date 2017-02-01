@@ -10,7 +10,7 @@ module.exports = ({ schema }) => schema.addSchema({
   schema: `
     # group:inhalt
     type Gemeindebrief implements CollectionInterface
-    @collection(name: "Gemeindebrief") @stamp @state {
+    @collection(name: "Gemeindebrief") @state @stamp {
       name: String
       # @image
       gemeindebrief: Image

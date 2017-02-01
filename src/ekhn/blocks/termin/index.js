@@ -1,31 +1,15 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter, DataLoader } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
+import { graphql, gql, withRouter, DataLoader, withAuth } from 'olymp';
+import { useGenericBlock, GenericBlock, useTagFilter } from 'olymp/cms';
 import { Pagination } from 'antd';
 import sortBy from 'lodash/sortBy';
 import difference from 'lodash/difference';
-import orderBy from 'lodash/orderBy';
 import { moment } from 'olymp/locale-de';
 import TerminItem from './item';
 
-const getTags = (items) => {
-  const tags = { Alle: 0 };
-  (items || []).forEach((item) => {
-    if (item.tags && item.tags.length) {
-      (item.tags || []).forEach((tag) => {
-        if (!tags[tag]) tags[tag] = 0;
-
-        tags[tag] += 1;
-      });
-    } else {
-      tags.Alle += 1;
-    }
-  });
-
-  return tags;
-};
 const now = moment().format('x');
 
+@withAuth
 @withRouter
 @graphql(gql`
   query termine {
@@ -44,8 +28,17 @@ const now = moment().format('x');
       ende
       kommentar
       ganztaegig
+      bild {
+        url
+        width
+        height
+        crop
+        caption
+        source
+      }
       farbe
       ort
+      tags
     }
     gottesdienste: gottesdienstList(query: {
       and: [
@@ -97,36 +90,15 @@ const now = moment().format('x');
 `, {
   options: () => ({ }),
 })
+@useTagFilter(data => [...(data.termine || []), ...(data.gottesdienste || [])])
 @useGenericBlock({
   label: 'Termine',
   props: ['tags', 'mode'],
   editable: false,
   actions: (props) => {
-    const { setData, getData, data } = props;
-    const selectedTags = getData('tags', ['Alle']);
-
-    const tagObj = getTags(data.beitragList);
-    tagObj.Alle += Object.keys(tagObj).reduce((val, key) => val + tagObj[key], 0);
-
-    let tags = Object.keys(tagObj).map(key => ({ key, count: tagObj[key] }));
-    tags = orderBy(tags, ['key', 'count'], ['asc', 'desc']);
+    const { setData, getData } = props;
 
     return [{
-      icon: 'tags',
-      type: 'choose-tags',
-      multi: true,
-      options: tags.map(({ key, count }) => ({
-        value: key,
-        label: key,
-        active: selectedTags.findIndex(tag => tag === key) !== -1,
-        disabled: (key !== 'Alle' && selectedTags.findIndex(tag => tag === 'Alle') !== -1) ||
-          (key === 'Alle' && selectedTags.length && selectedTags.findIndex(tag => tag === 'Alle') === -1),
-        anzahl: count,
-      })),
-      toggle: (tags) => {
-        setData({ tags: tags.map(tag => tag.key) });
-      },
-    }, {
       icon: !getData('mode', 0) ? 'calendar' : (getData('mode', 0) === 1 ? 'calendar-o' : 'calendar-plus-o'),
       type: 'toggle-mode',
       toggle: () => {
@@ -138,17 +110,25 @@ const now = moment().format('x');
           setData({ mode: 0 });
         }
       },
+    }, {
+      icon: 'header',
+      type: 'set-title',
+      toggle: () => {
+        const title = window.prompt('Titel', getData('title'));
+        setData({ title });
+      },
     }];
   },
 })
 export default class TerminBlock extends Component {
   render() {
-    const { data, children, getData, router, location, ...rest } = this.props;
+    const { data, children, getData, router, location, auth, ...rest } = this.props;
     const { pathname, query } = location;
     const page = query ? parseInt(query.page || 1, 10) : 1;
     const steps = query ? parseInt(query.steps || 10, 10) : 10;
     const mode = getData('mode', 0); // 0: Alle, 1: Termine, 2: Gottesdienste
     const tags = getData('tags', ['Alle']);
+    const title = getData('title');
 
     let { termine = [], gottesdienste = [] } = data;
 
@@ -204,7 +184,8 @@ export default class TerminBlock extends Component {
       <GenericBlock {...rest} style={{ width: '100%' }}>
         <DataLoader {...this.props} trigger={['termine', 'gottesdienste']} placeholder="Keine Termine vorhanden" className="items">
           <div className="item" style={{ padding: '.5rem' }}>
-            <h1>{type} der nächsten Zeit</h1>
+            <h6 style={{ margin: 0 }}>{!!auth && !!auth.user && `[${type}]`}</h6>
+            <h1>{title || type}</h1>
 
             {termine.slice((page - 1) * steps, page * steps).map(x => <TerminItem {...x} key={x.id} />)}
           </div>

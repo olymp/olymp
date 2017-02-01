@@ -47,7 +47,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
         {dateString}
 
         {ort ? (
-          <p>{ort}</p>
+          <p style={{ color }}>{ort}</p>
         ) : null}
       </div>
 

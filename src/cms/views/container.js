@@ -86,7 +86,7 @@ export default class Container extends Component {
 
     const mainMenu = (
       <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
-        {Object.keys(collectionTree).map((key) => {
+        {Object.keys(collectionTree).filter(key => key !== 'Global').map((key) => {
           const wrapper = children => (
             <Menu.SubMenu key={key} title={capitalize(key)}>
               {children}
@@ -110,9 +110,13 @@ export default class Container extends Component {
             Mediathek
           </Link>
         </Menu.Item>
-        <Menu.Item key="/@/users" disabled>Benutzer</Menu.Item>
-        <Menu.Item key="/@/analytics" disabled>Statistik</Menu.Item>
-        <Menu.Item key="page-settings" disabled>Einstellungen</Menu.Item>
+        <Menu.Item key="users" disabled>Benutzer</Menu.Item>
+        <Menu.Item key="analytics" disabled>Statistik</Menu.Item>
+        <Menu.Item key="settings">
+          <Link to={{ pathname, query: { '@global': null } }}>
+            Einstellungen
+          </Link>
+        </Menu.Item>
         <Menu.Item key="user" disabled>Profil</Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">Abmelden</Menu.Item>

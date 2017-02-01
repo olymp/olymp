@@ -5,17 +5,11 @@ import useBlockToolbar from './toolbar';
 import useBlockResize from './resize';
 
 export const GenericBlock = (props) => {
-  const { attributes, getData, isFocused, children, renderToolbar, readOnly, toolbarStyle, className, toolbarType, style } = props;
-  if (toolbarType === 'fix') {
-    return (
-      <div {...attributes} className={className} data-block-active={!readOnly} style={{ position: 'relative', ...(style || {}) }}>
-        {renderToolbar(toolbarStyle)}
-        {children}
-      </div>
-    );
-  }
+  const { attributes, getData, children, renderToolbar, readOnly, toolbarStyle, className, style } = props;
+
   return (
-    <div {...attributes} className={className} data-block-active={isFocused} style={{ position: 'relative', ...(style || {}) }}>
+    <div {...attributes} className={className} data-block-active={!readOnly} style={{ position: 'relative', ...(style || {}) }}>
+      {renderToolbar(toolbarStyle)}
       {children}
     </div>
   );
@@ -24,7 +18,7 @@ export const GenericBlock = (props) => {
 export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true }) => (WrappedComponent) => {
   let component = props => <WrappedComponent {...props} />;
 
-  component = useBlockToolbar({ actions, type: 'fix', remove, move, add })(component);
+  component = useBlockToolbar({ actions, remove, move, add })(component);
 
   if (resize && typeof resize === 'object') component = useBlockResize(resize)(component);
   else if (resize) component = useBlockResize({ })(component);
