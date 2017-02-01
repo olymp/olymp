@@ -26,14 +26,14 @@ export default class Carousel extends Component {
     const { items } = this.props;
 
     const images = items && items.map(({ url, render, ...rest }) => ({
-      original: cloudinaryUrl(url, { width: 800, height: this.getHeight(800), ...rest }),
+      original: cloudinaryUrl(url, { maxWidth: 800, maxHeight: this.getHeight(800), ...rest }),
       srcSet: `
-        ${cloudinaryUrl(url, { width: 400, height: this.getHeight(400), ...rest })} 400w,
-        ${cloudinaryUrl(url, { width: 800, height: this.getHeight(800), ...rest })} 800w,
-        ${cloudinaryUrl(url, { width: 1200, height: this.getHeight(1200), ...rest })} 1200w,
-        ${cloudinaryUrl(url, { width: 1600, height: this.getHeight(1600), ...rest })} 1600w
+        ${cloudinaryUrl(url, { maxWidth: 400, maxHeight: this.getHeight(400), ...rest })} 400w,
+        ${cloudinaryUrl(url, { maxWidth: 800, maxHeight: this.getHeight(800), ...rest })} 800w,
+        ${cloudinaryUrl(url, { maxWidth: 1200, maxHeight: this.getHeight(1200), ...rest })} 1200w,
+        ${cloudinaryUrl(url, { maxWidth: 1600, maxHeight: this.getHeight(1600), ...rest })} 1600w
       `,
-      thumbnail: cloudinaryUrl(url, { width: 150, height: 75, ...rest }),
+      thumbnail: cloudinaryUrl(url, { maxWidth: 150, maxHeight: 75, ...rest }),
       renderItem: render,
     }));
 
