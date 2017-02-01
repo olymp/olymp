@@ -15,10 +15,10 @@ const states = {
 @withRouter
 export default class CollectionListSidebar extends Component {
   getLink = ({ id }) => {
-    const { collection, location } = this.props;
+    const { typeName, location } = this.props;
     const { pathname } = location;
 
-    return { pathname, query: { ...location.query, [`@${collection.name.toLowerCase()}`]: id } };
+    return { pathname, query: { ...location.query, [`@${typeName.toLowerCase()}`]: id } };
   }
 
   resolveFieldValue = (item, field, { defaultFieldName, defaultValue }, fieldProps) => {
@@ -60,7 +60,7 @@ export default class CollectionListSidebar extends Component {
   )
 
   render() {
-    const { router, id, collection, isLoading, refetch } = this.props;
+    const { router, id, collection, isLoading, refetch, typeName } = this.props;
     const items = (this.props.items || []).map((item) => {
       const name = this.resolveFieldValue(item, 'name', { defaultFieldName: 'name', defaultValue: item.kurz || item.name || 'Kein Titel' });
       const description = this.resolveFieldValue(item, 'description', {});
@@ -97,7 +97,7 @@ export default class CollectionListSidebar extends Component {
         items={items}
         isLoading={isLoading}
         refetch={refetch}
-        activePage={collection.name}
+        activePage={typeName}
         actions={actions}
         filter={onFilter => getFilterMenu(collection, onFilter)}
         states={states}
