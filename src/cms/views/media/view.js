@@ -24,6 +24,7 @@ const ACTIVE_COLOR = '#EEE';
 `)
 @withRouter
 export default class MediaView extends Component {
+  cropImages = {};
   state = {
     tags: [],
     selected: [],
@@ -66,10 +67,6 @@ export default class MediaView extends Component {
 
   onClose = () => {
     const { id, onClose, router, location } = this.props;
-    const { selected } = this.state;
-
-    this.setState({ selected: [] });
-
     if (onClose) onClose();
     if (id) router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
   }
@@ -95,6 +92,14 @@ export default class MediaView extends Component {
     } else {
       router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } });
     }
+  }
+
+  onSaveCrop = () => {
+    const { data, onChange, onClose, multi } = this.props;
+    const { items } = data;
+    const { selected } = this.state;
+    const result = selected.map(id => this.cropImages[id] || items.find(x => x.id === id));
+    onChange(multi ? result : result[0]);
   }
 
   render() {
@@ -124,11 +129,11 @@ export default class MediaView extends Component {
           <h3>{selected.length > 1 ? 'Bilder' : 'Bild'} zurechtschneiden</h3>
           {selected.map(id =>
             <div key={id}>
-              <Crop id={id} onChange={image => this.setState({ images: images.map(x => x.url === image.url ? image : x) })} />
+              <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} />
             </div>
           )}
           <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
-            <Button key="submit" type="primary" size="large" onClick={() => onChange(images.filter(x => selected.find(y => x.id === y)))}>
+            <Button key="submit" type="primary" size="large" onClick={this.onSaveCrop}>
               Übernehmen
             </Button>&nbsp;
             <Button onClick={this.onClose}>Abbrechen</Button>

@@ -53,6 +53,7 @@ export default class GzCardImages extends Component {
     const { children, title, url, editor, setData, getData, showMedia, image, size, ...rest } = this.props;
     const items = image && Array.isArray(image) && image.map(item => ({
       url: item.url,
+      crop: item.crop,
       render: this.renderItem(item),
     }));
     return (

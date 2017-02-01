@@ -18,10 +18,9 @@ export const CropSelect = (props) => {
       <Select.Option key="4" value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
       <Select.Option key="5" value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
     </Select>
-  )
-}
+  );
+};
 
-@withFile
 export default class Crop extends Component {
   state = {};
 
@@ -37,6 +36,18 @@ export default class Crop extends Component {
       source: item.source,
     });
   };
+
+  componentDidMount() {
+    const { onChange, item } = this.props;
+    onChange({
+      url: item.url,
+      height: item.height,
+      width: item.width,
+      crop: null,
+      caption: item.caption,
+      source: item.source,
+    });
+  }
 
   render() {
     const { item, onClose, aspect } = this.props;
