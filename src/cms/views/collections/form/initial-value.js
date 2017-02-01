@@ -1,12 +1,14 @@
 import moment from 'moment';
 
-export default ({ item, form }, { name, description }) => {
+export default ({ item, form }, field) => {
+  const { name } = field;
+
   if (item[name]) {
     // Wenn Item schon existiert, den vorhandenen Wert nehmen
     return item[name];
-  } else if (description && description.indexOf('default:') !== -1) {
+  } else if (field['@'].default) {
     // Wenn ein default-Wert existiert
-    return description.split('default:')[1].split(' ')[0].split('\n')[0];
+    return field['@'].default.arg0;
   } else if (name === 'state') {
     // Bei State
     return 'DRAFT';

@@ -2,11 +2,12 @@ import React from 'react';
 import { Card } from 'antd';
 import { createComponent } from 'react-fela';
 import { Image } from '../../edits';
+import tinycolor from 'tinycolor2';
 
 const StyledCard = createComponent(({ isActive, color }) => ({
   cursor: 'pointer',
   margin: '3px 10px 3px 0',
-  borderRight: color ? `3px solid ${color}!important` : null,
+  borderRight: color ? `3px solid ${tinycolor(color).setAlpha(1).toRgbString()}!important` : null,
   left: isActive ? '15px' : 0,
   '> .ant-card-extra': {
     top: '5px',
