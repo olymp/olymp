@@ -34,16 +34,16 @@ export default Form.create()(
         <Form horizontal>
           {schema.header.map(field => <Form.Item key={field.name} label="Name" extra={field['@'].hint && field['@'].hint.arg0} {...formItemLayout0}>
             {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
-              <Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder="Titel ..." style={{ textAlign: 'center' }} />
+              <Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder={(!!field['@'].label && field['@'].label.arg0) || 'Titel'} style={{ textAlign: 'center' }} />
             )}
           </Form.Item>)}
           <Menu mode="horizontal">
-            {schema.bar.map(field => <Menu.Item style={{ width: 200 }} key={field.name}>
+            {schema.bar.map(field => <Menu.Item style={{ minWidth: '20%', maxWidth: `${100 - (20 * schema.bar.length)}%` }} key={field.name}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
                 getFormEditor(field)
               )}
             </Menu.Item>)}
-            <Menu.Item style={{ float: 'right' }} key="save">
+            <Menu.Item style={{ float: 'right', width: '20%' }} key="save">
               <span onClick={onCreate}><Icon type="save" /> Speichern</span>
             </Menu.Item>
           </Menu>

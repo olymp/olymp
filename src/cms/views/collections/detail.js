@@ -40,11 +40,13 @@ const getFormSchema = ({ fields }) =>
      if (headFields.includes(field.name)) { // Head
        result.header.push(field);
      } else if (barFields.includes(field.name)) { // Bar
-       result.bar.push(field);
+       result.bar.splice(barFields.indexOf(field.name), 0, field);
+       result.bar.join();
      } else if (field.type.name === 'Json') { // if slate => own group
        result.tabs[capitalize(field.name)] = [field];
      } else { // Group
-       const group = field.description && field.description.indexOf('detail:') !== -1 ? itfieldem.description.split('detail:')[1].split('\n')[0] : 'Allgemein';
+       const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
+
        if (!result.tabs[group]) result.tabs[group] = [];
        result.tabs[group].push(field);
      } return result;
