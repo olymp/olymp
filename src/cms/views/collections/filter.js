@@ -94,13 +94,11 @@ export const handleFilterClick = (collection, onFilter, key) => {
   }
 };
 
-export const getFilterMenu = (collection, onFilter) => {
-  return (
-    <Menu onClick={e => handleFilterClick(collection, onFilter, e.key)}>
-      {collection.fields.filter(({ name }) => name !== 'id').map(getMenuItem)}
-    </Menu>
+export const getFilterMenu = (collection, onFilter) => (
+  <Menu onClick={e => handleFilterClick(collection, onFilter, e.key)}>
+    {collection && collection.fields.filter(({ name }) => name !== 'id').map(getMenuItem)}
+  </Menu>
   );
-};
 
 export default class FilterComponent extends Component {
   render() {
