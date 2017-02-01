@@ -43,7 +43,7 @@ export default class MainList extends Component {
   update = (nextProps, lastProps) => {
     if (!lastProps || nextProps.collection !== lastProps.collection) {
       if (this.subscription) this.subscription.unsubscribe();
-      const { client, collection, attributes, location } = nextProps;
+      const { client, collection, fieldNames, location } = nextProps;
       this.items = null;
 
       const lname = collection.name[0].toLowerCase() + collection.name.substr(1);
@@ -52,7 +52,7 @@ export default class MainList extends Component {
         query: gql`
           query ${lname}List($state: [DOCUMENT_STATE]) {
             items: ${lname}List(query: {state: {in: $state}}) {
-              ${attributes}
+              ${fieldNames}
             }
           }
         `, /* eslint-disable */

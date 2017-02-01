@@ -4,18 +4,18 @@ import { Spin } from 'antd';
 import { Image, SlateMate } from 'olymp/cms';
 import { Gateway } from 'react-gateway';
 
-const attributes = 'id, name, farbe, extrakt, slug, text, bild { height, width, url, crop }';
+const fieldNames = 'id, name, farbe, extrakt, slug, text, bild { height, width, url, crop }';
 @withAuth
 @graphql(gql`
   query artikel($slug: String) {
     artikel(query: { slug: { eq: $slug } }) {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {
   options: ({ location }) => ({ variables: { slug: location.pathname.split('/artikel')[1] } }),
 })
-@withItem({ name: 'artikel', attributes })
+@withItem({ name: 'artikel', fieldNames })
 export default class Artikel extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;
@@ -64,9 +64,7 @@ export default class Artikel extends Component {
         )}
         <div className="container">
           <div className="row">
-            <aside className="col-sm-4">
-
-            </aside>
+            <aside className="col-sm-4" />
             <div className="col-sm-8">
               <SlateMate className="frontend-editor mt-2 mb-3" value={item.text} onChange={text => patch({ text })} readOnly={readOnly} />
             </div>

@@ -8,18 +8,18 @@ import AnchorHelper from 'antd/lib/anchor/anchorHelper';
 const Anchor = AnchorCreator.Link;
 
 const getChildSlug = slug => slug.indexOf('#') === -1 ? slug.substr(1) : slug.split('#')[1];
-const attributes = 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }';
+const fieldNames = 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }';
 
 @graphql(gql`
   query page($id: String!) {
     page(id: $id) {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {
   options: ({ id }) => ({ variables: { id } }),
 })
-@withItem({ typeName: 'page', attributes })
+@withItem({ typeName: 'page', fieldNames })
 @withAuth
 export default class CmsPage extends Component {
   constructor() {
@@ -31,13 +31,11 @@ export default class CmsPage extends Component {
       this.anchorHelper.scrollTo(location.hash);
     }
   }
-  createAnchors = (nodes) => {
-    return (nodes || []).map((node, i) =>
-      <Anchor key={i} href={`#${node.slug}`} title={node.text}>
-        {this.createAnchors(node.children)}
-      </Anchor>
-    );
-  }
+  createAnchors = nodes => (nodes || []).map((node, i) =>
+    <Anchor key={i} href={`#${node.slug}`} title={node.text}>
+      {this.createAnchors(node.children)}
+    </Anchor>
+    )
   render() {
     let { auth, item, patch, save, blocks, location, readOnly, getReadOnly, showAnchors } = this.props;
     if (!item) return <Spin size="large" />;
@@ -55,7 +53,7 @@ export default class CmsPage extends Component {
             </AnchorCreator>
           </div>
         )}
-        <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings }) } onChange={blocks => patch({ blocks })} />
+        <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings })} onChange={blocks => patch({ blocks })} />
 
         {!readOnly ? (
           <Gateway into="action">
@@ -97,4 +95,4 @@ export default class CmsPage extends Component {
       </div>
     );
   }
-};
+}

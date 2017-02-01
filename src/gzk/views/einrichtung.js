@@ -7,19 +7,19 @@ import Accordion from '../components/accordion2';
 
 const AccordionItem = Accordion.Item;
 
-const attributes = `id, name, kurz, art, farbe, slug, slogan, willkommen, etage, freifeld, zeiten, eMail, fax, telefonPrivat, telefon,
+const fieldNames = `id, name, kurz, art, farbe, slug, slogan, willkommen, etage, freifeld, zeiten, eMail, fax, telefonPrivat, telefon,
   website, peak { url, width, height, crop }, logo { url, width, height, crop }, fachrichtungen, tags, aesthetik { id, name, link, text }, vorsorgen { id, name, link, text }, leistungen { id, name, link, text },
   personen { id, name, beschreibung, bild { url, width, height, crop }, telefon, fax, eMail, text }, text`;
 @graphql(gql`
   query einrichtung($id: String!) {
     einrichtung(id: $id) {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {
   options: ({ id }) => ({ variables: { id } }),
 })
-@withItem({ name: 'einrichtung', attributes })
+@withItem({ name: 'einrichtung', fieldNames })
 @withAuth
 export default class Praxis extends Component {
   render() {
@@ -55,19 +55,19 @@ export default class Praxis extends Component {
               <p>{item.willkommen}</p>
             </div>
           </Image> : <div className="page-header panel">
-          <div className="container">
-            <h1 className="pull-left">{item.name}</h1>
-            <ol className="breadcrumb pull-left">
-              <li>
-                <a href="/">Home</a>
-              </li>
-              <li className="active">
-                {item.name || item.slogan}
-                {item.willkommen}
-              </li>
-            </ol>
-          </div>
-        </div>}
+            <div className="container">
+              <h1 className="pull-left">{item.name}</h1>
+              <ol className="breadcrumb pull-left">
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li className="active">
+                  {item.name || item.slogan}
+                  {item.willkommen}
+                </li>
+              </ol>
+            </div>
+          </div>}
         <div className="container">
           <div className="row">
             <aside className="col-sm-4">
@@ -85,13 +85,13 @@ export default class Praxis extends Component {
                     {item.telefonPrivat ? <li><i className="fa fa-phone" /> Privatpatienten: {item.telefonPrivat}</li> : null}
                     {item.fax ? <li><i className="fa fa-fax" /> Fax: {item.fax}</li> : null}
                     {item.eMail ? <li><i className="fa fa-envelope-o" /> E-Mail: {item.eMail}</li> : null}
-                    {item.website ? <li><a href={item.website} target="_blank"><i className="fa fa-link" /><bold style={{color: item.farbe}}> Eigene Website besuchen</bold></a></li> : null}
+                    {item.website ? <li><a href={item.website} target="_blank"><i className="fa fa-link" /><bold style={{ color: item.farbe }}> Eigene Website besuchen</bold></a></li> : null}
                   </ul>
                 </li>
                 {((item.zeiten && item.zeiten.length) || item.freifeld) ? <li className="widget">
                   <h4>Öffnungszeiten</h4>
                   <ul className="list-unstyled bulleted-list iconized-list">
-                    {(item.zeiten || []).map((zeit, index) => <li key={index} style={{display: zeit ? 'block' : 'none'}}>
+                    {(item.zeiten || []).map((zeit, index) => <li key={index} style={{ display: zeit ? 'block' : 'none' }}>
                       <i className="fa fa-icon" />{tage[index]}.&nbsp;{zeit}
                     </li>)}
                   </ul>

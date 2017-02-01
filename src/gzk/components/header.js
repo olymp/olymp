@@ -3,7 +3,7 @@ import { Link, cn, withApollo, withAuth, gql, toArray } from 'olymp';
 import { sortableContainer, sortableElement, sortableHandle, arrayMove } from 'olymp/cms';
 import './header.less';
 
-export const SortHandle  = sortableHandle(({ children }) => children);
+export const SortHandle = sortableHandle(({ children }) => children);
 export const SortElement = sortableElement(({ children }) => children);
 export const SortContainer = sortableContainer(({ children }) => React.Children.only(children));
 
@@ -15,7 +15,7 @@ class Menu extends Component {
     items: [],
   };
   renderUtil = (fn, props) => {
-    let x = fn && fn(props);
+    const x = fn && fn(props);
     if (x) return x;
   }
   renderPlus = (props) => {
@@ -26,7 +26,7 @@ class Menu extends Component {
       <Link to={to} style={style} className="item" activeClassName="active">
         <i className="fa fa-plus-square-o" />
       </Link>
-    )
+    );
   }
   renderHandle = (props) => {
     const { location, renderHandle } = props;
@@ -95,7 +95,7 @@ export default class MenuController extends Component {
         reorderPages: newChildren.map(({ id }, order) => ({ id, order })),
       },
     });
-    // newChildren.map((page, order) => saveItem({ order }, 'page', client, { id: page.id, attributes: ['id', 'order'] }));
+    // newChildren.map((page, order) => saveItem({ order }, 'page', client, { id: page.id, fieldNames: ['id', 'order'] }));
   };
   render() {
     const { items, auth, ...rest } = this.props;

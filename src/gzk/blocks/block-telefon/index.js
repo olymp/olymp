@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql } from 'olymp';
 import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
 
-const attributes = 'id slug peak { url } telefon farbe name kurz personen { id name } leistungen { id name }';
+const fieldNames = 'id slug peak { url } telefon farbe name kurz personen { id name } leistungen { id name }';
 @withRouter
 @graphql(gql`
   query einrichtungList {
     items: einrichtungList {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {

@@ -5,12 +5,12 @@ import { Image } from 'olymp/cms';
 import { Spin } from 'antd';
 import capitalize from 'lodash/upperFirst';
 
-const attributes = 'id name slug farbe bild { url, height, width, crop } extrakt tags';
+const fieldNames = 'id name slug farbe bild { url, height, width, crop } extrakt tags';
 @withRouter
 @graphql(gql`
   query artikelList {
     items: artikelList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
-      ${attributes}
+      ${fieldNames}
     }
     pdfs: fileList(tags: ["GiZ"]) {
       url

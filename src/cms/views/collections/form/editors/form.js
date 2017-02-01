@@ -3,11 +3,11 @@ import { withCollection } from 'olymp';
 import { Button, Collapse, Form } from 'antd';
 import getFormEditor from '../form-editor';
 
-const stampAttributes = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
+const fieldNames = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
 @withCollection
 export default class SubForm extends Component {
-  removeItem = index => {
+  removeItem = (index) => {
     const { onChange, value } = this.props;
     return onChange((value || []).filter((x, i) => i !== index));
   };
@@ -38,7 +38,7 @@ export default class SubForm extends Component {
           {(value || []).map((value, i) => (
             <Collapse.Panel header={this.getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
               <div className="ant-form">
-                {collection.fields.filter(({ name }) => name !== 'id' && stampAttributes.indexOf(name) === -1).map(({ type, name }) =>
+                {collection.fields.filter(({ name }) => name !== 'id' && fieldNames.indexOf(name) === -1).map(({ type, name }) =>
                   <Form.Item key={name}>
                     {getFormEditor(
                       type,

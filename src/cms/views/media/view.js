@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Button } from 'antd';
+import { Spin, Button, Affix } from 'antd';
 import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
@@ -10,15 +10,15 @@ import Sidebar from './list-sidebar';
 import List from './list';
 import ListMini from './list-mini';
 import Upload from './upload';
-import Crop from './crop';
+import Crop, { CropSelect } from './crop';
 
-const attributes = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
+const fieldNames = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
 const ACTIVE_COLOR = '#EEE';
 
 @graphql(gql`
   query fileList {
     items: fileList {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `)
@@ -27,6 +27,7 @@ export default class MediaView extends Component {
   state = {
     tags: [],
     selected: [],
+    aspect: 0
   };
 
   getNode = (images) => {
@@ -98,10 +99,8 @@ export default class MediaView extends Component {
 
   render() {
     const { data, onChange, onClose, multi } = this.props;
-    const { selected, tags } = this.state;
+    const { selected, tags, aspect } = this.state;
     const { items, loading } = data;
-
-    const id = (!!selected && selected[0]) || this.props.id;
 
     let currentNode = this.getNode(items || []);
     let images = items;
@@ -117,6 +116,60 @@ export default class MediaView extends Component {
       image => image.name /* image.length */
     );
 
+    let detail;
+    if (selected.length && onChange) { // crop one or more
+      detail = (
+        <div>
+          <CropSelect value={aspect} onChange={aspect => this.setState({ aspect })} />
+          <h3>{selected.length > 1 ? 'Bilder' : 'Bild'} zurechtschneiden</h3>
+          {selected.map(id =>
+            <div key={id}>
+              <Crop id={id} onChange={image => this.setState({ images: images.map(x => x.url === image.url ? image : x) })} />
+            </div>
+          )}
+          <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
+            <Button key="submit" type="primary" size="large" onClick={() => onChange(images.filter(x => selected.find(y => x.id === y)))}>
+              Übernehmen
+            </Button>&nbsp;
+            <Button onClick={this.onClose}>Abbrechen</Button>
+          </div>
+          <div style={{ clear: 'both' }} />
+        </div>
+      );
+    } else if (selected.length > 1 && !onChange) { // batch edit items
+      detail = (
+        <div>
+          <h3>{selected.length} Bilder ausgewählt</h3>
+          <DetailMulti
+            images={selected.map(x => items.find(item => item.id === x))}
+            deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
+            onClose={this.onClose}
+          />
+        </div>
+      );
+    } else if (selected.length === 1) { // edit one
+      detail = selected.map(id =>
+        <div key={id}>
+          <h3>Bild bearbeiten</h3>
+          <Detail
+            id={id}
+            onClose={this.onClose}
+          />
+        </div>
+      );
+    } else { // none selected
+      detail = (
+        <div>
+          <h3>Bild auswählen oder hochladen</h3>
+          <Upload modal={false} onClose={() => console.log('jo')} />
+          <div style={{ float: 'right', marginTop: '1rem' }}>
+            {!!onChange && <Button onClick={this.onClose}>Abbrechen</Button>}
+          </div>
+          <div style={{ clear: 'both' }} />
+        </div>
+      );
+    }
+
     return (
       <Modal onClose={onClose}>
         <Sidebar
@@ -124,80 +177,23 @@ export default class MediaView extends Component {
           isLoading={loading}
           noChangeAllowed={!!onChange}
         />
-        <div className="container olymp-container pr-0">
-          <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
+        <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
+          <div className="container olymp-container pr-0">
             {loading ? <Spin /> : (
               <List
-                selected={selected && selected.length ? selected : [id]}
+                selected={selected}
                 onClick={this.onClick}
                 images={images}
                 multi={multi}
               />
             )}
           </div>
-          <div className="col-md-4 py-1">
-            {
-              selected.length > 1 ? (
-                onChange ? (
-                  <div>
-                    <h3>{selected.length} Bilder ausgewählt</h3>
-                    <ListMini
-                      images={selected.map(x => items.find(item => item.id === x))}
-                      deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
-                    />
-
-                    <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
-                      <Button key="submit" type="primary" size="large" onClick={() => onChange(images.filter(x => selected.findIndex(y => x.id === y) !== -1))}>
-                        Übernehmen
-                      </Button>&nbsp;
-                      <Button onClick={this.onClose}>Abbrechen</Button>
-                    </div>
-
-                    <div style={{ clear: 'both' }} />
-                  </div>
-                ) : (
-                  <div>
-                    <h3>{selected.length} Bilder ausgewählt</h3>
-                    <DetailMulti
-                      images={selected.map(x => items.find(item => item.id === x))}
-                      deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
-                      onClose={this.onClose}
-                    />
-                  </div>
-                )
-              ) : (
-                id ? (
-                  onChange ? (
-                    <div>
-                      <h3>Bild zurechtschneiden</h3>
-                      <Crop
-                        onChange={onChange}
-                        onClose={this.onClose}
-                        id={id}
-                      />
-                    </div>
-                  ) : (
-                    <div>
-                      <h3>Bild bearbeiten</h3>
-                      <Detail
-                        id={id}
-                        onClose={this.onClose}
-                      />
-                    </div>
-                  )
-                ) : (
-                  <div>
-                    <h3>Bild auswählen oder hochladen</h3>
-                    <Upload modal={false} onClose={() => console.log('jo')} />
-
-                    <div style={{ float: 'right', marginTop: '1rem' }}>
-                      {!!onChange && <Button onClick={this.onClose}>Abbrechen</Button>}
-                    </div>
-                    <div style={{ clear: 'both' }} />
-                  </div>
-                )
-              )
-            }
+        </div>
+        <div className="col-md-4">
+          <div style={{ position: 'fixed', height: '100%', overflowY: 'auto' }}>
+            <div className="p-1">
+              {detail}
+            </div>
           </div>
         </div>
       </Modal>

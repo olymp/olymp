@@ -4,19 +4,19 @@ import { notification } from 'antd';
 import gql from 'graphql-tag';
 import capitalize from 'lodash/upperFirst';
 
-export const mutateItem = (client, name, { attributes }) => props => client.mutate({
+export const mutateItem = (client, name, { fieldNames }) => props => client.mutate({
   mutation: gql`
     mutation set_${name.toLowerCase()}($id:String, $type:OPERATION_TYPE!, $input:${capitalize(name)}Input!) {
       ${name.toLowerCase()}(id:$id, input:$input, operationType:$type) {
-        ${attributes || 'id'}
+        ${fieldNames || 'id'}
       }
     }
   `,
   ...props,
 });
 
-export const removeItem = (id, name, client, { onRemoved, attributes }) =>
-  mutateItem(client, name, { attributes })({
+export const removeItem = (id, name, client, { onRemoved, fieldNames }) =>
+  mutateItem(client, name, { fieldNames })({
     variables: {
       id,
       type: 'REMOVE',
@@ -46,10 +46,10 @@ const strip = (obj) => {
     Object.keys(obj).forEach(x => strip(obj[x]));
   }
 };
-export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
+export const saveItem = (body, name, client, { onSaved, fieldNames, id }) => {
   const input = JSON.parse(JSON.stringify(body));
   strip(input);
-  return mutateItem(client, name, { attributes })({
+  return mutateItem(client, name, { fieldNames })({
     variables: {
       id,
       input,
@@ -75,7 +75,7 @@ export const saveItem = (body, name, client, { onSaved, attributes, id }) => {
   });
 };
 
-export default ({ attributes, name }) => (WrappedComponent) => {
+export default ({ fieldNames, name }) => (WrappedComponent) => {
   @withApollo
   @graphql(gql`
     query getType($name: String!) {
@@ -151,7 +151,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
   class WithItemComponent extends Component {
     static defaultProps = {
       name,
-      attributes,
+      fieldNames,
     };
 
     constructor(props) {
@@ -174,9 +174,9 @@ export default ({ attributes, name }) => (WrappedComponent) => {
     }
 
     update = (nextProps, lastProps) => {
-      let { name, client, attributes, initialData, id, slug } = nextProps;
-      if (!lastProps || name !== lastProps.name || attributes !== lastProps.attributes || id !== lastProps.id || slug !== lastProps.slug || (nextProps.data && nextProps.data[name] !== lastProps.data[name])) {
-        if (!attributes || !name) return;
+      let { name, client, fieldNames, initialData, id, slug } = nextProps;
+      if (!lastProps || name !== lastProps.name || fieldNames !== lastProps.fieldNames || id !== lastProps.id || slug !== lastProps.slug || (nextProps.data && nextProps.data[name] !== lastProps.data[name])) {
+        if (!fieldNames || !name) return;
         const capitalized = capitalize(name);
         if (nextProps.data) {
           this.patchedItem = {};
@@ -187,7 +187,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
             query: gql`
               query get_${name.toLowerCase()}($id:String!) {
                 item: ${name.toLowerCase()}(query: { id: {eq: $id} }) {
-                  ${attributes}
+                  ${fieldNames}
                 }
               }
             `,
@@ -208,7 +208,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
             query: gql`
               query get_${name.toLowerCase()}($slug:String!) {
                 item: ${name.toLowerCase()}(query: { slug: {eq: $slug} }) {
-                  ${attributes}
+                  ${fieldNames}
                 }
               }
             `,
@@ -229,8 +229,8 @@ export default ({ attributes, name }) => (WrappedComponent) => {
         }
       }
     };
-    refetch = (attributes) => {
-      this.update({ ...this.props, attributes }, this.props);
+    refetch = (fieldNames) => {
+      this.update({ ...this.props, fieldNames }, this.props);
     };
     patch = (patch) => {
       if (this.unmount) return;
@@ -244,7 +244,7 @@ export default ({ attributes, name }) => (WrappedComponent) => {
       });
     };
     save = (data, opt) => {
-      const { onSaved, name, client, attributes } = this.props;
+      const { onSaved, name, client, fieldNames } = this.props;
       this.setState({ saving: true });
       const then = (x) => {
         this.setState({ saving: false });
@@ -254,20 +254,20 @@ export default ({ attributes, name }) => (WrappedComponent) => {
         return saveItem(data, name, client, {
           id: this.data.id,
           onSaved,
-          attributes,
+          fieldNames,
         }).then(then).catch(err => {
           this.setState({ saving: false });
           throw err;
         });
       }
-      return saveItem(this.data, name, client, { id: this.data.id, onSaved, attributes }).then(then).catch(err => {
+      return saveItem(this.data, name, client, { id: this.data.id, onSaved, fieldNames }).then(then).catch(err => {
         this.setState({ saving: false });
         throw err;
       });
     };
     remove = () => {
-      const { onRemoved, name, client, attributes } = this.props;
-      return removeItem(this.data.id, name, client, { onRemoved, attributes });
+      const { onRemoved, name, client, fieldNames } = this.props;
+      return removeItem(this.data.id, name, client, { onRemoved, fieldNames });
     };
 
     render() {

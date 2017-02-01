@@ -4,18 +4,18 @@ import { Spin } from 'antd';
 import { Image, SlateMate } from 'olymp/cms';
 import { Gateway } from 'react-gateway';
 
-const attributes = 'id, art, date, name, extrakt, slug, text, bild { height, width, url, crop }';
+const fieldNames = 'id, art, date, name, extrakt, slug, text, bild { height, width, url, crop }';
 @withAuth
 @graphql(gql`
   query termin($slug: String) {
     termin(query: { slug: { eq: $slug } }) {
-      ${attributes}
+      ${fieldNames}
     }
   }
 `, {
   options: ({ location }) => ({ variables: { slug: location.pathname.split('/news')[1] } }),
 })
-@withItem({ name: 'termin', attributes })
+@withItem({ name: 'termin', fieldNames })
 export default class News extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;

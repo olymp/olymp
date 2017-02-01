@@ -15,7 +15,7 @@ export default class MediaList extends Component {
           const isActive = selected.findIndex(x => x === item.id) !== -1;
 
           return (
-            <div onClick={typeof onClick === 'function' && (() => onClick(item, isActive))} key={index} className={`card card-block file ${isActive ? 'selected' : ''} ${multi ? 'multi' : ''}`}>
+            <div onClick={typeof onClick === 'function' && (() => onClick(item, isActive))} key={index} className={cn('card card-block file', {selected: isActive, multi: multi})}>
               <Image value={item} width={200} ratio={1} />
               {
                 item.format === 'pdf' ? (
