@@ -11,9 +11,9 @@ export default class ToolbarAction extends Component {
   }
 
   render() {
-    const { toggle, type, active, icon, separated, options, right, multi, excluding, showModal } = this.props;
+    const { toggle, type, active, icon, separated, options, exceptions, right, multi, showModal } = this.props;
 
-    if (options && options.length < 10 && !multi && !showModal && !excluding) {
+    if (options && options.length < 10 && !multi && !showModal && !exceptions) {
       return <Select {...this.props} />;
     } else if (options) {
       return <Modal {...this.props} />;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter, DataLoader, withAuth } from 'olymp';
-import { useGenericBlock, GenericBlock, useTagFilter } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/cms';
 import { Pagination } from 'antd';
 import sortBy from 'lodash/sortBy';
 import difference from 'lodash/difference';
@@ -90,11 +90,11 @@ const now = moment().format('x');
 `, {
   options: () => ({ }),
 })
-@useTagFilter(data => [...(data.termine || []), ...(data.gottesdienste || [])])
 @useGenericBlock({
   label: 'Termine',
   props: ['tags', 'mode'],
   editable: false,
+  tagSource: data => [...(data.termine || []), ...(data.gottesdienste || [])],
   actions: (props) => {
     const { setData, getData } = props;
 
@@ -122,7 +122,7 @@ const now = moment().format('x');
 })
 export default class TerminBlock extends Component {
   render() {
-    const { data, children, getData, router, location, auth, ...rest } = this.props;
+    const { filteredData, children, getData, router, location, auth, ...rest } = this.props;
     const { pathname, query } = location;
     const page = query ? parseInt(query.page || 1, 10) : 1;
     const steps = query ? parseInt(query.steps || 10, 10) : 10;
@@ -130,36 +130,31 @@ export default class TerminBlock extends Component {
     const tags = getData('tags', ['Alle']);
     const title = getData('title');
 
-    let { termine = [], gottesdienste = [] } = data;
+    // Alle Termine/Termine/Gottesdienst-Modus
+    let termine = filteredData.filter(item =>
+      !mode ||
+      (mode === 1 && (item.__typename === 'Termin')) ||
+      (mode === 2 && (item.__typename === 'Gottesdienst'))
+    );
 
-    gottesdienste = gottesdienste.map((gottesdienst) => {
-      return {
-        ...gottesdienst,
-        name: gottesdienst.name || 'Gottesdienst',
-        start: gottesdienst.datum,
-        className: gottesdienst.hervorheben ? 'special' : null,
-        additional: gottesdienst.abendmahl || gottesdienst.kindergottesdienst ? (
-          <p style={{ margin: 0 }}>
-            Mit
-            {gottesdienst.abendmahl ? <span> Abendmahl</span> : null}
-            {gottesdienst.abendmahl && gottesdienst.kindergottesdienst ? <span> und</span> : null}
-            {gottesdienst.kindergottesdienst ? <span> KiGo</span> : null}
-          </p>
-        ) : null,
-      };
-    });
-    termine = [
-      ...(!mode || mode === 1 ? termine : []),
-      ...(!mode || mode === 2 ? gottesdienste : []),
-    ];
+    // Gottesdienste mappen
+    termine = termine.map(item => (item.__typename === 'Gottesdienst' ? ({
+      ...item,
+      name: item.name || 'Gottesdienst',
+      start: item.datum,
+      className: item.hervorheben ? 'special' : null,
+      additional: item.abendmahl || item.kindergottesdienst ? (
+        <p style={{ margin: 0 }}>
+          Mit
+          {item.abendmahl ? <span> Abendmahl</span> : null}
+          {item.abendmahl && item.kindergottesdienst ? <span> und</span> : null}
+          {item.kindergottesdienst ? <span> KiGo</span> : null}
+        </p>
+      ) : null,
+    }) : item));
+
+    // Sortierung
     termine = sortBy(termine, termin => termin.start);
-
-    // Tags filtern
-    if (tags.findIndex(tag => tag === 'Alle') === -1) {
-      termine = termine.filter(
-        termin => difference(tags, termin.tags || []).length !== tags.length
-      );
-    }
 
     // Eventuell Gottesdienste ausblenden
     if (mode < 2) {
