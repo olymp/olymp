@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { cn } from 'olymp';
-import { SlateMate, useItemEdit } from 'olymp/cms';
+import { SlateMateFrontend, useItemEdit } from 'olymp/cms';
 import { moment } from 'olymp/locale-de';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';
@@ -48,7 +48,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
 
       {kommentar || additional ? (
         <div className="description">
-          {kommentar ? <SlateMate value={kommentar} readOnly /> : null}
+          {kommentar ? <SlateMateFrontend value={kommentar} readOnly /> : null}
           {additional}
         </div>
       ) : null}

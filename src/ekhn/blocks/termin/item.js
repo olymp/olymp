@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { cn } from 'olymp';
-import { SlateMate, Image, useItemEdit } from 'olymp/cms';
+import { SlateMateFrontend, Image, useItemEdit } from 'olymp/cms';
 import { moment } from 'olymp/locale-de';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';
@@ -54,7 +54,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
       <div className="col-xs-7 col-sm-9 pr-0">
         <div className="description">
           <h3 style={{ color }}>{hypher.hyphenateText(name || 'Termin')}</h3>
-          {kommentar ? <SlateMate value={kommentar} readOnly /> : null}
+          {kommentar ? <SlateMateFrontend value={kommentar} readOnly /> : null}
 
           {pfarrer && pfarrer.length ? <span>Mit{pfarrer.reverse().map((x, i) => {
             let content = <b key={i}> {x.name}</b>;

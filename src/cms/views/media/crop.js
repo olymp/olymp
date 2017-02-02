@@ -8,9 +8,9 @@ import withFile from '../../decorators/file';
 const defaultGetImage = props => props.value;
 
 export const CropSelect = (props) => {
-  const { value, onChange } = props;
+  const { value, onChange, style } = props;
   return (
-    <Select defaultValue={`${value || 0}`} style={{ width: 150, float: 'left' }} size="large" onChange={option => onChange(parseFloat(option, 10))}>
+    <Select defaultValue={`${value || 0}`} style={{ width: 150, float: 'left', ...style }} size="large" onChange={option => onChange(parseFloat(option, 10))}>
       <Select.Option key="0" value="0">Freie Auswahl</Select.Option>
       <Select.Option key="1" value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
       <Select.Option key="2" value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>

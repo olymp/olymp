@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spin, Button } from 'antd';
+import { Spin } from 'antd';
 
 export default ({ trigger = true, loading = false, data = {}, placeholder = 'Keine Daten vorhanden', children, style, className }) => {
   let triggerFn;
