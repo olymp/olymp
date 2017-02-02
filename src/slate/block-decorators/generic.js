@@ -2,6 +2,7 @@ import React from 'react';
 import useBlockBase from './base';
 import useBlockAlign from './align';
 import useBlockToolbar from './toolbar';
+import useTagFilter from './toolbar/action/tag-filter';
 import useBlockResize from './resize';
 
 export const GenericBlock = (props) => {
@@ -15,10 +16,12 @@ export const GenericBlock = (props) => {
   );
 };
 
-export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, remove = true, move = true, add = true }) => (WrappedComponent) => {
+export const useGenericBlock = ({ label, category, editable = true, align, props, resize, actions, defaultNodes, tagSource, remove = true, move = true, add = true }) => (WrappedComponent) => {
   let component = props => <WrappedComponent {...props} />;
 
   component = useBlockToolbar({ actions, remove, move, add })(component);
+
+  if (tagSource) component = useTagFilter(tagSource)(component);
 
   if (resize && typeof resize === 'object') component = useBlockResize(resize)(component);
   else if (resize) component = useBlockResize({ })(component);

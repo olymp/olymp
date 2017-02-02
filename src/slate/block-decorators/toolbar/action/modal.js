@@ -6,43 +6,31 @@ import capitalize from 'lodash/upperFirst';
 export default class ToolbarActionModal extends Component {
   state = {
     modal: {},
-    include: [],
-    exclude: [],
   };
 
   changeSelection = (value, type) => {
-    const { toggle, excluding } = this.props;
-    const { include, exclude } = this.state;
+    const { toggle, exceptions } = this.props;
 
-    if (excluding) {
-      this.setState({ [type]: value })
-
+    if (exceptions) {
       toggle({
-        include,
-        exclude,
+        [type]: value,
       });
     } else {
       toggle(value);
     }
   }
 
-  render() {
-    const { toggle, type, active, icon, separated, options, right, multi } = this.props;
-    const excluding = this.props.excluding && multi; // es macht keinen Sinn, excluding ohne muli zu benutzen
-    const { modal } = this.state;
+  renderTable = (options, multi, exception) => {
+    const { toggle } = this.props;
+    const modus = !exception ? 'include' : 'exclude';
 
     let attributes;
     const selectedRowKeys = [];
-    const excludedRowKeys = [];
-    const data = options.map(({ value, label, active, excluded, ...rest }) => {
+    const data = options.map(({ value, label, active, ...rest }) => {
       attributes = rest;
 
       if (active) {
         selectedRowKeys.push(value);
-      }
-
-      if (excluded) {
-        excludedRowKeys.push(value);
       }
 
       return {
@@ -53,8 +41,7 @@ export default class ToolbarActionModal extends Component {
     });
     delete attributes.disabled;
 
-    // Alten Wert speichern, für den Fall das Cancel gedrückt wird
-    if (!this.selection) this.selection = selectedRowKeys;
+    if (!this[modus]) this[modus] = selectedRowKeys;
 
     const columns = Object.keys(attributes).map(key => ({
       title: capitalize(key),
@@ -64,7 +51,7 @@ export default class ToolbarActionModal extends Component {
     const rowSelection = multi ? {
       type: 'select',
       selectedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => this.changeSelection(selectedRows, 'include'),
+      onChange: (selectedRowKeys, selectedRows) => this.changeSelection(selectedRows, modus),
     } : {
       type: 'radio',
       selectedRowKeys,
@@ -74,45 +61,27 @@ export default class ToolbarActionModal extends Component {
       disabled: record.disabled,
     });
 
-    const exRowSelection = {
-      type: 'select',
-      selectedRowKeys: excludedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => this.changeSelection(selectedRows, 'exclude'),
-      getCheckboxProps: record => ({
-        disabled: record.disabled,
-      })
+    const tableProps = {
+      dataSource: data,
+      columns: [
+        {
+          title: 'Name',
+          dataIndex: 'name',
+        },
+        ...columns,
+      ],
+      rowSelection,
+      size: 'middle',
+      pagination: false,
     };
+    if (exception) tableProps.title = () => 'Mit Ausnahme von';
 
-    const includeTable = (
-      <Table
-        dataSource={data}
-        columns={[{
-          title: 'Name',
-          dataIndex: 'name',
-        },
-          ...columns,
-        ]}
-        rowSelection={rowSelection}
-        size="middle"
-        pagination={false}
-      />
-    );
+    return <Table {...tableProps} />;
+  }
 
-    const excludeTable = excluding && (
-      <Table
-        dataSource={data}
-        columns={[{
-          title: 'Name',
-          dataIndex: 'name',
-        },
-          ...columns,
-        ]}
-        rowSelection={exRowSelection}
-        size="middle"
-        pagination={false}
-        title={() => 'Mit Ausnahme von'}
-      />
-    );
+  render() {
+    const { toggle, type, active, icon, separated, options, exceptions, right, multi } = this.props;
+    const { modal } = this.state;
 
     return (
       <div key={type}>
@@ -124,17 +93,27 @@ export default class ToolbarActionModal extends Component {
           title="Bitte wählen"
           visible={modal[type]}
           onOk={() => {
-            this.selection = undefined;
+            this.include = undefined;
+            this.exclude = undefined;
             this.setState({ modal: { ...modal, [type]: false } });
           }}
           onCancel={() => {
-            toggle(data.find(item => this.selection.findIndex(key => key === item.key) !== -1));
-            this.selection = undefined;
+            if (exceptions) {
+              toggle({
+                include: this.include.map(key => ({ key })),
+                exclude: this.exclude.map(key => ({ key })),
+              });
+            } else {
+              toggle(this.include);
+            }
+            this.include = undefined;
+            this.exclude = undefined;
+
             this.setState({ modal: { ...modal, [type]: false } });
           }}
         >
-          {includeTable}
-          {excludeTable}
+          {this.renderTable(options, multi || !!exceptions)}
+          {this.renderTable(exceptions, true, true)}
         </Modal>
       </div>
     );
