@@ -125,8 +125,9 @@ export default class MediaView extends Component {
     if (selected.length && onChange) { // crop one or more
       detail = (
         <div>
-          <CropSelect value={aspect} onChange={aspect => this.setState({ aspect })} />
           <h3>{selected.length > 1 ? 'Bilder' : 'Bild'} zurechtschneiden</h3>
+          <CropSelect value={aspect} onChange={aspect => this.setState({ aspect })} style={{ width: '100%', marginBottom: '1rem' }} />
+
           {selected.map(id =>
             <div key={id}>
               <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} />

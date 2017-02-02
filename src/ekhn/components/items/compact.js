@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, cn } from 'olymp';
-import { SlateMate, Image, useItemEdit } from 'olymp/cms';
+import { SlateMateFrontend, Image, useItemEdit } from 'olymp/cms';
 import capitalize from 'lodash/upperFirst';
 import Tags from '../tags';
 
@@ -37,10 +37,10 @@ export default useItemEdit()(({ children, id, header, subheader, shortText, more
         {subheader ? <div className="subheader">{subheader}</div> : null}
 
         <div className="hidden-sm-down">
-          {text ? <SlateMate key={id} value={text} readOnly className="slate" /> : <Tags tags={tags} />}
+          {text ? <SlateMateFrontend key={id} value={text} readOnly className="slate" /> : <Tags tags={tags} />}
         </div>
         <div className="hidden-md-up">
-          {shortText ? <SlateMate key={id} value={shortText} readOnly className="slate" /> : <Tags tags={tags} />}
+          {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : <Tags tags={tags} />}
         </div>
 
         {more ? (
