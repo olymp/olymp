@@ -30,7 +30,7 @@ const PageForm = Form.create()(
     const { item, data, form, onCreate, onCancel, saving } = props;
     const { getFieldDecorator } = form;
 
-    if (!item || !data.items) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin /></Modal>;
+    if (!item || !data.items) return <Modal {...modalSettings} title="Bearbeiten" onCancel={onCancel} onOk={onCreate}><Spin size="large" /></Modal>;
 
     let items = (data.items || []).map(({ id, name, parentId }) => ({
       value: id,

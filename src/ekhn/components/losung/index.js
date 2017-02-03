@@ -5,14 +5,10 @@ const defaultLosung = {
   datum: '2016-01-01T00:00:00',
   tag: 'Freitag',
   sonntag: 'Neujahr',
-  losung: {
-    text: 'Danket dem Herrn aller Herren, der allein große Wunder tut, denn seine Güte währet ewiglich.',
-    vers: 'Psalm 136,3.4',
-  },
-  lehr: {
-    text: 'Dem, der überschwänglich tun kann über alles hinaus, was wir bitten oder verstehen, nach der Kraft, die in uns wirkt, dem sei Ehre in der Gemeinde und in Christus Jesus zu aller Zeit, von Ewigkeit zu Ewigkeit! Amen.',
-    vers: 'Epheser 3,20-21',
-  },
+  losungtext: 'Danket dem Herrn aller Herren, der allein große Wunder tut, denn seine Güte währet ewiglich.',
+  losungvers: 'Psalm 136,3.4',
+  lehrtext: 'Dem, der überschwänglich tun kann über alles hinaus, was wir bitten oder verstehen, nach der Kraft, die in uns wirkt, dem sei Ehre in der Gemeinde und in Christus Jesus zu aller Zeit, von Ewigkeit zu Ewigkeit! Amen.',
+  lehrvers: 'Epheser 3,20-21',
 };
 
 @graphql(gql`

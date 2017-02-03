@@ -30,13 +30,12 @@ export default class ImageBlock extends Component {
     children: PropTypes.node,
     style: PropTypes.object,
     className: PropTypes.string,
-    isFocused: PropTypes.bool,
     getData: PropTypes.func,
     setData: PropTypes.func,
   }
 
   render() {
-    const { setData, getData, className, readOnly, attributes, isFocused, renderToolbar, toolbarStyle } = this.props;
+    const { setData, getData, className, readOnly, attributes, renderToolbar, toolbarStyle } = this.props;
     const { style, children, ...rest } = this.props;
     const value = getData('image', undefined);
 

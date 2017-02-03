@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Tabs, Input, Col, Select, Form, Pagination, Dropdown, Menu } from 'antd';
-import { withRouter, withCollections, Link } from 'olymp';
+import { Button, Input, Col, Pagination, Dropdown, Menu } from 'antd';
+import { withRouter, withCollections } from 'olymp';
 import { createComponent } from 'react-fela';
 import capitalize from 'lodash/upperFirst';
+import CMSMenu from '../menu';
 
 const StyledHeader = createComponent(() => ({
   marginBottom: '0px',
@@ -18,7 +19,10 @@ const StyledSubheader = createComponent(() => ({
 const StyledForm = createComponent(() => ({
   padding: '20px!important',
   paddingBottom: '14px!important',
-  borderWidth: '0!important',
+  borderTop: '0!important',
+  borderLeft: '0!important',
+  borderRight: '0!important',
+  borderBottom: '1px solid #e6e6e6',
 }), props => <div {...props} />);
 
 const StyledButtonGroup = createComponent(() => ({
@@ -27,51 +31,12 @@ const StyledButtonGroup = createComponent(() => ({
 
 const Panel = createComponent(() => ({
   padding: '5px 10px',
-  borderTop: '1px solid #e6e6e6',
   borderBottom: '1px solid #e6e6e6',
 }));
 
 @withRouter
 @withCollections
 export default class SidebarHeader extends Component {
-  renderSelect() {
-    const { collectionTree, router, activePage, location } = this.props;
-    const { pathname } = location;
-
-    return (
-      <Menu style={{ minWidth: 150 }}>
-        {Object.keys(collectionTree).map((key) => {
-          const wrapper = children => (
-            <Menu.SubMenu key={key} title={capitalize(key)}>
-              {children}
-            </Menu.SubMenu>
-          );
-          const groupItem = (
-            (collectionTree[key] || []).map(({ name, title }) => (
-              <Menu.Item key={`/@/${name}`}>
-                <Link to={{ pathname, query: { [`@${name.toLowerCase()}`]: null } }}>
-                  {capitalize(title || name)}
-                </Link>
-              </Menu.Item>
-            ))
-          );
-
-          return collectionTree[key].length === 1 ? groupItem : wrapper(groupItem);
-        })}
-        <Menu.Divider />
-        <Menu.Item key="mediathek">
-          <Link to={{ pathname, query: { '@mediathek': null } }}>
-            Mediathek
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="/@/users" disabled>Benutzer</Menu.Item>
-        <Menu.Item key="/@/analytics" disabled>Statistik</Menu.Item>
-        <Menu.Item key="page-settings" disabled>Einstellungen</Menu.Item>
-        <Menu.Item key="user" disabled>Profil</Menu.Item>
-      </Menu>
-    );
-  }
-
   renderStateMenu() {
     const { states, setQueryToState } = this.props;
 
@@ -83,7 +48,7 @@ export default class SidebarHeader extends Component {
   }
 
   render() {
-    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, query, setQueryToState, noChangeAllowed } = this.props;
+    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, query, setQueryToState, noChangeAllowed, collectionTree } = this.props;
 
     return (
       <div>
@@ -91,7 +56,7 @@ export default class SidebarHeader extends Component {
           <Input.Group style={{ height: 48 }}>
             <Col span="4" />
             <Col span="15" style={{ marginTop: -3 }}>
-              <Dropdown overlay={!noChangeAllowed && this.renderSelect()}>
+              <Dropdown overlay={!noChangeAllowed && <CMSMenu collections={collectionTree} />}>
                 <a className="ant-dropdown-link" href="javascript:;" style={noChangeAllowed ? { cursor: 'not-allowed' } : {}}>
                   <StyledHeader>
                     {capitalize(activePage)} {!noChangeAllowed && <i className="fa fa-angle-down" />}
@@ -125,22 +90,28 @@ export default class SidebarHeader extends Component {
           )}
         </StyledForm>
 
-        <Panel>
-          <Input.Group>
-            <Col span="18">
-              <Input size="large" onChange={searchFn} value={searchText} placeholder="Suche ..." />
-            </Col>
-            <Col span="6" className="pr-0">
-              {filter && (filtering ? (
-                <Button onClick={e => setQueryToState()} style={{ width: '100%' }}>Reset</Button>
-              ) : (
-                <Dropdown overlay={filter}>
-                  <Button style={{ width: '100%' }}>Filter</Button>
-                </Dropdown>
-              ))}
-            </Col>
-          </Input.Group>
-        </Panel>
+        {(!!searchFn || !!filter) && (
+          <Panel>
+            <Input.Group>
+              {searchFn && (
+                <Col span="18">
+                  <Input size="large" onChange={searchFn} value={searchText} placeholder="Suche ..." />
+                </Col>
+              )}
+              {filter && (
+                <Col span="6" className="pr-0">
+                  {filtering ? (
+                    <Button onClick={e => setQueryToState()} style={{ width: '100%' }}>Reset</Button>
+                  ) : (
+                    <Dropdown overlay={filter}>
+                      <Button style={{ width: '100%' }}>Filter</Button>
+                    </Dropdown>
+                  )}
+                </Col>
+              )}
+            </Input.Group>
+          </Panel>
+        )}
       </div>
     );
   }

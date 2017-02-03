@@ -14,7 +14,7 @@ const MediaForm = Form.create()(
     if (!item) {
       return (
         <div style={{ minHeight: 400 }}>
-          <Spin />
+          <Spin size="large" />
         </div>
       );
     }
@@ -50,7 +50,7 @@ const MediaForm = Form.create()(
           )}
         </Form.Item>
 
-        <Image value={{ ...item }} width="100%" readOnly className="my-1" />
+        <Image value={{ ...item }} width="100%" lightbox readOnly className="my-1" />
 
         <Form.Item key="size" label="Größe" {...FormItemLayout}>
           <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />

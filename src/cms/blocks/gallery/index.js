@@ -24,7 +24,6 @@ export default class ImagesBlock extends Component {
     children: PropTypes.node,
     style: PropTypes.object,
     className: PropTypes.string,
-    isFocused: PropTypes.bool,
     getData: PropTypes.func,
     setData: PropTypes.func,
   }
