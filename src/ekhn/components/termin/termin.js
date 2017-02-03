@@ -30,11 +30,11 @@ const now = moment().format('x');
 })
 export default class TerminBlock extends Component {
   render() {
-    const { data } = this.props;
+    const { className, style, data } = this.props;
     const { termine } = data;
 
     return (
-      <DataLoader {...this.props} trigger="termine" placeholder="Keine Termine vorhanden">
+      <DataLoader className={className} style={style} isEmpty={data.termine} placeholder="Keine Termine vorhanden">
         <Termin items={termine} />
       </DataLoader>
     );

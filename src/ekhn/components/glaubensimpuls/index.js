@@ -41,7 +41,7 @@ export default class GlaubensimpulsBlock extends Component {
     const { caption } = (bild || {});
 
     return (
-      <DataLoader {...this.props} trigger="glaubensimpuls" placeholder="Kein Glaubensimpuls vorhanden">
+      <DataLoader className={className} style={style} isEmpty={data.glaubensimpuls} placeholder="Kein Glaubensimpuls vorhanden">
         <Image value={bild} width="100%" />
         {!isBlock && (
           <div className="glaubensimpuls_content">
