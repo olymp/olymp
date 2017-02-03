@@ -2,7 +2,7 @@ const less = require('universally-dev-less');
 const path = require('path');
 const fs = require('fs');
 const rootPath = require('app-root-dir');
-const webpack = require("webpack");
+const webpack = require('webpack');
 
 module.exports = (config) => {
   const prevBabelConfig = config.plugins.babelConfig;
@@ -14,14 +14,15 @@ module.exports = (config) => {
   config.clientDevServerPort = process.env.PORT ? (process.env.PORT + 1) : 7331;
   config.url = process.env.URL || `http://localhost:${process.env.PORT || 1337}`;
   config.disableSSR = process.env.SSR === false || process.env.SSR === 'false';
-  config.env['URL'] = config.url;
-  config.env['API'] = process.env.API;
-  config.env['GM_KEY'] = process.env.GM_KEY;
-  if (!config.alias) config.alias = {}
+  config.env.URL = config.url;
+  config.env.HEROKU_URL = process.env.HEROKU_URL;
+  config.env.API = process.env.API;
+  config.env.GM_KEY = process.env.GM_KEY;
+  if (!config.alias) config.alias = {};
   config.alias['react-router'] = path.resolve(rootPath.get(), 'node_modules', 'react-router-v4-decode-uri');
-  config.alias['moment'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'moment'));
-  config.alias['lodash'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'lodash'));
-  config.alias['olymp'] = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'olymp'));
+  config.alias.moment = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'moment'));
+  config.alias.lodash = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'lodash'));
+  config.alias.olymp = fs.realpathSync(path.resolve(rootPath.get(), 'node_modules', 'olymp'));
   config.nodeBundlesIncludeNodeModuleFileTypes.push(v => v === 'olymp' || v.indexOf('olymp/') === 0 || v.indexOf('olymp-') === 0);
 
   config.bundles.client.srcPaths.push(fs.realpathSync(path.resolve(rootPath.get(), './node_modules/olymp/src')));
@@ -66,7 +67,7 @@ module.exports = (config) => {
     if (target === 'client') babelConfig.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
     if (mode === 'production' && target === 'server') babelConfig.plugins.push(require.resolve('babel-plugin-lodash'));
     if (mode === 'production' && target === 'server') babelConfig.plugins.push(require.resolve('babel-plugin-lodash'));
-    /*ifProd('transform-react-remove-prop-types'),
+    /* ifProd('transform-react-remove-prop-types'),
     ifProd('transform-react-pure-class-to-function'),
     ifProd('minify-constant-folding'),
     ifProd('minify-dead-code-elimination'),

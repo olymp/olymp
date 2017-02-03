@@ -45,13 +45,8 @@ function reactApplicationMiddleware(request, response) {
 
   const port = process.env.PORT || config.port;
 
-  const getUri = () => {
-    if (process.env.GRAPHQL_URL) return process.env.GRAPHQL_URL;
-    else if (process.env.API) return process.env.API;
-    return (process.env.URL || `http://localhost:${port}`) + '/graphql';
-  };
   const networkInterface = createNetworkInterface({
-    uri: getUri(),
+    uri: `http://localhost:${port}}/graphql`,
     opts: {
       credentials: 'same-origin',
       headers: request.headers,
@@ -86,37 +81,37 @@ function reactApplicationMiddleware(request, response) {
   );
 
   renderToStringWithData(reactApp).then((reactAppString) => {
-  const cssMarkup = renderer.renderToString()
+    const cssMarkup = renderer.renderToString();
   // Generate the html response.
-  const html = generateHTML({
+    const html = generateHTML({
     // Provide the full app react element.
-    reactAppString,
-    initialState: client.store.getState().apollo.data,
+      reactAppString,
+      initialState: client.store.getState().apollo.data,
     // Nonce which allows us to safely declare inline scripts.
-    nonce,
-    cssMarkup,
+      nonce,
+      cssMarkup,
     // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
     // that need to be included within our html.  It's based on the rendered app.
     // @see https://github.com/nfl/react-helmet
-    helmet: Helmet.rewind(),
+      helmet: Helmet.rewind(),
     // We provide our code split state so that it can be included within the
     // html, and then the client bundle can use this data to know which chunks/
     // modules need to be rehydrated prior to the application being rendered.
-    codeSplitState: codeSplitContext.getState(),
-  });
+      codeSplitState: codeSplitContext.getState(),
+    });
 
   // Get the render result from the server render context.
-  const renderResult = reactRouterContext.getResult();
+    const renderResult = reactRouterContext.getResult();
 
   // Check if the render result contains a redirect, if so we need to set
   // the specific status and redirect header and end the response.
-  if (renderResult.redirect) {
-    response.status(301).setHeader('Location', renderResult.redirect.pathname);
-    response.end();
-    return;
-  }
+    if (renderResult.redirect) {
+      response.status(301).setHeader('Location', renderResult.redirect.pathname);
+      response.end();
+      return;
+    }
 
-  response
+    response
     .status(
       renderResult.missed
         // If the renderResult contains a "missed" match then we set a 404 code.
