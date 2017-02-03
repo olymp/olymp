@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Button, Affix } from 'antd';
+import { Spin, Button } from 'antd';
 import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
@@ -8,7 +8,6 @@ import Detail from './detail';
 import DetailMulti from './detail-multi';
 import Sidebar from './list-sidebar';
 import List from './list';
-import ListMini from './list-mini';
 import Upload from './upload';
 import Crop, { CropSelect } from './crop';
 

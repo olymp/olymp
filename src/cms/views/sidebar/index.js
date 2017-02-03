@@ -82,7 +82,7 @@ export default class SidebarComponent extends Component {
   }
 
   render() {
-    const { items, isLoading, filter, multi } = this.props;
+    const { items, isLoading, filter, multi, refetch } = this.props;
     const { page } = this.state;
 
     const activeItems = items.filter(item => item.isActive);
@@ -93,7 +93,7 @@ export default class SidebarComponent extends Component {
         <SidebarHeader
           {...this.props}
           {...this.state}
-          searchFn={this.search}
+          searchFn={!!refetch && this.search}
           setPage={page => this.setState({ page })}
           pageSize={PAGE_SIZE}
           filter={typeof filter === 'function' ? filter(this.setQuery) : undefined}
