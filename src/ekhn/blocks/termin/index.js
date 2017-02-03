@@ -122,7 +122,7 @@ const now = moment().format('x');
 })
 export default class TerminBlock extends Component {
   render() {
-    const { filteredData, children, getData, router, location, auth, ...rest } = this.props;
+    const { filteredData, children, getData, router, location, auth, style, data, ...rest } = this.props;
     const { pathname, query } = location;
     const page = query ? parseInt(query.page || 1, 10) : 1;
     const steps = query ? parseInt(query.steps || 10, 10) : 10;
@@ -177,7 +177,7 @@ export default class TerminBlock extends Component {
 
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
-        <DataLoader {...this.props} trigger={['termine', 'gottesdienste']} placeholder="Keine Termine vorhanden" className="items">
+        <DataLoader style={style} isEmpty={(data.termine && data.termine.length) || (data.gottesdienste && data.gottesdienste.length)} placeholder="Keine Termine vorhanden" className="items">
           <div className="item" style={{ padding: '.5rem' }}>
             <h6 style={{ margin: 0 }}>{!!auth && !!auth.user && `[${type}]`}</h6>
             <h1>{title || type}</h1>
