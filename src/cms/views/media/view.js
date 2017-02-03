@@ -184,7 +184,7 @@ export default class MediaView extends Component {
         />
         <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
           <div className="container olymp-container pr-0">
-            {loading ? <Spin /> : (
+            {loading ? <Spin size="large" /> : (
               <List
                 selected={selected}
                 onClick={this.onClick}

@@ -102,7 +102,7 @@ export default class SidebarComponent extends Component {
 
         {isLoading ? (
           <Panel>
-            <Spin />
+            <Spin size="large" />
           </Panel>
           ) : (
             <Panel>

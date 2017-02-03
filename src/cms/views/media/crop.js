@@ -63,7 +63,7 @@ export default class Crop extends Component {
     if (!item) {
       return (
         <div style={{ minHeight: 400 }}>
-          <Spin />
+          <Spin size="large" />
         </div>
       );
     }
