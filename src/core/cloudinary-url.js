@@ -4,10 +4,13 @@ const defaultState = 'f_auto,q_auto,fl_lossy';
 export default (url, { mode, maxWidth, effect, maxHeight, border, width, height, cropX, cropY, quality, blur, retina, crop: crop0 } = {}, crop) => {
   if (!crop) crop = crop0;
   if (!mode) mode = 'fill';
-  if (retina && width) width *= 2;
-  if (retina && height) height *= 2;
-  if (retina && maxWidth) maxWidth *= 2;
-  if (retina && maxHeight) maxHeight *= 2;
+
+  // RETINA
+  // if (retina && width) width *= 2; geht so nicht, da cloudinary einen Fehler wirft, wenn die angefragt Größe > als die tatsächlich ist
+  // if (retina && height) height *= 2;
+  if (retina && maxWidth && maxWidth * 2 < width) maxWidth *= 2;
+  if (retina && maxHeight && maxHeight * 2 < height) maxHeight *= 2;
+
   if (!url) return url;
   if (crop) {
     width = crop[0];

@@ -115,8 +115,8 @@ export default class MultiMediaDetail extends Component {
 
     return (
       <div>
-        <div style={{ borderBottom: '1px solid #DDD', padding: '1rem 0', marginBottom: '1rem', minHeight: 200, position: 'relative' }}>
-          {loading ? <Spin /> : (
+        <div style={{ borderBottom: '1px solid #DDD', padding: '1rem 0', marginBottom: '1rem', minHeight: 400, position: 'relative' }}>
+          {loading ? <Spin size="large" /> : (
             <MediaForm
               {...this.props}
               ref={form => this.form = form}
