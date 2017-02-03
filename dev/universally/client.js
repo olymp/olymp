@@ -16,7 +16,7 @@ import { Provider } from 'react-fela';
 const container = document.querySelector('#app');
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.API || process.env.GRAPHQL_URL || '/graphql',
+  uri: process.env.GRAPHQL_URL || '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
