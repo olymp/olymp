@@ -35,7 +35,7 @@ class ModalForm extends Component {
             />
           )}
         </FormItem>
-        <FormItem key="password" label="Name" {...formItemLayout}>
+        <FormItem key="password" label="Passwort" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
           })(
