@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, cn } from 'olymp';
-import { SlateMate, Image, useItemEdit } from 'olymp/cms';
+import { SlateMateFrontend, Image, useItemEdit } from 'olymp/cms';
 import capitalize from 'lodash/upperFirst';
 import Tags from '../tags';
 
@@ -33,7 +33,7 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
             <h2>{header}</h2>
             {subheader ? <div className="subheader">{subheader}</div> : null}
 
-            {text ? <SlateMate key={id} value={text} className="mt-1" readOnly /> : null}
+            {text ? <SlateMateFrontend key={id} value={text} className="mt-1" readOnly /> : null}
 
             {(!query || !query[capitalize(identifier)]) && more ? (
               <p style={{ marginBottom: '2rem' }}>

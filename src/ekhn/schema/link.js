@@ -10,7 +10,7 @@ module.exports = ({ schema }) => schema.addSchema({
   schema: `
     # group:inhalt
     type Link implements CollectionInterface
-    @collection(name: "Link") @stamp @state {
+    @collection(name: "Link") @state @stamp {
       name: String
       # @description
       url: String

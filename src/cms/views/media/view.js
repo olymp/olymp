@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Button, Affix } from 'antd';
+import { Spin, Button } from 'antd';
 import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
@@ -8,7 +8,6 @@ import Detail from './detail';
 import DetailMulti from './detail-multi';
 import Sidebar from './list-sidebar';
 import List from './list';
-import ListMini from './list-mini';
 import Upload from './upload';
 import Crop, { CropSelect } from './crop';
 
@@ -125,8 +124,9 @@ export default class MediaView extends Component {
     if (selected.length && onChange) { // crop one or more
       detail = (
         <div>
-          <CropSelect value={aspect} onChange={aspect => this.setState({ aspect })} />
           <h3>{selected.length > 1 ? 'Bilder' : 'Bild'} zurechtschneiden</h3>
+          <CropSelect value={aspect} onChange={aspect => this.setState({ aspect })} style={{ width: '100%', marginBottom: '1rem' }} />
+
           {selected.map(id =>
             <div key={id}>
               <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} />
@@ -184,7 +184,7 @@ export default class MediaView extends Component {
         />
         <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
           <div className="container olymp-container pr-0">
-            {loading ? <Spin /> : (
+            {loading ? <Spin size="large" /> : (
               <List
                 selected={selected}
                 onClick={this.onClick}

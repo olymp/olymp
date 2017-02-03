@@ -10,8 +10,8 @@ module.exports = ({ schema }) => schema.addSchema({
   schema: `
     # group:termine
     type Gottesdienst implements CollectionInterface
-    @collection(name: "Gottesdienst") @stamp @state {
-      # title:Alternativer Titel
+    @collection(name: "Gottesdienst") @state @stamp {
+      # @label("Alternativer Titel")
       # @description
       name: String
       # @name
@@ -20,14 +20,14 @@ module.exports = ({ schema }) => schema.addSchema({
       # @color("#E6DCEA")
       hervorheben: Boolean
       abendmahl: Boolean
-      # title:mit Kindergottesdienst
+      # @label("mit Kindergottesdienst")
       kindergottesdienst: Boolean
       bild: Image
-      # title:Bei Terminen ausblenden
+      # @label("Bei Terminen ausblenden")
       keinTermin: Boolean
-      # title:Pfarrer/in
+      # @label("Pfarrer/in")
       pfarrer: [Person] @relation
-      # title:Organist/in
+      # @label("Organist/in")
       organist: Person @relation
       tags: [String]
     }

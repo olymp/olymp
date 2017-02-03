@@ -1,5 +1,6 @@
 import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
+import { withAuth } from 'olymp';
 import { Editor, Html, Raw } from 'slate';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
@@ -9,7 +10,7 @@ import './style.less';
 const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
-}
+};
 
 const options = {
   defaultNode: 'paragraph',
@@ -277,5 +278,16 @@ export default class SlateEditor extends Component {
         )}
       </div>
     );
+  }
+}
+
+@withAuth
+export class SlateMateFrontend extends Component {
+  render() {
+    const { auth, ...rest } = this.props;
+
+    return auth && auth.user ? (
+      <span>[-- NUR AUSGELOGGT SICHTBAR ---]</span>
+    ) : <SlateEditor {...rest} />;
   }
 }

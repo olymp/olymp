@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Link, withRouter, withCollections } from 'olymp';
+import { withRouter, withCollections } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
-import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
-import { Menu, Affix, Button, Dropdown, Icon } from 'antd';
+import { Affix, Button, Dropdown, Icon } from 'antd';
 import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
 import CollectionModal from './collections';
+import Menu from './menu';
 import { useColors } from '../decorators';
 import './container.less';
 
@@ -19,19 +19,6 @@ import './container.less';
 @withCollections
 @useColors()
 export default class Container extends Component {
-  isActive = (href) => {
-    const { pathname } = this.props.location;
-    if (href === pathname) return true;
-    if (pathname.indexOf(`${href}/`) === 0) return true;
-    return false;
-  };
-
-  handleClick = ({ key }) => {
-    if (key === 'logout') {
-      this.props.auth.logout();
-    }
-  };
-
   render() {
     const { children, router, location, auth, logo, collectionList, collectionTree } = this.props;
     const { pathname, query } = location;
@@ -84,41 +71,6 @@ export default class Container extends Component {
       );
     }
 
-    const mainMenu = (
-      <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
-        {Object.keys(collectionTree).map((key) => {
-          const wrapper = children => (
-            <Menu.SubMenu key={key} title={capitalize(key)}>
-              {children}
-            </Menu.SubMenu>
-          );
-          const groupItem = (
-            (collectionTree[key] || []).map(({ name, title }) => (
-              <Menu.Item key={`/@/${name}`}>
-                <Link to={{ pathname, query: { [`@${uncapitalize(name)}`]: null } }}>
-                  {capitalize(title || name)}
-                </Link>
-              </Menu.Item>
-            ))
-          );
-
-          return collectionTree[key].length === 1 ? groupItem : wrapper(groupItem);
-        })}
-        <Menu.Divider />
-        <Menu.Item key="mediathek">
-          <Link to={{ pathname, query: { '@mediathek': null } }}>
-            Mediathek
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="/@/users" disabled>Benutzer</Menu.Item>
-        <Menu.Item key="/@/analytics" disabled>Statistik</Menu.Item>
-        <Menu.Item key="page-settings" disabled>Einstellungen</Menu.Item>
-        <Menu.Item key="user" disabled>Profil</Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="logout">Abmelden</Menu.Item>
-      </Menu>
-    );
-
     return (
       <GatewayProvider>
         <div>
@@ -126,7 +78,7 @@ export default class Container extends Component {
           {modal}
           <Affix className="athena-cms-menu">
             {!modal && (
-              <Dropdown overlay={mainMenu} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+              <Dropdown overlay={<Menu collections={collectionTree} />} overlayClassName="ant-dropdown-left" placement="bottomLeft">
                 <Button type="primary" shape="circle" size="large">
                   {logo || <Icon type="menu-unfold" />}
                 </Button>

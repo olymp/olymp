@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input, Tabs, Menu, Icon } from 'antd';
-import { SlugEditor } from './editors';
 import getInitialValue from './initial-value';
 import getFormEditor from './form-editor';
 import getValidationRules from './get-validation-rules';

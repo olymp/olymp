@@ -6,22 +6,6 @@ import orderBy from 'lodash/orderBy';
 import { moment } from 'olymp/locale-de';
 import Items from '../../components/items';
 
-const getTags = (items) => {
-  const tags = { Alle: 0 };
-  (items || []).forEach((item) => {
-    if (item.tags && item.tags.length) {
-      (item.tags || []).forEach((tag) => {
-        if (!tags[tag]) tags[tag] = 0;
-
-        tags[tag] += 1;
-      });
-    } else {
-      tags.Alle += 1;
-    }
-  });
-
-  return tags;
-};
 const now = moment().format('x');
 
 @withRouter
@@ -81,15 +65,10 @@ const now = moment().format('x');
 @useGenericBlock({
   label: 'Beiträge',
   props: ['masonry', 'tags', 'placeholder', 'archive'],
+  editable: false,
+  tagSource: data => data.beitragList,
   actions: (props) => {
     const { setData, getData, data } = props;
-    const selectedTags = getData('tags', ['Alle']);
-
-    const tagObj = getTags(data.beitragList);
-    tagObj.Alle += Object.keys(tagObj).reduce((val, key) => val + tagObj[key], 0);
-
-    let tags = Object.keys(tagObj).map(key => ({ key, count: tagObj[key] }));
-    tags = orderBy(tags, ['key', 'count'], ['asc', 'desc']);
 
     return [{
       icon: 'columns',
@@ -97,22 +76,6 @@ const now = moment().format('x');
       active: !!getData('masonry', false),
       toggle: () => {
         setData({ masonry: !getData('masonry', false) });
-      },
-    },
-    {
-      icon: 'tags',
-      type: 'choose-tags',
-      multi: true,
-      options: tags.map(({ key, count }) => ({
-        value: key,
-        label: key,
-        active: selectedTags.findIndex(tag => tag === key) !== -1,
-        disabled: (key !== 'Alle' && selectedTags.findIndex(tag => tag === 'Alle') !== -1) ||
-          (key === 'Alle' && selectedTags.length && selectedTags.findIndex(tag => tag === 'Alle') === -1),
-        anzahl: count,
-      })),
-      toggle: (tags) => {
-        setData({ tags: tags.map(tag => tag.key) });
       },
     },
     {
@@ -139,20 +102,11 @@ const now = moment().format('x');
 })
 export default class BeitragBlock extends Component {
   render() {
-    const { data, children, getData } = this.props;
-    const { beitragList } = data;
+    const { filteredData, children, getData } = this.props;
     const masonry = getData('masonry', false);
-    const tags = getData('tags', ['Alle']);
-    const placeholder = (beitragList || []).find(beitrag => beitrag.id === getData('placeholder'));
+    const placeholder = filteredData.find(beitrag => beitrag.id === getData('placeholder'));
     const archive = getData('archive', false);
-    let beitraege = beitragList && Array.isArray(beitragList) ? beitragList : [];
-
-    // Tags filtern
-    if (tags.findIndex(tag => tag === 'Alle') === -1) {
-      beitraege = beitraege.filter(
-        beitrag => difference(tags, beitrag.tags || []).length !== tags.length
-      );
-    }
+    let beitraege = filteredData;
 
     // Archiv
     if (!archive) {
