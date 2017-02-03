@@ -46,7 +46,7 @@ function reactApplicationMiddleware(request, response) {
   const port = process.env.PORT || config.port;
 
   const networkInterface = createNetworkInterface({
-    uri: `http://localhost:${port}}/graphql`,
+    uri: `http://localhost:${port}/graphql`,
     opts: {
       credentials: 'same-origin',
       headers: request.headers,
