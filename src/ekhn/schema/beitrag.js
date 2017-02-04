@@ -19,9 +19,9 @@ module.exports = ({ schema }) => schema.addSchema({
       ende: Date
       # @color("#E6DCEA")
       hauptbeitrag: Boolean
-      # @description
       autor: Person @relation
       bild: Image
+      # @description
       text: Json
       # @hint("Nur setzten, wenn es einen 'Weiterlesen'-Button zu 'text' geben soll!")
       zusammenfassung: Json
