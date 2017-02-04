@@ -43,40 +43,55 @@ export default class SidebarComponent extends Component {
   setQuery = (query) => {
     const { refetch } = this.props;
 
-    refetch(query);
+    refetch({
+      ...this.state.query,
+      ...query
+    });
     this.setState({
       filtering: true,
       searchText: '',
-      query,
+      query: {
+        ...this.state.query,
+        ...query
+      },
     });
   }
 
   setQueryToState = (eq = 'PUBLISHED') => {
     const { refetch } = this.props;
 
-    refetch({ state: { eq } });
+    const query = {
+      state: (eq === 'ALL') ? { null: false } : { eq }
+    };
+
+    refetch(query);
     this.setState({
       filtering: false,
-      query: { state: { eq } },
+      query,
       searchText: '',
     });
   }
 
   search = (e) => {
     const { refetch } = this.props;
+    const { searchText } = this.state;
 
     if (!e.target.value) return this.setQueryToState();
 
-    const searchText = e.target.value;
+    const query = {
+      ...this.state.query,
+      name: { contains: searchText },
+    };
+
     this.setState({
-      searchText,
+      searchText: e.target.value,
     });
     this.throttle(() => {
-      if (!this.state.searchText) return;
-      refetch({ name: { contains: this.state.searchText } });
+      if (!searchText) return;
+      refetch(query);
       this.setState({
         filtering: true,
-        query: { name: { contains: this.state.searchText } },
+        query,
       });
     });
   }

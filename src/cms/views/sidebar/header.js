@@ -67,7 +67,7 @@ export default class SidebarHeader extends Component {
                 <Dropdown overlay={this.renderStateMenu()}>
                   <a className="ant-dropdown-link" href="javascript:;">
                     <StyledSubheader>
-                      {states[query.state.eq]} <i className="fa fa-angle-down" />
+                      {states[query.state.eq || (!query.state.null && 'ALL')]} <i className="fa fa-angle-down" />
                     </StyledSubheader>
                   </a>
                 </Dropdown>
