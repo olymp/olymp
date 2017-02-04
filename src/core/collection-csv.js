@@ -1,28 +1,43 @@
 import moment from 'moment';
+import { Plain, Raw } from 'slate';
 
 const SEPERATOR = '|';
-
 export const collectionToCsv = (collection, items) => {
-  const replacer = (key, value) => value === null ? '' : value;
-  const csv = items.reduce((csv, item, index) => {
+  const fields = collection.fields.filter(field => {
+    if (field.type.name === 'Image') return true;
+    return field.type.kind !== 'OBJECT';
+  });
+  return items.reduce((csv, item, index) => {
     const lines = [];
     if (!index) {
       lines.push(`sep=${SEPERATOR}`);
-      lines.push(`${collection.fields.map(({ name }) => name).join(SEPERATOR)}`);
+      lines.push(`${fields.map(({ name }) => name).join(SEPERATOR)}`);
     }
-    lines.push(collection.fields.map(({ type, name }) => {
+    lines.push(fields.map(({ type, name }) => {
       if (type.name === 'String') {
         return item[name];
-      } return undefined;
-    }).filter(x => x !== undefined).join(SEPERATOR));
-    return csv.join('\r\n');
+      } else if (['Date', 'DateTime'].includes(type.name)) {
+        return moment(item[name]).format();
+      } else if (type.name === 'Boolean') {
+        return !type.name ? 'false' : 'true';
+      } else if (type.name === 'Image') {
+        return item[name] ? item[name].url : '';
+      } else if (type.kind === 'LIST' && type.ofType.name === 'String') {
+        return (item[name] || []).join(';');
+      } else if (type.name === 'Json') {
+        if (!item[name]) return '';
+        const raw = Raw.deserialize(JSON.parse(JSON.stringify(item[name])), { terse: true });
+        return Plain.serialize(raw).split('\n').join(' ');
+      } return [undefined, null].includes(item[name]) ? '' : JSON.stringify(item[name]);
+    }).join(SEPERATOR));
+    return `${csv}${lines.join('\r\n')}\r\n`;
   }, '');
 };
 
-export const collectionToCsvDownload = (collection, json, fileName) => {
+export const collectionToCsvDownload = (collection, json) => {
   const link = window.document.createElement('a');
   link.setAttribute('href', `data:text/csv;charset=utf-8,%EF%BB%BF${escape(collectionToCsv(collection, json))}`);
-  link.setAttribute('download', `${fileName}.csv`);
+  link.setAttribute('download', `${collection.name}.csv`);
   link.click();
 };
 

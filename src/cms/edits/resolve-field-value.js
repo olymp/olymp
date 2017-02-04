@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from './image';
 import { Checkbox } from 'antd';
+import { Plain, Raw } from 'slate';
 import moment from 'moment';
 
 export default (value, meta, fieldProps) => {
@@ -28,6 +29,11 @@ export default (value, meta, fieldProps) => {
     switch (meta.type.name) {
       case 'Image':
         return value ? <Image value={value} {...fieldProps} /> : null;
+
+      case 'Json':
+        if (!value) return '';
+        const raw = Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true });
+        return Plain.serialize(raw).split('\n').join(' ');
 
       default:
         return value ? (value.name || 'Ja') : null;
