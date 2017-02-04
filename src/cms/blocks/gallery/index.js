@@ -16,6 +16,7 @@ import Image from '../../edits/image';
       setData({ showMedia: true });
     },
     active: false,
+    tooltip: 'Bilder für die Galerie auswählen',
   }],
 })
 @withAuth

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Menu, Button } from 'antd';
+import { Dropdown, Menu, Button, Tooltip } from 'antd';
 import { Raw } from 'slate';
 import sortBy from 'lodash/sortBy';
 import Action from './action';
@@ -30,6 +30,7 @@ const addAction = ({ editor, state, node }) => {
     right: true,
     separated: true,
     options,
+    tooltip: 'Absätze um Block hinzufügen/entfernen',
     toggle: ({ key }) => {
       const p = Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
       if (key === '+<<') {
@@ -93,6 +94,7 @@ const removeAction = ({ editor, state, node }) => ({
   icon: 'trash-o',
   right: true,
   separated: true,
+  tooltip: 'Block löschen',
   toggle: () => {
     let newState = state.transform().unsetSelection();
     editor.onChange(
@@ -107,6 +109,7 @@ const moveActions = ({ editor, state, node }) => ([{
   icon: 'arrow-up',
   right: true,
   separated: true,
+  tooltip: 'Block um eine Stelle nach oben verschieben',
   toggle: () => {
     const { document } = state;
     const parent = document.getParent(node.key);
@@ -121,6 +124,7 @@ const moveActions = ({ editor, state, node }) => ([{
   type: 'block.moveDown',
   icon: 'arrow-down',
   right: true,
+  tooltip: 'Block um eine Stelle nach unten verschieben',
   toggle: () => {
     const { document } = state;
     const parent = document.getParent(node.key);
@@ -175,11 +179,13 @@ export default class Toolbar extends Component {
       <div className="slate-fix-toolbar" style={style} contentEditable={false}>
         {move && moveActions(this.props).map((action, index) => <Action {...action} key={index} />)}
 
-        <Dropdown overlay={menu}>
-          <Button type="ghost" size="small" className="slate-toolbar-type">
-            {block.label || block.type} <i className="fa fa-caret-down" />
-          </Button>
-        </Dropdown>
+        <Tooltip placement="top" title="Typ des Blockes ändern">
+          <Dropdown overlay={menu}>
+            <Button type="ghost" size="small" className="slate-toolbar-type">
+              {block.label || block.type} <i className="fa fa-caret-down" />
+            </Button>
+          </Dropdown>
+        </Tooltip>
 
         {actions.map((action, index) => <Action {...action} key={index} />)}
 

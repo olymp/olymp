@@ -98,6 +98,20 @@ const now = moment().format('x');
   actions: (props) => {
     const { setData, getData } = props;
 
+    let tooltip;
+    switch (getData('mode', 0)) {
+      case 0:
+        tooltip = 'Nur Termine anzeigen';
+        break;
+
+      case 1:
+        tooltip = 'Nur Gottesdienste anzeigen';
+        break;
+
+      default:
+        tooltip = 'Termine und Gottesdienste anzeigen';
+    }
+
     return [{
       icon: !getData('mode', 0) ? 'calendar' : (getData('mode', 0) === 1 ? 'calendar-o' : 'calendar-plus-o'),
       type: 'toggle-mode',
@@ -110,6 +124,7 @@ const now = moment().format('x');
           setData({ mode: 0 });
         }
       },
+      tooltip,
     }, {
       icon: 'header',
       type: 'set-title',
@@ -117,6 +132,7 @@ const now = moment().format('x');
         const title = window.prompt('Titel', getData('title'));
         setData({ title });
       },
+      tooltip: 'Titel des Terminblockes eingeben',
     }];
   },
 })
@@ -179,7 +195,6 @@ export default class TerminBlock extends Component {
       <GenericBlock {...rest} style={{ width: '100%' }}>
         <DataLoader style={style} isEmpty={(data.termine && data.termine.length) || (data.gottesdienste && data.gottesdienste.length)} placeholder="Keine Termine vorhanden" className="items">
           <div className="item" style={{ padding: '.5rem' }}>
-            <h6 style={{ margin: 0 }}>{!!auth && !!auth.user && `[${type}]`}</h6>
             <h1>{title || type}</h1>
 
             {termine.slice((page - 1) * steps, page * steps).map(x => <TerminItem {...x} key={x.id} />)}

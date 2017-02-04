@@ -85,8 +85,12 @@ export default class CoolImage extends Component {
       }
     }
 
-    const containerStyles = {
+    const containerStyles = height > width || ratio > 1 ? {
       maxWidth: '100%',
+      height: 'auto',
+      ...style,
+    } : {
+      width: '100%',
       height: 'auto',
       ...style,
     };

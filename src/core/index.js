@@ -2,7 +2,7 @@ export { default as purify } from './purify';
 export { default as capitalize } from 'lodash/upperFirst';
 
 export * from './toolbelt';
-export * from './papa-parse.js';
+// export * from './papa-parse.js';
 
 export { default as withCollection } from './with-collection';
 export { default as withCollections } from './with-collections';

@@ -24,6 +24,7 @@ const actions = props => [{
     ratio: 7 / 4,
   },
   actions,
+  tooltip: 'Url angeben',
 })
 export default class YoutubeBlock extends Component {
   static propTypes = {

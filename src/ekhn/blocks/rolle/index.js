@@ -56,6 +56,7 @@ import Items from '../../components/items';
     toggle: ({ key }) => {
       props.setData({ rolle: key });
     },
+    tooltip: 'Rolle/Funktion der User auswählen',
   }],
 })
 export default class RollenBlock extends Component {

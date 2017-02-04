@@ -21,6 +21,7 @@ const actions = props => [{
     };
   },
   active: false,
+  tooltip: 'Adresse eingeben',
 }];
 
 @withApollo

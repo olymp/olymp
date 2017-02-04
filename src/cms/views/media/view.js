@@ -40,7 +40,7 @@ export default class MediaView extends Component {
 
         if (!tree[tag]) {
           tree[tag] = {
-            name: !isActive ? capitalize(tag) : `'${capitalize(tag)}' entfernen`,
+            name: !isActive ? capitalize(tag) : `'${capitalize(tag)}' aufheben`,
             onClick: () => this.setState(
               { tags: !isActive ? [...tags, tag] : tags.filter(x => x !== tag) }
             ),
@@ -119,6 +119,14 @@ export default class MediaView extends Component {
       Object.keys(currentNode).map(key => currentNode[key]),
       image => image.name /* image.length */
     );
+
+    if (directories.filter(x => x.isActive).length) {
+      directories.unshift({
+        name: 'Alle Tags aufheben',
+        onClick: () => this.setState({ tags: [] }),
+        isActive: true,
+      });
+    }
 
     let detail;
     if (selected.length && onChange) { // crop one or more
