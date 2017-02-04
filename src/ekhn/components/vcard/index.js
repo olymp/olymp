@@ -2,11 +2,11 @@ import React from 'react';
 import { DataLoader, cn } from 'olymp';
 import { Image, useItemEdit } from 'olymp/cms';
 
-export default useItemEdit()(({ children, className, vcard = {} }) => {
+export default useItemEdit()(({ children, className, style, vcard = {} }) => {
   const { name, bild, ort, telefon, mobil, fax, email, website } = vcard;
 
   return (
-    <DataLoader className={cn('vcard-block', className)} trigger={!!vcard} placeholder="Keine Visitenkarte vorhanden">
+    <DataLoader style={style} className={cn('vcard-block', className)} isEmpty={vcard} placeholder="Keine Visitenkarte vorhanden">
       {children}
 
       <div className="vcard" style={{ margin: 0 }}>
