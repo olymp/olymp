@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { useGenericBlock, GenericBlock } from 'olymp/slate';
+import { useGenericBlock } from 'olymp/slate';
 import Image from '../../edits/image';
 
 const actions = props => [{
