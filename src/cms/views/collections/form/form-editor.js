@@ -57,7 +57,7 @@ export default (field, label, props = {}) => {
   }
   switch (type.name) {
     case 'Json':
-      return <SlateEditor {...props} placeholder={label} />;
+      return <SlateEditor {...props} placeholder={label || 'Hier Text eingeben!'} />;
     case 'Boolean':
       return <Checkbox {...props} />;
     case 'Date':

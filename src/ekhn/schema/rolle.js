@@ -13,6 +13,7 @@ module.exports = ({ schema }) => schema.addSchema({
     @collection(name: "Rolle") @state @stamp {
       bild: Image
       name: String
+      # @description
       text: Json
       tags: [String]
     }
