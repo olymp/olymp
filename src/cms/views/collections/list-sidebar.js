@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp';
+import { withRouter, Link, jsonToCsvDownload } from 'olymp';
 import { Dropdown, Menu, Icon } from 'antd';
 import { resolveFieldValue } from '../../edits';
 import Sidebar from '../sidebar';
@@ -82,8 +82,8 @@ export default class CollectionListSidebar extends Component {
 
     const menu = (
       <Menu>
-        <Menu.Item key="1">Import</Menu.Item>
-        <Menu.Item key="2">Export</Menu.Item>
+        <Menu.Item key="1" disabled>Import</Menu.Item>
+        <Menu.Item key="2"><a href="javascript:;" onClick={() => jsonToCsvDownload(this.props.items, typeName)}>Export</a></Menu.Item>
       </Menu>
     );
     const actions = (
