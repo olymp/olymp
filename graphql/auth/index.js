@@ -45,20 +45,18 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         },
       },
       Mutation: {
-        forgot: (source, args) => auth.forgot(args.email),
+        forgot: (source, args) => auth.forgot(args.email.toLowerCase()),
         reset: (source, args) => auth.reset(args.token, args.password).then(() => true),
-        loginCookie: (source, args, context) => {
-          return auth.login(args.email, args.password).then((userAndToken) => {
-            context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
-            return userAndToken.user;
-          });
-        },
+        loginCookie: (source, args, context) => auth.login(args.email.toLowerCase(), args.password).then((userAndToken) => {
+          context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
+          return userAndToken.user;
+        }),
         logoutCookie: (source, args, context) => {
           delete context.session.userId; // eslint-disable-line no-param-reassign
           return true;
         },
-        login: (source, args) => auth.login(args.email, args.password),
-        register: (source, args) => auth.register(args.input, args.password).then(x => x.user),
+        login: (source, args) => auth.login(args.email.toLowerCase(), args.password),
+        register: (source, args) => auth.register({ ...args.input, email: args.input.email.toLowerCase() }, args.password).then(x => x.user),
         confirm: (source, args) => auth.confirm(args.token),
         user: (source, args, context) => {
           const hook = Mutation && Mutation.user ? Mutation.user : defaultHook;

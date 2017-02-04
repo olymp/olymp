@@ -77,10 +77,10 @@ exports.defaultScalars = {
   Email: {
     description: 'The email scalar type represents email adress.',
     parseValue(value) {
-      return value;
+      return value ? value.toLowerCase() : value;
     },
     serialize(value) {
-      return value;
+      return value ? value.toLowerCase() : value;
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
