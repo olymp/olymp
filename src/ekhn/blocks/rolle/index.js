@@ -60,7 +60,7 @@ import Items from '../../components/items';
 })
 export default class RollenBlock extends Component {
   render() {
-    const { data, children, getData, location } = this.props;
+    const { data, children, getData, className, style, location } = this.props;
     let { rollen = [], personen = [] } = data;
     const rolle = rollen.find(x => x.id === getData('rolle'));
 
@@ -75,7 +75,7 @@ export default class RollenBlock extends Component {
     return (
       <GenericBlock {...this.props}>
         {!location.query || !location.query.Person ? (
-          <DataLoader {...this.props} trigger={!!rolle} placeholder="Keine Rollen vorhanden">
+          <DataLoader className={className} style={style} isEmpty={rolle} placeholder="Keine Rollen vorhanden">
             <Items
               items={rolle ? [{
                 ...rolle,

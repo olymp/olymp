@@ -35,7 +35,7 @@ import Gottesdienst from './index';
 })
 export default class GottesdienstBlock extends Component {
   render() {
-    const { data } = this.props;
+    const { className, style, data } = this.props;
     const { gottesdienste } = data;
 
     const items = (gottesdienste || []).map((gottesdienst) => {
@@ -57,7 +57,7 @@ export default class GottesdienstBlock extends Component {
     });
 
     return (
-      <DataLoader {...this.props} trigger="gottesdienste" placeholder="Keine Gottesdienste vorhanden">
+      <DataLoader className={className} style={style} isEmpty={data.gottesdienste} placeholder="Keine Gottesdienste vorhanden">
         <Gottesdienst items={items} />
       </DataLoader>
     );

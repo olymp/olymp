@@ -32,7 +32,7 @@ import Items from '../../components/items';
 })
 export default class GemeindebriefeBlock extends Component {
   render() {
-    const { data, children, ...rest } = this.props;
+    const { data, children, className, style, ...rest } = this.props;
     let { gemeindebriefe = [] } = data;
 
     // Beiträge für Item-Komp. vorbereiten
@@ -51,7 +51,7 @@ export default class GemeindebriefeBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader {...this.props} trigger="gemeindebriefe" placeholder="Keine Gemeindebriefe vorhanden">
+        <DataLoader className={className} style={style} isEmpty={data.gemeindebriefe} placeholder="Keine Gemeindebriefe vorhanden">
           <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
           {children}
         </DataLoader>

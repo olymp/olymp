@@ -71,7 +71,7 @@ export default class ImagesBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader trigger={showMedia || (!!images && !!images.length)} placeholder="Keine Bilder vorhanden">
+        <DataLoader className={className} style={style} isEmpty={images} placeholder="Keine Bilder vorhanden">
           {(images || []).map((image, i) => imageBlock(image, i))}
 
           {auth && auth.user ? imageBlock(undefined, images.length) : null}

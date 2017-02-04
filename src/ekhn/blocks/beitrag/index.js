@@ -102,7 +102,7 @@ const now = moment().format('x');
 })
 export default class BeitragBlock extends Component {
   render() {
-    const { filteredData, children, getData } = this.props;
+    const { filteredData, children, getData, className, style, data } = this.props;
     const masonry = getData('masonry', false);
     const placeholder = filteredData.find(beitrag => beitrag.id === getData('placeholder'));
     const archive = getData('archive', false);
@@ -145,7 +145,7 @@ export default class BeitragBlock extends Component {
 
     return (
       <GenericBlock {...this.props}>
-        <DataLoader {...this.props} trigger="beitragList" placeholder="Keine Beiträge vorhanden">
+        <DataLoader className={className} style={style} isEmpty={data.beitragList} placeholder="Keine Beiträge vorhanden">
           <Items items={beitraege} masonry={masonry} identifier="beitrag" />
 
           {children}
