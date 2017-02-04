@@ -10,7 +10,6 @@ export const jsonToCsv = (items) => {
   const header = Object.keys(items[0]).filter(key => blackList.indexOf(key) === -1);
   const csv = items.map(row => header.map((fieldName) => {
     const value = row[fieldName];
-    console.log(value, typeof value);
     if (!value) return '';
     if (typeof value === 'string') {
       return value;
