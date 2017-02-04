@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { withRouter, Link, jsonToCsvDownload } from 'olymp';
+import { withRouter, Link, collectionToCsvDownload } from 'olymp';
 import { Dropdown, Menu, Icon } from 'antd';
 import { resolveFieldValue } from '../../edits';
 import Sidebar from '../sidebar';
 import { getFilterMenu } from './filter';
 
 const states = {
+  ALL: 'Alle',
   PUBLISHED: 'Öffentlich',
   DRAFT: 'Entwurf',
   ARCHIVED: 'Archiv',
@@ -24,6 +25,22 @@ export default class CollectionListSidebar extends Component {
   resolveFieldValue = (item, field, { defaultFieldName, defaultValue }, fieldProps) => {
     const fieldName = this.resolveFieldName(item, field, defaultFieldName);
     const meta = this.resolveField(fieldName);
+
+    // Wenn Feld ein Range ist
+    const startField = this.resolveFieldName(item, 'start');
+    const endField = this.resolveFieldName(item, 'end');
+    if (startField && endField && fieldName === startField) {
+      const start = resolveFieldValue(item[startField], meta, fieldProps);
+      const end = resolveFieldValue(item[endField], meta, fieldProps);
+
+      if (start && end) {
+        return `${start} - ${end}`;
+      } else if (start) {
+        return `Ab ${start}`;
+      } if (end) {
+        return `Bis ${end}`;
+      }
+    }
 
     return resolveFieldValue(item[fieldName] || defaultValue, meta, fieldProps);
   }
@@ -83,7 +100,7 @@ export default class CollectionListSidebar extends Component {
     const menu = (
       <Menu>
         <Menu.Item key="1" disabled>Import</Menu.Item>
-        <Menu.Item key="2"><a href="javascript:;" onClick={() => jsonToCsvDownload(this.props.items, typeName)}>Export</a></Menu.Item>
+        <Menu.Item key="2"><a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a></Menu.Item>
       </Menu>
     );
     const actions = (
