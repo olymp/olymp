@@ -2,6 +2,7 @@ export { default as purify } from './purify';
 export { default as capitalize } from 'lodash/upperFirst';
 
 export * from './toolbelt';
+export * from './collection-csv.js';
 export * from './csv.js';
 
 export { default as withCollection } from './with-collection';
