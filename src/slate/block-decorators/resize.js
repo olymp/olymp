@@ -87,7 +87,7 @@ export default (options = {}) => Block => {
       ];
 
       return (
-        <Block {...this.props} style={height ? { ...style, height: `${height}px` } : style} className={cn(width && `p-0 col-md-${width}`)} ref={e => this.block = e}>
+        <Block {...this.props} style={height ? { ...style, height: `${height}px` } : style} className={cn(width && `p-0 col-xs-${width}`)} ref={e => this.block = e}>
           {children}
         </Block>
       );

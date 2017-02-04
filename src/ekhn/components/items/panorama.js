@@ -33,7 +33,7 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
             <h2>{header}</h2>
             {subheader ? <div className="subheader">{subheader}</div> : null}
 
-            {text ? <SlateMateFrontend key={id} value={text} className="mt-1" readOnly /> : null}
+            {text ? <SlateMateFrontend key={id} value={text} className="slate" readOnly /> : null}
 
             {(!query || !query[capitalize(identifier)]) && more ? (
               <p style={{ marginBottom: '2rem' }}>

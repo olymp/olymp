@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Table } from 'antd';
+import { Button, Modal, Table, Tooltip } from 'antd';
 import classNames from 'classnames';
 import capitalize from 'lodash/upperFirst';
 
@@ -80,14 +80,16 @@ export default class ToolbarActionModal extends Component {
   }
 
   render() {
-    const { toggle, type, active, icon, separated, options, exceptions, right, multi } = this.props;
+    const { toggle, type, active, icon, separated, options, exceptions, right, multi, tooltip } = this.props;
     const { modal } = this.state;
 
     return (
       <div key={type}>
-        <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onClick={() => this.setState({ modal: { ...modal, [type]: true } })} data-active={active}>
-          <i className={`fa fa-${icon}`} />
-        </Button>
+        <Tooltip placement="top" title={tooltip}>
+          <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onClick={() => this.setState({ modal: { ...modal, [type]: true } })} data-active={active}>
+            <i className={`fa fa-${icon}`} />
+          </Button>
+        </Tooltip>
 
         <Modal
           title="Bitte wählen"

@@ -77,6 +77,7 @@ const now = moment().format('x');
       toggle: () => {
         setData({ masonry: !getData('masonry', false) });
       },
+      tooltip: !getData('masonry', false) ? 'Zweispaltiges Layout (bis auf Hauptbeitrag)' : 'Einspaltiges Layout',
     },
     {
       icon: 'archive',
@@ -85,6 +86,7 @@ const now = moment().format('x');
       toggle: () => {
         setData({ archive: !getData('archive', false) });
       },
+      tooltip: !getData('archive', false) ? 'Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)' : 'Nur Beiträge aus dem aktuellen Zeitraum anzeigen',
     },
     {
       icon: 'heart',
@@ -97,6 +99,7 @@ const now = moment().format('x');
       toggle: ({ key }) => {
         setData({ placeholder: key });
       },
+      tooltip: 'Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre',
     }];
   },
 })
@@ -125,7 +128,7 @@ export default class BeitragBlock extends Component {
       const autor = x.autor ? x.autor : x.createdBy;
       const date = x.start || x.createdAt || x.updatedAt;
       const archived = !!(x.ende && moment(x.ende).isBefore());
-      const archivText = archived ? <span style={{ color: 'red' }}><br />Archiv, gültig bis {moment(x.ende).format('DD. MMMM YYYY, HH:mm')} Uhr</span> : null;
+      // const archivText = archived ? <span style={{ color: 'red' }}><br />Archiv, gültig bis {moment(x.ende).format('DD. MMMM YYYY, HH:mm')} Uhr</span> : null;
       const text = x.text || x.zusammenfassung;
       const more = x.zusammenfassung ? 'Artikel weiterlesen' : 'Artikel ansehen';
 
@@ -137,7 +140,7 @@ export default class BeitragBlock extends Component {
         text,
         leading: !!(x.hauptbeitrag && !archived),
         header: x.name,
-        subheader: <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr - ${autor ? autor.name : 'Redaktion'}`}{archivText}</span>,
+        subheader: !!archive && <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr - ${autor ? autor.name : 'Redaktion'}`}</span>,
         more: !!text && more,
       };
     });
