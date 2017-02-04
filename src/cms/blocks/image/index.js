@@ -5,6 +5,7 @@ import Image from '../../edits/image';
 const actions = props => [{
   type: 'image-src',
   icon: 'picture-o',
+  tooltip: 'Bild und Bildausschnitt auswählen',
   toggle: () => {
     const { setData } = props;
     setData({ showMedia: true });
@@ -23,7 +24,6 @@ const actions = props => [{
     resizeY: false,
   },
   align: true,
-  tooltip: 'Bild und Bildausschnitt auswählen',
   actions,
 })
 export default class ImageBlock extends Component {
