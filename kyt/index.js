@@ -18,7 +18,7 @@ module.exports = {
     baseConfig.resolve.alias.lodash = path.resolve(process.cwd(), 'node_modules', 'lodash');
     baseConfig.resolve.alias.olymp = path.resolve(__dirname, '..');
     baseConfig.resolve.alias['@root'] = path.resolve(process.cwd());
-    baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
+    baseConfig.resolve.alias['@app'] = type === 'server' && process.env.NODE_ENV !== 'development' ? path.resolve(__dirname, 'blank') : path.resolve(process.cwd(), 'app');
     if (type === 'server') {
       baseConfig.externals = [
         path.resolve(__dirname, '..', 'node_modules'),
