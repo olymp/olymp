@@ -8,6 +8,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
+import App from '@app';
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -44,7 +45,7 @@ function renderApp() {
     <BrowserRouter stringifyQuery={stringify} parseQueryString={parse}>
       <ApolloProvider client={client}>
         <Provider renderer={renderer} mountNode={mountNode}>
-          <span>Hi</span>
+          <App />
         </Provider>
       </ApolloProvider>
     </BrowserRouter>,
@@ -54,3 +55,13 @@ function renderApp() {
 
 // Execute the first render of our app.
 renderApp();
+
+if (process.env.NODE_ENV === 'development' && module.hot) {
+  // Accept changes to this file for hot reloading.
+  module.hot.accept('@app');
+  // Any changes to our App will cause a hotload re-render.
+  module.hot.accept(
+    '@app',
+    () => renderApp(require('@app').default),
+  );
+}

@@ -1,6 +1,8 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
+require.extensions['.less'] = require.extensions['.css'] = () => undefined;
+
 module.exports = {
   reactHotLoader: true,
   debug: false,
@@ -9,7 +11,14 @@ module.exports = {
     baseConfig.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'))
     baseConfig.resolveLoader.modules.push(path.resolve(__dirname, '..', 'node_modules'))
     baseConfig.entry.main[baseConfig.entry.main.length - 1] = path.resolve(__dirname, type, 'index.js');
-    baseConfig.resolve.alias.express = path.resolve(__dirname, '..', 'node_modules', 'express');
+    baseConfig.resolve.alias['react'] = path.resolve(process.cwd(), 'node_modules', 'react');
+    baseConfig.resolve.alias['react-dom'] = path.resolve(process.cwd(), 'node_modules', 'react-dom');
+    baseConfig.resolve.alias['react-router'] = path.resolve(process.cwd(), 'node_modules', 'react-router-v4-decode-uri');
+    baseConfig.resolve.alias.moment = path.resolve(process.cwd(), 'node_modules', 'moment');
+    baseConfig.resolve.alias.lodash = path.resolve(process.cwd(), 'node_modules', 'lodash');
+    baseConfig.resolve.alias.olymp = path.resolve(__dirname, '..');
+    baseConfig.resolve.alias['@root'] = path.resolve(process.cwd());
+    baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
     if (type === 'server') {
       baseConfig.externals = [
         path.resolve(__dirname, '..', 'node_modules'),
@@ -33,10 +42,23 @@ module.exports = {
         x.include = [
           path.resolve(process.cwd(), 'app'),
           path.resolve(__dirname),
+          path.resolve(__dirname, '..', 'src'),
         ];
+        x.options.plugins.push(require.resolve('babel-plugin-transform-object-rest-spread'));
+        x.options.plugins.push(require.resolve('babel-plugin-transform-es2015-destructuring'));
+        x.options.plugins.push(require.resolve('babel-plugin-transform-decorators-legacy'));
+        x.options.plugins.push(require.resolve('babel-plugin-transform-class-properties'));
+        if (type === 'client') x.options.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
       } return x;
-    })
-    console.log(type, JSON.stringify(baseConfig, null, 2));
+    });
+    baseConfig.module.rules.push({
+      test: /\.less$/,
+      use: type === 'client' ? [
+        'style-loader',
+        { loader: 'css-loader', options: { importLoaders: 1 } },
+        'less-loader'
+      ] : [require.resolve('empty-loader')],
+    });
     return baseConfig;
   },
 };
