@@ -84,12 +84,9 @@ app.get('*', (request, response) => {
     </ServerRouter>
   );
 
-  console.log(1, decodeURI(request.url));
   renderToStringWithData(reactApp).then((reactAppString) => {
-    console.log(2);
     const cssMarkup = renderer.renderToString();
     // Generate the html response.
-    console.log(3);
     const html = template({
       root: reactAppString,
       jsBundle: clientAssets.main.js,
@@ -98,7 +95,6 @@ app.get('*', (request, response) => {
       helmet: Helmet.rewind(),
       initialState: client.store.getState().apollo.data,
     });
-    console.log(html);
 
     // Get the render result from the server render context.
     const renderResult = reactRouterContext.getResult();
