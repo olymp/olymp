@@ -1,4 +1,3 @@
-const less = require('universally-dev-less');
 const path = require('path');
 const fs = require('fs');
 const rootPath = require('app-root-dir');
@@ -33,10 +32,10 @@ module.exports = (config) => {
   config.bundles.server.srcPaths.push('./app');
   config.bundles.server.outputPath = './.build/server';
 
-  config.bundles.client.srcEntryFile = path.resolve(__dirname, 'universally', 'client.js');
-  config.bundles.client.srcPaths.push(path.resolve(__dirname, 'universally'));
-  config.bundles.server.srcEntryFile = path.resolve(__dirname, 'universally', 'server.js');
-  config.bundles.server.srcPaths.push(path.resolve(__dirname, 'universally'));
+  config.bundles.client.srcEntryFile = path.resolve(__dirname, 'src', 'client.js');
+  config.bundles.client.srcPaths.push(path.resolve(__dirname, 'src'));
+  config.bundles.server.srcEntryFile = path.resolve(__dirname, 'src', 'server.js');
+  config.bundles.server.srcPaths.push(path.resolve(__dirname, 'src'));
 
   config.cspExtensions = {
     manifestSrc: [],
@@ -88,11 +87,58 @@ module.exports = (config) => {
   };
   const prevConf = config.plugins.webpackConfig;
   config.plugins.webpackConfig = (webpackConfig, buildOptions, config, utils) => {
+    const { happyPackPlugin, ExtractTextPlugin, merge } = utils;
+    const { target, mode } = buildOptions;
+
     if (prevConf) webpackConfig = prevConf(webpackConfig, buildOptions, config, utils);
     webpackConfig.plugins.push(
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/)
     );
+    if (mode === 'development' && target === 'client') {
+      webpackConfig.plugins.push(happyPackPlugin({
+        name: 'happypack-devclient-less',
+        tempDir: !config.happypackOutputPath ? path.resolve(rootPath.get(), '.happypack') : path.resolve(rootPath.get(), config.happypackOutputPath),
+        loaders: [
+          require.resolve('style-loader'),
+          require.resolve('css-loader'),
+          {
+            path: require.resolve('less-loader'),
+            query: { sourceMap: true },
+          },
+        ],
+      }));
+    }
+    webpackConfig.module.rules.push(merge(
+      {
+        test: /\.less$/,
+      },
+      // For development clients we will defer all our css processing to the
+      // happypack plugin named "happypack-devclient-css".
+      // See the respective plugin within the plugins section for full
+      // details on what loader is being implemented.
+      target === 'client' && mode === 'development' && {
+        loaders: [`${require.resolve('happypack/loader')}?id=happypack-devclient-less`],
+      },
+      // For a production client build we use the ExtractTextPlugin which
+      // will extract our CSS into CSS files. We don't use happypack here
+      // as there are some edge cases where it fails when used within
+      // an ExtractTextPlugin instance.
+      // Note: The ExtractTextPlugin needs to be registered within the
+      // plugins section too.
+      target === 'client' && mode === 'production' && {
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: require.resolve('style-loader'),
+          loader: [`${require.resolve('css-loader')}!${require.resolve('less-loader')}`],
+        }),
+      },
+      // When targetting the server we use the "/locals" version of the
+      // css loader, as we don't need any css files for the server.
+      target !== 'client' && {
+        loaders: [require.resolve('empty-loader')],
+      }
+    ));
+
     return webpackConfig;
   };
-  return less(config);
+  return config;
 };
