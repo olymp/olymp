@@ -35,6 +35,7 @@ export { default as withAuth, auth } from './with-auth';
 export { default as slugify } from './slugify';
 export { default as sortBy } from './sort-by';
 export { default as DataLoader } from './data-loader';
+export { createComponent as styled } from 'react-fela';
 
 export { Miss, Match, Link, Redirect } from 'react-router-v4-decode-uri';
 export { withApollo, graphql } from 'react-apollo';
