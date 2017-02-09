@@ -17,6 +17,7 @@ import Helmet from 'react-helmet';
 import App from '@app';
 import { parse, stringify } from '../query-string';
 
+
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'));
 
