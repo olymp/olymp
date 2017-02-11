@@ -36,6 +36,15 @@ module.exports = ({ adapter, resolvers }) => ({
       },
     },
   },
+  input: {
+    name: 'mongodb',
+    description: 'Marks a type as a relative.',
+    resolveStatic: {
+      enter2(node, directive, { ast }) {
+        addInputTypes(node.name.value, ast);
+      },
+    },
+  },
   state: {
     name: 'state',
     description: 'Marks a type as a relative.',
