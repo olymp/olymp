@@ -6,10 +6,15 @@ require.extensions['.less'] = require.extensions['.css'] = () => undefined;
 module.exports = {
   reactHotLoader: true,
   debug: false,
+  additionalServerPaths: [
+    path.resolve(__dirname, '..', 'graphql'),
+    path.resolve(__dirname, 'server'),
+    path.resolve(process.cwd(), 'server')
+  ],
   modifyWebpackConfig: (baseConfig, { type }) => {
     if (!baseConfig.resolve.alias) baseConfig.resolve.alias = {};
-    baseConfig.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'))
-    baseConfig.resolveLoader.modules.push(path.resolve(__dirname, '..', 'node_modules'))
+    baseConfig.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
+    baseConfig.resolveLoader.modules.push(path.resolve(__dirname, '..', 'node_modules'));
     baseConfig.entry.main[baseConfig.entry.main.length - 1] = path.resolve(__dirname, type, 'index.js');
     baseConfig.resolve.alias['react'] = path.resolve(process.cwd(), 'node_modules', 'react');
     baseConfig.resolve.alias['react-dom'] = path.resolve(process.cwd(), 'node_modules', 'react-dom');
