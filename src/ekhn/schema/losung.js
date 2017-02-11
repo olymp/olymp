@@ -21,7 +21,7 @@ module.exports = ({ schema }) => {
     }
   };
 
-  cron.schedule('00 01 00 * * 1-7', get);
+  cron.schedule('00 01 00 * * *', get);
 
   // Get initial
   get();
