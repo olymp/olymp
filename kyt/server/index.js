@@ -6,7 +6,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import template from './template';
 import env from 'node-env-file';
-import fetch from 'node-fetch';
+import fetch from 'isomorphic-fetch';
 import { ServerRouter, createServerRenderContext } from 'react-router-v4-decode-uri';
 import { ApolloProvider } from 'react-apollo';
 import { renderToStringWithData } from 'react-apollo';
