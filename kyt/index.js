@@ -16,7 +16,7 @@ module.exports = {
     baseConfig.resolve.modules.push(path.resolve(__dirname, '..', 'node_modules'));
     baseConfig.resolveLoader.modules.push(path.resolve(__dirname, '..', 'node_modules'));
     baseConfig.entry.main[baseConfig.entry.main.length - 1] = path.resolve(__dirname, type, 'index.js');
-    baseConfig.resolve.alias['react'] = path.resolve(process.cwd(), 'node_modules', 'react');
+    baseConfig.resolve.alias.react = path.resolve(process.cwd(), 'node_modules', 'react');
     baseConfig.resolve.alias['react-dom'] = path.resolve(process.cwd(), 'node_modules', 'react-dom');
     baseConfig.resolve.alias['react-router'] = path.resolve(process.cwd(), 'node_modules', 'react-router-v4-decode-uri');
     baseConfig.resolve.alias.moment = path.resolve(process.cwd(), 'node_modules', 'moment');

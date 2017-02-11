@@ -2,7 +2,7 @@
 
 const supertest = require('supertest');
 const api = supertest('http://localhost:3000');
-const fetch = require('node-fetch');
+const fetch = require('isomorphic-fetch');
 const jsdom = require("jsdom");
 
 const should = require('chai').should();
