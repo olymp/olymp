@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'react-image-crop/dist/ReactCrop.css';
+// import 'react-image-crop/dist/ReactCrop.css';
 
 import MediaModal from '../../views/media/view';
 
