@@ -12,6 +12,16 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
     const width = bild.crop && bild.crop.length ? bild.crop[0] : bild.width;
     const height = bild.crop && bild.crop.length ? bild.crop[1] : bild.height;
     ratio = height / width;
+  }
+
+  let imageStyle = { width: '100%' };
+  let textStyle = {};
+  let slateStyle = {};
+  if (ratio > 1) {
+    imageStyle = { float: 'right', width: '33%' };
+    textStyle = { float: 'left', width: 'calc(67% - 1rem)', margin: 0 };
+    slateStyle = { columnCount: 1 };
+  } else {
     ratio = ratio > 0.66 ? 0.66 : ratio;
   }
 
@@ -21,7 +31,7 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
         {children}
 
         { bild && bild.url ? (
-          <Image width="100%" ratio={ratio || 0.5} value={bild} lightbox cloudinary={{ maxWidth: 1000 }}>
+          <Image ratio={ratio} value={bild} lightbox cloudinary={{ maxWidth: 1000 }} style={imageStyle}>
             {bild.caption || bild.source ? (
               <div>{bild.caption}<span style={{ float: 'right' }}>{bild.source}</span></div>
             ) : undefined}
@@ -29,11 +39,11 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
         ) : undefined}
 
         {(!!header || !!text || !!tags) && (
-          <div className={`text ${leading ? 'colored' : ''}`}>
+          <div className={`text ${leading ? 'colored' : ''}`} style={textStyle}>
             <h2>{header}</h2>
             {subheader ? <div className="subheader">{subheader}</div> : null}
 
-            {text ? <SlateMateFrontend key={id} value={text} className="slate" readOnly /> : null}
+            {text ? <SlateMateFrontend key={id} value={text} className="slate" style={slateStyle} readOnly /> : null}
 
             {(!query || !query[capitalize(identifier)]) && more ? (
               <p style={{ marginBottom: '2rem' }}>
@@ -46,6 +56,8 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
             <Tags tags={tags} />
           </div>
         )}
+
+        <div style={{ clear: 'both' }} />
       </div>
 
       {query && query[capitalize(identifier)] ? (

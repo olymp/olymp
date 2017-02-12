@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Select, Spin } from 'antd';
+import { Select, Spin } from 'antd';
 import ReactCrop from 'react-image-crop';
 import { cloudinaryUrl } from 'olymp';
-import 'react-image-crop/dist/ReactCrop.css';
-import withFile from '../../decorators/file';
-
-const defaultGetImage = props => props.value;
+// import 'react-image-crop/dist/ReactCrop.css';
 
 export const CropSelect = (props) => {
   const { value, onChange, style } = props;
