@@ -202,11 +202,9 @@ export default class MediaView extends Component {
             )}
           </div>
         </div>
-        <div className="col-md-4">
-          <div style={{ position: 'fixed', height: '100%', overflowY: 'auto' }}>
-            <div className="p-1">
-              {detail}
-            </div>
+        <div style={{ position: 'fixed', height: '100%', overflowY: 'auto', width: 'calc((100% - 340px) / 3)', right: 0 }}>
+          <div className="p-1">
+            {detail}
           </div>
         </div>
       </Modal>
