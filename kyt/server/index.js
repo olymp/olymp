@@ -51,7 +51,8 @@ app.disable('x-powered-by');
 app.use(compression());
 
 // Setup the public directory so that we can server static assets.
-app.use(express.static(KYT.PUBLIC_DIR));
+app.use(express.static(path.resolve(process.cwd(), 'public')));
+app.use(express.static(path.resolve(process.cwd(), 'build', 'public')));
 
 launchAPI();
 
@@ -106,8 +107,7 @@ app.get('*', (request, response) => {
       return;
     }
 
-    response
-    .status(
+    response.status(
       renderResult.missed
         // If the renderResult contains a "missed" match then we set a 404 code.
         // Our App component will handle the rendering of an Error404 view.
