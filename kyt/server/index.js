@@ -3,7 +3,6 @@ import compression from 'compression';
 import session from 'express-session';
 import path from 'path';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
 import template from './template';
 import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
@@ -16,7 +15,6 @@ import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import { parse, stringify } from '../query-string';
-
 
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'));

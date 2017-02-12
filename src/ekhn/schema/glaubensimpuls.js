@@ -80,7 +80,9 @@ module.exports = ({ schema }) => {
   const get = () => {
     // Get Glaubensimpuls from url
     fetch(url).then((res) => {
-      item = res.json();
+      return res.json();
+    }).then((json) => {
+      item = json;
       console.log('Neuer Impuls');
     }).catch(err => console.log(err));
   };
