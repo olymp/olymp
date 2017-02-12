@@ -1,14 +1,20 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const env = require('node-env-file');
 
+env(path.resolve(process.cwd(), '.env'));
 require.extensions['.less'] = require.extensions['.css'] = () => undefined;
 
+console.log(path.resolve(__dirname, 'src', '*', 'schema'));
 module.exports = {
   reactHotLoader: true,
   debug: false,
+  serverURL: `http://localhost:${process.env.PORT}`,
+  clientURL: `http://localhost:${process.env.PORT + 1}`,
   additionalServerPaths: [
     path.resolve(__dirname, '..', 'graphql'),
     path.resolve(__dirname, 'server'),
+    path.resolve(__dirname, '..', 'src', 'ekhn', 'schema'),
     path.resolve(process.cwd(), 'server')
   ],
   modifyWebpackConfig: (baseConfig, { type }) => {
