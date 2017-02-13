@@ -241,10 +241,10 @@ export default class SlateEditor extends Component {
   }
 
   render = () => {
-    const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, ...rest } = this.props;
+    const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, style, ...rest } = this.props;
 
     return (
-      <div className={className} style={{ position: 'relative' }}>
+      <div className={className} style={{ position: 'relative', ...style }}>
         {value && showUndo && value.hasUndos && (
           <Gateway into="button_undo">
             <a href="javascript:;" onClick={() => onChange(value.transform().undo().apply())}>

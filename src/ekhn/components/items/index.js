@@ -79,7 +79,7 @@ export default class Items extends Component {
     }
 
     const content = this.masonryWrapper((
-      items.slice((page - 1) * steps, page * steps).map((item, index) => item.leading && !index ?
+      items.slice((page - 1) * steps, page * steps).map((item, index) => item.leading && !index && (!item.bild || (item.bild.width > item.bild.height)) ?
         <ItemPanorama
           {...item}
           location={location}

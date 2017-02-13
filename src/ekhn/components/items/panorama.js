@@ -12,7 +12,6 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
     const width = bild.crop && bild.crop.length ? bild.crop[0] : bild.width;
     const height = bild.crop && bild.crop.length ? bild.crop[1] : bild.height;
     ratio = height / width;
-    ratio = ratio > 0.66 ? 0.66 : ratio;
   }
 
   return (
@@ -20,8 +19,8 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
       <div className={cn(className, 'item panorama')}>
         {children}
 
-        { bild && bild.url ? (
-          <Image width="100%" ratio={ratio || 0.5} value={bild} lightbox cloudinary={{ maxWidth: 1000 }}>
+        {bild && bild.url && ratio <= 1 ? (
+          <Image ratio={ratio > 0.66 ? 0.66 : ratio} value={bild} lightbox cloudinary={{ maxWidth: 1000 }} style={{ width: '100%' }}>
             {bild.caption || bild.source ? (
               <div>{bild.caption}<span style={{ float: 'right' }}>{bild.source}</span></div>
             ) : undefined}
@@ -36,9 +35,17 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
             {text ? <SlateMateFrontend key={id} value={text} className="slate" readOnly /> : null}
 
             {(!query || !query[capitalize(identifier)]) && more ? (
-              <p style={{ marginBottom: '2rem' }}>
+              <p>
                 <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: id } }}>
                   <i className="fa fa-angle-double-right" /> {more}
+                </Link>
+              </p>
+            ) : undefined}
+
+            {query && query[capitalize(identifier)] ? (
+              <p>
+                <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: null } }}>
+                  <i className="fa fa-angle-double-left" /> Zurück zur Übersicht
                 </Link>
               </p>
             ) : undefined}
@@ -46,14 +53,16 @@ export default useItemEdit()(({ children, className, id, header, subheader, text
             <Tags tags={tags} />
           </div>
         )}
+
+        <div style={{ clear: 'both' }} />
       </div>
 
-      {query && query[capitalize(identifier)] ? (
-        <p>
-          <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: null } }}>
-            <i className="fa fa-angle-double-left" /> Zurück zur Übersicht
-          </Link>
-        </p>
+      {bild && bild.url && ratio > 1 ? (
+        <Image value={bild} lightbox cloudinary={{ maxWidth: 1000 }} style={{ width: '100%', marginTop: '1rem' }}>
+          {bild.caption || bild.source ? (
+            <div>{bild.caption}<span style={{ float: 'right' }}>{bild.source}</span></div>
+          ) : undefined}
+        </Image>
       ) : undefined}
     </div>
   );

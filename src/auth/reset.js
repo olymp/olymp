@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import { notification } from 'antd';
+import { notification, Form, Modal, Button, Input } from 'antd';
 import gql from 'graphql-tag';
 import withAuth from './with-auth';
 
@@ -30,9 +30,9 @@ export default class AuthReset extends Component {
   getInner = () => {
     const { password, password2 } = this.state;
     if (this.props.data.checkToken === undefined) {
-      return (
+      /* todo: return (
         <LoadingScreen style={{ minHeight: '200px' }} />
-      );
+      ); */
     } else if (this.props.data.checkToken === false) {
       return (
         <p className="text-center">
@@ -42,18 +42,12 @@ export default class AuthReset extends Component {
     } else if (this.props.data.checkToken === true) {
       return (
         <Form>
-          <FormGroup row>
-            <Label sm={4}>Passwort</Label>
-            <Col sm={8}>
-              <Input type="password" placeholder="Passwort" value={password || ''} onChange={v => this.setState({ password: v || null })} className="uk-width-1-1" />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm={4}>Passwort wiederholen</Label>
-            <Col sm={8}>
-              <Input type="password" placeholder="Passwort" value={password2 || ''} onChange={v => this.setState({ password2: v || null })} className="uk-width-1-1" />
-            </Col>
-          </FormGroup>
+          <Form.Item label="Passwort">
+            <Input type="password" placeholder="Passwort" value={password || ''} onChange={v => this.setState({ password: v || null })} className="uk-width-1-1" />
+          </Form.Item>
+          <Form.Item label="Passwort wiederholen">
+            <Input type="password" placeholder="Passwort" value={password2 || ''} onChange={v => this.setState({ password2: v || null })} className="uk-width-1-1" />
+          </Form.Item>
         </Form>
       );
     }

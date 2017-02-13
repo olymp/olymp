@@ -3,7 +3,6 @@ import compression from 'compression';
 import session from 'express-session';
 import path from 'path';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
 import template from './template';
 import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
@@ -16,7 +15,6 @@ import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import { parse, stringify } from '../query-string';
-
 
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'));
@@ -53,7 +51,8 @@ app.disable('x-powered-by');
 app.use(compression());
 
 // Setup the public directory so that we can server static assets.
-app.use(express.static(KYT.PUBLIC_DIR));
+app.use(express.static(path.resolve(process.cwd(), 'public')));
+app.use(express.static(path.resolve(process.cwd(), 'build', 'public')));
 
 launchAPI();
 
@@ -108,8 +107,7 @@ app.get('*', (request, response) => {
       return;
     }
 
-    response
-    .status(
+    response.status(
       renderResult.missed
         // If the renderResult contains a "missed" match then we set a 404 code.
         // Our App component will handle the rendering of an Error404 view.
