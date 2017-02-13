@@ -8,6 +8,7 @@ import { useBlockTypes } from 'olymp/slate';
 import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
+import SettingsModal from './settings';
 import CollectionModal from './collections';
 import Menu from './menu';
 import { useColors } from '../decorators';
@@ -59,6 +60,10 @@ export default class Container extends Component {
     } else if (query && query['@mediathek'] !== undefined) {
       modal = (
         <MediaModal id={query['@mediathek']} multi />
+      );
+    } else if (query && query['@settings'] !== undefined) {
+      modal = (
+        <SettingsModal />
       );
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
