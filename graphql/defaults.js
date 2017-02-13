@@ -188,6 +188,12 @@ exports.defaultTypes = `
     ARCHIVED
     REMOVED
   }
+  enum MUTATION_TYPE {
+    UPDATE
+    REPLACE
+    REMOVE
+    INSERT
+  }
   enum SORT_DIRECTION {
     ASC,
     DESC
