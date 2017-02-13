@@ -13,9 +13,7 @@ import sortBy from 'lodash/sortBy';
       }
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 export default class Header extends Component {
   render() {
     const { location, data, showHome = true, className } = this.props;

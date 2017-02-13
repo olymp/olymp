@@ -25,9 +25,7 @@ const now = +moment();
       farbe
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 export default class TerminBlock extends Component {
   render() {
     const { className, style, data } = this.props;

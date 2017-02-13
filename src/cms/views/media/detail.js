@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Select, Spin, Button } from 'antd';
+import { Modal, Form, Input, Spin, Button } from 'antd';
 import moment from 'moment';
 import withFile from '../../decorators/file';
 import { Image, TagSelect } from '../../edits';

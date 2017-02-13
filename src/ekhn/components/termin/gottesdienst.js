@@ -30,9 +30,7 @@ import Gottesdienst from './index';
     tags
   }
 }
-`, {
-  options: () => ({ }),
-})
+`)
 export default class GottesdienstBlock extends Component {
   render() {
     const { className, style, data } = this.props;

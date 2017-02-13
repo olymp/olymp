@@ -38,9 +38,7 @@ import Items from '../../components/items';
       }
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 @useGenericBlock({
   label: 'Über Uns',
   props: ['rolle'],

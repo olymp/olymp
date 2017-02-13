@@ -30,9 +30,7 @@ import Tags from '../../components/tags';
       tags
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 export default class GlaubensimpulsBlock extends Component {
   render() {
     const { data, style, className, isBlock } = this.props;
