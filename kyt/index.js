@@ -1,6 +1,8 @@
 const path = require('path');
+const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
-
+const themePath = path.resolve(process.cwd(), 'theme.js');
+const theme = fs.existsSync(themePath) ? require(themePath)() : {};
 require.extensions['.less'] = require.extensions['.css'] = () => undefined;
 
 module.exports = {
@@ -56,12 +58,23 @@ module.exports = {
         if (type === 'client') x.options.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
       } return x;
     });
+
+    // TODO production client
+    baseConfig.module.rules.forEach(x => {
+      if (String(x.test) === String(/\.css$/)) {
+        if (Array.isArray(x.use)) {
+          x.use.filter(u => typeof u === 'object').forEach(u => {
+            if (u.options && u.options.modules) u.options.modules = false;
+          });
+        }
+      }
+    });
     baseConfig.module.rules.push({
       test: /\.less$/,
       use: type === 'client' ? [
         'style-loader',
         { loader: 'css-loader', options: { importLoaders: 1 } },
-        'less-loader'
+        `less-loader?{"modifyVars":${JSON.stringify(theme)}}`
       ] : [require.resolve('empty-loader')],
     });
     return baseConfig;
