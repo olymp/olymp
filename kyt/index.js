@@ -1,6 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const env = require('node-env-file');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 env(path.resolve(process.cwd(), '.env'));
 require.extensions['.less'] = require.extensions['.css'] = () => undefined;
@@ -64,11 +65,10 @@ module.exports = {
     });
     baseConfig.module.rules.push({
       test: /\.less$/,
-      use: type === 'client' ? [
-        'style-loader',
-        { loader: 'css-loader', options: { importLoaders: 1 } },
-        'less-loader'
-      ] : [require.resolve('empty-loader')],
+      use: type === 'client' ? ExtractTextPlugin.extract({
+        fallbackLoader: "style-loader",
+        loader: "css-loader!less-loader",
+      }) : [require.resolve('empty-loader')],
     });
     return baseConfig;
   },
