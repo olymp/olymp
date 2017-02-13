@@ -7,7 +7,7 @@ import difference from 'lodash/difference';
 import { moment } from 'olymp/locale-de';
 import TerminItem from './item';
 
-const now = moment().format('x');
+const now = +moment();
 
 @withAuth
 @withRouter

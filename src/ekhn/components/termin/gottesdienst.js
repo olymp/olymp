@@ -8,7 +8,7 @@ import Gottesdienst from './index';
   gottesdienste: gottesdienstList(sort: {datum: ASC}, limit: 5, query: {
     and: [
       { state: { eq: PUBLISHED } },
-      { datum: {gte: ${moment().format('x')}} }
+      { datum: {gte: ${+moment()}} }
     ]
   }) {
     id
