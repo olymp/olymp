@@ -21,7 +21,7 @@ export default class CMSMenu extends Component {
 
     return (
       <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
-        {Object.keys(collections).filter(key => key !== 'Global').map((key) => {
+        {Object.keys(collections).map((key) => {
           const wrapper = children => (
             <Menu.SubMenu key={key} title={capitalize(key)}>
               {children}
@@ -48,7 +48,7 @@ export default class CMSMenu extends Component {
         <Menu.Item key="users" disabled>Benutzer</Menu.Item>
         <Menu.Item key="analytics" disabled>Statistik</Menu.Item>
         <Menu.Item key="settings">
-          <Link to={{ pathname, query: { '@global': null } }}>
+          <Link to={{ pathname, query: { '@settings': null } }}>
             Einstellungen
           </Link>
         </Menu.Item>
