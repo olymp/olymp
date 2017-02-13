@@ -1,0 +1,62 @@
+// @cms-primary: @brand-primary; // #9459A2;
+// @cms-secondary: @brand-secondary; // #900024;
+// @cms-tertiary: @brand-tertiary; // #240090;
+
+a:focus, a:hover {
+  text-decoration: none !important;
+}
+
+// SIDEBAR
+.slate-sidebar {
+  &:hover i.slate-sidebar-icon {
+    color: rgba(255, 255, 255, .75);
+  }
+
+  i.slate-sidebar-icon {
+    font-size: inherit;
+    .specificBackground();
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+// TOOLBAR
+.slate-fix-toolbar {
+  .specificBackground();
+
+  .ant-btn {
+    color: #FFF;
+    background-color: rgba(255, 255, 255, .15);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .3);
+    }
+  }
+
+  .active, [data-active=true] {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+// FUNCTIONS
+.specificBackground {
+  background-image: none;
+  background: linear-gradient(230deg, darken(spin(@primary-color, 25), 15%), @primary-color, darken(spin(@primary-color, -25), 15%));
+  animation: MoveBG 60s ease infinite;
+  background-size: 500% 500%;
+  background-position: -200% -200%;
+  color: #FFF;
+  border-color: @primary-color;
+
+  @keyframes MoveBG {
+    0% {
+      background-position: -200% -200%;
+    }
+    50% {
+      background-position: -200% -100%;
+    }
+    100% {
+      background-position: -200% -200%;
+    }
+  }
+}

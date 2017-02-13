@@ -23,9 +23,7 @@ import Items from '../../components/items';
       tags
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 @useGenericBlock({
   label: 'Gemeindebriefe',
   editable: false,

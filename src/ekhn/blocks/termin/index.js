@@ -87,9 +87,7 @@ const now = +moment();
       tags
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 @useGenericBlock({
   label: 'Termine',
   props: ['tags', 'mode'],

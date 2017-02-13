@@ -2,8 +2,6 @@ const { buildSchema } = require('./utils');
 const { defaultScalars, defaultTypes } = require('./defaults');
 const directives = require('./directives');
 
-// import gql from 'graphql-tag';
-// if (typeof global !== 'undefined') global['gql'] = gql;
 module.exports = ({ adapter } = {}) => {
   let _schemas = {};
 
