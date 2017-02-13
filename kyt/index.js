@@ -76,14 +76,33 @@ module.exports = {
         }
       }
     });
-    baseConfig.module.rules.push({
-      test: /\.less$/,
-      use: type === 'client' ? [
-        'style-loader',
-        { loader: 'css-loader', options: { importLoaders: 1 } },
-        `less-loader?{"modifyVars":${JSON.stringify(theme)}}`
-      ] : [require.resolve('empty-loader')],
-    });
+    if (type === 'server') { // Empty loader for less on server
+      baseConfig.module.rules.push({
+        test: /\.less$/,
+        use: 'empty-loader',
+      });
+    } else if (process.env.NODE_ENV === 'production') { // Extract text for less on prod
+      baseConfig.module.rules.push({
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: 'style',
+          loader: 'css?sourceMap!postcss!less',
+        }),
+      });
+    } else {
+      baseConfig.module.rules.push({
+        test: /\.less$/,
+        use: [
+          'style',
+          {
+            loader: 'css',
+            options: { modules: false, sourceMap: true },
+          },
+          'postcss',
+          `less?{"modifyVars":${JSON.stringify(theme)}}`,
+        ],
+      });
+    }
     return baseConfig;
   },
 };
