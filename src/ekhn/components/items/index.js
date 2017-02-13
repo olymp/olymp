@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter, withAuth, Link } from 'olymp';
 import { Pagination } from 'antd';
 import capitalize from 'lodash/upperFirst';
-import MasonryLayout from 'react-masonry-component';
 
 import Item from './item';
 import ItemPanorama from './panorama';
@@ -12,17 +11,6 @@ import ItemFile from './file';
 @withAuth
 @withRouter
 export default class Items extends Component {
-  masonryWrapper = (children, isMasonry) => isMasonry ? (
-    <MasonryLayout
-      className="items masonry"
-      options={{ columnWidth: '.item:not(.leading)', itemSelector: '.item', gutter: 16 }}
-    >
-      {children}
-    </MasonryLayout>
-  ) : (
-    <div className="items">{children}</div>
-  );
-
   getItem = (item) => {
     const { identifier = 'item', location, masonry } = this.props;
     const { bild, shortText, text } = item;
@@ -78,21 +66,46 @@ export default class Items extends Component {
       ) : <div />;
     }
 
-    const content = this.masonryWrapper((
-      items.slice((page - 1) * steps, page * steps).map((item, index) => item.leading && !index && (!item.bild || (item.bild.width > item.bild.height)) ?
-        <ItemPanorama
-          {...item}
-          location={location}
-          identifier={identifier}
-          className="leading"
-          key={index}
-        /> : this.getItem(item)
-      )
-    ), masonry);
+    let leading;
+    const itemArr = [];
+    items.slice((page - 1) * steps, page * steps).forEach((item, index) => {
+      if (item.leading && !index && (!item.bild || (item.bild.width > item.bild.height))) {
+        leading = item;
+      } else {
+        itemArr.push(item);
+      }
+    });
 
     return (
       <div className={className} style={style}>
-        {content}
+        <div className="items">
+          {!!leading && (
+            <ItemPanorama
+              {...leading}
+              location={location}
+              identifier={identifier}
+              className={!!masonry && 'masonry'}
+            />
+          )}
+
+          <div className="hidden-sm-down">
+            {!!masonry ? (
+              <div>
+                <div style={{ width: '50%', float: 'left', paddingRight: '.5rem' }}>
+                  {itemArr.map((item, index) => !(index % 2) && this.getItem(item))}
+                </div>
+                <div style={{ width: '50%', float: 'left', paddingLeft: '.5rem' }}>
+                  {itemArr.map((item, index) => !!(index % 2) && this.getItem(item))}
+                </div>
+                <div style={{ clear: 'both' }} />
+              </div>
+            ) : itemArr.map(item => this.getItem(item))}
+          </div>
+          <div className="hidden-md-up">
+            {itemArr.map(item => this.getItem(item))}
+          </div>
+
+        </div>
 
         {steps < items.length ? (
           <Pagination
