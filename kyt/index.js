@@ -3,14 +3,20 @@ const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
 const themePath = path.resolve(process.cwd(), 'theme.js');
 const theme = fs.existsSync(themePath) ? require(themePath)() : {};
+const env = require('node-env-file');
+
+env(path.resolve(process.cwd(), '.env'));
 require.extensions['.less'] = require.extensions['.css'] = () => undefined;
 
 module.exports = {
   reactHotLoader: true,
   debug: false,
+  serverURL: `http://localhost:${process.env.PORT}`,
+  clientURL: `http://localhost:${process.env.PORT + 1}`,
   additionalServerPaths: [
     path.resolve(__dirname, '..', 'graphql'),
     path.resolve(__dirname, 'server'),
+    path.resolve(__dirname, '..', 'src', 'ekhn', 'schema'),
     path.resolve(process.cwd(), 'server')
   ],
   modifyWebpackConfig: (baseConfig, { type }) => {
@@ -25,7 +31,7 @@ module.exports = {
     baseConfig.resolve.alias.lodash = path.resolve(process.cwd(), 'node_modules', 'lodash');
     baseConfig.resolve.alias.olymp = path.resolve(__dirname, '..');
     baseConfig.resolve.alias['@root'] = path.resolve(process.cwd());
-    baseConfig.resolve.alias['@app'] = type === 'server' && process.env.NODE_ENV !== 'development' ? path.resolve(__dirname, 'blank') : path.resolve(process.cwd(), 'app');
+    baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
     if (type === 'server') {
       baseConfig.externals = [
         path.resolve(__dirname, '..', 'node_modules'),
@@ -42,7 +48,7 @@ module.exports = {
         ]
       }));
     }
-    baseConfig.plugins[0].definitions.KYT.PUBLIC_DIR = JSON.stringify(path.resolve(process.cwd(), 'public'));
+    // baseConfig.plugins[0].definitions.KYT.PUBLIC_DIR = JSON.stringify(path.resolve(process.cwd(), 'public'));
     baseConfig.module.rules = baseConfig.module.rules.map(x => {
       if (x.loader === 'babel-loader') {
         delete x.exclude;
