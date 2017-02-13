@@ -78,10 +78,11 @@ module.exports = {
     });
     baseConfig.module.rules.push({
       test: /\.less$/,
-      use: type === 'client' ? ExtractTextPlugin.extract({
-        fallbackLoader: 'style-loader',
-        loader: `css-loader!less-loader?{"modifyVars":${JSON.stringify(theme)}}`,
-      }) : [require.resolve('empty-loader')],
+      use: type === 'client' ? [
+        'style-loader',
+        { loader: 'css-loader', options: { importLoaders: 1 } },
+        `less-loader?{"modifyVars":${JSON.stringify(theme)}}`
+      ] : [require.resolve('empty-loader')],
     });
     return baseConfig;
   },
