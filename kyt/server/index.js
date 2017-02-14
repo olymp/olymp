@@ -15,6 +15,7 @@ import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import { parse, stringify } from '../query-string';
+import 'source-map-support/register';
 
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'));
@@ -117,27 +118,10 @@ app.get('*', (request, response) => {
     )
     .send(html);
   }).catch((err) => {
-    console.log(err);
     response
       .status(500)
       .send(err);
   });
-  return;
-  if (error) {
-    response.status(500).send(error.message);
-  } else if (redirectLocation) {
-    response.redirect(302, `${redirectLocation.pathname}${redirectLocation.search}`);
-  } else if (renderProps) {
-    // When a React Router route is matched then we render
-    // the components and assets into the template.
-    response.status(200).send(template({
-      root: '',
-      jsBundle: clientAssets.main.js,
-      cssBundle: clientAssets.main.css,
-    }));
-  } else {
-    response.status(404).send('Not found');
-  }
 });
 
 app.listen(port);
