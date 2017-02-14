@@ -1,14 +1,13 @@
+const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
 const themePath = path.resolve(process.cwd(), 'theme.js');
 const theme = fs.existsSync(themePath) ? require(themePath)() : {};
 const env = require('node-env-file');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 env(path.resolve(process.cwd(), '.env'));
-require.extensions['.less'] = require.extensions['.css'] = () => undefined;
-
 module.exports = {
   reactHotLoader: true,
   debug: false,
@@ -32,7 +31,8 @@ module.exports = {
     baseConfig.resolve.alias.lodash = path.resolve(process.cwd(), 'node_modules', 'lodash');
     baseConfig.resolve.alias.olymp = path.resolve(__dirname, '..');
     baseConfig.resolve.alias['@root'] = path.resolve(process.cwd());
-    baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
+    if (type === 'server' && process.env.NODE_ENV !== 'production') baseConfig.resolve.alias['@app'] = path.resolve(__dirname, 'noop');
+    else baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
     if (type === 'server') {
       baseConfig.externals = [
         path.resolve(__dirname, '..', 'node_modules'),
@@ -42,6 +42,7 @@ module.exports = {
         whitelist: [
           'source-map-support/register',
           v => v === 'olymp' || v.indexOf('olymp/') === 0 || v.indexOf('olymp-') === 0,
+          v => v === 'antd' || v.indexOf('antd/') === 0,
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
           /\.(mp4|mp3|ogg|swf|webp)$/,
@@ -50,6 +51,7 @@ module.exports = {
       }));
     }
     // baseConfig.plugins[0].definitions.KYT.PUBLIC_DIR = JSON.stringify(path.resolve(process.cwd(), 'public'));
+    if (type === 'server') baseConfig.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
     baseConfig.module.rules = baseConfig.module.rules.map(x => {
       if (x.loader === 'babel-loader') {
         delete x.exclude;
@@ -58,30 +60,25 @@ module.exports = {
           path.resolve(__dirname),
           path.resolve(__dirname, '..', 'src'),
         ];
+        if (type === 'server') {
+          x.options.ignore = [
+            '*.less',
+            '*.css',
+          ];
+        }
         x.options.plugins.push(require.resolve('babel-plugin-transform-object-rest-spread'));
         x.options.plugins.push(require.resolve('babel-plugin-transform-es2015-destructuring'));
         x.options.plugins.push(require.resolve('babel-plugin-transform-decorators-legacy'));
         x.options.plugins.push(require.resolve('babel-plugin-transform-class-properties'));
-        if (type === 'client') x.options.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
+        x.options.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
       } return x;
     });
 
     // TODO production client
-    baseConfig.module.rules.forEach(x => {
-      if (String(x.test) === String(/\.css$/)) {
-        if (Array.isArray(x.use)) {
-          x.use.filter(u => typeof u === 'object').forEach(u => {
-            if (u.options && u.options.modules) u.options.modules = false;
-          });
-        }
-      }
+    baseConfig.module.rules.filter(x => String(x.test) === String(/\.css$/) && Array.isArray(x.use)).forEach(x => {
+      x.use.filter(u => typeof u === 'object' && u.options && u.options.modules).forEach(u => u.options.modules = false);
     });
-    if (type === 'server') { // Empty loader for less on server
-      baseConfig.module.rules.push({
-        test: /\.less$/,
-        use: 'empty-loader',
-      });
-    } else if (process.env.NODE_ENV === 'production') { // Extract text for less on prod
+    if (type !== 'server' && process.env.NODE_ENV === 'production') { // Extract text for less on prod
       baseConfig.module.rules.push({
         test: /\.less$/,
         loader: ExtractTextPlugin.extract({
@@ -89,7 +86,7 @@ module.exports = {
           loader: `css?sourceMap!postcss!less{"modifyVars":${JSON.stringify(theme)}}`,
         }),
       });
-    } else {
+    } else if (type !== 'server') {
       baseConfig.module.rules.push({
         test: /\.less$/,
         use: [
