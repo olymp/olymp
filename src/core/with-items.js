@@ -7,7 +7,7 @@ import isEqual from 'lodash/isEqual';
 import lowerFirst from 'lodash/lowerFirst';
 
 export default ({ fieldNames, name, state } = {}) => (WrappedComponent) => {
-  @withCollection
+  @withCollection(name || '')
   @withApollo
   @withRouter
   class WithItemsComponent extends Component {
