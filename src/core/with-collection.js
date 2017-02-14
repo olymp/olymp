@@ -4,7 +4,6 @@ import { saveItem, removeItem } from './with-item';
 import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 
-const specialFieldsMemo = {};
 const imageFields = `
   url
   crop

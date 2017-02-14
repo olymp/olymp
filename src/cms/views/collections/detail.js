@@ -64,12 +64,8 @@ const getFormSchema = ({ fields }) =>
 @withItem({})
 @withRouter
 export default class MainDetail extends Component {
-  handleCancel = () => {
-    this.props.onClose();
-  }
-
   handleCreate = () => {
-    const { save, onClose, refetch, query, typeName, id, location, router } = this.props;
+    const { save, refetch, query, typeName, id, location, router } = this.props;
     const { pathname } = location;
     const form = this.form;
 
@@ -100,6 +96,7 @@ export default class MainDetail extends Component {
 
     const { before, after, ...schema } = getFormSchema(collection);
     this.after = after;
+
     return (
       <div className="container olymp-container">
         <Form
@@ -107,7 +104,6 @@ export default class MainDetail extends Component {
           item={before.reduce((item, fn) => fn(item), item)}
           schema={schema}
           ref={form => this.form = form}
-          onCancel={this.handleCancel}
           onCreate={this.handleCreate}
         />
       </div>
