@@ -10,15 +10,12 @@ export default class SettingView extends Component {
   handleCreate = () => {
     const { saveCollectionItem, items } = this.props;
     const form = this.form;
+    const item = items && items.length ? items[0] : {};
 
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-
-      const item = items && items.length ? items[0] : {};
-
-      console.log(item, values);
 
       saveCollectionItem({ ...item, ...values });
     });
@@ -26,8 +23,6 @@ export default class SettingView extends Component {
 
   render() {
     const { items, collection, fieldNames, collectionLoading } = this.props;
-
-    console.log(this.props);
 
     const content = collectionLoading || !fieldNames || !collection ? (
       <div style={{ minHeight: 400 }}>
@@ -37,7 +32,7 @@ export default class SettingView extends Component {
       <Form
         {...this.props}
         item={items && items.length ? items[0] : {}}
-        schema={{ tabs: { test: collection.fields } }}
+        schema={{ tabs: { default: collection.fields.filter(field => field.name !== 'id') } }}
         ref={form => this.form = form}
         onCreate={this.handleCreate}
       />

@@ -50,6 +50,7 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         ${attributes || ''}
       }
       type Settings {
+        id: String
         titel: String
         beschreibung: String
         ${globalAttributes || ''}
