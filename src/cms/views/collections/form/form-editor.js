@@ -1,8 +1,8 @@
 import React from 'react';
 import { Input, Select, Checkbox } from 'antd';
+import { ColorEditor } from 'olymp';
 import { DetailEditor, SlateEditor, DateEditor, SliderEditor, FormEditor, DateRange } from './editors';
 import { Image, TagSelect } from '../../../edits';
-import ColorEditor from '../../../edits/color';
 
 const states = {
   PUBLISHED: 'Öffentlich',
