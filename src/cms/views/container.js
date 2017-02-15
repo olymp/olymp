@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, withCollections } from 'olymp';
+import { withRouter, withCollections, useColors } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import uncapitalize from 'lodash/lowerFirst';
@@ -11,7 +11,6 @@ import MediaModal from './media/view';
 import SettingsModal from './settings';
 import CollectionModal from './collections';
 import Menu from './menu';
-import { useColors } from '../decorators';
 import './container.less';
 
 @useLightboxes
