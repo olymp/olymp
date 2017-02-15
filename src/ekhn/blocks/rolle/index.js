@@ -99,7 +99,7 @@ export default class RollenBlock extends Component {
             }))}
             identifier="person"
             pageSize={20}
-            style={{ marginTop: '2rem' }}
+            style={{ marginTop: '1rem' }}
           />
         ) : null}
 

@@ -63,7 +63,7 @@ export default class Container extends Component {
       );
     } else if (query && query['@settings'] !== undefined) {
       modal = (
-        <SettingsModal />
+        <SettingsModal typeName="settings" />
       );
     } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
       modal = (
