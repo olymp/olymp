@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql } from 'olymp';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 
 const fieldNames = 'id slug peak { url } telefon farbe name kurz personen { id name } leistungen { id name }';
 @withRouter

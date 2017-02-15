@@ -29,6 +29,7 @@ module.exports = ({ schema }) => schema.addSchema({
       pfarrer: [Person] @relation
       # @label("Organist/in")
       organist: Person @relation
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

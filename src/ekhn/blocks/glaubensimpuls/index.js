@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import Glaubensimpuls from '../../components/glaubensimpuls';
 
 @useGenericBlock({

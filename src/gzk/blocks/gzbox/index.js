@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useBlockBase, useGenericBlock, GenericBlock, Block } from 'olymp/slate';
+import { useBlockBase, useGenericBlock, Block } from 'olymp/slate';
 import { Image, MediaModal } from 'olymp/cms';
 import { cloudinaryUrl } from 'olymp';
 import './style.less';
