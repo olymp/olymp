@@ -3,7 +3,7 @@ import { Plain, Raw } from 'slate';
 
 const SEPERATOR = '|';
 export const collectionToCsv = (collection, items) => {
-  const fields = collection.fields.filter(field => {
+  const fields = collection.fields.filter((field) => {
     if (field.type.name === 'Image') return true;
     return field.type.kind !== 'OBJECT';
   });
