@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataLoader, cn } from 'olymp';
-import { Image, useItemEdit } from 'olymp/cms';
+import { Image } from 'olymp/cms';
+import { useItemEdit } from 'olymp/slate';
 
 export default useItemEdit()(({ children, className, style, vcard = {} }) => {
   const { name, bild, ort, telefon, mobil, fax, email, website } = vcard;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { cn } from 'olymp';
-import { SlateMateFrontend, Image, useItemEdit } from 'olymp/cms';
+import { Image } from 'olymp/cms';
+import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
 import { moment } from 'olymp/locale-de';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';

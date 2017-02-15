@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter, Link, slugify, DataLoader } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import sortBy from 'lodash/sortBy';
 import Items from '../../components/items';
 
