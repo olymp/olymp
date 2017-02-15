@@ -29,4 +29,8 @@ require('babel-register')({
   ],
 });*/
 
-require(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'));
+if (fs.existsSync(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'))) {
+  require(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'));
+} else if (fs.existsSync(path.resolve(__dirname, '..', '..', 'kyt', 'cli'))) {
+  require(path.resolve(__dirname, '..', '..', 'kyt', 'cli'));
+} else throw new Error('kyt not found');
