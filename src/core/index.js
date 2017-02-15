@@ -1,23 +1,14 @@
-export { default as purify } from './purify';
-
 export * from './toolbelt';
 export * from './collection-csv.js';
 export * from './csv.js';
 
-export { default as withCollection } from './with-collection';
-export { default as withCollections } from './with-collections';
+export { default as purify } from './purify';
 export { default as Modal } from './modal';
-export { default as withItem } from './with-item';
-export { default as withItems } from './with-items';
-export { default as withRouter } from './with-router';
 export { default as GoogleMap } from './google-map';
 export { default as cloudinaryUrl } from './cloudinary-url';
 export { default as CloudinaryImage } from './cloudinary-image';
 export { default as Error404 } from './error-404';
-
 export { makeTree } from './tree-utils';
-export { default as withState } from './with-state';
-export { default as withAuth, auth } from './with-auth';
 export { default as slugify } from './slugify';
 export { default as sortBy } from './sort-by';
 export { default as DataLoader } from './data-loader';
