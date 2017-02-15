@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, withCollections, useColors } from 'olymp';
+import { withRouter, withCollections, useColors, Helmet } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import uncapitalize from 'lodash/lowerFirst';
@@ -11,6 +11,7 @@ import MediaModal from './media/view';
 import SettingsModal from './settings';
 import CollectionModal from './collections';
 import Menu from './menu';
+import withSettings from '../decorators/settings';
 import './container.less';
 
 @useLightboxes
@@ -18,10 +19,12 @@ import './container.less';
 @useBlockTypes()
 @withCollections
 @useColors()
+@withSettings
 export default class Container extends Component {
   render() {
-    const { children, router, location, auth, logo, collectionList, collectionTree } = this.props;
+    const { children, router, location, auth, logo, collectionList, collectionTree, settings } = this.props;
     const { pathname, query } = location;
+    const { title, description, author, tags } = settings;
 
     let modal;
     if (query && query.confirm !== undefined) {
@@ -77,6 +80,20 @@ export default class Container extends Component {
 
     return (
       <GatewayProvider>
+        <Helmet
+          titleTemplate={title}
+          defaultTitle={title}
+          meta={[
+            { name: 'description', content: description },
+            { name: 'keywords', content: (tags || []).join(', ') },
+            { name: 'author', content: author },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+          ]}
+          link={[
+            { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
+          ]}
+        />
+
         <div>
           {children}
           {modal}
