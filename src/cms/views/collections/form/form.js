@@ -10,7 +10,7 @@ const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 
 export default Form.create()(
   (props) => {
-    const { schema, form, onCreate, item, className, style } = props;
+    const { schema, form, onCreate, className, style } = props;
     const { getFieldDecorator } = form;
     const renderForm = fields => (
       <Form horizontal>
@@ -27,17 +27,17 @@ export default Form.create()(
       </Form>
     );
 
-    const firstTab = Object.keys(schema.tabs)[0];
+    const firstTab = !!schema && Object.keys(schema.tabs)[0];
     return (
       <div className={className} style={style}>
         <Form horizontal>
-          {schema.header.map(field => <Form.Item key={field.name} label="Name" extra={field['@'].hint && field['@'].hint.arg0} {...formItemLayout0}>
+          {!!schema.header && schema.header.map(field => <Form.Item key={field.name} label="Name" extra={field['@'].hint && field['@'].hint.arg0} {...formItemLayout0}>
             {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
               <Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder={(!!field['@'].label && field['@'].label.arg0) || 'Titel'} style={{ textAlign: 'center' }} />
             )}
           </Form.Item>)}
           <Menu mode="horizontal">
-            {schema.bar.map(field => <Menu.Item style={{ minWidth: '20%', maxWidth: `${100 - (20 * schema.bar.length)}%` }} key={field.name}>
+            {!!schema.bar && schema.bar.map(field => <Menu.Item style={{ minWidth: '20%', maxWidth: `${100 - (20 * schema.bar.length)}%` }} key={field.name}>
               {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
                 getFormEditor(field)
               )}

@@ -101,8 +101,8 @@ exports.write = model => (source, args, context, fieldASTs) => {
       },
     });
 
-    const state = node.directives.find(x => x.name && x.name.value === 'state');
-    const stamp = node.directives.find(x => x.name && x.name.value === 'stamp');
+    const state = !!node && node.directives.find(x => x.name && x.name.value === 'state');
+    const stamp = !!node && node.directives.find(x => x.name && x.name.value === 'stamp');
     if (stamp && args.input) {
       delete args.input.createdAt;
       delete args.input.updatedAt;
@@ -130,7 +130,7 @@ exports.write = model => (source, args, context, fieldASTs) => {
     const promises = [];
     Object.keys(args.input || {}).forEach((key) => {
       const type = node.fields.find(({ name }) => name && name.value === key);
-      const relation = type.directives.find(x => x.name && x.name.value === 'relation');
+      const relation = !!type && type.directives.find(x => x.name && x.name.value === 'relation');
       if (relation) {
         if (!args.input[key]) {
           args.input[`${key}Id`] = null;

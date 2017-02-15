@@ -1,33 +1,50 @@
 import React, { Component } from 'react';
-import { gql, graphql, withCollection } from 'olymp';
+import { withItems } from 'olymp';
+import { Spin } from 'antd';
+import { Form } from '../collections/form';
 import Modal from '../modal';
 import Sidebar from '../sidebar';
 
-@withCollection('Settings')
-@graphql(gql`
-  query settings {
-    settings: settings {
-      title,
-      description
-    }
-  }
-`, {
-  options: (arg0, arg1) => {
-    console.log(arg0, arg1);
-
-    return {};
-  }
-})
+@withItems()
 export default class SettingView extends Component {
+  handleCreate = () => {
+    const { saveCollectionItem, items } = this.props;
+    const form = this.form;
+    const item = items && items.length ? items[0] : {};
+
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      saveCollectionItem({ ...item, ...values });
+    });
+  }
+
   render() {
-    const { collectionLoading } = this.props;
+    const { items, collection, fieldNames, collectionLoading } = this.props;
+
+    const content = collectionLoading || !fieldNames || !collection ? (
+      <div style={{ minHeight: 400 }}>
+        <Spin size="large" />
+      </div>
+    ) : (
+      <Form
+        {...this.props}
+        item={items && items.length ? items[0] : {}}
+        schema={{ tabs: { default: collection.fields.filter(field => field.name !== 'id') } }}
+        ref={form => this.form = form}
+        onCreate={this.handleCreate}
+      />
+    );
 
     return (
       <Modal>
         <Sidebar activePage="Einstellungen" isLoading={collectionLoading} />
 
         <div className="container olymp-container">
-          test
+          <h1 style={{ marginTop: '1rem', textAlign: 'center' }}>Globale Einstellungen</h1>
+          {content}
         </div>
       </Modal>
     );

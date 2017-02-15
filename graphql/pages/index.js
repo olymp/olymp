@@ -5,6 +5,7 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       page: Page @query
       pageList: [Page] @query
       settings: Settings @query
+      settingsList: [Settings] @query
     `,
     mutation: `
       page: Page @mutate
@@ -49,8 +50,9 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         ${attributes || ''}
       }
       type Settings {
-        title: String
-        description: String
+        id: String
+        titel: String
+        beschreibung: String
         ${globalAttributes || ''}
       }
     `,
