@@ -16,6 +16,7 @@ module.exports = ({ schema }) => schema.addSchema({
       gemeindebrief: Image
       # @description
       datum: Date
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

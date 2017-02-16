@@ -128,6 +128,7 @@ module.exports = ({ schema }) => {
         thumb: Image
         small: Image
         large: Image
+        # @label("Schlagworte")
         tags: [String]
       }
     `,

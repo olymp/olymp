@@ -16,6 +16,7 @@ module.exports = ({ schema }) => schema.addSchema({
       text: Json
       # @description
       rollen: [Rolle] @relation
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
-// import '@mapbox/react-colorpickr/dist/colorpickr.css';
-import { withColors } from '../../decorators';
+import { withColors } from '../decorators';
 
 let ColorPicker = null;
 if (typeof document !== 'undefined') {

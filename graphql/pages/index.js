@@ -51,8 +51,14 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       }
       type Settings {
         id: String
-        titel: String
-        beschreibung: String
+        # @label("Titel")
+        title: String
+        # @label("Beschreibung")
+        description: String
+        # @label("Autor")
+        author: String
+        # @label("Schlagworte")
+        tags: [String]
         ${globalAttributes || ''}
       }
     `,

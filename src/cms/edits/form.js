@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withCollection } from 'olymp';
 import { Button, Collapse, Form } from 'antd';
-import getFormEditor from '../form-editor';
+import getFormEditor from '../views/collections/form/form-editor';
 
 const fieldNames = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
@@ -11,24 +11,29 @@ export default class SubForm extends Component {
     const { onChange, value } = this.props;
     return onChange((value || []).filter((x, i) => i !== index));
   };
+
   createItem = () => {
     const { onChange, value } = this.props;
     return onChange([...(value || []), {}]);
   };
+
   patchItem = (index, nestedValue) => {
     const { onChange, value } = this.props;
     return onChange((value || []).map((x, i) => i === index ? nestedValue : x));
   };
+
   mouseDown = index => (e) => {
     e.preventDefault();
     this.removeItem(index);
   }
+
   getHeader = (title, index) => (
     <div>
       {title}
       <i className="fa fa-close pull-right" onMouseDown={this.mouseDown(index)} />
     </div>
   );
+
   render() {
     const { value, collection, onChange, ...rest } = this.props;
 

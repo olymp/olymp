@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
-import withAuth from './with-auth';
+import withAuth from './auth';
 
 export default (WrappedComponent) => {
   @graphql(gql`

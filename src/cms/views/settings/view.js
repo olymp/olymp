@@ -24,7 +24,7 @@ export default class SettingView extends Component {
   render() {
     const { items, collection, fieldNames, collectionLoading } = this.props;
 
-    const content = collectionLoading || !fieldNames || !collection ? (
+    const content = collectionLoading || !fieldNames || !collection || !items ? (
       <div style={{ minHeight: 400 }}>
         <Spin size="large" />
       </div>
@@ -42,7 +42,7 @@ export default class SettingView extends Component {
       <Modal>
         <Sidebar activePage="Einstellungen" isLoading={collectionLoading} />
 
-        <div className="container olymp-container">
+        <div className="container olymp-container" style={{ position: 'relative' }}>
           <h1 style={{ marginTop: '1rem', textAlign: 'center' }}>Globale Einstellungen</h1>
           {content}
         </div>

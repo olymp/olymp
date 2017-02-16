@@ -23,6 +23,7 @@ module.exports = ({ schema }) => schema.addSchema({
       bild: Image
       ort: String
       farbe: Color
+      # @label("Schlagworte")
       tags: [String]
     }
   `,
