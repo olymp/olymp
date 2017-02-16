@@ -5,3 +5,4 @@ export { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, us
 export { default as SlateMate, SlateMateFrontend, htmlSerializer, rawSerializer } from './editor';
 export { default as withBlockTypes, useBlockTypes } from './decorators';
 export { default as SlateModal } from './modal';
+export { default as SuggestionsPlugin } from './suggestion-plugin';
