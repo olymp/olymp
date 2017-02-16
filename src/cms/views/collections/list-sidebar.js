@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Link, collectionToCsvDownload } from 'olymp';
 import { Dropdown, Menu, Icon } from 'antd';
-import { resolveFieldValue } from '../../edits';
+import { FieldValue } from 'olymp';
 import Sidebar from '../sidebar';
 import { getFilterMenu } from './filter';
 
@@ -30,8 +30,8 @@ export default class CollectionListSidebar extends Component {
     const startField = this.resolveFieldName(item, 'start');
     const endField = this.resolveFieldName(item, 'end');
     if (startField && endField && fieldName === startField) {
-      const start = resolveFieldValue(item[startField], meta, fieldProps);
-      const end = resolveFieldValue(item[endField], meta, fieldProps);
+      const start = <FieldValue value={item[startField]} meta={meta} fieldProps={fieldProps} />;
+      const end = <FieldValue value={item[endField]} meta={meta} fieldProps={fieldProps} />;
 
       if (start && end) {
         return `${start} - ${end}`;
@@ -42,7 +42,9 @@ export default class CollectionListSidebar extends Component {
       }
     }
 
-    return resolveFieldValue(item[fieldName] || defaultValue, meta, fieldProps);
+    return (
+      <FieldValue value={item[fieldName] || defaultValue} meta={meta} fieldProps={fieldProps} />
+    );
   }
 
   resolveFieldName = (item, field, defaultFieldName) => {

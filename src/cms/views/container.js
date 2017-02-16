@@ -12,7 +12,7 @@ import SettingsModal from './settings';
 import CollectionModal from './collections';
 import Menu from './menu';
 import withSettings from '../decorators/settings';
-import './container.less';
+import '../styles/style.less';
 
 @useLightboxes
 @withRouter

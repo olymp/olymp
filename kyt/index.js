@@ -7,7 +7,7 @@ const theme = fs.existsSync(themePath) ? require(themePath)() : {};
 const env = require('node-env-file');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-env(path.resolve(process.cwd(), '.env'));
+env(path.resolve(process.cwd(), '.env'), { raise: false });
 module.exports = {
   reactHotLoader: true,
   debug: false,

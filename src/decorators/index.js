@@ -6,3 +6,4 @@ export { default as withItems } from './items';
 export { default as withRouter } from './router';
 export { default as withState } from './state';
 export { default as withAuth, auth } from './auth';
+export { default as withForm } from './form';

@@ -1,11 +1,11 @@
-import React from 'react';
-import Image from './image';
+import React, { Component } from 'react';
+import { Image } from '../cms';
 import { Checkbox } from 'antd';
 import { Plain, Raw } from 'slate';
 import moment from 'moment';
 
-export default (value, meta, fieldProps) => {
-  if (!meta) return undefined;
+const resolveFieldValue = (value, meta, fieldProps) => {
+  if (!meta) return null;
 
   if ((meta.type.kind === 'SCALAR' && meta.type.name !== 'Json') || meta.type.kind === 'ENUM') {
     switch (meta.type.name) {
@@ -19,24 +19,32 @@ export default (value, meta, fieldProps) => {
         return <Checkbox checked={value} disabled {...fieldProps}>{value ? 'Ja' : 'Nein'}</Checkbox>;
 
       default:
-        return value;
+        return <span>{value}</span>;
     }
   } else if (meta.type.kind === 'LIST') {
-    if (value && value.length && value.map(x => x.name).join('').length > 0) return value.map(x => x.name).join(', ');
-    if (value && value.length) return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
-    return '';
+    if (value && value.length && value.map(x => x.name).join('').length > 0) return <span>{value.map(x => x.name).join(', ')}</span>;
+    if (value && value.length) return <span>{`${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`}</span>;
+    return null;
   } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
       case 'Image':
         return value ? <Image value={value} {...fieldProps} /> : null;
 
       case 'Json':
-        if (!value) return '';
+        if (!value) return null;
         const raw = Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true });
-        return Plain.serialize(raw).split('\n').join(' ');
+        return <span>{Plain.serialize(raw).split('\n').join(' ')}</span>;
 
       default:
-        return value ? (value.name || 'Ja') : null;
+        return value ? <span>{value.name || 'Ja'}</span> : null;
     }
   }
 };
+
+export default class FieldValue extends Component {
+  render() {
+    const {value, meta, fieldProps} = this.props;
+
+    return resolveFieldValue(value, meta, fieldProps);
+  }
+}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { withCollection } from 'olymp';
-import { Button, Collapse, Form } from 'antd';
-import getFormEditor from '../views/collections/form/form-editor';
+import { withCollection, FormItem } from 'olymp';
+import { Button, Collapse } from 'antd';
 
 const fieldNames = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
 
@@ -44,17 +43,7 @@ export default class SubForm extends Component {
             <Collapse.Panel header={this.getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
               <div className="ant-form">
                 {collection.fields.filter(({ name }) => name !== 'id' && fieldNames.indexOf(name) === -1).map(({ type, name }) =>
-                  <Form.Item key={name}>
-                    {getFormEditor(
-                      type,
-                      name,
-                      {
-                        initialValue: value[name],
-                        onChange: v => this.patchItem(i, { ...value, [name]: v && v.target ? v.target.value : v }),
-                        disabled: (name === 'createdAt' || name === 'createdBy' || name === 'updatedAt' || name === 'updatedBy'),
-                      }
-                    )}
-                  </Form.Item>
+                  <FormItem key={name} />
                 )}
               </div>
             </Collapse.Panel>
@@ -65,3 +54,13 @@ export default class SubForm extends Component {
     );
   }
 }
+
+/* getFormEditor(
+  type,
+  name,
+  {
+    initialValue: value[name],
+    onChange: v => this.patchItem(i, { ...value, [name]: v && v.target ? v.target.value : v }),
+    disabled: (name === 'createdAt' || name === 'createdBy' || name === 'updatedAt' || name === 'updatedBy'),
+  }
+) */
