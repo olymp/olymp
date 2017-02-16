@@ -1,5 +1,5 @@
 import React from 'react';
-import cloudinaryUrl from './cloudinary-url';
+import cloudinaryUrl from '../core/cloudinary-url';
 
 const sizes = {
   sm: 400,

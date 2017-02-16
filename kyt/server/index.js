@@ -18,7 +18,7 @@ import { parse, stringify } from '../query-string';
 import 'source-map-support/register';
 
 global.fetch = fetch;
-env(path.resolve(process.cwd(), '.env'));
+env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const port = parseInt(KYT.SERVER_PORT, 10);
 const launchAPI = () => {
