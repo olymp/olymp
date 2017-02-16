@@ -11,8 +11,8 @@ env(path.resolve(process.cwd(), '.env'), { raise: false });
 module.exports = {
   reactHotLoader: true,
   debug: false,
-  serverURL: `http://localhost:${process.env.PORT}`,
-  clientURL: `http://localhost:${process.env.PORT + 1}`,
+  serverURL: `http://localhost:${process.env.PORT || 3000}`,
+  clientURL: `http://localhost:${(process.env.PORT || 3000) + 1}`,
   additionalServerPaths: [
     path.resolve(__dirname, '..', 'graphql'),
     path.resolve(__dirname, 'server'),
