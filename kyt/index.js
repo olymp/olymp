@@ -83,7 +83,7 @@ module.exports = {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract({
           fallbackLoader: 'style',
-          loader: `css?sourceMap!postcss!less{"modifyVars":${JSON.stringify(theme)}}`,
+          loader: `css?sourceMap!postcss!less?{"modifyVars":${JSON.stringify(theme)}}`,
         }),
       });
     } else if (type !== 'server') {
