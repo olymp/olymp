@@ -23,6 +23,7 @@ module.exports = ({ schema }) => schema.addSchema({
       fax: PhoneNumber
       email: Email
       homepage: Website
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

@@ -15,12 +15,31 @@ export default Form.create()(
     const renderForm = fields => (
       <Form horizontal>
         {fields.map((field) => {
+          const getFieldEditor = (field, label) => {
+            const editor = getFormEditor(field, label);
+
+            if (!editor) return null;
+
+            return getFieldDecorator(field.name, {
+              initialValue: getInitialValue(props, field),
+              rules: getValidationRules(field),
+              valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value'
+            })(editor);
+          };
+
           const title = field['@'].label ? field['@'].label.arg0 : toLabel(field.name);
-          const editor = getFormEditor(field, name);
-          if (!editor) return null;
+          const content = getFieldEditor(field);
+
+          if (!content) return null;
+
+          const value = content.props.value || content.props.checked;
+          const label = title.replace('-Ids', '').replace('-Id', '');
+          const hint = field['@'].hint && field['@'].hint.arg0 ? field['@'].hint : {};
+          const extra = !value && hint.arg1 ? hint.arg1 : hint.arg0;
+
           return (
-            <Form.Item key={field.name} label={title.replace('-Ids', '').replace('-Id', '')} extra={field['@'].hint && field['@'].hint.arg0} {...(field.type.name === 'Json' ? formItemLayout0 : formItemLayout)}>
-              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field), valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value' })(editor)}
+            <Form.Item key={field.name} label={label} extra={field.type.name !== 'Boolean' && extra} {...(field.type.name === 'Json' ? formItemLayout0 : formItemLayout)}>
+              {field.type.name === 'Boolean' ? getFieldEditor(field, extra) : content}
             </Form.Item>
           );
         })}
@@ -37,11 +56,17 @@ export default Form.create()(
             )}
           </Form.Item>)}
           <Menu mode="horizontal">
-            {!!schema.bar && schema.bar.map(field => <Menu.Item style={{ minWidth: '20%', maxWidth: `${100 - (20 * schema.bar.length)}%` }} key={field.name}>
-              {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(
-                getFormEditor(field)
-              )}
-            </Menu.Item>)}
+            {!!schema.bar && schema.bar.map(field => {
+              const title = field['@'].label ? field['@'].label.arg0 : toLabel(field.name);
+              const label = title.replace('-Ids', '').replace('-Id', '');
+              const editor = getFormEditor(field, label);
+
+              return (
+                <Menu.Item style={{ minWidth: '20%', maxWidth: `${100 - (20 * schema.bar.length)}%` }} key={field.name}>
+                  {getFieldDecorator(field.name, { initialValue: getInitialValue(props, field), rules: getValidationRules(field) })(editor)}
+                </Menu.Item>
+              );
+            })}
             <Menu.Item style={{ float: 'right', width: '20%' }} key="save">
               <span onClick={onCreate}><Icon type="save" /> Speichern</span>
             </Menu.Item>

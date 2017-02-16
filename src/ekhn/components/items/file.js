@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from 'olymp';
-import { Image, useItemEdit } from 'olymp/cms';
+import { Image } from 'olymp/cms';
+import { useItemEdit } from 'olymp/slate';
 import Tags from '../tags';
 
 export default useItemEdit()(({ children, id, header, subheader, shortText, bild, tags, className, leading }) => (

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import sortBy from 'lodash/sortBy';
 
 // defaultColors = [{ color: 'red', name: 'Termin' (optional) }, 'blue', ...]
 export const withColors = WrappedComponent => class WithColors extends Component {

@@ -14,6 +14,7 @@ module.exports = ({ schema }) => schema.addSchema({
       name: String
       # @description
       url: String
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

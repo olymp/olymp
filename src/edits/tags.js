@@ -9,7 +9,7 @@ import { graphql, gql } from 'olymp';
     }
   }
 `)
-export default class TagSelect extends Component {
+export default class TagsEditor extends Component {
   render() {
     const tags = this.props.data.tags || [];
     return (

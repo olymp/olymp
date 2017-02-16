@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Spin, Button } from 'antd';
+import { TagsEditor } from 'olymp/edits';
 import moment from 'moment';
 import withFile from '../../decorators/file';
-import { Image, TagSelect } from '../../edits';
+import { Image } from '../../edits';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };
 
@@ -46,7 +47,7 @@ const MediaForm = Form.create()(
           {getFieldDecorator('tags', {
             initialValue: item.tags || [],
           })(
-            <TagSelect {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
+            <TagsEditor {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
           )}
         </Form.Item>
 
