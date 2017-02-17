@@ -9,9 +9,11 @@ import tinycolor from 'tinycolor2';
 export default useItemEdit()(({ children, className, start, ende, name, kommentar, farbe, ganztaegig, additional }) => {
   const hypher = new Hypher(german);
 
-  const backgroundColor = farbe ? tinycolor(farbe).toRgbString() : null;
-  const color = farbe ? tinycolor(farbe)
-    .darken(33)
+  const eqColor = tinycolor.mix(tinycolor(farbe).setAlpha(1), '#FFF', 100 * (1 - tinycolor(farbe).getAlpha())).toRgbString();
+  const backgroundColor = farbe ? tinycolor(eqColor)
+    .toRgbString() : null;
+  const color = farbe ? tinycolor(eqColor)
+    .darken(40)
     .toRgbString() : null;
 
   const date = (date, time) => (
@@ -38,7 +40,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
   }
 
   return (
-    <div className={cn('termin mini', className)} style={{ backgroundColor }}>
+    <div className={cn(`termin mini ${!backgroundColor || tinycolor(backgroundColor).getBrightness() > 180 ? 'light' : 'dark'}`, className)} style={{ backgroundColor }}>
       {children}
 
       <div className="header">
