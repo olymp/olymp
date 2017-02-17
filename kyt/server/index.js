@@ -20,7 +20,7 @@ import 'source-map-support/register';
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 
-const port = parseInt(KYT.SERVER_PORT, 10);
+const port = parseInt(process.env.PORT || KYT.SERVER_PORT, 10);
 const launchAPI = () => {
   app.useSession = (url, getArgs) => {
     app.set('trust proxy', 2);
