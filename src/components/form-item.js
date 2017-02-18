@@ -9,6 +9,7 @@ const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 export default class FormItem extends Component {
   render() {
     const { field, clean, itemStyle, style, ...rest } = this.props;
+    const { item, getFieldValue } = this.props;
 
     const title = field['@'] && field['@'].label ? field['@'].label.arg0 : toLabel(field.name);
     const label = title.replace('-Ids', '').replace('-Id', '');
@@ -18,7 +19,7 @@ export default class FormItem extends Component {
 
     if (!content) return null;
 
-    const value = content.props.value || content.props.checked;
+    const value = getFieldValue(field.name);
     const extra = !value && hint.arg1 ? hint.arg1 : hint.arg0;
 
     return (

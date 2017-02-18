@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { withItems, withForm } from 'olymp';
+import { withItems, withForm, Form } from 'olymp';
 import { Spin, Button, Tabs } from 'antd';
-import { Form } from 'olymp';
-import Modal from '../modal';
-import Sidebar from '../sidebar';
+import Modal from './modal';
+import Sidebar from './sidebar';
 
 @withItems()
 @withForm

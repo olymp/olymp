@@ -10,33 +10,31 @@ const resolveFieldValue = (value, meta, fieldProps) => {
   if ((meta.type.kind === 'SCALAR' && meta.type.name !== 'Json') || meta.type.kind === 'ENUM') {
     switch (meta.type.name) {
       case 'Date':
-        return value ? moment(value).format('DD.MM.YYYY') : null;
+        return !!value && <span>{moment(value).format('DD.MM.YYYY')}</span>;
 
       case 'DateTime':
-        return value ? `${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr` : null;
+        return !!value && <span>{`${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr`}</span>;
 
       case 'Boolean':
         return <Checkbox checked={value} disabled {...fieldProps}>{value ? 'Ja' : 'Nein'}</Checkbox>;
 
       default:
-        return <span>{value}</span>;
+        return value;
     }
   } else if (meta.type.kind === 'LIST') {
-    if (value && value.length && value.map(x => x.name).join('').length > 0) return <span>{value.map(x => x.name).join(', ')}</span>;
-    if (value && value.length) return <span>{`${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`}</span>;
+    if (value && value.length && value.map(x => x.name).join('').length > 0) return value.map(x => x.name).join(', ');
+    if (value && value.length) return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
     return null;
   } else /* if (meta.type.kind === 'OBJECT') */ {
     switch (meta.type.name) {
       case 'Image':
-        return value ? <Image value={value} {...fieldProps} /> : null;
+        return !!value && <Image value={value} {...fieldProps} />;
 
       case 'Json':
-        if (!value) return null;
-        const raw = Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true });
-        return <span>{Plain.serialize(raw).split('\n').join(' ')}</span>;
+        return !!value && Plain.serialize(Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true })).split('\n').join(' ');
 
       default:
-        return value ? <span>{value.name || 'Ja'}</span> : null;
+        return !!value && <span>{value.name || 'Ja'}</span>;
     }
   }
 };
@@ -45,6 +43,9 @@ export default class FieldValue extends Component {
   render() {
     const {value, meta, fieldProps} = this.props;
 
-    return resolveFieldValue(value, meta, fieldProps);
+    const content = resolveFieldValue(value, meta, fieldProps) || null;
+
+    if (typeof content === 'string') return <span>{content}</span>;
+    return content;
   }
 }
