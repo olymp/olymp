@@ -22,7 +22,7 @@ import '../styles/style.less';
 @withSettings
 export default class Container extends Component {
   render() {
-    const { children, router, location, auth, logo, collectionList, collectionTree, settings, ...rest } = this.props;
+    const { children, router, location, auth, logo, collectionList, collectionTree, settings, helmet = {}, ...rest } = this.props;
     const { pathname, query } = location;
     const { title, description, author, tags } = settings;
 
@@ -82,7 +82,7 @@ export default class Container extends Component {
       <GatewayProvider>
         <div>
           <Helmet
-            {...rest}
+            {...helmet}
             titleTemplate={title}
             defaultTitle={title}
             meta={[
@@ -90,11 +90,11 @@ export default class Container extends Component {
               { name: 'keywords', content: (tags || []).join(', ') },
               { name: 'author', content: author },
               { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
-              ...(rest.meta || [])
+              ...(helmet.meta || [])
             ]}
             link={[
               { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
-              ...(rest.link || [])
+              ...(helmet.link || [])
             ]}
           />
 

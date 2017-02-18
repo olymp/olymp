@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '../../core/extern';
 import useBlockBase from './base';
 import useBlockAlign from './align';
 import useBlockToolbar from './toolbar';
@@ -9,7 +10,7 @@ export const GenericBlock = (props) => {
   const { attributes, getData, children, renderToolbar, readOnly, toolbarStyle, className, style } = props;
 
   return (
-    <div {...attributes} className={className} data-block-active={!readOnly} style={{ position: 'relative', ...(style || {}) }}>
+    <div {...attributes} className={cn(className)} data-block-active={!readOnly} style={{ position: 'relative', ...(style || {}), display: 'inline-block' }}>
       {renderToolbar(toolbarStyle)}
       {children}
     </div>

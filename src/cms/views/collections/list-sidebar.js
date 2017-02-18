@@ -30,15 +30,19 @@ export default class CollectionListSidebar extends Component {
     const startField = this.resolveFieldName(item, 'start');
     const endField = this.resolveFieldName(item, 'end');
     if (startField && endField && fieldName === startField) {
-      const start = <FieldValue value={item[startField]} meta={meta} fieldProps={fieldProps} />;
-      const end = <FieldValue value={item[endField]} meta={meta} fieldProps={fieldProps} />;
+      const start =!!item[startField] && (
+        <FieldValue value={item[startField]} meta={meta} fieldProps={fieldProps} />
+      );
+      const end = !!item[endField] && (
+        <FieldValue value={item[endField]} meta={meta} fieldProps={fieldProps} />
+      );
 
       if (start && end) {
-        return `${start} - ${end}`;
+        return <span>{start} bis<br />{end}</span>;
       } else if (start) {
-        return `Ab ${start}`;
+        return <span>Ab {start}</span>;
       } if (end) {
-        return `Bis ${end}`;
+        return <span>Bis {end}</span>;
       }
     }
 

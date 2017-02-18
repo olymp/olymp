@@ -13,6 +13,7 @@ export default ({ helmet, cssBundle, cssMarkup, jsBundle, root }) => `
     ${helmet.link.toString()}
     ${cssBundle ? '<link rel="stylesheet" type="text/css" href="' + cssBundle + '">' : ''}
     <style id="css-markup">${cssMarkup || ''}</style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   </head>
   <body>
     <div id="app"><div>${root}</div></div>

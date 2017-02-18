@@ -1,5 +1,6 @@
 import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
+import { Button} from 'antd';
 import { Editor, Html, Raw } from 'slate';
 import { withAuth } from '../decorators';
 import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
@@ -283,11 +284,17 @@ export default class SlateEditor extends Component {
 
 @withAuth
 export class SlateMateFrontend extends Component {
+  state = { expanded: false };
+
   render() {
     const { auth, ...rest } = this.props;
+    const { expanded } = this.state;
 
-    return auth && auth.user ? (
-      <span>[-- NUR AUSGELOGGT SICHTBAR ---]</span>
+    return auth && auth.user && !expanded ? (
+      <div className="service-hint">
+        <p>Das Anzeigen des Textes kann zu Fehlverhalten beim Inline-Editing führen.</p>
+        <Button type="primary" onClick={() => this.setState({ expanded: true })}>Trotzdem anzeigen</Button>
+      </div>
     ) : <SlateEditor {...rest} />;
   }
 }
