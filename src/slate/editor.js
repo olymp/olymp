@@ -3,7 +3,7 @@ import { Gateway } from 'react-gateway';
 import { Button} from 'antd';
 import { Editor, Html, Raw } from 'slate';
 import { withAuth } from '../decorators';
-import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
+import { withSlateState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
 import { getId } from './utils/get-text';
 import './style.less';
@@ -177,7 +177,7 @@ export const rawSerializer = Raw;
 
 @withBlockTypes
 @withUniqueId()
-@withState({ terse: true })
+@withSlateState({ terse: true })
 @useBlocks(options)
 @withAutoMarkdown(options)
 @withToolbar(options)

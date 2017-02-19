@@ -5,3 +5,6 @@ export { SortableContainer as sortableContainer, SortableElement as sortableElem
 export { default as Navigation } from './components/navigation';
 export * from './decorators';
 export * from './edits';
+
+export * from '../slate';
+export * from '../core';
