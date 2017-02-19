@@ -20,11 +20,11 @@ export default class ToolbarActionModal extends Component {
     }
   }
 
-  renderTable = (options, multi, exception) => {
+  renderTable = (options = [], multi, exception) => {
     const { toggle } = this.props;
     const modus = !exception ? 'include' : 'exclude';
 
-    let attributes;
+    let attributes = {};
     const selectedRowKeys = [];
     const data = options.map(({ value, label, active, ...rest }) => {
       attributes = rest;
@@ -39,7 +39,7 @@ export default class ToolbarActionModal extends Component {
         ...rest
       };
     });
-    delete attributes.disabled;
+    if (attributes.disabled) delete attributes.disabled;
 
     if (!this[modus]) this[modus] = selectedRowKeys;
 

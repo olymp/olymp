@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export default ({ toggle, options, separated, right, active, icon, tooltip }) => {
   const menu = (
-    <Menu onClick={toggle}>
+    <Menu onClick={toggle} style={{ minWidth: 200 }}>
       {options.map(({ value, label, active }) => active ? (
         <Menu.Item key={value} style={{ fontWeight: 'bold' }}><Icon type="check" /> {label}</Menu.Item>
       ) : (
