@@ -35,7 +35,7 @@ export default class GzBoxSmall extends Component {
   render() {
     const { children, text, description } = this.props;
     return (
-      <GenericBlock {...this.props} className="page-header panel">
+      <GenericBlock {...this.props} className="page-header panel" style={{ display: 'block' }}>
         <div className="container">
           <h1 className="pull-left gz-simple-header">{text}</h1>
           <ol className="breadcrumb pull-left">

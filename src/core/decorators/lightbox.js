@@ -22,14 +22,22 @@ export default ({ getImage } = {}) => WrappedComponent => class Lightbox extends
     this.context.lightbox.remove(this.id);
   }
   render() {
-    if (this.props.lightbox !== true) {
+    const { lightbox, onClick, ...rest } = this.props;
+
+    if (lightbox !== true) {
       return <WrappedComponent {...this.props} />;
     }
-    const { children } = this.props;
+
     return (
-      <WrappedComponent {...this.props} showLightbox={() => this.context.lightbox.show(this.id)}>
-        {children}
-      </WrappedComponent>
+      <WrappedComponent
+        {...this.props}
+        onClick={() => {
+          if (onClick) onClick();
+
+          this.context.lightbox.show(this.id);
+        }}
+        showLightbox={() => this.context.lightbox.show(this.id)}
+      />
     );
   }
 };

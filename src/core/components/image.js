@@ -88,11 +88,11 @@ export default class CoolImage extends Component {
       }
     }
 
-    const containerStyles = height > width || ratio > 1 ? {
+    const containerStyles = /* height > width || ratio > 1 ? {
       maxWidth: '100%',
       height: 'auto',
       ...style,
-    } : {
+    } :*/ {
       width: '100%',
       height: 'auto',
       ...style,
@@ -164,7 +164,11 @@ export default class CoolImage extends Component {
     containerStyles.backgroundImage = `url(${url})`;
 
     return (
-      <div onClick={onClick} style={containerStyles} className={cn(className, 'athena-img-container')}>
+      <div
+        onClick={onClick}
+        style={containerStyles}
+        className={cn(className, 'athena-img-container')}
+      >
         {children}
       </div>
     );

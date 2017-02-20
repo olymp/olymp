@@ -56,7 +56,7 @@ export default class ImageBlock extends Component {
     // const height = !value ? styles.height : (value.crop ? value.crop[1] : value.height);
 
     return (
-      <GenericBlock {...rest}>
+      <GenericBlock {...rest} style={styles}>
         <Image
           asImg
           onChange={image => setData({ showMedia: undefined, image })}

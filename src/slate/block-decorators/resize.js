@@ -51,7 +51,6 @@ export default (options = {}) => Block => {
       this.setState({ resize: false });
     }
 
-
     onResize = (event, { deltaX, deltaY, x, y }) => {
       const { getData, alignment } = this.props;
       const elementDimensions = this.element.getBoundingClientRect();
@@ -86,8 +85,15 @@ export default (options = {}) => Block => {
         </DraggableCore>,
       ];
 
+      const blockStyle = {
+        ...style,
+        display: 'inline-block',
+
+      };
+      if (height) blockStyle.height = `${height}px`;
+
       return (
-        <Block {...this.props} style={height ? { ...style, height: `${height}px` } : style} className={cn(width && `p-0 col-xs-${width}`, className)} ref={e => this.block = e}>
+        <Block {...this.props} style={blockStyle} className={cn(width && `p-0 col-xs-${width}`, className)} ref={e => this.block = e}>
           {children}
         </Block>
       );

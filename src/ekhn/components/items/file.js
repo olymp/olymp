@@ -1,6 +1,5 @@
 import React from 'react';
-import { cn } from 'olymp';
-import { Image } from 'olymp/cms';
+import { cn, Image } from 'olymp';
 import { useItemEdit } from 'olymp/slate';
 import Tags from '../tags';
 
