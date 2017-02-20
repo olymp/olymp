@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
-import { withColors } from '../decorators';
+import { withColors } from '../core/decorators';
 
 let ColorPicker = null;
 if (typeof document !== 'undefined') {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import toLabel from '../core/to-label';
+import toLabel from '../to-label';
 import FieldEditor from './field-editor';
 
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };

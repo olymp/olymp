@@ -1,8 +1,7 @@
 import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
-import { Button} from 'antd';
 import { Editor, Html, Raw } from 'slate';
-import { withAuth } from '../decorators';
+import { withAuth } from '../core/decorators';
 import { withSlateState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
 import { getId } from './utils/get-text';

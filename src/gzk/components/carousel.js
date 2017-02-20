@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { gql, graphql, Link, cloudinaryUrl, cn } from 'olymp';
+import { cloudinaryUrl, cn } from 'olymp';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery-no-icon.css';
 import './carousel.less';

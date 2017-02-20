@@ -3,7 +3,6 @@ import { Gateway, GatewayDest } from 'react-gateway';
 import { Anchor as AnchorCreator, Menu, Icon, Dropdown, Button, Spin } from 'antd';
 import { graphql, Link, gql, withAuth, withItem, Helmet } from 'olymp';
 import { SlateMate } from 'olymp/slate';
-import sortBy from 'lodash/sortBy';
 import AnchorHelper from 'antd/lib/anchor/anchorHelper';
 const Anchor = AnchorCreator.Link;
 

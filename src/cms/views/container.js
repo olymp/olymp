@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import { withRouter, withCollections, useColors, Helmet } from 'olymp';
+import { withRouter, withCollections, useColors, Helmet, useLightbox, useEdits } from 'olymp';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import uncapitalize from 'lodash/lowerFirst';
 import { Affix, Button, Dropdown, Icon } from 'antd';
 import { useBlockTypes } from 'olymp/slate';
-import { useLightboxes } from '../edits/image/with-lightbox';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
 import SettingsModal from './settings';
 import CollectionModal from './collections';
 import Menu from './menu';
 import withSettings from '../decorators/settings';
+import { ImageEdit } from '../edits';
 import '../styles/style.less';
 
-@useLightboxes
+@useLightbox
+@useEdits([
+  type => type.kind === 'OBJECT' && type.name === 'Image' && <ImageEdit asImg mode="fit" retina style={{ maxWidth: 300, maxHeight: 300 }} />
+])
 @withRouter
 @useBlockTypes()
 @withCollections
@@ -46,8 +49,9 @@ export default class Container extends Component {
     const helmetContent = (
       <Helmet
         {...helmet}
-        titleTemplate={title}
+        titleTemplate={`${title} - %s`}
         defaultTitle={title}
+        htmlAttributes={{ lang: 'de', amp: undefined }} // amp takes no value
         meta={[
           { name: 'description', content: description },
           { name: 'keywords', content: (tags || []).join(', ') },

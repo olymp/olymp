@@ -16,10 +16,10 @@ export { default as traverse } from './traverse';
 export { default as toLabel } from './to-label';
 
 // COMPONENTS
-export * from '../components';
+export * from './components';
 
 // DECORATORS
-export * from '../decorators';
+export * from './decorators';
 
 // EXTERNS
 export * from './extern';

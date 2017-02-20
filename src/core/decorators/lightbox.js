@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'antd';
-import {cloudinaryUrl} from 'olymp';
+import cloudinaryUrl from '../cloudinary-url';
 
 const defaultGetImage = props => props.value;
 export default ({ getImage } = {}) => WrappedComponent => class Lightbox extends Component {
@@ -34,7 +34,7 @@ export default ({ getImage } = {}) => WrappedComponent => class Lightbox extends
   }
 };
 
-export const useLightboxes = WrappedComponent => class WithLightbox extends Component {
+export const useLightbox = WrappedComponent => class WithLightbox extends Component {
   lightboxes = {};
   state = { visible: false };
   static childContextTypes = {

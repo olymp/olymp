@@ -1,6 +1,8 @@
 import React, { Component, PropTypes, Children } from 'react';
-import { cloudinaryUrl, cn } from 'olymp';
-import './style.less';
+import cloudinaryUrl from '../cloudinary-url';
+import { withLightbox } from '../decorators';
+import { cn } from '../extern';
+import './image.less';
 
 const getDim = (dim) => {
   if (dim) {
@@ -14,6 +16,7 @@ const getDim = (dim) => {
   return false;
 };
 
+@withLightbox()
 export default class CoolImage extends Component {
   static defaultProps = {
     cloudinary: {},
