@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link, withRouter, graphql, gql, cn } from 'olymp';
-import { useBlockBase, useGenericBlock, GenericBlock, Block } from 'olymp/slate';
+import { Link, withRouter, graphql, gql } from 'olymp';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import { Image } from 'olymp/cms';
 import { Spin } from 'antd';
 

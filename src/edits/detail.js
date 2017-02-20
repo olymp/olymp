@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withItems } from '../decorators';
+import { withItems } from '../core/decorators';
 import { Select } from 'antd';
 
 @withItems()

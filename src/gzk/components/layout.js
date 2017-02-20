@@ -4,7 +4,7 @@ import MenuController from './header';
 import Logo from './logo';
 import sortBy from 'lodash/sortBy';
 import { Affix } from 'antd';
-import { Link, cn, withApollo, withAuth, gql } from 'olymp';
+import { Link } from 'olymp';
 
 export default props => (
   <div className="frontend">

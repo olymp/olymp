@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { gql, graphql, Link } from 'olymp';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import Carousel from '../../components/carousel';
 
 @graphql(gql`

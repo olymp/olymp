@@ -7,3 +7,4 @@ export { default as DataLoader } from './data-loader';
 export { default as CloudinaryImage } from './cloudinary-image';
 export { default as Modal } from './modal';
 export { default as GoogleMap } from './google-map';
+export { default as Image } from './image';
