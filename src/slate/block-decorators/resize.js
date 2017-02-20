@@ -75,7 +75,7 @@ export default (options = {}) => Block => {
 
     render() {
       if (enable === false) return <Block {...this.props} />;
-      const { editor, alignment, style } = this.props;
+      const { editor, alignment, style, className } = this.props;
       const { resize, height, width } = this.state;
 
       const children = editor.props.readOnly ? this.props.children : [
@@ -87,7 +87,7 @@ export default (options = {}) => Block => {
       ];
 
       return (
-        <Block {...this.props} style={height ? { ...style, height: `${height}px` } : style} className={cn(width && `p-0 col-xs-${width}`)} ref={e => this.block = e}>
+        <Block {...this.props} style={height ? { ...style, height: `${height}px` } : style} className={cn(width && `p-0 col-xs-${width}`, className)} ref={e => this.block = e}>
           {children}
         </Block>
       );
