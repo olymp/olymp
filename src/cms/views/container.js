@@ -22,7 +22,7 @@ import '../styles/style.less';
 @withSettings
 export default class Container extends Component {
   render() {
-    const { children, router, location, auth, logo, collectionList, collectionTree, settings, helmet = {}, ...rest } = this.props;
+    const { children, router, location, auth, logo, collectionList, collectionTree, settings, helmet = {}, color, ...rest } = this.props;
     const { pathname, query } = location;
     const { title, description, author, tags } = settings;
 
@@ -43,9 +43,33 @@ export default class Container extends Component {
       modal = (<AuthReset token={query.reset} pathname={pathname} onClose={() => router.push(pathname)} />);
     }
 
+    const helmetContent = (
+      <Helmet
+        {...helmet}
+        titleTemplate={title}
+        defaultTitle={title}
+        meta={[
+          { name: 'description', content: description },
+          { name: 'keywords', content: (tags || []).join(', ') },
+          { name: 'author', content: author },
+          { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+          { name: 'theme-color', content: color },
+          { name: 'msapplication-TileColor', content: color },
+          ...(helmet.meta || [])
+        ]}
+        link={[
+          { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
+          { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' },
+          { rel: 'mask-icon', href: 'logo.svg', color: color || 'cornflowerblue' },
+          ...(helmet.link || [])
+        ]}
+      />
+    )
+
     if (!auth || !auth.user) {
       return (
         <div>
+          {helmetContent}
           {children}
           {modal}
         </div>
@@ -81,23 +105,7 @@ export default class Container extends Component {
     return (
       <GatewayProvider>
         <div>
-          <Helmet
-            {...helmet}
-            titleTemplate={title}
-            defaultTitle={title}
-            meta={[
-              { name: 'description', content: description },
-              { name: 'keywords', content: (tags || []).join(', ') },
-              { name: 'author', content: author },
-              { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
-              ...(helmet.meta || [])
-            ]}
-            link={[
-              { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
-              ...(helmet.link || [])
-            ]}
-          />
-
+          {helmetContent}
           {children}
           {modal}
           <Affix className="athena-cms-menu">
