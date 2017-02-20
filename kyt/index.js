@@ -60,17 +60,6 @@ module.exports = {
           path.resolve(__dirname),
           path.resolve(__dirname, '..', 'src'),
         ];
-        if (type === 'server') {
-          x.options.ignore = [
-            '*.less',
-            '*.css',
-          ];
-        }
-        x.options.plugins.push(require.resolve('babel-plugin-transform-object-rest-spread'));
-        x.options.plugins.push(require.resolve('babel-plugin-transform-es2015-destructuring'));
-        x.options.plugins.push(require.resolve('babel-plugin-transform-decorators-legacy'));
-        x.options.plugins.push(require.resolve('babel-plugin-transform-class-properties'));
-        x.options.plugins.push([require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }]);
       } return x;
     });
 
