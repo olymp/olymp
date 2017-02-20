@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
+import { Image } from 'olymp';
 import { createComponent } from 'react-fela';
-import { Image } from '../../edits';
 import tinycolor from 'tinycolor2';
 
 const StyledCard = createComponent(({ isActive, color }) => ({

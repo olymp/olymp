@@ -9,7 +9,7 @@ export const GenericBlock = (props) => {
   const { attributes, getData, children, renderToolbar, readOnly, toolbarStyle, className, style } = props;
 
   return (
-    <div {...attributes} className={className} data-block-active={!readOnly} style={{ position: 'relative', display: 'inline-block', ...(style || {}) }}>
+    <div {...attributes} className={className} data-block-active={!readOnly} style={{ position: 'relative', ...(style || {}) }}>
       {renderToolbar(toolbarStyle)}
       {children}
     </div>
