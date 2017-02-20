@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link, cn } from 'olymp';
-import { Image } from 'olymp/cms';
+import { Link, cn, Image } from 'olymp';
 import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
 import capitalize from 'lodash/upperFirst';
 import Responsive from './responsive';

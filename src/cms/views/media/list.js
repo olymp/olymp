@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { cn } from 'olymp';
+import { cn, Image } from 'olymp';
 import { Icon } from 'antd';
-import { Image } from '../../edits';
 import './style.less';
 
 export default class MediaList extends Component {

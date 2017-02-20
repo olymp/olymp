@@ -35,7 +35,7 @@ export default (options = {}) => (Block) => {
 
       return (
         <Block
-          {...this.props}
+          {...rest}
           renderToolbar={style => (
             <Toolbar
               {...rest}
