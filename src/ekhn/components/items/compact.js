@@ -27,7 +27,6 @@ export default useItemEdit()((props) => {
       {children}
 
       <div className="text hidden-sm-down">
-
         {header ? <h2 className="mt-0">{header}</h2> : null}
         {subheader ? <div className="subheader">{subheader}</div> : null}
         {text ? <SlateMateFrontend key={id} value={text} readOnly className="slate" /> : <Tags tags={tags} />}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, DataLoader } from 'olymp';
-import { Image } from 'olymp/cms';
+import { graphql, gql, DataLoader, Image } from 'olymp';
 import Tags from '../../components/tags';
 
 @graphql(gql`
