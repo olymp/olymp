@@ -3,7 +3,7 @@ import { withRouter, withCollections, useColors, Helmet, useLightbox, useEdits }
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import uncapitalize from 'lodash/lowerFirst';
-import { Affix, Button, Dropdown, Icon } from 'antd';
+import { Affix, Button, Dropdown } from 'antd';
 import { useBlockTypes } from 'olymp/slate';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
@@ -49,7 +49,7 @@ export default class Container extends Component {
     const helmetContent = (
       <Helmet
         {...helmet}
-        titleTemplate={`${title} - %s`}
+        titleTemplate={title ? `${title} - %s` : '%s'}
         defaultTitle={title}
         htmlAttributes={{ lang: 'de', amp: undefined }} // amp takes no value
         meta={[
@@ -116,13 +116,12 @@ export default class Container extends Component {
             {!modal && (
               <Dropdown overlay={<Menu collections={collectionTree} />} overlayClassName="ant-dropdown-left" placement="bottomLeft">
                 <Button type="primary" shape="circle" size="large">
-                  {logo || <Icon type="menu-unfold" />}
+                  <img src="logo.png" height="45" alt="Olymp CMS" />
                 </Button>
               </Dropdown>
             )}
             <GatewayDest
               name="action"
-              component={props => (props.children ? props.children : null)}
             />
           </Affix>
           <GatewayDest name="global" />
