@@ -101,7 +101,7 @@ export default class Items extends Component {
               </div>
             ) : itemArr.map(item => this.getItem(item))}
           </div>
-          <div className="hidden-md-up">
+          <div className="hidden-md-up mt-1">
             {itemArr.map(item => this.getItem(item))}
           </div>
 
