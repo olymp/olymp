@@ -90,7 +90,7 @@ export default class Items extends Component {
 
           <div className="hidden-sm-down" style={{ marginTop: leading ? '1rem' : 0 }}>
             {!!masonry ? (
-              <div className="pt-1">
+              <div>
                 <div style={{ width: '50%', float: 'left', paddingRight: '.5rem' }}>
                   {itemArr.map((item, index) => !(index % 2) && this.getItem(item))}
                 </div>
