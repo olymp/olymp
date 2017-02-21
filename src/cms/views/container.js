@@ -120,9 +120,7 @@ export default class Container extends Component {
                 </Button>
               </Dropdown>
             )}
-            <GatewayDest
-              name="action"
-            />
+            <GatewayDest name="action" />
           </Affix>
           <GatewayDest name="global" />
         </div>
