@@ -22,7 +22,7 @@ export default ({ toggle, options, separated, right, active, icon, tooltip }) =>
 
   return tooltip ? (
     <Dropdown overlay={menu}>
-      <Tooltip placement="top" title={tooltip}>
+      <Tooltip placement="top" overlay={<span>{tooltip}</span>}>
         {button}
       </Tooltip>
     </Dropdown>

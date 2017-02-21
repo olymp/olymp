@@ -85,7 +85,7 @@ export default class ToolbarActionModal extends Component {
 
     return (
       <div key={type}>
-        <Tooltip placement="top" title={tooltip}>
+        <Tooltip placement="top" overlay={<span>{tooltip}</span>}>
           <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onClick={() => this.setState({ modal: { ...modal, [type]: true } })} data-active={active}>
             <i className={`fa fa-${icon}`} />
           </Button>
