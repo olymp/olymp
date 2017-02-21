@@ -49,8 +49,8 @@ export default class Container extends Component {
     const helmetContent = (
       <Helmet
         {...helmet}
-        titleTemplate={title ? `${title} - %s` : '%s'}
-        defaultTitle={title}
+        titleTemplate={title ? `${title} - %s` : 'Olymp CMS'}
+        defaultTitle={title || 'Olymp CMS'}
         htmlAttributes={{ lang: 'de', amp: undefined }} // amp takes no value
         meta={[
           { name: 'description', content: description },
