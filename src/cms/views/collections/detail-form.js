@@ -6,8 +6,6 @@ export default class CollectionDetailForm extends Component {
   render() {
     const { schema, onCreate, className, style, form, item } = this.props;
 
-    console.log(schema);
-
     return (
       <div className={className} style={style}>
         {!!schema.header && schema.header.map(field => (
