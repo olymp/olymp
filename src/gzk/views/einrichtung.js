@@ -19,7 +19,7 @@ const fieldNames = `id, name, kurz, art, farbe, slug, slogan, willkommen, etage,
 `, {
   options: ({ id }) => ({ variables: { id } }),
 })
-@withItem({ name: 'einrichtung', fieldNames })
+@withItem({ typeName: 'einrichtung', fieldNames })
 @withAuth
 export default class Praxis extends Component {
   render() {
