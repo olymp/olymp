@@ -16,5 +16,6 @@ module.exports = () => ({
     production: {
       plugins: [],
     },
-  }
+  },
+  ignore: ['*.less', '*.css'],
 });
