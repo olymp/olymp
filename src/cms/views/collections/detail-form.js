@@ -6,6 +6,8 @@ export default class CollectionDetailForm extends Component {
   render() {
     const { schema, onCreate, className, style, form, item } = this.props;
 
+    console.log(schema);
+
     return (
       <div className={className} style={style}>
         {!!schema.header && schema.header.map(field => (
@@ -36,7 +38,7 @@ export default class CollectionDetailForm extends Component {
 
         <div className="ant-form-content pt-1">
           {Object.keys(schema.tabs).length === 1 ? (
-            <Form {...form} fields={schema.tabs[0]} item={item} />
+            <Form {...form} fields={schema.tabs.Allgemein} item={item} />
           ) : (
             <Tabs tabPosition="right">
               {Object.keys(schema.tabs).map(key => (
