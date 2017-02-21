@@ -148,6 +148,7 @@ ul.row > li {
   }
 
   & > div > * {
+    z-index: 1000;
     position: fixed;
     top: @margin;
     // z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
@@ -188,8 +189,6 @@ ul.row > li {
     height: 48px !important;
     width: 48px !important;
     font-size: 21px !important;
-
-    z-index: 1000;
 
     img {
       position: absolute;
