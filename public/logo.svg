@@ -1,23 +1,30 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300.000000 300.000000">
-<g transform="translate(0.000000,300.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
-<path d="M518 2983 c-29 -33 -518 -911 -518 -930 0 -21 1456 -2031 1483 -2047
-12 -8 22 -8 35 0 26 16 1482 2026 1482 2047 0 19 -489 897 -518 930 -14 16
--74 17 -982 17 -908 0 -968 -1 -982 -17z m858 -118 c-9 -13 -128 -178 -265
--365 l-250 -341 -91 278 c-50 153 -104 317 -120 366 l-29 87 386 0 385 0 -16
--25z m884 -331 c-66 -196 -121 -359 -124 -361 -3 -4 -462 615 -511 691 l-17
-26 385 0 385 0 -118 -356z m-485 -54 l267 -365 -271 -3 c-149 -1 -393 -1 -542
-0 l-271 3 268 367 c148 203 272 367 276 365 3 -1 126 -166 273 -367z m-1117
--25 c61 -187 110 -341 108 -342 -2 -2 -143 -2 -313 -1 l-311 3 196 348 c107
-191 198 344 202 340 4 -4 57 -161 118 -348z m2007 3 l193 -343 -311 -3 c-170
--1 -312 0 -315 2 -4 4 213 668 225 689 3 5 7 6 10 4 2 -3 92 -160 198 -349z
-m-1831 -535 c13 -43 133 -408 266 -811 133 -404 240 -735 238 -737 -3 -3
--1153 1579 -1171 1611 -7 12 39 14 317 14 l324 0 26 -77z m954 -793 c-159
--478 -293 -870 -297 -870 -6 0 -572 1716 -571 1733 0 4 261 7 579 7 l580 0
--291 -870z m1035 842 c-36 -57 -1187 -1641 -1190 -1638 -1 1 122 377 275 834
-l277 832 328 0 329 0 -19 -28z"/>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000px" height="790px" viewBox="0 0 1000 790" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled 14</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FBDA61" offset="0%"></stop>
+            <stop stop-color="#F76B1C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="15.7344472%" y1="-2.9713044%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFD022" offset="0%"></stop>
+            <stop stop-color="#F76B1C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="82.6809405%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#FFD22A" offset="0%"></stop>
+            <stop stop-color="#F76B1C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="8.79274861%" y1="3.8043752%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FBDA61" offset="0%"></stop>
+            <stop stop-color="#FC640E" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="left" fill-opacity="0.7" fill="url(#linearGradient-1)" opacity="0.7" points="0 580 300.446897 60 500 790"></polygon>
+        <polygon id="inner-left" fill-opacity="0.6" fill="url(#linearGradient-2)" points="1000 580 300 60 500 790"></polygon>
+        <polygon id="right" fill-opacity="0.8" fill="url(#linearGradient-3)" opacity="0.7" transform="translate(750.000000, 395.000000) scale(-1, 1) translate(-750.000000, -395.000000) " points="500 580 800 0 1000 790"></polygon>
+        <polygon id="inner-right" fill-opacity="0.6" fill="url(#linearGradient-4)" transform="translate(349.998596, 395.000000) scale(-1, 1) translate(-349.998596, -395.000000) " points="700 579.999802 -0.00280761719 0 199.997192 790"></polygon>
+    </g>
 </svg>
