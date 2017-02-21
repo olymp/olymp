@@ -88,7 +88,7 @@ export default class Items extends Component {
             />
           )}
 
-          <div className="hidden-sm-down">
+          <div className="hidden-sm-down" style={{ marginTop: leading ? '1rem' : 0 }}>
             {!!masonry ? (
               <div className="pt-1">
                 <div style={{ width: '50%', float: 'left', paddingRight: '.5rem' }}>
@@ -101,7 +101,7 @@ export default class Items extends Component {
               </div>
             ) : itemArr.map(item => this.getItem(item))}
           </div>
-          <div className="hidden-md-up mt-1">
+          <div className="hidden-md-up">
             {itemArr.map(item => this.getItem(item))}
           </div>
 

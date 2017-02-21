@@ -41,7 +41,7 @@ export default class GemeindebriefeBlock extends Component {
         bild: x.gemeindebrief,
         date: +moment(date),
         shortText: x.zusammenfassung || x.text,
-        header: <a href={x.gemeindebrief.url} target="_blank" rel="noopener noreferrer">{x.name}</a>,
+        header: x.gemeindebrief ? <a href={x.gemeindebrief.url} target="_blank" rel="noopener noreferrer">{x.name}</a> : x.name,
         subheader: <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr`}</span>,
       };
     });
