@@ -26,7 +26,7 @@ const getValidationRules = (field) => {
   return rules;
 };
 
-const getInitialValue = ({ item = {}, form }, field) => {
+const getInitialValue = ({ item = {}, getFieldValue }, field) => {
   const { name } = field;
 
   if (item[name]) {
@@ -38,17 +38,17 @@ const getInitialValue = ({ item = {}, form }, field) => {
   } else if (name === 'state') {
     // Bei State
     return 'DRAFT';
-  } else if (name === 'slug' && form.getFieldValue('name')) {
+  } else if (name === 'slug' && getFieldValue('name')) {
     // Bei Slug
-    let url = '/' + encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
+    let url = '/' + encodeURIComponent(getFieldValue('name').split(' ').join('-').toLowerCase())
       .split('%C3%A4').join('ä')
       .split('%C3%B6').join('ö')
       .split('%C3%BC').join('ü')
       .split('%C3%A4').join('Ä')
       .split('%C3%B6').join('Ö')
       .split('%C3%BC').join('Ü');
-    if (form.getFieldValue('date')) {
-      url = moment(form.getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
+    if (getFieldValue('date')) {
+      url = moment(getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
     }
     return url;
   }

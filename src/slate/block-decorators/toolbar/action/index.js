@@ -20,7 +20,7 @@ export default class ToolbarAction extends Component {
     }
 
     return (
-      <Tooltip placement="top" title={tooltip}>
+      <Tooltip placement="top" overlay={<span>{tooltip}</span>}>
         <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onMouseDown={this.onMouseDown(toggle)} data-active={active}>
           <i className={`fa fa-${icon}`} />
         </Button>
