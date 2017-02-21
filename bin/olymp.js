@@ -29,7 +29,9 @@ require('babel-register')({
   ],
 });*/
 
-if (['start', 'build']) process.env.NODE_ENV = 'production';
+if (['start', 'build'].includes(command)) {
+  process.env.NODE_ENV = 'production';
+}
 
 if (command === 'start') return require(path.resolve(process.cwd(), 'build', 'server', 'main'));
 if (fs.existsSync(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'))) {
