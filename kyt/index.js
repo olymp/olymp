@@ -3,9 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
 const themePath = path.resolve(process.cwd(), 'theme.js');
-const theme = fs.existsSync(themePath) ? require(themePath)() : {};
+const appTheme = fs.existsSync(themePath) ? require(themePath)() : {};
+const defaultTheme = require(path.resolve(__dirname, '..', 'default-theme'));
 const env = require('node-env-file');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const theme = Object.assign({}, defaultTheme, appTheme);
 
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 module.exports = {
