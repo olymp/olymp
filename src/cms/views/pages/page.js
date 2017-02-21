@@ -4,9 +4,8 @@ import { Anchor as AnchorCreator, Menu, Icon, Dropdown, Button, Spin } from 'ant
 import { graphql, Link, gql, withAuth, withItem, Helmet } from 'olymp';
 import { SlateMate } from 'olymp/slate';
 import AnchorHelper from 'antd/lib/anchor/anchorHelper';
-const Anchor = AnchorCreator.Link;
 
-const getChildSlug = slug => slug.indexOf('#') === -1 ? slug.substr(1) : slug.split('#')[1];
+const Anchor = AnchorCreator.Link;
 const fieldNames = 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }';
 
 @graphql(gql`
