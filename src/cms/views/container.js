@@ -57,14 +57,14 @@ export default class Container extends Component {
           { name: 'keywords', content: (tags || []).join(', ') },
           { name: 'author', content: author },
           { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
-          { name: 'theme-color', content: color },
-          { name: 'msapplication-TileColor', content: color },
+          { name: 'theme-color', content: color || '#FBA139' },
+          { name: 'msapplication-TileColor', content: color || '#FBA139' },
           ...(helmet.meta || [])
         ]}
         link={[
           { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
           { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' },
-          { rel: 'mask-icon', href: 'logo.svg', color: color || 'cornflowerblue' },
+          { rel: 'mask-icon', href: 'logo.svg', color: color || '#FBA139' },
           ...(helmet.link || [])
         ]}
       />
