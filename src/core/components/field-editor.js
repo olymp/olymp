@@ -66,7 +66,7 @@ export default class FieldEditor extends Component {
     const { type, name } = field;
 
     const editProps = {
-      placeholder: label,
+      placeholder: label || null,
       style: { ...editorStyle, ...style },
       className: cn(editorClassName, className),
       ...props,
