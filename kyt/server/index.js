@@ -53,6 +53,7 @@ app.use(compression());
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'build', 'public')));
+app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
 
 launchAPI();
 

@@ -2,7 +2,7 @@
 
 export default ({ helmet, cssBundle, cssMarkup, jsBundle, root }) => `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
     <meta charSet="utf-8" />
