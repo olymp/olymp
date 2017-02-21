@@ -52,7 +52,16 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
       </Select>
     );
   } else if (hasNativePicker()) {
-    return <Input {...rest} placeholder={name} type="color" addonBefore={<i className="fa fa-eyedropper" />} value={value} />;
+    return (
+      <Input
+        {...rest}
+        placeholder={name}
+        type="color"
+        addonBefore={<i className="fa fa-eyedropper" />}
+        value={tinycolor(value || '#000000').toHexString()}
+        defaultValue={tinycolor(value || '#000000').toHexString()}
+      />
+    );
   }
 
   return <ColorPicker {...rest} value={value} />;
