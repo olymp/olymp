@@ -250,7 +250,7 @@ module.exports = ({ adapter, resolvers }) => ({
 
         const field = parse(`
           type Mutation {
-            func(id: String, input: ${capitalize(type.name.value)}Input, operationType: OPERATION_TYPE): ${type.name.value}
+            func(id: String, input: ${capitalize(type.name.value)}Input, operationType: OPERATION_TYPE, type: MUTATION_TYPE): ${type.name.value}
           }
         `).definitions[0].fields[0];
 

@@ -3,6 +3,7 @@ export { withEdits, useEdits } from './edits';
 export { default as withCollection } from './collection';
 export { default as withCollections } from './collections';
 export { default as withItem } from './item';
+export { default as withItemNew } from './item-new';
 export { default as withItems } from './items';
 export { default as withRouter } from './router';
 export { default as withState } from './state';

@@ -178,6 +178,8 @@ exports.defaultTypes = `
     updatedBy: User
   }
   enum OPERATION_TYPE {
+    INSERT
+    UPDATE
     PATCH
     REMOVE
     REPLACE
