@@ -1,5 +1,5 @@
 import React, { Component, PropTypes, Children } from 'react';
-import { Gateway } from 'react-gateway';
+// import { Gateway } from 'react-gateway';
 import { Button } from 'antd';
 import { Editor, Html, Raw } from 'slate';
 import { withAuth } from '../core/decorators';
@@ -246,13 +246,21 @@ export default class SlateEditor extends Component {
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
-        {value && showUndo && value.hasUndos && (
-          <Gateway into="button_undo">
-            <a href="javascript:;" onClick={() => onChange(value.transform().undo().apply())}>
-              Rückgängig
-            </a>
-          </Gateway>
-        )}
+        {/* <Gateway into="button_undo">
+          <a
+            href="javascript:;"
+            disabled={!value || !showUndo || !value.hasUndos}
+            onClick={() => {
+              if (value && showUndo && value.hasUndos) {
+                return onChange(value.transform().undo().apply());
+              }
+
+              return null;
+            }}
+          >
+            Rückgängig
+          </a>
+        </Gateway> */}
         {children}
         {this.state.mode ? (
           <Editor
