@@ -54,33 +54,35 @@ export default class CmsPage extends Component {
         <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings })} onChange={blocks => patch({ blocks })} />
 
         <Gateway into="action">
-          <Dropdown
-            overlay={(
-              <Menu>
-                <Menu.Item key="page:1">
-                  <a href="javascript:;" onClick={save}>
-                    Speichern
-                  </a>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item key="page:visitor" disabled>{false ? <Icon type="check" /> : null}Besucher-Modus</Menu.Item>
-                <Menu.Item key="page:settings">
-                  <Link to={{ ...location, query: { '@page': item.id } }}>
-                    Einstellungen
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="page:delete" disabled>
-                  Seite löschen
-                </Menu.Item>
-              </Menu>
-            )}
-            overlayClassName="ant-dropdown-left"
-            placement="bottomLeft"
-          >
-            <Button shape="circle" size="large">
-              <Icon type="file" />
-            </Button>
-          </Dropdown>
+          {!readOnly ? (
+            <Dropdown
+              overlay={(
+                <Menu>
+                  <Menu.Item key="page:1">
+                    <a href="javascript:;" onClick={save}>
+                      Speichern
+                    </a>
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item key="page:visitor" disabled>{false ? <Icon type="check" /> : null}Besucher-Modus</Menu.Item>
+                  <Menu.Item key="page:settings">
+                    <Link to={{ ...location, query: { '@page': item.id } }}>
+                      Einstellungen
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item key="page:delete" disabled>
+                    Seite löschen
+                  </Menu.Item>
+                </Menu>
+              )}
+              overlayClassName="ant-dropdown-left"
+              placement="bottomLeft"
+            >
+              <Button shape="circle" size="large">
+                <Icon type="file" />
+              </Button>
+            </Dropdown>
+          ) : null}
         </Gateway>
       </div>
     );
