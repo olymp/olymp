@@ -3,7 +3,7 @@ import { Button, Input, Col, Pagination, Dropdown, Menu } from 'antd';
 import { withRouter, withCollections } from 'olymp';
 import { createComponent } from 'react-fela';
 import capitalize from 'lodash/upperFirst';
-import CMSMenu from '../menu';
+import { CmsAction } from '../../components';
 
 const StyledHeader = createComponent(() => ({
   marginBottom: '0px',
@@ -56,7 +56,7 @@ export default class SidebarHeader extends Component {
           <Input.Group style={{ height: 48 }}>
             <Col span="4" />
             <Col span="15" style={{ marginTop: -3 }}>
-              <Dropdown overlay={!noChangeAllowed && <CMSMenu collections={collectionTree} />}>
+              <Dropdown overlay={!noChangeAllowed && <CmsAction collections={collectionTree} />}>
                 <a className="ant-dropdown-link" href="javascript:;" style={noChangeAllowed ? { cursor: 'not-allowed' } : {}}>
                   <StyledHeader>
                     {capitalize(activePage)} {!noChangeAllowed && <i className="fa fa-angle-down" />}
