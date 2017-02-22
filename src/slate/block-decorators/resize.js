@@ -87,7 +87,7 @@ export default (options = {}) => Block => {
 
       const blockStyle = {
         ...style,
-        display: 'inline-block'
+        // display: 'inline-block'
       };
       if (height) blockStyle.height = `${height}px`;
 
