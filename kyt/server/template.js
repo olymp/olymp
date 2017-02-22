@@ -1,6 +1,7 @@
 /* eslint-disable prefer-template, max-len */
+import serialize from 'serialize-javascript';
 
-export default ({ helmet, cssBundle, cssMarkup, jsBundle, root }) => `
+export default ({ helmet, cssBundle, cssMarkup, jsBundle, root, initialState }) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -16,6 +17,7 @@ export default ({ helmet, cssBundle, cssMarkup, jsBundle, root }) => `
   </head>
   <body>
     <div id="app"><div>${root}</div></div>
+    <script type='text/javascript'>window.__APP_STATE__=${serialize(initialState)}</script>
     <script src="${jsBundle}"></script>
   </body>
 </html>
