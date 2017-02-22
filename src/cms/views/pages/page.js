@@ -17,6 +17,8 @@ export default class CmsPage extends Component {
   }
 
   componentDidMount() {
+    const { location } = this.props;
+
     if (location && location.hash) {
       this.anchorHelper.scrollTo(location.hash);
     }
@@ -29,7 +31,7 @@ export default class CmsPage extends Component {
   )
 
   render() {
-    const { auth, item, patch, getReadOnly, save } = this.props;
+    const { auth, item, patch, getReadOnly, save, location } = this.props;
 
     if (!item) return <Spin size="large" />;
 

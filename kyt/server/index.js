@@ -118,6 +118,7 @@ app.get('*', (request, response) => {
     )
     .send(html);
   }).catch((err) => {
+    console.error(err);
     response
       .status(500)
       .send(err);
