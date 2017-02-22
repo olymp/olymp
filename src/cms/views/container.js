@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { withRouter, withCollections, useColors, Helmet, useLightbox, useEdits } from 'olymp';
-import { GatewayProvider, GatewayDest } from 'react-gateway';
+import { useBlockTypes } from 'olymp/slate';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
+import { GatewayProvider, GatewayDest } from 'react-gateway';
 import uncapitalize from 'lodash/lowerFirst';
 import { Affix, Button, Dropdown } from 'antd';
-import { useBlockTypes } from 'olymp/slate';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
 import SettingsModal from './settings';
 import CollectionModal from './collections';
-import Menu from './menu';
+import { CmsAction } from '../components';
 import withSettings from '../decorators/settings';
 import { ImageEdit } from '../edits';
 import '../styles/style.less';
@@ -68,17 +68,7 @@ export default class Container extends Component {
           ...(helmet.link || [])
         ]}
       />
-    )
-
-    if (!auth || !auth.user) {
-      return (
-        <div>
-          {helmetContent}
-          {children}
-          {modal}
-        </div>
-      );
-    }
+    );
 
     const collection = query ? (collectionList || []).find(c => query[`@${c.name}`] !== undefined || query[`@${uncapitalize(c.name)}`] !== undefined) : undefined;
 
@@ -113,16 +103,15 @@ export default class Container extends Component {
           {children}
           {modal}
           <Affix className="athena-cms-menu">
-            {!modal && (
-              <Dropdown overlay={<Menu collections={collectionTree} />} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+            {auth && auth.user && !modal && (
+              <Dropdown overlay={<CmsAction collections={collectionTree} />} overlayClassName="ant-dropdown-left" placement="bottomLeft">
                 <Button type="primary" shape="circle" size="large">
-                  <img src="logo.png" height="45" alt="Olymp CMS" />
+                  <img src="/logo.png" height="45" alt="Olymp CMS" />
                 </Button>
               </Dropdown>
             )}
             <GatewayDest name="action" />
           </Affix>
-          <GatewayDest name="global" />
         </div>
       </GatewayProvider>
     );

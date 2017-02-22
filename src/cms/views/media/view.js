@@ -3,7 +3,7 @@ import { Spin, Button } from 'antd';
 import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
-import Modal from '../modal';
+import { Modal } from '../../components';
 import Detail from './detail';
 import DetailMulti from './detail-multi';
 import Sidebar from './list-sidebar';
