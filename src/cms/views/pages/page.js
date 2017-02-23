@@ -31,7 +31,7 @@ export default class CmsPage extends Component {
   )
 
   render() {
-    const { auth, item, patch, getReadOnly, save, location } = this.props;
+    const { auth, item, patch, getReadOnly, save, location, showAnchor } = this.props;
 
     if (!item) return <Spin size="large" />;
 
@@ -44,7 +44,7 @@ export default class CmsPage extends Component {
     return (
       <div>
         <Helmet title={item.name} />
-        {item.headings && item.headings.length > 1 && (
+        {showAnchor && item.headings && item.headings.length > 1 && (
           <div className="anchor-menu container">
             <AnchorCreator offsetTop={100}>
               {this.createAnchors(item.headings)}
