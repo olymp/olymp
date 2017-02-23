@@ -111,6 +111,7 @@ export default class Container extends Component {
               </Dropdown>
             )}
             <GatewayDest name="action" />
+            <GatewayDest name="undo" />
           </Affix>
         </div>
       </GatewayProvider>
