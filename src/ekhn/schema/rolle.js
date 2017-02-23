@@ -12,6 +12,7 @@ module.exports = ({ schema }) => schema.addSchema({
     type Rolle implements CollectionInterface
     @collection(name: "Rolle") @state @stamp {
       bild: Image
+      # @required
       name: String
       # @description
       text: Json

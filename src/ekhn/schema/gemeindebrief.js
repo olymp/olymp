@@ -11,8 +11,10 @@ module.exports = ({ schema }) => schema.addSchema({
     # group:inhalt
     type Gemeindebrief implements CollectionInterface
     @collection(name: "Gemeindebrief") @state @stamp {
+      # @required
       name: String
       # @image
+      # @required
       gemeindebrief: Image
       # @description
       datum: Date

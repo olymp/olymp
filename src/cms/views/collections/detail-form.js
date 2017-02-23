@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Input, Button, Tabs } from 'antd';
-import { Form, FormItem } from 'olymp';
+import { Button, Tabs } from 'antd';
+import { Form } from 'olymp';
 
 export default class CollectionDetailForm extends Component {
   render() {

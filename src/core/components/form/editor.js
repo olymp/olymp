@@ -4,8 +4,8 @@ import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor
 import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
-import { withEdits } from '../decorators';
-import { cn } from '../extern';
+import { withEdits } from '../../decorators';
+import { cn } from '../../extern';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -165,36 +165,49 @@ export default class FieldEditor extends Component {
   }
 
   render() {
-    const { field, getFieldDecorator, item } = this.props;
-    const { start, end } = this.state;
+    const { field, getFieldDecorator, getFieldValue, setFieldsValue, item } = this.props;
+    // const { start, end } = this.state;
 
     const editor = this.props.editor || this.fieldToEditor();
     const isDateRange = !!field['@'].start && !!field['@'].endField;
     const rules = getValidationRules(field);
 
-    console.log(rules, field);
-
     if (!editor || !getFieldDecorator) return null;
 
+    if (isDateRange) {
+      const start = this.state.start || item[field.name];
+      const end = this.state.end || item[field['@'].endField.name];
+
+      return (
+        <div>
+          {this.fieldToEditor({
+            onChange: (e) => {
+              setFieldsValue({
+                [field.name]: e[0],
+                [field['@'].endField.name]: e[1],
+              });
+              this.setState({ start: e[0], end: e[1] });
+            },
+            value: [start, end],
+          })}
+          {getFieldDecorator(field.name, {
+            initialValue: start,
+            rules
+          })(<DateEditor style={{ display: 'none' }} />)}
+          {getFieldDecorator(field['@'].endField.name, {
+            initialValue: end,
+            rules: getValidationRules(field['@'].endField)
+          })(<DateEditor style={{ display: 'none' }} />)}
+        </div>
+      );
+    }
+
     return (
-      <div>
-        {!isDateRange ? (
-          getFieldDecorator(field.name, {
-            initialValue: getInitialValue(this.props, field),
-            rules,
-            valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
-          })(editor)
-        ) : (
-          <div>
-            {this.fieldToEditor({
-              onChange: e => this.setState({ start: e[0], end: e[1] }),
-              value: [start || item[field.name], end || item[field['@'].endField.name]],
-            })}
-            {getFieldDecorator(field.name, { initialValue: start || item[field.name] })(<DateEditor style={{ display: 'none' }} />)}
-            {getFieldDecorator(field['@'].endField.name, { initialValue: end || item[field['@'].endField.name] })(<DateEditor style={{ display: 'none' }} />)}
-          </div>
-        )}
-      </div>
+      getFieldDecorator(field.name, {
+        initialValue: getInitialValue(this.props, field),
+        rules,
+        valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
+      })(editor)
     );
   }
 }

@@ -20,22 +20,25 @@ const hasNativePicker = () => {
 const ColorEditor = ({ value, colors = [], ...rest }) => {
   const newColors = [...colors];
 
+  let isOwnColor;
   if (value && value !== 'other') {
     const valueIndex = colors.findIndex(
       color => tinycolor(value).toRgbString() === tinycolor(color.color).toRgbString()
     );
 
-    if (valueIndex === -1) {
+    isOwnColor = valueIndex === -1;
+
+    if (isOwnColor) {
       newColors.push({ color: value, name: value });
     }
   }
 
   let select;
-  if (colors.length || value === 'other') {
+  if (colors.length) {
     select = (
       <Select
         showSearch
-        value={value}
+        value={value && tinycolor(value).toRgbString()}
         {...rest}
         filterOption={
           (input, option) => option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -56,7 +59,7 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
 
   // Show Picker
   let picker;
-  if (!colors.length || value === 'other') {
+  if (!colors.length || value === 'other' || isOwnColor) {
     if (hasNativePicker()) {
       picker = (
         <Input
