@@ -15,6 +15,7 @@ module.exports = ({ schema }) => schema.addSchema({
       # @required
       name: String
       # @description
+      # @required
       # @start
       start: DateTime
       # @end
@@ -22,7 +23,6 @@ module.exports = ({ schema }) => schema.addSchema({
       kommentar: Json
       ganztaegig: Boolean
       bild: Image
-      # @required
       ort: String
       farbe: Color
       # @label("Schlagworte")

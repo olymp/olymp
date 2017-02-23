@@ -15,6 +15,7 @@ module.exports = ({ schema }) => schema.addSchema({
       # @description
       name: String
       # @name
+      # @required
       datum: DateTime
       kommentar: Json
       # @color("#E6DCEA")

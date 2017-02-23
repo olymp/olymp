@@ -1,10 +1,13 @@
 import React from 'react';
-import enUS from 'antd/lib/locale-provider/en_US';
+import enUS from 'antd/lib/locale-provider/de_DE';
 import LocaleProvider from 'antd/lib/locale-provider';
+
 // import momento from 'moment';
+// momento.locale('de');
+
 import momentTimezone from 'moment-timezone';
 import 'moment/locale/de';
-// momento.locale('de');
+
 momentTimezone.locale('de');
 
 export const withLocale = WrappedComponent => props => (
