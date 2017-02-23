@@ -109,8 +109,8 @@ module.exports = ({ adapter, resolvers }) => ({
       },
     },
     hooks: {
-      before: (args, { model, isMutation, returnType }, { ast }) => {
-        if (!isMutation && returnType.toString().indexOf('[') === 0 && hasDirective(ast, model, 'state')) {
+      before: (args, { model, type, returnType }, { ast }) => {
+        if (type === 'QUERY' && returnType.toString().indexOf('[') === 0 && hasDirective(ast, model, 'state')) {
           const query = (args.query || {});
           if (!query.state) {
             query.state = { eq: 'PUBLISHED' };
@@ -118,7 +118,7 @@ module.exports = ({ adapter, resolvers }) => ({
           }
           return args;
         }
-        else if (isMutation && args.input && !args.input.state && !args.input.id) {
+        else if (type === 'MUTATION' && args.input && !args.input.state && !args.input.id) {
           args.input.state = 'DRAFT';
           return args;
         }
