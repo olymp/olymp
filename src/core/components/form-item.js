@@ -25,7 +25,7 @@ export default class FormItem extends Component {
     return (
       <Form.Item
         label={!clean && label}
-        extra={!isBool && extra}
+        extra='test'
         style={{ ...itemStyle, ...style }}
         {...(field.type.name === 'Json' || clean ? formItemLayout0 : formItemLayout)}
       >

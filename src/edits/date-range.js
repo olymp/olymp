@@ -10,6 +10,7 @@ export default class DatePickerInt extends Component {
     while (value.length < 2) value.push(null);
     onChange(value);
   }
+
   getValue = () => {
     const { value } = this.props;
     // 2014-09-14T10:32:27.831Z
@@ -18,6 +19,7 @@ export default class DatePickerInt extends Component {
       return value ? moment(value) : null;
     });
   }
+
   render() {
     return (
       <RangePicker

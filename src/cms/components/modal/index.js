@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { GatewayDest } from 'react-gateway';
 import { Modal, Link, withRouter } from 'olymp';
 import { Affix, Button, Icon } from 'antd';
 
@@ -24,6 +25,7 @@ export default class ModalView extends Component {
               </Button>
             </Link>
           )}
+          <GatewayDest name="cms-action" />
         </Affix>
 
         {children}

@@ -8,16 +8,14 @@ export default class CollectionDetailForm extends Component {
 
     return (
       <div className={className} style={style}>
-        {!!schema.header && schema.header.map(field => (
-          <FormItem
-            {...form}
-            item={item}
-            field={field}
-            editor={<Input className="naked-area" autosize={{ minRows: 1, maxRows: 2 }} type="textarea" placeholder={(!!field['@'].label && field['@'].label.arg0) || 'Titel'} style={{ textAlign: 'center' }} />}
-            clean
-            key={field.name}
-          />
-        ))}
+        <Form
+          {...form}
+          fields={schema.header}
+          item={item}
+          editorClassName="naked-area"
+          editorStyle={{ textAlign: 'center' }}
+          clean
+        />
 
         <Form
           {...form}

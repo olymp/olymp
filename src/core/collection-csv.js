@@ -13,17 +13,26 @@ export const collectionToCsv = (collection, items) => {
       lines.push(`sep=${SEPERATOR}`);
       lines.push(`${fields.map(({ name }) => name).join(SEPERATOR)}`);
     }
+    console.log(item, fields);
     lines.push(fields.map(({ type, name }) => {
       if (type.name === 'String') {
         return item[name];
       } else if (['Date', 'DateTime'].includes(type.name)) {
-        return moment(item[name]).format();
+        return moment(item[name]).isValid() ? moment(item[name]).format('YYYY-MM-DD HH:mm:ss') : '';
       } else if (type.name === 'Boolean') {
         return !type.name ? 'false' : 'true';
       } else if (type.name === 'Image') {
         return item[name] ? item[name].url : '';
-      } else if (type.kind === 'LIST' && type.ofType.name === 'String') {
-        return (item[name] || []).join(';');
+      } else if (type.kind === 'LIST') {
+        if (type.ofType.name === 'String') {
+          return (item[name] || []).join(';');
+        } else if (type.ofType.kind === 'OBJECT') {
+          if (Array.isArray(item[name])) {
+            return item[name].map(x => x.name || '').join(';');
+          }
+
+          return item[name].name;
+        }
       } else if (type.name === 'Json') {
         if (!item[name]) return '';
         const raw = Raw.deserialize(JSON.parse(JSON.stringify(item[name])), { terse: true });
@@ -43,7 +52,7 @@ export const collectionToCsvDownload = (collection, json) => {
 
 export const collectionToJson = (collection, csv) => {
   throw new Error('Not implemented');
-  const lines = csv.split('\n');
+  /* const lines = csv.split('\n');
   const result = [];
   const headers = lines[0].split(SEPERATOR);
   for (let i = 1; i < lines.length; i++) {
@@ -54,5 +63,5 @@ export const collectionToJson = (collection, csv) => {
     }
     result.push(obj);
   }
-  return result;
+  return result; */
 };

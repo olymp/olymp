@@ -18,6 +18,8 @@ const getFormSchema = ({ fields }) =>
       result.bar.join();
     } else if (field.type.name === 'Json') { // if slate => own group
       result.tabs[capitalize(field.name)] = [field];
+    } else if (field.type.name === 'Image') { // if image => own group
+      result.tabs[capitalize(field.name)] = [field];
     } else { // Group
       const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
 

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
 import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor, TagsEditor, FormEditor } from 'olymp/edits';
 import { SlateMate } from 'olymp/slate';
+import moment from 'moment';
+import capitalize from 'lodash/upperFirst';
 import { withEdits } from '../decorators';
 import { cn } from '../extern';
-import moment from 'moment';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -15,14 +16,19 @@ const states = {
 
 const getValidationRules = (field) => {
   const rules = [];
+  const required = !!field['@'] && !!field['@'].required;
+  const label = (!!field['@'] && field['@'].label) || capitalize(field.name);
+
   if (field.name === 'name') {
-    rules.push({ required: true, message: 'Bitte geben Sie einen Namen an!' });
-  }
-  if (field.type.name === 'Email') {
-    rules.push({ type: 'email', message: 'Keine gültige E-Mail Adresse!' });
+    rules.push({ required, message: `'${label}' muss angegeben werden!` });
+  } else if (field.type.name === 'Email') {
+    rules.push({ required, type: 'email', message: 'Keine gültige E-Mail Adresse!' });
   } else if (field.type.name === 'Website') {
-    rules.push({ type: 'url', message: 'Keine gültige Website!' });
+    rules.push({ required, type: 'url', message: 'Keine gültige Website!' });
+  } else if (field.type.name !== 'Boolean') {
+    rules.push({ required, message: `'${label}' muss angegeben werden!` });
   }
+
   return rules;
 };
 
@@ -164,6 +170,9 @@ export default class FieldEditor extends Component {
 
     const editor = this.props.editor || this.fieldToEditor();
     const isDateRange = !!field['@'].start && !!field['@'].endField;
+    const rules = getValidationRules(field);
+
+    console.log(rules, field);
 
     if (!editor || !getFieldDecorator) return null;
 
@@ -172,7 +181,7 @@ export default class FieldEditor extends Component {
         {!isDateRange ? (
           getFieldDecorator(field.name, {
             initialValue: getInitialValue(this.props, field),
-            rules: getValidationRules(field),
+            rules,
             valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
           })(editor)
         ) : (

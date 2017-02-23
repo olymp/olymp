@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link, collectionToCsvDownload } from 'olymp';
-import { Dropdown, Menu, Icon } from 'antd';
+import { Dropdown, Menu, Icon, Button } from 'antd';
 import { FieldValue } from 'olymp';
 import Sidebar from '../sidebar';
 import { getFilterMenu } from './filter';
@@ -105,14 +105,21 @@ export default class CollectionListSidebar extends Component {
 
     const menu = (
       <Menu>
-        <Menu.Item key="1" disabled>Import</Menu.Item>
-        <Menu.Item key="2"><a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a></Menu.Item>
+        <Menu.Item key="1">
+          <a href="javascript:;" onClick={() => router.push(this.getLink({ id: null }))}>Hinzufügen</a>
+        </Menu.Item>
+        <Menu.Item key="2" disabled>Import</Menu.Item>
+        <Menu.Item key="3">
+          <a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a>
+        </Menu.Item>
       </Menu>
     );
     const actions = (
-      <Dropdown.Button overlay={menu}>
-        <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
-      </Dropdown.Button>
+      <Dropdown overlay={menu}>
+        <Button shape="circle" size="large" onClick={() => router.push(this.getLink({ id: null }))}>
+          <Icon type="plus" />
+        </Button>
+      </Dropdown>
     );
 
     return (
