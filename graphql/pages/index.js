@@ -20,8 +20,8 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       },
     },
     hooks: {
-      before: (args, { model, isMutation }, { user }) => {
-        if (isMutation && model === 'Page' && !user) {
+      before: (args, { model, type }, { user }) => {
+        if (type === 'MUTATION' && model === 'Page' && !user) {
           throw new Error('Please log in');
         }
       },
