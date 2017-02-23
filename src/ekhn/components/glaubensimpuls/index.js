@@ -39,7 +39,7 @@ export default class GlaubensimpulsBlock extends Component {
 
     return (
       <DataLoader className={className} style={style} isEmpty={data.glaubensimpuls} placeholder="Kein Glaubensimpuls vorhanden">
-        <Image value={bild} width="100%" />
+        <Image value={bild} lightbox width="100%" />
         {!isBlock && (
           <div className="glaubensimpuls_content">
             <h5 style={{ marginBottom: '1rem' }}>{caption}</h5>

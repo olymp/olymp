@@ -7,14 +7,7 @@
   right: 100%;
   left: initial;
 }
-.ant-form-item-label label, .ant-input, .ant-tabs-tab, .ant-menu-item, .ant-menu-submenu-title, .ant-btn {
-  font-size: 14px !important;
-}
-.ant-form-item-label {
-  label {
-    line-height: 18px;
-  }
-}
+
 .ant-menu-item-brand > i.fa {
   float: left;
   margin-top: 5px;
@@ -96,14 +89,25 @@ ul.row > li {
 }
 
 .olymp-container {
-  // padding: 15px;
-  // width: 80%;
-  // max-width: 1600px;
-  // margin: 0 auto;
-
   max-width: calc(~'100% - 30px') !important;
   margin: 15px auto;
   padding: 0px;
+
+  :not(.ant-input-group) {
+    & > .ant-input, .ant-select-selection {
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+    }
+  }
+
+  .ant-calendar-picker {
+    width: 100% !important;
+  }
+
+  .ant-form-item-label {
+    text-align: left;
+    padding-left: .5rem;
+  }
 }
 
 .olymp-submenu {
@@ -143,22 +147,25 @@ ul.row > li {
 .athena-cms-menu {
   &.athena-cms-modal-menu {
     .ant-btn-primary {
+      // z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
       z-index: 1001 !important;
     }
+  }
+
+  .ant-btn.ant-btn-primary {
+    height: 58px !important;
+    width: 58px !important;
+    font-size: 31px !important;
   }
 
   & > div > * {
     z-index: 1000;
     position: fixed;
     top: @margin;
-    // z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
 
     &:nth-child(1) {
       top: calc(@margin - 5px);
       left: calc(@margin - 5px);
-      height: 58px !important;
-      width: 58px !important;
-      font-size: 31px !important;
     }
 
     &:nth-child(2) {
@@ -256,6 +263,72 @@ a:focus, a:hover {
   }
 }
 
+// SERVICE
+.service-hint {
+  text-align: center;
+  font-style: italic;
+  border: 1px dashed black;
+  color: black;
+  margin: 1rem;
+  padding: 1rem;
+  opacity: 0.6;
+
+  p {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}
+
+// PAGINATION
+.ant-pagination {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  &.mini {
+    margin-bottom: 0;
+
+    li {
+      background-color: transparent;
+    }
+  }
+
+  &:not(.mini) {
+    li, .ant-select-selection {
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
+    }
+  }
+
+  li, .ant-select-selection {
+    border-radius: 0;
+    border: none;
+    padding-top: 1px;
+
+    &.ant-pagination-item-active {
+      background-color: @primary-color;
+
+      a {
+        color: #FFF !important;
+      }
+    }
+
+    &.ant-pagination-prev a:after, &.ant-pagination-next a:after {
+      font-size: 18px;
+    }
+  }
+
+  /* .ant-pagination-options {
+    float: right;
+
+    .ant-pagination-options-size-changer {
+      margin-right: 0;
+    }
+  } */
+}
+
 // FUNCTIONS
 .specificBackground(@color) {
   .specificColor(@color, 100%);
@@ -281,23 +354,4 @@ a:focus, a:hover {
 }
 .specificColor(@color, @alpha) {
   color: fade(contrast(@color, #333333, #FFFFFF), @alpha);
-}
-
-.service-hint {
-  text-align: center;
-  font-style: italic;
-  border: 1px dashed black;
-  color: black;
-  margin: 1rem;
-  padding: 1rem;
-  opacity: 0.6;
-
-  p {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  button {
-    margin-top: 1rem;
-  }
 }

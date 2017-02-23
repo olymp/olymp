@@ -20,7 +20,7 @@ export default class CMSMenu extends Component {
     const { pathname } = location;
 
     return (
-      <Menu style={{ minWidth: 150 }} onClick={this.handleClick}>
+      <Menu style={{ minWidth: 150, borderRadius: '4px', boxShadow: '0 1px 6px rgba(0, 0, 0, .2)' }} onClick={this.handleClick}>
         {Object.keys(collections).map((key) => {
           const wrapper = children => (
             <Menu.SubMenu key={key} title={capitalize(key)}>

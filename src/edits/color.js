@@ -20,7 +20,7 @@ const hasNativePicker = () => {
 const ColorEditor = ({ value, colors = [], ...rest }) => {
   const newColors = [...colors];
 
-  if (value !== 'other') {
+  if (value && value !== 'other') {
     const valueIndex = colors.findIndex(
       color => tinycolor(value).toRgbString() === tinycolor(color.color).toRgbString()
     );
@@ -30,8 +30,9 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
     }
   }
 
+  let select;
   if (colors.length || value === 'other') {
-    return (
+    select = (
       <Select
         showSearch
         value={value}
@@ -51,20 +52,37 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
         </Select.Option>
       </Select>
     );
-  } else if (hasNativePicker()) {
-    return (
-      <Input
-        {...rest}
-        placeholder={name}
-        type="color"
-        addonBefore={<i className="fa fa-eyedropper" />}
-        value={tinycolor(value || '#000000').toHexString()}
-        defaultValue={tinycolor(value || '#000000').toHexString()}
-      />
-    );
   }
 
-  return <ColorPicker {...rest} value={value} />;
+  // Show Picker
+  let picker;
+  if (!colors.length || value === 'other') {
+    if (hasNativePicker()) {
+      picker = (
+        <Input
+          {...rest}
+          placeholder={name}
+          type="color"
+          addonBefore={<i className="fa fa-eyedropper" />}
+          value={tinycolor(value || '#000000').toHexString()}
+          defaultValue={tinycolor(value || '#000000').toHexString()}
+        />
+      );
+    } else {
+      picker = <ColorPicker {...rest} value={value} />;
+    }
+  }
+
+  return (
+    <div>
+      <div>
+        {select}
+      </div>
+      <div style={{ marginTop: '.5rem' }}>
+        {picker}
+      </div>
+    </div>
+  );
 };
 
 export default withColors(ColorEditor);

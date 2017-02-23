@@ -12,6 +12,7 @@ module.exports = ({ schema }) => schema.addSchema({
     # group:termine
     type Termin implements CollectionInterface
     @collection(name: "Termin") @state @stamp {
+      # @required
       name: String
       # @description
       # @start
@@ -21,6 +22,7 @@ module.exports = ({ schema }) => schema.addSchema({
       kommentar: Json
       ganztaegig: Boolean
       bild: Image
+      # @required
       ort: String
       farbe: Color
       # @label("Schlagworte")
