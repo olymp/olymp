@@ -23,7 +23,7 @@ export default useItemEdit()((props) => {
   }
 
   return (
-    <div className={cn(className, `item compact clearfix ${leading ? 'colored' : ''}`)} key={id}>
+    <div className={cn(className, `item compact ${leading ? 'colored' : ''}`)} key={id}>
       {children}
 
       <div className="text hidden-sm-down">
@@ -41,6 +41,8 @@ export default useItemEdit()((props) => {
       </div>
 
       <Responsive {...props} className="hidden-md-up" />
+
+      <div style={{ clear: 'both' }} />
     </div>
   );
 });
