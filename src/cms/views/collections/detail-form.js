@@ -21,7 +21,7 @@ export default class CollectionDetailForm extends Component {
           {...form}
           fields={schema.bar}
           item={item}
-          itemStyle={{ minWidth: '20%', maxWidth: `${100 - (20 * schema.bar.length)}%` }}
+          itemStyle={{ minWidth: '20%', maxWidth: '50%' }}
           editorClassName="inline-edit"
           style={{ borderBottom: '1px solid #e9e9e9' }}
           inline
