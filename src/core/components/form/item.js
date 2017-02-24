@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import toLabel from '../../to-label';
 import FieldEditor from './editor';
 
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } };
 const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 
 export default class FormItem extends Component {
