@@ -81,7 +81,7 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
       <div>
         {select}
       </div>
-      <div style={{ marginTop: '.5rem' }}>
+      <div style={{ marginTop: 2 }}>
         {picker}
       </div>
     </div>
