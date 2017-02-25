@@ -69,7 +69,7 @@ export default class Items extends Component {
     let leading;
     const itemArr = [];
     items.slice((page - 1) * steps, page * steps).forEach((item, index) => {
-      if (item.leading && !index && (!item.bild || (item.bild.width > item.bild.height))) {
+      if (item.leading && !index) {
         leading = item;
       } else {
         itemArr.push(item);
