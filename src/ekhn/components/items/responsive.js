@@ -1,34 +1,47 @@
 import React from 'react';
-import { Link, cn, Image } from 'olymp';
+import { cn } from 'olymp';
 import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
-import capitalize from 'lodash/upperFirst';
+import Hypher from 'hypher';
+import german from 'hyphenation.de';
+import { ItemImage, ItemMore } from './components';
 import Tags from '../tags';
 
-export default useItemEdit()(({ id, header, subheader, shortText, more, bild, tags, location, identifier, className }) => {
-  const { pathname, query } = location;
+export default useItemEdit()(({ id, header, subheader, shortText, more, bild, tags, identifier, className, breakpoint = 'md', children }) => {
+  const hypher = new Hypher(german);
+
+  let breakpointHidden;
+  switch (breakpoint) {
+    case 'sm':
+      breakpointHidden = 'xs';
+      break;
+    case 'md':
+      breakpointHidden = 'sm';
+      break;
+    case 'lg':
+      breakpointHidden = 'md';
+      break;
+
+    default:
+      breakpointHidden = 'sm';
+  }
 
   return (
-    <div className={cn(className, 'text col-xl-8 col-md-7 col-xs-12')}>
-      {header ? <h2 className="mt-0">{header}</h2> : null}
-      {subheader ? <div className="subheader">{subheader}</div> : null}
-      {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : <Tags tags={tags} />}
+    <div>
+      <div className={cn(className, `hidden-${breakpointHidden}-down`)}>
+        {children}
+      </div>
 
-      {more ? (
-        <p>
-          <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: id } }}>
-            <i className="fa fa-angle-double-right" /> {more}
-          </Link>
-        </p>
-      ) : undefined}
+      <div className={cn(className, 'text col-xl-8 col-md-7 col-xs-12', `hidden-${breakpoint}-up`)}>
+        {header ? <h2 className="mt-0">{hypher.hyphenateText(header)}</h2> : null}
+        {subheader ? <div className="subheader">{hypher.hyphenateText(subheader)}</div> : null}
+        {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
 
-      {bild && bild.url ? (
-        <div style={{ textAlign: 'center' }}>
-          <Image asImg value={bild} className="mt-1" cloudinary={{ maxWidth: 700 }} lightbox />
-          {bild.caption || bild.source ? (
-            <div style={{ textAlign: 'left' }}>{bild.caption} <div style={{ float: 'right', fontSize: 'small' }}>© {bild.source}</div></div>
-          ) : undefined}
-        </div>
-      ) : undefined}
+        <ItemMore more={more} id={id} identifier={identifier} />
+
+        <ItemImage bild={bild} className="mt-1" />
+
+        <Tags tags={tags} className="mt-2" />
+      </div>
     </div>
   );
 });

@@ -1,13 +1,12 @@
 import React from 'react';
-import { Link, cn } from 'olymp';
+import { cn } from 'olymp';
 import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
-import capitalize from 'lodash/upperFirst';
+import { ItemMore } from './components';
 import Responsive from './responsive';
 import Tags from '../tags';
 
 export default useItemEdit()((props) => {
-  const { children, id, header, subheader, shortText, more, bild, tags, location, identifier, className, leading } = props;
-  const { pathname, query } = location;
+  const { children, id, header, subheader, shortText, more, bild, tags, identifier, className, leading } = props;
   const text = !!shortText && !!shortText.nodes && { nodes: [...shortText.nodes] };
 
   if (bild && bild.url && text) {
@@ -26,21 +25,15 @@ export default useItemEdit()((props) => {
     <div className={cn(className, `item compact ${leading ? 'colored' : ''}`)} key={id}>
       {children}
 
-      <div className="text hidden-sm-down">
+      <Responsive {...props} className="text">
         {header ? <h2 className="mt-0">{header}</h2> : null}
         {subheader ? <div className="subheader">{subheader}</div> : null}
-        {text ? <SlateMateFrontend key={id} value={text} readOnly className="slate" /> : <Tags tags={tags} />}
+        {text ? <SlateMateFrontend key={id} value={text} readOnly className="slate" /> : null}
 
-        {more ? (
-          <p>
-            <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: id } }}>
-              <i className="fa fa-angle-double-right" /> {more}
-            </Link>
-          </p>
-        ) : undefined}
-      </div>
+        <ItemMore more={more} id={id} identifier={identifier} />
 
-      <Responsive {...props} className="hidden-md-up" />
+        <Tags tags={tags} className="mt-2" />
+      </Responsive>
 
       <div style={{ clear: 'both' }} />
     </div>

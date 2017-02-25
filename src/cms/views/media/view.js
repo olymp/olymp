@@ -137,11 +137,11 @@ export default class MediaView extends Component {
 
           {selected.map(id =>
             <div key={id}>
-              <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} />
+              <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} aspect={aspect} />
             </div>
           )}
           <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
-            <Button key="submit" type="primary" size="large" onClick={this.onSaveCrop}>
+            <Button key="submit" type="primary" onClick={this.onSaveCrop}>
               Übernehmen
             </Button>&nbsp;
             <Button onClick={this.onClose}>Abbrechen</Button>
