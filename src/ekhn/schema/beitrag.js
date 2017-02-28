@@ -14,6 +14,7 @@ module.exports = ({ schema }) => schema.addSchema({
     @collection(name: "Beitrag") @state @stamp {
       name: String
       # @start
+      # @label("Anzeigen ab")
       start: Date
       # @end
       ende: Date
