@@ -39,7 +39,6 @@ class SuggestionPortal extends React.Component {
   }
 
   onChange = (state) => {
-    console.log(state);
     return null;
   }
 
@@ -124,9 +123,7 @@ class SuggestionPortal extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const newTerm = this.matchCapture(newProps);
-    console.log(newTerm);
     if (newTerm !== this.lastTerm) {
-      console.log('NEW TERm', newTerm);
       this.lastTerm = this.matchCapture(newProps);
     }
   }
@@ -166,7 +163,6 @@ class SuggestionPortal extends React.Component {
   render = () => {
     const suggestions = this.filteredSuggestions();
     this.props.callback.suggestion = suggestions[this.selectedIndex];
-    console.log('RERENDER');
     return (
       <Portal isOpened onOpen={this.onOpen}>
         <div className="suggestion-portal">

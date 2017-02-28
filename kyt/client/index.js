@@ -28,7 +28,7 @@ const client = new ApolloClient({
   initialState: window.__APP_STATE__ ? { apollo: { data: window.__APP_STATE__ } } : null,
 });
 
-const renderer = createRenderer();
+const renderer = createRenderer({ selectorPrefix: '_' });
 const mountNode = document.getElementById('css-markup');
 
 function renderApp() {

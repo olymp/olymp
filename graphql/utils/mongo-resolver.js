@@ -132,7 +132,6 @@ exports.write = model => (source, args, context, fieldASTs) => {
         if (!args.input[key]) {
           args.input[`${key}Id`] = null;
         } else if (type.type.name) {
-          console.log(type.type.name);
           promises.push(exports.write(type.type.name.value)(args, {
             input: args.input[key],
             id: args.input[key].id,
@@ -162,7 +161,7 @@ exports.write = model => (source, args, context, fieldASTs) => {
       } return collection.replaceOne(query, Object.assign({}, args.input, { id: args.id }));
     }).then((x1, x2) => {
       if (!fieldASTs || !args.id) return { id: args.id };
-      return exports.one(model)(source, { id: args.id, query: args.query }, context, fieldASTs);
+      return exports.one(model)(source, { id: args.id }, context, fieldASTs);
     });
   });
 };
