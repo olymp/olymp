@@ -71,7 +71,7 @@ app.get('*', (request, response) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const renderer = createRenderer();
+  const renderer = createRenderer({ selectorPrefix: '_' });
   const reactRouterContext = createServerRenderContext();
 
   // Create our React application and render it into a string.
