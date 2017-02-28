@@ -129,21 +129,24 @@ export default class CoolImage extends Component {
         crop = [size, size * ratio, 0, 0];
       }
     }*/
-    if (asImg && !Children.toArray(children).filter(x => x).length) {
+    if (asImg) {
       return (
-        <img
-          className={cn(className, 'athena-img')}
-          onClick={onClick}
-          src={url}
-          alt={caption}
-          style={containerStyles}
-          srcSet={`
-            ${url300} 300w,
-            ${url600} 600w,
-            ${url1200} 1200w,
-            ${url1920} 1920w
-          `}
-        />
+        <div style={{ position: 'relative', ...style }}>
+          <img
+            className={cn(className, 'athena-img')}
+            onClick={onClick}
+            src={url}
+            alt={caption}
+            width="100%"
+            srcSet={`
+              ${url300} 300w,
+              ${url600} 600w,
+              ${url1200} 1200w,
+              ${url1920} 1920w
+            `}
+          />
+          {children}
+        </div>
       );
     }
 

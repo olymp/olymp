@@ -105,18 +105,16 @@
     }
 
     /* IMAGE */
-    .athena-img-container {
-      & > div {
-        position: absolute;
-        top: initial;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        transform: none;
-        background-color: rgba(255, 255, 255, .75);
-        padding: .25rem .5rem;
-        //width: 100%;
-      }
+    .athena-img-container > div, .athena-img-title {
+      position: absolute;
+      top: initial;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: none;
+      background-color: rgba(255, 255, 255, .75);
+      padding: .25rem .5rem;
+      //width: 100%;
     }
   }
 
@@ -124,4 +122,12 @@
   .colored {
     background-color: lighten(@brand-primary, 40%) !important;
   }
+}
+
+@media (max-width: 767px) {
+  .item.panorama.masonry {
+      .slate {
+        column-count: 1 !important;
+      }
+    }
 }
