@@ -154,6 +154,16 @@ exports.addInputTypes = (collectionName, ast) => {
       `).definitions[0]);
       return `${field.name.value}: IntQuery`;
     }
+    if (['Boolean'].includes(field.type.name.value)) {
+      addDefinition(ast, parse(`
+        input BooleanQuery {
+          eq: Float,
+          ne: Float,
+          null: Boolean
+        }
+      `).definitions[0]);
+      return `${field.name.value}: BooleanQuery`;
+    }
     if (['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(field.type.name.value)) {
       addDefinition(ast, parse(`
         input StringQuery {

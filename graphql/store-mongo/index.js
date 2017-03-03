@@ -1,5 +1,5 @@
 const MongoClient = require('bluebird').promisifyAll(require('mongodb')).MongoClient;
-const createSessionStore = require('./session');
+const createSessionStore = require('./session-cached');
 const ShortId = require('shortid');
 
 module.exports = config => {
