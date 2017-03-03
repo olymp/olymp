@@ -28,13 +28,13 @@ module.exports = {
     baseConfig.entry.main[baseConfig.entry.main.length - 1] = path.resolve(__dirname, type, 'index.js');
     baseConfig.resolve.alias.react = path.resolve(process.cwd(), 'node_modules', 'react');
     baseConfig.resolve.alias['react-dom'] = path.resolve(process.cwd(), 'node_modules', 'react-dom');
-    baseConfig.resolve.alias['react-router'] = path.resolve(process.cwd(), 'node_modules', 'react-router-v4-decode-uri');
+    baseConfig.resolve.alias['react-router'] = path.resolve(process.cwd(), 'node_modules', 'react-router');
     baseConfig.resolve.alias.moment = path.resolve(process.cwd(), 'node_modules', 'moment');
     baseConfig.resolve.alias.lodash = path.resolve(process.cwd(), 'node_modules', 'lodash');
     baseConfig.resolve.alias.olymp = path.resolve(__dirname, '..');
     baseConfig.resolve.alias['@root'] = path.resolve(process.cwd());
-    if (type === 'server' && process.env.NODE_ENV !== 'production') baseConfig.resolve.alias['@app'] = path.resolve(__dirname, 'noop');
-    else baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
+    //if (type === 'server' && process.env.NODE_ENV !== 'production') baseConfig.resolve.alias['@app'] = path.resolve(__dirname, 'noop');
+    baseConfig.resolve.alias['@app'] = path.resolve(process.cwd(), 'app');
     if (type === 'server') {
       baseConfig.externals = [
         path.resolve(__dirname, '..', 'node_modules'),

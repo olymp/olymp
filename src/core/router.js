@@ -1,3 +1,45 @@
+import React, { PropTypes, Component } from 'react';
+import { withRouter as withRouterLegacy, Link as LinkLegacy } from 'react-router-dom';
+export { Route, Switch, Redirect } from 'react-router-dom';
+
+export const Link = (props) => {
+  const newProps = { ...props };
+  if (newProps.query) {
+    newProps.search = stringifyQuery(newProps.query);
+    delete newProps.query;
+  }
+  return (
+    <LinkLegacy {...newProps} />
+  );
+};
+
+export const withRouter = (WrappedComponent) => {
+  @withRouterLegacy
+  class WithRouter extends Component {
+    static contextTypes = {
+      router: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+      }).isRequired,
+    };
+    push = (propsTo) => {
+      const to = { ...propsTo };
+      if (to.query) {
+        to.search = stringifyQuery(to.query);
+        delete to.query;
+      }
+      this.context.router.push(to);
+    }
+    render() {
+      const { location } = this.props;
+      location.query = parseQuery(location.search);
+      return (
+        <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push }} />
+      );
+    }
+  }
+  return WithRouter;
+};
+
 function memoize(func) {
   const cache = {};
   return function() {
@@ -11,7 +53,7 @@ function memoize(func) {
   };
 }
 
-export const parse = memoize((str) => {
+export const parseQuery = memoize((str) => {
   const ret = Object.create(null);
   if (typeof str !== 'string') return ret;
   str = str.trim().replace(/^(\?|#|&)/, '');
@@ -33,7 +75,7 @@ export const parse = memoize((str) => {
   return ret;
 });
 
-export const stringify = memoize((obj) => {
+export const stringifyQuery = memoize((obj) => {
   return obj ? Object.keys(obj).sort().map((key) => {
     const val = obj[key];
     if (val === undefined) {

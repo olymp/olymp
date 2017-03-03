@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import withCollection from './collection';
-import withRouter from './router';
 import isEqual from 'lodash/isEqual';
 import lowerFirst from 'lodash/lowerFirst';
+import { withRouter } from 'react-router-dom';
 
 export default ({ name, state } = {}) => (WrappedComponent) => {
   @withCollection(name || '')

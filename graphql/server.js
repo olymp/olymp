@@ -1,3 +1,5 @@
+var Cache = require('stale-lru-cache');
+
 const bodyparser = require('body-parser');
 const createSchema = require('./graphql');
 const createMail = require('./mail');
@@ -19,7 +21,7 @@ module.exports = (server, options) => {
   // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
 
-  if (options.sessions && adapter) {
+  if (options.sessions && adapter && server.useSession) {
     server.useSession('/graphql', session => ({
       store: adapter.createSessionStore(session),
       resave: false,
@@ -50,12 +52,19 @@ module.exports = (server, options) => {
   if (options.auth) {
     if (typeof options.auth === 'string') options.auth = { secret: options.auth };
     const { auth } = createAuthGql(Schema, Object.assign({ adapter, mail }, options.auth));
+    const cache = new Cache({ maxSize: 100, maxAge: 20 });
     server.all('/graphql', (req, res, next) => {
       if (req.session && req.session.userId) {
-        auth.getUser(req.session.userId).then((x) => {
-          req.user = x;
-          next();
-        });
+        req.user = cache.get(req.session.userId);
+        if (req.user) {
+          return next();
+        } else {
+          auth.getUser(req.session.userId).then((x) => {
+            req.user = x;
+            cache.set(req.session.userId, req.user);
+            next();
+          });
+        }
       } else {
         next();
       }

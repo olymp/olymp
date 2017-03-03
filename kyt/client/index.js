@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-v4-decode-uri';
-import { parse, stringify } from '../query-string';
+import { BrowserRouter } from 'react-router-dom';
+import { parseQuery, stringifyQuery } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
@@ -25,7 +25,7 @@ const client = new ApolloClient({
   networkInterface,
   dataIdFromObject: o => o.id,
   ssrForceFetchDelay: 100,
-  initialState: window.__APP_STATE__ ? { apollo: { data: window.__APP_STATE__ } } : null,
+  initialState: window.__APP_STATE__,
 });
 
 const renderer = createRenderer({ selectorPrefix: '_' });
@@ -42,7 +42,7 @@ function renderApp() {
   // the content returned by the server.
   // @see https://github.com/ctrlplusb/code-split-component
   render(
-    <BrowserRouter stringifyQuery={stringify} parseQueryString={parse}>
+    <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
       <ApolloProvider client={client}>
         <Provider renderer={renderer} mountNode={mountNode}>
           <App />

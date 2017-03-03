@@ -5,32 +5,38 @@ import path from 'path';
 import React from 'react';
 import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
-import { ServerRouter, createServerRenderContext } from 'react-router-v4-decode-uri';
-import { renderToStringWithData, ApolloProvider } from 'react-apollo';
+import { StaticRouter, withRouter } from 'react-router-dom';
+import { renderToString } from 'react-dom/server';
+import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import template from './template';
-import { parse, stringify } from '../query-string';
+import { parseQuery, stringifyQuery } from 'olymp';
 import 'source-map-support/register';
+// import { render, template } from 'rapscallion';
 
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const port = parseInt(process.env.PORT || KYT.SERVER_PORT, 10);
 const launchAPI = () => {
-  app.useSession = (url, getArgs) => {
-    app.set('trust proxy', 2);
-    if (!getArgs) {
-      getArgs = url;
-      url = null;
-    }
-    const args = getArgs(session);
-    if (url) app.use(url, session(args));
-    else app.use(session(args));
-  };
+  if (process.env.NODE_ENV !== 'production') {
+    app.use(session({ secret: 'keyboard cat' }));
+  } else {
+    app.useSession = (url, getArgs) => {
+      app.set('trust proxy', 2);
+      if (!getArgs) {
+        getArgs = url;
+        url = null;
+      }
+      const args = getArgs(session);
+      if (url) app.use(url, session(args));
+      else app.use(session(args));
+    };
+  }
   try {
     const server = require('@root/server');
     if (server.default) {
@@ -39,7 +45,7 @@ const launchAPI = () => {
       server(app);
     }
   } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
-}
+};
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
@@ -72,21 +78,26 @@ app.get('*', (request, response) => {
     ssrMode: true,
   });
   const renderer = createRenderer({ selectorPrefix: '_' });
-  const reactRouterContext = createServerRenderContext();
+  const context = {};
 
   // Create our React application and render it into a string.
+  const [pathname, search] = decodeURI(request.url).split('?');
+  console.log({ pathname, search, query: parseQuery(search) });
   const reactApp = (
-    <ServerRouter stringifyQuery={stringify} parseQueryString={parse} location={decodeURI(request.url)} context={reactRouterContext}>
+    <StaticRouter location={{ pathname, search, query: parseQuery(search) }} context={context}>
       <ApolloProvider client={client}>
         <Provider renderer={renderer}>
           <App />
         </Provider>
       </ApolloProvider>
-    </ServerRouter>
+    </StaticRouter>
   );
 
-  renderToStringWithData(reactApp).then((reactAppString) => {
+  return getDataFromTree(reactApp).then(() => {
+    // const reactAppString = render(reactApp);
+    const reactAppString = renderToString(reactApp);
     const cssMarkup = renderer.renderToString();
+
     // Generate the html response.
     const html = template({
       root: reactAppString,
@@ -94,29 +105,20 @@ app.get('*', (request, response) => {
       cssBundle: clientAssets.main.css,
       cssMarkup,
       helmet: Helmet.rewind(),
-      initialState: client.store.getState().apollo.data,
+      initialState: { [client.reduxRootKey]: client.getInitialState() },
     });
-
-    // Get the render result from the server render context.
-    const renderResult = reactRouterContext.getResult();
 
     // Check if the render result contains a redirect, if so we need to set
     // the specific status and redirect header and end the response.
-    if (renderResult.redirect) {
-      response.status(301).setHeader('Location', renderResult.redirect.pathname);
+    if (context.url) {
+      response.status(301).setHeader('Location', context.url);
       response.end();
       return;
     }
 
-    response.status(
-      renderResult.missed
-        // If the renderResult contains a "missed" match then we set a 404 code.
-        // Our App component will handle the rendering of an Error404 view.
-        ? 404
-        // Otherwise everything is all good and we send a 200 OK status.
-        : 200,
-    )
-    .send(html);
+    response.status(context.missed ? 404 : 200);
+    response.send(html);
+    // responseRenderer.toStream().pipe(response);
   }).catch((err) => {
     console.error(err);
     response

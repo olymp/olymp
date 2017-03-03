@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const webpack = require('webpack');
 
 const command = process.argv[process.argv.length - 1];
 
@@ -33,6 +34,16 @@ if (['start', 'build'].includes(command)) {
   process.env.NODE_ENV = 'production';
 }
 
+/*if (command === 'dev') {
+  webpack(require(path.resolve(__dirname, '..', 'runtime', 'config.server.dev')), (err, stats) => {
+    if (err) console.log('ERROR', err || stats.hasErrors());
+    const jsonStats = stats.toJson();
+    if (jsonStats.errors.length > 0) return console.error(jsonStats.errors);
+    if (jsonStats.warnings.length > 0) console.warn(jsonStats.warnings);
+    console.log('Server bundle done.');
+  });
+  return;
+}*/
 if (command === 'start') return require(path.resolve(process.cwd(), 'build', 'server', 'main'));
 if (fs.existsSync(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'))) {
   require(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'));
