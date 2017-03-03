@@ -1,9 +1,9 @@
 export { default as beitrag } from './beitrag';
 export { default as gemeindebrief } from './gemeindebrief';
-// export { default as glaubensimpuls } from './glaubensimpuls';
+export { default as glaubensimpuls } from './glaubensimpuls';
 export { default as gottesdienst } from './gottesdienst';
 export { default as link } from './link';
-// export { default as losung } from './losung';
+export { default as losung } from './losung';
 export { default as person } from './person';
 export { default as rolle } from './rolle';
 export { default as termin } from './termin';

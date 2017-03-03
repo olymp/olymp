@@ -8,7 +8,7 @@ import Gottesdienst from './index';
   gottesdienste: gottesdienstList(sort: {datum: ASC}, limit: 5, query: {
     and: [
       { state: { eq: PUBLISHED } },
-      { datum: {gte: ${moment().format('x')}} }
+      { datum: {gte: ${+moment()}} }
     ]
   }) {
     id
@@ -30,9 +30,7 @@ import Gottesdienst from './index';
     tags
   }
 }
-`, {
-  options: () => ({ }),
-})
+`)
 export default class GottesdienstBlock extends Component {
   render() {
     const { className, style, data } = this.props;

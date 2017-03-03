@@ -1,38 +1,29 @@
 /* ITEMS */
 .items {
-  margin-top: -1em;
   padding: 0;
-
-  & + .items {
-    padding-top: 0;
-    margin-top: 0;
-  }
-
-  /* MASONRY */
-  &.masonry {
-    .item:not(.leading) {
-      width: calc(~'50% - 8px');
-    }
-
-    .item.leading {
-      .slate {
-        column-count: 2;
-        column-gap: 2em;
-      }
-    }
-  }
 
   /* ITEM */
   .item {
     border: none;
     padding: 0;
-    margin-top: 1em;
+    margin-bottom: 1em;
     width: 100%;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     /* PANORAMA */
     &.panorama {
       & > div:nth-of-type(2) {
         margin-top: 1rem;
+      }
+
+      &.masonry {
+        .slate {
+          column-count: 2;
+          column-gap: 2em;
+        }
       }
 
       .text {
@@ -109,24 +100,21 @@
       }
 
       p {
-        // margin-top: 1em !important;
-        margin: 1em 0 !important;
+        margin: 1em 0;
       }
     }
 
     /* IMAGE */
-    .athena-img-container {
-      & > div {
-        position: absolute;
-        top: initial;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        transform: none;
-        background-color: rgba(255, 255, 255, .75);
-        padding: .25rem .5rem;
-        //width: 100%;
-      }
+    .athena-img-container > div, .athena-img-title {
+      position: absolute;
+      top: initial;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: none;
+      background-color: rgba(255, 255, 255, .75);
+      padding: .25rem .5rem;
+      //width: 100%;
     }
   }
 
@@ -136,55 +124,10 @@
   }
 }
 
-/* PAGINATION */
-.ant-pagination {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-
-  &.mini {
-    margin-bottom: 0;
-
-    li {
-      // margin-right: .5rem !important;
-      background-color: transparent;
-    }
-  }
-
-  &:not(.mini) {
-    li, .ant-select-selection {
-      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
-    }
-  }
-
-  li, .ant-select-selection {
-    border-radius: 0;
-    border: none;
-    padding-top: 1px;
-
-    &.ant-pagination-item-active {
-      background-color: @brand-primary;
-
-      a {
-        color: #FFF !important;
+@media (max-width: 767px) {
+  .item.panorama.masonry {
+      .slate {
+        column-count: 1 !important;
       }
     }
-
-    &.ant-pagination-prev a:after, &.ant-pagination-next a:after {
-      font-size: 18px;
-    }
-  }
-
-  .ant-pagination-options {
-    float: right;
-
-    .ant-pagination-options-size-changer {
-      margin-right: 0;
-    }
-  }
-}
-
-@media (max-width: 767px) {
-  .items.masonry .item {
-      width: 100% !important;
-  }
 }

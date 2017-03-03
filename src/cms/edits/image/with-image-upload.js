@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import 'react-image-crop/dist/ReactCrop.css';
-
 import MediaModal from '../../views/media/view';
 
 const defaultGetImage = props => props.value;

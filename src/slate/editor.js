@@ -1,8 +1,9 @@
 import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
-import { withAuth } from 'olymp';
+import { Button } from 'antd';
 import { Editor, Html, Raw } from 'slate';
-import { withState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
+import { withAuth } from '../core/decorators';
+import { withSlateState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
 import { getId } from './utils/get-text';
 import './style.less';
@@ -176,7 +177,7 @@ export const rawSerializer = Raw;
 
 @withBlockTypes
 @withUniqueId()
-@withState({ terse: true })
+@withSlateState({ terse: true })
 @useBlocks(options)
 @withAutoMarkdown(options)
 @withToolbar(options)
@@ -241,18 +242,23 @@ export default class SlateEditor extends Component {
   }
 
   render = () => {
-    const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, ...rest } = this.props;
+    const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, style, ...rest } = this.props;
+
+    const undo = !!value && !!value.history && !!value.history.undos && !!value.history.undos['_head'] && value.history.undos['_head'].value;
+    // console.log(undo);
 
     return (
-      <div className={className} style={{ position: 'relative' }}>
-        {value && showUndo && value.hasUndos && (
-          <Gateway into="button_undo">
-            <a href="javascript:;" onClick={() => onChange(value.transform().undo().apply())}>
-              Rückgängig
-            </a>
-          </Gateway>
-        )}
+      <div className={className} style={{ position: 'relative', ...style }}>
+        <Gateway into="undo">
+          {false && undo && undo.length ? (
+            <Button shape="circle" size="large" onClick={() => onChange(value.transform().undo().apply())}>
+              <i className="fa fa-undo" aria-hidden="true" />
+            </Button>
+          ) : null}
+        </Gateway>
+
         {children}
+
         {this.state.mode ? (
           <Editor
             {...rest}
@@ -283,11 +289,17 @@ export default class SlateEditor extends Component {
 
 @withAuth
 export class SlateMateFrontend extends Component {
+  state = { expanded: false };
+
   render() {
     const { auth, ...rest } = this.props;
+    const { expanded } = this.state;
 
-    return auth && auth.user ? (
-      <span>[-- NUR AUSGELOGGT SICHTBAR ---]</span>
+    return auth && auth.user && !expanded ? (
+      <div className="service-hint">
+        <p>Das Anzeigen des Textes kann zu Fehlverhalten beim Inline-Editing führen.</p>
+        <Button type="primary" onClick={() => this.setState({ expanded: true })}>Trotzdem anzeigen</Button>
+      </div>
     ) : <SlateEditor {...rest} />;
   }
 }

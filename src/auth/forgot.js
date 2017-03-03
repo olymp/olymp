@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-v4-decode-uri';
 import withAuth from './with-auth';
-import { notification } from 'antd';
+import { notification, Modal, Form, Button, Input } from 'antd';
 
 @withAuth
 export default class AuthForgot extends Component {
@@ -26,7 +26,7 @@ export default class AuthForgot extends Component {
     const { email } = this.state;
 
     const buttons = [
-      <Link key="0" className="pull-left" style={{marginTop:'5px'}} to={{ pathname, query: { login: email || null } }}>Zurück zur Anmeldung</Link>,
+      <Link key="0" className="pull-left" style={{ marginTop: '5px' }} to={{ pathname, query: { login: email || null } }}>Zurück zur Anmeldung</Link>,
       <span key="0.5">&nbsp;</span>,
       <Button key="1" color="secondary" onClick={onClose}>Abbruch</Button>,
       <span key="1.5">&nbsp;</span>,
@@ -36,12 +36,9 @@ export default class AuthForgot extends Component {
     return (
       <Modal title="Passwort vergessen" buttons={buttons} onClose={onClose}>
         <Form>
-          <FormGroup row>
-            <Label sm={4}>E-Mail</Label>
-            <Col sm={8}>
-              <Input id="email" type="text" name="email" placeholder="max@mustermann.de" value={email || ''} onChange={v => this.setState({ email: v || null })} className="uk-width-1-1" />
-            </Col>
-          </FormGroup>
+          <Form.Item label="E-Mail">
+            <Input id="email" type="text" name="email" placeholder="max@mustermann.de" value={email || ''} onChange={v => this.setState({ email: v || null })} className="uk-width-1-1" />
+          </Form.Item>
         </Form>
       </Modal>
     );

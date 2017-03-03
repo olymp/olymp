@@ -3,7 +3,7 @@ import { graphql, gql, DataLoader } from 'olymp';
 import { moment } from 'olymp/locale-de';
 import Termin from './index';
 
-const now = moment().format('x');
+const now = +moment();
 
 @graphql(gql`
   query termine {
@@ -25,9 +25,7 @@ const now = moment().format('x');
       farbe
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 export default class TerminBlock extends Component {
   render() {
     const { className, style, data } = this.props;

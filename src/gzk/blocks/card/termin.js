@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { gql, graphql, Link } from 'olymp';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import take from 'lodash/take';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';

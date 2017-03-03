@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter, DataLoader, withAuth } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import { Pagination } from 'antd';
 import sortBy from 'lodash/sortBy';
-import difference from 'lodash/difference';
 import { moment } from 'olymp/locale-de';
 import TerminItem from './item';
 
-const now = moment().format('x');
+const now = +moment();
 
 @withAuth
 @withRouter
@@ -87,9 +86,7 @@ const now = moment().format('x');
       tags
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 @useGenericBlock({
   label: 'Termine',
   props: ['tags', 'mode'],

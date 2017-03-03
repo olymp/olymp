@@ -179,7 +179,7 @@ export default class Toolbar extends Component {
       <div className="slate-fix-toolbar" style={style} contentEditable={false}>
         {move && moveActions(this.props).map((action, index) => <Action {...action} key={index} />)}
 
-        <Tooltip placement="top" title="Typ des Blockes ändern">
+        <Tooltip placement="top" overlay={<span>Typ des Blockes ändern</span>}>
           <Dropdown overlay={menu}>
             <Button type="ghost" size="small" className="slate-toolbar-type">
               {block.label || block.type} <i className="fa fa-caret-down" />

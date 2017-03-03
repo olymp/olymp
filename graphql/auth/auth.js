@@ -57,7 +57,7 @@ module.exports = ({ adapter, password, token, mail }) => {
         if (mail) registerMail(mail, { email: rawUser.email, token: confirmationToken })
           .then(x => console.log('Mail success')).catch(err => console.error(err));
         return { token: confirmationToken, user: cleanUser(result) };
-      })
+      });
     },
     // Get user by id and update user
     confirm: (key) => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { DataLoader, cn } from 'olymp';
-import { Image, useItemEdit } from 'olymp/cms';
+import { DataLoader, cn, Image } from 'olymp';
+import { useItemEdit } from 'olymp/slate';
 
 export default useItemEdit()(({ children, className, style, vcard = {} }) => {
   const { name, bild, ort, telefon, mobil, fax, email, website } = vcard;
@@ -11,7 +11,7 @@ export default useItemEdit()(({ children, className, style, vcard = {} }) => {
 
       <div className="vcard" style={{ margin: 0 }}>
         <div>
-          {bild ? <Image value={bild} width="100%" cloudinary={{ width: 300 }} /> : null}
+          {bild ? <Image value={bild} width="100%" lightbox cloudinary={{ width: 300, maxWidth: 300 }} /> : null}
 
           <div className="text">
             <h3>{name}</h3>

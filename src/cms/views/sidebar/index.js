@@ -97,7 +97,7 @@ export default class SidebarComponent extends Component {
   }
 
   render() {
-    const { items, isLoading, filter, multi, refetch } = this.props;
+    const { items = [], isLoading, filter, multi, refetch } = this.props;
     const { page } = this.state;
 
     const activeItems = items.filter(item => item.isActive);

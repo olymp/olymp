@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from '../../edits';
+import { Image } from 'olymp';
 
 export default class MediaListMini extends Component {
   render() {
