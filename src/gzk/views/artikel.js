@@ -15,7 +15,7 @@ const fieldNames = 'id, name, farbe, extrakt, slug, text, bild { height, width, 
 `, {
   options: ({ location }) => ({ variables: { slug: location.pathname.split('/artikel')[1] } }),
 })
-@withItem({ name: 'artikel', fieldNames })
+@withItem({ typeName: 'artikel', fieldNames })
 export default class Artikel extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;

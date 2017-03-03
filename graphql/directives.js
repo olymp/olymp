@@ -1,12 +1,62 @@
 const { parse } = require('graphql/language');
 const capitalize = require('lodash/upperFirst');
+const lowerFirst = require('lodash/lowerFirst');
 const { list, one, write, addInputTypes } = require('./utils');
 
 const hasDirective = (ast, model, directive) => {
   const schema = ast.definitions.find(({ name }) => name && name.value === model);
   return schema.directives.filter(({ name }) => name && name.value === 'state').length;
 };
+
 module.exports = ({ adapter, resolvers }) => ({
+  crud: {
+    name: 'crud',
+    description: 'Marks a type as a relative.',
+    resolveStatic: {
+      enter2(node, directive, { ast }) {
+        // Add InputType
+        addInputTypes(node.name.value, ast);
+
+        // Find Query object in AST
+        const Query = ast.definitions.find(x => x.name && x.name.value === 'Query');
+        const Mutation = ast.definitions.find(x => x.name && x.name.value === 'Mutation');
+        if (Query && Mutation) {
+          // Get name of decorated type
+          const name = node.name.value;
+          const lower = lowerFirst(node.name.value);
+
+          // Create all type of queries and mutations
+          const definitions = parse(`
+            type Query {
+              ${lower}List(query: ${name}Query, sort: ${name}Sort, limit: Int, skip: Int): [${name}]
+              ${lower}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}
+            }
+            type Mutation {
+              ${lower}(id: String, type: MUTATION_TYPE, input: ${name}Input): ${name}
+            }
+          `).definitions;
+
+          // Iterate over queries
+          definitions[0].fields.forEach((field) => {
+            // Add to AST
+            Query.fields.push(field);
+            // Create resolvers for queries
+            const isList = field.type.kind === 'ListType';
+            resolvers.Query[field.name.value] = isList
+              ? list(name)
+              : one(name);
+          });
+          // Iterate over mutations
+          definitions[1].fields.forEach((field) => {
+            // Add to AST
+            Mutation.fields.push(field);
+            // Create resolvers for mutations
+            resolvers.Mutation[field.name.value] = write(name);
+          });
+        }
+      },
+    },
+  },
   // Type
   collection: {
     name: 'mongodb',
@@ -36,6 +86,15 @@ module.exports = ({ adapter, resolvers }) => ({
       },
     },
   },
+  input: {
+    name: 'mongodb',
+    description: 'Marks a type as a relative.',
+    resolveStatic: {
+      enter2(node, directive, { ast }) {
+        addInputTypes(node.name.value, ast);
+      },
+    },
+  },
   state: {
     name: 'state',
     description: 'Marks a type as a relative.',
@@ -50,8 +109,8 @@ module.exports = ({ adapter, resolvers }) => ({
       },
     },
     hooks: {
-      before: (args, { model, isMutation, returnType }, { ast }) => {
-        if (!isMutation && returnType.toString().indexOf('[') === 0 && hasDirective(ast, model, 'state')) {
+      before: (args, { model, type, returnType }, { ast }) => {
+        if (type === 'QUERY' && returnType.toString().indexOf('[') === 0 && hasDirective(ast, model, 'state')) {
           const query = (args.query || {});
           if (!query.state) {
             query.state = { eq: 'PUBLISHED' };
@@ -59,7 +118,7 @@ module.exports = ({ adapter, resolvers }) => ({
           }
           return args;
         }
-        else if (isMutation && args.input && !args.input.state && !args.input.id) {
+        else if (type === 'MUTATION' && args.input && !args.input.state && !args.input.id) {
           args.input.state = 'DRAFT';
           return args;
         }
@@ -191,7 +250,7 @@ module.exports = ({ adapter, resolvers }) => ({
 
         const field = parse(`
           type Mutation {
-            func(id: String, input: ${capitalize(type.name.value)}Input, operationType: OPERATION_TYPE): ${type.name.value}
+            func(id: String, input: ${capitalize(type.name.value)}Input, operationType: OPERATION_TYPE, type: MUTATION_TYPE): ${type.name.value}
           }
         `).definitions[0].fields[0];
 

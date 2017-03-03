@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
+import { Image } from 'olymp';
 import { createComponent } from 'react-fela';
-import { Image } from '../../edits';
 import tinycolor from 'tinycolor2';
 
 const StyledCard = createComponent(({ isActive, color }) => ({
@@ -9,6 +9,7 @@ const StyledCard = createComponent(({ isActive, color }) => ({
   margin: '3px 10px 3px 0',
   borderRight: color ? `3px solid ${tinycolor(color).setAlpha(1).toRgbString()}!important` : null,
   left: isActive ? '15px' : 0,
+  minHeight: '60px',
   '> .ant-card-extra': {
     top: '5px',
     right: '5px',
@@ -23,13 +24,7 @@ const StyledCard = createComponent(({ isActive, color }) => ({
 
 const StyledCardContent = createComponent(() => ({
   padding: '8px',
-  float: 'left',
-}));
-
-const StyledCardImagePlaceholder = createComponent(() => ({
-  width: '60px',
-  height: '60px',
-  float: 'left',
+  marginLeft: '60px',
 }));
 
 const StyledCardTitle = createComponent(() => ({
@@ -44,13 +39,30 @@ const StyledCardParagraph = createComponent(() => ({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   width: '200px',
-  whiteSpace: 'nowrap',
+  // whiteSpace: 'nowrap',
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 3,
+  lineHeight: '18px',
+  maxHeight: '54px',
+  fontSize: 'small',
 }), 'p');
 
 export default ({ name, description, image, ...rest }) => (
   <StyledCard {...rest}>
-    {!!image && <Image value={image} width={60} retina mode="lpad" ratio={1} style={{ float: 'left' }} />}
-    {image === null && <StyledCardImagePlaceholder />}
+    {!!image && (
+      <Image
+        value={image}
+        width={60}
+        retina
+        mode="lpad"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }}
+      />
+    )}
     <StyledCardContent>
       <StyledCardTitle>{name}</StyledCardTitle>
       {!!description && <StyledCardParagraph>{description}</StyledCardParagraph>}

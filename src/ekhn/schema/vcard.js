@@ -14,6 +14,7 @@ module.exports = ({ schema }) => schema.addSchema({
     # title:Visitenkarte
     type Vcard implements CollectionInterface
     @collection(name: "Vcard") @state @stamp {
+      # @required
       name: String
       bild: Image
       # @description
@@ -23,6 +24,7 @@ module.exports = ({ schema }) => schema.addSchema({
       fax: PhoneNumber
       email: Email
       homepage: Website
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

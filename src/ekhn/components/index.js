@@ -7,3 +7,4 @@ export { default as Losung } from './losung';
 export { default as Glaubensimpuls } from './glaubensimpuls';
 export { default as Termin } from './termin/termin';
 export { default as Gottesdienst } from './termin/gottesdienst';
+export { default as Nav } from './nav';

@@ -1,52 +1,50 @@
 import React, { Component } from 'react';
-import { Gateway, GatewayDest } from 'react-gateway';
-import { Anchor as AnchorCreator, Menu, Icon, Dropdown, Button, Spin } from 'antd';
-import { graphql, Link, gql, withAuth, withItem, Helmet } from 'olymp';
+import { Gateway } from 'react-gateway';
+import { Anchor as AnchorCreator, Spin, Menu, Icon, Dropdown, Button } from 'antd';
+import { withAuth, withItemNew, Helmet, Link } from 'olymp';
 import { SlateMate } from 'olymp/slate';
-import sortBy from 'lodash/sortBy';
 import AnchorHelper from 'antd/lib/anchor/anchorHelper';
-const Anchor = AnchorCreator.Link;
 
-const getChildSlug = slug => slug.indexOf('#') === -1 ? slug.substr(1) : slug.split('#')[1];
+const Anchor = AnchorCreator.Link;
 const fieldNames = 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }';
 
-@graphql(gql`
-  query page($id: String!) {
-    page(id: $id) {
-      ${fieldNames}
-    }
-  }
-`, {
-  options: ({ id }) => ({ variables: { id } }),
-})
-@withItem({ typeName: 'page', fieldNames })
 @withAuth
+@withItemNew({ typeName: 'Page', fieldNames })
 export default class CmsPage extends Component {
   constructor() {
     super();
     this.anchorHelper = new AnchorHelper();
   }
+
   componentDidMount() {
+    const { location } = this.props;
+
     if (location && location.hash) {
       this.anchorHelper.scrollTo(location.hash);
     }
   }
+
   createAnchors = nodes => (nodes || []).map((node, i) =>
     <Anchor key={i} href={`#${node.slug}`} title={node.text}>
       {this.createAnchors(node.children)}
     </Anchor>
-    )
+  )
+
   render() {
-    let { auth, item, patch, save, blocks, location, readOnly, getReadOnly, showAnchors } = this.props;
+    const { auth, item, patch, getReadOnly, save, location, showAnchor } = this.props;
+
     if (!item) return <Spin size="large" />;
 
+    // todo: einfacher
+    // const readOnly = this.props.readOnly || (!auth || !auth.user);
+    let readOnly = this.props.readOnly;
     readOnly = readOnly !== undefined ? readOnly : getReadOnly ? getReadOnly(this.props) : (!auth.user || !!item.computed);
     if (location && location.query && Object.keys(location.query).find(x => location.query[x] !== undefined)) readOnly = true;
 
     return (
       <div>
         <Helmet title={item.name} />
-        {item.headings && item.headings.length > 1 && (
+        {showAnchor && item.headings && item.headings.length > 1 && (
           <div className="anchor-menu container">
             <AnchorCreator offsetTop={100}>
               {this.createAnchors(item.headings)}
@@ -55,8 +53,8 @@ export default class CmsPage extends Component {
         )}
         <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings })} onChange={blocks => patch({ blocks })} />
 
-        {!readOnly ? (
-          <Gateway into="action">
+        <Gateway into="action">
+          {!readOnly ? (
             <Dropdown
               overlay={(
                 <Menu>
@@ -64,12 +62,6 @@ export default class CmsPage extends Component {
                     <a href="javascript:;" onClick={save}>
                       Speichern
                     </a>
-                  </Menu.Item>
-                  <Menu.Item key="page:undo">
-                    <GatewayDest
-                      name="button_undo"
-                      component={({ children }) => (children || <span className="ant-dropdown-menu-item-disabled">Rückgängig</span>)}
-                    />
                   </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item key="page:visitor" disabled>{false ? <Icon type="check" /> : null}Besucher-Modus</Menu.Item>
@@ -90,8 +82,8 @@ export default class CmsPage extends Component {
                 <Icon type="file" />
               </Button>
             </Dropdown>
-          </Gateway>
-        ) : null}
+          ) : null}
+        </Gateway>
       </div>
     );
   }

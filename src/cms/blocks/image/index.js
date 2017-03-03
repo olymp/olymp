@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { useGenericBlock } from 'olymp/slate';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import Image from '../../edits/image';
 
 const actions = props => [{
@@ -36,7 +36,7 @@ export default class ImageBlock extends Component {
   }
 
   render() {
-    const { setData, getData, className, readOnly, attributes, renderToolbar, toolbarStyle } = this.props;
+    const { setData, getData, readOnly } = this.props;
     const { style, children, ...rest } = this.props;
     const value = getData('image', undefined);
 
@@ -56,23 +56,20 @@ export default class ImageBlock extends Component {
     // const height = !value ? styles.height : (value.crop ? value.crop[1] : value.height);
 
     return (
-      <figure {...attributes}>
-        <div style={styles} className={className} data-block-active={!readOnly}>
-          {renderToolbar(toolbarStyle)}
-          {children}
-          <Image
-            asImg
-            onChange={image => setData({ showMedia: undefined, image })}
-            onCancel={() => setData({ showMedia: false })}
-            lightbox
-            onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
-            showMediathek={getData('showMedia')}
-            width={styles.width}
-            value={value}
-            style={innerStyle}
-          />
-        </div>
-      </figure>
+      <GenericBlock {...rest} style={styles}>
+        <Image
+          asImg
+          onChange={image => setData({ showMedia: undefined, image })}
+          onCancel={() => setData({ showMedia: false })}
+          lightbox
+          onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
+          showMediathek={getData('showMedia')}
+          width={styles.width}
+          value={value}
+          style={innerStyle}
+        />
+        {children}
+      </GenericBlock>
     );
   }
 }

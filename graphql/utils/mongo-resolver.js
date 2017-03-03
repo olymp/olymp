@@ -35,20 +35,9 @@ var queryLoader = new DataLoader(queries => new Promise(resolve => {
 exports.list = (model, propertyKey, propertyKey2) => (source, args, context, fieldASTs) => {
   const { adapter, beforeHook, afterHook, ast } = context;
   const type = ast.definitions.find(x => x.name && x.name.value === model);
-  const hookArgs = Object.assign({ model, propertyKey, isMutation: false }, fieldASTs);
+  const hookArgs = Object.assign({ model, propertyKey, type: 'QUERY' }, fieldASTs);
   return beforeHook(args, hookArgs).then((args) => {
     const projection = getProjection(fieldASTs);
-    /*const include = {};
-    Object.keys(projection).map((key) => {
-      const field = type.fields.find(x => x.name && x.name.value === key);
-      if (field) {
-        const relation = field.directives.find(x => x.name && x.name.value === 'relation');
-        if (relation) {
-          const arg = relation.arguments.find(x => x.name && x.name.value === 'ignore');
-          if (arg) include[key] = field.type;
-        }
-      }
-    });*/
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
       if (source[`${propertyKey}Ids`]) { // include xxxIds
@@ -72,15 +61,17 @@ exports.list = (model, propertyKey, propertyKey2) => (source, args, context, fie
 
 exports.one = (model, propertyKey) => (source, args, context, fieldASTs) => {
   const { adapter, beforeHook, afterHook } = context;
-  const hookArgs = Object.assign({ model, propertyKey, isMutation: false }, fieldASTs);
+  const collection = adapter.db.collection(model.toLowerCase());
+  const hookArgs = Object.assign({ model, propertyKey, type: 'QUERY' }, fieldASTs);
   return beforeHook(args, hookArgs).then((args) => {
     const projection = getProjection(fieldASTs);
     let cursor = adapter.db.collection(model.toLowerCase());
     if (source && propertyKey) {
-      if (source[`${propertyKey}Id`]) return cursor.findOne({ id: source[`${propertyKey}Id`] }, projection);
-      return null;
+      if (!source[`${propertyKey}Id`]) return null;
+      return afterHook(collection.findOne({ id: source[`${propertyKey}Id`] }, projection), hookArgs);
     }
-    if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
+    if (args.id && args.query) cursor.findOne(adaptQuery({ $and: [{ id: args.id }, args.query].filter(x => x) }), projection);
+    else if (args.id) cursor = cursor.findOne({ id: args.id }, projection);
     else if (args.query) cursor = cursor.findOne(adaptQuery(args.query), projection);
     return afterHook(cursor, hookArgs);
   });
@@ -88,9 +79,14 @@ exports.one = (model, propertyKey) => (source, args, context, fieldASTs) => {
 
 exports.write = model => (source, args, context, fieldASTs) => {
   const { beforeHook, afterHook, user, adapter, ast } = context;
-  const hookArgs = Object.assign({ model, isMutation: true }, fieldASTs);
+  const collection = adapter.db.collection(model.toLowerCase());
+  const hookArgs = Object.assign({ model, type: 'MUTATION' }, fieldASTs);
   return beforeHook(args, hookArgs).then((args) => {
-    if (!args.operationType) args.operationType = 'PATCH';
+    if (args.input) delete args.input.id;
+    if (!args.type) args.type = args.id ? 'UPDATE' : 'INSERT';
+    if (['UPDATE', 'REPLACE', 'REMOVE'].includes(args.type) && !args.id) throw new Error('Must provide id for operation');
+    if (['UPDATE', 'REPLACE', 'INSERT'].includes(args.type) && !args.input) throw new Error('Must provide input for operation');
+    if (args.type === 'INSERT' && args.id) throw new Error('Cannot use id on operation');
     let node;
     visit(ast, {
       enter(_node) {
@@ -111,17 +107,17 @@ exports.write = model => (source, args, context, fieldASTs) => {
       delete args.input.updatedBy;
       delete args.input.updatedById;
     }
-    if (args.operationType === 'REMOVE' && state) {
+    if (args.type === 'REMOVE' && state) {
       if (!args.id) throw new Error('You must provide an id to remove a document');
       const $set = { state: 'REMOVED' };
-      if (stamp) $set.updatedAt = parseInt(moment().format('x'));
-      return adapter.db.collection(model.toLowerCase()).updateOne(
+      if (stamp) $set.updatedAt = +moment();
+      return collection.updateOne(
         { id: args.id },
         { $set }
       ).then(() => null);
-    } else if (args.operationType === 'REMOVE' || args.operationType === 'FORCE_REMOVE') {
+    } else if (args.type === 'REMOVE') {
       if (!args.id) throw new Error('You must provide an id to remove a document');
-      return adapter.db.collection(model.toLowerCase()).remove(
+      return collection.remove(
         { id: args.id },
         { justOne: true }
       ).then(() => null);
@@ -130,14 +126,14 @@ exports.write = model => (source, args, context, fieldASTs) => {
     const promises = [];
     Object.keys(args.input || {}).forEach((key) => {
       const type = node.fields.find(({ name }) => name && name.value === key);
+      if (!type) return;
       const relation = type.directives.find(x => x.name && x.name.value === 'relation');
       if (relation) {
         if (!args.input[key]) {
           args.input[`${key}Id`] = null;
         } else if (type.type.name) {
-          promises.push(write(type.type.name.value)(args, {
+          promises.push(exports.write(type.type.name.value)(args, {
             input: args.input[key],
-            operationType: args.operationType,
             id: args.input[key].id,
           }, context, fieldASTs).then((item) => {
             args.input[`${key}Id`] = item.id;
@@ -148,35 +144,25 @@ exports.write = model => (source, args, context, fieldASTs) => {
     });
 
     if (stamp) {
-      args.input.updatedAt = parseInt(moment().format('x'));
+      args.input.updatedAt = +moment();
       if (stamp && context.user) args.input.updatedById = context.user.id;
       if (!args.id) {
-        args.input.createdAt = parseInt(moment().format('x'));
+        args.input.createdAt = +moment();
         if (stamp && context.user) args.input.createdById = context.user.id;
       }
     }
-    const then = () => {
-      if (fieldASTs) return exports.one(model, adapter, { ast })(source, args, context, fieldASTs);
-      return { id: args.id };
-    };
-    if (!args.id) args.id = ShortId.generate();
-    args.input.id = args.id;
-    if (args.operationType === 'PATCH' && args.id) {
-      return Promise.all(promises).then(() => {
-        return adapter.db.collection(model.toLowerCase()).updateOne(
-          { id: args.id },
-          { $set: args.input },
-          { upsert: true }
-        );
-      }).then(then);
-    }
     return Promise.all(promises).then(() => {
-      return adapter.db.collection(model.toLowerCase()).replaceOne(
-        { id: args.id },
-        args.input,
-        { upsert: true }
-      );
-    }).then(then);
+      const query = { $and: [{ id: args.id }, args.query].filter(x => x) };
+      if (args.type === 'UPDATE') {
+        return collection.updateOne(query, { $set: args.input });
+      } if (args.type === 'INSERT') {
+        args.id = ShortId.generate();
+        return collection.insertOne(Object.assign({}, args.input, { id: args.id }));
+      } return collection.replaceOne(query, Object.assign({}, args.input, { id: args.id }));
+    }).then((x1, x2) => {
+      if (!fieldASTs || !args.id) return { id: args.id };
+      return exports.one(model)(source, { id: args.id }, context, fieldASTs);
+    });
   });
 };
 

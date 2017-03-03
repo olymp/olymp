@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter, DataLoader } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
-import orderBy from 'lodash/orderBy';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import { moment } from 'olymp/locale-de';
 import Items from '../../components/items';
 
@@ -23,9 +22,7 @@ import Items from '../../components/items';
       tags
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 @useGenericBlock({
   label: 'Gemeindebriefe',
   editable: false,
@@ -42,9 +39,9 @@ export default class GemeindebriefeBlock extends Component {
       return {
         ...x,
         bild: x.gemeindebrief,
-        date: moment(date).format('X'),
+        date: +moment(date),
         shortText: x.zusammenfassung || x.text,
-        header: <a href={x.gemeindebrief.url} target="_blank" rel="noopener noreferrer">{x.name}</a>,
+        header: x.gemeindebrief ? <a href={x.gemeindebrief.url} target="_blank" rel="noopener noreferrer">{x.name}</a> : x.name,
         subheader: <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr`}</span>,
       };
     });

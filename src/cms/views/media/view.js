@@ -3,7 +3,7 @@ import { Spin, Button } from 'antd';
 import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
-import Modal from '../modal';
+import { Modal } from '../../components';
 import Detail from './detail';
 import DetailMulti from './detail-multi';
 import Sidebar from './list-sidebar';
@@ -137,11 +137,11 @@ export default class MediaView extends Component {
 
           {selected.map(id =>
             <div key={id}>
-              <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} />
+              <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} aspect={aspect} />
             </div>
           )}
           <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
-            <Button key="submit" type="primary" size="large" onClick={this.onSaveCrop}>
+            <Button key="submit" type="primary" onClick={this.onSaveCrop}>
               Übernehmen
             </Button>&nbsp;
             <Button onClick={this.onClose}>Abbrechen</Button>
@@ -202,11 +202,9 @@ export default class MediaView extends Component {
             )}
           </div>
         </div>
-        <div className="col-md-4">
-          <div style={{ position: 'fixed', height: '100%', overflowY: 'auto' }}>
-            <div className="p-1">
-              {detail}
-            </div>
+        <div style={{ position: 'fixed', height: '100%', overflowY: 'auto', width: 'calc((100% - 340px) / 3)', right: 0 }}>
+          <div className="p-1">
+            {detail}
           </div>
         </div>
       </Modal>

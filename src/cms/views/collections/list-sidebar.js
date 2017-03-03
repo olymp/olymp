@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Link, collectionToCsvDownload } from 'olymp';
-import { Dropdown, Menu, Icon } from 'antd';
-import { resolveFieldValue } from '../../edits';
+import { Dropdown, Menu, Icon, Button } from 'antd';
+import { FieldValue } from 'olymp';
 import Sidebar from '../sidebar';
 import { getFilterMenu } from './filter';
 
@@ -30,19 +30,25 @@ export default class CollectionListSidebar extends Component {
     const startField = this.resolveFieldName(item, 'start');
     const endField = this.resolveFieldName(item, 'end');
     if (startField && endField && fieldName === startField) {
-      const start = resolveFieldValue(item[startField], meta, fieldProps);
-      const end = resolveFieldValue(item[endField], meta, fieldProps);
+      const start =!!item[startField] && (
+        <FieldValue value={item[startField]} meta={meta} fieldProps={fieldProps} />
+      );
+      const end = !!item[endField] && (
+        <FieldValue value={item[endField]} meta={meta} fieldProps={fieldProps} />
+      );
 
       if (start && end) {
-        return `${start} - ${end}`;
+        return <span>{start} bis<br />{end}</span>;
       } else if (start) {
-        return `Ab ${start}`;
+        return <span>Ab {start}</span>;
       } if (end) {
-        return `Bis ${end}`;
+        return <span>Bis {end}</span>;
       }
     }
 
-    return resolveFieldValue(item[fieldName] || defaultValue, meta, fieldProps);
+    return (
+      <FieldValue value={item[fieldName] || defaultValue} meta={meta} fieldProps={fieldProps} />
+    );
   }
 
   resolveFieldName = (item, field, defaultFieldName) => {
@@ -99,14 +105,21 @@ export default class CollectionListSidebar extends Component {
 
     const menu = (
       <Menu>
-        <Menu.Item key="1" disabled>Import</Menu.Item>
-        <Menu.Item key="2"><a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a></Menu.Item>
+        <Menu.Item key="1">
+          <a href="javascript:;" onClick={() => router.push(this.getLink({ id: null }))}>Hinzufügen</a>
+        </Menu.Item>
+        <Menu.Item key="2" disabled>Import</Menu.Item>
+        <Menu.Item key="3">
+          <a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a>
+        </Menu.Item>
       </Menu>
     );
     const actions = (
-      <Dropdown.Button overlay={menu}>
-        <Link to={this.getLink({ id: null })}><Icon type="plus" /></Link>
-      </Dropdown.Button>
+      <Dropdown overlay={menu}>
+        <Button shape="circle" size="large" onClick={() => router.push(this.getLink({ id: null }))}>
+          <Icon type="plus" />
+        </Button>
+      </Dropdown>
     );
 
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useItemEdit } from 'olymp/cms';
+import { useItemEdit } from 'olymp/slate';
 
 export default useItemEdit()(({ children, className, gemeindebrief, name }) => (
   <li className={className}>

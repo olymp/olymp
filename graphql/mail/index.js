@@ -1,5 +1,5 @@
 const compose = require('./templates/default');
-const fetch = require('node-fetch');
+const fetch = require('isomorphic-fetch');
 
 module.exports = ({ from, url, name, signature, uri }) => ({ to, subject, content }) => {
   if (uri.indexOf('mailgun://') === 0) uri = uri.split('ailgun://')[1];

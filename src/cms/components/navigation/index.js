@@ -17,12 +17,12 @@ const Plus = ({ location, page }) => (
 const Handle = sortableHandle(() => <span className="grippy" style={{ zIndex: 1, position: 'absolute', right: 0, top: 'calc(50% - 9px)', width: '15px', height: '100%' }} />);
 
 const Li = sortableElement((props) => {
-  const { renderNav, page, level, disabled, sortEndCreator, style } = props;
+  const { renderNav, page, level, readOnly, sortEndCreator, style } = props;
 
-  if (page.blocks || !disabled) {
+  if (page.blocks || !readOnly) {
     return (
       <li style={{ ...style, position: 'relative' }} className={cn({ 'nav-item': !level }, !level ? 'dropdown-mainmenu' : 'dropdown-submenu')} key={page.id}>
-        {!disabled ? <Handle /> : null}
+        {!readOnly ? <Handle /> : null}
         <Link to={page.href || page.path || '/'} className="dropdown-toggle" data-toggle="dropdown" activeClassName="active" style={!page.blocks ? { textDecoration: 'underline' } : {}}>
           {page.name}
         </Link>
@@ -42,13 +42,13 @@ const Li = sortableElement((props) => {
 });
 
 const Ul = sortableContainer((props) => {
-  const { items, className, children, location, level, disabled, page } = props;
+  const { items, className, children, location, level, readOnly, page } = props;
 
   return (
     <ul className={className || cn(className, !level ? 'nav navbar-nav' : 'dropdown-menu')}>
       {children}
-      {!disabled ? (
-        <li className="nav-item" style={{ textAlign: 'center', width: level ? '100%' : `${100 / (disabled ? items.length : items.length + 1)}%` }}>
+      {!readOnly ? (
+        <li className="nav-item" style={{ textAlign: 'center', width: level ? '100%' : `${100 / (readOnly ? items.length : items.length + 1)}%` }}>
           <Plus location={location} page={page} />
         </li>
       ) : null}
@@ -57,7 +57,7 @@ const Ul = sortableContainer((props) => {
 });
 
 const UlWrapped = (props) => {
-  const { level, disabled, rollen } = props;
+  const { level, readOnly, rollen } = props;
   let { items } = props;
 
   // Personen den Rollen-Seiten zuordnen
@@ -88,7 +88,7 @@ const UlWrapped = (props) => {
           index={index}
           key={page.id}
           page={page}
-          style={!level ? { width: `${100 / (disabled ? items.length : items.length + 1)}%` } : {}}
+          style={!level ? { width: `${100 / (readOnly ? items.length : items.length + 1)}%` } : {}}
         />
       ))}
     </Ul>
@@ -126,7 +126,7 @@ export default class Navigation extends Component {
       <UlWrapped
         level={0}
         items={nav || []}
-        disabled={!auth || !auth.user}
+        readOnly={!auth || !auth.user}
         axis="x"
         useDragHandle
         onSortEnd={this.onSortEnd(nav)}

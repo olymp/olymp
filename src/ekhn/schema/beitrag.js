@@ -14,6 +14,7 @@ module.exports = ({ schema }) => schema.addSchema({
     @collection(name: "Beitrag") @state @stamp {
       name: String
       # @start
+      # @label("Anzeigen ab")
       start: Date
       # @end
       ende: Date
@@ -25,6 +26,7 @@ module.exports = ({ schema }) => schema.addSchema({
       text: Json
       # @hint("Nur setzten, wenn es einen 'Weiterlesen'-Button zu 'text' geben soll!")
       zusammenfassung: Json
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

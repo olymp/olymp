@@ -15,6 +15,7 @@ module.exports = ({ schema }) => schema.addSchema({
       # @description
       name: String
       # @name
+      # @required
       datum: DateTime
       kommentar: Json
       # @color("#E6DCEA")
@@ -29,6 +30,7 @@ module.exports = ({ schema }) => schema.addSchema({
       pfarrer: [Person] @relation
       # @label("Organist/in")
       organist: Person @relation
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

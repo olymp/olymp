@@ -11,9 +11,12 @@ module.exports = ({ schema }) => schema.addSchema({
     # group:inhalt
     type Link implements CollectionInterface
     @collection(name: "Link") @state @stamp {
+      # @required
       name: String
       # @description
+      # @required
       url: String
+      # @label("Schlagworte")
       tags: [String]
     }
   `,

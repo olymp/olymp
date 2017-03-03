@@ -1,7 +1,6 @@
 const SitemapGenerator = require('./builder');
 const fs = require('fs');
 const path = require('path');
-const appRoot = require('app-root-dir').get();
 
 const defaultHook = (source, args, context) => {
   if (!context.user) throw new Error('Must be authenticated');
@@ -26,7 +25,7 @@ const regenerateSitemap = () => new Promise((yay, nay) => {
   generator.start();
 });
 const writeSitemap = (sitemap) => new Promise((yay, nay) => {
-  fs.writeFile(path.resolve(appRoot, 'public', 'sitemap.xml'), sitemap, (err) => {
+  fs.writeFile(path.resolve(KYT.PUBLIC_DIR, 'sitemap.xml'), sitemap, (err) => {
     if (err) nay(err);
     else yay(true);
   });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter, Link, slugify, DataLoader } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import sortBy from 'lodash/sortBy';
 import Items from '../../components/items';
 
@@ -38,9 +38,7 @@ import Items from '../../components/items';
       }
     }
   }
-`, {
-  options: () => ({ }),
-})
+`)
 @useGenericBlock({
   label: 'Über Uns',
   props: ['rolle'],
@@ -101,7 +99,7 @@ export default class RollenBlock extends Component {
             }))}
             identifier="person"
             pageSize={20}
-            style={{ marginTop: '2rem' }}
+            style={{ marginTop: '1rem' }}
           />
         ) : null}
 

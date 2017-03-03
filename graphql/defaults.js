@@ -178,6 +178,8 @@ exports.defaultTypes = `
     updatedBy: User
   }
   enum OPERATION_TYPE {
+    INSERT
+    UPDATE
     PATCH
     REMOVE
     REPLACE
@@ -187,6 +189,12 @@ exports.defaultTypes = `
     DRAFT
     ARCHIVED
     REMOVED
+  }
+  enum MUTATION_TYPE {
+    UPDATE
+    REPLACE
+    REMOVE
+    INSERT
   }
   enum SORT_DIRECTION {
     ASC,

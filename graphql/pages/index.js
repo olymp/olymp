@@ -4,13 +4,13 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
     query: `
       page: Page @query
       pageList: [Page] @query
-      global: Global @query
-      globalList: [Global] @query
+      settings: Settings @query
+      settingsList: [Settings] @query
     `,
     mutation: `
       page: Page @mutate
       reorderPages(id: String, ids: [String], order: [Int]): [Page]
-      global: Global @mutate
+      settings: Settings @mutate
     `,
     resolvers: {
       Mutation: {
@@ -20,8 +20,8 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       },
     },
     hooks: {
-      before: (args, { model, isMutation }, { user }) => {
-        if (isMutation && model === 'Page' && !user) {
+      before: (args, { model, type }, { user }) => {
+        if (type === 'MUTATION' && model === 'Page' && !user) {
           throw new Error('Please log in');
         }
       },
@@ -49,10 +49,15 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         showHeadings: Boolean
         ${attributes || ''}
       }
-      type Global implements CollectionInterface @collection(name: "Global") @stamp @state {
-        name: String
+      type Settings {
+        id: String
+        # @label("Titel")
         title: String
+        # @label("Beschreibung")
         description: String
+        # @label("Autor")
+        author: String
+        # @label("Schlagworte")
         tags: [String]
         ${globalAttributes || ''}
       }
@@ -65,16 +70,6 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
     collection.findOne({ }).then((one) => {
       if (one) return;
       adapter.client.collection('page').insertOne(
-        { id: require('shortid').generate(), name: 'Home', slug: '/', state: 'PUBLISHED' }
-      );
-    }).catch(err => console.log(err));
-  }, 5000);
-  setTimeout(() => {
-    if (!adapter.client) return;
-    const collection = adapter.client.collection('global');
-    collection.findOne({ }).then((one) => {
-      if (one) return;
-      adapter.client.collection('global').insertOne(
         { id: require('shortid').generate(), name: 'Home', slug: '/', state: 'PUBLISHED' }
       );
     }).catch(err => console.log(err));

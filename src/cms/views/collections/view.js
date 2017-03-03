@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, withItems } from 'olymp';
-import Modal from '../modal';
+import { Modal } from '../../components';
 import Detail from './detail';
 import List from './list-sidebar';
 

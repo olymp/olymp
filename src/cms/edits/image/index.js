@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Image from './cool-image';
+import { Image, withLightbox } from 'olymp';
 import withImageUpload from './with-image-upload';
-import withLightbox from './with-lightbox';
 
 const defaultImage = {
   url: '/img/placeholder.jpg',

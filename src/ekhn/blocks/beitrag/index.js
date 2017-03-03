@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { graphql, gql, withRouter, DataLoader } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/cms';
-import difference from 'lodash/difference';
+import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import orderBy from 'lodash/orderBy';
 import { moment } from 'olymp/locale-de';
 import Items from '../../components/items';
 
-const now = moment().format('x');
+const now = +moment();
 
 @withRouter
 @graphql(gql`
@@ -135,7 +134,7 @@ export default class BeitragBlock extends Component {
       return {
         ...x,
         archived,
-        date: moment(date).format('X'),
+        date: +moment(date),
         shortText: x.zusammenfassung || x.text,
         text,
         leading: !!(x.hauptbeitrag && !archived),

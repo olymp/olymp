@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { cn } from 'olymp';
-import { SlateMateFrontend, Image, useItemEdit } from 'olymp/cms';
+import { cn, Image } from 'olymp';
+import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
 import { moment } from 'olymp/locale-de';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';
@@ -13,7 +13,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
   const backgroundColor = farbe ? tinycolor(eqColor)
     .toRgbString() : null;
   const color = farbe ? tinycolor(eqColor)
-    .darken(45)
+    .darken(40)
     .toRgbString() : null;
 
   const date = (date, time) => (
@@ -27,9 +27,11 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
   const startDate = moment(start).format('DD. MMMM YYYY');
   const endeDate = moment(ende).format('DD. MMMM YYYY');
 
-  if (startDate === endeDate) {
+  if (startDate === endeDate && !moment(ende).isSame(start)) {
     const timeString = <span>{moment(start).format('HH:mm')} Uhr - {moment(ende).format('HH:mm')} Uhr</span>;
     dateString = date(startDate, !ganztaegig && timeString);
+  } else if (startDate === endeDate) {
+    dateString = date(startDate, !ganztaegig && <span>{moment(start).format('HH:mm')} Uhr</span>);
   } else {
     dateString = (
       <span>
@@ -40,7 +42,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
   }
 
   return (
-    <div className={cn('termin row', className)} style={{ backgroundColor }}>
+    <div className={cn(`termin row ${!backgroundColor || tinycolor(backgroundColor).getBrightness() > 180 ? 'light' : 'dark'}`, className)} style={{ backgroundColor }}>
       {children}
 
       <div className="date col-xs-5 col-sm-3">

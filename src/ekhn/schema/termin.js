@@ -12,8 +12,10 @@ module.exports = ({ schema }) => schema.addSchema({
     # group:termine
     type Termin implements CollectionInterface
     @collection(name: "Termin") @state @stamp {
+      # @required
       name: String
       # @description
+      # @required
       # @start
       start: DateTime
       # @end
@@ -23,6 +25,7 @@ module.exports = ({ schema }) => schema.addSchema({
       bild: Image
       ort: String
       farbe: Color
+      # @label("Schlagworte")
       tags: [String]
     }
   `,
