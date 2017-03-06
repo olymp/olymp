@@ -16,6 +16,9 @@ import App from '@app';
 import template from './template';
 import { parseQuery, stringifyQuery } from 'olymp';
 import 'source-map-support/register';
+import createRedisStore from 'connect-redis';
+const RedisStore = createRedisStore(session);
+
 // import { render, template } from 'rapscallion';
 
 global.fetch = fetch;
@@ -23,20 +26,14 @@ env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const port = parseInt(process.env.PORT || KYT.SERVER_PORT, 10);
 const launchAPI = () => {
-  if (process.env.NODE_ENV !== 'production') {
-    app.use(session({ secret: 'keyboard cat' }));
-  } else {
-    app.useSession = (url, getArgs) => {
-      app.set('trust proxy', 2);
-      if (!getArgs) {
-        getArgs = url;
-        url = null;
-      }
-      const args = getArgs(session);
-      if (url) app.use(url, session(args));
-      else app.use(session(args));
-    };
-  }
+  if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
+  app.use(session({
+    store: new RedisStore({ options: process.env.REDIS_URI }),
+    resave: false,
+    saveUninitialized: true,
+    secure: process.env.NODE_ENV === 'production',
+    secret: process.env.SESSION_SECRET || 'keyboard cat',
+  }));
   try {
     const server = require('@root/server');
     if (server.default) {
