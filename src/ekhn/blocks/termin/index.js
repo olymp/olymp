@@ -190,7 +190,7 @@ export default class TerminBlock extends Component {
 
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
-        <DataLoader style={style} isEmpty={(data.termine && data.termine.length) || (data.gottesdienste && data.gottesdienste.length)} placeholder="Keine Termine vorhanden" className="items">
+        <DataLoader style={style} isEmpty={(data.termine && data.termine.length) || (data.gottesdienste && data.gottesdienste.length)} placeholder="Keine Termine vorhanden" loading="Termine werden geladen" className="items">
           <div className="item" style={{ padding: '.5rem' }}>
             <h1>{title || type}</h1>
 

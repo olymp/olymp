@@ -117,8 +117,7 @@ module.exports = ({ adapter, resolvers }) => ({
             args.query = query;
           }
           return args;
-        }
-        else if (type === 'MUTATION' && args.input && !args.input.state && !args.input.id) {
+        } else if (type === 'MUTATION' && args.input && !args.input.state && !args.id) {
           args.input.state = 'DRAFT';
           return args;
         }

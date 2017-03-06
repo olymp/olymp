@@ -48,7 +48,7 @@ export default class GemeindebriefeBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader className={className} style={style} isEmpty={data.gemeindebriefe} placeholder="Keine Gemeindebriefe vorhanden">
+        <DataLoader className={className} style={style} isEmpty={data.gemeindebriefe} placeholder="Keine Gemeindebriefe vorhanden" loading="Gemeindebriefe werden geladen">
           <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
           {children}
         </DataLoader>
