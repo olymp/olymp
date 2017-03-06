@@ -3,14 +3,11 @@ import { withRouter as withRouterLegacy, Link as LinkLegacy } from 'react-router
 export { Route, Switch, Redirect } from 'react-router-dom';
 
 export const Link = (props) => {
-  const newProps = { ...props };
-  if (newProps.query) {
-    newProps.search = stringifyQuery(newProps.query);
-    delete newProps.query;
+  if (props.to && props.to.query) {
+    props.to.search = stringifyQuery(props.to.query);
+    delete props.to.query;
   }
-  return (
-    <LinkLegacy {...newProps} />
-  );
+  return <LinkLegacy {...props} />;
 };
 
 export const withRouter = (WrappedComponent) => {
