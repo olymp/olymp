@@ -38,7 +38,7 @@ export default class GlaubensimpulsBlock extends Component {
     const { caption } = (bild || {});
 
     return (
-      <DataLoader className={className} style={style} isEmpty={data.glaubensimpuls} placeholder="Kein Glaubensimpuls vorhanden">
+      <DataLoader className={className} style={style} isEmpty={data.glaubensimpuls} placeholder="Kein Glaubensimpuls vorhanden" loading="Glaubensimpuls wird geladen">
         <Image value={bild} lightbox width="100%" />
         {!isBlock && (
           <div className="glaubensimpuls_content">

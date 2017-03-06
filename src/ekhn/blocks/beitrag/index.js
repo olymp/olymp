@@ -129,7 +129,7 @@ export default class BeitragBlock extends Component {
       const archived = !!(x.ende && moment(x.ende).isBefore());
       // const archivText = archived ? <span style={{ color: 'red' }}><br />Archiv, gültig bis {moment(x.ende).format('DD. MMMM YYYY, HH:mm')} Uhr</span> : null;
       const text = x.text || x.zusammenfassung;
-      const more = x.zusammenfassung ? 'Artikel weiterlesen' : 'Artikel ansehen';
+      const more = x.zusammenfassung ? 'Artikel weiterlesen' : false;
 
       return {
         ...x,
@@ -147,7 +147,7 @@ export default class BeitragBlock extends Component {
 
     return (
       <GenericBlock {...this.props}>
-        <DataLoader className={className} style={style} isEmpty={data.beitragList} placeholder="Keine Beiträge vorhanden">
+        <DataLoader className={className} style={style} isEmpty={data.beitragList} placeholder="Keine Beiträge vorhanden" loading="Beiträge werden geladen">
           <Items items={beitraege} masonry={masonry} identifier="beitrag" />
 
           {children}

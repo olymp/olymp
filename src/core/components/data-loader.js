@@ -1,12 +1,12 @@
 import React from 'react';
 import { Spin } from 'antd';
 
-export default ({ isEmpty, placeholder = 'Keine Daten vorhanden', children, style, className }) => {
+export default ({ isEmpty, placeholder = 'Keine Daten vorhanden', loading = 'Daten werden geladen', children, style, className }) => {
   const containerStyle = { width: '100%', minHeight: 100, ...style };
-  const text = (
+  const text = content => (
     <div style={{ textAlign: 'center', display: 'block', padding: '2rem', margin: 0, ...containerStyle }}>
       <h1>
-        {placeholder}
+        {content}
       </h1>
     </div>
   );
@@ -14,7 +14,7 @@ export default ({ isEmpty, placeholder = 'Keine Daten vorhanden', children, styl
   if (isEmpty) {
     return Array.isArray(isEmpty) && !isEmpty.length ? (
       <div style={containerStyle} className={className}>
-        {text}
+        {text(placeholder)}
       </div>
     ) : (
       <div style={style} className={className}>
@@ -25,7 +25,7 @@ export default ({ isEmpty, placeholder = 'Keine Daten vorhanden', children, styl
 
   return (
     <Spin style={containerStyle} size="large" className={className}>
-      {text}
+      {text(loading)}
     </Spin>
   );
 };
