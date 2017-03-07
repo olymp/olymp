@@ -18,6 +18,14 @@ export class BrowserRouter extends Component {
     const history = createHistory(this.props);
     history.location.pathname = decodeURIComponent(history.location.pathname);
     this.history = history;
+
+    if (navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
   }
 
   render() {
