@@ -34,7 +34,6 @@ var queryLoader = new DataLoader(queries => new Promise(resolve => {
 
 exports.list = (model, propertyKey, propertyKey2) => (source, args, context, fieldASTs) => {
   const { adapter, beforeHook, afterHook, ast } = context;
-  console.log('LIST', model, propertyKey, propertyKey2);
   const type = ast.definitions.find(x => x.name && x.name.value === model);
   const hookArgs = Object.assign({ model, propertyKey, type: 'QUERY' }, fieldASTs);
   return beforeHook(args, hookArgs).then((args) => {
