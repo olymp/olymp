@@ -57,9 +57,7 @@ try {
   const server = require('@root/server');
   if (server.default) {
     server.default(app);
-  } else {
-    server(app);
-  }
+  } else server(app);
 } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
 
 // Setup server side routing.
@@ -77,7 +75,7 @@ app.get('*', (request, response) => {
     ssrMode: true,
   });
   const renderer = createRenderer({ selectorPrefix: '_' });
-  const context = {};
+  const context = { };
 
   // Create our React application and render it into a string.
   const [pathname, search] = decodeURI(request.url).split('?');
