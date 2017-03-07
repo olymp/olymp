@@ -52,7 +52,9 @@ module.exports = {
         ]
       }));
     }
-    // baseConfig.plugins[0].definitions.KYT.PUBLIC_DIR = JSON.stringify(path.resolve(process.cwd(), 'public'));
+
+    baseConfig.plugins[0].definitions.GM_KEY = process.env.GM_KEY;
+
     if (type === 'server') baseConfig.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
     baseConfig.module.rules = baseConfig.module.rules.map(x => {
       if (x.loader === 'babel-loader') {
@@ -91,6 +93,8 @@ module.exports = {
         ],
       });
     }
+
+    console.log(JSON.stringify(baseConfig, null, 2));
     return baseConfig;
   },
 };
