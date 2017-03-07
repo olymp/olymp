@@ -3,8 +3,7 @@ import { Link } from 'olymp';
 import withAuth from './with-auth';
 import { notification, Modal, Form, Button, Input } from 'antd';
 
-@withAuth
-export default class AuthForgot extends Component {
+class AuthForgot extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -44,3 +43,5 @@ export default class AuthForgot extends Component {
     );
   }
 }
+
+export default withAuth(AuthForgot);

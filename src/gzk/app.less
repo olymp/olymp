@@ -10,6 +10,17 @@ body a {
 }
 body, html {
   .frontend {
+    p {
+      text-align: justify;
+      hyphens: auto;
+    }
+    li.widget > h5 {
+      border-bottom: 0px !important;
+      &::before {
+        content: '';
+        display: none!important;
+      }
+    }
       /*.no-container {
         width: 100vw;
         left: ~"calc(-50vw + 50%)";

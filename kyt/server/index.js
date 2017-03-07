@@ -5,7 +5,7 @@ import path from 'path';
 import React from 'react';
 import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
-import { StaticRouter, withRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
@@ -79,7 +79,6 @@ app.get('*', (request, response) => {
 
   // Create our React application and render it into a string.
   const [pathname, search] = decodeURI(request.url).split('?');
-  console.log({ pathname, search, query: parseQuery(search) });
   const reactApp = (
     <StaticRouter location={{ pathname, search, query: parseQuery(search) }} context={context}>
       <ApolloProvider client={client}>

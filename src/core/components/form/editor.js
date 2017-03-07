@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
-import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor, TagsEditor, FormEditor } from 'olymp/edits';
+import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor, TagsEditor, FormEditor, SuggestEditor } from 'olymp/edits';
 import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
@@ -68,7 +68,7 @@ export default class FieldEditor extends Component {
 
   fieldToEditor = (props) => {
     const { edits, className, editorClassName, style, editorStyle, field, label } = this.props;
-    const { idField, start } = field['@'];
+    const { idField, start, suggest } = field['@'];
     const { type, name } = field;
 
     const editProps = {
@@ -94,22 +94,22 @@ export default class FieldEditor extends Component {
     if (idField && idField.type) {
       if (idField.type.kind === 'LIST' && idField.type.ofType) {
         return <DetailEditor {...editProps} tags typeName={idField.type.ofType.name} />;
-      }
-
-      return <DetailEditor {...editProps} typeName={idField.type.name} />;
+      } return <DetailEditor {...editProps} typeName={idField.type.name} />;
     }
     if (type.kind === 'LIST') {
       if (type.ofType.name === 'String') {
         if (name === 'tags') {
           return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
-        }
-        return <Select {...editProps} tags searchPlaceholder="Suche ..." />;
+        } return <Select {...editProps} tags searchPlaceholder="Suche ..." />;
       } if (type.ofType.name.indexOf('Nested') === 0) {
         return <FormEditor {...editProps} typeName={type.ofType.name} type={type} />;
       } return null;
     }
     if (type.kind === 'OBJECT') {
       return null;
+    }
+    if (suggest) {
+      return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
     }
     if (start) {
       if (type.name === 'Date') return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />;

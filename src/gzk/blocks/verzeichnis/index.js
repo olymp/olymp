@@ -6,7 +6,7 @@ import { Spin } from 'antd';
 import Carousel from '../../components/carousel';
 import './theme.less';
 
-const fieldNames = 'id slug peak { url } telefon farbe name kurz fachrichtungen personen { name }';
+const fieldNames = 'id slug peak { url } telefon farbe name kurz fachrichtungen personen { id name }';
 @withRouter
 @graphql(gql`
   query einrichtungList {

@@ -23,7 +23,7 @@ class Menu extends Component {
     const to = { ...location, query: { '@page': page ? page.id : null } };
     const style = { paddingLeft: 0, paddingRight: 0 };
     return this.renderUtil(renderPlus, { ...props, to }) || (
-      <Link to={to} style={style} className="item" activeClassName="active">
+      <Link to={to} style={style} className="item">
         <i className="fa fa-plus-square-o" />
       </Link>
     );
@@ -47,7 +47,7 @@ class Menu extends Component {
       <SortElement key={page.id} index={index}>
         {this.renderUtil(renderItem, props) || <li style={{ position: 'relative' }} className={classes} key={page.slug}>
           {!disabled ? this.renderHandle(props) : null}
-          <Link to={!isHeading ? (page.href || page.slug) : `${parent.slug}#${page.slug}`} key={page.slug} className={classes2} activeClassName="active">
+          <Link to={!isHeading ? (page.href || page.slug) : `${parent.slug}#${page.slug}`} key={page.slug} className={classes2}>
             {!isHeading ? page.name : page.text}
           </Link>
           {children}

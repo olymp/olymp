@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'olymp';
 import { Modal, Form, Input, notification } from 'antd';
 import withAuth from './with-auth';
 

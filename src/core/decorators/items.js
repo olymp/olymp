@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import withCollection from './collection';
 import isEqual from 'lodash/isEqual';
 import lowerFirst from 'lodash/lowerFirst';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from '../router';
 
 export default ({ name, state } = {}) => (WrappedComponent) => {
   @withCollection(name || '')
