@@ -40,15 +40,16 @@ app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'build', 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
 
-if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
+console.log('USING REDIS?', process.env.REDIS_URL, process.env.NODE_ENV);
+// if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
 app.use(session({
-  store: process.env.REDIS_URL ? new RedisStore({ options: process.env.REDIS_URL }) : undefined,
+  store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) : undefined,
   resave: false,
-  saveUninitialized: false,
-  secure: process.env.NODE_ENV === 'production',
+  saveUninitialized: true,
+  proxy: process.env.NODE_ENV === 'production',
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   cookie: {
-    secure: 'auto',
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 60000000,
   },
 }));
@@ -64,6 +65,7 @@ try {
 
 // Setup server side routing.
 app.get('*', (request, response) => {
+  console.log(request.session, request.sessionID);
   const networkInterface = createNetworkInterface({
     uri: `http://localhost:${port}/graphql`,
     opts: {
