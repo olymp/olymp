@@ -53,7 +53,7 @@ module.exports = {
       }));
     }
 
-    baseConfig.plugins[0].definitions.GM_KEY = process.env.GM_KEY ? JSON.stringify(process.env.GM_KEY) : undefined;
+    baseConfig.plugins[0].definitions['process.env.GM_KEY'] = process.env.GM_KEY ? JSON.stringify(process.env.GM_KEY) : undefined;
 
     if (type === 'server') baseConfig.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
     baseConfig.module.rules = baseConfig.module.rules.map(x => {
