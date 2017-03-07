@@ -25,24 +25,6 @@ global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const port = parseInt(process.env.PORT || KYT.SERVER_PORT, 10);
-const launchAPI = () => {
-  if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
-  app.use(session({
-    store: new RedisStore({ options: process.env.REDIS_URI }),
-    resave: false,
-    saveUninitialized: true,
-    secure: process.env.NODE_ENV === 'production',
-    secret: process.env.SESSION_SECRET || 'keyboard cat',
-  }));
-  try {
-    const server = require('@root/server');
-    if (server.default) {
-      server.default(app);
-    } else {
-      server(app);
-    }
-  } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
-};
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
@@ -58,7 +40,27 @@ app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'build', 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
 
-launchAPI();
+if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
+app.use(session({
+  store: process.env.REDIS_URL ? new RedisStore({ options: process.env.REDIS_URL }) : undefined,
+  resave: false,
+  saveUninitialized: false,
+  secure: process.env.NODE_ENV === 'production',
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
+  cookie: {
+    secure: 'auto',
+    maxAge: 60000000,
+  },
+}));
+
+try {
+  const server = require('@root/server');
+  if (server.default) {
+    server.default(app);
+  } else {
+    server(app);
+  }
+} catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
 
 // Setup server side routing.
 app.get('*', (request, response) => {

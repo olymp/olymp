@@ -21,19 +21,6 @@ module.exports = (server, options) => {
   // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
 
-  if (options.sessions && adapter && server.useSession) {
-    server.useSession('/graphql', session => ({
-      store: adapter.createSessionStore(session),
-      resave: false,
-      saveUninitialized: false,
-      secret: options.sessions.secret || options.sessions,
-      cookie: {
-        secure: 'auto',
-        maxAge: 60000000,
-      },
-    }));
-  }
-
   const Schema = createSchema({ adapter });
   const mail = options.mail ? createMail(options.mail) : null;
   createSitemap(Schema, {});
