@@ -8,6 +8,7 @@ import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import App from '@app';
+import { AppContainer } from "react-hot-loader";
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -32,13 +33,15 @@ const mountNode = document.getElementById('css-markup');
 
 function renderApp() {
   render(
-    <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
-      <ApolloProvider client={client}>
-        <Provider renderer={renderer} mountNode={mountNode}>
-          <App />
-        </Provider>
-      </ApolloProvider>
-    </BrowserRouter>,
+    <AppContainer>
+      <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
+        <ApolloProvider client={client}>
+          <Provider renderer={renderer} mountNode={mountNode}>
+            <App />
+          </Provider>
+        </ApolloProvider>
+      </BrowserRouter>
+    </AppContainer>,
     container,
   );
 }

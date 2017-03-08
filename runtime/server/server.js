@@ -63,9 +63,6 @@ try {
 
 // Setup server side routing.
 app.get('*', (request, response) => {
-  response.send('12121');
-});
-app.get('*', (request, response) => {
   const networkInterface = createNetworkInterface({
     uri: `http://localhost:${port}/graphql`,
     opts: {
@@ -101,8 +98,8 @@ app.get('*', (request, response) => {
     // Generate the html response.
     const html = template({
       root: reactAppString,
-      jsBundle: 'bundle.js',
-      cssBundle: 'bundle.css',
+      jsBundle: 'http://localhost:3012/main.js',
+      // cssBundle: 'http://localhost:3012/main.css',
       cssMarkup,
       helmet: Helmet.rewind(),
       initialState: { [client.reduxRootKey]: client.getInitialState() },

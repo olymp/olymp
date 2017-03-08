@@ -1,12 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
+const AssetsPlugin = require('assets-webpack-plugin');
 
-const theme = Object.assign({}, {}, {});
+let theme = require('../default-theme')();
+if (fs.existsSync(path.resolve(process.cwd(), 'theme.js'))) {
+  theme = Object.assign({}, theme, require(path.resolve(process.cwd(), 'theme.js'))());
+}
 const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..');
 
-module.exports = ({
+module.exports = (port) => ({
   node: {
     __dirname: true,
     __filename: true
@@ -42,10 +46,11 @@ module.exports = ({
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"development"',
     }),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-    new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }),
-    new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'),
+    new AssetsPlugin({ filename: 'publicAssets.json', path: path.resolve(process.cwd(), 'build') }),
   ],
   module: {
     rules: [{
@@ -63,13 +68,9 @@ module.exports = ({
     }, {
       test: /\.less$/,
       use: [
-        'style',
-        {
-          loader: 'css',
-          options: { modules: false, sourceMap: true },
-        },
-        'postcss',
-        `less?{"modifyVars":${JSON.stringify(theme)}}`,
+        'style-loader',
+        { loader: 'css-loader', options: { modules: false, sourceMap: true } },
+        `less-loader?{"modifyVars":${JSON.stringify(theme)}}`,
       ],
     }, {
       test: /\.(js|jsx)$/,
@@ -86,14 +87,14 @@ module.exports = ({
         // this is a loader-specific option and can't be put in a babel preset
         cacheDirectory: false,
         presets: [
-          require.resolve('babel-preset-kyt-react'),
+          'react',
         ],
         plugins: [
-          require.resolve('babel-plugin-transform-object-rest-spread'),
-          require.resolve('babel-plugin-transform-es2015-destructuring'),
-          require.resolve('babel-plugin-transform-decorators-legacy'),
-          require.resolve('babel-plugin-transform-class-properties'),
-          [require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }],
+          'transform-object-rest-spread',
+          'transform-es2015-destructuring',
+          'transform-decorators-legacy',
+          'transform-class-properties',
+          ['import', { libraryName: 'antd', style: true }],
         ],
       },
     }],
@@ -102,24 +103,15 @@ module.exports = ({
   entry: {
     main: [
       'react-hot-loader/patch',
-      'babel-polyfill',
-      'webpack-hot-middleware/client?reload=true&path=http://localhost:30051/__webpack_hmr',
-      path.resolve(__dirname, 'client'),
+      `webpack-dev-server/client?http://localhost:${port}`,
+      'webpack/hot/only-dev-server',
+      require.resolve(path.resolve(__dirname, 'client')),
     ]
   },
   output: {
     path: path.resolve(appRoot, 'build', 'client'),
     filename: '[name].js',
-    chunkFilename: '[name]-[chunkhash].js',
-    publicPath: 'http://localhost:30051/',
-    libraryTarget: 'var'
-  },
-  devServer: {
-    publicPath: 'http://localhost:30051/',
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
-    noInfo: true,
-    quiet: true
+    // chunkFilename: '[name]-[chunkhash].js',
+    publicPath: `http://localhost:${port}/`,
   }
 });
