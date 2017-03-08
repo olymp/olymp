@@ -5,9 +5,9 @@ export default ({ helmet, cssBundle, cssMarkup, jsBundle, root, initialState }) 
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
     <meta charSet="utf-8" />
-    <meta httpEquiv="Content-Language" content="de" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="de" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="mask-icon" color="#FBA139" href="logo.svg">
     <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
@@ -36,6 +36,7 @@ export default ({ helmet, cssBundle, cssMarkup, jsBundle, root, initialState }) 
   <body>
     <div id="app"><div>${root}</div></div>
     <script type='text/javascript'>window.__APP_STATE__=${serialize(initialState)}</script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
     <script src="${jsBundle}"></script>
   </body>
 </html>

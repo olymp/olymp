@@ -9,7 +9,7 @@ const olympRoot = path.resolve(__dirname, '..');
 
 module.exports = ({
   watch: true,
-  // devtool: 'source-map',
+  devtool: 'source-map',
   resolve: {
     extensions: [
       '.js',
@@ -40,7 +40,7 @@ module.exports = ({
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"development"',
     }),
-    new StartServerPlugin('server.js'),
+    new StartServerPlugin('main.js'),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
@@ -69,8 +69,10 @@ module.exports = ({
       test: /\.(js|jsx)$/,
       loader: 'babel-loader',
       include: [
+        path.resolve(appRoot, 'server'),
         path.resolve(appRoot, 'app'),
         path.resolve(olympRoot, 'src'),
+        path.resolve(olympRoot, 'graphql'),
         path.resolve(__dirname),
       ],
       // babel configuration should come from presets defined in the user's
@@ -84,11 +86,11 @@ module.exports = ({
           'react',
         ],
         plugins: [
-          require.resolve('babel-plugin-transform-object-rest-spread'),
-          require.resolve('babel-plugin-transform-es2015-destructuring'),
-          require.resolve('babel-plugin-transform-decorators-legacy'),
-          require.resolve('babel-plugin-transform-class-properties'),
-          [require.resolve('babel-plugin-import'), { libraryName: 'antd', style: true }],
+          'transform-object-rest-spread',
+          'transform-es2015-destructuring',
+          'transform-decorators-legacy',
+          'transform-class-properties',
+          ['import', { libraryName: 'antd', style: true }],
         ],
       },
     }],
@@ -116,7 +118,8 @@ module.exports = ({
   ],
   output: {
     path: path.resolve(appRoot, 'build', 'server'),
-    filename: 'server.js',
+    filename: 'main.js',
+    // publicPath: `http://localhost:30051/`,
     // chunkFilename: '[name]-[chunkhash].js',
     // publicPath: 'http://localhost:30051/',
     // libraryTarget: 'commonjs2'

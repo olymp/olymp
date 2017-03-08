@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+const env = require('node-env-file');
+env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const command = process.argv[process.argv.length - 1];
 
@@ -35,18 +37,6 @@ if (['start', 'build'].includes(command)) {
 }
 
 if (command === 'dev') {
-  /*require('babel-register')({
-    presets: [
-      [require.resolve('babel-preset-env'), { targets: { node: true } }],
-      require.resolve('babel-preset-kyt-react'),
-    ],
-    only: [
-      path.resolve(__dirname, '..', 'src'),
-      path.resolve(__dirname, '..', 'runtime'),
-      // path.resolve(process.cwd(), 'universally.config.js')
-    ],
-  });
-  return require('../runtime/server');*/
   webpack(require(path.resolve(__dirname, '..', 'runtime', 'config.server.dev')), (err, stats) => {
     if (err) console.log('ERROR', err || stats.hasErrors());
     const jsonStats = stats.toJson();
@@ -54,6 +44,16 @@ if (command === 'dev') {
     if (jsonStats.warnings.length > 0) console.warn(jsonStats.warnings);
     console.log('Server bundle done.');
   });
+  var webpackDevServer = require("webpack-dev-server");
+  const port = parseInt(process.env.PORT, 10) + 1;
+  var compiler = webpack(require(path.resolve(__dirname, '..', 'runtime', 'config.client.dev'))(port));
+  var server = new webpackDevServer(compiler, {
+    host: 'localhost',
+    port,
+    historyApiFallback: true,
+    hot: true,
+  });
+  server.listen(port);
   return;
 }
 if (command === 'start') return require(path.resolve(process.cwd(), 'build', 'server', 'main'));
