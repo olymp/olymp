@@ -14,7 +14,7 @@ import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import template from './template';
-import { parseQuery, stringifyQuery } from 'olymp';
+import { parseQuery } from 'olymp';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 const RedisStore = createRedisStore(session);
@@ -26,8 +26,9 @@ env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const port = parseInt(process.env.PORT || KYT.SERVER_PORT, 10);
 
-const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
+// const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
+app.version = +new Date();
 
 // Remove annoying Express header addition.
 app.disable('x-powered-by');
@@ -61,6 +62,9 @@ try {
 } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
 
 // Setup server side routing.
+app.get('*', (request, response) => {
+  response.send('12121');
+});
 app.get('*', (request, response) => {
   const networkInterface = createNetworkInterface({
     uri: `http://localhost:${port}/graphql`,
@@ -97,8 +101,8 @@ app.get('*', (request, response) => {
     // Generate the html response.
     const html = template({
       root: reactAppString,
-      jsBundle: clientAssets.main.js,
-      cssBundle: clientAssets.main.css,
+      jsBundle: 'bundle.js',
+      cssBundle: 'bundle.css',
       cssMarkup,
       helmet: Helmet.rewind(),
       initialState: { [client.reduxRootKey]: client.getInitialState() },
@@ -123,4 +127,4 @@ app.get('*', (request, response) => {
   });
 });
 
-app.listen(port);
+export default app;

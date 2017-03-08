@@ -34,7 +34,19 @@ if (['start', 'build'].includes(command)) {
   process.env.NODE_ENV = 'production';
 }
 
-/*if (command === 'dev') {
+if (command === 'dev') {
+  /*require('babel-register')({
+    presets: [
+      [require.resolve('babel-preset-env'), { targets: { node: true } }],
+      require.resolve('babel-preset-kyt-react'),
+    ],
+    only: [
+      path.resolve(__dirname, '..', 'src'),
+      path.resolve(__dirname, '..', 'runtime'),
+      // path.resolve(process.cwd(), 'universally.config.js')
+    ],
+  });
+  return require('../runtime/server');*/
   webpack(require(path.resolve(__dirname, '..', 'runtime', 'config.server.dev')), (err, stats) => {
     if (err) console.log('ERROR', err || stats.hasErrors());
     const jsonStats = stats.toJson();
@@ -43,7 +55,7 @@ if (['start', 'build'].includes(command)) {
     console.log('Server bundle done.');
   });
   return;
-}*/
+}
 if (command === 'start') return require(path.resolve(process.cwd(), 'build', 'server', 'main'));
 if (fs.existsSync(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'))) {
   require(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'));
