@@ -10,7 +10,7 @@ module.exports = ({ adapter } = {}) => {
     let moduleTypeDefinitions = [];
     let moduleHooks = { before: [], after: [] };
     let moduleMutations = ['hello: String'];
-    let moduleResolvers = { Query: { hello: () => 'World!' }, Mutation: { hello: () => 'World!' } };
+    let moduleResolvers = { Query: { hello: () => 'World23423!' }, Mutation: { hello: () => 'World2!' } };
 
     Object.keys(_schemas).forEach((schemaName) => {
       const { query, mutation, resolvers, schema, hooks } = _schemas[schemaName];
