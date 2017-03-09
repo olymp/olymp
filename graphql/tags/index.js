@@ -8,6 +8,7 @@ module.exports = (schema, { adapter }) => {
     name: 'tag',
     query: `
       tags: [Tag]
+      suggestions(collection: String, field: String): [Tag]
     `,
     resolvers: {
       Query: {
@@ -24,6 +25,15 @@ module.exports = (schema, { adapter }) => {
             return result;
           }, []);
           return orderBy(result, ['count', 'id'], ['desc', 'asc']);
+        }),
+        suggestions: (source, args) => adapter.client.collection(args.collection.toLowerCase()).find({}, { [args.field]: 1 }).toArray().then((array) => {
+          const grouped = groupBy(array, args.field);
+          const result = Object.keys(grouped).reduce((result, item) => {
+            if (item === 'undefined') return result;
+            result.push({ id: item, count: grouped[item].length });
+            return result;
+          }, []);
+          return orderBy(result, ['count', args.field], ['desc', 'asc']);
         }),
       },
     },

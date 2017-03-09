@@ -1,5 +1,4 @@
 const MongoClient = require('bluebird').promisifyAll(require('mongodb')).MongoClient;
-const createSessionStore = require('./session');
 const ShortId = require('shortid');
 
 module.exports = config => {
@@ -73,10 +72,6 @@ module.exports = config => {
     write,
     list,
     remove,
-    createSessionStore: (session) => {
-      const Session = createSessionStore(session);
-      return new Session({ url: config.url });
-    },
   };
 
   MongoClient.connect(config.url, (err, db) => {

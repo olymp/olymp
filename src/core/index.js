@@ -22,4 +22,5 @@ export * from './components';
 export * from './decorators';
 
 // EXTERNS
+export * from './router';
 export * from './extern';

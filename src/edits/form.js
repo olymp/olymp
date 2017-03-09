@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withCollection } from '../core/decorators';
-import { FormItem } from '../core/components';
+import FormItem from '../core/components/form/item';
 import { Button, Collapse } from 'antd';
 
 const fieldNames = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
@@ -36,15 +36,14 @@ export default class SubForm extends Component {
 
   render() {
     const { value, collection, onChange, ...rest } = this.props;
-
     return (
       <div>
         <Collapse accordion>
           {(value || []).map((value, i) => (
             <Collapse.Panel header={this.getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
               <div className="ant-form">
-                {collection.fields.filter(({ name }) => name !== 'id' && fieldNames.indexOf(name) === -1).map(({ type, name }) =>
-                  <FormItem key={name} />
+                {(collection ? collection.fields : []).filter(({ name }) => name !== 'id' && fieldNames.indexOf(name) === -1).map((field) =>
+                  <FormItem key={field.name} field={field} item={value} />
                 )}
               </div>
             </Collapse.Panel>
