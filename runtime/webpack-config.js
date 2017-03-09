@@ -150,7 +150,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    babel.options.presets.push(['react-optimize']);
+    // babel.options.presets.push(['react-optimize']);
   }
 
   // webpack plugins
@@ -165,7 +165,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   }
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-    config.plugins.push(new webpack.optimize.DedupePlugin());
+    // config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(new ExtractTextPlugin({
       filename: '[name].[contenthash].css',
       allChunks: true,
@@ -179,10 +179,14 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         screw_ie8: true,
         warnings: false,
       },
+      mangle: {
+        screw_ie8: true,
+      },
       output: {
         comments: false,
+        screw_ie8: true,
       },
-      sourceMap: true,
+      sourceMap: false,
     }));
   }
 
