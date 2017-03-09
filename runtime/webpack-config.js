@@ -134,7 +134,7 @@ module.exports = ({ mode, target, port, devPort }) => {
 
   // babel-preset-env on node
   if (isNode) {
-    babel.options.presets.push(['env', { modules: false }]);
+    babel.options.presets.push(['env', { modules: false, loose: true }]);
   } else if (isWeb) {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
     if(isDev) babel.options.plugins.push('react-hot-loader/babel');
