@@ -8,7 +8,7 @@ import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import App from '@app';
-import { AppContainer } from "react-hot-loader";
+import { AppContainer } from 'react-hot-loader';
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -49,7 +49,7 @@ function renderApp() {
 // Execute the first render of our app.
 renderApp();
 
-if (process.env.NODE_ENV === 'development' && module.hot) {
+if (module.hot) {
   // Accept changes to this file for hot reloading.
   module.hot.accept('@app');
   // Any changes to our App will cause a hotload re-render.

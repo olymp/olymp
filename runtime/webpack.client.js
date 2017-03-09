@@ -1,15 +1,21 @@
-const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const path = require('path');
-const StartServerPlugin = require('start-server-webpack-plugin');
+const fs = require('fs');
+const AssetsPlugin = require('assets-webpack-plugin');
 
+let theme = require('../default-theme')();
+if (fs.existsSync(path.resolve(process.cwd(), 'theme.js'))) {
+  theme = Object.assign({}, theme, require(path.resolve(process.cwd(), 'theme.js'))());
+}
 const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..');
 
-module.exports = ({
-  watch: true,
-  devtool: 'source-map',
+module.exports = ({ devPort }) => ({
+  node: {
+    __dirname: true,
+    __filename: true
+  },
+  devtool: 'inline-source-map',
   resolve: {
     extensions: [
       '.js',
@@ -40,39 +46,38 @@ module.exports = ({
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"development"',
     }),
-    new StartServerPlugin('main.js'),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new ProgressBarPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-    new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }),
-    new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'),
+    new AssetsPlugin({ filename: 'publicAssets.json', path: path.resolve(process.cwd(), 'build') }),
   ],
   module: {
     rules: [{
       test: /\.html$/,
       loader: 'file-loader?name=[name].[ext]',
-    },
-    {
+    }, {
       test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
       loader: 'url-loader',
       options: {
         limit: 20000,
       },
-    },
-    {
+    }, {
       test: /\.json$/,
       loader: 'json-loader',
-    },
-    {
+    }, {
+      test: /\.less$/,
+      use: [
+        'style-loader',
+        { loader: 'css-loader', options: { modules: false, sourceMap: true } },
+        `less-loader?{"modifyVars":${JSON.stringify(theme)}}`,
+      ],
+    }, {
       test: /\.(js|jsx)$/,
       loader: 'babel-loader',
       include: [
-        path.resolve(appRoot, 'server'),
         path.resolve(appRoot, 'app'),
         path.resolve(olympRoot, 'src'),
-        path.resolve(olympRoot, 'graphql'),
         path.resolve(__dirname),
       ],
       // babel configuration should come from presets defined in the user's
@@ -80,9 +85,8 @@ module.exports = ({
       // the webpack loader query
       options: {
         // this is a loader-specific option and can't be put in a babel preset
-        // cacheDirectory: false,
+        cacheDirectory: false,
         presets: [
-          ['env', { modules: false }],
           'react',
         ],
         plugins: [
@@ -95,33 +99,20 @@ module.exports = ({
       },
     }],
   },
-  target: 'node',
-  externals: [
-    path.resolve(__dirname, '..', 'node_modules'),
-    path.resolve(process.cwd(), 'node_modules')
-  ].map(modulesDir => nodeExternals({
-    modulesDir,
-    whitelist: [
-      'webpack/hot/poll?1000',
-      'source-map-support/register',
-      v => v === 'olymp' || v.indexOf('olymp/') === 0 || v.indexOf('olymp-') === 0,
-      v => v === 'antd' || v.indexOf('antd/') === 0,
-      /\.(eot|woff|woff2|ttf|otf)$/,
-      /\.(svg|png|jpg|jpeg|gif|ico)$/,
-      /\.(mp4|mp3|ogg|swf|webp)$/,
-      /\.(css|scss|sass|sss|less)$/
+  target: 'web',
+  entry: {
+    main: [
+      'react-hot-loader/patch',
+      `webpack-dev-server/client?http://localhost:${devPort}`,
+      'webpack/hot/only-dev-server',
+      require.resolve(path.resolve(__dirname, 'web')),
     ]
-  })),
-  entry: [
-    'webpack/hot/poll?1000',
-    require.resolve(path.resolve(__dirname, 'server')),
-  ],
+  },
   output: {
-    path: path.resolve(appRoot, 'build', 'server'),
-    filename: 'main.js',
-    // publicPath: `http://localhost:30051/`,
+    path: path.resolve(appRoot, 'build', 'client'),
+    filename: '[name].js',
     // chunkFilename: '[name]-[chunkhash].js',
-    // publicPath: 'http://localhost:30051/',
-    // libraryTarget: 'commonjs2'
+    libraryTarget: 'umd',
+    publicPath: `http://localhost:${devPort}/`,
   }
 });

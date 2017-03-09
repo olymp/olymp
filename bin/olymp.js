@@ -37,23 +37,33 @@ if (['start', 'build'].includes(command)) {
 }
 
 if (command === 'dev') {
-  webpack(require(path.resolve(__dirname, '..', 'runtime', 'config.server.dev')), (err, stats) => {
-    if (err) console.log('ERROR', err || stats.hasErrors());
+  const port = parseInt(process.env.PORT, 10);
+  const devPort = port + 1;
+  const createConfig = require(path.resolve(__dirname, '..', 'runtime', 'webpack-config'));
+
+  webpack(createConfig({ target: 'node', mode: 'development', port, devPort }), (err, stats) => {
+    if (err) console.log('NODE ERROR', err || stats.hasErrors());
     const jsonStats = stats.toJson();
     if (jsonStats.errors.length > 0) return console.error(jsonStats.errors);
     if (jsonStats.warnings.length > 0) console.warn(jsonStats.warnings);
-    console.log('Server bundle done.');
+    console.log('Node bundle done.');
   });
-  var webpackDevServer = require("webpack-dev-server");
-  const port = parseInt(process.env.PORT, 10) + 1;
-  var compiler = webpack(require(path.resolve(__dirname, '..', 'runtime', 'config.client.dev'))(port));
+  var webpackDevServer = require('webpack-dev-server');
+  var compiler = webpack(createConfig({ target: 'web', mode: 'development', port, devPort }), (err, stats) => {
+    if (err) console.log('WEB ERROR', err || stats.hasErrors());
+    const jsonStats = stats.toJson();
+    if (jsonStats.errors.length > 0) return console.error(jsonStats.errors);
+    if (jsonStats.warnings.length > 0) console.warn(jsonStats.warnings);
+    console.log('Web bundle done.');
+  });
   var server = new webpackDevServer(compiler, {
     host: 'localhost',
-    port,
+    port: devPort,
     historyApiFallback: true,
     hot: true,
+    noInfo: true,
   });
-  server.listen(port);
+  server.listen(devPort);
   return;
 }
 if (command === 'start') return require(path.resolve(process.cwd(), 'build', 'server', 'main'));
