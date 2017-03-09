@@ -2,8 +2,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const rimraf = require('rimraf');
 const webpack = require('webpack');
 const env = require('node-env-file');
+const createConfig = require(path.resolve(__dirname, '..', 'runtime', 'webpack-config'));
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const command = process.argv[process.argv.length - 1];
@@ -37,26 +39,25 @@ if (['start', 'build'].includes(command)) {
 }
 
 if (command === 'dev') {
+  const notifier = require('node-notifier');
+
   const port = parseInt(process.env.PORT, 10);
   const devPort = port + 1;
-  const createConfig = require(path.resolve(__dirname, '..', 'runtime', 'webpack-config'));
 
-  webpack(createConfig({ target: 'node', mode: 'development', port, devPort }), (err, stats) => {
-    if (err) console.log('NODE ERROR', err || stats.hasErrors());
-    const jsonStats = stats.toJson();
-    if (jsonStats.errors.length > 0) return console.error(jsonStats.errors);
-    if (jsonStats.warnings.length > 0) console.warn(jsonStats.warnings);
-    console.log('Node bundle done.');
+  const compiler = webpack([
+    createConfig({ target: 'node', mode: 'development', port, devPort, ssr: false }),
+    createConfig({ target: 'web', mode: 'development', port, devPort }),
+    // require(path.resolve(__dirname, '..', 'runtime', 'webpack.client'))({ target: 'web', mode: 'development', port, devPort })
+  ]);
+  compiler.watch({ aggregateTimeout: 300 }, (err, compilation) => {
+    if (err) return console.log('[webpack] error:', err);
+    const stats = compilation.stats || [compilation];
+    console.log('[webpack] the following asset bundles were built:');
+    stats.forEach((c) => console.log(c.toString()));
+    notifier.notify('Ready');
   });
   var webpackDevServer = require('webpack-dev-server');
-  var compiler = webpack(createConfig({ target: 'web', mode: 'development', port, devPort }), (err, stats) => {
-    if (err) console.log('WEB ERROR', err || stats.hasErrors());
-    const jsonStats = stats.toJson();
-    if (jsonStats.errors.length > 0) return console.error(jsonStats.errors);
-    if (jsonStats.warnings.length > 0) console.warn(jsonStats.warnings);
-    console.log('Web bundle done.');
-  });
-  var server = new webpackDevServer(compiler, {
+  var server = new webpackDevServer(compiler.compilers[1], {
     host: 'localhost',
     port: devPort,
     historyApiFallback: true,
@@ -64,11 +65,19 @@ if (command === 'dev') {
     noInfo: true,
   });
   server.listen(devPort);
-  return;
+} else if (command === 'build') {
+  rimraf.sync(path.resolve(process.cwd(), 'build'));
+  process.env.NODE_ENV = 'production';
+  const compiler = webpack([
+    createConfig({ target: 'node', mode: 'production', port, devPort }),
+    createConfig({ target: 'web', mode: 'production', port, devPort })
+  ]);
+  compiler.run((err, compilation) => {
+    if (err) return console.log('[webpack] error:', err);
+    const stats = compilation.stats || [compilation];
+    console.log('[webpack] the following asset bundles were built:');
+    stats.forEach((c) => console.log(c.toString()));
+  });
+} else if (command === 'start') {
+  require(path.resolve(process.cwd(), 'build', 'node', 'main'))
 }
-if (command === 'start') return require(path.resolve(process.cwd(), 'build', 'server', 'main'));
-if (fs.existsSync(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'))) {
-  require(path.resolve(__dirname, '..', 'node_modules', 'kyt', 'cli'));
-} else if (fs.existsSync(path.resolve(__dirname, '..', '..', 'kyt', 'cli'))) {
-  require(path.resolve(__dirname, '..', '..', 'kyt', 'cli'));
-} else throw new Error('kyt not found');

@@ -6,6 +6,8 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
 let theme = require('../default-theme')();
 if (fs.existsSync(path.resolve(process.cwd(), 'theme.js'))) {
@@ -15,7 +17,8 @@ const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..');
 process.noDeprecation = true;
 
-module.exports = ({ mode, target, port, devPort }) => {
+module.exports = ({ mode, target, port, devPort, ssr }) => {
+  const isSSR = ssr !== false;
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
@@ -38,7 +41,7 @@ module.exports = ({ mode, target, port, devPort }) => {
         lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         olymp: olympRoot,
         '@root': appRoot,
-        '@app': path.resolve(appRoot, 'app'),
+        '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
       }
     },
     resolveLoader: {
@@ -49,7 +52,9 @@ module.exports = ({ mode, target, port, devPort }) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('development'),
+        'process.env.SSR': JSON.stringify(isSSR),
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.DEV_PORT': JSON.stringify(devPort),
       }),
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
@@ -72,8 +77,6 @@ module.exports = ({ mode, target, port, devPort }) => {
     },
     output: {
       path: path.resolve(appRoot, 'build', target),
-      filename: '[name].js',
-      chunkFilename: '[name]-[chunkhash].js',
     },
     entry: {
       main: []
@@ -95,7 +98,7 @@ module.exports = ({ mode, target, port, devPort }) => {
       ],
       plugins: [
         'transform-object-rest-spread',
-        'transform-es2015-destructuring',
+        // 'transform-es2015-destructuring',
         'transform-decorators-legacy',
         'transform-class-properties',
         ['import', { libraryName: 'antd', style: true }],
@@ -108,6 +111,13 @@ module.exports = ({ mode, target, port, devPort }) => {
     config.devtool = 'inline-source-map';
   } else {
     config.devtool = 'source-map';
+  }
+
+  // inline-source-map for web-dev
+  if (isProd && isWeb) {
+    config.output.filename = '[name].[contenthash].js';
+  } else {
+    config.output.filename = '[name].js';
   }
 
   // target && node settings
@@ -135,18 +145,42 @@ module.exports = ({ mode, target, port, devPort }) => {
   // babel-preset-env on node
   if (isNode) {
     babel.options.presets.push(['env', { modules: false, loose: true }]);
-  } else if (isWeb) {
+  } else if (isDev) {
+    babel.options.presets.push(['latest', { modules: true, loose: true }]);
+    babel.options.plugins.push('react-hot-loader/babel');
+  } else {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    if(isDev) babel.options.plugins.push('react-hot-loader/babel');
   }
 
   // webpack plugins
-  if (isNode) {
+  if (isNode && isDev) {
     config.plugins.push(new StartServerPlugin('main.js'));
+  }
+  if (isNode) {
     config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
     config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
   } else {
     config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
+  }
+  if (isWeb && isProd) {
+    config.plugins.push(new ExtractTextPlugin({
+      filename: '[name].[contenthash].css',
+      allChunks: true,
+    }));
+    config.plugins.push(new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }));
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        screw_ie8: true,
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      },
+      sourceMap: true,
+    }));
   }
 
   // Hot module replacement on dev
@@ -157,26 +191,10 @@ module.exports = ({ mode, target, port, devPort }) => {
   // LimitChunkCount on all but production-web
   if (isDev || isNode) {
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
-  }
-
-  // Less loader
-  if (isWeb && isProd) {
-    config.module.rules.push({
-      test: /\.less$/,
-      loader: ExtractTextPlugin.extract({
-        fallbackLoader: 'style',
-        loader: `css?sourceMap!less?{"modifyVars":${JSON.stringify(theme)}}`,
-      }),
-    });
-  } else if (isWeb) {
-    config.module.rules.push({
-      test: /\.less$/,
-      use: [
-        'style-loader',
-        { loader: 'css-loader', options: { modules: false, sourceMap: true } },
-        `less-loader?{"modifyVars":${JSON.stringify(theme)}}`,
-      ],
-    });
+    config.output.filename = '[name].js';
+  } else {
+    config.output.filename = '[name].[chunkhash].js';
+    config.output.chunkFilename = '[name].[chunkhash].js';
   }
 
   // externals
@@ -217,6 +235,60 @@ module.exports = ({ mode, target, port, devPort }) => {
     ];
   }
 
-  config.module.rules.push(babel);
+  // Less loader
+  if (isWeb && isProd) {
+    config.module.rules.push({
+      test: /\.less$/,
+      loader: ExtractTextPlugin.extract({
+        use: [{
+          loader: 'css-loader',
+          options: { modules: false }
+        }, {
+          loader: 'less-loader', options: {
+            modifyVars: theme, // JSON.stringify(theme)
+          }
+        }],
+        fallback: 'style-loader'
+      }),
+    });
+    config.module.rules.push(babel);
+  } else if (isWeb && isDev) {
+    config.plugins.push(new HappyPack({
+      id: 'less',
+      threads: 4,
+      tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
+      loaders: [ 'style-loader', {
+        path: 'css-loader',
+        query: JSON.stringify({ modules: false, sourceMap: true }),
+      }, {
+        loader: 'less-loader',
+        query: JSON.stringify({ modifyVars: theme }),
+      }]
+    }));
+    config.module.rules.push({
+      test: /\.less$/,
+      loaders: [ 'happypack/loader?id=less' ]
+    });
+  }
+
+  if (isDev) {
+    config.plugins.push(new HappyPack({
+      id: 'babel',
+      threads: 4,
+      tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
+      loaders: [{
+        path: babel.loader,
+        query: JSON.stringify(babel.options)
+      }],
+    }));
+    config.module.rules.push({
+      test: babel.test,
+      include: babel.include,
+      loaders: [ 'happypack/loader?id=babel' ]
+    });
+  } else {
+    config.module.rules.push(babel);
+  }
+
   return config;
 }
