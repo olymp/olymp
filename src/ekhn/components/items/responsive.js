@@ -3,7 +3,7 @@ import { cn } from 'olymp';
 import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';
-import { ItemImage, ItemMore } from './components';
+import { ItemImage, ItemMore, ItemHeader } from './components';
 import Tags from '../tags';
 
 export default useItemEdit()(({ id, header, subheader, shortText, more, bild, tags, identifier, className, breakpoint = 'md', children }) => {
@@ -32,7 +32,7 @@ export default useItemEdit()(({ id, header, subheader, shortText, more, bild, ta
       </div>
 
       <div className={cn(className, 'text col-xl-8 col-md-7 col-xs-12', `hidden-${breakpoint}-up`)}>
-        {header ? <h2 className="mt-0">{hypher.hyphenateText(header)}</h2> : null}
+        {header ? <ItemHeader className="mt-0" id={id} identifier={identifier}>{hypher.hyphenateText(header)}</ItemHeader> : null}
         {subheader ? <div className="subheader">{hypher.hyphenateText(subheader)}</div> : null}
         {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
 
