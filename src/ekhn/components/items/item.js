@@ -2,7 +2,7 @@ import React from 'react';
 import { cn, Image } from 'olymp';
 import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
 import Responsive from './responsive';
-import { ItemMore } from './components';
+import { ItemMore, ItemHeader } from './components';
 import Tags from '../tags';
 
 export default useItemEdit()((props) => {
@@ -19,7 +19,7 @@ export default useItemEdit()((props) => {
         </div>
 
         <div className="text col-xl-8 col-md-7 col-xs-12">
-          {header ? <h2 className="mt-0">{header}</h2> : null}
+          {header ? <ItemHeader className="mt-0" id={id} identifier={identifier}>{header}</ItemHeader> : null}
           {subheader ? <div className="subheader">{subheader}</div> : null}
           {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
 

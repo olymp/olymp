@@ -6,7 +6,7 @@ export default useItemEdit()(({ children, className, style, vcard = {} }) => {
   const { name, bild, ort, telefon, mobil, fax, email, website } = vcard;
 
   return (
-    <DataLoader style={style} className={cn('vcard-block', className)} isEmpty={vcard} placeholder="Keine Visitenkarte vorhanden">
+    <DataLoader style={style} className={cn('vcard-block', className)} isEmpty={vcard} placeholder="Keine Visitenkarte vorhanden" loading="Visitenkarte wird geladen">
       {children}
 
       <div className="vcard" style={{ margin: 0 }}>
