@@ -2,12 +2,26 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { parseQuery, stringifyQuery, BrowserRouter } from 'olymp';
+import { BrowserRouter } from 'react-router-dom';
+import { parseQuery, stringifyQuery } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import App from '@app';
+import { AppContainer } from 'react-hot-loader';
+
+if (process.env.NODE_ENV === 'production') {
+  if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+} else {
+  console.warn('web/index.js removes serviceworkers temporarily');
+}
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -32,13 +46,15 @@ const mountNode = document.getElementById('css-markup');
 
 function renderApp() {
   render(
-    <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
-      <ApolloProvider client={client}>
-        <Provider renderer={renderer} mountNode={mountNode}>
-          <App />
-        </Provider>
-      </ApolloProvider>
-    </BrowserRouter>,
+    <AppContainer>
+      <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
+        <ApolloProvider client={client}>
+          <Provider renderer={renderer} mountNode={mountNode}>
+            <App />
+          </Provider>
+        </ApolloProvider>
+      </BrowserRouter>
+    </AppContainer>,
     container,
   );
 }
@@ -46,7 +62,7 @@ function renderApp() {
 // Execute the first render of our app.
 renderApp();
 
-if (process.env.NODE_ENV === 'development' && module.hot) {
+if (module.hot) {
   // Accept changes to this file for hot reloading.
   module.hot.accept('@app');
   // Any changes to our App will cause a hotload re-render.

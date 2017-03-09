@@ -4,35 +4,6 @@ export { Route, Switch, Redirect } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Router } from 'react-router';
 
-export class BrowserRouter extends Component {
-  static propTypes = {
-    basename: PropTypes.string,
-    forceRefresh: PropTypes.bool,
-    getUserConfirmation: PropTypes.func,
-    keyLength: PropTypes.number,
-    children: PropTypes.node
-  }
-
-  constructor() {
-    super();
-    const history = createHistory(this.props);
-    history.location.pathname = decodeURIComponent(history.location.pathname);
-    this.history = history;
-
-    if (navigator && navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister();
-        }
-      });
-    }
-  }
-
-  render() {
-    return <Router history={this.history}>{this.props.children}</Router>;
-  }
-}
-
 export const Link = (props) => {
   if (props.to && props.to.query) {
     props.to.search = stringifyQuery(props.to.query);
@@ -53,8 +24,12 @@ export const withRouter = (WrappedComponent) => {
   @withRouterLegacy
   class WithRouter extends Component {
     static contextTypes = {
-      history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
+      router: PropTypes.shape({
+        history: PropTypes.shape({
+          push: PropTypes.func.isRequired,
+          replace: PropTypes.func.isRequired,
+          createHref: PropTypes.func.isRequired
+        }).isRequired
       }).isRequired,
     };
     push = (propsTo) => {
@@ -63,13 +38,13 @@ export const withRouter = (WrappedComponent) => {
         to.search = stringifyQuery(to.query);
         delete to.query;
       }
-      this.context.history.push(to);
+      this.context.router.history.push(to);
     }
     render() {
       const { location } = this.props;
       location.query = parseQuery(location.search);
       return (
-        <WrappedComponent {...this.props} router={{ ...this.context.history, push: this.push }} />
+        <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push }} />
       );
     }
   }
