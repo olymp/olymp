@@ -4,7 +4,7 @@ import MenuController from './header';
 import Logo from './logo';
 import sortBy from 'lodash/sortBy';
 import { Affix } from 'antd';
-import { Link } from 'olymp';
+import { Link, NavLink } from 'olymp';
 
 export default props => (
   <div className="frontend">
@@ -32,7 +32,7 @@ class Header extends Component {
           <Link to="/" className="navbar-brand">
             <Logo color={color} title={title} text={text} />
           </Link>
-          <MenuController items={nav.main} className="nav navbar-nav pull-right sf-menu l_tinynav1 sf-js-enabled" location={location}>
+          <MenuController renderMenu={this.renderNav} items={nav.main} className="nav navbar-nav pull-right sf-menu l_tinynav1 sf-js-enabled" location={location}>
             {links && links.map(({ href, color }) => <li className="nav-item" key={href}>
               <a href={href} target="_blank" rel="noopener noreferrer" className="item active">
                 <Logo icon color={color} />
@@ -44,7 +44,7 @@ class Header extends Component {
     );
   }
 
-  renderNav = props => {
+  renderNav = (props) => {
     if (props.page && props.page.slug === '/zentrum') {
       const groups = sortBy(this.props.einrichtungen, ['kurz', 'name']).reduce((state, item) => {
         if (!state[item.art || 'PRAXIS']) state[item.art || 'PRAXIS'] = [];
@@ -55,7 +55,15 @@ class Header extends Component {
         <div className="dropdown-menu sf-mega" style={{ width: '700px' }}>
           <div className="col-md-3">
             <h6>{props.page.name}</h6>
-            <UlWrapped {...props} className="list-unstyled" level={props.level + 1} items={props.page.children} headings={props.page.headings} />
+            <ul className="list-unstyled">
+              {props.page.children.map(item => (
+                <li style={{ position: 'relative' }} key={item.id}>
+                  <NavLink to={item.slug || '/'} className="item" activeClassName="active">
+                    {item.kurz || item.name}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
           </div>
           {Object.keys(groups).map(groupKey => (
             <div key={groupKey} className="col-md-3">
@@ -63,9 +71,9 @@ class Header extends Component {
               <ul className="list-unstyled">
                 {groups[groupKey].map(item => (
                   <li style={{ position: 'relative' }} key={item.id}>
-                    <Link to={item.slug || '/'} className="item" activeClassName="active">
+                    <NavLink to={item.slug || '/'} className="item" activeClassName="active">
                       {item.kurz || item.name}
-                    </Link>
+                    </NavLink>
                   </li>
                 ))}
               </ul>

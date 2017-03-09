@@ -1,3 +1,56 @@
+import React, { PropTypes, Component } from 'react';
+import { withRouter as withRouterLegacy, Link as LinkLegacy, NavLink as NavLinkLegacy } from 'react-router-dom';
+export { Route, Switch, Redirect } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+import { Router } from 'react-router';
+
+export const Link = (props) => {
+  if (props.to && props.to.query) {
+    props.to.search = stringifyQuery(props.to.query);
+    delete props.to.query;
+  }
+  return <LinkLegacy {...props} />;
+};
+
+export const NavLink = (props) => {
+  if (props.to && props.to.query) {
+    props.to.search = stringifyQuery(props.to.query);
+    delete props.to.query;
+  }
+  return <NavLinkLegacy {...props} />;
+};
+
+export const withRouter = (WrappedComponent) => {
+  @withRouterLegacy
+  class WithRouter extends Component {
+    static contextTypes = {
+      router: PropTypes.shape({
+        history: PropTypes.shape({
+          push: PropTypes.func.isRequired,
+          replace: PropTypes.func.isRequired,
+          createHref: PropTypes.func.isRequired
+        }).isRequired
+      }).isRequired,
+    };
+    push = (propsTo) => {
+      const to = { ...propsTo };
+      if (to.query) {
+        to.search = stringifyQuery(to.query);
+        delete to.query;
+      }
+      this.context.router.history.push(to);
+    }
+    render() {
+      const { location } = this.props;
+      location.query = parseQuery(location.search);
+      return (
+        <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push }} />
+      );
+    }
+  }
+  return WithRouter;
+};
+
 function memoize(func) {
   const cache = {};
   return function() {
@@ -11,7 +64,7 @@ function memoize(func) {
   };
 }
 
-export const parse = memoize((str) => {
+export const parseQuery = memoize((str) => {
   const ret = Object.create(null);
   if (typeof str !== 'string') return ret;
   str = str.trim().replace(/^(\?|#|&)/, '');
@@ -33,7 +86,7 @@ export const parse = memoize((str) => {
   return ret;
 });
 
-export const stringify = memoize((obj) => {
+export const stringifyQuery = memoize((obj) => {
   return obj ? Object.keys(obj).sort().map((key) => {
     const val = obj[key];
     if (val === undefined) {

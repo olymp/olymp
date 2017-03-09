@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Link, cn, withApollo, withAuth, gql } from 'olymp';
+import { NavLink, cn, withApollo, withAuth, gql } from 'olymp';
 import { SortableContainer as sortableContainer, SortableElement as sortableElement, SortableHandle as sortableHandle, arrayMove } from 'react-sortable-hoc';
 import './nav.less';
 
 const Plus = ({ location, page }) => (
-  <Link
+  <NavLink
     to={{ ...location, query: { '@new-page': page ? page.id : null } }}
     style={{ paddingLeft: 0, paddingRight: 0 }}
     className="item"
     activeClassName="active"
   >
     <i className="fa fa-plus" />
-  </Link>
+  </NavLink>
 );
 
 const Handle = sortableHandle(() => <span className="grippy" style={{ zIndex: 1, position: 'absolute', right: 0, top: 'calc(50% - 9px)', width: '15px', height: '100%' }} />);

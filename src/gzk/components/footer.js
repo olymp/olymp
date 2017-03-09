@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp';
+import { NavLink, Link } from 'olymp';
 
 export default class Footer extends Component {
   static defaultProps = {
@@ -11,9 +11,9 @@ export default class Footer extends Component {
 
     const nav = (navigation && navigation.foot ? navigation.foot : []).filter(item => item.slug !== '/home').map((item) => {
       const secondLvl = (item.children || []).map(item => (
-        <Link to={item.slug} key={item.slug} className="item" activeClassName="active">
+        <NavLink to={item.slug} key={item.slug} className="item" activeClassName="active">
           {item.name}
-        </Link>
+        </NavLink>
         ));
       if (secondLvl.length > 0) {
         return (

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { cloudinaryUrl, cn } from 'olymp';
 import ImageGallery from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery-no-icon.css';
 import './carousel.less';
 
 export default class Carousel extends Component {

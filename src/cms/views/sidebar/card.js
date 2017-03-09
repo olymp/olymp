@@ -17,8 +17,8 @@ const StyledCard = createComponent(({ isActive, color }) => ({
   '> .ant-card-body': {
     padding: 0,
   },
-  ':hover': {
-    left: isActive ? '-5px' : '10px',
+  ':hover': !isActive && {
+    left: '10px',
   },
 }), props => <Card {...props} />, ['onClick', 'extra']);
 
