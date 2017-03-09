@@ -8,7 +8,6 @@ server.listen(port);
 
 if (module.hot) {
   module.hot.accept('./server', () => {
-    console.log('Versions', currentApp.version, app.version);
     server.removeListener('request', currentApp);
     server.on('request', app);
     currentApp = app;
