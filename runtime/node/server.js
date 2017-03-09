@@ -14,9 +14,10 @@ import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import template from './template';
-import { parseQuery, stringifyQuery } from 'olymp';
+import { parseQuery } from 'olymp';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
+import fs from 'fs';
 const RedisStore = createRedisStore(session);
 
 // import { render, template } from 'rapscallion';
@@ -24,9 +25,12 @@ const RedisStore = createRedisStore(session);
 global.fetch = fetch;
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 
-const port = parseInt(process.env.PORT || KYT.SERVER_PORT, 10);
+const isProd = process.env.NODE_ENV === 'production';
+const port = parseInt(process.env.PORT, 10);
+const devPort = parseInt(process.env.DEV_PORT, 10);
 
-const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
+const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
+const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
 
 // Remove annoying Express header addition.
@@ -37,7 +41,7 @@ app.use(compression());
 
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.resolve(process.cwd(), 'public')));
-app.use(express.static(path.resolve(process.cwd(), 'build', 'public')));
+app.use(express.static(path.resolve(process.cwd(), 'build', 'web')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
 
 // if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
@@ -45,10 +49,10 @@ app.use(session({
   store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) : undefined,
   resave: false,
   saveUninitialized: true,
-  proxy: process.env.NODE_ENV === 'production',
+  proxy: isProd,
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProd,
     maxAge: 60000000,
   },
 }));
@@ -97,8 +101,8 @@ app.get('*', (request, response) => {
     // Generate the html response.
     const html = template({
       root: reactAppString,
-      jsBundle: clientAssets.main.js,
-      cssBundle: clientAssets.main.css,
+      jsBundle: isProd ? `/${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`,
+      cssBundle: isProd ? `/${clientAssets.main.css}` : undefined,
       cssMarkup,
       helmet: Helmet.rewind(),
       initialState: { [client.reduxRootKey]: client.getInitialState() },
@@ -123,4 +127,4 @@ app.get('*', (request, response) => {
   });
 });
 
-app.listen(port);
+export default app;

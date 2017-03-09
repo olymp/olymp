@@ -40,7 +40,11 @@ module.exports = (server, options) => {
     if (typeof options.auth === 'string') options.auth = { secret: options.auth };
     const { auth } = createAuthGql(Schema, Object.assign({ adapter, mail }, options.auth));
     const cache = new Cache({ maxSize: 100, maxAge: 20 });
-    server.all('/graphql', (req, res, next) => {
+    const handler = (req, res, next) => {
+      if (!adapter.client) {
+        return setTimeout(() => handler(req, res, next), 250);
+      }
+
       if (req.session && req.session.userId) {
         req.user = cache.get(req.session.userId);
         if (req.user) {
@@ -55,7 +59,8 @@ module.exports = (server, options) => {
       } else {
         next();
       }
-    });
+    }
+    server.all('/graphql', handler);
     server.auth = auth;
   }
 
