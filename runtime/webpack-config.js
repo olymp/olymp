@@ -150,6 +150,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
+    babel.options.presets.push(['react-optimize']);
   }
 
   // webpack plugins
@@ -163,6 +164,8 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
   }
   if (isWeb && isProd) {
+    config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+    config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(new ExtractTextPlugin({
       filename: '[name].[contenthash].css',
       allChunks: true,

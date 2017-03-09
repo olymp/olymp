@@ -47,7 +47,6 @@ if (command === 'dev') {
   const compiler = webpack([
     createConfig({ target: 'node', mode: 'development', port, devPort, ssr: false }),
     createConfig({ target: 'web', mode: 'development', port, devPort }),
-    // require(path.resolve(__dirname, '..', 'runtime', 'webpack.client'))({ target: 'web', mode: 'development', port, devPort })
   ]);
   compiler.watch({ aggregateTimeout: 300 }, (err, compilation) => {
     if (err) return console.log('[webpack] error:', err);
@@ -69,8 +68,8 @@ if (command === 'dev') {
   rimraf.sync(path.resolve(process.cwd(), 'build'));
   process.env.NODE_ENV = 'production';
   const compiler = webpack([
-    createConfig({ target: 'node', mode: 'production', port, devPort }),
-    createConfig({ target: 'web', mode: 'production', port, devPort })
+    createConfig({ target: 'node', mode: 'production' }),
+    createConfig({ target: 'web', mode: 'production' })
   ]);
   compiler.run((err, compilation) => {
     if (err) return console.log('[webpack] error:', err);
