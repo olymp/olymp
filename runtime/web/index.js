@@ -2,13 +2,26 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { parseQuery, stringifyQuery, BrowserRouter } from 'olymp';
+import { BrowserRouter } from 'react-router-dom';
+import { parseQuery, stringifyQuery } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
+
+if (process.env.NODE_ENV === 'production') {
+  if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+} else {
+  console.warn('web/index.js removes serviceworkers temporarily');
+}
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
