@@ -32,7 +32,7 @@ export default class TerminBlock extends Component {
     const { termine } = data;
 
     return (
-      <DataLoader className={className} style={style} isEmpty={data.termine} placeholder="Keine Termine vorhanden">
+      <DataLoader className={className} style={style} isEmpty={data.termine} placeholder="Keine Termine vorhanden" loading="Termine werden geladen">
         <Termin items={termine} />
       </DataLoader>
     );

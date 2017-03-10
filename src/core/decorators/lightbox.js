@@ -97,7 +97,7 @@ export const useLightbox = WrappedComponent => class WithLightbox extends Compon
     const images = Object.keys(this.lightboxes).map(key => this.lightboxes[key]);
     const image = visible ? images[visible] : {};
     const footer = image.caption || image.source ? (
-      <span>test {image.caption} <span className="source">{image.source}</span></span>
+      <span>{image.caption} <span className="source">{image.source}</span></span>
     ) : false;
 
     return (
@@ -115,7 +115,7 @@ export const useLightbox = WrappedComponent => class WithLightbox extends Compon
             // prevSrc={images[(visible + images.length - 1) % images.length]}
             onCancel={this.hide}
           >
-            <img src={cloudinaryUrl(image.url)} width="100%" height="auto" />
+            <img src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), { maxWidth: 960 })} width="100%" height="auto" />
           </Modal>
         ) : null}
       </WrappedComponent>

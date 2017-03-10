@@ -74,7 +74,7 @@ export default class RollenBlock extends Component {
     return (
       <GenericBlock {...this.props}>
         {!location.query || !location.query.Person ? (
-          <DataLoader className={className} style={style} isEmpty={rolle} placeholder="Keine Rollen vorhanden">
+          <DataLoader className={className} style={style} isEmpty={rolle} placeholder="Keine Rollen vorhanden" loading="Rolle wwird geladen">
             <Items
               items={rolle ? [{
                 ...rolle,
