@@ -55,7 +55,7 @@ export default class GottesdienstBlock extends Component {
     });
 
     return (
-      <DataLoader className={className} style={style} isEmpty={data.gottesdienste} placeholder="Keine Gottesdienste vorhanden">
+      <DataLoader className={className} style={style} isEmpty={data.gottesdienste} placeholder="Keine Gottesdienste vorhanden" loading="Gottesdienste werden geladen">
         <Gottesdienst items={items} />
       </DataLoader>
     );

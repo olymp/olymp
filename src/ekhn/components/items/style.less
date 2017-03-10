@@ -19,13 +19,6 @@
         margin-top: 1rem;
       }
 
-      &.masonry {
-        .slate {
-          column-count: 2;
-          column-gap: 2em;
-        }
-      }
-
       .text {
         width: 100%;
         background-color: #FFF;
@@ -52,6 +45,12 @@
       .info .header.clickable:hover h2 u {
         border-bottom: 1px solid @brand-primary;
       }
+    }
+
+    /* COMPACT */
+    .p-0.col-xs-5 {
+      margin: 0 0 1rem .5rem;
+      background-color: none;
     }
 
     /* INFO/LEFT-PART */
@@ -122,12 +121,4 @@
   .colored {
     background-color: lighten(@brand-primary, 40%) !important;
   }
-}
-
-@media (max-width: 767px) {
-  .item.panorama.masonry {
-      .slate {
-        column-count: 1 !important;
-      }
-    }
 }

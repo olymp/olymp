@@ -135,7 +135,7 @@ export default class CoolImage extends Component {
           <img
             className={cn(className, 'athena-img')}
             onClick={onClick}
-            src={url}
+            src={url.replace('.pdf', '.jpg')}
             alt={caption}
             width="100%"
             srcSet={`
@@ -164,7 +164,7 @@ export default class CoolImage extends Component {
         containerStyles.paddingBottom = `${(parseInt(containerStyles.height, 10) / ratio)}%`;
       }
     }
-    containerStyles.backgroundImage = `url(${url})`;
+    containerStyles.backgroundImage = `url(${url.replace('.pdf', '.jpg')})`;
 
     return (
       <div
