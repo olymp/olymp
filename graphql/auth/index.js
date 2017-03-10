@@ -48,6 +48,7 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         forgot: (source, args) => auth.forgot(args.email),
         reset: (source, args) => auth.reset(args.token, args.password).then(() => true),
         loginCookie: (source, args, context) => auth.login(args.email, args.password).then((userAndToken) => {
+          console.log(context);
           context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
           return userAndToken.user;
         }),

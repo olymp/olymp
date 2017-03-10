@@ -5,3 +5,4 @@ exports.one = require('./graphql/utils/mongo-resolver').one;
 exports.write = require('./graphql/utils/mongo-resolver').write;
 exports.adaptQuery = require('./graphql/utils/mongo-query').adaptQuery;
 exports.adaptSort = require('./graphql/utils/mongo-query').adaptSort;
+exports.getProjection = require('./graphql/utils/mongo-projection');
