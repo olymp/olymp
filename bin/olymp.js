@@ -45,7 +45,7 @@ if (command === 'dev') {
   const devPort = port + 1;
 
   const compiler = webpack([
-    createConfig({ target: 'node', mode: 'development', port, devPort, ssr: false }),
+    createConfig({ target: 'node', mode: 'development', port, devPort, ssr: true }),
     createConfig({ target: 'web', mode: 'development', port, devPort }),
   ]);
   compiler.watch({ aggregateTimeout: 300 }, (err, compilation) => {
