@@ -87,6 +87,8 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     test: /\.(js|jsx)$/,
     loader: 'babel-loader',
     include: [
+      // path.resolve(appRoot, 'server'),
+      // path.resolve(olympRoot, 'graphql'),
       path.resolve(appRoot, 'app'),
       path.resolve(olympRoot, 'src'),
       path.resolve(__dirname),
@@ -146,7 +148,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   if (isNode) {
     babel.options.presets.push(['env', { modules: false, loose: true }]);
   } else if (isDev) {
-    babel.options.presets.push(['latest', { modules: true, loose: true }]);
+    babel.options.presets.push(['latest', { modules: false, loose: true }]);
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
@@ -159,6 +161,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   }
   if (isNode) {
     config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
+    // config.plugins.push(new webpack.BannerPlugin({ banner: 'const regeneratorRuntime = require("regenerator-runtime");', raw: true }));
     config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
   } else {
     config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));

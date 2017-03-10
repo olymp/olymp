@@ -60,7 +60,7 @@ module.exports = (server, options) => {
         next();
       }
     }
-    server.all('/graphql', handler);
+    server.use(handler);
     server.auth = auth;
   }
 
