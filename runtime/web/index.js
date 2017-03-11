@@ -3,13 +3,22 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { parseQuery, stringifyQuery } from 'olymp';
+import { parseQuery, stringifyQuery, AmpProvider } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
+import monolithic from 'fela-monolithic';
+import extend from 'fela-plugin-extend';
+import customProperty from 'fela-plugin-custom-property';
+import prefixer from 'fela-plugin-prefixer';
+import fallbackValue from 'fela-plugin-fallback-value';
+import unit from 'fela-plugin-unit';
+import removeUndefined from 'fela-plugin-remove-undefined';
+import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
+import namedMediaQuery from 'fela-plugin-named-media-query';
 
 if (process.env.NODE_ENV === 'production') {
   if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
@@ -41,7 +50,22 @@ const client = new ApolloClient({
   initialState: window.__APP_STATE__,
 });
 
-const renderer = createRenderer({ selectorPrefix: '_' });
+const renderer = createRenderer({
+  selectorPrefix: 'o',
+  plugins: [ extend(), unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
+    onWide: '@media (min-width: 1200px)',
+    onDesktop: '@media (min-width: 992px)',
+    onTablet: '@media (min-width: 768px)',
+    onPhone: '@media (min-width: 480px)',
+    onMini: '@media (min-width: 320px)',
+  }), friendlyPseudoClass(), customProperty({
+    size: size => ({
+      width: size + 'px',
+      height: size + 'px'
+    })
+  }) ],
+  enhancers: [ monolithic() ]
+});
 const mountNode = document.getElementById('css-markup');
 
 function renderApp() {
@@ -50,7 +74,9 @@ function renderApp() {
       <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
         <ApolloProvider client={client}>
           <Provider renderer={renderer} mountNode={mountNode}>
-            <App />
+            <AmpProvider amp={false}>
+              <App />
+            </AmpProvider>
           </Provider>
         </ApolloProvider>
       </BrowserRouter>
