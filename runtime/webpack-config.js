@@ -162,9 +162,15 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   if (isNode) {
     config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
     // config.plugins.push(new webpack.BannerPlugin({ banner: 'const regeneratorRuntime = require("regenerator-runtime");', raw: true }));
-    config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
+    // config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
   } else {
     config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
+  }
+  if (isNode) {
+    config.plugins.push(new ExtractTextPlugin({
+      filename: '[name].css',
+      allChunks: true,
+    }));
   }
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
@@ -282,6 +288,26 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       test: /\.less$/,
       loaders: [ 'happypack/loader?id=less' ]
     });
+  } else if (isNode) {
+    config.module.rules.push({
+      test: /\.less$/,
+      loader: ExtractTextPlugin.extract({
+        use: [{
+          loader: 'css-loader',
+          options: { modules: false, minimize: {
+            discardComments: {
+              removeAll: true
+            }
+          } }
+        }, {
+          loader: 'less-loader', options: {
+            modifyVars: theme, // JSON.stringify(theme)
+          }
+        }],
+        fallback: 'style-loader'
+      }),
+    });
+    config.module.rules.push(babel);
   }
 
   if (isDev) {
