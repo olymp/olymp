@@ -267,7 +267,10 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       id: 'less',
       threads: 4,
       tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
-      loaders: [ 'style-loader', {
+      loaders: [ {
+        path: 'style-loader',
+        query: JSON.stringify({ insertAt: 'top' })
+      }, {
         path: 'css-loader',
         query: JSON.stringify({ modules: false, sourceMap: true }),
       }, {

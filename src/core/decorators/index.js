@@ -9,3 +9,4 @@ export { default as withState } from './state';
 export { default as withAuth, auth } from './auth';
 export { default as withForm } from './form';
 export { default as withLightbox, useLightbox } from './lightbox';
+export { default as withAmp, AmpProvider } from './amp';

@@ -6,18 +6,29 @@ import React from 'react';
 import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
 import { StaticRouter } from 'react-router-dom';
-import { renderToString } from 'react-dom/server';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
-import template from './template';
-import { parseQuery } from 'olymp';
+import template, { amp } from './template';
+import { parseQuery, AmpProvider } from 'olymp';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 import fs from 'fs';
+import useragent from 'express-useragent';
+import monolithic from 'fela-monolithic'
+import extend from 'fela-plugin-extend';
+import customProperty from 'fela-plugin-custom-property';
+import prefixer from 'fela-plugin-prefixer';
+import fallbackValue from 'fela-plugin-fallback-value';
+import unit from 'fela-plugin-unit';
+import removeUndefined from 'fela-plugin-remove-undefined';
+import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
+import namedMediaQuery from 'fela-plugin-named-media-query';
+
 const RedisStore = createRedisStore(session);
 
 // import { render, template } from 'rapscallion';
@@ -38,12 +49,21 @@ app.disable('x-powered-by');
 
 // Compress (gzip) assets in production.
 app.use(compression());
+app.use(useragent.express());
 
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'build', 'web')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
 
+app.use((req, res, next) => {
+  console.log(req.query.amp)
+  if (req.subdomains && req.subdomains.length === 1 && req.subdomains[0] === 'amp') {
+    req.isAmp = true;
+  } else if (req.query.amp !== undefined) {
+    req.isAmp = true;
+  } next();
+});
 // if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
 app.use(session({
   store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) : undefined,
@@ -78,7 +98,22 @@ app.get('*', (request, response) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const renderer = createRenderer({ selectorPrefix: '_' });
+  const renderer = createRenderer({
+    selectorPrefix: 'o',
+    plugins: [ extend(), unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
+      onWide: '@media (min-width: 1200px)',
+      onDesktop: '@media (min-width: 992px)',
+      onTablet: '@media (min-width: 768px)',
+      onPhone: '@media (min-width: 480px)',
+      onMini: '@media (min-width: 320px)',
+    }), friendlyPseudoClass(), customProperty({
+      size: size => ({
+        width: size + 'px',
+        height: size + 'px'
+      })
+    }) ],
+    enhancers: [ monolithic() ]
+  });
   const context = { };
 
   // Create our React application and render it into a string.
@@ -87,7 +122,9 @@ app.get('*', (request, response) => {
     <StaticRouter location={{ pathname, search, query: parseQuery(search) }} context={context}>
       <ApolloProvider client={client}>
         <Provider renderer={renderer}>
-          <App />
+          <AmpProvider amp={request.isAmp}>
+            <App />
+          </AmpProvider>
         </Provider>
       </ApolloProvider>
     </StaticRouter>
@@ -95,11 +132,11 @@ app.get('*', (request, response) => {
 
   return getDataFromTree(reactApp).then(() => {
     // const reactAppString = render(reactApp);
-    const reactAppString = renderToString(reactApp);
+    const reactAppString = request.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
     const cssMarkup = renderer.renderToString();
 
     // Generate the html response.
-    const html = template({
+    const html = (request.isAmp ? amp : template)({
       root: reactAppString,
       jsBundle: isProd ? `/${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`,
       cssBundle: isProd ? `/${clientAssets.main.css}` : undefined,
