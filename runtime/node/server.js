@@ -84,6 +84,7 @@ try {
   } else server(app);
 } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
 
+let style;
 // Setup server side routing.
 app.get('*', (request, response) => {
   const networkInterface = createNetworkInterface({
@@ -100,12 +101,23 @@ app.get('*', (request, response) => {
   });
   const renderer = createRenderer({
     selectorPrefix: 'o',
-    plugins: [ extend(), unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
+    plugins: [ unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
+      // From
+      fromWide: '@media (min-width: 1200px)',
+      fromDesktop: '@media (min-width: 992px)',
+      fromTablet: '@media (min-width: 768px)',
+      fromPhone: '@media (min-width: 480px)',
+      // To
+      toDesktop: '@media (max-width: 1199px)',
+      toTablet: '@media (max-width: 991px)',
+      toPhone: '@media (max-width: 767px)',
+      toMini: '@media (max-width: 479px)',
+      // On
       onWide: '@media (min-width: 1200px)',
-      onDesktop: '@media (min-width: 992px)',
-      onTablet: '@media (min-width: 768px)',
-      onPhone: '@media (min-width: 480px)',
-      onMini: '@media (min-width: 320px)',
+      onDesktop: '@media (max-width: 1199px, min-width: 992)',
+      onTablet: '@media (max-width: 991px, min-width: 768)',
+      onPhone: '@media (max-width: 767px, min-width: 480)',
+      onMini: '@media (max-width: 479px)',
     }), friendlyPseudoClass(), customProperty({
       size: size => ({
         width: size + 'px',
@@ -132,6 +144,13 @@ app.get('*', (request, response) => {
 
   return getDataFromTree(reactApp).then(() => {
     // const reactAppString = render(reactApp);
+    if (request.isAmp) {
+      if (!style || !isProd) {
+        if (!fs.existsSync(path.resolve(__dirname, 'main.css'))) style = 'none';
+        else style = fs.readFileSync(path.resolve(__dirname, 'main.css'), { encoding: 'utf8' })
+      };
+      if (style !== 'none') renderer.renderStatic(style);
+    }
     const reactAppString = request.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
     const cssMarkup = renderer.renderToString();
 

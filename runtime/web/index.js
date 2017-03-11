@@ -52,12 +52,23 @@ const client = new ApolloClient({
 
 const renderer = createRenderer({
   selectorPrefix: 'o',
-  plugins: [ extend(), unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
+  plugins: [ unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
+    // From
+    fromWide: '@media (min-width: 1200px)',
+    fromDesktop: '@media (min-width: 992px)',
+    fromTablet: '@media (min-width: 768px)',
+    fromPhone: '@media (min-width: 480px)',
+    // To
+    toDesktop: '@media (max-width: 1199px)',
+    toTablet: '@media (max-width: 991px)',
+    toPhone: '@media (max-width: 767px)',
+    toMini: '@media (max-width: 479px)',
+    // On
     onWide: '@media (min-width: 1200px)',
-    onDesktop: '@media (min-width: 992px)',
-    onTablet: '@media (min-width: 768px)',
-    onPhone: '@media (min-width: 480px)',
-    onMini: '@media (min-width: 320px)',
+    onDesktop: '@media (max-width: 1199px, min-width: 992)',
+    onTablet: '@media (max-width: 991px, min-width: 768)',
+    onPhone: '@media (max-width: 767px, min-width: 480)',
+    onMini: '@media (max-width: 479px)',
   }), friendlyPseudoClass(), customProperty({
     size: size => ({
       width: size + 'px',
