@@ -9,7 +9,6 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import { createRenderer } from 'fela';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
@@ -19,15 +18,7 @@ import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 import fs from 'fs';
 import useragent from 'express-useragent';
-import monolithic from 'fela-monolithic'
-import extend from 'fela-plugin-extend';
-import customProperty from 'fela-plugin-custom-property';
-import prefixer from 'fela-plugin-prefixer';
-import fallbackValue from 'fela-plugin-fallback-value';
-import unit from 'fela-plugin-unit';
-import removeUndefined from 'fela-plugin-remove-undefined';
-import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
-import namedMediaQuery from 'fela-plugin-named-media-query';
+import renderer from '../fela';
 
 const RedisStore = createRedisStore(session);
 
@@ -57,7 +48,6 @@ app.use(express.static(path.resolve(process.cwd(), 'build', 'web')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
 
 app.use((req, res, next) => {
-  console.log(req.query.amp)
   if (req.subdomains && req.subdomains.length === 1 && req.subdomains[0] === 'amp') {
     req.isAmp = true;
   } else if (req.query.amp !== undefined) {
@@ -99,33 +89,6 @@ app.get('*', (request, response) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const renderer = createRenderer({
-    selectorPrefix: 'o',
-    plugins: [ unit(), fallbackValue(), removeUndefined(), prefixer(), namedMediaQuery({
-      // From
-      fromWide: '@media (min-width: 1200px)',
-      fromDesktop: '@media (min-width: 992px)',
-      fromTablet: '@media (min-width: 768px)',
-      fromPhone: '@media (min-width: 480px)',
-      // To
-      toDesktop: '@media (max-width: 1199px)',
-      toTablet: '@media (max-width: 991px)',
-      toPhone: '@media (max-width: 767px)',
-      toMini: '@media (max-width: 479px)',
-      // On
-      onWide: '@media (min-width: 1200px)',
-      onDesktop: '@media (max-width: 1199px, min-width: 992)',
-      onTablet: '@media (max-width: 991px, min-width: 768)',
-      onPhone: '@media (max-width: 767px, min-width: 480)',
-      onMini: '@media (max-width: 479px)',
-    }), friendlyPseudoClass(), customProperty({
-      size: size => ({
-        width: size + 'px',
-        height: size + 'px'
-      })
-    }) ],
-    enhancers: [ monolithic() ]
-  });
   const context = { };
 
   // Create our React application and render it into a string.
@@ -144,13 +107,13 @@ app.get('*', (request, response) => {
 
   return getDataFromTree(reactApp).then(() => {
     // const reactAppString = render(reactApp);
-    if (request.isAmp) {
+    /*if (request.isAmp) {
       if (!style || !isProd) {
         if (!fs.existsSync(path.resolve(__dirname, 'main.css'))) style = 'none';
         else style = fs.readFileSync(path.resolve(__dirname, 'main.css'), { encoding: 'utf8' })
       };
       if (style !== 'none') renderer.renderStatic(style);
-    }
+    }*/
     const reactAppString = request.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
     const cssMarkup = renderer.renderToString();
 
