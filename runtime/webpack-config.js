@@ -71,6 +71,9 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           limit: 20000,
         },
       }, {
+        test: /\.(txt|md)$/,
+        loader: 'raw-loader',
+      }, {
         test: /\.json$/,
         loader: 'json-loader',
       }],
@@ -161,17 +164,17 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   }
   if (isNode) {
     config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
-    // config.plugins.push(new webpack.BannerPlugin({ banner: 'const regeneratorRuntime = require("regenerator-runtime");', raw: true }));
-    // config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
+    config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
   } else {
     config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
+    // config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
   }
-  if (isNode) {
+  /*if (isNode) {
     config.plugins.push(new ExtractTextPlugin({
       filename: '[name].css',
       allChunks: true,
     }));
-  }
+  }*/
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
@@ -281,24 +284,20 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         query: JSON.stringify({ modules: false, sourceMap: true }),
       }, {
         loader: 'less-loader',
-        query: JSON.stringify({ modifyVars: theme }),
+        query: JSON.stringify({ modifyVars: theme, sourceMap: true }),
       }]
     }));
     config.module.rules.push({
       test: /\.less$/,
       loaders: [ 'happypack/loader?id=less' ]
     });
-  } else if (isNode) {
+  } /*else if (isNode) {
     config.module.rules.push({
       test: /\.less$/,
       loader: ExtractTextPlugin.extract({
         use: [{
           loader: 'css-loader',
-          options: { modules: false, minimize: {
-            discardComments: {
-              removeAll: true
-            }
-          } }
+          options: { modules: false }
         }, {
           loader: 'less-loader', options: {
             modifyVars: theme, // JSON.stringify(theme)
@@ -308,7 +307,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       }),
     });
     config.module.rules.push(babel);
-  }
+  }*/
 
   if (isDev) {
     config.plugins.push(new HappyPack({
