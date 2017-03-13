@@ -77,6 +77,19 @@ if (command === 'dev') {
     console.log('[webpack] the following asset bundles were built:');
     stats.forEach((c) => console.log(c.toString()));
   });
+} else if (command.indexOf('build:') === 0) {
+  const target = command.split(':')[1];
+  rimraf.sync(path.resolve(process.cwd(), 'build', target));
+  process.env.NODE_ENV = 'production';
+  const compiler = webpack([
+    createConfig({ target: target, mode: 'production' })
+  ]);
+  compiler.run((err, compilation) => {
+    if (err) return console.log('[webpack] error:', err);
+    const stats = compilation.stats || [compilation];
+    console.log('[webpack] the following asset bundles were built:');
+    stats.forEach((c) => console.log(c.toString()));
+  });
 } else if (command === 'start') {
   require(path.resolve(process.cwd(), 'build', 'node', 'main'))
 }

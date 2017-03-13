@@ -6,6 +6,8 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
@@ -159,22 +161,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   }
 
   // webpack plugins
-  if (isNode && isDev) {
-    config.plugins.push(new StartServerPlugin('main.js'));
-  }
-  if (isNode) {
-    config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
-    config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
-  } else {
-    config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
-    // config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
-  }
-  /*if (isNode) {
-    config.plugins.push(new ExtractTextPlugin({
-      filename: '[name].css',
-      allChunks: true,
-    }));
-  }*/
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
@@ -200,6 +186,46 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       },
       sourceMap: false,
     }));
+  }
+  if (isNode) {
+    if (isDev) {
+      config.plugins.push(new StartServerPlugin('main.js'));
+    }
+    config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
+    config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
+  } else {
+    config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
+    if (isProd) {
+      config.plugins.push(new HtmlWebpackPlugin({
+        filename: 'offline.html',
+        template: path.resolve(__dirname, 'node', 'offline.js'),
+        inject: false,
+        /*minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },*/
+      }));
+      config.plugins.push(new OfflinePlugin({
+        responseStrategy: 'network-first',
+        externals: [
+          'https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'
+        ],
+        caches: 'all',
+        ServiceWorker: {
+          events: true,
+          navigateFallbackURL: '/offline.html',
+        },
+        AppCache: false,
+      }));
+    }
   }
 
   // Hot module replacement on dev
