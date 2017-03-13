@@ -8,11 +8,12 @@ const EXPRESSION = /^((\+{1,}) ([^\n\+]+)?[ \t]*)(?:\n([\s\S]*?)(\n\2[ \t]*(?=\n
 // const EXPRESSION = /^\:{3,}/;
 const getArgsFromStr = (str, allowed) => {
   const match = str ? str.match(/(?:[^\s"'\]\[]+|"[^"]*"|'[^']*'|\[[^']*\])+/g) : null;
+  console.log(match);
   if (match) {
     return match.reduce((state, current) => {
       const [x, y] = current.split('=');
       if (allowed && !allowed[x]) return state;
-      else if (!allowed) state[x] = JSON.parse(y);
+      else if (!allowed) state[x] = y;
       else if (allowed[x] === PropTypes.number) state[x] = y !== null && y !== undefined ? parseInt(y) : null;
       else if (allowed[x] === PropTypes.bool) state[x] = y === 'true' ? true : y === 'false' ? false : null;
       else state[x] = y;
