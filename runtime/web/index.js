@@ -11,6 +11,7 @@ import { Provider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
 
+// TODO
 if (process.env.NODE_ENV === 'production') {
   if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -38,7 +39,7 @@ const client = new ApolloClient({
   networkInterface,
   dataIdFromObject: o => o.id,
   ssrForceFetchDelay: 100,
-  initialState: window.__APP_STATE__,
+  initialState: window.INITIAL_DATA,
 });
 
 const mountNode = document.getElementById('css-markup');
@@ -61,7 +62,8 @@ function renderApp() {
 }
 
 // Execute the first render of our app.
-renderApp();
+if (window.POLYFILLED) renderApp();
+else window.GO = renderApp;
 
 if (module.hot) {
   // Accept changes to this file for hot reloading.
