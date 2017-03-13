@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import remark from 'remark';
 import reactRenderer from './compiler';
 import plugin from './container';
+import { Link } from 'olymp';
 
 const defaultComponents = {
   text: ({ value, ...props }) => <span {...props}>{value}</span>,
@@ -20,6 +21,11 @@ const defaultComponents = {
   heading4: props => <h4 {...props} />,
   heading5: props => <h5 {...props} />,
   heading6: props => <h6 {...props} />,
+  link: props => {
+    if (props.href.indexOf('/') === 0) {
+      return <Link to={props.href} />
+    } return <a target="_blank" rel="nofollow noreferrer" {...props} />
+  },
 };
 
 export default (components) => {
