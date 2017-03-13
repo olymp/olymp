@@ -10,8 +10,26 @@ import createFela from '../fela';
 import { Provider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
-
-// TODO
+if (process.env.NODE_ENV === 'production') {
+  const offline = require('offline-plugin/runtime');
+  offline.install({
+    onUpdating: () => {
+      console.log('SW Event:', 'onUpdating');
+    },
+    onUpdateReady: () => {
+      console.log('SW Event:', 'onUpdateReady');
+      offline.applyUpdate();
+    },
+    onUpdated: () => {
+      console.log('SW Event:', 'onUpdated');
+      window.location.reload();
+    },
+    onUpdateFailed: () => {
+      console.log('SW Event:', 'onUpdateFailed');
+    }
+  });
+}
+/*// TODO
 if (process.env.NODE_ENV === 'production') {
   if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -22,7 +40,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 } else {
   console.warn('web/index.js removes serviceworkers temporarily');
-}
+}*/
 
 const networkInterface = createBatchingNetworkInterface({
   uri: process.env.GRAPHQL_URL || '/graphql',
