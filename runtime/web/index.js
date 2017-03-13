@@ -23,27 +23,6 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   console.warn('web/index.js removes serviceworkers temporarily');
 }
-
-// Get the DOM Element that will host our React application.
-const container = document.querySelector('#app');
-
-const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || '/graphql',
-  batchInterval: 5,
-  opts: {
-    credentials: 'same-origin',
-  },
-});
-
-const client = new ApolloClient({
-  networkInterface,
-  dataIdFromObject: o => o.id,
-  ssrForceFetchDelay: 100,
-  initialState: window.INITIAL_DATA,
-});
-
-const mountNode = document.getElementById('css-markup');
-
 function renderApp() {
   render(
     <AppContainer>
@@ -60,10 +39,29 @@ function renderApp() {
     container,
   );
 }
+function load() {
+  // Get the DOM Element that will host our React application.
+  const container = document.querySelector('#app');
+  const networkInterface = createBatchingNetworkInterface({
+    uri: process.env.GRAPHQL_URL || '/graphql',
+    batchInterval: 5,
+    opts: {
+      credentials: 'same-origin',
+    },
+  });
+  const client = new ApolloClient({
+    networkInterface,
+    dataIdFromObject: o => o.id,
+    ssrForceFetchDelay: 100,
+    initialState: window.INITIAL_DATA,
+  });
+  const mountNode = document.getElementById('css-markup');
+  renderApp();
+}
 
 // Execute the first render of our app.
-if (window.POLYFILLED) renderApp();
-else window.GO = renderApp;
+if (window.POLYFILLED) load();
+else window.GO = load;
 
 if (module.hot) {
   // Accept changes to this file for hot reloading.
