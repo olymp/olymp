@@ -49,24 +49,23 @@ function renderApp() {
     container,
   );
 }
-// function load() {
-// Get the DOM Element that will host our React application.
-container = document.getElementById('app');
-mountNode = document.getElementById('css-markup');
-renderer = createFela();
-client = new ApolloClient({
-  networkInterface,
-  dataIdFromObject: o => o.id,
-  ssrForceFetchDelay: 100,
-  initialState: window.INITIAL_DATA,
-});
-// return renderApp();
-renderApp();
-// }
+function load() {
+  // Get the DOM Element that will host our React application.
+  container = document.getElementById('app');
+  mountNode = document.getElementById('css-markup');
+  renderer = createFela();
+  client = new ApolloClient({
+    networkInterface,
+    dataIdFromObject: o => o.id,
+    ssrForceFetchDelay: 100,
+    initialState: window.INITIAL_DATA,
+  });
+  return renderApp();
+}
 
 // Execute the first render of our app.
-// if (window.POLYFILLED) load();
-// else window.GO = load;
+if (window.POLYFILLED) load();
+else window.GO = load;
 
 if (module.hot) {
   // Accept changes to this file for hot reloading.
