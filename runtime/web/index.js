@@ -23,6 +23,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   console.warn('web/index.js removes serviceworkers temporarily');
 }
+
+let client, mountNode;
 function renderApp() {
   render(
     <AppContainer>
@@ -49,13 +51,13 @@ function load() {
       credentials: 'same-origin',
     },
   });
-  const client = new ApolloClient({
+  client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,
     ssrForceFetchDelay: 100,
     initialState: window.INITIAL_DATA,
   });
-  const mountNode = document.getElementById('css-markup');
+  mountNode = document.getElementById('css-markup');
   renderApp();
 }
 
