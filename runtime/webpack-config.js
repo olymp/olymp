@@ -8,6 +8,8 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const VisualizerPlugin = require('webpack-visualizer-plugin');
+const LodashPlugin = require('lodash-webpack-plugin');
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
@@ -58,6 +60,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
       }),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
@@ -156,6 +159,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
+    babel.options.presets.push('lodash');
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
     // babel.options.presets.push(['react-optimize']);
   }
@@ -224,6 +228,9 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           navigateFallbackURL: '/offline.html',
         },
         AppCache: false,
+      }));
+      config.plugins.push(new VisualizerPlugin({
+        filename: './visualizer.html'
       }));
     }
   }

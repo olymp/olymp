@@ -89,6 +89,7 @@ if (command === 'dev') {
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
     stats.forEach((c) => console.log(c.toString()));
+    // stats.forEach((c) => fs.writeFileSync(path.resolve(__dirname, `${target}.json`), c.toJSON()));
   });
 } else if (command === 'start') {
   require(path.resolve(process.cwd(), 'build', 'node', 'main'))
