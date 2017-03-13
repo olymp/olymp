@@ -6,6 +6,14 @@ import plugin from './container';
 
 const defaultComponents = {
   text: ({ value, ...props }) => <span {...props}>{value}</span>,
+  code: ({ value, ...props }) => <pre {...props}>{value}</pre>,
+  blockquote: (props) => <blockquote {...props}/>,
+  emphasis: (props) => <em {...props}/>,
+  strong: (props) => <strong {...props}/>,
+  paragraph: (props) => <p {...props}/>,
+  ul: (props) => <ul {...props} />,
+  ol: (props) => <ol {...props} />,
+  li: (props) => <li {...props} />,
   heading1: props => <h1 {...props} />,
   heading2: props => <h2 {...props} />,
   heading3: props => <h3 {...props} />,
@@ -17,16 +25,6 @@ const defaultComponents = {
 export default (components) => {
   const allComponents = { ...defaultComponents, ...components };
   return remark().use(plugin, { components: allComponents }).use(reactRenderer, {
-    // sanitize: false,
     remarkReactComponents: allComponents,
-    toHast: {
-      handlers: {
-        react: (h, node) => {
-          const { children, position, ...props } = node;
-          const copy = JSON.parse(JSON.stringify(node));
-          return h(node, allComponents[node.tag] ? node.tag : 'default', props, all(h, copy));
-        }
-      }
-    }
   });
 };
