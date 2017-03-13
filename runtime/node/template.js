@@ -69,14 +69,16 @@ export default ({ helmet, cssBundle, cssMarkup, jsBundle, root, initialState }) 
     ${helmet.title.toString()}
     ${helmet.meta.toString()}
     ${helmet.link.toString()}
-    ${cssBundle ? '<link rel="stylesheet" type="text/css" href="' + cssBundle + '">' : ''}
+    ${cssBundle ? `<link rel="stylesheet" type="text/css" href="${cssBundle}" media="none" onload="if(media!='all')media='all'">` : ''}
+    ${cssBundle ? `<noscript><link rel="stylesheet" href="${cssBundle}"></noscript>` : ''}
     <style id="css-markup">${cssMarkup || ''}</style>
   </head>
   <body>
     <div id="app"><div>${root}</div></div>
-    <script type='text/javascript'>window.__APP_STATE__=${serialize(initialState)}</script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-    <script src="${jsBundle}"></script>
+    <script type='text/javascript'>window.INITIAL_DATA=${serialize(initialState)}</script>
+    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
+    <script defer async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
+    <script defer async src="${jsBundle}"></script>
   </body>
 </html>
 `;
