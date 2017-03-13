@@ -159,8 +159,8 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
-    babel.options.presets.push('lodash');
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
+    babel.options.plugins.push('lodash');
     // babel.options.presets.push(['react-optimize']);
   }
 
