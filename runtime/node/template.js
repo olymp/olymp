@@ -76,9 +76,12 @@ export default ({ helmet, cssBundle, cssMarkup, jsBundle, root, initialState }) 
   <body>
     <div id="app"><div>${root}</div></div>
     <script type='text/javascript'>window.INITIAL_DATA=${serialize(initialState)}</script>
-    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
-    <script defer async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
-    <script defer async src="${jsBundle}"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <script src="${jsBundle}"></script>
   </body>
 </html>
 `;
+
+//<script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
+//<script defer async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
+//<script defer async src="${jsBundle}"></script>
