@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { parseQuery, stringifyQuery, AmpProvider } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import renderer from '../fela';
+import createFela from '../fela';
 import { Provider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
@@ -32,7 +32,7 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
-let client, mountNode, container;
+let client, mountNode, container, renderer;
 function renderApp() {
   render(
     <AppContainer>
@@ -53,6 +53,7 @@ function load() {
   // Get the DOM Element that will host our React application.
   container = document.getElementById('app');
   mountNode = document.getElementById('css-markup');
+  renderer = createFela();
   client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,

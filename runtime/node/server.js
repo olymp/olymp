@@ -18,7 +18,7 @@ import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 import fs from 'fs';
 import useragent from 'express-useragent';
-import renderer from '../fela';
+import createFela from '../fela';
 
 const RedisStore = createRedisStore(session);
 
@@ -90,6 +90,7 @@ app.get('*', (request, response) => {
     ssrMode: true,
   });
   const context = { };
+  const renderer = createFela();
 
   // Create our React application and render it into a string.
   const [pathname, search] = decodeURI(request.url).split('?');

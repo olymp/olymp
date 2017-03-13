@@ -8,7 +8,6 @@ const EXPRESSION = /^((\+{1,}) ([^\n\+]+)?[ \t]*)(?:\n([\s\S]*?)(\n\2[ \t]*(?=\n
 // const EXPRESSION = /^\:{3,}/;
 const getArgsFromStr = (str, allowed) => {
   const match = str ? str.match(/(?:[^\s"'\]\[]+|"[^"]*"|'[^']*'|\[[^']*\])+/g) : null;
-  console.log(match);
   if (match) {
     return match.reduce((state, current) => {
       const [x, y] = current.split('=');
