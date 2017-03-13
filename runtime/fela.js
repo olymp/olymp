@@ -30,8 +30,8 @@ const renderer = createRenderer({
     onMini: '@media (max-width: 479px)',
   }), friendlyPseudoClass(), customProperty({
     size: size => ({
-      width: size + 'px',
-      height: size + 'px'
+      width: size,
+      height: size,
     })
   }) ],
   enhancers: [ monolithic() ]

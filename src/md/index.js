@@ -24,7 +24,8 @@ const defaultComponents = {
 
 export default (components) => {
   const allComponents = { ...defaultComponents, ...components };
-  return remark().use(plugin, { components: allComponents }).use(reactRenderer, {
+  const instance = remark().use(plugin, { components: allComponents }).use(reactRenderer, {
     remarkReactComponents: allComponents,
   });
+  return ({ value }) => instance.processSync(value).contents;
 };

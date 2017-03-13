@@ -14,7 +14,7 @@ const gallery = (props) => {
     ? `https://res.cloudinary.com/djyenzorc/image/upload/f_auto,q_auto,fl_lossy/v1480883925/${name}`
     : 'http://placehold.it/350x150';
   return (
-    <div style={{ border: '1px solid red', float }}>
+    <div style={{ float }}>
       <img src={src} alt={alt} width={width || 'auto'} height={height || 'auto'} />
       {children}
     </div>
@@ -27,12 +27,24 @@ gallery.propTypes = {
   height: PropTypes.string,
   float: PropTypes.string,
 }
+const bordered = (props) => {
+  const { children, color } = props;
+  return (
+    <div style={{ border: `1px solid ${color || 'red'}` }}>
+      {children}
+    </div>
+  );
+}
+bordered.propTypes = {
+  color: PropTypes.string,
+}
 export default class MdExample extends Component {
   state = { text };
   constructor(props) {
     super(props);
     this.remark = md({
       fallback,
+      bordered,
       gallery,
     });
   }
@@ -43,7 +55,7 @@ export default class MdExample extends Component {
           mode: 'markdown',
         }} />
         <div>
-          {this.remark.processSync(this.state.text).contents}
+          {this.remark(this.state.text)}
         </div>
       </div>
     );
