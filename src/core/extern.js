@@ -1,5 +1,4 @@
 // EXTERNS
-export { default as moment } from 'moment';
 export { default as capitalize } from 'lodash/upperFirst';
 export { default as cn } from 'classnames';
 export { default as Helmet } from 'react-helmet';
