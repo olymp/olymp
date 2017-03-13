@@ -24,7 +24,15 @@ if (process.env.NODE_ENV === 'production') {
   console.warn('web/index.js removes serviceworkers temporarily');
 }
 
-let client, mountNode;
+const networkInterface = createBatchingNetworkInterface({
+  uri: process.env.GRAPHQL_URL || '/graphql',
+  batchInterval: 5,
+  opts: {
+    credentials: 'same-origin',
+  },
+});
+
+let client, mountNode, container;
 function renderApp() {
   render(
     <AppContainer>
@@ -43,21 +51,14 @@ function renderApp() {
 }
 function load() {
   // Get the DOM Element that will host our React application.
-  const container = document.querySelector('#app');
-  const networkInterface = createBatchingNetworkInterface({
-    uri: process.env.GRAPHQL_URL || '/graphql',
-    batchInterval: 5,
-    opts: {
-      credentials: 'same-origin',
-    },
-  });
+  container = document.getElementById('app');
+  mountNode = document.getElementById('css-markup');
   client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,
     ssrForceFetchDelay: 100,
     initialState: window.INITIAL_DATA,
   });
-  mountNode = document.getElementById('css-markup');
   renderApp();
 }
 
