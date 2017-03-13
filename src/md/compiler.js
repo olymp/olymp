@@ -58,12 +58,14 @@ function remarkReact(options) {
   }
 
   function compile(node, key) {
-    const { tag, type, position, depth, value, ordered, props = {}, children = [] } = node;
+    const { tag, type, position, depth, value, ordered, url, props = {}, children = [] } = node;
     let t = tag || type;
     if (!props.key) props.key = key;
     if (!props.value) props.value = value;
     if (t === 'heading') {
       t = `heading${depth || 1}`;
+    } else if (t === 'link') {
+      props.href = url;
     } else if (t === 'text') {
     } else if (t === 'list') {
       t = ordered ? 'ol' : 'ul';
