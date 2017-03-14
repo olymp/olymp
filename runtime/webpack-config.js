@@ -26,6 +26,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
+  const isElectron = target === 'electron';
   const isNode = target === 'node';
   const config = {
     resolve: {
@@ -44,6 +45,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         moment: path.resolve(appRoot, 'node_modules', 'moment'),
         lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         olymp: olympRoot,
+        'olymp-icons': path.resolve(olympRoot, 'icons'),
         '@root': appRoot,
         '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
       }
@@ -59,6 +61,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.SSR': JSON.stringify(isSSR),
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
+        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
       }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
@@ -70,7 +73,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         test: /\.html$/,
         loader: 'file-loader?name=[name].[ext]',
       }, {
-        test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
+        test: /\.(jpg|jpeg|png|gif|eot|ttf|woff|woff2)$/,
         loader: 'url-loader',
         options: {
           limit: 20000,
@@ -98,6 +101,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       // path.resolve(appRoot, 'server'),
       // path.resolve(olympRoot, 'graphql'),
       path.resolve(appRoot, 'app'),
+      path.resolve(olympRoot, 'icons'),
       path.resolve(olympRoot, 'src'),
       path.resolve(__dirname),
     ],
@@ -160,12 +164,28 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    babel.options.plugins.push('lodash');
+    babel.options.plugins.push(['transform-imports', {
+      antd: {
+        transform: 'antd/lib/${member}',
+        kebabCase: true,
+        preventFullImport: true
+      },
+      lodash: {
+        transform: 'lodash/${member}',
+        preventFullImport: true
+      },
+      'olymp-icons': {
+        transform: 'olymp-icons/lib/${member}',
+        kebabCase: true,
+        preventFullImport: true
+      },
+    }]);
     // babel.options.presets.push(['react-optimize']);
   }
 
   // webpack plugins
   if (isWeb && isProd) {
+    config.plugins.push(new LodashPlugin());
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(new ExtractTextPlugin({
@@ -199,10 +219,10 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
   } else {
     config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
-    if (isProd) {
+    if (isProd && !isElectron) {
       config.plugins.push(new HtmlWebpackPlugin({
         filename: 'offline.html',
-        template: path.resolve(__dirname, 'node', 'offline.js'),
+        template: path.resolve(__dirname, target, 'template.js'),
         inject: false,
         /*minify: {
           removeComments: true,
@@ -231,6 +251,25 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       }));
       config.plugins.push(new VisualizerPlugin({
         filename: './visualizer.html'
+      }));
+    }
+    if (isProd && isElectron) {
+      config.plugins.push(new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: path.resolve(__dirname, target, 'template.js'),
+        inject: false,
+        /*minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },*/
       }));
     }
   }
@@ -357,8 +396,30 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       include: babel.include,
       loaders: [ 'happypack/loader?id=babel' ]
     });
+    /*config.module.rules.push({
+      test: /\.svg$/,
+      loaders: [
+        'happypack/loader?id=babel', {
+        loader: 'react-svg-loader',
+        query: {
+          jsx: true
+        },
+      }]
+    });*/
   } else {
     config.module.rules.push(babel);
+    /*config.module.rules.push({
+      test: /\.svg$/,
+      loaders: [{
+        loader: babel.loader,
+        query: babel.options,
+      }, {
+        loader: 'react-svg-loader',
+        query: {
+          jsx: true
+        },
+      }]
+    });*/
   }
 
   return config;
