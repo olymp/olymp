@@ -44,6 +44,23 @@ export const offline = ({ cssBundle, jsBundle }) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
+
+    ${cssBundle ? `<link rel="stylesheet" type="text/css" href="${cssBundle}" media="none" onload="if(media!='all')media='all'">` : ''}
+    ${cssBundle ? `<noscript><link rel="stylesheet" href="${cssBundle}"></noscript>` : ''}
+    <style id="css-markup"></style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
+    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
+    <script async src="${jsBundle}"></script>
+  </body>
+</html>
+`;
+export const electron = ({ cssBundle, jsBundle }) => `
+<!DOCTYPE html>
+<html lang="de">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -66,15 +83,21 @@ export const offline = ({ cssBundle, jsBundle }) => `
     <meta name="msapplication-TileColor" content="#FBA139">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#FBA139">
-    ${cssBundle ? `<link rel="stylesheet" type="text/css" href="${cssBundle}" media="none" onload="if(media!='all')media='all'">` : ''}
-    ${cssBundle ? `<noscript><link rel="stylesheet" href="${cssBundle}"></noscript>` : ''}
+    ${cssBundle ? `<link rel="stylesheet" type="text/css" href="${cssBundle}">` : ''}
     <style id="css-markup"></style>
+    <style>
+      body {
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+      }
+      p, h1, h2, h3, h4, h5, h6, span, strong {
+        cursor: default;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
-    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
-    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
-    <script async src="${jsBundle}"></script>
+    <script src="${jsBundle}"></script>
   </body>
 </html>
 `;
