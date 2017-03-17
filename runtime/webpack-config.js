@@ -9,7 +9,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
-const LodashPlugin = require('lodash-webpack-plugin');
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
@@ -112,6 +111,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'react',
       ],
       plugins: [
+        'syntax-dynamic-import',
         'transform-object-rest-spread',
         // 'transform-es2015-destructuring',
         'transform-decorators-legacy',
@@ -155,6 +155,8 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
 
   if (isDev && isWeb) {
     config.output.publicPath = `http://localhost:${devPort}/`;
+  } else {
+    config.output.publicPath = '/';
   }
 
   // babel-preset-env on node
@@ -186,7 +188,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
 
   // webpack plugins
   if (isWeb && isProd) {
-    config.plugins.push(new LodashPlugin());
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(new ExtractTextPlugin({

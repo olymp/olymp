@@ -9,6 +9,7 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
+//import { flushServerSideRequires } from 'react-loadable';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
@@ -31,6 +32,38 @@ const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
 const devPort = parseInt(process.env.DEV_PORT, 10);
 
+
+// React loadable SSR
+const modules = {};
+const bundles = {};
+const clientStatsPath = path.resolve(__dirname, '..', 'web', 'stats.json');
+if (fs.existsSync(clientStatsPath)) {
+  const webpackStats = JSON.parse(fs.readFileSync(clientAssetsPath));
+  webpackStats.modules.forEach(module => {
+    const parts = module.identifier.split('!');
+    const filePath = parts[parts.length - 1];
+    modules[filePath] = module.chunks;
+  });
+  webpackStats.chunks.forEach(chunk => {
+    bundles[chunk.id] = chunk.files;
+  });
+}
+const getLoadableScripts = (main) => {
+  let scripts = [main];
+  /*if (!isProd) return scripts;
+  console.log(flushServerSideRequires);
+  const requires = flushServerSideRequires();
+  requires.forEach(file => {
+    let matchedBundles = modules[file + '.js'];
+    matchedBundles.forEach(bundle => {
+      bundles[bundle].forEach(script => {
+        scripts.unshift(script);
+      });
+    });
+  });*/
+  return scripts;
+}
+// Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
 const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
@@ -116,13 +149,15 @@ app.get('*', (request, response) => {
       if (style !== 'none') renderer.renderStatic(style);
     }*/
     const reactAppString = request.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
+    const scripts = request.isAmp ? [] : getLoadableScripts(isProd ? `${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`);
+    const styles = request.isAmp ? [] : (isProd ? [`${clientAssets.main.css}`] : []);
     const cssMarkup = renderer.renderToString();
 
     // Generate the html response.
     const html = (request.isAmp ? amp : template)({
       root: reactAppString,
-      jsBundle: isProd ? `/${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`,
-      cssBundle: isProd ? `/${clientAssets.main.css}` : undefined,
+      scripts,
+      styles,
       cssMarkup,
       helmet: Helmet.rewind(),
       initialState: { [client.reduxRootKey]: client.getInitialState() },
