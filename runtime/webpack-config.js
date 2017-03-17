@@ -6,6 +6,9 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
+const VisualizerPlugin = require('webpack-visualizer-plugin');
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
@@ -19,9 +22,11 @@ process.noDeprecation = true;
 
 module.exports = ({ mode, target, port, devPort, ssr }) => {
   const isSSR = ssr !== false;
+  if (!isSSR) console.log('SSR OFF');
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
+  const isElectron = target === 'electron';
   const isNode = target === 'node';
   const config = {
     resolve: {
@@ -40,6 +45,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         moment: path.resolve(appRoot, 'node_modules', 'moment'),
         lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         olymp: olympRoot,
+        'olymp-icons': path.resolve(olympRoot, 'src', 'icons'),
         '@root': appRoot,
         '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
       }
@@ -55,7 +61,9 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.SSR': JSON.stringify(isSSR),
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
+        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
       }),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
@@ -65,11 +73,14 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         test: /\.html$/,
         loader: 'file-loader?name=[name].[ext]',
       }, {
-        test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
+        test: /\.(jpg|jpeg|png|gif|eot|ttf|woff|woff2)$/,
         loader: 'url-loader',
         options: {
           limit: 20000,
         },
+      }, {
+        test: /\.(txt|md)$/,
+        loader: 'raw-loader',
       }, {
         test: /\.json$/,
         loader: 'json-loader',
@@ -90,6 +101,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       // path.resolve(appRoot, 'server'),
       // path.resolve(olympRoot, 'graphql'),
       path.resolve(appRoot, 'app'),
+      path.resolve(olympRoot, 'icons'),
       path.resolve(olympRoot, 'src'),
       path.resolve(__dirname),
     ],
@@ -99,6 +111,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'react',
       ],
       plugins: [
+        'syntax-dynamic-import',
         'transform-object-rest-spread',
         // 'transform-es2015-destructuring',
         'transform-decorators-legacy',
@@ -142,6 +155,8 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
 
   if (isDev && isWeb) {
     config.output.publicPath = `http://localhost:${devPort}/`;
+  } else {
+    config.output.publicPath = '/';
   }
 
   // babel-preset-env on node
@@ -152,26 +167,26 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     babel.options.plugins.push('react-hot-loader/babel');
   } else {
     babel.options.presets.push(['latest', { modules: false, loose: true }]);
+    babel.options.plugins.push(['transform-imports', {
+      antd: {
+        transform: 'antd/lib/${member}',
+        kebabCase: true,
+        preventFullImport: true
+      },
+      lodash: {
+        transform: 'lodash/${member}',
+        preventFullImport: true
+      },
+      'olymp-icons': {
+        transform: 'olymp-icons/lib/${member}',
+        kebabCase: true,
+        preventFullImport: true
+      },
+    }]);
     // babel.options.presets.push(['react-optimize']);
   }
 
   // webpack plugins
-  if (isNode && isDev) {
-    config.plugins.push(new StartServerPlugin('main.js'));
-  }
-  if (isNode) {
-    config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
-    // config.plugins.push(new webpack.BannerPlugin({ banner: 'const regeneratorRuntime = require("regenerator-runtime");', raw: true }));
-    // config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
-  } else {
-    config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
-  }
-  if (isNode) {
-    config.plugins.push(new ExtractTextPlugin({
-      filename: '[name].css',
-      allChunks: true,
-    }));
-  }
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
@@ -197,6 +212,68 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       },
       sourceMap: false,
     }));
+  }
+  if (isNode) {
+    if (isDev) {
+      config.plugins.push(new StartServerPlugin('main.js'));
+    }
+    config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
+    config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
+  } else {
+    config.plugins.push(new AssetsPlugin({ filename: 'assets.json', path: path.resolve(process.cwd(), 'build', target) }));
+    if (isProd && !isElectron) {
+      config.plugins.push(new HtmlWebpackPlugin({
+        filename: 'offline.html',
+        template: path.resolve(__dirname, target, 'template.js'),
+        inject: false,
+        /*minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },*/
+      }));
+      config.plugins.push(new OfflinePlugin({
+        responseStrategy: 'network-first',
+        externals: [
+          'https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'
+        ],
+        caches: 'all',
+        ServiceWorker: {
+          events: true,
+          navigateFallbackURL: '/offline.html',
+        },
+        AppCache: false,
+      }));
+      config.plugins.push(new VisualizerPlugin({
+        filename: './visualizer.html'
+      }));
+    }
+    if (isProd && isElectron) {
+      config.plugins.push(new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: path.resolve(__dirname, target, 'template.js'),
+        inject: false,
+        /*minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },*/
+      }));
+    }
   }
 
   // Hot module replacement on dev
@@ -281,24 +358,20 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         query: JSON.stringify({ modules: false, sourceMap: true }),
       }, {
         loader: 'less-loader',
-        query: JSON.stringify({ modifyVars: theme }),
+        query: JSON.stringify({ modifyVars: theme, sourceMap: true }),
       }]
     }));
     config.module.rules.push({
       test: /\.less$/,
       loaders: [ 'happypack/loader?id=less' ]
     });
-  } else if (isNode) {
+  } /*else if (isNode) {
     config.module.rules.push({
       test: /\.less$/,
       loader: ExtractTextPlugin.extract({
         use: [{
           loader: 'css-loader',
-          options: { modules: false, minimize: {
-            discardComments: {
-              removeAll: true
-            }
-          } }
+          options: { modules: false }
         }, {
           loader: 'less-loader', options: {
             modifyVars: theme, // JSON.stringify(theme)
@@ -308,7 +381,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       }),
     });
     config.module.rules.push(babel);
-  }
+  }*/
 
   if (isDev) {
     config.plugins.push(new HappyPack({
@@ -325,8 +398,30 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       include: babel.include,
       loaders: [ 'happypack/loader?id=babel' ]
     });
+    /*config.module.rules.push({
+      test: /\.svg$/,
+      loaders: [
+        'happypack/loader?id=babel', {
+        loader: 'react-svg-loader',
+        query: {
+          jsx: true
+        },
+      }]
+    });*/
   } else {
     config.module.rules.push(babel);
+    /*config.module.rules.push({
+      test: /\.svg$/,
+      loaders: [{
+        loader: babel.loader,
+        query: babel.options,
+      }, {
+        loader: 'react-svg-loader',
+        query: {
+          jsx: true
+        },
+      }]
+    });*/
   }
 
   return config;

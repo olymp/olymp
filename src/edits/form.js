@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withCollection } from '../core/decorators';
-import FormItem from '../core/components/form/item';
+import FormItem from '../cms-core/components/form/item';
 import { Button, Collapse } from 'antd';
 
 const fieldNames = ['createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'updatedById', 'createdById'];
