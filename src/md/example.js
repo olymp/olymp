@@ -38,15 +38,12 @@ const bordered = (props) => {
 bordered.propTypes = {
   color: PropTypes.string,
 }
+export const components = { fallback, bordered, gallery };
 export default class MdExample extends Component {
   state = { text };
   constructor(props) {
     super(props);
-    this.remark = md({
-      fallback,
-      bordered,
-      gallery,
-    });
+    this.remark = md({ components });
   }
   render() {
     return (

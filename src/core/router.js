@@ -40,11 +40,19 @@ export const withRouter = (WrappedComponent) => {
       }
       this.context.router.history.push(to);
     }
+    replace = (propsTo) => {
+      const to = { ...propsTo };
+      if (to.query) {
+        to.search = stringifyQuery(to.query);
+        delete to.query;
+      }
+      this.context.router.history.replace(to);
+    }
     render() {
       const { location } = this.props;
       location.query = parseQuery(location.search);
       return (
-        <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push }} />
+        <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push, replace: this.replace }} />
       );
     }
   }
