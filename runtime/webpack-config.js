@@ -23,6 +23,7 @@ process.noDeprecation = true;
 
 module.exports = ({ mode, target, port, devPort, ssr }) => {
   const isSSR = ssr !== false;
+  if (!isSSR) console.log('SSR OFF');
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
@@ -45,7 +46,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         moment: path.resolve(appRoot, 'node_modules', 'moment'),
         lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         olymp: olympRoot,
-        'olymp-icons': path.resolve(olympRoot, 'icons'),
+        'olymp-icons': path.resolve(olympRoot, 'src', 'icons'),
         '@root': appRoot,
         '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
       }
