@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { cn } from 'olymp';
 import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
 import { moment } from 'olymp/locale-de';
