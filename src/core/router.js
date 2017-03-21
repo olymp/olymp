@@ -3,46 +3,25 @@ import { withRouter as withRouterLegacy, Link as LinkLegacy, NavLink as NavLinkL
 export { Route, Switch, Redirect } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Router } from 'react-router';
+import { connect } from 'react-redux';
+import { CALL_HISTORY_METHOD } from 'react-router-redux/actions';
 
-export class BrowserRouter extends Component {
-  static propTypes = {
-    basename: PropTypes.string,
-    forceRefresh: PropTypes.bool,
-    getUserConfirmation: PropTypes.func,
-    keyLength: PropTypes.number,
-    children: PropTypes.node
-  }
-
-  constructor() {
-    super();
-    const history = createHistory(this.props);
-    history.location.pathname = decodeURIComponent(history.location.pathname);
-    this.history = history;
-  }
-
-  render() {
-    return <Router history={this.history} children={this.props.children} />;
-  }
+export const routerQueryMiddleware = () => {
+  return function (next) {
+    return function (action) {
+      if (action.type !== CALL_HISTORY_METHOD) {
+        return next(action);
+      }
+      console.log(action.payload);
+      return next();
+    };
+  };
 }
 
-export const Link = (props) => {
-  if (props.to && props.to.query) {
-    props.to.search = stringifyQuery(props.to.query);
-    delete props.to.query;
-  }
-  return <LinkLegacy {...props} />;
-};
-
-export const NavLink = (props) => {
-  if (props.to && props.to.query) {
-    props.to.search = stringifyQuery(props.to.query);
-    delete props.to.query;
-  }
-  return <NavLinkLegacy {...props} />;
-};
-
 export const withRouter = (WrappedComponent) => {
-  @withRouterLegacy
+  @connect(
+    ({ router }) => ({ location: router.location })
+  )
   class WithRouter extends Component {
     static contextTypes = {
       router: PropTypes.shape({
@@ -70,35 +49,28 @@ export const withRouter = (WrappedComponent) => {
       this.context.router.history.replace(to);
     }
     render() {
-      const { location } = this.props;
-      location.query = parseQuery(location.search);
       return (
         <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push, replace: this.replace }} />
       );
     }
   }
   return WithRouter;
-};class ListeningRoute extends React.Component {
-}
-ListeningRoute = withRouter(ListeningRoute);
+};
 
-export const withRouterDirty = (WrappedComponent) => {
-  @withRouterLegacy
-  class WithRouter extends Component {
-    state = {};
-    componentWillMount() {
-      this.unlisten = this.props.history.listen(location => {
-        this.setState({ location });
-      });
-    }
-    componentWillUnmount() {
-      this.unlisten();
-    }
-    render() {
-      return <Route {...this.props} location={this.state.location || this.props.location} />;
-    }
+export const Link = (props) => {
+  if (props.to && props.to.query) {
+    props.to.search = stringifyQuery(props.to.query);
+    delete props.to.query;
   }
-  return WithRouter;
+  return <LinkLegacy {...props} />;
+};
+
+export const NavLink = (props) => {
+  if (props.to && props.to.query) {
+    props.to.search = stringifyQuery(props.to.query);
+    delete props.to.query;
+  }
+  return <NavLinkLegacy {...props} />;
 };
 
 function memoize(func) {
