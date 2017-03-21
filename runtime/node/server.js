@@ -12,7 +12,7 @@ import { ApolloClient, createNetworkInterface } from 'apollo-client';
 //import { flushServerSideRequires } from 'react-loadable';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
-import App from '@app';
+import App, { init } from '@app';
 import template, { amp } from './template';
 import { parseQuery, AmpProvider } from 'olymp';
 import 'source-map-support/register';
@@ -127,6 +127,7 @@ app.get('*', (request, response) => {
 
   // Create our React application and render it into a string.
   const [pathname, search] = decodeURI(request.url).split('?');
+  if (typeof init !== undefined && init) init({ renderer, client });
   const reactApp = (
     <StaticRouter location={{ pathname, search, query: parseQuery(search) }} context={context}>
       <ApolloProvider client={client}>

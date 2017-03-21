@@ -7,7 +7,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import createFela from '../fela';
 import { Provider } from 'react-fela';
-import App from '@app';
+import App, { init } from '@app';
 import { AppContainer } from 'react-hot-loader';
 
 if (process.env.NODE_ENV === 'production') {
@@ -78,6 +78,7 @@ function load() {
     ssrForceFetchDelay: 100,
     initialState: window.INITIAL_DATA,
   });
+  if (typeof init !== undefined && init) init({ renderer, client });
   return renderApp();
 }
 
