@@ -12,7 +12,7 @@ import { ApolloClient, createNetworkInterface } from 'apollo-client';
 //import { flushServerSideRequires } from 'react-loadable';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
-import App, { init } from '@app';
+import App from '@app';
 import template, { amp } from './template';
 import { parseQuery, AmpProvider } from 'olymp';
 import 'source-map-support/register';
@@ -20,6 +20,7 @@ import createRedisStore from 'connect-redis';
 import fs from 'fs';
 import useragent from 'express-useragent';
 import createFela from '../fela';
+const init = require('@app').init;
 
 const RedisStore = createRedisStore(session);
 
