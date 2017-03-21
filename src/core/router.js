@@ -78,6 +78,27 @@ export const withRouter = (WrappedComponent) => {
     }
   }
   return WithRouter;
+};class ListeningRoute extends React.Component {
+}
+ListeningRoute = withRouter(ListeningRoute);
+
+export const withRouterDirty = (WrappedComponent) => {
+  @withRouterLegacy
+  class WithRouter extends Component {
+    state = {};
+    componentWillMount() {
+      this.unlisten = this.props.history.listen(location => {
+        this.setState({ location });
+      });
+    }
+    componentWillUnmount() {
+      this.unlisten();
+    }
+    render() {
+      return <Route {...this.props} location={this.state.location || this.props.location} />;
+    }
+  }
+  return WithRouter;
 };
 
 function memoize(func) {
