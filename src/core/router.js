@@ -4,23 +4,30 @@ export { Route, Switch, Redirect } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Router } from 'react-router';
 import { connect } from 'react-redux';
-import { CALL_HISTORY_METHOD } from 'react-router-redux/actions';
+import { LOCATION_CHANGE } from 'react-router-redux/actions';
 
-export const routerQueryMiddleware = () => {
-  return function (next) {
-    return function (action) {
-      if (action.type !== CALL_HISTORY_METHOD) {
-        return next(action);
-      }
-      console.log(action.payload);
-      return next();
-    };
-  };
-}
+export const routerQueryMiddleware = store => next => action =>  {
+  console.log(action.type, action.type === LOCATION_CHANGE, LOCATION_CHANGE, action.payload);
+  if (action.type !== LOCATION_CHANGE) {
+    return next(action);
+  }
+  if (action.payload.query) {
+    action.payload.search = stringifyQuery(action.payload.query);
+    delete action.payload.query;
+  }
+  return next(action);
+};
 
 export const withRouter = (WrappedComponent) => {
   @connect(
-    ({ router }) => ({ location: router.location })
+    ({ router }) => {
+      return {
+        location: {
+          ...router.location,
+          query: parseQuery(router.location.search)
+        }
+      }
+    }
   )
   class WithRouter extends Component {
     static contextTypes = {
