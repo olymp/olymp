@@ -2,14 +2,14 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { parseQuery, stringifyQuery, AmpProvider } from 'olymp';
+import { parseQuery, stringifyQuery, AmpProvider, BrowserRouter } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import createFela from '../fela';
 import { Provider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
+
 if (process.env.NODE_ENV === 'production') {
   const offline = require('offline-plugin/runtime');
   offline.install({

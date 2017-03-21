@@ -4,6 +4,27 @@ export { Route, Switch, Redirect } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Router } from 'react-router';
 
+export class BrowserRouter extends Component {
+  static propTypes = {
+    basename: PropTypes.string,
+    forceRefresh: PropTypes.bool,
+    getUserConfirmation: PropTypes.func,
+    keyLength: PropTypes.number,
+    children: PropTypes.node
+  }
+
+  constructor() {
+    super();
+    const history = createHistory(this.props);
+    history.location.pathname = decodeURIComponent(history.location.pathname);
+    this.history = history;
+  }
+
+  render() {
+    return <Router history={this.history} children={this.props.children} />;
+  }
+}
+
 export const Link = (props) => {
   if (props.to && props.to.query) {
     props.to.search = stringifyQuery(props.to.query);
