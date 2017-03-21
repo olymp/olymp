@@ -14,13 +14,19 @@ import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
 import template, { amp } from './template';
-import { parseQuery, AmpProvider } from 'olymp';
+import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 import fs from 'fs';
 import useragent from 'express-useragent';
 import createFela from '../fela';
 const init = require('@app').init;
+
+// Redux stuff
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import createHistory from 'history/createBrowserHistory'
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+// End Redux stuff
 
 const RedisStore = createRedisStore(session);
 
@@ -123,33 +129,41 @@ app.get('*', (request, response) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const context = { };
   const renderer = createFela();
+  const context = {};
+
+  const [pathname, search] = decodeURI(request.url).split('?');
+  const staticRouter = new StaticRouter();
+  staticRouter.props = { location: { pathname, search, query: parseQuery(search) }, context, basename: '' };
+  const history = staticRouter.render().props.history;
+  const store = createStore(
+    combineReducers({
+      apollo: client.reducer(),
+      router: routerReducer
+    }),
+    {},
+    compose(
+      applyMiddleware(routerQueryMiddleware),
+      applyMiddleware(routerMiddleware(history)),
+      applyMiddleware(client.middleware()),
+    )
+  );
 
   // Create our React application and render it into a string.
-  const [pathname, search] = decodeURI(request.url).split('?');
-  if (typeof init !== undefined && init) init({ renderer, client });
+  if (typeof init !== undefined && init) init({ renderer, client, store });
   const reactApp = (
-    <StaticRouter location={{ pathname, search, query: parseQuery(search) }} context={context}>
-      <ApolloProvider client={client}>
+    <ApolloProvider store={store} client={client}>
+      <ConnectedRouter history={history}>
         <Provider renderer={renderer}>
           <AmpProvider amp={request.isAmp}>
             <App />
           </AmpProvider>
         </Provider>
-      </ApolloProvider>
-    </StaticRouter>
+      </ConnectedRouter>
+    </ApolloProvider>
   );
 
   return getDataFromTree(reactApp).then(() => {
-    // const reactAppString = render(reactApp);
-    /*if (request.isAmp) {
-      if (!style || !isProd) {
-        if (!fs.existsSync(path.resolve(__dirname, 'main.css'))) style = 'none';
-        else style = fs.readFileSync(path.resolve(__dirname, 'main.css'), { encoding: 'utf8' })
-      };
-      if (style !== 'none') renderer.renderStatic(style);
-    }*/
     const reactAppString = request.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
     const scripts = request.isAmp ? [] : getLoadableScripts(isProd ? `${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`);
     const styles = request.isAmp ? [] : (isProd ? [`${clientAssets.main.css}`] : []);

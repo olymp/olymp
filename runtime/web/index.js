@@ -2,13 +2,20 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { parseQuery, stringifyQuery, AmpProvider, BrowserRouter } from 'olymp';
+import { parseQuery, stringifyQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import createFela from '../fela';
-import { Provider } from 'react-fela';
+import { Provider as FelaProvider } from 'react-fela';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
+
+// Redux stuff
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import createHistory from 'history/createBrowserHistory'
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+// End Redux stuff
+
 const init = require('@app').init;
 
 if (process.env.NODE_ENV === 'production') {
@@ -51,19 +58,19 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
-let client, mountNode, container, renderer;
+let client, mountNode, container, renderer, store, history;
 function renderApp() {
   return render(
     <AppContainer>
-      <BrowserRouter stringifyQuery={stringifyQuery} parseQueryString={parseQuery}>
-        <ApolloProvider client={client}>
-          <Provider renderer={renderer} mountNode={mountNode}>
+      <ApolloProvider store={store} client={client}>
+        <ConnectedRouter history={history}>
+          <FelaProvider renderer={renderer} mountNode={mountNode}>
             <AmpProvider amp={false}>
               <App />
             </AmpProvider>
-          </Provider>
-        </ApolloProvider>
-      </BrowserRouter>
+          </FelaProvider>
+        </ConnectedRouter>
+      </ApolloProvider>
     </AppContainer>,
     container,
   );
@@ -77,9 +84,27 @@ function load() {
     networkInterface,
     dataIdFromObject: o => o.id,
     ssrForceFetchDelay: 100,
-    initialState: window.INITIAL_DATA,
+    // initialState: window.INITIAL_DATA,
   });
-  if (typeof init !== undefined && init) init({ renderer, client });
+  // Redux stuff
+  history = createHistory();
+  store = createStore(
+    combineReducers({
+      apollo: client.reducer(),
+      router: routerReducer
+    }),
+    window.INITIAL_DATA || {},
+    compose(
+      applyMiddleware(routerQueryMiddleware),
+      applyMiddleware(routerMiddleware(history)),
+      applyMiddleware(client.middleware()),
+      // If you are using the devToolsExtension, you can add it here also
+      (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+    )
+  );
+  // End Redux stuff
+
+  if (typeof init !== undefined && init) init({ renderer, client, store });
   return renderApp();
 }
 
