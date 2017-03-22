@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, DataLoader } from 'olymp';
+import { graphql, gql } from 'olymp';
+import { DataLoader } from 'olymp/cms-core';
 import { moment } from 'olymp/locale-de';
 import Gottesdienst from './index';
 

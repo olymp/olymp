@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, cn, withApollo, withAuth, gql } from 'olymp';
+import { Link, NavLink, cn, withApollo, withAuth, gql } from 'olymp';
 import { SortableContainer as sortableContainer, SortableElement as sortableElement, SortableHandle as sortableHandle, arrayMove } from 'react-sortable-hoc';
 import './nav.less';
 
@@ -23,9 +23,9 @@ const Li = sortableElement((props) => {
     return (
       <li style={{ ...style, position: 'relative' }} className={cn({ 'nav-item': !level }, !level ? 'dropdown-mainmenu' : 'dropdown-submenu')} key={page.id}>
         {!readOnly ? <Handle /> : null}
-        <Link to={page.href || page.path || '/'} className="dropdown-toggle" data-toggle="dropdown" activeClassName="active" style={!page.blocks ? { textDecoration: 'underline' } : {}}>
+        <NavLink to={page.href || page.path || '/'} className="dropdown-toggle" data-toggle="dropdown" activeClassName="active" style={!page.blocks ? { textDecoration: 'underline' } : {}}>
           {page.name}
-        </Link>
+        </NavLink>
 
         {renderNav ? renderNav(props) : <UlWrapped {...props} className={null} axis="y" useDragHandle onSortEnd={sortEndCreator(page.children)} level={level + 1} items={page.children} />}
       </li>

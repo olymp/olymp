@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Image from './image';
+import { Image } from 'olymp';
 import { Checkbox } from 'antd';
 import { Plain, Raw } from 'slate';
 import moment from 'moment';

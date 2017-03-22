@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter, Link, slugify, DataLoader } from 'olymp';
+import { graphql, gql, withRouter, Link, slugify } from 'olymp';
+import { DataLoader } from 'olymp/cms-core';
 import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import sortBy from 'lodash/sortBy';
 import Items from '../../components/items';
@@ -74,7 +75,7 @@ export default class RollenBlock extends Component {
     return (
       <GenericBlock {...this.props}>
         {!location.query || !location.query.Person ? (
-          <DataLoader className={className} style={style} isEmpty={rolle} placeholder="Keine Rollen vorhanden" loading="Rolle wwird geladen">
+          <DataLoader className={className} style={style} isEmpty={rolle} placeholder="Keine Rollen vorhanden" loading="Rolle wird geladen">
             <Items
               items={rolle ? [{
                 ...rolle,
