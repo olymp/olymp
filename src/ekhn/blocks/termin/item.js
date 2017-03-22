@@ -55,7 +55,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
 
       <div className="col-xs-7 col-sm-9 pr-0">
         <div className="description">
-          <h3 style={{ color }}>{hypher.hyphenateText(name || 'Termin')}</h3>
+          <h3 style={{ color }}>{hypher.hyphenateText(name.toString() || 'Termin')}</h3>
           {kommentar ? <SlateMateFrontend value={kommentar} readOnly /> : null}
 
           {pfarrer && pfarrer.length ? <span>Mit{pfarrer.reverse().map((x, i) => {

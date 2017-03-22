@@ -54,6 +54,7 @@ export default class Items extends Component {
     const selectedItem = selectedId || queryId ?
       items.find(x => x.id === (selectedId || queryId)) :
         undefined;
+
     if (selectedItem) {
       return selectedItem ? (
         <div className="items">
