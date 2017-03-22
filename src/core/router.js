@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { LOCATION_CHANGE } from 'react-router-redux/actions';
 
 export const routerQueryMiddleware = store => next => action =>  {
-  console.log(action.type, action.type === LOCATION_CHANGE, LOCATION_CHANGE, action.payload);
   if (action.type !== LOCATION_CHANGE) {
     return next(action);
   }
