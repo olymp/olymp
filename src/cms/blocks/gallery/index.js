@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { withAuth, DataLoader } from 'olymp';
+import { withAuth } from 'olymp';
+import { DataLoader } from 'olymp/cms-core';
 import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import Image from '../../edits/image';
 

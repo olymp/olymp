@@ -4,8 +4,7 @@ import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor
 import { SlateMate } from 'olymp/slate';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
-import { withEdits } from '../../decorators';
-import { cn } from '../../extern';
+import { withEdits, cn } from 'olymp';
 
 const states = {
   PUBLISHED: 'Öffentlich',
