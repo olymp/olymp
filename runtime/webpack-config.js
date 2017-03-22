@@ -92,7 +92,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     entry: {
       main: []
     }
-  }
+  };
 
   const babel = {
     test: /\.(js|jsx)$/,
@@ -119,7 +119,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         ['import', { libraryName: 'antd', style: true }],
       ],
     },
-  }
+  };
 
   // inline-source-map for web-dev
   if (isDev && isWeb) {

@@ -2,7 +2,7 @@ import { moment } from 'olymp/locale-de';
 import cron from 'node-cron';
 import losungen from './losungen.json';
 
-module.exports = ({ schema }) => {
+export default ({ schema }) => {
   // Losung buffer
   let item;
 
