@@ -4,7 +4,7 @@ import { useBlockTypes } from 'olymp/slate';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import uncapitalize from 'lodash/lowerFirst';
-import { Affix, Button, Dropdown } from 'antd';
+import { Affix, Button, Dropdown, Alert } from 'antd';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
 import SettingsModal from './settings';
@@ -113,6 +113,14 @@ export default class Container extends Component {
             <GatewayDest name="action" />
             <GatewayDest name="undo" />
           </Affix>
+          {/* <Affix offsetBottom={0}>
+            <Alert
+              message="Datenschutz-Informationen"
+              description="Mit der Nutzung dieser Website erklären Sie sich damit einverstanden, dass Cookies verwendet werden. Nähere Informationen finden Sie im Impressum dieser Seite!"
+              banner
+              closeText="Akzeptieren und schließen"
+            />
+          </Affix> */}
         </div>
       </GatewayProvider>
     );
