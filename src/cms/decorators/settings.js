@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { withItems } from 'olymp';
+import { graphql, gql } from 'olymp';
 
-export default (WrappedComponent) => {
-  @withItems({ name: 'settings' })
+export default (attributes) => (WrappedComponent) => {
+  @graphql(gql`
+  query settingsList {
+    items: settingsList {
+      id, title, description, author, tags, ${attributes}
+    }
+  }
+`)
   class WithSettingsComponent extends Component {
     render() {
-      const { items, ...rest } = this.props;
+      const { data, ...rest } = this.props;
+      const { items } = data;
 
       return (
         <WrappedComponent {...rest} settings={items && items.length ? items[0] : {}} />

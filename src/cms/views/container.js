@@ -22,7 +22,7 @@ import '../styles/style.less';
 @useBlockTypes()
 @withCollections
 @useColors()
-@withSettings
+@withSettings()
 export default class Container extends Component {
   render() {
     const { children, router, location, auth, logo, collectionList, collectionTree, settings, helmet = {}, color, ...rest } = this.props;

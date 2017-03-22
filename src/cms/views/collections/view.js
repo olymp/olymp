@@ -4,7 +4,7 @@ import { Modal } from '../../components';
 import Detail from './detail';
 import List from './list-sidebar';
 
-@withItems({ })
+@withItems()
 @withRouter
 export default class CollectionView extends Component {
   render() {
