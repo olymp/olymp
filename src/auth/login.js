@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link as OlympLink } from 'olymp';
+import { Link } from 'olymp';
 import { Form, Input, notification } from 'antd';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
@@ -7,88 +7,58 @@ import Modal from './modal';
 import withAuth from './with-auth';
 
 const modalSettings = { visible: true, okText: 'Anmelden', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
+const formItemLayout = { labelCol: { span: 5 }, wrapperCol: { span: 19 } };
 
-const getColor = color => tinycolor(color).getBrightness() > 60 ? '#FFFFFF' : '#333333';
+const FormItem = createComponent(({ theme }) => ({ }), Form.Item, p => p);
 
-const FormItem = createComponent(({ theme }) => ({
-  '> .ant-form-item-control-wrapper': {
-    '> .ant-form-item-control': {
-      '> .ant-input': {
-        border: 'none',
-        backgroundColor: theme.color || '#3271A8',
-        color: getColor(theme.color || '#3271A8'),
-        textAlign: 'left',
-        fontSize: '18px',
-        padding: '1.2rem .8rem',
-        '::placeholder': {
-          color: getColor(theme.color || '#3271A8'),
-        }
-      }
-    }
-  }
-}), p => <Form.Item {...p} />, p => p);
-
-const Image = createComponent(({ theme }) => ({
-  width: '200px',
-  margin: '0 0 1.5rem 0',
+const Links = createComponent(({ theme }) => ({
+  position: 'absolute',
+  bottom: -60,
   textAlign: 'center',
-}), p => <img {...p} />, p => p);
-
-const Link = createComponent(({ theme }) => ({
-  color: getColor(theme.color || '#3271A8'),
-}), p => <OlympLink {...p} />, p => p);
+  right: 0,
+  left: 0,
+  '> a': {
+    color: 'white',
+    padding: '0 9px',
+  },
+  '> a:not(:first-child)': {
+    borderLeft: '1px solid white',
+  },
+}), 'div');
 
 @Form.create()
 class ModalForm extends Component {
+  onKeyPress1 = (e) => {
+    if (e.key === 'Enter' && typeof this !== 'undefined') {
+      return this.input && this.input.refs.input && this.input.refs.input.focus();
+    } return false;
+  }
+  onKeyPress2 = (e) => {
+    if (e.key === 'Enter') {
+      onCreate();
+    }
+  }
   render() {
     const { email, form, onCreate, onCancel, saving, pathname } = this.props;
     const { getFieldDecorator } = form;
 
     return (
-      <Modal
-        {...modalSettings}
-        confirmLoading={saving}
-        onCancel={onCancel}
-        onOk={onCreate}
-        maskClosable={false}
-      >
-        <Image src="logo.png" />
-        <FormItem key="email" {...formItemLayout}>
+      <Modal {...modalSettings} title="Anmelden" confirmLoading={saving} onCancel={onCancel} onOk={onCreate} maskClosable={false}>
+        <FormItem key="email" label="E-Mail" {...formItemLayout}>
           {getFieldDecorator('email', {
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(
-            <Input
-              type="email"
-              placeholder="E-Mail"
-              onKeyPress={(element) => {
-                if (element.key === 'Enter' && typeof this !== 'undefined') {
-                  return this.input && this.input.refs.input && this.input.refs.input.focus();
-                }
-
-                return false;
-              }}
-            />
-          )}
+          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} size="large" addonAfter={<i className="fa fa-envelope-o" />} />)}
         </FormItem>
-        <FormItem key="password" {...formItemLayout}>
+        <FormItem key="password" label="Passwort" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(
-            <Input
-              type="password"
-              placeholder="Password"
-              onKeyPress={(element) => {
-                if (element.key === 'Enter') {
-                  onCreate();
-                }
-              }}
-              ref={(input) => { this.input = input; }}
-            />
-          )}
+          })(<Input type="password" placeholder="Password" onKeyPress={this.onKeyPress2} ref={input => this.input = input } size="large" addonAfter={<i className="fa fa-key" />}/>)}
         </FormItem>
-        <Link to={{ pathname, query: { forgot: null } }}>Passwort vergessen?</Link>
+        <Links>
+          <Link to={{ pathname, query: { register: null, login: undefined } }}>Registrieren</Link>
+          <Link to={{ pathname, query: { forgot: null, login: undefined } }}>Passwort vergessen?</Link>
+        </Links>
       </Modal>
     );
   }
