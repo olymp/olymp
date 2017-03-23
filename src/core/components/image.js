@@ -66,7 +66,9 @@ export default class CoolImage extends Component {
       return <div />;
     }
 
-    let { url, width, height, crop, caption } = value;
+    let { url, crop, caption } = value;
+    let width = 0;
+    let height = 0;
 
     // wenn crop gesetzt, dann Ausschnitt als neues Bild festlegen
     if (crop) {

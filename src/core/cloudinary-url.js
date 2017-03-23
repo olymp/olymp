@@ -26,10 +26,7 @@ export default (url, { mode, maxWidth, effect, maxHeight, border, width, height,
   if (cropX !== undefined && cropY !== undefined) {
     part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
   } else if (width && height) {
-    // part = `w_${width},h_${height},c_${mode}/${part}`;
-    // beni, solltest du das hier ändern wollen, dann sag mir Bescheid. Mit dieser Zeile wird eine URL wie folgt erzeugt:
-    // https://res.cloudinary.com/dhsf4vjjc/image/upload/w_2896,h_1944,c_fill/f_auto,q_auto,fl_lossy,w_960,c_fill/v1490025279/p0xdfvo73u7pj6oudtf4.tiff
-    // d.h. die Bilder werden mit voller Dimension geladen, egal wie groß sie eigentlich sein sollten!
+    part = `w_${width},h_${height},c_${mode}/${part}`;
   }
 
   if (maxWidth || maxHeight) {
