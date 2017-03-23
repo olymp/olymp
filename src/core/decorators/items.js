@@ -45,7 +45,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
     }
 
     update = (nextProps, lastProps) => {
-      if (!lastProps || nextProps.collection !== lastProps.collection || !isEqual(nextProps.query, lastProps.query)) {
+      if (!lastProps || nextProps.typeName !== lastProps.typeName || !isEqual(nextProps.query, lastProps.query)) {
         if (this.subscription) this.subscription.unsubscribe();
         const { client, collection, fieldNames, location, force } = nextProps;
         if (!collection) return;
@@ -96,17 +96,17 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
         }
         this.isLoading = true;
 
-        this.subscription = watchQuery.subscribe({
+        /*this.subscription = watchQuery.subscribe({
           next: ({ data }) => {
             if (this.unmount) return;
             this.items = data.items;
             this.isLoading = false;
-            this.setState({ });
+            // this.setState({ });
           },
           error: (error) => {
             console.log('there was an error sending the query', error);
           },
-        });
+        });*/
       }
     }
 
