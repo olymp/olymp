@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import text from './example.md';
-import md from './index';
+import createRemark from './index';
 import CodeMirror from 'react-codemirror';
-import 'codemirror/mode/markdown/markdown';
 import './style.less';
+if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+  require('codemirror/mode/markdown/markdown');
+}
 
 const fallback = (props) => {
   return <div>No component of type {props.name} found</div>;
@@ -20,13 +22,6 @@ const gallery = (props) => {
     </div>
   );
 }
-gallery.propTypes = {
-  name: PropTypes.string,
-  alt: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  float: PropTypes.string,
-}
 const bordered = (props) => {
   const { children, color } = props;
   return (
@@ -35,15 +30,24 @@ const bordered = (props) => {
     </div>
   );
 }
+gallery.propTypes = {
+  name: PropTypes.string,
+  alt: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  float: PropTypes.string,
+}
 bordered.propTypes = {
   color: PropTypes.string,
 }
+
 export const components = { fallback, bordered, gallery };
+const Remark = createRemark(components);
+
 export default class MdExample extends Component {
   state = { text };
   constructor(props) {
     super(props);
-    this.remark = md({ components });
   }
   render() {
     return (
@@ -52,7 +56,7 @@ export default class MdExample extends Component {
           mode: 'markdown',
         }} />
         <div>
-          {this.remark(this.state.text)}
+          <Remark value={this.state.text} />
         </div>
       </div>
     );

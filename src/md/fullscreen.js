@@ -4,10 +4,12 @@ import Portal from 'react-portal';
 import { styled } from 'olymp';
 import md from './index';
 import CodeMirror from 'react-codemirror';
-import 'codemirror/mode/markdown/markdown';
 import './fullscreen.less';
 import './style.less';
 import { components } from './example';
+if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+  require('codemirror/mode/markdown/markdown');
+}
 
 const Remark = md(components);
 const modalSettings = {
