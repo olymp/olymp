@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'olymp';
-import { Modal, Form, Input, notification } from 'antd';
+import { Form, Input, notification } from 'antd';
+import Modal from './modal';
 import withAuth from './with-auth';
 
 const FormItem = Form.Item;
-const modalSettings = { visible: true, style: { top: 20 }, okText: 'Login', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 20 } };
+const modalSettings = { visible: true, okText: 'Login', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
 @Form.create()
 class ModalForm extends Component {
