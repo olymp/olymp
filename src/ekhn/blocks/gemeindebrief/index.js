@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter, DataLoader } from 'olymp';
+import { graphql, gql, withRouter } from 'olymp';
+import { DataLoader } from 'olymp/cms-core';
 import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import { moment } from 'olymp/locale-de';
 import Items from '../../components/items';

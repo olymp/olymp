@@ -72,7 +72,7 @@ const testData = {
   ],
 };
 
-module.exports = ({ schema }) => {
+export default ({ schema }) => {
   // Losung buffer
   let item = testData;
 

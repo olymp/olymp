@@ -44,7 +44,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
       {children}
 
       <div className="header">
-        <h4>{hypher.hyphenateText(name || 'Termin')}</h4>
+        <h4>{hypher.hyphenateText(name.toString() || 'Termin')}</h4>
         {dateString}
       </div>
 
