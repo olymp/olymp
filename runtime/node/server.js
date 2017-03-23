@@ -134,8 +134,9 @@ app.get('*', (request, response) => {
 
   const [pathname, search] = decodeURI(request.url).split('?');
   const staticRouter = new StaticRouter();
-  staticRouter.props = { location: { pathname, search, query: parseQuery(search) }, context, basename: '' };
+  staticRouter.props = { location: { pathname, search }, context, basename: '' };
   const history = staticRouter.render().props.history;
+  history.location.query = parseQuery(history.location.search);
   const store = createStore(
     combineReducers({
       apollo: client.reducer(),
