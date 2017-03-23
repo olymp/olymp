@@ -6,7 +6,6 @@ import { Router } from 'react-router';
 import { connect } from 'react-redux';
 import { LOCATION_CHANGE } from 'react-router-redux/actions';
 
-
 export const routerQueryMiddleware = store => next => action =>  {
   if (action.type !== LOCATION_CHANGE) {
     return next(action);
@@ -19,10 +18,9 @@ export const routerQueryMiddleware = store => next => action =>  {
 export const withRouter = (WrappedComponent) => {
   @connect(
     ({ router }) => ({
-      location: {
-        ...router.location,
-        query: parseQuery(router.location.search)
-      }
+      query: parseQuery(router.location.search),
+      pathname: router.location.pathname,
+      search: router.location.search,
     })
   )
   class WithRouter extends Component {
@@ -52,8 +50,9 @@ export const withRouter = (WrappedComponent) => {
       this.context.router.history.replace(to);
     }
     render() {
+      const { query, pathname, search } = this.props;
       return (
-        <WrappedComponent {...this.props} router={{ ...this.context.router, push: this.push, replace: this.replace }} />
+        <WrappedComponent {...this.props} location={{ query, pathname, search }} query={query} pathname={pathname} router={{ ...this.context.router, push: this.push, replace: this.replace }} />
       );
     }
   }
