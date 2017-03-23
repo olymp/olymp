@@ -165,6 +165,7 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
     render() {
       const { data, ...rest } = this.props;
       const collection = (this.props.data && this.props.data.type) || this.props.collection || null;
+      console.log(collection, rest);
 
       return <WrappedComponent
         {...rest}
