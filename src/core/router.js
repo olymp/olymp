@@ -6,27 +6,24 @@ import { Router } from 'react-router';
 import { connect } from 'react-redux';
 import { LOCATION_CHANGE } from 'react-router-redux/actions';
 
+
 export const routerQueryMiddleware = store => next => action =>  {
   if (action.type !== LOCATION_CHANGE) {
     return next(action);
-  }
-  if (action.payload.query) {
+  } else if (action.payload.query) {
     action.payload.search = stringifyQuery(action.payload.query);
     delete action.payload.query;
-  }
-  return next(action);
+  } return next(action);
 };
 
 export const withRouter = (WrappedComponent) => {
   @connect(
-    ({ router }) => {
-      return {
-        location: {
-          ...router.location,
-          query: parseQuery(router.location.search)
-        }
+    ({ router }) => ({
+      location: {
+        ...router.location,
+        query: parseQuery(router.location.search)
       }
-    }
+    })
   )
   class WithRouter extends Component {
     static contextTypes = {
