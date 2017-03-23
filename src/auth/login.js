@@ -1,12 +1,43 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp';
+import { Link as OlympLink } from 'olymp';
 import { Form, Input, notification } from 'antd';
+import { createComponent } from 'react-fela';
+import tinycolor from 'tinycolor2';
 import Modal from './modal';
 import withAuth from './with-auth';
 
-const FormItem = Form.Item;
-const modalSettings = { visible: true, okText: 'Login', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
+const modalSettings = { visible: true, okText: 'Anmelden', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
+const formItemLayout = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
+
+const getColor = color => tinycolor(color).getBrightness() > 60 ? '#FFFFFF' : '#333333';
+
+const FormItem = createComponent(({ theme }) => ({
+  '> .ant-form-item-control-wrapper': {
+    '> .ant-form-item-control': {
+      '> .ant-input': {
+        border: 'none',
+        backgroundColor: theme.color || '#3271A8',
+        color: getColor(theme.color || '#3271A8'),
+        textAlign: 'left',
+        fontSize: '18px',
+        padding: '1.2rem .8rem',
+        '::placeholder': {
+          color: getColor(theme.color || '#3271A8'),
+        }
+      }
+    }
+  }
+}), p => <Form.Item {...p} />, p => p);
+
+const Image = createComponent(({ theme }) => ({
+  width: '200px',
+  margin: '0 0 1.5rem 0',
+  textAlign: 'center',
+}), p => <img {...p} />, p => p);
+
+const Link = createComponent(({ theme }) => ({
+  color: getColor(theme.color || '#3271A8'),
+}), p => <OlympLink {...p} />, p => p);
 
 @Form.create()
 class ModalForm extends Component {
@@ -15,15 +46,20 @@ class ModalForm extends Component {
     const { getFieldDecorator } = form;
 
     return (
-      <Modal {...modalSettings} confirmLoading={saving} title="Anmelden" onCancel={onCancel} onOk={onCreate}>
-        <FormItem key="email" label="E-Mail" {...formItemLayout}>
+      <Modal
+        {...modalSettings}
+        confirmLoading={saving}
+        onCancel={onCancel}
+        onOk={onCreate}
+        maskClosable={false}
+      >
+        <Image src="logo.png" />
+        <FormItem key="email" {...formItemLayout}>
           {getFieldDecorator('email', {
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
           })(
             <Input
-              size="large"
-              addonBefore={<i className="fa fa-envelope-o" />}
               type="email"
               placeholder="E-Mail"
               onKeyPress={(element) => {
@@ -36,13 +72,11 @@ class ModalForm extends Component {
             />
           )}
         </FormItem>
-        <FormItem key="password" label="Passwort" {...formItemLayout}>
+        <FormItem key="password" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
           })(
             <Input
-              size="large"
-              addonBefore={<i className="fa fa-lock" />}
               type="password"
               placeholder="Password"
               onKeyPress={(element) => {
