@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter, Link, collectionToCsvDownload } from 'olymp';
+import { withRouter, Link } from 'olymp';
 import { Dropdown, Menu, Icon, Button } from 'antd';
-import { FieldValue } from 'olymp';
+import { FieldValue, collectionToCsvDownload } from 'olymp/cms-core';
 import Sidebar from '../sidebar';
 import { getFilterMenu } from './filter';
 

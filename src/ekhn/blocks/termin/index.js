@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, withRouter, DataLoader, withAuth } from 'olymp';
+import { graphql, gql, withRouter, withAuth } from 'olymp';
+import { DataLoader } from 'olymp/cms-core';
 import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import { Pagination } from 'antd';
 import sortBy from 'lodash/sortBy';
