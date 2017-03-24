@@ -58,7 +58,7 @@ export default class SidebarHeader extends Component {
   }
 
   render() {
-    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, query, setQueryToState, noChangeAllowed, collectionTree } = this.props;
+    const { items, page, pageSize, setPage, searchFn, searchText, filter, filtering, actions, activePage, states, gqlQuery, setQueryToState, noChangeAllowed, collectionTree } = this.props;
 
     return (
       <div>
@@ -79,7 +79,7 @@ export default class SidebarHeader extends Component {
               <Dropdown overlay={this.renderStateMenu()}>
                 <a className="ant-dropdown-link" href="javascript:;">
                   <StyledSubheader>
-                    {states[query.state.eq || (!query.state.null && 'ALL')]} ({(items || []).length}) <i className="fa fa-angle-down" />
+                    {states[gqlQuery.state.eq || (!gqlQuery.state.null && 'ALL')]} ({(items || []).length}) <i className="fa fa-angle-down" />
                   </StyledSubheader>
                 </a>
               </Dropdown>
