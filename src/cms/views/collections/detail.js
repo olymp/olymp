@@ -37,7 +37,7 @@ const getFormSchema = ({ fields }) =>
 @withForm
 export default class CollectionDetail extends Component {
   handleCreate = () => {
-    const { save, refetch, query, typeName, id, location, router, form } = this.props;
+    const { save, refetch, gqlQuery, typeName, id, location, router, form } = this.props;
     const { pathname } = location;
 
     form.validateFields((err, values) => {
@@ -49,7 +49,7 @@ export default class CollectionDetail extends Component {
         if (!id) {
           router.push({ pathname, query: { [`@${typeName.toLowerCase()}`]: obj[typeName.toLowerCase()].id } });
         }
-        if (refetch) refetch(query);
+        if (refetch) refetch(gqlQuery);
       });
     });
   }

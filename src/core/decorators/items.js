@@ -114,7 +114,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
 
     render() {
       return (
-        <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} query={this.newQuery || this.props.query} isLoading={this.isLoading} />
+        <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} gqlQuery={this.newQuery || this.props.query} isLoading={this.isLoading} />
       );
     }
   }
