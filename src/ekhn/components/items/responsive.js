@@ -33,7 +33,7 @@ export default useItemEdit()(({ id, header, subheader, shortText, more, bild, ta
 
       <div className={cn(className, 'text col-xl-8 col-md-7 col-xs-12', `hidden-${breakpoint}-up`)}>
         {header ? <ItemHeader className="mt-0" id={id} identifier={identifier}>{hypher.hyphenateText(header.toString())}</ItemHeader> : null}
-        {subheader ? <div className="subheader">{hypher.hyphenateText(subheader.toString())}</div> : null}
+        {subheader ? <div className="subheader">{subheader}</div> : null}
         {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
 
         <ItemMore more={more} id={id} identifier={identifier} />
