@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { withRouter, withAuth, Link } from 'olymp';
+import { withRouter, withAuth, Link, cn } from 'olymp';
 import { Pagination } from 'antd';
 import capitalize from 'lodash/upperFirst';
 
 import Item from './item';
 import ItemPanorama from './panorama';
+import ItemMasonry from './masonry';
 import ItemCompact from './compact';
 import ItemFile from './file';
 
@@ -80,14 +81,21 @@ export default class Items extends Component {
     return (
       <div className={className} style={style}>
         <div className="items">
-          {!!leading && (
+          {!!leading && (masonry ? (
+            <ItemMasonry
+              {...leading}
+              location={location}
+              identifier={identifier}
+            />
+          ) : (
             <ItemPanorama
               {...leading}
               location={location}
               identifier={identifier}
-              className={!!masonry && 'masonry'}
             />
-          )}
+          ))}
+
+          {!!leading && <hr style={!masonry ? { maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' } : { marginTop: 0 }} />}
 
           <div className="hidden-sm-down" style={{ marginTop: leading ? '1rem' : 0 }}>
             {!!masonry ? (

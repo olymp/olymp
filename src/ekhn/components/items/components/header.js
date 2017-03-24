@@ -5,11 +5,11 @@ import capitalize from 'lodash/upperFirst';
 @withRouter
 export default class ItemMore extends Component {
   render() {
-    const { location, identifier, children, id, className } = this.props;
+    const { location, identifier, children, id, className, style } = this.props;
     const { pathname, query } = location;
 
     return (
-      <h2 className={className}>
+      <h2 className={className} style={style}>
         {(!query || !query[capitalize(identifier)]) && id ? (
           <Link to={{ pathname, query: { ...query, [capitalize(identifier)]: id } }}>
             {children}

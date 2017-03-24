@@ -86,6 +86,8 @@ export default class RollenBlock extends Component {
               selectedId={rolle ? rolle.id : undefined}
               identifier="rolle"
             />
+
+            <hr style={{ maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }} />
           </DataLoader>
         ) : null}
 

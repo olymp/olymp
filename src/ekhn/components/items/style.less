@@ -8,6 +8,8 @@
     padding: 0;
     margin-bottom: 1em;
     width: 100%;
+    background-color: #FFF;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
 
     &:last-child {
       margin-bottom: 0;
@@ -15,8 +17,32 @@
 
     /* PANORAMA */
     &.panorama {
+      background-color: transparent;
+      box-shadow: none;
+
       & > div:nth-of-type(2) {
         margin-top: 1rem;
+      }
+
+      .image {
+        position: relative;
+        // overflow: hidden;
+
+        & > .col-md-4 {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          padding-left: 0;
+
+          h2, h5 {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
+
+          h5 {
+            margin-top: .5rem !important;
+          }
+        }
       }
 
       .text {
@@ -24,13 +50,14 @@
         background-color: #FFF;
         box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33)!important;
         display: block;
+        border-top: 2px solid #9459A2;
 
         & > h2 {
           margin-top: 0 !important;
         }
 
-        .athena-img-container {
-          box-shadow: none;
+        .slate div p:first-child {
+          margin: 0 !important;
         }
       }
 
@@ -38,13 +65,39 @@
         box-shadow: 0 0 20px 1px rgba(0, 0, 0, .5);
       }
     }
-    &:not(.panorama) {
-      background-color: #FFF;
-      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33)!important;
 
-      .info .header.clickable:hover h2 u {
-        border-bottom: 1px solid @brand-primary;
+    /* MASONRY */
+    &.masonry {
+      background-color: transparent;
+      box-shadow: none;
+      padding: 0 .5rem;
+      margin-bottom: 0;
+
+      .col-md-6 {
+        margin-bottom: 1rem;
+
+        &:nth-child(1) {
+          padding-left: .5rem;
+          padding-right: .5rem;
+        }
+        &:nth-child(2) {
+          padding-left: .5rem;
+          padding-right: .5rem;
+        }
+
+        & > .text > h2 {
+          margin-top: 0 !important;
+        }
+
+        h5 {
+          margin-top: .5rem !important;
+        }
       }
+    }
+    &:not(.masonry) {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* COMPACT */
