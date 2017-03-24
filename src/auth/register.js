@@ -7,9 +7,32 @@ import Modal from './modal';
 import withAuth from './with-auth';
 
 const modalSettings = { visible: true, okText: 'Anmelden', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 5 }, wrapperCol: { span: 19 } };
+const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
-const FormItem = createComponent(({ theme }) => ({ }), Form.Item, p => p);
+const FormItem = createComponent(({ theme }) => ({
+  margin: '1.5rem',
+  '> .ant-form-item-label': {
+    textAlign: 'left',
+    '> label': {
+      paddingTop: '.25rem',
+      margin: 0,
+      color: theme.color,
+    },
+  },
+  '> .ant-form-item-control-wrapper': {
+    '> .ant-form-item-control': {
+      '> .ant-input': {
+        fontSize: '18px',
+        padding: '1.2rem .8rem',
+        borderRadius: 0,
+        borderColor: theme.color,
+        '::placeholder': {
+          color: theme.color,
+        }
+      }
+    }
+  }
+}), Form.Item, p => p);
 
 const Links = createComponent(({ theme }) => ({
   position: 'absolute',
@@ -48,15 +71,16 @@ class ModalForm extends Component {
           {getFieldDecorator('email', {
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} size="large" addonAfter={<i className="fa fa-envelope-o" />} />)}
+          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} />)}
         </FormItem>
         <FormItem key="password" label="Passwort" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(<Input type="password" placeholder="Password" onKeyPress={this.onKeyPress2} ref={input => this.input = input } size="large" addonAfter={<i className="fa fa-key" />}/>)}
+          })(<Input type="password" placeholder="Passwort" onKeyPress={this.onKeyPress2} ref={input => this.input = input } />)}
         </FormItem>
         <Links>
-          <Link to={{ pathname, query: { login: null, register: undefined } }}>Login</Link>
+          <Link to={{ pathname, query: { login: null, register: undefined } }}>Anmelden</Link>
+          <Link to={{ pathname, query: { forgot: null, login: undefined } }}>Passwort vergessen?</Link>
         </Links>
       </Modal>
     );
