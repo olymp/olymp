@@ -7,33 +7,9 @@ import Modal from './modal';
 import withAuth from './with-auth';
 
 const modalSettings = { visible: true, okText: 'Anmelden', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
-const formItemLayout = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
+const formItemLayout = { labelCol: { span: 5 }, wrapperCol: { span: 19 } };
 
-const FormItem = createComponent(({ theme }) => ({
-  margin: '1.5rem',
-  '> .ant-form-item-control-wrapper': {
-    '> .ant-form-item-control': {
-      '> .ant-input-wrapper': {
-        '> .ant-input': {
-          fontSize: '18px',
-          padding: '1.2rem .8rem',
-          borderRadius: 0,
-          borderColor: theme.color,
-          '::placeholder': {
-            color: theme.color,
-          }
-        },
-        '> .ant-input-group-addon': {
-          background: `linear-gradient(90deg, ${tinycolor(theme.color).darken(3).toRgbString()}, ${tinycolor(theme.color).lighten(3).toRgbString()})`,
-          color: '#FFFFFF',
-          borderRadius: 0,
-          borderColor: theme.color,
-          width: 40,
-        }
-      }
-    }
-  }
-}), Form.Item, p => p);
+const FormItem = createComponent(({ theme }) => ({ }), Form.Item, p => p);
 
 const Links = createComponent(({ theme }) => ({
   position: 'absolute',
@@ -72,12 +48,12 @@ class ModalForm extends Component {
           {getFieldDecorator('email', {
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} addonBefore={<i className="fa fa-user" />} />)}
+          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} size="large" addonAfter={<i className="fa fa-envelope-o" />} />)}
         </FormItem>
         <FormItem key="password" label="Passwort" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(<Input type="password" placeholder="Passwort" onKeyPress={this.onKeyPress2} ref={input => this.input = input } addonBefore={<i className="fa fa-lock" />}/>)}
+          })(<Input type="password" placeholder="Password" onKeyPress={this.onKeyPress2} ref={input => this.input = input } size="large" addonAfter={<i className="fa fa-key" />}/>)}
         </FormItem>
         <Links>
           <Link to={{ pathname, query: { register: null, login: undefined } }}>Registrieren</Link>
