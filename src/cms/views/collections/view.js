@@ -15,8 +15,8 @@ export default class CollectionView extends Component {
 
     return (
       <Modal>
-        <List typeName={typeName} collection={collection} fieldNames={fieldNames} items={items} id={id} location={location} refetch={refetch} query={this.props.query} isLoading={collectionLoading} />
-        <Detail typeName={typeName} collection={collection} fieldNames={fieldNames} location={location} id={id} refetch={refetch} query={this.props.query} />
+        <List typeName={typeName} collection={collection} fieldNames={fieldNames} items={items} id={id} location={location} refetch={refetch} gqlQuery={this.props.gqlQuery} isLoading={collectionLoading} />
+        <Detail typeName={typeName} collection={collection} fieldNames={fieldNames} location={location} id={id} refetch={refetch} gqlQuery={this.props.gqlQuery} />
       </Modal>
     );
   }
