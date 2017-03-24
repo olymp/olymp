@@ -5,7 +5,7 @@ export default (attributes) => (WrappedComponent) => {
   @graphql(gql`
   query settingsList {
     items: settingsList {
-      id, title, description, author, tags, ${attributes}
+      id, title, description, author, tags, ${attributes || ''}
     }
   }
 `)
