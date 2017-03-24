@@ -8,7 +8,7 @@ import { Affix, Button, Dropdown, Alert } from 'antd';
 import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
 import SettingsModal from './settings';
-import CollectionModal from './collections';
+import CollectionModal from './collections2';
 import { CmsAction } from '../components';
 import withSettings from '../decorators/settings';
 import { ImageEdit } from '../edits';
