@@ -5,7 +5,7 @@ import tinycolor from 'tinycolor2';
 
 const style = ({ theme }) => {
 
-  const logo = theme.header ? {
+  const logo = theme.logoTitle ? {
     onBefore: {
       content: '""',
       position: 'absolute',
@@ -20,7 +20,7 @@ const style = ({ theme }) => {
       height: '75px',
     },
     onAfter: {
-      content: `"${theme.header}"`,
+      content: `"${theme.logoTitle}"`,
       position: 'absolute',
       left: 0,
       right: 0,
