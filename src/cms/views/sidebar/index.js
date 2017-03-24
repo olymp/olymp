@@ -33,26 +33,26 @@ const SubPanel = createComponent(({ seperator }) => ({
 
 export default class SidebarComponent extends Component {
   state = {
-    query: { state: { eq: 'PUBLISHED' } },
+    gqlQuery: { state: { eq: 'PUBLISHED' } },
     filtering: false,
     searchText: '',
     page: 1,
   };
   throttle = throttleInput();
 
-  setQuery = (query) => {
+  setQuery = (gqlQuery) => {
     const { refetch } = this.props;
 
     refetch({
-      ...this.state.query,
-      ...query
+      ...this.state.gqlQuery,
+      ...gqlQuery
     });
     this.setState({
       filtering: true,
       searchText: '',
-      query: {
-        ...this.state.query,
-        ...query
+      gqlQuery: {
+        ...this.state.gqlQuery,
+        ...gqlQuery
       },
     });
   }
@@ -60,14 +60,14 @@ export default class SidebarComponent extends Component {
   setQueryToState = (eq = 'PUBLISHED') => {
     const { refetch } = this.props;
 
-    const query = {
+    const gqlQuery = {
       state: (eq === 'ALL') ? { null: false } : { eq }
     };
 
-    refetch(query);
+    refetch(gqlQuery);
     this.setState({
       filtering: false,
-      query,
+      gqlQuery,
       searchText: '',
     });
   }
@@ -78,8 +78,8 @@ export default class SidebarComponent extends Component {
 
     if (!e.target.value) return this.setQueryToState();
 
-    const query = {
-      ...this.state.query,
+    const gqlQuery = {
+      ...this.state.gqlQuery,
       name: { contains: searchText },
     };
 
@@ -88,10 +88,10 @@ export default class SidebarComponent extends Component {
     });
     this.throttle(() => {
       if (!searchText) return;
-      refetch(query);
+      refetch(gqlQuery);
       this.setState({
         filtering: true,
-        query,
+        gqlQuery,
       });
     });
   }
