@@ -86,7 +86,7 @@ export default class CoolImage extends Component {
         // wenn style.width/height und beide vom selben gültigen Typen sind
         ratio = parseInt(style.height, 10) / parseInt(style.width, 10);
       } else {
-        ratio = height / width;
+        ratio = crop ? height / width : value.height / value.width;
       }
     }
 
