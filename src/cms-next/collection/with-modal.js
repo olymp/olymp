@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'olymp';
-import Modal from '../../auth/modal';
+import { withRouter, Modal } from 'olymp';
 
 export default WrappedComponent => withRouter(props => {
   const { pathname, router, typeName } = props;

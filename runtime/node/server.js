@@ -17,6 +17,7 @@ import template, { amp } from './template';
 import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
+import { GatewayProvider } from 'react-gateway';
 import fs from 'fs';
 import useragent from 'express-useragent';
 import createFela from '../fela';
@@ -156,9 +157,11 @@ app.get('*', (request, response) => {
     <ApolloProvider store={store} client={client}>
       <ConnectedRouter history={history}>
         <Provider renderer={renderer}>
-          <AmpProvider amp={request.isAmp}>
-            <App />
-          </AmpProvider>
+          <GatewayProvider>
+            <AmpProvider amp={request.isAmp}>
+              <App />
+            </AmpProvider>
+          </GatewayProvider>
         </Provider>
       </ConnectedRouter>
     </ApolloProvider>

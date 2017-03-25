@@ -1,38 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp';
+import { Link as UnstyledLink, Modal } from 'olymp';
 import { Form, Input, notification } from 'antd';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
-import Modal from './modal';
 import withAuth from './with-auth';
 
-const modalSettings = { visible: true, okText: 'Anmelden', cancelText: 'Abbruch', transitionName: 'fade', maskTransitionName: 'fade' };
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
 
-const FormItem = createComponent(({ theme }) => ({
-  margin: '1.5rem',
-  '> .ant-form-item-label': {
-    textAlign: 'left',
-    '> label': {
-      paddingTop: '.25rem',
-      margin: 0,
-      color: theme.color,
-    },
-  },
-  '> .ant-form-item-control-wrapper': {
-    '> .ant-form-item-control': {
-      '> .ant-input': {
-        fontSize: '18px',
-        padding: '1.2rem .8rem',
-        borderRadius: 0,
-        borderColor: theme.color,
-        '::placeholder': {
-          color: theme.color,
-        }
-      }
-    }
-  }
-}), Form.Item, p => p);
+const FormItem = createComponent(({ theme }) => ({ }), Form.Item, p => p);
 
 const Links = createComponent(({ theme }) => ({
   position: 'absolute',
@@ -41,13 +16,25 @@ const Links = createComponent(({ theme }) => ({
   right: 0,
   left: 0,
   '> a': {
-    color: 'white',
+    display: 'inline-block',
+    minWidth: 200,
     padding: '0 9px',
   },
-  '> a:not(:first-child)': {
-    borderLeft: '1px solid white',
-  },
 }), 'div');
+const Footer = createComponent(({ theme }) => ({
+  position: 'fixed',
+  bottom: 10,
+  textAlign: 'center',
+  right: 0,
+  left: 0,
+}), 'div');
+const Link = createComponent(({ theme }) => ({
+  color: 'white',
+  opacity: .3,
+  onHover: {
+    opacity: 1,
+  }
+}), UnstyledLink, p => p);
 
 @Form.create()
 class ModalForm extends Component {
@@ -62,11 +49,11 @@ class ModalForm extends Component {
     }
   }
   render() {
-    const { email, form, onCreate, onCancel, saving, pathname } = this.props;
+    const { isOpen, email, form, onCreate, onCancel, saving, pathname } = this.props;
     const { getFieldDecorator } = form;
 
     return (
-      <Modal {...modalSettings} title="Registrieren" confirmLoading={saving} onCancel={onCancel} onOk={onCreate} maskClosable={false}>
+      <Modal isOpen={isOpen} title="Registrieren" confirmLoading={saving} onCancel={onCancel} onOk={onCreate} maskClosable={false}>
         <FormItem key="email" label="E-Mail" {...formItemLayout}>
           {getFieldDecorator('email', {
             initialValue: email,
