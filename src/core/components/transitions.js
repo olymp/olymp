@@ -138,35 +138,3 @@ export const TransitionSlide = createTransition(({ type, delay, speed }) => {
     };
   }
 });
-
-export const TransitionSlideFade = createTransition(({ type, delay, speed }) => {
-  if (type === 'enter') {
-    return {
-      opacity: 0,
-      transform: 'translateX(100%)',
-      zIndex: 99999,
-    };
-  } else if (type === 'enter-active') {
-    return {
-      opacity: 1,
-      transform: 'translateX(0%)',
-      transition: `transform ${speed}ms ease-in-out, opacity ${speed}ms ease-in-out`,
-      willChange: 'transform',
-      zIndex: 99999,
-    };
-  } else if (type === 'leave') {
-    return {
-      opacity: 1,
-      pointerEvents: 'none',
-      transform: 'translateX(0%)',
-    };
-  } else if (type === 'leave-active') {
-    return {
-      opacity: 0,
-      transform: 'translateX(-100%)',
-      pointerEvents: 'none',
-      transition: `transform ${speed}ms ease-in-out, opacity ${speed}ms ease-in-out`,
-      willChange: 'transform',
-    };
-  }
-});
