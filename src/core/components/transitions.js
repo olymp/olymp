@@ -22,7 +22,8 @@ const withTransition = (Transition, { delayLeave } = {}) => {
       }).length > 0 ? (speed * 2) : speed;
     }
     componentWillAppear(callback) {
-      const { speed } = this.props;
+      const { speed, enter } = this.props;
+      if (enter === false) return callback();
       state(this, { animation: 'enter', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
@@ -31,7 +32,8 @@ const withTransition = (Transition, { delayLeave } = {}) => {
         .then(callback);
     }
     componentWillEnter(callback) {
-      const { speed } = this.props;
+      const { speed, enter } = this.props;
+      if (enter === false) return callback();
       state(this, { animation: 'enter', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
@@ -40,11 +42,13 @@ const withTransition = (Transition, { delayLeave } = {}) => {
         .then(callback);
     }
     componentWillLeave(callback) {
+      const { speed, leave } = this.props;
+      if (leave === false) return callback();
       state(this, { animation: 'leave', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
         .then(() => delay(this.state.delay))
-        .then(() => state(this, { animation: null }))
+        //.then(() => state(this, { animation: null }))
         .then(callback);
     }
     render() {
@@ -119,10 +123,46 @@ export const TransitionSlide = createTransition(({ type, delay, speed }) => {
   } else if (type === 'leave') {
     return {
       pointerEvents: 'none',
+      position: 'absolute',
+      width: '100%',
       transform: 'translateX(0%)',
     };
   } else if (type === 'leave-active') {
     return {
+      transform: 'translateX(-100%)',
+      position: 'absolute',
+      width: '100%',
+      pointerEvents: 'none',
+      transition: `transform ${speed}ms ease-in-out, opacity ${speed}ms ease-in-out`,
+      willChange: 'transform',
+    };
+  }
+});
+
+export const TransitionSlideFade = createTransition(({ type, delay, speed }) => {
+  if (type === 'enter') {
+    return {
+      opacity: 0,
+      transform: 'translateX(100%)',
+      zIndex: 99999,
+    };
+  } else if (type === 'enter-active') {
+    return {
+      opacity: 1,
+      transform: 'translateX(0%)',
+      transition: `transform ${speed}ms ease-in-out, opacity ${speed}ms ease-in-out`,
+      willChange: 'transform',
+      zIndex: 99999,
+    };
+  } else if (type === 'leave') {
+    return {
+      opacity: 1,
+      pointerEvents: 'none',
+      transform: 'translateX(0%)',
+    };
+  } else if (type === 'leave-active') {
+    return {
+      opacity: 0,
       transform: 'translateX(-100%)',
       pointerEvents: 'none',
       transition: `transform ${speed}ms ease-in-out, opacity ${speed}ms ease-in-out`,
