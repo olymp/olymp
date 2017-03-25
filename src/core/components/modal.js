@@ -11,7 +11,7 @@ ReactModal2.getApplicationElement = () => document.getElementById('app');
 const ReactModal = ({ className, ...props }) => <ReactModal2 backdropClassName={className} {...props}/>
 export const Modal = ({ isOpen, className, children, onCancel, okText, cancelText, onOk, title, ...props }) => (
   <Gateway into="modal">
-    <TransitionFade speed={500} isOpen={isOpen}>
+    <TransitionSlide speed={500} isOpen={isOpen}>
       <ReactModal onClose={onCancel} closeOnEsc closeOnBackdropClick className={cn('ant-modal-wrap', className)} modalClassName="ant-modal">
         <div className="ant-modal-content">
           <div className="ant-modal-header">
@@ -30,11 +30,11 @@ export const Modal = ({ isOpen, className, children, onCancel, okText, cancelTex
           </div>
         </div>
       </ReactModal>
-    </TransitionFade>
+    </TransitionSlide>
   </Gateway>
 );
 
-export default createComponent(({ theme, width, showLogo }) => ({
+export default createComponent(({ theme, padding, width, showLogo }) => ({
   backgroundColor: 'whitesmoke',
   background: `linear-gradient(0deg, ${tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
   display: 'flex',
@@ -75,6 +75,9 @@ export default createComponent(({ theme, width, showLogo }) => ({
       '> .ant-modal-close': {
         display: 'none',
       },
+      '> .ant-modal-body': {
+        padding,
+      },
       '> .ant-modal-header > .ant-modal-title': {
         color: theme.color,
         textAlign: 'center',
@@ -85,6 +88,7 @@ export default createComponent(({ theme, width, showLogo }) => ({
       '> .ant-modal-footer': {
         '> .ant-btn': {
           width: 'calc(50% - 4px)',
+          maxWidth: 200,
         },
       },
     }
