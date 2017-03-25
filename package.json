@@ -103,6 +103,7 @@
     "react-image-crop": "2.0.2",
     "react-image-gallery": "0.7.12",
     "react-loadable": "^3.0.1",
+    "react-modal2": "^4.0.0",
     "react-portal": "3.0.0",
     "react-redux": "^5.0.3",
     "react-router-dom": "4.0.0",

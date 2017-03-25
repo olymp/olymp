@@ -22,6 +22,7 @@ module.exports = ({ adapter, password, token, mail }) => {
       let user = null;
       return adapter.read('user', { filter }).then((usr) => {
         user = usr;
+        console.log(filter);
         if (!user) throw new Error('No user matched.');
         if (user.confirmed === false) throw new Error('User not confirmed.');
         return password.match(user, pw);

@@ -7,6 +7,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import createFela from '../fela';
 import { Provider as FelaProvider } from 'react-fela';
+import { GatewayProvider } from 'react-gateway';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
 
@@ -65,9 +66,11 @@ function renderApp() {
       <ApolloProvider store={store} client={client}>
         <ConnectedRouter history={history}>
           <FelaProvider renderer={renderer} mountNode={mountNode}>
-            <AmpProvider amp={false}>
-              <App />
-            </AmpProvider>
+            <GatewayProvider>
+              <AmpProvider amp={false}>
+                <App />
+              </AmpProvider>
+            </GatewayProvider>
           </FelaProvider>
         </ConnectedRouter>
       </ApolloProvider>
