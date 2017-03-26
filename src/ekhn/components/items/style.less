@@ -50,7 +50,7 @@
         background-color: #FFF;
         box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33)!important;
         display: block;
-        border-top: 2px solid #9459A2;
+        border-top: 2px solid @brand-primary;
 
         & > h2 {
           margin-top: 0 !important;
@@ -76,6 +76,10 @@
       .col-md-6 {
         margin-bottom: 1rem;
 
+        & > div {
+          box-shadow: 0 0 20px 1px rgba(0, 0, 0, .33);
+        }
+
         &:nth-child(1) {
           padding-left: .5rem;
           padding-right: .5rem;
@@ -85,8 +89,12 @@
           padding-right: .5rem;
         }
 
-        & > .text > h2 {
-          margin-top: 0 !important;
+        & > .text {
+          border-top: 2px solid @brand-primary;
+
+          & > h2 {
+            margin-top: 0 !important;
+          }
         }
 
         h5 {

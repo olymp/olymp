@@ -96,15 +96,15 @@ app.use((req, res, next) => {
 });
 // if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
 app.use(session({
-  store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) : undefined,
-  resave: false,
-  saveUninitialized: true,
-  proxy: isProd,
-  secret: process.env.SESSION_SECRET || 'keyboard cat',
-  cookie: {
-    secure: isProd,
-    maxAge: 60000000,
-  },
+  store: /*cprocess.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) :*/ undefined,
+  resave: false,
+  saveUninitialized: true,
+  proxy: isProd,
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
+  cookie: {
+    secure: isProd,
+    maxAge: 60000000,
+  },
 }));
 
 try {

@@ -24,8 +24,6 @@ export default useItemEdit()((props) => {
           {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
 
           <ItemMore more={more} id={id} identifier={identifier} />
-
-          <Tags tags={tags} className="mt-2" />
         </div>
       </Responsive>
 
