@@ -41,7 +41,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
     const visible = this.state.visible || showMediathek;
     const image = this.image;
 
-    if (disableUpload || readOnly || !showMediathekOnClick) {
+    if (disableUpload || readOnly || (!showMediathekOnClick && !showMediathek)) {
       return <WrappedComponent {...this.props} />;
     }
 
