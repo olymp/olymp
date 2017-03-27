@@ -138,6 +138,18 @@ const moveActions = ({ editor, state, node }) => ([{
 }]);
 
 export default class Toolbar extends Component {
+  onChangeType = ({ key }) => {
+    const { editor, readOnly, node, state } = this.props;
+    const blockTypes = editor.props.sidebarTypes || [];
+    const newBlock = (blockTypes.find(({ type }) => type === key) || node);
+    editor.onChange(
+      state
+        .transform()
+        .setNodeByKey(node.key, { type: newBlock.type, isVoid: newBlock.isVoid })
+        .apply()
+    );
+  }
+
   render() {
     const { editor, node, readOnly, style, remove, add, move } = this.props;
     const actions = [...this.props.actions];
