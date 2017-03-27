@@ -115,7 +115,7 @@ export const useLightbox = WrappedComponent => class WithLightbox extends Compon
             // prevSrc={images[(visible + images.length - 1) % images.length]}
             onCancel={this.hide}
           >
-            <img src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), { maxWidth: 960 })} width="100%" height="auto" />
+            <img src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), { width: 960 })} width="100%" height="auto" />
           </Modal>
         ) : null}
       </WrappedComponent>

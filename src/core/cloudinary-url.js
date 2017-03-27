@@ -1,55 +1,56 @@
 // http://res.cloudinary.com/demo/image/upload/f_auto,q_auto,w_250,h_250,c_fit/sample.jpg
 const defaultState = 'f_auto,q_auto,fl_lossy';
 
-export default (url, { mode, maxWidth, effect, maxHeight, border, width, height, cropX, cropY, quality, blur, retina, crop: crop0 } = {}, crop) => {
+export default (url, { mode, effect, border, width, height, cropX, cropY, quality, blur, retina = true, originWidth, originHeight, crop: crop0 } = {}, crop) => {
   if (!crop) crop = crop0;
   if (!mode) mode = 'fill';
+  let part = defaultState;
 
-  // RETINA
-  // if (retina && width) width *= 2; geht so nicht, da cloudinary einen Fehler wirft, wenn die angefragt Größe > als die tatsächlich ist
-  // if (retina && height) height *= 2;
-  if (retina && maxWidth && maxWidth * 2 < width) maxWidth *= 2;
-  if (retina && maxHeight && maxHeight * 2 < height) maxHeight *= 2;
-
+  // URL
   if (!url) return url;
-  if (crop) {
-    width = crop[0];
-    height = crop[1];
-    cropX = crop[2];
-    cropY = crop[3];
-  }
   if (url.indexOf('http://res.cloudinary.com/') === 0) {
     url = url.split('ttp://res.cloudinary.com/').join('ttps://res.cloudinary.com/');
   }
   if (url.indexOf('https://res.cloudinary.com/') !== 0) return url;
-  let part = defaultState;
-  if (cropX !== undefined && cropY !== undefined) {
-    part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
-  } else if (width && height) {
-    part = `w_${width},h_${height},c_${mode}/${part}`;
+
+  // RETINA
+  if (retina && width * 2 <= originWidth) width *= 2;
+  if (retina && height * 2 <= originHeight) height *= 2;
+
+  // CROP
+  if (crop) {
+    part = `x_${crop[2]},y_${crop[3]},w_${crop[0]},h_${crop[1]},c_crop/${part}`;
   }
 
-  if (maxWidth || maxHeight) {
-    if (maxWidth) part += `,w_${maxWidth}`;
-    if (maxHeight) part += `,h_${maxHeight}`;
-    part += `,c_${mode}`;
+  // SIZE
+  if (width || height) {
+    part = `c_${mode}/${part}`;
+    if (height) part = `h_${height},${part}`;
+    if (width) part = `w_${width},${part}`;
   }
-  if (quality) {
-    part += `,q_${quality}`;
-  }
+
+  // BLUR
   if (blur) {
     part += `,e_blur:${blur}`;
   }
-  if (part === defaultState) {
-    part += ',q_75';
-  }
+
+  // BORDER
   if (border) {
     Object.keys(border).map((key) => {
       part = `bo_${border[key]}px_solid_${key}/${part}`;
     });
   }
+
+  // EFFECT
   if (effect) {
     part = `e_${effect}/${part}`;
+  }
+
+  // QUALITY
+  if (quality) {
+    part += `,q_${quality}`;
+  } else if (part === defaultState) {
+    part += ',q_75';
   }
 
   return url.replace('/upload/', `/upload/${part}/`);

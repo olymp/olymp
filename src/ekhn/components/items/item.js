@@ -14,7 +14,7 @@ export default useItemEdit()((props) => {
 
       <Responsive {...props}>
         <div className="info pl-1 pr-0 py-1 col-xl-4 col-md-5 hidden-sm-down">
-          {bild ? <Image className="header" width="100%" value={bild} cloudinary={{ maxWidth: 300 }} lightbox /> : null}
+          {bild ? <Image className="header" width="100%" value={bild} cloudinary={{ width: 300 }} lightbox /> : null}
           {shortText ? <Tags tags={tags} /> : null}
         </div>
 

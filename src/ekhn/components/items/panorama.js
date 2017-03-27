@@ -16,7 +16,7 @@ export default class Panorama extends Component {
         {bild && bild.url ? (
           <div className="image row">
             <div className="col-md-8">
-              <Image value={bild} lightbox cloudinary={{ maxWidth: 400 }} style={{ width: '100%' }} />
+              <Image value={bild} lightbox cloudinary={{ width: 400 }} style={{ width: '100%' }} />
             </div>
 
             <div className="col-md-4 hidden-sm-down">
