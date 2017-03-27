@@ -24,6 +24,7 @@ export default class Crop extends Component {
   onCrop = (p, { width, height, x, y }) => {
     const { onChange, item } = this.props;
     const crop = [width, height, x, y];
+
     onChange({
       url: item.url,
       height: item.height,
@@ -36,6 +37,7 @@ export default class Crop extends Component {
 
   componentDidMount() {
     const { onChange, item } = this.props;
+
     onChange({
       url: item.url,
       height: item.height,
