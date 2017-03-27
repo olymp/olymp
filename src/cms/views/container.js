@@ -16,7 +16,7 @@ import '../styles/style.less';
 
 @useLightbox
 @useEdits([
-  type => type.kind === 'OBJECT' && type.name === 'Image' && <ImageEdit asImg mode="fit" retina style={{ maxWidth: 300, maxHeight: 300 }} />
+  type => type.kind === 'OBJECT' && type.name === 'Image' && <ImageEdit asImg mode="fit" showMediathekOnClick retina style={{ maxWidth: 300, maxHeight: 300 }} />
 ])
 @withRouter
 @useBlockTypes()

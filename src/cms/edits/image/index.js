@@ -16,9 +16,9 @@ export default class ImageComponent extends Component {
     const { showLightbox, showMediathek, onImageClick, readOnly, auth, onChange, lightbox } = this.props;
 
     if (!readOnly) {
-      if (onImageClick) {
+      if (typeof onImageClick === 'function') {
         onImageClick({ showLightbox, showMediathek });
-      } else if (/* auth && auth.user && */ onChange) {
+      } else if (typeof showMediathek === 'function' && onChange) {
         showMediathek({ showMediathek });
       }
     }
@@ -29,7 +29,7 @@ export default class ImageComponent extends Component {
   }
 
   render() {
-    const { cloudinary, asImg, style, className, width, height, ratio, children, border, retina, mode, showMediathek, showLightbox, onImageClick } = this.props;
+    const { cloudinary, asImg, style, className, width, height, ratio, children, border, retina, mode } = this.props;
     let { value } = this.props;
 
     if (!value) {
@@ -53,7 +53,7 @@ export default class ImageComponent extends Component {
         width={width}
         height={height}
         ratio={ratio}
-        onClick={showMediathek || showLightbox || onImageClick ? this.onImageClick : () => {}}
+        onClick={this.onImageClick}
       >
         {children}
       </Image>
