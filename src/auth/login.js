@@ -59,7 +59,7 @@ class ModalForm extends Component {
   }
   onKeyPress2 = (e) => {
     if (e.key === 'Enter') {
-      onCreate();
+      this.props.onCreate();
     }
   }
   render() {
@@ -80,7 +80,7 @@ class ModalForm extends Component {
           })(<Input type="password" placeholder="Passwort" onKeyPress={this.onKeyPress2} ref={input => this.input = input } addonBefore={<i className="fa fa-lock" />}/>)}
         </FormItem>
         <Links>
-          <Link to={{ pathname, query: { register: null, login: undefined } }}>Registrieren</Link>
+          {/* <Link to={{ pathname, query: { register: null, login: undefined } }}>Registrieren</Link> */}
           <Link to={{ pathname, query: { forgot: null, login: undefined } }}>Passwort vergessen?</Link>
         </Links>
       </Modal>
@@ -108,7 +108,7 @@ export default class AuthLogin extends Component {
       }).catch((err) => {
         notification.error({
           message: 'Anmeldung fehlgeschlagen',
-          description: err.message,
+          description: 'Benutzername oder Passwort falsch', // err.message,
         });
       });
     });

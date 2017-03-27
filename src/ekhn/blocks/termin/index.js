@@ -192,8 +192,8 @@ export default class TerminBlock extends Component {
     return (
       <GenericBlock {...rest} style={{ width: '100%' }}>
         <DataLoader style={style} isEmpty={(data.termine && data.termine.length) || (data.gottesdienste && data.gottesdienste.length)} placeholder="Keine Termine vorhanden" loading="Termine werden geladen" className="items">
-          <div className="item" style={{ padding: '.5rem' }}>
-            <h1>{title || type}</h1>
+          <div className="item" style={{ padding: '1rem' }}>
+            <h1 style={{ margin: '0 0 1rem 0' }}>{title || type}</h1>
 
             {termine.slice((page - 1) * steps, page * steps).map(x => <TerminItem {...x} key={x.id} />)}
           </div>
