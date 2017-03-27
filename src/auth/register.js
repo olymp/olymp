@@ -58,7 +58,7 @@ class ModalForm extends Component {
   }
   onKeyPress2 = (e) => {
     if (e.key === 'Enter') {
-      onCreate();
+      this.props.onCreate();
     }
   }
   render() {
@@ -107,7 +107,7 @@ export default class AuthLogin extends Component {
       }).catch((err) => {
         notification.error({
           message: 'Anmeldung fehlgeschlagen',
-          description: err.message,
+          description: 'Benutzername oder Passwort falsch', // err.message,
         });
       });
     });

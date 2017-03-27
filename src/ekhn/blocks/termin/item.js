@@ -8,6 +8,7 @@ import tinycolor from 'tinycolor2';
 
 export default useItemEdit()(({ children, className, start, ende, name, kommentar, farbe, ganztaegig, bild, pfarrer, organist, additional, ort }) => {
   const hypher = new Hypher(german);
+  let pfarrerReverse = Array.isArray(pfarrer) ? [...pfarrer].reverse() : [];
 
   const eqColor = tinycolor.mix(tinycolor(farbe).setAlpha(1), '#FFF', 100 * (1 - tinycolor(farbe).getAlpha())).toRgbString();
   const backgroundColor = farbe ? tinycolor(eqColor)
@@ -58,7 +59,7 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
           <h3 style={{ color }}>{hypher.hyphenateText(name.toString() || 'Termin')}</h3>
           {kommentar ? <SlateMateFrontend value={kommentar} readOnly /> : null}
 
-          {pfarrer && pfarrer.length ? <span>Mit{pfarrer.reverse().map((x, i) => {
+          {pfarrerReverse.length ? <span>Mit{pfarrerReverse.map((x, i) => {
             let content = <b key={i}> {x.name}</b>;
 
             if (i && i !== pfarrer.length - 1) {
@@ -90,8 +91,8 @@ export default useItemEdit()(({ children, className, start, ende, name, kommenta
             <Image value={organist.bild} width={80} lightbox style={{ borderRadius: '50%' }} />
             : null}
 
-          {!bild && pfarrer && pfarrer.length ?
-            pfarrer.reverse().map((x, i) => x.bild ? (
+          {!bild && pfarrerReverse.length ?
+            pfarrerReverse.map((x, i) => x.bild ? (
               <Image value={x.bild} width={80} lightbox style={{ borderRadius: '50%' }} key={i} />
             ) : null)
           : null}
