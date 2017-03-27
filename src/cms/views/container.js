@@ -63,7 +63,7 @@ export default class Container extends Component {
         ]}
         link={[
           { rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' },
-          { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' },
+          { rel: 'apple-touch-icon', href: 'apple-icon.png' },
           { rel: 'mask-icon', href: 'logo.svg', color: color || '#FBA139' },
           ...(helmet.link || [])
         ]}
