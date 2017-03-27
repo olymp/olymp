@@ -30,10 +30,6 @@ export default class CoolImage extends Component {
     cloudinary: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number,
-      minWidth: PropTypes.number,
-      minHeight: PropTypes.number,
-      maxWidth: PropTypes.number,
-      maxHeight: PropTypes.number,
     }),
     onClick: PropTypes.func,
 
@@ -110,7 +106,7 @@ export default class CoolImage extends Component {
       width = Math.round(height / ratio);
     }
 
-    const cloudinaryProps = { url, width, height, maxWidth: style.maxWidth, maxHeight: style.maxHeight, retina, mode, border, ...cloudinary };
+    const cloudinaryProps = { width: style.maxWidth || width, height: style.maxHeight || height , retina, mode, border, ...cloudinary, originWidth: value.width, originHeight: value.height };
     if (cloudinary && cloudinary.width && !cloudinary.height) delete cloudinaryProps.height;
     if (cloudinary && cloudinary.height && !cloudinary.width) delete cloudinaryProps.width;
     url = cloudinaryUrl(url, cloudinaryProps, crop);
