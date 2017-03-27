@@ -29,7 +29,7 @@ export default class ImageComponent extends Component {
   }
 
   render() {
-    const { cloudinary, asImg, style, className, width, height, ratio, children, border, retina, mode } = this.props;
+    const { cloudinary, asImg, style, className, width, height, ratio, children, border, retina, mode, showMediathek, showLightbox, onImageClick } = this.props;
     let { value } = this.props;
 
     if (!value) {
@@ -53,7 +53,7 @@ export default class ImageComponent extends Component {
         width={width}
         height={height}
         ratio={ratio}
-        onClick={this.onImageClick}
+        onClick={showMediathek || showLightbox || onImageClick ? this.onImageClick : () => {}}
       >
         {children}
       </Image>

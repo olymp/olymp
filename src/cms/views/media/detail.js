@@ -62,7 +62,7 @@ const MediaForm = Form.create()(
         <Form.Item key="format" label="Format" {...FormItemLayout}>
           <Input disabled placeholder="Format" defaultValue={item.format} />
         </Form.Item>
-        { item.format === 'pdf' ? (
+        { item.format === 'pdf' && item.pages ? (
           <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
             <Input disabled placeholder="Seiten" defaultValue={item.pages} />
           </Form.Item>

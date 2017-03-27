@@ -37,11 +37,11 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
   }
 
   render() {
-    const { disableUpload, readOnly, showMediathek, children, multi } = this.props;
+    const { disableUpload, readOnly, showMediathek, children, multi, pdfMode } = this.props;
     const visible = this.state.visible || showMediathek;
     const image = this.image;
 
-    if (disableUpload || readOnly) {
+    if (disableUpload || readOnly || !showMediathek) {
       return <WrappedComponent {...this.props} />;
     }
 
@@ -54,6 +54,7 @@ export default ({ getImage } = {}) => WrappedComponent => class WithImageUpload 
             onChange={this.onOk}
             onClose={this.onCancel}
             multi={multi}
+            pdfMode={pdfMode}
           />
         )}
       </WrappedComponent>

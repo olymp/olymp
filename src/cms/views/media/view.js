@@ -83,7 +83,7 @@ export default class MediaView extends Component {
         { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
       );
 
-      if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+      if (!onChange) router.replace({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
     } else if (onChange) {
       this.setState(
         { selected: !isActive ? [item.id] : [] }
@@ -102,12 +102,17 @@ export default class MediaView extends Component {
   }
 
   render() {
-    const { data, onChange, onClose, multi } = this.props;
+    const { data, onChange, onClose, multi, pdfMode } = this.props;
     const { selected, tags, aspect } = this.state;
     const { items, loading } = data;
 
-    let currentNode = this.getNode(items || []);
-    let images = items;
+    let images = items || [];
+
+    if (pdfMode) {
+      images = images.filter(x => x.format === 'pdf');
+    }
+
+    let currentNode = this.getNode(images);
     tags.forEach((tag) => {
       if (currentNode && currentNode[tag] && currentNode[tag].images && currentNode[tag].images.length) {
         images = currentNode[tag].images;
