@@ -6,12 +6,16 @@ export const amp = ({ helmet, cssMarkup, root }) => `
   <!DOCTYPE html>
   <html amp lang="de">
     <head>
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
       <meta charset="utf-8">
-      <script async src="https://cdn.ampproject.org/v0.js"></script>
-      <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Language" content="de" />
+      <meta name="msapplication-TileColor" content="#FBA139">
+      <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+      <meta name="theme-color" content="#FBA139">
+      ${helmet.link.toString()}
       <link rel="mask-icon" color="#FBA139" href="/logo.svg">
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
       <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -27,13 +31,9 @@ export const amp = ({ helmet, cssMarkup, root }) => `
       <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
       <link rel="manifest" href="/manifest.json">
-      <meta name="msapplication-TileColor" content="#FBA139">
-      <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-      <meta name="theme-color" content="#FBA139">
-      ${helmet.title.toString()}
-      ${helmet.meta.toString()}
-      ${helmet.link.toString()}
       <style amp-custom id="css-markup">${cssMarkup || ''}</style>
+      <script async src="https://cdn.ampproject.org/v0.js"></script>
+      <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
     </head>
     <body>
       <div id="app"><div>${root ? replaceInline(root) : ''}</div></div>
@@ -129,10 +129,16 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrac
 <!DOCTYPE html>
 <html lang="de">
   <head>
+    ${helmet.title.toString()}
+    ${helmet.meta.toString()}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
+    <meta name="msapplication-TileColor" content="#FBA139">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#FBA139">
+    ${helmet.link.toString()}
     <link rel="mask-icon" color="#FBA139" href="/logo.svg">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -148,12 +154,6 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrac
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#FBA139">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#FBA139">
-    ${helmet.title.toString()}
-    ${helmet.meta.toString()}
-    ${helmet.link.toString()}
     ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`)}
     ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
     <style id="css-markup">${cssMarkup || ''}</style>
