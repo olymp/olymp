@@ -22,8 +22,6 @@ const FormItem = createComponent(({ theme }) => ({
   '> .ant-form-item-control-wrapper': {
     '> .ant-form-item-control': {
       '> .ant-input': {
-        fontSize: '18px',
-        padding: '1.2rem .8rem',
         borderRadius: 0,
         borderColor: theme.color,
         '::placeholder': {
@@ -71,12 +69,12 @@ class ModalForm extends Component {
           {getFieldDecorator('email', {
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} />)}
+          })(<Input type="email" placeholder="E-Mail" size="large" onKeyPress={this.onKeyPress1} />)}
         </FormItem>
         <FormItem key="password" label="Passwort" {...formItemLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(<Input type="password" placeholder="Passwort" onKeyPress={this.onKeyPress2} ref={input => this.input = input } />)}
+          })(<Input type="password" placeholder="Passwort" size="large" onKeyPress={this.onKeyPress2} ref={input => this.input = input } />)}
         </FormItem>
         <Links>
           <Link to={{ pathname, query: { login: null, register: undefined } }}>Anmelden</Link>

@@ -1,5 +1,5 @@
 {
-  "version": "14.2.10",
+  "version": "14.2.11",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
