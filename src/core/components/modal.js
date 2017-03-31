@@ -4,33 +4,36 @@ import cn from 'classnames';
 import { Gateway } from 'react-gateway';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
-import { TransitionSlide, TransitionFade } from './transitions';
+import { Transition } from './transitions';
 ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
 const ReactModal = ({ className, ...props }) => <ReactModal2 backdropClassName={className} {...props}/>
-export const Modal = ({ isOpen, className, children, onCancel, okText, cancelText, onOk, title, ...props }) => (
+export const Modal = ({ isOpen, showFooter, leftButtons, rightButtons, className, subtitle, children, onCancel, okText, cancelText, onOk, title, ...props }) => (
   <Gateway into="modal">
-    <TransitionSlide speed={500} isOpen={isOpen}>
+    <Transition isOpen={isOpen}>
       <ReactModal onClose={onCancel} closeOnEsc closeOnBackdropClick className={cn('ant-modal-wrap', className)} modalClassName="ant-modal">
         <div className="ant-modal-content">
           <div className="ant-modal-header">
+            {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+            {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
             <div className="ant-modal-title">{title}</div>
+            {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
           </div>
           <div className="ant-modal-body">
             {children}
           </div>
-          <div className="ant-modal-footer">
+          {showFooter !== false && <div className="ant-modal-footer">
             <button onClick={onCancel} type="button" className="ant-btn ant-btn-lg">
               <span>{cancelText || 'Abbruch'}</span>
             </button>
             <button onClick={onOk} type="button" className="ant-btn ant-btn-primary ant-btn-lg">
               <span>{okText || 'Speichern'}</span>
             </button>
-          </div>
+          </div>}
         </div>
       </ReactModal>
-    </TransitionSlide>
+    </Transition>
   </Gateway>
 );
 
@@ -80,10 +83,12 @@ export default createComponent(({ theme, padding, width, showLogo }) => ({
       },
       '> .ant-modal-header > .ant-modal-title': {
         color: theme.color,
-        textAlign: 'center',
         fontSize: 40,
         fontWeight: 200,
         padding: 10,
+      },
+      '> .ant-modal-header': {
+        textAlign: 'center',
       },
       '> .ant-modal-footer': {
         '> .ant-btn': {
@@ -94,3 +99,16 @@ export default createComponent(({ theme, padding, width, showLogo }) => ({
     }
   }
 }), Modal, p => p);
+
+const TitleButtons = createComponent(({ theme, left, right, padding, width, showLogo }) => ({
+  margin: 0,
+  lineHeight: '21px',
+  position: 'absolute',
+  left: left && 16,
+  right: right && 16,
+  color: theme.color,
+  fontSize: 40,
+  fontWeight: 200,
+  padding: 10,
+  top: 14,
+}), 'div', ({ left, right, ...p }) => p)
