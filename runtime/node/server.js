@@ -95,7 +95,8 @@ app.use((req, res, next) => {
     req.isAmp = true;
   } next();
 });
-// if (process.env.NODE_ENV === 'production') app.set('trust proxy', 2);
+
+if (isProd) app.set('trust proxy', 2);
 app.use(session({
   store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) : undefined,
   resave: false,

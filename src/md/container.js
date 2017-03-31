@@ -6,22 +6,23 @@ const LINE = '\n';
 const EXPRESSION = /^((\+{1,}) ([^\n\+]+)?[ \t]*)(?:\n([\s\S]*?)(\n\2[ \t]*(?=\n|$)))?/;
 // const EXPRESSION = /^((\+{1,}) ([^\n\+]+)?[ \t]*)(?:\n([\s\S]*?)(\n\2[ \t]*(?=\n|$)))?/;
 // const EXPRESSION = /^\:{3,}/;
-const getArgsFromStr = (str, allowed) => {
-  const match = str ? str.match(/(?:[^\s"'\]\[]+|"[^"]*"|'[^']*'|\[[^']*\])+/g) : null;
-  if (match) {
-    return match.reduce((state, current) => {
-      const [x, y] = current.split('=');
-      if (allowed && !allowed[x]) return state;
-      else if (!allowed) state[x] = y;
-      else if (allowed[x] === PropTypes.number) state[x] = y !== null && y !== undefined ? parseInt(y) : null;
-      else if (allowed[x] === PropTypes.bool) state[x] = y === 'true' ? true : y === 'false' ? false : null;
-      else state[x] = y;
-      return state;
-    }, {});
-  } return {};
-}
 
-function attacher({ components }) {
+function attacher({ components, props }) {
+  const getArgsFromStr = (str, allowed) => {
+    const match = str ? str.match(/(?:[^\s"'\]\[]+|"[^"]*"|'[^']*'|\[[^']*\])+/g) : null;
+    if (match) {
+      return match.reduce((state, current) => {
+        let [x, y] = current.split('=');
+        if (y && y.indexOf('{') === 0) y = props[y.substr(1).slice(0, -1)];
+        if (allowed && !allowed[x]) return state;
+        else if (!allowed) state[x] = y;
+        else if (allowed[x] === PropTypes.number) state[x] = y !== null && y !== undefined ? parseInt(y) : null;
+        else if (allowed[x] === PropTypes.bool) state[x] = y === 'true' ? true : y === 'false' ? false : null;
+        else state[x] = y;
+        return state;
+      }, {});
+    } return {};
+  }
   function parse(eat, value, silent) {
     // let match = value.match(EXPRESSION);
     // console.log(match);

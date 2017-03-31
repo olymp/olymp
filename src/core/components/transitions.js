@@ -13,6 +13,12 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     static contextTypes = {
       gatewayRegistry: React.PropTypes.instanceOf(GatewayRegistry).isRequired
     };
+    static defaultProps = {
+      speed: 300,
+      appear: false,
+      enter: true,
+      leave: true,
+    };
     state = { animation: null };
     delay = () => {
       const { speed } = this.props;
@@ -22,8 +28,8 @@ const withTransition = (Transition, { delayLeave } = {}) => {
       }).length > 0 ? (speed * 2) : speed;
     }
     componentWillAppear(callback) {
-      const { speed, enter } = this.props;
-      if (enter === false) return callback();
+      const { speed, enter, appear } = this.props;
+      if (enter === false || appear === false) return callback();
       state(this, { animation: 'enter', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
@@ -55,7 +61,7 @@ const withTransition = (Transition, { delayLeave } = {}) => {
       const { speed } = this.props;
       const { animation, active, delay } = this.state;
       const type = `${animation}${active ? '-active' : ''}`;
-      return <Transition {...this.props} type={type} phase={animation} state={active} delay={(delay ||speed) - speed} />;
+      return <Transition {...this.props} type={type} phase={animation} state={active} delay={this.props.delay === false ? 0 : ((delay || speed) - speed)} />;
     }
   }
   return props => {
@@ -70,12 +76,22 @@ const withTransition = (Transition, { delayLeave } = {}) => {
 }
 
 export const createTransition = (fn, options) => {
-  return withTransition(
+  const Inner = withTransition(
     createComponent(fn, ({ className, children }) => {
       const child = Children.only(children);
       return cloneElement(child, { className: cn(child.props.className, className) });
     }, p => p), options
-  )
+  );
+  const component = (props, { theme }) => {
+    if (!theme.transition) {
+      const { isOpen } = props;
+      const opened = isOpen === undefined ? true : !!isOpen;
+      return opened ? Children.only(props.children) : null;
+    }
+    return <Inner {...props} />
+  };
+  component.contextTypes = { theme: React.PropTypes.object };
+  return component;
 }
 
 export const TransitionFade = createTransition(({ type, delay, speed }) => {
@@ -94,12 +110,16 @@ export const TransitionFade = createTransition(({ type, delay, speed }) => {
   } else if (type === 'leave') {
     return {
       opacity: 1,
+      position: 'absolute',
+      width: '100%',
       pointerEvents: 'none',
     };
   } else if (type === 'leave-active') {
     return {
       opacity: 0,
       pointerEvents: 'none',
+      position: 'absolute',
+      width: '100%',
       transition: `opacity ${speed}ms ease-in-out`,
       transitionDelay: `${delay}ms`,
       willChange: 'transform',
@@ -138,3 +158,12 @@ export const TransitionSlide = createTransition(({ type, delay, speed }) => {
     };
   }
 });
+
+export const Transition = (props, { theme }) => {
+  if (theme.transition === 'fade') return <TransitionFade {...props} speed={theme.transitionSpeed || 250} />;
+  if (theme.transition === 'slide') return <TransitionSlide {...props} speed={theme.transitionSpeed || 500} />;
+  const { isOpen } = props;
+  const opened = isOpen === undefined ? true : !!isOpen;
+  return opened ? Children.only(props.children) : null;
+};
+Transition.contextTypes = { theme: React.PropTypes.object };
