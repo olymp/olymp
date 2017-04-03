@@ -1,32 +1,4 @@
-const htmlTypes = {
-  p: props => props.content.split('\n').map(x => x.trim()).filter(x => x.length > 0).map(text => `
-    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-      <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; ${props.strong ? 'font-weight: bold;' : ''}" valign="top">
-        ${text}
-      </td>
-    </tr>
-  `).join(''),
-  link: props => `
-    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-      <td class="content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-        <a href="${props.link}" class="btn-primary" itemprop="url" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">
-          ${props.content}
-        </a>
-      </td>
-    </tr>
-  `
-};
-
-const textTypes = {
-  p: props => `${props.content}\n`,
-  link: props => `${props.content} (${props.link})`
-}
-
-const merge = (x1, x2) => Object.assign({}, x1, x2)
-
-module.exports = (contentArray, options = {}) => {
-  const content = contentArray.map(x => htmlTypes[x.type](merge({content: ''}, x))).join('');
-  const body = contentArray.map(x => textTypes[x.type](merge({content: ''}, x))).join('\n');
+module.exports = (content, options) => {
   const html = `
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -77,7 +49,7 @@ module.exports = (contentArray, options = {}) => {
     </body>
   </html>
   `;
-  return { html, body }
+  return html;
 };
 
 var style = `

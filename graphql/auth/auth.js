@@ -1,4 +1,4 @@
-const { registerMail, forgotMail } = require('./mails');
+const mails = require('./mails');
 
 const cleanUser = (user) => {
   const cleaned = Object.assign({}, user);
@@ -22,7 +22,6 @@ module.exports = ({ adapter, password, token, mail }) => {
       let user = null;
       return adapter.read('user', { filter }).then((usr) => {
         user = usr;
-        console.log(filter);
         if (!user) throw new Error('No user matched.');
         if (user.confirmed === false) throw new Error('User not confirmed.');
         return password.match(user, pw);
@@ -39,6 +38,7 @@ module.exports = ({ adapter, password, token, mail }) => {
         return adapter.read('user', { id });
       }).then((user) => {
         if (!user) throw new Error('No user matched.');
+        if (user.confirmed === false) throw new Error('User not confirmed.');
         const newToken = token.createFromUser(user);
         return { token: newToken, user: cleanUser(user) };
       });
@@ -54,8 +54,9 @@ module.exports = ({ adapter, password, token, mail }) => {
         if (currentUser) throw new Error('USER_ALREADY_EXISTS Error.');
         return adapter.write('user', user);
       }).then((result) => {
-        const confirmationToken = token.create(result.id);
-        if (mail) registerMail(mail, { email: rawUser.email, token: confirmationToken })
+        const confirmationToken = token.createFromUser(result);
+        console.log('CONFIRM', confirmationToken);
+        if (mail) mail(mails.register({ email: rawUser.email, token: confirmationToken }))
           .then(x => console.log('Mail success')).catch(err => console.error(err));
         return { token: confirmationToken, user: cleanUser(result) };
       });
@@ -76,8 +77,11 @@ module.exports = ({ adapter, password, token, mail }) => {
     forgot: (email) => {
       return adapter.read('user', { filter: { email } }).then((user) => {
         if (!user) throw new Error('No user matched.');
-        const requestToken = token.create(user.id);
-        if (mail) forgotMail(mail, { email: user.email, token: requestToken })
+        if (user.confirmed === false) throw new Error('User not confirmed.');
+        const requestToken = token.createFromUser(user);
+        console.log('FORGOT', requestToken);
+
+        if (mail) mail(mails.forgot({ email: user.email, token: requestToken }))
           .then(x => console.log('Mail success')).catch(err => console.error(err));
         return true;
       });
@@ -88,9 +92,10 @@ module.exports = ({ adapter, password, token, mail }) => {
         return adapter.read('user', { id });
       })).then((user) => {
         if (!user) throw new Error('No user matched.');
+        if (user.confirmed === false) throw new Error('User not confirmed.');
         return password.set(user, pwd);
       }).then(user => adapter.write('user', user))
-        .then(user => cleanUser(user));
+        .then(user => ({ token: token.createFromUser(user), user: cleanUser(user) }));
     },
   };
 };

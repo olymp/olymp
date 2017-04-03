@@ -19,7 +19,7 @@ export const auth = (obj) => WrappedComponent => {
     return graphql(
       gql`
         query verify {
-          user: verifyCookie {
+          user: verify {
             ${attributes}
           }
         }
@@ -59,10 +59,11 @@ const authMethods = (client, refetch) => ({
     return client.mutate({
       mutation: gql`
         mutation logout {
-          logoutCookie
+          logout
         }
       `,
-    }).then(({ data }) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
       if (refetch) refetch({});
     });
   },
@@ -73,7 +74,8 @@ const authMethods = (client, refetch) => ({
           forgot(email:"${email}")
         }
       `,
-    }).then(({ data }) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
       return data.forgot;
     });
   },
@@ -82,12 +84,28 @@ const authMethods = (client, refetch) => ({
     return client.mutate({
       mutation: gql`
         mutation reset {
-          reset(token:"${token}", password:"${password}")
+          reset(token:"${token}", password:"${password}") {
+            email
+          }
         }
       `
-    }).then(({ data }) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
       return data.reset;
-    }).catch(err => {
+    });
+  },
+  confirm: (token) => {
+    return client.mutate({
+      mutation: gql`
+        mutation confirm {
+          confirm(token:"${token}") {
+            email
+          }
+        }
+      `
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      return data.confirm;
     });
   },
   login: (email, password) => {
@@ -95,26 +113,29 @@ const authMethods = (client, refetch) => ({
     return client.mutate({
       mutation: gql`
         mutation login {
-          user: loginCookie(email:"${email}", password:"${password}") {
+          user: login(email:"${email}", password:"${password}") {
             ${attributes}
           }
         }
       `,
-    }).then(({ data }) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
       const { user } = data;
       if (refetch) refetch({ });
       return user;
-    }).catch(err => {
     });
   },
   register: (user, password) => {
     return client.mutate({
       mutation: gql`
-        mutation register($user: userInput) {
-          register(input: $user, password: "${password}")
+        mutation register($user: UserInput) {
+          register(input: $user, password: "${password}") {
+            ${attributes}
+          }
         }
       `, variables: { user },
-    }).then(({ data }) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
       return data.register;
     });
   },

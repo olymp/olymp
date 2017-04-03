@@ -1,113 +1,62 @@
 import React, { Component } from 'react';
-import { Link as UnstyledLink, Modal } from 'olymp';
+import { Link, Modal } from 'olymp';
 import { Form, Input, notification } from 'antd';
-import { createComponent } from 'react-fela';
-import tinycolor from 'tinycolor2';
 import withAuth from './with-auth';
-
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
-
-const FormItem = createComponent(({ theme }) => ({ }), Form.Item, p => p);
-
-const Links = createComponent(({ theme }) => ({
-  position: 'absolute',
-  bottom: -60,
-  textAlign: 'center',
-  right: 0,
-  left: 0,
-  '> a': {
-    display: 'inline-block',
-    minWidth: 200,
-    padding: '0 9px',
-  },
-}), 'div');
-const Footer = createComponent(({ theme }) => ({
-  position: 'fixed',
-  bottom: 10,
-  textAlign: 'center',
-  right: 0,
-  left: 0,
-}), 'div');
-const Link = createComponent(({ theme }) => ({
-  color: 'white',
-  opacity: .3,
-  onHover: {
-    opacity: 1,
-  }
-}), UnstyledLink, p => p);
-
-@Form.create()
-class ModalForm extends Component {
-  onKeyPress1 = (e) => {
-    if (e.key === 'Enter' && typeof this !== 'undefined') {
-      return this.input && this.input.refs.input && this.input.refs.input.focus();
-    } return false;
-  }
-  onKeyPress2 = (e) => {
-    if (e.key === 'Enter') {
-      onCreate();
-    }
-  }
-  render() {
-    const { isOpen, email, form, onCreate, onCancel, saving, pathname } = this.props;
-    const { getFieldDecorator } = form;
-
-    return (
-      <Modal isOpen={isOpen} title="Registrieren" confirmLoading={saving} onCancel={onCancel} onOk={onCreate} maskClosable={false}>
-        <FormItem key="email" label="E-Mail" {...formItemLayout}>
-          {getFieldDecorator('email', {
-            initialValue: email,
-            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(<Input type="email" placeholder="E-Mail" onKeyPress={this.onKeyPress1} />)}
-        </FormItem>
-        <FormItem key="password" label="Passwort" {...formItemLayout}>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(<Input type="password" placeholder="Passwort" onKeyPress={this.onKeyPress2} ref={input => this.input = input } />)}
-        </FormItem>
-        <Links>
-          <Link to={{ pathname, query: { login: null, register: undefined } }}>Anmelden</Link>
-          <Link to={{ pathname, query: { forgot: null, login: undefined } }}>Passwort vergessen?</Link>
-        </Links>
-      </Modal>
-    );
-  }
-}
+import { EnvelopeO, Key } from 'olymp-icons';
+import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
 
 @withAuth
-export default class AuthLogin extends Component {
-  handleCancel = () => {
-    this.props.onClose();
-  }
+@Form.create()
+export default class AuthRegister extends Component {
+  state = {};
 
-  handleCreate = () => {
-    const { auth, onClose } = this.props;
-    const form = this.form;
+  ok = () => {
+    const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) return;
-      auth.login(values.email, values.password).then(({ name }) => {
-        notification.success({
-          message: 'Anmeldung erfolgreich',
-          description: `Wilkommen, ${name}`,
-        });
-        onClose();
-      }).catch((err) => {
-        notification.error({
-          message: 'Anmeldung fehlgeschlagen',
-          description: err.message,
-        });
-      });
+      if (err) return onError(err);
+      if (values.password2 !== values.password) return onError(new Error('Die Passwörter stimmen nicht überein!'));
+      const user = {...values};
+      delete user.password;
+      delete user.password2;
+      auth.register(user).then(({ name }) => {
+        onSuccess('Registrierung abgeschickt', `Bitte checken Sie Ihre E-Mails`);
+        onOk({ email: values.email });
+      }).catch(onError);
     });
   }
 
   render() {
+    const { isOpen, email, form, saving, pathname, onClose, extraFields } = this.props;
+    const { getFieldDecorator } = form;
+
     return (
-      <ModalForm
-        {...this.props}
-        ref={form => this.form = form}
-        onCancel={this.handleCancel}
-        onCreate={this.handleCreate}
-      />
+      <Base isOpen={isOpen} title="Registrieren" onOk={this.ok} onCancel={onClose}>
+        <Form.Item key="name" label="Name" {...layout}>
+          {getFieldDecorator('name', {
+            rules: [{ required: true, message: 'Bitte geben Sie Ihren Namen an' }],
+          })(<Input type="text" placeholder="Name" onKeyPress={onEnterFocus(() => this.mail)} size="large" />)}
+        </Form.Item>
+        <Form.Item key="email" label="E-Mail" {...layout}>
+          {getFieldDecorator('email', {
+            initialValue: email,
+            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
+          })(<Input type="email" placeholder="E-Mail" onKeyPress={onEnterFocus(() => this.pw1)} ref={x => this.mail = x} size="large" addonAfter={<EnvelopeO size={10} />} />)}
+        </Form.Item>
+        <Form.Item key="password" label="Passwort" {...layout}>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
+          })(<Input type="password" placeholder="Password" onKeyPress={onEnterFocus(() => this.pw2)} ref={x => this.pw1 = x} size="large" addonAfter={<Key size={10} />}/>)}
+        </Form.Item>
+        <Form.Item key="password2" label="Wiederholen" {...layout}>
+          {getFieldDecorator('password2', {
+            rules: [{ required: true, message: 'Bitte die Passwort-Wiederholung angeben!' }],
+          })(<Input type="password" placeholder="Password wiederholen" onKeyPress={onEnterOk(this.ok)} ref={x => this.pw2 = x} size="large" addonAfter={<Key size={10} />}/>)}
+        </Form.Item>
+        {extraFields ? extraFields({ layout, getFieldDecorator, state: this.state, setState: this.setState }) : null}
+        <Modal.Links>
+          <Link to={{ pathname, query: { login: null, register: undefined } }}>Zur Anmeldung</Link>
+        </Modal.Links>
+      </Base>
     );
   }
 }
