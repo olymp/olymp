@@ -11,30 +11,28 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
   const password = getPassword({ });
   const auth = getAuth({ adapter, password, token, mail, confirm: false });
 
+  // checkToken(token: String): Boolean
   schema.addSchema({
     name: 'user',
     query: `
-      checkToken(token: String): Boolean
-      verify(token: String): UserAndToken
-      verifyCookie: User
+      verify: User
       userList: [User]
       user(id: String): User
     `,
     mutation: `
-      confirm(token: String): Boolean
+      confirm(token: String): User
       forgot(email: Email): Boolean
       register(input: UserInput, password: String): User
-      reset(token: String, password: String): Boolean
-      login(email: Email, password: String): UserAndToken
-      loginCookie(email: Email, password: String): User
-      logoutCookie: Boolean
+      reset(token: String, password: String): User
+      login(email: Email, password: String): User
+      logout: Boolean
       user(input: UserInput, operationType: OPERATION_TYPE): User
     `,
     resolvers: {
       Query: {
-        checkToken: (source, args) => auth.checkToken(args.token),
-        verifyCookie: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
-        verify: (source, args) => auth.verify(args.token),
+        // checkToken: (source, args) => auth.checkToken(args.token),
+        verify: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
+        // verify: (source, args) => auth.verify(args.token),
         userList: (source, args, context) => {
           const hook = Query && Query.userList ? Query.userList : defaultHook;
           return hook(source, Object.assign({}, args), context).then(item => adapter.list('user', item));
@@ -45,20 +43,27 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         },
       },
       Mutation: {
-        forgot: (source, args) => auth.forgot(args.email),
-        reset: (source, args) => auth.reset(args.token, args.password).then(() => true),
-        loginCookie: (source, args, context) => auth.login(args.email, args.password).then((userAndToken) => {
-          console.log(context);
+        register: (source, args) => {
+          return auth.register(args.input, args.password).then(x => x.user);
+        },
+        forgot: (source, args) => {
+          return auth.forgot(args.email);
+        },
+        reset: (source, args) => {
+          return auth.reset(args.token, args.password).then(({ user }) => user);
+        },
+        login: (source, args, context) => auth.login(args.email, args.password).then((userAndToken) => {
+          console.log(userAndToken);
           context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
           return userAndToken.user;
         }),
-        logoutCookie: (source, args, context) => {
+        logout: (source, args, context) => {
           delete context.session.userId; // eslint-disable-line no-param-reassign
           return true;
         },
-        login: (source, args) => auth.login(args.email, args.password),
-        register: (source, args) => auth.register(args.input, args.password).then(x => x.user),
-        confirm: (source, args) => auth.confirm(args.token),
+        confirm: (source, args) => {
+          return auth.confirm(args.token).then(({ user }) => user);
+        },
         user: (source, args, context) => {
           const hook = Mutation && Mutation.user ? Mutation.user : defaultHook;
           return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow

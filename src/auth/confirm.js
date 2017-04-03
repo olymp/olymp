@@ -1,40 +1,35 @@
 import React, { Component } from 'react';
+import { Link, Modal } from 'olymp';
+import { Form, Input, Button, notification } from 'antd';
+import withAuth from './with-auth';
+import { EnvelopeO, Key } from 'olymp-icons';
+import Base, { onEnterFocus, onEnterOk, layout, onSuccess, onError } from './base';
 
-export default class AuthLogin extends Component {
-  state = {
-    email: null,
-    password: null
-  };
-  confirm = key => {
-    this.props.auth.confirm(key).then(user => {
-      window.addSuccess('Registrierung abgeschlossen', 'Sie können sich jetzt anmelden');
-      this.props.onDone({ email: user.email });
-    }).catch(err => {
-      window.addDanger('Fehler', err.message);
-    })
+@withAuth
+@Form.create()
+export default class AuthConfirm extends Component {
+  ok = () => {
+    const { auth, onOk, form, token } = this.props;
+    form.validateFields((err, values) => {
+      if (err) return onError(err);
+      auth.confirm(token).then(({ name }) => {
+        onSuccess('Konto bestätigt', `Sie können sich jetzt anmelden`);
+        onOk({ email });
+      }).catch(onError);
+    });
   }
-  componentDidMount() {
-    if (this.props.activationKey){
-      this.confirm(this.props.activationKey);
-    }
-  }
-  componentWillUpdate(props) {
-    if (props.activationKey && !this.props.activationKey){
-      this.confirm(props.activationKey);
-    }
-  }
+
   render() {
-    const { onClose, activationKey } = this.props;
+    const { isOpen, email, form, saving, pathname, onClose } = this.props;
+    const { getFieldDecorator } = form;
 
     return (
-      <Modal title={'Bestätigen'} onClose={onClose}>
-        {activationKey ? <p>
-          Wird bestätigt ...
-        </p> : null}
-        {!activationKey ? <p>
-          Eine E-Mail wurde von diego.one an Sie verschickt. Mit einem Klick auf den Link in dieser E-Mail bestätigen Sie die Registrierung, dann können Sie loslegen.
-        </p> : null}
-      </Modal>
+      <Base isOpen={isOpen} title="Bestätigen" onOk={this.ok} onCancel={onClose}>
+        <Modal.Links>
+          <Link to={{ pathname, query: { login: null, register: undefined } }}>Zur Anmeldung</Link>
+        </Modal.Links>
+      </Base>
     );
   }
 }
+

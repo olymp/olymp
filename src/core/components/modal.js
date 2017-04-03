@@ -1,5 +1,6 @@
 import React, { Component, Children } from 'react';
 import { createComponent } from 'react-fela';
+import { Button as AntButton } from 'antd';
 import cn from 'classnames';
 import { Gateway } from 'react-gateway';
 import ReactModal2 from 'react-modal2';
@@ -9,63 +10,72 @@ ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
 const ReactModal = ({ className, ...props }) => <ReactModal2 backdropClassName={className} {...props}/>
-export const Modal = ({ isOpen, showFooter, leftButtons, rightButtons, className, subtitle, children, onCancel, okText, cancelText, onOk, title, ...props }) => (
-  <Gateway into="modal">
-    <Transition isOpen={isOpen}>
-      <ReactModal onClose={onCancel} closeOnEsc closeOnBackdropClick className={cn('ant-modal-wrap', className)} modalClassName="ant-modal">
-        <div className="ant-modal-content">
-          <div className="ant-modal-header">
-            {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
-            {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
-            <div className="ant-modal-title">{title}</div>
-            {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, ...props }, { theme }) => {
+  let copyright = null;
+  let links = null;
+  let footer = null;
+  const children = Children.toArray(props.children).filter(child => {
+    if (child.type && child.type.displayName === 'Copyright') {
+      copyright = child;
+      return false;
+    } else if (child.type && child.type.displayName === 'Links') {
+      links = child;
+      return false;
+    } else if (child.type && child.type.displayName === 'Footer') {
+      footer = child;
+      return false;
+    } return true;
+  });
+  return (
+    <Gateway into="modal">
+      <Transition isOpen={isOpen}>
+        <ReactModal onClose={onCancel || onClose} closeOnEsc closeOnBackdropClick className={cn('ant-modal-wrap', className)} modalClassName="ant-modal">
+          {showLogo && theme.logo && (
+            <div className="logo">
+              <img src={theme.logo} />
+              <h3>{theme.logoTitle}</h3>
+            </div>
+          )}
+          <div className="ant-modal-content">
+            <div className="ant-modal-header">
+              {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+              {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+              <div className="ant-modal-title">{title}</div>
+              {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+            </div>
+            {children.length > 0 && <div className="ant-modal-body">
+              {children}
+            </div>}
+            {footer}
           </div>
-          <div className="ant-modal-body">
-            {children}
-          </div>
-          {showFooter !== false && <div className="ant-modal-footer">
-            <button onClick={onCancel} type="button" className="ant-btn ant-btn-lg">
-              <span>{cancelText || 'Abbruch'}</span>
-            </button>
-            <button onClick={onOk} type="button" className="ant-btn ant-btn-primary ant-btn-lg">
-              <span>{okText || 'Speichern'}</span>
-            </button>
-          </div>}
-        </div>
-      </ReactModal>
-    </Transition>
-  </Gateway>
-);
+          {links && <component.Links>{links}</component.Links>}
+          {copyright && <component.Copyright>{copyright}</component.Copyright>}
+        </ReactModal>
+      </Transition>
+    </Gateway>
+  );
+};
+Modal.contextTypes = { theme: React.PropTypes.object };
 
-export default createComponent(({ theme, padding, width, showLogo }) => ({
+const component = createComponent(({ theme, padding, width, showLogo }) => ({
   backgroundColor: 'whitesmoke',
   background: `linear-gradient(0deg, ${tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
   display: 'flex',
   '> .ant-modal': {
-    onBefore: showLogo && {
-      content: '""',
-      position: 'absolute',
-      background: `url("${theme.logo || '/logo.png'}")`,
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50%',
-      left: 0,
-      right: 0,
-      top: -150,
+    '> .logo': {
+      pointerEvents: 'none',
       margin: 'auto',
-      height: '75px',
-    },
-    onAfter: showLogo && {
-      content: `"${theme.logoTitle || 'Olymp'}"`,
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: -80,
-      fontSize: 40,
-      color: 'rgba(255, 255, 255, 0.99)',
-      fontWeight: 200,
-      margin: 'auto',
+      marginBottom: 20,
+      marginTop: -140,
       textAlign: 'center',
+      '> img': {
+        height: '75px',
+      },
+      '> h3': {
+        color: 'rgba(255, 255, 255, 0.99)',
+        fontWeight: 200,
+        fontSize: 40,
+      },
     },
     top: 0,
     outline: 0,
@@ -100,6 +110,70 @@ export default createComponent(({ theme, padding, width, showLogo }) => ({
   }
 }), Modal, p => p);
 
+// Copyright
+const InnerCopyright = createComponent(({ theme }) => ({
+  position: 'fixed',
+  bottom: 10,
+  textAlign: 'center',
+  right: 0,
+  left: 0,
+  '> a': {
+    color: 'white',
+    opacity: .3,
+    onHover: {
+      opacity: 1,
+    },
+  },
+}), Copyright);
+class Copyright extends Component { render() { return <InnerCopyright {...this.props}/> } }
+component.Copyright = Copyright;
+
+// Footer
+class Footer extends Component { render() {
+  const { children } = this.props;
+  return (
+    <div className="ant-modal-footer">
+      {children}
+    </div>
+  );
+} }
+component.Footer = Footer;
+// Button
+class Button extends Component { render() {
+  return (
+    <AntButton {...this.props} />
+  );
+} }
+component.Button = Button;
+
+// Button
+const InnerLink = createComponent(({ theme }) => ({
+  marginTop: 20,
+  textAlign: 'center',
+  '> a': {
+    display: 'inline-block',
+    minWidth: 200,
+    padding: '0 9px',
+    color: 'white',
+    opacity: .3,
+    onHover: {
+      opacity: 1,
+    },
+  },
+  '> div > a': {
+    display: 'inline-block',
+    minWidth: 200,
+    padding: '0 9px',
+    color: 'white',
+    opacity: .3,
+    onHover: {
+      opacity: 1,
+    },
+  },
+}), Links);
+class Links extends Component { render() { return <InnerLink {...this.props}/> } }
+component.Links = Links;
+
 const TitleButtons = createComponent(({ theme, left, right, padding, width, showLogo }) => ({
   margin: 0,
   lineHeight: '21px',
@@ -111,4 +185,6 @@ const TitleButtons = createComponent(({ theme, left, right, padding, width, show
   fontWeight: 200,
   padding: 10,
   top: 14,
-}), 'div', ({ left, right, ...p }) => p)
+}), 'div', ({ left, right, ...p }) => p);
+
+export default component;
