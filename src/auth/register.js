@@ -8,8 +8,6 @@ import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './bas
 @withAuth
 @Form.create()
 export default class AuthRegister extends Component {
-  state = {};
-
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
@@ -18,7 +16,7 @@ export default class AuthRegister extends Component {
       const user = {...values};
       delete user.password;
       delete user.password2;
-      auth.register(user).then(({ name }) => {
+      auth.register(user, values.password).then(({ name }) => {
         onSuccess('Registrierung abgeschickt', `Bitte checken Sie Ihre E-Mails`);
         onOk({ email: values.email });
       }).catch(onError);

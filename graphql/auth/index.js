@@ -6,6 +6,7 @@ const defaultHook = (source, args, context) => {
   if (!context.user) throw new Error('Must be authenticated');
   return Promise.resolve(args);
 };
+
 module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutation } = {}) => {
   const token = getToken({ secret });
   const password = getPassword({ });
@@ -15,22 +16,25 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
   schema.addSchema({
     name: 'user',
     query: `
+      checkToken(token: String): Boolean
       verify: User
       userList: [User]
       user(id: String): User
+      totp: TokenAndQR
     `,
     mutation: `
+      totpConfirm(token: String, totp: String): Boolean
       confirm(token: String): User
       forgot(email: Email): Boolean
       register(input: UserInput, password: String): User
       reset(token: String, password: String): User
-      login(email: Email, password: String): User
+      login(email: Email, password: String, totp: String): User
       logout: Boolean
       user(input: UserInput, operationType: OPERATION_TYPE): User
     `,
     resolvers: {
       Query: {
-        // checkToken: (source, args) => auth.checkToken(args.token),
+        checkToken: (source, args) => auth.checkToken(args.token),
         verify: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
         // verify: (source, args) => auth.verify(args.token),
         userList: (source, args, context) => {
@@ -41,6 +45,9 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
           const hook = Query && Query.user ? Query.user : defaultHook;
           return hook(source, Object.assign({}, args), context).then(item => adapter.read('user', item));
         },
+        totp: (source, args, context) => auth.totp(context.session.userId).then((x) => {
+          return x;
+        }),
       },
       Mutation: {
         register: (source, args) => {
@@ -52,8 +59,10 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         reset: (source, args) => {
           return auth.reset(args.token, args.password).then(({ user }) => user);
         },
-        login: (source, args, context) => auth.login(args.email, args.password).then((userAndToken) => {
-          console.log(userAndToken);
+        totpConfirm: (source, args, context) => auth.totpConfirm(args.token, args.totp).then((x) => {
+          return x;
+        }),
+        login: (source, args, context) => auth.login(args.email, args.password, args.totp).then((userAndToken) => {
           context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
           return userAndToken.user;
         }),
@@ -74,7 +83,8 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
               delete args.input; // eslint-disable-line no-param-reassign
             }
             delete args.operationType; // eslint-disable-line no-param-reassign
-            return adapter.write('user', args, { attributes });
+            console.log('ARGS', args);
+            return adapter.db.write('user', args);
           });
         },
       },
@@ -90,6 +100,11 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
       type UserAndToken {
         user: User
         token: String
+      }
+      type TokenAndQR {
+        enabled: Boolean
+        token: String
+        qr: String
       }
     `,
   });

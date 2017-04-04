@@ -3,6 +3,7 @@ import { createComponent } from 'react-fela';
 import { Button as AntButton } from 'antd';
 import cn from 'classnames';
 import { Gateway } from 'react-gateway';
+import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
 import { Transition } from './transitions';
@@ -10,7 +11,7 @@ ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
 const ReactModal = ({ className, ...props }) => <ReactModal2 backdropClassName={className} {...props}/>
-export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, ...props }, { theme }) => {
+export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, ...props }, { theme }) => {
   let copyright = null;
   let links = null;
   let footer = null;
@@ -36,18 +37,20 @@ export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, 
               <h3>{theme.logoTitle}</h3>
             </div>
           )}
-          <div className="ant-modal-content">
-            <div className="ant-modal-header">
-              {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
-              {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
-              <div className="ant-modal-title">{title}</div>
-              {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+          <Spin spinning={!!loading} tip={typeof loading === 'string' ? loading : 'Lädt ...'}>
+            <div className="ant-modal-content">
+              <div className="ant-modal-header">
+                {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+                {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+                <div className="ant-modal-title">{title}</div>
+                {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+              </div>
+              {children.length > 0 && <div className="ant-modal-body">
+                {children}
+              </div>}
+              {footer}
             </div>
-            {children.length > 0 && <div className="ant-modal-body">
-              {children}
-            </div>}
-            {footer}
-          </div>
+          </Spin>
           {links && <component.Links>{links}</component.Links>}
           {copyright && <component.Copyright>{copyright}</component.Copyright>}
         </ReactModal>
@@ -77,36 +80,38 @@ const component = createComponent(({ theme, padding, width, showLogo }) => ({
         fontSize: 40,
       },
     },
+    '> div > div': {
+      '> .ant-modal-content': {
+        borderRadius: 0,
+        '> .ant-modal-close': {
+          display: 'none',
+        },
+        '> .ant-modal-body': {
+          padding,
+        },
+        '> .ant-modal-header > .ant-modal-title': {
+          color: theme.color,
+          fontSize: 40,
+          fontWeight: 200,
+          padding: 10,
+        },
+        '> .ant-modal-header': {
+          textAlign: 'center',
+        },
+        '> .ant-modal-footer': {
+          '> .ant-btn': {
+            width: 'calc(50% - 4px)',
+            maxWidth: 200,
+          },
+        },
+      },
+    },
     top: 0,
     outline: 0,
     width: width || 400,
     margin: 'auto',
     paddingBottom: 24,
     paddingTop: 24,
-    '> .ant-modal-content': {
-      borderRadius: 0,
-      '> .ant-modal-close': {
-        display: 'none',
-      },
-      '> .ant-modal-body': {
-        padding,
-      },
-      '> .ant-modal-header > .ant-modal-title': {
-        color: theme.color,
-        fontSize: 40,
-        fontWeight: 200,
-        padding: 10,
-      },
-      '> .ant-modal-header': {
-        textAlign: 'center',
-      },
-      '> .ant-modal-footer': {
-        '> .ant-btn': {
-          width: 'calc(50% - 4px)',
-          maxWidth: 200,
-        },
-      },
-    }
   }
 }), Modal, p => p);
 
