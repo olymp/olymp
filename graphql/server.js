@@ -35,9 +35,9 @@ Hallo
   if (options.media) createMediaGql(Schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
   if (options.schemas) {
     if (typeof options.schemas === 'function') {
-      options.schemas({ schema: Schema, adapter });
+      options.schemas({ schema: Schema, adapter, mail });
     } else if (Array.isArray(options.schemas)) {
-      options.schemas.forEach(s => s(Schema, { adapter }));
+      options.schemas.forEach(s => s(Schema, { adapter, mail }));
     }
   }
 

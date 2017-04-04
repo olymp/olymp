@@ -55,6 +55,20 @@ export default WrappedComponent => {
 
 /////////////////
 const authMethods = (client, refetch) => ({
+  save: (user) => {
+    return client.mutate({
+      mutation: gql`
+        mutation user($user: UserInput) {
+          user(input: $user) {
+            ${attributes}
+          }
+        }
+      `, variables: { user },
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      if (refetch) refetch({});
+    });
+  },
   logout: () => {
     return client.mutate({
       mutation: gql`
@@ -108,12 +122,12 @@ const authMethods = (client, refetch) => ({
       return data.confirm;
     });
   },
-  login: (email, password) => {
+  login: (email, password, totp) => {
     if (typeof localStorage === 'undefined') return;
     return client.mutate({
       mutation: gql`
         mutation login {
-          user: login(email:"${email}", password:"${password}") {
+          user: login(email:"${email}", password:"${password}"${totp ? `, totp:"${totp}"` : ''}) {
             ${attributes}
           }
         }
@@ -148,6 +162,19 @@ const authMethods = (client, refetch) => ({
       `,
     }).then(({ data }) => {
       return data.checkToken;
+    });
+  },
+  totpConfirm: (token, totp) => {
+    return client.mutate({
+      mutation: gql`
+        mutation totpConfirm($token: String, $totp: String) {
+          totpConfirm(token: $token, totp: $totp)
+        }
+      `, variables: { token, totp },
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      if (!data.totpConfirm) throw new Error('Could not activate TOTP');
+      return data.totpConfirm;
     });
   },
 });

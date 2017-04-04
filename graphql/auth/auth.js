@@ -1,5 +1,8 @@
 const mails = require('./mails');
-
+const speakeasy = require('speakeasy');
+const qr = (email, x, issuer) => new Promise((yay, nay) => {
+  require('qrcode').toString(`otpauth://totp/${email}?secret=${x}&issuer=${issuer || 'Olymp'}`, { type: 'svg' }, (err, data) => err ? nay(err) : yay(data));
+});
 const cleanUser = (user) => {
   const cleaned = Object.assign({}, user);
   delete cleaned.hash;
@@ -7,7 +10,7 @@ const cleanUser = (user) => {
   return cleaned;
 };
 
-module.exports = ({ adapter, password, token, mail }) => {
+module.exports = ({ adapter, password, token, mail, issuer }) => {
   return {
     checkToken: (key) => {
       return token.readUser(key).then(() => {
@@ -17,7 +20,7 @@ module.exports = ({ adapter, password, token, mail }) => {
       });
     },
     getUser: id => adapter.read('user', { id }).then(cleanUser),
-    login: (email, pw) => {
+    login: (email, pw, totp) => {
       const filter = { email };
       let user = null;
       return adapter.read('user', { filter }).then((usr) => {
@@ -27,6 +30,14 @@ module.exports = ({ adapter, password, token, mail }) => {
         return password.match(user, pw);
       }).then((isValid) => {
         if (!isValid) throw new Error('Wrong password.');
+        // TOTP
+        if (user.totp && !totp) {
+          throw new Error(`Please provide a totp token`);
+        } else if (user.totp) {
+          var verified = speakeasy.totp.verify({ secret: user.totp,  encoding: 'base32', token: totp });
+          if (!verified) throw new Error('TOTP token error');
+        }
+        // END TOTP
         return { token: token.createFromUser(user), user: cleanUser(user) };
       });
     },
@@ -47,6 +58,7 @@ module.exports = ({ adapter, password, token, mail }) => {
     register: (rawUser, pwd) => {
       const filter = { email: rawUser.email };
       rawUser.confirmed = false;
+      if (!pwd || pwd.length < 6) throw new Error('Password too short');
       return Promise.all([
         adapter.read('user', { filter }),
         password.set(rawUser, pwd),
@@ -67,11 +79,50 @@ module.exports = ({ adapter, password, token, mail }) => {
         if (!id) throw new Error('Error.');
         return adapter.read('user', { id });
       })).then((currentUser) => {
+        if (!currentUser) throw new Error('No user matched.');
         currentUser.confirmed = true;
         return adapter.write('user', currentUser);
       }).then((user) => {
-        if (!user) throw new Error('No user matched.');
         return { token: token.createFromUser(user), user: cleanUser(user) };
+      });
+    },
+    //
+    totp: (id) => {
+      const secret = speakeasy.generateSecret({ length: 20 }).base32;
+      let user = null;
+      return adapter.read('user', { id }).then((currentUser) => {
+        if (!currentUser) throw new Error('No user matched.');
+        console.log(currentUser);
+        if (currentUser.totp) {
+          return { token: token.create({ id: currentUser.id, disable: true }), enabled: true, user: cleanUser(currentUser) };
+        }
+        user = currentUser;
+        return qr(user.email, secret, issuer);
+      }).then((qr) => {
+        if (typeof qr === 'object') return qr;
+        return { token: token.create({ id: user.id, secret }), user: cleanUser(user), qr };
+      });
+    },
+    //
+    totpConfirm: (t, totp) => {
+      let secret;
+      return token.verify(t).then((untoken) => {
+        if (!untoken) throw new Error('TOTP token error');
+        const { id, disable } = untoken;
+        if (disable) {
+          secret = null;
+        } else {
+          secret = untoken.secret;
+          var verified = speakeasy.totp.verify({ secret, encoding: 'base32', token: totp });
+          if (!verified) throw new Error('TOTP token error');
+        }
+        return adapter.read('user', { id });
+      }).then((currentUser) => {
+        if (!currentUser) throw new Error('No user matched.');
+        currentUser.totp = secret;
+        return adapter.write('user', currentUser);
+      }).then((user) => {
+        return true;
       });
     },
     forgot: (email) => {

@@ -11,12 +11,12 @@ export const onEnterFocus = (ref) => (e) => {
 export const onEnterOk = (onOk) => (e) => {
   if (e.key === 'Enter') onOk();
 }
-const def = ({ copyright, isOpen, email, children, title, saving, pathname, onCancel, onOk, cancelText }, { theme }) => (
-  <Modal showLogo isOpen={isOpen} title={title} confirmLoading={saving} onCancel={onCancel} maskClosable={false}>
+const def = ({ copyright, isOpen, email, children, title, pathname, onCancel, onOk, cancelText, okText, loading, saving }, { theme }) => (
+  <Modal showLogo isOpen={isOpen} title={title} onCancel={onCancel} maskClosable={false} loading={loading}>
     {children}
     <Modal.Footer>
       <Modal.Button onClick={onCancel}>{cancelText || 'Abbruch'}</Modal.Button>
-      {onOk && <Modal.Button type="primary" onClick={onOk}>{title}</Modal.Button>}
+      {onOk && <Modal.Button type="primary" onClick={onOk} loading={saving}>{okText || title}</Modal.Button>}
     </Modal.Footer>
     <Modal.Copyright>
       <Link to={{ pathname, query: { register: null, login: undefined } }}>{theme.copyright || 'made with ❤ by olymp'}</Link>

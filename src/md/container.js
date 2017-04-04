@@ -14,6 +14,7 @@ function attacher({ components, props }) {
       return match.reduce((state, current) => {
         let [x, y] = current.split('=');
         if (y && y.indexOf('{') === 0) y = props[y.substr(1).slice(0, -1)];
+        if (y && y.indexOf('"') === 0) y = y.substr(1).slice(0, -1);
         if (allowed && !allowed[x]) return state;
         else if (!allowed) state[x] = y;
         else if (allowed[x] === PropTypes.number) state[x] = y !== null && y !== undefined ? parseInt(y) : null;
