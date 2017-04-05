@@ -9,7 +9,8 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-//import { flushServerSideRequires } from 'react-loadable';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import App from '@app';
@@ -42,7 +43,7 @@ const devPort = parseInt(process.env.DEV_PORT, 10);
 
 
 // React loadable SSR
-const modules = {};
+/*const modules = {};
 const bundles = {};
 const clientStatsPath = path.resolve(__dirname, '..', 'web', 'stats.json');
 if (fs.existsSync(clientStatsPath)) {
@@ -68,9 +69,9 @@ const getLoadableScripts = (main) => {
         scripts.unshift(script);
       });
     });
-  });*/
+  });*
   return scripts;
-}
+}*/
 // Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
 const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
@@ -152,27 +153,32 @@ app.get('*', (request, response) => {
     )
   );
 
+  const asyncContext = createAsyncContext()
+
   // Create our React application and render it into a string.
   if (typeof init !== undefined && init) init({ renderer, client, store });
   const reactApp = (
-    <ApolloProvider store={store} client={client}>
-      <ConnectedRouter history={history}>
-        <Provider renderer={renderer}>
-          <GatewayProvider>
-            <AmpProvider amp={request.isAmp}>
-              <App />
-            </AmpProvider>
-          </GatewayProvider>
-        </Provider>
-      </ConnectedRouter>
-    </ApolloProvider>
+    <AsyncComponentProvider asyncContext={asyncContext}>
+      <ApolloProvider store={store} client={client}>
+        <ConnectedRouter history={history}>
+          <Provider renderer={renderer}>
+            <GatewayProvider>
+              <AmpProvider amp={request.isAmp}>
+                <App />
+              </AmpProvider>
+            </GatewayProvider>
+          </Provider>
+        </ConnectedRouter>
+      </ApolloProvider>
+    </AsyncComponentProvider>
   );
 
-  return getDataFromTree(reactApp).then(() => {
+  return asyncBootstrapper(reactApp).then(() => getDataFromTree(reactApp)).then(() => {
     const reactAppString = request.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
-    const scripts = request.isAmp ? [] : getLoadableScripts(isProd ? `${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`);
+    const scripts = request.isAmp ? [] : [isProd ? `${clientAssets.main.js}` : `http://localhost:${devPort}/main.js`];
     const styles = request.isAmp ? [] : (isProd ? [`${clientAssets.main.css}`] : []);
     const cssMarkup = renderer.renderToString();
+    const asyncState = asyncContext.getState();
 
     // Generate the html response.
     const html = (request.isAmp ? amp : template)({
@@ -181,7 +187,8 @@ app.get('*', (request, response) => {
       styles,
       cssMarkup,
       helmet: Helmet.rewind(),
-      initialState: { [client.reduxRootKey]: client.getInitialState() },
+      initialState: { apollo: client.getInitialState() },
+      asyncState,
       gaTrackingId: process.env.GA_TRACKING_ID,
     });
 

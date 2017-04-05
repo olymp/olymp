@@ -92,7 +92,6 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
       let user = null;
       return adapter.read('user', { id }).then((currentUser) => {
         if (!currentUser) throw new Error('No user matched.');
-        console.log(currentUser);
         if (currentUser.totp) {
           return { token: token.create({ id: currentUser.id, disable: true }), enabled: true, user: cleanUser(currentUser) };
         }
