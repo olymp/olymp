@@ -125,7 +125,7 @@ export const electron = ({ styles, scripts }) => `
 </html>
 `;
 
-export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrackingId }) => `
+export default ({ helmet, cssMarkup, styles, scripts, root, initialState, asyncState, gaTrackingId }) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -181,6 +181,7 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrac
   <body>
     <div id="app"><div>${root}</div></div>
     <script type='text/javascript'>window.INITIAL_DATA=${serialize(initialState)}</script>
+    <script type='text/javascript'>window.ASYNC_STATE=${serialize(asyncState)}</script>
     <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
     <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
     ${scripts.map(script => `<script async src="${script}"></script>`)}

@@ -5,6 +5,8 @@ import { render } from 'react-dom';
 import { parseQuery, stringifyQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
 import createFela from '../fela';
 import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
@@ -59,24 +61,26 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
-let client, mountNode, container, renderer, store, history;
+let client, mountNode, container, renderer, store, history, rehydrateState, asyncContext;
 function renderApp() {
-  return render(
-    <AppContainer>
-      <ApolloProvider store={store} client={client}>
-        <ConnectedRouter history={history}>
-          <FelaProvider renderer={renderer} mountNode={mountNode}>
-            <GatewayProvider>
-              <AmpProvider amp={false}>
-                <App />
-              </AmpProvider>
-            </GatewayProvider>
-          </FelaProvider>
-        </ConnectedRouter>
-      </ApolloProvider>
-    </AppContainer>,
-    container,
+  const app = (
+    <AsyncComponentProvider rehydrateState={rehydrateState} asyncContext={asyncContext}>
+      <AppContainer>
+        <ApolloProvider store={store} client={client}>
+          <ConnectedRouter history={history}>
+            <FelaProvider renderer={renderer} mountNode={mountNode}>
+              <GatewayProvider>
+                <AmpProvider amp={false}>
+                  <App />
+                </AmpProvider>
+              </GatewayProvider>
+            </FelaProvider>
+          </ConnectedRouter>
+        </ApolloProvider>
+      </AppContainer>
+    </AsyncComponentProvider>
   );
+  asyncBootstrapper(app).then(() => render(app, container));
 }
 function load() {
   // Get the DOM Element that will host our React application.
@@ -90,6 +94,7 @@ function load() {
     // initialState: window.INITIAL_DATA,
   });
   // Redux stuff
+  console.log(window.ASYNC_STATE);
   history = createHistory();
   store = createStore(
     combineReducers({
@@ -106,8 +111,11 @@ function load() {
     )
   );
   // End Redux stuff
+  rehydrateState = window.ASYNC_STATE;
+  asyncContext = createAsyncContext();
 
   if (typeof init !== undefined && init) init({ renderer, client, store });
+
   return renderApp();
 }
 

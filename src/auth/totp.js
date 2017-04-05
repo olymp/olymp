@@ -12,12 +12,7 @@ import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './bas
     totp { qr, token, enabled }
   }
 `, {
-  options: ({ token }) => ({
-    fetchPolicy: 'network-only',
-    variables: {
-      token
-    }
-  }),
+  options: { fetchPolicy: 'network-only' }
 })
 export default class AuthTotp extends Component {
   ok = () => {
@@ -43,7 +38,7 @@ export default class AuthTotp extends Component {
     const { isOpen, email, form, saving, pathname, onClose, extraFields, auth, data } = this.props;
     const { getFieldDecorator } = form;
 
-    const loading = data.loading;
+    const loading = !data.totp;
     const qr = data.totp && data.totp.qr;
     const enabled = data.totp && data.totp.enabled;
 

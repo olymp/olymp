@@ -1,5 +1,5 @@
 {
-  "version": "15.0.0-alpha.4",
+  "version": "15.0.0-alpha.5",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -93,6 +93,8 @@
     "raw-loader": "^0.5.1",
     "react": "15.4.2",
     "react-apollo": "1.0.0",
+    "react-async-bootstrapper": "^1.0.0",
+    "react-async-component": "^1.0.0-alpha.2",
     "react-codemirror": "^0.3.0",
     "react-day-picker": "5.0.0",
     "react-dom": "15.4.2",
@@ -103,7 +105,6 @@
     "react-hot-loader": "next",
     "react-image-crop": "2.0.2",
     "react-image-gallery": "0.7.12",
-    "react-loadable": "^3.2.2",
     "react-modal2": "^4.0.0",
     "react-portal": "3.0.0",
     "react-redux": "^5.0.3",
