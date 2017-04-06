@@ -6,7 +6,7 @@ export { default as withItem } from './item';
 export { default as withItemNew } from './item-new';
 export { default as withItems } from './items';
 export { default as withState } from './state';
-export { default as withAuth, auth } from './auth';
+export { auth, setAuthFields, default as withAuth } from './auth';
 export { default as withForm } from './form';
 export { default as withLightbox, useLightbox } from './lightbox';
 export { default as withAmp, AmpProvider } from './amp';

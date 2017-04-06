@@ -8,8 +8,7 @@ body .bg-primary {
 body a {
   color: @color;
 }
-body, html {
-  .frontend {
+.frontend{
     p {
       text-align: justify;
       hyphens: auto;
@@ -77,7 +76,7 @@ body, html {
               }
           }
       }
-      h1, h2, h3, h4, h5, h6 {
+      h1.gz, h2.gz, h3.gz, h4.gz, h5.gz, h6.gz {
         // font-family: Times New Roman;
         font-style: italic;
         position: relative;
@@ -95,7 +94,7 @@ body, html {
           }
         }
       }
-      h1, h2, h3, h4, h5 {
+      h1.gz, h2.gz, h3.gz, h4.gz, h5.gz {
           font-weight: 300;
       }
       .ui.menu {
@@ -161,7 +160,7 @@ body, html {
           fill: @color;
       }
       a:hover {
-          color: @color;
+         // color: @color;
       }
       .panel-link a {
           color: @color;
@@ -650,10 +649,10 @@ body, html {
           display: block;
           line-height: 20px;
       }
-      .section-title, a, h2, h3, h4, h5, h6 {
+      .section-title.gz, a.gz, h2.gz, h3.gz, h4.gz, h5.gz, h6.gz {
           color: #504646;
       }
-      a.primary, a:hover {
+      a.gz.primary, a.gz:hover {
           color: @color;
       }
       .social-links a {
@@ -922,5 +921,4 @@ body, html {
       .img-responsive {
           width: 100%;
       }
-  }
 }

@@ -1,2 +1,2 @@
-export { default as CollectionListModal, CollectionListView } from './list';
-export { default as CollectionDetailModal, CollectionDetailView } from './detail';
+export { default as CollectionDetail } from './detail';
+export { default as CollectionList } from './list';

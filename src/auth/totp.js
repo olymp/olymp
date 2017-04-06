@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link, Modal, graphql, gql } from 'olymp';
+import { Link, Modal, graphql, gql, withAuth } from 'olymp';
 import { Form, Input, notification } from 'antd';
-import withAuth from './with-auth';
 import { EnvelopeO, Key } from 'olymp-icons';
 import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
 
@@ -55,7 +54,7 @@ export default class AuthTotp extends Component {
         </div>}
         {!enabled && <Form.Item key="token" label="Token" {...layout}>
           {getFieldDecorator('token', {
-            rules: [{ required: true, message: 'Bitte geben Sie ein Token an!' }],
+            // rules: [{ required: true, message: 'Bitte geben Sie ein Token an!' }],
           })(<Input type="text" placeholder="Token" onKeyPress={onEnterFocus(() => this.ok)} size="large" addonAfter={<Key size={10} />} />)}
         </Form.Item>}
       </Base>

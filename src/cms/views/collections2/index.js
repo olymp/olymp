@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, withItems, graphql } from 'olymp';
-import Modal from '../../../auth/modal';
+import { Modal, withRouter, withItems, graphql } from 'olymp';
 
 @withRouter
 export default class CollectionView extends Component {
