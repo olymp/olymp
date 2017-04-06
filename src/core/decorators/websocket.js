@@ -31,13 +31,11 @@ export class WebsocketProvider extends Component {
     if (!isOffline) return this.showNotification();
     this.showNotification(
       'Verbindung verloren',
-      'Sie sind offline oder die Website steht zur Zeit nicht zur Verfügung.',
+      'Sie sind offline oder die Website steht zurzeit nicht zur Verfügung.',
     );
   }
   connect = () => {
-    const host = window.document.location.host.replace(/:.*/, '');
-    const wsPort = parseInt(location.port, 10) + 1;
-    const server = this.ws = new WebSocket(`ws://${host}:${wsPort}`);
+    const server = this.ws = new WebSocket(`ws://${location.host}`);
     let interval;
     const onPong = ({ version, xyz }) => {
       console.log('Pong', version, xyz);
