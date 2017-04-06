@@ -10,3 +10,4 @@ export { auth, setAuthFields, default as withAuth } from './auth';
 export { default as withForm } from './form';
 export { default as withLightbox, useLightbox } from './lightbox';
 export { default as withAmp, AmpProvider } from './amp';
+export { default as withWebsocket, WebsocketProvider } from './websocket';

@@ -42,7 +42,7 @@ if (command === 'dev') {
   const notifier = require('node-notifier');
 
   const port = parseInt(process.env.PORT, 10);
-  const devPort = port + 1;
+  const devPort = port + 2;
 
   const compiler = webpack([
     createConfig({ target: 'node', mode: 'development', port, devPort, ssr: process.env.SSR != 'false' }),
