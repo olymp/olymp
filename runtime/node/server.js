@@ -16,15 +16,20 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import App from '@app';
 import template, { amp } from './template';
-import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
+import { parseQuery, AmpProvider, routerQueryMiddleware, WebsocketProvider } from 'olymp';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 import { GatewayProvider } from 'react-gateway';
 import fs from 'fs';
 import useragent from 'express-useragent';
+import bodyparser from 'body-parser';
+import { Server as WebSocketServer } from 'uws';
 import createFela from '../fela';
+
 const init = require('@app').init;
-const bodyparser = require('body-parser');
+
+const version = +fs.statSync(__filename).mtime;
+console.log('VERSION', version);
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -47,6 +52,25 @@ const devPort = parseInt(process.env.DEV_PORT, 10);
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
 const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
+
+// Websocket Server
+app.listenWS = () => {
+  var wss = new WebSocketServer({ port: port + 1 });
+  wss.on('connection', ws => {
+    const onPing = message => {
+      ws.send(JSON.stringify({ type: 'pong', version, xyz: false }));
+    }
+    const onMessage = message => {
+      if (message === 'ping') onPing(message);
+    }
+    ws.on('message', onMessage);
+  });
+  return wss;
+}
+
+// app.wss.close();
+// ---
+
 app.use(helmet());
 
 // Remove annoying Express header addition.
@@ -137,7 +161,9 @@ app.get('*', (request, response) => {
           <Provider renderer={renderer}>
             <GatewayProvider>
               <AmpProvider amp={request.isAmp}>
-                <App />
+                <WebsocketProvider>
+                  <App />
+                </WebsocketProvider>
               </AmpProvider>
             </GatewayProvider>
           </Provider>

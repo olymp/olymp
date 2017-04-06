@@ -1,5 +1,5 @@
 {
-  "version": "15.0.0-alpha.13",
+  "version": "15.0.0-alpha.15",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -137,6 +137,7 @@
     "unist-util-visit": "^1.1.1",
     "unitless-css-property": "^1.0.2",
     "url-loader": "^0.5.8",
+    "uws": "^0.14.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
     "webpack-node-externals": "^1.5.4",

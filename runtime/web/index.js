@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { parseQuery, stringifyQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
+import { parseQuery, stringifyQuery, AmpProvider, routerQueryMiddleware, WebsocketProvider } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
@@ -71,7 +71,9 @@ function renderApp() {
             <FelaProvider renderer={renderer} mountNode={mountNode}>
               <GatewayProvider>
                 <AmpProvider amp={false}>
-                  <App />
+                  <WebsocketProvider>
+                    <App />
+                  </WebsocketProvider>
                 </AmpProvider>
               </GatewayProvider>
             </FelaProvider>
