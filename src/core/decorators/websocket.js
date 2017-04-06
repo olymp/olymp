@@ -2,15 +2,15 @@ import React, { Component, Children, PropTypes } from 'react';
 import { Button, notification } from 'antd';
 
 export class WebsocketProvider extends Component {
-  state = { isOffline: false };
+  state = { connected: true };
   static childContextTypes = {
     websocket: React.PropTypes.object,
-    isOffline: React.PropTypes.bool,
+    connected: React.PropTypes.bool,
   };
   getChildContext() {
     return {
       websocket: this.ws,
-      isOffline: this.state.isOffline,
+      connected: this.state.connected,
     };
   }
   showNotification = (message, description, btn) => {
@@ -25,20 +25,30 @@ export class WebsocketProvider extends Component {
       duration: 0,
     });
   }
-  isOffline = isOffline => {
-    if (this.state.isOffline === isOffline) return;
-    this.setState({ isOffline });
-    if (!isOffline) return this.showNotification();
-    this.showNotification(
-      'Verbindung verloren',
-      'Sie sind offline oder die Website steht zurzeit nicht zur Verfügung.',
-    );
+  connected = (connected) => {
+    console.log('uws state', connected, this.ws.readyState);
+    if (this.state.connected === connected) return;
+    this.setState({ connected });
+    if (connected === true) return this.showNotification();
+    else if (connected === null) {
+      this.showNotification(
+        'Offline',
+        'Sie sind derzeit nicht zum Internet verbunden.',
+      );
+    } else if (connected === false) {
+      this.showNotification(
+        'Server Offline',
+        'Der Server steht zurzeit nicht zur Verfügung.',
+      );
+    }
   }
   connect = () => {
     const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${location.host}`;
     const server = this.ws = new WebSocket(url);
     let interval;
+    let hasPong = true;
     const onPong = ({ version, xyz }) => {
+      hasPong = true;
       console.log('Pong', version, xyz);
       if (this.lastVersion && this.lastVersion !== version) {
         this.showNotification(
@@ -57,13 +67,20 @@ export class WebsocketProvider extends Component {
       if (data.type === 'pong') onPong(data);
     };
     server.onopen = event => {
-      this.isOffline(false);
+      this.connected(true);
       interval = setInterval(() => {
+        if (!hasPong) {
+          this.connected(null);
+        }
+        hasPong = false;
         server.send('ping');
       }, 3000);
     };
+    server.onerror = error => {
+      console.error('uws error', error);
+    };
     server.onclose = () => {
-      this.isOffline(true);
+      this.connected(false);
       if (interval) {
         clearInterval(interval);
         interval = null;

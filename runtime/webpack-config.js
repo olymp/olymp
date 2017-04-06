@@ -249,6 +249,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         externals: [
           'https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'
         ],
+        // autoUpdate: 1000 * 60 * 5,
         caches: 'all',
         ServiceWorker: {
           events: true,
