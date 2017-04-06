@@ -35,7 +35,8 @@ export class WebsocketProvider extends Component {
     );
   }
   connect = () => {
-    const server = this.ws = new WebSocket(`ws://${location.host}`);
+    const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${location.host}`;
+    const server = this.ws = new WebSocket(url);
     let interval;
     const onPong = ({ version, xyz }) => {
       console.log('Pong', version, xyz);
