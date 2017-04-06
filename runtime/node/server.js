@@ -24,6 +24,7 @@ import fs from 'fs';
 import useragent from 'express-useragent';
 import createFela from '../fela';
 const init = require('@app').init;
+const bodyparser = require('body-parser');
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -59,6 +60,7 @@ app.use(useragent.express());
 app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'build', 'web')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
+app.use(bodyparser.json());
 
 app.use((req, res, next) => {
   if (req.subdomains && req.subdomains.length === 1 && req.subdomains[0] === 'amp') {
@@ -81,7 +83,6 @@ app.use(session({
   },
 }));
 
-console.log(123);
 app.use((x, y, z) => {
   console.log('SESSION', x.sessionID);
   z();

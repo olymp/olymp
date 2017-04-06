@@ -1,6 +1,5 @@
 const Cache = require('stale-lru-cache');
 
-const bodyparser = require('body-parser');
 const createSchema = require('./graphql');
 const createMail = require('./mail');
 
@@ -16,7 +15,6 @@ const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 module.exports = (server, options) => {
   let adapter;
 
-  server.use(bodyparser.json());
   if (options.adapter && options.adapter.indexOf('mongodb') === 0) adapter = require('./store-mongo')(options.adapter);
   // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
