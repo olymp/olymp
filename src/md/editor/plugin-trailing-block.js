@@ -1,14 +1,6 @@
-const Block = require('slate/lib/models/block');
-const Text = require('slate/lib/models/text');
-const focusAtEnd = require('./utils/focus-at-end');
-
-/**
- * Slate plugin to ensure a trailing block.
- * @param {Object} [opts] Options for the plugin
- * @param {String|Function} [opts.match='paragraph'] Match last block
- * @param {String} [opts.type] The type of the trailing block to insert
- * @return {Object}
- */
+import Block from 'slate/lib/models/block';
+import Text from 'slate/lib/models/text';
+import focusAtEnd from './utils/focus-at-end';
 
 function TrailingBlock(opts) {
     opts       = opts || {};
@@ -47,4 +39,4 @@ function TrailingBlock(opts) {
     };
 }
 
-module.exports = TrailingBlock;
+export default TrailingBlock;
