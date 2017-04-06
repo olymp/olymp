@@ -16,13 +16,13 @@ export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, 
   let links = null;
   let footer = null;
   const children = Children.toArray(props.children).filter(child => {
-    if (child.type && child.type.displayName === 'Copyright') {
+    if (child.type && child.type === component.Copyright) {
       copyright = child;
       return false;
-    } else if (child.type && child.type.displayName === 'Links') {
+    } else if (child.type && child.type === component.Links) {
       links = child;
       return false;
-    } else if (child.type && child.type.displayName === 'Footer') {
+    } else if (child.type && child.type === component.Footer) {
       footer = child;
       return false;
     } return true;
@@ -116,7 +116,7 @@ const component = createComponent(({ theme, padding, width, showLogo }) => ({
 }), Modal, p => p);
 
 // Copyright
-const InnerCopyright = createComponent(({ theme }) => ({
+component.Copyright = createComponent(({ theme }) => ({
   position: 'fixed',
   bottom: 10,
   textAlign: 'center',
@@ -129,30 +129,18 @@ const InnerCopyright = createComponent(({ theme }) => ({
       opacity: 1,
     },
   },
-}), Copyright);
-class Copyright extends Component { render() { return <InnerCopyright {...this.props}/> } }
-component.Copyright = Copyright;
+}), 'div');
 
-// Footer
-class Footer extends Component { render() {
-  const { children } = this.props;
-  return (
-    <div className="ant-modal-footer">
-      {children}
-    </div>
-  );
-} }
-component.Footer = Footer;
-// Button
-class Button extends Component { render() {
-  return (
-    <AntButton {...this.props} />
-  );
-} }
-component.Button = Button;
+component.Footer = ({ children, className }) => (
+  <div className={cn('ant-modal-footer', className)}>
+    {children}
+  </div>
+);
+component.Button = props => (
+  <AntButton {...props} />
+);
 
-// Button
-const InnerLink = createComponent(({ theme }) => ({
+component.Links = createComponent(({ theme }) => ({
   marginTop: 20,
   textAlign: 'center',
   '> a': {
@@ -175,9 +163,7 @@ const InnerLink = createComponent(({ theme }) => ({
       opacity: 1,
     },
   },
-}), Links);
-class Links extends Component { render() { return <InnerLink {...this.props}/> } }
-component.Links = Links;
+}), 'div');
 
 const TitleButtons = createComponent(({ theme, left, right, padding, width, showLogo }) => ({
   margin: 0,
