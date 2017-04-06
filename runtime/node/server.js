@@ -94,15 +94,18 @@ app.use((req, res, next) => {
   } next();
 });
 
-if (isProd) app.set('trust proxy', 2);
+const trust = process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
+const secure = process.env.COOKIE_SECURE !== undefined ? `${process.env.COOKIE_SECURE}` === 'true' : isProd;
+
+if (isProd) app.set('trust proxy', trust);
 app.use(session({
   store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL, logErrors: true }) : undefined,
   resave: false,
   saveUninitialized: true,
-  proxy: isProd,
+  proxy: !!trust,
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   cookie: {
-    secure: isProd,
+    secure,
     maxAge: 60000000,
   },
 }));
