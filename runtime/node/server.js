@@ -83,11 +83,6 @@ app.use(session({
   },
 }));
 
-app.use((x, y, z) => {
-  console.log('SESSION', x.sessionID);
-  z();
-});
-
 try {
   const server = require('@root/server');
   if (server.default) {
