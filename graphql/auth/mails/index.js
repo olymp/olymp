@@ -23,4 +23,16 @@ module.exports = {
       [Jetzt bestätigen](${url}?reset=${token})
     `,
   }),
+  invite: ({ email, token }) => ({ url }) => ({
+    to: email,
+    subject: 'Einladung',
+    markdown: `
+      # Einladung
+      Sie wurden auf ${url} eingeladen.
+
+      Mittels des Links unten können Sie innerhalb von 1 Stunde ein Benutzerkonto registrieren. Später ist der Link ungültig und Sie brauchen erneut eine Einladung.
+
+      [Jetzt bestätigen](${url}?register=${token})
+    `,
+  }),
 };

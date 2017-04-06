@@ -12,6 +12,9 @@ const cleanUser = (user) => {
 
 module.exports = ({ adapter, password, token, mail, issuer }) => {
   return {
+    checkTokenValue: (key, k) => {
+      return token.verify(key).then(c => c[k]);
+    },
     checkToken: (key) => {
       return token.readUser(key).then(() => {
         return true;
@@ -55,14 +58,17 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
       });
     },
     // Get user by email/realm and post new user
-    register: (rawUser, pwd) => {
+    register: (rawUser, pwd, key) => {
       const filter = { email: rawUser.email };
       rawUser.confirmed = false;
       if (!pwd || pwd.length < 6) throw new Error('Password too short');
-      return Promise.all([
-        adapter.read('user', { filter }),
-        password.set(rawUser, pwd),
-      ]).then(([currentUser, user]) => {
+      return token.verify(key).then(({ email }) => {
+        if (email !== rawUser.email) throw new Error('Unexpected E-Mail address');
+        return Promise.all([
+          adapter.read('user', { filter }),
+          password.set(rawUser, pwd),
+        ]);
+      }).then(([currentUser, user]) => {
         if (currentUser) throw new Error('USER_ALREADY_EXISTS Error.');
         return adapter.write('user', user);
       }).then((result) => {

@@ -62,7 +62,7 @@ Modal.contextTypes = { theme: React.PropTypes.object };
 
 const component = createComponent(({ theme, padding, width, showLogo }) => ({
   backgroundColor: 'whitesmoke',
-  background: `linear-gradient(0deg, ${tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
+  background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
   display: 'flex',
   '> .ant-modal': {
     '> .logo': {

@@ -2,17 +2,8 @@ import React from 'react';
 import { Link, Modal } from 'olymp';
 import { notification } from 'antd';
 
-export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
-export const onEnterFocus = (ref) => (e) => {
-  if (e.key === 'Enter') {
-    return ref() && ref().refs && ref().refs.input.focus();
-  } return false;
-}
-export const onEnterOk = (onOk) => (e) => {
-  if (e.key === 'Enter') onOk();
-}
-const def = ({ copyright, isOpen, email, children, title, pathname, onCancel, onOk, cancelText, okText, loading, saving }, { theme }) => (
-  <Modal showLogo isOpen={isOpen} title={title} onCancel={onCancel} maskClosable={false} loading={loading}>
+const def = ({ copyright, showLogo, isOpen, email, children, title, pathname, onCancel, onOk, cancelText, okText, loading, saving }, { theme }) => (
+  <Modal showLogo={showLogo !== false} isOpen={isOpen} title={title} onCancel={onCancel} maskClosable={false} loading={loading}>
     {children}
     <Modal.Footer>
       <Modal.Button onClick={onCancel}>{cancelText || 'Abbruch'}</Modal.Button>
@@ -44,6 +35,15 @@ export const onSuccess = (message, description) => {
     message,
     description,
   });
+}
+export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
+export const onEnterFocus = (ref) => (e) => {
+  if (e.key === 'Enter') {
+    return ref() && ref().refs && ref().refs.input.focus();
+  } return false;
+}
+export const onEnterOk = (onOk) => (e) => {
+  if (e.key === 'Enter') onOk();
 }
 
 

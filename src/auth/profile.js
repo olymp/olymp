@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link, Modal } from 'olymp';
+import { Link, Modal, withAuth } from 'olymp';
 import { Form, Input, notification } from 'antd';
-import withAuth from './with-auth';
 import { EnvelopeO, Key } from 'olymp-icons';
 import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
 

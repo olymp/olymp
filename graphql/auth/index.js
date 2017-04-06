@@ -1,6 +1,7 @@
 const getAuth = require('./auth');
 const getToken = require('./utils/token');
 const getPassword = require('./utils/password');
+const mails = require('./mails');
 
 const defaultHook = (source, args, context) => {
   if (!context.user) throw new Error('Must be authenticated');
@@ -16,8 +17,11 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
   schema.addSchema({
     name: 'user',
     query: `
+      checkTokenMail(token: String): String
       checkToken(token: String): Boolean
       verify: User
+      invitationList: [Invitation]
+      invitation(id: String): Invitation
       userList: [User]
       user(id: String): User
       totp: TokenAndQR
@@ -26,22 +30,36 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
       totpConfirm(token: String, totp: String): Boolean
       confirm(token: String): User
       forgot(email: Email): Boolean
-      register(input: UserInput, password: String): User
+      register(input: UserInput, password: String, token: String): User
       reset(token: String, password: String): User
       login(email: Email, password: String, totp: String): User
       logout: Boolean
-      user(input: UserInput, operationType: OPERATION_TYPE): User
+      user(id: String, input: UserInput, operationType: OPERATION_TYPE): User
+      invitation(id: String, input: InvitationInput, operationType: OPERATION_TYPE): Invitation
     `,
     resolvers: {
       Query: {
+        checkTokenMail: (source, args) => auth.checkTokenValue(args.token, 'email'),
         checkToken: (source, args) => auth.checkToken(args.token),
         verify: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
         // verify: (source, args) => auth.verify(args.token),
+        invitationList: (source, args, context) => {
+          const hook = Query && Query.userList ? Query.userList : defaultHook;
+          return hook(source, Object.assign({}, args), context).then(item => adapter.list('invitation', item));
+        },
+        invitation: (source, args, context) => {
+          const hook = Query && Query.user ? Query.user : defaultHook;
+          return hook(source, Object.assign({}, args), context).then(item => adapter.read('invitation', item));
+        },
         userList: (source, args, context) => {
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
           const hook = Query && Query.userList ? Query.userList : defaultHook;
           return hook(source, Object.assign({}, args), context).then(item => adapter.list('user', item));
         },
         user: (source, args, context) => {
+          if (context.user && context.user.isAdmin) {
+          } else if (context.user && context.user.id === args.id) {
+          } else throw new Error('No permission');
           const hook = Query && Query.user ? Query.user : defaultHook;
           return hook(source, Object.assign({}, args), context).then(item => adapter.read('user', item));
         },
@@ -51,7 +69,7 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
       },
       Mutation: {
         register: (source, args) => {
-          return auth.register(args.input, args.password).then(x => x.user);
+          return auth.register(args.input, args.password, args.token).then(x => x.user);
         },
         forgot: (source, args) => {
           return auth.forgot(args.email);
@@ -74,23 +92,65 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
           return auth.confirm(args.token).then(({ user }) => user);
         },
         user: (source, args, context) => {
+          if (context.user && context.user.isAdmin) {
+          } else if (context.user && context.user.id === args.id) {
+          } else throw new Error('No permission');
+          const collection = adapter.db.collection('user');
           const hook = Mutation && Mutation.user ? Mutation.user : defaultHook;
           return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
             if (args.operationType && args.operationType === 'REMOVE') {
               return adapter.remove('user', Object.assign({}, args));
+            } else if (args.input) {
+              const id = args.id;
+              args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
+              delete args.input; // eslint-disable-line no-param-reassign
+              args.id = id;
+            }
+            delete args.operationType; // eslint-disable-line no-param-reassign
+            delete args.isAdmin;
+            console.log('ARGS', args);
+            return adapter.write('user', Object.assign({}, args));
+            // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
+            // else return collection.insertOne(args);
+          });
+        },
+        invitation: (source, args, context) => {
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          const collection = adapter.db.collection('invitation');
+          const hook = Mutation && Mutation.invitation ? Mutation.invitation : defaultHook;
+          return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
+            if (args.operationType && args.operationType === 'REMOVE') {
+              return adapter.remove('invitation', Object.assign({}, args));
             } else if (args.input) {
               args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
               delete args.input; // eslint-disable-line no-param-reassign
             }
             delete args.operationType; // eslint-disable-line no-param-reassign
             console.log('ARGS', args);
-            return adapter.db.write('user', args);
+            args.expiry = +new Date();
+            args.token = token.create({ email: args.email });
+            return adapter.write('invitation', Object.assign({}, args)).then(u => {
+              console.log('INVITE', u.token, u);
+              if (mail) mail(mails.invite({ email: u.email, token: u.token, name: u.name }))
+                .then(x => console.log('Mail success', x.ok)).catch(err => console.error(err));
+              return u;
+            });
+            // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
+            // else return collection.insertOne(args);
           });
         },
       },
     },
     schema: `
+      type Invitation @input {
+        id: String
+        email: Email
+        token: String
+        expiry: DateTime
+        name: String
+      }
       type User {
+        isAdmin: Boolean
         id: String
         email: Email
         token: String

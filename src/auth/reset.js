@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link, Modal, withRouter, graphql, gql } from 'olymp';
+import { Link, Modal, withRouter, graphql, gql, withAuth } from 'olymp';
 import { Form, Input, Spin, notification } from 'antd';
-import withAuth from './with-auth';
 import { EnvelopeO, Key } from 'olymp-icons';
 import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
 
@@ -13,6 +12,7 @@ import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './bas
   }
 `, {
   options: ({ token }) => ({
+    fetchPolicy: !token ? 'cache-only' : 'network-only',
     variables: {
       token
     }

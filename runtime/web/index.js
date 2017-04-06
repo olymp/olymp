@@ -94,7 +94,6 @@ function load() {
     // initialState: window.INITIAL_DATA,
   });
   // Redux stuff
-  console.log(window.ASYNC_STATE);
   history = createHistory();
   store = createStore(
     combineReducers({

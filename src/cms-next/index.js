@@ -5,3 +5,4 @@ export { default as Mardown } from './null';
 export { default as Container } from './null';
 export { default as Auth } from './auth';
 export * from './collection';
+export * from './pages';

@@ -13,6 +13,7 @@ import { AsyncComponentProvider, createAsyncContext } from 'react-async-componen
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
+import helmet from 'helmet';
 import App from '@app';
 import template, { amp } from './template';
 import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
@@ -41,41 +42,11 @@ const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
 const devPort = parseInt(process.env.DEV_PORT, 10);
 
-
-// React loadable SSR
-/*const modules = {};
-const bundles = {};
-const clientStatsPath = path.resolve(__dirname, '..', 'web', 'stats.json');
-if (fs.existsSync(clientStatsPath)) {
-  const webpackStats = JSON.parse(fs.readFileSync(clientAssetsPath));
-  webpackStats.modules.forEach(module => {
-    const parts = module.identifier.split('!');
-    const filePath = parts[parts.length - 1];
-    modules[filePath] = module.chunks;
-  });
-  webpackStats.chunks.forEach(chunk => {
-    bundles[chunk.id] = chunk.files;
-  });
-}
-const getLoadableScripts = (main) => {
-  let scripts = [main];
-  /*if (!isProd) return scripts;
-  console.log(flushServerSideRequires);
-  const requires = flushServerSideRequires();
-  requires.forEach(file => {
-    let matchedBundles = modules[file + '.js'];
-    matchedBundles.forEach(bundle => {
-      bundles[bundle].forEach(script => {
-        scripts.unshift(script);
-      });
-    });
-  });*
-  return scripts;
-}*/
 // Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
 const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
+app.use(helmet());
 
 // Remove annoying Express header addition.
 app.disable('x-powered-by');
@@ -99,7 +70,7 @@ app.use((req, res, next) => {
 
 if (isProd) app.set('trust proxy', 2);
 app.use(session({
-  store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL }) : undefined,
+  store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL, logErrors: true }) : undefined,
   resave: false,
   saveUninitialized: true,
   proxy: isProd,
@@ -109,6 +80,12 @@ app.use(session({
     maxAge: 60000000,
   },
 }));
+
+console.log(123);
+app.use((x, y, z) => {
+  console.log('SESSION', x.sessionID);
+  z();
+});
 
 try {
   const server = require('@root/server');

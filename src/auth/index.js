@@ -6,4 +6,6 @@ export { default as AuthReset } from './reset';
 export { default as AuthProfile } from './profile';
 export { default as AuthTotp } from './totp';
 export { default as AuthStatus } from './status';
-export { auth, setAuthFields, default as withAuth } from './with-auth';
+export { default as AuthUsers } from './users';
+export { default as AuthInvitations } from './invitations';
+export { auth, setAuthFields, withAuth } from 'olymp';
