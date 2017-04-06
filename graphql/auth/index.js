@@ -44,10 +44,12 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         verify: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
         // verify: (source, args) => auth.verify(args.token),
         invitationList: (source, args, context) => {
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
           const hook = Query && Query.userList ? Query.userList : defaultHook;
           return hook(source, Object.assign({}, args), context).then(item => adapter.list('invitation', item));
         },
         invitation: (source, args, context) => {
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
           const hook = Query && Query.user ? Query.user : defaultHook;
           return hook(source, Object.assign({}, args), context).then(item => adapter.read('invitation', item));
         },

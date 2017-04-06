@@ -9,8 +9,11 @@ import { Modal, SplitView, List, Panel } from 'olymp/ui';
   query userList {
     items: userList { id, name, isAdmin }
   }
-`)
+`, {
+  options: ({ isOpen }) => ({ skip: !isOpen })
+})
 export default class AuthUsers extends Component {
+  static defaultProps = { data: {} };
   state = { search: '' };
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;

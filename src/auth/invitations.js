@@ -9,8 +9,11 @@ import { Modal, SplitView, List, Panel } from 'olymp/ui';
   query invitationList {
     items: invitationList { id, name, email }
   }
-`)
+`, {
+  options: ({ isOpen }) => ({ skip: !isOpen })
+})
 export default class AuthInvitations extends Component {
+  static defaultProps = { data: {} };
   state = { search: '' };
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
