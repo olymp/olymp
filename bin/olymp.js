@@ -48,7 +48,7 @@ if (command === 'dev') {
     createConfig({ target: 'node', mode: 'development', port, devPort, ssr: process.env.SSR != 'false' }),
     createConfig({ target: 'web', mode: 'development', port, devPort }),
   ]);
-  compiler.watch({ aggregateTimeout: 300 }, (err, compilation) => {
+  compiler.compilers[0].watch({ aggregateTimeout: 300 }, (err, compilation) => {
     if (err) return console.log('[webpack] error:', err);
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
