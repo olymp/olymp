@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     onUpdated: () => {
       console.log('SW Event:', 'onUpdated');
-      window.location.reload();
+      // window.location.reload(); // Only needed with autoUpdates
     },
     onUpdateFailed: () => {
       console.log('SW Event:', 'onUpdateFailed');
