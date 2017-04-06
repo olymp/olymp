@@ -1,5 +1,3 @@
-export { default as createSuggestPlugin } from './suggest';
-export { default as Plain2 } from './serializer';
 import all from 'mdast-util-to-hast/lib/all';
 import React, { Component } from 'react';
 import remark from 'remark';

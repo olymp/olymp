@@ -1,11 +1,11 @@
 import ReactDOM from 'react-dom';
 import React, { Component } from 'react';
-import { Menu, Dropdown, Icon, Select } from 'antd';
-import { Slate, Block, Plain, Raw } from 'slate';
-import position from './caret-position';
+import { Select } from 'antd';
+import Raw from 'slate/lib/serializers/raw';
+
+import position from './utils/caret-position';
 import typeOf from 'type-of';
-import Portal from 'react-portal';
-import { groupBy as _groupBy } from 'lodash';
+import GroupBy from 'lodash/groupBy';
 import shortID from 'shortid';
 
 const createP = () => Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
@@ -99,7 +99,7 @@ export default ({ fetch, trigger, onInsert, renderItems, renderItem, groupBy }) 
       if (renderItems) {
         children = renderItems(data);
       } else if (groupBy) {
-        const groups = _groupBy(data, groupBy);
+        const groups = GroupBy(data, groupBy);
         children = Object.keys(groups).map(key => (
           <Select.OptGroup key={key} label={key}>{groups[key].map(renderItem)}</Select.OptGroup>
         ));

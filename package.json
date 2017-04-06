@@ -1,5 +1,5 @@
 {
-  "version": "15.0.0-alpha.11",
+  "version": "15.0.0-alpha.12",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -107,6 +107,7 @@
     "react-hot-loader": "next",
     "react-image-crop": "2.0.2",
     "react-image-gallery": "0.7.12",
+    "react-lite": "^0.15.33",
     "react-modal2": "^4.0.0",
     "react-portal": "3.0.0",
     "react-redux": "^5.0.3",

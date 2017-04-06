@@ -60,7 +60,7 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
     // Get user by email/realm and post new user
     register: (rawUser, pwd, key) => {
       const filter = { email: rawUser.email };
-      rawUser.confirmed = false;
+      rawUser.confirmed = !!key;
       if (!pwd || pwd.length < 6) throw new Error('Password too short');
       return token.verify(key).then(({ email }) => {
         if (email !== rawUser.email) throw new Error('Unexpected E-Mail address');
@@ -72,11 +72,13 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
         if (currentUser) throw new Error('USER_ALREADY_EXISTS Error.');
         return adapter.write('user', user);
       }).then((result) => {
-        const confirmationToken = token.createFromUser(result);
-        console.log('CONFIRM', confirmationToken);
-        if (mail) mail(mails.register({ email: rawUser.email, token: confirmationToken }))
-          .then(x => console.log('Mail success')).catch(err => console.error(err));
-        return { token: confirmationToken, user: cleanUser(result) };
+        if (!result.confirmed) {
+          const confirmationToken = token.createFromUser(result);
+          console.log('CONFIRM', confirmationToken);
+          if (mail) mail(mails.register({ email: rawUser.email, token: confirmationToken }))
+            .then(x => console.log('Mail success')).catch(err => console.error(err));
+        }
+        return { user: cleanUser(result) };
       });
     },
     // Get user by id and update user

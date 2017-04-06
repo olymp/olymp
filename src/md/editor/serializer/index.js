@@ -1,4 +1,4 @@
-import { Raw } from 'slate';
+import Raw from './raw';
 import shortID from 'shortid';
 
 function deserialize(string, options = {}) {

@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import { Link, graphql, gql, withAuth } from 'olymp';
 import { Button, Form, Input, Icon, notification } from 'antd';
 import { EnvelopeO, Key } from 'olymp-icons';
-import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
-import { Modal, SplitView, List, Panel } from 'olymp/ui';
+import { Modal, SplitView, List, Panel, onEnterFocus, onEnterOk, layout, onError, onSuccess } from 'olymp/ui';
 
 @graphql(gql`
-  query invitationList {
-    items: invitationList { id, name, email }
+  query userList {
+    items: userList { id, name, isAdmin }
   }
 `, {
   options: ({ isOpen }) => ({ skip: !isOpen })
 })
-export default class AuthInvitations extends Component {
+export default class AuthUsers extends Component {
   static defaultProps = { data: {} };
   state = { search: '' };
   ok = () => {
@@ -35,24 +34,24 @@ export default class AuthInvitations extends Component {
     if (search) items = items.filter(({ name }) => name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} width="auto" padding={0} title="Einladungen" subtitle="Einladungen sehen und verschicken">
+      <Modal isOpen={isOpen} onClose={onClose} width="auto" padding={0} title="Benutzerverwaltung" subtitle="Benutzer bearbeiten, hinzufügen, löschen">
         <SplitView>
           <List side="left">
             <List.Title buttons={
               <Button size="small" onClick={() => console.log()}>
-                <Link to={{ pathname, query: { '@invitations': 'new' } }}>
+                <Link to={{ pathname, query: { '@users': 'new' } }}>
                   <Icon type="plus" />
                 </Link>
               </Button>
-            }>Einladungen</List.Title>
+            }>Benutzer</List.Title>
             <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
-            {items.map(item => <List.Item to={{ pathname, query: { '@invitations': item.id } }} key={item.id} label={item.name} description="Benutzer" />)}
+            {items.map(item => <List.Item to={{ pathname, query: { '@users': item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
           </List>
-          {id && id === 'new' && <AuthInviationDetail id={null} />}
-          {id && id !== 'new' && <AuthInviationDetail key={id} id={id} />}
+          {id && id === 'new' && <AuthUsersDetail id={null} />}
+          {id && id !== 'new' && <AuthUsersDetail key={id} id={id} />}
         </SplitView>
         <Modal.Links>
-          <Link to={{ pathname, query: { '@invitations': null, '@users': undefined } }}>Benutzer verwalten</Link>
+          <Link to={{ pathname, query: { '@invitations': null, '@users': undefined } }}>Einladungen verwalten</Link>
         </Modal.Links>
       </Modal>
     );
@@ -61,8 +60,8 @@ export default class AuthInvitations extends Component {
 
 @withAuth
 @graphql(gql`
-  query invitation($id: String) {
-    item: invitation(id: $id) { id, name, email }
+  query user($id: String) {
+    item: user(id: $id) { id, name, email }
   }
 `, {
   options: ({ id }) => ({
@@ -71,15 +70,15 @@ export default class AuthInvitations extends Component {
   }),
 })
 @Form.create()
-class AuthInviationDetail extends Component {
+class AuthUsersDetail extends Component {
   ok = () => {
     const { auth, form, data } = this.props;
     const item = data.item || {};
     form.validateFields((err, values) => {
       if (err) return onError(err);
-      const invitation = { ...item, ...values };
-      delete invitation.__typename;
-      auth.invitation(invitation).then(({ name }) => {
+      const user = { ...item, ...values };
+      delete user.__typename;
+      auth.save(user).then(({ name }) => {
         onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
       }).catch(onError);
     });
