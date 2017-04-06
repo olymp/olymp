@@ -67,7 +67,7 @@ const authMethods = (client, refetch, user, loading) => ({
       mutation: gql`
         mutation invitation($invitation: InvitationInput) {
           invitation(input: $invitation) {
-            ${attributes}
+            id, name, email
           }
         }
       `, variables: { invitation },
