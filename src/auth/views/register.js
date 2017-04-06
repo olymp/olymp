@@ -30,7 +30,7 @@ export default class AuthRegister extends Component {
       delete user.password2;
       auth.register(user, values.password, token).then(() => {
         onSuccess('Registrierung abgeschickt', `Bitte checken Sie Ihre E-Mails`);
-        onOk({ email: values.email });
+        onOk({ email: values.email, token });
       }).catch(onError);
     });
   }

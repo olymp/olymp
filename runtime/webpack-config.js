@@ -121,6 +121,11 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     },
   };
 
+  // React lite
+  if (isProd && isWeb) {
+    config.resolve.alias.react = path.resolve(appRoot, 'node_modules', 'react-lite');
+    config.resolve.alias['react-dom'] = path.resolve(appRoot, 'node_modules', 'react-lite');
+  }
   // inline-source-map for web-dev
   if (isDev && isWeb) {
     config.devtool = 'inline-source-map';
