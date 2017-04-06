@@ -1,8 +1,9 @@
+import React, { Component } from 'react';
 import Slate from 'slate/lib/components/editor';
 import createSuggestPlugin from './plugin-suggest';
 import createTrailingBlock from './plugin-trailing-block';
 
-export class SlateEditor extends Component {
+export default class SlateEditor extends Component {
   fetch(value) {
     if (!this.props.suggestions) return Promise.resolve([]);
     return new Promise(yay => {
