@@ -96,6 +96,7 @@ app.use((req, res, next) => {
 
 const trust = process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
 const secure = process.env.COOKIE_SECURE !== undefined ? `${process.env.COOKIE_SECURE}` === 'true' : isProd;
+const domain = process.env.URL !== undefined ? process.env.URL.split('/')[2] : undefined;
 
 if (isProd) app.set('trust proxy', trust);
 app.use(session({
@@ -103,6 +104,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   proxy: !!trust,
+  domain,
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   cookie: {
     secure,
