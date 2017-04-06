@@ -54,8 +54,8 @@ const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSyn
 const app = express();
 
 // Websocket Server
-app.listenWS = () => {
-  var wss = new WebSocketServer({ port: port + 1 });
+app.listenWS = (server) => {
+  var wss = new WebSocketServer({ server });
   wss.on('connection', ws => {
     const onPing = message => {
       ws.send(JSON.stringify({ type: 'pong', version, xyz: false }));
