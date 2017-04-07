@@ -62,6 +62,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
+        'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
       }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
@@ -203,7 +204,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       minimize: true,
       debug: false,
     }));
-    /*config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
       compress: {
         screw_ie8: true,
         warnings: false,
@@ -216,7 +217,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         screw_ie8: true,
       },
       sourceMap: false,
-    }));*/
+    }));
   }
   if (isNode) {
     if (isDev) {
