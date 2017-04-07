@@ -54,7 +54,7 @@ if (process.env.NODE_ENV === 'production') {
 }*/
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || '/graphql',
+  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',

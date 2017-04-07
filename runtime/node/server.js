@@ -103,6 +103,7 @@ app.use(session({
   store: process.env.REDIS_URL ? new RedisStore({ url: process.env.REDIS_URL, logErrors: true }) : undefined,
   resave: false,
   saveUninitialized: true,
+  httpOnly: true,
   proxy: !!trust,
   domain,
   secret: process.env.SESSION_SECRET || 'keyboard cat',

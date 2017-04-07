@@ -15,22 +15,24 @@ export class WebsocketProvider extends Component {
   }
   showNotification = (message, description, btn) => {
     if (!this.key) this.key = `open${Date.now()}`;
-    notification.close(this.key);
-    if (!message) return;
-    notification.warning({
-      message,
-      description,
-      btn,
-      key: this.key,
-      duration: 0,
-    });
+    if (!message) {
+      notification.close(this.key);
+    } else {
+      notification.warning({
+        message,
+        description,
+        btn,
+        key: this.key,
+        duration: 0,
+      });
+    }
   }
   connected = (connected) => {
     console.log('uws state', connected, this.ws.readyState);
-    if (this.state.connected === connected) return;
-    this.setState({ connected });
-    if (connected === true) return this.showNotification();
-    else if (connected === null) {
+    // if (this.state.connected === connected) return;
+    if (connected === true) {
+      this.showNotification();
+    } else if (connected === null) {
       this.showNotification(
         'Offline',
         'Sie sind derzeit nicht zum Internet verbunden.',
@@ -41,6 +43,7 @@ export class WebsocketProvider extends Component {
         'Der Server steht zurzeit nicht zur Verfügung.',
       );
     }
+    this.setState({ connected });
   }
   connect = () => {
     const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${location.host}`;
