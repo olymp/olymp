@@ -6,7 +6,7 @@ import { onEnterFocus, onEnterOk, layout, onError, onSuccess } from 'olymp/ui';
 import { Modal, SplitView, List, Panel } from 'olymp/ui';
 import { lowerFirst } from 'lodash';
 import md, { createSuggestPlugin, Plain2 } from 'olymp/md';
-import { Editor as Slate, Plain, Raw } from 'slate';
+import { Slate, Plain } from 'olymp/src/md/editor';
 
 const Remark = md({
   template: ({ children, name }) => (
@@ -16,10 +16,6 @@ const Remark = md({
     </div>
   ),
 });
-
-const SlateEditor = ({ value, onChange }) => (
-  <Slate slate={value} onChange={onChange} />
-);
 
 @withRouter
 @Form.create()
@@ -60,8 +56,8 @@ export default class Page extends Component {
           </Form.Item>
           <Form.Item key="slate" label="Slate" {...layout}>
             {getFieldDecorator('slate', {
-              initialValue: item.markdown || Plain2.deserialize(''),
-            })(<SlateEditor />)}
+              initialValue: item.markdown || Plain.deserialize(''),
+            })(<Slate />)}
           </Form.Item>
         </Panel>
         <Modal.Links>

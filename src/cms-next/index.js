@@ -5,4 +5,3 @@ export { default as Mardown } from './null';
 export { default as Container } from './null';
 export * from './collection';
 export * from './pages';
-throw new Error('HI');
