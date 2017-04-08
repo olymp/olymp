@@ -22,8 +22,9 @@ export default class SlateEditor extends Component {
     ];
   }
   render() {
+    const value = this.props.state || this.props.value || Plain.deserialize('');
     return (
-      <Slate plugins={this.plugins} {...this.props} />
+      <Slate plugins={this.plugins} state={value} {...this.props} />
     )
   }
 }

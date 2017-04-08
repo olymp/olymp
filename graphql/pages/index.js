@@ -33,9 +33,17 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         slug: String
         children: [PageHeading]
       }
+      type PageGQL {
+        id: String
+        name: String
+        attributes: [String]
+        field: String
+        prefix: String
+      }
       type Page @collection(name: "Page") @stamp @state {
         menu: String
         alias: Page @relation
+        gql: PageGQL
         headings: [PageHeading]
         href: String
         parent: Page @relation(property: "children", type: "one-to-many")

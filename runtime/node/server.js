@@ -109,7 +109,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   cookie: {
     secure,
-    maxAge: 60000000,
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
   },
 }));
 
