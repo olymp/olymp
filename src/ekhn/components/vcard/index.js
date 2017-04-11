@@ -21,12 +21,10 @@ const VCard = useItemEdit()(({ name, bild, ort, telefon, mobil, fax, email, home
   </div>
 ));
 
-export default ({ style, className, children, vcard }) => {
-  console.log(vcard);
-  return (
+export default ({ style, className, children, vcard }) => (
   <DataLoader style={style} className={cn('vcard-block', className)} isEmpty={vcard} placeholder="Keine Visitenkarte vorhanden" loading="Visitenkarte wird geladen">
     {children}
 
     <VCard __typename="Vcard" {...vcard} />
   </DataLoader>
-);}
+);
