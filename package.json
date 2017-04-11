@@ -1,5 +1,5 @@
 {
-  "version": "14.2.11",
+  "version": "14.2.12",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -124,6 +124,7 @@
     "tinycolor2": "1.4.1",
     "unist-util-remove": "^0.2.1",
     "unist-util-visit": "^1.1.1",
+    "unitless-css-property": "1.0.2",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
