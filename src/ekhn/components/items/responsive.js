@@ -1,12 +1,12 @@
 import React from 'react';
 import { cn } from 'olymp';
-import { SlateMateFrontend, useItemEdit } from 'olymp/slate';
+import { SlateMateFrontend } from 'olymp/slate';
 import Hypher from 'hypher';
 import german from 'hyphenation.de';
 import { ItemImage, ItemMore, ItemHeader } from './components';
 import Tags from '../tags';
 
-export default useItemEdit()(({ id, header, subheader, shortText, more, bild, tags, identifier, className, breakpoint = 'md', children }) => {
+export default ({ id, header, subheader, shortText, more, bild, tags, identifier, className, breakpoint = 'md', children }) => {
   const hypher = new Hypher(german);
 
   let breakpointHidden;
@@ -44,4 +44,4 @@ export default useItemEdit()(({ id, header, subheader, shortText, more, bild, ta
       </div>
     </div>
   );
-});
+};
