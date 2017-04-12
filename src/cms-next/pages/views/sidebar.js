@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql, withAuth, withRouter } from 'olymp';
-import { Menu, Button, Form, Input, Icon, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import { Sidebar, onEnterFocus, onEnterOk, layout, onError, onSuccess } from 'olymp/ui';
-import { Modal, SplitView, List, Panel } from 'olymp/ui';
-import { lowerFirst } from 'lodash';
+import { Link, withRouter } from 'olymp';
+import { Menu, Button, Form, Icon } from 'antd';
+import { Sidebar } from 'olymp/ui';
 import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../gql';
 import { PagesGql } from '../pages';

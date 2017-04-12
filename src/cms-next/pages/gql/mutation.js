@@ -1,6 +1,5 @@
 import { gql, graphql } from 'olymp';
 import { onError, onSuccess } from 'olymp/ui';
-import { cloneDeep } from 'lodash';
 
 const ok = (props, mutate) => () => {
   const { form, item, router } = props;
