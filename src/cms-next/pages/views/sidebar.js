@@ -17,37 +17,44 @@ import { Page } from '../page';
 @Form.create()
 @mutatePage
 export default class PageSidebar extends Component {
-  state = { text: '' };
   render() {
-    const { id, form, router, pathname, item, save, auth, query } = this.props;
-    const { text } = this.state;
+    const { id, form, router, pathname, save, auth, query } = this.props;
+    let { item } = this.props;
 
     if (!auth.user) {
       return (
-        <Page item={{ ...item, text: text || item.text }} />
+        <Page item={item} />
       );
     }
 
     const value = query['@page'];
+    if (value === 'new') item = {};
+
     const leftButtons = (
       <div>
-        {/*<Button.Group style={{ marginRight: 5 }}>
-          <Button onClick={() => router.push(pathname)}>
-            <Icon type="close" />
-          </Button>
-        </Button.Group>*/}
-        {value && <Button.Group style={{ marginRight: 5 }}>
+        {value && <Button.Group>
           <Button onClick={() => router.push(pathname)}>
             <Icon type="arrow-left" />
           </Button>
         </Button.Group>}
-        <Button.Group>
-          <Button onClick={save}>
-            <Icon type="save" />
-          </Button>
-        </Button.Group>
       </div>
     );
+    const rightButtons = (
+      <div>
+        {value && <Button.Group>
+          <Button disabled={!form.isFieldsTouched()} onClick={save}>
+            <Icon type="save" />
+          </Button>
+        </Button.Group>}
+        {!value && <Button.Group>
+          <Button onClick={() => router.push({ pathname, query: { '@page': 'new' } })}>
+            <Icon type="plus" />
+          </Button>
+        </Button.Group>}
+      </div>
+    );
+    const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
+    const description = !value ? 'Seiten hinzufügen und verschieben' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     return (
       <div>
         <Gateway into="menu">
@@ -55,11 +62,11 @@ export default class PageSidebar extends Component {
             Bearbeiten
           </Link>
         </Gateway>
-        <Sidebar leftButtons={leftButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title="Seite" subtitle={'Seite bearbeiten'}>
+        <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
           {!value && <PagesGql />}
-          {value && <PageForm form={form} item={item} onChangeText={text => this.setState({ text })} />}
+          {value && <PageForm form={form} item={item} />}
         </Sidebar>
-        <Page item={{ ...item, text: text || item.text }} />
+        <Page item={{ ...item, ...form.getFieldsValue() }} />
       </div>
     );
   }

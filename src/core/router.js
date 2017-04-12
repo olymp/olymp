@@ -1,10 +1,11 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes, Children, Component, createElement, cloneElement } from 'react';
 import { withRouter as withRouterLegacy, Link as LinkLegacy, NavLink as NavLinkLegacy } from 'react-router-dom';
-export { Route, Switch, Redirect } from 'react-router-dom';
+export { Route, Switch, Redirect, Prompt } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 import { Router } from 'react-router';
 import { connect } from 'react-redux';
 import { LOCATION_CHANGE } from 'react-router-redux/actions';
+import { routerMiddleware, push, replace } from 'react-router-redux'
 
 export const routerQueryMiddleware = store => next => action =>  {
   if (action.type !== LOCATION_CHANGE) {
@@ -25,6 +26,7 @@ export const withRouter = (WrappedComponent) => {
   )
   class WithRouter extends Component {
     static contextTypes = {
+      store: PropTypes.object,
       router: PropTypes.shape({
         history: PropTypes.shape({
           push: PropTypes.func.isRequired,
@@ -34,20 +36,24 @@ export const withRouter = (WrappedComponent) => {
       }).isRequired,
     };
     push = (propsTo) => {
+      const { store } = this.context;
       const to = { ...propsTo };
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
       }
-      this.context.router.history.push(to);
+      store.dispatch(push(to));
+      // this.context.router.history.push(to);
     }
     replace = (propsTo) => {
+      const { store } = this.context;
       const to = { ...propsTo };
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
       }
-      this.context.router.history.replace(to);
+      store.dispatch(replace(to));
+      // this.context.router.history.replace(to);
     }
     render() {
       const { query, pathname, search } = this.props;
@@ -57,6 +63,27 @@ export const withRouter = (WrappedComponent) => {
     }
   }
   return WithRouter;
+};
+
+export const SimpleSwitch = ({ children, ...rest }) => {
+  let notFound, match;
+  const matches = Children.toArray(children).forEach(route => {
+    if (route.props.match) {
+      match = route;
+    } else if (route.props.match === undefined) {
+      notFound = route;
+    }
+  });
+  if (match) return match;
+  if (!match && notFound) return cloneElement(notFound, { match: true });
+  else return null;
+};
+
+export const SimpleRoute = ({ match, render, component, location, ...rest }) => {
+  rest = { ...rest, ...location, location };
+  if (match && component) return createElement(component, rest);
+  if (match && render) return render(rest);
+  else return null;
 };
 
 export const Link = (props) => {
