@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 export default class HashtaxProvided extends Component {
   static contextTypes = {
     Hashtax: PropTypes.func.isRequired,
-  }
+  };
   render() {
     const Hashtax = this.context.Hashtax;
     return <Hashtax {...this.props} />;

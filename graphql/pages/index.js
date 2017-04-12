@@ -52,6 +52,7 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         description: String
         slug: String
         blocks: Json
+        text: String
         templateName: String
         templateData: Json
         showHeadings: Boolean

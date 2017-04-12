@@ -22,10 +22,10 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     state = { animation: null };
     delay = () => {
       const { speed } = this.props;
-      return delayLeave && Object.keys(this.context.gatewayRegistry._children.modal).filter(key => {
+      return delayLeave && Object.keys(this.context.gatewayRegistry._children.modal).find(key => {
         const { isOpen } = this.context.gatewayRegistry._children.modal[key].props;
-        return isOpen === undefined || !!isOpen;
-      }).length > 0 ? (speed * 2) : speed;
+        return isOpen !== false;
+      }) ? (speed * 2) : speed;
     }
     componentWillAppear(callback) {
       const { speed, enter, appear } = this.props;
@@ -160,6 +160,7 @@ export const TransitionSlide = createTransition(({ type, delay, speed }) => {
 });
 
 export const Transition = (props, { theme }) => {
+  if (!theme.transition) theme.transition = 'fade';
   if (theme.transition === 'fade') return <TransitionFade {...props} speed={theme.transitionSpeed || 250} />;
   if (theme.transition === 'slide') return <TransitionSlide {...props} speed={theme.transitionSpeed || 500} />;
   const { isOpen } = props;
@@ -167,3 +168,5 @@ export const Transition = (props, { theme }) => {
   return opened ? Children.only(props.children) : null;
 };
 Transition.contextTypes = { theme: React.PropTypes.object };
+
+export default Transition;

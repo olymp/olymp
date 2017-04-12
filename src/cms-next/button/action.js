@@ -3,6 +3,7 @@ import { Menu } from 'antd';
 import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
 import { Link } from 'olymp';
+import { GatewayDest } from 'react-gateway';
 
 const wrapper = children => (
   <Menu.SubMenu key={key} title={capitalize(key)}>
@@ -25,11 +26,7 @@ export default class CmsAction extends Component {
 
     return (
       <Menu style={{ minWidth: 150, borderRadius: '4px', boxShadow: '0 1px 6px rgba(0, 0, 0, .2)' }} onClick={this.handleClick}>
-        <Menu.Item key="edit">
-          <Link to={{ pathname, query: { '@page': null } }}>
-            Bearbeiten
-          </Link>
-        </Menu.Item>
+        <GatewayDest component={Menu.Item} name="menu" key="gateway-button" />
         <Menu.Divider />
         {Object.keys(collections).map((key) => collections[key].length === 1 ? (
             (collections[key] || []).map(({ name, title }) => (

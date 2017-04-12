@@ -1,1 +1,5 @@
-export { default as PageDetail } from './page';
+export * from './form';
+export * from './page';
+export * from './gql';
+export * from './views';
+
