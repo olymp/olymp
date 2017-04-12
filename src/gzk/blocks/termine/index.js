@@ -37,7 +37,7 @@ const News = ({ item, highlight }) => (
           <b>
             {capitalize(item.art.replace('PRESSE', 'PRESSEARTIKEL').toLowerCase())}
             {item.art.indexOf('P') === 0 ? ' vom ' : ' am '}
-            {moment(item.date).format('DD. MMMM YYYY HH:mm').replace(' 00:00', '')}
+            {moment(item.date).format('DD. MMMM YYYY HH:mm').utcOffset('+01:00').replace(' 00:00', '')}
           </b>
           {item.tags && item.tags.length ? (
             <b style={{ float: 'right' }}>

@@ -62,7 +62,8 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
       const filter = { email: rawUser.email };
       rawUser.confirmed = !!key;
       if (!pwd || pwd.length < 6) throw new Error('Password too short');
-      return token.verify(key).then(({ email }) => {
+      const init = key ? token.verify(key) : Promise.resolve(filter);
+      return init.then(({ email }) => {
         if (email !== rawUser.email) throw new Error('Unexpected E-Mail address');
         return Promise.all([
           adapter.read('user', { filter }),
@@ -72,13 +73,14 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
         if (currentUser) throw new Error('USER_ALREADY_EXISTS Error.');
         return adapter.write('user', user);
       }).then((result) => {
+        let confirmationToken;
         if (!result.confirmed) {
-          const confirmationToken = token.createFromUser(result);
+          confirmationToken = token.createFromUser(result);
           console.log('CONFIRM', confirmationToken);
           if (mail) mail(mails.register({ email: rawUser.email, token: confirmationToken }))
             .then(x => console.log('Mail success')).catch(err => console.error(err));
         }
-        return { user: cleanUser(result) };
+        return { user: cleanUser(result), token: confirmationToken };
       });
     },
     // Get user by id and update user
@@ -151,6 +153,7 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
       })).then((user) => {
         if (!user) throw new Error('No user matched.');
         if (user.confirmed === false) throw new Error('User not confirmed.');
+        user.totp = null; // Disable TOTP
         return password.set(user, pwd);
       }).then(user => adapter.write('user', user))
         .then(user => ({ token: token.createFromUser(user), user: cleanUser(user) }));

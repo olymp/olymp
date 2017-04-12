@@ -53,7 +53,7 @@ export default class News extends Component {
               {item.art && <h1 className="gz-simple-header">{item.art[0]}{item.art.toLowerCase().substr(1)}</h1>}
               <h5 className="card-title mb-0 gz-simple-header">{item.name}</h5>
               <small>
-                <b>{moment(item.date).format('DD. MMMM YYYY HH:mm').replace(' 00:00', '')}</b>
+                <b>{moment(item.date).utcOffset('+01:00').format('DD. MMMM YYYY HH:mm').replace(' 00:00', '')}</b>
                 {item.tags && item.tags.length ? (
                   <b style={{ float: 'right' }}>
                     {item.tags.join(', ')}

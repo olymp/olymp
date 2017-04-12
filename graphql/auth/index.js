@@ -170,12 +170,13 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
       }
     `,
   });
+
   setTimeout(() => {
-    if (!adapter.client) return;
-    const collection = adapter.client.collection('user');
+    if (!adapter.db) return;
+    const collection = adapter.db.collection('user');
     collection.findOne({ }).then((one) => {
       if (one) return;
-      auth.register({ email: 'admin@olymp-cms.com', name: 'Administrator' }, 'admin').then(({ token }) => {
+      auth.register({ email: 'admin@olymp-cms.com', name: 'Administrator' }, 'admin12').then(({ token }) => {
         auth.confirm(token);
       });
     }).catch(err => console.log(err));
