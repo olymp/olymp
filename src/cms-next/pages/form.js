@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import { Link, graphql, gql, withAuth, withRouter, Prompt } from 'olymp';
-import { Tabs, Button, Form, Icon, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import { onEnterFocus, onEnterOk, layout, onError, onSuccess } from 'olymp/ui';
+import React, { Component, PropTypes } from 'react';
+import { Prompt } from 'olymp';
+import { Tabs } from 'antd';
 import { Panel } from 'olymp/ui';
 import { queryPage, mutatePage } from './gql';
 import { Input, Hashtax, State } from '../collection';
@@ -14,7 +12,6 @@ export class PageForm extends Component {
   }
   render() {
     const { form, item } = this.props;
-    const { getFieldDecorator, getFieldValue } = form;
     return (
       <div>
         <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
@@ -37,4 +34,11 @@ export class PageForm extends Component {
     );
   }
 }
+Page.propTypes = {
+  item: PropTypes.object,
+  form: PropTypes.object,
+};
+Page.defaultProps = {
+  item: {},
+};
 export const PageFormGql = queryPage(mutatePage(Form.create(PageForm)));
