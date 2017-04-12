@@ -101,7 +101,7 @@ export default class MenuController extends Component {
     const { items, auth, ...rest } = this.props;
     const disabled = !auth || !auth.user || auth.user.einrichtung;
     return (
-      <Menu {...rest} disabled={disabled} sortEndCreator={this.onSortEnd} page={{ children: items.filter(x => x.slug !== '/') }} />
+      <Menu {...rest} disabled={disabled} sortEndCreator={this.onSortEnd} page={{ children: (items||[]).filter(x => x.slug !== '/') }} />
     );
   }
 }

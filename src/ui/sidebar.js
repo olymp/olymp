@@ -41,6 +41,7 @@ const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWi
   '> .ant-modal-content': {
     display: 'flex',
     flexDirection: 'column',
+    boxShadow: '0',
     height: '100%',
     borderRadius: 0,
     '> .ant-modal-close': {

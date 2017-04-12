@@ -5,7 +5,6 @@ import { EnvelopeO, Key } from 'olymp-icons';
 import { onEnterFocus, onEnterOk, layout, onError, onSuccess } from 'olymp/ui';
 import { Panel } from 'olymp/ui';
 import { queryPage, mutatePage, queryPages } from './gql';
-import Slate from './editor';
 
 export class Pages extends Component {
   state = {

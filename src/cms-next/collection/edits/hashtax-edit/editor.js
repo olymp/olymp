@@ -55,11 +55,13 @@ export default class SlateEditor extends Component {
     super(props);
     this.plugins = [];
     this.state = { };
-    this.editorState = Plain.deserialize(props.value || '');
+    this.value = props.value || '';
+    this.editorState = Plain.deserialize(this.value);
   }
   componentWillReceiveProps(newProps) {
     if (newProps.value !== this.value) {
-      this.editorState = Plain.deserialize(newProps.value || '');
+      this.value = newProps.value || '';
+      this.editorState = Plain.deserialize(this.value);
     }
   }
   onChange = value => {
