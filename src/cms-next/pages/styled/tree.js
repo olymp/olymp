@@ -26,6 +26,8 @@ const getIcon = (item) => {
     return <span><Icon type="arrow-up" /> </span>;
   } else if (item.sorting && item.sorting[0] === '-') {
     return <span><Icon type="arrow-down" /> </span>;
+  } else if (item.slug === '/') {
+    return <span><Icon type="home" /> </span>;
   } return null;
 }
 export const TreeNode = styled(({ }) => ({
@@ -38,7 +40,7 @@ export const TreeNode = styled(({ }) => ({
     <Link to={{ pathname: item.slug }}>
       {getIcon(item)}{item.name}
     </Link>
-    <Link to={{ pathname: item.slug, query: { '@page': 'edit' } }}>
+    <Link to={{ pathname: item.slug, query: { '@page': item.id } }}>
       <Icon type="edit" />
     </Link>
   </span>

@@ -9,7 +9,7 @@ export default graphql(gql`
   }
 `, {
   options: ({ id, query }) => ({
-    variables: { id },
+    variables: { id: query['@page'] && query['@page'] !== 'new' ? query['@page'] : id },
     fetchPolicy: isNew({ query }) ? 'cache-only' : undefined,
   }),
   props: ({ ownProps, data }) => ({
