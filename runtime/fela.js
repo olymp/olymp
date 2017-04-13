@@ -39,7 +39,23 @@ export default () => {
         size: size => ({
           width: size,
           height: size,
-        })
+        }),
+        paddingX: padding => ({
+          paddingLeft: padding,
+          paddingRight: padding,
+        }),
+        paddingY: padding => ({
+          paddingTop: padding,
+          paddingBottom: padding,
+        }),
+        marginX: margin => ({
+          marginLeft: margin,
+          marginRight: margin,
+        }),
+        marginY: margin => ({
+          marginTop: margin,
+          marginBottom: margin,
+        }),
       })
     ],
     enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic')()],

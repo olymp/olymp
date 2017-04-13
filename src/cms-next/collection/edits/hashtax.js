@@ -7,7 +7,7 @@ import Slate from './hashtax-edit';
 const HashtaxInput = ({ item, field, label, layout, initialValue, rules, placeholder, form, ...rest }) => {
   const inner = form.getFieldDecorator(field, {
     initialValue: item ? item[field] : undefined,
-    rules: getRules(rules),
+    rules: getRules(rules, label),
   })(<Slate placeholder={placeholder || label} {...rest} />);
   if (label === null) return inner;
   return (

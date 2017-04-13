@@ -7,7 +7,7 @@ const Input = ({ item, field, label, layout, initialValue, rules, placeholder, f
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: item ? item[field] : undefined,
-      rules: getRules(rules),
+      rules: getRules(rules, label),
     })(<AntInput placeholder={placeholder || label} {...rest} />)}
   </Form.Item>
 );

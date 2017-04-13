@@ -1,6 +1,7 @@
 import { gql, graphql } from 'olymp';
 
 const isNew = (props) => props.query['@page'] === 'new';
+const getId = (id, query) => query['@page'] && query['@page'] !== 'new' ? query['@page'] : id;
 export default graphql(gql`
   query page($id: String) {
     item: page(id: $id) {
@@ -9,7 +10,7 @@ export default graphql(gql`
   }
 `, {
   options: ({ id, query }) => ({
-    variables: { id: query['@page'] && query['@page'] !== 'new' ? query['@page'] : id },
+    variables: { id: getId(id, query) },
     fetchPolicy: isNew({ query }) ? 'cache-only' : undefined,
   }),
   props: ({ ownProps, data }) => ({
