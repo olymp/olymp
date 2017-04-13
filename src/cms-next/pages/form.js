@@ -21,7 +21,7 @@ export class PageForm extends Component {
             {/*<Panel minWidth={560} margin="0 30px" padding={16}>*/}
             <Panel paddingX={16}>
               <Input form={form} item={item} field="name" label="Name" rules={['required']} type="text" size="large" />
-              <Input form={form} item={item} field="slug" label="Slug" rules={['required']} type="text" size="large" />
+              <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
               <Input form={form} item={item} field="binding" placeholder="typ feld1,feld2 slug" label="Bindung" type="text" size="large" />
               <Input form={form} item={item} field="sorting" placeholder="" label="Sortieren" type="text" size="large" />

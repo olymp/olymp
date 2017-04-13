@@ -13,7 +13,15 @@ export default class Container1 extends Component {
     const { id, form, router, pathname, item, save, auth, query, children, collections } = this.props;
     const { text } = this.state;
 
-    if (!auth.user) return Children.only(children);
+    if (!auth.user) {
+      return (
+        <div>
+          <AuthRoutes />
+          <GatewayDest name="modal" />
+          {children}
+        </div>
+      )
+    }
     return (
       <Panel display="flex" height="100%">
         <NavigationVertical collections={collections} />

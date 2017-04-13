@@ -2,6 +2,7 @@ import React, { Component, createElement } from 'react';
 import { gql, graphql, SimpleRoute, unflatten } from 'olymp';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
+import { interpolate } from 'olymp/hashtax';
 
 export const withNavigation = Wrapped => {
   @withNavigationPrepare
@@ -18,7 +19,10 @@ export const withNavigation = Wrapped => {
           children = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
-              (data.items||[]).forEach(item => state.push({ ...child, pageId: child.id, bindingId: item.id, slug: item.slug, name: item.name, id: item.id }))
+              (data.items||[]).forEach(item => {
+                const slug = child.slug ? interpolate(item, child.slug) : item.slug;
+                state.push({ ...child, pageId: child.id, bindingId: item.id, slug, name: item.name, id: item.id })
+              });
             } else {
               state.push(child);
             }
@@ -42,7 +46,7 @@ export const withNavigation = Wrapped => {
           } return children;
         },
         setPath: (current, { slug, ...rest }) => {
-          slug = `${current}${slug}`;
+          slug = `${current || ''}${slug || ''}`;
           flatNavigation.push({ ...rest, slug });
           return slug;
         },
