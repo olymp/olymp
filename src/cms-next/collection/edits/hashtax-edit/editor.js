@@ -5,11 +5,11 @@ import Plain from './serializer/plain';
 
 const addMarks = (startChar, closeChar, markType, characters, string) => {
   const mark = Mark.create({ type: markType });
-  let start = -1;
+  let start = -startChar.length;
   while (true) {
-    start = string.indexOf(startChar, start+1);
+    start = string.indexOf(startChar, start+startChar.length);
     if (start === -1) break;
-    const end = string.indexOf(closeChar, start+1) + 1;
+    const end = string.indexOf(closeChar, start+startChar.length) + startChar.length;
     const size = end === 0 ? characters.size : end;
     for (let i = start; i < size; i++) {
       let char = characters.get(i);
@@ -29,7 +29,9 @@ const decorate = (text, block) => {
   if (string.indexOf('#') !== -1) {
     addMarks('#', '#', 'hashtax-inline', characters, string);
   }
-  if (string.indexOf('{') !== -1) {
+  if (string.indexOf('{{') !== -1) {
+    addMarks('{{', '}}', 'hashtax-inline-var', characters, string);
+  } else if (string.indexOf('{') !== -1) {
     addMarks('{', '}', 'hashtax-var', characters, string);
   }
   return characters.asImmutable();
@@ -39,6 +41,9 @@ const schema = {
   marks: {
     'hashtax-inline': {
       fontWeight: 'bold',
+    },
+    'hashtax-inline-var': {
+      background: 'aliceblue',
     },
     'hashtax-var': {
       background: 'yellow',
