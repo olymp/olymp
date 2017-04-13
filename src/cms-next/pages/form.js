@@ -41,6 +41,9 @@ export class PageForm extends Component {
               <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
               <Parent form={form} treeData={tree} item={item} field="parentId" label="Position" placeholder="Übergeordnetes Element" size="large" />
+              <SectionH title="Links" description="Externe/Interne Verlinkung" />
+              <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />
+              <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />
               <SectionH title="Erweitert" description="Datenanbindung und Sortierung der Elemente" />
               <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
               <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
