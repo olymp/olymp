@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Form } from 'antd';
 import { Prompt } from 'olymp';
 import { Tabs } from 'antd';
 import { Panel } from 'olymp/ui';
@@ -22,6 +23,8 @@ export class PageForm extends Component {
               <Input form={form} item={item} field="name" label="Name" rules={['required']} type="text" size="large" />
               <Input form={form} item={item} field="slug" label="Slug" rules={['required']} type="text" size="large" />
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
+              <Input form={form} item={item} field="binding" placeholder="typ feld1,feld2 slug" label="Bindung" type="text" size="large" />
+              <Input form={form} item={item} field="sorting" placeholder="" label="Sortieren" type="text" size="large" />
             </Panel>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Text" key="2">
@@ -34,11 +37,11 @@ export class PageForm extends Component {
     );
   }
 }
-Page.propTypes = {
+PageForm.propTypes = {
   item: PropTypes.object,
   form: PropTypes.object,
 };
-Page.defaultProps = {
+PageForm.defaultProps = {
   item: {},
 };
 export const PageFormGql = queryPage(mutatePage(Form.create(PageForm)));

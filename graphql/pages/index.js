@@ -42,6 +42,8 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       }
       type Page @collection(name: "Page") @stamp @state {
         menu: String
+        binding: String
+        sorting: String
         alias: Page @relation
         gql: PageGQL
         headings: [PageHeading]
