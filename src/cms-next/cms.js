@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Panel } from 'olymp/ui';
 import { auth as withAuth, withRouter } from 'olymp';
-import { withNavigation, PageSidebar, DataRoute, PageGql, Error404 } from './pages';
+import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
 import { withLocale } from 'olymp/locale-de';
 import { createHashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
@@ -11,26 +11,41 @@ import { GatewayDest } from 'react-gateway';
 
 export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   const HashtaxProvider = createHashtaxProvider(hashtax);
-
+  const cache = {};
   // Container for authed users
   const IfAuth = (props) => {
     const type = Object.keys(modules).find(key => props.query[`@${key}`] !== undefined);
     const collection = type && modules[type];
+    const collectionPage = collection && props.flatNavigation.find(({ binding }) => binding && binding.indexOf(type) === 0);
+    let inner = null;
+    if (collection && collectionPage) { // Show preview for collection
+      const itemId = props.query[`@${type}`];
+      const match = collectionPage;
+      const View = cache[type] = cache[type] || CollectionSidebar(type, collection);
+      inner = [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
+        <View {...props} id={itemId} pageId={pageId || id} render={children => (
+          <Wrapped {...props} match={match}>
+            {children}
+          </Wrapped>
+        )} />
+      ))[0];
+    } else {
+      const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+      inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
+        <DataRoute {...props} collection={collection} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
+          <Wrapped {...props} match={match}>
+            {children}
+          </Wrapped>
+        )} />
+      ))[0] : ( // If no page, render only wrapper
+        <DataRoute {...props} component={PageSidebar} render={match => (
+          <Wrapped {...props}>
+            <Error404 />
+          </Wrapped>
+        )} />
+      );
+    }
 
-    const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
-    const inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
-      <DataRoute {...props} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
-        <Wrapped {...props} match={match}>
-          {children}
-        </Wrapped>
-      )} />
-    ))[0] : ( // If no page, render only wrapper
-      <DataRoute {...props} component={PageSidebar} render={match => (
-        <Wrapped {...props}>
-          <Error404 />
-        </Wrapped>
-      )} />
-    );
     return (
       <ThemeProvider theme={theme}>
         <HashtaxProvider>
@@ -38,7 +53,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
             <NavigationVertical collections={props.collections} />
             <AuthRoutes />
             <GatewayDest name="modal" />
-            {collection && <collection.DataList id={props.query[`@${type}`]} />}
+            {collection && !collectionPage && <collection.DataList id={props.query[`@${type}`]} />}
             {inner}
           </Panel>
         </HashtaxProvider>

@@ -10,6 +10,9 @@ import { lowerFirst } from 'lodash';
 @Form.create()
 export default class CollectionList extends Component {
   state = { search: '' };
+  defaultProps = {
+    items: [],
+  };
 
   ok = () => {
     const { id, form, item, router, mutate } = this.props;
@@ -35,9 +38,9 @@ export default class CollectionList extends Component {
 
   render() {
     const { id, router, isOpen, email, form, saving, pathname, onClose, data, DetailView, typeName, description } = this.props;
+    let { items } = this.props;
     const { search } = this.state;
 
-    let items = (data.items || []);
     if (search) items = items.filter(({ name }) => name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
 
     const leftButtons = (
@@ -52,6 +55,13 @@ export default class CollectionList extends Component {
             <Icon type="save" />
           </Button>
         </Button.Group>}
+      </div>
+    );
+
+    return (
+      <div>
+        <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+        {items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(typeName)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
       </div>
     );
 
