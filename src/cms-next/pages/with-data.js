@@ -4,7 +4,48 @@ import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
 import { interpolate } from 'olymp/hashtax';
 
+const defaultFields = 'id name';
+const deserializeBinding = (value) => { // value e.g. 'event id name slug' or 'event'
+  if (!value) return { };
+  value = value.trim();
+  const firstSpace = value.indexOf(' ');
+  if (firstSpace === -1) return { type: value, fields: defaultFields } // no space = only typename
+  return {
+    type: value.substr(0, firstSpace),
+    fields: value.substr(firstSpace),
+  };
+};
+
+let NavCache = {  };
 export const withNavigation = Wrapped => {
+  // Prepare Data, gather bound navigation items
+  const withNavigationPrepare = Wrapped => {
+    @queryPages // get PageList
+    class WithNavPrepareInner extends Component {
+      render() {
+        const { items } = this.props;
+        const deco = items.filter(item => item.binding);
+        const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
+        if (!NavCache[key]) {
+          NavCache[key] = items.filter(item => item.binding).reduce((store, value) => {
+            const { type, fields } = deserializeBinding(value.binding);
+            return graphql(gql`
+              query ${type}List {
+                items: ${type}List {
+                  ${fields}
+                }
+              }
+            `, { name: `nav_${value.id}` })(store);
+          }, Wrapped);
+        }
+        const Comp = NavCache[key];
+        return Comp ? <Comp {...this.props} /> : <Wrapped {...this.props} />;
+      }
+    }
+    return WithNavPrepareInner;
+  }
+
+  // Compose Navigation from prepared data
   @withNavigationPrepare
   class WithNavInner extends Component {
     render() {
@@ -58,36 +99,17 @@ export const withNavigation = Wrapped => {
   }
   return WithNavInner;
 }
-let NavCache = {  };
-export const withNavigationPrepare = Wrapped => {
-  @queryPages
-  class WithNavPrepareInner extends Component {
-    render() {
-      const { items } = this.props;
-      const deco = items.filter(item => item.binding);
-      const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
-      if (!NavCache[key]) {
-        NavCache[key] = items.filter(item => item.binding).reduce((store, value) => {
-          const split = value.binding.split(' ');
-          const type = split[0];
-          const fields = split.length > 1 ? split[1] : 'id name';
-          const field = split.length > 2 ? split[2] : null;
-          return graphql(gql`
-            query ${type}List {
-              items: ${type}List {
-                ${fields}
-              }
-            }
-          `, { name: `nav_${value.id}` })(store);
-        }, Wrapped);
-      }
-      const Comp = NavCache[key];
-      return Comp ? <Comp {...this.props} /> : <Wrapped {...this.props} />;
-    }
-  }
-  return WithNavPrepareInner;
-}
 
+// DataRoute: Wrap pages with `binding` to their data items
+const cache = {};
+export const DataRoute = ({ binding, component, ...rest }) => {
+  if (!binding) return createElement(component || SimpleRoute, rest);
+  const { type, fields } = deserializeBinding(binding);
+  const key = `route-${type}-${fields}`;
+  if (!cache[key]) cache[key] = withData(component || SimpleRoute, { fields, type });
+  return createElement(cache[key], rest);
+};
+// Helper for DataRoute, actual decorator
 export const withData = (Wrapped, { type, fields, render }) => {
   return graphql(gql`
     query ${(type || 'page')}($id: String) {
@@ -107,16 +129,4 @@ export const withData = (Wrapped, { type, fields, render }) => {
       <Wrapped {...rest} binding={nav_data.item} />
     );
   });
-};
-
-const cache = {};
-export const DataRoute = ({ binding, ...rest }) => {
-  if (!binding) return <SimpleRoute {...rest} />
-  const split = binding.split(' ');
-  const type = split[0];
-  const fields = split.length > 1 ? split[1] : null;
-  const field = split.length > 2 ? split[2] : null;
-  const key = `route-${type}-${fields}`;
-  if (!cache[key]) cache[key] = withData(SimpleRoute, { fields, type });
-  return createElement(cache[key], rest);
 };

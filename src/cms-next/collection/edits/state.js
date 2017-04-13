@@ -8,7 +8,7 @@ const StateInput = ({ item, field, label, layout, initialValue, rules, placehold
     <Form.Item key={field} label={label} {...layout}>
       {form.getFieldDecorator(field, {
         initialValue: item ? item[field] : undefined,
-        rules: getRules(rules),
+        rules: getRules(rules, label),
       })(
         <Select style={{ width: '100%' }} {...rest}>
           <Select.Option value="PUBLISHED">Veröffentlicht</Select.Option>

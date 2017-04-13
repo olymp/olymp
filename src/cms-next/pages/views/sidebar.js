@@ -1,28 +1,35 @@
 import React, { Component } from 'react';
-import { Link, withRouter, withAuth } from 'olymp';
+import { Link, withRouter, withAuth, styled } from 'olymp';
 import { Menu, Button, Form, Icon } from 'antd';
-import { Sidebar } from 'olymp/ui';
+import { Panel, Sidebar } from 'olymp/ui';
 import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../gql';
 import { Pages } from '../pages';
 import { PageForm } from '../form';
 import { Page } from '../page';
 
+export const Container = styled(({ }) => ({
+  display: 'flex',
+  flex: 1,
+  '> :first-child': {
+    flex: 0,
+    overflow: 'auto',
+  },
+  '> :not(:first-child)': {
+    flex: 1,
+    overflow: 'auto',
+  },
+}), 'div', p => p);
+
 @withRouter
-@withAuth
 @queryPage
 @Form.create()
 @mutatePage
 export default class PageSidebar extends Component {
   render() {
-    const { id, form, router, pathname, save, auth, query, binding, navigation } = this.props;
+    const { id, form, router, pathname, save, query, binding, navigation, flatNavigation, render } = this.props;
     let { item } = this.props;
 
-    if (!auth.user) {
-      return (
-        <Page item={item} />
-      );
-    }
     const value = query['@page'];
     if (value === 'new') item = {};
 
@@ -50,20 +57,16 @@ export default class PageSidebar extends Component {
       </div>
     );
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
-    const description = !value ? 'Seiten hinzufügen und verschieben' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
+    const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     return (
-      <div>
-        <Gateway into="menu">
-          <Link to={{ pathname, query: { '@page': 'edit' } }}>
-            Bearbeiten
-          </Link>
-        </Gateway>
+      <Container>
         <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
           {!value && <Pages items={navigation} />}
-          {value && <PageForm form={form} item={item} />}
+          {value && <PageForm form={form} item={item} items={flatNavigation} />}
         </Sidebar>
-        <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />
-      </div>
+        {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />)}
+        {!render && <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />}
+      </Container>
     );
   }
 }

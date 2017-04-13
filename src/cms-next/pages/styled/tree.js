@@ -4,13 +4,14 @@ import { styled, Link } from 'olymp';
 
 export const Tree = styled(({ }) => ({
   '& li': {
-    position: 'relative',
-    // display: 'flex',
     '> span': {
-      left: -4,
-      top: 11,
-      display: 'none',
-      position: 'absolute',
+      position: 'relative',
+      width: 0,
+      onAfter: {
+        left: -4,
+        top: 1,
+        position: 'absolute',
+      },
     },
     '> a': {
       width: '100%',
@@ -20,9 +21,7 @@ export const Tree = styled(({ }) => ({
 Tree.TreeNode = AntTree.TreeNode;
 
 const getIcon = (item) => {
-  if (item.bindingId) {
-    return <span><Icon type="share-alt" /> </span>;
-  } else if (item.sorting && item.sorting[0] === '+') {
+  if (item.sorting && item.sorting[0] === '+') {
     return <span><Icon type="arrow-up" /> </span>;
   } else if (item.sorting && item.sorting[0] === '-') {
     return <span><Icon type="arrow-down" /> </span>;
@@ -40,7 +39,10 @@ export const TreeNode = styled(({ }) => ({
     <Link to={{ pathname: item.slug }}>
       {getIcon(item)}{item.name}
     </Link>
-    <Link to={{ pathname: item.slug, query: { '@page': item.id } }}>
+    {item.bindingId && <Link to={{ query: { '@artikel': item.bindingId } }}>
+      <Icon type="share-alt" />
+    </Link>}
+    <Link to={{ pathname: item.slug, query: { '@page': item.pageId || item.id } }}>
       <Icon type="edit" />
     </Link>
   </span>

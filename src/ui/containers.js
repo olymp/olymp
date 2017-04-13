@@ -6,18 +6,19 @@ export const SplitView = styled(({ side, width }) => ({
   minHeight: 600,
 }), 'div', ({ side, ...p }) => p);
 
-export const Panel = styled(({ paddingX, height, width, paddingY, padding, margin, minWidth, display }) => ({
-  display,
+export const Panel = styled(({ display, alignLabel, ...rest }) => ({
   position: 'relative',
-  paddingLeft: paddingX,
-  paddingRight: paddingX,
-  paddingTop: paddingY,
-  paddingBottom: paddingY,
-  width,
-  height,
-  minWidth,
-  margin,
-  padding,
   // border: '1px solid transparent',
   overflow: 'auto',
+  display: display,
+  '> *': display === 'flex' && {
+    overflow: 'auto',
+  },
+  ...rest,
+  '& .ant-form-item': alignLabel && { // oops, should not be here!
+    marginBottom: 12,
+    '> .ant-form-item-label': {
+      textAlign: alignLabel,
+    },
+  },
 }), 'div', ['children', 'itemScope', 'itemType']);
