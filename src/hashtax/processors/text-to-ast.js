@@ -1,6 +1,6 @@
 
 // convert #componentName key=value# to object { type: componentName, args: { key: value } }
-const parseComponent = raw => {
+export const parseComponent = raw => {
   const [text, ...decos] = raw.split('@');
   const [type, ...rest] = text.split(' ');
   const decorators = decos.map(parseComponent);
@@ -19,7 +19,7 @@ const parseComponent = raw => {
   return { type, args, decorators, raw }
 }
 // convert array of lines to AST
-const processLines = (lines, result = []) => {
+export const processLines = (lines, result = []) => {
   if (!lines || lines.length === 0) return { lines, result };
   let [line, ...rest] = lines;
   const split = line.split('#');

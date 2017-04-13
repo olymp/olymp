@@ -9,8 +9,8 @@ export default graphql(gql`
     }
   }
 `, {
-  options: ({ id, query }) => ({
-    variables: { id: getId(id, query) },
+  options: ({ id, pageId, query }) => ({
+    variables: { id: pageId || getId(id, query) },
     fetchPolicy: isNew({ query }) ? 'cache-only' : undefined,
   }),
   props: ({ ownProps, data }) => ({

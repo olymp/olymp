@@ -7,6 +7,7 @@ export default WrappedComponent => class DataConnector extends Component {
   static contextTypes = {
     hashtaxData: PropTypes.object,
   }
+  static propTypes = WrappedComponent.propTypes;
   render() {
     const hashtaxData = this.context.hashtaxData || {};
     const all = { ...hashtaxData, ...this.props };

@@ -12,6 +12,7 @@ export default () => {
   const renderer = createRenderer({
     selectorPrefix: 'o',
     plugins: [
+      extend(),
       unit(),
       fallbackValue(),
       removeUndefined(),

@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Slate from 'slate/lib/components/editor';
 import Mark from 'slate/lib/models/mark';
 import Plain from './serializer/plain';
+import { Popover, Button } from 'antd';
+import { parseComponent } from 'olymp/hashtax';
+
 
 const addMarks = (startChar, closeChar, markType, characters, string) => {
   const mark = Mark.create({ type: markType });
@@ -37,25 +40,59 @@ const decorate = (text, block) => {
   return characters.asImmutable();
 }
 
-const schema = {
-  marks: {
-    'hashtax-inline': {
-      fontWeight: 'bold',
-    },
-    'hashtax-inline-var': {
-      background: 'aliceblue',
-    },
-    'hashtax-var': {
-      background: 'yellow',
-    },
-  },
-  rules: [{
-    match: () => true,
-    decorate,
-  }]
-}
-
 export default class SlateEditor extends Component {
+  static contextTypes = {
+    Hashtax: PropTypes.func,
+  };
+  getContent = (text) => {
+    const { components } = this.context.Hashtax;
+    const { type, args, decorators, raw } = parseComponent(text.split('#').join(''));
+    const component = components[type];
+    if (component && component.propTypes){
+      return {
+        content: (
+          <div>
+            {Object.keys(component.propTypes).map(key => (
+              <p key={key}>
+                <b>{key}: </b>
+                <span>{args[key]}</span>
+              </p>
+            ))}
+          </div>
+        ),
+        title: type,
+      };
+    } return undefined;
+  }
+  getSchema = () => ({
+    marks: {
+      'hashtax-inline': ({ children, text }) => {
+        const content = this.getContent(text);
+        const inner = (
+          <span href="javascript:;" style={{ fontWeight: 'bold' }}>
+            {children}
+          </span>
+        );
+        if (content) {
+          return (
+            <Popover {...content}>
+              {inner}
+            </Popover>
+          )
+        } return inner;
+      },
+      'hashtax-inline-var': {
+        background: 'aliceblue',
+      },
+      'hashtax-var': {
+        background: 'yellow',
+      },
+    },
+    rules: [{
+      match: () => true,
+      decorate,
+    }]
+  });
   constructor(props) {
     super(props);
     this.plugins = [];
@@ -82,7 +119,7 @@ export default class SlateEditor extends Component {
   render() {
     const { editorState } = this;
     return (
-      <Slate {...this.props} schema={schema} plugins={this.plugins} state={editorState} onChange={this.onChange}/>
+      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange}/>
     )
   }
 }
