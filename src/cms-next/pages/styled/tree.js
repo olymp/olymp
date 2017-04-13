@@ -4,7 +4,7 @@ import { styled, Link } from 'olymp';
 
 export const Tree = styled(({ }) => ({
   '& li': {
-    '> span': {
+    '> span.ant-tree-switcher': {
       position: 'relative',
       width: 0,
       onAfter: {
@@ -22,11 +22,15 @@ Tree.TreeNode = AntTree.TreeNode;
 
 const getIcon = (item) => {
   if (item.sorting && item.sorting[0] === '+') {
-    return <span><Icon type="arrow-up" /> </span>;
+    return <a href="javascript:;"><Icon type="arrow-up" /></a>;
   } else if (item.sorting && item.sorting[0] === '-') {
-    return <span><Icon type="arrow-down" /> </span>;
+    return <a href="javascript:;"><Icon type="arrow-down" /></a>;
   } else if (item.slug === '/') {
-    return <span><Icon type="home" /> </span>;
+    return <a href="javascript:;"><Icon type="home" /></a>;
+  } else if (item.aliasId) {
+    return <a href="javascript:;"><Icon type="copy" /></a>;
+  } else if (item.href) {
+    return <a href="javascript:;"><Icon type="link" /></a>;
   } return null;
 }
 export const TreeNode = styled(({ }) => ({
@@ -37,8 +41,9 @@ export const TreeNode = styled(({ }) => ({
 }), ({ className, item }) => (
   <span className={className}>
     <Link to={{ pathname: item.slug }}>
-      {getIcon(item)}{item.name}
+      {item.name}
     </Link>
+    {getIcon(item)}
     {item.bindingId && <Link to={{ query: { '@artikel': item.bindingId } }}>
       <Icon type="share-alt" />
     </Link>}

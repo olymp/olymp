@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withAuth, withRouter, styled } from 'olymp';
 import tinycolor from 'tinycolor2';
-import Button from '../button';
+import Button from './button';
 
 const Styled = styled(({ left, top, theme }) => ({
   width: 56,

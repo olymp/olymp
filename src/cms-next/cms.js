@@ -15,8 +15,8 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   // Container for authed users
   const IfAuth = (props) => {
     const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
-    const inner = match ? [match].map(({ id, slug, binding, pageId, bindingId }) => (
-      <DataRoute {...props} component={PageSidebar} id={pageId || id} bindingId={bindingId} binding={binding} render={children => (
+    const inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
+      <DataRoute {...props} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
         <Wrapped {...props} match={match}>
           {children}
         </Wrapped>
@@ -46,8 +46,8 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   const NoAuth = (props) => {
     const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
     // Render page
-    const children = match ? [match].map(({ id, slug, binding, pageId, bindingId }) => (
-      <DataRoute {...props} component={PageGql} id={pageId || id} bindingId={bindingId} binding={binding} />
+    const children = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
+      <DataRoute {...props} component={PageGql} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
     ))[0] : <Error404 />;
     // Wrap rendered page
     const inner = (
