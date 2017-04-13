@@ -23,7 +23,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       const match = collectionPage;
       const View = cache[type] = cache[type] || CollectionSidebar(type, collection);
       inner = [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
-        <View {...props} id={itemId} pageId={pageId || id} render={children => (
+        <View {...props} key={itemId} id={itemId} pageId={pageId || id} render={children => (
           <Wrapped {...props} match={match}>
             {children}
           </Wrapped>

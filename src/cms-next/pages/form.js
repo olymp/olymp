@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Form } from 'antd';
-import { Prompt, unflatten, slugify } from 'olymp';
+import { unflatten, slugify } from 'olymp';
 import { Tabs } from 'antd';
 import { Panel, SectionH } from 'olymp/ui';
 import { queryPage, queryPages, mutatePage } from './gql';
@@ -32,7 +32,6 @@ export class PageForm extends Component {
 
     return (
       <div>
-        <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
         <Tabs defaultActiveKey="1" size="small">
           <Tabs.TabPane tab="Basis" key="1">
             {/*<Panel minWidth={560} margin="0 30px" padding={16}>*/}

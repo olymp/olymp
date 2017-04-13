@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter, withAuth, styled } from 'olymp';
+import { Prompt, Link, withRouter, withAuth, styled } from 'olymp';
 import { Menu, Button, Form, Icon } from 'antd';
 import { Panel, Sidebar } from 'olymp/ui';
 import { Gateway } from 'react-gateway';
@@ -60,6 +60,7 @@ export default class PageSidebar extends Component {
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     return (
       <Container>
+        <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
         <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
           {!value && <Pages items={navigation} />}
           {value && <PageForm form={form} item={item} items={flatNavigation} />}

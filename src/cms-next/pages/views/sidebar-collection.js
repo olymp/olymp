@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter, withAuth, styled } from 'olymp';
+import { Link, withRouter, withAuth, styled, Prompt } from 'olymp';
 import { Menu, Button, Form, Icon } from 'antd';
 import { Panel, Sidebar, onError, onSuccess } from 'olymp/ui';
 import { Gateway } from 'react-gateway';
@@ -95,6 +95,7 @@ export default (type, collection) => {
 
       return (
         <Container>
+          <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
           <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
             {!value && <collection.List items={items} />}
             {value && <collection.Detail key={id} form={form} item={item} viewType="sidebar" />}
