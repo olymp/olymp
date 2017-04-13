@@ -14,6 +14,9 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
 
   // Container for authed users
   const IfAuth = (props) => {
+    const type = Object.keys(modules).find(key => props.query[`@${key}`] !== undefined);
+    const collection = type && modules[type];
+
     const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
     const inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
       <DataRoute {...props} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
@@ -35,6 +38,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
             <NavigationVertical collections={props.collections} />
             <AuthRoutes />
             <GatewayDest name="modal" />
+            {collection && <collection.DataList id={props.query[`@${type}`]} />}
             {inner}
           </Panel>
         </HashtaxProvider>

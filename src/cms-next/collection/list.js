@@ -10,16 +10,29 @@ import { lowerFirst } from 'lodash';
 @Form.create()
 export default class CollectionList extends Component {
   state = { search: '' };
+
   ok = () => {
-    const { auth, form, data } = this.props;
-    form.validateFields((err, values) => {
+    const { id, form, item, router, mutate } = this.props;
+    form.validateFields((err, input) => {
       if (err) return onError(err);
-      console.log('SAVED', values);
-      /*auth.save(user).then(({ name }) => {
-        onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
-      }).catch(onError);*/
+      mutate({
+        variables: {
+          id,
+          input,
+        },
+        updateQueries: !id ? {
+          artikelList: (prev, { mutationResult }) => ({
+            ...prev,
+            items: [...prev.items, mutationResult.data.item],
+          }),
+        } : undefined,
+      }).then(({ data: { item } }) => {
+        onSuccess('Gespeichert', 'Der Artikel wurde gespeichert');
+        form.resetFields();
+      }).catch(onError);
     });
   }
+
   render() {
     const { id, router, isOpen, email, form, saving, pathname, onClose, data, DetailView, typeName, description } = this.props;
     const { search } = this.state;

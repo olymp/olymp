@@ -4,5 +4,5 @@ import { get } from 'lodash';
 export default (props, value) => {
   if (typeof value !== 'string') return value;
   if (value.indexOf('{') === -1) return value;
-  return value.replace(/\{(.+?)\}/g, (m, v) => get(props, v, v));
+  return value.replace(/\{\{?(.+?)\}?\}/g, (m, v) => get(props, v, v));
 }

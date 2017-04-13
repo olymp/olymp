@@ -4,29 +4,34 @@ import MenuController from './header';
 import Logo from './logo';
 import sortBy from 'lodash/sortBy';
 import { Affix } from 'antd';
-import { Link, NavLink } from 'olymp';
+import { Link, NavLink, styled } from 'olymp';
 
-export default props => (
-  <div className="frontend">
-    <div className="frontend-container">
-      <Header {...props} />
-      {props.children}
-    </div>
-    <Footer {...props} />
-  </div>
-);
+export const Header = styled(({ sticky }) => ({
+  backgroundColor: 'white',
+  boxShadow: sticky && '0 3px 11px 0 rgba(0,0,0,.06)',
+}), 'nav', p => p);
 
-class Header extends Component {
+export const Container = styled(({ }) => ({
+  display: 'flex',
+  position: 'relative',
+  minHeight: '100vh',
+  flexDirection: 'column',
+  '> :not(:first-child):not(:last-child)': {
+    flex: 1,
+  },
+}), ({ className, children, innerRef }) => <div className={className} children={children} ref={innerRef} />, p => p);
+
+export default class Layout extends Component {
   static defaultProps = {
     pages: [],
   }
   render() {
-    const { pages, color, title, text, location, links, ...rest } = this.props;
+    const { pages, color, title, text, location, links, children, ...rest } = this.props;
     const nav = pages.map(x => x.children)[0];
 
     return (
-      <Affix className="gz-navigation">
-        <nav className="container navbar-collapse">
+      <Container className="frontend" innerRef={node => { if (node) this.container = node }}>
+        <Header className="container navbar-collapse">
           <Link to="/" className="navbar-brand">
             <Logo color={color} title={title} text={text} />
           </Link>
@@ -37,8 +42,10 @@ class Header extends Component {
               </a>
             </li>)}
           </MenuController>
-        </nav>
-      </Affix>
+        </Header>
+        {children}
+        <Footer {...this.props} />
+      </Container>
     );
   }
 
