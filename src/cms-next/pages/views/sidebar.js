@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'olymp';
+import { Link, withRouter, withAuth } from 'olymp';
 import { Menu, Button, Form, Icon } from 'antd';
 import { Sidebar } from 'olymp/ui';
 import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../gql';
-import { PagesGql } from '../pages';
+import { Pages } from '../pages';
 import { PageForm } from '../form';
 import { Page } from '../page';
 
@@ -15,7 +15,7 @@ import { Page } from '../page';
 @mutatePage
 export default class PageSidebar extends Component {
   render() {
-    const { id, form, router, pathname, save, auth, query } = this.props;
+    const { id, form, router, pathname, save, auth, query, binding, navigation } = this.props;
     let { item } = this.props;
 
     if (!auth.user) {
@@ -23,7 +23,6 @@ export default class PageSidebar extends Component {
         <Page item={item} />
       );
     }
-
     const value = query['@page'];
     if (value === 'new') item = {};
 
@@ -60,10 +59,10 @@ export default class PageSidebar extends Component {
           </Link>
         </Gateway>
         <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
-          {!value && <PagesGql />}
+          {!value && <Pages items={navigation} />}
           {value && <PageForm form={form} item={item} />}
         </Sidebar>
-        <Page item={{ ...item, ...form.getFieldsValue() }} />
+        <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />
       </div>
     );
   }

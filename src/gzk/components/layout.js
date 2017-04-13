@@ -17,14 +17,12 @@ export default props => (
 );
 
 class Header extends Component {
+  static defaultProps = {
+    pages: [],
+  }
   render() {
     const { pages, color, title, text, location, links, ...rest } = this.props;
-    const nav = {};
-    Object.keys(pages).forEach((key) => {
-      const page = pages[key];
-      if (!nav[page.menu || 'main']) nav[page.menu || 'main'] = [];
-      nav[page.menu || 'main'].push(page);
-    });
+    const nav = pages.map(x => x.children)[0];
 
     return (
       <Affix className="gz-navigation">
@@ -32,7 +30,7 @@ class Header extends Component {
           <Link to="/" className="navbar-brand">
             <Logo color={color} title={title} text={text} />
           </Link>
-          <MenuController renderMenu={this.renderNav} items={nav.main} className="nav navbar-nav pull-right sf-menu l_tinynav1 sf-js-enabled" location={location}>
+          <MenuController renderMenu={this.renderNav} items={nav} className="nav navbar-nav pull-right sf-menu l_tinynav1 sf-js-enabled" location={location}>
             {links && links.map(({ href, color }) => <li className="nav-item" key={href}>
               <a href={href} target="_blank" rel="noopener noreferrer" className="item active">
                 <Logo icon color={color} />

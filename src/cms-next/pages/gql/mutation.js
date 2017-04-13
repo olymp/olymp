@@ -10,18 +10,6 @@ const ok = (props, mutate) => () => {
         id: item.id,
         input: values,
       },
-      // refetchQueries: ['pageList'],
-      /*update: (proxy, mutationResult) => {
-        const query = gql`{
-          pageList {
-            id, slug, order, name, parentId
-          }
-        }`;
-        const data = proxy.readQuery({ query });
-        data.pageList.push(mutationResult.data.item);
-        proxy.writeQuery({ query, data });
-        console.log('UPDATE', proxy, mutationResult);
-      },*/
       updateQueries: !item.id ? {
         pageList: (prev, { mutationResult }) => ({
           ...prev,
@@ -39,7 +27,7 @@ const ok = (props, mutate) => () => {
 export default graphql(gql`
   mutation page($id: String, $input: PageInput) {
     item: page(id: $id, input: $input) {
-      id, slug, order, name, text, parentId, blocks, state,headings { id, slug, text, children { id, slug, text } }
+      id slug order name text binding sorting parentId blocks state headings { id slug text children { id slug text } }
     }
   }
 `, {
@@ -47,5 +35,34 @@ export default graphql(gql`
     ...ownProps,
     save: ok(ownProps, mutate),
     mutate,
+  }),
+});
+
+export const reorderPage = graphql(gql`
+  mutation reorderPage($id: String, $sorting: String) {
+    item: page(id: $id, input: { sorting: $sorting }) {
+      id sorting
+    }
+  }
+`, {
+  props: ({ ownProps, mutate }) => ({
+    ...ownProps,
+    reorder: mutate,
+  }),
+});
+
+export const movePage = graphql(gql`
+  mutation movePage($id: String, $parentId: String, $sorting: String) {
+    item: page(id: $parentId, input: { sorting: $sorting }) {
+      id sorting
+    }
+    item2: page(id: $id, input: { parentId: $parentId }) {
+      id parentId
+    }
+  }
+`, {
+  props: ({ ownProps, mutate }) => ({
+    ...ownProps,
+    move: mutate,
   }),
 });

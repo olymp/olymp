@@ -4,7 +4,7 @@ const isNew = (props) => props.query['@page'] === 'new';
 export default graphql(gql`
   query page($id: String) {
     item: page(id: $id) {
-      id, slug, order, name, text, parentId, blocks, state, headings { id, slug, text, children { id, slug, text } }
+      id slug order name text binding parentId sorting blocks state headings { id slug text children { id slug text } }
     }
   }
 `, {
@@ -22,7 +22,7 @@ export default graphql(gql`
 export const queryPages = graphql(gql`
   query pageList {
     items: pageList {
-      id, slug, order, name, parentId
+      id slug order name binding parentId sorting
     }
   }
 `, {

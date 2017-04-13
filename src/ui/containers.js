@@ -19,5 +19,5 @@ export const Panel = styled(({ paddingX, height, width, paddingY, padding, margi
   margin,
   padding,
   // border: '1px solid transparent',
-  overflow: 'hidden',
+  overflow: 'auto',
 }), 'div', ['children', 'itemScope', 'itemType']);
