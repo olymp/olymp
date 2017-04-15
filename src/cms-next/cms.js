@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Panel } from 'olymp/ui';
-import { auth as withAuth, withRouter } from 'olymp';
+import { auth as withAuth, withRouter, withState, styled } from 'olymp';
 import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
 import { withLocale } from 'olymp/locale-de';
 import { createHashtaxProvider } from 'olymp/hashtax';
@@ -8,12 +8,57 @@ import { ThemeProvider } from 'react-fela';
 import { NavigationVertical } from './navigation';
 import { AuthRoutes } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
+import FrameComponent from 'react-frame-component';
+
+class FrameInner extends Component {
+  static contextTypes = {
+    window: PropTypes.any,
+    document: PropTypes.any
+  }
+  componentDidMount() {
+    const parent = window;
+    const { document } = this.context;
+    console.log(parent, document);
+    setTimeout(() => {
+      var oHead = document.getElementsByTagName('head')[0];
+      var arrStyleSheets = [
+        ...parent.document.getElementsByTagName('style'),
+        ...parent.document.getElementsByTagName('link')
+      ];
+      for (var i = 0; i < arrStyleSheets.length; i++)
+        oHead.appendChild(arrStyleSheets[i].cloneNode(true));
+    }, 0);
+  }
+  render() {
+    const { children } = this.props;
+    return React.Children.only(children);
+  }
+}
+const Frame = ({ children }) => (
+  <FrameComponent>
+    <FrameInner>
+      {children}
+    </FrameInner>
+  </FrameComponent>
+)
+
+export const Container = styled(({ deviceWidth }) => ({
+  display: 'flex',
+  height: '100%',
+  '> :last-child': {
+    flex: 1,
+  },
+  '> *': {
+    overflow: 'auto',
+  },
+}), 'div', ({ deviceWidth, ...p }) => p);
 
 export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   const HashtaxProvider = createHashtaxProvider(hashtax);
   const cache = {};
   // Container for authed users
   const IfAuth = (props) => {
+    const deviceWidth = props.query[`@deviceWidth`];
     const type = Object.keys(modules).find(key => props.query[`@${key}`] !== undefined);
     const collection = type && modules[type];
     const collectionPage = collection && props.flatNavigation.find(({ binding }) => binding && binding.indexOf(type) === 0);
@@ -23,43 +68,55 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       const match = collectionPage;
       const View = cache[type] = cache[type] || CollectionSidebar(type, collection);
       inner = [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
-        <View {...props} key={itemId} id={itemId} pageId={pageId || id} render={children => (
+        <View {...props} deviceWidth={deviceWidth} key={itemId} id={itemId} pageId={pageId || id} render={children => (
           <Wrapped {...props} match={match}>
             {children}
           </Wrapped>
         )} />
       ))[0];
-    } else {
+    } else if (props.query[`@page`] !== undefined) { // Edit page
       const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
       inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
-        <DataRoute {...props} collection={collection} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
+        <DataRoute {...props} deviceWidth={deviceWidth} collection={collection} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
           <Wrapped {...props} match={match}>
             {children}
           </Wrapped>
         )} />
       ))[0] : ( // If no page, render only wrapper
-        <DataRoute {...props} component={PageSidebar} render={match => (
+        <DataRoute {...props} deviceWidth={deviceWidth} component={PageSidebar} render={match => (
           <Wrapped {...props}>
             <Error404 />
           </Wrapped>
         )} />
+      );
+    } else { // No edit
+      const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+      // Render page
+      const children = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
+        <DataRoute {...props} component={PageGql} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
+      ))[0] : <Error404 />;
+      // Wrap rendered page
+      inner = (
+        <Wrapped {...props} match={match}>
+          {children}
+        </Wrapped>
       );
     }
 
     return (
       <ThemeProvider theme={theme}>
         <HashtaxProvider>
-          <Panel display="flex" height="100%">
-            <NavigationVertical collections={props.collections} />
+          <Container display="flex" height="100%">
+            <NavigationVertical collections={props.collections} deviceWidth={deviceWidth} {...props.location} location={props.location} />
             <AuthRoutes />
             <GatewayDest name="modal" />
             {collection && !collectionPage && <collection.DataList id={props.query[`@${type}`]} />}
             {inner}
-          </Panel>
+          </Container>
         </HashtaxProvider>
       </ThemeProvider>
     );
-  }
+  };
 
   // Container for non-authed users
   const NoAuth = (props) => {
@@ -85,7 +142,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
         </HashtaxProvider>
       </ThemeProvider>
     );
-  }
+  };
 
   @withRouter
   @withLocale

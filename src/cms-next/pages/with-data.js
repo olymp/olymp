@@ -101,11 +101,16 @@ export const withNavigation = Wrapped => {
 }
 
 // DataRoute: Wrap pages with `binding` to their data items
-const cache = {};
+let cache = {};
+let lastType;
 export const DataRoute = ({ binding, component, ...rest }) => {
   if (!binding) return createElement(component || SimpleRoute, rest);
   const { type, fields } = deserializeBinding(binding);
   const key = `route-${type}-${fields}`;
+  if (lastType !== (component || SimpleRoute)) { // TODO better way to wipe cache
+    cache = {};
+    lastType = component || SimpleRoute;
+  }
   if (!cache[key]) cache[key] = withData(component || SimpleRoute, { fields, type });
   return createElement(cache[key], rest);
 };

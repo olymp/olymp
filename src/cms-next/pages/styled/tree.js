@@ -38,16 +38,16 @@ export const TreeNode = styled(({ }) => ({
   '> a:first-child': {
     flex: 1,
   },
-}), ({ className, item }) => (
+}), ({ className, item, query }) => (
   <span className={className}>
-    <Link to={{ pathname: item.slug }}>
+    <Link to={{ pathname: item.slug, query }}>
       {item.name}
     </Link>
     {getIcon(item)}
-    {item.bindingId && <Link to={{ query: { '@artikel': item.bindingId } }}>
+    {item.bindingId && <Link to={{ query: { ...query, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}>
       <Icon type="share-alt" />
     </Link>}
-    <Link to={{ pathname: item.slug, query: { '@page': item.pageId || item.id } }}>
+    <Link to={{ pathname: item.slug, query: { ...query, '@page': item.pageId || item.id } }}>
       <Icon type="edit" />
     </Link>
   </span>

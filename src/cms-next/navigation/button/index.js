@@ -17,7 +17,7 @@ const Styled = styled(({ left, top }) => ({
   }
 }), ({ collectionTree, location, auth, className }) => {
   return (
-    <Dropdown overlay={<CmsAction collections={collectionTree} location={location} auth={auth} />} overlayClassName="ant-dropdown-left" placement="bottomLeft">
+    <Dropdown overlay={<CmsAction collections={collectionTree} {...location} location={location} auth={auth} />} overlayClassName="ant-dropdown-left" placement="bottomLeft">
       <Button type="primary" shape="circle" size="large" className={className}>
         <img src="/logo.png" alt="Olymp CMS" />
       </Button>

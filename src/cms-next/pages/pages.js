@@ -44,7 +44,7 @@ export class Pages extends Component {
     }
   }
   loop = (data, parent) => data.map((item) => {
-    const inner = <TreeNode item={item} parent={parent}/>;
+    const inner = <TreeNode item={item} parent={parent} {...this.props.location}/>;
     if (item.children && item.children.length) {
       return (
         <Tree.TreeNode key={item.slug || item.id} title={inner}>
