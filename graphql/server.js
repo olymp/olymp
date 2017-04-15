@@ -21,11 +21,11 @@ module.exports = (server, options) => {
 
   const Schema = createSchema({ adapter });
   const mail = options.mail && process.env.POSTMARK_KEY ? createMail(options.mail) : null;
-  /*if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `
+  if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `
 Hallo
 ## kopo [Anmelden](http://google.de)
 [Anmelden](http://google.de)
-` }).then(x => x.json()).then(x => console.log(x)).catch(err => console.error(err));*/
+` }).then(x => x.json()).then(x => console.log(x)).catch(err => console.error(err));
   createSitemap(Schema, {});
   createTagGql(Schema, { adapter });
   if (options.google) createGoogleGql(Schema, typeof options.google === 'object' ? options.google : {});

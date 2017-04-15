@@ -9,7 +9,8 @@ export default class Footer extends Component {
   render() {
     const { navigation, user, location } = this.props;
 
-    const nav = (navigation && navigation.foot ? navigation.foot : []).filter(item => item.slug !== '/home').map((item) => {
+    const pages = this.props.pages.map(x => x.children)[1] || [];
+    const nav = pages.map((item) => {
       const secondLvl = (item.children || []).map(item => (
         <NavLink to={item.slug} key={item.slug} className="item" activeClassName="active">
           {item.name}
@@ -39,7 +40,7 @@ export default class Footer extends Component {
       <div className="container mt-2">
         <nav className="nav nav-inline">
           <small>
-            <Link className="nav-link" to="/kontakt">Impressum</Link> - GesundheitsZentrum Kelkheim. Copyright {new Date().getFullYear()}.
+            GesundheitsZentrum Kelkheim. Copyright {new Date().getFullYear()}.
           </small>
           <ul className="pull-right">
             {nav}

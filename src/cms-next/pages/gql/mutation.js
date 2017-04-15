@@ -19,7 +19,6 @@ const ok = (props, mutate) => () => {
     }).then(({ data: { item } }) => {
       onSuccess('Gespeichert', 'Die Seite wurde gespeichert');
       form.resetFields();
-      router.push({ pathname: item.slug });
     }).catch(onError);
   });
 }

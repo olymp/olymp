@@ -3,7 +3,6 @@ import { Menu } from 'antd';
 import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
 import { Link } from 'olymp';
-import { GatewayDest } from 'react-gateway';
 
 const wrapper = children => (
   <Menu.SubMenu key={key} title={capitalize(key)}>
@@ -21,13 +20,10 @@ export default class CmsAction extends Component {
   };
 
   render() {
-    const { location, collections } = this.props;
-    const { pathname } = location;
+    const { location, collections, query, pathname } = this.props;
 
     return (
       <Menu style={{ minWidth: 150, borderRadius: '4px', boxShadow: '0 1px 6px rgba(0, 0, 0, .2)' }} onClick={this.handleClick}>
-        <GatewayDest component={Menu.Item} name="menu" key="gateway-button" />
-        <Menu.Divider />
         {Object.keys(collections).map((key) => collections[key].length === 1 ? (
             (collections[key] || []).map(({ name, title }) => (
               <Menu.Item key={`/@/${name}`}>
@@ -60,6 +56,24 @@ export default class CmsAction extends Component {
             Profil
           </Link>
         </Menu.Item>
+        <Menu.Divider />
+        <Menu.SubMenu title="Gerät">
+          <Menu.Item key="device">
+            <Link to={{ pathname, query: { ...query, '@deviceWidth': undefined } }}>
+              Standart
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="device-768">
+            <Link to={{ pathname, query: { ...query, '@deviceWidth': 768 } }}>
+              Tablet
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="device-375">
+            <Link to={{ pathname, query: { ...query, '@deviceWidth': 375 } }}>
+              Smartphone
+            </Link>
+          </Menu.Item>
+        </Menu.SubMenu>
         <Menu.Divider />
         <Menu.Item key="logout">Abmelden</Menu.Item>
       </Menu>

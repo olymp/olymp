@@ -39,7 +39,7 @@ export class PageForm extends Component {
               <Input form={form} item={item} field="name" label="Name" onChange={this.handleNameChange} rules={['required']} type="text" size="large" />
               <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
-              <Parent form={form} treeData={tree} item={item} field="parentId" label="Position" placeholder="Übergeordnetes Element" size="large" />
+              <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />
               <SectionH title="Links" description="Externe/Interne Verlinkung" />
               <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />
               <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />
