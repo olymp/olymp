@@ -50,7 +50,7 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
 export default withAuth(({ auth, className, deviceWidth, children, query, ...rest }) => (
   <VerticalMenu className={className} deviceWidth={deviceWidth}>
     <Menu.Item key="page">
-      <Popover placement="right" content="Seiten-Mmanager">
+      <Popover placement="right" content="Seiten-Manager">
         <Link to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="home" />
         </Link>
