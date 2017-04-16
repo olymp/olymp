@@ -34,13 +34,15 @@ class FrameInner extends Component {
     return React.Children.only(children);
   }
 }
-const Frame = ({ children }) => (
+const Frame = ({ children, disabled }) => disabled ? (
+  React.Children.only(children)
+) : (
   <FrameComponent>
     <FrameInner>
       {children}
     </FrameInner>
   </FrameComponent>
-)
+);
 
 export const Container = styled(({ deviceWidth }) => ({
   display: 'flex',
@@ -69,24 +71,30 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       const View = cache[type] = cache[type] || CollectionSidebar(type, collection);
       inner = [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <View {...props} deviceWidth={deviceWidth} key={itemId} id={itemId} pageId={pageId || id} render={children => (
-          <Wrapped {...props} match={match}>
-            {children}
-          </Wrapped>
+          <Frame disabled={!deviceWidth}>
+            <Wrapped {...props} match={match}>
+              {children}
+            </Wrapped>
+          </Frame>
         )} />
       ))[0];
     } else if (props.query[`@page`] !== undefined) { // Edit page
       const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
       inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <DataRoute {...props} deviceWidth={deviceWidth} collection={collection} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
-          <Wrapped {...props} match={match}>
-            {children}
-          </Wrapped>
+          <Frame disabled={!deviceWidth}>
+            <Wrapped {...props} match={match}>
+              {children}
+            </Wrapped>
+          </Frame>
         )} />
       ))[0] : ( // If no page, render only wrapper
         <DataRoute {...props} deviceWidth={deviceWidth} component={PageSidebar} render={match => (
-          <Wrapped {...props}>
-            <Error404 />
-          </Wrapped>
+          <Frame disabled={!deviceWidth}>
+            <Wrapped {...props}>
+              <Error404 />
+            </Wrapped>
+          </Frame>
         )} />
       );
     } else { // No edit
