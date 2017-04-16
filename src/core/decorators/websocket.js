@@ -52,7 +52,6 @@ export class WebsocketProvider extends Component {
     let hasPong = true;
     const onPong = ({ version, xyz }) => {
       hasPong = true;
-      console.log('Pong', version, xyz);
       if (this.lastVersion && this.lastVersion !== version) {
         this.showNotification(
           'Neues Update verfügbar',
