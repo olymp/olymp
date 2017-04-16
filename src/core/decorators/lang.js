@@ -2,7 +2,7 @@ import React, { Component, Children, PropTypes } from 'react';
 
 export class LangProvider extends Component {
   static childContextTypes = {
-    lang: React.PropTypes.bool,
+    lang: React.PropTypes.object,
   };
   getChildContext() {
     return {
