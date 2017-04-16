@@ -14,4 +14,8 @@ export const Splitview = styled(({ deviceWidth }) => ({
     margin: 'auto',
     maxWidth: deviceWidth,
   },
+  '> iframe': {
+    height: '100%',
+    border: 0,
+  },
 }), 'div', ({ deviceWidth, ...p }) => p);
