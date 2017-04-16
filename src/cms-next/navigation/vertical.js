@@ -93,9 +93,9 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
     </Menu.Item>
 
     {auth.user && auth.user.isAdmin ? (
-      <Menu.Item key="user">
+      <Menu.Item key="users">
         <Popover placement="right" content="Benutzer-Management">
-          <Link to={{ query: { '@user': null } }}>
+          <Link to={{ query: { '@users': null } }}>
             <Icon type="team" />
           </Link>
         </Popover>
