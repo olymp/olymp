@@ -4,15 +4,18 @@ import { Menu, Icon, Tooltip, Popover } from 'antd';
 import tinycolor from 'tinycolor2';
 import CmsButton from './button';
 
+const Separator = styled(({ theme }) => ({
+  // borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+}), 'li');
+const Filler = styled(({ theme }) => ({
+  flex: 1,
+}), 'li');
 const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   overflow: 'visible',
   display: 'flex',
   flexDirection: 'column',
   boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
   background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
-  '> li:nth-last-child(4)': {
-    marginTop: 'auto',
-  },
   '> li.ant-menu-item': {
     paddingX: 14,
     //padding: 5,
@@ -84,6 +87,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Popover>
     </Menu.Item>
+    <Separator />
     <Menu.Item key="artikel">
       <Popover placement="right" content="Artikel-Liste">
         <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>
@@ -91,7 +95,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Popover>
     </Menu.Item>
-
+    <Filler />
     {auth.user && auth.user.isAdmin ? (
       <Menu.Item key="user">
         <Popover placement="right" content="Benutzer-Management">
@@ -133,6 +137,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Menu.Item>
     </Menu.SubMenu>
+    <Separator />
     <Menu.Item key="logoff" title="Abmelden">
       <Popover placement="right" content="Abmelden">
         <a onClick={auth.logout} href="javascript:;">
