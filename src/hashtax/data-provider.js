@@ -14,8 +14,8 @@ export default class DataProvider extends Component {
     return {
       hashtaxData: {
         ...hashtaxData,
-        ...props
-      }
+        ...props,
+      },
     };
   }
   render() {

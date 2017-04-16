@@ -2,21 +2,27 @@ import React, { Component, PropTypes, Children } from 'react';
 import hashtax from './hashtax';
 
 // HashtaxProvider
-export default options => {
-  const Hashtax = hashtax(options);
-  class HashtaxProvider extends Component {
-    static childContextTypes = {
-      Hashtax: PropTypes.func.isRequired,
-    }
-    getChildContext() {
-      return {
-        Hashtax,
-      };
-    }
-    render() {
-      const { children } = this.props;
-      return Children.only(children);
-    }
+class HashtaxProvider extends Component {
+  static childContextTypes = {
+    Hashtax: PropTypes.func.isRequired,
   }
-  return HashtaxProvider;
+  constructor(props) {
+    super(props);
+    this.Hashtax = hashtax(props);
+  }
+  shouldComponentUpdate(newProps) {
+    console.log('NEW PROPS',newProps)
+    this.Hashtax = hashtax(newProps);
+    return true;
+  }
+  getChildContext() {
+    return {
+      Hashtax: this.Hashtax,
+    };
+  }
+  render() {
+    const { children } = this.props;
+    return Children.only(children);
+  }
 }
+export default HashtaxProvider;

@@ -61,7 +61,7 @@ export const withNavigation = Wrapped => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
               (data.items||[]).forEach(item => {
-                const slug = child.slug ? interpolate(item, child.slug) : item.slug;
+                const slug = child.slug ? interpolate(child.slug, item) : item.slug;
                 state.push({ ...child, pageId: child.id, bindingId: item.id, slug, name: item.name, id: item.id })
               });
             } else {
