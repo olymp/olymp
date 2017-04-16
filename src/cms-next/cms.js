@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Panel } from 'olymp/ui';
-import { auth as withAuth, withRouter, withState, styled } from 'olymp';
+import { auth as withAuth, withRouter, withState, styled, withLangProvider } from 'olymp';
 import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
@@ -10,6 +10,7 @@ import { AuthRoutes } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
 import * as Template from './templates';
 import FrameComponent from 'react-frame-component';
+import * as LANG from './lang/de';
 
 class FrameInner extends Component {
   static contextTypes = {
@@ -158,6 +159,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   @withLocale
   @withAuth(auth)
   @withNavigation
+  @withLangProvider(LANG)
   @Template.withTemplates
   class CMS extends Component {
     render() {
