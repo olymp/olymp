@@ -56,6 +56,13 @@ export default withAuth(({ auth, className, deviceWidth, children, query, ...res
         </Link>
       </Popover>
     </Menu.Item>
+    <Menu.Item key="template">
+      <Popover placement="right" content="Template-Liste">
+        <Link to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}>
+          <Icon type="appstore-o" />
+        </Link>
+      </Popover>
+    </Menu.Item>
     <Menu.Item key="artikel">
       <Popover placement="right" content="Artikel-Liste">
         <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>

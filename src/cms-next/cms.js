@@ -3,11 +3,12 @@ import { Panel } from 'olymp/ui';
 import { auth as withAuth, withRouter, withState, styled } from 'olymp';
 import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
 import { withLocale } from 'olymp/locale-de';
-import { createHashtaxProvider } from 'olymp/hashtax';
+import { HashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
 import { NavigationVertical } from './navigation';
 import { AuthRoutes } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
+import * as Template from './templates';
 import FrameComponent from 'react-frame-component';
 
 class FrameInner extends Component {
@@ -56,11 +57,11 @@ export const Container = styled(({ deviceWidth }) => ({
 }), 'div', ({ deviceWidth, ...p }) => p);
 
 export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
-  const HashtaxProvider = createHashtaxProvider(hashtax);
   const cache = {};
   // Container for authed users
   const IfAuth = (props) => {
     const deviceWidth = props.query[`@deviceWidth`];
+    const template = props.query[`@template`];
     const type = Object.keys(modules).find(key => props.query[`@${key}`] !== undefined);
     const collection = type && modules[type];
     const collectionPage = collection && props.flatNavigation.find(({ binding }) => binding && binding.indexOf(type) === 0);
@@ -113,12 +114,13 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
 
     return (
       <ThemeProvider theme={theme}>
-        <HashtaxProvider>
+        <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...props.templates }}>
           <Container display="flex" height="100%">
             <NavigationVertical collections={props.collections} deviceWidth={deviceWidth} {...props.location} location={props.location} />
             <AuthRoutes />
             <GatewayDest name="modal" />
             {collection && !collectionPage && <collection.DataList id={props.query[`@${type}`]} />}
+            {template !== undefined && <Template.DataList id={template} />}
             {inner}
           </Container>
         </HashtaxProvider>
@@ -141,7 +143,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
     );
     return (
       <ThemeProvider theme={theme}>
-        <HashtaxProvider>
+        <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...props.templates }}>
           <div>
             <AuthRoutes />
             <GatewayDest name="modal" />
@@ -156,6 +158,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   @withLocale
   @withAuth(auth)
   @withNavigation
+  @Template.withTemplates
   class CMS extends Component {
     render() {
       const { auth } = this.props;

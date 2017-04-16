@@ -4,11 +4,14 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
     query: `
       page: Page @query
       pageList: [Page] @query
+      template: Template @query
+      templateList: [Template] @query
       settings: Settings @query
       settingsList: [Settings] @query
     `,
     mutation: `
       page: Page @mutate
+      template: Template @mutate
       reorderPages(id: String, ids: [String], order: [Int]): [Page]
       settings: Settings @mutate
     `,
@@ -27,6 +30,11 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       },
     },
     schema: `
+      type Template @collection(name: "Template") {
+        id: String
+        name: String
+        text: String
+      }
       type PageHeading {
         id: String
         text: String
