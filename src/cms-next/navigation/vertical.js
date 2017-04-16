@@ -9,14 +9,12 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
-  background: !deviceWidth
-    ? `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`
-    : `linear-gradient(0deg, #000000, #232323)`,
-  '> li:last-child': {
+  background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
+  '> li:nth-last-child(4)': {
     marginTop: 'auto',
   },
   '> li.ant-menu-item': {
-    paddingX: 20,
+    paddingX: 14,
     //padding: 5,
     //height: 'initial',
     textAlign: 'center',
@@ -28,22 +26,38 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
     '> a > i.anticon': {
       margin: 0,
       // color: theme.color,
-      color: !deviceWidth ? 'white' : '#666',
+      color: '#FFFFFF',
+      padding: 6,
+      backgroundColor: 'rgba(0,0,0,0.15)',
+      borderRadius: '50%',
+    },
+    ':hover > a > i.anticon': {
+      backgroundColor: 'rgba(0,0,0,0.33)',
     },
   },
   '> li.ant-menu-submenu > .ant-menu-submenu-title': {
-    paddingX: 20,
-    color: !deviceWidth ? 'white' : '#666',
+    paddingX: 14,
+    color: '#FFFFFF',
     textAlign: 'center',
     '> i': {
       margin: 0,
+      color: '#FFFFFF',
+      padding: 6,
+      backgroundColor: 'rgba(0,0,0,0.15)',
+      borderRadius: '50%',
+    },
+    ':hover > i.anticon': {
+      backgroundColor: 'rgba(0,0,0,0.33)',
     },
   },
   '> li.ant-menu-item.ant-menu-item-selected': {
     backgroundColor: 'transparent',
   },
   '> li.ant-menu-item-selected > a': {
-    color: !deviceWidth ? 'white' : theme.color,
+    color: theme.color,
+    '> i': {
+      backgroundColor: 'rgba(0,0,0,0.25)!important',
+    },
   },
 }), Menu, p => p);
 
@@ -63,10 +77,42 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Popover>
     </Menu.Item>
+    <Menu.Item key="media">
+      <Popover placement="right" content="Mediathek">
+        <Link to={{ query: { '@mediathek': null } }}>
+          <Icon type="picture" />
+        </Link>
+      </Popover>
+    </Menu.Item>
     <Menu.Item key="artikel">
       <Popover placement="right" content="Artikel-Liste">
         <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="calculator" />
+        </Link>
+      </Popover>
+    </Menu.Item>
+
+    {auth.user && auth.user.isAdmin ? (
+      <Menu.Item key="user">
+        <Popover placement="right" content="Benutzer-Management">
+          <Link to={{ query: { '@user': null } }}>
+            <Icon type="team" />
+          </Link>
+        </Popover>
+      </Menu.Item>
+    ) : (
+      <Menu.Item key="profile">
+        <Popover placement="right" content="Profil">
+          <Link to={{ query: { '@profile': null } }}>
+            <Icon type="user" />
+          </Link>
+        </Popover>
+      </Menu.Item>
+    )}
+    <Menu.Item key="settings">
+      <Popover placement="right" content="Einstellungen">
+        <Link to={{ query: { '@settings': null } }}>
+          <Icon type="setting" />
         </Link>
       </Popover>
     </Menu.Item>
