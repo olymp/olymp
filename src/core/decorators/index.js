@@ -11,3 +11,4 @@ export { default as withForm } from './form';
 export { default as withLightbox, useLightbox } from './lightbox';
 export { default as withAmp, AmpProvider } from './amp';
 export { default as withWebsocket, WebsocketProvider } from './websocket';
+export { default as withLang, withLangProvider, LangProvider } from './lang';
