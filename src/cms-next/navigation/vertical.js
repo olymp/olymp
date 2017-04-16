@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withAuth, withRouter, styled, Link } from 'olymp';
+import { withAuth, withRouter, styled, Link, withLang } from 'olymp';
 import { Menu, Icon, Tooltip, Popover } from 'antd';
 import tinycolor from 'tinycolor2';
 import CmsButton from './button';
@@ -47,10 +47,10 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   },
 }), Menu, p => p);
 
-export default withAuth(({ auth, className, deviceWidth, children, query, ...rest }) => (
+export default withLang(withAuth(({ auth, lang, className, deviceWidth, children, query, ...rest }) => (
   <VerticalMenu className={className} deviceWidth={deviceWidth}>
     <Menu.Item key="page">
-      <Popover placement="right" content="Seiten-Mmanager">
+      <Popover placement="right" content={lang.PAGE_MANAGER}>
         <Link to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="home" />
         </Link>
@@ -96,4 +96,4 @@ export default withAuth(({ auth, className, deviceWidth, children, query, ...res
     </Menu.Item>
     {/*<CmsButton {...rest} />*/}
   </VerticalMenu>
-));
+)));
