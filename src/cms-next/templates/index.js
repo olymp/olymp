@@ -43,7 +43,7 @@ export const withTemplates = graphql(gql`
     }
   }
 `, {
-  props: ({ ownProps, data }) => ({ ...ownProps, templateData: data, templates: data.items.reduce((store, item) => {
+  props: ({ ownProps, data }) => ({ ...ownProps, templateData: data, templates: (data.items || []).reduce((store, item) => {
     store[item.name] = item.text;
     return store;
   }, {}) || {} }),
