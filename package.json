@@ -46,6 +46,7 @@
     "bluebird": "3.4.7",
     "body-parser": "1.16.1",
     "cloudinary": "1.7.0",
+    "cloudinary-react": "^1.0.3",
     "connect-redis": "^3.2.0",
     "css-loader": "^0.26.4",
     "dom-closest": "^0.2.0",
