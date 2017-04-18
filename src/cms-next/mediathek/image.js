@@ -29,7 +29,7 @@ const Img = ({ src, children, maxSize, style, className, ...rest }) => (
   </Image>
 );
 Img.propTypes = {
-  width: PropTypes.numbers,
-  height: PropTypes.numbers,
+  width: PropTypes.number,
+  height: PropTypes.number,
 };
 export default Img;
