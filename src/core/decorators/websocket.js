@@ -28,7 +28,6 @@ export class WebsocketProvider extends Component {
     }
   }
   connected = (connected) => {
-    console.log('uws state', connected, this.ws.readyState);
     // if (this.state.connected === connected) return;
     if (connected === true) {
       this.showNotification();

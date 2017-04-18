@@ -66,11 +66,13 @@ export default (type, collection) => {
       );
       const rightButtons = (
         <div>
-          {value && <Button.Group>
-            <Button disabled={!form.isFieldsTouched()} onClick={this.ok}>
-              <Icon type="save" />
-            </Button>
-          </Button.Group>}
+          {value && (
+            <Button.Group>
+              <Button disabled={!form.isFieldsTouched()} onClick={this.ok}>
+                <Icon type="save" />
+              </Button>
+            </Button.Group>
+          )}
           {!value && <Button.Group>
             <Button onClick={() => router.push({ pathname, query: { ...query, [`@${type}`]: 'new' } })}>
               <Icon type="plus" />
