@@ -2,9 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import Slate from 'slate/lib/components/editor';
 import Mark from 'slate/lib/models/mark';
 import Plain from './serializer/plain';
-import { Popover, Button } from 'antd';
+import { Popover, Button, Tag, Input } from 'antd';
 import { parseComponent } from 'olymp/hashtax';
+import { styled } from 'olymp';
 
+const Highlighted = styled(({ }) => ({
+  fontWeight: 'bold',
+  ':hover': {
+    backgroundColor: 'rgba(0, 0, 0, .1)',
+  },
+}), 'span', p => p);
 
 const addMarks = (startChar, closeChar, markType, characters, string) => {
   const mark = Mark.create({ type: markType });
@@ -28,15 +35,19 @@ const addMarks = (startChar, closeChar, markType, characters, string) => {
 const decorate = (text, block) => {
   const characters = text.characters.asMutable();
   const string = text.text;
+
   if (!string) return text.characters;
+
   if (string.indexOf('#') !== -1) {
     addMarks('#', '#', 'hashtax-inline', characters, string);
   }
+
   if (string.indexOf('{{') !== -1) {
     addMarks('{{', '}}', 'hashtax-inline-var', characters, string);
   } else if (string.indexOf('{') !== -1) {
     addMarks('{', '}', 'hashtax-var', characters, string);
   }
+
   return characters.asImmutable();
 }
 
@@ -44,10 +55,17 @@ export default class SlateEditor extends Component {
   static contextTypes = {
     Hashtax: PropTypes.func,
   };
+
+  getContentEditor = (propType, val) => {
+    return val;
+    // return <Input value={val} placeholder={propType} />;
+  }
+
   getContent = (text) => {
     const { components } = this.context.Hashtax;
     const { type, args, decorators, raw } = parseComponent(text.split('#').join(''));
     const component = components[type];
+
     if (component && component.propTypes){
       return {
         content: (
@@ -55,7 +73,7 @@ export default class SlateEditor extends Component {
             {Object.keys(component.propTypes).map(key => (
               <p key={key}>
                 <b>{key}: </b>
-                <span>{args[key]}</span>
+                {this.getContentEditor(key, args[key])}
               </p>
             ))}
           </div>
@@ -64,14 +82,15 @@ export default class SlateEditor extends Component {
       };
     } return undefined;
   }
+
   getSchema = () => ({
     marks: {
       'hashtax-inline': ({ children, text }) => {
         const content = this.getContent(text);
         const inner = (
-          <span href="javascript:;" style={{ fontWeight: 'bold' }}>
+          <Highlighted>
             {children}
-          </span>
+          </Highlighted>
         );
         if (content) {
           return (
@@ -81,18 +100,15 @@ export default class SlateEditor extends Component {
           )
         } return inner;
       },
-      'hashtax-inline-var': {
-        background: 'aliceblue',
-      },
-      'hashtax-var': {
-        background: 'yellow',
-      },
+      'hashtax-inline-var': ({ children }) => <Tag color="blue">{children}</Tag>,
+      'hashtax-var': ({ children }) => <Tag color="yellow">{children}</Tag>,
     },
     rules: [{
       match: () => true,
       decorate,
     }]
   });
+
   constructor(props) {
     super(props);
     this.plugins = [];
@@ -100,12 +116,14 @@ export default class SlateEditor extends Component {
     this.value = props.value || '';
     this.editorState = Plain.deserialize(this.value);
   }
+
   componentWillReceiveProps(newProps) {
     if (newProps.value !== this.value) {
       this.value = newProps.value || '';
       this.editorState = Plain.deserialize(this.value);
     }
   }
+
   onChange = value => {
     this.editorState = value;
     this.setState({ }, () => {
@@ -116,10 +134,22 @@ export default class SlateEditor extends Component {
       }
     });
   }
+
+  onKeyDown = e => {
+    const key = window.event ? e.keyCode : e.which;
+    console.log(key);
+
+    if (key === 220) { // #
+      console.log(e, '#');
+    } else if (key === 56) { // {
+
+    }
+  }
+
   render() {
     const { editorState } = this;
     return (
-      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange}/>
+      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange} onKeyDown={this.onKeyDown}/>
     )
   }
 }
