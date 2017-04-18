@@ -14,8 +14,8 @@ export default (url, { mode, effect, border, width, height, cropX, cropY, qualit
   if (url.indexOf('https://res.cloudinary.com/') !== 0) return url;
 
   // RETINA
-  // if (retina && width * 2 <= originWidth) width *= 2;
-  // if (retina && height * 2 <= originHeight) height *= 2;
+  if (retina && width * 2 <= originWidth) width *= 2;
+  if (retina && height * 2 <= originHeight) height *= 2;
 
   // CROP
   if (crop) {
@@ -24,7 +24,7 @@ export default (url, { mode, effect, border, width, height, cropX, cropY, qualit
 
   // SIZE
   if (width || height) {
-    part = `c_${mode}/${part}`;
+    part = `${part}/c_${mode}`;
     if (height) part = `h_${height},${part}`;
     if (width) part = `w_${width},${part}`;
   }
