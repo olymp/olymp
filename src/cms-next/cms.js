@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Panel } from 'olymp/ui';
 import { auth as withAuth, withRouter, withState, styled, withLangProvider } from 'olymp';
 import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
+import { MediathekSidebar } from './mediathek';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
@@ -67,6 +68,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
     const collection = type && modules[type];
     const collectionPage = collection && props.flatNavigation.find(({ binding }) => binding && binding.indexOf(type) === 0);
     let inner = null;
+
     if (collection && collectionPage) { // Show preview for collection
       const itemId = props.query[`@${type}`];
       const match = collectionPage;
@@ -82,6 +84,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       ))[0];
     } else if (props.query[`@page`] !== undefined) { // Edit page
       const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+
       inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <DataRoute {...props} deviceWidth={deviceWidth} collection={collection} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
           <Frame disabled={!deviceWidth}>
@@ -99,8 +102,13 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
           </Frame>
         )} />
       );
+    } else if (props.query[`@mediathek`] !== undefined) { // Mediathek
+      inner = (
+        <MediathekSidebar id={props.query[`@mediathek`]} multi />
+      );
     } else { // No edit
       const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+
       // Render page
       const children = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <DataRoute {...props} component={PageGql} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
@@ -132,6 +140,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   // Container for non-authed users
   const NoAuth = (props) => {
     const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+
     // Render page
     const children = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
       <DataRoute {...props} component={PageGql} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
