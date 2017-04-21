@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Panel } from 'olymp/ui';
 import { auth as withAuth, withRouter, withState, styled, withLangProvider } from 'olymp';
 import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
-import { MediathekSidebar } from './mediathek';
+import { MediaSidebar } from './media';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
@@ -76,7 +76,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       inner = [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <View {...props} deviceWidth={deviceWidth} key={itemId} id={itemId} pageId={pageId || id} render={children => (
           <Frame disabled={!deviceWidth}>
-            <Wrapped {...props} match={match}>
+             <Wrapped {...props} match=match
               {children}
             </Wrapped>
           </Frame>
@@ -102,9 +102,9 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
           </Frame>
         )} />
       );
-    } else if (props.query[`@mediathek`] !== undefined) { // Mediathek
+    } else if (props.query[`@media`] !== undefined) { // Media
       inner = (
-        <MediathekSidebar id={props.query[`@mediathek`]} multi />
+        <MediaSidebar id={props.query[`@media`]} multi />
       );
     } else { // No edit
       const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
