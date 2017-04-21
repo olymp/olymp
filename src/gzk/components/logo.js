@@ -30,7 +30,7 @@ export default class Logo extends Component {
     }
     return (
       <div className="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="220px" height="41px" viewBox="0 0 220 41" version="1.1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="250px" height="41px" viewBox="0 0 220 41" version="1.1">
           <g transform="scale(1.5)">
             <path
               style={{ fill: color }}

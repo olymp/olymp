@@ -8,9 +8,6 @@ import { styled } from 'olymp';
 
 const Highlighted = styled(({ }) => ({
   fontWeight: 'bold',
-  ':hover': {
-    backgroundColor: 'rgba(0, 0, 0, .1)',
-  },
 }), 'span', p => p);
 
 const addMarks = (startChar, closeChar, markType, characters, string) => {

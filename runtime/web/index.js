@@ -20,7 +20,7 @@ import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-ro
 // End Redux stuff
 
 const init = require('@app').init;
-
+// window.Perf = require('react-addons-perf');
 if (process.env.NODE_ENV === 'production') {
   const offline = require('offline-plugin/runtime');
   offline.install({
