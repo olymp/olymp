@@ -8,7 +8,7 @@ const states = {
 export default props => (
   <Sidebar
     {...props}
-    activePage="mediathek"
+    activePage="media"
     filter={undefined}
     states={states}
   />

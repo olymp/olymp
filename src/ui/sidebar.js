@@ -1,12 +1,12 @@
 import React, { Component, Children } from 'react';
 import { createComponent } from 'react-fela';
-import { Button as AntButton } from 'antd';
+import { Button as AntButton, Icon, Button } from 'antd';
 import cn from 'classnames';
 import { Spin } from 'antd';
 import tinycolor from 'tinycolor2';
 import Transition from 'olymp/src/core/components/transitions';
 
-const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, ...props }) => (
+const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, ...props }) => isOpen ? (
   <StyledInner {...props}>
     <div className="ant-modal-content">
       <div className="ant-modal-header">
@@ -15,9 +15,24 @@ const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, classN
         <div className="ant-modal-title">{title}</div>
         {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
       </div>
-      {Children.toArray(children).length > 0 && <div className="ant-modal-body">
-        {children}
-      </div>}
+
+      {Children.toArray(children).length > 0 && (
+        <div className="ant-modal-body">
+          {children}
+        </div>
+      )}
+    </div>
+  </StyledInner>
+) : (
+  <StyledInner {...props} minWidth={80}>
+    <div className="ant-modal-content">
+      <div className="ant-modal-header">
+        <Button.Group>
+          <Button onClick={() => {}}>
+            <Icon type="double-right" />
+          </Button>
+        </Button.Group>
+      </div>
     </div>
   </StyledInner>
 );
@@ -34,6 +49,7 @@ class SidebarInner extends Component {
     );
   }
 };
+
 const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWidth, showLogo }) => ({
   '> .ant-modal-content': {
     display: 'flex',

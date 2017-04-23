@@ -4,10 +4,13 @@ import { Icon } from 'antd';
 import { queryMedias } from './gql';
 import Image from './image';
 
+const MAX_ITEMS = 12;
+
 const Gallery = styled(() => ({
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: 'space-around',
+  // alignContent: 'space-around',
   alignItems: 'baseline',
   position: 'relative',
   minWidth: 800,
@@ -17,7 +20,7 @@ const Gallery = styled(() => ({
   borderRight: '1px solid #e9e9e9',
 }), 'div', p => p);
 
-const ImageContainer = styled(({ theme, multi, selected }) => {
+const ImageContainer = styled(({ theme, isActive }) => {
   let style = {
     position: 'relative',
     maxWidth: 180,
@@ -33,40 +36,34 @@ const ImageContainer = styled(({ theme, multi, selected }) => {
     }
   }
 
-  if (selected) {
+  if (isActive) {
     style = {
       ...style,
       transform: 'scale(1.1)',
+      animationName: 'jiggle',
+      animationIterationCount: 'infinite',
+      animationDuration: '1.2s',
+      transformOrigin: '50% 50%',
+      zIndex: 2,
+      '@keyframes jiggle': {
+        '0%': {
+          transform: 'rotate(-2deg) scale(1.05)',
+          animationTimingFunction: 'linear',
+        },
+        '50%': {
+          transform: 'rotate(2deg) scale(1.05)',
+          animationTimingFunction: 'linear',
+        },
+        '100%': {
+          transform: 'rotate(-2deg) scale(1.05)',
+          animationTimingFunction: 'linear',
+        },
+      }
     };
-
-    if (multi) {
-      style = {
-        ...style,
-        animationName: 'jiggle',
-        animationIterationCount: 'infinite',
-        animationDuration: '1.2s',
-        transformOrigin: '50% 50%',
-        zIndex: 2,
-        '@keyframes jiggle': {
-          '0%': {
-            transform: 'rotate(-2deg) scale(1.05)',
-            animationTimingFunction: 'linear',
-          },
-          '50%': {
-            transform: 'rotate(2deg) scale(1.05)',
-            animationTimingFunction: 'linear',
-          },
-          '100%': {
-            transform: 'rotate(-2deg) scale(1.05)',
-            animationTimingFunction: 'linear',
-          },
-        }
-      };
-    }
   }
 
   return style;
-}, 'div', ({ multi, selected, ...p }) => p);
+}, 'div', ({ isActive, ...p }) => p);
 
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
@@ -86,34 +83,30 @@ const ImageLabel = styled(({ theme }) => ({
   boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)"
 }), 'div', p => p);
 
-export const MediaList = ({ items, onClick, selected, multi, ...rest }) => (
+export const MediaList = ({ items, onSelect, selected, ...rest }) => (
   <Gallery>
-    {(items || []).map((item, index) => {
-      const isActive = selected.findIndex(x => x === item.id) !== -1;
-
-      return index < 16 ? (
-        <ImageContainer
-          onClick={typeof onClick === 'function' && (() => onClick(item, isActive))}
-          multi={multi}
-          selected={isActive}
-          key={item.id}
-        >
-          <Image src={item} width={180} height={180} crop="fit" />
-          {
-            item.format === 'pdf' ? (
-              <ImageLabel>
-                <Icon type="file-pdf" />
-              </ImageLabel>
-            ) : undefined
-          }
-        </ImageContainer>
-      ) : null;
-    })}
+    {(items || []).map((item, index) => (!MAX_ITEMS || index < MAX_ITEMS) ? (
+      <ImageContainer
+        onClick={typeof onSelect === 'function' && (() => onSelect(item.id))}
+        isActive={selected.findIndex(x => x === item.id) > 0}
+        key={item.id}
+      >
+        <Image src={item} width={180} height={180} crop="fit" />
+        {
+          item.format === 'pdf' ? (
+            <ImageLabel>
+              <Icon type="file-pdf" />
+            </ImageLabel>
+          ) : undefined
+        }
+      </ImageContainer>
+    ) : null)}
   </Gallery>
 );
 MediaList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   selected: PropTypes.arrayOf(PropTypes.string),
+  onSelect: PropTypes.func,
 };
 MediaList.defaultProps = {
   items: [],
