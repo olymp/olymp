@@ -108,11 +108,11 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
         <Mediathek
           selected={(query[`@media`] || '').split(',')}
           onSelect={selectionId => {
-            const selected = (query[`@media`] || '').split(',');
+            const selected = (query[`@media`] || '').split(',').filter(x => x);
 
             const itemIndex = selected.findIndex(item => item === selectionId);
             if (itemIndex < 0) {
-              selected.push(selectionId); // add/select
+              selected.unshift(selectionId); // add/select
             } else {
               selected.splice(itemIndex, 1); // remove/deselect
             }

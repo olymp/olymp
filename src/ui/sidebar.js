@@ -1,26 +1,30 @@
 import React, { Component, Children } from 'react';
-import { createComponent } from 'react-fela';
-import { Button as AntButton, Icon, Button } from 'antd';
-import cn from 'classnames';
-import { Spin } from 'antd';
-import tinycolor from 'tinycolor2';
-import Transition from 'olymp/src/core/components/transitions';
+import { styled } from 'olymp';
+import { Button as AntButton, Icon, Button, Spin } from 'antd';
 
-const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, ...props }) => isOpen ? (
+const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, footer, ...props }) => isOpen ? (
   <StyledInner {...props}>
     <div className="ant-modal-content">
-      <div className="ant-modal-header">
-        {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
-        {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
-        <div className="ant-modal-title">{title}</div>
-        {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
-      </div>
+      {leftButtons || rightButtons || title || subtitle ? (
+        <div className="ant-modal-header">
+          {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+          {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+          <div className="ant-modal-title">{title}</div>
+          {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+        </div>
+      ) : null}
 
       {Children.toArray(children).length > 0 && (
         <div className="ant-modal-body">
           {children}
         </div>
       )}
+
+      {footer ? (
+        <div className="ant-modal-footer">
+          {footer}
+        </div>
+      ) : null}
     </div>
   </StyledInner>
 ) : (
@@ -50,7 +54,7 @@ class SidebarInner extends Component {
   }
 };
 
-const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWidth, showLogo }) => ({
+const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth, showLogo }) => ({
   '> .ant-modal-content': {
     display: 'flex',
     flexDirection: 'column',
@@ -77,22 +81,25 @@ const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWi
     },
     '> .ant-modal-header': {
       textAlign: 'center',
+      position: 'relative',
     },
     '> .ant-modal-footer': {
-      '> .ant-btn': {
+      '> div > .ant-btn': {
         width: 'calc(50% - 4px)',
         maxWidth: 200,
       },
     },
   },
+  width,
   minWidth,
+  maxWidth,
   height: '100%',
   borderRight: '1px solid #e9e9e9',
   paddingBottom: 0,
   paddingTop: 0,
 }), SidebarInner, p => p);
 
-const TitleButtons = createComponent(({ theme, left, right, padding, width, showLogo }) => ({
+const TitleButtons = styled(({ theme, left, right, padding, width, showLogo }) => ({
   margin: 0,
   lineHeight: '21px',
   position: 'absolute',
@@ -102,7 +109,8 @@ const TitleButtons = createComponent(({ theme, left, right, padding, width, show
   fontSize: 40,
   fontWeight: 200,
   padding: 10,
-  top: 14,
+  top: '50%',
+  transform: 'translateY(-50%)',
 }), 'div', ({ left, right, ...p }) => p);
 
 export default Sidebar;

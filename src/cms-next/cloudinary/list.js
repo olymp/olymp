@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import { Icon } from 'antd';
-import { queryMedias } from './gql';
 import Image from './image';
 
 const MAX_ITEMS = 12;
@@ -10,9 +9,10 @@ const Gallery = styled(() => ({
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: 'space-around',
-  // alignContent: 'space-around',
+  alignContent: 'space-around',
   alignItems: 'baseline',
   position: 'relative',
+  padding: '1rem',
   minWidth: 800,
   minHeight: '100vh',
   height: '100%',
@@ -20,12 +20,12 @@ const Gallery = styled(() => ({
   borderRight: '1px solid #e9e9e9',
 }), 'div', p => p);
 
-const ImageContainer = styled(({ theme, isActive }) => {
+const ImageContainer = styled(({ theme, selected, isActive }) => {
   let style = {
+    border: isActive ? `2px solid ${theme.color}` : 'none',
     position: 'relative',
-    maxWidth: 180,
-    maxHeight: 180,
-    margin: 10,
+    maxWidth: 184,
+    maxHeight: 184,
     boxShadow: '0 0 8px 0 rgba(0,0,0,.75)',
     cursor: 'pointer',
     ':hover': {
@@ -36,7 +36,7 @@ const ImageContainer = styled(({ theme, isActive }) => {
     }
   }
 
-  if (isActive) {
+  if (selected) {
     style = {
       ...style,
       transform: 'scale(1.1)',
@@ -63,7 +63,7 @@ const ImageContainer = styled(({ theme, isActive }) => {
   }
 
   return style;
-}, 'div', ({ isActive, ...p }) => p);
+}, 'div', ({ isActive, selected, ...p }) => p);
 
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
@@ -83,12 +83,13 @@ const ImageLabel = styled(({ theme }) => ({
   boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)"
 }), 'div', p => p);
 
-export const MediaList = ({ items, onSelect, selected, ...rest }) => (
+export const MediaList = ({ items, onSelect, selected, activeItem, ...rest }) => (
   <Gallery>
     {(items || []).map((item, index) => (!MAX_ITEMS || index < MAX_ITEMS) ? (
       <ImageContainer
         onClick={typeof onSelect === 'function' && (() => onSelect(item.id))}
-        isActive={selected.findIndex(x => x === item.id) > 0}
+        selected={selected.findIndex(x => x === item.id) >= 0}
+        isActive={activeItem === item.id}
         key={item.id}
       >
         <Image src={item} width={180} height={180} crop="fit" />
@@ -112,4 +113,4 @@ MediaList.defaultProps = {
   items: [],
   selected: [],
 };
-export default queryMedias(MediaList);
+export default MediaList;
