@@ -35,8 +35,8 @@ export default class CmsAction extends Component {
           ) : wrapper(groupItem)
         )}
         <Menu.Divider />
-        <Menu.Item key="mediathek">
-          <Link to={{ pathname, query: { '@mediathek': null } }}>
+        <Menu.Item key="media">
+          <Link to={{ pathname, query: { '@media': null } }}>
             Mediathek
           </Link>
         </Menu.Item>

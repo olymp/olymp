@@ -67,7 +67,7 @@ export default class MediaView extends Component {
   onClose = () => {
     const { id, onClose, router, location } = this.props;
     if (onClose) onClose();
-    if (id) router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+    if (id) router.push({ pathname: location.pathname, query: { ...location.query, '@media': null } });
   }
 
   onClick = (item, isActive) => {
@@ -83,13 +83,13 @@ export default class MediaView extends Component {
         { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
       );
 
-      if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+      if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@media': null } });
     } else if (onChange) {
       this.setState(
         { selected: !isActive ? [item.id] : [] }
       );
     } else {
-      router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': item.id } });
+      router.push({ pathname: location.pathname, query: { ...location.query, '@media': item.id } });
     }
   }
 

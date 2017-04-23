@@ -82,7 +82,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
     </Menu.Item>
     <Menu.Item key="media">
       <Popover placement="right" content="Mediathek">
-        <Link to={{ query: { '@mediathek': null } }}>
+        <Link to={{ query: { '@media': null } }}>
           <Icon type="picture" />
         </Link>
       </Popover>

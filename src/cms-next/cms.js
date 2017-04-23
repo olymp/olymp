@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Panel } from 'olymp/ui';
 import { auth as withAuth, withRouter, withState, styled, withLangProvider } from 'olymp';
 import { withNavigation, PageSidebar, CollectionSidebar, DataRoute, PageGql, Error404 } from './pages';
-import { MediaSidebar } from './media';
+import { Mediathek } from './cloudinary';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
@@ -62,28 +62,29 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
   const cache = {};
   // Container for authed users
   const IfAuth = (props) => {
-    const deviceWidth = props.query[`@deviceWidth`];
-    const template = props.query[`@template`];
-    const type = Object.keys(modules).find(key => props.query[`@${key}`] !== undefined);
+    const { router, pathname, query } = props;
+    const deviceWidth = query[`@deviceWidth`];
+    const template = query[`@template`];
+    const type = Object.keys(modules).find(key => query[`@${key}`] !== undefined);
     const collection = type && modules[type];
     const collectionPage = collection && props.flatNavigation.find(({ binding }) => binding && binding.indexOf(type) === 0);
     let inner = null;
 
     if (collection && collectionPage) { // Show preview for collection
-      const itemId = props.query[`@${type}`];
+      const itemId = query[`@${type}`];
       const match = collectionPage;
       const View = cache[type] = cache[type] || CollectionSidebar(type, collection);
       inner = [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <View {...props} deviceWidth={deviceWidth} key={itemId} id={itemId} pageId={pageId || id} render={children => (
           <Frame disabled={!deviceWidth}>
-             <Wrapped {...props} match=match
+            <Wrapped {...props} match={match}>
               {children}
             </Wrapped>
           </Frame>
         )} />
       ))[0];
-    } else if (props.query[`@page`] !== undefined) { // Edit page
-      const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+    } else if (query[`@page`] !== undefined) { // Edit page
+      const match = props.flatNavigation.find(({ slug }) => pathname === slug);
 
       inner = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
         <DataRoute {...props} deviceWidth={deviceWidth} collection={collection} component={PageSidebar} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
@@ -102,12 +103,27 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
           </Frame>
         )} />
       );
-    } else if (props.query[`@media`] !== undefined) { // Media
+    } else if (query[`@media`] !== undefined) { // Media
       inner = (
-        <MediaSidebar id={props.query[`@media`]} multi />
+        <Mediathek
+          selected={(query[`@media`] || '').split(',')}
+          onSelect={selectionId => {
+            const selected = (query[`@media`] || '').split(',');
+
+            const itemIndex = selected.findIndex(item => item === selectionId);
+            if (itemIndex < 0) {
+              selected.push(selectionId); // add/select
+            } else {
+              selected.splice(itemIndex, 1); // remove/deselect
+            }
+
+            router.push({pathname, query: { ...query, ['@media']: selected.join(',') }});
+          }}
+          onClose={() => router.push({pathname, query: { ...query, ['@media']: undefined }})}
+        />
       );
     } else { // No edit
-      const match = props.flatNavigation.find(({ slug }) => props.pathname === slug);
+      const match = props.flatNavigation.find(({ slug }) => pathname === slug);
 
       // Render page
       const children = match ? [match].map(({ id, slug, binding, pageId, aliasId, bindingId }) => (
@@ -128,7 +144,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
             <NavigationVertical collections={props.collections} deviceWidth={deviceWidth} {...props.location} location={props.location} />
             <AuthRoutes />
             <GatewayDest name="modal" />
-            {collection && !collectionPage && <collection.DataList id={props.query[`@${type}`]} />}
+            {collection && !collectionPage && <collection.DataList id={query[`@${type}`]} />}
             {template !== undefined && <Template.DataList id={template} />}
             {inner}
           </Container>
