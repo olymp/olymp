@@ -2,16 +2,28 @@ import React, { Component, Children, PropTypes } from 'react';
 import { Button, notification } from 'antd';
 
 export class WebsocketProvider extends Component {
+  listeners = {};
   state = { connected: true };
   static childContextTypes = {
+    on: React.PropTypes.func,
+    emit: React.PropTypes.func,
     websocket: React.PropTypes.object,
     connected: React.PropTypes.bool,
   };
   getChildContext() {
     return {
+      on: this.on,
+      emit: this.emit,
       websocket: this.ws,
       connected: this.state.connected,
     };
+  }
+  on = (name, fc) => {
+    if (!this.listeners[name]) this.listeners[name] = [];
+    this.listeners[name].push(fc);
+  }
+  emit = (type, data) => {
+    this.ws.send(JSON.stringify({...data, type}));
   }
   showNotification = (message, description, btn) => {
     if (!this.key) this.key = `open${Date.now()}`;
@@ -65,7 +77,8 @@ export class WebsocketProvider extends Component {
     };
     server.onmessage = event => {
       const data = JSON.parse(event.data);
-      if (data.type === 'pong') onPong(data);
+      if (data.type === 'pong') return onPong(data);
+      if (this.listeners[data.type]) this.listeners[data.type].forEach(fc => fc(data));
     };
     server.onopen = event => {
       this.connected(true);
@@ -102,6 +115,8 @@ export default (WrappedComponent) => {
     <WrappedComponent {...context} {...props} />
   );
   withWebsocket.contextTypes = {
+    on: React.PropTypes.func,
+    emit: React.PropTypes.func,
     websocket: React.PropTypes.object,
     isOffline: React.PropTypes.bool,
   };
