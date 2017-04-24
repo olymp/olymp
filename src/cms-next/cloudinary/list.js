@@ -96,17 +96,27 @@ const Image = styled(({ theme }) => ({
   boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)"
 }), 'div', p => p);*/
 
-export const MediaList = ({ items, onSelect, selected, activeItem, ...rest }) => (
+export const MediaList = ({ items, onSelect, selected, activeItemId, ...rest }) => (
   <Gallery>
     {(items || []).map((item, index) => (!MAX_ITEMS || index < MAX_ITEMS) ? (
       <ImageContainer
         ratio={item.width / item.height}
         onClick={typeof onSelect === 'function' && (() => onSelect(item.id))}
         selected={selected.findIndex(x => x === item.id) >= 0}
-        isActive={activeItem === item.id}
+        isActive={activeItemId === item.id}
         key={item.id}
       >
-        <Image src={item.url} />
+        <Image src={item} width={180} height={180} crop="fit" />
+        {item.format === 'pdf' ? (
+          <ImageLabel>
+            <Icon type="file-pdf" />
+          </ImageLabel>
+        ) : undefined}
+        {selected.findIndex(x => x === item.id) >= 0 ? (
+          <ImageLabel>
+            <Icon type="close" />
+          </ImageLabel>
+        ) : undefined}
       </ImageContainer>
     ) : null)}
     <PlaceholderContainer flexible />
@@ -114,6 +124,7 @@ export const MediaList = ({ items, onSelect, selected, activeItem, ...rest }) =>
 );
 MediaList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
+  activeItemId: PropTypes.string,
   selected: PropTypes.arrayOf(PropTypes.string),
   onSelect: PropTypes.func,
 };
