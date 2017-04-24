@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Icon } from 'antd';
 import { styled } from 'olymp';
-import { Sidebar } from 'olymp/ui';
+import { Sidebar, List } from 'olymp/ui';
 import { queryMedias } from '../gql';
 import { Splitview } from '../../pages/styled';
-import List from '../list';
+import ListView from '../list';
 import SelectionSidebar from './selection';
 
 class Mediathek extends Component {
@@ -15,20 +15,16 @@ class Mediathek extends Component {
 
   render() {
     const { selected, onSelect, onClose, deviceWidth, items } = this.props;
-    const { isOpen, selection } = this.state;
+    const { isOpen, selection, search } = this.state;
 
     return (
       <Splitview deviceWidth={deviceWidth}>
         <Sidebar
           leftButtons={
-            <Button type="primary" shape="circle" onClick={() => onClose(this)}>
-              <Icon type="close" />
-            </Button>
+            <Button shape="circle" onClick={() => onClose(this)} icon="close" />
           }
           rightButtons={
-            <Button type="primary" shape="circle">
-              <Icon type="upload" />
-            </Button>
+            <Button shape="circle" icon="upload" />
           }
           isOpen={isOpen}
           minWidth={400}
@@ -36,10 +32,11 @@ class Mediathek extends Component {
           title="Mediathek"
           subtitle="Medien sichten und verwalten"
         >
-          Hier kommen die Ordner hin
+          <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+          {[{ pathname: '', id: 0, name: 'Abc'}].map(item => <List.Item active={false} to={item.pathname} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
         </Sidebar>
 
-        <List
+        <ListView
           onSelect={onSelect}
           selected={selected}
           items={items}
