@@ -4,8 +4,8 @@ import app from './server';
 const server = http.createServer(app);
 let currentApp = app;
 const port = parseInt(process.env.PORT || 3000);
-server.listen(port);
-let ws = app.listenWS(server);
+server.listen(port, process.env.NODE_ENV !== 'production' ? '0.0.0.0' : undefined);
+let ws = app.listenWS({ server });
 
 if (module.hot) {
   module.hot.accept('./server', () => {
@@ -13,6 +13,6 @@ if (module.hot) {
     ws.close();
     server.on('request', app);
     currentApp = app;
-    ws = app.listenWS(server);
+    ws = app.listenWS({ server });
   });
 }

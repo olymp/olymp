@@ -56,8 +56,29 @@ const app = express();
 app.emitter = new EventEmitter();
 
 // Websocket Server
-app.listenWS = (server) => {
-  var wss = new WebSocketServer({ server });
+app.listenWS = (options) => {
+  var wss = new WebSocketServer(options);
+  /*wss.httpServer.on('connection', (x, y) => {
+    console.log('WWWWS', 'CONNECTION', x, y);
+  })
+  wss.httpServer.on('clientError', (ex) => {
+    console.log('WWWWS', ex);
+  })
+  wss.httpServer.on('abort', (ex) => {
+    console.log('WWWWS', 'abort');
+  })
+  wss.httpServer.on('aborted', (ex) => {
+    console.log('WWWWS', 'aborted');
+  })
+  wss.httpServer.on('request', (ex) => {
+    console.log('WWWWS', 'request');
+  })
+  wss.httpServer.on('close', (ex) => {
+    console.log('WWWWS', 'close');
+  })
+  wss.httpServer.on('upgrade', (request, socket) => {
+    console.log('WWWWS', 'upgrade', request, socket);
+  })*/
   function toJSON(str) {
     try {
       return JSON.parse(str);
@@ -94,9 +115,6 @@ app.listenWS = (server) => {
 // ---
 
 app.use(helmet());
-
-// Remove annoying Express header addition.
-app.disable('x-powered-by');
 
 // Compress (gzip) assets in production.
 app.use(compression());
