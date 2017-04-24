@@ -1,71 +1,84 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import { Icon } from 'antd';
-import Image from './image';
 
+/*
+html {
+  font-size: 16px;
+}
+
+.thumbnail {
+}
+
+.thumbnail:hover {
+  opacity: 0.9;
+  transition: .2s ease-in;
+}
+*/
 const MAX_ITEMS = 12;
 
 const Gallery = styled(() => ({
   display: 'flex',
-  flexFlow: 'row wrap',
-  justifyContent: 'space-around',
-  alignContent: 'space-around',
-  alignItems: 'baseline',
-  position: 'relative',
-  padding: '1rem',
-  minWidth: 800,
-  minHeight: '100vh',
-  height: '100%',
-  backgroundColor: '#FFFFFF',
-  borderRight: '1px solid #e9e9e9',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  padding: 10,
+  margin: 0,
 }), 'div', p => p);
 
-const ImageContainer = styled(({ theme, selected, isActive }) => {
+const ImageContainer = styled(({ theme, selected, isActive, ratio }) => {
   let style = {
-    border: isActive ? `2px solid ${theme.color}` : 'none',
+    backgroundColor: '#333',
+    height: `8rem`,
     position: 'relative',
-    maxWidth: 184,
-    maxHeight: 184,
-    boxShadow: '0 0 8px 0 rgba(0,0,0,.75)',
-    cursor: 'pointer',
-    ':hover': {
-      animation: 'none',
-      transform: 'scale(1.1)',
-      transition: 'all .15s ease-in-out',
-      zIndex: 3,
-    }
-  }
-
-  if (selected) {
-    style = {
-      ...style,
-      transform: 'scale(1.1)',
-      animationName: 'jiggle',
-      animationIterationCount: 'infinite',
-      animationDuration: '1.2s',
-      transformOrigin: '50% 50%',
-      zIndex: 2,
-      '@keyframes jiggle': {
-        '0%': {
-          transform: 'rotate(-2deg) scale(1.05)',
-          animationTimingFunction: 'linear',
-        },
-        '50%': {
-          transform: 'rotate(2deg) scale(1.05)',
-          animationTimingFunction: 'linear',
-        },
-        '100%': {
-          transform: 'rotate(-2deg) scale(1.05)',
-          animationTimingFunction: 'linear',
-        },
-      }
-    };
-  }
-
+    flex: 1,
+    flexBasis: `${8 * ratio}rem`,
+    marginRight: 2,
+    marginBottom: 2,
+    /*':nth-child(5n)': {
+      flexBasis: '14rem',
+    },
+    ':nth-child(2n+1)': {
+      flexBasis: '10rem',
+    },
+    ':nth-child(7n+4)': {
+      flexBasis: '20rem',
+    },*/
+  };
   return style;
 }, 'div', ({ isActive, selected, ...p }) => p);
 
-const ImageLabel = styled(({ theme }) => ({
+const PlaceholderContainer = styled(({ theme, selected, isActive, ratio }) => {
+  let style = {
+    backgroundColor: '#333',
+    minHeight: `8rem`,
+    position: 'relative',
+    flex: 1,
+    flexBasis: `${8 * ratio}rem`,
+    marginRight: 2,
+    marginBottom: 2,
+    /*':nth-child(5n)': {
+      flexBasis: '14rem',
+    },
+    ':nth-child(2n+1)': {
+      flexBasis: '10rem',
+    },
+    ':nth-child(7n+4)': {
+      flexBasis: '20rem',
+    },*/
+  };
+  return style;
+}, 'div', ({ isActive, selected, ...p }) => p);
+
+const Image = styled(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+}), 'img', p => p);
+
+/*const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -81,27 +94,22 @@ const ImageLabel = styled(({ theme }) => ({
   height: 50,
   lineHeight: 1.25,
   boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)"
-}), 'div', p => p);
+}), 'div', p => p);*/
 
 export const MediaList = ({ items, onSelect, selected, activeItem, ...rest }) => (
   <Gallery>
     {(items || []).map((item, index) => (!MAX_ITEMS || index < MAX_ITEMS) ? (
       <ImageContainer
+        ratio={item.width / item.height}
         onClick={typeof onSelect === 'function' && (() => onSelect(item.id))}
         selected={selected.findIndex(x => x === item.id) >= 0}
         isActive={activeItem === item.id}
         key={item.id}
       >
-        <Image src={item} width={180} height={180} crop="fit" />
-        {
-          item.format === 'pdf' ? (
-            <ImageLabel>
-              <Icon type="file-pdf" />
-            </ImageLabel>
-          ) : undefined
-        }
+        <Image src={item.url} />
       </ImageContainer>
     ) : null)}
+    <PlaceholderContainer flexible />
   </Gallery>
 );
 MediaList.propTypes = {

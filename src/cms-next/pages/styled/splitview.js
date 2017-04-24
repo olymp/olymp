@@ -1,9 +1,9 @@
 import { styled } from 'olymp';
 
-export const Splitview = styled(({ deviceWidth }) => ({
+export const Splitview = styled(({ deviceWidth, color, center }) => ({
   display: 'flex',
   flex: 1,
-  background: 'linear-gradient(0deg, #000000, #232323)',
+  background: color && 'linear-gradient(0deg, #000000, #232323)',
   '> :first-child': {
     flex: 0,
     overflow: 'auto',
@@ -11,7 +11,7 @@ export const Splitview = styled(({ deviceWidth }) => ({
   '> :not(:first-child)': {
     flex: 1,
     overflow: 'auto',
-    margin: 'auto',
+    margin: center && 'auto',
     maxWidth: deviceWidth,
   },
   '> iframe': {
