@@ -28,12 +28,20 @@ const ImageContainer = styled(({ theme, selected, isActive }) => {
     maxHeight: 184,
     boxShadow: '0 0 8px 0 rgba(0,0,0,.75)',
     cursor: 'pointer',
+    '> div': {
+      display: 'none',
+      transition: 'all .15s ease-in-out',
+    },
     ':hover': {
+      '> div': {
+        display: 'initial',
+        transition: 'all .15s ease-in-out',
+      },
       animation: 'none',
       transform: 'scale(1.1)',
       transition: 'all .15s ease-in-out',
       zIndex: 3,
-    }
+    },
   }
 
   if (selected) {
