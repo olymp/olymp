@@ -25,6 +25,7 @@ import useragent from 'express-useragent';
 import bodyparser from 'body-parser';
 import { Server as WebSocketServer } from 'uws';
 import createFela from '../fela';
+import { EventEmitter } from 'events';
 
 const init = require('@app').init;
 
@@ -52,16 +53,34 @@ const devPort = parseInt(process.env.DEV_PORT, 10);
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
 const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
+app.emitter = new EventEmitter();
 
 // Websocket Server
 app.listenWS = (server) => {
   var wss = new WebSocketServer({ server });
+  function toJSON(str) {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      return { invalid: true };
+    }
+  }
   wss.on('connection', ws => {
     const onPing = message => {
-      ws.send(JSON.stringify({ type: 'pong', version, xyz: false }));
+      ws.send(JSON.stringify({ type: 'pong', version }));
     }
     const onMessage = message => {
-      if (message === 'ping') onPing(message);
+      if (message === 'ping') return onPing(message);
+      const value = toJSON(message);
+      console.log('JSON', value, message);
+      if (message.type === 'AUTH') {
+        ws.user = message.data;
+      } else {
+        value.ws = ws;
+        value.user = ws.user;
+        value.raw = message;
+        app.emitter.emit('uws', value);
+      }
     }
     ws.on('message', onMessage);
   });
