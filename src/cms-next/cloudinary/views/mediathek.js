@@ -52,9 +52,7 @@ class Mediathek extends Component {
             activeItemId={selected[selection]}
             onSwitch={index => this.setState({ selection: index })}
             onSelect={id => {
-              console.log(selection, id === selected[selection]);
               if (id === selected[selection]) this.setState({ selection: 0 });
-              console.log(selection, id, selected[selection]);
               onSelect(id);
             }}
           />
