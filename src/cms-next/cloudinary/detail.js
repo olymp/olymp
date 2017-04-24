@@ -14,9 +14,9 @@ class MediaDetail extends Component {
     const { item, form } = this.props;
     const { getFieldDecorator } = form;
 
-    return !item ? (
-      <Spin size="large" />
-    ) : (
+    if (!item) {
+      return <Spin size="large" />;
+    } return (
       <div>
         <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
 
@@ -51,7 +51,6 @@ class MediaDetail extends Component {
               <TagsEditor {...this.props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
             )}
           </Form.Item>
-
           <Form.Item key="size" label="Größe" {...FormItemLayout}>
             <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />
           </Form.Item>
