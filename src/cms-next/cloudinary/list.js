@@ -1,77 +1,59 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import { Icon } from 'antd';
-import Image from './image';
+// import Image from './image';
 
 const MAX_ITEMS = 12;
 
 const Gallery = styled(() => ({
   display: 'flex',
-  flexFlow: 'row wrap',
-  justifyContent: 'space-around',
-  alignContent: 'space-around',
-  alignItems: 'baseline',
-  position: 'relative',
-  padding: '1rem',
-  minWidth: 800,
-  minHeight: '100vh',
-  height: '100%',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between',
+  alignContent: 'flex-start',
+  padding: 10,
+  margin: 0,
   backgroundColor: '#FFFFFF',
   borderRight: '1px solid #e9e9e9',
 }), 'div', p => p);
 
-const ImageContainer = styled(({ theme, selected, isActive }) => {
+const ImageContainer = styled(({ theme, selected, isActive, ratio }) => {
   let style = {
-    border: isActive ? `2px solid ${theme.color}` : 'none',
+    height: `8rem`,
     position: 'relative',
-    maxWidth: 184,
-    maxHeight: 184,
-    boxShadow: '0 0 8px 0 rgba(0,0,0,.75)',
+    flex: `0 1 ${8 * ratio}rem`,
+    margin: '.5rem',
+    boxShadow: '0 0 8px 0 rgba(0, 0, 0, .5)',
     cursor: 'pointer',
+    border: selected ? `2px solid ${theme.color}` : 'none',
+    transform: selected ? 'scale(1.075)' : 'none',
+    backgroundColor: isActive ? theme.color : '#FFF',
+    transition: 'all .15s ease-in-out',
     '> div': {
       display: 'none',
-      transition: 'all .15s ease-in-out',
+    },
+    '> img': {
+      opacity: isActive ? .6 : 1,
     },
     ':hover': {
       '> div': {
         display: 'initial',
-        transition: 'all .15s ease-in-out',
       },
       animation: 'none',
-      transform: 'scale(1.1)',
+      transform: selected ? 'scale(1.0)' : 'scale(1.075)',
       transition: 'all .15s ease-in-out',
       zIndex: 3,
     },
   }
 
-  if (selected) {
-    style = {
-      ...style,
-      transform: 'scale(1.1)',
-      animationName: 'jiggle',
-      animationIterationCount: 'infinite',
-      animationDuration: '1.2s',
-      transformOrigin: '50% 50%',
-      zIndex: 2,
-      '@keyframes jiggle': {
-        '0%': {
-          transform: 'rotate(-2deg) scale(1.05)',
-          animationTimingFunction: 'linear',
-        },
-        '50%': {
-          transform: 'rotate(2deg) scale(1.05)',
-          animationTimingFunction: 'linear',
-        },
-        '100%': {
-          transform: 'rotate(-2deg) scale(1.05)',
-          animationTimingFunction: 'linear',
-        },
-      }
-    };
-  }
-
   return style;
-}, 'div', ({ isActive, selected, ...p }) => p);
+}, 'div', ({ isActive, selected, ratio, ...p }) => p);
+
+const Image = styled(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+  backgroundColor: '#FFF',
+}), 'img', p => p);
 
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
@@ -91,16 +73,28 @@ const ImageLabel = styled(({ theme }) => ({
   boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)"
 }), 'div', p => p);
 
+/* const PlaceholderContainer = styled(({ theme, ratio }) => ({
+  backgroundColor: '#333',
+  minHeight: `8rem`,
+  position: 'relative',
+  flex: 1,
+  flexBasis: `${8 * ratio}rem`,
+  marginRight: 2,
+  marginBottom: 2,
+}), 'div', ({ ratio, ...p }) => p); */
+
 export const MediaList = ({ items, onSelect, selected, activeItemId, ...rest }) => (
   <Gallery>
     {(items || []).map((item, index) => (!MAX_ITEMS || index < MAX_ITEMS) ? (
       <ImageContainer
+        ratio={item.width / item.height}
         onClick={typeof onSelect === 'function' && (() => onSelect(item.id))}
         selected={selected.findIndex(x => x === item.id) >= 0}
         isActive={activeItemId === item.id}
         key={item.id}
       >
-        <Image src={item} width={180} height={180} crop="fit" />
+        {/* <Image src={item} width={180} height={180} crop="fit" /> */}
+        <Image src={item.url} />
         {item.format === 'pdf' ? (
           <ImageLabel>
             <Icon type="file-pdf" />
