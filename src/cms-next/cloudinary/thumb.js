@@ -25,7 +25,7 @@ const ImageContainer = styled(({ theme, selected, isActive, ratio }) => {
     margin: '.5rem',
     boxShadow: '0 0 8px 0 rgba(0, 0, 0, .75)',
     cursor: 'pointer',
-    border: selected ? `2px solid ${isActive ? theme.color : '#666'}` : 'none',
+    border: selected ? `2px solid ${isActive ? theme.color : '#333'}` : 'none',
     transform: selected ? 'scale(1.075)' : 'none',
     backgroundColor: isActive ? theme.color : '#FFF',
     transition: 'all .15s ease-in-out',
