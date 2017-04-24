@@ -1,11 +1,14 @@
 import React, { PropTypes } from 'react';
-import { Image, Transformation } from 'cloudinary-react';
+import { url } from './utils';
 
 const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
-const Img = ({ src, children, maxSize, style, className, ...rest }) => (
+const Img = ({ retina, value, mode, children, maxSize, width, height, style, className, ...rest }) => (
+  <img src={url(value.url, { width, height, dpr: retina ? 2: undefined, mode })} width={width} height={height} style={style} className={className} />
+);
+/*const Img = ({ src, children, maxSize, style, className, ...rest }) => (
   <Image
     cloudName={src.url.split('http://res.cloudinary.com/')[1].split('/')[0]}
     publicId={src.id}
@@ -27,7 +30,7 @@ const Img = ({ src, children, maxSize, style, className, ...rest }) => (
       {...rest}
     />
   </Image>
-);
+);*/
 Img.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,

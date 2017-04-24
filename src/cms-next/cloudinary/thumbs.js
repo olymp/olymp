@@ -14,32 +14,32 @@ const ThumbContainer = styled(({ theme }) => ({
 
 const Thumb = styled(({ theme, isActive }) => ({
   margin: '.25rem 0',
-  border: isActive ? `2px solid ${theme.color}` : 'none',
-  transform: isActive ? 'scale(1.1)' : 'none',
+  outline: isActive ? `2px solid ${theme.color}` : 'none',
+  // transform: isActive ? 'scale(1.1)' : 'none',
   zIndex: isActive ? 2 : 1,
   cursor: 'pointer',
   position: 'relative',
-  boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.75)',
+  /* boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.75)',
   ':hover': {
     transform: 'scale(1.2)',
     transition: 'all .15s ease-in-out',
     zIndex: 3,
-  }
+  }*/
 }), 'div', ({ isActive, ...p }) => p);
 
 const Button = styled(({ theme }) => ({
   margin: '.25rem 0',
   zIndex: 1,
-  boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.75)',
+  /*boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.75)',
   ':hover': {
     transform: 'scale(1.2)',
     transition: 'all .15s ease-in-out',
     zIndex: 3,
-  }
+  }*/
 }), AntButton, p => p);
 
 const Label = styled(({ theme }) => ({
-  opacity: .75,
+  // opacity: .75,
   position: "absolute",
   top: '50%',
   left: '50%',
@@ -49,14 +49,11 @@ const Label = styled(({ theme }) => ({
   borderRadius: "50%",
   textAlign: "center",
   fontSize: 17,
-  paddingTop: 3,
-  paddingLeft: 1,
-  width: 25,
-  height: 25,
-  lineHeight: 1.25,
-  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
+  padding: 5,
+  lineHeight: 1,
+  // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   ':hover': {
-    opacity: 1,
+    // opacity: 1,
   }
 }), 'div', p => p);
 
@@ -75,18 +72,19 @@ const Thumbs = ({ items, activeItemId, onClick, onRemove }) => (
         key={item.id}
       >
         <Image
-          src={item}
+          value={item}
+          retina
+          mode="pad"
           width={70}
           height={70}
-          crop="fit"
         />
-        {onRemove ? (
+        {/*onRemove ? (
           <Tooltip placement="top" title="Von Auswahl entfernen">
             <Label onClick={() => onRemove(item.id, index)}>
               <Icon type="close" />
             </Label>
           </Tooltip>
-        ) : null}
+        ) : null*/}
       </Thumb>
     ) : null)}
   </ThumbContainer>
