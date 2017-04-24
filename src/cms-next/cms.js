@@ -106,7 +106,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
     } else if (query[`@media`] !== undefined) { // Media
       inner = (
         <Mediathek
-          selected={(query[`@media`] || '').split(',')}
+          selected={(query[`@media`] || '').split(',').filter(x => x)}
           onSelect={selectionId => {
             const selected = (query[`@media`] || '').split(',').filter(x => x);
 
