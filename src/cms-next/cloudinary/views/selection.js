@@ -16,21 +16,17 @@ const SelectionSidebar = ({ items, activeItemId, onSwitch, onSelect }) => {
     <Sidebar
       leftButtons={
         <Button
-          type="primary"
           shape="circle"
           onClick={() => onSwitch(selected + 1 < items.length ? selected + 1 : 0)}
-        >
-          <Icon type="left" />
-        </Button>
+          icon="left"
+        />
       }
       rightButtons={
         <Button
-          type="primary"
           shape="circle"
           onClick={() => onSwitch(selected ? selected - 1 : items.length - 1)}
-        >
-          <Icon type="right" />
-        </Button>
+          icon="right"
+        />
       }
       footer={
         <div>
