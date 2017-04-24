@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import { Icon, Tooltip } from 'antd';
-// import Image from './image';
+import UnstyledImage from './image';
 
 const MAX_ITEMS = 12;
 
@@ -9,7 +9,8 @@ const Gallery = styled(() => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
-  justifyContent: 'space-between',
+  //justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   alignContent: 'flex-start',
   padding: 10,
   margin: 0,
@@ -19,29 +20,30 @@ const Gallery = styled(() => ({
 
 const ImageContainer = styled(({ theme, selected, isActive, ratio }) => {
   let style = {
-    height: `8rem`,
+    height: `5rem`,
     position: 'relative',
-    flex: `0 1 ${8 * ratio}rem`,
+    flex: `0 1 ${5 * ratio}rem`,
     margin: '.5rem',
-    boxShadow: '0 0 8px 0 rgba(0, 0, 0, .75)',
+    // boxShadow: '0 0 8px 0 rgba(0, 0, 0, .75)',
     cursor: 'pointer',
-    border: selected ? `2px solid ${isActive ? theme.color : '#666'}` : 'none',
-    transform: selected ? 'scale(1.075)' : 'none',
-    backgroundColor: isActive ? theme.color : '#FFF',
-    transition: 'all .15s ease-in-out',
+    outline: selected ? `3px solid ${theme.color}` : 'none',
+    // border: selected ? `2px solid ${isActive ? theme.color : '#666'}` : 'none',
+    // transform: selected ? 'scale(1.075)' : 'none',
+    backgroundColor: selected ? '#666' : '#FFF',
+    // transition: 'all .15s ease-in-out',
     '> div': {
-      display: 'none',
+      // display: 'none',
     },
     '> img': {
-      opacity: isActive ? .6 : 1,
+      opacity: selected ? .6 : 1,
     },
     ':hover': {
       '> div': {
         display: 'initial',
       },
-      animation: 'none',
-      transform: selected ? 'scale(1.0)' : 'scale(1.075)',
-      transition: 'all .15s ease-in-out',
+      // animation: 'none',
+      // transform: selected ? 'scale(1.0)' : 'scale(1.075)',
+      // transition: 'all .15s ease-in-out',
       zIndex: 3,
     },
   }
@@ -53,7 +55,7 @@ const Image = styled(({ theme }) => ({
   width: '100%',
   height: '100%',
   backgroundColor: '#FFF',
-}), 'img', p => p);
+}), UnstyledImage, p => p);
 
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
@@ -64,18 +66,15 @@ const ImageLabel = styled(({ theme }) => ({
   color: "#FFF",
   borderRadius: "50%",
   textAlign: "center",
-  fontSize: 34,
-  paddingTop: 3,
-  paddingLeft: 1,
-  width: 50,
-  height: 50,
-  lineHeight: 1.25,
-  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
+  fontSize: 25,
+  padding: 5,
+  lineHeight: 1,
+  // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   transition: 'all .15s ease-in-out',
-  ':hover': {
+  /*':hover': {
     transform: 'translate(-50%, -50%) scale(1.33)',
     transition: 'all .15s ease-in-out',
-  },
+  },*/
 }), 'div', p => p);
 
 /* const PlaceholderContainer = styled(({ theme, ratio }) => ({
@@ -99,7 +98,7 @@ export const MediaList = ({ items, onSelect, selected, activeItemId, ...rest }) 
         key={item.id}
       >
         {/* <Image src={item} width={180} height={180} crop="fit" /> */}
-        <Image src={item.url} />
+        <Image value={item} mode="fill" height={80} retina />
         {item.format === 'pdf' ? (
           <ImageLabel>
             <Icon type="file-pdf" />

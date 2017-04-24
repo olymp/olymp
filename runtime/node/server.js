@@ -66,10 +66,13 @@ app.listenWS = (server) => {
     }
   }
   wss.on('connection', ws => {
+    console.log('WS', 'CONNECT');
     const onPing = message => {
+      console.log('WS', 'PING');
       ws.send(JSON.stringify({ type: 'pong', version }));
     }
     const onMessage = message => {
+      console.log('WS', 'MESSAGE', message);
       if (message === 'ping') return onPing(message);
       const value = toJSON(message);
       console.log('JSON', value, message);
