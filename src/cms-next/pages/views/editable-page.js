@@ -7,7 +7,7 @@ import { queryPage, mutatePage } from '../gql';
 import { Pages } from '../pages';
 import { PageForm } from '../form';
 import { Page } from '../page';
-import { Splitview } from '../styled';
+import { SplitView } from '../../style';
 
 @withRouter
 @queryPage
@@ -24,35 +24,27 @@ export default class PageSidebar extends Component {
     const leftButtons = (
       <div>
         {!value && <Button.Group>
-          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': undefined } })}>
-            <Icon type="close" />
-          </Button>
+          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': undefined } })} shape="circle" icon="close" />
         </Button.Group>}
         {value && <Button.Group>
-          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': null } })}>
-            <Icon type="arrow-left" />
-          </Button>
+          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': null } })} shape="circle" icon="arrow-left" />
         </Button.Group>}
       </div>
     );
     const rightButtons = (
       <div>
         {value && <Button.Group>
-          <Button disabled={!form.isFieldsTouched()} onClick={save}>
-            <Icon type="save" />
-          </Button>
+          <Button disabled={!form.isFieldsTouched()} onClick={save} shape="circle" icon="save" />
         </Button.Group>}
         {!value && <Button.Group>
-          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new' } })}>
-            <Icon type="plus" />
-          </Button>
+          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new' } })} shape="circle" icon="plus" />
         </Button.Group>}
       </div>
     );
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     return (
-      <Splitview deviceWidth={deviceWidth}>
+      <SplitView deviceWidth={deviceWidth}>
         <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
         <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
           {!value && <Pages items={navigation} />}
@@ -60,7 +52,7 @@ export default class PageSidebar extends Component {
         </Sidebar>
         {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />)}
         {!render && <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />}
-      </Splitview>
+      </SplitView>
     );
   }
 }

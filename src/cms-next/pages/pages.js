@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'olymp';
 import { queryPages, reorderPage, movePage } from './gql';
-import { Tree, TreeNode } from './styled';
+import { Tree, TreeNode } from './style';
 
 @withRouter
 @reorderPage

@@ -51,7 +51,7 @@ const PageForm = Form.create()(
           {getFieldDecorator('parentId', { initialValue: item.parentId })(
             <TreeSelect
               style={{ width: '100%' }}
-              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              dropdownStyle={{ maxHeight: 400, overflowY: 'auto' }}
               treeData={items}
             />
           )}

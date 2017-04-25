@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CollectionModal, CollectionDetail, Input, State, Hashtax as HashtaxEditor } from '../collection';
+import { CollectionModal, CollectionSplitView, CollectionDetail, Input, State, Hashtax as HashtaxEditor } from '../collection';
 import { Hashtax } from 'olymp/hashtax';
 import { Link, graphql, gql, withAuth, withRouter, withState } from 'olymp';
 import { Button, Form, Icon, Tabs, notification } from 'antd';
@@ -77,9 +77,9 @@ export const Detail = withState('text')(({ text, setText, viewType, item, form, 
 ));
 
 export const List = (props) => (
-  <CollectionModal {...props} DetailView={DataDetail} typeName="Template" nameField="name" />
+  <CollectionSplitView {...props} DetailView={DataDetail} typeName="Template" nameField="name" />
 );
 
 // Bound views
 export const DataDetail = Form.create()(query(Detail));
-export const DataList = mutation(list(List));
+export const TemplateRoute = mutation(list(List));

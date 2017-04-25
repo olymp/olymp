@@ -46,15 +46,11 @@ export default class CollectionList extends Component {
 
     const leftButtons = (
       <div>
-        <Button.Group style={{ marginRight: 5 }}>
-          <Button onClick={() => router.push(pathname)}>
-            <Icon type="close" />
-          </Button>
+        <Button.Group style={{ marginRight: 5 }} shape="circle">
+          <Button onClick={() => router.push(pathname)} icon="close" />
         </Button.Group>
         {id && <Button.Group>
-          <Button onClick={this.ok}>
-            <Icon type="save" />
-          </Button>
+          <Button onClick={this.ok} shape="circle" icon="save" />
         </Button.Group>}
       </div>
     );
@@ -64,7 +60,7 @@ export default class CollectionList extends Component {
         <SplitView>
           <List side="left">
             <List.Title buttons={
-              <Button size="small" onClick={() => console.log()}>
+              <Button size="small" onClick={() => console.log()} shape="circle">
                 <Link to={{ pathname, query: { [`@${lowerFirst(typeName)}`]: 'new' } }}>
                   <Icon type="plus" />
                 </Link>
