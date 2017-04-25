@@ -6,23 +6,30 @@ import UnstyledImage from './image';
 const MAX_ITEMS = 12;
 
 const Gallery = styled(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  //justifyContent: 'space-between',
-  justifyContent: 'flex-start',
+  /*display: 'flex',
+  /*alignItems: 'flex-start',
   alignContent: 'flex-start',
+  display: 'flex',
+  flexWrap: 'wrap',*/
   padding: 10,
   margin: 0,
   backgroundColor: '#FFFFFF',
   borderRight: '1px solid #e9e9e9',
+  onAfter: {
+    content: "''",
+    width: '100%',
+    flex: 1,
+  },
 }), 'div', p => p);
 
 const ImageContainer = styled(({ theme, selected, isActive, ratio }) => {
   let style = {
-    height: `5rem`,
     position: 'relative',
-    flex: `0 1 ${5 * ratio}rem`,
+    /*height: `5rem`,
+    flex: 1,
+    flexBasis: `${5 * ratio}rem`,*/
+    // flex: 5 * ratio,
+    float: 'left',
     margin: '.5rem',
     // boxShadow: '0 0 8px 0 rgba(0, 0, 0, .75)',
     cursor: 'pointer',
@@ -52,8 +59,10 @@ const ImageContainer = styled(({ theme, selected, isActive, ratio }) => {
 }, 'div', ({ isActive, selected, ratio, ...p }) => p);
 
 const Image = styled(({ theme }) => ({
-  width: '100%',
-  height: '100%',
+  // width: '100%',
+  // height: '100%',
+  width: 'auto',
+	height: 80,
   backgroundColor: '#FFF',
 }), UnstyledImage, p => p);
 
