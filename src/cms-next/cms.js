@@ -24,7 +24,6 @@ export const Container = styled(({ deviceWidth }) => ({
 }), 'div', ({ deviceWidth, ...p }) => p);
 
 export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
-  const cache = {};
   // Container for authed users
   const IfAuth = (props) => {
     const { query } = props;
@@ -33,6 +32,8 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       <ThemeProvider theme={theme}>
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...props.templates }}>
           <Container>
+            <GatewayDest name="modal" />
+            <AuthRoutes />
             <NavigationVertical collections={props.collections} deviceWidth={query[`@deviceWidth`]} {...props.location} location={props.location} />
             <SimpleSwitch>
               <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute id={query[`@template`]} />} />
@@ -41,8 +42,6 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
               <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
             </SimpleSwitch>
-            <GatewayDest name="modal" />
-            <AuthRoutes />
           </Container>
         </HashtaxProvider>
       </ThemeProvider>
