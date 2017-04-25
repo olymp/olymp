@@ -8,7 +8,7 @@ import { lowerFirst } from 'lodash';
 
 @withRouter
 @Form.create()
-export default class CollectionList extends Component {
+export default class CollectionSplitView extends Component {
   state = { search: '' };
   defaultProps = {
     items: [],
@@ -46,24 +46,31 @@ export default class CollectionList extends Component {
 
     const leftButtons = (
       <div>
-        <Button.Group style={{ marginRight: 5 }}>
-          <Button onClick={() => router.push(pathname)} shape="circle">
-            <Icon type="close" />
-          </Button>
+        <Button.Group style={{ marginRight: 5 }} shape="circle">
+          <Button onClick={() => router.push(pathname)} icon="close" />
         </Button.Group>
         {id && <Button.Group>
-          <Button onClick={this.ok} shape="circle">
-            <Icon type="save" />
-          </Button>
+          <Button onClick={this.ok} shape="circle" icon="save" />
         </Button.Group>}
       </div>
     );
 
     return (
-      <div>
-        <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
-        {items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(typeName)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
-      </div>
+      <SplitView>
+        <List side="left">
+          <List.Title buttons={
+            <Button size="small" onClick={() => console.log()} shape="circle">
+              <Link to={{ pathname, query: { [`@${lowerFirst(typeName)}`]: 'new' } }}>
+                <Icon type="plus" />
+              </Link>
+            </Button>
+          }>{typeName}</List.Title>
+          <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+          {items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(typeName)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
+        </List>
+        {id && id === 'new' && <DetailView form={form} ref={d => this.detail = d} id={null} />}
+        {id && id !== 'new' && <DetailView form={form} ref={d => this.detail = d} key={id} id={id} />}
+      </SplitView>
     );
   }
 }

@@ -68,7 +68,7 @@ export default styled(() => ({
   '> div:nth-child(2)': {
     background: '#f5f2f0',
     borderLeft: '1px solid #cccccc',
-    overflow: 'auto',
+    overflowY: 'auto',
     '> div': {
       paddingLeft: 20,
       paddingRight: 20,

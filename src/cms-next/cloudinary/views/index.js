@@ -1,1 +1,1 @@
-export { default as Mediathek } from './mediathek';
+export { default as Cloudinary } from './cloudinary';

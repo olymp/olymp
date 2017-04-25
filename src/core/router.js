@@ -67,13 +67,15 @@ export const withRouter = (WrappedComponent) => {
 
 export const SimpleSwitch = ({ children, ...rest }) => {
   let notFound, match;
-  const matches = Children.toArray(children).forEach(route => {
+  const routes = Children.toArray(children);
+  for (var index = 0; index < routes.length; index++) {
+    var route = routes[index];
     if (route.props.match) {
       match = route;
     } else if (route.props.match === undefined) {
       notFound = route;
     }
-  });
+  }
   if (match) return match;
   if (!match && notFound) return cloneElement(notFound, { match: true });
   else return null;

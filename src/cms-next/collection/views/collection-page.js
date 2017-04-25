@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
-import { Link, withRouter, withAuth, styled, Prompt } from 'olymp';
-import { Menu, Button, Form, Icon } from 'antd';
-import { Panel, Sidebar, onError, onSuccess } from 'olymp/ui';
-import { Gateway } from 'react-gateway';
-import { queryPage, mutatePage } from '../gql';
-import { Pages } from '../pages';
-import { PageForm } from '../form';
-import { Page } from '../page';
+import { withRouter, styled, Prompt } from 'olymp';
+import { Button, Form } from 'antd';
+import { Sidebar, onError, onSuccess } from 'olymp/ui';
 import { upperFirst } from 'lodash';
-import { Splitview } from '../styled';
+import { IFrame, Error404, queryPage, Page } from '../../pages';
+import { SplitView } from '../../style';
 
-export const mod = Wrapped => ({ data, item, ...rest }) => {
-  return (
-    <Wrapped pageData={data} page={item} {...rest} />
-  );
-};
+const mod = Wrapped => ({ data, item, ...rest }) => (
+  <Wrapped pageData={data} page={item} {...rest} />
+);
 
 export default (type, collection) => {
   const Type = upperFirst(type);
@@ -53,14 +47,10 @@ export default (type, collection) => {
       const leftButtons = (
         <div>
           {!value && <Button.Group>
-            <Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: undefined }})}>
-              <Icon type="close" />
-            </Button>
+            <Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: undefined }})} shape="circle" icon="close" />
           </Button.Group>}
           {value && <Button.Group>
-            <Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: null }})}>
-              <Icon type="arrow-left" />
-            </Button>
+            <Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: null }})} shape="circle" icon="arrow-left" />
           </Button.Group>}
         </div>
       );
@@ -68,15 +58,11 @@ export default (type, collection) => {
         <div>
           {value && (
             <Button.Group>
-              <Button disabled={!form.isFieldsTouched()} onClick={this.ok}>
-                <Icon type="save" />
-              </Button>
+              <Button disabled={!form.isFieldsTouched()} onClick={this.ok} shape="circle" icon="save" />
             </Button.Group>
           )}
           {!value && <Button.Group>
-            <Button onClick={() => router.push({ pathname, query: { ...query, [`@${type}`]: 'new' } })}>
-              <Icon type="plus" />
-            </Button>
+            <Button onClick={() => router.push({ pathname, query: { ...query, [`@${type}`]: 'new' } })} shape="circle" icon="plus" />
           </Button.Group>}
         </div>
       );
@@ -84,7 +70,7 @@ export default (type, collection) => {
       const description = !value ? `${Type}-Management` : value === 'new' ? `${Type} hinzufügen` : `${Type} bearbeiten`;
 
       return (
-        <Splitview deviceWidth={deviceWidth}>
+        <SplitView deviceWidth={deviceWidth}>
           <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
           <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
             {!value && <collection.List items={items} />}
@@ -92,7 +78,7 @@ export default (type, collection) => {
           </Sidebar>
           {render && render(<Page item={page} binding={{ ...item, ...form.getFieldsValue() }} />)}
           {!render && <Page item={page} binding={{ ...item, ...form.getFieldsValue() }} />}
-        </Splitview>
+        </SplitView>
       );
     }
   } return CollectionSidebar;

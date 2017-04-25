@@ -9,10 +9,10 @@ export const SplitView = styled(({ side, width }) => ({
 export const Panel = styled(({ display, alignLabel, ...rest }) => ({
   position: 'relative',
   // border: '1px solid transparent',
-  overflow: 'auto',
+  overflowY: 'auto',
   display: display,
   '> *': display === 'flex' && {
-    overflow: 'auto',
+    overflowY: 'auto',
   },
   ...rest,
   '& .ant-form-item': alignLabel && { // oops, should not be here!

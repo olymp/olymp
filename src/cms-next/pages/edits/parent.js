@@ -12,7 +12,7 @@ const ParentSelect = ({ item, field, label, layout, initialValue, rules, placeho
       <TreeSelect
         placeholder={placeholder || label}
         style={{ width: '100%' }}
-        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+        dropdownStyle={{ maxHeight: 400, overflowY: 'auto' }}
         {...rest}
       />
     )}

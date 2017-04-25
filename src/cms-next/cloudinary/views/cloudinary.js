@@ -3,11 +3,11 @@ import { Button, Icon } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar, List } from 'olymp/ui';
 import { queryMedias } from '../gql';
-import { Splitview } from '../../pages/styled';
+import { SplitView } from '../../style';
 import ListView from '../list';
 import SelectionSidebar from './selection';
 
-class Mediathek extends Component {
+class CloudinaryView extends Component {
   state = {
     isOpen: true,
     selection: 0,
@@ -18,7 +18,7 @@ class Mediathek extends Component {
     const { isOpen, selection, search } = this.state;
 
     return (
-      <Splitview deviceWidth={deviceWidth}>
+      <SplitView deviceWidth={deviceWidth}>
         <Sidebar
           leftButtons={
             <Button shape="circle" onClick={() => onClose(this)} icon="close" />
@@ -54,20 +54,20 @@ class Mediathek extends Component {
             }}
           />
         ) : null}
-      </Splitview>
+      </SplitView>
     );
   }
 };
-Mediathek.propTypes = {
+CloudinaryView.propTypes = {
   onClose: PropTypes.func,
   onSelect: PropTypes.func,
   selected: PropTypes.arrayOf(PropTypes.string),
   items: PropTypes.arrayOf(PropTypes.object),
 };
-Mediathek.defaultProps = {
+CloudinaryView.defaultProps = {
   onClose: x => x.setState({ isOpen: false }),
   onSelect: selectionId => console.log(selectionId),
   selected: [],
   items: [],
 };
-export default queryMedias(Mediathek);
+export default queryMedias(CloudinaryView);
