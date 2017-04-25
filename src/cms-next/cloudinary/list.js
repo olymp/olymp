@@ -116,7 +116,7 @@ export const MediaList = ({ items, onSelect, selected, activeItemId, ...rest }) 
         {selected.findIndex(x => x === item.id) >= 0 ? (
           <Tooltip placement="top" title="Von Auswahl entfernen">
             <ImageLabel>
-              <Icon type="close" />
+              <Icon type="check" />
             </ImageLabel>
           </Tooltip>
         ) : undefined}
