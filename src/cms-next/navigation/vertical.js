@@ -31,11 +31,11 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
       // color: theme.color,
       color: '#FFFFFF',
       padding: 6,
-      backgroundColor: 'rgba(0,0,0,0.15)',
+      backgroundColor: 'rgba(0,0,0,0.05)',
       borderRadius: '50%',
     },
     ':hover > a > i.anticon': {
-      backgroundColor: 'rgba(0,0,0,0.33)',
+      backgroundColor: 'rgba(0,0,0,0.30)',
     },
   },
   '> li.ant-menu-submenu > .ant-menu-submenu-title': {
@@ -46,41 +46,48 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
       margin: 0,
       color: '#FFFFFF',
       padding: 6,
-      backgroundColor: 'rgba(0,0,0,0.15)',
+      backgroundColor: 'rgba(0,0,0,0.05)',
       borderRadius: '50%',
     },
     ':hover > i.anticon': {
-      backgroundColor: 'rgba(0,0,0,0.33)',
+      backgroundColor: 'rgba(0,0,0,0.30)',
     },
   },
   '> li.ant-menu-item.ant-menu-item-selected': {
     backgroundColor: 'transparent',
   },
+  '> li.ant-menu-item:active': {
+    backgroundColor: 'transparent',
+  },
   '> li.ant-menu-item-selected > a': {
-    color: theme.color,
     '> i': {
-      backgroundColor: 'rgba(0,0,0,0.25)!important',
+      backgroundColor: 'rgba(0,0,0,0.30)!important',
+    },
+  },
+  '> li.ant-menu-submenu-selected > div': {
+    '> i': {
+      backgroundColor: 'rgba(0,0,0,0.30)!important',
     },
   },
 }), Menu, p => p);
 
 export default withLang(withAuth(({ auth, lang, className, deviceWidth, children, query, ...rest }) => (
-  <VerticalMenu className={className} deviceWidth={deviceWidth}>
-    <Menu.Item key="page">
+  <VerticalMenu className={className} deviceWidth={deviceWidth} selectedKeys={Object.keys(query)}>
+    <Menu.Item key="@page">
       <Popover placement="right" content={lang.PAGE_MANAGER}>
         <Link to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="home" />
         </Link>
       </Popover>
     </Menu.Item>
-    <Menu.Item key="template">
+    <Menu.Item key="@template">
       <Popover placement="right" content="Template-Liste">
         <Link to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="appstore-o" />
         </Link>
       </Popover>
     </Menu.Item>
-    <Menu.Item key="media">
+    <Menu.Item key="@media">
       <Popover placement="right" content="Mediathek">
         <Link to={{ query: { '@media': null } }}>
           <Icon type="picture" />
@@ -88,7 +95,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
       </Popover>
     </Menu.Item>
     <Separator />
-    <Menu.Item key="artikel">
+    <Menu.Item key="@artikel">
       <Popover placement="right" content="Artikel-Liste">
         <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="calculator" />
@@ -97,7 +104,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
     </Menu.Item>
     <Filler />
     {auth.user && auth.user.isAdmin ? (
-      <Menu.Item key="users">
+      <Menu.Item key="@users">
         <Popover placement="right" content="Benutzer-Management">
           <Link to={{ query: { '@users': null } }}>
             <Icon type="team" />
@@ -105,7 +112,7 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Popover>
       </Menu.Item>
     ) : (
-      <Menu.Item key="profile">
+      <Menu.Item key="@profile">
         <Popover placement="right" content="Profil">
           <Link to={{ query: { '@profile': null } }}>
             <Icon type="user" />
@@ -113,25 +120,25 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Popover>
       </Menu.Item>
     )}
-    <Menu.Item key="settings">
+    <Menu.Item key="@settings">
       <Popover placement="right" content="Einstellungen">
         <Link to={{ query: { '@settings': null } }}>
           <Icon type="setting" />
         </Link>
       </Popover>
     </Menu.Item>
-    <Menu.SubMenu key="device" title={<Icon type="laptop" />}>
-      <Menu.Item key="device-no">
+    <Menu.SubMenu title={<Icon type="laptop" />}>
+      <Menu.Item key="@device-no">
         <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
           <Icon type="laptop" /> Normal
         </Link>
       </Menu.Item>
-      <Menu.Item key="device-700">
+      <Menu.Item key="@deviceWidth">
         <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
           <Icon type="tablet" /> Tablet
         </Link>
       </Menu.Item>
-      <Menu.Item key="device-400">
+      <Menu.Item key="@deviceWidth400">
         <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
           <Icon type="phone" /> Mobil
         </Link>
