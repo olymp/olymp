@@ -114,7 +114,7 @@ export default class BeitragBlock extends Component {
     // Archiv
     if (!archive) {
       beitraege = beitraege.filter(
-        beitrag => !beitrag.ende || moment(beitrag.ende).isAfter()
+        beitrag => !beitrag.ende || moment(beitrag.ende).endOf('day').isAfter()
       );
     }
 

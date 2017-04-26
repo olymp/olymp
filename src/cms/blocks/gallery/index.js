@@ -33,8 +33,13 @@ export default class ImagesBlock extends Component {
   render() {
     const { setData, getData, className, readOnly, auth } = this.props;
     const { style, children, ...rest } = this.props;
-    const images = getData('images', []);
+    let images = getData('images', []);
     const showMedia = getData('showMedia');
+
+    if (auth && auth.user) {
+      images = images.filter(i => i);
+      images.push(undefined);
+    }
 
     const styles = {
       position: 'relative',
@@ -47,7 +52,7 @@ export default class ImagesBlock extends Component {
     };
 
     const imageBlock = (image, i) => (
-      <div style={{ ...styles, height: 'auto', width: '20%', float: 'left', padding: '.5rem' }} key={i}>
+      <div style={{ ...styles, height: 'auto', width: '20%', float: 'left', padding: '.5rem', clear: (i + 1) % 5 === 1 ? 'both' : 'none' }} key={i}>
         <figure className={className} style={{ margin: 0 }}>
           <Image
             onChange={images => setData({ showMedia: undefined, images })}
@@ -76,7 +81,6 @@ export default class ImagesBlock extends Component {
         <DataLoader className={className} style={style} isEmpty={images} placeholder="Keine Bilder vorhanden">
           {(images || []).map((image, i) => imageBlock(image, i))}
 
-          {auth && auth.user ? imageBlock(undefined, images.length) : null}
           <div style={{ clear: 'both' }} />
         </DataLoader>
 

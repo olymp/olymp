@@ -198,6 +198,13 @@ module.exports = (schema, { uri, adapter } = {}) => {
         },
       },
     },
+    hooks: {
+      before: (args, { model, type }, { user }) => {
+        if (type === 'MUTATION' && (model === 'Image' || model === 'File' || model === 'CloudinaryRequest') && !user) {
+          throw new Error('Please log in');
+        }
+      },
+    },
     schema: `
       type Image {
         url: String

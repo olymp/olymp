@@ -7,6 +7,13 @@ module.exports = ({ schema }) => schema.addSchema({
   mutation: `
     rolle: Rolle @mutate
   `,
+  hooks: {
+    before: (args, { model, type }, { user }) => {
+      if (type === 'MUTATION' && model === 'Rolle' && !user) {
+        throw new Error('Please log in');
+      }
+    },
+  },
   schema: `
     # group:über Uns
     type Rolle implements CollectionInterface

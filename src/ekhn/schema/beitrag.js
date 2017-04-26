@@ -8,6 +8,13 @@ module.exports = ({ schema }) => schema.addSchema({
   mutation: `
     beitrag: Beitrag @mutate
   `,
+  hooks: {
+    before: (args, { model, type }, { user }) => {
+      if (type === 'MUTATION' && model === 'Beitrag' && !user) {
+        throw new Error('Please log in');
+      }
+    },
+  },
   schema: `
     # group:inhalt
     type Beitrag implements CollectionInterface
