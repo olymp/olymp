@@ -9,6 +9,13 @@ module.exports = ({ schema }) => schema.addSchema({
   mutation: `
     vcard: Vcard @mutate
   `,
+  hooks: {
+    before: (args, { model, type }, { user }) => {
+      if (type === 'MUTATION' && model === 'Vcard' && !user) {
+        throw new Error('Please log in');
+      }
+    },
+  },
   schema: `
     # group:über Uns
     # title:Visitenkarte

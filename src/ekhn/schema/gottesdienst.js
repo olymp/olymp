@@ -7,6 +7,13 @@ module.exports = ({ schema }) => schema.addSchema({
   mutation: `
     gottesdienst: Gottesdienst @mutate
   `,
+  hooks: {
+    before: (args, { model, type }, { user }) => {
+      if (type === 'MUTATION' && model === 'Gottesdienst' && !user) {
+        throw new Error('Please log in');
+      }
+    },
+  },
   schema: `
     # group:termine
     type Gottesdienst implements CollectionInterface

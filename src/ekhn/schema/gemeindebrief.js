@@ -7,6 +7,13 @@ module.exports = ({ schema }) => schema.addSchema({
   mutation: `
     gemeindebrief: Gemeindebrief @mutate
   `,
+  hooks: {
+    before: (args, { model, type }, { user }) => {
+      if (type === 'MUTATION' && model === 'Gemeindebrief' && !user) {
+        throw new Error('Please log in');
+      }
+    },
+  },
   schema: `
     # group:inhalt
     type Gemeindebrief implements CollectionInterface

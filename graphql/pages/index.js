@@ -24,6 +24,9 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         if (type === 'MUTATION' && model === 'Page' && !user) {
           throw new Error('Please log in');
         }
+        if (type === 'MUTATION' && model === 'Settings' && !user) {
+          throw new Error('Please log in');
+        }
       },
     },
     schema: `

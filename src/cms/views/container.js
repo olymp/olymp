@@ -72,28 +72,30 @@ export default class Container extends Component {
 
     const collection = query ? (collectionList || []).find(c => query[`@${c.name}`] !== undefined || query[`@${uncapitalize(c.name)}`] !== undefined) : undefined;
 
-    if (collection !== undefined) {
-      const { name } = collection;
-      modal = (
-        <CollectionModal typeName={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
-      );
-    } else if (query && query['@mediathek'] !== undefined) {
-      modal = (
-        <MediaModal id={query['@mediathek']} pdfMode={query['@pdf'] !== undefined} multi />
-      );
-    } else if (query && query['@settings'] !== undefined) {
-      modal = (
-        <SettingsModal typeName="settings" />
-      );
-    } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
-      modal = (
-        <PageModal
-          id={query['@page']}
-          initialData={{ parentId: query['@new-page'], order: 0 }}
-          fieldNames="id, slug, order, name, parentId, blocks, templateName"
-          onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
-        />
-      );
+    if (auth && auth.user) {
+      if (collection !== undefined) {
+        const { name } = collection;
+        modal = (
+          <CollectionModal typeName={name} onClose={() => router.push({ pathname, query: { ...query, [`@${name}`]: undefined } })} />
+        );
+      } else if (query && query['@mediathek'] !== undefined) {
+        modal = (
+          <MediaModal id={query['@mediathek']} pdfMode={query['@pdf'] !== undefined} multi />
+        );
+      } else if (query && query['@settings'] !== undefined) {
+        modal = (
+          <SettingsModal typeName="settings" />
+        );
+      } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
+        modal = (
+          <PageModal
+            id={query['@page']}
+            initialData={{ parentId: query['@new-page'], order: 0 }}
+            fieldNames="id, slug, order, name, parentId, blocks, templateName"
+            onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
+          />
+        );
+      }
     }
 
     return (

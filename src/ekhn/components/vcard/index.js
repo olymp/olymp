@@ -7,7 +7,7 @@ const VCard = useItemEdit()(({ name, bild, ort, telefon, mobil, fax, email, home
   <div className={cn(className, 'vcard')} style={{ margin: 0 }}>
     {children}
 
-    {bild ? <Image value={bild} width="100%" lightbox cloudinary={{ width: 300 }} /> : null}
+    {bild ? <Image value={bild} width="100%" lightbox cloudinary={{ width: 300 }} className="block" /> : null}
 
     <div className="text">
       <h3>{name}</h3>
