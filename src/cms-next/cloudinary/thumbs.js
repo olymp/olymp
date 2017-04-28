@@ -19,6 +19,14 @@ const Thumb = styled(({ theme, isActive }) => ({
   zIndex: isActive ? 2 : 1,
   cursor: 'pointer',
   position: 'relative',
+  '> div': {
+    display: 'none',
+  },
+  ':hover': {
+    '> div': {
+      display: 'initial',
+    },
+  },
   /* boxShadow: '0px 0px 12px 0px rgba(0,0,0,0.75)',
   ':hover': {
     transform: 'scale(1.2)',
@@ -59,11 +67,11 @@ const Label = styled(({ theme }) => ({
 
 const Thumbs = ({ items, activeItemId, onClick, onRemove }) => (
   <ThumbContainer>
-    <Tooltip placement="top" title="Alle bearbeiten">
+    {/* <Tooltip placement="top" title="Alle bearbeiten">
       <Button type="primary" shape="circle" onClick={() => console.log('test')}>
         <Icon type="appstore-o" />
       </Button>
-    </Tooltip>
+    </Tooltip> */}
 
     {items.map((item, index) => item && item.id ? (
       <Thumb
@@ -78,13 +86,13 @@ const Thumbs = ({ items, activeItemId, onClick, onRemove }) => (
           width={70}
           height={70}
         />
-        {/*onRemove ? (
-          <Tooltip placement="top" title="Von Auswahl entfernen">
+        {onRemove ? (
+          <Tooltip title="Von Auswahl entfernen">
             <Label onClick={() => onRemove(item.id, index)}>
               <Icon type="close" />
             </Label>
           </Tooltip>
-        ) : null*/}
+        ) : null}
       </Thumb>
     ) : null)}
   </ThumbContainer>

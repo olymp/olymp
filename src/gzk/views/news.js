@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql, withItem, withAuth, Helmet, moment } from 'olymp';
+import { Link, graphql, gql, withItem, withAuth, Helmet } from 'olymp';
 import { Spin } from 'antd';
 import { Image, SlateMate } from 'olymp/cms';
 import { Gateway } from 'react-gateway';
+import moment from 'moment';
 
 const fieldNames = 'id, art, date, name, extrakt, slug, text, bild { height, width, url, crop }';
 @withAuth
