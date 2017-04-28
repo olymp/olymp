@@ -102,8 +102,10 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       // path.resolve(appRoot, 'server'),
       // path.resolve(olympRoot, 'graphql'),
       path.resolve(appRoot, 'app'),
+      path.resolve(appRoot, 'server'),
       path.resolve(olympRoot, 'icons'),
       path.resolve(olympRoot, 'src'),
+      path.resolve(olympRoot, 'graphql'),
       path.resolve(__dirname),
     ],
     options: {
