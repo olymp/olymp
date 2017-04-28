@@ -16,7 +16,7 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import App from '@app';
 import template, { amp } from './template';
-import { parseQuery, AmpProvider, routerQueryMiddleware, WebsocketProvider } from 'olymp';
+import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
@@ -79,34 +79,23 @@ app.listenWS = (options) => {
   wss.httpServer.on('upgrade', (request, socket) => {
     console.log('WWWWS', 'upgrade', request, socket);
   })*/
-  function toJSON(str) {
-    try {
-      return JSON.parse(str);
-    } catch (e) {
-      return { invalid: true };
-    }
-  }
-  wss.on('connection', ws => {
-    console.log('WS', 'CONNECT');
+  wss.on('connection', socket => {
     const onPing = message => {
-      console.log('WS', 'PING');
-      ws.send(JSON.stringify({ type: 'pong', version }));
+      socket.send(JSON.stringify({ type: 'pong', version }));
     }
-    const onMessage = message => {
-      console.log('WS', 'MESSAGE', message);
-      if (message === 'ping') return onPing(message);
-      const value = toJSON(message);
-      console.log('JSON', value, message);
-      if (message.type === 'AUTH') {
-        ws.user = message.data;
-      } else {
-        value.ws = ws;
-        value.user = ws.user;
-        value.raw = message;
-        app.emitter.emit('uws', value);
-      }
-    }
-    ws.on('message', onMessage);
+    const onMessage = raw => {
+      if (!raw) return;
+      if (raw === 'ping') return onPing(raw);
+      console.log('UWS', raw);
+      let json = {};
+      try {
+        json = JSON.parse(raw);
+        if (json) app.emitter.emit('uws', { json, raw, socket });
+      } catch(err) {
+        console.error('Websocket error', err);
+       }
+    };
+    socket.on('message', onMessage);
   });
   return wss;
 }
@@ -207,9 +196,7 @@ app.get('*', (request, response) => {
           <Provider renderer={renderer}>
             <GatewayProvider>
               <AmpProvider amp={request.isAmp}>
-                <WebsocketProvider>
-                  <App />
-                </WebsocketProvider>
+                <App />
               </AmpProvider>
             </GatewayProvider>
           </Provider>

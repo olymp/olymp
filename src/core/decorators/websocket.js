@@ -1,124 +1,48 @@
 import React, { Component, Children, PropTypes } from 'react';
 import { Button, notification } from 'antd';
+import shortid from 'shortid';
 
-export class WebsocketProvider extends Component {
-  listeners = {};
-  state = { connected: true };
-  static childContextTypes = {
-    on: React.PropTypes.func,
-    emit: React.PropTypes.func,
-    websocket: React.PropTypes.object,
-    connected: React.PropTypes.bool,
-  };
-  getChildContext() {
-    return {
-      on: this.on,
-      emit: this.emit,
-      websocket: this.ws,
-      connected: this.state.connected,
-    };
+export default class Websocket extends Component {
+  emit = data => {
+    this.ws.send(JSON.stringify(data));
   }
-  on = (name, fc) => {
-    if (!this.listeners[name]) this.listeners[name] = [];
-    this.listeners[name].push(fc);
-  }
-  emit = (type, data) => {
-    this.ws.send(JSON.stringify({...data, type}));
-  }
-  showNotification = (message, description, btn) => {
-    if (!this.key) this.key = `open${Date.now()}`;
-    if (!message) {
-      notification.close(this.key);
-    } else {
-      notification.warning({
-        message,
-        description,
-        btn,
-        key: this.key,
-        duration: 0,
-      });
-    }
-  }
-  connected = (connected) => {
-    // if (this.state.connected === connected) return;
-    if (connected === true) {
-      this.showNotification();
-    } else if (connected === null) {
-      this.showNotification(
-        'Offline',
-        'Sie sind derzeit nicht zum Internet verbunden.',
-      );
-    } else if (connected === false) {
-      this.showNotification(
-        'Server Offline',
-        'Der Server steht zurzeit nicht zur Verfügung.',
-      );
-    }
-    this.setState({ connected });
-  }
-  connect = () => {
-    const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${location.host}`;
-    const server = this.ws = new WebSocket(url);
-    let interval;
-    let hasPong = true;
-    const onPong = ({ version, xyz }) => {
-      hasPong = true;
-      if (this.lastVersion && this.lastVersion !== version) {
-        this.showNotification(
-          'Neues Update verfügbar',
-          'Möchten Sie die neue Version sofort benutzen?',
-          (
-            <Button size="small" onClick={() => location.reload()}>
-              Ja, Seite neu laden
-            </Button>
-          ),
-        );
-      } this.lastVersion = version;
-    };
-    server.onmessage = event => {
+  open = (type, data) => {
+    const { onMessage, onOpen, onClose, onError, initialData, endpoint } = this.props;
+    if (this.ws) this.close();
+    const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${endpoint || location.host}`;
+    this.ws = new WebSocket(url);
+    this.ws.onmessage = event => {
       const data = JSON.parse(event.data);
-      if (data.type === 'pong') return onPong(data);
-      if (this.listeners[data.type]) this.listeners[data.type].forEach(fc => fc(data));
+      if (onMessage) onMessage(data);
     };
-    server.onopen = event => {
-      this.connected(true);
-      interval = setInterval(() => {
-        if (!hasPong) {
-          this.connected(null);
-        }
-        hasPong = false;
-        server.send('ping');
-      }, 3000);
+    this.ws.onopen = event => {
+      if (onOpen) onOpen(event);
+      if (initialData) this.emit(initialData);
     };
-    server.onerror = error => {
-      console.error('uws error', error);
+    this.ws.onerror = error => {
+      if (onError) onError(error);
     };
-    server.onclose = () => {
-      this.connected(false);
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-      setTimeout(this.connect, 5000);
+    this.ws.onclose = event => {
+      if (onClose) onClose(event);
     };
   }
-  componentDidMount() {
-    this.connect();
+  close = (type, data) => {
+    this.ws.close();
+    this.ws = null;
+  }
+  componentDidMount() {
+    this.open();
+    const { onRef } = this.props;
+    if (onRef) onRef(this);
+  }
+  componentDidUpdate() {
+    const { onRef } = this.props;
+    if (onRef) onRef(this);
+  }
+  componentWillUnmount() {
+    this.close();
   }
   render() {
-    return Children.only(this.props.children);
+    return null;
   }
-};
-
-export default (WrappedComponent) => {
-  const withWebsocket = (props, context) => (
-    <WrappedComponent {...context} {...props} />
-  );
-  withWebsocket.contextTypes = {
-    on: React.PropTypes.func,
-    emit: React.PropTypes.func,
-    websocket: React.PropTypes.object,
-    isOffline: React.PropTypes.bool,
-  };
-  return withWebsocket;
 };
