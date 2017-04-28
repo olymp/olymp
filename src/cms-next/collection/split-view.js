@@ -15,7 +15,7 @@ export default class CollectionSplitView extends Component {
   };
 
   ok = () => {
-    const { form, item, router, mutate } = this.props;
+    const { form, item, router, mutate, typeName } = this.props;
     let id = !this.props.id || this.props.id === 'new' ? null : this.props.id;
     form.validateFields((err, input) => {
       if (err) return onError(err);
@@ -25,7 +25,7 @@ export default class CollectionSplitView extends Component {
           input,
         },
         updateQueries: !id ? {
-          artikelList: (prev, { mutationResult }) => ({
+          [`${lowerFirst(typeName)}List`]: (prev, { mutationResult }) => ({
             ...prev,
             items: [...prev.items, mutationResult.data.item],
           }),
@@ -68,8 +68,8 @@ export default class CollectionSplitView extends Component {
           <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
           {items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(typeName)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
         </List>
-        {id && id === 'new' && <DetailView form={form} ref={d => this.detail = d} id={null} />}
-        {id && id !== 'new' && <DetailView form={form} ref={d => this.detail = d} key={id} id={id} />}
+        {id && id === 'new' && <DetailView form={form} ref={d => this.detail = d} ok={this.ok} id={null} />}
+        {id && id !== 'new' && <DetailView form={form} ref={d => this.detail = d} ok={this.ok} key={id} id={id} />}
       </SplitView>
     );
   }

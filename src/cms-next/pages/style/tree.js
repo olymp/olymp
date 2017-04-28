@@ -44,7 +44,7 @@ export const TreeNode = styled(({ }) => ({
       {item.name}
     </Link>
     {getIcon(item)}
-    {item.bindingId && <Link to={{ query: { ...query, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}>
+    {item.bindingId && <Link to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}>
       <Icon type="share-alt" />
     </Link>}
     <Link to={{ pathname: item.slug, query: { ...query, '@page': item.pageId || item.id } }}>

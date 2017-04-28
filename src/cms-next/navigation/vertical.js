@@ -59,15 +59,11 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   '> li.ant-menu-item:active': {
     backgroundColor: 'transparent',
   },
-  '> li.ant-menu-item-selected > a': {
-    '> i': {
-      backgroundColor: 'rgba(0,0,0,0.30)!important',
-    },
+  '> li.ant-menu-item-selected > a > i': {
+    backgroundColor: 'rgba(0,0,0,0.30)!important',
   },
-  '> li.ant-menu-submenu-selected > div': {
-    '> i': {
-      backgroundColor: 'rgba(0,0,0,0.30)!important',
-    },
+  '> li.ant-menu-submenu-selected > div > i': {
+    backgroundColor: 'rgba(0,0,0,0.30)!important',
   },
 }), Menu, p => p);
 
