@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Tooltip } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar } from 'olymp/ui';
 import Detail from '../detail';
@@ -9,29 +9,42 @@ const Line = styled(({ theme }) => ({
   marginBottom: 0,
 }), 'hr', p => p);
 
+const Panel = styled(({ theme }) => ({
+  textAlign: 'center',
+  margin: '5rem auto',
+  fontWeight: 200,
+  fontSize: '200%',
+}));
+
 const SelectionSidebar = ({ items, activeItemId, onSwitch, onSelect }) => {
   const selected = items.findIndex(item => item.id === activeItemId);
 
   return (
     <Sidebar
       leftButtons={
-        <Button
-          shape="circle"
-          onClick={() => onSwitch(selected + 1 < items.length ? selected + 1 : 0)}
-          icon="left"
-        />
+        <Tooltip title="Von Auswahl entfernen">
+          <Button
+            shape="circle"
+            onClick={id => onSelect(id)}
+            icon="close"
+            disabled={!items.length}
+          />
+        </Tooltip>
       }
       rightButtons={
-        <Button
-          shape="circle"
-          onClick={() => onSwitch(selected ? selected - 1 : items.length - 1)}
-          icon="right"
-        />
+        <Tooltip title="Alle bearbeiten">
+          <Button
+            shape="circle"
+            onClick={() => onSwitch(selected ? selected - 1 : items.length - 1)}
+            icon="appstore-o"
+            disabled={items.length  <= 1}
+          />
+        </Tooltip>
       }
       footer={
         <div>
-          <Button onClick={() => {}} type="primary">Speichern</Button>
-          <Button onClick={() => {}}>Abbrechen</Button>
+          <Button onClick={() => {}} type="primary" disabled={!items.length}>Speichern</Button>
+          <Button onClick={() => {}} disabled={!items.length}>Abbrechen</Button>
         </div>
       }
       isOpen
@@ -41,18 +54,24 @@ const SelectionSidebar = ({ items, activeItemId, onSwitch, onSelect }) => {
       maxWidth={350}
       padding={0}
     >
-      {items.length > 1 ? (
-        <Thumbs
-          items={items}
-          activeItemId={activeItemId}
-          onClick={(id, index) => onSwitch(index)}
-          onRemove={id => onSelect(id)}
-        />
-      ) : null}
+      {items.length ? (
+        <div>
+          <Thumbs
+            items={items}
+            activeItemId={activeItemId}
+            onClick={(id, index) => onSwitch(index)}
+            onRemove={id => onSelect(id)}
+          />
 
-      {items.length > 1 ? <Line /> : null}
+          <Line />
 
-      <Detail item={items.find(item => item.id === activeItemId)} />
+          <Detail item={items.find(item => item.id === activeItemId)} />
+        </div>
+      ) : (
+        <Panel>
+          Bitte Bilder auswählen
+        </Panel>
+      )}
     </Sidebar>
   );
 };

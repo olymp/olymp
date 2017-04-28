@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Tooltip } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar, List } from 'olymp/ui';
 import { queryMedias } from '../gql';
@@ -21,10 +21,14 @@ class CloudinaryView extends Component {
       <SplitView deviceWidth={deviceWidth}>
         <Sidebar
           leftButtons={
-            <Button shape="circle" onClick={() => onClose(this)} icon="close" />
+            <Tooltip title="Mediathek schließen">
+              <Button shape="circle" onClick={() => onClose(this)} icon="close" />
+            </Tooltip>
           }
           rightButtons={
-            <Button shape="circle" icon="upload" />
+            <Tooltip title="Datei hochladen">
+              <Button shape="circle" icon="upload" />
+            </Tooltip>
           }
           isOpen={isOpen}
           minWidth={400}
@@ -43,17 +47,16 @@ class CloudinaryView extends Component {
           activeItemId={selected[selection]}
         />
 
-        {items && selected && selected.length ? (
-          <SelectionSidebar
-            items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
-            activeItemId={selected[selection]}
-            onSwitch={index => this.setState({ selection: index })}
-            onSelect={id => {
-              if (id === selected[selection]) this.setState({ selection: 0 });
-              onSelect(id);
-            }}
-          />
-        ) : null}
+        <SelectionSidebar
+          items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
+          activeItemId={selected[selection]}
+          onSwitch={index => this.setState({ selection: index })}
+          onSelect={id => {
+            if (selection === selected.length - 1) this.setState({ selection: selection - 1 }); // Wenn letztes Element gelöscht wird
+            console.log(id, selected[selection], selection);
+            onSelect(id);
+          }}
+        />
       </SplitView>
     );
   }

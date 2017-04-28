@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
-import { Icon, Tooltip } from 'antd';
+import { Icon } from 'antd';
 import UnstyledImage from './image';
 
 const MAX_ITEMS = 12;
@@ -114,11 +114,9 @@ export const MediaList = ({ items, onSelect, selected, activeItemId, ...rest }) 
           </ImageLabel>
         ) : undefined}
         {selected.findIndex(x => x === item.id) >= 0 ? (
-          <Tooltip placement="top" title="Von Auswahl entfernen">
-            <ImageLabel>
-              <Icon type="check" />
-            </ImageLabel>
-          </Tooltip>
+          <ImageLabel>
+            <Icon type="check" />
+          </ImageLabel>
         ) : undefined}
       </ImageContainer>
     ) : null)}
