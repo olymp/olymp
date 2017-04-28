@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-jwt.verify = require('bluebird').promisify(jwt.verify);
 
 module.exports = (config = {}) => {
   const SECRET = config['secret'] || process.env.AUTH_SECRET || 'abc';
@@ -11,11 +10,12 @@ module.exports = (config = {}) => {
     return jwt.sign({ id: str, exp: expiry || Math.floor(Date.now() / 1000) + (60 * 60) }, SECRET);
   };
 
-  const readUser = token => jwt.verify(token, SECRET).then(content => {
+  const readUser = token => {
+    const content = jwt.verify(token, SECRET)
     return {
       id: content.id,
     }
-  });
+  };
 
   const create = (data, expiry) => {
     if (!data.exp) data.exp = expiry || Math.floor(Date.now() / 1000) + (60 * 60);
