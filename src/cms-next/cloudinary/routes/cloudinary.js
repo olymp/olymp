@@ -4,15 +4,20 @@ import { Cloudinary } from '../views';
 export default ({ query, pathname, router }) => (
   <Cloudinary
     selected={(query[`@media`] || '').split(',').filter(x => x)}
-    onSelect={selectionId => {
+    onSelect={selectionIds => {
       const selected = (query[`@media`] || '').split(',').filter(x => x);
 
-      const itemIndex = selected.findIndex(item => item === selectionId);
-      if (itemIndex < 0) {
-        selected.unshift(selectionId); // add/select
-      } else {
-        selected.splice(itemIndex, 1); // remove/deselect
-      }
+      console.log(selectionIds, selected);
+
+      selectionIds.forEach(selectionId => {
+        const itemIndex = selected.findIndex(item => item === selectionId);
+
+        if (itemIndex < 0) {
+          selected.push(selectionId); // add/select
+        } else {
+          selected.splice(itemIndex, 1); // remove/deselect
+        }
+      })
 
       router.push({pathname, query: { ...query, ['@media']: selected.join(',') }});
     }}
