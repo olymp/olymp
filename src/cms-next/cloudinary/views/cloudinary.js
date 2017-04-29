@@ -13,6 +13,15 @@ class CloudinaryView extends Component {
     selection: 0,
   };
 
+  componentWillUpdate = (nextProps, nextState) => {
+    const { selection } = nextState;
+    const { selected } = nextProps;
+
+    if (selected.length && selection >= selected.length) {
+      this.setState({ selection: selection - 1 })
+    }
+  }
+
   render() {
     const { selected, onSelect, onClose, deviceWidth, items } = this.props;
     const { isOpen, selection, search } = this.state;
@@ -41,21 +50,27 @@ class CloudinaryView extends Component {
         </Sidebar>
 
         <ListView
-          onSelect={onSelect}
+          onClick={id => {
+            const index = selected.findIndex(selectedId => selectedId === id);
+
+            if (index < 0) {
+              this.setState({ selection: selected.length });
+              onSelect([id]);
+            } else {
+              this.setState({ selection: index });
+            }
+          }}
+          onRemove={onSelect}
           selected={selected}
           items={items}
-          activeItemId={selected[selection]}
         />
 
         <SelectionSidebar
           items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
           activeItemId={selected[selection]}
-          onSwitch={index => this.setState({ selection: index })}
-          onSelect={id => {
-            if (selection === selected.length - 1) this.setState({ selection: selection - 1 }); // Wenn letztes Element gelöscht wird
-            console.log(id, selected[selection], selection);
-            onSelect(id);
-          }}
+          onSelect={index => this.setState({ selection: index })}
+          onRemove={onSelect}
+          onCancel={() => onSelect(selected)}
         />
       </SplitView>
     );
@@ -69,7 +84,7 @@ CloudinaryView.propTypes = {
 };
 CloudinaryView.defaultProps = {
   onClose: x => x.setState({ isOpen: false }),
-  onSelect: selectionId => console.log(selectionId),
+  onSelect: selectionIds => console.log(selectionIds),
   selected: [],
   items: [],
 };
