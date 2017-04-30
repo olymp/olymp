@@ -13,15 +13,6 @@ class CloudinaryView extends Component {
     selection: 0,
   };
 
-  componentWillUpdate = (nextProps, nextState) => {
-    const { selection } = nextState;
-    const { selected } = nextProps;
-
-    if (selected.length && selection >= selected.length) {
-      this.setState({ selection: selection - 1 })
-    }
-  }
-
   onClick = id => {
     const { selected, onSelect } = this.props;
     const index = selected.findIndex(selectedId => selectedId === id);
@@ -32,6 +23,18 @@ class CloudinaryView extends Component {
     } else {
       this.setState({ selection: index });
     }
+  }
+
+  onRemove = id => {
+    const { onSelect, selected } = this.props;
+    const { selection } = this.state;
+    const index = selected.findIndex(item => item.id === id);
+
+    if (index < selection || (index === selection && index === selected.length - 1)) {
+      this.setState({ selection: selection - 1 });
+    }
+
+    onSelect([id]);
   }
 
   render() {
@@ -63,7 +66,7 @@ class CloudinaryView extends Component {
 
         <ListView
           onClick={this.onClick}
-          onRemove={onSelect}
+          onRemove={this.onRemove}
           selected={selected}
           items={items}
         />
@@ -72,7 +75,7 @@ class CloudinaryView extends Component {
           items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
           activeItemId={selected[selection]}
           onSelect={index => this.setState({ selection: index })}
-          onRemove={onSelect}
+          onRemove={this.onRemove}
           onCancel={() => onSelect(selected)}
         />
       </SplitView>
