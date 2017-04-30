@@ -61,18 +61,15 @@ const ImageLabel = styled(({ theme }) => ({
 }), 'div', p => p);
 
 export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
-  <ImageContainer
-    onClick={() => onClick(item.id)}
-    isActive={isActive}
-  >
-    <Image value={item} mode="fill" height={height} retina />
+  <ImageContainer isActive={isActive}>
+    <Image value={item} mode="fill" height={height} onClick={onClick} retina />
     {item.format === 'pdf' && !isActive ? (
       <ImageLabel>
         <Icon type="file-pdf" />
       </ImageLabel>
     ) : undefined}
     {isActive ? (
-      <ImageLabel onClick={() => onRemove(item.id)}>
+      <ImageLabel onClick={onRemove}>
         <Icon type="check" />
         <Icon type="close" />
       </ImageLabel>

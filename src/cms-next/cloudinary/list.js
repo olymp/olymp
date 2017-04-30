@@ -14,7 +14,7 @@ export const MediaList = ({ items, itemHeight, selected, onClick, onRemove, ...r
       <Thumb
         item={item}
         onClick={() => onClick(item.id, index)}
-        onRemove={() => onRemove([item.id])}
+        onRemove={() => onRemove(item.id)}
         isActive={selected.findIndex(x => x === item.id) >= 0}
         height={itemHeight}
         key={item.id}

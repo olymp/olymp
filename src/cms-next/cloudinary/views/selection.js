@@ -25,19 +25,16 @@ class SelectionSidebar extends Component {
   };
 
   componentWillReceiveProps = props => {
-    const stateItems = this.state.items;
+    const { items: stateItems, source, tags } = this.state;
     const propItems = props.items;
-    const items = [];
-
-    // nur neue Items hinzufügen
-    propItems.forEach(propItem => {
+    const items = propItems.map(propItem => {
       const stateItem = stateItems.find(item => item.id === propItem.id);
 
-      if (!stateItem) {
-        items.push(propItem);
-      } else {
-        items.push(stateItem);
-      }
+      return stateItem ? stateItem : {
+        ...propItem,
+        source: source ? stateItems[0].source : propItem.source,
+        tags: tags ? stateItems[0].tags : propItem.tags,
+      }; // nur neue Items hinzufügen, ansonsten Items aus State verwenden
     });
 
     this.setState({ items });
@@ -64,7 +61,6 @@ class SelectionSidebar extends Component {
 
   patchItems = (type, val) => {
     const items = this.state.items.map(item => this.patch(item, {[type]: val}));
-    console.log(items);
     this.setState({ items, [type]: !this.state[type] });
   }
 
