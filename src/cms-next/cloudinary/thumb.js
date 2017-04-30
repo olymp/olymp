@@ -41,7 +41,7 @@ const ImageLabel = styled(({ theme }) => ({
 
 export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
   <ImageContainer isActive={isActive}>
-    <Image value={item} mode="fill" height={height} onClick={onClick} retina />
+    <Image value={item} mode="fill" height={height} onClick={onClick} style={{ maxWidth: '100%' }} retina />
     {item.format === 'pdf' && !isActive ? (
       <ImageLabel>
         <Icon type="file-pdf" />
