@@ -12,7 +12,7 @@ const FormForAllLayout = { wrapperCol: { span: 16, offset: 8 }, style: { marginB
 const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, ...rest }) => !item ? (
   <Spin size="large" />
 ) : (
-  <div style={{ padding: '.5rem' }}>
+  <div style={{ padding: '1rem' }}>
     {!multi ? <Prompt when={false} message={location => `Änderungen verwerfen?`} /> : null}
 
     <Crop url={item.url} width={item.width} height={item.height} />

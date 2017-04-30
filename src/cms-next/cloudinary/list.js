@@ -6,6 +6,7 @@ const Thumbs = styled(() => ({
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: 'space-between',
+  padding: '.5rem',
 }), 'div', p => p);
 
 export const MediaList = ({ items, itemHeight, selected, onClick, onRemove, ...rest }) => (

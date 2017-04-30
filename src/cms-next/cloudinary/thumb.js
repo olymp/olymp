@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import { Icon } from 'antd';
-import UnstyledImage from './image';
+import Image from './image';
 
 const ImageContainer = styled(({ theme, isActive }) => {
   let style = {
@@ -10,32 +10,21 @@ const ImageContainer = styled(({ theme, isActive }) => {
     cursor: 'pointer',
     outline: isActive ? `3px solid ${theme.color}` : 'none',
     backgroundColor: isActive ? '#666' : '#FFF',
-    transition: 'all .15s ease-in-out',
     '> img': {
       opacity: isActive ? .6 : 1,
-    },
-    ':hover': {
-      '> div': {
-        display: 'initial',
-      },
-      transform: 'scale(1.075)',
-      transition: 'all .15s ease-in-out',
-      zIndex: 3,
+      backgroundColor: '#FFF',
     },
   }
 
   return style;
 }, 'div', ({ height, isActive, ...p }) => p);
 
-const Image = styled(({ theme }) => ({
-  backgroundColor: '#FFF',
-}), UnstyledImage, p => p);
-
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  top: 0,
+  right: 0,
+  transform: "translate(40%, -40%) scale(0.667)",
+  transition: 'all .15s ease-in-out',
   backgroundColor: theme.color,
   color: "#FFF",
   borderRadius: "50%",
@@ -44,20 +33,10 @@ const ImageLabel = styled(({ theme }) => ({
   padding: 5,
   lineHeight: 1,
   boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
-  transition: 'all .15s ease-in-out',
-  '> .anticon-close': {
-    display: 'none',
-  },
   ':hover': {
-    // transform: 'translate(-50%, -50%) scale(1.33)',
+    transform: "translate(40%, -40%) scale(0.75)",
     transition: 'all .15s ease-in-out',
-    '> .anticon-check': {
-      display: 'none',
-    },
-    '> .anticon-close': {
-      display: 'initial',
-    },
-  },
+  }
 }), 'div', p => p);
 
 export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
@@ -70,7 +49,6 @@ export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
     ) : undefined}
     {isActive ? (
       <ImageLabel onClick={onRemove}>
-        <Icon type="check" />
         <Icon type="close" />
       </ImageLabel>
     ) : undefined}
