@@ -6,6 +6,8 @@ const Thumbs = styled(({ justifyContent }) => ({
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: justifyContent || 'space-between',
+  alignContent: 'flex-start',
+  alignItems: 'flex-start',
   padding: '.5rem',
 }), 'div', ({ justifyContent, ...p }) => p);
 

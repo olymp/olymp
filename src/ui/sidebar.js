@@ -42,7 +42,7 @@ const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, classN
     </div>
   </StyledInner>
 );
-Sidebar.defaultProps = { width: 400 };
+Sidebar.defaultProps = { width: 350, minWidth: 350 };
 
 let actives = [];
 class SidebarInner extends Component {
@@ -57,12 +57,20 @@ class SidebarInner extends Component {
 };
 
 const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth, showLogo }) => ({
+  width,
+  minWidth,
+  maxWidth,
+  height: '100%',
+  borderRight: '1px solid #e9e9e9',
+  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.25)",
+  paddingBottom: 0,
+  paddingTop: 0,
   '> .ant-modal-content': {
     display: 'flex',
     flexDirection: 'column',
-    boxShadow: '0',
     height: '100%',
     borderRadius: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.015)',
     '> .ant-modal-close': {
       display: 'none',
     },
@@ -84,21 +92,16 @@ const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidt
     '> .ant-modal-header': {
       textAlign: 'center',
       position: 'relative',
+      backgroundColor: 'rgba(0, 0, 0, 0.01)',
     },
     '> .ant-modal-footer': {
+      backgroundColor: 'rgba(0, 0, 0, 0.01)',
       '> div > .ant-btn': {
         width: 'calc(50% - 4px)',
         maxWidth: 200,
       },
     },
   },
-  width,
-  minWidth,
-  maxWidth,
-  height: '100%',
-  borderRight: '1px solid #e9e9e9',
-  paddingBottom: 0,
-  paddingTop: 0,
 }), SidebarInner, p => p);
 
 const TitleButtons = styled(({ theme, left, right, padding, width, showLogo }) => ({

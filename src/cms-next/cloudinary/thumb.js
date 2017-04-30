@@ -21,6 +21,22 @@ const ImageContainer = styled(({ theme, isActive }) => {
 
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
+  top: '50%',
+  right: '50%',
+  transform: "translate(50%, -50%)",
+  transition: 'all .15s ease-in-out',
+  backgroundColor: theme.color,
+  color: "#FFF",
+  borderRadius: "50%",
+  textAlign: "center",
+  fontSize: 25,
+  padding: 5,
+  lineHeight: 1,
+  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
+}), 'div', p => p);
+
+const CloseLabel = styled(({ theme }) => ({
+  position: "absolute",
   top: 0,
   right: 0,
   transform: "translate(40%, -40%) scale(0.667)",
@@ -42,15 +58,15 @@ const ImageLabel = styled(({ theme }) => ({
 export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
   <ImageContainer isActive={isActive}>
     <Image value={item} mode="fill" height={height} onClick={onClick} style={{ maxWidth: '100%' }} retina />
-    {item.format === 'pdf' && !isActive ? (
+    {item.format === 'pdf' ? (
       <ImageLabel>
         <Icon type="file-pdf" />
       </ImageLabel>
     ) : undefined}
     {isActive ? (
-      <ImageLabel onClick={onRemove}>
+      <CloseLabel onClick={onRemove}>
         <Icon type="close" />
-      </ImageLabel>
+      </CloseLabel>
     ) : undefined}
   </ImageContainer>
 ) : null;

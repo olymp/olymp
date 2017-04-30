@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button, Icon, Tooltip } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar, List } from 'olymp/ui';
-import { isEqual } from 'lodash';
+import { isEqual, intersection, upperFirst, orderBy } from 'lodash';
 import { queryMedias } from '../gql';
 import { SplitView } from '../../style';
 import ListView from '../list';
@@ -16,6 +16,7 @@ class CloudinaryView extends Component {
   state = {
     isOpen: true,
     selection: 0,
+    tagFilter: [],
   };
 
   onClick = id => {
@@ -42,9 +43,39 @@ class CloudinaryView extends Component {
     onSelect([id]);
   }
 
+  getTags = items => {
+    const tags = {};
+
+    items.forEach(item => item.tags.forEach(tag => {
+      if (!tags[tag]) tags[tag] = [];
+      tags[tag].push(item);
+    }));
+
+    return tags;
+  }
+
+  getDirectories = (tags, items) => Object.keys(tags).map(tag => {
+    const { tagFilter } = this.state;
+    const isActive = !!tagFilter.find(x => x === tag);
+    const count = tags[tag].length;
+
+    return {
+      active: isActive,
+      disabled: !isActive && !items.filter(item => item.tags.find(x => x === tag)).length,
+      onClick: () => this.setState({ tagFilter: !isActive ? [...tagFilter, tag] : tagFilter.filter(x => x !== tag) }),
+      label: upperFirst(tag),
+      description: `${count} Bilder mit diesem Schlagwort`,
+      image: tags[tag][0],
+      count,
+      key: tag,
+    };
+  })
+
   render() {
     const { selected, onSelect, onClose, deviceWidth, items } = this.props;
-    const { isOpen, selection, search } = this.state;
+    const { isOpen, selection, search, tagFilter } = this.state;
+    const filteredItems = items.filter(item => intersection(item.tags, tagFilter).length === tagFilter.length);
+    const directories = orderBy(this.getDirectories(this.getTags(items), filteredItems), ['active', 'disabled', 'count', 'label'], ['desc', 'asc', 'desc', 'asc']);
 
     return (
       <SplitView deviceWidth={deviceWidth}>
@@ -59,23 +90,22 @@ class CloudinaryView extends Component {
               <Button shape="circle" icon="upload" />
             </Tooltip>
           }
+          header={
+            <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+          }
           isOpen={isOpen}
-          minWidth={400}
           padding={0}
           title="Mediathek"
           subtitle="Medien sichten und verwalten"
         >
-          <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
-          {[{ pathname: '', id: 0, name: 'Abc'}].map(item => (
-            <List.Card key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />
-          ))}
+          {directories.map(dir => <List.Item {...dir} />)}
         </Sidebar>
 
         <StyledList
           onClick={this.onClick}
           onRemove={this.onRemove}
           selected={selected}
-          items={items}
+          items={filteredItems}
         />
 
         <SelectionSidebar

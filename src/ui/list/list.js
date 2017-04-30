@@ -7,7 +7,7 @@ export default styled(({ side, width }) => ({
   width: width || 300,
   borderRight: side === 'left' && '1px solid rgb(233, 233, 233)',
   borderLeft: side === 'right' && '1px solid rgb(233, 233, 233)',
-  backgroundColor: 'rgba(128, 128, 128, 0.04)',
+  backgroundColor: 'rgba(0, 0, 0, 0.015)',
   onBefore: {
     content: "'>'",
     position: 'absolute',

@@ -39,8 +39,8 @@ class SelectionSidebar extends Component {
 
       return stateItem ? stateItem : {
         ...propItem,
-        source: source ? stateItems[0].source : propItem.source,
-        tags: tags ? stateItems[0].tags : propItem.tags,
+        source: source && stateItems[0] ? stateItems[0].source : propItem.source,
+        tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
       }; // nur neue Items hinzufügen, ansonsten Items aus State verwenden
     });
 
@@ -88,7 +88,7 @@ class SelectionSidebar extends Component {
             <Button onClick={onCancel} disabled={!items.length}>Abbrechen</Button>
           </div>
         }
-        header={
+        header={items.length > 1 ? (
           <div>
             <Line />
             <StyledList
@@ -100,7 +100,7 @@ class SelectionSidebar extends Component {
               justifyContent="space-around"
             />
           </div>
-        }
+        ) : null}
         isOpen
         title="Bearbeiten"
         width={350}
