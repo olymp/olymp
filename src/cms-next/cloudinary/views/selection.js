@@ -7,7 +7,7 @@ import Detail from '../detail';
 import List from '../list';
 
 const Line = styled(({ theme }) => ({
-  margin: 0,
+  margin: '14px -16px 0 -16px',
 }), 'hr', p => p);
 
 const Panel = styled(({ theme }) => ({
@@ -16,6 +16,13 @@ const Panel = styled(({ theme }) => ({
   fontWeight: 200,
   fontSize: '200%',
 }));
+
+const StyledList = styled(({ theme }) => ({
+  maxHeight: 250,
+  overflow: 'auto',
+  marginBottom: -14,
+  padding: '.5rem 0',
+}), List, p => p);
 
 class SelectionSidebar extends Component {
   state = {
@@ -64,6 +71,10 @@ class SelectionSidebar extends Component {
     this.setState({ items, [type]: !this.state[type] });
   }
 
+  onRemove = () => {
+
+  }
+
   render = () => {
     const { activeItemId, onSelect, onRemove, onCancel } = this.props;
     const { items, source, tags } = this.state;
@@ -77,6 +88,19 @@ class SelectionSidebar extends Component {
             <Button onClick={onCancel} disabled={!items.length}>Abbrechen</Button>
           </div>
         }
+        header={
+          <div>
+            <Line />
+            <StyledList
+              items={items}
+              itemHeight={60}
+              selected={[activeItemId]}
+              onClick={(id, index) => onSelect(index)}
+              onRemove={onRemove}
+              justifyContent="space-around"
+            />
+          </div>
+        }
         isOpen
         title="Bearbeiten"
         width={350}
@@ -85,26 +109,14 @@ class SelectionSidebar extends Component {
         padding={0}
       >
         {items.length ? (
-          <div>
-            <List
-              items={items}
-              itemHeight={60}
-              selected={[activeItemId]}
-              onClick={(id, index) => onSelect(index)}
-              onRemove={onRemove}
-            />
-
-            <Line />
-
-            <Detail
-              item={activeItem}
-              multi={items.length > 1}
-              patchItem={changes => this.patchItem(activeItem.id, changes)}
-              patchItems={this.patchItems}
-              source={source}
-              tags={tags}
-            />
-          </div>
+          <Detail
+            item={activeItem}
+            multi={items.length > 1}
+            patchItem={changes => this.patchItem(activeItem.id, changes)}
+            patchItems={this.patchItems}
+            source={source}
+            tags={tags}
+          />
         ) : (
           <Panel>
             Dateien auswählen
@@ -113,7 +125,7 @@ class SelectionSidebar extends Component {
       </Sidebar>
     );
   }
-}
+};
 SelectionSidebar.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   activeItemId: PropTypes.string,

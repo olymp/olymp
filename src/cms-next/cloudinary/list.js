@@ -2,15 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import Thumb from './thumb';
 
-const Thumbs = styled(() => ({
+const Thumbs = styled(({ justifyContent }) => ({
   display: 'flex',
   flexFlow: 'row wrap',
-  justifyContent: 'space-between',
+  justifyContent: justifyContent || 'space-between',
   padding: '.5rem',
-}), 'div', p => p);
+}), 'div', ({ justifyContent, ...p }) => p);
 
 export const MediaList = ({ items, itemHeight, selected, onClick, onRemove, ...rest }) => (
-  <Thumbs>
+  <Thumbs {...rest}>
     {(items || []).map((item, index) => (
       <Thumb
         item={item}

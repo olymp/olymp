@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { Prompt } from 'olymp';
 import { TagsEditor } from 'olymp/edits';
 import { Sidebar } from 'olymp/ui';
-import { Button, Form, Icon, Input, Spin, Checkbox } from 'antd';
+import { Button, Form, Icon, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';
 import Crop from './crop';
 
@@ -13,8 +12,6 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, ...rest
   <Spin size="large" />
 ) : (
   <div style={{ padding: '1rem' }}>
-    {!multi ? <Prompt when={false} message={location => `Änderungen verwerfen?`} /> : null}
-
     <Crop url={item.url} width={item.width} height={item.height} />
 
     <Form.Item key="id" label="ID" {...FormItemLayout}>
@@ -34,23 +31,36 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, ...rest
     </Form.Item>
     {multi ? (
       <Form.Item key="sourceForAll" {...FormForAllLayout}>
-        <Checkbox checked={source} onChange={() => patchItems('source', item.source)}>Für alle Ausgewählte</Checkbox>
+        {!source ? (
+          <Popconfirm title="'Quelle' für alle ausgewählten Medien überschreiben?" onConfirm={() => patchItems('source', item.source)} okText="Ja" cancelText="Abbrechen">
+            <Checkbox checked={source}>Für alle Ausgewählte</Checkbox>
+          </Popconfirm>
+        ) : (
+          <Checkbox checked={source} onChange={() => patchItems('source', item.source)}>Für alle Ausgewählte</Checkbox>
+        )}
       </Form.Item>
     ) : null}
 
-    <Form.Item key="tags" label="Tags" {...FormItemLayout}>
+    <Form.Item key="tags" label="Schlagworte" {...FormItemLayout}>
       <TagsEditor
         {...rest}
         value={item.tags || []}
         onChange={val => patchItem({ tags: val })}
         disabled={tags && multi}
         searchPlaceholder="Suche ..."
+        placeholder="Schlagworte"
         style={{ width: '100%' }}
       />
     </Form.Item>
     {multi ? (
       <Form.Item key="tagsForAll" {...FormForAllLayout}>
-        <Checkbox checked={tags} onChange={() => patchItems('tags', item.tags)}>Für alle Ausgewählte</Checkbox>
+        {!tags ? (
+          <Popconfirm title="'Schlagworte' für alle ausgewählten Medien überschreiben?" onConfirm={() => patchItems('tags', item.tags)} okText="Ja" cancelText="Abbrechen">
+            <Checkbox checked={tags}>Für alle Ausgewählte</Checkbox>
+          </Popconfirm>
+        ) : (
+          <Checkbox checked={tags} onChange={() => patchItems('tags', item.tags)}>Für alle Ausgewählte</Checkbox>
+        )}
       </Form.Item>
     ) : null}
 

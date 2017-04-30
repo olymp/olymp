@@ -2,10 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { Button, Icon, Tooltip } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar, List } from 'olymp/ui';
+import { isEqual } from 'lodash';
 import { queryMedias } from '../gql';
 import { SplitView } from '../../style';
 import ListView from '../list';
 import SelectionSidebar from './selection';
+
+const StyledList = styled(({ theme }) => ({
+  borderRight: '1px solid #e9e9e9',
+}), ListView, p => p);
 
 class CloudinaryView extends Component {
   state = {
@@ -61,10 +66,12 @@ class CloudinaryView extends Component {
           subtitle="Medien sichten und verwalten"
         >
           <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
-          {[{ pathname: '', id: 0, name: 'Abc'}].map(item => <List.Item active={false} to={item.pathname} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
+          {[{ pathname: '', id: 0, name: 'Abc'}].map(item => (
+            <List.Item active={false} to={item.pathname} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />
+          ))}
         </Sidebar>
 
-        <ListView
+        <StyledList
           onClick={this.onClick}
           onRemove={this.onRemove}
           selected={selected}
