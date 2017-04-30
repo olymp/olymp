@@ -2,15 +2,17 @@ import React, { Component, Children } from 'react';
 import { styled } from 'olymp';
 import { Button as AntButton, Icon, Button, Spin } from 'antd';
 
-const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, footer, ...props }) => isOpen ? (
+const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, header, footer, ...props }) => isOpen ? (
   <StyledInner {...props}>
     <div className="ant-modal-content">
-      {leftButtons || rightButtons || title || subtitle ? (
+      {leftButtons || rightButtons || title || subtitle || header ? (
         <div className="ant-modal-header">
           {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
           {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
           <div className="ant-modal-title">{title}</div>
           {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+
+          {header}
         </div>
       ) : null}
 

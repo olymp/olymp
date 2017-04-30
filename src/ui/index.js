@@ -1,4 +1,4 @@
-export * from './list';
+export { default as List } from './list';
 export * from './containers';
 export * from './modal-utils';
 export { default as Modal } from 'olymp/src/core/components/modal';
