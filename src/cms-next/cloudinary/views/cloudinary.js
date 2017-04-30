@@ -67,7 +67,7 @@ class CloudinaryView extends Component {
         >
           <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
           {[{ pathname: '', id: 0, name: 'Abc'}].map(item => (
-            <List.Item active={false} to={item.pathname} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />
+            <List.Card key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />
           ))}
         </Sidebar>
 
