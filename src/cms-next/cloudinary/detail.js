@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Prompt } from 'olymp';
 import { TagsEditor } from 'olymp/edits';
 import { Sidebar } from 'olymp/ui';
@@ -9,9 +9,8 @@ import Crop from './crop';
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: 0 } };
 const FormForAllLayout = { wrapperCol: { span: 16, offset: 8 }, style: { marginBottom: 0 } };
 
-@Form.create()
 class MediaDetail extends Component {
-  state = {
+  /* state = {
     itemFields: [],
   };
 
@@ -51,79 +50,90 @@ class MediaDetail extends Component {
         }
       }
     }
-  }
+  } */
 
   render() {
-    const { item, form, multi } = this.props;
-    const { getFieldDecorator } = form;
+    const { item, patchItem, patchItems, multi, source, tags } = this.props;
 
     if (!item) {
       return <Spin size="large" />;
     } return (
-      <div>
-        <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
+      <div style={{ padding: '.5rem' }}>
+        {!multi ? <Prompt when={true} message={location => `Änderungen verwerfen?`} /> : null}
 
-        <div style={{ padding: '1rem' }}>
-          <Crop url={item.url} width={item.width} height={item.height} />
+        <Crop url={item.url} width={item.width} height={item.height} />
 
-          <Form.Item key="id" label="ID" {...FormItemLayout}>
-            {getFieldDecorator('id', {
-              initialValue: item.id,
-            })(
-              <Input disabled placeholder="ID" />
-            )}
+        <Form.Item key="id" label="ID" {...FormItemLayout}>
+          <Input value={item.id} disabled placeholder="ID" />
+        </Form.Item>
+        <Form.Item key="caption" label="Bezeichnung" {...FormItemLayout}>
+          <Input value={item.caption} onChange={event => patchItem({ caption: event.target.value })} placeholder="Bezeichnung" />
+        </Form.Item>
+
+        <Form.Item key="source" label="Quelle" {...FormItemLayout}>
+          <Input
+            value={item.source}
+            onChange={event => patchItem({ source: event.target.value })}
+            placeholder="Quelle"
+            disabled={source}
+          />
+        </Form.Item>
+        {multi ? (
+          <Form.Item key="sourceForAll" {...FormForAllLayout}>
+            <Checkbox checked={source} onChange={() => patchItems('source', item.source)}>Für Alle übernehmen</Checkbox>
           </Form.Item>
-          <Form.Item key="caption" label="Bezeichnung" {...FormItemLayout}>
-            {getFieldDecorator('caption', {
-              initialValue: item.caption,
-            })(
-              <Input placeholder="Bezeichnung" />
-            )}
+        ) : null}
+
+        <Form.Item key="tags" label="Tags" {...FormItemLayout}>
+          <TagsEditor
+            {...this.props}
+            value={item.tags || []}
+            onChange={val => patchItem({ tags: val })}
+            disabled={tags}
+            searchPlaceholder="Suche ..."
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+        {multi ? (
+          <Form.Item key="tagsForAll" {...FormForAllLayout}>
+            <Checkbox checked={tags} onChange={() => patchItems('tags', item.tags)}>Für Alle übernehmen</Checkbox>
           </Form.Item>
-          <Form.Item key="source" label="Quelle" {...FormItemLayout}>
-            {getFieldDecorator('source', {
-              initialValue: item.source,
-            })(
-              <Input placeholder="Quelle" disabled={!!source} />
-            )}
+        ) : null}
+
+        <Form.Item key="size" label="Größe" {...FormItemLayout}>
+          <Input disabled placeholder="Größe" value={`${item.width}x${item.height}`} />
+        </Form.Item>
+        <Form.Item key="date" label="Hinzugefügt" {...FormItemLayout}>
+          <Input disabled placeholder="Hinzugefügt" value={`${moment(item.createdAt).format('DD. MMMM YYYY, HH:mm:ss')} Uhr`} />
+        </Form.Item>
+        <Form.Item key="format" label="Format" {...FormItemLayout}>
+          <Input disabled placeholder="Format" value={item.format} />
+        </Form.Item>
+        { item.format === 'pdf' ? (
+          <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
+            <Input disabled placeholder="Seiten" value={item.pages} />
           </Form.Item>
-          {multi ? (
-            <Form.Item key="sourceForAll" {...FormForAllLayout}>
-              <Checkbox onChange={() => this.setState({ source: !source ? item.source : undefined })}>Für Alle übernehmen</Checkbox>
-            </Form.Item>
-          ) : null}
-          <Form.Item key="tags" label="Tags" {...FormItemLayout}>
-            {getFieldDecorator('tags', {
-              initialValue: item.tags || [],
-            })(
-              <TagsEditor {...this.props} disabled={!!tags} searchPlaceholder="Suche ..." style={{ width: '100%' }} />
-            )}
-          </Form.Item>
-          {multi ? (
-            <Form.Item key="tagsForAll" {...FormForAllLayout}>
-              <Checkbox onChange={() => this.setState({ tags: !tags ? item.tags : undefined })}>Für Alle übernehmen</Checkbox>
-            </Form.Item>
-          ) : null}
-          <Form.Item key="size" label="Größe" {...FormItemLayout}>
-            <Input disabled placeholder="Größe" defaultValue={`${item.width}x${item.height}`} />
-          </Form.Item>
-          <Form.Item key="date" label="Hinzugefügt" {...FormItemLayout}>
-            <Input disabled placeholder="Hinzugefügt" defaultValue={`${moment(item.createdAt).format('DD. MMMM YYYY, HH:mm:ss')} Uhr`} />
-          </Form.Item>
-          <Form.Item key="format" label="Format" {...FormItemLayout}>
-            <Input disabled placeholder="Format" defaultValue={item.format} />
-          </Form.Item>
-          { item.format === 'pdf' ? (
-            <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
-              <Input disabled placeholder="Seiten" defaultValue={item.pages} />
-            </Form.Item>
-          ) : undefined }
-          <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
-            <Input disabled placeholder="Dateigröße" defaultValue={`${item.bytes / 1000} kB`} />
-          </Form.Item>
-        </div>
+        ) : undefined }
+        <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
+          <Input disabled placeholder="Dateigröße" value={`${item.bytes / 1000} kB`} />
+        </Form.Item>
       </div>
     );
   }
 }
+MediaDetail.propTypes = {
+  item: PropTypes.object,
+  patchItem: PropTypes.func,
+  patchItems: PropTypes.func,
+  multi: PropTypes.bool,
+  source: PropTypes.bool,
+  tags: PropTypes.bool,
+};
+MediaDetail.defaultProps = {
+  patchItem: () => {},
+  patchItems: () => {},
+  multi: false,
+  source: false,
+  tags: false,
+};
 export default MediaDetail;

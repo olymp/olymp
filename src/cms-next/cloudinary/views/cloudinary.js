@@ -22,6 +22,18 @@ class CloudinaryView extends Component {
     }
   }
 
+  onClick = id => {
+    const { selected, onSelect } = this.props;
+    const index = selected.findIndex(selectedId => selectedId === id);
+
+    if (index < 0) {
+      this.setState({ selection: selected.length });
+      onSelect([id]);
+    } else {
+      this.setState({ selection: index });
+    }
+  }
+
   render() {
     const { selected, onSelect, onClose, deviceWidth, items } = this.props;
     const { isOpen, selection, search } = this.state;
@@ -50,16 +62,7 @@ class CloudinaryView extends Component {
         </Sidebar>
 
         <ListView
-          onClick={id => {
-            const index = selected.findIndex(selectedId => selectedId === id);
-
-            if (index < 0) {
-              this.setState({ selection: selected.length });
-              onSelect([id]);
-            } else {
-              this.setState({ selection: index });
-            }
-          }}
+          onClick={this.onClick}
           onRemove={onSelect}
           selected={selected}
           items={items}

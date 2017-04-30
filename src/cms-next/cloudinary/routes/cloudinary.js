@@ -7,8 +7,6 @@ export default ({ query, pathname, router }) => (
     onSelect={selectionIds => {
       const selected = (query[`@media`] || '').split(',').filter(x => x);
 
-      console.log(selectionIds, selected);
-
       selectionIds.forEach(selectionId => {
         const itemIndex = selected.findIndex(item => item === selectionId);
 
