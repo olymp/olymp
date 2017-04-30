@@ -72,7 +72,7 @@ export default (type, collection) => {
       return (
         <SplitView deviceWidth={deviceWidth}>
           <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
-          <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
+          <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} padding={0} title={title} subtitle={description}>
             {!value && <collection.List items={items} />}
             {value && <collection.Detail key={id} form={form} item={item} viewType="sidebar" />}
           </Sidebar>

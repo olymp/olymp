@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { styled, Link } from 'olymp';
 import { ChevronRight } from 'olymp-icons';
+import Image from '../../cms-next/cloudinary/image';
 
-export default styled(({ active, theme }) => ({
+const Content = styled(({ active, disabled }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: '5px 6px',
   width: '100%',
-  color: 'rgba(0, 0, 0, 0.85)',
-  backgroundColor: active && 'rgba(233, 233, 233, .4)',
+  color: disabled ? 'rgba(0, 0, 0, 0.40)' : 'rgba(0, 0, 0, 0.85)',
+  backgroundColor: active && 'rgba(233, 233, 233, .6)',
   lineHeight: '20px',
   borderBottom: '1px solid rgb(233, 233, 233)',
+  cursor: disabled ? 'not-allowed' : 'pointer',
   '> img': {
     marginRight: 8,
     width: 37,
@@ -33,25 +35,24 @@ export default styled(({ active, theme }) => ({
     color: 'rgba(0, 0, 0, 0.85)',
     boxShadow: '0 0 3px 1px rgba(63, 81, 181, 0.19)',
   },
-}), ({ className, image, label, description, to, onClick }) => onClick ? (
-  <a className={className} href="javascript:;" onClick={onClick} onFocus={onFocus}>
-    {image && <img src={image} />}
+}), ({ image, label, description, className, disabled }) => (
+  <div className={className}>
+    {image ? <Image value={image} mode="fill" width={37} height={37} retina /> : null}
     <div>
-      <strong className="header">{label}</strong>
-      <div className="description">{description}</div>
+      <strong>{label}</strong>
+      {description}
     </div>
-    <ChevronRight size={14} color />
+
+    {!disabled ? <ChevronRight size={14} color /> : null}
+  </div>
+), p => p);
+
+export default ({ className, image, label, description, to, onClick, active, disabled }) => onClick ? (
+  <a className={className} href="javascript:;" onClick={disabled ? () => {} : onClick}>
+    <Content image={image} label={label} description={description} active={active} disabled={disabled} />
   </a>
 ) : (
-  <Link className={className} to={to} onFocus={onFocus}>
-    {image && <img src={image} />}
-    <div>
-      <strong className="header">{label}</strong>
-      <div className="description">{description}</div>
-    </div>
-    <ChevronRight size={14} color />
+  <Link className={className} to={to} disabled={disabled}>
+    <Content image={image} label={label} description={description} active={active} disabled={disabled} />
   </Link>
-), p => p);
-const onFocus = ({ target, keyCode }) => {
-  // if (this.ref) target.click();
-}
+);

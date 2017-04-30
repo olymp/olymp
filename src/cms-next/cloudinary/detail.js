@@ -4,6 +4,7 @@ import { Sidebar } from 'olymp/ui';
 import { Button, Form, Icon, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';
 import Crop from './crop';
+import Image from './image';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: 0 } };
 const FormForAllLayout = { wrapperCol: { span: 16, offset: 8 }, style: { marginBottom: 0 } };
@@ -12,7 +13,13 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, ...rest
   <Spin size="large" />
 ) : (
   <div style={{ padding: '1rem' }}>
-    <Crop url={item.url} width={item.width} height={item.height} />
+    <div style={{ marginBottom: '1rem' }}>
+      {false ? (
+        <Crop url={item.url} width={item.width} height={item.height} />
+      ) : (
+        <Image value={item} mode="fill" width={350} style={{ maxWidth: '100%' }} retina />
+      )}
+    </div>
 
     <Form.Item key="id" label="ID" {...FormItemLayout}>
       <Input value={item.id} disabled placeholder="ID" />

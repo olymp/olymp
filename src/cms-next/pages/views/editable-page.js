@@ -46,7 +46,7 @@ export default class PageSidebar extends Component {
     return (
       <SplitView deviceWidth={deviceWidth}>
         <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
-        <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} minWidth={400} padding={0} title={title} subtitle={description}>
+        <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} padding={0} title={title} subtitle={description}>
           {!value && <Pages items={navigation} />}
           {value && <PageForm form={form} item={item} items={flatNavigation} />}
         </Sidebar>
