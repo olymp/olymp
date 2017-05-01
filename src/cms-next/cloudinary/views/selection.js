@@ -3,6 +3,7 @@ import { Button, Icon, Tooltip, notification } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar } from 'olymp/ui';
 import { isEqual } from 'lodash';
+import { mutateFile } from '../gql';
 import Detail from '../detail';
 import List from '../list';
 
@@ -20,6 +21,7 @@ const StyledList = styled(({ theme }) => ({
   borderTop: '1px solid #e9e9e9',
 }), List, p => p);
 
+@mutateFile
 class SelectionSidebar extends Component {
   state = {
     items: [],
@@ -90,10 +92,29 @@ class SelectionSidebar extends Component {
     });
   }
 
+  isEqual = (obj1, obj2) => {
+    // null, undefined, false, '' => null
+    const nulize = obj => {
+      const clone = {};
+      Object.keys(obj).forEach(key => {
+        if (obj[key]) {
+          clone[key] = obj[key];
+        } else {
+          clone[key] = null;
+        }
+      });
+
+      return clone;
+    }
+
+    return isEqual(nulize(obj1), nulize(obj2));
+  }
+
   onSave = () => {
     const { items } = this.state;
+    const { save } = this.props;
 
-    items.forEach(item => console.log(item));
+    items.forEach(item => save(item));
   }
 
   onRemove = id => {
@@ -103,7 +124,7 @@ class SelectionSidebar extends Component {
     const propItem = propItems.find(item => item.id === id);
     const stateItem = stateItems.find(item => item.id === id);
 
-    if (isEqual(propItem, stateItem)) {
+    if (this.isEqual(propItem, stateItem)) {
       onRemove(id);
     } else {
       this.notification(`open${Date.now()}`, () => onSelect(id));
@@ -118,7 +139,7 @@ class SelectionSidebar extends Component {
     stateItems.forEach(stateItem => {
       const propItem = propItems.find(item => item.id === stateItem.id);
 
-      if (!isEqual(propItem, stateItem)) {
+      if (!this.isEqual(propItem, stateItem)) {
         changes = true;
       }
     });
