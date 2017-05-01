@@ -2,9 +2,10 @@ import React from 'react';
 import { Cloudinary } from '../views';
 
 const onClick = ({ query, pathname, router }) => (selectionIds, index, e) => {
-  if(e.shiftKey) {
+  const selected = (query[`@media`] || '').split(',').filter(x => x);
+
+  if(e && e.shiftKey) {
     // MULTI
-    const selected = (query[`@media`] || '').split(',').filter(x => x);
     selectionIds.forEach((selectionId) => {
       const itemIndex = selected.findIndex(item => item === selectionId);
       if (itemIndex < 0) {
@@ -16,8 +17,11 @@ const onClick = ({ query, pathname, router }) => (selectionIds, index, e) => {
     router.push({ pathname, query: { ...query, '@media': selected.join(',') }});
   } else {
     // SINGLE
-    const selected = (query['@media'] || '').split(',').filter(x => x)[0];
-    router.push({ pathname, query: { ...query, '@media': selected !== selectionIds[0] ? selectionIds[0] : null } });
+    if (selected.length && selected.includes(selectionIds[0])) {
+      router.push({ pathname, query: { ...query, '@media': selected.filter(x => x !== selectionIds[0]).join(',') } });
+    } else {
+      router.push({ pathname, query: { ...query, '@media': selectionIds[0] } });
+    }
   }
 };
 
