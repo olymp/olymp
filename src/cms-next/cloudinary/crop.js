@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
-import { Select, Spin } from 'antd';
+import { Select } from 'antd';
+import { url as optimizeUrl } from './utils';
 import ReactCrop from 'react-image-crop';
 
 const StyledCropSelect = styled(({ theme }) => ({
@@ -31,7 +32,7 @@ export const CropSelect = (props) => {
 
 const Crop = ({ url, aspect, crop, width, height, onChange }) => (
   <StyledCrop
-    src={url}
+    src={optimizeUrl(url)}
     onChange={(p, { width, height, x, y }) => onChange([width, height, x, y])}
     crop={crop ? {
       width: (crop[0] / width) * 100,
