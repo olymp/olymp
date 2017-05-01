@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { styled } from 'olymp';
 import { TagsEditor } from 'olymp/edits';
 import { Sidebar } from 'olymp/ui';
 import { Button, Form, Icon, Input, Spin, Checkbox, Popconfirm } from 'antd';
@@ -6,10 +7,14 @@ import moment from 'moment';
 import Crop from './crop';
 import Image from './image';
 
+const DangerCheckbox = styled(({ theme, checked }) => ({
+  color: checked ? 'red' : 'rgba(0, 0, 0, .65)',
+}), Checkbox, p => p);
+
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: 0 } };
 const FormForAllLayout = { wrapperCol: { span: 16, offset: 8 }, style: { marginBottom: 0 } };
 
-const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, ...rest }) => !item ? (
+const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, remove, ...rest }) => !item ? (
   <Spin size="large" />
 ) : (
   <div style={{ padding: '1rem' }}>
@@ -88,6 +93,15 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, ...rest
     <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
       <Input disabled placeholder="Dateigröße" value={`${item.bytes / 1000} kB`} />
     </Form.Item>
+    <Form.Item key="delete" label="Löschen" {...FormItemLayout}>
+      {!item.removed ? (
+        <Popconfirm title="Datei wirklich löschen?" onConfirm={() => patchItem({ removed: true })} okText="Löschen" cancelText="Abbrechen">
+          <DangerCheckbox checked={false}>Datei wird nicht gelöscht</DangerCheckbox>
+        </Popconfirm>
+      ) : (
+        <DangerCheckbox onChange={() => patchItem({ removed: null })} checked>Datei wird gelöscht</DangerCheckbox>
+      )}
+    </Form.Item>
   </div>
 );
 MediaDetail.propTypes = {
@@ -97,6 +111,7 @@ MediaDetail.propTypes = {
   multi: PropTypes.bool,
   source: PropTypes.bool,
   tags: PropTypes.bool,
+  remove: PropTypes.bool,
 };
 MediaDetail.defaultProps = {
   patchItem: () => {},
@@ -104,5 +119,6 @@ MediaDetail.defaultProps = {
   multi: false,
   source: false,
   tags: false,
+  remove: true,
 };
 export default MediaDetail;
