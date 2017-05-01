@@ -3,7 +3,7 @@ import { styled } from 'olymp';
 export default styled(({ deviceWidth, color, center }) => ({
   display: 'flex',
   flex: 1,
-  background: color && 'linear-gradient(0deg, #000000, #232323)',
+  background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
   '> :first-child': {
     flex: 0,
     overflowY: 'auto',
@@ -15,7 +15,8 @@ export default styled(({ deviceWidth, color, center }) => ({
     maxWidth: deviceWidth,
   },
   '> iframe': {
-    height: '100%',
     border: 0,
+    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
+    margin: '1rem auto',
   },
 }), 'div', ({ deviceWidth, ...p }) => p);
