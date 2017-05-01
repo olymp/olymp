@@ -12,6 +12,10 @@ const StyledList = styled(({ theme }) => ({
   borderRight: '1px solid #e9e9e9',
 }), ListView, p => p);
 
+const StyledFilter = styled(({ theme }) => ({
+  borderTop: '1px solid #e9e9e9',
+}), List.Filter, p => p);
+
 class CloudinaryView extends Component {
   state = {
     isOpen: true,
@@ -34,7 +38,7 @@ class CloudinaryView extends Component {
   onRemove = id => {
     const { onSelect, selected } = this.props;
     const { selection } = this.state;
-    const index = selected.findIndex(item => item.id === id);
+    const index = selected.findIndex(itemId => itemId === id);
 
     if (index < selection || (index === selection && index === selected.length - 1)) {
       this.setState({ selection: selection - 1 });
@@ -44,12 +48,18 @@ class CloudinaryView extends Component {
   }
 
   getTags = items => {
-    const tags = {};
+    const tags = { "Ohne Schlagworte": [] };
 
-    items.forEach(item => item.tags.forEach(tag => {
-      if (!tags[tag]) tags[tag] = [];
-      tags[tag].push(item);
-    }));
+    items.forEach(item => {
+      if (!item.tags.length) {
+        tags["Ohne Schlagworte"].push(item);
+      } else {
+        item.tags.forEach(tag => {
+          if (!tags[tag]) tags[tag] = [];
+          tags[tag].push(item);
+        });
+      }
+    });
 
     return tags;
   }
@@ -61,10 +71,10 @@ class CloudinaryView extends Component {
 
     return {
       active: isActive,
-      disabled: !isActive && !items.filter(item => item.tags.find(x => x === tag)).length,
+      disabled: !isActive && !items.filter(item => (tag === 'Ohne Schlagworte' && !item.tags.length) || item.tags.find(x => x === tag)).length,
       onClick: () => this.setState({ tagFilter: !isActive ? [...tagFilter, tag] : tagFilter.filter(x => x !== tag) }),
       label: upperFirst(tag),
-      description: `${count} Bilder mit diesem Schlagwort`,
+      description: `${count} Medien mit diesem Schlagwort`,
       image: tags[tag][0],
       count,
       key: tag,
@@ -72,9 +82,14 @@ class CloudinaryView extends Component {
   })
 
   render() {
-    const { selected, onSelect, onClose, deviceWidth, items } = this.props;
+    const { selected, onSelect, onClose, deviceWidth, pdfMode } = this.props;
     const { isOpen, selection, search, tagFilter } = this.state;
-    const filteredItems = items.filter(item => intersection(item.tags, tagFilter).length === tagFilter.length);
+
+    let items = this.props.items;
+    if (pdfMode) {
+      items = items.filter(x => x.format === 'pdf');
+    }
+    const filteredItems = items.filter(item => intersection(item.tags, tagFilter).length === tagFilter.length || (tagFilter.find(tag => tag === 'Ohne Schlagworte') && !item.tags.length));
     const directories = orderBy(this.getDirectories(this.getTags(items), filteredItems), ['active', 'disabled', 'count', 'label'], ['desc', 'asc', 'desc', 'asc']);
 
     return (
@@ -91,7 +106,7 @@ class CloudinaryView extends Component {
             </Tooltip>
           }
           header={
-            <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+            <StyledFilter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
           }
           isOpen={isOpen}
           padding={0}
@@ -103,7 +118,7 @@ class CloudinaryView extends Component {
 
         <StyledList
           onClick={this.onClick}
-          onRemove={this.onRemove}
+          // onRemove={this.onRemove} derzeit wird hier nicht erkannt ob Änderungen vorliegen oder nicht, daher kommt kein Prompt wenn man in dieser Liste ein Bild schließt
           selected={selected}
           items={filteredItems}
         />
@@ -124,11 +139,13 @@ CloudinaryView.propTypes = {
   onSelect: PropTypes.func,
   selected: PropTypes.arrayOf(PropTypes.string),
   items: PropTypes.arrayOf(PropTypes.object),
+  pdfMode: PropTypes.bool,
 };
 CloudinaryView.defaultProps = {
   onClose: x => x.setState({ isOpen: false }),
-  onSelect: selectionIds => console.log(selectionIds),
+  onSelect: () => {},
   selected: [],
   items: [],
+  pdfMode: false,
 };
 export default queryMedias(CloudinaryView);

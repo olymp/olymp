@@ -18,6 +18,7 @@ const Content = styled(({ active, disabled }) => ({
     width: 37,
     height: 37,
     borderRadius: 500,
+    opacity: disabled ? 0.667 : 1,
   },
   '> div': {
     display: 'flex',

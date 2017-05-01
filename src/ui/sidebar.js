@@ -7,10 +7,12 @@ const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, classN
     <div className="ant-modal-content">
       {leftButtons || rightButtons || title || subtitle || header ? (
         <div className="ant-modal-header">
-          {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
-          {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
-          <div className="ant-modal-title">{title}</div>
-          {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+          <Title>
+            {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+            {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+            <div className="ant-modal-title">{title}</div>
+            {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+          </Title>
 
           {header}
         </div>
@@ -62,7 +64,8 @@ const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidt
   maxWidth,
   height: '100%',
   borderRight: '1px solid #e9e9e9',
-  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.25)",
+  boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
+  zIndex: 1,
   paddingBottom: 0,
   paddingTop: 0,
   '> .ant-modal-content': {
@@ -83,19 +86,17 @@ const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidt
       paddingBottom: paddingY,
       padding,
     },
-    '> .ant-modal-header > .ant-modal-title': {
-      color: theme.color,
-      fontSize: 40,
-      fontWeight: 200,
-      padding: 10,
-    },
     '> .ant-modal-header': {
       textAlign: 'center',
       position: 'relative',
       backgroundColor: 'rgba(0, 0, 0, 0.01)',
+      padding: 0,
+      borderBottom: '2px solid #e9e9e9',
+      boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
     },
     '> .ant-modal-footer': {
       backgroundColor: 'rgba(0, 0, 0, 0.01)',
+      boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
       '> div > .ant-btn': {
         width: 'calc(50% - 4px)',
         maxWidth: 200,
@@ -104,18 +105,33 @@ const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidt
   },
 }), SidebarInner, p => p);
 
+const Title = styled(({ theme }) => ({
+  position: 'relative',
+  padding: '1rem',
+  '> .ant-modal-title': {
+    color: theme.color,
+    fontSize: 40,
+    fontWeight: 200,
+    padding: 10,
+  },
+}), 'div', p => p);
+
 const TitleButtons = styled(({ theme, left, right, padding, width, showLogo }) => ({
   margin: 0,
   lineHeight: '21px',
   position: 'absolute',
-  left: left && 16,
-  right: right && 16,
-  color: theme.color,
+  left: left && 0,
+  right: right && 0,
   fontSize: 40,
   fontWeight: 200,
-  padding: 10,
+  padding: '0 1rem',
   top: '50%',
   transform: 'translateY(-50%)',
+  '> button': {
+    display: 'block',
+    boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
+    paddingTop: 1,
+  }
 }), 'div', ({ left, right, ...p }) => p);
 
 export default Sidebar;
