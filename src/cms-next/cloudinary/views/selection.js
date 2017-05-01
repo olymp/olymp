@@ -170,8 +170,8 @@ class SelectionSidebar extends Component {
         ) : null}
         footer={
           <div>
-            {onSelect ? (
-              <Button onClick={this.onSave} type="primary" disabled={!items.length}>Alle speichern</Button>
+            {!onSelect ? (
+              <Button onClick={this.onSave} type="primary" disabled={!items.length}>{items.length > 1 ? 'Alle speichern' : 'Speichern'}</Button>
             ) : (
               <Button onClick={() => onSelect(items)} type="primary" disabled={!items.length}>Übernehmen</Button>
             )}
@@ -179,8 +179,8 @@ class SelectionSidebar extends Component {
           </div>
         }
         isOpen
-        title={onSelect ? 'Bearbeiten' : 'Auswählen'}
-        subtitle={onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'}
+        title={!onSelect ? 'Bearbeiten' : 'Auswählen'}
+        subtitle={!onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'}
         width={350}
         minWidth={350}
         maxWidth={350}
@@ -194,7 +194,7 @@ class SelectionSidebar extends Component {
             patchItems={this.patchItems}
             source={source}
             tags={tags}
-            editable={!!onSelect}
+            editable={!onSelect}
           />
         ) : (
           <Panel>

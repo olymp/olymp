@@ -4,7 +4,8 @@ import { Cloudinary } from '../views';
 export default ({ query, pathname, router }) => (
   <Cloudinary
     selected={(query[`@media`] || '').split(',').filter(x => x)}
-    onSelect={selectionIds => {
+    onClick={selectionIds => {
+      // MULTI
       const selected = (query[`@media`] || '').split(',').filter(x => x);
 
       selectionIds.forEach(selectionId => {
@@ -18,7 +19,12 @@ export default ({ query, pathname, router }) => (
       })
 
       router.push({pathname, query: { ...query, ['@media']: selected.join(',') }});
+
+      // ONLY ONE
+      // const selected = (query[`@media`] || '').split(',').filter(x => x)[0];
+      // router.push({pathname, query: { ...query, ['@media']: selected !== selectionIds[0] ? selectionIds[0] : null }});
     }}
+    // onSelect={items => console.log(items)} => Selection-Mode
     onClose={() => router.push({pathname, query: { ...query, ['@media']: undefined }})}
   />
 );

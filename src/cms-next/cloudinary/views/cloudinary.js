@@ -83,7 +83,8 @@ class CloudinaryView extends Component {
 
   render() {
     const { selected, onClick, onClose, deviceWidth, pdfMode, onSelect } = this.props;
-    const { isOpen, selection, search, tagFilter } = this.state;
+    const { isOpen, search, tagFilter } = this.state;
+    const selection = this.state.selection >= 0 && this.state.selection < selected.length ? this.state.selection : 0;
 
     let items = this.props.items;
     if (pdfMode) {
