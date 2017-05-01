@@ -20,7 +20,7 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editabl
   <div style={{ padding: '1rem' }}>
     <div style={{ marginBottom: '1rem' }}>
       {!editable ? (
-        <Crop url={item.url} width={item.width} height={item.height} />
+        <Crop url={item.url} width={item.width} height={item.height} crop={item.crop} onChange={crop => patchItem({ crop })} />
       ) : (
         <Image value={item} mode="fill" width={350} style={{ maxWidth: '100%' }} retina />
       )}

@@ -24,7 +24,7 @@ export default ({ query, pathname, router }) => (
       // const selected = (query[`@media`] || '').split(',').filter(x => x)[0];
       // router.push({pathname, query: { ...query, ['@media']: selected !== selectionIds[0] ? selectionIds[0] : null }});
     }}
-    // onSelect={items => console.log(items)} => Selection-Mode
+    // onSelect={items => console.log(items)} // => Selection-Mode
     onClose={() => router.push({pathname, query: { ...query, ['@media']: undefined }})}
   />
 );
