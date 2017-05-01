@@ -58,13 +58,13 @@ class SidebarInner extends Component {
   }
 };
 
-const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth, showLogo }) => ({
+const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
   width,
   minWidth,
   maxWidth,
   height: '100%',
   borderRight: '1px solid #e9e9e9',
-  boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
+  boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
   zIndex: 1,
   paddingBottom: 0,
   paddingTop: 0,
@@ -116,7 +116,7 @@ const Title = styled(({ theme }) => ({
   },
 }), 'div', p => p);
 
-const TitleButtons = styled(({ theme, left, right, padding, width, showLogo }) => ({
+const TitleButtons = styled(({ left, right }) => ({
   margin: 0,
   lineHeight: '21px',
   position: 'absolute',
@@ -129,7 +129,7 @@ const TitleButtons = styled(({ theme, left, right, padding, width, showLogo }) =
   transform: 'translateY(-50%)',
   '> button': {
     display: 'block',
-    boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
+    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
     paddingTop: 1,
   }
 }), 'div', ({ left, right, ...p }) => p);

@@ -24,4 +24,4 @@ export const SectionH = ({ title, description }) => (
       {description}
     </H>}
   </div>
-)
+);

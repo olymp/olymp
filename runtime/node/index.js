@@ -16,3 +16,9 @@ if (module.hot) {
     ws = app.listenWS({ server });
   });
 }
+
+process.on('uncaughtException', err => {
+  console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+  console.error(err.stack);
+  process.exit(1);
+});

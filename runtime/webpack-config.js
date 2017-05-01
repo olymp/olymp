@@ -354,6 +354,17 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       }),
     });
     config.module.rules.push(babel);
+    config.module.rules.push({
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract({
+        use: [{
+          loader: 'css-loader',
+          options: { modules: false }
+        }],
+        fallback: 'style-loader'
+      }),
+    });
+    config.module.rules.push(babel);
   } else if (isWeb && isDev) {
     config.plugins.push(new HappyPack({
       id: 'less',
@@ -374,23 +385,23 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       test: /\.less$/,
       loaders: [ 'happypack/loader?id=less' ]
     });
-  } /*else if (isNode) {
+    config.plugins.push(new HappyPack({
+      id: 'css',
+      threads: 4,
+      tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
+      loaders: [ {
+        path: 'style-loader',
+        query: JSON.stringify({ insertAt: 'top' })
+      }, {
+        path: 'css-loader',
+        query: JSON.stringify({ modules: false, sourceMap: true }),
+      }]
+    }));
     config.module.rules.push({
-      test: /\.less$/,
-      loader: ExtractTextPlugin.extract({
-        use: [{
-          loader: 'css-loader',
-          options: { modules: false }
-        }, {
-          loader: 'less-loader', options: {
-            modifyVars: theme, // JSON.stringify(theme)
-          }
-        }],
-        fallback: 'style-loader'
-      }),
+      test: /\.css$/,
+      loaders: [ 'happypack/loader?id=css' ]
     });
-    config.module.rules.push(babel);
-  }*/
+  }
 
   if (isDev) {
     config.plugins.push(new HappyPack({

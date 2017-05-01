@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { styled } from 'olymp';
 
-export const SplitView = styled(({ side, width }) => ({
+export const SplitView = styled(() => ({
   display: 'flex',
   minHeight: 600,
 }), 'div', ({ side, ...p }) => p);
@@ -10,7 +10,7 @@ export const Panel = styled(({ display, alignLabel, ...rest }) => ({
   position: 'relative',
   // border: '1px solid transparent',
   overflowY: 'auto',
-  display: display,
+  display,
   '> *': display === 'flex' && {
     overflowY: 'auto',
   },

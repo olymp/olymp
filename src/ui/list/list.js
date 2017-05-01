@@ -16,6 +16,6 @@ export default styled(({ side, width }) => ({
     left: side === 'right' && -26,
     fontSize: 30,
     fontWeight: 'bold',
-    opacity: .2,
+    opacity: 0.2,
   },
 }), 'div', ({ side, ...p }) => p);

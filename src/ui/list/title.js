@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { styled } from 'olymp';
 
-export default styled(({ active, theme }) => ({
+export default styled(({ theme }) => ({
   padding: '5px 6px',
   borderBottom: '1px solid #e9e9e9',
   fontSize: '1.17em',

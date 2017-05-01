@@ -26,7 +26,6 @@ const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, classN
 );
 Sidebar.defaultProps = { width: 400 };
 
-let actives = [];
 class SidebarInner extends Component {
   render() {
     const { children, className } = this.props;
@@ -37,7 +36,7 @@ class SidebarInner extends Component {
     );
   }
 };
-const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWidth, showLogo }) => ({
+const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWidth }) => ({
   '> .ant-modal-content': {
     display: 'flex',
     flexDirection: 'column',
@@ -80,7 +79,7 @@ const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, minWi
   paddingTop: 0,
 }), SidebarInner, p => p);
 
-const TitleButtons = createComponent(({ theme, left, right, padding, width, showLogo }) => ({
+const TitleButtons = createComponent(({ theme, left, right }) => ({
   margin: 0,
   lineHeight: '21px',
   position: 'absolute',
