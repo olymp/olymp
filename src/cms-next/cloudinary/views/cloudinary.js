@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Icon, Tooltip } from 'antd';
+import { Button, Icon, Popover } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar, List } from 'olymp/ui';
 import { isEqual, intersection, upperFirst, orderBy } from 'lodash';
@@ -11,10 +11,6 @@ import SelectionSidebar from './selection';
 const StyledList = styled(({ theme }) => ({
   borderRight: '1px solid #e9e9e9',
 }), ListView, p => p);
-
-const StyledFilter = styled(({ theme }) => ({
-  borderTop: '1px solid #e9e9e9',
-}), List.Filter, p => p);
 
 class CloudinaryView extends Component {
   state = {
@@ -97,17 +93,17 @@ class CloudinaryView extends Component {
       <SplitView deviceWidth={deviceWidth}>
         <Sidebar
           leftButtons={
-            <Tooltip title="Mediathek schließen">
+            <Popover content="Mediathek schließen">
               <Button shape="circle" onClick={() => onClose(this)} icon="close" />
-            </Tooltip>
+            </Popover>
           }
           rightButtons={
-            <Tooltip title="Datei hochladen">
+            <Popover content="Datei hochladen">
               <Button shape="circle" icon="upload" />
-            </Tooltip>
+            </Popover>
           }
           header={
-            <StyledFilter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+            <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
           }
           isOpen={isOpen}
           padding={0}
