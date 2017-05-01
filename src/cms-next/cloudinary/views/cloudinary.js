@@ -82,13 +82,13 @@ class CloudinaryView extends Component {
   })
 
   render() {
-    const { selected, onClick, onClose, deviceWidth, pdfMode, onSelect } = this.props;
+    const { selected, onClick, onClose, deviceWidth, format, onSelect } = this.props;
     const { isOpen, search, tagFilter } = this.state;
     const selection = this.state.selection >= 0 && this.state.selection < selected.length ? this.state.selection : 0;
 
     let items = this.props.items;
-    if (pdfMode) {
-      items = items.filter(x => x.format === 'pdf');
+    if (format) {
+      items = items.filter(x => x.format === format);
     }
     const filteredItems = items.filter(item => intersection(item.tags, tagFilter).length === tagFilter.length || (tagFilter.find(tag => tag === 'Ohne Schlagworte') && !item.tags.length));
     const directories = orderBy(this.getDirectories(this.getTags(items), filteredItems), ['active', 'disabled', 'count', 'label'], ['desc', 'asc', 'desc', 'asc']);
@@ -142,13 +142,13 @@ CloudinaryView.propTypes = {
   onSelect: PropTypes.func,
   selected: PropTypes.arrayOf(PropTypes.string),
   items: PropTypes.arrayOf(PropTypes.object),
-  pdfMode: PropTypes.bool,
+  format: PropTypes.bool,
 };
 CloudinaryView.defaultProps = {
   onClose: x => x.setState({ isOpen: false }),
   onClick: () => {},
   selected: [],
   items: [],
-  pdfMode: false,
+  format: false,
 };
 export default queryMedias(CloudinaryView);
