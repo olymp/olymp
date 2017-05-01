@@ -23,9 +23,10 @@ const onClick = ({ query, pathname, router }) => (selectionIds, index, e) => {
 
 export default ({ query, pathname, router }) => (
   <Cloudinary
+    pdfMode
     selected={(query['@media'] || '').split(',').filter(x => x)}
     onClick={onClick({ query, pathname, router })}
-    // onSelect={items => console.log(items)} // => Selection-Mode
+    onSelect={items => console.log(items)} // => Selection-Mode
     onClose={() => router.push({ pathname, query: { ...query, '@media': undefined } })}
   />
 );
