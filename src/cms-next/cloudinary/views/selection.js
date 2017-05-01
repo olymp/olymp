@@ -1,14 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Icon, Tooltip } from 'antd';
+import { Button, Icon, Tooltip, notification } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar } from 'olymp/ui';
 import { isEqual } from 'lodash';
 import Detail from '../detail';
 import List from '../list';
-
-const Line = styled(({ theme }) => ({
-  margin: '14px -16px 0 -16px',
-}), 'hr', p => p);
 
 const Panel = styled(({ theme }) => ({
   textAlign: 'center',
@@ -20,8 +16,8 @@ const Panel = styled(({ theme }) => ({
 const StyledList = styled(({ theme }) => ({
   maxHeight: 250,
   overflow: 'auto',
-  marginBottom: -14,
   padding: '.5rem 0',
+  borderTop: '1px solid #e9e9e9',
 }), List, p => p);
 
 class SelectionSidebar extends Component {
@@ -71,38 +67,95 @@ class SelectionSidebar extends Component {
     this.setState({ items, [type]: !this.state[type] });
   }
 
-  onRemove = () => {
+  notification = (key, fn) => {
+    notification.open({
+      message: 'Änderungen verwerfen?',
+      description: 'Wollen Sie wirlich die nicht gespeicherten Änderungen verwerfen?',
+      btn: (
+        <div>
+          <Button size="small" onClick={() => notification.close(key)}>
+            Abbrechen
+          </Button>&nbsp;
+          <Button type="primary" size="small" onClick={() => {
+            fn();
+            notification.close(key);
+          }}>
+            Verwerfen
+          </Button>
+        </div>
+      ),
+      key,
+      onClose: notification.close(key),
+      duration: 0,
+    });
+  }
 
+  onSave = () => {
+    const { items } = this.state;
+
+    items.forEach(item => console.log(item));
+  }
+
+  onRemove = id => {
+    const { onRemove, items: propItems } = this.props;
+    const { items: stateItems } = this.state;
+
+    const propItem = propItems.find(item => item.id === id);
+    const stateItem = stateItems.find(item => item.id === id);
+
+    if (isEqual(propItem, stateItem)) {
+      onRemove(id);
+    } else {
+      this.notification(`open${Date.now()}`, () => onSelect(id));
+    }
+  }
+
+  onCancel = () => {
+    const { onCancel, items: propItems } = this.props;
+    const { items: stateItems } = this.state;
+    let changes = false;
+
+    stateItems.forEach(stateItem => {
+      const propItem = propItems.find(item => item.id === stateItem.id);
+
+      if (!isEqual(propItem, stateItem)) {
+        changes = true;
+      }
+    });
+
+    if (changes) {
+      this.notification(`open${Date.now()}`, onCancel);
+    } else {
+      onCancel();
+    }
   }
 
   render = () => {
-    const { activeItemId, onSelect, onRemove, onCancel } = this.props;
+    const { activeItemId, onSelect } = this.props;
     const { items, source, tags } = this.state;
     const activeItem = items.find(item => item.id === activeItemId);
 
     return (
       <Sidebar
+        header={items.length > 1 ? (
+          <StyledList
+            items={items}
+            itemHeight={60}
+            selected={[activeItemId]}
+            onClick={(id, index) => onSelect(index)}
+            onRemove={this.onRemove}
+            justifyContent="space-around"
+          />
+        ) : null}
         footer={
           <div>
-            <Button onClick={() => {}} type="primary" disabled={!items.length}>Alle speichern</Button>
-            <Button onClick={onCancel} disabled={!items.length}>Abbrechen</Button>
+            <Button onClick={this.onSave} type="primary" disabled={!items.length}>Alle speichern</Button>
+            <Button onClick={this.onCancel} disabled={!items.length}>Abbrechen</Button>
           </div>
         }
-        header={items.length > 1 ? (
-          <div>
-            <Line />
-            <StyledList
-              items={items}
-              itemHeight={60}
-              selected={[activeItemId]}
-              onClick={(id, index) => onSelect(index)}
-              onRemove={onRemove}
-              justifyContent="space-around"
-            />
-          </div>
-        ) : null}
         isOpen
         title="Bearbeiten"
+        subtitle="Ausgewählte Medien editieren"
         width={350}
         minWidth={350}
         maxWidth={350}

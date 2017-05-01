@@ -3,21 +3,22 @@ import { styled } from 'olymp';
 import { Icon } from 'antd';
 import Image from './image';
 
-const ImageContainer = styled(({ theme, isActive }) => {
-  let style = {
+const ImageContainer = styled(({ theme, isActive }) => ({
     position: 'relative',
     margin: '.5rem',
     cursor: 'pointer',
     outline: isActive ? `3px solid ${theme.color}` : 'none',
+    transform: isActive ? "scale(1.15)" : 'none',
+    transition: 'all .25s ease-in-out',
     backgroundColor: isActive ? '#666' : '#FFF',
     '> img': {
       opacity: isActive ? .6 : 1,
       backgroundColor: '#FFF',
     },
-  }
-
-  return style;
-}, 'div', ({ height, isActive, ...p }) => p);
+    ':hover > img': {
+      opacity: .75,
+    },
+  }), 'div', ({ height, isActive, ...p }) => p);
 
 const ImageLabel = styled(({ theme }) => ({
   position: "absolute",
@@ -63,7 +64,7 @@ export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
         <Icon type="file-pdf" />
       </ImageLabel>
     ) : undefined}
-    {isActive ? (
+    {isActive && onRemove ? (
       <CloseLabel onClick={onRemove}>
         <Icon type="close" />
       </CloseLabel>
