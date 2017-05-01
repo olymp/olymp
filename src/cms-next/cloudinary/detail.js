@@ -22,7 +22,7 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editabl
       {!editable ? (
         <Crop url={item.url} width={item.width} height={item.height} crop={item.crop} onChange={crop => patchItem({ crop })} />
       ) : (
-        <Image value={item} mode="fill" width={350} style={{ maxWidth: '100%' }} retina />
+        <Image value={item} mode="fill" width={350} style={{ maxWidth: '100%' }} lightbox retina />
       )}
     </div>
 

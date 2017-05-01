@@ -2,27 +2,22 @@ import React from 'react';
 import { Cloudinary } from '../views';
 
 const onClick = ({ query, pathname, router }) => (selectionIds, index, e) => {
-  const selected = (query[`@media`] || '').split(',').filter(x => x);
+  let selected = (query[`@media`] || '').split(',').filter(x => x);
 
-  if(e && e.shiftKey) {
-    // MULTI
-    selectionIds.forEach((selectionId) => {
-      const itemIndex = selected.findIndex(item => item === selectionId);
-      if (itemIndex < 0) {
-        selected.push(selectionId); // add/select
+  selectionIds.forEach((selectionId) => {
+    const itemIndex = selected.findIndex(item => item === selectionId);
+    if (itemIndex < 0) {
+      if(e && e.shiftKey) {
+        selected.push(selectionId); // select multi
       } else {
-        selected.splice(itemIndex, 1); // remove/deselect
+        selected = [selectionId]; // select single
       }
-    });
-    router.push({ pathname, query: { ...query, '@media': selected.join(',') }});
-  } else {
-    // SINGLE
-    if (selected.length && selected.includes(selectionIds[0])) {
-      router.push({ pathname, query: { ...query, '@media': selected.filter(x => x !== selectionIds[0]).join(',') } });
     } else {
-      router.push({ pathname, query: { ...query, '@media': selectionIds[0] } });
+      selected.splice(itemIndex, 1); // remove/deselect
     }
-  }
+  });
+
+  router.push({ pathname, query: { ...query, '@media': selected.join(',') }});
 };
 
 export default ({ query, pathname, router }) => (

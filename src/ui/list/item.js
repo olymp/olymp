@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { styled, Link } from 'olymp';
-import { ChevronRight } from 'olymp-icons';
+import { Icon } from 'antd';
 import Image from '../../cms-next/cloudinary/image';
 
 const Content = styled(({ active, disabled }) => ({
@@ -8,6 +8,7 @@ const Content = styled(({ active, disabled }) => ({
   alignItems: 'center',
   padding: '5px 6px',
   width: '100%',
+  height: 40,
   color: disabled ? 'rgba(0, 0, 0, 0.40)' : 'rgba(0, 0, 0, 0.85)',
   backgroundColor: active && 'rgba(233, 233, 233, .6)',
   lineHeight: '20px',
@@ -36,7 +37,7 @@ const Content = styled(({ active, disabled }) => ({
     color: 'rgba(0, 0, 0, 0.85)',
     boxShadow: '0 0 3px 1px rgba(63, 81, 181, 0.19)',
   },
-}), ({ image, label, description, className, disabled }) => (
+}), ({ image, label, description, className, disabled, icon }) => (
   <div className={className}>
     {image ? <Image value={image} mode="fill" width={37} height={37} retina /> : null}
     <div>
@@ -44,16 +45,16 @@ const Content = styled(({ active, disabled }) => ({
       {description}
     </div>
 
-    {!disabled ? <ChevronRight size={14} color /> : null}
+    {!disabled ? <Icon type={icon || 'right'} /> : null}
   </div>
 ), p => p);
 
-export default ({ className, image, label, description, to, onClick, active, disabled }) => onClick ? (
+export default ({ className, image, label, description, to, onClick, active, disabled, icon }) => onClick ? (
   <a className={className} href="javascript:;" onClick={disabled ? () => {} : onClick}>
-    <Content image={image} label={label} description={description} active={active} disabled={disabled} />
+    <Content image={image} label={label} description={description} active={active} disabled={disabled} icon={icon} />
   </a>
 ) : (
   <Link className={className} to={to} disabled={disabled}>
-    <Content image={image} label={label} description={description} active={active} disabled={disabled} />
+    <Content image={image} label={label} description={description} active={active} disabled={disabled} icon={icon} />
   </Link>
 );
