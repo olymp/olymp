@@ -116,20 +116,13 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Popover>
       </Menu.Item>
     )}
-    <Menu.Item key="@settings">
-      <Popover placement="right" content="Einstellungen">
-        <Link to={{ query: { '@settings': null } }}>
-          <Icon type="setting" />
-        </Link>
-      </Popover>
-    </Menu.Item>
     <Menu.SubMenu title={<Icon type="laptop" />}>
       <Menu.Item key="@device-no">
         <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
           <Icon type="laptop" /> Normal
         </Link>
       </Menu.Item>
-      <Menu.Item key="@deviceWidth">
+      <Menu.Item key="@deviceWidth700">
         <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
           <Icon type="tablet" /> Tablet
         </Link>
@@ -140,6 +133,13 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Menu.Item>
     </Menu.SubMenu>
+    <Menu.Item key="@settings">
+      <Popover placement="right" content="Einstellungen">
+        <Link to={{ query: { '@settings': null } }}>
+          <Icon type="setting" />
+        </Link>
+      </Popover>
+    </Menu.Item>
     <Separator />
     <Menu.Item key="logoff" title="Abmelden">
       <Popover placement="right" content="Abmelden">

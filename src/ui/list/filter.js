@@ -4,6 +4,7 @@ import { Input, Icon } from 'antd';
 
 export default styled(() => ({
   padding: 6,
+  borderTop: '1px solid #e9e9e9',
   backgroundColor: 'rgba(233, 233, 233, 0.47)',
   '> input': {
     width: '100%',
