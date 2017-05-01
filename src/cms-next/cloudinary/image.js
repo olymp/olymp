@@ -5,16 +5,22 @@ const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
-const Img = ({ retina, value, mode, children, maxSize, width, height, style, className, ...rest }) => (
-  <img
-    {...rest}
-    src={url(value.url, { width, height, dpr: retina ? 2: undefined, mode })}
-    width={width}
-    height={height}
-    style={style}
-    className={className}
-  />
-);
+const Img = ({ retina, value, mode, children, maxSize, width, height, style, className, lightbox, ...rest }) => {
+  if (lightbox) {
+    console.log('Beni, hier fehlt noch ne Lightbox! ;)');
+  }
+
+  return (
+    <img
+      {...rest}
+      src={url(value.url, { width, height, dpr: retina ? 2: undefined, mode })}
+      width={width}
+      height={height}
+      style={style}
+      className={className}
+    />
+  );
+}
 /*const Img = ({ src, children, maxSize, style, className, ...rest }) => (
   <Image
     cloudName={src.url.split('http://res.cloudinary.com/')[1].split('/')[0]}

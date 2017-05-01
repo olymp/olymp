@@ -114,7 +114,8 @@ class CloudinaryView extends Component {
           title="Mediathek"
           subtitle="Medien sichten und verwalten"
         >
-          {directories.map(dir => <List.Item {...dir} />)}
+          {directories.find(dir => dir.disabled) ? <List.Item label="Zurück" icon="left" onClick={() => this.setState({ tagFilter: [] })} /> : null}
+          {directories.map(dir => !dir.disabled ? <List.Item {...dir} /> : null)}
         </Sidebar>
 
         <StyledList
