@@ -127,7 +127,7 @@ class SelectionSidebar extends Component {
     if (this.isEqual(propItem, stateItem)) {
       onRemove(id);
     } else {
-      this.notification(`open${Date.now()}`, () => onSelect(id));
+      this.notification(`open${Date.now()}`, () => onClick(id));
     }
   }
 
@@ -152,7 +152,7 @@ class SelectionSidebar extends Component {
   }
 
   render = () => {
-    const { activeItemId, onSelect } = this.props;
+    const { activeItemId, onClick, onSelect } = this.props;
     const { items, source, tags } = this.state;
     const activeItem = items.find(item => item.id === activeItemId);
 
@@ -163,20 +163,24 @@ class SelectionSidebar extends Component {
             items={items}
             itemHeight={60}
             selected={[activeItemId]}
-            onClick={(id, index) => onSelect(index)}
+            onClick={(id, index) => onClick(index)}
             onRemove={this.onRemove}
             justifyContent="space-around"
           />
         ) : null}
         footer={
           <div>
-            <Button onClick={this.onSave} type="primary" disabled={!items.length}>Alle speichern</Button>
+            {onSelect ? (
+              <Button onClick={this.onSave} type="primary" disabled={!items.length}>Alle speichern</Button>
+            ) : (
+              <Button onClick={() => onSelect(items)} type="primary" disabled={!items.length}>Übernehmen</Button>
+            )}
             <Button onClick={this.onCancel} disabled={!items.length}>Abbrechen</Button>
           </div>
         }
         isOpen
-        title="Bearbeiten"
-        subtitle="Ausgewählte Medien editieren"
+        title={onSelect ? 'Bearbeiten' : 'Auswählen'}
+        subtitle={onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'}
         width={350}
         minWidth={350}
         maxWidth={350}
@@ -190,6 +194,7 @@ class SelectionSidebar extends Component {
             patchItems={this.patchItems}
             source={source}
             tags={tags}
+            editable={!!onSelect}
           />
         ) : (
           <Panel>
@@ -203,13 +208,14 @@ class SelectionSidebar extends Component {
 SelectionSidebar.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   activeItemId: PropTypes.string,
+  onClick: PropTypes.func,
   onSelect: PropTypes.func,
   onRemove: PropTypes.func,
   onCancel: PropTypes.func,
 };
 SelectionSidebar.defaultProps = {
   items: [],
-  onSelect: () => {},
+  onClick: () => {},
   onRemove: () => {},
   onCancel: () => {},
 };

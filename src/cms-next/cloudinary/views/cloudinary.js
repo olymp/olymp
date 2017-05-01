@@ -24,19 +24,19 @@ class CloudinaryView extends Component {
   };
 
   onClick = id => {
-    const { selected, onSelect } = this.props;
+    const { selected, onClick } = this.props;
     const index = selected.findIndex(selectedId => selectedId === id);
 
     if (index < 0) {
       this.setState({ selection: selected.length });
-      onSelect([id]);
+      onClick([id]);
     } else {
       this.setState({ selection: index });
     }
   }
 
   onRemove = id => {
-    const { onSelect, selected } = this.props;
+    const { onClick, selected } = this.props;
     const { selection } = this.state;
     const index = selected.findIndex(itemId => itemId === id);
 
@@ -44,7 +44,7 @@ class CloudinaryView extends Component {
       this.setState({ selection: selection - 1 });
     }
 
-    onSelect([id]);
+    onClick([id]);
   }
 
   getTags = items => {
@@ -82,7 +82,7 @@ class CloudinaryView extends Component {
   })
 
   render() {
-    const { selected, onSelect, onClose, deviceWidth, pdfMode } = this.props;
+    const { selected, onClick, onClose, deviceWidth, pdfMode, onSelect } = this.props;
     const { isOpen, selection, search, tagFilter } = this.state;
 
     let items = this.props.items;
@@ -126,9 +126,10 @@ class CloudinaryView extends Component {
         <SelectionSidebar
           items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
           activeItemId={selected[selection]}
-          onSelect={index => this.setState({ selection: index })}
+          onClick={index => this.setState({ selection: index })}
           onRemove={this.onRemove}
-          onCancel={() => onSelect(selected)}
+          onCancel={() => onClick(selected)}
+          onSelect={onSelect}
         />
       </SplitView>
     );
@@ -136,6 +137,7 @@ class CloudinaryView extends Component {
 };
 CloudinaryView.propTypes = {
   onClose: PropTypes.func,
+  onClick: PropTypes.func,
   onSelect: PropTypes.func,
   selected: PropTypes.arrayOf(PropTypes.string),
   items: PropTypes.arrayOf(PropTypes.object),
@@ -143,7 +145,7 @@ CloudinaryView.propTypes = {
 };
 CloudinaryView.defaultProps = {
   onClose: x => x.setState({ isOpen: false }),
-  onSelect: () => {},
+  onClick: () => {},
   selected: [],
   items: [],
   pdfMode: false,
