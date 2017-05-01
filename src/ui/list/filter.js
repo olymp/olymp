@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { styled } from 'olymp';
 import { Input, Icon } from 'antd';
 
-export default styled(({ active, theme }) => ({
+export default styled(() => ({
   padding: 6,
   backgroundColor: 'rgba(233, 233, 233, 0.47)',
   '> input': {
@@ -16,7 +16,7 @@ export default styled(({ active, theme }) => ({
   return (
     <div className={className}>
       {children}
-      <Input suffix={suffix} value={value} onChange={(e) => onChange(e.target.value)} {...props} />
+      <Input suffix={suffix} value={value} onChange={e => onChange(e.target.value)} {...props} />
     </div>
-  )
-} , p => p);
+  );
+}, p => p);
