@@ -23,13 +23,13 @@ class CloudinaryView extends Component {
     tagFilter: [],
   };
 
-  onClick = id => {
+  onClick = (id, i, e) => {
     const { selected, onClick } = this.props;
     const index = selected.findIndex(selectedId => selectedId === id);
 
     if (index < 0) {
       this.setState({ selection: selected.length });
-      onClick([id]);
+      onClick([id], i, e);
     } else {
       this.setState({ selection: index });
     }
