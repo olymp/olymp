@@ -7,7 +7,7 @@ const onClick = ({ query, pathname, router }) => (selectionIds, index, e) => {
   selectionIds.forEach((selectionId) => {
     const itemIndex = selected.findIndex(item => item === selectionId);
     if (itemIndex < 0) {
-      if(e && e.shiftKey) {
+      if (e && e.shiftKey) {
         selected.push(selectionId); // select multi
       } else {
         selected = [selectionId]; // select single
