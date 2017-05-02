@@ -30,19 +30,32 @@ export const CropSelect = (props) => {
   );
 };
 
-const Crop = ({ url, aspect, crop, width, height, onChange }) => (
-  <StyledCrop
-    src={optimizeUrl(url)}
-    onChange={(p, { width, height, x, y }) => onChange([width, height, x, y])}
-    crop={crop ? {
-      width: (crop[0] / width) * 100,
-      height: (crop[1] / height) * 100,
-      x: (crop[2] / width) * 100,
-      y: (crop[3] / height) * 100,
-      aspect,
-    } : { aspect }}
-  />
-);
+class Crop extends Component {
+  state = {
+    isOpen: true,
+  };
+
+  render() {
+    const { url, crop, width, height, onChange } = this.props;
+    const aspect = this.props.aspect || (this.state.isSquare && 1);
+
+    return (
+      <div onKeyDown={e => this.setState({ isSquare: e && e.shiftKey })} onKeyUp={e => this.setState({ isSquare: false })}>
+        <StyledCrop
+          src={optimizeUrl(url)}
+          onChange={(p, { width, height, x, y }) => onChange([width, height, x, y])}
+          crop={crop ? {
+            width: (crop[0] / width) * 100,
+            height: (crop[1] / height) * 100,
+            x: (crop[2] / width) * 100,
+            y: (crop[3] / height) * 100,
+            aspect,
+          } : { aspect }}
+        />
+      </div>
+    );
+  }
+};
 Crop.propTypes = {
   url: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
