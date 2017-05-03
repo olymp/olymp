@@ -31,3 +31,16 @@ export const queryMedias = graphql(gql`
   }),
 });
 
+export const cloudinaryRequest = graphql(gql`
+  query cloudinaryRequest {
+    cloudinaryRequest {
+      apiKey, url, signature, timestamp
+    }
+  }
+`, {
+  forceFetch: true,
+  props: ({ ownProps, data }) => ({
+    ...ownProps,
+    data,
+  }),
+});

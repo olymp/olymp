@@ -5,7 +5,7 @@ import { Sidebar } from 'olymp/ui';
 import { isEqual } from 'lodash';
 import { mutateFile } from '../gql';
 import Detail from '../detail';
-import List from '../list';
+import Gallery from '../gallery';
 
 const Panel = styled(({ theme }) => ({
   textAlign: 'center',
@@ -14,12 +14,12 @@ const Panel = styled(({ theme }) => ({
   fontSize: '200%',
 }));
 
-const StyledList = styled(({ theme }) => ({
+const StyledGallery = styled(({ theme }) => ({
   maxHeight: 250,
   overflow: 'auto',
   padding: '.5rem 0',
   borderTop: '1px solid #e9e9e9',
-}), List, p => p);
+}), Gallery, p => p);
 
 @mutateFile
 class SelectionSidebar extends Component {
@@ -159,7 +159,7 @@ class SelectionSidebar extends Component {
     return (
       <Sidebar
         header={items.length > 1 ? (
-          <StyledList
+          <StyledGallery
             items={items}
             itemHeight={60}
             selected={[activeItemId]}
