@@ -55,8 +55,11 @@ if (command === 'dev') {
     stats.forEach((c) => console.log(c.toString()));
     notifier.notify('Ready');
   });
-  var webpackDevServer = require('webpack-dev-server');
-  var server = new webpackDevServer(compiler.compilers[1], {
+  const webpackDevServer = require('webpack-dev-server');
+  const server = new webpackDevServer(compiler.compilers[1], {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
     host: 'localhost',
     port: devPort,
     historyApiFallback: true,
