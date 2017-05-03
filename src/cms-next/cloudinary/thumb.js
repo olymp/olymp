@@ -11,7 +11,7 @@ const ImageContainer = styled(({ theme, isActive }) => ({
     transform: isActive ? "scale(1.15)" : 'none',
     transition: 'all .25s ease-in-out',
     backgroundColor: isActive ? '#666' : '#FFF',
-    boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
+    // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
     '> img': {
       opacity: isActive ? .6 : 1,
       backgroundColor: '#FFF',
@@ -35,7 +35,7 @@ const ImageLabel = styled(({ theme }) => ({
   fontSize: 25,
   padding: 5,
   lineHeight: 1,
-  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
+  // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
 }), 'div', p => p);
 
 const CloseLabel = styled(({ theme }) => ({
@@ -51,7 +51,7 @@ const CloseLabel = styled(({ theme }) => ({
   fontSize: 25,
   padding: 5,
   lineHeight: 1,
-  boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
+  // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   ':hover': {
     transform: "translate(40%, -40%) scale(0.75)",
     transition: 'all .15s ease-in-out',
