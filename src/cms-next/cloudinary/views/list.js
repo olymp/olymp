@@ -49,7 +49,7 @@ class ListSidebar extends Component {
       const countFilter = (this.getTags(filteredItems)[tag] || []).length;
       const countAll = tags[tag].length;
       const disabled = !countFilter;
-      const text = `${countAll} Dokumente mit diesem Schlagwort`;
+      const text = `${countAll} Dateien`;
 
       return {
         active,
