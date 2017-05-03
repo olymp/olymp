@@ -61,11 +61,11 @@ export default (type, collection) => {
       );
       const rightButtons = value ? (
         <Popover content={`${collection.name} speichern`}>
-          <Button disabled={!form.isFieldsTouched()} onClick={this.ok} shape="circle" icon="save" />
+          <Sidebar.Button disabled={!form.isFieldsTouched()} onClick={this.ok} shape="circle" icon="save" />
         </Popover>
       ) : (
         <Popover content={`${collection.name} hinzufügen`}>
-          <Button onClick={() => router.push({ pathname, query: { ...query, [`@${type}`]: 'new' } })} shape="circle" icon="plus" />
+          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, [`@${type}`]: 'new' } })} shape="circle" icon="plus" />
         </Popover>
       );
       const title = Type;

@@ -11,13 +11,14 @@ const ImageContainer = styled(({ theme, isActive }) => ({
     transform: isActive ? "scale(1.15)" : 'none',
     transition: 'all .25s ease-in-out',
     backgroundColor: isActive ? '#666' : '#FFF',
-    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+    boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
     '> img': {
       opacity: isActive ? .6 : 1,
       backgroundColor: '#FFF',
     },
     ':hover > img': {
-      opacity: .75,
+      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.4)',
+      transform:'scale(1.05)',
     },
   }), 'div', ({ height, isActive, ...p }) => p);
 

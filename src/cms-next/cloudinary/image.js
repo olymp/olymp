@@ -1,25 +1,38 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { url } from './utils';
 
-const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
+// const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
-const Img = ({ retina, value, mode, children, maxSize, width, height, style, className, lightbox, ...rest }) => {
-  if (lightbox) {
-    console.log('Beni, hier fehlt noch ne Lightbox! ;)');
+class Img extends Component {
+  onClick = e => {
+    const { lightbox, onClick } = this.props;
+
+    if (lightbox) {
+      console.log('Beni, hier fehlt noch ne Lightbox! ;)')
+    }
+
+    if (onClick) {
+      onClick(e);
+    }
   }
 
-  return (
-    <img
-      {...rest}
-      src={url(value.url, { width, height, dpr: retina ? 2: undefined, mode })}
-      width={width}
-      height={height}
-      style={style}
-      className={className}
-    />
-  );
+  render() {
+    const { retina, value, mode, children, maxSize, width, height, style, className, lightbox, ...rest } = this.props;
+
+    return (
+      <img
+        {...rest}
+        src={url(value.url, { width, height, dpr: retina ? 2: undefined, mode })}
+        width={width}
+        height={height}
+        style={style}
+        className={className}
+        onClick={this.onClick}
+      />
+    );
+  }
 }
 /*const Img = ({ src, children, maxSize, style, className, ...rest }) => (
   <Image

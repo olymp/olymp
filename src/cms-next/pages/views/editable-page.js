@@ -24,20 +24,20 @@ export default class PageSidebar extends Component {
     const leftButtons = (
       <div>
         {!value && <Button.Group>
-          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': undefined } })} shape="circle" icon="close" />
+          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': undefined } })} shape="circle" icon="close" />
         </Button.Group>}
         {value && <Button.Group>
-          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': null } })} shape="circle" icon="arrow-left" />
+          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': null } })} shape="circle" icon="arrow-left" />
         </Button.Group>}
       </div>
     );
     const rightButtons = (
       <div>
         {value && <Button.Group>
-          <Button disabled={!form.isFieldsTouched()} onClick={save} shape="circle" icon="save" />
+          <Sidebar.Button disabled={!form.isFieldsTouched()} onClick={save} shape="circle" icon="save" />
         </Button.Group>}
         {!value && <Button.Group>
-          <Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new' } })} shape="circle" icon="plus" />
+          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new' } })} shape="circle" icon="plus" />
         </Button.Group>}
       </div>
     );

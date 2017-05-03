@@ -36,3 +36,29 @@ export default graphql(gql`
     mutate,
   }),
 });
+
+export const cloudinaryRequestDone = graphql(gql`
+  mutation cloudinaryRequestDone($id: String, $token: String) {
+    cloudinaryRequestDone(id: $id, token: $token) {
+      id height width url type colors tags caption source createdAt format bytes pages
+    }
+  }
+`, {
+  props({ ownProps, mutate }) {
+    return {
+      done({ id, token }) {
+        return mutate({
+          variables: { id, token },
+          updateQueries: {
+            fileList: (prev, { mutationResult }) => {
+              const newData = mutationResult.data.cloudinaryRequestDone;
+              return {
+                items: [...prev.items, newData],
+              };
+            },
+          },
+        });
+      },
+    };
+  },
+});
