@@ -144,7 +144,7 @@ class CloudinaryView extends Component {
     const { selected, search, filter, uploading } = this.state;
     const selection = this.state.selection >= 0 && this.state.selection < selected.length ? this.state.selection : 0;
 
-    const items = format ? this.props.items : this.props.items.filter(x => x.format === format);
+    const items = !format ? this.props.items : this.props.items.filter(x => x.format === format);
     const filteredItems = this.state.filteredItems || items;
 
     return (
@@ -160,11 +160,7 @@ class CloudinaryView extends Component {
         />
 
         <DragZone uploading={uploading} clickable={false} {...this.getUploadPops()}>
-          <Gallery
-            onClick={this.onClick}
-            selected={selected}
-            items={filteredItems}
-          />
+          <Gallery onClick={this.onClick} selected={selected} items={filteredItems} />
         </DragZone>
 
         <SelectionSidebar
