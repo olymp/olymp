@@ -31,7 +31,7 @@ class CloudinaryView extends Component {
   }
 
   getUploadPops = () => {
-    const { data, done } = this.props;
+    const { data, done, refetchKey } = this.props;
     const { uploading } = this.state;
     const saveProgress = file => this.setState({
       uploading: [
@@ -54,8 +54,8 @@ class CloudinaryView extends Component {
       multiple: true,
       data: {
         api_key: apiKey,
-        signature: signature,
-        timestamp: timestamp,
+        signature,
+        timestamp,
       },
       action: url,
       onChange: ({ file, fileList, event }) => {
@@ -79,6 +79,7 @@ class CloudinaryView extends Component {
                 this.setState({ uploading: uploading.filter(x => x.name !== file.name) });
                 if (data && data.cloudinaryRequestDone) {
                   this.onSelect([data.cloudinaryRequestDone.id]);
+                  refetchKey();
                 }
               });
             });

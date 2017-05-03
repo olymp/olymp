@@ -38,9 +38,12 @@ export const cloudinaryRequest = graphql(gql`
     }
   }
 `, {
-  forceFetch: true,
+  options: () => ({
+    fetchPolicy: 'network-only',
+  }),
   props: ({ ownProps, data }) => ({
     ...ownProps,
+    refetchKey: data.refetch,
     data,
   }),
 });
