@@ -95,18 +95,17 @@ function load() {
   });
   // Redux stuff
   history = createHistory();
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   store = createStore(
     combineReducers({
       apollo: client.reducer(),
       router: routerReducer
     }),
-    window.INITIAL_DATA || {},
-    compose(
+    window.INITIAL_DATA || {},
+    composeEnhancers(
       applyMiddleware(routerQueryMiddleware),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(client.middleware()),
-      // If you are using the devToolsExtension, you can add it here also
-      (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     )
   );
   // End Redux stuff
