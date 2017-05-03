@@ -1,55 +1,50 @@
-var React = require('react');
+import React, { Component } from 'react';
+import { number, func } from 'prop-types';
 
-var CountdownTimer = React.createClass({
-  displayName: 'CountdownTimer',
+export default class CountdownTimer extends Component {
+  static propTypes = {
+    initialTimeRemaining: number.isRequired,
+    interval: number,
+    formatFunc: func,
+    tickCallback: func,
+    completeCallback: func
+  };
+  static defaultProps = {
+    interval: 1000,
+    formatFunc: null,
+    tickCallback: null,
+    completeCallback: null
+  };
 
-  propTypes: {
-    initialTimeRemaining: React.PropTypes.number.isRequired,
-    interval: React.PropTypes.number,
-    formatFunc: React.PropTypes.func,
-    tickCallback: React.PropTypes.func,
-    completeCallback: React.PropTypes.func
-  },
-
-  getDefaultProps: function() {
-    return {
-      interval: 1000,
-      formatFunc: null,
-      tickCallback: null,
-      completeCallback: null
-    };
-  },
-
-  getInitialState: function() {
-    // Normally an anti-pattern to use this.props in getInitialState,
-    // but these are all initializations (not an anti-pattern).
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       timeRemaining: this.props.initialTimeRemaining,
       timeoutId: null,
       prevTime: null
     };
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.tick();
-  },
+  }
 
-  componentWillReceiveProps: function(newProps) {
+  componentWillReceiveProps(newProps) {
     if (this.state.timeoutId) { clearTimeout(this.state.timeoutId); }
-    this.setState({prevTime: null, timeRemaining: newProps.initialTimeRemaining});
-  },
+    this.setState({ prevTime: null, timeRemaining: newProps.initialTimeRemaining });
+  }
 
-  componentDidUpdate: function() {
-    if ((!this.state.prevTime) && this.state.timeRemaining > 0 && this.isMounted()) {
+  componentDidUpdate() {
+    if ((!this.state.prevTime) && this.state.timeRemaining > 0) {
       this.tick();
     }
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     clearTimeout(this.state.timeoutId);
-  },
+  }
 
-  tick: function() {
+  tick = () => {
     var currentTime = Date.now();
     var dt = this.state.prevTime ? (currentTime - this.state.prevTime) : 0;
     var interval = this.props.interval;
@@ -82,9 +77,9 @@ var CountdownTimer = React.createClass({
     if (this.props.tickCallback) {
       this.props.tickCallback(timeRemaining);
     }
-  },
+  }
 
-  getFormattedTime: function(milliseconds) {
+  getFormattedTime = (milliseconds) => {
     if (this.props.formatFunc) {
       return this.props.formatFunc(milliseconds);
     }
@@ -100,17 +95,15 @@ var CountdownTimer = React.createClass({
     hours = hours < 10 ? '0' + hours : hours;
 
     return hours + ':' + minutes + ':' + seconds;
-  },
+  }
 
-  render: function() {
+  render() {
     var timeRemaining = this.state.timeRemaining;
 
     return (
-      <div className='timer'>
+      <div className="timer">
         {this.getFormattedTime(timeRemaining)}
       </div>
     );
   }
-});
-
-export default CountdownTimer;
+}

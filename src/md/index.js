@@ -1,4 +1,3 @@
-import all from 'mdast-util-to-hast/lib/all';
 import React, { Component } from 'react';
 import remark from 'remark';
 import reactRenderer from './compiler';

@@ -2,11 +2,9 @@
 
 module.exports = remarkReact;
 
-var toHAST = require('mdast-util-to-hast');
-var sanitize = require('hast-util-sanitize');
-var toH = require('hast-to-hyperscript');
-var xtend = require('xtend');
-
+// var toHAST = require('mdast-util-to-hast');
+// var sanitize = require('hast-util-sanitize');
+// var toH = require('hast-to-hyperscript');
 var globalCreateElement;
 
 try {
@@ -37,7 +35,7 @@ function remarkReact(options) {
   var clean = settings.sanitize !== false;
   var scheme = clean && (typeof settings.sanitize !== 'boolean') ? settings.sanitize : null;
   var toHastOptions = settings.toHast || {};
-  var components = xtend({
+  var components = Object.assign({
     td: createTableCellComponent('td'),
     th: createTableCellComponent('th')
   }, settings.remarkReactComponents);
@@ -89,3 +87,5 @@ function remarkReact(options) {
     }
   }
 }
+
+
