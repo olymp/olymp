@@ -41,6 +41,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       ],
       alias: {
         react: path.resolve(appRoot, 'node_modules', 'react'),
+        // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
         'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
         'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
         moment: path.resolve(appRoot, 'node_modules', 'moment'),

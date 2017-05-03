@@ -1,6 +1,5 @@
 const remark = require('remark');
 const compose = require('./templates/default');
-const normalize = require('normalize-uri');
 
 function compiler(handlers) {
   this.Compiler = compile;
