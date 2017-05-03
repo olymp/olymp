@@ -158,6 +158,7 @@ class SelectionSidebar extends Component {
 
     return (
       <Sidebar
+        right
         header={items.length > 1 ? (
           <StyledGallery
             items={items}

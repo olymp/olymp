@@ -26,7 +26,7 @@ export const queryMedias = graphql(gql`
 `, {
   props: ({ ownProps, data }) => ({
     ...ownProps,
-    items: data.items || [],
+    items: data.items || [],
     data,
   }),
 });
