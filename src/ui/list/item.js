@@ -10,8 +10,7 @@ const Content = styled(({ active, disabled }) => ({
   width: '100%',
   minHeight: 51,
   color: disabled ? 'rgba(0, 0, 0, 0.40)' : 'rgba(0, 0, 0, 0.85)',
-  backgroundColor: active && 'rgba(233, 233, 233, .6)',
-  background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
+  background: active ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.083))' : 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
   lineHeight: '20px',
   borderBottom: '1px solid rgb(233, 233, 233)',
   cursor: disabled ? 'not-allowed' : 'pointer',
@@ -28,7 +27,8 @@ const Content = styled(({ active, disabled }) => ({
     flex: 1,
   },
   onHover: !active && {
-    backgroundColor: 'rgba(233, 233, 233, .4)',
+    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.075), rgba(0, 0, 0, 0.058))',
+    backgroundColor: 'rgba(255, 255, 255, .4)',
     color: 'rgba(0, 0, 0, 0.85)',
   },
   onActive: {
