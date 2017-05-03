@@ -60,9 +60,9 @@ export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, 
 };
 Modal.contextTypes = { theme: React.PropTypes.object };
 
-const component = createComponent(({ theme, padding, width, showLogo }) => ({
+const component = createComponent(({ theme, padding, width, showLogo, bottomTransparency, topTransparency }) => ({
   backgroundColor: 'whitesmoke',
-  background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
+  background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).setAlpha(bottomTransparency || 1).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).setAlpha(topTransparency || 1).toRgbString()})`,
   display: 'flex',
   '> .ant-modal': {
     '> .logo': {

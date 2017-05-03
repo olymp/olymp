@@ -36,7 +36,8 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       ],
       modules: [
         path.resolve(olympRoot, 'node_modules'),
-        path.resolve(appRoot, 'node_modules')
+        path.resolve(appRoot, 'node_modules'),
+        path.resolve(appRoot, 'app'),
       ],
       alias: {
         react: path.resolve(appRoot, 'node_modules', 'react'),
@@ -85,6 +86,10 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       }, {
         test: /\.json$/,
         loader: 'json-loader',
+      }, {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
       }],
     },
     output: {
