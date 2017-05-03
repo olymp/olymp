@@ -21,7 +21,7 @@ const ok = (item, mutate) => {
       onSuccess('Gespeichert', `Datei '${item.id}' wurde gespeichert`);
     }
   }).catch(onError);
-}
+};
 
 export default graphql(gql`
   mutation file($id: String, $input: FileInput, $operationType: OPERATION_TYPE) {
@@ -40,7 +40,7 @@ export default graphql(gql`
 export const cloudinaryRequestDone = graphql(gql`
   mutation cloudinaryRequestDone($id: String, $token: String) {
     cloudinaryRequestDone(id: $id, token: $token) {
-      id height width url type colors tags caption source createdAt format bytes pages
+      id, url, tags, colors, width, height, createdAt, caption, source, format, bytes, removed
     }
   }
 `, {
@@ -53,7 +53,8 @@ export const cloudinaryRequestDone = graphql(gql`
             fileList: (prev, { mutationResult }) => {
               const newData = mutationResult.data.cloudinaryRequestDone;
               return {
-                items: [...prev.items, newData],
+                ...prev,
+                items: [newData, ...prev.items],
               };
             },
           },

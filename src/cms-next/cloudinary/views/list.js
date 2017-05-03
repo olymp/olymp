@@ -32,7 +32,7 @@ class ListSidebar extends Component {
     const { search, filter, onFilter } = this.props;
     const items = this.props.items.map(item => ({
       ...item,
-      tags: !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
+      tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
     }));
     const tags = this.getTags(items);
 

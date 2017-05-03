@@ -71,20 +71,15 @@ class CloudinaryView extends Component {
 
           if (!uploading.find(file => file.percent < 100)) {
             // Write data in DB
-            uploading.forEach(file => {
-              const response = {...file.response};
+            uploading.forEach((f) => {
+              const response = { ...file.response };
               response.id = response.public_id;
-              done({ id: response.id, token: signature }).then(data => {
+              done({ id: response.id, token: signature }).then(({ data }) => {
                 // remove file from uploading
                 this.setState({ uploading: uploading.filter(x => x.name !== file.name) });
-
-                // BENI, HIER GEHT NICHT!!!
-                console.log(data, file);
                 if (data && data.cloudinaryRequestDone) {
-                  console.log('onSelect');
-                  this.onSelect([cloudinaryRequestDone.id]);
+                  this.onSelect([data.cloudinaryRequestDone.id]);
                 }
-
               });
             });
           }
@@ -158,11 +153,9 @@ class CloudinaryView extends Component {
           search={search}
           onSearch={search => this.setState({ search })}
         />
-
         <DragZone uploading={uploading} clickable={false} {...this.getUploadPops()}>
           <Gallery onClick={this.onClick} selected={selected} items={filteredItems} />
         </DragZone>
-
         <SelectionSidebar
           items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
           activeItemId={selected[selection]}

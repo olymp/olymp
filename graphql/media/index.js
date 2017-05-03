@@ -187,12 +187,11 @@ module.exports = (schema, { uri, adapter } = {}) => {
         },
         cloudinaryRequestDone: (source, args) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
-            // imagesCache = null;
             invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
-            // if (!imageCache) imageCache = {};
-            return getImageById(config, args.id).then(image =>
-              // imageCache[args.id] = image;
-               image);
+            return getImageById(config, args.id).then(image => {
+              console.log('IMAGE', image, args);
+              return image;
+            });
           }
           throw new Error('Invalid');
         },
