@@ -18,7 +18,7 @@ class CloudinaryView extends Component {
     uploading: [],
     search: undefined,
     filter: [],
-    filteredItems: [],
+    filteredItems: null,
   };
 
   componentWillReceiveProps = props => {
@@ -141,13 +141,14 @@ class CloudinaryView extends Component {
 
   render() {
     const { onClose, deviceWidth, format, onSelect } = this.props;
-    const { selected, search, filter, filteredItems, uploading } = this.state;
+    const { selected, search, filter, uploading } = this.state;
     const selection = this.state.selection >= 0 && this.state.selection < selected.length ? this.state.selection : 0;
 
     let items = this.props.items;
     if (format) {
       items = items.filter(x => x.format === format);
     }
+    const filteredItems = this.state.filteredItems || items;
 
     return (
       <SplitView deviceWidth={deviceWidth}>
@@ -180,7 +181,7 @@ class CloudinaryView extends Component {
       </SplitView>
     );
   }
-};
+}
 CloudinaryView.propTypes = {
   onClose: PropTypes.func,
   handleSelection: PropTypes.func,
