@@ -3,7 +3,7 @@ import { throttle, interpolate } from './utils';
 import { textToAst, astToReact } from './processors';
 import connect from './connect';
 
-export default options => {
+export default (options) => {
   const createTemplate = (text) => {
     const ast = textToAst(text);
     const component = ({ children, value, ...props }) => {
@@ -61,7 +61,7 @@ export default options => {
       this.unmounting = true;
     }
     render() {
-      const { value, className, style, type, throttle, ...context } = this.props;
+      const { value, className, style, type, ...context } = this.props;
       if (!value) return null;
 
       // value to AST
@@ -84,4 +84,5 @@ export default options => {
     toReact = astToReact({ components, decorators, templates, fallback });
   };
   return Hashtax;
-}
+};
+

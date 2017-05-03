@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
+import { object } from 'prop-types';
 import { Hashtax } from 'olymp/hashtax';
 import { queryPage } from './gql';
 
@@ -6,7 +7,7 @@ export const Page = ({ item, ...rest }) => (
   <Hashtax {...rest} value={item.text} page={item} />
 );
 Page.propTypes = {
-  item: PropTypes.object,
+  item: object,
 };
 Page.defaultProps = {
   item: {},
