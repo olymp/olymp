@@ -25,7 +25,6 @@ const Progress = styled(({ theme }) => ({
   backgroundColor: 'rgba(0, 0, 0, .4)',
   position: 'absolute',
   zIndex: 1,
-
   '> .ant-progress': {
     position: 'absolute',
     top: '50%',
@@ -45,11 +44,8 @@ class DragZone extends Component {
     const size = uploading.reduce((a, x) => a + x.size, 0);
 
     return (
-      <ProgressWrapper type="circle" percent={Math.round(progress / size) || 0} onClick={e => clickable ? {} : e.preventDefault()} disabled={!uploading.length}>
-        <Dragger
-          clickable={clickable}
-          {...rest}
-        >
+      <ProgressWrapper type="circle" percent={Math.round(progress / size) || 0} onClick={e => clickable ? {} : e.preventDefault()}>
+        <Dragger clickable={clickable} {...rest}>
           {children}
         </Dragger>
       </ProgressWrapper>
