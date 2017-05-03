@@ -1,37 +1,38 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
+import { object, func, number, bool } from 'prop-types';
 import { styled } from 'olymp';
 import { Icon } from 'antd';
 import Image from './image';
 
 const ImageContainer = styled(({ theme, isActive }) => ({
-    position: 'relative',
-    margin: '.5rem',
-    cursor: 'pointer',
-    outline: isActive ? `3px solid ${theme.color}` : 'none',
-    transform: isActive ? "scale(1.15)" : 'none',
-    transition: 'all .25s ease-in-out',
-    backgroundColor: isActive ? '#666' : '#FFF',
-    // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
-    '> img': {
-      opacity: isActive ? .6 : 1,
-      backgroundColor: '#FFF',
-    },
-    ':hover > img': {
-      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.4)',
-      transform:'scale(1.05)',
-    },
-  }), 'div', ({ height, isActive, ...p }) => p);
+  position: 'relative',
+  margin: '.5rem',
+  cursor: 'pointer',
+  outline: isActive ? `3px solid ${theme.color}` : 'none',
+  // transform: isActive ? 'scale(1.15)' : 'none',
+  // transition: 'all .1s ease-in-out',
+  backgroundColor: isActive ? '#666' : '#FFF',
+  // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
+  '> img': {
+    opacity: isActive ? 0.6 : 1,
+    backgroundColor: '#FFF',
+  },
+  ':hover > img': {
+    // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.4)',
+    // transform: 'scale(1.05)',
+  },
+}), 'div', ({ height, isActive, ...p }) => p);
 
 const ImageLabel = styled(({ theme }) => ({
-  position: "absolute",
+  position: 'absolute',
   top: '50%',
   right: '50%',
-  transform: "translate(50%, -50%)",
+  transform: 'translate(50%, -50%)',
   transition: 'all .15s ease-in-out',
   backgroundColor: theme.color,
-  color: "#FFF",
-  borderRadius: "50%",
-  textAlign: "center",
+  color: '#FFF',
+  borderRadius: '50%',
+  textAlign: 'center',
   fontSize: 25,
   padding: 5,
   lineHeight: 1,
@@ -39,21 +40,21 @@ const ImageLabel = styled(({ theme }) => ({
 }), 'div', p => p);
 
 const CloseLabel = styled(({ theme }) => ({
-  position: "absolute",
+  position: 'absolute',
   top: 0,
   right: 0,
-  transform: "translate(40%, -40%) scale(0.667)",
+  transform: 'translate(40%, -40%) scale(0.667)',
   transition: 'all .15s ease-in-out',
   backgroundColor: theme.color,
-  color: "#FFF",
-  borderRadius: "50%",
-  textAlign: "center",
+  color: '#FFF',
+  borderRadius: '50%',
+  textAlign: 'center',
   fontSize: 25,
   padding: 5,
   lineHeight: 1,
   // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   ':hover': {
-    transform: "translate(40%, -40%) scale(0.75)",
+    transform: 'translate(40%, -40%) scale(0.75)',
     transition: 'all .15s ease-in-out',
   }
 }), 'div', p => p);
@@ -74,10 +75,10 @@ export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
   </ImageContainer>
 ) : null;
 Thumb.propTypes = {
-  item: PropTypes.object,
-  onClick: PropTypes.func,
-  onRemove: PropTypes.func,
-  height: PropTypes.number,
-  isActive: PropTypes.bool,
+  item: object,
+  onClick: func,
+  onRemove: func,
+  height: number,
+  isActive: bool,
 };
 export default Thumb;

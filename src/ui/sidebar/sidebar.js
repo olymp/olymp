@@ -58,15 +58,15 @@ class SidebarInner extends Component {
   }
 };
 
-const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
+const StyledInner = styled(({ padding, right, paddingX, paddingY, width, minWidth, maxWidth }) => ({
   width,
   minWidth,
   maxWidth,
   height: '100%',
   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-  boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
-  borderLeft: '1px solid rgba(0, 0, 0, 0.0667)',
-  borderRight: '1px solid rgba(0, 0, 0, 0.0667)',
+  // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
+  borderLeft: right && '1px solid rgba(0, 0, 0, 0.0667)',
+  borderRight: !right && '1px solid rgba(0, 0, 0, 0.0667)',
   zIndex: 1,
   paddingBottom: 0,
   paddingTop: 0,
@@ -87,7 +87,7 @@ const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxW
       paddingTop: paddingY,
       paddingBottom: paddingY,
       padding,
-      boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.05)',
+      // boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.05)',
     },
     '> .ant-modal-header': {
       textAlign: 'center',
