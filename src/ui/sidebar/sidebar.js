@@ -65,6 +65,8 @@ const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxW
   height: '100%',
   backgroundColor: 'rgba(255, 255, 255, 0.9)',
   boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
+  borderLeft: '1px solid rgba(0, 0, 0, 0.0667)',
+  borderRight: '1px solid rgba(0, 0, 0, 0.0667)',
   zIndex: 1,
   paddingBottom: 0,
   paddingTop: 0,
@@ -85,18 +87,19 @@ const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxW
       paddingTop: paddingY,
       paddingBottom: paddingY,
       padding,
+      boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.05)',
     },
     '> .ant-modal-header': {
       textAlign: 'center',
       position: 'relative',
       backgroundColor: '#FFF',
       padding: 0,
-      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)',
+      // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)',
       border: 0,
     },
     '> .ant-modal-footer': {
       backgroundColor: 'rgba(0, 0, 0, 0.015)',
-      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)',
+      // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)',
       border: 0,
       '> div > .ant-btn': {
         width: 'calc(50% - 4px)',
@@ -128,10 +131,8 @@ const TitleButtons = styled(({ left, right }) => ({
   padding: '0 1rem',
   top: '50%',
   transform: 'translateY(-50%)',
-  '> button': {
-    display: 'block',
-    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
-    paddingTop: 1,
+  '> *': {
+    display: 'flex', // verhindert unschönen Abstand
   }
 }), 'div', ({ left, right, ...p }) => p);
 

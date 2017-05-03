@@ -1,2 +1,2 @@
-export { default as queryMedia, queryMedias } from './query';
-export { default as mutateFile } from './mutation';
+export { default as queryMedia, queryMedias, cloudinaryRequest } from './query';
+export { default as mutateFile, cloudinaryRequestDone } from './mutation';
