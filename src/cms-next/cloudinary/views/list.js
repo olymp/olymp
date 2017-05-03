@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Icon, Popover, Upload } from 'antd';
+import { Popover, Upload } from 'antd';
 import { Sidebar, List } from 'olymp/ui';
 import { intersection, upperFirst, orderBy } from 'lodash';
 
@@ -8,21 +8,15 @@ class ListSidebar extends Component {
     isOpen: true,
   };
 
-  componentWillMount = () => {
-    const { onFilter, items } = this.props;
-
-    onFilter([], items);
-  }
-
-  getTags = items => {
+  getTags = (items) => {
     const { search } = this.props;
     const tags = { 'Ohne Schlagworte': [] };
 
-    items.forEach(item => {
+    items.forEach((item) => {
       if (!item.tags.length) {
         tags['Ohne Schlagworte'].push(item);
       } else {
-        item.tags.forEach(tag => {
+        item.tags.forEach((tag) => {
           if (!search || tag.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
             if (!tags[tag]) tags[tag] = [];
             tags[tag].push(item);
@@ -39,10 +33,10 @@ class ListSidebar extends Component {
     const items = this.props.items.map(item => ({
       ...item,
       tags: !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
-    }))
+    }));
     const tags = this.getTags(items);
 
-    return Object.keys(tags).map(tag => {
+    return Object.keys(tags).map((tag) => {
       const active = !!filter.find(x => x === tag);
       const filteredTags = !active ? [...filter, tag] : filter.filter(x => x !== tag);
       const filteredItems = items.filter(item => intersection(item.tags, filteredTags).length === filteredTags.length);
@@ -62,11 +56,11 @@ class ListSidebar extends Component {
         countAll,
         key: tag,
       };
-    })
+    });
   }
 
   render() {
-    const { items, upload, onClose, search, onSearch, filter, onFilter } = this.props;
+    const { items, upload, onClose, search, onSearch, onFilter } = this.props;
     const { isOpen } = this.state;
 
     const directories = orderBy(this.getDirectories(), ['active', 'disabled', 'countFilter', 'countAll', 'label'], ['desc', 'asc', 'desc', 'desc', 'asc']);
@@ -98,7 +92,7 @@ class ListSidebar extends Component {
       </Sidebar>
     );
   }
-};
+}
 ListSidebar.propTypes = {
   onClose: PropTypes.func,
   onSearch: PropTypes.func,
