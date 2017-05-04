@@ -9,10 +9,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 const HappyPack = require('happypack');
-const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
+
+HappyPack.ThreadPool({ size: 5 });
 
 let theme = require('../default-theme')();
+
 if (fs.existsSync(path.resolve(process.cwd(), 'theme.js'))) {
   theme = Object.assign({}, theme, require(path.resolve(process.cwd(), 'theme.js'))());
 }
@@ -66,6 +69,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
         'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
       }),
+      // new PrepackWebpackPlugin({ }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
