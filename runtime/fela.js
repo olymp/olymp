@@ -59,8 +59,7 @@ export default () => {
         }),
       })
     ],
-    // enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic')()],
-    enhancers: [require('fela-monolithic')()],
+    enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic')()],
   });
 
   return renderer;
