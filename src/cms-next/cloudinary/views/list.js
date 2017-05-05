@@ -75,7 +75,7 @@ class ListSidebar extends Component {
         rightButtons={
           <Popover content="Datei hochladen">
             <Upload {...upload}>
-              <Sidebar.Button shape="circle" icon="upload" />
+              <Sidebar.Button shape="circle" icon="plus" />
             </Upload>
           </Popover>
         }
