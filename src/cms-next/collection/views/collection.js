@@ -19,7 +19,7 @@ export default (type, collection) => {
   @collection.query
   @Form.create()
   @collection.mutation
-  class CollectionPageSidebar extends Component {
+  class CollectionSidebar extends Component {
     state = { search: '' };
 
     ok = () => {
@@ -83,14 +83,12 @@ export default (type, collection) => {
             subtitle={description}
             header={!value && <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />}
           >
-            {!value && items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(collection.name)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
-            {value && <collection.Detail key={id} form={form} item={item} viewType="sidebar" />}
+            {items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(collection.name)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
           </Sidebar>
-          {render && render(<Page item={page} binding={{ ...item, ...form.getFieldsValue() }} />)}
-          {!render && <Page item={page} binding={{ ...item, ...form.getFieldsValue() }} />}
+          {value && <collection.Detail key={id} form={form} item={item} viewType="sidebar" />}
         </SplitView>
       );
     }
-  } return CollectionPageSidebar;
+  } return CollectionSidebar;
 };
 
