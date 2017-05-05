@@ -18,7 +18,7 @@ const StyledGallery = styled(({ theme }) => ({
   maxHeight: 250,
   overflow: 'auto',
   padding: '.5rem 0',
-  borderTop: '1px solid #e9e9e9',
+  borderTop: '1px solid #eee',
 }), Gallery, p => p);
 
 @mutateFile

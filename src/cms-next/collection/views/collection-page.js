@@ -52,11 +52,11 @@ export default (type, collection) => {
       const items = search ? this.props.items.filter(({ name }) => name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1) : this.props.items;
       const leftButtons = !value ? (
         <Popover content={`${collection.name} schließen`}>
-          <Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: undefined }})} shape="circle" icon="close" />
+          <Sidebar.Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: undefined }})} shape="circle" icon="close" />
         </Popover>
       ) : (
         <Popover content="Zurück zur Übersicht">
-          <Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: null }})} shape="circle" icon="arrow-left" />
+          <Sidebar.Button onClick={() => router.push({pathname, query: { ...query, [`@${type}`]: null }})} shape="circle" icon="arrow-left" />
         </Popover>
       );
       const rightButtons = value ? (
@@ -70,8 +70,6 @@ export default (type, collection) => {
       );
       const title = Type;
       const description = !value ? `${Type}-Management` : value === 'new' ? `${Type} hinzufügen` : `${Type} bearbeiten`;
-
-      console.log(this.props);
 
       return (
         <SplitView deviceWidth={deviceWidth}>
