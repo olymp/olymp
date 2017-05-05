@@ -8,18 +8,20 @@ const ImageContainer = styled(({ theme, isActive }) => ({
   position: 'relative',
   margin: '.5rem',
   cursor: 'pointer',
-  outline: isActive ? `3px solid ${theme.color}` : 'none',
+  // outline: isActive ? `3px solid ${theme.color}` : 'none',
   // transform: isActive ? 'scale(1.15)' : 'none',
-  // transition: 'all .1s ease-in-out',
-  backgroundColor: isActive ? '#666' : '#FFF',
+  transition: 'all .1s ease-in-out',
+  backgroundColor: isActive ? theme.color : '#FFF',
+  border: isActive ? `1px solid ${theme.color}` : '1px solid #eee',
   // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
   '> img': {
-    opacity: isActive ? 0.6 : 1,
+    opacity: isActive ? .6 : 1,
     backgroundColor: '#FFF',
   },
-  ':hover > img': {
+  ':hover': {
     // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.4)',
-    // transform: 'scale(1.05)',
+    transform: 'scale(1.025)',
+    transition: 'all .1s ease-in-out',
   },
 }), 'div', ({ height, isActive, ...p }) => p);
 
@@ -39,7 +41,7 @@ const ImageLabel = styled(({ theme }) => ({
   // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
 }), 'div', p => p);
 
-const CloseLabel = styled(({ theme }) => ({
+const CheckLabel = styled(({ theme }) => ({
   position: 'absolute',
   top: 0,
   right: 0,
@@ -52,12 +54,14 @@ const CloseLabel = styled(({ theme }) => ({
   fontSize: 25,
   padding: 5,
   lineHeight: 1,
-  // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
+}), 'div', p => p);
+
+const CloseLabel = styled(({ theme }) => ({
   ':hover': {
     transform: 'translate(40%, -40%) scale(0.75)',
     transition: 'all .15s ease-in-out',
   }
-}), 'div', p => p);
+}), CheckLabel, p => p);
 
 export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
   <ImageContainer isActive={isActive}>
@@ -67,10 +71,16 @@ export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
         <Icon type="file-pdf" />
       </ImageLabel>
     ) : undefined}
-    {isActive && onRemove ? (
-      <CloseLabel onClick={onRemove}>
-        <Icon type="close" />
-      </CloseLabel>
+    {isActive ? (
+      onRemove ? (
+        <CloseLabel onClick={onRemove}>
+          <Icon type="close" />
+        </CloseLabel>
+      ) : (
+        <CheckLabel>
+          <Icon type="check" />
+        </CheckLabel>
+      )
     ) : undefined}
   </ImageContainer>
 ) : null;
