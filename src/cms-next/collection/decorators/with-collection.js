@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { withApollo, graphql } from 'react-apollo';
-import { saveItem, removeItem } from './item';
 import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 
