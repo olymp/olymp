@@ -62,6 +62,10 @@ const authMethods = (client, refetch, user, loading) => ({
     if (!user.features) return false;
     return user.features.includes(method);
   },
+  isAuthenticated: (method) => {
+    if (!user) return false;
+    return true;
+  },
   invitation: (invitation, id) => {
     return client.mutate({
       mutation: gql`
