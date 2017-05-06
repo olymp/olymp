@@ -17,7 +17,7 @@ const FormForAllLayout = { wrapperCol: { span: 16, offset: 8 }, style: { marginB
 const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editable, ...rest }) => !item ? (
   <Spin size="large" />
 ) : (
-  <div style={{ padding: '1rem' }}>
+  <div>
     <div style={{ marginBottom: '1rem' }}>
       {!editable ? (
         <Crop url={item.url} width={item.width} height={item.height} crop={item.crop} onChange={crop => patchItem({ crop })} />

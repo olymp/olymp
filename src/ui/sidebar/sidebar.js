@@ -87,6 +87,7 @@ const StyledInner = styled(({ padding, right, paddingX, paddingY, width, minWidt
       paddingTop: paddingY,
       paddingBottom: paddingY,
       padding,
+      position: 'relative',
       // boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.05)',
     },
     '> .ant-modal-header': {

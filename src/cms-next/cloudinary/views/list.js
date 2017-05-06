@@ -4,10 +4,6 @@ import { Sidebar, List } from 'olymp/ui';
 import { intersection, upperFirst, orderBy } from 'lodash';
 
 class ListSidebar extends Component {
-  state = {
-    isOpen: true,
-  };
-
   getTags = (items) => {
     const { search } = this.props;
     const tags = { 'Ohne Schlagworte': [] };
@@ -29,7 +25,7 @@ class ListSidebar extends Component {
   }
 
   getDirectories = () => {
-    const { search, filter, onFilter } = this.props;
+    const { filter, onFilter } = this.props;
     const items = this.props.items.map(item => ({
       ...item,
       tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
@@ -61,15 +57,13 @@ class ListSidebar extends Component {
 
   render() {
     const { items, upload, onClose, search, onSearch, onFilter } = this.props;
-    const { isOpen } = this.state;
-
     const directories = orderBy(this.getDirectories(), ['active', 'disabled', 'countFilter', 'countAll', 'label'], ['desc', 'asc', 'desc', 'desc', 'asc']);
 
     return (
       <Sidebar
         leftButtons={
           <Popover content="Mediathek schließen">
-            <Sidebar.Button shape="circle" onClick={() => onClose(this)} icon="close" />
+            <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
           </Popover>
         }
         rightButtons={
@@ -82,7 +76,7 @@ class ListSidebar extends Component {
         header={
           <List.Filter placeholder="Filter ..." onChange={onSearch} value={search} />
         }
-        isOpen={isOpen}
+        isOpen
         padding={0}
         title="Mediathek"
         subtitle="Medien sichten und verwalten"
@@ -103,7 +97,7 @@ ListSidebar.propTypes = {
   filter: PropTypes.array,
 };
 ListSidebar.defaultProps = {
-  onClose: x => x.setState({ isOpen: false }),
+  onClose: () => {},
   onSearch: () => {},
   onFilter: () => {},
   items: [],

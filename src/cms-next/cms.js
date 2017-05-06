@@ -36,7 +36,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
             <AuthRoutes />
             <NavigationVertical collections={props.collections} deviceWidth={query[`@deviceWidth`]} {...props.location} location={props.location} />
             <SimpleSwitch>
-              <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute id={query[`@template`]} />} />
+              <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute {...props} />} />
               <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped}  />} />
               <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped}  />} />
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />

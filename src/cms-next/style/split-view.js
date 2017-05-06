@@ -8,15 +8,11 @@ export default styled(({ deviceWidth, color, center }) => ({
     flex: 0,
     overflowY: 'auto',
   },
-  '> :not(:first-child)': {
+  // '> :not(:first-child)': {
+  '> :nth-child(2)': {
     flex: 1,
     overflowY: 'auto',
     margin: center && 'auto',
     maxWidth: deviceWidth,
-  },
-  '> iframe': {
-    border: 0,
-    boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
-    margin: '1rem auto',
   },
 }), 'div', ({ deviceWidth, ...p }) => p);
