@@ -1,5 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import FrameComponent from 'react-frame-component';
+import { styled } from 'olymp';
+
+const StyledFrameComponent = styled(() => ({
+  border: 0,
+  width: '100%',
+  height: '100%',
+}), FrameComponent, p => p);
 
 class FrameInner extends Component {
   static contextTypes = {
@@ -28,9 +35,9 @@ class FrameInner extends Component {
 export default ({ children, disabled }) => disabled ? (
   React.Children.only(children)
 ) : (
-  <FrameComponent>
+  <StyledFrameComponent>
     <FrameInner>
       {children}
     </FrameInner>
-  </FrameComponent>
+  </StyledFrameComponent>
 );

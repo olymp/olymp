@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Prompt, Link, withRouter, withAuth, styled } from 'olymp';
 import { Menu, Button, Form, Icon } from 'antd';
-import { Panel, Sidebar } from 'olymp/ui';
+import { Sidebar, Container } from 'olymp/ui';
 import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../gql';
 import { Pages } from '../pages';
@@ -43,6 +43,7 @@ export default class PageSidebar extends Component {
     );
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
+
     return (
       <SplitView deviceWidth={deviceWidth}>
         <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
@@ -50,8 +51,11 @@ export default class PageSidebar extends Component {
           {!value && <Pages items={navigation} />}
           {value && <PageForm form={form} item={item} items={flatNavigation} />}
         </Sidebar>
-        {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />)}
-        {!render && <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />}
+
+        <Container width={1200} padding={0}>
+          {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />)}
+          {!render && <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />}
+        </Container>
       </SplitView>
     );
   }

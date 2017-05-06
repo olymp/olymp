@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withState } from 'olymp';
-import { Container } from 'olymp/ui';
+import { Container, Placeholder } from 'olymp/ui';
 import { Hashtax } from 'olymp/hashtax';
 import { SplitView } from '../../style';
 import { queryTemplate } from '../gql';
@@ -15,8 +15,9 @@ class Templates extends Component {
   };
 
   render() {
-    const { id, text, setText, item, form, deviceWidth, handleListClick, onClose } = this.props;
+    const { id, setText, item, form, deviceWidth, handleListClick, onClose } = this.props;
     const { search } = this.state;
+    const text = this.props.text || item.text;
 
     return (
       <SplitView deviceWidth={deviceWidth}>
@@ -29,7 +30,7 @@ class Templates extends Component {
         />
 
         <Container>
-          <Hashtax value={text || item.text} />
+          {text ? <Hashtax value={text} /> : <Placeholder>Vorschau</Placeholder>}
         </Container>
 
         <SelectionSidebar item={item} onCancel={() => handleListClick({ id: null })} setText={setText} />

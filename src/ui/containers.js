@@ -23,11 +23,23 @@ export const Panel = styled(({ display, alignLabel, ...rest }) => ({
   },
 }), 'div', ['children', 'itemScope', 'itemType']);
 
-export const Container = styled(() => ({
-  width: 700,
-  maxWidth: 700,
+export const Container = styled(({ width, padding }) => ({
+  width: width || 700,
+  maxWidth: width || 700,
   boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
   margin: '1rem auto',
-  padding: '1rem',
+  padding: padding !== undefined ? padding : '1rem',
   backgroundColor: '#FFFFFF',
+  position: 'relative',
+}), 'div', ({ width, padding, ...p }) => p);
+
+export const Placeholder = styled(({ theme }) => ({
+  textAlign: 'center',
+  fontWeight: 200,
+  fontSize: '200%',
+  opacity: .5,
+  top: '50%',
+  left: '50%',
+  position: 'absolute',
+  transform: 'translate(-50%, -50%)',
 }), 'div', p => p);
