@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Prompt, Link, withRouter, withAuth, styled } from 'olymp';
-import { Menu, Button, Form, Icon } from 'antd';
+import { Prompt, withRouter } from 'olymp';
+import { Button, Form } from 'antd';
 import { Sidebar, Container } from 'olymp/ui';
-import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../gql';
 import { Pages } from '../pages';
 import { PageForm } from '../form';
