@@ -22,3 +22,12 @@ export const Panel = styled(({ display, alignLabel, ...rest }) => ({
     },
   },
 }), 'div', ['children', 'itemScope', 'itemType']);
+
+export const Container = styled(() => ({
+  width: 700,
+  maxWidth: 700,
+  boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.0667)',
+  margin: '1rem auto',
+  padding: '1rem',
+  backgroundColor: '#FFFFFF',
+}), 'div', p => p);

@@ -185,7 +185,7 @@ class SelectionSidebar extends Component {
         width={350}
         minWidth={350}
         maxWidth={350}
-        padding={0}
+        padding="1rem"
       >
         {items.length ? (
           <Detail
