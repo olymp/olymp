@@ -1,6 +1,6 @@
 import React from 'react';
 import { IFrame } from '../../pages/components';
-import { createCollectionPage } from '../views';
+import { Collection } from '../views';
 
 const cache = {};
 export default (props) => {
@@ -15,7 +15,7 @@ export default (props) => {
     );
   }
   const { id, pageId } = match || {};
-  const View = cache[key] = cache[key] || createCollectionPage(key, collection);
+  const View = cache[key] = cache[key] || Collection(key, collection);
   return (
     <View {...props} deviceWidth={deviceWidth} key={query[`@${key}`]} id={query[`@${key}`]} pageId={pageId || id} render={children => (
       <IFrame disabled={!deviceWidth}>
