@@ -46,9 +46,6 @@ class SelectionSidebar extends Component {
             <Button onClick={onCancel} disabled={!item.id}>Abbrechen</Button>
           </div>
         }
-        width={350}
-        minWidth={350}
-        maxWidth={350}
         right
       >
         <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
