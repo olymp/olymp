@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
+import { Container } from 'olymp/ui';
 import Thumb from './thumb';
 
 const Thumbs = styled(({ justifyContent }) => ({
@@ -9,7 +10,7 @@ const Thumbs = styled(({ justifyContent }) => ({
   alignContent: 'flex-start',
   alignItems: 'flex-start',
   padding: '.5rem',
-}), 'div', ({ justifyContent, ...p }) => p);
+}), Container, ({ justifyContent, ...p }) => p);
 
 export const MediaList = ({ items, itemHeight, selected, onClick, onRemove, ...rest }) => (
   <Thumbs {...rest}>

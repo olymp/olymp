@@ -1,18 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, Icon, Tooltip, notification } from 'antd';
 import { styled } from 'olymp';
-import { Sidebar } from 'olymp/ui';
+import { Sidebar, Placeholder } from 'olymp/ui';
 import { isEqual } from 'lodash';
 import { mutateFile } from '../gql';
 import Detail from '../detail';
 import Gallery from '../gallery';
-
-const Panel = styled(({ theme }) => ({
-  textAlign: 'center',
-  margin: '5rem auto',
-  fontWeight: 200,
-  fontSize: '200%',
-}));
 
 const StyledGallery = styled(({ theme }) => ({
   maxHeight: 250,
@@ -182,10 +175,7 @@ class SelectionSidebar extends Component {
         isOpen
         title={!onSelect ? 'Bearbeiten' : 'Auswählen'}
         subtitle={!onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'}
-        width={350}
-        minWidth={350}
-        maxWidth={350}
-        padding={0}
+        padding="1rem"
       >
         {items.length ? (
           <Detail
@@ -198,9 +188,9 @@ class SelectionSidebar extends Component {
             editable={!onSelect}
           />
         ) : (
-          <Panel>
+          <Placeholder>
             Dateien auswählen
-          </Panel>
+          </Placeholder>
         )}
       </Sidebar>
     );
