@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Prompt } from 'olymp';
 import { Form, Popover } from 'antd';
-import { Sidebar, onError, onSuccess, List } from 'olymp/ui';
+import { Sidebar, Container, Placeholder, onError, onSuccess, List } from 'olymp/ui';
 import { upperFirst, lowerFirst } from 'lodash';
 import { queryPage, Page } from '../../pages';
 import { SplitView } from '../../style';
@@ -72,7 +72,6 @@ export default (type, collection) => {
 
       return (
         <SplitView deviceWidth={deviceWidth}>
-          <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
           <Sidebar
             leftButtons={leftButtons}
             rightButtons={rightButtons}
@@ -85,7 +84,25 @@ export default (type, collection) => {
           >
             {items.map(item => <List.Item active={id === item.id} to={{ pathname, query: { [`@${lowerFirst(collection.name)}`]: item.id } }} key={item.id} label={item.name} description={item.isAdmin ? 'Administrator' : 'Benutzer'} />)}
           </Sidebar>
-          {value && <collection.Detail key={id} form={form} item={item} viewType="sidebar" />}
+
+          <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
+          <Container>
+            <Placeholder>Hier fände ich es cool, wennn man über ein Select einen Block auswählen kann und darin dann quasi ne Vorschau von dem Artikel sieht.</Placeholder>
+          </Container>
+
+          <Sidebar
+            right
+            leftButtons={leftButtons}
+            rightButtons={rightButtons}
+            isOpen
+            onClose={() => router.push(pathname)}
+            padding={0}
+            title={title}
+            subtitle={description}
+            header={!value && <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />}
+          >
+            {value && <collection.Detail key={id} form={form} item={item} viewType="sidebar" />}
+          </Sidebar>
         </SplitView>
       );
     }
