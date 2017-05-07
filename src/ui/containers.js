@@ -32,7 +32,7 @@ export const Container = styled(({ width, padding, minHeight }) => ({
   padding: padding !== undefined ? padding : '1rem',
   backgroundColor: '#FFFFFF',
   position: 'relative',
-}), 'div', ({ width, padding, ...p }) => p);
+}), 'div', ({ width, minHeight, padding, ...p }) => p);
 
 export const Placeholder = styled(({ theme }) => ({
   textAlign: 'center',

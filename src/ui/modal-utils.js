@@ -10,7 +10,7 @@ export const onError = (err) => {
   message.error(description);
 };
 export const onSuccess = (text, description) => {
-  message.success(description);
+  message.success(description || text);
 };
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 export const onEnterFocus = (ref) => (e) => {
