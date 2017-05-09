@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Popover, Tabs, Form, Button } from 'antd';
+import { Tabs, Form, Button } from 'antd';
 import { Prompt } from 'olymp';
 import { Sidebar, Panel, onError, onSuccess } from 'olymp/ui';
 import { Input, Hashtax } from '../../collection';
@@ -11,6 +11,7 @@ class SelectionSidebar extends Component {
   ok = () => {
     const { form, item, mutate } = this.props;
     const id = item.id;
+
     form.validateFields((err, input) => {
       if (err) return onError(err);
       mutate({
@@ -36,9 +37,8 @@ class SelectionSidebar extends Component {
 
     return (
       <Sidebar
-        isOpen
         padding="1rem"
-        title={item.name || 'Neues Template'}
+        title={item.name || 'Neu'}
         subtitle={item.id ? 'Template bearbeiten' : 'Template erstellen'}
         footer={
           <div>
