@@ -1,33 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import { Popover } from 'antd';
 import { Sidebar, List } from 'olymp/ui';
-import { queryTemplates } from '../gql';
 
-@queryTemplates
 class ListSidebar extends Component {
   render() {
-    const { onClick, onClose, search, onSearch, id } = this.props;
+    const { id, onClick, onClose, search, onSearch, type } = this.props;
     const items = this.props.items.filter(item => !search || item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
 
     return (
       <Sidebar
         leftButtons={
-          <Popover content="Templates schließen">
-            <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
+          <Popover content={`${type} schließen`}>
+            <Sidebar.Button onClick={onClose} shape="circle" icon="close" />
           </Popover>
         }
         rightButtons={
-          <Popover content="Template hinzufügen">
+          <Popover content={`${type} hinzufügen`}>
             <Sidebar.Button onClick={() => onClick({ id: null })} shape="circle" icon="plus" />
           </Popover>
         }
+        title={type}
+        subtitle={`${type} sichten und verwalten`}
         header={
-          <List.Filter placeholder="Filter ..." onChange={onSearch} value={search} />
+          <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
         }
-        isOpen
-        padding={0}
-        title="Templates"
-        subtitle="Templates sichten und verwalten"
       >
         {items.map(item => (
           <List.Item
