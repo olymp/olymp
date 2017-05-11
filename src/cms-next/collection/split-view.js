@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql, withAuth, withRouter } from 'olymp';
-import { Button, Form, Input, Icon, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import { onEnterFocus, onEnterOk, layout, onError, onSuccess } from 'olymp/ui';
-import { Modal, SplitView, List, Panel } from 'olymp/ui';
+import { Link, withRouter } from 'olymp';
+import { Button, Form, Icon } from 'antd';
+import { onError, onSuccess } from 'olymp/ui';
+import { SplitView, List } from 'olymp/ui';
 import { lowerFirst } from 'lodash';
 
 @withRouter
