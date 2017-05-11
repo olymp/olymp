@@ -35,7 +35,7 @@ module.exports = ({ adapter, password, token, mail, issuer }) => {
         if (!isValid) throw new Error('Wrong password.');
         // TOTP
         if (user.totp && !totp) {
-          throw new Error(`Please provide a totp token`);
+          throw new Error('Please provide a totp token');
         } else if (user.totp) {
           var verified = speakeasy.totp.verify({ secret: user.totp,  encoding: 'base32', token: totp });
           if (!verified) throw new Error('TOTP token error');
