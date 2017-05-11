@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { withState } from 'olymp';
-import { Container, Placeholder } from 'olymp/ui';
+import { Container, Placeholder, SplitView } from 'olymp/ui';
 import { Hashtax } from 'olymp/hashtax';
-import { SplitView } from '../../style';
 import { queryTemplate } from '../gql';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Prompt, withRouter } from 'olymp';
 import { Button, Form } from 'antd';
-import { Sidebar, Container } from 'olymp/ui';
+import { Sidebar, Container, SplitView } from 'olymp/ui';
 import { queryPage, mutatePage } from '../gql';
 import { Pages } from '../pages';
 import { PageForm } from '../form';
 import { Page } from '../page';
-import { SplitView } from '../../style';
 
 @withRouter
 @queryPage

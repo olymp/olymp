@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Popover } from 'antd';
-import { Sidebar, Container, Placeholder, List } from 'olymp/ui';
+import { Container, Placeholder, SplitView } from 'olymp/ui';
 import { upperFirst } from 'lodash';
 import { queryPage } from '../../pages';
-import { SplitView } from '../../style';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
 
