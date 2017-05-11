@@ -10,7 +10,7 @@ const Thumbs = styled(({ justifyContent }) => ({
   alignContent: 'flex-start',
   alignItems: 'flex-start',
   padding: '.5rem',
-}), Container, ({ justifyContent, ...p }) => p);
+}), 'div', ({ justifyContent, ...p }) => p);
 
 export const MediaList = ({ items, itemHeight, selected, onClick, onRemove, ...rest }) => (
   <Thumbs {...rest}>
