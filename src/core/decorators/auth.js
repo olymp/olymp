@@ -62,9 +62,13 @@ const authMethods = (client, refetch, user, loading) => ({
     if (!user.features) return false;
     return user.features.includes(method);
   },
-  isAuthenticated: (method) => {
+  isAuthenticated: () => {
     if (!user) return false;
     return true;
+  },
+  isAdmin: () => {
+    if (!user) return false;
+    return user.isAdmin;
   },
   invitation: (invitation, id) => {
     return client.mutate({

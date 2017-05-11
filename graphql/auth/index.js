@@ -97,7 +97,6 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
           if (context.user && context.user.isAdmin) {
           } else if (context.user && context.user.id === args.id) {
           } else throw new Error('No permission');
-          const collection = adapter.db.collection('user');
           const hook = Mutation && Mutation.user ? Mutation.user : defaultHook;
           return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
             if (args.operationType && args.operationType === 'REMOVE') {

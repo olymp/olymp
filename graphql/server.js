@@ -31,14 +31,6 @@ Hallo
   if (options.google) createGoogleGql(Schema, typeof options.google === 'object' ? options.google : {});
   if (options.pages) createPagesGql(Schema, typeof options.pages === 'object' ? Object.assign({ adapter }, options.pages) : { adapter });
   if (options.media) createMediaGql(Schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
-  if (options.schemas) {
-    if (typeof options.schemas === 'function') {
-      options.schemas({ schema: Schema, adapter, mail });
-    } else if (Array.isArray(options.schemas)) {
-      options.schemas.forEach(s => s(Schema, { adapter, mail }));
-    }
-  }
-
   if (options.auth) {
     if (typeof options.auth === 'string') options.auth = { secret: options.auth };
     const { auth } = createAuthGql(Schema, Object.assign({ adapter, mail }, options.auth));
@@ -62,10 +54,18 @@ Hallo
       } else {
         next();
       }
-    }
+    };
     server.use(handler);
     server.auth = auth;
   }
+  if (options.schemas) {
+    if (typeof options.schemas === 'function') {
+      options.schemas({ schema: Schema, adapter, mail });
+    } else if (Array.isArray(options.schemas)) {
+      options.schemas.forEach(s => s(Schema, { adapter, mail }));
+    }
+  }
+
 
   if (process.env.NODE_ENV !== 'production') {
     server.get('/graphql', graphiqlExpress({ endpointURL: '/graphql' }));
