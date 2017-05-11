@@ -10,7 +10,8 @@ import { Gateway } from 'react-gateway';
 ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
-const ReactModal = ({ className, ...props }) => <ReactModal2 backdropClassName={className} {...props}/>
+const ReactModal = ({ className, ...props }) => <ReactModal2 backdropClassName={className} {...props}/>;
+
 export const Modal = ({ isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, ...props }, { theme }) => {
   let copyright = null;
   let links = null;

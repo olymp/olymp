@@ -1,10 +1,22 @@
-import React, { Component } from 'react';
 import { styled } from 'olymp';
 
-export const SplitView = styled(() => ({
+export const SplitView = styled(({ deviceWidth, center }) => ({
   display: 'flex',
+  flex: 1,
+  background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
   minHeight: 600,
-}), 'div', ({ side, ...p }) => p);
+  '> :first-child': {
+    flex: 0,
+    overflowY: 'auto',
+  },
+  // '> :not(:first-child)': {
+  '> :nth-child(2)': {
+    flex: 1,
+    overflowY: 'auto',
+    margin: center && 'auto',
+    maxWidth: deviceWidth,
+  },
+}), 'div', ({ deviceWidth, ...p }) => p);
 
 export const Panel = styled(({ display, alignLabel, ...rest }) => ({
   position: 'relative',

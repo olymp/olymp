@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Upload, message } from 'antd';
 import { isEqual } from 'lodash';
+import { SplitView } from 'olymp/ui';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
-import { SplitView } from '../../style';
 import DragZone from '../dragzone';
 import Gallery from '../gallery';
 import ListSidebar from './list';
