@@ -2,6 +2,18 @@ import React, { Component, Children } from 'react';
 import { styled } from 'olymp';
 import { Button as AntButton, Icon, Button, Spin } from 'antd';
 
+let actives = [];
+class SidebarInner extends Component {
+  render() {
+    const { children, className } = this.props;
+    return (
+      <div className={className}>
+        {children}
+      </div>
+    );
+  }
+}
+
 const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
   width,
   minWidth,
@@ -127,17 +139,5 @@ const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, classN
   </StyledInner>
 );
 Sidebar.defaultProps = { width: 350, minWidth: 350, padding: 0, isOpen: true };
-
-let actives = [];
-class SidebarInner extends Component {
-  render() {
-    const { children, className } = this.props;
-    return (
-      <div className={className}>
-        {children}
-      </div>
-    );
-  }
-};
 
 export default Sidebar;
