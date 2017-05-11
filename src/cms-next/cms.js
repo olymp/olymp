@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { auth as withAuth, withRouter, styled, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
@@ -24,19 +24,22 @@ export const Container = styled(({ deviceWidth }) => ({
   },
 }), 'div', ({ deviceWidth, ...p }) => p);
 
-export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
+export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
   // Container for authed users
   const IfAuth = (props) => {
-    const { query } = props;
+    const { query, templates, collections, location } = props;
     const collection = Object.keys(modules).filter(key => query[`@${key}`] !== undefined).map(key => ({ key, ...modules[key] }))[0];
+
     return (
       <ThemeProvider theme={theme}>
-        <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...props.templates }}>
+        <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
           <Container>
             <GatewayDest name="modal" />
-            <AuthRoutes />
-            <NavigationVertical collections={props.collections} deviceWidth={query[`@deviceWidth`]} {...props.location} location={props.location} />
+            <AuthRoutes.Modal prefix="@" exclude={['Profile', 'Users']} />
+            <NavigationVertical collections={collections} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
             <SimpleSwitch>
+              <SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />
+              <SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />
               <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute {...props} />} />
               <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped}  />} />
               <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped}  />} />
@@ -57,7 +60,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
       <ThemeProvider theme={theme}>
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
           <div>
-            <AuthRoutes />
+            <AuthRoutes.Modal prefix="@" />
             <GatewayDest name="modal" />
             <PageRoute {...props} Wrapped={Wrapped} />
           </div>
