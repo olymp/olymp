@@ -31,8 +31,7 @@ export default class AuthConfirm extends Component {
   }
 
   render() {
-    const { isOpen, email, form, saving, pathname, onClose, data } = this.props;
-    const { getFieldDecorator } = form;
+    const { isOpen, pathname, onClose, data } = this.props;
     const loading = data.valid !== true && data.valid !== false;
     const valid = data.valid !== false;
 

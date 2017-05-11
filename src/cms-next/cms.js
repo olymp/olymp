@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { auth as withAuth, withRouter, styled, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
-import { EditablePageRoute, PageRoute, withNavigation } from './pages';
-import { CollectionRoute } from './collection';
-import { CloudinaryRoute } from './cloudinary';
-import { TemplateRoute, withTemplates } from './templates';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
 import { NavigationVertical } from './navigation';
 import { AuthRoutes } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
+import { EditablePageRoute, PageRoute, withNavigation } from './pages';
+import { CollectionRoute } from './collection';
+import { CloudinaryRoute } from './cloudinary';
+import { StatsRoute } from './stats';
+import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
 
 export const Container = styled(({ deviceWidth }) => ({
@@ -40,6 +41,7 @@ export default ({ auth, theme, locale, hashtax, modules }) => Wrapped => {
               <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped}  />} />
               <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped}  />} />
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
+              <SimpleRoute match={query[`@stats`] !== undefined} render={() => <StatsRoute {...props} />} />
               <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
             </SimpleSwitch>
           </Container>
