@@ -90,11 +90,14 @@ if (command === 'dev') {
     createConfig({ target: 'web', mode: 'production' })
   ]);
   compiler.run((err, compilation) => {
-    if (err) throw err;
+    if (err) {
+      console.error(err);
+      return process.exit(1);
+    }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    stats.forEach((c) => fs.writeFileSync(path.resolve(__dirname, `stats.json`), c.toJson()));
-    stats.forEach((c) => console.log(c.toString()));
+    stats.forEach(c => fs.writeFileSync(path.resolve(__dirname, `stats.json`), c.toJson()));
+    stats.forEach(c => console.log(c.toString()));
   });
 } else if (command.indexOf('build:') === 0) {
   const target = command.split(':')[1];
@@ -104,12 +107,15 @@ if (command === 'dev') {
     createConfig({ target: target, mode: 'production' })
   ]);
   compiler.run((err, compilation) => {
-    if (err) throw err;
+    if (err) {
+      console.error(err);
+      return process.exit(1);
+    }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    stats.forEach((c) => console.log(c.toString()));
-    stats.forEach((c) => fs.writeFileSync(path.resolve(__dirname, `stats.json`), c.toJson()));
+    stats.forEach(c => console.log(c.toString()));
+    stats.forEach(c => fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson()));
   });
 } else if (command === 'start') {
-  require(path.resolve(process.cwd(), 'build', 'node', 'main'))
+  require(path.resolve(process.cwd(), 'build', 'node', 'main'));
 }

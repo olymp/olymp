@@ -1,10 +1,10 @@
 import React from 'react';
 import { styled } from 'olymp';
 
-export const H = styled(({ fontSize, theme, padding, marginBottom, marginTop, textAlign, light, colored, color }) => ({
+export const H = styled(({ fontSize, theme, padding, marginBottom, marginTop, textAlign, light, colored, color, center }) => ({
   color: (colored || color) && theme.color,
   fontWeight: light && 200,
-  textAlign,
+  textAlign: center ? 'center' : textAlign,
   padding,
   fontSize,
   lineHeight: fontSize ? `${fontSize}px` : undefined,

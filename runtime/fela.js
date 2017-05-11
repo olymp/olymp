@@ -13,10 +13,9 @@ export default () => {
     selectorPrefix: 'o',
     plugins: [
       extend(),
-      unit(),
-      fallbackValue(),
-      removeUndefined(),
       prefixer(),
+      fallbackValue(),
+      unit(),
       namedMediaQuery({
         // From
         fromWide: '@media (min-width: 1200px)',
@@ -57,7 +56,8 @@ export default () => {
           marginTop: margin,
           marginBottom: margin,
         }),
-      })
+      }),
+      removeUndefined()
     ],
     enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic')()],
   });
