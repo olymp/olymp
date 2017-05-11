@@ -1,11 +1,9 @@
 import React, { PropTypes, Children, Component, createElement, cloneElement } from 'react';
-import { withRouter as withRouterLegacy, Link as LinkLegacy, NavLink as NavLinkLegacy } from 'react-router-dom';
+import { Link as LinkLegacy, NavLink as NavLinkLegacy } from 'react-router-dom';
 export { Route, Switch, Redirect, Prompt } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
-import { Router } from 'react-router';
 import { connect } from 'react-redux';
 import { LOCATION_CHANGE } from 'react-router-redux/actions';
-import { routerMiddleware, push, replace } from 'react-router-redux'
+import { push, replace } from 'react-router-redux';
 
 export const routerQueryMiddleware = store => next => action =>  {
   if (action.type !== LOCATION_CHANGE) {
@@ -18,7 +16,7 @@ export const routerQueryMiddleware = store => next => action =>  {
 
 export const withRouter = (WrappedComponent) => {
   @connect(
-    ({ router }) => ({
+    ({ router, match }) => ({
       query: parseQuery(router.location.search),
       pathname: router.location.pathname,
       search: router.location.search,
