@@ -5,7 +5,7 @@ import tinycolor from 'tinycolor2';
 import CmsButton from './button';
 
 const Separator = styled(({ theme }) => ({
-  // borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+  borderTop: '1px solid rgba(0, 0, 0, 0.05)',
 }), 'li');
 const Filler = styled(({ theme }) => ({
   flex: 1,
@@ -86,37 +86,40 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
     </Menu.Item>
     <Menu.Item key="@media">
       <Popover placement="right" content="Mediathek">
-        <Link to={{ query: { '@media': null } }}>
+        <Link to={{ query: { '@media': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="picture" />
         </Link>
       </Popover>
     </Menu.Item>
-    <Separator />
-    <Menu.Item key="@artikel">
-      <Popover placement="right" content="Artikel-Liste">
-        <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>
-          <Icon type="calculator" />
-        </Link>
-      </Popover>
-    </Menu.Item>
-    <Filler />
     {auth.user && auth.user.isAdmin ? (
       <Menu.Item key="@users">
         <Popover placement="right" content="Benutzer-Management">
-          <Link to={{ query: { '@users': null } }}>
+          <Link to={{ query: { '@users': null, '@deviceWidth': deviceWidth } }}>
             <Icon type="team" />
           </Link>
         </Popover>
       </Menu.Item>
-    ) : (
-      <Menu.Item key="@profile">
-        <Popover placement="right" content="Profil">
-          <Link to={{ query: { '@profile': null } }}>
-            <Icon type="user" />
-          </Link>
-        </Popover>
-      </Menu.Item>
-    )}
+    ) : null}
+    <Menu.Item key="@stats">
+      <Popover placement="right" content="Statistiken">
+        <Link to={{ query: { '@stats': null, '@deviceWidth': deviceWidth } }}>
+          <Icon type="line-chart" />
+        </Link>
+      </Popover>
+    </Menu.Item>
+
+    <Separator />
+
+    <Menu.Item key="@artikel">
+      <Popover placement="right" content="Artikel-Liste">
+        <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>
+          <Icon type="file-text" />
+        </Link>
+      </Popover>
+    </Menu.Item>
+
+    <Filler />
+
     <Menu.SubMenu title={<Icon type="laptop" />}>
       <Menu.Item key="@device-no">
         <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
@@ -134,9 +137,16 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Menu.Item>
     </Menu.SubMenu>
+    <Menu.Item key="@profile">
+      <Popover placement="right" content="Profil">
+        <Link to={{ query: { '@profile': null, '@deviceWidth': deviceWidth } }}>
+          <Icon type="user" />
+        </Link>
+      </Popover>
+    </Menu.Item>
     <Menu.Item key="@settings">
       <Popover placement="right" content="Einstellungen">
-        <Link to={{ query: { '@settings': null } }}>
+        <Link to={{ query: { '@settings': null, '@deviceWidth': deviceWidth } }}>
           <Icon type="setting" />
         </Link>
       </Popover>

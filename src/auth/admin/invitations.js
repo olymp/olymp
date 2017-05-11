@@ -51,7 +51,7 @@ export default class AuthInvitations extends Component {
           {id && id !== 'new' && <AuthInviationDetail key={id} id={id} />}
         </SplitView>
         <Modal.Links>
-          <Link to={{ pathname, query: { '@invitations': null, '@users': undefined } }}>Benutzer verwalten</Link>
+          <Link to={{ pathname, query: { '@invitations': undefined, '@users': null } }}>Benutzer verwalten</Link>
         </Modal.Links>
       </Modal>
     );

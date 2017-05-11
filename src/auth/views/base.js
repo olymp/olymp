@@ -16,8 +16,10 @@ const def = ({ copyright, showLogo, isOpen, email, children, title, pathname, on
 );
 def.contextTypes = {
   theme: React.PropTypes.object,
-}
+};
+
 export default def;
+
 export const onError = (err) => {
   let description;
   if (err && err.message) {
@@ -29,21 +31,25 @@ export const onError = (err) => {
     message: 'Fehler',
     description,
   });
-}
+};
+
 export const onSuccess = (message, description) => {
   notification.success({
     message,
     description,
   });
-}
+};
+
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
+
 export const onEnterFocus = (ref) => (e) => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   } return false;
-}
+};
+
 export const onEnterOk = (onOk) => (e) => {
   if (e.key === 'Enter') onOk();
-}
+};
 
 
