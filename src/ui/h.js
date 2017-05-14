@@ -9,7 +9,11 @@ export const H = styled(({ fontSize, theme, padding, marginBottom, marginTop, te
   fontSize,
   lineHeight: fontSize ? `${fontSize}px` : undefined,
   marginTop: marginTop !== undefined ? marginTop : undefined,
-  marginBottom: marginBottom !== undefined ? marginBottom : 15,
+  marginBottom: marginBottom !== undefined ? marginBottom : 15,
+  '& .ant-checkbox-inner': {
+    width: 21,
+    height: 21,
+  }
 }), ({ level, children, ...rest }) => {
   if (!level) level = 1;
   return React.createElement(`h${level}`, rest, children);

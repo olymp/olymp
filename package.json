@@ -1,5 +1,5 @@
 {
-  "version": "15.0.0-beta.25",
+  "version": "15.0.1",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@google/maps": "0.3.1",
     "@mapbox/react-colorpickr": "4.3.0",
-    "antd": "^2.10.0",
+    "antd": "^2.10.1",
     "apollo-client": "^1.2.2",
     "assets-webpack-plugin": "^3.5.1",
     "babel-core": "^6.24.1",
@@ -90,7 +90,7 @@
     "offline-plugin": "^4.7.0",
     "postcss-loader": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.9.3",
-    "prop-types": "^15.5.9",
+    "prop-types": "^15.5.10",
     "qrcode": "^0.8.1",
     "rapscallion": "^2.1.7",
     "raw-loader": "^0.5.1",
@@ -116,7 +116,7 @@
     "react-router-redux": "5.0.0-alpha.4",
     "react-sortable-hoc": "^0.6.3",
     "react-svg-loader": "^1.1.1",
-    "recompose": "^0.23.3",
+    "recompose": "^0.23.4",
     "redux": "^3.6.0",
     "remark": "^7.0.1",
     "rimraf": "^2.6.1",
@@ -146,6 +146,6 @@
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.1",
-    "eslint-plugin-react": "^7.0.0"
+    "eslint-plugin-react": "^7.0.1"
   }
 }
