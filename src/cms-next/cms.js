@@ -14,7 +14,6 @@ import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
 
-console.log(AuthModals);
 export const Container = styled(({ deviceWidth }) => ({
   display: 'flex',
   height: '100%',
