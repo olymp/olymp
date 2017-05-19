@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Placeholder, Sidebar } from 'olymp/ui';
-import { SplitView } from '../../style';
+// import { SplitView } from '../../style';
 
 class Templates extends Component {
   render() {
