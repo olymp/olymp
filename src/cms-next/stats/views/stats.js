@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Placeholder, Sidebar } from 'olymp/ui';
 // import { SplitView } from '../../style';
+import { Container, Placeholder, Sidebar, SplitView } from 'olymp/ui';
 
-class Templates extends Component {
+class Stats extends Component {
   render() {
     const { deviceWidth } = this.props;
 
@@ -28,4 +28,4 @@ class Templates extends Component {
     );
   }
 }
-export default Templates;
+export default Stats;
