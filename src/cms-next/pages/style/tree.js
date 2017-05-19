@@ -4,7 +4,7 @@ import { styled, Link } from 'olymp';
 
 export const Tree = styled(({ }) => ({
   '& li': {
-    '> span.ant-tree-switcher': {
+    '> .ant-tree-switcher': {
       position: 'relative',
       width: 0,
       onAfter: {
@@ -13,7 +13,12 @@ export const Tree = styled(({ }) => ({
         position: 'absolute',
       },
     },
-    '> a': {
+    '> .ant-tree-switcher:after': {
+      left: -4,
+      top: 1,
+      position: 'absolute',
+    },
+    '> .ant-tree-node-content-wrapper': {
       width: '100%',
     },
   },
@@ -32,7 +37,7 @@ const getIcon = (item) => {
   } else if (item.href) {
     return <a href="javascript:;"><Icon type="link" /></a>;
   } return null;
-}
+};
 export const TreeNode = styled(({ }) => ({
   display: 'flex',
   '> a:first-child': {
