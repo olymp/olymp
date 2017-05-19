@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'olymp';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus, AuthProfile, AuthTotp } from './views';
 import { AuthUsers, AuthInvitations } from './admin';
@@ -15,7 +15,7 @@ export default withRouter(props => {
   const p = { pathname, onClose: () => router.push(pathname) };
   return (
     <div>
-      <AuthLogin {...p} isOpen={inQuery('login')} email={query.login} totp={inQuery('totp')} onTotp={redirect({ totp: null })} />
+      <AuthLogin {...p} isOpen={inQuery('login')} email={query.login} totp={inQuery('totp')} onTotp={() => redirect({ totp: null })} />
       <AuthRegister {...p} isOpen={inQuery('register')} token={query.register} onOk={({ email, token }) => token ? redirect({ login: email }) : redirect({ 'status-register': email })} extraFields={register} />
       <AuthForgot {...p} isOpen={inQuery('forgot')} email={query.forgot} onOk={({ email }) => redirect({ 'status-forgot': email })} />
       <AuthReset {...p} isOpen={inQuery('reset')} token={query.reset} onOk={({ email }) => redirect({ login: email })} />
