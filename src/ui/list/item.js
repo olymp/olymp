@@ -27,7 +27,7 @@ const Content = styled(({ active, disabled }) => ({
     flexDirection: 'column',
     flex: 1,
   },
-  onHover: !active && {
+  onHover: !active && !disabled && {
     // background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.075), rgba(0, 0, 0, 0.058))',
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     color: 'rgba(0, 0, 0, 0.85)',
@@ -51,7 +51,7 @@ const Content = styled(({ active, disabled }) => ({
   </div>
 ), p => p);
 
-export default ({ className, image, label, description, to, onClick, active, disabled, icon }) => onClick ? (
+export default ({ className, image, label, description, to, onClick, active, disabled, icon }) => onClick || disabled ? (
   <a className={className} href="javascript:;" onClick={disabled ? () => {} : onClick}>
     <Content image={image} label={label} description={description} active={active} disabled={disabled} icon={icon} />
   </a>

@@ -35,7 +35,7 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
           <Container>
             <GatewayDest name="modal" />
-            <AuthRoutes.Modal prefix="@" exclude={['Profile', 'Users']} />
+            <AuthRoutes.Modal exclude={['Profile', 'Users']} />
             <NavigationVertical collections={collections} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
             <SimpleSwitch>
               <SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />

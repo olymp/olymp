@@ -52,7 +52,7 @@ if (command === 'dev') {
     if (err) return console.log('[webpack] error:', err);
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    stats.forEach((c) => console.log(c.toString()));
+    stats.forEach(c => console.log(c.toString()));
     notifier.notify('Ready');
   });
   const webpackDevServer = require('webpack-dev-server');
@@ -96,7 +96,7 @@ if (command === 'dev') {
     }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    stats.forEach(c => fs.writeFileSync(path.resolve(__dirname, `stats.json`), c.toJson()));
+    stats.forEach(c => fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson()));
     stats.forEach(c => console.log(c.toString()));
   });
 } else if (command.indexOf('build:') === 0) {
@@ -104,7 +104,7 @@ if (command === 'dev') {
   rimraf.sync(path.resolve(process.cwd(), 'build', target));
   process.env.NODE_ENV = 'production';
   const compiler = webpack([
-    createConfig({ target: target, mode: 'production' })
+    createConfig({ target, mode: 'production' })
   ]);
   compiler.run((err, compilation) => {
     if (err) {

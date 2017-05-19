@@ -18,11 +18,12 @@ export const SplitView = styled(({ deviceWidth, center }) => ({
   },
 }), 'div', ({ deviceWidth, ...p }) => p);
 
-export const Panel = styled(({ display, alignLabel, ...rest }) => ({
+export const Panel = styled(({ display, axis, show, alignLabel, ...rest }) => ({
   position: 'relative',
   // border: '1px solid transparent',
   overflowY: 'auto',
-  display,
+  display: show === false ? 'none' : display,
+  flexDirection: axis === 'x' ? 'row' : axis === 'y' ? 'column' : undefined,
   '> *': display === 'flex' && {
     overflowY: 'auto',
   },

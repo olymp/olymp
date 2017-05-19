@@ -13,7 +13,11 @@ export const H = styled(({ fontSize, theme, padding, marginBottom, marginTop, te
   '& .ant-checkbox-inner': {
     width: 21,
     height: 21,
-  }
+    onAfter: {
+      left: 7,
+      top: 5,
+    },
+  },
 }), ({ level, children, ...rest }) => {
   if (!level) level = 1;
   return React.createElement(`h${level}`, rest, children);

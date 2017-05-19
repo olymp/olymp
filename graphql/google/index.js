@@ -18,7 +18,7 @@ const convertGeocode = (result) => {
     newResult.locationType = result.geometry.location_type;
   }
   newResult.partialMatch = result.partial_match;
-  newResult.placeId = result.place_id;
+  newResult.id = result.place_id;
   newResult.types = result.types;
   return newResult;
 };
@@ -41,6 +41,7 @@ module.exports = (schema, { config } = {}) => {
     },
     schema: `
       type Geocode {
+        id: String
         streetNumber: String
         route: String
         locality: String
@@ -53,7 +54,6 @@ module.exports = (schema, { config } = {}) => {
         lng: Float
         locationType: String
         partialMatch: Boolean
-        placeId: String
         types: [String]
       }
     `,

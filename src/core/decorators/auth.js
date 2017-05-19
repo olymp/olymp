@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { graphql, withApollo } from 'react-apollo';
+import { Spin } from 'antd';
 import gql from 'graphql-tag';
 
 const baseAttributes = 'id, name, email, isAdmin';
@@ -38,6 +39,7 @@ export const auth = (obj) => WrappedComponent => {
       };
     }
     render() {
+      if (this.props.auth.loading) return <Spin />;
       return <WrappedComponent {...this.props} />;
     }
   } return inner(UserProvider);

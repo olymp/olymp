@@ -39,6 +39,14 @@ export const withRouter = (WrappedComponent) => {
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
+
+        if (this.lastPath === to.pathname && this.lastSearch === to.search) return;
+        this.lastPath = to.pathname;
+        this.lastSearch = to.search;
+      } else {
+        if (this.lastPath === to) return;
+        this.lastPath = to;
+        this.lastSearch = null;
       }
       store.dispatch(push(to));
       // this.context.router.history.push(to);
