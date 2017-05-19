@@ -4,7 +4,7 @@ import { styled, Link } from 'olymp';
 
 export const Tree = styled(({ }) => ({
   '& li': {
-    '> .ant-tree-switcher': {
+    '> span.ant-tree-switcher': {
       position: 'relative',
       width: 0,
       onAfter: {
@@ -13,12 +13,12 @@ export const Tree = styled(({ }) => ({
         position: 'absolute',
       },
     },
-    '> .ant-tree-switcher:after': {
-      left: -4,
-      top: 1,
+    '> span.ant-tree-switcher:after': {
+      left: -8,
+      top: -1,
       position: 'absolute',
     },
-    '> .ant-tree-node-content-wrapper': {
+    '> span.ant-tree-node-content-wrapper': {
       width: '100%',
     },
   },
