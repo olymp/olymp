@@ -10,6 +10,7 @@ import { EditablePageRoute, PageRoute, withNavigation } from './pages';
 import { CollectionRoute } from './collection';
 import { CloudinaryRoute } from './cloudinary';
 import { StatsRoute } from './stats';
+import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
 
@@ -45,6 +46,7 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
               <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped}  />} />
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
               <SimpleRoute match={query[`@stats`] !== undefined} render={() => <StatsRoute {...props} />} />
+              <SimpleRoute match={query[`@settings`] !== undefined} render={() => <SettingsRoute {...props} />} />
               <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
             </SimpleSwitch>
           </Container>

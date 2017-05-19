@@ -27,6 +27,8 @@ import { Server as WebSocketServer } from 'uws';
 import createFela from '../fela';
 import { EventEmitter } from 'events';
 
+import googleAPI from '../google'; // todo: Hier richtig???
+
 const init = require('@app').init;
 
 const version = +fs.statSync(__filename).mtime;
@@ -166,6 +168,8 @@ app.get('*', (request, response) => {
   });
   const renderer = createFela();
   const context = {};
+
+  googleAPI();
 
   const [pathname, search] = decodeURI(request.url).split('?');
   const staticRouter = new StaticRouter();
