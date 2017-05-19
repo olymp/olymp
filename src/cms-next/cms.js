@@ -4,16 +4,17 @@ import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
 import { ThemeProvider } from 'react-fela';
 import { NavigationVertical } from './navigation';
-import { AuthRoutes } from 'olymp/auth';
+import { AuthModals } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from './pages';
 import { CollectionRoute } from './collection';
 import { CloudinaryRoute } from './cloudinary';
-import { StatsRoute } from './stats';
+// import { AnalyticsRoute } from './analytics';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
 
+console.log(AuthModals);
 export const Container = styled(({ deviceWidth }) => ({
   display: 'flex',
   height: '100%',
@@ -36,16 +37,16 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
           <Container>
             <GatewayDest name="modal" />
-            <AuthRoutes.Modal exclude={['Profile', 'Users']} />
+            <AuthModals />
             <NavigationVertical collections={collections} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
             <SimpleSwitch>
-              <SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />
-              <SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />
+              {/*<SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
+              {/*<SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
               <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute {...props} />} />
-              <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped}  />} />
-              <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped}  />} />
+              <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped} />} />
+              <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />} />
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
-              <SimpleRoute match={query[`@stats`] !== undefined} render={() => <StatsRoute {...props} />} />
+              {/*<SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
               <SimpleRoute match={query[`@settings`] !== undefined} render={() => <SettingsRoute {...props} />} />
               <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
             </SimpleSwitch>
@@ -62,7 +63,7 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
       <ThemeProvider theme={theme}>
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
           <div>
-            <AuthRoutes.Modal prefix="@" />
+            <AuthModals />
             <GatewayDest name="modal" />
             <PageRoute {...props} Wrapped={Wrapped} />
           </div>
@@ -88,4 +89,5 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
       } return <IfAuth {...this.props} />;
     }
   } return CMS;
-}
+};
+

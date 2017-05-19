@@ -4,7 +4,7 @@ import Static from './static';
 import { DateRange } from './../../edits';
 
 var firstRun = true;
-export default class Stats extends Component {
+export default class Analytics extends Component {
   static contextTypes = {
     apiClient: React.PropTypes.object.isRequired
   };
