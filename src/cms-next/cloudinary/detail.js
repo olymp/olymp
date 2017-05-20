@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { styled } from 'olymp';
 import { TagsEditor } from 'olymp/edits';
-import { Sidebar } from 'olymp/ui';
-import { Button, Form, Icon, Input, Spin, Checkbox, Popconfirm } from 'antd';
+import { Form, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';
 import Crop from './crop';
-import Image from './image';
+import LightboxImage from './lightbox-image';
 
 const DangerCheckbox = styled(({ theme, checked }) => ({
   color: checked ? 'red' : 'rgba(0, 0, 0, .65)',
@@ -22,7 +21,7 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editabl
       {!editable ? (
         <Crop url={item.url} width={item.width} height={item.height} crop={item.crop} onChange={crop => patchItem({ crop })} />
       ) : (
-        <Image value={item} mode="fill" width={350} style={{ maxWidth: '100%' }} lightbox retina />
+        <LightboxImage value={item} mode="fill" width={350} style={{ maxWidth: '100%' }} retina />
       )}
     </div>
 
@@ -45,7 +44,7 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editabl
       <Form.Item key="sourceForAll" {...FormForAllLayout}>
         {!source ? (
           <Popconfirm title="'Quelle' für alle ausgewählten Medien überschreiben?" onConfirm={() => patchItems('source', item.source)} okText="Ja" cancelText="Abbrechen">
-            <Checkbox checked={source}>Für alle Ausgewählte</Checkbox>
+            <Checkbox checked={source}>Für alle Ausgewählten</Checkbox>
           </Popconfirm>
         ) : (
           <Checkbox checked={source} onChange={() => patchItems('source', item.source)}>Für alle Ausgewählten</Checkbox>
@@ -93,7 +92,7 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editabl
     <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
       <Input disabled placeholder="Dateigröße" value={`${item.bytes / 1000} kB`} />
     </Form.Item>
-    {editable ? (
+    {!multi && editable ? (
       <Form.Item key="delete" label="Löschen" {...FormItemLayout}>
         {!item.removed ? (
           <Popconfirm title="Datei wirklich löschen?" onConfirm={() => patchItem({ removed: true })} okText="Löschen" cancelText="Abbrechen">
@@ -101,6 +100,17 @@ const MediaDetail = ({ item, patchItem, patchItems, multi, source, tags, editabl
           </Popconfirm>
         ) : (
           <DangerCheckbox onChange={() => patchItem({ removed: null })} checked>Datei wird gelöscht</DangerCheckbox>
+        )}
+      </Form.Item>
+    ) : null}
+    {multi && editable ? (
+      <Form.Item key="deleteAll" label="Alle löschen" {...FormItemLayout}>
+        {!item.removed ? (
+          <Popconfirm title="Alle ausgewählten Dateien wirklich löschen?" onConfirm={() => patchItems('removed', true)} okText="Alle löschen" cancelText="Abbrechen">
+            <DangerCheckbox checked={false}>Dateien werden nicht gelöscht</DangerCheckbox>
+          </Popconfirm>
+        ) : (
+          <DangerCheckbox onChange={() => patchItems('removed', null)} checked>Dateien werden gelöscht</DangerCheckbox>
         )}
       </Form.Item>
     ) : null}
