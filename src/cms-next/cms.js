@@ -8,7 +8,7 @@ import { AuthModals } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from './pages';
 import { CollectionRoute } from './collection';
-import { CloudinaryRoute } from './cloudinary';
+import { CloudinaryRoute, LightboxProvider, Lightbox } from './cloudinary';
 // import { AnalyticsRoute } from './analytics';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
@@ -34,22 +34,25 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
     return (
       <ThemeProvider theme={theme}>
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
-          <Container>
-            <GatewayDest name="modal" />
-            <AuthModals />
-            <NavigationVertical collections={collections} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
-            <SimpleSwitch>
-              {/*<SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
-              {/*<SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
-              <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute {...props} />} />
-              <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped} />} />
-              <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />} />
-              <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
-              {/*<SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
-              <SimpleRoute match={query[`@settings`] !== undefined} render={() => <SettingsRoute {...props} />} />
-              <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
-            </SimpleSwitch>
-          </Container>
+          <LightboxProvider>
+            <Container>
+              <Lightbox />
+              <GatewayDest name="modal" />
+              <AuthModals />
+              <NavigationVertical collections={collections} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
+              <SimpleSwitch>
+                {/*<SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
+                {/*<SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
+                <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute {...props} />} />
+                <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped} />} />
+                <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />} />
+                <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
+                {/*<SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
+                <SimpleRoute match={query[`@settings`] !== undefined} render={() => <SettingsRoute {...props} />} />
+                <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
+              </SimpleSwitch>
+            </Container>
+          </LightboxProvider>
         </HashtaxProvider>
       </ThemeProvider>
     );
@@ -61,11 +64,14 @@ export default ({ auth, theme, hashtax, modules }) => (Wrapped) => {
     return (
       <ThemeProvider theme={theme}>
         <HashtaxProvider {...hashtax} components={{ ...hashtax.components, ...templates }}>
-          <div>
-            <AuthModals />
-            <GatewayDest name="modal" />
-            <PageRoute {...props} Wrapped={Wrapped} />
-          </div>
+          <LightboxProvider>
+            <div>
+              <Lightbox />
+              <AuthModals />
+              <GatewayDest name="modal" />
+              <PageRoute {...props} Wrapped={Wrapped} />
+            </div>
+          </LightboxProvider>
         </HashtaxProvider>
       </ThemeProvider>
     );

@@ -113,6 +113,7 @@ class CloudinaryView extends Component {
   }
 
   onClick = (id, i, e) => {
+    const { handleSelection } = this.props;
     const { selected } = this.state;
     const index = selected.findIndex(selectedId => selectedId === id);
 
@@ -121,6 +122,7 @@ class CloudinaryView extends Component {
       this.onSelect([id], i, e);
     } else {
       this.setState({ selection: index });
+      handleSelection([id], this);
     }
   }
 
