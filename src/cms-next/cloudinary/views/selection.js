@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Button, Icon, Tooltip, notification } from 'antd';
+import { Button, notification } from 'antd';
 import { styled } from 'olymp';
 import { Sidebar, Placeholder } from 'olymp/ui';
 import { isEqual } from 'lodash';
 import { mutateFile } from '../gql';
 import Detail from '../detail';
 import Gallery from '../gallery';
+import LightboxGallery from '../lightbox-gallery';
 
 const StyledGallery = styled(({ theme }) => ({
   maxHeight: 250,
@@ -150,49 +151,51 @@ class SelectionSidebar extends Component {
     const activeItem = items.find(item => item.id === activeItemId);
 
     return (
-      <Sidebar
-        right
-        header={items.length > 1 ? (
-          <StyledGallery
-            items={items}
-            itemHeight={60}
-            selected={[activeItemId]}
-            onClick={(id, index) => onClick(index)}
-            onRemove={this.onRemove}
-            justifyContent="space-around"
-          />
-        ) : null}
-        footer={
-          <div>
-            {!onSelect ? (
-              <Button onClick={this.onSave} type="primary" disabled={!items.length}>{items.length > 1 ? 'Alle speichern' : 'Speichern'}</Button>
-            ) : (
-              <Button onClick={() => onSelect(items)} type="primary" disabled={!items.length}>Übernehmen</Button>
-            )}
-            <Button onClick={this.onCancel} disabled={!items.length}>Abbrechen</Button>
-          </div>
-        }
-        isOpen
-        title={!onSelect ? 'Bearbeiten' : 'Auswählen'}
-        subtitle={!onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'}
-        padding="1rem"
-      >
-        {items.length ? (
-          <Detail
-            item={activeItem}
-            multi={items.length > 1}
-            patchItem={changes => this.patchItem(activeItem.id, changes)}
-            patchItems={this.patchItems}
-            source={source}
-            tags={tags}
-            editable={!onSelect}
-          />
-        ) : (
-          <Placeholder>
-            Dateien auswählen
-          </Placeholder>
-        )}
-      </Sidebar>
+      <LightboxGallery>
+        <Sidebar
+          right
+          header={items.length > 1 ? (
+            <StyledGallery
+              items={items}
+              itemHeight={60}
+              selected={[activeItemId]}
+              onClick={(id, index) => onClick(index)}
+              onRemove={this.onRemove}
+              justifyContent="space-around"
+            />
+          ) : null}
+          footer={
+            <div>
+              {!onSelect ? (
+                <Button onClick={this.onSave} type="primary" disabled={!items.length}>{items.length > 1 ? 'Alle speichern' : 'Speichern'}</Button>
+              ) : (
+                <Button onClick={() => onSelect(items)} type="primary" disabled={!items.length}>Übernehmen</Button>
+              )}
+              <Button onClick={this.onCancel} disabled={!items.length}>Abbrechen</Button>
+            </div>
+          }
+          isOpen
+          title={!onSelect ? 'Bearbeiten' : 'Auswählen'}
+          subtitle={!onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'}
+          padding="1rem"
+        >
+          {items.length ? (
+            <Detail
+              item={activeItem}
+              multi={items.length > 1}
+              patchItem={changes => this.patchItem(activeItem.id, changes)}
+              patchItems={this.patchItems}
+              source={source}
+              tags={tags}
+              editable={!onSelect}
+            />
+          ) : (
+            <Placeholder>
+              Dateien auswählen
+            </Placeholder>
+          )}
+        </Sidebar>
+      </LightboxGallery>
     );
   }
 };
