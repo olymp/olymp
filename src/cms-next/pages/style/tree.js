@@ -13,7 +13,12 @@ export const Tree = styled(({ }) => ({
         position: 'absolute',
       },
     },
-    '> a': {
+    '> span.ant-tree-switcher:after': {
+      left: -8,
+      top: -1,
+      position: 'absolute',
+    },
+    '> span.ant-tree-node-content-wrapper': {
       width: '100%',
     },
   },
@@ -32,7 +37,7 @@ const getIcon = (item) => {
   } else if (item.href) {
     return <a href="javascript:;"><Icon type="link" /></a>;
   } return null;
-}
+};
 export const TreeNode = styled(({ }) => ({
   display: 'flex',
   '> a:first-child': {
