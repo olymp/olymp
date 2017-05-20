@@ -7,11 +7,7 @@ import { url } from './utils';
 // http://cloudinary.com/documentation/image_transformation_reference
 class Img extends Component {
   onClick = e => {
-    const { lightbox, onClick } = this.props;
-
-    if (lightbox) {
-      console.log('Beni, hier fehlt noch ne Lightbox! ;)')
-    }
+    const { onClick } = this.props;
 
     if (onClick) {
       onClick(e);
@@ -19,7 +15,7 @@ class Img extends Component {
   }
 
   render() {
-    const { retina, value, mode, children, maxSize, width, height, style, className, lightbox, ...rest } = this.props;
+    const { retina, value, mode, children, maxSize, width, height, style, className, ...rest } = this.props;
 
     return (
       <img
