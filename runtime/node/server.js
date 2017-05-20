@@ -27,8 +27,6 @@ import { Server as WebSocketServer } from 'uws';
 import createFela from '../fela';
 import { EventEmitter } from 'events';
 
-import googleAPI from '../google'; // todo: Hier richtig???
-
 const init = require('@app').init;
 
 const version = +fs.statSync(__filename).mtime;
@@ -169,8 +167,6 @@ app.get('*', (request, response) => {
   const renderer = createFela();
   const context = {};
 
-  googleAPI();
-
   const [pathname, search] = decodeURI(request.url).split('?');
   const staticRouter = new StaticRouter();
   staticRouter.props = { location: { pathname, search }, context, basename: '' };
@@ -189,7 +185,7 @@ app.get('*', (request, response) => {
     )
   );
 
-  const asyncContext = createAsyncContext()
+  const asyncContext = createAsyncContext();
 
   // Create our React application and render it into a string.
   if (typeof init !== undefined && init) init({ renderer, client, store });
@@ -226,6 +222,7 @@ app.get('*', (request, response) => {
       initialState: { apollo: client.getInitialState() },
       asyncState,
       gaTrackingId: process.env.GA_TRACKING_ID,
+      segmentKey: process.env.SEGMENT_KEY,
     });
 
     // Check if the render result contains a redirect, if so we need to set
