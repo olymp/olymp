@@ -67,7 +67,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
               }
             `,
             variables: {
-              gqlQuery,
+              query: gqlQuery,
             },
           });
         } else if (fieldNames.indexOf('state') !== -1) {

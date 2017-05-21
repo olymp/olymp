@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withItem, graphql, gql, unflatten, flatten } from 'olymp';
-import { Modal, Form, Input, Spin, TreeSelect } from 'antd';
+import { Modal, Form, Input, Spin, TreeSelect, Select } from 'antd';
 // import { map, groupBy, extend, pick } from 'lodash';
 
 const FormItem = Form.Item;
@@ -61,6 +61,16 @@ const PageForm = Form.create()(
             <Input />
           )}
         </FormItem>
+        <FormItem key="state" label="Status" {...formItemLayout}>
+          {getFieldDecorator('state', { initialValue: getInitialValue(props, 'state') })(
+            <Select style={{ minWidth: 200 }}>
+              <Select.Option value="PUBLISHED">Veröffentlicht</Select.Option>
+              {/* <Select.Option value="DRAFT">Entwurf</Select.Option>
+              <Select.Option value="ARCHIVED">Archiviert</Select.Option> */}
+              <Select.Option value="REMOVED">Gelöscht</Select.Option>
+            </Select>
+          )}
+        </FormItem>
       </Modal>
     );
   }
@@ -91,7 +101,7 @@ export default class PageSettings extends Component {
         return;
       }
 
-      values.state = 'PUBLISHED';
+      if (!values.state) values.state = 'PUBLISHED';
       // console.log('Received values of form: ', values);
       save(values, { commit: false }).then(({ page }) => {
         // Pfad ermitteln

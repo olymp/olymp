@@ -47,7 +47,7 @@ const MediaForm = Form.create()(
           {getFieldDecorator('tags', {
             initialValue: item.tags || [],
           })(
-            <TagsEditor {...props} tags searchPlaceholder="Suche ..." style={{ width: '100%' }} />
+            <TagsEditor {...props} searchPlaceholder="Suche ..." style={{ width: '100%' }} />
           )}
         </Form.Item>
 
