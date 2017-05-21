@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Button } from 'antd';
+import { Spin, Button, Icon } from 'antd';
 import { gql, graphql, withRouter } from 'olymp';
 import sortBy from 'lodash/sortBy';
 import capitalize from 'lodash/upperFirst';
@@ -65,9 +65,11 @@ export default class MediaView extends Component {
   }
 
   onClose = () => {
-    const { id, onClose, router, location } = this.props;
+    const { id, onClose, router, location, multi } = this.props;
+
     if (onClose) onClose();
     if (id) router.push({ pathname: location.pathname, query: { ...location.query, '@mediathek': null } });
+    if (multi) this.setState({ selected: [] });
   }
 
   onClick = (item, isActive) => {
@@ -195,21 +197,23 @@ export default class MediaView extends Component {
           isLoading={loading}
           noChangeAllowed={!!onChange}
         />
-        <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
-          <div className="container olymp-container pr-0">
-            {loading ? <Spin size="large" /> : (
-              <List
-                selected={selected}
-                onClick={this.onClick}
-                images={images}
-                multi={multi}
-              />
-            )}
+        <div className="row">
+          <div className="col-md-8" style={{ minHeight: 400 }} >
+            <div className="container olymp-container pr-0">
+              {loading ? <Spin size="large" /> : (
+                <List
+                  selected={selected}
+                  onClick={this.onClick}
+                  images={images}
+                  multi={multi}
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div style={{ position: 'fixed', height: '100%', overflowY: 'auto', width: 'calc((100% - 340px) / 3)', right: 0 }}>
-          <div className="p-1">
-            {detail}
+          <div style={{ position: 'fixed', height: '100%', overflowY: 'auto', width: 'calc((100% - 340px) / 3)', right: 0 }}>
+            <div className="p-3">
+              {detail}
+            </div>
           </div>
         </div>
       </Modal>

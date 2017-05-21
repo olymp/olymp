@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import fetch from 'isomorphic-fetch';
 
 // Url for Glaubensimpuls
-const url = 'https://api.instagram.com/v1/users/976930779/media/recent?access_token=15212360.ba4c844.f7f2feb22b774ade838666d3dd0affb5&count=1';
+const url = 'https://api.instagram.com/v1/users/976930779/media/recent?access_token=15212360.ba4c844.05522f13a1e84fe5b8280d65c0cc8353&count=1';
 // authkey hier generieren lassen (andere Seiten gehen nicht (mehr)): http://instagramwordpress.rafsegat.com/docs/get-access-token/#access_token=15212360.ba4c844.f7f2feb22b774ade838666d3dd0affb5
 const testData = {
   pagination: {
@@ -91,6 +91,8 @@ export default ({ schema }) => {
 
   // Get initial
   get();
+
+  if (!item || !item.data || !item.data[0]) item = testData;
 
   return schema.addSchema({
     name: 'glaubensimpuls',

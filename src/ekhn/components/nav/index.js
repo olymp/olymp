@@ -47,8 +47,8 @@ export default class Header extends Component {
     });
 
     return (
-      <nav className={cn(className, 'nav-component')}>
-        <Navigation nav={nav.main} className="nav navbar-nav pull-right" location={location} rollen={rollen} />
+      <nav className={cn(className, 'navbar navbar-toggleable-sm nav-component p-0')}>
+        <Navigation nav={nav.main} className="navbar-nav" location={location} rollen={rollen} />
       </nav>
     );
   }

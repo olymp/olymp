@@ -108,7 +108,7 @@ export default class CollectionListSidebar extends Component {
         <Menu.Item key="1">
           <a href="javascript:;" onClick={() => router.push(this.getLink({ id: null }))}>Hinzufügen</a>
         </Menu.Item>
-        <Menu.Item key="2" disabled>Import</Menu.Item>
+        {/* <Menu.Item key="2" disabled>Import</Menu.Item> */}
         <Menu.Item key="3">
           <a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a>
         </Menu.Item>

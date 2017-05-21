@@ -63,16 +63,16 @@ export default class CmsPage extends Component {
                       Speichern
                     </a>
                   </Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Item key="page:visitor" disabled>{false ? <Icon type="check" /> : null}Besucher-Modus</Menu.Item>
                   <Menu.Item key="page:settings">
                     <Link to={{ ...location, query: { '@page': item.id } }}>
                       Einstellungen
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key="page:delete" disabled>
+                  {/* <Menu.Divider />
+                  <Menu.Item key="page:visitor" disabled>{false ? <Icon type="check" /> : null}Besucher-Modus</Menu.Item>
+                  <Menu.Item key="page:delete">
                     Seite löschen
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </Menu>
               )}
               overlayClassName="ant-dropdown-left"

@@ -96,9 +96,12 @@ const removeAction = ({ editor, state, node }) => ({
   separated: true,
   tooltip: 'Block löschen',
   toggle: () => {
-    let newState = state.transform().unsetSelection();
+    const newState = state.transform().unsetSelection();
+
     editor.onChange(
-      newState.removeNodeByKey(node.key).apply()
+      newState
+        .removeNodeByKey(node.key)
+        .apply()
     );
   },
 });

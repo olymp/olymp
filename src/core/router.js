@@ -33,6 +33,7 @@ export const withRouter = (WrappedComponent) => {
         }).isRequired
       }).isRequired,
     };
+    static slate = WrappedComponent.slate;
     push = (propsTo) => {
       const to = { ...propsTo };
       if (to.query) {
@@ -51,6 +52,7 @@ export const withRouter = (WrappedComponent) => {
     }
     render() {
       const { query, pathname, search } = this.props;
+
       return (
         <WrappedComponent {...this.props} location={{ query, pathname, search }} query={query} pathname={pathname} router={{ ...this.context.router, push: this.push, replace: this.replace }} />
       );
