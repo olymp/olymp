@@ -74,9 +74,9 @@ export default class SidebarComponent extends Component {
 
   search = (e) => {
     const { refetch } = this.props;
-    const { searchText } = this.state;
+    const searchText = e.target.value;
 
-    if (!e.target.value) return this.setQueryToState();
+    if (!searchText) return this.setQueryToState();
 
     const gqlQuery = {
       ...this.state.gqlQuery,
