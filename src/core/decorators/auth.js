@@ -43,13 +43,20 @@ export const auth = obj => (WrappedComponent) => {
   } return inner(UserProvider);
 };
 
-export default (WrappedComponent) => {
-  const withUserRenderer = (props, context) => (
-    <WrappedComponent {...context} {...props} />
-  );
-  withUserRenderer.contextTypes = {
-    auth: React.PropTypes.object,
-  };
+export default WrappedComponent => {
+  class withUserRenderer extends Component {
+    static contextTypes = {
+      auth: React.PropTypes.object,
+    };
+    static slate = WrappedComponent.slate;
+
+    render() {
+      return (
+        <WrappedComponent {...this.context} {...this.props} />
+      );
+    }
+  }
+
   return withUserRenderer;
 };
 

@@ -110,7 +110,7 @@ export const useLightbox = WrappedComponent => class WithLightbox extends Compon
     const footer = image.caption || image.source ? (
       <span>
         {image.caption}
-        <span className="source">{this.isURL(image.source) ? <a href={image.source}>Link</a> : image.source}</span>
+        <span className="source">{this.isURL(image.source) ? <a href={image.source}>{image.source}</a> : image.source}</span>
       </span>
     ) : false;
 

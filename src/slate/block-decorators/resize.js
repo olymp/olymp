@@ -92,7 +92,7 @@ export default (options = {}) => Block => {
       if (height) blockStyle.height = `${height}px`;
 
       return (
-        <Block {...this.props} style={blockStyle} className={cn(width && `p-0 col-xs-${width}`, className)} ref={e => this.block = e}>
+        <Block {...this.props} style={blockStyle} className={cn(width && `p-0 col-sm-${width}`, className)} ref={e => this.block = e}>
           {children}
         </Block>
       );

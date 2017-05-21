@@ -88,7 +88,7 @@ export default class MagazinBlock extends Component {
           <section className="col-sm-8 col-sm-push-4">
             <div className="row events-carousel events-no-carousel">
               {items.map(item =>
-                <Link to={`/artikel${item.slug}`} className="gz-image-box col-md-4 col-sm-6 col-xs-12 mb-2" key={item.id}>
+                <Link to={`/artikel${item.slug}`} className="gz-image-box col-md-4 col-sm-6 mb-2" key={item.id}>
                   <Image value={item.bild} width="100%" cloudinary={{ width: (300 * 1.2) * 1, height: 250 }} />
                   <span className="gz-image-content" style={{ backgroundColor: item.farbe }}>{item.name}</span>
                 </Link>

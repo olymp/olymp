@@ -45,10 +45,10 @@ const Ul = sortableContainer((props) => {
   const { items, className, children, location, level, readOnly, page } = props;
 
   return (
-    <ul className={className || cn(className, !level ? 'nav navbar-nav' : 'dropdown-menu')}>
+    <ul className={className || cn(className, !level ? 'navbar-nav' : 'dropdown-menu')}>
       {children}
       {!readOnly ? (
-        <li className="nav-item" style={{ textAlign: 'center', width: level ? '100%' : `${100 / (readOnly ? items.length : items.length + 1)}%` }}>
+        <li className="nav-item" style={{ textAlign: 'center', /* width: level ? '100%' : `${100 / (readOnly ? items.length : items.length + 1)}%` */ }}>
           <Plus location={location} page={page} />
         </li>
       ) : null}

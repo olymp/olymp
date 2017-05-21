@@ -12,13 +12,13 @@ export default useItemEdit()((props) => {
     <div className={cn(className, `item ${leading ? 'colored' : ''}`)} key={id}>
       {children}
 
-      <Responsive {...props}>
-        <div className="info pl-1 pr-0 py-1 col-xl-4 col-md-5 hidden-sm-down">
+      <Responsive {...props} className='row p-3'>
+        <div className="info col-xl-4 col-md-5 hidden-sm-down">
           {bild ? <Image className="header" width="100%" value={bild} cloudinary={{ width: 300 }} lightbox /> : null}
           {shortText ? <Tags tags={tags} /> : null}
         </div>
 
-        <div className="text col-xl-8 col-md-7 col-xs-12">
+        <div className="text p-0 col-xl-8 col-md-7">
           {header ? <ItemHeader className="mt-0" id={id} identifier={identifier}>{header}</ItemHeader> : null}
           {subheader ? <div className="subheader">{subheader}</div> : null}
           {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
