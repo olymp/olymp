@@ -9,6 +9,7 @@ import PageModal from './pages/modals/page';
 import MediaModal from './media/view';
 import SettingsModal from './settings';
 import CollectionModal from './collections';
+import PagesModal from './pages';
 import { CmsAction } from '../components';
 import withSettings from '../decorators/settings';
 import { ImageEdit } from '../edits';
@@ -86,14 +87,24 @@ export default class Container extends Component {
         modal = (
           <SettingsModal typeName="settings" />
         );
-      } else if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
+      } else if (query && query['@pages'] !== undefined) {
         modal = (
-          <PageModal
-            id={query['@page']}
-            initialData={{ parentId: query['@new-page'], order: 0 }}
-            fieldNames="id, slug, order, name, parentId, blocks, templateName"
-            onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
-          />
+          <PagesModal />
+        );
+      }
+
+      // small Modals
+      if (query && (query['@page'] !== undefined || query['@new-page'] !== undefined)) {
+        modal = (
+          <div>
+            {modal}
+            <PageModal
+              id={query['@page']}
+              initialData={{ parentId: query['@new-page'], order: 0 }}
+              fieldNames="id, slug, order, name, parentId, blocks, templateName, state"
+              onClose={newPath => router.push({ pathname: newPath || pathname, query: { ...query, '@page': undefined, '@new-page': undefined } })}
+            />
+          </div>
         );
       }
     }

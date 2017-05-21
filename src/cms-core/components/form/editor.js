@@ -93,14 +93,14 @@ export default class FieldEditor extends Component {
 
     if (idField && idField.type) {
       if (idField.type.kind === 'LIST' && idField.type.ofType) {
-        return <DetailEditor {...editProps} tags typeName={idField.type.ofType.name} />;
+        return <DetailEditor {...editProps} mode="tags" typeName={idField.type.ofType.name} />;
       } return <DetailEditor {...editProps} typeName={idField.type.name} />;
     }
     if (type.kind === 'LIST') {
       if (type.ofType.name === 'String') {
         if (name === 'tags') {
           return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
-        } return <Select {...editProps} tags searchPlaceholder="Suche ..." />;
+        } return <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />;
       } if (type.ofType.name.indexOf('Nested') === 0) {
         return <FormEditor {...editProps} typeName={type.ofType.name} type={type} />;
       } return null;

@@ -24,7 +24,7 @@ export default class CollectionDetailForm extends Component {
           itemStyle={{ minWidth: '20%', maxWidth: '50%' }}
           editorClassName="inline-edit"
           style={{ borderBottom: '1px solid #e9e9e9' }}
-          inline
+          layout="inline"
           clean
         >
           <div style={{ float: 'right', width: '20%', textAlign: 'right' }} key="save">

@@ -38,7 +38,7 @@ export default class FormComponent extends Component {
     }, []);
 
     return (
-      <Form vertical={vertical} inline={inline} style={style} className={className}>
+      <Form vertical={vertical} layout={inline ? 'inline' : (vertical ? 'vertical' : 'horizontal')} style={style} className={className}>
         {mappedFields.map(field => (
           <FormItem
              {...rest}

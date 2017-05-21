@@ -45,14 +45,19 @@ export default class CMSMenu extends Component {
             Mediathek
           </Link>
         </Menu.Item>
-        <Menu.Item key="users" disabled>Benutzer</Menu.Item>
-        <Menu.Item key="analytics" disabled>Statistik</Menu.Item>
+        {/* <Menu.Item key="users" disabled>Benutzer</Menu.Item>
+        <Menu.Item key="analytics" disabled>Statistik</Menu.Item> */}
+        <Menu.Item key="pages">
+          <Link to={{ pathname, query: { '@pages': null } }}>
+            Seiten
+          </Link>
+        </Menu.Item>
         <Menu.Item key="settings">
           <Link to={{ pathname, query: { '@settings': null } }}>
             Einstellungen
           </Link>
         </Menu.Item>
-        <Menu.Item key="user" disabled>Profil</Menu.Item>
+        {/* <Menu.Item key="user" disabled>Profil</Menu.Item> */}
         <Menu.Divider />
         <Menu.Item key="logout">Abmelden</Menu.Item>
       </Menu>
