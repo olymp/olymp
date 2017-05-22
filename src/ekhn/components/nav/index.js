@@ -16,7 +16,7 @@ import sortBy from 'lodash/sortBy';
 `)
 export default class Nav extends Component {
   render() {
-    const { location, data, showHome = true, className, readOnly } = this.props;
+    const { data, showHome = true, className, readOnly } = this.props;
     let { pages = [] } = this.props;
     let { personen } = data;
 
