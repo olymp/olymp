@@ -70,7 +70,7 @@ export default class CollectionListSidebar extends Component {
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
-      <Menu.Item disabled>
+      {/* <Menu.Item disabled>
         Kopieren
       </Menu.Item>
       <Menu.Item disabled>
@@ -78,7 +78,7 @@ export default class CollectionListSidebar extends Component {
           ? 'Löschen'
           : 'Wiederherstellen'
         }
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   )
 
@@ -97,7 +97,7 @@ export default class CollectionListSidebar extends Component {
         description,
         image,
         color,
-        extra: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
+        extra: <Link to={this.getLink({ id })}><Icon type="edit" /></Link>, // <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
         isActive: item.id === id,
         onClick: () => router.push(this.getLink(item)),
       };

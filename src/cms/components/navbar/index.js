@@ -19,7 +19,7 @@ const Li = sortableElement((props) => {
 
   return (
     <li className={cn(isSubmenu ? 'dropdown-item' : 'nav-item', page.path === pathname ? 'active' : null, visible ? 'focus' : null)}>
-      {page.blocks ? (
+      {page.blocks || !readOnly ? (
         <NavLink to={page.path} className="nav-link">
           {page.name}
         </NavLink>
@@ -74,6 +74,13 @@ export default class Navbar extends Component {
           className="dropdown-menu"
         >
           {page.children.map((child, i) => this.getMenu(child, i, true))}
+          {!this.props.readOnly ? (
+              <li className="nav-item">
+                <NavLink to={{ ...this.props.location, query: { '@new-page': page.id } }} className="nav-link">
+                  <Icon type="plus-circle" />
+                </NavLink>
+              </li>
+            ) : null}
         </Ul>
       ) : null}
     </Li>
