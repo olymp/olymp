@@ -52,6 +52,7 @@ export default class Nav extends Component {
           path: `${rolle.path}?Person=${person.id}`,
           children: [],
           blocks: true,
+          noOrdering: true,
         }))
       }))
     }
