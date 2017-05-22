@@ -6,13 +6,13 @@ import './navbar.less';
 @withRouter
 export default class Navbar extends Component {
   getMenu = (page, isSubmenu) => {
-    const { router } = this.props;
+    const { router, location } = this.props;
     const { query, pathname } = location;
     const navigation = !!query && query.navigation
 
     let matches = [];
     page.children.forEach((e) => {
-      matches = matches.concat(e.children.filter(child => child.Id === navigation));
+      matches = matches.concat(e.children.filter(child => child.id === navigation));
     });
     const visible = navigation === page.id || !!matches.length;
 
@@ -43,7 +43,7 @@ export default class Navbar extends Component {
 
   // RAAH: brand/navbar-collapse col-md-..., Kontakt => Kontakt/Impressum, a.active => li.active, navbar-toggler-left
   render() {
-    const { readOnly, router, brand, fill, pages } = this.props;
+    const { readOnly, router, brand, fill, pages, location } = this.props;
     const { query, pathname } = location;
     const navigation = !!query && query.navigation !== undefined; // null/page.id => true, undefined => false
 
