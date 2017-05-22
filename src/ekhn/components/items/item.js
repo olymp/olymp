@@ -13,13 +13,13 @@ export default useItemEdit()((props) => {
       <div className="info col-xl-4 col-md-5 py-3 hidden-sm-down">
         {bild ? <Image className="header" width="100%" value={bild} cloudinary={{ width: 300 }} lightbox /> : null}
         {shortText ? <Tags tags={tags} /> : null}
-        {children}
       </div>
 
       <div className="text col-xl-8 col-md-7">
         {header ? <ItemHeader className="mt-0" id={id} identifier={identifier}>{header}</ItemHeader> : null}
         {subheader ? <div className="subheader">{subheader}</div> : null}
         {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
+        {children}
 
         <ItemMore more={more} id={id} identifier={identifier} />
       </div>
