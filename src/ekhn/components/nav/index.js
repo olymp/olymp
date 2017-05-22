@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, cn } from 'olymp';
-import { Navigation } from 'olymp/cms';
+import { graphql, gql } from 'olymp';
+import { Navbar } from 'olymp/cms';
 import sortBy from 'lodash/sortBy';
 
 @graphql(gql`
@@ -14,43 +14,49 @@ import sortBy from 'lodash/sortBy';
     }
   }
 `)
-export default class Header extends Component {
+export default class Nav extends Component {
   render() {
-    const { location, data, showHome = true, className } = this.props;
+    const { location, data, showHome = true, className, readOnly } = this.props;
     let { pages = [] } = this.props;
     let { personen } = data;
-    const nav = {};
 
     if (!showHome) {
       pages = pages.filter(page => page.slug !== '/');
     }
-
     pages = pages.filter(page => page.slug !== '/impressum');
 
-    Object.keys(pages).forEach((key) => {
-      const page = pages[key];
-      if (!nav[page.menu || 'main']) nav[page.menu || 'main'] = [];
-      nav[page.menu || 'main'].push(page);
-    });
+    const aboutUs = pages.find(page => page.name === 'Über Uns');
+    if (aboutUs) {
+      // Alle Rollen herausfiltern
+      const rollen = {};
+      personen = sortBy(personen, person => person.name.split(' ').splice(-1));
+      (personen || []).forEach(person => person.rollen.forEach((rolle) => {
+        if (!rollen[rolle.name]) rollen[rolle.name] = [];
 
-    const rollen = {};
-    personen = sortBy(personen, person => person.name.split(' ').splice(-1));
-    (personen || []).forEach(person => person.rollen.forEach((rolle) => {
-      if (!rollen[rolle.name]) rollen[rolle.name] = [];
+        rollen[rolle.name].push(person);
+      }));
 
-      rollen[rolle.name].push(person);
-    }));
-    Object.keys(rollen).forEach(key => {
-      if (rollen[key].length === 1) {
-        delete rollen[key];
-      }
-    });
+      // Rollen mit nur einer Person sollen kein Untermenü haben
+      Object.keys(rollen).forEach(key => {
+        if (rollen[key].length === 1) {
+          delete rollen[key];
+        }
+      });
 
-    return (
-      <nav className={cn(className, 'navbar navbar-toggleable-sm nav-component p-0')}>
-        <Navigation nav={nav.main} className="navbar-nav" location={location} rollen={rollen} />
-      </nav>
-    );
+      // Für jede Rolle Untermenü hinzufügen
+      aboutUs.children = (aboutUs.children || []).map(rolle => ({
+        ...rolle,
+        children: (rollen[rolle.name] || []).map(person => ({
+          id: person.id,
+          name: person.name,
+          path: `${rolle.path}?Person=${person.id}`,
+          children: [],
+          blocks: true,
+        }))
+      }))
+    }
+
+    return <Navbar pages={pages} readOnly={readOnly} fill />;
   }
 }
 

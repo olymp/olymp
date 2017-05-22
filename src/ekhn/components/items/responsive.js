@@ -31,16 +31,16 @@ export default ({ id, header, subheader, shortText, more, bild, tags, identifier
         {children}
       </div>
 
-      <div className={cn(className, 'text col-xl-8 col-md-7', `hidden-${breakpoint}-up`)}>
+      <div className={cn(className, 'text col-xl-8 col-md-7 p-3 mb-3', `hidden-${breakpoint}-up`)}>
         {header ? <ItemHeader className="mt-0" id={id} identifier={identifier}>{hypher.hyphenateText(header.toString())}</ItemHeader> : null}
         {subheader ? <div className="subheader">{subheader}</div> : null}
         {shortText ? <SlateMateFrontend key={id} value={shortText} readOnly className="slate" /> : null}
 
         <ItemMore more={more} id={id} identifier={identifier} />
 
-        <ItemImage bild={bild} className="mt-1" />
+        <ItemImage bild={bild} className="mt-3" />
 
-        <Tags tags={tags} className="mt-2" />
+        <Tags tags={tags} className="mt-4" />
       </div>
     </div>
   );
