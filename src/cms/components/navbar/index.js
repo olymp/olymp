@@ -18,7 +18,7 @@ const Li = sortableElement((props) => {
   const visible = navigation === page.id || !!matches.length;
 
   return (
-    <li className={cn(isSubmenu ? 'dropdown-item' : 'nav-item', page.path === pathname ? 'active' : null, visible ? 'focus' : null)}>
+    <div className={cn(isSubmenu ? 'dropdown-item' : 'nav-item', page.path === pathname ? 'active' : null, visible ? 'focus' : null)}>
       {page.blocks || !readOnly ? (
         <NavLink to={page.path} className="nav-link">
           {page.name}
@@ -33,10 +33,10 @@ const Li = sortableElement((props) => {
       )}
       {children}
       {!readOnly && !page.noOrdering ? <Handle /> : null}
-    </li>
+    </div>
   );
 });
-const Ul = sortableContainer(({ axis, useDragHandle, onSortEnd, sortEndCreator, hideSortableGhost, ...rest }) => <ul {...rest} />);
+const Ul = sortableContainer(({ axis, useDragHandle, onSortEnd, sortEndCreator, hideSortableGhost, ...rest }) => <div {...rest} />);
 
 @withRouter
 @withApollo
@@ -113,11 +113,11 @@ export default class Navbar extends Component {
           >
             {pages.map((page, i) => this.getMenu(page, i))}
             {!readOnly ? (
-              <li className="nav-item">
+              <div className="nav-item">
                 <NavLink to={{ ...location, query: { '@new-page': null } }} className="nav-link">
                   <Icon type="plus-circle" />
                 </NavLink>
-              </li>
+              </div>
             ) : null}
           </Ul>
         </div>

@@ -77,10 +77,10 @@ class ModalForm extends Component {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
           })(<Input type="password" placeholder="Passwort" onKeyPress={this.onKeyPress2} ref={input => this.input = input } size="large" addonBefore={<i className="fa fa-lock" />}/>)}
         </FormItem>
-        <Links>
-          {/* <Link to={{ pathname, query: { register: null, login: undefined } }}>Registrieren</Link> */}
+        {/* <Links>
+          <Link to={{ pathname, query: { register: null, login: undefined } }}>Registrieren</Link>
           <Link to={{ pathname, query: { forgot: null, login: undefined } }}>Passwort vergessen?</Link>
-        </Links>
+        </Links> */}
       </Modal>
     );
   }

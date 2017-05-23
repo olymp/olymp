@@ -11,7 +11,23 @@ const actions = props => [{
     setData({ showMedia: true });
   },
   active: false,
-}];
+}, {
+  icon: 'quote-right',
+  type: 'withCaption',
+  toggle: () => {
+    const { setData, getData } = props;
+    setData({ withCaption: !getData('withCaption') });
+  },
+  tooltip: 'Bildunterschriften anzeigen',
+}, {
+  icon: 'code',
+  type: 'withSource',
+  toggle: () => {
+    const { setData, getData } = props;
+    setData({ withSource: !getData('withSource') });
+  },
+  tooltip: 'Quellen anzeigen',
+},];
 
 @useGenericBlock({
   label: 'Bild',
@@ -39,9 +55,11 @@ export default class ImageBlock extends Component {
     const { setData, getData, readOnly } = this.props;
     const { style, children, ...rest } = this.props;
     const value = getData('image', undefined);
+    const withCaption = this.props.withCaption || getData('withCaption');
+    const withSource = this.props.withSource || getData('withSource');
 
     const styles = {
-      backgroundColor: 'gray',
+      backgroundColor: !value ? 'gray' : 'transparent',
       position: 'relative',
       zIndex: 2,
       ...style,

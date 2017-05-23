@@ -6,7 +6,7 @@ import Image from '../../edits/image';
 
 @useGenericBlock({
   label: 'Galerie',
-  props: ['image', 'showMedia', 'withCaption', 'withSource'],
+  props: ['image', 'showMedia', 'withCaption', 'withSource', 'columns'],
   category: 'Media',
   editable: false,
   actions: props => [
@@ -19,6 +19,24 @@ import Image from '../../edits/image';
       },
       active: false,
       tooltip: 'Bilder für die Galerie auswählen',
+    }, {
+      icon: 'plus',
+      type: 'addColumn',
+      toggle: () => {
+        const { setData, getData } = props;
+        setData({ columns: getData('columns', 4) + 1 });
+      },
+      tooltip: 'Spalte hinzufügen',
+    }, {
+      icon: 'minus',
+      type: 'substractColumn',
+      toggle: () => {
+        const { setData, getData } = props;
+        const columns = getData('columns', 4) - 1;
+
+        setData({ columns: columns < 1 ? 1 : columns });
+      },
+      tooltip: 'Spalte entfernen',
     }, {
       icon: 'quote-right',
       type: 'withCaption',
@@ -48,17 +66,6 @@ export default class ImagesBlock extends Component {
     setData: PropTypes.func,
   }
 
-  isURL = (str) => {
-    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-
-    return pattern.test(str);
-  }
-
   render() {
     const { setData, getData, className, readOnly, auth } = this.props;
     const { style, children, ...rest } = this.props;
@@ -66,6 +73,7 @@ export default class ImagesBlock extends Component {
     const showMedia = getData('showMedia');
     const withCaption = getData('withCaption');
     const withSource = getData('withSource');
+    const columns = getData('columns', 4);
 
     if (auth && auth.user) {
       images = images.filter(i => i);
@@ -83,7 +91,8 @@ export default class ImagesBlock extends Component {
     };
 
     const imageBlock = (image, i) => (
-      <div style={{ ...styles, height: 'auto', width: '20%', float: 'left', padding: '.5rem', clear: (i + 1) % 5 === 1 ? 'both' : 'none' }} key={i}>
+      <div style={{ ...styles, flexBasis: `${100 / columns}%`, padding: '.5rem' }} key={i}>
+        {/* <div style={{ ...styles, height: 'auto', width: `${100 / columns}%`, float: 'left', padding: '.5rem', clear: (i + 1) % columns === 1 ? 'both' : 'none' }} key={i}> */}
         <figure className={className} style={{ margin: 0 }}>
           <Image
             onChange={images => setData({ showMedia: undefined, images })}
@@ -95,22 +104,14 @@ export default class ImagesBlock extends Component {
             width="100%"
             value={image}
             style={innerStyle}
+            withCaption={withCaption}
+            withSource={withSource}
           />
           {auth && auth.user && image && i !== images.length ? (
-            <figcaption>
+            <figcaption style={{ textAlign: 'center' }}>
               <a href="javascript:;" onClick={() => setData({ images: images.splice(i, 1) })}>
                 Entfernen
               </a>
-            </figcaption>
-          ) : null}
-          {image && withSource && image.source ? (
-            <figcaption style={{ lineHeight: 1.25 }}>
-              {withCaption && image.caption ? image.caption : null}
-            </figcaption>
-          ) : null}
-          {image && withSource && image.source ? (
-            <figcaption style={{ fontSize: 'small', lineHeight: 1.25, whiteSpace: 'nowrap', /* overflow: 'hidden', textOverflow: 'ellipsis' */ }}>
-              {withSource && image.source ? (this.isURL(image.source) ? <a href={image.source}>{image.source}</a> : image.source) : null}
             </figcaption>
           ) : null}
         </figure>
@@ -119,10 +120,10 @@ export default class ImagesBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader className={className} style={style} isEmpty={images} placeholder="Keine Bilder vorhanden">
+        <DataLoader className={className} style={{ display: 'flex', flexFlow: 'row wrap', alignItems: 'center', ...style }} isEmpty={images} placeholder="Keine Bilder vorhanden">
           {(images || []).map((image, i) => imageBlock(image, i))}
 
-          <div style={{ clear: 'both' }} />
+          {/* <div style={{ clear: 'both' }} /> */}
         </DataLoader>
 
         {children}
