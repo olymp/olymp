@@ -6,7 +6,7 @@ const excludedFields = ['id', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
 
 export default class FormComponent extends Component {
   render() {
-    const { fields = [], inline, vertical, children, item, style, className, validateFields, ...rest } = this.props;
+    const { fields = [], layout, children, item, style, className, validateFields, ...rest } = this.props;
 
     let toAntSchema = x => x;
     const mappedFields = fields.reduce((result, field) => {
@@ -38,7 +38,7 @@ export default class FormComponent extends Component {
     }, []);
 
     return (
-      <Form vertical={vertical} layout={inline ? 'inline' : (vertical ? 'vertical' : 'horizontal')} style={style} className={className}>
+      <Form layout={layout} style={style} className={className}>
         {mappedFields.map(field => (
           <FormItem
              {...rest}

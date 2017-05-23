@@ -1,37 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Gateway } from 'react-gateway';
 import { Anchor as AnchorCreator, Spin, Menu, Icon, Dropdown, Button } from 'antd';
-import { withAuth, withItemNew, Helmet, Link } from 'olymp';
+import { withRouter, withAuth, withItemNew, Helmet, Link } from 'olymp';
 import { SlateMate } from 'olymp/slate';
 import AnchorHelper from 'antd/lib/anchor/anchorHelper';
 
 const Anchor = AnchorCreator.Link;
-const fieldNames = 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }';
 
 @withAuth
-@withItemNew({ typeName: 'Page', fieldNames })
-export default class CmsPage extends Component {
-  constructor() {
-    super();
-    this.anchorHelper = new AnchorHelper();
+@withItemNew({ typeName: 'Page', fieldNames: 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }' })
+export default class Page extends Component {
+  static childContextTypes = {
+    page: PropTypes.string
+  };
+
+  getChildContext() {
+    const { id } = this.props;
+
+    return {
+      page: id
+    };
   }
-
-  componentDidMount() {
-    const { location } = this.props;
-
-    if (location && location.hash) {
-      this.anchorHelper.scrollTo(location.hash);
-    }
-  }
-
-  createAnchors = nodes => (nodes || []).map((node, i) =>
-    <Anchor key={i} href={`#${node.slug}`} title={node.text}>
-      {this.createAnchors(node.children)}
-    </Anchor>
-  )
 
   render() {
-    const { auth, item, patch, getReadOnly, save, location, showAnchor } = this.props;
+    const { id, auth, item, patch, getReadOnly, save, location, showAnchors } = this.props;
 
     if (!item) return <Spin size="large" />;
 
@@ -44,11 +36,9 @@ export default class CmsPage extends Component {
     return (
       <div>
         <Helmet title={item.name} />
-        {showAnchor && item.headings && item.headings.length > 1 && (
+        {showAnchors && (
           <div className="anchor-menu container">
-            <AnchorCreator offsetTop={100}>
-              {this.createAnchors(item.headings)}
-            </AnchorCreator>
+            <PageAnchorsWrapper offsetTop={100} />
           </div>
         )}
         <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings })} onChange={blocks => patch({ blocks })} />
@@ -86,5 +76,55 @@ export default class CmsPage extends Component {
         </Gateway>
       </div>
     );
+  }
+}
+
+@withRouter
+@withItemNew({ typeName: 'Page', fieldNames: 'headings { id, slug, text, children { id, slug, text } }' })
+class PageAnchors extends Component {
+  constructor() {
+    super();
+    this.anchorHelper = new AnchorHelper();
+  }
+
+  componentDidMount() {
+    const { location } = this.props;
+
+    if (location && location.hash) {
+      this.anchorHelper.scrollTo(location.hash);
+    }
+  }
+
+  createAnchors = nodes => (nodes || []).map((node, i) =>
+    <Anchor key={i} href={`#${node.slug}`} title={node.text}>
+      {this.createAnchors(node.children)}
+    </Anchor>
+  )
+
+  render() {
+    const { item, children, ...rest } = this.props;
+
+    if (!item) return <Spin size="large" />;
+
+    const headings = (item.headings || []).filter(h => h.text)
+
+    return headings.length > 1 ? (
+      <AnchorCreator {...rest}>
+        {children}
+        {this.createAnchors(headings)}
+      </AnchorCreator>
+    ) : <div />;
+  }
+}
+
+export class PageAnchorsWrapper extends Component {
+  static contextTypes = {
+    page: PropTypes.string
+  };
+
+  render() {
+    const { page } = this.context;
+
+    return <PageAnchors id={page} {...this.props} />
   }
 }

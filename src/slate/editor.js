@@ -19,6 +19,7 @@ const options = {
     { type: 'bold', icon: 'bold' },
     { type: 'italic', icon: 'italic' },
     { type: 'underlined', icon: 'underline' },
+    { type: 'center', icon: 'align-center' },
     { type: 'code', icon: 'code' },
   ],
   toolbarTypes: [
@@ -80,6 +81,7 @@ const options = {
     code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
     italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
     underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
+    center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
   },
   getMarkdownType: (chars) => {
     switch (chars) {
@@ -132,6 +134,10 @@ const serializer = new Html({
         u: 'underline',
         s: 'strikethrough',
         code: 'code',
+        left: 'left',
+        center: 'center',
+        right: 'right',
+        justify: 'justify',
       };
       const mark = marks[el.tagName];
       if (!mark) return undefined;
