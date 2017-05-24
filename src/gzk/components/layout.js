@@ -3,7 +3,7 @@ import Footer from './footer';
 import MenuController from './header';
 import Logo from './logo';
 import sortBy from 'lodash/sortBy';
-import { Affix } from 'antd';
+import Navbar from 'olymp-navbar';
 import { Link, NavLink, styled } from 'olymp';
 
 export const Header = styled(({ sticky }) => ({
@@ -19,7 +19,9 @@ export const Container = styled(({ }) => ({
   '> :not(:first-child):not(:last-child)': {
     flex: 1,
   },
-}), ({ className, children, innerRef }) => <div className={className} children={children} ref={innerRef} />, p => p);
+}), ({ className, children, innerRef }) => (
+  <div className={className} children={children} ref={innerRef} />
+), p => p);
 
 export default class Layout extends Component {
   static defaultProps = {
@@ -43,6 +45,13 @@ export default class Layout extends Component {
             </li>)}
           </MenuController>
         </Header>
+
+        <Navbar
+          brand={<Logo color={color} title={title} text={text} />}
+          pages={nav}
+          light
+        />
+
         {children}
         <Footer {...this.props} />
       </Container>
@@ -89,4 +98,3 @@ export default class Layout extends Component {
     }
   }
 }
-

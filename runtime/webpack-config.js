@@ -51,6 +51,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         olymp: olympRoot,
         'olymp-icons': path.resolve(olympRoot, 'src', 'icons'),
+        'olymp-navbar': path.resolve(olympRoot, 'src', 'navbar'),
         '@root': appRoot,
         '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
       }
