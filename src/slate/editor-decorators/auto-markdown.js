@@ -4,24 +4,9 @@ import React, { Component, PropTypes } from 'react';
 const defaultEmptyFunc = () => null;
 export default (options = {}) => {
   const { getMarkdownType } = options;
-  return Editor => class SlateAutoMarkdownDecorator extends Component {
-    static propTypes = {
-      plugins: PropTypes.array,
-      getMarkdownType: PropTypes.func,
-    }
-    static defaultProps = {
-      plugins: [],
-    }
-    render() {
-      const plugins = [...this.props.plugins, this];
-      return (
-        <Editor {...this.props} plugins={plugins} />
-      );
-    }
-
-    getType = (chars) => {
+  const self = {
+    getType: (chars) => {
       if (getMarkdownType && getMarkdownType(chars)) return getMarkdownType(chars);
-      if (this.props.getMarkdownType && this.props.getMarkdownType(chars)) return this.props.getMarkdownType(chars);
       switch (chars) {
         case '*':
         case '-':
@@ -35,22 +20,20 @@ export default (options = {}) => {
         case '######': return 'heading-six';
         default: return null;
       }
-    }
-
-    onKeyDown = (e, data, state) => {
+    },
+    onKeyDown: (e, data, state) => {
       switch (data.key) {
-        case 'space': return this.onSpace(e, state);
-        case 'backspace': return this.onBackspace(e, state);
-        case 'enter': return this.onEnter(e, state);
+        case 'space': return self.onSpace(e, state);
+        case 'backspace': return self.onBackspace(e, state);
+        case 'enter': return self.onEnter(e, state);
       }
-    }
-
-    onSpace = (e, state) => {
+    },
+    onSpace: (e, state) => {
       if (state.isExpanded) return undefined;
       let { selection } = state;
       const { startText, startBlock, startOffset } = state;
       const chars = startBlock.text.slice(0, startOffset).replace(/\s*/g, '');
-      const type = this.getType(chars);
+      const type = self.getType(chars);
 
       if (!type) return undefined;
       if (type === 'list-item' && startBlock.type === 'list-item') return undefined;
@@ -66,9 +49,8 @@ export default (options = {}) => {
         .extendToStartOf(startBlock)
         .delete()
         .apply();
-    }
-
-    onBackspace = (e, state) => {
+    },
+    onBackspace: (e, state) => {
       if (state.isExpanded) return undefined;
       if (state.startOffset !== 0) return undefined;
       const { startBlock } = state;
@@ -82,12 +64,11 @@ export default (options = {}) => {
 
       if (startBlock.type === 'list-item') transform = transform.unwrapBlock('bulleted-list');
       return transform.apply();
-    }
-
-    onEnter = (e, state) => {
+    },
+    onEnter: (e, state) => {
       if (state.isExpanded) return undefined;
       const { startBlock, startOffset, endOffset } = state;
-      if (startOffset === 0 && startBlock.length === 0) return this.onBackspace(e, state);
+      if (startOffset === 0 && startBlock.length === 0) return self.onBackspace(e, state);
       if (endOffset !== startBlock.length) return undefined;
 
       if (
@@ -108,6 +89,6 @@ export default (options = {}) => {
         .splitBlock()
         .setBlock('paragraph')
         .apply();
-    }
-  };
+    },
+  }; return self;
 };
