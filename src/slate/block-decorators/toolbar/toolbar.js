@@ -96,9 +96,12 @@ const removeAction = ({ editor, state, node }) => ({
   separated: true,
   tooltip: 'Block löschen',
   toggle: () => {
-    let newState = state.transform().unsetSelection();
+    const newState = state.transform().unsetSelection();
+
     editor.onChange(
-      newState.removeNodeByKey(node.key).apply()
+      newState
+        .removeNodeByKey(node.key)
+        .apply()
     );
   },
 });
@@ -138,6 +141,18 @@ const moveActions = ({ editor, state, node }) => ([{
 }]);
 
 export default class Toolbar extends Component {
+  onChangeType = ({ key }) => {
+    const { editor, readOnly, node, state } = this.props;
+    const blockTypes = editor.props.sidebarTypes || [];
+    const newBlock = (blockTypes.find(({ type }) => type === key) || node);
+    editor.onChange(
+      state
+        .transform()
+        .setNodeByKey(node.key, { type: newBlock.type, isVoid: newBlock.isVoid })
+        .apply()
+    );
+  }
+
   render() {
     const { editor, node, readOnly, style, remove, add, move } = this.props;
     const actions = [...this.props.actions];
