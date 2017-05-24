@@ -8,6 +8,14 @@ import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
 
+// todo: Helfer für gradient, box-Shadows (mit Level) und inner-Shadows
+// color, colorAccent, colorSuccess, colorInfo, colorWarning, colorDanger, colorMuted
+// colorText, colorTextSecondary, colorTextMuted https://material.io/guidelines/style/color.html#color-usability
+// colorTextLight, colorTextLightSecondary, colorTextLightMuted ??? (für dunklen Hintergrund)
+// für jeden Farbe: color, colorLight, colorDark, colorInv
+// fontSize, fontSizeSmall, fontSizeLarge
+// space0, space1, ..., space5 https://v4-alpha.getbootstrap.com/utilities/spacing/
+
 export default () => {
   const renderer = createRenderer({
     selectorPrefix: 'o',
@@ -18,21 +26,21 @@ export default () => {
       unit(),
       namedMediaQuery({
         // From
-        fromWide: '@media (min-width: 1200px)',
-        fromDesktop: '@media (min-width: 992px)',
-        fromTablet: '@media (min-width: 768px)',
-        fromPhone: '@media (min-width: 480px)',
+        ifHugeUp: '@media (min-width: 1200px)',
+        ifLargeUp: '@media (min-width: 992px)',
+        ifMediumUp: '@media (min-width: 768px)',
+        ifSmallUp: '@media (min-width: 480px)',
         // To
-        toDesktop: '@media (max-width: 1199px)',
-        toTablet: '@media (max-width: 991px)',
-        toPhone: '@media (max-width: 767px)',
-        toMini: '@media (max-width: 479px)',
+        ifLargeDown: '@media (max-width: 1199px)',
+        ifMediumDown: '@media (max-width: 991px)',
+        ifSmallDown: '@media (max-width: 767px)',
+        ifMiniDown: '@media (max-width: 479px)',
         // On
-        onWide: '@media (min-width: 1200px)',
-        onDesktop: '@media (max-width: 1199px, min-width: 992)',
-        onTablet: '@media (max-width: 991px, min-width: 768)',
-        onPhone: '@media (max-width: 767px, min-width: 480)',
-        onMini: '@media (max-width: 479px)',
+        ifHuge: '@media (min-width: 1200px)',
+        ifLarge: '@media (max-width: 1199px, min-width: 992)',
+        ifMedium: '@media (max-width: 991px, min-width: 768)',
+        ifSmall: '@media (max-width: 767px, min-width: 480)',
+        ifMini: '@media (max-width: 479px)',
       }),
       friendlyPseudoClass(),
       customProperty({
