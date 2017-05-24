@@ -122,7 +122,7 @@ export default (options = {}) => {
       const theToolbarMarks = [...toolbarMarks, ...this.props.toolbarMarks];
       const theToolbarTypes = [...toolbarTypes, ...this.props.toolbarTypes];
       const theToolbarActions = [...toolbarActions, ...this.props.toolbarActions];
-      // const isOpen = editorState.isExpanded && editorState.isFocused;
+
       return (
         <Portal isOpened onOpen={this.onOpen} key="toolbar-0">
           <Menu
