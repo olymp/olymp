@@ -45,14 +45,14 @@ export const TreeNode = styled(({ }) => ({
   },
 }), ({ className, item, query }) => (
   <span className={className}>
-    <Link to={{ pathname: item.slug, query }}>
+    <Link to={{ pathname: item.pathname, query }}>
       {item.name}
     </Link>
     {getIcon(item)}
     {item.bindingId && <Link to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}>
       <Icon type="share-alt" />
     </Link>}
-    <Link to={{ pathname: item.slug, query: { ...query, '@page': item.pageId || item.id } }}>
+    <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }}>
       <Icon type="edit" />
     </Link>
   </span>

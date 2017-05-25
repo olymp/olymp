@@ -6,7 +6,7 @@ import { layout } from 'olymp/ui';
 const ParentSelect = ({ item, field, label, layout, initialValue, rules, placeholder, form, ...rest }) => (
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
-      initialValue: item ? item[field] : undefined,
+      initialValue: item ? item[field] : initialValue,
       rules: getRules(rules, label),
     })(
       <TreeSelect
