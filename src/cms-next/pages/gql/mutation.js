@@ -2,7 +2,7 @@ import { gql, graphql } from 'olymp';
 import { onError, onSuccess } from 'olymp/ui';
 
 const ok = (props, mutate) => () => {
-  const { form, item, router } = props;
+  const { form, item, router, query, flatNavigation } = props;
   form.validateFields((err, values) => {
     if (err) return onError(err);
     mutate({
@@ -19,9 +19,18 @@ const ok = (props, mutate) => () => {
     }).then(({ data: { item } }) => {
       onSuccess('Gespeichert', 'Die Seite wurde gespeichert');
       form.resetFields();
+      let slug = item.slug;
+      let parentId = item.parentId;
+      while (parentId) {
+        const parent = flatNavigation.find(x => x.id === parentId) || { };
+        if (parent.slug) {
+          slug = `${parent.slug}${slug}`;
+        } parentId = parent.parentId;
+      }
+      router.push({ pathname: slug, query });
     }).catch(onError);
   });
-}
+};
 
 export default graphql(gql`
   mutation page($id: String, $input: PageInput) {

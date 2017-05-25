@@ -17,7 +17,7 @@ export class PageForm extends Component {
     const value = e.target.value;
     const slug = form.getFieldValue('slug');
     // if (!slug) {
-    form.setFieldsValue({ 'slug': `/${slugify(value, true)}` });
+    form.setFieldsValue({ slug: `/${slugify(value, true)}` });
     // }
   }
   render() {

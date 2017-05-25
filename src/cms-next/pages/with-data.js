@@ -16,7 +16,7 @@ const deserializeBinding = (value) => { // value e.g. 'event id name slug' or 'e
   };
 };
 
-let NavCache = {  };
+const NavCache = { };
 export const withNavigation = Wrapped => {
   // Prepare Data, gather bound navigation items
   const withNavigationPrepare = Wrapped => {
@@ -54,7 +54,7 @@ export const withNavigation = Wrapped => {
       const items = (data && data.items) || [];
       const flatNavigation = [];
       const navigation = unflatten(items, {
-        pathProp: 'slug',
+        pathProp: 'pathname',
         sort: (children, parent) => {
           const sorting = parent ? (parent.sorting || '+order') : '+order';
           children = children.reduce((state, child) => {
@@ -87,9 +87,9 @@ export const withNavigation = Wrapped => {
           } return children;
         },
         setPath: (current, { slug, ...rest }) => {
-          slug = `${current || ''}${slug || ''}`;
-          flatNavigation.push({ ...rest, slug });
-          return slug;
+          const pathname = `${current || ''}${slug || ''}`;
+          flatNavigation.push({ ...rest, slug, pathname });
+          return pathname;
         },
       });
       return (
