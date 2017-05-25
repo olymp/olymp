@@ -120,7 +120,7 @@ export default class ImagesBlock extends Component {
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader className={className} style={{ display: 'flex', flexFlow: 'row wrap', alignItems: 'center', ...style }} isEmpty={images} placeholder="Keine Bilder vorhanden">
+        <DataLoader className={className} style={{ display: 'flex', flexFlow: 'row wrap', alignItems: 'center', justifyContent: 'center', ...style }} isEmpty={images} placeholder="Keine Bilder vorhanden">
           {(images || []).map((image, i) => imageBlock(image, i))}
 
           {/* <div style={{ clear: 'both' }} /> */}
