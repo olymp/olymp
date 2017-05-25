@@ -34,29 +34,35 @@ export const withRouter = (WrappedComponent) => {
       }).isRequired,
     };
     push = (propsTo) => {
-      const { store } = this.context;
+      const { store, router } = this.context;
       const to = { ...propsTo };
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
-
-        if (this.lastPath === to.pathname && this.lastSearch === to.search) return;
-        this.lastPath = to.pathname;
-        this.lastSearch = to.search;
+        if (router.lastPath === to.pathname && router.lastSearch === to.search) return;
+        router.lastPath = to.pathname;
+        router.lastSearch = to.search;
       } else {
-        if (this.lastPath === to) return;
-        this.lastPath = to;
-        this.lastSearch = null;
+        if (router.lastPath === to) return;
+        router.lastPath = to;
+        router.lastSearch = null;
       }
       store.dispatch(push(to));
       // this.context.router.history.push(to);
     }
     replace = (propsTo) => {
-      const { store } = this.context;
+      const { store, router } = this.context;
       const to = { ...propsTo };
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
+        if (router.lastPath === to.pathname && router.lastSearch === to.search) return;
+        router.lastPath = to.pathname;
+        router.lastSearch = to.search;
+      } else {
+        if (router.lastPath === to) return;
+        router.lastPath = to;
+        router.lastSearch = null;
       }
       store.dispatch(replace(to));
       // this.context.router.history.replace(to);
