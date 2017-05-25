@@ -17,7 +17,7 @@ export default class PageSidebar extends Component {
     let { item } = this.props;
 
     const value = query['@page'];
-    if (value === 'new') item = {};
+    if (value === 'new') item = { parentId: query.parent };
 
     const leftButtons = (
       <div>
@@ -35,7 +35,7 @@ export default class PageSidebar extends Component {
           <Sidebar.Button disabled={!form.isFieldsTouched()} onClick={save} shape="circle" icon="save" />
         </Button.Group>}
         {!value && <Button.Group>
-          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new' } })} shape="circle" icon="plus" />
+          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new', parent: item.id } })} shape="circle" icon="plus" />
         </Button.Group>}
       </div>
     );
