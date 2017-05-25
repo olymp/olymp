@@ -47,11 +47,11 @@ export class Pages extends Component {
     const inner = <TreeNode item={item} parent={parent} {...this.props.location}/>;
     if (item.children && item.children.length) {
       return (
-        <Tree.TreeNode key={item.slug || item.id} title={inner}>
+        <Tree.TreeNode key={item.pathname || item.id} title={inner}>
           {this.loop(item.children, item)}
         </Tree.TreeNode>
       );
-    } return <Tree.TreeNode key={item.slug || item.id} title={inner}/>;
+    } return <Tree.TreeNode key={item.pathname || item.id} title={inner}/>;
   })
   render() {
     const { items, pathname } = this.props;

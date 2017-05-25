@@ -6,7 +6,7 @@ import Error404 from '../404';
 
 export default props => {
   const { Wrapped, flatNavigation, query, pathname } = props;
-  const match = flatNavigation.find(({ slug }) => pathname === slug);
+  const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, slug, binding, pageId, aliasId, bindingId } = match || {};
   const deviceWidth = query[`@deviceWidth`];
   if (!match) {
