@@ -67,7 +67,6 @@ export default (options = {}) => {
     }*/
     render() {
       const { sidebarTypes } = this.props;
-      const plugins = [...this.props.plugins, this];
       const newNodes = {
         ...(nodes || {}),
         ...(this.props.nodes || {}),
@@ -87,7 +86,6 @@ export default (options = {}) => {
       return (
         <Editor
           {...this.props}
-          plugins={plugins}
           nodes={newNodes}
           marks={newMarks}
           sidebarTypes={newSidebarTypes}

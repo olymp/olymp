@@ -1,7 +1,7 @@
 import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
 import { Button } from 'antd';
-import { Editor, Html, Raw } from 'slate';
+import { Editor, Html, Raw, Plain } from 'slate';
 import { withAuth } from '../core/decorators';
 import { withSlateState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
@@ -57,7 +57,7 @@ const options = {
         }
         onChange(newVal);
       },
-      isActive: ({ value }) => value.inlines.some(inline => inline.type === 'link'),
+      isActive: ({ value }) => value && value.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
@@ -181,14 +181,15 @@ const serializer = new Html({
 export const htmlSerializer = serializer;
 export const rawSerializer = Raw;
 
+const md = withAutoMarkdown(options);
 @withBlockTypes
 @withUniqueId()
 @withSlateState({ terse: true })
 @useBlocks(options)
-@withAutoMarkdown(options)
 @withToolbar(options)
 @withSidebar(options)
 export default class SlateEditor extends Component {
+  plugins = [md];
   state = {};
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -262,32 +263,21 @@ export default class SlateEditor extends Component {
             </Button>
           ) : null}
         </Gateway>
-
         {children}
-
-        {this.state.mode ? (
+        <div className={className} style={{ position: 'relative', ...style }}>
+          {children}
           <Editor
             {...rest}
+            state={value || Plain.deserialize('')}
             spellcheck={spellcheck || false}
             readOnly={!!readOnly}
-            state={this.state.mode}
-            onChange={mode => this.setState({ mode })}
-            onPaste={this.onPaste}
-            onKeyDown={this.onKeyDown}
-          />
-        ) : (
-          <Editor
-            {...rest}
-            spellcheck={spellcheck || false}
-            readOnly={!!readOnly}
-            plugins={plugins}
+            plugins={this.plugins}
             schema={{ marks, nodes }}
-            state={value}
             onChange={onChange}
             onPaste={this.onPaste}
             onKeyDown={this.onKeyDown}
           />
-        )}
+        </div>
       </div>
     );
   }
