@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { auth as withAuth, withRouter, styled, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
 import { withLocale } from 'olymp/locale-de';
 import { HashtaxProvider } from 'olymp/hashtax';
-import { ThemeProvider } from 'react-fela';
+import { ThemeProvider } from 'olymp/ui';
 import { NavigationVertical } from './navigation';
 import { AuthModals } from 'olymp/auth';
 import { GatewayDest } from 'react-gateway';
