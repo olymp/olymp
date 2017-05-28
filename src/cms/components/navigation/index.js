@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, NavLink, cn, withApollo, withAuth, gql } from 'olymp';
+import { NavLink, cn, withApollo, withAuth, gql } from 'olymp';
 import { SortableContainer as sortableContainer, SortableElement as sortableElement, SortableHandle as sortableHandle, arrayMove } from 'react-sortable-hoc';
 import './nav.less';
 

@@ -1,9 +1,16 @@
 import tinycolor from 'tinycolor2';
 
+export const border = (theme, color) => `${theme.borderWith}px ${theme.borderStyle} ${color || theme.color}`;
+export const lighten = (color, percent) => tinycolor(color).lighten(percent || 15).toRgbString();
+export const darken = (color, percent) => tinycolor(color).darken(percent || 7).toRgbString();
+export const spin = (color, deg) => tinycolor(color).spin(deg || 180).toRgbString();
+export const fade = (color, percent) => tinycolor(color).setAlpha(percent / 100 || 0.67).toRgbString();
+export const shadow = color => `0px 0px 5px 0px ${tinycolor(color).toRgbString()}`;
+export const innerShadow = color => `inset ${shadow(color)}`;
 export const gradient = (color1, color2, deg) => {
-  let tColor1 = tinycolor(color1).lighten();
-  let tColor2 = tinycolor(color1).darken();
-  let tDeg = deg;
+  let tColor1 = tinycolor(lighten(color1)).spin(12);
+  let tColor2 = tinycolor(darken(color1)).spin(-6);
+  let tDeg = deg || 90;
 
   if (color2 && deg) { // color1, color2, deg
     tColor1 = tinycolor(color1);
@@ -12,7 +19,7 @@ export const gradient = (color1, color2, deg) => {
     tDeg = color2;
   }
 
-  return `linear-gradient(${tDeg + 90}, ${tColor1.toRgbString()} 0%, ${tColor2.toRgbString()} 100%)`;
+  return `linear-gradient(${tDeg + 90}deg, ${tColor1.toRgbString()} 0%, ${tColor2.toRgbString()} 100%)`;
 
   /* return `
     background: ${tColor1.toString()}; // Old browsers
@@ -22,9 +29,3 @@ export const gradient = (color1, color2, deg) => {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${tColor1.toString()}', endColorstr='${tColor2.toString()}',GradientType=1 ); // IE6-9 fallback on horizontal gradient
   `; */
 };
-export const border = (theme, color) => `${theme.borderWith}px ${theme.borderStyle} ${color || theme.color}`;
-export const lighten = (color, percent) => tinycolor(color).lighten(percent || 15).toRgbString();
-export const darken = (color, percent) => tinycolor(color).darken(percent || 7).toRgbString();
-export const spin = (color, deg) => tinycolor(color).spin(deg || 180).toRgbString();
-export const shadow = color => `0px 0px 5px 0px ${tinycolor(color).toRgbString()}`;
-export const innerShadow = color => `inset ${shadow(color)}`;
