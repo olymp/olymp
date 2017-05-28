@@ -23,6 +23,33 @@ import namedMediaQuery from 'fela-plugin-named-media-query';
 // textColorLight/Dark
 // borderWidth/Style/Radius => getBorder(color) => `${theme.borderWidth} ${theme.borderStyle} ${color}`
 
+/*
+PRIMARY, SECONDARY, SUCCESS, INFO, WARNING, DANGER, MUTED
+
+theme: {
+  space: INT | [INT]
+  fontSize: INT | [INT (default), INT (h1), INT (h2), INT (h3), INT (h4), INT (h5), INT (h6), INT (small)]
+  borderWidth: INT (pixel)
+  borderStyle: BORDER_STYLE
+  borderRadius: INT (pixel)
+  color: STRING
+  colorSuccess: STRING
+}
+
+getShadow
+getInnerShadow
+getBorder(theme.color)
+getGradient(theme.color)
+getTextColor(theme.color)
+getTextColor('muted', theme.color)
+getSpace(1)
+getLight(theme.color, 2)
+getDark(theme.color, 2)
+getSpin(theme.color, 2)
+
+*/
+
+
 export default () => {
   const renderer = createRenderer({
     selectorPrefix: 'o',
