@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { parseQuery, stringifyQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
+import { AmpProvider, routerQueryMiddleware } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
@@ -16,7 +16,7 @@ import { AppContainer } from 'react-hot-loader';
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
 // End Redux stuff
 
 const init = require('@app').init;

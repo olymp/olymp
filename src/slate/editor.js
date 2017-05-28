@@ -204,7 +204,6 @@ export default class SlateEditor extends Component {
     className: PropTypes.string,
   }
   static defaultProps = {
-    readOnly: false,
   }
 
   onPaste = (e, data, state) => {
