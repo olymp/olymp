@@ -18,9 +18,10 @@ import namedMediaQuery from 'fela-plugin-named-media-query';
   // color.primary.getNuance(grad = 180°) = Gibt spin der Farbe zurück
   // color.primary.getGradient(grad = 45°, color = undefined) = Gibt Gradient der Farbe zurück
 // space: {d0, d1, d2 ... d5} (d = dynamisch = x rem) https://v4-alpha.getbootstrap.com/utilities/spacing/
-// fontSize: {primary, secondary, small}
-// borderRadius: {primary???}
-// boxShadows: {l0, l1, l2, ..., i0, i1, ...} (l = level, i = inner)
+// fontSize: {primary, small}
+// boxShadows: normal und inner
+// textColorLight/Dark
+// borderWidth/Style/Radius => getBorder(color) => `${theme.borderWidth} ${theme.borderStyle} ${color}`
 
 export default () => {
   const renderer = createRenderer({
@@ -69,6 +70,14 @@ export default () => {
         marginY: margin => ({
           marginTop: margin,
           marginBottom: margin,
+        }),
+        borderX: border => ({
+          borderLeft: border,
+          borderRight: border,
+        }),
+        borderY: border => ({
+          borderTop: border,
+          borderBottom: border,
         }),
       }),
       removeUndefined()
