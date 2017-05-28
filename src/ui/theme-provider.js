@@ -1,4 +1,5 @@
 import { ThemeProvider } from 'react-fela';
+import tinycolor from 'tinycolor2';
 import React from 'react';
 
 // todo
@@ -27,6 +28,8 @@ theme: {
   borderRadius: INT (pixel)
   color: STRING
   colorSuccess: STRING
+  textColorLight: STRING
+  textColorDark: STRING
 }
 
 getShadow
@@ -35,7 +38,6 @@ getBorder(theme.color)
 getGradient(theme.color)
 getColor(theme.color)
 getColor('muted', theme.color)
-getSpace(1)
 getLight(theme.color, 2)
 getDark(theme.color, 2)
 getSpin(theme.color, 2)
@@ -51,17 +53,64 @@ export const COLOR_TYPE = {
   MUTED: 'MUTED',
 };
 
-const getTheme = (theme) => {
-  return {
-    getColor: (type, color) => {
-      if (!color && !COLOR_TYPE[type]) { // if no second argument and first not a type
-        color = type;
-        type = null;
-      }
-      if (!type) return theme[color];
-      if (!color) return theme[type];
-      return null; // TODO: return color depending on type+color
+export const TEXT_TYPE = {
+  PRIMARY: 'PRIMARY',
+  SECONDARY: 'SECONDARY',
+  MUTED: 'MUTED',
+};
+
+const getTheme = ({ color, textColor, ...rest }) => {
+  const theme = {
+    color: {
+      primary: '#8e44ad',
+      secondary: '#e67e22',
+      success: '#2ecc71',
+      info: '#3498db',
+      warning: '#f39c12',
+      danger: '#e74c3c',
+      muted: '#bdc3c7',
+      ...color,
     },
+    textColor: {
+      light: '#FFFFFF',
+      dark: '#000000',
+      ...textColor,
+    },
+    ...rest
+  };
+
+  return {
+    getColor: color => theme.color[color] || theme.color.primary,
+    getTextColor: (type, bgColor) => {
+      let newType = TEXT_TYPE[type];
+      let newColor = bgColor;
+
+      if (!bgColor && !TEXT_TYPE[type]) { // if no second argument and first not a type
+        newColor = type;
+        newType = 'PRIMARY';
+      }
+
+      const textColors = Object.keys(theme.textColor).map(color => theme.textColor[color]);
+      const color = tinycolor.mostReadable(newColor, textColors);
+
+      switch (newType) {
+        case 'SECONDARY':
+          return color.isDark() ?
+            color.setAlpha(0.46).toRgbString()
+              : color.setAlpha(0.3).toRgbString();
+
+        case 'MUTED':
+          return color.isDark() ?
+            color.setAlpha(0.62).toRgbString()
+              : color.setAlpha(0.5).toRgbString();
+
+        default:
+          return color.isDark() ?
+            color.setAlpha(0.13).toRgbString()
+              : color.toRgbString();
+      }
+    },
+    getSpace: space => `${0.25 * ((2 ** space) - 1)}.rem`,
     ...theme,
   };
 };
