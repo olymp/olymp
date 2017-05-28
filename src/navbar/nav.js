@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, styled } from 'olymp';
+import { styled } from 'olymp';
+import { NavLink } from 'react-router';
 import { gradient } from 'olymp/ui';
 import Toggler from './toggler';
 import NavItem from './item';
