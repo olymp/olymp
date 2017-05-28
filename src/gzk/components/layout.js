@@ -33,6 +33,7 @@ export default class Layout extends Component {
       <Container className="frontend" innerRef={node => { if (node) this.container = node }}>
         <Navbar
           // brand={<Logo color={color} title={title} text={text} />}
+          // inverse
           pages={nav}
         />
 

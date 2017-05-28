@@ -9,8 +9,8 @@ const Navbar = styled(({ theme, inverse }) => ({
   backgroundColor: inverse ? theme.color : 'transparent',
   background: inverse ? gradient(theme.color) : 'none',
   borderRadius: theme.borderRadius,
-  paddingX: theme.space1,
-  margin: theme.space1,
+  paddingX: theme.space2,
+  margin: theme.space2,
 }), ({ className, brand, pages, vertically, ...rest }) => (
   <nav className={className}>
     {brand ? <Brand vertically={vertically}>{brand}</Brand> : null}
@@ -43,7 +43,7 @@ Navbar.defaultProps = {
   brand: undefined,
   fill: false,
   vertically: false,
-  inverse: true,
+  inverse: false,
 };
 export default Navbar;
 

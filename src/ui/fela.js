@@ -29,7 +29,7 @@ const getTheme = theme => ({
   space5: '4rem',
   borderWidth: 1,
   borderStyle: 'solid',
-  borderRadius: 3,
+  borderRadius: '0.25rem',
   fontSize: '1rem',
   fontSizeSmall: '1rem',
   fontSizeH1: '1rem',
