@@ -1,4 +1,5 @@
 require('babel-register');
+
 module.exports = (templateParams) => {
   console.log(templateParams.htmlWebpackPlugin.files.chunks);
   return require('../node/template').offline({

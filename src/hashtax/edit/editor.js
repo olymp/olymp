@@ -1,12 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import Slate from 'slate/lib/components/editor';
 import Mark from 'slate/lib/models/mark';
-import Plain from './serializer/plain';
-import { Popover, Button, Tag, Input } from 'antd';
-import { parseComponent } from 'olymp/hashtax';
+import Raw from './serializer/raw';
+import { Popover, Tag } from 'antd';
+import { parseComponent } from '../processors';
 import { styled } from 'olymp';
 
-const Highlighted = styled(({ }) => ({
+const deserialize = (value) => {
+  console.log('DESERIALIZE', value);
+  return Raw.deserialize(value, { terse: true });
+};
+const serialize = (state) => {
+  console.log('SERIALIZE', state);
+  return Raw.serialize(state, { terse: true });
+};
+
+const Highlighted = styled(() => ({
   fontWeight: 'bold',
 }), 'span', p => p);
 
@@ -14,11 +23,11 @@ const addMarks = (startChar, closeChar, markType, characters, string) => {
   const mark = Mark.create({ type: markType });
   let start = -startChar.length;
   while (true) {
-    start = string.indexOf(startChar, start+startChar.length);
+    start = string.indexOf(startChar, start + startChar.length);
     if (start === -1) break;
-    const end = string.indexOf(closeChar, start+startChar.length) + startChar.length;
+    const end = string.indexOf(closeChar, start + startChar.length) + startChar.length;
     const size = end === 0 ? characters.size : end;
-    for (let i = start; i < size; i++) {
+    for (let i = start; i < size; i + 1) {
       let char = characters.get(i);
       let { marks } = char;
       marks = marks.add(mark);
@@ -27,7 +36,7 @@ const addMarks = (startChar, closeChar, markType, characters, string) => {
     }
     start = size;
   } return characters;
-}
+};
 
 const decorate = (text, block) => {
   const characters = text.characters.asMutable();
@@ -94,7 +103,7 @@ export default class SlateEditor extends Component {
             <Popover {...content}>
               {inner}
             </Popover>
-          )
+          );
         } return inner;
       },
       'hashtax-inline-var': ({ children }) => <Tag color="blue">{children}</Tag>,
@@ -110,21 +119,21 @@ export default class SlateEditor extends Component {
     super(props);
     this.plugins = [];
     this.state = { };
-    this.value = props.value || '';
-    this.editorState = Plain.deserialize(this.value);
+    this.value = props.value || '';
+    this.editorState = deserialize(this.value);
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.value !== this.value) {
-      this.value = newProps.value || '';
-      this.editorState = Plain.deserialize(this.value);
+      this.value = newProps.value || '';
+      this.editorState = deserialize(this.value);
     }
   }
 
   onChange = value => {
     this.editorState = value;
     this.setState({ }, () => {
-      const newValue = Plain.serialize(value);
+      const newValue = serialize(value);
       if (newValue !== this.value) {
         this.value = newValue;
         this.props.onChange(newValue);
@@ -134,19 +143,16 @@ export default class SlateEditor extends Component {
 
   onKeyDown = e => {
     const key = window.event ? e.keyCode : e.which;
-    console.log(key);
-
     if (key === 220) { // #
-      console.log(e, '#');
     } else if (key === 56) { // {
-
     }
   }
 
-  render() {
+  render() {
     const { editorState } = this;
+    console.log(this.props);
     return (
-      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange} onKeyDown={this.onKeyDown}/>
-    )
+      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange} onKeyDown={this.onKeyDown} />
+    );
   }
 }

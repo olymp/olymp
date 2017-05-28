@@ -2,7 +2,7 @@ import React, { Component, createElement } from 'react';
 import { gql, graphql, SimpleRoute, unflatten } from 'olymp';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
-import { interpolate } from 'olymp/hashtax';
+import { interpolate } from 'hashtax';
 
 const defaultFields = 'id name';
 const deserializeBinding = (value) => { // value e.g. 'event id name slug' or 'event'

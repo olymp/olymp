@@ -8,4 +8,4 @@ export { default as Sidebar } from './sidebar';
 export { default as Dropdown } from './dropdown';
 export * from './h';
 export * from './color';
-export { default as ThemeProvider, COLOR_TYPE } from './theme-provider';
+export * from './fela';

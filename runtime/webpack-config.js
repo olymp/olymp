@@ -50,6 +50,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         moment: path.resolve(appRoot, 'node_modules', 'moment'),
         lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         olymp: olympRoot,
+        hashtax: path.resolve(olympRoot, 'src', 'hashtax'),
         'olymp-icons': path.resolve(olympRoot, 'src', 'icons'),
         'olymp-navbar': path.resolve(olympRoot, 'src', 'navbar'),
         '@root': appRoot,
