@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "name": "olymp-navbar",
+  "description": "",
+  "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "license": "MIT",
+  "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "olymp": "^14.2.27",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "@kadira/storybook": "^2.21.0",
+    "@kadira/storybook-addon-knobs": "^1.7.1",
+    "@storybook/addon-centered": "^3.0.0-alpha.0",
+    "@storybook/addon-info": "^3.0.0-alpha.0",
+    "raw-loader": "^0.5.1"
+  }
+}
