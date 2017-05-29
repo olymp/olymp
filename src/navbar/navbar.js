@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink, styled } from 'olymp';
-import { gradient } from 'olymp/ui';
+import { gradient } from 'olymp-fela';
 import Toggler from './toggler';
 import Nav from './nav';
 
@@ -12,7 +12,7 @@ const Navbar = styled(({ theme, inverse, vertically }) => ({
   margin: theme.space2,
   width: vertically ? 200 : '100%',
   onAfter: {
-    content: '.',
+    content: '""',
     clear: 'both',
     display: 'block',
     visibility: 'hidden',

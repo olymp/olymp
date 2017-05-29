@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from 'olymp';
-import { fade, shadow, border } from 'olymp/ui';
 import NavItem from './item';
 
 const Nav = styled(({ theme, inverse, vertically }) => ({
   minWidth: vertically ? '100%' : 'auto',
   zIndex: 1,
-  border: inverse ? 'none' : border(theme),
+  onAfter: {
+    content: '.',
+    clear: 'both',
+    display: 'block',
+    visibility: 'hidden',
+    height: 0,
+  }
 }), ({ className, pages, ...rest }) => (
   <div className={className}>
     {(pages || []).map(({ children, ...page }) =>
