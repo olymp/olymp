@@ -4,28 +4,31 @@ import { NavLink, styled } from 'olymp';
 import { gradient } from 'olymp/ui';
 import Toggler from './toggler';
 import Nav from './nav';
-import NavItem from './item';
 
-const Navbar = styled(({ theme, inverse }) => ({
+const Navbar = styled(({ theme, inverse, vertically }) => ({
   backgroundColor: inverse ? theme.color : 'transparent',
   background: inverse ? gradient(theme.color) : 'none',
   borderRadius: theme.borderRadius,
   margin: theme.space2,
-}), ({ className, brand, pages, vertically, inverse, ...rest }) => (
+  width: vertically ? 200 : '100%',
+  onAfter: {
+    content: '.',
+    clear: 'both',
+    display: 'block',
+    visibility: 'hidden',
+    height: 0,
+  }
+}), ({ className, brand, vertically, ...rest }) => (
   <nav className={className}>
     {brand ? <Brand vertically={vertically}>{brand}</Brand> : null}
 
     <Toggler onClick={() => {}} />
 
-    <Nav inverse={inverse} vertically={vertically} >
-      {(pages || []).map(page =>
-        <NavItem {...rest} page={page} vertically={vertically} inverse={inverse} key={page.id} />
-      )}
-    </Nav>
+    <Nav {...rest} vertically={vertically} />
   </nav>
 ), p => p);
 Navbar.propTypes = {
-  /**  */
+  /** Array of page-objects */
   pages: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     pathname: PropTypes.string,
