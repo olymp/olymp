@@ -19,6 +19,7 @@ export const Container = styled(({ deviceWidth }) => ({
   height: '100%',
   '> :last-child': {
     flex: 1,
+    minHeight: '100%',
   },
   '> *': {
     overflowY: 'auto',
