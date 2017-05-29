@@ -38,13 +38,13 @@ const getIcon = (item) => {
     return <a href="javascript:;"><Icon type="link" /></a>;
   } return null;
 };
-export const TreeNode = styled(({ }) => ({
+export const TreeNode = styled(({ theme }) => ({
   display: 'flex',
   '> a:first-child': {
     flex: 1,
   },
   '> a': {
-    color: 'black',
+    color: theme.textColor,
   },
 }), ({ className, item, query }) => (
   <span className={className}>
