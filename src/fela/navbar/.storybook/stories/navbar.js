@@ -7,7 +7,6 @@ import { withKnobs, text } from '@kadira/storybook-addon-knobs';
 import centered from '@storybook/addon-centered';
 import { FelaDecorator, RouterDecorator } from 'olymp-fela/storybook';
 
-
 import Readme from '../../README.md';
 
 storiesOf('Navbar', module)
@@ -19,22 +18,18 @@ storiesOf('Navbar', module)
     'with text',
     Readme,
     () => (
-      <FelaProvider renderer={renderer}>
-        <ThemeProvider>
-          <Navbar
-            // brand={<Logo color={color} title={title} text={text} />}
-            inverse
-            pages={[
-              {
-                id: 'home',
-                name: 'Home',
-                pathname: '/',
-                children: [],
-              }
-            ]}
-          />
-        </ThemeProvider>
-      </FelaProvider>
+      <Navbar
+        // brand={<Logo color={color} title={title} text={text} />}
+        inverse
+        pages={[
+          {
+            id: 'home',
+            name: 'Home',
+            pathname: '/',
+            children: [],
+          }
+        ]}
+      />
     )
   )
   .add('with some emoji', () => (
