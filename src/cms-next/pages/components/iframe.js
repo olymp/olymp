@@ -16,22 +16,33 @@ class FrameInner extends Component {
   componentDidMount() {
     const parent = window;
     const { document } = this.context;
-    console.log(parent, document);
+
+
     setTimeout(() => {
-      var oHead = document.getElementsByTagName('head')[0];
-      var arrStyleSheets = [
+      const style = document.createElement('style');
+      style.id = 'iframe-styles';
+      style.type = 'text/css';
+      style.appendChild(document.createTextNode(`
+        .frame-root { height: 100%; }
+        .frame-content { height: 100%; }
+      `));
+      const oHead = document.getElementsByTagName('head')[0];
+      const arrStyleSheets = [
         ...parent.document.getElementsByTagName('style'),
         ...parent.document.getElementsByTagName('link')
       ];
-      for (var i = 0; i < arrStyleSheets.length; i++)
+      for (let i = 0; i < arrStyleSheets.length; i++) {
         oHead.appendChild(arrStyleSheets[i].cloneNode(true));
+      }
+      oHead.appendChild(style);
     }, 0);
   }
   render() {
-    const { children } = this.props;
+    const { children, className } = this.props;
     return React.Children.only(children);
   }
 }
+
 export default ({ children, disabled }) => disabled ? (
   React.Children.only(children)
 ) : (
