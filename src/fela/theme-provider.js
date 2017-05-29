@@ -21,6 +21,7 @@ const getTheme = theme => ({
   borderWidth: 1,
   borderStyle: 'solid',
   borderRadius: '0.25rem',
+  borderColor: 'rgba(0, 0, 0, 0.12)',
   fontSize: '1rem',
   fontSizeSmall: '1rem',
   fontSizeH1: '1rem',
