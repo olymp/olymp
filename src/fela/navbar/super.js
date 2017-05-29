@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { styled } from 'olymp';
 import NavItem from './item';
 
-const Nav = styled(({ theme, inverse, vertically }) => ({
+const SuperNav = styled(({ theme, inverse, vertically, right }) => ({
+  float: right ? 'right' : 'none',
   minWidth: vertically ? '100%' : 'auto',
   zIndex: 1,
   onAfter: {
@@ -20,7 +21,7 @@ const Nav = styled(({ theme, inverse, vertically }) => ({
     )}
   </div>
 ), p => p);
-Nav.propTypes = {
+SuperNav.propTypes = {
   /** Array of page-objects */
   pages: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
@@ -34,10 +35,8 @@ Nav.propTypes = {
   /** aligns nav-items right */
   right: PropTypes.bool,
 };
-Nav.defaultProps = {
+SuperNav.defaultProps = {
   pages: [],
-  vertically: false,
   inverse: false,
-  right: false,
 };
-export default Nav;
+export default SuperNav;

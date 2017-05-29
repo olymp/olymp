@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Footer from './footer';
 import Logo from './logo';
-import { Navbar } from 'olymp-navbar';
+import { Navbar, Nav } from 'olymp-fela';
 import { styled } from 'olymp';
 
 export const Header = styled(({ sticky }) => ({
@@ -33,14 +33,16 @@ export default class Layout extends Component {
       <Container className="frontend" innerRef={node => { if (node) this.container = node }}>
         <Navbar
           brand={<Logo color={color} title={title} text={text} />}
-          pages={nav}
           inverse
-        />
+        >
+          <Nav pages={nav} inverse right />
+        </Navbar>
 
         <Navbar
           brand={<Logo color={color} title={title} text={text} />}
-          pages={nav}
-        />
+        >
+          <Nav pages={nav} right />
+        </Navbar>
 
         <Navbar
           inverse
