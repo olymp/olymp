@@ -10,7 +10,7 @@ const Navbar = styled(({ theme, inverse, vertically }) => ({
   background: inverse ? gradient(theme.color) : 'none',
   borderRadius: theme.borderRadius,
   margin: theme.space2,
-  width: vertically ? 200 : '100%',
+  width: vertically ? 200 : 'auto',
   onAfter: {
     content: '""',
     clear: 'both',
@@ -18,13 +18,12 @@ const Navbar = styled(({ theme, inverse, vertically }) => ({
     visibility: 'hidden',
     height: 0,
   }
-}), ({ className, brand, vertically, ...rest }) => (
+}), ({ className, brand, vertically, children, ...rest }) => (
   <nav className={className}>
     {brand ? <Brand vertically={vertically}>{brand}</Brand> : null}
-
     <Toggler onClick={() => {}} />
-
     <Nav {...rest} vertically={vertically} />
+    {children}
   </nav>
 ), p => p);
 Navbar.propTypes = {

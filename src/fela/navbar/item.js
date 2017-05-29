@@ -4,8 +4,8 @@ import { styled, NavLink } from 'olymp';
 import { fade, shadow, border, textColorDark, textColorLight } from 'olymp-fela';
 import Nav from './nav';
 
-const NavItem = styled(({ theme, inverse, vertically, right }) => ({
-  float: vertically ? 'none' : (right ? 'right' : 'left'),
+const NavItem = styled(({ theme, inverse, vertically }) => ({
+  float: vertically ? 'none' : 'left',
   position: 'relative',
   whiteSpace: 'nowrap',
   '> div': {
@@ -58,8 +58,6 @@ NavItem.propTypes = {
   vertically: PropTypes.bool,
   /** */
   editable: PropTypes.bool,
-  /** aligns nav-item right */
-  right: PropTypes.bool,
 };
 NavItem.defaultProps = {
   pathname: undefined,
@@ -67,7 +65,6 @@ NavItem.defaultProps = {
   inverse: false,
   vertically: false,
   editable: false,
-  right: false,
 };
 export default NavItem;
 
