@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styled, withRouter, NavLink } from 'olymp';
+import { styled, NavLink } from 'olymp';
 import { fade, shadow } from 'olymp/ui';
 import Nav from './nav';
 
@@ -63,7 +63,7 @@ NavItem.defaultProps = {
   vertically: false,
   editable: false,
 };
-export default withRouter(NavItem);
+export default NavItem;
 
 const Link = styled(({ theme, inverse }) => ({
   color: inverse ? theme.textColorLight : theme.textColorDark,
