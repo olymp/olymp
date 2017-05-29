@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import './logo.less';
+import React, { Component } from 'react';
+import { styled } from 'olymp';
 
 export default class Logo extends Component {
   static defaultProps = {
@@ -12,43 +12,71 @@ export default class Logo extends Component {
 
     if (icon) {
       return (
-        <div className="logo-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 41 41" version="1.1">
-            <g transform="scale(1.5)">
-              <path
-                style={{ fill: color }}
-                className="logo-big"
-                d="M23.9999995 24 L24 2.7 C24 2.7 23.3 0.7 21.9 1 C18.4139693 1.9 12 4 8.2 8 C4.5754908 11.8 1.7 18.9 1 22.3 C0.709504296 24.1 3.1 24 3.1 24 L23.9999995 24 Z" />
-              <path
-                d="M0 0.2 L0 9 C0 9 0.3 9.8 0.9 9.6 C2.4 9.3 5.2 8.4 6.8 6.8 C8.3 5.2 9.6 2.3 9.8 0.9 C10 0.2 9 0.2 9 0.2 L0 0.2 Z"
-                className="logo-small"
-              />
-            </g>
-          </svg>
-        </div>
+        <Icon color={color} width={20} height={20} icon />
       );
     }
+
     return (
-      <div className="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="250px" height="41px" viewBox="0 0 220 41" version="1.1">
-          <g transform="scale(1.5)">
-            <path
-              style={{ fill: color }}
-              className="logo-big"
-              d="M23.9999995 24 L24 2.7 C24 2.7 23.3 0.7 21.9 1 C18.4139693 1.9 12 4 8.2 8 C4.5754908 11.8 1.7 18.9 1 22.3 C0.709504296 24.1 3.1 24 3.1 24 L23.9999995 24 Z" />
-            <path
-              d="M0 0.2 L0 9 C0 9 0.3 9.8 0.9 9.6 C2.4 9.3 5.2 8.4 6.8 6.8 C8.3 5.2 9.6 2.3 9.8 0.9 C10 0.2 9 0.2 9 0.2 L0 0.2 Z"
-              className="logo-small"
-            />
-            <text className="logo-title">
-              <tspan x="31" y="11">{title}</tspan>
-            </text>
-            <text className="logo-sub" style={{ fill: color }}>
-              <tspan x="31" y="22">{text}</tspan>
-            </text>
-          </g>
-        </svg>
-      </div>
+      <Icon color={color} width={250} height={41}>
+        <Title color={color}>{title}</Title>
+        <SubTitle color={color}>{text}</SubTitle>
+      </Icon>
     );
   }
 }
+
+const LogoBig = styled(({ color }) => ({
+  fill: color,
+}), ({ className }) => (
+  <path
+    className={className}
+    d="M23.9999995 24 L24 2.7 C24 2.7 23.3 0.7 21.9 1 C18.4139693 1.9 12 4 8.2 8 C4.5754908 11.8 1.7 18.9 1 22.3 C0.709504296 24.1 3.1 24 3.1 24 L23.9999995 24 Z"
+  />
+), p => p);
+
+const LogoSmall = styled(() => ({
+  fill: '#828282',
+}), ({ className }) => (
+  <path
+    className={className}
+    d="M0 0.2 L0 9 C0 9 0.3 9.8 0.9 9.6 C2.4 9.3 5.2 8.4 6.8 6.8 C8.3 5.2 9.6 2.3 9.8 0.9 C10 0.2 9 0.2 9 0.2 L0 0.2 Z"
+  />
+), p => p);
+
+const Icon = styled(({ theme, color, width, height, icon }) => ({
+  width,
+  height,
+  fill: color || theme.color,
+  marginTop: icon ? 3 : 12,
+  maxWidth: icon ? 'auto' : 999,
+}), ({ className, children, color, width, height, icon }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} width={width} height={height} viewBox={`0 0 ${icon ? 41 : 220} 41`} version="1.1">
+    <g transform="scale(1.5)">
+      <LogoBig color={color} />
+      <LogoSmall />
+      {children}
+    </g>
+  </svg>
+), p => p);
+
+const Title = styled(() => ({
+  fontSize: 11,
+  fontFamily: 'Times New Roman',
+  fontStyle: 'italic',
+  fontWeight: 700,
+  fill: '#94828B',
+}), ({ className, children }) => (
+  <text className={className}>
+    <tspan x="31" y="11">{children}</tspan>
+  </text>
+), p => p);
+
+const SubTitle = styled(({ theme, color }) => ({
+  fontSize: 10,
+  fontFamily: 'Arial',
+  fill: color || theme.color,
+}), ({ className, children }) => (
+  <text className={className}>
+    <tspan x="31" y="22">{children}</tspan>
+  </text>
+), p => p);
