@@ -5,32 +5,16 @@ import { action } from '@kadira/storybook-addon-actions';
 import { linkTo } from '@kadira/storybook-addon-links';
 import { withKnobs, text } from '@kadira/storybook-addon-knobs';
 import centered from '@storybook/addon-centered';
-import { ThemeProvider, createFela } from 'olymp-fela';
-import { Provider as FelaProvider } from 'react-fela';
-import { MemoryRouter } from 'react-router'
+import { FelaDecorator, RouterDecorator } from 'olymp-fela/storybook';
 
-const renderer = createFela();
 
 import Readme from '../../README.md';
-
-const ss = document.getElementById('fela') || document.createElement('style');
-if (!ss.id) {
-  ss.id = 'fela';
-  ss.type = 'text/css';
-  document.getElementsByTagName('head')[0].appendChild(ss);
-}
 
 storiesOf('Navbar', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
-  .addDecorator(story => (
-    <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
-  ))
-  .addDecorator(story => (
-    <FelaProvider renderer={renderer} mountNode={ss}>
-      <ThemeProvider>{story()}</ThemeProvider>
-    </FelaProvider>
-  ))
+  .addDecorator(RouterDecorator)
+  .addDecorator(FelaDecorator)
   .addWithInfo(
     'with text',
     Readme,
