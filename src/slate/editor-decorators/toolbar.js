@@ -1,6 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react';
 import Portal from 'react-portal';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import { getVisibleSelectionRect } from '../utils/range';
 import { hasBlock, hasMark } from '../utils/has';
 import addBlock from '../utils/add-block';
@@ -90,7 +90,7 @@ export default (options = {}) => {
 
       if (type && Array.isArray(type)) {
         return (
-          <Menu.SubMenu key={type.join('-')} title={<i className={`fa fa-${props.icon}`} />}>
+          <Menu.SubMenu key={type.join('-')} title={<Icon type={props.icon} />}>
             {type.map((subType, index) => {
               const subLabel = props.description && props.description[index] ?
                 props.description[index] :
@@ -110,7 +110,7 @@ export default (options = {}) => {
       return (
         <Menu.Item key={type} className={isActive ? 'active' : ''} data-active={isActive}>
           <div style={{ margin: '0 -20px', padding: '0 20px', textAlign: 'center' }} onMouseDown={onMouseDown}>
-            {label || <i className={`fa fa-${props.icon}`} />}
+            {label || <Icon type={props.icon} />}
           </div>
         </Menu.Item>
       );
