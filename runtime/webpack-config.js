@@ -42,7 +42,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         path.resolve(appRoot, 'node_modules'),
         path.resolve(appRoot, 'app'),
       ],
-      alias: {
+      alias: Object.assign({
         react: path.resolve(appRoot, 'node_modules', 'react'),
         // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
         'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
@@ -55,7 +55,10 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'olymp-navbar': path.resolve(olympRoot, 'src', 'navbar'),
         '@root': appRoot,
         '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
-      }
+      }, fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => { // get all folders in src and create 'olymp-xxx' alias
+        obj[`olymp-${item}`] = path.resolve(olympRoot, 'src', item);
+        return obj;
+      }, { })),
     },
     resolveLoader: {
       modules: [
@@ -136,11 +139,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     },
   };
 
-  /*// React lite
-  if (isProd && isWeb) {
-    config.resolve.alias.react = path.resolve(appRoot, 'node_modules', 'react-lite');
-    config.resolve.alias['react-dom'] = path.resolve(appRoot, 'node_modules', 'react-lite');
-  }*/
   // inline-source-map for web-dev
   if (isDev && isWeb) {
     config.devtool = 'inline-source-map';

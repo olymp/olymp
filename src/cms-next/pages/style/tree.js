@@ -43,6 +43,9 @@ export const TreeNode = styled(({ }) => ({
   '> a:first-child': {
     flex: 1,
   },
+  '> a': {
+    color: 'black',
+  },
 }), ({ className, item, query }) => (
   <span className={className}>
     <Link to={{ pathname: item.pathname, query }}>
