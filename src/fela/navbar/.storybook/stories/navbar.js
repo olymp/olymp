@@ -5,13 +5,20 @@ import { action } from '@kadira/storybook-addon-actions';
 import { linkTo } from '@kadira/storybook-addon-links';
 import { withKnobs, text } from '@kadira/storybook-addon-knobs';
 import centered from '@storybook/addon-centered';
-import { ThemeProvider, createFela } from 'olymp/ui';
+import { ThemeProvider, createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
 import { MemoryRouter } from 'react-router'
 
 const renderer = createFela();
 
 import Readme from '../../README.md';
+
+const ss = document.getElementById('fela') || document.createElement('style');
+if (!ss.id) {
+  ss.id = 'fela';
+  ss.type = 'text/css';
+  document.getElementsByTagName('head')[0].appendChild(ss);
+}
 
 storiesOf('Navbar', module)
   .addDecorator(withKnobs)
@@ -20,7 +27,7 @@ storiesOf('Navbar', module)
     <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
   ))
   .addDecorator(story => (
-    <FelaProvider renderer={renderer}>
+    <FelaProvider renderer={renderer} mountNode={ss}>
       <ThemeProvider>{story()}</ThemeProvider>
     </FelaProvider>
   ))
@@ -47,9 +54,5 @@ storiesOf('Navbar', module)
     )
   )
   .add('with some emoji', () => (
-    <FelaProvider renderer={renderer}>
-      <ThemeProvider>
-        <Toggler onClick={action('clicked')}>😀 😎 👍 💯</Toggler>
-      </ThemeProvider>
-    </FelaProvider>
+    <Toggler onClick={action('clicked')}>😀 😎 👍 💯</Toggler>
   ));
