@@ -1,6 +1,7 @@
 const path = require('path');
+const fs = require('fs');
 const appRoot = process.cwd();
-const olympRoot = path.resolve(__dirname, '..', '..', '..');
+const olympRoot = path.resolve(__dirname, '..', '..', '..', '..');
 
 module.exports = function(storybookBaseConfig, configType) {
   if (!storybookBaseConfig.resolve.modules) storybookBaseConfig.resolve.modules = [];
@@ -13,7 +14,10 @@ module.exports = function(storybookBaseConfig, configType) {
   );
   storybookBaseConfig.resolve.alias.olymp = olympRoot;
   storybookBaseConfig.resolve.alias.hashtax = path.resolve(olympRoot, 'src', 'hashtax');
-  storybookBaseConfig.resolve.alias['olymp-icons'] = path.resolve(olympRoot, 'src', 'icons');
+  fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => { // get all folders in src and create 'olymp-xxx' alias
+    storybookBaseConfig.resolve.alias[`olymp-${item}`] = path.resolve(olympRoot, 'src', item);
+    return obj;
+  }, { });
 
   storybookBaseConfig.module.loaders[0].query.plugins.push('transform-decorators-legacy');
   storybookBaseConfig.module.loaders[0].include[0] = path.resolve(olympRoot, 'src');
