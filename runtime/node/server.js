@@ -24,7 +24,7 @@ import fs from 'fs';
 import useragent from 'express-useragent';
 import bodyparser from 'body-parser';
 import { Server as WebSocketServer } from 'uws';
-import createFela from '../fela';
+import { createFela } from 'olymp-fela';
 import { EventEmitter } from 'events';
 
 const init = require('@app').init;

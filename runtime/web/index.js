@@ -7,7 +7,7 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
-import createFela from '../fela';
+import { createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import App from '@app';
