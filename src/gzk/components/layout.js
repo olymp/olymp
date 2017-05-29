@@ -10,15 +10,15 @@ export const Header = styled(({ sticky }) => ({
 }), 'nav', p => p);
 
 export const Container = styled(({ }) => ({
-  display: 'flex',
+  /* display: 'flex',
   position: 'relative',
   minHeight: '100vh',
   flexDirection: 'column',
   '> :not(:first-child):not(:last-child)': {
     flex: 1,
-  },
+  }, */
 }), ({ className, children, innerRef }) => (
-  <div className={className} children={children} ref={innerRef} />
+  <div className={className} ref={innerRef}>{children}</div>
 ), p => p);
 
 export default class Layout extends Component {

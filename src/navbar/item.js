@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled, NavLink } from 'olymp';
-import { fade, shadow, textColorDark, textColorLight } from 'olymp/ui';
+import { fade, shadow, border, textColorDark, textColorLight } from 'olymp-fela';
 import Nav from './nav';
 
 const NavItem = styled(({ theme, inverse, vertically, right }) => ({
@@ -10,10 +10,11 @@ const NavItem = styled(({ theme, inverse, vertically, right }) => ({
   whiteSpace: 'nowrap',
   '> div': {
     backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
+    border: inverse ? 'none' : border(theme),
     display: 'none',
     position: 'absolute',
-    top: vertically ? 0 : '100%',
-    left: vertically ? '100%' : 0,
+    top: !vertically ? '100%' : (inverse ? 0 : -theme.borderWidth),
+    left: vertically ? '100%' : (inverse ? 0 : -theme.borderWidth),
     // borderRadius: theme.borderRadius,
     boxShadow: shadow(),
   },
