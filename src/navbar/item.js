@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled, NavLink } from 'olymp';
-import { fade, shadow } from 'olymp/ui';
+import { fade, shadow, textColorDark, textColorLight } from 'olymp/ui';
 import Nav from './nav';
 
-const NavItem = styled(({ theme, inverse, vertically }) => ({
-  float: vertically ? 'none' : 'left',
-  padding: theme.space3,
+const NavItem = styled(({ theme, inverse, vertically, right }) => ({
+  float: vertically ? 'none' : (right ? 'right' : 'left'),
   position: 'relative',
   whiteSpace: 'nowrap',
   '> div': {
+    backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
     display: 'none',
     position: 'absolute',
     top: vertically ? 0 : '100%',
@@ -23,58 +23,65 @@ const NavItem = styled(({ theme, inverse, vertically }) => ({
       display: 'block',
     }
   }
-}), ({ className, vertically, editable, page, inverse }) => (
+}), ({ className, pathname, name, pages, inverse }) => (
   <div className={className}>
-    {true || editable ? ( // wenn Inhalt
-      <Link to={page.pathname} inverse={inverse}>
-        {page.name}
+    {pathname ? (
+      <Link to={pathname} inverse={inverse}>
+        {name}
       </Link>
     ) : (
       <Placeholder onClick={() => {}} inverse={inverse}>
-        {page.name}
+        {name}
       </Placeholder>
     )}
 
-    {page.children && page.children.length ? (
-      <Nav inverse={inverse} vertically>
-        {page.children.map(child => (
-          <NavItem page={child} vertically inverse={inverse} key={child.id} />
-        ))}
-      </Nav>
+    {pages && pages.length ? (
+      <Nav pages={pages} inverse={inverse} vertically />
     ) : null}
   </div>
 ), p => p);
 NavItem.propTypes = {
-  /**  */
-  page: PropTypes.shape({
+  /** name  */
+  name: PropTypes.string.isRequired,
+  /** path for react-router or undefined for placeholder */
+  pathname: PropTypes.string,
+  /** Array of page-objects for submenu */
+  pages: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     pathname: PropTypes.string,
     children: PropTypes.arrayOf(PropTypes.object)
-  }).isRequired,
+  })),
   /** inverse theme with primary-color background */
   inverse: PropTypes.bool,
   /** render nav vertically instead horizontally */
   vertically: PropTypes.bool,
   /** */
   editable: PropTypes.bool,
+  /** aligns nav-item right */
+  right: PropTypes.bool,
 };
 NavItem.defaultProps = {
+  pathname: undefined,
+  pages: [],
   inverse: false,
   vertically: false,
   editable: false,
+  right: false,
 };
 export default NavItem;
 
-const Link = styled(({ theme, inverse }) => ({
-  color: inverse ? theme.textColorLight : theme.textColorDark,
-  cursor: 'pointer',
+const navItemStyles = ({ theme, inverse }) => ({
+  color: inverse ? textColorLight(theme.textColorLight) : textColorDark(theme.color),
   display: 'block',
+  padding: theme.space3,
+});
+
+const Link = styled(({ theme, inverse }) => ({
+  ...navItemStyles({ theme, inverse }),
+  cursor: 'pointer',
   onHover: {
-    color: inverse ? theme.textColorLight : theme.color,
+    color: inverse ? textColorLight(theme.textColorLight, 'SECONDARY') : textColorDark(theme.color, 'SECONDARY'),
   }
 }), ({ inverse, ...p }) => <NavLink {...p} />, p => p);
 
-const Placeholder = styled(({ theme, inverse }) => ({
-  // color: inverse ? theme.textColorLight : theme.color,
-  display: 'block',
-}), 'span', ({ inverse, ...p }) => p);
+const Placeholder = styled(p => navItemStyles(p), 'span', ({ inverse, ...p }) => p);
