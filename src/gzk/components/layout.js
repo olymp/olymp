@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Footer from './footer';
 import Logo from './logo';
-import { Navbar, Nav } from 'olymp-fela';
+import { Navbar, Nav, Layout } from 'olymp-fela';
 import { styled } from 'olymp';
 
 export const Header = styled(({ sticky }) => ({
@@ -9,19 +9,7 @@ export const Header = styled(({ sticky }) => ({
   boxShadow: sticky && '0 3px 11px 0 rgba(0,0,0,.06)',
 }), 'nav', p => p);
 
-export const Container = styled(({ }) => ({
-  /* display: 'flex',
-  position: 'relative',
-  minHeight: '100vh',
-  flexDirection: 'column',
-  '> :not(:first-child):not(:last-child)': {
-    flex: 1,
-  }, */
-}), ({ className, children, innerRef }) => (
-  <div className={className} ref={innerRef}>{children}</div>
-), p => p);
-
-export default class Layout extends Component {
+export default class GzLayout extends Component {
   static defaultProps = {
     pages: [],
   }
@@ -30,34 +18,19 @@ export default class Layout extends Component {
     const nav = pages.map(x => x.children)[0];
 
     return (
-      <Container className="frontend" innerRef={node => { if (node) this.container = node }}>
-        <Navbar
-          brand={<Logo color={color} title={title} text={text} />}
-          inverse
-        >
-          <Nav pages={nav} inverse right />
-        </Navbar>
-
-        <Navbar
-          brand={<Logo color={color} title={title} text={text} />}
-        >
-          <Nav pages={nav} right />
-        </Navbar>
-
-        <Navbar
-          inverse
-          vertically
-          pages={nav}
-        />
-
-        <Navbar
-          vertically
-          pages={nav}
-        />
-
-        {children}
-        <Footer {...this.props} />
-      </Container>
+      <Layout>
+        <Layout.Header container>
+          <Navbar brand={<Logo color={color} title={title} text={text} />}>
+            <Nav pages={nav} right />
+          </Navbar>
+        </Layout.Header>
+        <Layout.Body container>
+          {children}
+        </Layout.Body>
+        <Layout.Footer container>
+          <Footer {...this.props} />
+        </Layout.Footer>
+      </Layout>
     );
   }
 }

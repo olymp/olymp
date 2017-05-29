@@ -8,6 +8,9 @@ const NavItem = styled(({ theme, inverse, vertically }) => ({
   float: vertically ? 'none' : 'left',
   position: 'relative',
   whiteSpace: 'nowrap',
+  '> a': {
+    color: theme.textColor,
+  },
   '> div': {
     backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
     border: inverse ? 'none' : border(theme),
