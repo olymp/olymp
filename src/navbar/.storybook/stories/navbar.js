@@ -28,7 +28,7 @@ storiesOf('Navbar', module)
               {
                 id: 'home',
                 name: 'Home',
-                pathName: '/',
+                pathname: '/',
                 children: [],
               }
             ]}
