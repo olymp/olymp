@@ -1,10 +1,4 @@
-export { default as Page } from './views/pages/page';
-export { default as CmsContainer } from './views/container';
-export { default as MediaModal } from './views/media/view';
-export { SortableContainer as sortableContainer, SortableElement as sortableElement, SortableHandle as sortableHandle, arrayMove } from 'react-sortable-hoc';
-export { default as Navigation } from './components/navigation';
-export * from './decorators';
-export * from './edits';
-
-export * from '../slate';
-export * from '../core';
+export { default as cms } from './cms';
+export * from './navigation';
+export * from './collection';
+export * from './pages';

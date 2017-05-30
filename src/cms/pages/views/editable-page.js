@@ -5,13 +5,17 @@ import { Sidebar, Container, SplitView } from 'olymp/ui';
 import { queryPage, mutatePage } from '../gql';
 import { Pages } from '../pages';
 import { PageForm } from '../form';
-import { Page } from '../page';
+import Page from '../page';
 
 @withRouter
 @queryPage
 @Form.create()
 @mutatePage
 export default class PageSidebar extends Component {
+  onChange = (blocks) => {
+    const { form } = this.props;
+    form.setFieldsValue({ blocks });
+  }
   render() {
     const { id, form, router, pathname, save, query, binding, navigation, flatNavigation, render, deviceWidth } = this.props;
     let { item } = this.props;
@@ -42,6 +46,7 @@ export default class PageSidebar extends Component {
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
 
+    form.getFieldDecorator('blocks');
     return (
       <SplitView deviceWidth={deviceWidth}>
         <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
@@ -51,8 +56,8 @@ export default class PageSidebar extends Component {
         </Sidebar>
 
         <Container width={1200} padding={0}>
-          {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />)}
-          {!render && <Page item={{ ...item, ...form.getFieldsValue() }} binding={binding} />}
+          {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} onChange={this.onChange} readOnly={!value} binding={binding} />)}
+          {!render && <Page item={{ ...item, ...form.getFieldsValue() }} onChange={this.onChange} readOnly={!value} binding={binding} />}
         </Container>
       </SplitView>
     );

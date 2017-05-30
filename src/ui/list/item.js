@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { styled, Link } from 'olymp';
 import { Icon } from 'antd';
-import Image from '../../cms-next/cloudinary/image';
+import Image from '../../cms/cloudinary/image';
 
 const Content = styled(({ active, disabled }) => ({
   display: 'flex',

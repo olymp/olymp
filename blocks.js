@@ -1,1 +1,1 @@
-module.exports = require('./src/cms/blocks');
+module.exports = require('./src/cms/pages/blocks');

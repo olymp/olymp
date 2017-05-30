@@ -1,0 +1,16 @@
+{
+  "presets": [
+    "react",
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": ["last 2 versions", "safari >= 7"]
+      }
+    }]
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-object-rest-spread"
+  ]
+}

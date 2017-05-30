@@ -50,7 +50,7 @@ export class PageForm extends Component {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Text" key="2">
             <Panel paddingX={16}>
-              <Hashtax form={form} item={item} field="text" label={null} placeholder="Text" onChange={this.handleChange} />
+              <Hashtax form={form} item={item} field="blocks" label={null} placeholder="Text" onChange={this.handleChange} />
             </Panel>
           </Tabs.TabPane>
         </Tabs>
