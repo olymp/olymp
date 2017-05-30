@@ -2,13 +2,13 @@ import React, { Component, Children } from 'react';
 import { styled } from 'olymp';
 import { Icon, Button } from 'antd';
 
-const StyledInner = styled(({ padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
+const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
   width,
   minWidth,
   maxWidth,
   height: '100%',
   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-  boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.04)',
+  boxShadow: theme.shadow,
   // borderLeft: right && '1px solid #eee',
   // borderRight: !right && '1px solid #eee',
   zIndex: 1,

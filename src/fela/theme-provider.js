@@ -2,6 +2,7 @@ import { ThemeProvider as FelaThemeProvider } from 'react-fela';
 import React from 'react';
 
 const getTheme = theme => ({
+  // Colors
   color: '#8e44ad',
   colorSecondary: '#e67e22',
   colorSuccess: '#2ecc71',
@@ -29,6 +30,7 @@ const getTheme = theme => ({
   darkDivider: 'rgba(0, 0, 0, 0.12)',
   /* */
 
+  // Spaces
   space0: 0,
   space1: '0.25rem',
   space2: '0.5rem',
@@ -36,11 +38,21 @@ const getTheme = theme => ({
   space4: '2rem',
   space5: '4rem',
 
+  // Borders
   borderWidth: 1,
   borderStyle: 'solid',
   borderRadius: '0.25rem',
   borderColor: 'rgba(0, 0, 0, 0.12)',
 
+  // Shadows
+  shadow: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
+  innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+  /*boxShadowLeft: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
+  boxShadowRight: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
+  boxShadowTop: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
+  boxShadowBottom: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',*/
+
+  // Font
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   fontSize: '1rem',
   fontSizeSmall: '1rem',
