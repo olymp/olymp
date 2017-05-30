@@ -17,16 +17,20 @@ const getTheme = theme => ({
   darkSecondary: 'rgba(0, 0, 0, 0.54)',
   darkMuted: 'rgba(0, 0, 0, 0.38)',
   darkDivider: 'rgba(0, 0, 0, 0.12)',
+
   space0: 0,
   space1: '0.25rem',
   space2: '0.5rem',
   space3: '1rem',
   space4: '2rem',
   space5: '4rem',
+
   borderWidth: 1,
   borderStyle: 'solid',
   borderRadius: '0.25rem',
   borderColor: 'rgba(0, 0, 0, 0.12)',
+
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   fontSize: '1rem',
   fontSizeSmall: '1rem',
   fontSizeH1: '1rem',
