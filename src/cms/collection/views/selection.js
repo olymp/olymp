@@ -40,7 +40,6 @@ class SelectionSidebar extends Component {
     return (
       <Sidebar
         right
-        padding="1rem"
         title={item.name || 'Neu'}
         subtitle={item.id ? `${type} bearbeiten` : `${type} erstellen`}
         footer={
