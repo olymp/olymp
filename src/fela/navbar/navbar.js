@@ -4,13 +4,16 @@ import { NavLink, styled } from 'olymp';
 import { gradient } from 'olymp-fela';
 import Toggler from './toggler';
 import Nav from './nav';
+import NavItem from './item';
 
 const Navbar = styled(({ theme, inverse, vertically, full }) => ({
   backgroundColor: inverse ? theme.color : 'transparent',
   background: inverse ? gradient(theme.color) : 'none',
   borderRadius: full ? 0 : theme.borderRadius,
   margin: full ? theme.space0 : theme.space2,
-  width: vertically ? 200 : 'auto',
+  width: full ? '100%' : 'auto',
+  minWidth: vertically ? 200 : 'auto',
+  display: vertically ? 'inline-block' : 'block',
   onAfter: {
     content: '""',
     clear: 'both',
@@ -18,11 +21,11 @@ const Navbar = styled(({ theme, inverse, vertically, full }) => ({
     visibility: 'hidden',
     height: 0,
   }
-}), ({ className, brand, vertically, children, ...rest }) => (
+}), ({ className, brand, vertically, inverse, children, ...rest }) => (
   <nav className={className}>
-    {brand ? <Brand vertically={vertically}>{brand}</Brand> : null}
+    {brand ? <Brand inverse={inverse} vertically={vertically}>{brand}</Brand> : null}
     <Toggler onClick={() => {}} />
-    <Nav {...rest} vertically={vertically} />
+    <Nav {...rest} inverse={inverse} vertically={vertically} />
     {children}
   </nav>
 ), p => p);
@@ -35,7 +38,7 @@ Navbar.propTypes = {
     children: PropTypes.arrayOf(PropTypes.object)
   })),
   /** react element as brand/logo */
-  brand: PropTypes.element,
+  brand: PropTypes.node,
   /** if true, navbar will fill the whole width */
   fill: PropTypes.bool,
   /** render nav vertically instead horizontally */
@@ -55,9 +58,13 @@ Navbar.defaultProps = {
 };
 export default Navbar;
 
-const Brand = styled(({ theme, vertically }) => ({
+const Brand = styled(({ theme, vertically, inverse }) => ({
   float: vertically ? 'none' : 'left',
-  color: theme.color,
-}), ({ className, children }) => (
-  <NavLink to="/" className={className}>{children}</NavLink>
+  color: inverse ? theme.light : theme.dark,
+  fontSize: `calc(${theme.fontSize} + 4px)`,
+  '> a': {
+    paddingY: `calc(${theme.space3} - 2px)`,
+  }
+}), p => (
+  <NavItem pathname="/" {...p} />
 ), p => p);

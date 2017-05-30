@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import { styled } from 'olymp';
 import NavItem from './item';
 
-const Nav = styled(({ theme, inverse, vertically, right }) => ({
+const Nav = styled(({ theme, fill, vertically, right }) => ({
   float: right ? 'right' : 'none',
   minWidth: vertically ? '100%' : 'auto',
   zIndex: 1,
+  display: fill ? 'flex' : 'block',
+  '> div': fill ? {
+    flex: '1 1',
+    textAlign: 'center',
+  } : {},
   onAfter: {
     content: '.',
     clear: 'both',
@@ -17,7 +22,7 @@ const Nav = styled(({ theme, inverse, vertically, right }) => ({
 }), ({ className, pages, ...rest }) => (
   <div className={className}>
     {(pages || []).map(({ children, ...page }) =>
-      <NavItem {...rest} {...page} pages={children} key={page.id} />
+      <NavItem {...rest} {...page} pages={children} key={page.id}>{page.name}</NavItem>
     )}
   </div>
 ), p => p);
@@ -34,11 +39,14 @@ Nav.propTypes = {
   inverse: PropTypes.bool,
   /** aligns nav-items right */
   right: PropTypes.bool,
+  /** if true, navbar will fill the whole width */
+  fill: PropTypes.bool,
 };
 Nav.defaultProps = {
   pages: [],
   vertically: false,
   inverse: false,
   right: false,
+  fill: false,
 };
 export default Nav;

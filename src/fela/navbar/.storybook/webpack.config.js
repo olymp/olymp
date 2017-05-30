@@ -19,9 +19,9 @@ module.exports = function(storybookBaseConfig, configType) {
     return obj;
   }, { });
 
-  storybookBaseConfig.module.loaders[0].query.plugins.push('transform-decorators-legacy');
-  storybookBaseConfig.module.loaders[0].include[0] = path.resolve(olympRoot, 'src');
-  storybookBaseConfig.module.loaders.push({ test: /\.md$/, loader: 'raw' });
+  storybookBaseConfig.module.rules[0].query.plugins.push('transform-decorators-legacy');
+  storybookBaseConfig.module.rules[0].include[0] = path.resolve(olympRoot, 'src');
+  storybookBaseConfig.module.rules.push({ test: /\.md$/, loader: 'raw' });
   return storybookBaseConfig;
 };
 
