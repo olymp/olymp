@@ -2,19 +2,25 @@ import React from 'react';
 import { Tree as AntTree, Icon } from 'antd';
 import { styled, Link } from 'olymp';
 
-export const Tree = styled(({ }) => ({
+export const Tree = styled(() => ({
+  paddingRight: 8,
+  paddingLeft: 13,
+  paddingY: 0,
+  '& .anticon': {
+    marginLeft: 3,
+  },
   '& li': {
     '> span.ant-tree-switcher': {
       position: 'relative',
       width: 0,
       onAfter: {
-        left: -4,
+        left: -6,
         top: 1,
         position: 'absolute',
       },
     },
     '> span.ant-tree-switcher:after': {
-      left: -8,
+      left: -10,
       top: -1,
       position: 'absolute',
     },
