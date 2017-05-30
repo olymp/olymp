@@ -42,7 +42,7 @@ export const Container = styled(({ theme, width, padding, minHeight }) => ({
   minHeight,
   boxShadow: theme.shadow,
   marginX: 'auto',
-  padding: padding !== undefined ? padding : '1rem',
+  padding: padding !== undefined ? padding : theme.space3,
   backgroundColor: '#FFFFFF',
   position: 'relative',
 }), 'div', ({ width, minHeight, padding, ...p }) => p);
