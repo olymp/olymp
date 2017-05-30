@@ -3,5 +3,5 @@ export { default as ThemeProvider } from './theme-provider';
 export { default as Grid } from './grid';
 export { default as Container } from './container';
 export { default as Layout } from './layout';
-export * from './navbar';
+export { default as Navbar } from './navbar';
 export * from './utils';

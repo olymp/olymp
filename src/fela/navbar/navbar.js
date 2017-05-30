@@ -21,9 +21,10 @@ const Navbar = styled(({ theme, inverse, vertically, full }) => ({
     visibility: 'hidden',
     height: 0,
   }
-}), ({ className, brand, vertically, inverse, children, ...rest }) => (
+}), ({ className, brand, logo, vertically, inverse, children, ...rest }) => (
   <nav className={className}>
     {brand ? <Brand inverse={inverse} vertically={vertically}>{brand}</Brand> : null}
+    {logo ? <Logo vertically={vertically}>{logo}</Logo> : null}
     <Toggler onClick={() => {}} />
     <Nav {...rest} inverse={inverse} vertically={vertically} />
     {children}
@@ -37,16 +38,20 @@ Navbar.propTypes = {
     pathname: PropTypes.string,
     children: PropTypes.arrayOf(PropTypes.object)
   })),
-  /** react element as brand/logo */
+  /** node as brand, light styled */
   brand: PropTypes.node,
-  /** if true, navbar will fill the whole width */
+  /** node as logo without styles */
+  logo: PropTypes.node,
+  /** if true, nav-items will fill the whole width */
   fill: PropTypes.bool,
   /** render nav vertically instead horizontally */
   vertically: PropTypes.bool,
   /** inverse theme with primary-color background */
   inverse: PropTypes.bool,
-  /**  */
+  /** full size width without margin */
   full: PropTypes.bool,
+  /** right aligned nav-items */
+  right: PropTypes.bool,
 };
 Navbar.defaultProps = {
   pages: [],
@@ -55,6 +60,7 @@ Navbar.defaultProps = {
   vertically: false,
   inverse: false,
   full: false,
+  right: false,
 };
 export default Navbar;
 
@@ -64,7 +70,9 @@ const Brand = styled(({ theme, vertically, inverse }) => ({
   fontSize: `calc(${theme.fontSize} + 4px)`,
   '> a': {
     paddingY: `calc(${theme.space3} - 2px)`,
-  }
-}), p => (
-  <NavItem pathname="/" {...p} />
-), p => p);
+  },
+}), p => <NavItem pathname="/" {...p} />, p => p);
+
+const Logo = styled(({ vertically }) => ({
+  float: vertically ? 'none' : 'left',
+}), ({ vertically, ...p }) => <NavLink to="/" {...p} />, p => p);

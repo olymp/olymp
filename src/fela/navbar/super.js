@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from 'olymp';
-import NavItem from './item';
+import { Grid, Navbar } from '../index';
 
 const SuperNav = styled(({ theme, inverse, vertically, right }) => ({
   float: right ? 'right' : 'none',
@@ -15,11 +15,16 @@ const SuperNav = styled(({ theme, inverse, vertically, right }) => ({
     height: 0,
   }
 }), ({ className, pages, ...rest }) => (
-  <div className={className}>
-    {(pages || []).map(({ children, ...page }) =>
-      <NavItem {...rest} {...page} pages={children} key={page.id} />
-    )}
-  </div>
+  <Grid size={pages.length}>
+    {pages.map(({ id, name, children }, i) => (
+      <Grid.Item mini={1} key={id || i}>
+        <Navbar.Item>{name}</Navbar.Item>
+        <ul>
+          {children.map(({ id, name }, i) => <li key={id || i}>{name}</li>)}
+        </ul>
+      </Grid.Item>
+    ))}
+  </Grid>
 ), p => p);
 SuperNav.propTypes = {
   /** Array of page-objects */

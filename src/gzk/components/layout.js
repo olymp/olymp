@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Footer from './footer';
 import Logo from './logo';
-import { Navbar, Nav, Layout } from 'olymp-fela';
+import { Navbar, Layout } from 'olymp-fela';
 import { styled } from 'olymp';
 
 export const Header = styled(({ sticky }) => ({
@@ -20,8 +20,8 @@ export default class GzLayout extends Component {
     return (
       <Layout>
         <Layout.Header container>
-          <Navbar brand={<Logo color={color} title={title} text={text} />} full>
-            <Nav pages={nav} right />
+          <Navbar logo={<Logo color={color} title={title} text={text} />} full>
+            <Navbar.Nav pages={nav} right />
           </Navbar>
         </Layout.Header>
         <Layout.Body>
