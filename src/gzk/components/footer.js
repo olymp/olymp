@@ -37,19 +37,17 @@ export default class Footer extends Component {
     });
 
     return (
-      <div className="container mt-2">
-        <nav className="nav nav-inline">
-          <small>
-            GesundheitsZentrum Kelkheim. Copyright {new Date().getFullYear()}.
-          </small>
-          <ul className="pull-right">
-            {nav}
-            {!user && location ? <Link className="item" to={{ pathname: location.pathname, query: { login: null } }}>
-              <i className="fa fa-sign-in" />
-            </Link> : null}
-          </ul>
-        </nav>
-      </div>
+      <nav className="nav nav-inline">
+        <small>
+          GesundheitsZentrum Kelkheim. Copyright {new Date().getFullYear()}.
+        </small>
+        <ul className="pull-right">
+          {nav}
+          {!user && location ? <Link className="item" to={{ pathname: location.pathname, query: { login: null } }}>
+            <i className="fa fa-sign-in" />
+          </Link> : null}
+        </ul>
+      </nav>
     );
   }
 }
