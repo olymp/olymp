@@ -20,7 +20,7 @@ export default class GzLayout extends Component {
     return (
       <Layout>
         <Layout.Header container>
-          <Navbar brand={<Logo color={color} title={title} text={text} />}>
+          <Navbar brand={<Logo color={color} title={title} text={text} />} full>
             <Nav pages={nav} right />
           </Navbar>
         </Layout.Header>

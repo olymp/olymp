@@ -5,11 +5,11 @@ import { gradient } from 'olymp-fela';
 import Toggler from './toggler';
 import Nav from './nav';
 
-const Navbar = styled(({ theme, inverse, vertically }) => ({
+const Navbar = styled(({ theme, inverse, vertically, full }) => ({
   backgroundColor: inverse ? theme.color : 'transparent',
   background: inverse ? gradient(theme.color) : 'none',
-  borderRadius: theme.borderRadius,
-  margin: theme.space2,
+  borderRadius: full ? 0 : theme.borderRadius,
+  margin: full ? theme.space0 : theme.space2,
   width: vertically ? 200 : 'auto',
   onAfter: {
     content: '""',
@@ -26,6 +26,7 @@ const Navbar = styled(({ theme, inverse, vertically }) => ({
     {children}
   </nav>
 ), p => p);
+Navbar.displayName = 'Navbar';
 Navbar.propTypes = {
   /** Array of page-objects */
   pages: PropTypes.arrayOf(PropTypes.shape({
@@ -41,6 +42,8 @@ Navbar.propTypes = {
   vertically: PropTypes.bool,
   /** inverse theme with primary-color background */
   inverse: PropTypes.bool,
+  /**  */
+  full: PropTypes.bool,
 };
 Navbar.defaultProps = {
   pages: [],
@@ -48,6 +51,7 @@ Navbar.defaultProps = {
   fill: false,
   vertically: false,
   inverse: false,
+  full: false,
 };
 export default Navbar;
 

@@ -72,12 +72,13 @@ const navItemStyles = ({ theme, inverse }) => ({
   color: inverse ? theme.lightSecondary : theme.darkSecondary,
   display: 'block',
   padding: theme.space3,
+  fontFamily: theme.fontFamily,
+  textDecoration: 'none',
 });
 
 const Link = styled(({ theme, inverse }) => ({
   ...navItemStyles({ theme, inverse }),
   cursor: 'pointer',
-  textDecoration: 'none',
   onHover: {
     color: inverse ? theme.light : theme.dark,
   }
