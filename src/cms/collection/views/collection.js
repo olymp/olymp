@@ -4,6 +4,7 @@ import { upperFirst } from 'lodash';
 import { queryPage } from '../../pages';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
+import Page from '../../pages/page';
 
 const mod = Wrapped => ({ data, item, ...rest }) => (
   <Wrapped pageData={data} page={item} {...rest} />
@@ -19,7 +20,7 @@ export default (type, collection) => {
     state = { search: '' };
 
     render() {
-      const { id, page, deviceWidth, mutate, handleListClick, onClose, items } = this.props;
+      const { id, page, deviceWidth, mutate, handleListClick, onClose, items, render } = this.props;
       const { search } = this.state;
       const item = items.find(item => item.id === id) || {};
 
@@ -36,7 +37,8 @@ export default (type, collection) => {
           />
 
           <Container>
-            <Placeholder>Hier fände ich es cool, wennn man über ein Select einen Block auswählen kann und darin dann quasi ne Vorschau von dem Artikel sieht.</Placeholder>
+            {render && render(<Page item={item} onChange={this.onChange} readOnly={!item.value} binding={item} />)}
+            {!render && <Page item={item} onChange={this.onChange} readOnly={!item.value} binding={item} />}
           </Container>
 
           <SelectionSidebar item={item} type={upperFirst(type)} mutate={mutate} onCancel={() => handleListClick({ id: null })}>
