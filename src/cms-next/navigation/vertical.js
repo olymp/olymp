@@ -15,7 +15,7 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   // boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
-  boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)!important',
+  boxShadow: `${theme.innerShadow}!important`,
   background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
   '> li.ant-menu-item': {
     paddingX: 14,

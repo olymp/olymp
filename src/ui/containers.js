@@ -40,7 +40,7 @@ export const Container = styled(({ theme, width, padding, minHeight }) => ({
   width: width || 700,
   maxWidth: width || 700,
   minHeight,
-  boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
+  boxShadow: theme.shadow,
   marginX: 'auto',
   padding: padding !== undefined ? padding : theme.space3,
   backgroundColor: '#FFFFFF',
