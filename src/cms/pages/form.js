@@ -8,20 +8,13 @@ import { Input, Hashtax, State } from '../collection';
 import { Parent } from './edits';
 
 export class PageForm extends Component {
-  handleChange = text => { // trigger text change for preview
-    const { form, item, onChangeText } = this.props;
-    if (onChangeText) onChangeText(text);
-  }
-  handleNameChange = e => { // set slug if unset
+  handleNameChange = (e) => { // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
-    const slug = form.getFieldValue('slug');
-    // if (!slug) {
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
-    // }
   }
   render() {
-    const { form, item, navigation, items } = this.props;
+    const { form, item, items } = this.props;
 
     let tree = unflatten(items.map(({ id, name, parentId }) => ({
       value: id,
@@ -50,7 +43,7 @@ export class PageForm extends Component {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Text" key="2">
             <Panel paddingX={16}>
-              <Hashtax form={form} item={item} field="blocks" label={null} placeholder="Text" onChange={this.handleChange} />
+              <Hashtax form={form} item={item} field="text" label={null} placeholder="Text" />
             </Panel>
           </Tabs.TabPane>
         </Tabs>
