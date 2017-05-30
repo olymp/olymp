@@ -1,1 +1,2 @@
-export * from './navbar';
+import './navbar';
+import './nav';
