@@ -24,15 +24,15 @@ const NavItem = styled(({ theme, inverse, vertically }) => ({
       display: 'block',
     }
   }
-}), ({ className, pathname, name, pages, inverse }) => (
+}), ({ className, pathname, children, pages, inverse }) => (
   <div className={className}>
     {pathname ? (
       <Link to={pathname} inverse={inverse}>
-        {name}
+        {children}
       </Link>
     ) : (
       <Placeholder onClick={() => {}} inverse={inverse}>
-        {name}
+        {children}
       </Placeholder>
     )}
 
@@ -42,8 +42,6 @@ const NavItem = styled(({ theme, inverse, vertically }) => ({
   </div>
 ), p => p);
 NavItem.propTypes = {
-  /** name  */
-  name: PropTypes.string.isRequired,
   /** path for react-router or undefined for placeholder */
   pathname: PropTypes.string,
   /** Array of page-objects for submenu */
@@ -69,7 +67,7 @@ NavItem.defaultProps = {
 export default NavItem;
 
 const navItemStyles = ({ theme, inverse }) => ({
-  color: inverse ? theme.lightSecondary : theme.darkSecondary,
+  color: inverse ? theme.light2 : theme.dark2,
   display: 'block',
   padding: theme.space3,
   fontFamily: theme.fontFamily,
