@@ -44,7 +44,7 @@ export const TreeNode = styled(({ theme }) => ({
     flex: 1,
   },
   '> a': {
-    color: theme.textColor,
+    color: theme.dark,
   },
 }), ({ className, item, query }) => (
   <span className={className}>

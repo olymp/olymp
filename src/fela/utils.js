@@ -28,12 +28,6 @@ export const border = (theme, color) => `${theme.borderWidth}px ${theme.borderSt
 export const shadow = color => `0px 0px 5px 0px ${tinycolor(color || 'rgba(0, 0, 0, 0.1)').toRgbString()}`;
 export const innerShadow = color => `inset ${shadow(color)}`;
 
-// TEXTCOLORS
-export const textColorDark = (color, type) =>
-  tinycolor(color).setAlpha(TEXT_COLOR_DARK[type] || 0.87).toRgbString();
-export const textColorLight = (color, type) =>
-  tinycolor(color).setAlpha(TEXT_COLOR_LIGHT[type] || 1).toRgbString();
-
 export const gradient = (color1, color2, deg) => {
   let tColor1 = tinycolor(lighten(color1)).spin(6);
   let tColor2 = tinycolor(darken(color1)).spin(-3);

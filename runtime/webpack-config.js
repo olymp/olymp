@@ -52,7 +52,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         olymp: olympRoot,
         hashtax: path.resolve(olympRoot, 'src', 'hashtax'),
         'olymp-icons': path.resolve(olympRoot, 'src', 'icons'),
-        'olymp-navbar': path.resolve(olympRoot, 'src', 'navbar'),
         '@root': appRoot,
         '@app': isNode && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
       }, fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => { // get all folders in src and create 'olymp-xxx' alias
