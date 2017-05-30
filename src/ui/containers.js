@@ -41,7 +41,7 @@ export const Container = styled(({ width, padding, minHeight }) => ({
   maxWidth: width || 700,
   minHeight,
   boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
-  margin: '1rem auto',
+  marginX: 'auto',
   padding: padding !== undefined ? padding : '1rem',
   backgroundColor: '#FFFFFF',
   position: 'relative',
