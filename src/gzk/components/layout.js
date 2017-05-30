@@ -24,7 +24,7 @@ export default class GzLayout extends Component {
             <Nav pages={nav} right />
           </Navbar>
         </Layout.Header>
-        <Layout.Body container>
+        <Layout.Body>
           {children}
         </Layout.Body>
         <Layout.Footer container>
