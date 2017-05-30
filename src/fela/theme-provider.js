@@ -10,13 +10,24 @@ const getTheme = theme => ({
   colorDanger: '#e74c3c',
   colorMuted: '#bdc3c7',
   light: '#FFFFFF',
+  light1: 'rgba(255, 255, 255, 0.85)',
+  light2: 'rgba(255, 255, 255, 0.7)',
+  light3: 'rgba(255, 255, 255, 0.5)',
+  light4: 'rgba(255, 255, 255, 0.12)',
+  dark: 'rgba(0, 0, 0, 0.87)',
+  dark1: 'rgba(0, 0, 0, 0.7)',
+  dark2: 'rgba(0, 0, 0, 0.54)',
+  dark3: 'rgba(0, 0, 0, 0.38)',
+  dark4: 'rgba(0, 0, 0, 0.12)',
+
+  /* DEPRECATED */
   lightSecondary: 'rgba(255, 255, 255, 0.7)',
   lightMuted: 'rgba(255, 255, 255, 0.5)',
   lightDivider: 'rgba(255, 255, 255, 0.12)',
-  dark: 'rgba(0, 0, 0, 0.87)',
   darkSecondary: 'rgba(0, 0, 0, 0.54)',
   darkMuted: 'rgba(0, 0, 0, 0.38)',
   darkDivider: 'rgba(0, 0, 0, 0.12)',
+  /* */
 
   space0: 0,
   space1: '0.25rem',
