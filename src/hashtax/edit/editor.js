@@ -1,17 +1,22 @@
 import React, { Component, PropTypes } from 'react';
-import Slate from 'slate/lib/components/editor';
+// import Slate from 'slate/lib/components/editor';
 import Mark from 'slate/lib/models/mark';
 import Raw from './serializer/raw';
+import Plain from './serializer/plain';
+import { throttleInput } from 'olymp';
 import { Popover, Tag } from 'antd';
 import { parseComponent } from '../processors';
 import { styled } from 'olymp';
+import { SlateMate } from 'olymp/slate';
 
 const deserialize = (value) => {
   console.log('DESERIALIZE', value);
+  if (!value) return Plain.deserialize('');
   return Raw.deserialize(value, { terse: true });
 };
 const serialize = (state) => {
   console.log('SERIALIZE', state);
+  if (!state) return null;
   return Raw.serialize(state, { terse: true });
 };
 
@@ -58,6 +63,7 @@ const decorate = (text, block) => {
 }
 
 export default class SlateEditor extends Component {
+  throttle = throttleInput(300);
   static contextTypes = {
     Hashtax: PropTypes.func,
   };
@@ -72,7 +78,7 @@ export default class SlateEditor extends Component {
     const { type, args, decorators, raw } = parseComponent(text.split('#').join(''));
     const component = components[type];
 
-    if (component && component.propTypes){
+    if (component && component.propTypes) {
       return {
         content: (
           <div>
@@ -130,18 +136,18 @@ export default class SlateEditor extends Component {
     }
   }
 
-  onChange = value => {
+  onChange = (value) => {
     this.editorState = value;
     this.setState({ }, () => {
       const newValue = serialize(value);
       if (newValue !== this.value) {
         this.value = newValue;
-        this.props.onChange(newValue);
+        this.throttle(() => this.props.onChange(this.value));
       }
     });
   }
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     const key = window.event ? e.keyCode : e.which;
     if (key === 220) { // #
     } else if (key === 56) { // {
@@ -150,9 +156,8 @@ export default class SlateEditor extends Component {
 
   render() {
     const { editorState } = this;
-    console.log(this.props);
     return (
-      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange} onKeyDown={this.onKeyDown} />
+      <SlateMate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange} onKeyDown={this.onKeyDown} />
     );
   }
 }

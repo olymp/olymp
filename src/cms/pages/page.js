@@ -3,7 +3,7 @@ import { object } from 'prop-types';
 import { Hashtax } from 'hashtax';
 import { queryPage } from './gql';
 
-export const Page = ({ item, ...rest }) => (
+const Page = ({ item, ...rest }) => (
   <Hashtax {...rest} value={item.text} page={item} />
 );
 Page.propTypes = {
@@ -12,4 +12,5 @@ Page.propTypes = {
 Page.defaultProps = {
   item: {},
 };
+export default Page;
 export const PageGql = queryPage(Page);
