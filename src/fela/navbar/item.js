@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled, NavLink } from 'olymp';
-import { fade, shadow, border, textColorDark, textColorLight } from 'olymp-fela';
+import { fade, shadow, border } from 'olymp-fela';
 import Nav from './nav';
 
 const NavItem = styled(({ theme, inverse, vertically }) => ({
   float: vertically ? 'none' : 'left',
   position: 'relative',
   whiteSpace: 'nowrap',
-  '> a': {
-    color: theme.textColor,
-  },
   '> div': {
     backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
     border: inverse ? 'none' : border(theme),
@@ -72,7 +69,7 @@ NavItem.defaultProps = {
 export default NavItem;
 
 const navItemStyles = ({ theme, inverse }) => ({
-  color: inverse ? textColorLight(theme.textColorLight) : textColorDark(theme.color),
+  color: inverse ? theme.lightSecondary : theme.darkSecondary,
   display: 'block',
   padding: theme.space3,
 });
@@ -80,8 +77,9 @@ const navItemStyles = ({ theme, inverse }) => ({
 const Link = styled(({ theme, inverse }) => ({
   ...navItemStyles({ theme, inverse }),
   cursor: 'pointer',
+  textDecoration: 'none',
   onHover: {
-    color: inverse ? textColorLight(theme.textColorLight, 'SECONDARY') : textColorDark(theme.color, 'SECONDARY'),
+    color: inverse ? theme.light : theme.dark,
   }
 }), ({ inverse, ...p }) => <NavLink {...p} />, p => p);
 

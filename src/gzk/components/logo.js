@@ -49,8 +49,8 @@ const Icon = styled(({ theme, color, width, height, icon }) => ({
   fill: color || theme.color,
   marginTop: icon ? 3 : 6,
   maxWidth: icon ? 'auto' : 999,
-}), ({ className, children, color, width, height, icon }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} width={width} height={height} viewBox={`0 0 ${icon ? 41 : 220} 41`} version="1.1">
+}), ({ className, children, color, width, height }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} width={width} height={height} viewBox={`0 0 ${width} ${height}`} version="1.1">
     <g transform="scale(1.5)">
       <LogoBig color={color} />
       <LogoSmall />
