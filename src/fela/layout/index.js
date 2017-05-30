@@ -6,7 +6,8 @@ const WithContainer = ({ container, ...rest }) => container ? <Container {...res
 
 const Layout = styled(() => ({
   display: 'flex',
-  minHeight: '100%',
+  height: '100%',
+  minHeight: '100vh',
   flexDirection: 'column',
 }), 'div', p => p);
 Layout.Header = WithContainer;
