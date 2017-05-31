@@ -139,7 +139,8 @@
     "webpack-dev-server": "^2.4.5",
     "webpack-node-externals": "^1.6.0",
     "webpack-visualizer-plugin": "^0.1.11",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "why-did-you-update": "^0.0.8"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
