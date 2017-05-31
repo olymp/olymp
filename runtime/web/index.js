@@ -39,6 +39,9 @@ if (process.env.NODE_ENV === 'production') {
       console.log('SW Event:', 'onUpdateFailed');
     }
   });
+} else {
+  // const { whyDidYouUpdate } = require('why-did-you-update');
+  // whyDidYouUpdate(React);
 }
 /*// TODO
 if (process.env.NODE_ENV === 'production') {
