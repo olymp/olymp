@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'olymp';
+import { withRouter, Link } from 'olymp';
+import { Tree } from 'olymp-ui';
+import { Icon } from 'antd';
 import { queryPages, reorderPage, movePage } from './gql';
-import { Tree, TreeNode } from './style';
 
 @withRouter
 @reorderPage
@@ -43,18 +44,43 @@ export class Pages extends Component {
       });
     }
   }
-  loop = (data, parent) => data.map((item) => {
-    const inner = <TreeNode item={item} parent={parent} {...this.props.location}/>;
-    if (item.children && item.children.length) {
-      return (
-        <Tree.TreeNode key={item.pathname || item.id} title={inner}>
-          {this.loop(item.children, item)}
-        </Tree.TreeNode>
-      );
-    } return <Tree.TreeNode key={item.pathname || item.id} title={inner}/>;
+  getNodeIcon = (item) => {
+    if (item.sorting && item.sorting[0] === '+') {
+      return <a href="javascript:;"><Icon type="arrow-up" /></a>;
+    } else if (item.sorting && item.sorting[0] === '-') {
+      return <a href="javascript:;"><Icon type="arrow-down" /></a>;
+    } else if (item.slug === '/') {
+      return <a href="javascript:;"><Icon type="home" /></a>;
+    } else if (item.aliasId) {
+      return <a href="javascript:;"><Icon type="copy" /></a>;
+    } else if (item.href) {
+      return <a href="javascript:;"><Icon type="link" /></a>;
+    } return null;
+  };
+  loop = (data) => data.map((item) => {
+    const { query } = this.props;
+    const children = item.children && item.children.length ? this.loop(item.children, item) : undefined;
+    return (
+      <Tree.Node key={item.pathname || item.id} title={
+        <Tree.Title>
+          <Link to={{ pathname: item.pathname, query }}>
+            {item.name}
+          </Link>
+          {this.getNodeIcon(item)}
+          {item.bindingId && <Link to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}>
+            <Icon type="share-alt" />
+          </Link>}
+          <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }}>
+            <Icon type="edit" />
+          </Link>
+        </Tree.Title>
+      }>
+        {children}
+      </Tree.Node>
+    );
   })
   render() {
-    const { items, pathname } = this.props;
+    const { items, pathname, query } = this.props;
     const { expandedKeys } = this.state;
     return (
       <Tree

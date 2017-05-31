@@ -40,14 +40,14 @@ export default (options = {}) => {
         return;
       }
       const parentRect = sideBarMenu.parentNode.parentNode.getBoundingClientRect();
-      const height = 48; // sideBarMenu.offsetHeight
-      const width = 32; // sideBarMenu.offsetWidth
+      const height = 24; // sideBarMenu.offsetHeight
+      const width = 16; // sideBarMenu.offsetWidth
       const top = rect.top - parentRect.top - (height / 2) + (rect.height / 2); // eslint-disable-line
       const left = rect.left - parentRect.left - width;
 
       sideBarMenu.style.display = 'block';
       sideBarMenu.style.top = `${top}px`;
-      sideBarMenu.style.left = `${left}px`;
+      sideBarMenu.style.left = `3px`;
     }
     componentDidUpdate() {
       this.componentDidMount();
@@ -100,7 +100,7 @@ export default (options = {}) => {
       return (
         <div className="slate-sidebar" ref={ref => this.gwRef = ref} key="gw-sidebar">
           <Dropdown overlay={menu}>
-            <Icon type="plus" className="slate-sidebar-icon" />
+            <Icon type="plus-circle-o" className="slate-sidebar-icon" />
           </Dropdown>
         </div>
       );

@@ -6,3 +6,4 @@ export { default as SlateMate, SlateMateFrontend, htmlSerializer, rawSerializer 
 export { default as withBlockTypes, useBlockTypes } from './decorators';
 export { default as SlateModal } from './modal';
 export { default as SuggestionsPlugin } from './suggestion-plugin';
+export { default as SlateTreeEdit } from './tree';
