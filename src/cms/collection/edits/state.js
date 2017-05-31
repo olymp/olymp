@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input as AntInput, Form, Select } from 'antd';
+import { Input as AntInput, Form, Select, Icon } from 'antd';
 import getRules from '../rules';
 import { layout } from 'olymp/ui';
 
@@ -11,10 +11,9 @@ const StateInput = ({ item, field, label, layout, initialValue, rules, placehold
         rules: getRules(rules, label),
       })(
         <Select style={{ width: '100%' }} {...rest}>
-          <Select.Option value="PUBLISHED">Veröffentlicht</Select.Option>
-          <Select.Option value="DRAFT">Entwurf</Select.Option>
-          <Select.Option value="Archived">Archiviert</Select.Option>
-          <Select.Option value="DELETED">Gelöscht</Select.Option>
+          <Select.Option value="DRAFT"><b style={{ color: 'blue' }}><Icon type="inbox" /></b> Ablage</Select.Option>
+          <Select.Option value="PUBLISHED"><b style={{ color: 'green' }}><Icon type="check" /></b> Veröffentlicht</Select.Option>
+          <Select.Option value="DELETED"><b style={{ color: 'red' }}><Icon type="delete" /></b> Gelöscht</Select.Option>
         </Select>
       )}
     </Form.Item>
