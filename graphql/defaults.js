@@ -187,7 +187,6 @@ exports.defaultTypes = `
   enum DOCUMENT_STATE {
     PUBLISHED
     DRAFT
-    ARCHIVED
     REMOVED
   }
   enum MUTATION_TYPE {
