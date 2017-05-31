@@ -16,17 +16,17 @@ const getIdByTag = (children) => {
 const options = {
   defaultNode: 'paragraph',
   toolbarMarks: [
-    { type: 'bold', icon: 'exclamation' },
-    { type: 'italic', icon: 'info' },
-    { type: 'underlined', icon: 'minus' },
-    { type: 'center', icon: 'align-center' },
-    { type: 'code', icon: 'code' },
+    { type: 'bold', label: <b>B</b> },
+    { type: 'italic', label: <i>I</i> },
+    { type: 'underlined', label: <u>U</u> },
+    { type: 'center', icon: 'to-top' },
+    { type: 'code', label: <span>{'>'}</span> },
   ],
   toolbarTypes: [
-    { type: ['heading-one', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six'], icon: 'exclamation', description: ['Überschrift 1', 'Überschrift 2', 'Überschrift 3', 'Überschrift 4', 'Überschrift 5', 'Überschrift 6'] },
-    { type: 'block-quote', icon: 'exclamation' },
-    { type: 'numbered-list', icon: 'exclamation' },
-    { type: 'bulleted-list', icon: 'exclamation' },
+    { type: ['heading-one', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six'], label: <b>H</b>, description: ['Überschrift 1', 'Überschrift 2', 'Überschrift 3', 'Überschrift 4', 'Überschrift 5', 'Überschrift 6'] },
+    { type: 'block-quote', label: <span>{'"'}</span> },
+    { type: 'numbered-list', label: <span>ol</span> },
+    { type: 'bulleted-list', label: <span>ul</span> },
   ],
   toolbarActions: [
     {

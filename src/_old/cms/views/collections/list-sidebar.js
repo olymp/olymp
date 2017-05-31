@@ -8,8 +8,7 @@ import { getFilterMenu } from './filter';
 const states = {
   ALL: 'Alle',
   PUBLISHED: 'Öffentlich',
-  DRAFT: 'Entwurf',
-  ARCHIVED: 'Archiv',
+  DRAFT: 'Ablage',
   REMOVED: 'Papierkorb',
 };
 

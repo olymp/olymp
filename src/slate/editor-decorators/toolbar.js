@@ -40,8 +40,8 @@ export default (options = {}) => {
 
       const rect = getVisibleSelectionRect();
       if (!rect) return;
-      const height = 45; // menu.offsetHeight
-      const width = 402; // menu.offsetWidth
+      const height = 30; // menu.offsetHeight
+      const width = 308; // menu.offsetWidth
       const top = (rect.top + window.scrollY) - height;
       const left = rect.left + window.scrollX - width / 2 + rect.width / 2; // eslint-disable-line
 
@@ -88,9 +88,10 @@ export default (options = {}) => {
       const isActive = isActiveFn(value, type);
       const onMouseDown = e => onMouseDownFn(e, props);
 
+      const icon = label || props.label || <Icon type={props.icon} />;
       if (type && Array.isArray(type)) {
         return (
-          <Menu.SubMenu key={type.join('-')} title={<Icon type={props.icon} />}>
+          <Menu.SubMenu key={type.join('-')} title={icon}>
             {type.map((subType, index) => {
               const subLabel = props.description && props.description[index] ?
                 props.description[index] :
@@ -109,8 +110,8 @@ export default (options = {}) => {
 
       return (
         <Menu.Item key={type} className={isActive ? 'active' : ''} data-active={isActive}>
-          <div style={{ margin: '0 -20px', padding: '0 20px', textAlign: 'center' }} onMouseDown={onMouseDown}>
-            {label || <Icon type={props.icon} />}
+          <div onMouseDown={onMouseDown}>
+            {icon}
           </div>
         </Menu.Item>
       );
