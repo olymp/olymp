@@ -56,7 +56,7 @@ class ListSidebar extends Component {
   }
 
   render() {
-    const { items, upload, onClose, search, onSearch, onFilter } = this.props;
+    const { items, upload, onClose, search, onSearch, onFilter, filter } = this.props;
     const directories = orderBy(this.getDirectories(), ['active', 'disabled', 'countFilter', 'countAll', 'label'], ['desc', 'asc', 'desc', 'desc', 'asc']);
 
     return (
@@ -81,8 +81,8 @@ class ListSidebar extends Component {
         title="Mediathek"
         subtitle="Medien sichten und verwalten"
       >
-        {directories.find(dir => dir.disabled) ? <List.Item label="Zurück" icon="left" onClick={() => onFilter([], items)} /> : null}
-        {directories.map(dir => !dir.disabled ? <List.Item {...dir} icon={dir.active && 'left'} /> : null)}
+        {directories.find(dir => dir.disabled) ? <List.Item label="Zurück" icon="left" onClick={() => onFilter(filter.slice(0, -1), items)} /> : null}
+        {directories.filter(dir => !dir.active).map(dir => !dir.disabled ? <List.Item {...dir} /> : null)}
       </Sidebar>
     );
   }
