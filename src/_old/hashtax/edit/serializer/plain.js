@@ -29,7 +29,7 @@ function deserialize(string, options = {}) {
               ]
             }
           ]
-        }
+        },
       }),
     }
   }

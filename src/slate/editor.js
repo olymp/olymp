@@ -7,6 +7,8 @@ import { withSlateState, withSidebar, withToolbar, withAutoMarkdown, withUniqueI
 import withBlockTypes from './decorators';
 import { getId } from './utils/get-text';
 import './style.less';
+import TrailingBlock from 'slate-trailing-block';
+import InsertBlockOnEnter from 'slate-insert-block-on-enter';
 
 const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
@@ -14,7 +16,7 @@ const getIdByTag = (children) => {
 };
 
 const options = {
-  defaultNode: 'paragraph',
+  defaultNode: 'line',
   toolbarMarks: [
     { type: 'bold', label: <b>B</b> },
     { type: 'italic', label: <i>I</i> },
@@ -105,7 +107,7 @@ const serializer = new Html({
   rules: [{
     deserialize(el, next) {
       const types = {
-        p: 'paragraph',
+        p: 'line',
         li: 'list-item',
         ul: 'bulleted-list',
         ol: 'numbered-list',
@@ -181,7 +183,6 @@ const serializer = new Html({
 export const htmlSerializer = serializer;
 export const rawSerializer = Raw;
 
-const md = withAutoMarkdown(options);
 @withBlockTypes
 @withUniqueId()
 @withSlateState({ terse: true })
@@ -189,7 +190,7 @@ const md = withAutoMarkdown(options);
 @withToolbar(options)
 @withSidebar(options)
 export default class SlateEditor extends Component {
-  plugins = [md];
+  plugins = [withAutoMarkdown(options), TrailingBlock({ type: 'line' }), InsertBlockOnEnter({ type: 'line' })];
   state = {};
   static propTypes = {
     readOnly: PropTypes.bool,

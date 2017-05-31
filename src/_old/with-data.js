@@ -2,18 +2,7 @@ import React, { Component, createElement } from 'react';
 import { gql, graphql, SimpleRoute, unflatten } from 'olymp';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
-import { get } from 'lodash';
-
-// interpolate a string value using props
-const interpolate = (value, propsOrFunc) => {
-  if (typeof value !== 'string') return value;
-  if (value.indexOf('{') === -1) return value;
-  return value.replace(/\{\{?\:?(.+?)\}?\}/g, (m, v) => {
-    return typeof propsOrFunc === 'function'
-      ? propsOrFunc(v, v)
-      : get(propsOrFunc, v, v);
-  });
-};
+import { interpolate } from 'hashtax';
 
 const defaultFields = 'id name';
 const deserializeBinding = (value) => { // value e.g. 'event id name slug' or 'event'

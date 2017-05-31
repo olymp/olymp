@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withState } from 'olymp';
 import { Container, Placeholder, SplitView } from 'olymp/ui';
-import { Hashtax } from 'hashtax';
 import { queryTemplate } from '../gql';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
@@ -29,7 +28,7 @@ class Templates extends Component {
         />
 
         <Container>
-          {text ? <Hashtax value={text} /> : <Placeholder>Vorschau</Placeholder>}
+          <Placeholder>Vorschau</Placeholder>
         </Container>
 
         <SelectionSidebar item={item} onCancel={() => handleListClick({ id: null })} setText={setText} />

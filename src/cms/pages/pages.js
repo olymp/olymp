@@ -13,14 +13,15 @@ export class Pages extends Component {
   };
   onDrop = (info) => { // reorder or move nodes on drop
     const { reorder, move } = this.props;
-    const parent = info.dropToGap && info.node.props.title.props.parent
-      ? info.node.props.title.props.parent
-      : info.node.props.title.props.item;
-    const page = info.dragNode.props.title.props.item;
+    const parent = info.dropToGap && info.node.props.parent
+      ? info.node.props.parent
+      : info.node.props.item;
+    const page = info.dragNode.props.item;
+    console.log(page, info.dragNode.props);
     const pageId = page.pageId || page.id; // get real pageId in case of binding
 
     // Get all IDs of children in order
-    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
+    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
     childIds.splice(info.dropPosition, 0, page.id);
 
     // Check if new parent is itself??
@@ -57,11 +58,11 @@ export class Pages extends Component {
       return <a href="javascript:;"><Icon type="link" /></a>;
     } return null;
   };
-  loop = (data) => data.map((item) => {
+  loop = (data, parent) => data.map((item) => {
     const { query } = this.props;
     const children = item.children && item.children.length ? this.loop(item.children, item) : undefined;
     return (
-      <Tree.Node key={item.pathname || item.id} title={
+      <Tree.Node key={item.pathname || item.id} item={item} parent={parent} title={
         <Tree.Title>
           <Link to={{ pathname: item.pathname, query }}>
             {item.name}

@@ -8,7 +8,7 @@ import typeOf from 'type-of';
 import GroupBy from 'lodash/groupBy';
 import shortID from 'shortid';
 
-const createP = () => Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
+const createP = () => Raw.deserializeNode({ kind: 'block', type: 'line', nodes: [{ kind: 'text', text: '', ranges: [] }] });
 export default ({ fetch, trigger, onInsert, renderItems, renderItem, groupBy }) => {
   if (!trigger) trigger = '@';
   if (!fetch) fetch = value => [];

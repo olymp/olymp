@@ -1,16 +1,17 @@
 import React from 'react';
-import { object } from 'prop-types';
-import { Hashtax } from 'hashtax';
+import { object, func } from 'prop-types';
+import { SlateMate, withBlockTypes } from 'olymp/slate';
 import { queryPage } from './gql';
 
-const Page = ({ item, ...rest }) => (
-  <Hashtax {...rest} value={item.text} page={item} />
-);
-Page.propTypes = {
+const PageSlate = withBlockTypes(({ item, onChange, ...rest }) => (
+  <SlateMate {...rest} onChange={onChange} showUndo value={item.blocks || null} />
+));
+PageSlate.propTypes = {
   item: object,
+  onChange: func,
 };
-Page.defaultProps = {
+PageSlate.defaultProps = {
   item: {},
 };
-export default Page;
-export const PageGql = queryPage(Page);
+export default PageSlate;
+export const PageSlateGql = queryPage(PageSlate);

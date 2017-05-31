@@ -4,7 +4,7 @@ import { unflatten, slugify } from 'olymp';
 import { Tabs } from 'antd';
 import { Panel, SectionH } from 'olymp/ui';
 import { queryPage, queryPages, mutatePage } from './gql';
-import { Input, Hashtax, State } from '../collection';
+import { Input, SlateTree, State } from '../collection';
 import { Parent } from './edits';
 
 export class PageForm extends Component {
@@ -43,7 +43,7 @@ export class PageForm extends Component {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Text" key="2">
             <Panel paddingX={16}>
-              <Hashtax form={form} item={item} field="text" label={null} placeholder="Text" />
+              <SlateTree form={form} item={item} field="blocks" label={null} />
             </Panel>
           </Tabs.TabPane>
         </Tabs>
