@@ -1,6 +1,7 @@
 import { styled } from 'olymp';
 
 export default styled(() => ({
+  minHeight: 30,
   position: 'relative',
   marginX: 'auto',
   paddingX: 15,

@@ -11,17 +11,17 @@ const addAction = ({ editor, state, node }) => {
   const last = node.nodes.last();
 
   const options = [];
-  if (!prev || prev.type !== 'paragraph') options.push({ label: 'Neuer Paragraph darüber', value: '+<<' });
+  if (!prev || prev.type !== 'line') options.push({ label: 'Neuer Paragraph darüber', value: '+<<' });
   else options.push({ label: 'Paragraph darüber löschen', value: '-<<' });
 
   if (!node.isVoid) {
-    if (!first || first.type !== 'paragraph') options.push({ label: 'An Anfang', value: '+<' });
+    if (!first || first.type !== 'line') options.push({ label: 'An Anfang', value: '+<' });
     else options.push({ label: 'Anfang löschen', value: '-<' });
-    if (!last || last.type !== 'paragraph') options.push({ label: 'Ans Ende', value: '+>' });
+    if (!last || last.type !== 'line') options.push({ label: 'Ans Ende', value: '+>' });
     else options.push({ label: 'Ende löschen', value: '->' });
   }
 
-  if (!next || next.type !== 'paragraph') options.push({ label: 'Neuer Paragraph darunter', value: '+>>' });
+  if (!next || next.type !== 'line') options.push({ label: 'Neuer Paragraph darunter', value: '+>>' });
   else options.push({ label: 'Paragraph darunter löschen', value: '->>' });
 
   return {
@@ -32,7 +32,7 @@ const addAction = ({ editor, state, node }) => {
     options,
     tooltip: 'Absätze um Block hinzufügen/entfernen',
     toggle: ({ key }) => {
-      const p = Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
+      const p = Raw.deserializeNode({ kind: 'block', type: 'line', nodes: [{ kind: 'text', text: '', ranges: [] }] });
       if (key === '+<<') {
         const parent = state.document.getParent(node.key) || node;
         editor.onChange(

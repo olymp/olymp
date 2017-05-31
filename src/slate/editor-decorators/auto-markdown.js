@@ -55,12 +55,12 @@ export default (options = {}) => {
       if (state.startOffset !== 0) return undefined;
       const { startBlock } = state;
 
-      if (startBlock.type === 'paragraph') return undefined;
+      if (startBlock.type === 'line') return undefined;
       e.preventDefault();
 
       let transform = state
         .transform()
-        .setBlock('paragraph');
+        .setBlock('line');
 
       if (startBlock.type === 'list-item') transform = transform.unwrapBlock('bulleted-list');
       return transform.apply();
@@ -87,7 +87,7 @@ export default (options = {}) => {
       return state
         .transform()
         .splitBlock()
-        .setBlock('paragraph')
+        .setBlock('line')
         .apply();
     },
   }; return self;

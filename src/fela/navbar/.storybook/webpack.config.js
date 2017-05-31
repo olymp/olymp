@@ -13,7 +13,6 @@ module.exports = function(storybookBaseConfig, configType) {
     path.resolve(appRoot, 'node_modules')
   );
   storybookBaseConfig.resolve.alias.olymp = olympRoot;
-  storybookBaseConfig.resolve.alias.hashtax = path.resolve(olympRoot, 'src', 'hashtax');
   fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => { // get all folders in src and create 'olymp-xxx' alias
     storybookBaseConfig.resolve.alias[`olymp-${item}`] = path.resolve(olympRoot, 'src', item);
     return obj;

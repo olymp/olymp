@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import useBlockBase from '../block-decorators/base';
 
 export default WrappedComponent => class WithBlockTypes extends Component {
   static contextTypes = {
@@ -9,16 +10,28 @@ export default WrappedComponent => class WithBlockTypes extends Component {
   }
 };
 
-export const useBlockTypes = blockTypes => WrappedComponent => class UseBlockTypes extends Component {
-  static childContextTypes = {
-    blockTypes: React.PropTypes.object,
-  };
-  getChildContext() {
-    return {
-      blockTypes: blockTypes || this.props.blockTypes,
+export const useBlockTypes = (types) => {
+  const blockTypes = Object.keys(types).reduce((result, key) => {
+    if (!types[key].label) {
+      result[key] = types[key];
+    } else {
+      const { component, editable, ...rest } = types[key];
+      result[key] = useBlockBase({ isVoid: !editable, isAtomic: true })(component);
+      result[key].slate = { ...result[key].slate, ...rest };
+    }
+    return result;
+  }, { });
+  return WrappedComponent => class UseBlockTypes extends Component {
+    static childContextTypes = {
+      blockTypes: React.PropTypes.object,
     };
-  }
-  render() {
-    return <WrappedComponent {...this.props} />;
-  }
+    getChildContext() {
+      return {
+        blockTypes: blockTypes || this.props.blockTypes,
+      };
+    }
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  };
 };

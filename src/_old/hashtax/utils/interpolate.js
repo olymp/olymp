@@ -9,4 +9,4 @@ export default (value, propsOrFunc) => {
       ? propsOrFunc(v, v)
       : get(propsOrFunc, v, v);
   });
-}
+};

@@ -49,23 +49,40 @@ export default class SlateTree extends Component {
     }, 0) : 0;
     return length + text + children + ranges;
   }
-  loop = nodes => nodes.map((node, i) => {
-    const children = node.nodes && node.nodes.length ? this.loop(node.nodes, node) : undefined;
-    const length = this.getTextLength(node);
-    const title = (
-      <Tree.Title>
-        <a href="javascript:;">
-          {node.type || node.kind} ({ length })
-        </a>
-        {node.kind === 'block' && <a href="javascript:;"><Icon type="appstore-o" /></a>}
-      </Tree.Title>
-    );
-    return (
-      <Tree.Node key={i} title={title}>
+  loop = (nodes) => {
+    const items = [];
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node && node.kind !== 'text') {
+        const lastNode = items[items.length - 1];
+        const children = node.nodes && node.nodes.length ? this.loop(node.nodes, node) : undefined;
+        const length = this.getTextLength(node);
+        if (lastNode && lastNode.type === 'line' && node.type === 'line') {
+          lastNode.length += length;
+        } else {
+          items.push({
+            length,
+            kind: node.kind,
+            text: node.type === 'line' ? 'Text' : null,
+            type: node.type,
+            children: children && children.length ? children : undefined,
+          });
+        }
+      }
+    }
+    return items.map(({ kind, type, text, length, children }, i) => (
+      <Tree.Node key={i} title={(
+        <Tree.Title>
+          <a href="javascript:;">
+            {text || type || kind} {length ? `(${length})` : ''}
+          </a>
+          {type !== 'line' && <a href="javascript:;"><Icon type="appstore-o" /></a>}
+        </Tree.Title>
+      )}>
         {children}
       </Tree.Node>
-    );
-  })
+    ));
+  }
   render() {
     const { value, pathname, query } = this.props;
     const { expandedKeys } = this.state;

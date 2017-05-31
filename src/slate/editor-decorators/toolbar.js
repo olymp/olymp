@@ -7,7 +7,7 @@ import addBlock from '../utils/add-block';
 
 export default (options = {}) => {
   let { defaultNode, toolbarTypes, toolbarMarks, toolbarActions } = options;
-  if (!defaultNode) defaultNode = 'paragraph';
+  if (!defaultNode) defaultNode = 'line';
   if (!toolbarActions) toolbarActions = [];
   if (!toolbarTypes) toolbarTypes = [];
   if (!toolbarMarks) toolbarMarks = [];

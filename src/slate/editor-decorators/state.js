@@ -65,7 +65,7 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
 
               // Filter empty Blocks
               if (
-                !(type === 'paragraph') &&
+                !(type === 'line') &&
                 !(type === 'line') &&
                 !(kind === 'text' && text === '')
               ) {

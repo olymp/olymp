@@ -3,7 +3,7 @@ import { useGenericBlock } from 'olymp/slate';
 import { Container } from 'olymp-fela';
 
 @useGenericBlock({
-  label: 'Container',
+  label: 'ContainerAlt',
   category: 'Template',
   resize: {
     coverOnResize: true,

@@ -34,7 +34,7 @@ export default (options = {}) => {
         .collapseToEndOf(last)
         .splitBlock()
         .setBlock({
-          type: 'paragraph',
+          type: 'line',
           isVoid: false,
           data: {},
         })
@@ -55,7 +55,7 @@ export default (options = {}) => {
         .collapseToEndOf(last)
         .splitBlock()
         .setBlock({
-          type: 'paragraph',
+          type: 'line',
           isVoid: false,
           data: {},
         })

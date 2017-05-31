@@ -1,9 +1,8 @@
 export * from './form';
 export * from './page';
-export * from './page-slate';
 export * from './gql';
-export * from './views';
 export * from './with-data';
+export * from './views';
 export * from './routes';
 export { default as Error404 } from './404';
 

@@ -7,7 +7,7 @@ import { hasBlock } from '../utils/has';
 
 export default (options = {}) => {
   let { sidebarTypes, defaultNode } = options;
-  if (!defaultNode) defaultNode = 'paragraph';
+  if (!defaultNode) defaultNode = 'line';
   if (!sidebarTypes) sidebarTypes = [];
 
   return Editor => class SlateSidebarDecorator extends Component {

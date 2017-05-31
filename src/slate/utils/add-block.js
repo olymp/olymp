@@ -1,9 +1,11 @@
 import { hasBlock } from './has';
 import { Raw, Block } from 'slate';
-const createP = () => Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
+const createP = () => Raw.deserializeNode({ kind: 'block', type: 'line', nodes: [{ kind: 'text', text: '', ranges: [] }] });
 
 export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }) => {
-  if (!defaultNode) defaultNode = 'paragraph';
+  if (!defaultNode) defaultNode = 'line';
+
+  console.log(value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode })
 
   let transform = value.transform();
   const { document, blocks } = value;

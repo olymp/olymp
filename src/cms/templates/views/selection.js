@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Tabs, Form, Button } from 'antd';
 import { Prompt } from 'olymp';
 import { Sidebar, Panel, onError, onSuccess } from 'olymp/ui';
-import { Input, Hashtax } from '../../collection';
+import { Input } from '../../collection';
 import { mutateTemplate } from '../gql';
 
 @Form.create()
@@ -56,7 +56,7 @@ class SelectionSidebar extends Component {
             </Panel>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Text" key="2">
-            <Hashtax onChange={(text) => setText(text)} form={form} item={item} field="text" label="Text" rules={['required']} label={null} placeholder="Text" size="large" />
+            Text
           </Tabs.TabPane>
         </Tabs>
       </Sidebar>
