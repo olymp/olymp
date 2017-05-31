@@ -137,6 +137,7 @@ storiefy(
       full={boolean('full', true)}
       vertically={boolean('vertically', false)}
       fill={boolean('fill', true)}
+      right={boolean('right', false)}
     />
   )
 );
