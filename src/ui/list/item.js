@@ -3,13 +3,13 @@ import { styled, Link } from 'olymp';
 import { Icon } from 'antd';
 import Image from '../../cms/cloudinary/image';
 
-const Content = styled(({ active, disabled }) => ({
+const Content = styled(({ active, disabled, theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: '5px 6px',
   width: '100%',
   minHeight: 51,
-  color: disabled ? 'rgba(0, 0, 0, 0.40)' : 'rgba(0, 0, 0, 0.85)',
+  color: disabled ? theme.dark3 : theme.dark1,
   // background: active ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.083))' : 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
   background: active && 'rgba(0, 0, 0, 0.03)',
   lineHeight: '20px',

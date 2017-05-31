@@ -18,7 +18,7 @@ export default class Footer extends Component {
         ));
       if (secondLvl.length > 0) {
         return (
-          <div to={item.slug} key={item.slug} className="ui simple dropdown item" activeClassName="active">
+          <div to={item.slug} key={item.slug} className="ui simple dropdown item">
             {item.name}
             <i className="dropdown icon" />
             <div className="menu">
@@ -29,9 +29,9 @@ export default class Footer extends Component {
       }
       return (
         <li className="nav-item" key={item.slug}>
-          <Link to={item.slug} className="item" activeClassName="active">
+          <NavLink to={item.slug} className="item" activeClassName="active">
             {item.name}
-          </Link>
+          </NavLink>
         </li>
       );
     });

@@ -37,7 +37,6 @@ class SelectionSidebar extends Component {
 
     return (
       <Sidebar
-        padding="1rem"
         title={item.name || 'Neu'}
         subtitle={item.id ? 'Template bearbeiten' : 'Template erstellen'}
         footer={
