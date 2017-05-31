@@ -3,7 +3,7 @@ import { boolean, text } from '@storybook/addon-knobs';
 import Navbar from '../index';
 import { storiesOf } from '../.storybook';
 
-const storiefy = storiesOf('Navbar.Nav');
+const storiefy = storiesOf('Navbar.Item');
 const nav = [
   {
     id: 'home',
@@ -62,8 +62,12 @@ storiefy(
   'Basic usage',
   () => (
     <Navbar inverse={boolean('inverse', true)}>
+      <Navbar.Nav>
+        <Navbar.Item title="Left Group - Item 1" />
+        <Navbar.Item title="Left Group - Item 2" />
+      </Navbar.Nav>
       <Navbar.Nav right>
-        <Navbar.Item title="A">
+        <Navbar.Item title="Right Group - Item with SubMenu">
           <Navbar.Nav>
             <Navbar.Item title="SubItem 1">
               <Navbar.Nav>
@@ -74,12 +78,6 @@ storiefy(
             <Navbar.Item title="SubItem 2" />
           </Navbar.Nav>
         </Navbar.Item>
-        <Navbar.Item title="B" />
-        <Navbar.Item title="C" />
-      </Navbar.Nav>
-      <Navbar.Nav fill>
-        <Navbar.Item title="Item 1" />
-        <Navbar.Item title="Item 2" />
       </Navbar.Nav>
     </Navbar>
   )

@@ -1,17 +1,12 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from 'olymp';
-import NavItem from './item';
 
-const Nav = styled(({ theme, fill, vertically, right }) => ({
+const Nav = styled(({ fill, vertically, right }) => ({
   float: right ? 'right' : 'none',
   minWidth: vertically ? '100%' : 'auto',
   zIndex: 1,
-  display: fill ? 'flex' : 'block',
-  '> div': fill ? {
-    flex: '1 1',
-    textAlign: 'center',
-  } : {},
+  display: fill && 'flex',
   onAfter: {
     content: '.',
     clear: 'both',
@@ -19,14 +14,20 @@ const Nav = styled(({ theme, fill, vertically, right }) => ({
     visibility: 'hidden',
     height: 0,
   }
-}), ({ className, pages, children, ...rest }) => (
+}), ({ className, pages, children, ...props }) => ((pages && !!pages.length) || children) ? (
   <div className={className}>
-    {(pages || []).map(({ children, ...page }) =>
-      <NavItem {...rest} {...page} pages={children} key={page.id}>{page.name}</NavItem>
-    )}
-    {children}
+    {pages.map(({ children: childPages, ...page }, i) => props.renderItem({
+      ...page,
+      title: page.name,
+      pages: childPages,
+      key: page.id || i,
+      ...props,
+    }))}
+
+    {Children.map(children, child => cloneElement(child, props))}
   </div>
-), p => p);
+) : null, p => p);
+Nav.displayName = 'Navbar.Nav';
 Nav.propTypes = {
   /** Array of page-objects */
   pages: PropTypes.arrayOf(PropTypes.shape({

@@ -6,8 +6,6 @@ import { Link, Placeholder } from './link';
 
 const SuperNav = styled(({ right }) => ({
   width: 700,
-  left: right && 'auto !important',
-  right: right && 0,
 }), ({ className, pages, inverse }) => (
   <div className={className}>
     <Grid size={pages.length}>
@@ -41,7 +39,7 @@ SuperNav.propTypes = {
     pathname: PropTypes.string,
     children: PropTypes.arrayOf(PropTypes.object)
   })),
-  /** aligns supermenu right */
+  /** aligns mega-submenu right */
   right: PropTypes.bool,
 };
 SuperNav.defaultProps = {
