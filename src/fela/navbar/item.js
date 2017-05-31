@@ -13,7 +13,7 @@ const NavItem = styled(({ theme, inverse, vertically }) => ({
   '> div': {
     backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
     border: inverse ? 'none' : border(theme),
-    // display: 'none',
+    display: 'none',
     position: 'absolute',
     top: !vertically ? '100%' : (inverse ? 0 : -theme.borderWidth),
     left: vertically ? '100%' : (inverse ? 0 : -theme.borderWidth),
