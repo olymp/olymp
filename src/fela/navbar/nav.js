@@ -19,11 +19,12 @@ const Nav = styled(({ theme, fill, vertically, right }) => ({
     visibility: 'hidden',
     height: 0,
   }
-}), ({ className, pages, ...rest }) => (
+}), ({ className, pages, children, ...rest }) => (
   <div className={className}>
     {(pages || []).map(({ children, ...page }) =>
       <NavItem {...rest} {...page} pages={children} key={page.id}>{page.name}</NavItem>
     )}
+    {children}
   </div>
 ), p => p);
 Nav.propTypes = {

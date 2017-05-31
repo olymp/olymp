@@ -1,10 +1,9 @@
 import React from 'react';
 import { boolean, text } from '@storybook/addon-knobs';
 import Navbar from '../index';
-import Super from '../super';
 import { storiesOf } from '../.storybook';
 
-const storiefy = storiesOf('Navbar.Nav');
+const storiefy = storiesOf('Navbar.Item');
 const nav = [
   {
     id: 'home',
@@ -60,6 +59,10 @@ const nav = [
 ];
 
 storiefy(
-  'Beni stinkt',
-  () => <Super pages={nav} />
+  'Super dropdown submenu',
+  () => (
+    <Navbar inverse={boolean('inverse', false)}>
+      <Navbar.Item pages={nav} inverse={boolean('inverse', false)} superSub={boolean('superSub', true)}>Hover me!</Navbar.Item>
+    </Navbar>
+  )
 );
