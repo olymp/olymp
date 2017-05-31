@@ -21,15 +21,6 @@ const getTheme = theme => ({
   dark3: 'rgba(0, 0, 0, 0.38)',
   dark4: 'rgba(0, 0, 0, 0.12)',
 
-  /* DEPRECATED */
-  lightSecondary: 'rgba(255, 255, 255, 0.7)',
-  lightMuted: 'rgba(255, 255, 255, 0.5)',
-  lightDivider: 'rgba(255, 255, 255, 0.12)',
-  darkSecondary: 'rgba(0, 0, 0, 0.54)',
-  darkMuted: 'rgba(0, 0, 0, 0.38)',
-  darkDivider: 'rgba(0, 0, 0, 0.12)',
-  /* */
-
   // Spaces
   space0: 0,
   space1: '0.25rem',
@@ -55,13 +46,13 @@ const getTheme = theme => ({
   // Font
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   fontSize: '1rem',
-  fontSizeSmall: '1rem',
-  fontSizeH1: '1rem',
-  fontSizeH2: '1rem',
-  fontSizeH3: '1rem',
-  fontSizeH4: '1rem',
-  fontSizeH5: '1rem',
-  fontSizeH6: '1rem',
+  fontSizeSmall: '0.9rem',
+  fontSizeH1: '1.6rem',
+  fontSizeH2: '1.5rem',
+  fontSizeH3: '1.4rem',
+  fontSizeH4: '1.33rem',
+  fontSizeH5: '1.2rem',
+  fontSizeH6: '0.9rem',
   ...theme,
 });
 

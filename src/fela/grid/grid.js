@@ -2,8 +2,8 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from 'olymp';
 
-const Grid = styled(({ width }) => ({
-  width: width || '100%',
+const Grid = styled(() => ({
+  minWidth: '100%',
   onAfter: {
     content: '""',
     clear: 'both',
