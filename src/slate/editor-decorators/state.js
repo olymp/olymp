@@ -8,9 +8,9 @@ const parseValue = (v, initialState, terse) => {
   if (!v) return Plain.deserialize('');
   const value = JSON.parse(JSON.stringify(v));
   try { return Raw.deserialize(value, { terse }); }
-  catch(err1) {
+  catch (err1) {
     try { return Raw.deserialize(value, { terse: !terse }); }
-    catch(err2) {
+    catch (err2) {
       console.error('Couldnt parse value in slate', err1, err2);
       return initialState ? parseValue(initialState, undefined, { terse }) : Plain.deserialize('');
     }
