@@ -10,8 +10,12 @@ const Layout = styled(() => ({
   minHeight: '100vh',
   flexDirection: 'column',
 }), 'div', p => p);
-Layout.Header = WithContainer;
-Layout.Footer = WithContainer;
+Layout.Header = styled(() => ({
+  flexShrink: 0,
+}), WithContainer, p => p);
+Layout.Footer = styled(() => ({
+  flexShrink: 0,
+}), WithContainer, p => p);
 Layout.Body = styled(() => ({
   flex: 1,
 }), WithContainer, p => p);
