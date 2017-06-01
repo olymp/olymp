@@ -7,6 +7,19 @@ import { Pages } from '../pages';
 import { PageForm } from '../form';
 import Page from '../page';
 
+const plugin = {
+  onChange: (state) => {
+    const map = (nodes) => {
+      nodes.forEach((node) => {
+        if (node.nodes) map(node.nodes);
+        // console.log(node.key);
+      });
+    };
+    map(state.document.nodes);
+    console.log(state.selection);
+  }
+};
+
 @withRouter
 @queryPage
 @Form.create()
@@ -43,7 +56,7 @@ export default class PageSidebar extends Component {
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     const P = form.getFieldDecorator('blocks', {
       initialValue: item.blocks,
-    })(<Page readOnly={!value} binding={binding} />);
+    })(<Page readOnly={!value} binding={binding} plugins={[plugin]} />);
 
     return (
       <SplitView deviceWidth={deviceWidth}>

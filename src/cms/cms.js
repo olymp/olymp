@@ -12,8 +12,6 @@ import { CloudinaryRoute, LightboxProvider, Lightbox } from './cloudinary';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
-import { useBlockTypes } from 'olymp-slate';
-import * as blockTypes from './pages/blocks';
 
 export const Container = styled(({ deviceWidth }) => ({
   display: 'flex',
@@ -81,7 +79,6 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
   @withNavigation
   @withLangProvider(LANG)
   @withTemplates
-  @useBlockTypes(blockTypes)
   class CMS extends Component {
     render() {
       const { auth } = this.props;

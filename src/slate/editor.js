@@ -9,6 +9,7 @@ import { getId } from './utils/get-text';
 import './style.less';
 import TrailingBlock from 'slate-trailing-block';
 import InsertBlockOnEnter from 'slate-insert-block-on-enter';
+import BlockToolbar from './block-toolbar';
 
 const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
@@ -247,7 +248,8 @@ export default class SlateEditor extends Component {
   }
 
   render = () => {
-    const { children, showUndo, value, onChange, readOnly, marks, nodes, plugins, className, spellcheck, style, ...rest } = this.props;
+    const { children, showUndo, onChange, readOnly, marks, nodes, plugins, className, spellcheck, style, blockTypes, ...rest } = this.props;
+    const value = this.props.value || Plain.deserialize('');
 
     const undo = !!value && !!value.history && !!value.history.undos && !!value.history.undos['_head'] && value.history.undos['_head'].value;
     // console.log(undo);
@@ -262,11 +264,12 @@ export default class SlateEditor extends Component {
           ) : null}
         </Gateway>
         {children}
+        {readOnly !== true && <BlockToolbar state={value} blockTypes={blockTypes} onChange={onChange} />}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
           <Editor
             {...rest}
-            state={value || Plain.deserialize('')}
+            state={value}
             spellcheck={spellcheck || false}
             readOnly={!!readOnly}
             plugins={this.plugins}

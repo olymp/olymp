@@ -19,5 +19,11 @@ export default {
   // Block decorators like resize
   decorators: [],
   // Actions
-  actions: [],
+  actions: [{
+    type: 'small',
+    icon: 'align-left',
+    tooltip: 'Bild wählen',
+    toggle: ({ setData }) => setData({ alignment: 'left' }),
+    active: ({ alignment }) => alignment === 'left',
+  }],
 };
