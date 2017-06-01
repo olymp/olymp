@@ -38,10 +38,11 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
       const oldValue = getValue(this.props);
       if (newValue !== oldValue && this.rawValue !== newValue) {
         this.value = parseValue(newValue, undefined, terse);
+        this.rawValue = newValue;
         return true;
-      }
-      if (props.readOnly !== this.props.readOnly) return true;
-      return false;
+      } else if (props.readOnly !== this.props.readOnly) {
+        return true;
+      } return false;
     }
 
     changeValue = (value) => {

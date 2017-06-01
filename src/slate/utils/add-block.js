@@ -5,8 +5,6 @@ const createP = () => Raw.deserializeNode({ kind: 'block', type: 'line', nodes: 
 export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }) => {
   if (!defaultNode) defaultNode = 'line';
 
-  console.log(value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode })
-
   let transform = value.transform();
   const { document, blocks } = value;
 
