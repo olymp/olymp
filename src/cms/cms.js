@@ -23,6 +23,13 @@ export const Container = styled(({ deviceWidth }) => ({
 }), 'div', ({ deviceWidth, ...p }) => p);
 
 export default ({ auth, theme, modules }) => (Wrapped) => {
+  const filterPublic = pages => pages
+    .filter(page => page.state === 'PUBLISHED')
+    .map(({ children, ...rest }) => ({
+      ...rest,
+      children: filterPublic(children),
+    }));
+
   // Container for authed users
   const IfAuth = (props) => {
     const { query, templates, collections, location } = props;
@@ -45,7 +52,7 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
               {/*<SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
               <SimpleRoute match={query[`@settings`] !== undefined} render={() => <SettingsRoute {...props} />} />
-              <SimpleRoute render={() => <PageRoute {...props} Wrapped={Wrapped} />} />
+              <SimpleRoute render={() => <PageRoute {...props} navigation={filterPublic(props.navigation)} Wrapped={Wrapped} />} />
             </SimpleSwitch>
           </Container>
         </LightboxProvider>
@@ -55,7 +62,8 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
 
   // Container for non-authed users
   const NoAuth = (props) => {
-    const { templates } = props;
+    const { templates, navigation } = props;
+
     return (
       <ThemeProvider theme={theme}>
         <LightboxProvider>
@@ -63,7 +71,7 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
             <Lightbox />
             <AuthModals />
             <GatewayDest name="modal" />
-            <PageRoute {...props} Wrapped={Wrapped} />
+            <PageRoute {...props} navigation={filterPublic(navigation)} Wrapped={Wrapped} />
           </div>
         </LightboxProvider>
       </ThemeProvider>
@@ -78,10 +86,11 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
   @withTemplates
   class CMS extends Component {
     render() {
-      const { auth } = this.props;
+      const { auth, navigation } = this.props;
       /*const routes = flatNavigation.filter(x => x.slug).map(({ id, slug, binding, pageId, bindingId }) => (
         <DataRoute key={id} id={pageId || id} bindingId={bindingId} binding={binding} match={pathname === slug} component={PageSidebar} location={location} navigation={navigation} flatNavigation={flatNavigation} />
       ));*/
+
       if (!auth.user) {
         return <NoAuth {...this.props} />;
       } return <IfAuth {...this.props} />;
