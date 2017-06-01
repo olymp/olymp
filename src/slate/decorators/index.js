@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { styled } from 'olymp';
 import useBlockBase from '../block-decorators/base';
 
 export default WrappedComponent => class WithBlockTypes extends Component {
@@ -15,7 +16,9 @@ export const useBlockTypes = (types) => {
     if (!types[key].label) {
       result[key] = types[key];
     } else {
-      const { component, editable, ...rest } = types[key];
+      let { component, styles, editable, ...rest } = types[key];
+      if (styles && typeof styles === 'object') component = styled(() => styles, component, p => p);
+      if (styles && typeof styles === 'function') component = styled(styles, component, p => p);
       result[key] = useBlockBase({ isVoid: !editable, isAtomic: true })(component);
       result[key].slate = { ...result[key].slate, ...rest };
     }

@@ -1,5 +1,7 @@
 export { default as Container } from './container';
+export { default as Img } from './img';
 export { default as Line } from './line';
+
 
 /*
 export { default as ContainerOld } from './container-old';

@@ -1,17 +1,22 @@
 import React from 'react';
-import { object, func } from 'prop-types';
+import { object, func, bool } from 'prop-types';
 import { SlateMate, withBlockTypes } from 'olymp/slate';
 import { queryPage } from './gql';
+import { mapProps } from 'recompose';
 
-const PageSlate = withBlockTypes(({ item, onChange, ...rest }) => (
-  <SlateMate {...rest} onChange={onChange} showUndo value={item.blocks || null} />
+const Page = withBlockTypes(props => (
+  <SlateMate {...props} showUndo />
 ));
-PageSlate.propTypes = {
+Page.propTypes = {
   item: object,
   onChange: func,
+  readOnly: bool,
 };
-PageSlate.defaultProps = {
+Page.defaultProps = {
   item: {},
+  readOnly: true,
 };
-export default PageSlate;
-export const PageSlateGql = queryPage(PageSlate);
+export default Page;
+export const PageGql = queryPage(
+  mapProps(({ item }) => ({ value: item && item.blocks }))(Page)
+);

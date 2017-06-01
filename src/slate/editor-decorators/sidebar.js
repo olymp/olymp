@@ -86,7 +86,7 @@ export default (options = {}) => {
       });
 
       const menu = (
-        <Menu>
+        <Menu style={{ minWidth: 150 }}>
           {Object.keys(categories).map(key => (
             <Menu.SubMenu title={key} key={key}>
               {categories[key].map(x => x)}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 // import { DataRoute } from '../with-data';
 import { IFrame } from '../components';
 import { EditablePage } from '../views';

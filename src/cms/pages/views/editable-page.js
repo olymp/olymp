@@ -12,10 +12,6 @@ import Page from '../page';
 @Form.create()
 @mutatePage
 export default class PageSidebar extends Component {
-  onChange = (blocks) => {
-    const { form } = this.props;
-    form.setFieldsValue({ blocks });
-  }
   render() {
     const { id, form, router, pathname, save, query, binding, navigation, flatNavigation, render, deviceWidth } = this.props;
     let { item } = this.props;
@@ -45,19 +41,21 @@ export default class PageSidebar extends Component {
     );
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
+    const P = form.getFieldDecorator('blocks', {
+      initialValue: item.blocks,
+    })(<Page readOnly={!value} binding={binding} />);
 
-    form.getFieldDecorator('blocks');
     return (
       <SplitView deviceWidth={deviceWidth}>
-        <Prompt when={form.isFieldsTouched()} message={location => `Änderungen verwerfen?`} />
+        <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
         <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} padding={0} title={title} subtitle={description}>
           {!value && <Pages items={navigation} />}
           {value && <PageForm form={form} item={item} items={flatNavigation} />}
         </Sidebar>
 
         <Container width={1200} padding={0}>
-          {render && render(<Page item={{ ...item, ...form.getFieldsValue() }} onChange={this.onChange} readOnly={!value} binding={binding} />)}
-          {!render && <Page item={{ ...item, ...form.getFieldsValue() }} onChange={this.onChange} readOnly={!value} binding={binding} />}
+          {render && render(P)}
+          {!render && P}
         </Container>
       </SplitView>
     );

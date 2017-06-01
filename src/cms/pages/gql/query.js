@@ -5,7 +5,7 @@ const getId = (id, query) => query['@page'] && query['@page'] !== 'new' ? query[
 export default graphql(gql`
   query page($id: String) {
     item: page(id: $id) {
-      id slug order name text binding parentId sorting aliasId href blocks state headings { id slug text children { id slug text } }
+      id slug order name binding parentId sorting aliasId href blocks state headings { id slug text children { id slug text } }
     }
   }
 `, {
