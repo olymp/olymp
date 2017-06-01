@@ -15,7 +15,8 @@ export default class GzLayout extends Component {
   }
   render() {
     const { pages, color, title, text, location, links, children, ...rest } = this.props;
-    const nav = pages.map(x => x.children)[0];
+    const nav = (pages.map(x => x.children)[0] || [])
+      .filter(x => x.slug !== '/');
 
     return (
       <Layout>
