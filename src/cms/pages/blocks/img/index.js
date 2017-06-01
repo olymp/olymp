@@ -1,6 +1,45 @@
 import React from 'react';
 import Portal from 'react-portal';
 import { Cloudinary } from '../../../cloudinary';
+import { styled } from 'olymp';
+
+const CloudinaryEdit = styled(({ theme }) => ({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
+  zIndex: 1000,
+  boxShadow: theme.boxShadow,
+  border: `1px solid ${theme.dark4}`,
+  backgroundColor: theme.dark1,
+  '> div': {
+    position: 'absolute',
+    top: 10,
+    bottom: 10,
+    left: 10,
+    right: 10,
+    display: 'flex',
+    backgroundColor: theme.light,
+  }
+}), ({ setData, getData, className }) => (
+  <Portal
+    key={getData('type')}
+    closeOnEsc
+    closeOnOutsideClick
+    openByClickOn={(
+      <a href="javascript:;">
+        Bild wählen
+      </a>
+    )}
+  >
+    <div className={className}>
+      <div>
+        <Cloudinary multi={false} onSelect={x => setData({ value: x.length ? x[0] : null })} />
+      </div>
+    </div>
+  </Portal>
+), p => p);
 
 export default {
   // Meta-Data
@@ -25,17 +64,7 @@ export default {
     type: 'small',
     icon: 'align-left',
     tooltip: 'Bild wählen',
-    component: ({ setData, getData }) => (
-      <Portal key={getData('type')} closeOnEsc closeOnOutsideClick openByClickOn={(
-        <a href="javascript:;">
-          Bild wählen
-        </a>
-      )}>
-        <div style={{ position: 'fixed', top: 0, left: 0, bottom: 0, right: 0, zIndex: 1000, display: 'flex' }}>
-          <Cloudinary multi={false} onSelect={x => setData({ value: x.length ? x[0] : null, y: console.log(x) })} />
-        </div>
-      </Portal>
-    ),
+    component: CloudinaryEdit,
     toggle: ({ setData }) => setData({ alignment: 'left' }),
     active: ({ alignment }) => alignment === 'left',
   }],
