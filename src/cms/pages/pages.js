@@ -21,8 +21,8 @@ const badgeStyle = theme => ({
 });
 
 const Button = styled(({ theme }) => ({
-  backgroundColor: theme.color,
-  ...badgeStyle(theme),
+  // backgroundColor: theme.color,
+  // ...badgeStyle(theme),
 }), ({ className, to, type }) => (
   <Link to={to} className={className}>
     <Icon type={type} />
@@ -30,8 +30,8 @@ const Button = styled(({ theme }) => ({
 ), p => p);
 
 const Badge = styled(({ theme }) => ({
-  backgroundColor: theme.dark2,
-  ...badgeStyle(theme),
+  // backgroundColor: theme.dark2,
+  // ...badgeStyle(theme),
 }), ({ className, type }) => (
   <a href="javascript:;" className={className}>
     <Icon type={type} />
