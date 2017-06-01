@@ -18,7 +18,7 @@ const parseValue = (v, initialState, terse) => {
 };
 
 const defaultGetValue = ({ value }) => value;
-const defaultChangeValue = ({ onChange }, value) => onChange ? onChange(value) : null;
+const defaultChangeValue = ({ onChange }, value, raw) => onChange ? onChange(value, raw) : null;
 
 export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, initialState, terse } = {}) => {
   return Editor => class SlateStateDecorator extends Component {
@@ -83,10 +83,10 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
 
             if (rawValue && flattenNodes(rawValue.nodes).length) {
               if (onChangeHeadings) onChangeHeadings(getHeaders(rawValue.nodes));
-              changeValue(this.props, rawValue);
+              changeValue(this.props, rawValue, value);
             } else {
               if (onChangeHeadings) onChangeHeadings(null);
-              changeValue(this.props, null);
+              changeValue(this.props, null, value);
             }
           });
         }

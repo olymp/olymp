@@ -20,7 +20,7 @@ export const useBlockTypes = (types) => {
       if (styles && typeof styles === 'object') component = styled(() => styles, component, p => p);
       if (styles && typeof styles === 'function') component = styled(styles, component, p => p);
       result[key] = useBlockBase({ isVoid: !editable, isAtomic: true })(component);
-      result[key].slate = { ...result[key].slate, ...rest };
+      result[key].slate = { ...result[key].slate, key, ...rest };
     }
     return result;
   }, { });
