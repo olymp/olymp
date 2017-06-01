@@ -1,5 +1,5 @@
 import React from 'react';
-import { boolean, text } from '@storybook/addon-knobs';
+import { boolean, text, object } from '@storybook/addon-knobs';
 import Navbar from '../index';
 import { storiesOf } from '../.storybook';
 
@@ -61,7 +61,7 @@ const nav = [
 storiefy(
   'Basic usage',
   () => (
-    <Navbar inverse={boolean('inverse', true)}>
+    <Navbar brand="Olymp ❤ CMS" inverse>
       <Navbar.Nav>
         <Navbar.Item title="Left Group - Item 1" />
         <Navbar.Item title="Left Group - Item 2" />
@@ -83,9 +83,55 @@ storiefy(
   )
 );
 storiefy(
+  'Title',
+  () => (
+    <Navbar brand="Olymp ❤ CMS" inverse>
+      <Navbar.Nav>
+        <Navbar.Item pathname="/" title={text('title', 'Title')} />
+      </Navbar.Nav>
+    </Navbar>
+  )
+);
+storiefy(
+  'Link vs. Placeholder',
+  () => (
+    <Navbar brand="Olymp ❤ CMS" inverse>
+      <Navbar.Nav>
+        <Navbar.Item pathname="/" title="Link" pages={nav} />
+        <Navbar.Item title="Placeholder" pages={nav} />
+      </Navbar.Nav>
+    </Navbar>
+  )
+);
+storiefy(
+  'Submenu',
+  () => (
+    <Navbar brand="Olymp ❤ CMS" inverse>
+      <Navbar.Nav>
+        <Navbar.Item
+          pathname="/"
+          title="Item with Submenu"
+          pages={[
+            object('page1', {
+              name: 'Page 1',
+              pathname: '/',
+              children: [],
+            }),
+            object('page2', {
+              name: 'Page 2',
+              pathname: undefined,
+              children: [],
+            }),
+          ]}
+        />
+      </Navbar.Nav>
+    </Navbar>
+  )
+);
+storiefy(
   'Mega-Dropdown-Submenu',
   () => (
-    <Navbar inverse={boolean('inverse', true)}>
+    <Navbar brand="Olymp ❤ CMS" inverse>
       <Navbar.Nav>
         <Navbar.Item pages={nav} mega={boolean('mega', true)} title="Hover me!" />
       </Navbar.Nav>

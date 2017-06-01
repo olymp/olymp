@@ -18,7 +18,6 @@ const createFela = () => {
       unit(),
       namedMediaQuery({
         // From
-        ifHugeUp: '@media (min-width: 1200px)',
         ifLargeUp: '@media (min-width: 992px)',
         ifMediumUp: '@media (min-width: 768px)',
         ifSmallUp: '@media (min-width: 480px)',
@@ -26,7 +25,6 @@ const createFela = () => {
         ifLargeDown: '@media (max-width: 1199px)',
         ifMediumDown: '@media (max-width: 991px)',
         ifSmallDown: '@media (max-width: 767px)',
-        ifMiniDown: '@media (max-width: 479px)',
         // On
         ifHuge: '@media (min-width: 1200px)',
         ifLarge: '@media (max-width: 1199px, min-width: 992)',
@@ -64,6 +62,12 @@ const createFela = () => {
           borderTop: border,
           borderBottom: border,
         }),
+        overflow: overflow => (overflow === 'ellipsis' ? ({
+          whiteSpace: 'nowrap',
+          overflowX: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100%',
+        }) : ({ overflow })),
       }),
       removeUndefined()
     ],

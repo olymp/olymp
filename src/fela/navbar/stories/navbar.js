@@ -71,7 +71,7 @@ storiefy(
 );
 storiefy(
   'Full size',
-  () => <Navbar pages={nav} inverse={boolean('inverse', true)} full={boolean('full', true)} />
+  () => <Navbar pages={nav} inverse full={boolean('full', true)} />
 );
 storiefy(
   'Brand',
@@ -79,7 +79,7 @@ storiefy(
     <Navbar
       pages={nav}
       brand={text('brand', 'Olymp ❤ CMS')}
-      inverse={boolean('inverse', true)}
+      inverse
     />
   )
 );
@@ -89,41 +89,40 @@ storiefy(
     <Navbar
       pages={nav}
       logo={<Icon color={boolean('inverse', true) ? 'white' : '#8e44ad'} size="32" style={{ margin: '9px', display: 'block' }} />}
-      inverse={boolean('inverse', true)}
+      inverse
     />
   )
-);
-storiefy(
-  'Right aligned',
-  () => (
-    <Navbar
-      pages={nav}
-      brand={text('brand', 'Olymp ❤ CMS')}
-      inverse={boolean('inverse', true)}
-      right={boolean('right', true)}
-    />
-  )
-);
-storiefy(
-  'Equal size nav-items',
-  () => (
-    <Navbar
-      pages={nav}
-      brand={text('brand', 'Olymp ❤ CMS')}
-      inverse={boolean('inverse', true)}
-      fill={boolean('fill', true)}
-    />
-  ),
-  'works with flex!'
 );
 storiefy(
   'Vertical nav',
   () => (
     <Navbar
       pages={nav}
-      brand={text('brand', 'Olymp ❤ CMS')}
-      inverse={boolean('inverse', true)}
+      brand="Olymp ❤ CMS"
+      inverse
       vertically={boolean('vertically', true)}
+    />
+  )
+);
+storiefy(
+  'Fill empty space',
+  () => (
+    <Navbar
+      pages={nav}
+      inverse
+      fill={boolean('fill', true)}
+    />
+  ),
+  'Works with flex!'
+);
+storiefy(
+  'Pass props to deeper Components',
+  () => (
+    <Navbar
+      pages={nav}
+      inverse
+      right={boolean('right [Navbar.Nav]', true)}
+      mega={boolean('mega [Navbar.Item]', false)}
     />
   )
 );
@@ -137,7 +136,8 @@ storiefy(
       full={boolean('full', true)}
       vertically={boolean('vertically', false)}
       fill={boolean('fill', true)}
-      right={boolean('right', false)}
+      right={boolean('right [Navbar.Nav]', false)}
+      mega={boolean('mega [Navbar.Item]', false)}
     />
   )
 );

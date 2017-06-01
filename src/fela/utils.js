@@ -1,19 +1,5 @@
 import tinycolor from 'tinycolor2';
 
-const TEXT_COLOR_DARK = {
-  PRIMARY: 0.87,
-  SECONDARY: 0.54,
-  MUTED: 0.38,
-  DIVIDER: 0.12,
-};
-
-const TEXT_COLOR_LIGHT = {
-  PRIMARY: 1,
-  SECONDARY: 0.7,
-  MUTED: 0.5,
-  DIVIDER: 0.12,
-};
-
 // COLOR-TRANSFORMATIONS
 export const lighten = (color, percent) => tinycolor(color).lighten(percent || 8).toRgbString();
 export const darken = (color, percent) => tinycolor(color).darken(percent || 4).toRgbString();
@@ -22,10 +8,10 @@ export const fade = (color, percent) =>
   tinycolor(color).setAlpha(percent / 100 || 0.67).toRgbString();
 
 // BORDERS
-export const border = (theme, color) => `${theme.borderWidth}px ${theme.borderStyle} ${color || theme.borderColor || theme.color}`;
+export const border = (theme, color) => `${theme.borderWidth}px ${theme.borderStyle} ${color || theme.borderColor}`;
 
 // SHADOWS
-export const shadow = color => `0px 0px 5px 0px ${tinycolor(color || 'rgba(0, 0, 0, 0.1)').toRgbString()}`;
+export const shadow = (color, intense) => `0px 0px ${intense || 10} 0px ${tinycolor(color || 'rgba(0, 0, 0, 0.1)').toRgbString()}`;
 export const innerShadow = color => `inset ${shadow(color)}`;
 
 export const gradient = (color1, color2, deg) => {

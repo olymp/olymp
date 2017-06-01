@@ -4,13 +4,13 @@ import { styled } from 'olymp';
 import { Grid } from '../index';
 import { Link, Placeholder } from './link';
 
-const SuperNav = styled(({ right }) => ({
+const SuperNav = styled(() => ({
   width: 700,
 }), ({ className, pages, inverse }) => (
   <div className={className}>
     <Grid size={pages.length}>
       {pages.map(({ id, name, children }, i) => (
-        <Grid.Item mini={1} key={id || i}>
+        <Grid.Item small={1} key={id || i}>
           <Column>
             <Title pathname="/" inverse={inverse}>{name}</Title>
             {children.map((child, cI) => (
@@ -31,7 +31,7 @@ const SuperNav = styled(({ right }) => ({
     </Grid>
   </div>
 ), p => p);
-SuperNav.displayName = 'Navbar.SuperNav';
+SuperNav.displayName = 'Navbar.Mega';
 SuperNav.propTypes = {
   /** Array of page-objects */
   pages: PropTypes.arrayOf(PropTypes.shape({

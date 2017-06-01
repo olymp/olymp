@@ -1,23 +1,23 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink, styled } from 'olymp';
-import { gradient } from 'olymp-fela';
+import { gradient, border } from 'olymp-fela';
 import Toggler from './toggler';
 import Nav from './nav';
 import Item from './item';
 import Sub from './sub';
 
 const renderItem = props => <Item {...props} />;
-const renderSub = props => <Sub {...props} sub />;
+const renderNav = props => <Nav {...props} sub />;
 
-const Navbar = styled(({ theme, inverse, vertically, full }) => ({
+const Navbar = styled(({ theme, inverse, vertically, full, fill }) => ({
   backgroundColor: inverse && theme.color,
   background: inverse && gradient(theme.color),
-  borderRadius: full ? 0 : theme.borderRadius,
-  margin: full ? theme.space0 : theme.space2,
+  borderRadius: !full && theme.borderRadius,
+  margin: !full && theme.space2,
   width: full && '100%',
   minWidth: vertically && 200,
-  display: vertically && 'inline-block',
+  display: vertically ? 'inline-block' : fill && 'flex',
   onAfter: {
     content: '""',
     clear: 'both',
@@ -25,33 +25,34 @@ const Navbar = styled(({ theme, inverse, vertically, full }) => ({
     visibility: 'hidden',
     height: 0,
   },
-}), ({ className, brand, logo, children, ...props }) => (
+  ifMini: {
+    margin: theme.space0,
+  },
+}), ({ className, brand, logo, children, pages, ...props }) => (
   <nav className={className}>
-    {brand ? <Brand {...props} renderItem={renderItem} renderSub={renderSub}>{brand}</Brand> : null}
+    {brand ? <Brand {...props} renderItem={renderItem} renderNav={renderNav}>{brand}</Brand> : null}
     {logo ? <Logo vertically={props.vertically}>{logo}</Logo> : null}
 
-    <Toggler onClick={() => {}} />
-
-    <Nav
-      {...props}
-      renderItem={renderItem}
-      renderSub={renderSub}
-    />
+    {pages && !!pages.length && (
+      <Toggler
+        {...props}
+        pages={pages}
+        renderItem={renderItem}
+        renderNav={renderNav}
+        hasLogo={!!logo || !!brand}
+      >
+        <Sub />
+      </Toggler>
+    )}
 
     {Children.map(children, child => cloneElement(
       child,
-      { ...props, renderItem, renderSub }
+      { ...props, renderItem, renderNav }
     ))}
   </nav>
 ), p => p);
 Navbar.displayName = 'Navbar';
 Navbar.propTypes = {
-  /** Array of page-objects */
-  pages: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    pathname: PropTypes.string,
-    children: PropTypes.arrayOf(PropTypes.object)
-  })),
   /** node as brand, light styled */
   brand: PropTypes.node,
   /** node as logo without styles */
@@ -62,20 +63,26 @@ Navbar.propTypes = {
   inverse: PropTypes.bool,
   /** full size width without margin */
   full: PropTypes.bool,
+  /** nav-items will fill empty space on full length */
+  fill: PropTypes.bool,
 };
 Navbar.defaultProps = {
-  pages: [],
   brand: undefined,
+  logo: undefined,
   vertically: false,
   inverse: false,
   full: false,
+  fill: false,
 };
 export default Navbar;
 
 const Brand = styled(({ theme, vertically, inverse }) => ({
-  float: vertically ? 'none' : 'left',
+  float: `${vertically ? 'none' : 'left'} !important`,
+  width: 'auto !important',
   color: inverse ? theme.light : theme.dark,
+  borderRight: inverse && !vertically && border(theme, theme.dark4),
   fontSize: `calc(${theme.fontSize} + 4px)`,
+  flex: 'none !important',
   '> a': {
     paddingY: `calc(${theme.space3} - 2px)`,
   },

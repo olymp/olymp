@@ -15,11 +15,13 @@ const getTheme = theme => ({
   light2: 'rgba(255, 255, 255, 0.7)',
   light3: 'rgba(255, 255, 255, 0.5)',
   light4: 'rgba(255, 255, 255, 0.12)',
+  light5: 'rgba(255, 255, 255, 0.05)',
   dark: 'rgba(0, 0, 0, 0.87)',
   dark1: 'rgba(0, 0, 0, 0.7)',
   dark2: 'rgba(0, 0, 0, 0.54)',
   dark3: 'rgba(0, 0, 0, 0.38)',
   dark4: 'rgba(0, 0, 0, 0.12)',
+  dark5: 'rgba(0, 0, 0, 0.05)',
 
   // Spaces
   space0: 0,
@@ -36,12 +38,8 @@ const getTheme = theme => ({
   borderColor: 'rgba(0, 0, 0, 0.12)',
 
   // Shadows
-  shadow: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
+  shadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
   innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
-  /*boxShadowLeft: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
-  boxShadowRight: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
-  boxShadowTop: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',
-  boxShadowBottom: '0px 3px 6px 0px rgba(0, 0, 0, 0.08)',*/
 
   // Font
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
