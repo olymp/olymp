@@ -9,6 +9,7 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, compon
       .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } })
       .apply();
     onChange(transform);
+    return Promise.resolve();
   };
   const getData = (name, defaultValue) => {
     return node.data.get(name) || defaultValue;
