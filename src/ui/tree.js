@@ -11,21 +11,15 @@ const Tree = styled(() => ({
   },
   '& li': {
     padding: 0,
-    '> span.ant-tree-switcher': {
-      position: 'relative',
-      width: 0,
+    '> .ant-tree-switcher': {
+      position: 'absolute',
       onAfter: {
-        left: -6,
-        top: 1,
+        left: -8,
+        top: 2,
         position: 'absolute',
       },
     },
-    '> span.ant-tree-switcher:after': {
-      left: -10,
-      top: -1,
-      position: 'absolute',
-    },
-    '> span.ant-tree-node-content-wrapper': {
+    '> .ant-tree-node-content-wrapper': {
       width: '100%',
     },
   },
