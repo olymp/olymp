@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Footer from './footer';
 import Logo from './logo';
 import { Navbar, Layout } from 'olymp-fela';
 import { styled } from 'olymp';
