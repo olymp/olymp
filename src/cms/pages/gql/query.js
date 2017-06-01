@@ -22,8 +22,8 @@ export default graphql(gql`
 
 export const queryPages = graphql(gql`
   query pageList {
-    items: pageList {
-      id slug order type name binding parentId sorting
+    items: pageList(query: {state: {in: [PUBLISHED, DRAFT]}}) {
+      id slug order type name binding parentId sorting state
     }
   }
 `, {

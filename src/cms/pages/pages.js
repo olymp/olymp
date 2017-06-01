@@ -1,8 +1,42 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter, Link } from 'olymp';
+import { withRouter, Link, styled } from 'olymp';
 import { Tree } from 'olymp-ui';
 import { Icon } from 'antd';
 import { queryPages, reorderPage, movePage } from './gql';
+
+const badgeStyle = theme => ({
+  size: 23,
+  borderRadius: '50%',
+  textAlign: 'center',
+  marginLeft: 3,
+  '> i': {
+    color: theme.light,
+    margin: '0 !important',
+  },
+  onHover: {
+    '> i': {
+      color: theme.light2,
+    },
+  }
+});
+
+const Button = styled(({ theme }) => ({
+  backgroundColor: theme.color,
+  ...badgeStyle(theme),
+}), ({ className, to, type }) => (
+  <Link to={to} className={className}>
+    <Icon type={type} />
+  </Link>
+), p => p);
+
+const Badge = styled(({ theme }) => ({
+  backgroundColor: theme.dark2,
+  ...badgeStyle(theme),
+}), ({ className, type }) => (
+  <a href="javascript:;" className={className}>
+    <Icon type={type} />
+  </a>
+), p => p);
 
 @withRouter
 @reorderPage
@@ -17,7 +51,6 @@ export class Pages extends Component {
       ? info.node.props.parent
       : info.node.props.item;
     const page = info.dragNode.props.item;
-    console.log(page, info.dragNode.props);
     const pageId = page.pageId || page.id; // get real pageId in case of binding
 
     // Get all IDs of children in order
@@ -47,39 +80,47 @@ export class Pages extends Component {
   }
   getNodeIcon = (item) => {
     if (item.sorting && item.sorting[0] === '+') {
-      return <a href="javascript:;"><Icon type="arrow-up" /></a>;
+      return <Badge type="arrow-up" />;
     } else if (item.sorting && item.sorting[0] === '-') {
-      return <a href="javascript:;"><Icon type="arrow-down" /></a>;
+      return <Badge type="arrow-down" />;
     } else if (item.slug === '/') {
-      return <a href="javascript:;"><Icon type="home" /></a>;
+      return <Badge type="home" />;
     } else if (item.type === 'ALIAS') {
-      return <a href="javascript:;"><Icon type="copy" /></a>;
+      return <Badge type="copy" />;
     } else if (item.type === 'LINK') {
-      return <a href="javascript:;"><Icon type="link" /></a>;
+      return <Badge type="link" />;
     } else if (item.type === 'PLACEHOLDER') {
-      return <a href="javascript:;"><Icon type="pause" /></a>;
+      return <Badge type="pause" />;
     } else if (item.type === 'MENU') {
-      return <a href="javascript:;"><Icon type="database" /></a>;
+      return <Badge type="database" />;
+    } else if (item.state === 'DRAFT') {
+      return <Badge type="eye-o" />;
     } return null;
   };
   loop = (data, parent) => data.map((item) => {
     const { query } = this.props;
     const children = item.children && item.children.length ? this.loop(item.children, item) : undefined;
     return (
-      <Tree.Node key={item.pathname || item.id} item={item} parent={parent} title={
-        <Tree.Title>
-          <Link to={{ pathname: item.pathname, query }}>
-            {item.name}
-          </Link>
-          {this.getNodeIcon(item)}
-          {item.bindingId && <Link to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}>
-            <Icon type="share-alt" />
-          </Link>}
-          <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }}>
-            <Icon type="edit" />
-          </Link>
-        </Tree.Title>
-      }>
+      <Tree.Node
+        key={item.id || item.pathname}
+        item={item}
+        parent={parent}
+        title={
+          <Tree.Title disabled={item.state === 'DRAFT'}>
+            <Link to={{ pathname: item.pathname, query }}>
+              {item.name}
+            </Link>
+            {this.getNodeIcon(item)}
+            {item.bindingId && (
+              <Button
+                to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}
+                type="share-alt"
+              />
+            )}
+            <Button to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }} type="edit" />
+          </Tree.Title>
+        }
+      >
         {children}
       </Tree.Node>
     );

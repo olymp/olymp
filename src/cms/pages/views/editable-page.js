@@ -12,11 +12,9 @@ const plugin = {
     const map = (nodes) => {
       nodes.forEach((node) => {
         if (node.nodes) map(node.nodes);
-        // console.log(node.key);
       });
     };
     map(state.document.nodes);
-    console.log(state.selection);
   }
 };
 
@@ -47,9 +45,11 @@ export default class PageSidebar extends Component {
         {value && <Button.Group>
           <Sidebar.Button disabled={!form.isFieldsTouched()} onClick={save} shape="circle" icon="save" />
         </Button.Group>}
-        {!value && <Button.Group>
-          <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new', parent: item.id } })} shape="circle" icon="plus" />
-        </Button.Group>}
+        {!value && (
+          <Button.Group>
+            <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': 'new', parent: item.id } })} shape="circle" icon="plus" />
+          </Button.Group>
+        )}
       </div>
     );
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
@@ -67,8 +67,6 @@ export default class PageSidebar extends Component {
         </Sidebar>
 
         <Container width={1200} padding={0}>
-          {render && render(P)}
-          {!render && P}
         </Container>
       </SplitView>
     );

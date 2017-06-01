@@ -25,13 +25,13 @@ const Tree = styled(() => ({
   },
 }), AntTree, p => p);
 
-Tree.Title = styled(({ theme }) => ({
+Tree.Title = styled(({ theme, disabled }) => ({
   display: 'flex',
   '> a:first-child': {
     flex: 1,
   },
   '> a': {
-    color: theme.dark1,
+    color: disabled ? theme.dark3 : theme.dark1,
   },
 }), ({ className, children }) => (
   <span className={className}>
