@@ -20,9 +20,6 @@ export const Container = styled(({ deviceWidth }) => ({
     flex: 1,
     minHeight: '100%',
   },
-  '> *': {
-    overflowY: 'auto',
-  },
 }), 'div', ({ deviceWidth, ...p }) => p);
 
 export default ({ auth, theme, modules }) => (Wrapped) => {

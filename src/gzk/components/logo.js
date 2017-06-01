@@ -17,7 +17,7 @@ export default class Logo extends Component {
     }
 
     return (
-      <Icon color={color} width={250} height={41}>
+      <Icon color={color} width={221} height={41}>
         <Title color={color}>{title}</Title>
         <SubTitle color={color}>{text}</SubTitle>
       </Icon>

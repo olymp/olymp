@@ -1,10 +1,13 @@
 import { styled } from 'olymp';
 
-export default styled(() => ({
+export default styled(({ theme }) => ({
   minHeight: 30,
   position: 'relative',
   marginX: 'auto',
-  paddingX: 15,
+  paddingX: theme.space3,
+  ifMini: {
+    width: '100%',
+  },
   ifSmallUp: {
     width: 540,
     maxWidth: '100%',
