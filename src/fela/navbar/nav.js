@@ -1,32 +1,42 @@
-import React, { Children, cloneElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from 'olymp';
+import { fade, border } from 'olymp-fela';
+import Sub from './sub';
+import Mega from './mega';
 
-const Nav = styled(({ fill, vertically, right }) => ({
-  float: right ? 'right' : 'none',
-  minWidth: vertically ? '100%' : 'auto',
-  zIndex: 1,
-  display: fill && 'flex',
-  onAfter: {
-    content: '.',
-    clear: 'both',
-    display: 'block',
-    visibility: 'hidden',
-    height: 0,
-  }
-}), ({ className, pages, children, ...props }) => ((pages && !!pages.length) || children) ? (
-  <div className={className}>
-    {pages.map(({ children: childPages, ...page }, i) => props.renderItem({
-      ...page,
-      title: page.name,
-      pages: childPages,
-      key: page.id || i,
-      ...props,
-    }))}
-
-    {Children.map(children, child => cloneElement(child, props))}
-  </div>
-) : null, p => p);
+const Nav = styled(
+  ({ theme, inverse, vertically, right, sub }) => (sub && {
+    backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
+    border: !inverse && border(theme),
+    display: 'none',
+    position: 'absolute',
+    top: !vertically ? '100%' : -theme.borderWidth,
+    left: !right && (vertically ? '100%' : -theme.borderWidth),
+    right: right && (!vertically ? 0 : '100%'),
+    boxShadow: theme.shadow,
+    zIndex: 1,
+    '> div': {
+      textAlign: 'left',
+    },
+    ifMini: {
+      position: 'relative',
+      top: 'auto',
+      left: 'auto',
+      right: 'auto',
+      fontSize: theme.fontSizeSmall,
+      backgroundColor: inverse && theme.dark5,
+      boxShadow: inverse ? theme.innerShadow : 'none',
+      border: 'none',
+    },
+  }),
+  ({ mega, sub, vertically, children, ...props }) => (mega ? (
+    <Mega {...props} />
+  ) : (
+    <Sub {...props} vertically={sub || vertically}>{children}</Sub>
+  )),
+  p => p
+);
 Nav.displayName = 'Navbar.Nav';
 Nav.propTypes = {
   /** Array of page-objects */
@@ -35,20 +45,11 @@ Nav.propTypes = {
     pathname: PropTypes.string,
     children: PropTypes.arrayOf(PropTypes.object)
   })),
-  /** render nav vertically instead horizontally */
-  vertically: PropTypes.bool,
-  /** inverse theme with primary-color background */
-  inverse: PropTypes.bool,
   /** aligns nav-items right */
   right: PropTypes.bool,
-  /** if true, navbar will fill the whole width */
-  fill: PropTypes.bool,
 };
 Nav.defaultProps = {
   pages: [],
-  vertically: false,
-  inverse: false,
   right: false,
-  fill: false,
 };
 export default Nav;

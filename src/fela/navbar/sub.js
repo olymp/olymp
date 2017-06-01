@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import { styled } from 'olymp';
-import { fade, shadow, border } from 'olymp-fela';
-import Nav from './nav';
-import Mega from './mega';
+import { border } from 'olymp-fela';
 
-export default styled(
-  ({ theme, inverse, vertically, right, sub }) => (sub && {
-    backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
-    border: !inverse && border(theme),
-    display: 'none',
-    position: 'absolute',
-    top: !vertically ? '100%' : ((!inverse && -theme.borderWidth) || 0),
-    left: !right && (vertically ? '100%' : ((!inverse && -theme.borderWidth) || 0)),
-    right: right && (!vertically ? 0 : '100%'),
-    boxShadow: shadow(),
-  }),
-  ({ mega, sub, vertically, children, ...props }) => (mega ? (
-    <Mega {...props} />
-  ) : (
-    <Nav {...props} vertically={sub || vertically}>{children}</Nav>
-  )),
-  p => p
-);
+export default styled(({ theme, fill, vertically, right, inverse }) => ({
+  float: right ? 'right' : 'left',
+  width: fill && '100%',
+  minWidth: vertically ? '100%' : 'auto',
+  display: fill && 'flex',
+  flex: fill && '1 1',
+  marginLeft: right && 'auto',
+  borderRight: inverse && !right && !vertically && border(theme, theme.dark4),
+  borderLeft: inverse && right && !vertically && border(theme, theme.dark4),
+  borderTop: vertically && border(theme, theme.dark4),
+  ifMini: {
+    float: 'none',
+    width: '100%',
+    borderRight: 0,
+    borderTop: border(theme, theme.dark4),
+    clear: 'both',
+  },
+}), ({ className, pages, children, ...props }) => (
+  <div className={className}>
+    {pages.map(({ children: childPages, ...page }, i) => props.renderItem({
+      ...page,
+      title: page.name,
+      pages: childPages,
+      key: page.id || i,
+      ...props,
+    }))}
+
+    {Children.map(children, child => cloneElement(child, props))}
+  </div>
+), p => p);

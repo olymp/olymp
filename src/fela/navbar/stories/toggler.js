@@ -1,21 +1,19 @@
 import React from 'react';
-import { boolean, text } from '@storybook/addon-knobs';
+import { boolean, text, object } from '@storybook/addon-knobs';
 import Navbar from '../index';
 import { storiesOf } from '../.storybook';
 
-const storiefy = storiesOf('Navbar.Nav');
-const nav1 = [
+const storiefy = storiesOf('Navbar.Toggler');
+const nav = [
   {
     id: 'home',
-    name: 'Nav 1 - Item 1',
+    name: 'Home',
     pathname: '/',
     children: [],
   },
-];
-const nav2 = [
   {
     id: 'm1',
-    name: 'Nav 2 - Item 1',
+    name: 'Menu with SubMenu',
     pathname: '/m1',
     children: [
       {
@@ -54,7 +52,7 @@ const nav2 = [
   },
   {
     id: 'm2',
-    name: 'Nav 2 - Item 2',
+    name: 'Menu without SubMenu',
     pathname: '/m2',
     children: [],
   },
@@ -63,18 +61,27 @@ const nav2 = [
 storiefy(
   'Basic usage',
   () => (
-    <Navbar brand="Olymp ❤ CMS" inverse>
-      <Navbar.Nav pages={nav1} />
-      <Navbar.Nav pages={nav2} />
+    <Navbar brand="Show me on screen < 479px" inverse>
+      <Navbar.Toggler>
+        <Navbar.Nav>
+          <Navbar.Item title="Left Group - Item 1" />
+          <Navbar.Item title="Left Group - Item 2" />
+        </Navbar.Nav>
+        <Navbar.Nav right>
+          <Navbar.Item title="Right Group - Item with SubMenu">
+            <Navbar.Nav>
+              <Navbar.Item title="SubItem 1">
+                <Navbar.Nav>
+                  <Navbar.Item title="SubItem 1" />
+                  <Navbar.Item title="SubItem 2" />
+                </Navbar.Nav>
+              </Navbar.Item>
+              <Navbar.Item title="SubItem 2" />
+            </Navbar.Nav>
+          </Navbar.Item>
+        </Navbar.Nav>
+      </Navbar.Toggler>
     </Navbar>
-  )
-);
-storiefy(
-  'Right aligned',
-  () => (
-    <Navbar brand="Olymp ❤ CMS" inverse>
-      <Navbar.Nav pages={nav1} right={boolean('right [nav1]', false)} />
-      <Navbar.Nav pages={nav2} right={boolean('right [nav2]', true)} />
-    </Navbar>
-  )
+  ),
+  ''
 );

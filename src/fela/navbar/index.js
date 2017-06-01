@@ -1,10 +1,11 @@
 // import { default as Page } from './editable';
 import Navbar from './navbar';
-import Sub from './sub';
+import Nav from './nav';
 import Item from './item';
-// import { default as Toggler } from './toggler';
+import Toggler from './toggler';
 
-Navbar.Nav = Sub;
+Navbar.Nav = Nav;
 Navbar.Item = Item;
+Navbar.Toggler = Toggler;
 
 export default Navbar;

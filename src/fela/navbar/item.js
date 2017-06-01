@@ -4,19 +4,23 @@ import { styled } from 'olymp';
 import { fade } from 'olymp-fela';
 import { Link, Placeholder } from './link';
 
-const NavItem = styled(({ fill, inverse, vertically }) => ({
+const NavItem = styled(({ fill, inverse, vertically, right }) => ({
   float: !vertically && 'left',
   position: 'relative',
-  whiteSpace: 'nowrap',
   flex: fill && '1 1',
-  textAlign: fill && 'center',
+  textAlign: fill ? 'center' : right && vertically && 'right',
   onHover: {
-    backgroundColor: inverse ? fade('#000000', 10) : '#FFFFFF',
+    backgroundColor: inverse && fade('#000000', 10),
     '> div': {
       display: 'block',
-    }
-  }
-}), ({ className, pathname, children, title, fill, ...props }) => (
+    },
+  },
+  ifMini: {
+    float: 'none',
+    display: 'block',
+    width: '100%',
+  },
+}), ({ className, pathname, children, title, fill, pages, ...props }) => (
   <div className={className}>
     {pathname ? (
       <Link to={pathname} inverse={props.inverse}>
@@ -28,27 +32,22 @@ const NavItem = styled(({ fill, inverse, vertically }) => ({
       </Placeholder>
     )}
 
-    {props.renderSub({ ...props, sub: true })}
+    {pages && !!pages.length && props.renderNav({ ...props, pages, sub: true })}
 
     {Children.map(children, child => cloneElement(child, { ...props, sub: true }))}
   </div>
 ), p => p);
 NavItem.displayName = 'Navbar.Item';
 NavItem.propTypes = {
-  /** Array of page-objects */
-  pages: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    pathname: PropTypes.string,
-    children: PropTypes.arrayOf(PropTypes.object)
-  })),
+  /** title/label */
+  title: PropTypes.string.isRequired,
   /** path for react-router or undefined for placeholder */
   pathname: PropTypes.string,
-  /** inverse theme with primary-color background */
-  inverse: PropTypes.bool,
+  /** submenu is mega dropdown menu */
+  mega: PropTypes.bool,
 };
 NavItem.defaultProps = {
-  pages: [],
   pathname: undefined,
-  inverse: false,
+  mega: false,
 };
 export default NavItem;
