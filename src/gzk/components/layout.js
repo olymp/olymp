@@ -7,7 +7,7 @@ import { styled } from 'olymp';
 export const Header = styled(({ sticky }) => ({
   backgroundColor: 'white',
   boxShadow: sticky && '0 3px 11px 0 rgba(0,0,0,.06)',
-}), 'nav', p => p);
+}), 'div', p => p);
 
 export default class GzLayout extends Component {
   static defaultProps = {
@@ -21,13 +21,30 @@ export default class GzLayout extends Component {
     return (
       <Layout>
         <Layout.Header container>
-          <Navbar pages={nav} logo={<Logo color={color} title={title} text={text} />} full right superSub />
+          <Navbar pages={nav} logo={<Logo color={color} title={title} text={text} />} full right mega />
         </Layout.Header>
         <Layout.Body>
           {children}
         </Layout.Body>
         <Layout.Footer container>
-          <Footer {...this.props} />
+          <Navbar full>
+            <Navbar.Nav
+              pages={[{ name: `GesundheitsZentrum Kelkheim. Copyright ${new Date().getFullYear()}` }]}
+            />
+            <Navbar.Nav
+              pages={[
+                {
+                  name: 'Impressum',
+                  pathname: '/?login',
+                },
+                {
+                  name: 'Einloggen',
+                  pathname: '/?login',
+                }
+              ]}
+              right
+            />
+          </Navbar>
         </Layout.Footer>
       </Layout>
     );

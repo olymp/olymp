@@ -14,6 +14,13 @@ const Toggler = styled(({ hasLogo }) => ({
         display: 'block',
       },
     },
+    onAfter: {
+      content: '""',
+      clear: 'both',
+      display: 'block',
+      visibility: 'hidden',
+      height: 0,
+    },
   },
 }), ({ className, children, ...props }) => (
   <div className={className}>

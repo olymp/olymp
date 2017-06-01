@@ -1,7 +1,7 @@
-import { default as List } from './list';
-import { default as Item } from './item';
-import { default as Title } from './title';
-import { default as Filter } from './filter';
+import List from './list';
+import Item from './item';
+import Title from './title';
+import Filter from './filter';
 
 List.Item = Item;
 List.Title = Title;

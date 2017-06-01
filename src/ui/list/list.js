@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { styled } from 'olymp';
 
 export default styled(({ side, width }) => ({
