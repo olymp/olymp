@@ -2,7 +2,7 @@ import React, { Component, PropTypes, Children } from 'react';
 import Portal from 'react-portal';
 import { get } from 'lodash';
 
-const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip }, i) => {
+const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, component }, i) => {
   const setData = (data) => {
     const transform = state
       .transform()
@@ -10,7 +10,13 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip }, i) =
       .apply();
     onChange(transform);
   };
-  return (
+  const getData = (name, defaultValue) => {
+    return node.data.get(name) || defaultValue;
+  };
+  if (component) {
+    const Com = component;
+    return <Com setData={setData} getData={getData} />;
+  } return (
     <a onClick={() => toggle({ setData, state, onChange })} key={i}>
       {tooltip}
     </a>
