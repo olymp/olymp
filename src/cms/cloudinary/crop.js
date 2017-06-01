@@ -3,6 +3,7 @@ import { styled } from 'olymp';
 import { Select } from 'antd';
 import { url as optimizeUrl } from './utils';
 import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 const StyledCropSelect = styled(({ theme }) => ({
   width: 150,
