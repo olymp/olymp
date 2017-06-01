@@ -35,7 +35,7 @@ const ok = (props, mutate) => () => {
 export default graphql(gql`
   mutation page($id: String, $input: PageInput) {
     item: page(id: $id, input: $input) {
-      id slug order name binding aliasId href sorting parentId blocks state headings { id slug text children { id slug text } }
+      id slug order name type binding aliasId href sorting parentId blocks state headings { id slug text children { id slug text } }
     }
   }
 `, {

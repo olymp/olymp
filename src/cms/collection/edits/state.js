@@ -13,7 +13,7 @@ const StateInput = ({ item, field, label, layout, initialValue, rules, placehold
         <Select style={{ width: '100%' }} {...rest}>
           <Select.Option value="DRAFT"><b style={{ color: 'blue' }}><Icon type="inbox" /></b> Ablage</Select.Option>
           <Select.Option value="PUBLISHED"><b style={{ color: 'green' }}><Icon type="check" /></b> Veröffentlicht</Select.Option>
-          <Select.Option value="DELETED"><b style={{ color: 'red' }}><Icon type="delete" /></b> Gelöscht</Select.Option>
+          <Select.Option value="REMOVED"><b style={{ color: 'red' }}><Icon type="delete" /></b> Gelöscht</Select.Option>
         </Select>
       )}
     </Form.Item>
