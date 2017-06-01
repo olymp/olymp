@@ -20,8 +20,8 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   background: `linear-gradient(0deg, ${theme.colorStart || tinycolor(theme.color).darken(6).spin(-6).toRgbString()}, ${theme.colorEnd || tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
   '> li.ant-menu-item': {
     paddingX: 14,
-    //padding: 5,
-    //height: 'initial',
+    // padding: 5,
+    // height: 'initial',
     textAlign: 'center',
     '> a': {
       // backgroundColor: 'white',
