@@ -1,9 +1,10 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { Cloudinary } from '../../../cloudinary';
+import { Cloudinary, Image } from '../../../cloudinary';
 import { styled } from 'olymp';
+import { withState } from 'recompose';
 
-const CloudinaryEdit = styled(({ theme }) => ({
+const CloudinaryModal = styled(({ theme }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -22,24 +23,23 @@ const CloudinaryEdit = styled(({ theme }) => ({
     display: 'flex',
     backgroundColor: theme.light,
   }
-}), ({ setData, getData, className }) => (
-  <Portal
-    key={getData('type')}
-    closeOnEsc
-    closeOnOutsideClick
-    openByClickOn={(
-      <a href="javascript:;">
-        Bild wählen
-      </a>
-    )}
-  >
-    <div className={className}>
-      <div>
-        <Cloudinary multi={false} onSelect={x => setData({ value: x.length ? x[0] : null })} />
-      </div>
+}), ({ onChange, className }) => (
+  <div className={className}>
+    <div>
+      <Cloudinary multi={false} onSelect={x => onChange(x.length ? x[0] : null)} />
     </div>
-  </Portal>
+  </div>
 ), p => p);
+
+const CloudinaryEdit = withState('isOpen', 'setOpen', false)(({ setData, isOpen, setOpen }) => (
+  <a href="javascript:;" onClick={() => setOpen(true)}>
+    Bild wählen
+    <Portal isOpened={isOpen} onClose={() => setOpen(false)} closeOnEsc closeOnOutsideClick>
+      <CloudinaryModal onChange={value => setData({ value }).then(() => setOpen(false))} />
+    </Portal>
+  </a>
+));
+
 
 export default {
   // Meta-Data
@@ -48,7 +48,7 @@ export default {
   editable: false,
   // Component
   component: ({ attributes, className, getData }) => (
-    <img {...attributes} className={className} x={console.log(getData('value'), getData('value', { url: 'http://placekitten.com/1000/300' }))} src={getData('value', { url: 'http://placekitten.com/1000/300' }).url} alt="" />
+    <Image {...attributes} className={className} value={getData('value', { url: 'http://placekitten.com/1000/300' })} alt="" />
   ),
   // Styles
   styles: {

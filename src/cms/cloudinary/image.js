@@ -6,7 +6,7 @@ import { url } from './utils';
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
 class Img extends Component {
-  onClick = e => {
+  onClick = (e) => {
     const { onClick } = this.props;
 
     if (onClick) {
@@ -20,7 +20,7 @@ class Img extends Component {
     return (
       <img
         {...rest}
-        src={url(value.url, { width, height, dpr: retina ? 2: undefined, mode })}
+        src={url(value.url, { ...value, width, height, dpr: retina ? 2 : undefined, mode })}
         width={width}
         height={height}
         style={style}
