@@ -13,6 +13,12 @@ export class PageForm extends Component {
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
   }
+  handleTypeChange = (e) => { // set slug if unset
+    const { form } = this.props;
+    if (e === 'MENU') {
+      form.setFieldsValue({ parentId: null });
+    }
+  }
   render() {
     const { form, item, items } = this.props;
 
@@ -34,9 +40,9 @@ export class PageForm extends Component {
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
               <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />
               <SectionH title="Verwendung" description="Seite, Link, Alias, Platzhalter, Menü" />
-              <PageType form={form} item={item} field="type" label="Art" size="large" />
-              <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />
-              <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />
+              <PageType form={form} item={item} field="type" label="Art" size="large" onChange={this.handleTypeChange} />
+              {form.getFieldValue('type') === 'LINK' && <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />}
+              {form.getFieldValue('type') === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
               <SectionH title="Erweitert" description="Datenanbindung und Sortierung der Elemente" />
               <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
               <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
