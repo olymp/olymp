@@ -1,4 +1,6 @@
 import React from 'react';
+import Portal from 'react-portal';
+import { Cloudinary } from '../../../cloudinary';
 
 export default {
   // Meta-Data
@@ -6,8 +8,8 @@ export default {
   category: 'Media',
   editable: false,
   // Component
-  component: ({ attributes, className }) => (
-    <img {...attributes} className={className} src="http://placekitten.com/1000/300" alt="" />
+  component: ({ attributes, className, getData }) => (
+    <img {...attributes} className={className} x={console.log(getData('value'), getData('value', { url: 'http://placekitten.com/1000/300' }))} src={getData('value', { url: 'http://placekitten.com/1000/300' }).url} alt="" />
   ),
   // Styles
   styles: {
@@ -23,6 +25,17 @@ export default {
     type: 'small',
     icon: 'align-left',
     tooltip: 'Bild wählen',
+    component: ({ setData, getData }) => (
+      <Portal key={getData('type')} closeOnEsc closeOnOutsideClick openByClickOn={(
+        <a href="javascript:;">
+          Bild wählen
+        </a>
+      )}>
+        <div style={{ position: 'fixed', top: 0, left: 0, bottom: 0, right: 0, zIndex: 1000, display: 'flex' }}>
+          <Cloudinary multi={false} onSelect={x => setData({ value: x.length ? x[0] : null, y: console.log(x) })} />
+        </div>
+      </Portal>
+    ),
     toggle: ({ setData }) => setData({ alignment: 'left' }),
     active: ({ alignment }) => alignment === 'left',
   }],
