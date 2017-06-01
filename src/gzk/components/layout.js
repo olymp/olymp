@@ -17,8 +17,10 @@ export default class GzLayout extends Component {
     const { pages, color, title, text, location, links, children, ...rest } = this.props;
     const nav = (pages.map(x => x.children)[0] || [])
       .filter(x => x.slug !== '/');
-    const footer = (pages.map(x => x.children)[1] || []);
-    footer.push({ name: 'Einloggen', pathname: '/?login', });
+    const footer = [
+      ...(pages.map(x => x.children)[1] || []),
+      { name: 'Einloggen', pathname: '/?login', }
+    ];
 
     return (
       <Layout>
