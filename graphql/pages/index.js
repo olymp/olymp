@@ -30,6 +30,13 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
       },
     },
     schema: `
+      enum PAGE_TYPE {
+        PAGE
+        MENU
+        ALIAS
+        LINK
+        PLACEHOLDER
+      }
       type Template @collection(name: "Template") {
         id: String
         name: String
@@ -49,6 +56,7 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
         prefix: String
       }
       type Page @collection(name: "Page") @stamp @state {
+        type: PAGE_TYPE
         menu: String
         binding: String
         sorting: String
