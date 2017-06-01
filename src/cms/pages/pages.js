@@ -52,10 +52,14 @@ export class Pages extends Component {
       return <a href="javascript:;"><Icon type="arrow-down" /></a>;
     } else if (item.slug === '/') {
       return <a href="javascript:;"><Icon type="home" /></a>;
-    } else if (item.aliasId) {
+    } else if (item.type === 'ALIAS') {
       return <a href="javascript:;"><Icon type="copy" /></a>;
-    } else if (item.href) {
+    } else if (item.type === 'LINK') {
       return <a href="javascript:;"><Icon type="link" /></a>;
+    } else if (item.type === 'PLACEHOLDER') {
+      return <a href="javascript:;"><Icon type="pause" /></a>;
+    } else if (item.type === 'MENU') {
+      return <a href="javascript:;"><Icon type="database" /></a>;
     } return null;
   };
   loop = (data, parent) => data.map((item) => {

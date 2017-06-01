@@ -4,7 +4,7 @@ import { unflatten, slugify } from 'olymp';
 import { Tabs } from 'antd';
 import { Panel, SectionH } from 'olymp/ui';
 import { queryPage, queryPages, mutatePage } from './gql';
-import { Input, SlateTree, State } from '../collection';
+import { Input, SlateTree, PageType, State } from '../collection';
 import { Parent } from './edits';
 
 export class PageForm extends Component {
@@ -12,6 +12,12 @@ export class PageForm extends Component {
     const { form } = this.props;
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
+  }
+  handleTypeChange = (e) => { // set slug if unset
+    const { form } = this.props;
+    if (e === 'MENU') {
+      form.setFieldsValue({ parentId: null });
+    }
   }
   render() {
     const { form, item, items } = this.props;
@@ -32,10 +38,10 @@ export class PageForm extends Component {
               <Input form={form} item={item} field="name" label="Name" onChange={this.handleNameChange} rules={['required']} type="text" size="large" />
               <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
-              <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />
-              <SectionH title="Links" description="Externe/Interne Verlinkung" />
-              <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />
-              <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />
+              <PageType form={form} item={item} field="type" label="Art" size="large" onChange={this.handleTypeChange} />
+              {form.getFieldValue('type') !== 'MENU' && <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />}
+              {form.getFieldValue('type') === 'LINK' && <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />}
+              {form.getFieldValue('type') === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
               <SectionH title="Erweitert" description="Datenanbindung und Sortierung der Elemente" />
               <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
               <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
