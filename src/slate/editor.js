@@ -9,7 +9,9 @@ import { getId } from './utils/get-text';
 import './style.less';
 import TrailingBlock from 'slate-trailing-block';
 import InsertBlockOnEnter from 'slate-insert-block-on-enter';
-import BlockToolbar from './block-toolbar';
+import ToolbarBlock from './toolbar-block';
+import ToolbarText from './toolbar-text';
+import ToolbarVoid from './toolbar-void';
 
 const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
@@ -188,8 +190,8 @@ export const rawSerializer = Raw;
 @withUniqueId()
 @withSlateState({ terse: true })
 @useBlocks(options)
-@withToolbar(options)
-@withSidebar(options)
+// @withToolbar(options)
+// @withSidebar(options)
 export default class SlateEditor extends Component {
   plugins = [withAutoMarkdown(options), TrailingBlock({ type: 'line' }), InsertBlockOnEnter({ type: 'line' })];
   state = {};
@@ -264,7 +266,9 @@ export default class SlateEditor extends Component {
           ) : null}
         </Gateway>
         {children}
-        {readOnly !== true && <BlockToolbar state={value} blockTypes={blockTypes} onChange={onChange} />}
+        {readOnly !== true && <ToolbarBlock state={value} blockTypes={blockTypes} onChange={onChange} />}
+        {readOnly !== true && <ToolbarVoid state={value} blockTypes={blockTypes} onChange={onChange} />}
+        {readOnly !== true && <ToolbarText state={value} onChange={onChange} {...options} />}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
           <Editor

@@ -1,5 +1,6 @@
-import React, { Component, PropTypes, Children } from 'react';
-import Portal from 'react-portal';
+import React from 'react';
+import Toolbar, { Button } from './toolbar';
+import { Menu } from 'antd';
 import { get } from 'lodash';
 
 const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, component }, i) => {
@@ -16,11 +17,19 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, compon
   };
   if (component) {
     const Com = component;
-    return <Com setData={setData} getData={getData} />;
+    return (
+      <Menu.Item key={i}>
+        <Button onMouseDown={toggle ? () => toggle({ setData, state, onChange }) : undefined}>
+          <Com setData={setData} getData={getData} />
+        </Button>
+      </Menu.Item>
+    );
   } return (
-    <a onClick={() => toggle({ setData, state, onChange })} key={i}>
-      {tooltip}
-    </a>
+    <Menu.Item key={i}>
+      <Button onMouseDown={() => toggle({ setData, state, onChange })}>
+        {tooltip}
+      </Button>
+    </Menu.Item>
   );
 };
 export default (props) => {
@@ -29,10 +38,8 @@ export default (props) => {
   const node = state.blocks.get(0);
   const actions = get(block, 'slate.actions', []);
   return (
-    <Portal isOpened={!!block}>
-      <div style={{ position: 'fixed', top: 0, zIndex: 10, textAlign: 'center', background: 'black', color: 'white', width: '100%' }}>
-        {block && block.slate && block.slate.label} - {actions.map(Action({ ...props, node }))}
-      </div>
-    </Portal>
+    <Toolbar isOpened={!!block}>
+      {actions.map(Action({ ...props, node }))}
+    </Toolbar>
   );
 };
