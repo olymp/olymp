@@ -93,8 +93,6 @@ export class Pages extends Component {
       return <Badge type="pause" />;
     } else if (item.type === 'MENU') {
       return <Badge type="database" />;
-    } else if (item.state === 'DRAFT') {
-      return <Badge type="eye-o" />;
     } return null;
   };
   loop = (data, parent) => data.map((item) => {
