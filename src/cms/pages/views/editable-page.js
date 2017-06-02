@@ -67,6 +67,8 @@ export default class PageSidebar extends Component {
         </Sidebar>
 
         <Container width={1200} padding={0}>
+          {render && render(P)}
+          {!render && P}
         </Container>
       </SplitView>
     );
