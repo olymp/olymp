@@ -7,7 +7,7 @@ const navItemStyles = ({ theme, inverse }) => ({
   padding: theme.space3,
   fontFamily: theme.fontFamily,
   textDecoration: 'none',
-  overflow: 'ellipsis',
+  ellipsis: true,
 });
 
 export const Link = styled(({ theme, inverse }) => ({

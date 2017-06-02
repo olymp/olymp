@@ -63,12 +63,12 @@ const createFela = () => {
           borderTop: border,
           borderBottom: border,
         }),
-        overflow: overflow => (overflow === 'ellipsis' ? ({
+        ellipsis: ellipsis => ellipsis === true ? ({
           whiteSpace: 'nowrap',
           overflowX: 'hidden',
           textOverflow: 'ellipsis',
           maxWidth: '100%',
-        }) : ({ overflow })),
+        }) : ({ }),
       }),
       removeUndefined()
     ],

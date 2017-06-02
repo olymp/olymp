@@ -29,15 +29,12 @@ const StyledCardContent = createComponent(() => ({
 
 const StyledCardTitle = createComponent(() => ({
   width: '200px',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
+  ellipsis: true,
 }), 'h6');
 
 const StyledCardParagraph = createComponent(() => ({
   margin: 0,
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
+  ellipsis: true,
   width: '200px',
   // whiteSpace: 'nowrap',
   display: '-webkit-box',
