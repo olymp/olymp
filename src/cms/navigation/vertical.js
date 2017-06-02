@@ -108,6 +108,20 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </Link>
       </Popover>
     </Menu.Item>
+    <Menu.Item key="@share">
+      <Popover placement="right" content="Teilen">
+        <Link to={{ query: { '@share': null, '@deviceWidth': deviceWidth } }}>
+          <Icon type="share-alt" />
+        </Link>
+      </Popover>
+    </Menu.Item>
+    <Menu.Item key="@trash">
+      <Popover placement="right" content="Papierkorb">
+        <Link to={{ query: { '@trash': null, '@deviceWidth': deviceWidth } }}>
+          <Icon type="delete" />
+        </Link>
+      </Popover>
+    </Menu.Item>
 
     <Separator />
 
