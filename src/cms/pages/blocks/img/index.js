@@ -32,12 +32,12 @@ const CloudinaryModal = styled(({ theme }) => ({
 ), p => p);
 
 const CloudinaryEdit = withState('isOpen', 'setOpen', false)(({ setData, isOpen, setOpen }) => (
-  <a href="javascript:;" onClick={() => setOpen(true)}>
+  <span onClick={() => setOpen(true)}>
     Bild wählen
     <Portal isOpened={isOpen} onClose={() => setOpen(false)} closeOnEsc closeOnOutsideClick>
       <CloudinaryModal onChange={value => setData({ value }).then(() => setOpen(false))} />
     </Portal>
-  </a>
+  </span>
 ));
 
 
