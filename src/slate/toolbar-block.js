@@ -19,14 +19,14 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, compon
     const Com = component;
     return (
       <Menu.Item key={i}>
-        <Button onMouseDown={toggle ? () => toggle({ setData, state, onChange }) : undefined}>
+        <Button onMouseDown={toggle ? () => toggle({ setData, getData, state, onChange }) : undefined}>
           <Com setData={setData} getData={getData} />
         </Button>
       </Menu.Item>
     );
   } return (
     <Menu.Item key={i}>
-      <Button onMouseDown={() => toggle({ setData, state, onChange })}>
+      <Button onMouseDown={() => toggle({ setData, getData, state, onChange })}>
         {tooltip}
       </Button>
     </Menu.Item>
