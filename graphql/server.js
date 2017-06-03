@@ -5,6 +5,7 @@ const createMail = require('./mail');
 
 const createGoogleGql = require('./google');
 const createMediaGql = require('./media');
+const { filestackGraphQL } = require('olymp-filestack/server');
 const createAuthGql = require('./auth');
 const createPagesGql = require('./pages');
 const createSitemap = require('./sitemap');
@@ -31,6 +32,7 @@ Hallo
   if (options.google) createGoogleGql(Schema, typeof options.google === 'object' ? options.google : {});
   if (options.pages) createPagesGql(Schema, typeof options.pages === 'object' ? Object.assign({ adapter }, options.pages) : { adapter });
   if (options.media) createMediaGql(Schema, typeof options.media === 'object' ? Object.assign({ adapter }, options.media) : { uri: options.media });
+  if (process.env.FILESTACK_KEY) filestackGraphQL(Schema, { adapter });
   if (options.auth) {
     if (typeof options.auth === 'string') options.auth = { secret: options.auth };
     const { auth } = createAuthGql(Schema, Object.assign({ adapter, mail }, options.auth));
