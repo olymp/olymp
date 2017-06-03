@@ -57,6 +57,9 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       }, fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => { // get all folders in src and create 'olymp-xxx' alias
         obj[`olymp-${item}`] = path.resolve(olympRoot, 'src', item);
         return obj;
+      }, { }), fs.readdirSync(path.resolve(olympRoot, 'packages')).reduce((obj, item) => { // get all folders in src and create 'olymp-xxx' alias
+        obj[`olymp-${item}`] = path.resolve(olympRoot, 'packages', item);
+        return obj;
       }, { })),
     },
     resolveLoader: {
@@ -72,6 +75,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.DEV_PORT': JSON.stringify(devPort),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
         'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
+        'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY ? JSON.stringify(process.env.FILESTACK_KEY) : undefined,
       }),
       // new PrepackWebpackPlugin({ }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
@@ -118,6 +122,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       path.resolve(appRoot, 'app'),
       path.resolve(appRoot, 'server'),
       path.resolve(olympRoot, 'icons'),
+      path.resolve(olympRoot, 'packages'),
       path.resolve(olympRoot, 'src'),
       path.resolve(olympRoot, 'graphql'),
       path.resolve(__dirname),

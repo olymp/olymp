@@ -104,6 +104,7 @@
     "react-dom": "^15.5.4",
     "react-draggable": "^2.2.6",
     "react-fela": "^4.3.5",
+    "react-filestack": "^0.9.1",
     "react-frame-component": "^1.0.3",
     "react-gateway": "^2.7.0",
     "react-helmet": "^5.1.3",
