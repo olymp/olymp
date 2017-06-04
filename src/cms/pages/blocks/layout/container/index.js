@@ -5,8 +5,8 @@ export default {
   label: 'Container',
   category: 'Template',
   editable: true,
-  component: ({ attributes, children }) => (
-    <Container {...attributes}>
+  component: ({ attributes, className, children }) => (
+    <Container {...attributes} className={className}>
       {children}
     </Container>
   ),
