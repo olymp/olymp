@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Upload, message } from 'antd';
+import { message } from 'antd';
 import { isEqual } from 'lodash';
 import { SplitView } from 'olymp/ui';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';

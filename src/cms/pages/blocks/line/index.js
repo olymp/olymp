@@ -136,7 +136,7 @@ const component = styled(({ getData, theme }) => (
 
 export default {
   label: 'Linie',
-  category: 'Deko',
+  category: 'Template',
   component,
   actions: [{
     type: 'small',
