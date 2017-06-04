@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { withAuth, withRouter, styled, Link, withLang } from 'olymp';
-import { Menu, Icon, Tooltip, Popover } from 'antd';
+import React from 'react';
+import { withAuth, styled, Link, withLang } from 'olymp';
+import { Menu, Icon, Popover } from 'antd';
 import tinycolor from 'tinycolor2';
-import CmsButton from './button';
 
 const Separator = styled(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, 0.05)',
@@ -174,6 +173,5 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
         </a>
       </Popover>
     </Menu.Item>
-    {/*<CmsButton {...rest} />*/}
   </VerticalMenu>
 )));
