@@ -3,7 +3,7 @@ import { Gateway } from 'react-gateway';
 import { Button } from 'antd';
 import { Editor, Html, Raw, Plain } from 'slate';
 import { withAuth } from '../core/decorators';
-import { withSlateState, withSidebar, withToolbar, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
+import { withSlateState, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
 import withBlockTypes from './decorators';
 import { getId } from './utils/get-text';
 import './style.less';
@@ -281,6 +281,8 @@ export default class SlateEditor extends Component {
             onChange={onChange}
             onPaste={this.onPaste}
             onKeyDown={this.onKeyDown}
+            placeholder={!readOnly && 'Hier Text eingeben...'}
+            placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
           />
         </div>
       </div>

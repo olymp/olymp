@@ -4,7 +4,14 @@ export default styled(({ theme }) => ({
   minHeight: 30,
   position: 'relative',
   marginX: 'auto',
-  paddingX: theme.space3,
+  // paddingX: theme.space3,
+  onAfter: {
+    content: '""',
+    clear: 'both',
+    display: 'block',
+    visibility: 'hidden',
+    height: 0,
+  },
   ifMini: {
     width: '100%',
   },

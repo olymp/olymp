@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
+import { styled } from 'olymp';
+import { fade } from 'olymp-fela';
 
 export default (options = {}) => Block => {
   const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes, props } = options;
 
+  const StyledBlock = styled(({ theme, active }) => ({
+    // border: active && `${theme.borderWidth}px ${theme.borderStyle} ${fade(theme.color)}`,
+    outline: active && `${theme.borderWidth}px ${theme.borderStyle} ${fade(theme.color)}`,
+    // outlineOffset: -1,
+  }), p => <Block {...p} />, p => p);
+
   return class BaseDecorator extends Component {
     static slate = { isVoid: isVoid !== false, isAtomic: isAtomic !== false, sidebar, label, category, icon, defaultNodes };
     render() {
-      const { node, editor, state } = this.props;
+      const { node, editor, state, children } = this.props;
 
       const setData = data => {
         const transform = editor
@@ -23,12 +31,19 @@ export default (options = {}) => Block => {
         if (getData(prop) !== undefined) state[prop] = getData(prop);
         return state;
       }, {});
-      const children = isVoid === false ? [this.props.children] : [];
       // Empty children!!
+      const active = children.findIndex(child => parseInt(child.key, 10) === parseInt(state.selection.startKey, 10)) >= 0;
       return (
-        <Block {...this.props} getData={getData} setData={setData} readOnly={editor.props.readOnly} {...blockProps}>
-          {children}
-        </Block>
+        <StyledBlock
+          {...this.props}
+          active={active}
+          getData={getData}
+          setData={setData}
+          readOnly={editor.props.readOnly}
+          {...blockProps}
+        >
+          {isVoid === false ? [children] : []}
+        </StyledBlock>
       );
     }
   };
