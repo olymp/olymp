@@ -1,6 +1,7 @@
 import React from 'react';
 import Portal from 'react-portal';
 import { styled } from 'olymp';
+import { border } from 'olymp-fela';
 import { Menu as AntMenu } from 'antd';
 
 export const Menu = styled(({ theme }) => ({
@@ -9,11 +10,14 @@ export const Menu = styled(({ theme }) => ({
   zIndex: 10,
   left: '50%',
   transform: 'translateX(-50%)',
-  background: theme.dark,
+  background: theme.light1,
   borderBottom: 0,
+  boxShadow: theme.shadow,
+  border: border(theme),
+  borderTop: 0,
   '> li': {
     padding: 0,
-    color: `${theme.light}!important`,
+    color: `${theme.dark1}!important`,
     '> .ant-menu-submenu-title': {
       padding: 0,
     },
