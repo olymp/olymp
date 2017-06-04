@@ -1,5 +1,6 @@
-export * from './image';
-export { default as Container } from './container';
+export { default as Gallery } from './image/gallery';
+export { default as Image } from './image/image';
+export { default as Container } from './layout/container';
 export { default as Line } from './line';
 
 
