@@ -9,7 +9,7 @@ export const Menu = styled(({ theme }) => ({
   zIndex: 10,
   left: '50%',
   transform: 'translateX(-50%)',
-  background: theme.dark1,
+  background: theme.dark,
   borderBottom: 0,
   '> li': {
     padding: 0,
