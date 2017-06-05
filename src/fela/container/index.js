@@ -4,6 +4,7 @@ export default styled(({ theme }) => ({
   minHeight: 30,
   position: 'relative',
   marginX: 'auto',
+  display: 'flex',
   // paddingX: theme.space3,
   onAfter: {
     content: '""',

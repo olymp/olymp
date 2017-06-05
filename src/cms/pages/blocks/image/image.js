@@ -98,7 +98,12 @@ const Label = styled(({ theme }) => ({
   '> p': {
     padding: 0,
     color: theme.dark2,
-  }
+  },
+  ifSmallDown: {
+    position: 'relative',
+    padding: theme.space2,
+    backgroundColor: theme.dark5,
+  },
 }), ({ className, title, subtitle }) => (
   <div className={className}>
     {title && <h3>{title}</h3>}
