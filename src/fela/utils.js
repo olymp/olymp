@@ -11,8 +11,8 @@ export const fade = (color, percent) =>
 export const border = (theme, color) => `${theme.borderWidth}px ${theme.borderStyle} ${color || theme.borderColor}`;
 
 // SHADOWS
-export const shadow = (color, intense) => `0px 0px ${intense || 10} 0px ${tinycolor(color || 'rgba(0, 0, 0, 0.1)').toRgbString()}`;
-export const innerShadow = color => `inset ${shadow(color)}`;
+export const boxShadow = (color = 'rgba(0, 0, 0, 0.1)', intense = 10) => `0px 0px ${intense}px 0px ${tinycolor(color).toRgbString()}`;
+export const innerShadow = color => `inset ${boxShadow(color)}`;
 
 export const gradient = (color1, color2, deg) => {
   let tColor1 = tinycolor(lighten(color1)).spin(6);
