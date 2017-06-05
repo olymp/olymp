@@ -38,7 +38,7 @@ const getTheme = theme => ({
   borderColor: 'rgba(0, 0, 0, 0.12)',
 
   // Shadows
-  shadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
+  boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
   innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
 
   // Font

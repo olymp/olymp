@@ -1,7 +1,7 @@
 import React from 'react';
 import Portal from 'react-portal';
 import { styled } from 'olymp';
-import { border } from 'olymp-fela';
+import { border, boxShadow } from 'olymp-fela';
 import { Menu as AntMenu } from 'antd';
 
 export const Menu = styled(({ theme }) => ({
@@ -12,8 +12,8 @@ export const Menu = styled(({ theme }) => ({
   transform: 'translateX(-50%)',
   background: theme.light1,
   borderBottom: 0,
-  boxShadow: theme.shadow,
-  border: border(theme),
+  boxShadow: boxShadow(theme.dark3),
+  border: border(theme, theme.dark4),
   borderTop: 0,
   '> li': {
     padding: 0,
