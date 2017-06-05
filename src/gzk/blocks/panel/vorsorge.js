@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'olymp';
-import { Container } from 'olymp-fela';
+import { Container, fade } from 'olymp-fela';
 
 export default {
   label: 'Vorsorge, Medizin, Video',
@@ -20,10 +20,14 @@ export default {
   ),
 };
 
-const Panel = styled(({ theme, padding = '0.5rem' }) => ({
+const Panel = styled(({ theme, padding = '0.5rem 1.33rem 1.33rem 0.5rem' }) => ({
   width: `${100 / 3}%`,
   float: 'left',
-  padding: theme.space3,
+  padding: `${theme.space3} 0 0 ${theme.space3}`,
+  position: 'relative',
+  textAlign: 'justify',
+  display: 'flex',
+  flexDirection: 'column',
   '> h2': {
     marginBottom: theme.space1,
   },
@@ -31,12 +35,36 @@ const Panel = styled(({ theme, padding = '0.5rem' }) => ({
     backgroundColor: theme.dark5,
     color: theme.dark2,
     padding,
-    borderBottomRightRadius: 40,
+    borderBottomRightRadius: 100,
+    display: 'flex',
+    flex: '1 1',
     '> iframe': {
       display: 'block',
-      borderBottomRightRadius: 40,
+      borderBottomRightRadius: 100,
     }
   },
+  onAfter: {
+    content: '""',
+    position: 'absolute',
+    width: 33,
+    height: 33,
+    backgroundColor: fade(theme.color),
+    bottom: 0,
+    borderTopLeftRadius: 30,
+    right: 0,
+  },
+  onHover: {
+    onAfter: {
+      backgroundColor: theme.color,
+    },
+  },
+  ifSmallDown: {
+    width: '100%',
+    float: 'none',
+    paddingX: theme.space2,
+    paddingTop: theme.space2,
+    paddingBottom: theme.space0,
+  }
 }), ({ className, title, children }) => (
   <div className={className}>
     <h2>{title}</h2>
