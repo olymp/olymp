@@ -1,8 +1,8 @@
-import { Image } from 'olymp-cms/pages/blocks';
+import { Blocks } from 'olymp-cms';
 import { fade } from 'olymp-fela';
 
 export default {
-  ...Image,
+  ...Blocks.Image,
   styles: {
     '> div': {
       '> div': {

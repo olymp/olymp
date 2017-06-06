@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, withCollections, useColors, Helmet, useLightbox, useEdits } from 'olymp';
-import { useBlockTypes } from 'olymp/slate';
-import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp/auth';
+import { useBlockTypes } from 'olymp-slate';
+import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot } from 'olymp-auth';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import uncapitalize from 'lodash/lowerFirst';
 import { Affix, Button, Dropdown, Alert } from 'antd';

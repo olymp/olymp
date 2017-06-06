@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
+import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp-slate';
 
 @useGenericBlock({
   label: 'Kontainer',

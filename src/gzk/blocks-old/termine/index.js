@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useGenericBlock, GenericBlock } from 'olymp-slate';
+import { Image } from 'olymp-cms';
 import { Spin } from 'antd';
 
 import moment from 'moment';

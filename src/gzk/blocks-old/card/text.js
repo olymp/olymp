@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { cn } from 'olymp';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp-slate';
+import { Image } from 'olymp-cms';
 
 @useGenericBlock({
   category: 'Karte',

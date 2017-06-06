@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withItems, withForm } from 'olymp';
-import { Form } from 'olymp/cms-core';
+import { Form } from 'olymp-cms-core';
 import { Spin, Button, Tabs } from 'antd';
 import { Modal } from '../components';
 import Sidebar from './sidebar';

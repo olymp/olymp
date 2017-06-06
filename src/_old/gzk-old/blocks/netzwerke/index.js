@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { gql, graphql, toArray, CloudinaryImage, withItems, cn } from 'olymp';
-import { useGenericBlock, GenericBlock } from 'olymp/slate';
+import { useGenericBlock, GenericBlock } from 'olymp-slate';
 import Carousel from '../../components/carousel';
 
 /* @graphql(gql`

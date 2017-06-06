@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp-slate';
+import { Image } from 'olymp-cms';
 
 const defaultVideo = 'https://www.youtube.com/embed/zalYJacOhpo';
 const actions = props => [{

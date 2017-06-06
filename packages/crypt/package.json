@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "name": "olymp-crypt",
+  "description": "",
+  "main": "./index.js",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "scripts": {
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

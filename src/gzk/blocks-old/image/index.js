@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from 'olymp-slate';
+import { Image } from 'olymp-cms';
 
 const defaultImage = 'whoa.jpg';
 const actions = props => [{

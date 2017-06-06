@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useGenericBlock, GenericBlock } from 'olymp/slate';
+import { useGenericBlock, GenericBlock } from 'olymp-slate';
 
 
 @useGenericBlock({

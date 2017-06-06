@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, cn, withApollo, withAuth, gql, toArray } from 'olymp';
-import { sortableContainer, sortableElement, sortableHandle, arrayMove } from 'olymp/cms';
+import { sortableContainer, sortableElement, sortableHandle, arrayMove } from 'olymp-cms';
 import './header.less';
 
 export const SortHandle = sortableHandle(({ children }) => children);

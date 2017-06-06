@@ -5,7 +5,7 @@ import { withColors } from '../core/decorators';
 
 let ColorPicker = null;
 if (typeof document !== 'undefined') {
-  ColorPicker = require('@mapbox/react-colorpickr');
+  // ColorPicker = require('@mapbox/react-colorpickr');
 }
 
 const hasNativePicker = () => {

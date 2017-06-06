@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Spin, Button } from 'antd';
 import { Image } from 'olymp';
-import { TagsEditor } from 'olymp/edits';
+import { TagsEditor } from 'olymp-edits';
 import moment from 'moment';
 import withFile from '../../decorators/file';
 
