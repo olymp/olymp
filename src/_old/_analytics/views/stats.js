@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { SplitView } from '../../style';
-import { Container, Placeholder, Sidebar, SplitView } from 'olymp/ui';
+import { Container, Placeholder, Sidebar, SplitView } from 'olymp-ui';
 
 class Stats extends Component {
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Tabs } from 'antd';
-import { Form } from 'olymp/cms-core';
+import { Form } from 'olymp-cms-core';
 
 export default class CollectionDetailForm extends Component {
   render() {

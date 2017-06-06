@@ -1,5 +1,5 @@
 import { gql, graphql } from 'olymp';
-import { onError, onSuccess } from 'olymp/ui';
+import { onError, onSuccess } from 'olymp-ui';
 
 const transform = (image) => {
   const newImage = {

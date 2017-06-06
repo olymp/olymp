@@ -1,5 +1,5 @@
 import React from 'react';
-import { SplitView, Sidebar, Container, List } from 'olymp/ui';
+import { SplitView, Sidebar, Container, List } from 'olymp-ui';
 import AuthProfile from '../components';
 
 const AuthProfileSplitView = ({ onClose, form, onOk, auth, extraFields, pathname, deviceWidth }) => (

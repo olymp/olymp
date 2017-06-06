@@ -1,4 +1,4 @@
-export * from 'olymp/blocks';
+export * from 'olymp-blocks';
 export { default as GzBox, GzBoxContent } from './gzbox';
 export { default as GzBoxSmall } from './gzbox-small';
 export { default as Magazin } from './magazin';

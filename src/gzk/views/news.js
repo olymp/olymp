@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, graphql, gql, withItem, withAuth, Helmet } from 'olymp';
 import { Spin } from 'antd';
-import { Image, SlateMate } from 'olymp/cms';
+import { Image, SlateMate } from 'olymp-cms';
 import { Gateway } from 'react-gateway';
 import moment from 'moment';
 

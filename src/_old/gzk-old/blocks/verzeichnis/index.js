@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter, graphql, gql, sortBy } from 'olymp';
-import { useBlockBase, useBlockToolbar } from 'olymp/slate';
-import { Image } from 'olymp/cms';
+import { useBlockBase, useBlockToolbar } from 'olymp-slate';
+import { Image } from 'olymp-cms';
 import { Spin } from 'antd';
 import Carousel from '../../components/carousel';
 import './theme.less';

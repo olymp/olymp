@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Gateway } from 'react-gateway';
 import { Anchor as AnchorCreator, Spin, Menu, Icon, Dropdown, Button } from 'antd';
 import { withAuth, withItemNew, Helmet, Link } from 'olymp';
-import { SlateMate } from 'olymp/slate';
+import { SlateMate } from 'olymp-slate';
 import AnchorHelper from 'antd/lib/anchor/anchorHelper';
 
 const Anchor = AnchorCreator.Link;

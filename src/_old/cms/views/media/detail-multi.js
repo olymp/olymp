@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Select, Button, Spin } from 'antd';
 import { withCollection } from 'olymp';
-import { TagsEditor } from 'olymp/edits';
+import { TagsEditor } from 'olymp-edits';
 import ListMini from './list-mini';
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: '0' } };

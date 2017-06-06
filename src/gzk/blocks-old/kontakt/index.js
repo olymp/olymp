@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
+import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp-slate';
 import { cn } from 'olymp';
 
 const defaultVideo = 'https://www.youtube.com/embed/zalYJacOhpo';

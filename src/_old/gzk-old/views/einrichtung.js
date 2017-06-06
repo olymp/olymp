@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, graphql, gql, cloudinaryUrl, withItem, withAuth, Helmet } from 'olymp';
-import { SlateMate, Image } from 'olymp/cms';
+import { SlateMate, Image } from 'olymp-cms';
 import { Spin } from 'antd';
 import { Gateway } from 'react-gateway';
 import Accordion from '../components/accordion2';
