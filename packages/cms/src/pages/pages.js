@@ -105,7 +105,7 @@ export class Pages extends Component {
         parent={parent}
         title={
           <Tree.Title disabled={item.state === 'DRAFT'}>
-            <Link to={{ pathname: item.pathname, query }}>
+            <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }}>
               {item.name}
             </Link>
             {this.getNodeIcon(item)}
@@ -115,7 +115,6 @@ export class Pages extends Component {
                 type="share-alt"
               />
             )}
-            <Button to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }} type="edit" />
           </Tree.Title>
         }
       >
