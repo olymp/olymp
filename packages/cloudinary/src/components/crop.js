@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { styled } from 'olymp';
 import { Select } from 'antd';
-import { url as optimizeUrl } from './utils';
+import { url as optimizeUrl } from '../utils';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 

@@ -4,9 +4,9 @@ import { styled } from 'olymp';
 import { Sidebar, Placeholder } from 'olymp-ui';
 import { isEqual } from 'lodash';
 import { mutateFile } from '../gql';
-import Detail from '../detail';
-import Gallery from '../gallery';
-import LightboxGallery from '../lightbox-gallery';
+import Detail from './detail';
+import { Gallery } from '../components';
+import { LightboxGallery } from '../lightbox';
 
 const StyledGallery = styled(({ theme }) => ({
   maxHeight: 250,
@@ -198,7 +198,7 @@ class SelectionSidebar extends Component {
       </LightboxGallery>
     );
   }
-};
+}
 SelectionSidebar.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   activeItemId: PropTypes.string,

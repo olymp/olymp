@@ -3,8 +3,8 @@ import { styled } from 'olymp';
 import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';
-import Crop from './crop';
-import LightboxImage from './lightbox-image';
+import { Crop } from '../components';
+import { LightboxImage } from '../lightbox';
 
 const DangerCheckbox = styled(({ theme, checked }) => ({
   color: checked ? 'red' : 'rgba(0, 0, 0, .65)',

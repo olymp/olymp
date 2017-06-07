@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloudinary } from '../views';
+import { Cloudinary } from './views';
 
 export default ({ query, pathname, router }) => (
   <Cloudinary

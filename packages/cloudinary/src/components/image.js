@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { url } from './utils';
+import { url } from '../utils';
 
 // const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
 
