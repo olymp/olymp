@@ -41,7 +41,8 @@ const Content = styled(({ active, disabled, theme }) => ({
   },
 }), ({ image, label, description, className, disabled, icon }) => (
   <div className={className}>
-    {image ? <img value={image} mode="fill" width={37} height={37} retina /> : null}
+    {image && typeof image === 'string' && <img src={image} width={37} height={37} />}
+    {image && typeof image !== 'string' && image}
     <div>
       <strong>{label}</strong>
       {description}

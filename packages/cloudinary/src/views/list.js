@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Popover, Upload } from 'antd';
 import { Sidebar, List } from 'olymp-ui';
+import { Image } from '../components';
 import { intersection, upperFirst, orderBy } from 'lodash';
 
 class ListSidebar extends Component {
@@ -55,6 +56,10 @@ class ListSidebar extends Component {
     });
   }
 
+  image = ({ image }) => {
+    return <Image value={image} mode="fill" width={37} height={37} retina />;
+  }
+
   render() {
     const { items, upload, onClose, search, onSearch, onFilter, filter } = this.props;
     const directories = orderBy(this.getDirectories(), ['active', 'disabled', 'countFilter', 'countAll', 'label'], ['desc', 'asc', 'desc', 'desc', 'asc']);
@@ -82,7 +87,7 @@ class ListSidebar extends Component {
         subtitle="Medien sichten und verwalten"
       >
         {directories.find(dir => dir.disabled) ? <List.Item label="Zurück" icon="left" onClick={() => onFilter(filter.slice(0, -1), items)} /> : null}
-        {directories.filter(dir => !dir.active).map(dir => !dir.disabled ? <List.Item {...dir} /> : null)}
+        {directories.filter(dir => !dir.active).map(dir => !dir.disabled ? <List.Item {...dir} image={this.image(dir)} /> : null)}
       </Sidebar>
     );
   }

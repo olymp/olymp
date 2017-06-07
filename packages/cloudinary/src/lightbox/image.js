@@ -53,15 +53,13 @@ export default class Lightbox extends Component {
   }
 
   onClick = (e) => {
-    const { onClick, router, pathname, query, value, search, dispatch, location, ...rest } = this.props;
+    const { onClick, router, pathname, query } = this.props;
     router.push({ pathname, query: { ...query, lightbox: this.ref } });
-    if (onClick) {
-      onClick(e);
-    }
+    if (onClick) onClick(e);
   }
 
   render() {
-    const { onClick, router, pathname, query, value, search, dispatch, location, ...rest } = this.props;
+    const { onClick, router, pathname, query, value, search, dispatch, location, retina, ...rest } = this.props;
 
     return (
       <Image onClick={this.onClick} value={value} {...rest} />
