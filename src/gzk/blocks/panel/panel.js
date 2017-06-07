@@ -1,8 +1,7 @@
 import React from 'react';
 import { styled } from 'olymp';
-import { fade } from 'olymp-fela';
 
-export default styled(({ theme, size = 1, columns = 3, background = theme.dark5, color = theme.dark2, padding = `${theme.space2} 1.33rem 1.33rem ${theme.space2}` }) => ({
+export default styled(({ theme, size = 1, columns = 3, background = theme.dark5, color = theme.dark2, padding }) => ({
   width: `${100 / columns * size}%`,
   float: 'left',
   padding: `${theme.space3} 0 0 ${theme.space3}`,
@@ -18,11 +17,12 @@ export default styled(({ theme, size = 1, columns = 3, background = theme.dark5,
   '> p': {
     backgroundColor: background,
     color,
-    padding,
+    padding: padding || `${theme.space2} 1.33rem 1.33rem ${theme.space2}`,
     borderBottomRightRadius: 100,
     display: 'flex',
     hyphens: 'auto',
     flex: '1 1',
+    minHeight: 80,
     '> iframe': {
       display: 'block',
       borderBottomRightRadius: 100,
