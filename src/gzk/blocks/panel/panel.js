@@ -12,6 +12,8 @@ export default styled(({ theme, size = 1, columns = 3, background = theme.dark5,
   flexDirection: 'column',
   '> h2': {
     marginBottom: theme.space1,
+    fontWeight: 300,
+    fontStyle: 'italic',
   },
   '> p': {
     backgroundColor: background,
@@ -19,6 +21,7 @@ export default styled(({ theme, size = 1, columns = 3, background = theme.dark5,
     padding,
     borderBottomRightRadius: 100,
     display: 'flex',
+    hyphens: 'auto',
     flex: '1 1',
     '> iframe': {
       display: 'block',
