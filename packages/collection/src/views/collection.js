@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Container, SplitView } from 'olymp-ui';
 import { Form } from 'antd';
 import { upperFirst } from 'lodash';
-import { queryPage } from '../../pages';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
-import Page from '../../pages/page';
+import { Page, queryPage } from 'olymp-pages';
 
 const mod = Wrapped => ({ data, item, ...rest }) => (
   <Wrapped pageData={data} page={item} {...rest} />

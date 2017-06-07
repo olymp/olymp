@@ -1,7 +1,6 @@
 import React from 'react';
-import { Input as AntInput, Form, Select, Icon } from 'antd';
-import getRules from '../rules';
-import { layout } from 'olymp-ui';
+import { Form, Select } from 'antd';
+import { layout, getRules } from 'olymp-ui';
 
 const PageTypeInput = ({ item, field, label, layout, initialValue, rules, placeholder, form, ...rest }) => {
   return (
