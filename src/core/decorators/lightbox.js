@@ -91,33 +91,19 @@ export const useLightbox = WrappedComponent => class WithLightbox extends Compon
     this.setState({ visible: false });
   };
 
-  isURL = (str) => {
-    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-
-    return pattern.test(str);
-  }
-
   render() {
     const { visible } = this.state;
     const { children } = this.props;
     const images = Object.keys(this.lightboxes).map(key => this.lightboxes[key]);
     const image = visible ? images[visible] : {};
     const footer = image.caption || image.source ? (
-      <span>
-        {image.caption}
-        <span className="source">{this.isURL(image.source) ? <a href={image.source}>Link</a> : image.source}</span>
-      </span>
+      <span>{image.caption} <span className="source">{image.source}</span></span>
     ) : false;
 
     return (
       <WrappedComponent {...this.props}>
         {children}
-        {visible !== false && image.url ? (
+        {visible !== false ? (
           <Modal
             visible
             width="100xd"
@@ -129,7 +115,7 @@ export const useLightbox = WrappedComponent => class WithLightbox extends Compon
             // prevSrc={images[(visible + images.length - 1) % images.length]}
             onCancel={this.hide}
           >
-            <img src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), { width: 960 })} width="100%" height="auto" />
+            <img src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), { maxWidth: 960 })} width="100%" height="auto" />
           </Modal>
         ) : null}
       </WrappedComponent>
