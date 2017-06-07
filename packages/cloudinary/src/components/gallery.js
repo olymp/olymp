@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { styled } from 'olymp';
-import { Container } from 'olymp-ui';
 import Thumb from './thumb';
 
 const Thumbs = styled(({ justifyContent }) => ({

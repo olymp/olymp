@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp';
-import { url } from './utils';
-import Image from './image';
+import { url } from '../utils';
+import Image from '../components/image';
 
 @withRouter
 export default class Lightbox extends Component {
@@ -52,21 +52,19 @@ export default class Lightbox extends Component {
     });
   }
 
+  onClick = (e) => {
+    const { onClick, router, pathname, query, value, search, dispatch, location, ...rest } = this.props;
+    router.push({ pathname, query: { ...query, lightbox: this.ref } });
+    if (onClick) {
+      onClick(e);
+    }
+  }
+
   render() {
     const { onClick, router, pathname, query, value, search, dispatch, location, ...rest } = this.props;
 
     return (
-      <Image
-        onClick={(e) => {
-          router.push({ pathname, query: { ...query, lightbox: this.ref } });
-
-          if (onClick) {
-            onClick(e);
-          }
-        }}
-        value={value}
-        {...rest}
-      />
+      <Image onClick={this.onClick} value={value} {...rest} />
     );
   }
 }

@@ -3,8 +3,7 @@ import { message } from 'antd';
 import { isEqual } from 'lodash';
 import { SplitView } from 'olymp-ui';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
-import DragZone from '../dragzone';
-import Gallery from '../gallery';
+import { Dragzone, Gallery } from '../components';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
 
@@ -156,9 +155,9 @@ class CloudinaryView extends Component {
           search={search}
           onSearch={search => this.setState({ search })}
         />
-        <DragZone uploading={uploading} clickable={false} {...this.getUploadPops()}>
+        <Dragzone uploading={uploading} clickable={false} {...this.getUploadPops()}>
           <Gallery onClick={this.onClick} selected={selected} items={filteredItems} />
-        </DragZone>
+        </Dragzone>
         <SelectionSidebar
           items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
           activeItemId={selected[selection]}

@@ -63,7 +63,7 @@ const CloseLabel = styled(({ theme }) => ({
   }
 }), CheckLabel, p => p);
 
-export const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
+const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
   <ImageContainer isActive={isActive}>
     <Image value={item} mode="fill" height={height} onClick={onClick} style={{ maxWidth: '100%' }} retina />
     {item.format === 'pdf' ? (
