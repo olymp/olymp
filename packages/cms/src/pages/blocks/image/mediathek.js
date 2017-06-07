@@ -1,6 +1,6 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { Cloudinary } from '../../../cloudinary';
+import { Cloudinary } from 'olymp-cloudinary';
 import { styled } from 'olymp';
 import { withState } from 'recompose';
 

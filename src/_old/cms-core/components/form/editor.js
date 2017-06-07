@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
-import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor, TagsEditor, SuggestEditor } from 'olymp-edits';
+import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor, TagsEditor, SuggestEditor } from 'olymp-ui';
 import FormEditor from './edit';
 import { SlateMate } from 'olymp-slate';
 import moment from 'moment';

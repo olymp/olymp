@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image as CloudinaryImage } from '../../../cloudinary';
+import { Image as CloudinaryImage } from 'olymp-cloudinary';
 import { styled } from 'olymp';
 import Mediathek from './mediathek';
 

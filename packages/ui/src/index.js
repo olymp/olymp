@@ -7,4 +7,5 @@ export { default as Transitions } from './transitions';
 export { default as Sidebar } from './sidebar';
 export { default as Dropdown } from './dropdown';
 export * from './h';
+export * from './edits';
 export { default as Tree } from './tree';
