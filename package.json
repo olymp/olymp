@@ -1,12 +1,12 @@
 {
-  "version": "15.0.3",
+  "version": "15.0.4-beta.2",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
   "engines": {
     "node": ">=6.1.0"
   },
-  "bin": "./bin/olymp.js",
+  "bin": "./packages/runtime/bin/olymp.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
@@ -67,7 +67,7 @@
     "google-map-react": "^0.24.0",
     "graphql": "^0.10.1",
     "graphql-server-express": "^0.8.0",
-    "graphql-tag": "^2.2.1",
+    "graphql-tag": "^2.2.2",
     "graphql-tools": "^1.0.0",
     "happypack": "^4.0.0-beta.1",
     "helmet": "^3.6.1",
@@ -105,7 +105,7 @@
     "react-draggable": "^2.2.6",
     "react-fela": "^4.3.5",
     "react-filestack": "^0.9.1",
-    "react-frame-component": "^1.0.3",
+    "react-frame-component": "^1.1.0",
     "react-gateway": "^2.7.0",
     "react-helmet": "^5.1.3",
     "react-hot-loader": "3.0.0-beta.7",

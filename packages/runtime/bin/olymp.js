@@ -5,10 +5,7 @@ const path = require('path');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
 const env = require('node-env-file');
-const rootDir = path.resolve(__dirname, '..');
-const createConfig = fs.existsSync(path.resolve(rootDir, 'packages', 'runtime', 'webpack-config.js'))
-  ? require(path.resolve(rootDir, 'packages', 'runtime', 'webpack-config.js'))
-  : require(path.resolve(rootDir, 'node_modules', 'olymp-runtime', 'webpack-config.js'));
+const createConfig = require(path.resolve(__dirname, '..', 'webpack-config.js'));
 env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const command = process.argv[process.argv.length - 1];

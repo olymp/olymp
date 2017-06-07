@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { styled } from 'olymp';
-import { TagsEditor } from 'olymp-edits';
+import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';
 import Crop from './crop';

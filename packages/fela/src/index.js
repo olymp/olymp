@@ -4,4 +4,5 @@ export { default as Grid } from './grid';
 export { default as Container } from './container';
 export { default as Layout } from './layout';
 export { default as Navbar } from './navbar';
+export * from './loader';
 export * from './utils';
