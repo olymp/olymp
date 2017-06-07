@@ -48,8 +48,6 @@ class Stats extends Component {
       });
 
       report.on('success', (res) => {
-        console.log(res);
-
         this.setState({
           header: res.columnHeaders,
           data: res.rows,

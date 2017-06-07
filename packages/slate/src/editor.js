@@ -253,9 +253,6 @@ export default class SlateEditor extends Component {
     const value = this.props.value || Plain.deserialize('');
 
     const undo = !!value && !!value.history && !!value.history.undos && !!value.history.undos['_head'] && value.history.undos['_head'].value;
-    // console.log(undo);
-
-    console.log(blockTypes);
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>

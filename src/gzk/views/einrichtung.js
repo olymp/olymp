@@ -27,7 +27,6 @@ export default class Praxis extends Component {
     const tage = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
     if (!item) return <Spin size="large" />;
     const readOnly = !auth || !auth.user || (auth.user.einrichtung && auth.user.einrichtung !== item.id);
-    // console.log(item.personen);
     return (
       <div>
         <Helmet

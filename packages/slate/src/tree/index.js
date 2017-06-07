@@ -43,7 +43,6 @@ export default class SlateTree extends Component {
     }
   }
   onClick = (node) => {
-    console.log(node);
     this.setState({ selectedNode: node });
   }
   getTextLength = (node, length = 0) => {
