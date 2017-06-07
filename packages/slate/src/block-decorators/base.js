@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { styled } from 'olymp';
-import { fade } from 'olymp-fela';
 
 export default (options = {}) => Block => {
   const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes, props } = options;
 
   const StyledBlock = styled(({ theme, active }) => ({
     // border: active && `${theme.borderWidth}px ${theme.borderStyle} ${fade(theme.color)}`,
-    outline: active && `3px ${theme.borderStyle} ${fade(theme.color)}`,
+    outline: active && `2px ${theme.borderStyle} $(theme.color}`,
     // outlineOffset: -1,
   }), p => <Block {...p} />, p => p);
 
