@@ -30,7 +30,6 @@ export default class PageSidebar extends Component {
     const value = query['@page'];
     if (value === 'new') item = { parentId: query.parent, type: 'PAGE' };
 
-    console.log(item);
     const leftButtons = (
       <div>
         {!value && <Button.Group>

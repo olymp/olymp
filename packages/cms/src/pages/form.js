@@ -29,7 +29,6 @@ export class PageForm extends Component {
       children: [],
     })), { id: 'value', parentId: 'parent' });
 
-    console.log(item, form.getFieldValue('type'), form.getFieldValue('type') !== 'MENU');
     return (
       <div>
         <Tabs defaultActiveKey="1" size="small">
