@@ -1,6 +1,6 @@
 import React from 'react';
 import { IFrame } from 'olymp-fela';
-import { Collection } from '../views';
+import { Collection } from './views';
 
 const cache = {};
 export default (props) => {

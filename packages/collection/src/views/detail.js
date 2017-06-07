@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withAuth } from 'olymp';
 import { Button, Tabs } from 'antd';
 import { Panel } from 'olymp-ui';
-import { Input } from './edits';
+import { Input } from '../edits';
 
 @withAuth
 export default class CollectionDetail extends Component {

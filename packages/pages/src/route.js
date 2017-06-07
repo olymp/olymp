@@ -1,10 +1,8 @@
 import React from 'react';
-// import { DataRoute } from '../with-data';
 import { IFrame } from 'olymp-fela';
-import { EditablePage } from '../views';
-import Error404 from '../404';
+import { Error404, Page, EditablePage } from './views';
 
-export default props => {
+export const EditablePageRoute = props => {
   const { Wrapped, flatNavigation, query, pathname } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, slug, binding, pageId, aliasId, bindingId } = match || {};
@@ -27,5 +25,21 @@ export default props => {
         </Wrapped>
       </IFrame>
     )} />
+  );
+};
+
+
+export const PageRoute = props => {
+  const { Wrapped, flatNavigation, query, pathname } = props;
+  const match = flatNavigation.find(({ slug }) => pathname === slug);
+  const deviceWidth = query[`@deviceWidth`];
+  const { id, slug, binding, pageId, aliasId, bindingId } = match || {};
+  return (
+    <Wrapped {...props} match={match}>
+      {match
+        ? <Page.WithData {...props} component={PageGql} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
+        : <Error404 />
+      }
+    </Wrapped>
   );
 };
