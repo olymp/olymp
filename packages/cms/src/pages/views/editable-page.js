@@ -28,8 +28,9 @@ export default class PageSidebar extends Component {
     let { item } = this.props;
 
     const value = query['@page'];
-    if (value === 'new') item = { parentId: query.parent };
+    if (value === 'new') item = { parentId: query.parent, type: 'PAGE' };
 
+    console.log(item);
     const leftButtons = (
       <div>
         {!value && <Button.Group>
@@ -52,11 +53,12 @@ export default class PageSidebar extends Component {
         )}
       </div>
     );
+
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     const P = form.getFieldDecorator('blocks', {
       initialValue: item.blocks,
-    })(<Page readOnly={!value} binding={binding} plugins={[plugin]} />);
+    })(<Page readOnly={!value || item.type !== 'PAGE'} binding={binding} plugins={[plugin]} />);
 
     return (
       <SplitView deviceWidth={deviceWidth}>
