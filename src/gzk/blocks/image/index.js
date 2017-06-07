@@ -5,17 +5,24 @@ export default {
   ...Blocks.Image,
   styles: ({ theme }) => ({
     '> div': {
+      borderBottomRightRadius: 75,
+      overflow: 'hidden',
       '> div': {
         backgroundColor: fade('#ffa210', 90),
-        color: '#FFFFFF',
+        color: theme.light,
+        borderBottomRightRadius: 75,
+        minHeight: 75,
+        '> h3': {
+          fontWeight: 300,
+        },
+        '> p': {
+          color: theme.light,
+        },
       },
     },
     ifMediumUp: {
-      borderBottomRightRadius: 100,
-      overflow: 'hidden',
       '> div': {
         borderBottomRightRadius: 100,
-        overflow: 'hidden',
         '> div': {
           width: '66%',
           left: 'auto',
@@ -28,12 +35,7 @@ export default {
           fontSize: '125%',
           '> h3': {
             fontSize: '145%',
-            fontWeight: 300,
             lineHeight: 1.25,
-            color: theme.light,
-          },
-          '> p': {
-            color: theme.light,
           },
         },
       },
