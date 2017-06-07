@@ -6,7 +6,7 @@ import { Panel, SectionH } from 'olymp-ui';
 import { queryPage, queryPages, mutatePage } from './gql';
 import { Input, PageType, State, Parent } from './edits';
 
-export class PageForm extends Component {
+class PageForm extends Component {
   handleNameChange = (e) => { // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
@@ -65,4 +65,5 @@ PageForm.defaultProps = {
   item: {},
   items: [],
 };
-export const PageFormGql = queryPages(queryPage(mutatePage(Form.create(PageForm))));
+PageForm.WithData = queryPages(queryPage(mutatePage(Form.create(PageForm))));
+export default PageForm;

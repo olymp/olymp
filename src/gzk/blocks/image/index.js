@@ -1,4 +1,4 @@
-import { Blocks } from 'olymp-cms';
+import { Blocks } from 'olymp-pages';
 import { fade } from 'olymp-fela';
 
 export default {

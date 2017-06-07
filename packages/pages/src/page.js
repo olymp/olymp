@@ -19,7 +19,7 @@ Page.defaultProps = {
   item: {},
   readOnly: true,
 };
-export default Page;
-export const PageGql = queryPage(
+Page.WithData = queryPage(
   mapProps(({ item, data }) => ({ value: item && item.blocks, isLoading: data.loading }))(Page)
 );
+export default Page;

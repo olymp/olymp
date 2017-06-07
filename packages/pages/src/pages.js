@@ -41,7 +41,7 @@ const Badge = styled(({ theme }) => ({
 @withRouter
 @reorderPage
 @movePage
-export class Pages extends Component {
+class Pages extends Component {
   state = {
     expandedKeys: [],
   };
@@ -146,4 +146,5 @@ Pages.propTypes = {
 Pages.defaultProps = {
   items: [],
 };
-export const PagesGql = queryPages(Pages);
+Pages.WithData = queryPages(Pages);
+export default Pages;

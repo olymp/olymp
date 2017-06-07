@@ -1,5 +1,6 @@
-export * from './form';
-export * from './page';
+export { default as PageForm } from './form';
+export { default as Page } from './page';
+export { default as Pages } from './pages';
 export * from './gql';
 export * from './with-data';
 export * from './views';
