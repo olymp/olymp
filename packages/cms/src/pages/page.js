@@ -5,7 +5,7 @@ import { queryPage } from './gql';
 import { mapProps } from 'recompose';
 
 const Page = withBlockTypes(props => (
-  <SlateMate {...props} showUndo xy={console.log(props)} />
+  <SlateMate {...props} showUndo />
 ));
 Page.propTypes = {
   item: object,

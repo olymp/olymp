@@ -76,11 +76,6 @@ export default ({ getValue = defaultGetValue, changeValue = defaultChangeValue, 
               return newArr;
             }, []);
 
-            /* if (rawValue) {
-              const test = flattenNodes(rawValue.nodes);
-              console.log(rawValue, test);
-            } */
-
             if (rawValue && flattenNodes(rawValue.nodes).length) {
               if (onChangeHeadings) onChangeHeadings(getHeaders(rawValue.nodes));
               changeValue(this.props, rawValue, value);

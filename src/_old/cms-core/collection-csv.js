@@ -13,7 +13,6 @@ export const collectionToCsv = (collection, items) => {
       lines.push(`sep=${SEPERATOR}`);
       lines.push(`${fields.map(({ name }) => name).join(SEPERATOR)}`);
     }
-    console.log(item, fields);
     lines.push(fields.map(({ type, name }) => {
       if (type.name === 'String') {
         return item[name];
