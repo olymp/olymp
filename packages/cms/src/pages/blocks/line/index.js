@@ -130,8 +130,8 @@ const styles = theme => ({
 
 const component = styled(({ getData, theme }) => (
   styles(theme)[getData('type', 'style1')]
-), ({ attributes, className, getData }) => (
-  <hr {...attributes} className={className} x={console.log(getData('type', 'style1'), styles({}), styles({})[getData('type', 'style1')])} />
+), ({ attributes, className }) => (
+  <hr {...attributes} className={className} />
 ), p => p);
 
 export default {
