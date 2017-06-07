@@ -3,9 +3,12 @@ import { object, func, bool } from 'prop-types';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import { queryPage } from './gql';
 import { mapProps } from 'recompose';
+import { ContentLoader } from 'olymp-fela';
 
 const Page = withBlockTypes(props => (
-  <SlateMate {...props} showUndo />
+  <ContentLoader height={200} isLoading={props.isLoading}>
+    <SlateMate {...props} showUndo />
+  </ContentLoader>
 ));
 Page.propTypes = {
   item: object,
@@ -18,5 +21,5 @@ Page.defaultProps = {
 };
 export default Page;
 export const PageGql = queryPage(
-  mapProps(({ item }) => ({ value: item && item.blocks }))(Page)
+  mapProps(({ item, data }) => ({ value: item && item.blocks, isLoading: data.loading }))(Page)
 );

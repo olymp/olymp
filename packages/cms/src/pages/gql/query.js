@@ -10,12 +10,12 @@ export default graphql(gql`
   }
 `, {
   options: ({ id, pageId, query }) => ({
-    variables: { id: pageId || getId(id, query) },
+    variables: { id: pageId || getId(id, query) },
     fetchPolicy: isNew({ query }) ? 'cache-only' : undefined,
   }),
   props: ({ ownProps, data }) => ({
     ...ownProps,
-    item: (isNew(ownProps) ? {} : data.item) || {},
+    item: (isNew(ownProps) ? {} : data.item) || {},
     data,
   }),
 });
@@ -29,7 +29,7 @@ export const queryPages = graphql(gql`
 `, {
   props: ({ ownProps, data }) => ({
     ...ownProps,
-    items: data.items || [],
+    items: data.items || [],
     data,
   }),
 });

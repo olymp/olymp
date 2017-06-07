@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Form } from 'antd';
-import { unflatten, slugify } from 'olymp';
+import { slugify, unflatten } from 'olymp';
 import { Tabs } from 'antd';
 import { Panel, SectionH } from 'olymp-ui';
 import { queryPage, queryPages, mutatePage } from './gql';
-import { Input, SlateTree, PageType, State } from '../collection';
+import { Input, PageType, State } from '../collection';
 import { Parent } from './edits';
 
 export class PageForm extends Component {
@@ -29,6 +29,7 @@ export class PageForm extends Component {
       children: [],
     })), { id: 'value', parentId: 'parent' });
 
+    console.log(item, form.getFieldValue('type'), form.getFieldValue('type') !== 'MENU');
     return (
       <div>
         <Tabs defaultActiveKey="1" size="small">
@@ -39,19 +40,19 @@ export class PageForm extends Component {
               <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
               <State form={form} item={item} field="state" label="Status" rules={['required']} />
               <PageType form={form} item={item} field="type" label="Art" size="large" onChange={this.handleTypeChange} />
-              {form.getFieldValue('type') !== 'MENU' && <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />}
-              {form.getFieldValue('type') === 'LINK' && <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />}
-              {form.getFieldValue('type') === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
+              {(form.getFieldValue('type') || item.type) !== 'MENU' && <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />}
+              {(form.getFieldValue('type') || item.type) === 'LINK' && <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />}
+              {(form.getFieldValue('type') || item.type) === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
               <SectionH title="Erweitert" description="Datenanbindung und Sortierung der Elemente" />
               <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
               <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
             </Panel>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Text" key="2">
+          {/*<Tabs.TabPane tab="Text" key="2">
             <Panel paddingX={16}>
               <SlateTree form={form} item={item} field="blocks" label={null} />
             </Panel>
-          </Tabs.TabPane>
+          </Tabs.TabPane>*/}
         </Tabs>
       </div>
     );

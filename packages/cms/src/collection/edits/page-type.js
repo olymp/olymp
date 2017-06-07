@@ -7,7 +7,7 @@ const PageTypeInput = ({ item, field, label, layout, initialValue, rules, placeh
   return (
     <Form.Item key={field} label={label} {...layout}>
       {form.getFieldDecorator(field, {
-        initialValue: item ? item[field] : undefined,
+        initialValue: item && item[field] ? item[field] : 'PAGE',
         rules: getRules(rules, label),
       })(
         <Select style={{ width: '100%' }} {...rest}>
