@@ -55,9 +55,10 @@ export default class PageSidebar extends Component {
 
     const title = !value ? 'Seiten' : value === 'new' ? 'Neue Seite' : 'Seite';
     const description = !value ? 'Seiten-Management' : value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
+    const isPage = (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
     const P = form.getFieldDecorator('blocks', {
       initialValue: item.blocks,
-    })(<Page readOnly={!value || item.type !== 'PAGE'} binding={binding} plugins={[plugin]} />);
+    })(<Page readOnly={!value || !isPage} binding={binding} plugins={[plugin]} />);
 
     return (
       <SplitView deviceWidth={deviceWidth}>
