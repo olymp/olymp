@@ -1,7 +1,6 @@
 import React from 'react';
 import { TreeSelect, Form } from 'antd';
-import { getRules } from '../../collection';
-import { layout } from 'olymp-ui';
+import { layout, getRules } from 'olymp-ui';
 
 const ParentSelect = ({ item, field, label, layout, initialValue, rules, placeholder, form, ...rest }) => (
   <Form.Item key={field} label={label} {...layout}>

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Tabs, Form, Button } from 'antd';
 import { Prompt } from 'olymp';
 import { Sidebar, Panel, onError, onSuccess } from 'olymp-ui';
-import { Input } from '../../collection';
+import { Input } from 'olymp-collection';
 import { mutateTemplate } from '../gql';
 
 @Form.create()

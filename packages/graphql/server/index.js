@@ -7,7 +7,8 @@ const { googleGraphQL } = require('olymp-google/server');
 const { cloudinaryGraphQL } = require('olymp-cloudinary/server');
 const { filestackGraphQL } = require('olymp-filestack/server');
 const { authGraphQL } = require('olymp-auth/server');
-const { tagsGraphQL, pagesGraphQL } = require('olymp-cms/server');
+const { tagsGraphQL } = require('olymp-cms/server');
+const { pagesGraphQL } = require('olymp-pages/server');
 const createSitemap = require('olymp-sitemap');
 
 const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');

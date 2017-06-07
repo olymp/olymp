@@ -2,4 +2,4 @@ export default (names = [], label) => names.map(key => rules[key]).filter(x => x
 
 const rules = {
   required: ({ label }) => ({ required: true, message: `'${label}' erforderlich` }),
-}
+};

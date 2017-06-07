@@ -1,5 +1,5 @@
 import React from 'react';
-import { IFrame } from '../../pages/components';
+import { IFrame } from 'olymp-fela';
 import { Collection } from '../views';
 
 const cache = {};

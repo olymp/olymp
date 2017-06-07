@@ -1,6 +1,6 @@
 import React from 'react';
 // import { DataRoute } from '../with-data';
-import { IFrame } from '../components';
+import { IFrame } from 'olymp-fela';
 import { EditablePage } from '../views';
 import Error404 from '../404';
 

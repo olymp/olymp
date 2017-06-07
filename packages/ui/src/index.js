@@ -9,3 +9,4 @@ export { default as Dropdown } from './dropdown';
 export * from './h';
 export * from './edits';
 export { default as Tree } from './tree';
+export { default as getRules } from './rules';
