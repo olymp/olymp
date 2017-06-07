@@ -3,9 +3,9 @@ import { Prompt, withRouter } from 'olymp';
 import { Button, Form } from 'antd';
 import { Sidebar, Container, SplitView } from 'olymp-ui';
 import { queryPage, mutatePage } from '../gql';
-import Pages from '../pages';
-import PageForm from '../form';
-import Page from '../page';
+import Pages from './pages';
+import PageForm from './form';
+import Page from './page';
 
 const plugin = {
   onChange: (state) => {

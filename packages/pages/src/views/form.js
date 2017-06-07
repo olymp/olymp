@@ -3,8 +3,8 @@ import { Form } from 'antd';
 import { slugify, unflatten } from 'olymp';
 import { Tabs } from 'antd';
 import { Panel, SectionH } from 'olymp-ui';
-import { queryPage, queryPages, mutatePage } from './gql';
-import { Input, PageType, State, Parent } from './edits';
+import { queryPage, queryPages, mutatePage } from '../gql';
+import { Input, PageType, State, Parent } from '../edits';
 
 class PageForm extends Component {
   handleNameChange = (e) => { // set slug if unset

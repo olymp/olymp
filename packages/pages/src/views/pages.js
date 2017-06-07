@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter, Link, styled } from 'olymp';
 import { Tree } from 'olymp-ui';
 import { Icon } from 'antd';
-import { queryPages, reorderPage, movePage } from './gql';
+import { queryPages, reorderPage, movePage } from '../gql';
 
 const badgeStyle = theme => ({
   size: 23,
