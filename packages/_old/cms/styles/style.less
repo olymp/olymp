@@ -1,0 +1,357 @@
+@import '~react-image-crop/dist/ReactCrop.css'; // CROP
+@import '~@mapbox/react-colorpickr/dist/colorpickr.css'; // COLOR-PICKR
+@import './bootstrap.less';
+
+// AntDesign Overwrites
+.ant-dropdown.ant-dropdown-left .ant-dropdown-menu.ant-dropdown-menu-vertical.ant-dropdown-menu-sub.ant-dropdown-menu-hidden {
+  right: 100%;
+  left: initial;
+}
+
+.ant-menu-item-brand > i.fa {
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-left: -10px;
+  font-size: 34px;
+}
+.ant-menu-horizontal > .ant-menu-item, .ant-menu-vertical > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu > .ant-menu-submenu-title, .ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title {
+  padding: 0 16px;
+
+  a {
+    display: block;
+    color: #666;
+  }
+
+  &::after {
+    content: none;
+  }
+}
+.ant-select-selection__rendered > ul {
+  margin: 0;
+}
+.ant-menu-horizontal > .ant-menu-item-brand:hover,
+.ant-menu-horizontal > .ant-menu-item-brand:focus, {
+  border-bottom: 0px;
+}
+.ant-menu-horizontal > .ant-menu-item-right,
+.ant-menu-horizontal > .ant-menu-submenu-right {
+  float: right;
+}
+.ant-menu-horizontal > .ant-menu-item > a:hover,
+.ant-menu-horizontal > .ant-menu-submenu > a:hover,
+.ant-menu-horizontal > .ant-menu-item > a:focus,
+.ant-menu-horizontal > .ant-menu-submenu > a:focus,
+.ant-menu-horizontal > .ant-menu-submenu > .ant-menu-submenu-title > a:hover,
+.ant-menu-horizontal > .ant-menu-submenu > .ant-menu-submenu-title > a:focus {
+  text-decoration: none;
+}
+.ant-menu-item-separated {
+  border-left: 1px dashed #e4e4e4;
+}
+// Others
+.display-none {
+  display: none;
+}
+
+.main-nav {
+  border-bottom: 0;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, .4);
+
+  & > .ant-menu-item:not(.ant-menu-item-brand):hover, & > .ant-menu-item-selected, & > .ant-menu-item-active, & > .ant-menu-submenu:hover  {
+    &.ant-menu-item-brand {
+      border-bottom: 2px solid transparent;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+.ant-spin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ul.row {
+  display: block;
+  list-style: none;
+  padding: 0;
+  font-size: 0;
+}
+ul.row > li {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: top;
+  float: none;
+}
+
+.olymp-container {
+  max-width: calc(~'100% - 30px') !important;
+  margin: 15px auto;
+  padding: 0px;
+
+  :not(.ant-input-group) {
+    & > .ant-input, .ant-select-selection {
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+    }
+  }
+
+  .ant-calendar-picker {
+    width: 100% !important;
+  }
+
+  .ant-form-item-label {
+    // text-align: left;
+    padding-left: .5rem;
+  }
+}
+
+.olymp-submenu {
+  font-size: 13px;
+  line-height: 38px;
+  width: 100%;
+  z-index: 1;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, .4), inset 0 7px 9px -7px rgba(0, 0, 0, .6);
+
+  & > ul {
+    max-width: 1600px;
+    margin: 0 auto;
+    line-height: 38px;
+    background-color: transparent;
+  }
+
+  a {
+    color: #999 !important;
+  }
+
+  .ant-menu-item-selected a, a:hover {
+    color: #FFF !important;
+  }
+}
+
+.ant-form-item-label label {
+  white-space: initial;
+}
+.affix-absolute {
+  .ant-affix {
+    position: absolute!important;
+    left: 0;
+  }
+}
+/* new */
+@margin: 15px;
+.athena-cms-menu {
+  &.athena-cms-modal-menu {
+    .ant-btn-primary {
+      // z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
+      z-index: 1001 !important;
+    }
+  }
+
+  .ant-btn.ant-btn-primary {
+    height: 58px !important;
+    width: 58px !important;
+    font-size: 31px !important;
+  }
+
+  & > div > * {
+    z-index: 1000;
+    position: fixed;
+    top: @margin;
+
+    &:nth-child(1) {
+      top: calc(@margin - 5px);
+      left: calc(@margin - 5px);
+    }
+
+    &:nth-child(2) {
+      left: calc(48px + 2 * @margin);
+    }
+
+    &:nth-child(3) {
+      left: calc(2 * 48px + 3 * @margin);
+    }
+  }
+  &.inner div > * {
+    &:nth-child(1) {
+      left: calc(320px + @margin - 5px);
+    }
+
+    &:nth-child(2) {
+      left: calc(320px + 48px + 2 * @margin);
+    }
+
+    &:nth-child(3) {
+      left: calc(320px + 2 * 48px + 3 * @margin);
+    }
+  }
+
+  .ant-btn {
+    border: none;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
+    height: 48px !important;
+    width: 48px !important;
+    font-size: 21px !important;
+
+    img {
+      position: absolute;
+      top: 15%;
+      left: 15%;
+      width: 70%;
+      height: 70%;
+    }
+  }
+
+  & > .ant-affix {
+    z-index: 1001; // damit Buttons auch in Modals angezeigt werden (index > 1000)
+  }
+}
+
+.ant-affix {
+  z-index: 6;
+}
+
+.inline-edit {
+  .ant-select-selection {
+    border: 0;
+  }
+}
+
+a:focus, a:hover {
+  text-decoration: none !important;
+}
+
+.ant-calendar-picker-container .ant-calendar-panel .ant-calendar-footer .ant-calendar-footer-btn .ant-calendar-ok-btn {
+  .specificColor(@cms-color, 100%);
+
+  height: auto;
+}
+
+// SIDEBAR
+.slate-sidebar {
+  &:hover i.slate-sidebar-icon {
+    color: rgba(255, 255, 255, .75);
+  }
+
+  i.slate-sidebar-icon {
+    font-size: inherit;
+    .specificBackground(@primary-color);
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+// TOOLBAR
+.slate-fix-toolbar {
+  .specificBackground(@cms-color);
+
+  .ant-btn {
+    .specificColor(@cms-color, 100%);
+    background-color: rgba(255, 255, 255, .15);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .3);
+    }
+  }
+
+  .active, [data-active=true] {
+    .specificColor(@cms-color, 80%);
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+// SERVICE
+.service-hint {
+  text-align: center;
+  font-style: italic;
+  border: 1px dashed black;
+  color: black;
+  margin: 1rem;
+  padding: 1rem;
+  opacity: 0.6;
+
+  p {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}
+
+// PAGINATION
+.ant-pagination {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  &.mini {
+    margin-bottom: 0;
+
+    li {
+      background-color: transparent;
+    }
+  }
+
+  &:not(.mini) {
+    li, .ant-select-selection {
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, .2);
+    }
+  }
+
+  li, .ant-select-selection {
+    border-radius: 0;
+    border: none;
+    padding-top: 1px;
+
+    &.ant-pagination-item-active {
+      background-color: @primary-color;
+
+      a {
+        color: #FFF !important;
+      }
+    }
+
+    &.ant-pagination-prev a:after, &.ant-pagination-next a:after {
+      font-size: 18px;
+    }
+  }
+
+  /* .ant-pagination-options {
+    float: right;
+
+    .ant-pagination-options-size-changer {
+      margin-right: 0;
+    }
+  } */
+}
+
+// FUNCTIONS
+.specificBackground(@color) {
+  .specificColor(@color, 100%);
+
+  background-image: none;
+  background: linear-gradient(230deg, darken(spin(@color, 25), 20%), @color, darken(spin(@color, -25), 20%));
+  animation: MoveBG 60s ease infinite;
+  background-size: 500% 500%;
+  background-position: -200% -200%;
+  border-color: @color;
+
+  /* @keyframes MoveBG {
+    0% {
+      background-position: -200% -200%;
+    }
+    50% {
+      background-position: -200% -100%;
+    }
+    100% {
+      background-position: -200% -200%;
+    }
+  } */
+}
+.specificColor(@color, @alpha) {
+  color: fade(contrast(@color, #333333, #FFFFFF), @alpha);
+}

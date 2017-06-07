@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "name": "olymp-filestack",
+  "description": "",
+  "main": "./src",
+  "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "license": "MIT",
+  "scripts": {
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

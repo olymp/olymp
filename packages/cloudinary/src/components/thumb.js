@@ -15,7 +15,7 @@ const ImageContainer = styled(({ theme, isActive }) => ({
   border: isActive ? `1px solid ${theme.color}` : '1px solid #eee',
   // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
   '> img': {
-    opacity: isActive ? .6 : 1,
+    opacity: isActive ? 0.6 : 1,
     backgroundColor: '#FFF',
     display: 'block',
   },

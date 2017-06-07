@@ -38,8 +38,8 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
       this.unmount = true;
     }
 
-    setQuery = (gqlQuery) => {
-      this.newQuery = gqlQuery;
+    setQuery = (query) => {
+      this.newQuery = query;
       this.update({ ...this.props, force: true });
       this.forceUpdate();
     }
@@ -51,12 +51,12 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
         if (this.subscription) this.subscription.unsubscribe();
         const { client, collection, fieldNames, location, force } = nextProps;
         if (!collection) return;
-        const gqlQuery = this.newQuery || this.props.gqlQuery;
+        const query = this.newQuery || this.props.query;
         this.items = null;
         const queryName = `${lowerFirst(collection.name)}List`;
 
         let watchQuery;
-        if (gqlQuery) {
+        if (query) {
           watchQuery = client.watchQuery({
             forceFetch: force,
             query: gql`
@@ -67,7 +67,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
               }
             `,
             variables: {
-              gqlQuery,
+              query,
             },
           });
         } else if (fieldNames.indexOf('state') !== -1) {
@@ -114,7 +114,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
 
     render() {
       return (
-        <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} gqlQuery={this.newQuery || this.props.gqlQuery} isLoading={this.isLoading} />
+        <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} gqlQuery={this.newQuery || this.props.query} isLoading={this.isLoading} />
       );
     }
   }

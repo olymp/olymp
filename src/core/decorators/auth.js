@@ -1,26 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { graphql, withApollo } from 'react-apollo';
+import { Spin } from 'antd';
 import gql from 'graphql-tag';
 
-const baseAttributes = 'id, name, email';
-let fieldNames = baseAttributes;
+const baseAttributes = 'id, name, email, isAdmin';
+let attributes = baseAttributes;
 
-export const auth = obj => (WrappedComponent) => {
-  if (obj && obj.extraAttributes) fieldNames = `${baseAttributes}, ${obj.extraAttributes}`;
-  const inner = (WrappedComponent) => {
-    const component = (props) => {
+export const auth = (obj) => WrappedComponent => {
+  if (obj && obj.extraAttributes) attributes = `${baseAttributes}, ${obj.extraAttributes}`;
+  const inner = WrappedComponent => {
+    const component = props => {
       const auth = {
         user: props.data.user,
         loading: props.data.loading,
-        ...authMethods(props.client, props.data.refetch),
+        ...authMethods(props.client, props.data.refetch, props.data.user, props.data.loading),
       };
       return <WrappedComponent auth={auth} {...props} />;
     };
     return graphql(
       gql`
         query verify {
-          user: verifyCookie {
-            ${fieldNames}
+          user: verify {
+            ${attributes}
           }
         }
       `, {
@@ -38,12 +39,13 @@ export const auth = obj => (WrappedComponent) => {
       };
     }
     render() {
+      if (this.props.auth.loading) return <Spin />;
       return <WrappedComponent {...this.props} />;
     }
   } return inner(UserProvider);
 };
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const withUserRenderer = (props, context) => (
     <WrappedComponent {...context} {...props} />
   );
@@ -53,65 +55,159 @@ export default (WrappedComponent) => {
   return withUserRenderer;
 };
 
-// ///////////////
-const authMethods = (client, refetch) => ({
-  logout: () => client.mutate({
-    mutation: gql`
+/////////////////
+const authMethods = (client, refetch, user, loading) => ({
+  can: (method) => {
+    if (loading) return true;
+    if (!user) return false;
+    if (user.isAdmin) return true;
+    if (!user.features) return false;
+    return user.features.includes(method);
+  },
+  isAuthenticated: () => {
+    if (!user) return false;
+    return true;
+  },
+  isAdmin: () => {
+    if (!user) return false;
+    return user.isAdmin;
+  },
+  invitation: (invitation, id) => {
+    return client.mutate({
+      mutation: gql`
+        mutation invitation($invitation: InvitationInput) {
+          invitation(input: $invitation) {
+            id, name, email
+          }
+        }
+      `, variables: { invitation },
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      // if (refetch) refetch({});
+      return data.invitation;
+    });
+  },
+  save: (user, id) => {
+    return client.mutate({
+      mutation: gql`
+        mutation user($user: UserInput) {
+          user(input: $user) {
+            ${attributes}
+          }
+        }
+      `, variables: { user },
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      // if (refetch) refetch({});
+      return data.user;
+    });
+  },
+  logout: () => {
+    return client.mutate({
+      mutation: gql`
         mutation logout {
-          logoutCookie
+          logout
         }
       `,
-  }).then(({ data }) => {
-    if (refetch) refetch({});
-  }),
-  forgot: email => client.mutate({
-    mutation: gql`
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      if (refetch) refetch({});
+    });
+  },
+  forgot: email => {
+    return client.mutate({
+      mutation: gql`
         mutation forgot {
           forgot(email:"${email}")
         }
       `,
-  }).then(({ data }) => data.forgot),
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      return data.forgot;
+    });
+  },
   reset: (token, password) => {
     if (typeof localStorage === 'undefined') return;
     return client.mutate({
       mutation: gql`
         mutation reset {
-          reset(token:"${token}", password:"${password}")
+          reset(token:"${token}", password:"${password}") {
+            email
+          }
         }
       `
-    }).then(({ data }) => data.reset).catch((err) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      return data.reset;
     });
   },
-  login: (email, password) => {
+  confirm: (token) => {
+    return client.mutate({
+      mutation: gql`
+        mutation confirm {
+          confirm(token:"${token}") {
+            email
+          }
+        }
+      `
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      return data.confirm;
+    });
+  },
+  login: (email, password, totp) => {
     if (typeof localStorage === 'undefined') return;
     return client.mutate({
       mutation: gql`
         mutation login {
-          user: loginCookie(email:"${email}", password:"${password}") {
-            ${fieldNames}
+          user: login(email:"${email}", password:"${password}"${totp ? `, totp:"${totp}"` : ''}) {
+            ${attributes}
           }
         }
       `,
-    }).then(({ data }) => {
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
       const { user } = data;
       if (refetch) refetch({ });
       return user;
-    }).catch((err) => {
     });
   },
-  register: (user, password) => client.mutate({
-    mutation: gql`
-        mutation register($user: userInput) {
-          register(input: $user, password: "${password}")
+  register: (user, password, token) => {
+    return client.mutate({
+      mutation: gql`
+        mutation register($user: UserInput, $password: String, $token: String) {
+          register(input: $user, password: $password, token: $token) {
+            ${attributes}
+          }
         }
-      `,
-    variables: { user },
-  }).then(({ data }) => data.register),
-  checkToken: key => client.mutate({
-    query: gql`
+      `, variables: { user, password, token },
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      return data.register;
+    });
+  },
+  checkToken: key => {
+    return client.mutate({
+      query: gql`
         query checkToken {
           checkToken(token:"${key}")
         }
       `,
-  }).then(({ data }) => data.checkToken),
+    }).then(({ data }) => {
+      return data.checkToken;
+    });
+  },
+  totpConfirm: (token, totp) => {
+    return client.mutate({
+      mutation: gql`
+        mutation totpConfirm($token: String, $totp: String) {
+          totpConfirm(token: $token, totp: $totp)
+        }
+      `, variables: { token, totp },
+    }).then(({ data, errors }) => {
+      if (errors) throw errors[0];
+      if (!data.totpConfirm) throw new Error('Could not activate TOTP');
+      return data.totpConfirm;
+    });
+  },
 });
