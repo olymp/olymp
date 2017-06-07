@@ -30,14 +30,13 @@ export const EditablePageRoute = props => {
 
 
 export const PageRoute = props => {
-  const { Wrapped, flatNavigation, query, pathname } = props;
+  const { Wrapped, flatNavigation, pathname } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
-  const deviceWidth = query[`@deviceWidth`];
   const { id, slug, binding, pageId, aliasId, bindingId } = match || {};
   return (
     <Wrapped {...props} match={match}>
       {match
-        ? <Page.WithData {...props} component={PageGql} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
+        ? <Page.WithData {...props} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} />
         : <Error404 />
       }
     </Wrapped>
