@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
 export default (options = {}) => Block => {
   const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes, props } = options;
 
-  const StyledBlock = styled(({ theme, active }) => ({
+  const StyledBlock = createComponent(({ theme, active }) => ({
     // border: active && `${theme.borderWidth}px ${theme.borderStyle} ${fade(theme.color)}`,
     outline: active && `2px ${theme.borderStyle} $(theme.color}`,
     // outlineOffset: -1,
-  }), p => <Block {...p} />, p => p);
+  }), p => <Block {...p} />, p => Object.keys(p));
 
   return class BaseDecorator extends Component {
     static slate = { isVoid: isVoid !== false, isAtomic: isAtomic !== false, sidebar, label, category, icon, defaultNodes };

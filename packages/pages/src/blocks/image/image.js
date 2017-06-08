@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image as CloudinaryImage } from 'olymp-cloudinary';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 import Mediathek from './mediathek';
 
 export default {
@@ -45,7 +45,7 @@ export default {
   }],
 };
 
-const Gallery = styled(() => ({
+const Gallery = createComponent(() => ({
   width: '100%',
   onAfter: {
     content: '""',
@@ -67,9 +67,9 @@ const Gallery = styled(() => ({
       />
     ))}
   </div>
-), p => p);
+), p => Object.keys(p));
 
-const ImageContainer = styled(({ width }) => ({
+const ImageContainer = createComponent(({ width }) => ({
   width,
   position: 'relative',
   float: 'left',
@@ -80,14 +80,14 @@ const ImageContainer = styled(({ width }) => ({
       <Label title={title} subtitle={subtitle} />
     )}
   </div>
-), p => p);
+), p => Object.keys(p));
 
-const Image = styled(() => ({
+const Image = createComponent(() => ({
   width: '100%',
   display: 'block',
-}), p => <CloudinaryImage {...p} />, p => p);
+}), p => <CloudinaryImage {...p} />, p => Object.keys(p));
 
-const Label = styled(({ theme }) => ({
+const Label = createComponent(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: 0,
@@ -109,4 +109,4 @@ const Label = styled(({ theme }) => ({
     {title && <h3>{title}</h3>}
     {subtitle && <p>{subtitle}</p>}
   </div>
-), p => p);
+), p => Object.keys(p));

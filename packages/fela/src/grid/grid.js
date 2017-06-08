@@ -1,8 +1,8 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 
-const Grid = styled(() => ({
+const Grid = createComponent(() => ({
   minWidth: '100%',
   onAfter: {
     content: '""',
@@ -18,7 +18,7 @@ const Grid = styled(() => ({
       { gridSize: size }
     ))}
   </div>
-), p => p);
+), p => Object.keys(p));
 Grid.propTypes = {
   /** Defines the number of columns of the grid system */
   size: PropTypes.number,

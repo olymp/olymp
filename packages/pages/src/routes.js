@@ -2,14 +2,14 @@ import React from 'react';
 import { IFrame } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 
-export const EditablePageRoute = props => {
+export const EditablePageRoute = (props) => {
   const { Wrapped, flatNavigation, query, pathname } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
-  const { id, slug, binding, pageId, aliasId, bindingId } = match || {};
+  const { id, binding, pageId, aliasId, bindingId } = match || {};
   const deviceWidth = query[`@deviceWidth`];
   if (!match) {
     return (
-      <EditablePage {...props} deviceWidth={deviceWidth} component={EditablePage} render={match => (
+      <EditablePage {...props} deviceWidth={deviceWidth} render={match => (
         <IFrame disabled={!deviceWidth}>
           <Wrapped {...props}>
             <Error404 />
@@ -18,7 +18,7 @@ export const EditablePageRoute = props => {
       )} />
     );
   } return (
-    <EditablePage {...props} deviceWidth={deviceWidth} component={EditablePage} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
+    <EditablePage {...props} deviceWidth={deviceWidth} id={pageId || aliasId || id} bindingId={bindingId} binding={binding} render={children => (
       <IFrame disabled={!deviceWidth}>
         <Wrapped {...props} match={match}>
           {children}
@@ -29,10 +29,10 @@ export const EditablePageRoute = props => {
 };
 
 
-export const PageRoute = props => {
+export const PageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
-  const { id, slug, binding, pageId, aliasId, bindingId } = match || {};
+  const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
     <Wrapped {...props} match={match}>
       {match

@@ -1,10 +1,10 @@
 import React from 'react';
 import { object, func, number, bool } from 'prop-types';
-import { styled } from 'olymp';
 import { Icon } from 'antd';
 import Image from './image';
+import { createComponent } from 'olymp-fela';
 
-const ImageContainer = styled(({ theme, isActive }) => ({
+const ImageContainer = createComponent(({ theme, isActive }) => ({
   position: 'relative',
   margin: '.5rem',
   cursor: 'pointer',
@@ -25,9 +25,9 @@ const ImageContainer = styled(({ theme, isActive }) => ({
     transform: 'scale(1.025)',
     transition: 'all .1s ease-in-out',
   },
-}), 'div', ({ height, isActive, ...p }) => p);
+}), 'div', ({ height, isActive, ...p }) => Object.keys(p));
 
-const ImageLabel = styled(({ theme }) => ({
+const ImageLabel = createComponent(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   right: '50%',
@@ -41,9 +41,9 @@ const ImageLabel = styled(({ theme }) => ({
   padding: 5,
   lineHeight: 1,
   // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
-const CheckLabel = styled(({ theme }) => ({
+const CheckLabel = createComponent(({ theme }) => ({
   position: 'absolute',
   top: 0,
   right: 0,
@@ -56,14 +56,14 @@ const CheckLabel = styled(({ theme }) => ({
   fontSize: 25,
   padding: 5,
   lineHeight: 1,
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
-const CloseLabel = styled(({ theme }) => ({
+const CloseLabel = createComponent(({ theme }) => ({
   ':hover': {
     transform: 'translate(40%, -40%) scale(0.75)',
     transition: 'all .15s ease-in-out',
   }
-}), CheckLabel, p => p);
+}), CheckLabel, p => Object.keys(p));
 
 const Thumb = ({ item, onClick, onRemove, isActive, height }) => item ? (
   <ImageContainer isActive={isActive}>

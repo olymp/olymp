@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 import { Grid } from '../index';
 import { Link, Placeholder } from './link';
 
-const SuperNav = styled(() => ({
+const SuperNav = createComponent(() => ({
   width: 700,
 }), ({ className, pages, inverse }) => (
   <div className={className}>
@@ -30,7 +30,7 @@ const SuperNav = styled(() => ({
       ))}
     </Grid>
   </div>
-), p => p);
+), p => Object.keys(p));
 SuperNav.displayName = 'Navbar.Mega';
 SuperNav.propTypes = {
   /** Array of page-objects */
@@ -48,12 +48,12 @@ SuperNav.defaultProps = {
 };
 export default SuperNav;
 
-const Column = styled(({ theme }) => ({
+const Column = createComponent(({ theme }) => ({
   padding: theme.space3,
   fontFamily: theme.fontFamily,
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
-const Title = styled(
+const Title = createComponent(
   ({ theme, inverse }) => ({
     display: 'block',
     fontWeight: 'bold',
@@ -62,24 +62,24 @@ const Title = styled(
     color: `${inverse ? theme.light : theme.dark} !important`,
   }),
   ({ pathname, ...p }) => (pathname ? <Link to={pathname} {...p} /> : <Placeholder {...p} />),
-  p => p
+  p => Object.keys(p)
 );
 
-const Link2 = styled(({ theme }) => ({
+const Link2 = createComponent(({ theme }) => ({
   padding: `${theme.space1} ${theme.space0} !important`,
-}), p => <Link {...p} />, p => p);
+}), p => <Link {...p} />, p => Object.keys(p));
 
-const Item = styled(({ theme }) => ({
+const Item = createComponent(({ theme }) => ({
   onHover: {
     '> div': {
       display: 'block',
     }
   }
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
-const SubMenu = styled(({ theme }) => ({
+const SubMenu = createComponent(({ theme }) => ({
   display: 'none',
   paddingLeft: theme.space3,
   paddingY: theme.space1,
   fontSize: theme.fontSizeSmall,
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));

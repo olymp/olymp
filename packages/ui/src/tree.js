@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tree as AntTree } from 'antd';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
-const Tree = styled(() => ({
+const Tree = createComponent(() => ({
   paddingRight: 8,
   paddingLeft: 13,
   paddingY: 0,
@@ -23,9 +23,9 @@ const Tree = styled(() => ({
       width: '100%',
     },
   },
-}), AntTree, p => p);
+}), AntTree, p => Object.keys(p));
 
-Tree.Title = styled(({ theme, disabled }) => ({
+Tree.Title = createComponent(({ theme, disabled }) => ({
   display: 'flex',
   '> a:first-child': {
     flex: 1,
@@ -37,7 +37,7 @@ Tree.Title = styled(({ theme, disabled }) => ({
   <span className={className}>
     {children}
   </span>
-), p => p);
+), p => Object.keys(p));
 
 Tree.Node = AntTree.TreeNode;
 

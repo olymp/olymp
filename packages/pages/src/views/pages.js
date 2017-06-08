@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter, Link, styled } from 'olymp';
+import { withRouter, Link } from 'olymp';
+import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon } from 'antd';
 import { queryPages, reorderPage, movePage } from '../gql';
@@ -20,23 +21,23 @@ const badgeStyle = theme => ({
   }
 });
 
-const Button = styled(({ theme }) => ({
+const Button = createComponent(({ theme }) => ({
   // backgroundColor: theme.color,
   // ...badgeStyle(theme),
 }), ({ className, to, type }) => (
   <Link to={to} className={className}>
     <Icon type={type} />
   </Link>
-), p => p);
+), p => Object.keys(p));
 
-const Badge = styled(({ theme }) => ({
+const Badge = createComponent(({ theme }) => ({
   // backgroundColor: theme.dark2,
   // ...badgeStyle(theme),
 }), ({ className, type }) => (
   <a href="javascript:;" className={className}>
     <Icon type={type} />
   </a>
-), p => p);
+), p => Object.keys(p));
 
 @withRouter
 @reorderPage

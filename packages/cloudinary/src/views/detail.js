@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
-import { styled } from 'olymp';
 import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';
 import { Crop } from '../components';
 import { LightboxImage } from '../lightbox';
+import { createComponent } from 'olymp-fela';
 
-const DangerCheckbox = styled(({ theme, checked }) => ({
+const DangerCheckbox = createComponent(({ theme, checked }) => ({
   color: checked ? 'red' : 'rgba(0, 0, 0, .65)',
-}), Checkbox, p => p);
+}), Checkbox, p => Object.keys(p));
 
 const FormItemLayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 }, style: { marginBottom: 0 } };
 const FormForAllLayout = { wrapperCol: { span: 16, offset: 8 }, style: { marginBottom: 0 } };

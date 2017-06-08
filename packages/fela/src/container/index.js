@@ -1,6 +1,6 @@
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 
-export default styled(({ theme }) => ({
+export default createComponent(({ theme }) => ({
   minHeight: 30,
   position: 'relative',
   marginX: 'auto',
@@ -31,4 +31,4 @@ export default styled(({ theme }) => ({
     width: 1140,
     maxWidth: '100%',
   },
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));

@@ -1,8 +1,7 @@
 import React from 'react';
-import { styled } from 'olymp';
-import { fade } from 'olymp-fela';
+import { fade, createComponent } from 'olymp-fela';
 
-export default styled(({ theme, size = 1, columns = 3, background = theme.dark5, color = theme.dark2, padding = `${theme.space2} 1.33rem 1.33rem ${theme.space2}` }) => ({
+export default createComponent(({ theme, size = 1, columns = 3, background = theme.dark5, color = theme.dark2, padding = `${theme.space2} 1.33rem 1.33rem ${theme.space2}` }) => ({
   width: `${100 / columns * size}%`,
   float: 'left',
   padding: `${theme.space3} 0 0 ${theme.space3}`,
@@ -56,4 +55,4 @@ export default styled(({ theme, size = 1, columns = 3, background = theme.dark5,
     <h2>{title}</h2>
     <p>{children}</p>
   </div>
-), p => p);
+), p => Object.keys(p));

@@ -1,20 +1,20 @@
 import React, { Component, PropTypes } from 'react';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 import { Select } from 'antd';
 import { url as optimizeUrl } from '../utils';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-const StyledCropSelect = styled(({ theme }) => ({
+const StyledCropSelect = createComponent(({ theme }) => ({
   width: 150,
   float: 'left',
-}), Select, p => p);
+}), Select, p => Object.keys(p));
 
-const StyledCrop = styled(({ theme }) => ({
+const StyledCrop = createComponent(({ theme }) => ({
   '> .ReactCrop--crop-wrapper': {
     backgroundColor: 'white',
   }
-}), ReactCrop, p => p);
+}), ReactCrop, p => Object.keys(p));
 
 export const CropSelect = (props) => {
   const { value, onChange, style } = props;
@@ -56,7 +56,7 @@ class Crop extends Component {
       </div>
     );
   }
-};
+}
 Crop.propTypes = {
   url: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,

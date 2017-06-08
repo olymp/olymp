@@ -1,19 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { Button, notification } from 'antd';
-import { styled } from 'olymp';
 import { Sidebar, Placeholder } from 'olymp-ui';
 import { isEqual } from 'lodash';
 import { mutateFile } from '../gql';
 import Detail from './detail';
 import { Gallery } from '../components';
 import { LightboxGallery } from '../lightbox';
+import { createComponent } from 'olymp-fela';
 
-const StyledGallery = styled(({ theme }) => ({
+const StyledGallery = createComponent(({ theme }) => ({
   maxHeight: 250,
   overflow: 'auto',
   padding: '.5rem 0',
   borderTop: '1px solid #eee',
-}), Gallery, p => p);
+}), Gallery, p => Object.keys(p));
 
 @mutateFile
 class SelectionSidebar extends Component {
