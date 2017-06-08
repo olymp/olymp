@@ -1,22 +1,25 @@
 import React from 'react';
-import { createComponent } from 'olymp-fela';
-import Panel from './panel';
 import Container from './container';
-
-const Li = createComponent(({ theme }) => ({
-  paddingBottom: theme.space2,
-  ':last-of-type': {
-    paddingBottom: 0,
-  },
-}), 'li', p => Object.keys(p));
+import Li from './li';
+import Panel from './panel';
+import Carousel from './carousel';
 
 export default {
-  label: 'Veranstaltungen, Neuigkeiten',
+  label: 'Veranstaltungen, Magazin',
   category: 'Panel',
   editable: false,
   component: ({ className, ...props }) => (
     <Container className={className}>
-      <Panel medium={6} title="Veranstaltungen" background="rgb(73, 146, 195)" color="#FFF">
+      <Carousel
+        title="Magazin"
+        size={5}
+        items={[
+          { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Z1pLCLtn51l_edd3gh.jpg' },
+          { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/ZJwg-TF0c51l_xfh4q5.jpg' },
+          { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Wke6YQMjq1x_vprqa2.jpg' },
+        ]}
+      />
+      <Panel medium={7} title="Veranstaltungen" background="rgb(73, 146, 195)" color="#FFF">
         <ul>
           <Li>
             <b>Vortrag am 25. April 2017, 18 Uhr</b>
@@ -26,17 +29,17 @@ export default {
             <b>Vortrag am 21. März 2017, 18 Uhr</b>
             <p>Gelenkersatz am Knie</p>
           </Li>
-        </ul>
-      </Panel>
-      <Panel medium={6} title="Neuigkeiten" background="rgb(62, 167, 62)" color="#FFF">
-        <ul>
           <Li>
-            <b>Presseartikel vom 15. Dezember 2016</b>
-            <p>Vertreterversammlung der KV Hessen wählt neue Vorsitzende</p>
+            <b>Vortrag am 25. April 2017, 18 Uhr</b>
+            <p>Ursachen und aktuelle Behandlungsmöglichkeiten von Schulterschmerzen</p>
           </Li>
           <Li>
-            <b>Publikation vom 08. Dezember 2016</b>
-            <p>Pflegeinfo Express</p>
+            <b>Vortrag am 21. März 2017, 18 Uhr</b>
+            <p>Gelenkersatz am Knie</p>
+          </Li>
+          <Li>
+            <b>Vortrag am 25. April 2017, 18 Uhr</b>
+            <p>MAXIMAL 5 ITEMS!</p>
           </Li>
         </ul>
       </Panel>

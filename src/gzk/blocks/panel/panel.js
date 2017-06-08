@@ -1,18 +1,17 @@
 import React from 'react';
-import { Grid, createComponent } from 'olymp-fela';
+import { Grid, createComponent, fade } from 'olymp-fela';
+import { H2 } from '../../components';
 
 export default createComponent(({ theme, background = theme.dark5, color = theme.dark2, padding = '1.33rem' }) => ({
   width: '100%',
-  float: 'left',
-  padding: `${theme.space3} 0 0 ${theme.space3}`,
+  paddingTop: theme.space3,
+  paddingX: theme.space2,
   position: 'relative',
   textAlign: 'justify',
   display: 'flex',
   flexDirection: 'column',
   '> h2': {
     marginBottom: theme.space1,
-    fontWeight: 300,
-    fontStyle: 'italic',
   },
   '> div': {
     backgroundColor: background,
@@ -40,7 +39,7 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
   },
   onHover: {
     onAfter: {
-      backgroundColor: theme.color,
+      backgroundColor: fade(background === theme.dark5 ? theme.color : background),
     },
   },
   ifSmallDown: {
@@ -51,7 +50,7 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
   }
 }), ({ title, children, padding, background, color, ...rest }) => (
   <Grid.Item mini={12} {...rest}>
-    <h2>{title}</h2>
+    <H2 color={background}>{title}</H2>
     <div>{children}</div>
   </Grid.Item>
 ), p => Object.keys(p));
