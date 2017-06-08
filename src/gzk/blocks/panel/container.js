@@ -1,5 +1,5 @@
 import React from 'react';
-import { createComponent,Container, Grid } from 'olymp-fela';
+import { createComponent, Container, Grid } from 'olymp-fela';
 
 export default createComponent(() => ({
   display: 'flex',

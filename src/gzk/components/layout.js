@@ -5,7 +5,7 @@ import { Navbar, Layout, createComponent } from 'olymp-fela';
 export const Header = createComponent(({ sticky }) => ({
   backgroundColor: 'white',
   boxShadow: sticky && '0 3px 11px 0 rgba(0,0,0,.06)',
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
 export default class GzLayout extends Component {
   static defaultProps = {

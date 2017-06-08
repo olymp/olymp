@@ -114,7 +114,7 @@ const component = createComponent(({ theme, padding, width, showLogo, bottomTran
     paddingBottom: 24,
     paddingTop: 24,
   }
-}), Modal, p => p);
+}), Modal, p => Object.keys(p));
 
 // Copyright
 component.Copyright = createComponent(({ theme }) => ({
