@@ -14,7 +14,6 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
-import App from '@app';
 import template, { amp } from './template';
 import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
 import { GatewayProvider } from 'react-gateway';
@@ -26,6 +25,8 @@ import bodyparser from 'body-parser';
 import { Server as WebSocketServer } from 'uws';
 import { createFela } from 'olymp-fela';
 import { EventEmitter } from 'events';
+import { UserAgentProvider } from '@quentin-sommer/react-useragent';
+import App from '@app';
 
 const init = require('@app').init;
 
@@ -34,8 +35,7 @@ console.log('VERSION', version);
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 // End Redux stuff
 
 const RedisStore = createRedisStore(session);
@@ -195,9 +195,11 @@ app.get('*', (request, response) => {
         <ConnectedRouter history={history}>
           <Provider renderer={renderer}>
             <GatewayProvider>
-              <AmpProvider amp={request.isAmp}>
-                <App />
-              </AmpProvider>
+              <UserAgentProvider ua={request.headers['user-agent']}>
+                <AmpProvider amp={request.isAmp}>
+                  <App />
+                </AmpProvider>
+              </UserAgentProvider>
             </GatewayProvider>
           </Provider>
         </ConnectedRouter>

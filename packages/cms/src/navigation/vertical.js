@@ -1,15 +1,16 @@
 import React from 'react';
-import { withAuth, styled, Link, withLang } from 'olymp';
+import { withAuth, Link, withLang } from 'olymp';
 import { Menu, Icon, Popover } from 'antd';
 import tinycolor from 'tinycolor2';
+import { createComponent } from 'olymp-fela';
 
-const Separator = styled(({ theme }) => ({
+const Separator = createComponent(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, 0.05)',
 }), 'li');
-const Filler = styled(({ theme }) => ({
+const Filler = createComponent(({ theme }) => ({
   flex: 1,
 }), 'li');
-const VerticalMenu = styled(({ deviceWidth, theme }) => ({
+const VerticalMenu = createComponent(({ deviceWidth, theme }) => ({
   overflow: 'visible',
   display: 'flex',
   flexDirection: 'column',
@@ -66,7 +67,7 @@ const VerticalMenu = styled(({ deviceWidth, theme }) => ({
   '> li.ant-menu-submenu-selected > div > i': {
     backgroundColor: 'rgba(0,0,0,0.30)!important',
   },
-}), Menu, p => p);
+}), Menu, p => Object.keys(p));
 
 export default withLang(withAuth(({ auth, lang, className, deviceWidth, children, query, ...rest }) => (
   <VerticalMenu className={className} deviceWidth={deviceWidth} selectedKeys={Object.keys(query)}>

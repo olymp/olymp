@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { styled } from 'olymp';
+import React from 'react';
+import { createComponent } from 'olymp-fela';
 
-export default styled(({ theme, noBorder, color, center }) => ({
+export default createComponent(({ theme, noBorder, color, center }) => ({
   padding: '5px 6px',
   borderBottom: noBorder || '1px solid #e9e9e9',
   fontSize: '1.17em',
@@ -18,4 +18,4 @@ export default styled(({ theme, noBorder, color, center }) => ({
       {buttons}
     </div>
   </div>
-), p => p);
+), p => Object.keys(p));

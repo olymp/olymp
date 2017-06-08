@@ -114,7 +114,7 @@ const component = createComponent(({ theme, padding, width, showLogo, bottomTran
     paddingBottom: 24,
     paddingTop: 24,
   }
-}), Modal, p => p);
+}), Modal, p => Object.keys(p));
 
 // Copyright
 component.Copyright = createComponent(({ theme }) => ({
@@ -177,6 +177,6 @@ const TitleButtons = createComponent(({ theme, left, right, padding, width, show
   fontWeight: 200,
   padding: 10,
   top: 14,
-}), 'div', ({ left, right, ...p }) => p);
+}), 'div', ({ left, right, ...p }) => Object.keys(p));
 
 export default component;

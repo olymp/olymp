@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 import { fade, border } from 'olymp-fela';
 import Sub from './sub';
 import Mega from './mega';
 
-const Nav = styled(
+const Nav = createComponent(
   ({ theme, inverse, vertically, right, sub }) => (sub && {
     backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
     border: !inverse && border(theme),
@@ -35,7 +35,7 @@ const Nav = styled(
   ) : (
     <Sub {...props} vertically={sub || vertically}>{children}</Sub>
   )),
-  p => p
+  p => Object.keys(p)
 );
 Nav.displayName = 'Navbar.Nav';
 Nav.propTypes = {

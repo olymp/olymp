@@ -1,5 +1,6 @@
 import React from 'react';
-import { styled, NavLink } from 'olymp';
+import { NavLink } from 'olymp';
+import { createComponent } from 'react-fela';
 
 const navItemStyles = ({ theme, inverse }) => ({
   color: inverse ? theme.light2 : theme.dark2,
@@ -10,12 +11,12 @@ const navItemStyles = ({ theme, inverse }) => ({
   ellipsis: true,
 });
 
-export const Link = styled(({ theme, inverse }) => ({
+export const Link = createComponent(({ theme, inverse }) => ({
   ...navItemStyles({ theme, inverse }),
   cursor: 'pointer',
   onHover: {
     color: inverse ? theme.light : theme.dark,
   }
-}), ({ inverse, ...p }) => <NavLink {...p} />, p => p);
+}), ({ inverse, ...p }) => <NavLink {...p} />, p => Object.keys(p));
 
-export const Placeholder = styled(p => navItemStyles(p), 'span', ({ inverse, ...p }) => p);
+export const Placeholder = createComponent(p => navItemStyles(p), 'span', ({ inverse, ...p }) => Object.keys(p));

@@ -1,6 +1,6 @@
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
-export const SplitView = styled(({ deviceWidth, center }) => ({
+export const SplitView = createComponent(({ deviceWidth, center }) => ({
   display: 'flex',
   flex: 1,
   background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
@@ -16,9 +16,9 @@ export const SplitView = styled(({ deviceWidth, center }) => ({
     margin: center && 'auto',
     maxWidth: deviceWidth,
   },
-}), 'div', ({ deviceWidth, ...p }) => p);
+}), 'div', ({ deviceWidth, ...p }) => Object.keys(p));
 
-export const Panel = styled(({ display, axis, show, alignLabel, ...rest }) => ({
+export const Panel = createComponent(({ display, axis, show, alignLabel, ...rest }) => ({
   position: 'relative',
   // border: '1px solid transparent',
   overflowY: 'auto',
@@ -36,7 +36,7 @@ export const Panel = styled(({ display, axis, show, alignLabel, ...rest }) => ({
   },
 }), 'div', ['children', 'itemScope', 'itemType']);
 
-export const Container = styled(({ theme, width, padding, minHeight }) => ({
+export const Container = createComponent(({ theme, width, padding, minHeight }) => ({
   width: width || 700,
   maxWidth: width || 700,
   minHeight,
@@ -45,15 +45,15 @@ export const Container = styled(({ theme, width, padding, minHeight }) => ({
   padding: padding !== undefined ? padding : theme.space3,
   backgroundColor: '#FFFFFF',
   position: 'relative',
-}), 'div', ({ width, minHeight, padding, ...p }) => p);
+}), 'div', ({ width, minHeight, padding, ...p }) => Object.keys(p));
 
-export const Placeholder = styled(({ theme }) => ({
+export const Placeholder = createComponent(({ theme }) => ({
   textAlign: 'center',
   fontWeight: 200,
   fontSize: '200%',
-  opacity: .5,
+  opacity: 0.5,
   top: '50%',
   left: '50%',
   position: 'absolute',
   transform: 'translate(-50%, -50%)',
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));

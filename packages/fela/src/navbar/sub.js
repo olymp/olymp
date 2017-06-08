@@ -1,8 +1,8 @@
 import React, { Children, cloneElement } from 'react';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 import { border } from 'olymp-fela';
 
-export default styled(({ theme, fill, vertically, right, inverse }) => ({
+export default createComponent(({ theme, fill, vertically, right, inverse }) => ({
   float: right ? 'right' : 'left',
   width: fill && '100%',
   minWidth: vertically ? '100%' : 'auto',
@@ -31,4 +31,4 @@ export default styled(({ theme, fill, vertically, right, inverse }) => ({
 
     {Children.map(children, child => cloneElement(child, props))}
   </div>
-), p => p);
+), p => Object.keys(p));

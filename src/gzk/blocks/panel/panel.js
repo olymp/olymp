@@ -55,4 +55,4 @@ export default styled(({ theme, background = theme.dark5, color = theme.dark2, p
     <h2>{title}</h2>
     <p>{children}</p>
   </Grid.Item>
-), p => p);
+), p => Object.keys(p));

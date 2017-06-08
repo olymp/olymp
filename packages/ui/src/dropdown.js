@@ -1,8 +1,8 @@
 import React from 'react';
 import { Dropdown, Menu, Icon } from 'antd';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
-const dropdown = styled(({ float }) => ({
+const dropdown = createComponent(({ float }) => ({
   float,
   '> i': {
     marginLeft: 3,
@@ -18,6 +18,6 @@ const dropdown = styled(({ float }) => ({
       <Icon type="down" />
     </span>
   </Dropdown>
-), p => p);
+), p => Object.keys(p));
 dropdown.Item = Menu.Item;
 export default dropdown;

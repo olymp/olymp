@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth as withAuth, withRouter, styled, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
+import { auth as withAuth, withRouter, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
 import { AuthModals } from 'olymp-auth';
@@ -11,8 +11,9 @@ import { NavigationVertical } from './navigation';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
+import { createComponent } from 'olymp-fela';
 
-export const Container = styled(({ deviceWidth }) => ({
+export const Container = createComponent(({ deviceWidth }) => ({
   display: 'flex',
   height: '100%',
   '> :last-child': {
@@ -20,7 +21,7 @@ export const Container = styled(({ deviceWidth }) => ({
     minHeight: '100%',
     overflowY: 'auto',
   },
-}), 'div', ({ deviceWidth, ...p }) => p);
+}), 'div', ({ deviceWidth, ...p }) => Object.keys(p));
 
 export default ({ auth, theme, modules }) => (Wrapped) => {
   const filterPublic = pages => pages

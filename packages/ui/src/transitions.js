@@ -80,7 +80,7 @@ export const createTransition = (fn, options) => {
     createComponent(fn, ({ className, children }) => {
       const child = Children.only(children);
       return cloneElement(child, { className: cn(child.props.className, className) });
-    }, p => p), options
+    }, p => Object.keys(p)), options
   );
   const component = (props, { theme }) => {
     if (!theme.transition) {

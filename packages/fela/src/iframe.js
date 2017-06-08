@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import FrameComponent from 'react-frame-component';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 
-const StyledFrameComponent = styled(() => ({
+const StyledFrameComponent = createComponent(() => ({
   border: 0,
   width: '100%',
   height: '100%',
-}), FrameComponent, p => p);
+}), FrameComponent, p => Object.keys(p));
 
 class FrameInner extends Component {
   static contextTypes = {
@@ -16,7 +16,6 @@ class FrameInner extends Component {
   componentDidMount() {
     const parent = window;
     const { document } = this.context;
-
 
     setTimeout(() => {
       const style = document.createElement('style');

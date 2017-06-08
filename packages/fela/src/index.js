@@ -7,3 +7,4 @@ export { default as Navbar } from './navbar';
 export { default as IFrame } from './iframe';
 export * from './loader';
 export * from './utils';
+export { createComponent } from 'react-fela';

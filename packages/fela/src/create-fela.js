@@ -9,7 +9,7 @@ import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
 import normalize from './normalize';
 
-const createFela = () => {
+export default () => {
   const renderer = createRenderer({
     selectorPrefix: 'o',
     plugins: [
@@ -72,9 +72,8 @@ const createFela = () => {
       }),
       removeUndefined()
     ],
-    enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic')()],
+    // enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic').default()],
   });
   renderer.renderStatic(normalize);
   return renderer;
 };
-export default createFela;
