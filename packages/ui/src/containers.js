@@ -40,7 +40,7 @@ export const Container = createComponent(({ theme, width, padding, minHeight }) 
   width: width || 700,
   maxWidth: width || 700,
   minHeight,
-  boxShadow: theme.shadow,
+  boxShadow: theme.boxShadow,
   marginX: 'auto',
   padding: padding !== undefined ? padding : theme.space3,
   backgroundColor: '#FFFFFF',
