@@ -4,11 +4,11 @@ import { createComponent } from 'olymp-fela';
 export default (options = {}) => Block => {
   const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes, props } = options;
 
-  /*const StyledBlock = createComponent(({ theme, active }) => ({
+  const StyledBlock = createComponent(({ active }) => ({
     // border: active && `${theme.borderWidth}px ${theme.borderStyle} ${fade(theme.color)}`,
-    outline: active && `2px ${theme.borderStyle} $(theme.color}`,
+    outline: active && '2px solid rgba(48, 48, 48, 0.67)',
     // outlineOffset: -1,
-  }), p => <Block {...p} />, p => Object.keys(p));*/
+  }), p => <Block {...p} />, p => Object.keys(p));
 
   return class BaseDecorator extends Component {
     static slate = { isVoid: isVoid !== false, isAtomic: isAtomic !== false, sidebar, label, category, icon, defaultNodes };
@@ -36,7 +36,7 @@ export default (options = {}) => Block => {
       // Empty children!!
       const active = !editor.props.readOnly && children.findIndex(child => parseInt(child.key, 10) === parseInt(state.selection.startKey, 10)) >= 0;
       return (
-        <Block
+        <StyledBlock
           {...this.props}
           active={active}
           getData={this.getData}
@@ -45,7 +45,7 @@ export default (options = {}) => Block => {
           {...blockProps}
         >
           {isVoid === false ? [children] : []}
-        </Block>
+        </StyledBlock>
       );
     }
   };

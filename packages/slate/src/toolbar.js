@@ -10,17 +10,18 @@ export const Menu = createComponent(({ theme }) => ({
   zIndex: 10,
   left: '50%',
   transform: 'translateX(-50%)',
-  // background: theme.light1,
-  background: theme.dark,
+  background: 'rgba(48, 48, 48, 0.9)',
   borderBottom: 0,
-  // boxShadow: boxShadow(theme.dark3),
+  boxShadow: boxShadow(theme.dark3),
   borderTop: 0,
   '> li': {
     padding: 0,
-    // color: `${theme.dark1}!important`,
-    color: `${theme.light}!important`,
+    color: `${theme.light1}!important`,
     '> .ant-menu-submenu-title': {
       padding: 0,
+    },
+    onHover: {
+      color: `${theme.light}!important`,
     },
   },
   '> li:hover': {
