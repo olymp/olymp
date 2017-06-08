@@ -13,7 +13,7 @@ export const Menu = createComponent(({ theme }) => ({
   // background: theme.light1,
   background: theme.dark,
   borderBottom: 0,
-  // boxShadow: boxShadow(theme.dark3),
+  boxShadow: boxShadow(theme.dark3),
   borderTop: 0,
   '> li': {
     padding: 0,
