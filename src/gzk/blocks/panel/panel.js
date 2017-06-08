@@ -49,7 +49,7 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
     paddingTop: theme.space2,
     paddingBottom: theme.space0,
   }
-}), ({ title, children, padding, ...rest }) => (
+}), ({ title, children, padding, background, color, ...rest }) => (
   <Grid.Item mini={3} {...rest}>
     <h2>{title}</h2>
     <p>{children}</p>
