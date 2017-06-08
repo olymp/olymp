@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from 'olymp-fela';
 import Panel from './panel';
 import Container from './container';
 
