@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, createComponent } from 'olymp-fela';
 
-export default createComponent(({ theme, background = theme.dark5, color = theme.dark2, padding = `${theme.space2} 1.33rem 1.33rem ${theme.space2}` }) => ({
+export default createComponent(({ theme, background = theme.dark5, color = theme.dark2, padding = '1.33rem' }) => ({
   width: '100%',
   float: 'left',
   padding: `${theme.space3} 0 0 ${theme.space3}`,
@@ -14,7 +14,7 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
     fontWeight: 300,
     fontStyle: 'italic',
   },
-  '> p': {
+  '> div': {
     backgroundColor: background,
     color,
     padding,
@@ -50,8 +50,8 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
     paddingBottom: theme.space0,
   }
 }), ({ title, children, padding, background, color, ...rest }) => (
-  <Grid.Item mini={3} {...rest}>
+  <Grid.Item mini={12} {...rest}>
     <h2>{title}</h2>
-    <p>{children}</p>
+    <div>{children}</div>
   </Grid.Item>
 ), p => Object.keys(p));
