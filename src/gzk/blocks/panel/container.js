@@ -8,6 +8,6 @@ export default createComponent(() => ({
   }
 }), p => (
   <Container>
-    <Grid size={3} {...p} />
+    <Grid size={12} {...p} />
   </Container>
 ), p => Object.keys(p));
