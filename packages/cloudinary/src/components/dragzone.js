@@ -1,25 +1,25 @@
 import React, { Component, PropTypes } from 'react';
-import { Upload, Progress as AntProgress, Spin } from 'antd';
-import { styled } from 'olymp';
+import { Upload, Progress as AntProgress } from 'antd';
+import { createComponent } from 'olymp-fela';
 
-const Dragger = styled(({ theme, clickable }) => ({
+const Dragger = createComponent(({ theme, clickable }) => ({
   '> .ant-upload': {
     border: 0,
     cursor: clickable ? 'pointer' : 'default',
     height: 'auto',
   },
-}), Upload.Dragger, ({ clickable, ...p }) => p);
+}), Upload.Dragger, ({ clickable, ...p }) => Object.keys(p));
 
-const ProgressWrapper = styled(({ theme }) => ({
+const ProgressWrapper = createComponent(({ theme }) => ({
   position: 'relative',
 }), ({ onClick, children, className, disabled, ...p }) => (
   <div className={className} onClick={onClick}>
     {!disabled && <Progress {...p} />}
     {children}
   </div>
-), p => p);
+), p => Object.keys(p));
 
-const Progress = styled(({ theme }) => ({
+const Progress = createComponent(({ theme }) => ({
   width: '100%',
   height: '100%',
   backgroundColor: 'rgba(0, 0, 0, .4)',
@@ -35,7 +35,7 @@ const Progress = styled(({ theme }) => ({
   <div className={className}>
     <AntProgress {...p} />
   </div>
-), p => p);
+), p => Object.keys(p));
 
 class DragZone extends Component {
   render() {

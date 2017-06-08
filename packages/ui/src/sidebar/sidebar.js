@@ -1,8 +1,8 @@
-import React, { Component, Children } from 'react';
-import { styled } from 'olymp';
+import React, { Children } from 'react';
+import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
 
-const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
+const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
   width,
   minWidth,
   maxWidth,
@@ -59,9 +59,9 @@ const StyledInner = styled(({ theme, padding, paddingX, paddingY, width, minWidt
   <div className={className}>
     {children}
   </div>
-), ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) => p);
+), ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) => Object.keys(p));
 
-const Title = styled(({ theme }) => ({
+const Title = createComponent(({ theme }) => ({
   position: 'relative',
   padding: '1rem',
   '> .ant-modal-title': {
@@ -70,9 +70,9 @@ const Title = styled(({ theme }) => ({
     fontWeight: 200,
     padding: 10,
   },
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
-const TitleButtons = styled(({ left, right }) => ({
+const TitleButtons = createComponent(({ left, right }) => ({
   margin: 0,
   lineHeight: '21px',
   position: 'absolute',
@@ -86,7 +86,7 @@ const TitleButtons = styled(({ left, right }) => ({
   '> *': {
     display: 'flex', // verhindert unschönen Abstand
   }
-}), 'div', ({ left, right, ...p }) => p);
+}), 'div', ({ left, right, ...p }) => Object.keys(p));
 
 const Sidebar = ({ children, isOpen, showLogo, leftButtons, rightButtons, className, subtitle, onClose, onCancel, okText, cancelText, onOk, title, loading, header, footer, ...props }) => isOpen ? (
   <StyledInner {...props}>

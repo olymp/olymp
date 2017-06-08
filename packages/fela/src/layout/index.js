@@ -1,23 +1,23 @@
 import React from 'react';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 import Container from '../container';
 
 const WithContainer = ({ container, ...rest }) => container ? <Container {...rest} /> : <div {...rest} />;
 
-const Layout = styled(() => ({
+const Layout = createComponent(() => ({
   display: 'flex',
   height: '100%',
   minHeight: '100vh',
   flexDirection: 'column',
-}), 'div', p => p);
-Layout.Header = styled(() => ({
+}), 'div', p => Object.keys(p));
+Layout.Header = createComponent(() => ({
   flexShrink: 0,
-}), WithContainer, p => p);
-Layout.Footer = styled(() => ({
+}), WithContainer, p => Object.keys(p));
+Layout.Footer = createComponent(() => ({
   flexShrink: 0,
-}), WithContainer, p => p);
-Layout.Body = styled(() => ({
+}), WithContainer, p => Object.keys(p));
+Layout.Body = createComponent(() => ({
   flex: 1,
-}), WithContainer, p => p);
+}), WithContainer, p => Object.keys(p));
 
 export default Layout;

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { styled } from 'olymp';
 import { Badge as AntBadge } from 'antd';
+import { createComponent } from 'olymp-fela';
 
-export const Badge = styled(({ theme, color }) => ({
+export const Badge = createComponent(({ theme, color }) => ({
   '> .ant-badge-status-default': {
     backgroundColor: color || theme.color,
   },
-}), AntBadge, ({ color, ...p }) => p);
+}), AntBadge, ({ color, ...p }) => Object.keys(p));
 Badge.defaultProps = {
   status: 'default',
 };

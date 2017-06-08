@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from 'olymp';
 import { Dropdown, Menu } from 'antd';
+import { createComponent } from 'olymp-fela';
 
 const styles = theme => ({
   style1: {
@@ -128,11 +128,11 @@ const styles = theme => ({
   },
 });
 
-const component = styled(({ getData, theme }) => (
+const component = createComponent(({ getData, theme }) => (
   styles(theme)[getData('type', 'style1')]
 ), ({ attributes, className }) => (
   <hr {...attributes} className={className} />
-), p => p);
+), p => Object.keys(p));
 
 export default {
   label: 'Linie',

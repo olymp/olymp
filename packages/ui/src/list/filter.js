@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { styled } from 'olymp';
+import React from 'react';
+import { createComponent } from 'olymp-fela';
 import { Input, Icon } from 'antd';
 
-export default styled(() => ({
+export default createComponent(() => ({
   padding: 6,
   borderTop: '1px solid #eee',
   backgroundColor: 'rgba(233, 233, 233, 0.47)',
@@ -14,4 +14,4 @@ export default styled(() => ({
       <Input placeholder={placeholder || 'Filter ...'} suffix={suffix} value={value} onChange={e => onChange(e.target.value)} {...props} />
     </div>
   );
-}, p => p);
+}, p => Object.keys(p));

@@ -1,10 +1,10 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { styled } from 'olymp';
 import { boxShadow } from 'olymp-fela';
 import { Menu as AntMenu } from 'antd';
+import { createComponent } from 'olymp-fela';
 
-export const Menu = styled(({ theme }) => ({
+export const Menu = createComponent(({ theme }) => ({
   position: 'fixed',
   top: 0,
   zIndex: 10,
@@ -27,17 +27,17 @@ export const Menu = styled(({ theme }) => ({
     // color: theme.light1,
     color: theme.dark,
   },
-}), AntMenu, p => p);
+}), AntMenu, p => Object.keys(p));
 
-export const Button = styled(() => ({
+export const Button = createComponent(() => ({
   paddingX: 20,
 }), ({ className, onMouseDown, children, innerKey, ...props }) => (
   <div className={className} onMouseDown={onMouseDown}>
     {children}
   </div>
-), p => p);
+), p => Object.keys(p));
 
-export default styled(({ theme }) => ({
+export default createComponent(({ theme }) => ({
   /*width: '100%',
   display: 'flex',
   justifyContent: 'center',*/
@@ -50,4 +50,4 @@ export default styled(({ theme }) => ({
       </Menu>
     </Portal>
   );
-}, p => p);
+}, p => Object.keys(p));

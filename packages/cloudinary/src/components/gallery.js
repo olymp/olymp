@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
-import { styled } from 'olymp';
 import Thumb from './thumb';
+import { createComponent } from 'olymp-fela';
 
-const Thumbs = styled(({ justifyContent }) => ({
+const Thumbs = createComponent(({ justifyContent }) => ({
   display: 'flex',
   flexFlow: 'row wrap',
-  justifyContent: justifyContent || 'space-between',
+  justifyContent: justifyContent || 'space-between',
   alignContent: 'flex-start',
   alignItems: 'flex-start',
   padding: '.5rem',
-}), 'div', ({ justifyContent, ...p }) => p);
+}), 'div', ({ justifyContent, ...p }) => Object.keys(p));
 
 export const MediaList = ({ items, itemHeight, selected, onClick, onRemove, ...rest }) => (
   <Thumbs {...rest}>

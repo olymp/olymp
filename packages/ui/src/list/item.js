@@ -1,9 +1,10 @@
 import React from 'react';
-import { styled, Link } from 'olymp';
+import { Link } from 'olymp';
+import { createComponent } from 'olymp-fela';
 import { Icon } from 'antd';
 // import Image from '../../cms/cloudinary/image';
 
-const Content = styled(({ active, disabled, theme }) => ({
+const Content = createComponent(({ active, disabled, theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: '5px 6px',
@@ -50,7 +51,7 @@ const Content = styled(({ active, disabled, theme }) => ({
 
     {!disabled ? <Icon type={icon || 'right'} /> : null}
   </div>
-), p => p);
+), p => Object.keys(p));
 
 export default ({ className, image, label, description, to, onClick, active, disabled, icon }) => onClick || disabled ? (
   <a className={className} href="javascript:;" onClick={disabled ? () => {} : onClick}>
