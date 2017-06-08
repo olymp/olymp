@@ -5,6 +5,7 @@ import Container from './container';
 export default {
   label: 'Veranstaltungen, Neuigkeiten',
   category: 'Panel',
+  editable: false,
   component: ({ className, ...props }) => (
     <Container className={className}>
       <Panel medium={2} title="Veranstaltungen" background="rgb(73, 146, 195)" color="#FFF">
