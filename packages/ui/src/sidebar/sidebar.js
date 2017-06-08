@@ -8,7 +8,7 @@ const StyledInner = createComponent(({ theme, padding, paddingX, paddingY, width
   maxWidth,
   height: '100%',
   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-  boxShadow: theme.shadow,
+  boxShadow: theme.boxShadow,
   // borderLeft: right && '1px solid #eee',
   // borderRight: !right && '1px solid #eee',
   zIndex: 1,
