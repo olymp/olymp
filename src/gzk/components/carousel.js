@@ -8,19 +8,24 @@ export default class Carousel extends Component {
     <button className="image-gallery-left-nav" disabled={disabled} onClick={onClick}>
       <i className="fa fa-angle-left" />
     </button>
-    )
+  );
+
   renderRightNav = (onClick, disabled) => (
     <button className="image-gallery-right-nav" disabled={disabled} onClick={onClick}>
       <i className="fa fa-angle-right" />
     </button>
-    )
-  renderPlayPauseButton = (onClick, isPlaying) => null
+  );
+
+  renderPlayPauseButton = (onClick, isPlaying) => null;
+
   renderFullscreenButton = (onClick, isFullscreen) => (
     <button type="button" className={cn('image-gallery-play-button', isFullscreen && 'active')} onClick={onClick}>
       <i className="fa fa-expand" style={{ color: 'white', padding: '15px 20px' }} />
     </button>
-    )
+  );
+
   getHeight = width => Math.floor(width / this.props.ratio);
+
   render() {
     const { items } = this.props;
 
@@ -32,7 +37,7 @@ export default class Carousel extends Component {
         ${cloudinaryUrl(url, { width: 1200, height: this.getHeight(1200), ...rest })} 1200w,
         ${cloudinaryUrl(url, { width: 1600, height: this.getHeight(1600), ...rest })} 1600w
       `,
-      thumbnail: cloudinaryUrl(url, { width: 150, height: 75, ...rest }),
+      thumbnail: cloudinaryUrl(url, { width: 150, height: 150, ...rest }),
       renderItem: render,
     }));
 
