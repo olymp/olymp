@@ -10,9 +10,9 @@ export const Menu = createComponent(({ theme }) => ({
   zIndex: 10,
   left: '50%',
   transform: 'translateX(-50%)',
-  background: 'rgba(29, 29, 29, 0.9)',
+  background: '#3E3E3E',
   borderBottom: 0,
-  boxShadow: boxShadow(theme.dark3),
+  boxShadow: theme.boxShadow,
   borderTop: 0,
   '> li': {
     padding: 0,
