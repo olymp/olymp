@@ -1,6 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, styled } from 'olymp';
+import { NavLink } from 'olymp';
+import { createComponent } from 'react-fela';
 import { gradient, border } from 'olymp-fela';
 import Toggler from './toggler';
 import Nav from './nav';
@@ -10,7 +11,7 @@ import Sub from './sub';
 const renderItem = props => <Item {...props} />;
 const renderNav = props => <Nav {...props} sub />;
 
-const Navbar = styled(({ theme, inverse, vertically, full, fill }) => ({
+const Navbar = createComponent(({ theme, inverse, vertically, full, fill }) => ({
   backgroundColor: inverse && theme.color,
   background: inverse && gradient(theme.color),
   borderRadius: !full && theme.borderRadius,
@@ -50,7 +51,7 @@ const Navbar = styled(({ theme, inverse, vertically, full, fill }) => ({
       { ...props, renderItem, renderNav }
     ))}
   </nav>
-), p => p);
+), p => Object.keys(p));
 Navbar.displayName = 'Navbar';
 Navbar.propTypes = {
   /** node as brand, light styled */
@@ -76,7 +77,7 @@ Navbar.defaultProps = {
 };
 export default Navbar;
 
-const Brand = styled(({ theme, vertically, inverse }) => ({
+const Brand = createComponent(({ theme, vertically, inverse }) => ({
   float: `${vertically ? 'none' : 'left'} !important`,
   width: 'auto !important',
   color: inverse ? theme.light : theme.dark,
@@ -86,8 +87,8 @@ const Brand = styled(({ theme, vertically, inverse }) => ({
   '> a': {
     paddingY: `calc(${theme.space3} - 2px)`,
   },
-}), ({ children, pages, ...p }) => <Item pathname="/" {...p} title={children} />, p => p);
+}), ({ children, pages, ...p }) => <Item pathname="/" {...p} title={children} />, p => Object.keys(p));
 
-const Logo = styled(({ vertically }) => ({
+const Logo = createComponent(({ vertically }) => ({
   float: vertically ? 'none' : 'left',
-}), ({ vertically, ...p }) => <NavLink to="/" {...p} />, p => p);
+}), ({ vertically, ...p }) => <NavLink to="/" {...p} />, p => Object.keys(p));

@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { withAuth, withRouter, styled } from 'olymp';
-import { Affix, Button, Dropdown } from 'antd';
+import React from 'react';
+import { withAuth, withRouter } from 'olymp';
+import { Button, Dropdown } from 'antd';
 import withCollectionTree from './with-collection-tree';
 import CmsAction from './action';
+import { createComponent } from 'olymp-fela';
 
-const Styled = styled(({ left, top }) => ({
+const Styled = createComponent(({ left, top }) => ({
   zIndex: 1001,
   position: 'fixed',
   top: top || 10,
@@ -23,7 +24,7 @@ const Styled = styled(({ left, top }) => ({
       </Button>
     </Dropdown>
   );
-}, p => p);
+}, p => Object.keys(p));
 
 export default (
   withRouter(

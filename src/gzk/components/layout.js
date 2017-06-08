@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Logo from './logo';
-import { Navbar, Layout } from 'olymp-fela';
-import { styled } from 'olymp';
+import { Navbar, Layout, createComponent } from 'olymp-fela';
 
-export const Header = styled(({ sticky }) => ({
+export const Header = createComponent(({ sticky }) => ({
   backgroundColor: 'white',
   boxShadow: sticky && '0 3px 11px 0 rgba(0,0,0,.06)',
 }), 'div', p => p);

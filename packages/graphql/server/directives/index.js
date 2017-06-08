@@ -1,14 +1,12 @@
+import { hasDirective } from './tools';
+import createInput from './input';
 const { parse } = require('graphql/language');
 const capitalize = require('lodash/upperFirst');
 const lowerFirst = require('lodash/lowerFirst');
-const { list, one, write, addInputTypes } = require('./utils');
+const { list, one, write, addInputTypes } = require('../utils');
 
-const hasDirective = (ast, model, directive) => {
-  const schema = ast.definitions.find(({ name }) => name && name.value === model);
-  return schema.directives.filter(({ name }) => name && name.value === 'state').length;
-};
-
-module.exports = ({ adapter, resolvers }) => ({
+export default ({ adapter, resolvers }) => ({
+  input: createInput({ adapter, resolvers }),
   crud: {
     name: 'crud',
     description: 'Marks a type as a relative.',
@@ -83,15 +81,6 @@ module.exports = ({ adapter, resolvers }) => ({
           }
         `).definitions[0];
         node.fields = node.fields.concat(type.fields);
-      },
-    },
-  },
-  input: {
-    name: 'input',
-    description: 'Marks a type as a relative.',
-    resolveStatic: {
-      enter2(node, directive, { ast }) {
-        addInputTypes(node.name.value, ast);
       },
     },
   },

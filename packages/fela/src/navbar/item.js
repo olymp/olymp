@@ -1,10 +1,10 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 import { fade } from 'olymp-fela';
 import { Link, Placeholder } from './link';
 
-const NavItem = styled(({ fill, inverse, vertically, right }) => ({
+const NavItem = createComponent(({ fill, inverse, vertically, right }) => ({
   float: !vertically && 'left',
   position: 'relative',
   flex: fill && '1 1',
@@ -36,7 +36,7 @@ const NavItem = styled(({ fill, inverse, vertically, right }) => ({
 
     {Children.map(children, child => cloneElement(child, { ...props, sub: true }))}
   </div>
-), p => p);
+), p => Object.keys(p));
 NavItem.displayName = 'Navbar.Item';
 NavItem.propTypes = {
   /** title/label */

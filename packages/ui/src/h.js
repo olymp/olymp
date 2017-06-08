@@ -1,7 +1,7 @@
 import React from 'react';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
-export const H = styled(({ fontSize, theme, padding, marginBottom, marginTop, textAlign, light, colored, color, center }) => ({
+export const H = createComponent(({ fontSize, theme, padding, marginBottom, marginTop, textAlign, light, colored, color, center }) => ({
   color: (colored || color) && theme.color,
   fontWeight: light && 200,
   textAlign: center ? 'center' : textAlign,

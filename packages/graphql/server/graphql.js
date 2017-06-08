@@ -1,8 +1,8 @@
+import directives from './directives';
 const { buildSchema } = require('./utils');
 const { defaultScalars, defaultTypes } = require('./defaults');
-const directives = require('./directives');
 
-module.exports = ({ adapter } = {}) => {
+export default ({ adapter } = {}) => {
   let _schemas = {};
 
   const getFinalSchema = () => {

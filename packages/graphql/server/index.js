@@ -1,17 +1,14 @@
-const Cache = require('stale-lru-cache');
-
-const createSchema = require('./graphql');
-const createMail = require('olymp-mail/server');
-
-const { googleGraphQL } = require('olymp-google/server');
-const { cloudinaryGraphQL } = require('olymp-cloudinary/server');
-const { filestackGraphQL } = require('olymp-filestack/server');
-const { authGraphQL } = require('olymp-auth/server');
-const { tagsGraphQL } = require('olymp-cms/server');
-const { pagesGraphQL } = require('olymp-pages/server');
-const createSitemap = require('olymp-sitemap');
-
-const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
+import createSchema from './graphql';
+import Cache from 'stale-lru-cache';
+import createMail from 'olymp-mail/server';
+import { googleGraphQL } from 'olymp-google/server';
+import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
+import { filestackGraphQL } from 'olymp-filestack/server';
+import { authGraphQL } from 'olymp-auth/server';
+import { tagsGraphQL } from 'olymp-cms/server';
+import { pagesGraphQL } from 'olymp-pages/server';
+import createSitemap from 'olymp-sitemap';
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 
 export default (server, options) => {
   let adapter;

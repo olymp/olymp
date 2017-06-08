@@ -1,6 +1,6 @@
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
-export default styled(({ side, width }) => ({
+export default createComponent(({ side, width }) => ({
   position: 'relative',
   overflow: 'hidden',
   width: width || 300,
@@ -17,4 +17,4 @@ export default styled(({ side, width }) => ({
     fontWeight: 'bold',
     opacity: 0.2,
   },
-}), 'div', ({ side, ...p }) => p);
+}), 'div', ({ side, ...p }) => Object.keys(p));

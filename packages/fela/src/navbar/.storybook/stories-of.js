@@ -3,9 +3,9 @@ import { storiesOf } from '@storybook/react';
 // import { action } from '@storybook/addon-actions';
 import { withKnobs } from '@storybook/addon-knobs';
 import { FelaDecorator, RouterDecorator } from 'olymp-fela/storybook';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 
-const Container = styled(({ customStyle }) => ({
+const Container = createComponent(({ customStyle }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -15,7 +15,7 @@ const Container = styled(({ customStyle }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   ...customStyle,
-}), 'div', p => p);
+}), 'div', p => Object.keys(p));
 
 export default (title, centered, customStyle) => (subtitle, compFn, text) => storiesOf(title, module)
   .addDecorator(withKnobs)

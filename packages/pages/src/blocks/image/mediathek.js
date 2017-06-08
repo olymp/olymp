@@ -1,7 +1,7 @@
 import React from 'react';
 import Portal from 'react-portal';
 import { Cloudinary } from 'olymp-cloudinary';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 import { withState } from 'recompose';
 
 export default withState('isOpen', 'setOpen', false)(({ setData, getData, isOpen, setOpen, multi }) => (
@@ -18,7 +18,7 @@ export default withState('isOpen', 'setOpen', false)(({ setData, getData, isOpen
   </div>
 ));
 
-const CloudinaryModal = styled(({ theme }) => ({
+const CloudinaryModal = createComponent(({ theme }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -48,4 +48,4 @@ const CloudinaryModal = styled(({ theme }) => ({
       />
     </div>
   </div>
-), p => p);
+), p => Object.keys(p));

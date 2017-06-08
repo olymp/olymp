@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { styled } from 'olymp';
+import { createComponent } from 'react-fela';
 
-const GridItem = styled(({ gridSize, mini, small, medium, large, huge }) => ({
+const GridItem = createComponent(({ gridSize, mini, small, medium, large, huge }) => ({
   float: 'left',
   width: `${100 / gridSize * (mini || gridSize)}%`,
   // marginLeft: `${100 / gridSize * offset}%`,
@@ -22,7 +22,7 @@ const GridItem = styled(({ gridSize, mini, small, medium, large, huge }) => ({
   ifHugeUp: huge ? {
     width: `${100 / gridSize * huge}%`,
   } : {},
-}), 'div', ({ gridSize, offset, mini, small, medium, large, huge, ...p }) => p);
+}), 'div', ({ gridSize, offset, mini, small, medium, large, huge, ...p }) => Object.keys(p));
 GridItem.propTypes = {
   /** The size relative to the grid container */
   gridSize: PropTypes.number,

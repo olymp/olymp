@@ -12,6 +12,7 @@ import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
+import { UserAgentProvider } from '@quentin-sommer/react-useragent';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -73,9 +74,11 @@ function renderApp() {
           <ConnectedRouter history={history}>
             <FelaProvider renderer={renderer} mountNode={mountNode}>
               <GatewayProvider>
-                <AmpProvider amp={false}>
-                  <App />
-                </AmpProvider>
+                <UserAgentProvider ua={window.navigator.userAgent}>
+                  <AmpProvider amp={false}>
+                    <App />
+                  </AmpProvider>
+                </UserAgentProvider>
               </GatewayProvider>
             </FelaProvider>
           </ConnectedRouter>

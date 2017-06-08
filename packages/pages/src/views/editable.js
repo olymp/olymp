@@ -7,17 +7,6 @@ import Pages from './pages';
 import PageForm from './form';
 import Page from './page';
 
-const plugin = {
-  onChange: (state) => {
-    const map = (nodes) => {
-      nodes.forEach((node) => {
-        if (node.nodes) map(node.nodes);
-      });
-    };
-    map(state.document.nodes);
-  }
-};
-
 @withRouter
 @queryPage
 @Form.create()
@@ -58,11 +47,11 @@ export default class PageSidebar extends Component {
     const isPage = (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
     const P = form.getFieldDecorator('blocks', {
       initialValue: item.blocks,
-    })(<Page readOnly={!value || !isPage} binding={binding} plugins={[plugin]} />);
+    })(<Page readOnly={!value || !isPage} binding={binding} />);
 
     return (
       <SplitView deviceWidth={deviceWidth}>
-        <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
+        <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
         <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} padding={0} title={title} subtitle={description}>
           {!value && <Pages items={navigation} />}
           {value && <PageForm form={form} item={item} items={flatNavigation} />}

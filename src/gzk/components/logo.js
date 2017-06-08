@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { styled } from 'olymp';
+import { createComponent } from 'olymp-fela';
 
 export default class Logo extends Component {
   static defaultProps = {
@@ -25,25 +25,25 @@ export default class Logo extends Component {
   }
 }
 
-const LogoBig = styled(({ color }) => ({
+const LogoBig = createComponent(({ color }) => ({
   fill: color,
 }), ({ className }) => (
   <path
     className={className}
     d="M23.9999995 24 L24 2.7 C24 2.7 23.3 0.7 21.9 1 C18.4139693 1.9 12 4 8.2 8 C4.5754908 11.8 1.7 18.9 1 22.3 C0.709504296 24.1 3.1 24 3.1 24 L23.9999995 24 Z"
   />
-), p => p);
+), p => Object.keys(p));
 
-const LogoSmall = styled(() => ({
+const LogoSmall = createComponent(() => ({
   fill: '#828282',
 }), ({ className }) => (
   <path
     className={className}
     d="M0 0.2 L0 9 C0 9 0.3 9.8 0.9 9.6 C2.4 9.3 5.2 8.4 6.8 6.8 C8.3 5.2 9.6 2.3 9.8 0.9 C10 0.2 9 0.2 9 0.2 L0 0.2 Z"
   />
-), p => p);
+), p => Object.keys(p));
 
-const Icon = styled(({ theme, color, width, height, icon }) => ({
+const Icon = createComponent(({ theme, color, width, height, icon }) => ({
   width,
   height,
   fill: color || theme.color,
@@ -58,9 +58,9 @@ const Icon = styled(({ theme, color, width, height, icon }) => ({
       {children}
     </g>
   </svg>
-), p => p);
+), p => Object.keys(p));
 
-const Title = styled(() => ({
+const Title = createComponent(() => ({
   fontSize: 11,
   fontFamily: 'Times New Roman',
   fontStyle: 'italic',
@@ -70,9 +70,9 @@ const Title = styled(() => ({
   <text className={className}>
     <tspan x="31" y="11">{children}</tspan>
   </text>
-), p => p);
+), p => Object.keys(p));
 
-const SubTitle = styled(({ theme, color }) => ({
+const SubTitle = createComponent(({ theme, color }) => ({
   fontSize: 10,
   fontFamily: 'Arial',
   fill: color || theme.color,
@@ -80,4 +80,4 @@ const SubTitle = styled(({ theme, color }) => ({
   <text className={className}>
     <tspan x="31" y="22">{children}</tspan>
   </text>
-), p => p);
+), p => Object.keys(p));
