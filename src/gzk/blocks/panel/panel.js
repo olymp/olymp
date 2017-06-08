@@ -1,8 +1,7 @@
 import React from 'react';
-import { styled } from 'olymp';
-import { Grid } from 'olymp-fela';
+import { Grid, createComponent } from 'olymp-fela';
 
-export default styled(({ theme, background = theme.dark5, color = theme.dark2, padding = `${theme.space2} 1.33rem 1.33rem ${theme.space2}` }) => ({
+export default createComponent(({ theme, background = theme.dark5, color = theme.dark2, padding = `${theme.space2} 1.33rem 1.33rem ${theme.space2}` }) => ({
   width: '100%',
   float: 'left',
   padding: `${theme.space3} 0 0 ${theme.space3}`,

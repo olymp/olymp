@@ -1,8 +1,7 @@
 import React from 'react';
-import { styled } from 'olymp';
-import { Container, Grid } from 'olymp-fela';
+import { createComponent,Container, Grid } from 'olymp-fela';
 
-export default styled(() => ({
+export default createComponent(() => ({
   display: 'flex',
   ifSmallDown: {
     flexDirection: 'column',
@@ -11,4 +10,4 @@ export default styled(() => ({
   <Container>
     <Grid size={3} {...p} />
   </Container>
-), p => p);
+), p => Object.keys(p));
