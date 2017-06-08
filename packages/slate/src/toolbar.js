@@ -11,9 +11,9 @@ export const Menu = createComponent(({ theme }) => ({
   left: '50%',
   transform: 'translateX(-50%)',
   // background: theme.light1,
-  background: theme.dark1,
+  background: theme.dark,
   borderBottom: 0,
-  boxShadow: boxShadow(theme.dark3),
+  // boxShadow: boxShadow(theme.dark3),
   borderTop: 0,
   '> li': {
     padding: 0,
