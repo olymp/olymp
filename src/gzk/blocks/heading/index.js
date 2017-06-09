@@ -1,5 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'olymp';
 import { createComponent, Container } from 'olymp-fela';
+import capitalize from 'lodash/upperFirst';
+
+@withRouter
+class Content extends Component {
+  render() {
+    const { pathname, children } = this.props;
+    const path = pathname.split('/').filter(p => p);
+    return (
+      <Container>
+        <h1>{children || capitalize(path[path.length - 1])}</h1>
+        <h5>Startseite {path.map(p => `/ ${capitalize(p)}`)}</h5>
+      </Container>
+    );
+  }
+}
 
 const Header = createComponent(({ theme }) => ({
   width: '100%',
@@ -9,10 +25,7 @@ const Header = createComponent(({ theme }) => ({
   paddingY: theme.space4,
 }), ({ className, children }) => (
   <div className={className}>
-    <Container>
-      <h1>{children}</h1>
-      <h5>Home / Magazin</h5>
-    </Container>
+    <Content>{children}</Content>
   </div>
 ), p => Object.keys(p));
 
@@ -20,9 +33,16 @@ export default {
   label: 'Überschrift',
   category: 'Template',
   editable: true,
-  component: ({ children, ...props }) => (
+  component: ({ getData, ...props }) => (
     <Header>
-      Gesundheitsmagazin
+      {getData('title')}
     </Header>
   ),
+  actions: [{
+    tooltip: 'Überschrift',
+    toggle: ({ setData, getData, ...p }) => {
+      const title = prompt('Überschrift', getData('title', ''));
+      setData({ title });
+    },
+  }],
 };
