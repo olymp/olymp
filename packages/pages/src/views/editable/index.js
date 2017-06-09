@@ -11,8 +11,17 @@ import Page from '../page';
 @Form.create()
 @mutatePage
 export default class PageSidebar extends Component {
+  state = { tab: 0 };
+
+  componentWillReceiveProps = (props) => {
+    if (props.query['@page'] !== this.props.query['@page'] && props.query['@page'] === 'new') {
+      this.setState({ tab: 1 });
+    }
+  }
+
   render() {
     const { form, router, pathname, save, query, binding, navigation, flatNavigation, render, deviceWidth } = this.props;
+    const { tab } = this.state;
     let item = this.props.item || flatNavigation.find(page => page.slug === '/');
 
     const value = query['@page'] || item.id;
@@ -42,12 +51,22 @@ export default class PageSidebar extends Component {
     return (
       <SplitView deviceWidth={deviceWidth}>
         <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
-        <Sidebar leftButtons={leftButtons} rightButtons={rightButtons} isOpen onClose={() => router.push(pathname)} padding={0} title={title} subtitle={description}>
+        <Sidebar
+          leftButtons={leftButtons}
+          rightButtons={rightButtons}
+          isOpen
+          onClose={() => router.push(pathname)}
+          padding={0}
+          title={title}
+          subtitle={description}
+        >
           <PageForm
             form={form}
             item={item}
             navigation={navigation}
             items={flatNavigation}
+            tab={`${tab}`}
+            onTabClick={key => this.setState({ tab: key })}
           />
         </Sidebar>
 
