@@ -35,7 +35,7 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
     backgroundColor: theme.dark4,
     bottom: 0,
     borderTopLeftRadius: 30,
-    right: 0,
+    right: theme.space2,
   },
   onHover: {
     onAfter: {

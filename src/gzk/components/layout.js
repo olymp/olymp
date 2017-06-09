@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import Logo from './logo';
 import { Navbar, Layout, createComponent } from 'olymp-fela';
 
-export const Header = createComponent(({ sticky }) => ({
-  backgroundColor: 'white',
-  boxShadow: sticky && '0 3px 11px 0 rgba(0,0,0,.06)',
-}), 'div', p => Object.keys(p));
+export const Header = createComponent(({ theme }) => ({
+  paddingY: theme.space3,
+}), ({ children, className }) => (
+  <Layout.Header className={className} container>
+    {children}
+  </Layout.Header>
+), p => Object.keys(p));
 
 export default class GzLayout extends Component {
   static defaultProps = {
@@ -22,9 +25,9 @@ export default class GzLayout extends Component {
 
     return (
       <Layout>
-        <Layout.Header container>
+        <Header>
           <Navbar pages={nav} logo={<Logo color={color} title={title} text={text} />} full right mega />
-        </Layout.Header>
+        </Header>
         <Layout.Body>
           {children}
         </Layout.Body>
