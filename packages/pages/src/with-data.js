@@ -98,7 +98,7 @@ export const withNavigation = Wrapped => {
           } return children;
         },
         setPath: (current, { slug, ...rest }) => {
-          const pathname = `${current || ''}${slug || ''}`;
+          const pathname = `${current || ''}${slug || ''}`.replace('//', '/');
           flatNavigation.push({ ...rest, slug, pathname });
           return pathname;
         },
