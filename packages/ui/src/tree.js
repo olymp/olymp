@@ -21,6 +21,7 @@ const Tree = createComponent(() => ({
     },
     '> .ant-tree-node-content-wrapper': {
       width: '100%',
+      paddingLeft: 10,
     },
   },
 }), AntTree, p => Object.keys(p));
