@@ -67,6 +67,9 @@ const VerticalMenu = createComponent(({ deviceWidth, theme }) => ({
   '> li.ant-menu-submenu-selected > div > i': {
     backgroundColor: 'rgba(0,0,0,0.30)!important',
   },
+  ifSmallDown: {
+    display: 'none',
+  }
 }), Menu, p => Object.keys(p));
 
 export default withLang(withAuth(({ auth, lang, className, deviceWidth, children, query, ...rest }) => (

@@ -3,14 +3,8 @@ import { createComponent, Grid, fade } from 'olymp-fela';
 import { Carousel, H2 } from '../../components';
 
 export default createComponent(({ theme }) => ({
-  '> h2': {
-    marginBottom: theme.space1,
-    paddingTop: theme.space3,
-    marginX: theme.space2,
-  },
   '> .image-gallery': {
     width: '100%',
-    paddingX: theme.space2,
     '> .image-gallery-content': {
       '> .image-gallery-slide-wrapper': {
         position: 'relative',
@@ -58,7 +52,13 @@ export default createComponent(({ theme }) => ({
     },
   },
 }), ({ className, title, size, ...p }) => (
-  <Grid.Item mini={12} medium={size} className={className}>
+  <Grid.Item
+    mini={12}
+    medium={size}
+    className={className}
+    paddingMini="0.5rem 1rem"
+    paddingMedium="1rem 0.5rem"
+  >
     <H2>{title}</H2>
     <Carousel
       slideInterval={7500}

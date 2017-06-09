@@ -22,13 +22,17 @@ const Header = createComponent(({ theme }) => ({
   backgroundColor: '#ffa210',
   color: theme.light,
   borderBottomRightRadius: 75,
+  paddingX: theme.space3,
   paddingY: '1.33rem',
   '> div': {
     '> h1': {
       lineHeight: 'initial',
       fontWeight: 200,
       // fontStyle: 'italic',
-    }
+    },
+    '> h5': {
+      fontWeight: 200,
+    },
   }
 }), ({ className, children }) => (
   <div className={className}>

@@ -44,9 +44,8 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
   },
   ifSmallDown: {
     float: 'none',
-    paddingX: theme.space2,
-    paddingTop: theme.space2,
-    paddingBottom: theme.space0,
+    paddingX: theme.space3,
+    paddingY: theme.space2,
   }
 }), ({ title, children, padding, background, color, ...rest }) => (
   <Grid.Item mini={12} {...rest}>

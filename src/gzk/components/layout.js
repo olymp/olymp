@@ -4,6 +4,9 @@ import { Navbar, Layout, createComponent } from 'olymp-fela';
 
 export const Header = createComponent(({ theme }) => ({
   paddingY: theme.space3,
+  ifSmallDown: {
+    paddingY: theme.space0,
+  }
 }), ({ children, className }) => (
   <Layout.Header className={className} container>
     {children}
