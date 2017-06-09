@@ -22,23 +22,23 @@ export default {
       <Panel medium={7} title="Veranstaltungen" background="rgb(73, 146, 195)" color="#FFF">
         <ul>
           <Li>
-            <b>Vortrag am 25. April 2017, 18 Uhr</b>
+            <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
             <p>Ursachen und aktuelle Behandlungsmöglichkeiten von Schulterschmerzen</p>
           </Li>
           <Li>
-            <b>Vortrag am 21. März 2017, 18 Uhr</b>
+            <b>Vortrag am 21. März 2017, 18:00 Uhr</b>
             <p>Gelenkersatz am Knie</p>
           </Li>
           <Li>
-            <b>Vortrag am 25. April 2017, 18 Uhr</b>
+            <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
             <p>Ursachen und aktuelle Behandlungsmöglichkeiten von Schulterschmerzen</p>
           </Li>
           <Li>
-            <b>Vortrag am 21. März 2017, 18 Uhr</b>
+            <b>Vortrag am 21. März 2017, 18:00 Uhr</b>
             <p>Gelenkersatz am Knie</p>
           </Li>
           <Li>
-            <b>Vortrag am 25. April 2017, 18 Uhr</b>
+            <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
             <p>MAXIMAL 5 ITEMS!</p>
           </Li>
         </ul>

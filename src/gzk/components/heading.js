@@ -1,8 +1,8 @@
 import { createComponent, border } from 'olymp-fela';
 
 const style = {
-  fontWeight: 300,
-  fontStyle: 'italic',
+  fontWeight: 200,
+  // fontStyle: 'italic',
 };
 
 const coloredBorder = (theme, color) => ({
