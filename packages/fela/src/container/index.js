@@ -4,7 +4,6 @@ export default createComponent(({ theme }) => ({
   minHeight: 30,
   position: 'relative',
   marginX: 'auto',
-  // paddingX: theme.space3,
   onAfter: {
     content: '""',
     clear: 'both',
@@ -14,6 +13,7 @@ export default createComponent(({ theme }) => ({
   },
   ifMini: {
     width: '100%',
+    paddingX: theme.space3,
   },
   ifSmallUp: {
     width: 540,
