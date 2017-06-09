@@ -12,6 +12,7 @@ export default {
     <Container className={className}>
       <Carousel
         title="Magazin"
+        bordered="Magazin"
         size={5}
         items={[
           { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Z1pLCLtn51l_edd3gh.jpg' },
@@ -19,7 +20,7 @@ export default {
           { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Wke6YQMjq1x_vprqa2.jpg' },
         ]}
       />
-      <Panel medium={7} title="Veranstaltungen" background="rgb(73, 146, 195)" color="#FFF">
+      <Panel medium={7} title="Veranstaltungen" bordered="Veranstaltungen" background="rgb(73, 146, 195)" color="#FFF">
         <ul>
           <Li>
             <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
