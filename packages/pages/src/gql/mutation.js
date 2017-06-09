@@ -27,7 +27,7 @@ const ok = (props, mutate) => () => {
           slug = `${parent.slug}${slug}`.replace('//', '/');
         } parentId = parent.parentId;
       }
-      router.push({ pathname: slug });
+      router.push({ pathname: slug, query });
     }).catch(onError);
   });
 };

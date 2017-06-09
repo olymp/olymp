@@ -2,42 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter, Link } from 'olymp';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
-import { Icon } from 'antd';
-import { queryPages, reorderPage, movePage } from '../gql';
-
-const badgeStyle = theme => ({
-  size: 23,
-  borderRadius: '50%',
-  textAlign: 'center',
-  marginLeft: 3,
-  '> i': {
-    color: theme.light,
-    margin: '0 !important',
-  },
-  onHover: {
-    '> i': {
-      color: theme.light2,
-    },
-  }
-});
-
-const Button = createComponent(({ theme }) => ({
-  // backgroundColor: theme.color,
-  // ...badgeStyle(theme),
-}), ({ className, to, type }) => (
-  <Link to={to} className={className}>
-    <Icon type={type} />
-  </Link>
-), p => Object.keys(p));
-
-const Badge = createComponent(({ theme }) => ({
-  // backgroundColor: theme.dark2,
-  // ...badgeStyle(theme),
-}), ({ className, type }) => (
-  <a href="javascript:;" className={className}>
-    <Icon type={type} />
-  </a>
-), p => Object.keys(p));
+import { Icon, Tooltip } from 'antd';
+import { queryPages, reorderPage, movePage } from '../../gql';
 
 @withRouter
 @reorderPage
@@ -46,6 +12,7 @@ class Pages extends Component {
   state = {
     expandedKeys: [],
   };
+
   onDrop = (info) => { // reorder or move nodes on drop
     const { reorder, move } = this.props;
     const parent = info.dropToGap && info.node.props.parent
@@ -79,23 +46,25 @@ class Pages extends Component {
       });
     }
   }
+
   getNodeIcon = (item) => {
     if (item.sorting && item.sorting[0] === '+') {
-      return <Badge type="arrow-up" />;
+      return <Badge type="arrow-up" tooltip="Austeigend sortiert" />;
     } else if (item.sorting && item.sorting[0] === '-') {
-      return <Badge type="arrow-down" />;
+      return <Badge type="arrow-down" tooltip="Absteigend sortiert" />;
     } else if (item.slug === '/') {
-      return <Badge type="home" />;
+      return <Badge type="home" tooltip="Startseite" />;
     } else if (item.type === 'ALIAS') {
-      return <Badge type="copy" />;
+      return <Badge type="fork" tooltip="Alias" />;
     } else if (item.type === 'LINK') {
-      return <Badge type="link" />;
+      return <Badge type="link" tooltip="Link" />;
     } else if (item.type === 'PLACEHOLDER') {
-      return <Badge type="pause" />;
+      return <Badge type="ellipsis" tooltip="Platzhalter" />;
     } else if (item.type === 'MENU') {
-      return <Badge type="database" />;
+      return <Badge type="bars" tooltip="Menü" />;
     } return null;
   };
+
   loop = (data, parent) => data.map((item) => {
     const { query } = this.props;
     const children = item.children && item.children.length ? this.loop(item.children, item) : undefined;
@@ -113,7 +82,7 @@ class Pages extends Component {
             {item.bindingId && (
               <Button
                 to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}
-                type="share-alt"
+                type="api"
               />
             )}
           </Tree.Title>
@@ -123,6 +92,7 @@ class Pages extends Component {
       </Tree.Node>
     );
   })
+
   render() {
     const { items, pathname, query } = this.props;
     const { expandedKeys } = this.state;
@@ -149,3 +119,41 @@ Pages.defaultProps = {
 };
 Pages.WithData = queryPages(Pages);
 export default Pages;
+
+const Button = createComponent(({ theme }) => ({
+  borderRadius: '50%',
+  size: 23,
+  textAlign: 'center',
+  marginLeft: 3,
+  '> i': {
+    color: theme.color,
+    margin: '0 !important',
+  },
+  onHover: {
+    backgroundColor: theme.color,
+    '> i': {
+      color: theme.light,
+    },
+  }
+}), ({ className, to, type }) => (
+  <Link to={to} className={className}>
+    <Icon type={type} />
+  </Link>
+), p => Object.keys(p));
+
+const Badge = createComponent(({ theme }) => ({
+  borderRadius: '50%',
+  size: 23,
+  textAlign: 'center',
+  marginLeft: 3,
+  '> i': {
+    color: theme.dark3,
+    margin: '0 !important',
+  },
+}), ({ className, type, tooltip }) => (
+  <Tooltip title={tooltip}>
+    <a href="javascript:;" className={className}>
+      <Icon type={type} />
+    </a>
+  </Tooltip>
+), p => Object.keys(p));

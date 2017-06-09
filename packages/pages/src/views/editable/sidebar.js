@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Form } from 'antd';
+import { Form, Tabs } from 'antd';
 import { slugify, unflatten } from 'olymp';
-import { Tabs } from 'antd';
 import { Panel, SectionH } from 'olymp-ui';
-import { queryPage, queryPages, mutatePage } from '../gql';
-import { Input, PageType, State, Parent } from '../edits';
+import { queryPage, queryPages, mutatePage } from '../../gql';
+import { Input, PageType, State, Parent } from '../../edits';
+import Tree from './tree';
 
 class PageForm extends Component {
   handleNameChange = (e) => { // set slug if unset
@@ -19,9 +19,8 @@ class PageForm extends Component {
     }
   }
   render() {
-    const { form, item, items } = this.props;
-
-    let tree = unflatten(items.map(({ id, name, parentId }) => ({
+    const { form, item, items, navigation } = this.props;
+    const tree = unflatten(items.map(({ id, name, parentId }) => ({
       value: id,
       label: name,
       parent: parentId,
@@ -30,9 +29,13 @@ class PageForm extends Component {
 
     return (
       <div>
-        <Tabs defaultActiveKey="1" size="small">
-          <Tabs.TabPane tab="Basis" key="1">
-            {/*<Panel minWidth={560} margin="0 30px" padding={16}>*/}
+        <Tabs defaultActiveKey="0" size="small">
+          <Tabs.TabPane tab="Übersicht" key="0">
+            <Panel>
+              <Tree items={navigation} />
+            </Panel>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Seite" key="1">
             <Panel paddingX={16} alignLabel="left">
               <Input form={form} item={item} field="name" label="Name" onChange={this.handleNameChange} rules={['required']} type="text" size="large" />
               <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
@@ -46,11 +49,16 @@ class PageForm extends Component {
               <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
             </Panel>
           </Tabs.TabPane>
-          {/*<Tabs.TabPane tab="Text" key="2">
+          <Tabs.TabPane tab="Collection" key="2">
+            <Panel paddingX={16}>
+              Hier kommt bei Bindings quasi der Parent rein
+            </Panel>
+          </Tabs.TabPane>
+          {/* <Tabs.TabPane tab="Text" key="2">
             <Panel paddingX={16}>
               <SlateTree form={form} item={item} field="blocks" label={null} />
             </Panel>
-          </Tabs.TabPane>*/}
+          </Tabs.TabPane> */}
         </Tabs>
       </div>
     );
@@ -60,10 +68,12 @@ PageForm.propTypes = {
   item: PropTypes.object,
   form: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object),
+  navigation: PropTypes.arrayOf(PropTypes.object),
 };
 PageForm.defaultProps = {
   item: {},
   items: [],
+  navigation: [],
 };
 PageForm.WithData = queryPages(queryPage(mutatePage(Form.create(PageForm))));
 export default PageForm;
