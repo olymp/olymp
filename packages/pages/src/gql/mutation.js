@@ -24,10 +24,10 @@ const ok = (props, mutate) => () => {
       while (parentId) {
         const parent = flatNavigation.find(x => x.id === parentId) || { };
         if (parent.slug) {
-          slug = `${parent.slug}${slug}`;
+          slug = `${parent.slug}${slug}`.replace('//', '/');
         } parentId = parent.parentId;
       }
-      router.push({ pathname: slug, query });
+      router.push({ pathname: slug });
     }).catch(onError);
   });
 };

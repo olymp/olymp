@@ -57,10 +57,8 @@ export default class PageSidebar extends Component {
           {value && <PageForm form={form} item={item} items={flatNavigation} />}
         </Sidebar>
 
-        <Container width={1200} padding={0}>
-          {render && render(P)}
-          {!render && P}
-        </Container>
+        {render && render(P)}
+        {!render && P}
       </SplitView>
     );
   }
