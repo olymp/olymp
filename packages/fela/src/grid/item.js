@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
-const GridItem = createComponent(({ gridSize, mini, small, medium, large, huge }) => ({
+const GridItem = createComponent(({ gridSize, mini, small, medium, large, huge, padding }) => ({
   float: 'left',
   width: `${100 / gridSize * (mini || gridSize)}%`,
+  padding,
   // marginLeft: `${100 / gridSize * offset}%`,
   ifMini: mini === 0 || mini === false ? { display: 'none' } : {},
   ifSmall: small === 0 || small === false ? { display: 'none' } : {},
@@ -22,7 +23,7 @@ const GridItem = createComponent(({ gridSize, mini, small, medium, large, huge }
   ifHugeUp: huge ? {
     width: `${100 / gridSize * huge}%`,
   } : {},
-}), 'div', ({ gridSize, offset, mini, small, medium, large, huge, ...p }) => Object.keys(p));
+}), 'div', ({ gridSize, offset, mini, small, medium, large, huge, padding, ...p }) => Object.keys(p));
 GridItem.propTypes = {
   /** The size relative to the grid container */
   gridSize: PropTypes.number,

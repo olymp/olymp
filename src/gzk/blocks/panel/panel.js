@@ -18,7 +18,7 @@ export default createComponent(({ theme, background = theme.dark5, color = theme
     color,
     padding,
     borderBottomRightRadius: 100,
-    display: 'flex',
+    // display: 'flex',
     hyphens: 'auto',
     flex: '1 1',
     minHeight: 90,
