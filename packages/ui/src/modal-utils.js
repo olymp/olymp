@@ -7,7 +7,7 @@ export const onError = (err) => {
   } else if (err && typeof err === 'object') {
     description = Object.keys(err).map(key => err[key].errors.map(e => e.message).join('\n')).join('\n')
   }
-  message.error(description);
+  message.error(description, 30);
 };
 export const onSuccess = (text, description) => {
   message.success(description || text);
