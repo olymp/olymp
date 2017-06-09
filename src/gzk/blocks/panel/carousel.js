@@ -51,7 +51,7 @@ export default createComponent(({ theme }) => ({
       },
     },
   },
-}), ({ className, title, size, ...p }) => (
+}), ({ className, title, size, bordered, ...p }) => (
   <Grid.Item
     mini={12}
     medium={size}
@@ -59,7 +59,7 @@ export default createComponent(({ theme }) => ({
     paddingMini="0.5rem 1rem"
     paddingMedium="1rem 0.5rem"
   >
-    <H2>{title}</H2>
+    <H2 bordered={bordered}>{title}</H2>
     <Carousel
       slideInterval={7500}
       ratio={0.33 * size}
