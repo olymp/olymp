@@ -1,6 +1,5 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { boxShadow } from 'olymp-fela';
 import { Menu as AntMenu } from 'antd';
 import { createComponent } from 'olymp-fela';
 
@@ -23,10 +22,6 @@ export const Menu = createComponent(({ theme }) => ({
     onHover: {
       color: `${theme.light}!important`,
     },
-  },
-  '> li:hover': {
-    // color: theme.light1,
-    color: theme.dark,
   },
 }), AntMenu, p => Object.keys(p));
 

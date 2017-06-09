@@ -2,4 +2,4 @@
 export { default as Carousel } from './carousel';
 export { default as Layout } from './layout';
 export { default as Logo } from './logo';
-export * from './header';
+export * from './heading';
