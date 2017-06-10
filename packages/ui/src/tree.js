@@ -11,6 +11,7 @@ const Tree = createComponent(() => ({
   },
   '& li': {
     padding: 0,
+    paddingTop: '0.7rem !important',
     '> .ant-tree-switcher': {
       position: 'absolute',
       onAfter: {
