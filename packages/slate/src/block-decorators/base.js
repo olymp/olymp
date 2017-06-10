@@ -34,6 +34,7 @@ export default (options = {}) => Block => {
         return state;
       }, {});
       // Empty children!!
+      // console.log(editor.props, children, state);
       const active = !editor.props.readOnly && children.findIndex(child => parseInt(child.key, 10) === parseInt(state.selection.startKey, 10)) >= 0;
       return (
         <StyledBlock

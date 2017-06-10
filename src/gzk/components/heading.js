@@ -1,29 +1,11 @@
 import React from 'react';
 import { createComponent, border } from 'olymp-fela';
 
-const style = {
-  fontWeight: 200,
-  // fontStyle: 'italic',
-};
-
-const coloredBorder = (theme) => ({
+export const H1 = createComponent(({ theme }) => ({
   position: 'relative',
   borderBottom: border(theme),
-  /* onBefore: {
-    bottom: -1,
-    content: '""',
-    display: 'block',
-    height: 1,
-    left: 0,
-    position: 'absolute',
-    minWidth: '20%',
-    backgroundColor: color || '#ffa210',
-  } */
-});
-
-export const H1 = createComponent(({ theme }) => ({
-  ...style,
-  ...coloredBorder(theme)
+  fontWeight: 200,
+  marginBottom: theme.space1,
 }), ({ className, children, color, bordered }) => (
   <h1 className={className}>
     {children}
@@ -32,8 +14,10 @@ export const H1 = createComponent(({ theme }) => ({
 ), p => Object.keys(p));
 
 export const H2 = createComponent(({ theme }) => ({
-  ...style,
-  ...coloredBorder(theme)
+  position: 'relative',
+  borderBottom: border(theme),
+  fontWeight: 200,
+  marginBottom: theme.space1,
 }), ({ className, children, color, bordered }) => (
   <h2 className={className}>
     {children}
