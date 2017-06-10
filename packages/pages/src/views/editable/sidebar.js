@@ -4,7 +4,7 @@ import { slugify, unflatten } from 'olymp';
 import { Panel, SectionH } from 'olymp-ui';
 import { createComponent, border } from 'olymp-fela';
 import { queryPage, queryPages, mutatePage } from '../../gql';
-import { Input, PageType, State, Parent } from '../../edits';
+import { Input, PageType, State, Parent, TagSelect } from '../../edits';
 import Tree from './tree';
 
 class PageForm extends Component {
@@ -51,7 +51,15 @@ class PageForm extends Component {
             {(form.getFieldValue('type') || item.type) === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
             <SectionH title="Erweitert" description="Datenanbindung und Sortierung der Elemente" />
             <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
-            <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
+            <TagSelect
+              form={form}
+              item={item}
+              options={items.filter(i => i.parentId === item.id)}
+              field="sorting"
+              placeholder="+name, -id"
+              label="Sortieren"
+              size="large"
+            />
           </Panel>
         </TabPane>
         <TabPane tab="Collection" key="2">
