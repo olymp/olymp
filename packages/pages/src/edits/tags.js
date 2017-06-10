@@ -5,7 +5,9 @@ import { layout, getRules } from 'olymp-ui';
 const TagSelect = ({ item, field, label, layout, initialValue, rules, placeholder, form, options, ...rest }) => (
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
-      initialValue: item ? item[field].split(',') : undefined,
+      initialValue: item ?
+        item[field].split(',').filter(i => options.findIndex(option => option.id === i) >= 0) :
+        undefined,
       rules: getRules(rules, label),
     })(
       <Select mode="multiple" placeholder={placeholder || label} {...rest}>

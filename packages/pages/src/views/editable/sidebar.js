@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import { slugify, unflatten } from 'olymp';
 import { Panel, SectionH } from 'olymp-ui';
 import { createComponent, border } from 'olymp-fela';
-import { queryPage, queryPages, mutatePage } from '../../gql';
 import { Input, PageType, State, Parent, TagSelect } from '../../edits';
 import Tree from './tree';
 
@@ -49,7 +48,7 @@ class PageForm extends Component {
             {(form.getFieldValue('type') || item.type) !== 'MENU' && <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />}
             {(form.getFieldValue('type') || item.type) === 'LINK' && <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />}
             {(form.getFieldValue('type') || item.type) === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
-            <SectionH title="Erweitert" description="Datenanbindung und Sortierung der Elemente" />
+            <SectionH title="Erweitert" description="Datenanbindung, Sortierung Unterseiten" />
             <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
             <TagSelect
               form={form}
@@ -91,7 +90,6 @@ PageForm.defaultProps = {
   tab: '0',
   onTabClick: key => console.log(key),
 };
-PageForm.WithData = queryPages(queryPage(mutatePage(Form.create(PageForm))));
 export default PageForm;
 
 const TabPane = createComponent(({ theme }) => ({
