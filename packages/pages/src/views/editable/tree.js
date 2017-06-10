@@ -3,7 +3,7 @@ import { withRouter, Link } from 'olymp';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Tooltip } from 'antd';
-import { queryPages, reorderPage, movePage } from '../../gql';
+import { reorderPage, movePage } from '../../gql';
 
 @withRouter
 @reorderPage
@@ -33,12 +33,6 @@ class Pages extends Component {
         .map(child => child.id);
       childIds.push(pageId);
     }
-
-    console.log({
-      id: pageId,
-      parentId: parent.id,
-      sorting: childIds.join(','),
-    });
 
     if (pageId !== parent.id) {
       move({
@@ -147,7 +141,6 @@ Pages.propTypes = {
 Pages.defaultProps = {
   items: [],
 };
-Pages.WithData = queryPages(Pages);
 export default Pages;
 
 const Title = createComponent(({ theme }) => ({

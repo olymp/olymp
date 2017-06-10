@@ -54,7 +54,7 @@ export const withNavigation = Wrapped => {
       }
     }
     return WithNavPrepareInner;
-  }
+  };
 
   // Compose Navigation from prepared data
   @withNavigationPrepare
