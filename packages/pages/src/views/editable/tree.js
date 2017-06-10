@@ -100,18 +100,23 @@ class Pages extends Component {
         item={item}
         parent={parent}
         title={
-          <Tree.Title disabled={item.state === 'DRAFT'}>
-            <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }}>
+          <Title disabled={item.state === 'DRAFT'}>
+            <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id, parent: undefined } }}>
               {item.name || 'Kein Name'}
             </Link>
+            <Button
+              to={{ query: { ...query, '@page': 'new', parent: item.id } }}
+              type="plus"
+              showOnHover
+            />
             {item.bindingId && (
               <Button
-                to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}
+                to={{ query: { ...query, '@page': undefined, parent: undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}
                 type="api"
               />
             )}
             {this.getNodeIcon(item)}
-          </Tree.Title>
+          </Title>
         }
       >
         {children}
@@ -145,11 +150,20 @@ Pages.defaultProps = {
 Pages.WithData = queryPages(Pages);
 export default Pages;
 
-const Button = createComponent(({ theme }) => ({
+const Title = createComponent(({ theme }) => ({
+  onHover: {
+    '> a': {
+      display: 'initial',
+    },
+  }
+}), Tree.Title, p => Object.keys(p));
+
+const Button = createComponent(({ theme, showOnHover }) => ({
   borderRadius: '50%',
   size: 23,
   textAlign: 'center',
   marginLeft: 3,
+  display: showOnHover && 'none',
   '> i': {
     color: theme.color,
     margin: '0 !important',
@@ -159,7 +173,7 @@ const Button = createComponent(({ theme }) => ({
     '> i': {
       color: theme.light,
     },
-  }
+  },
 }), ({ className, to, type }) => (
   <Link to={to} className={className}>
     <Icon type={type} />

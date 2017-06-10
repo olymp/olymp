@@ -15,7 +15,7 @@ export default class PageSidebar extends Component {
   state = { tab: 0 };
 
   componentWillReceiveProps = (props) => {
-    if (props.query['@page'] !== this.props.query['@page'] && props.query['@page'] === 'new') {
+    if ((props.query['@page'] !== this.props.query['@page'] || props.query.parent !== this.props.query.parent) && props.query['@page'] === 'new') {
       this.setState({ tab: 1 });
     }
   }
@@ -30,7 +30,7 @@ export default class PageSidebar extends Component {
 
     const leftButtons = (
       <Button.Group>
-        <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': undefined } })} shape="circle" icon="close" />
+        <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, '@page': undefined, parent: undefined } })} shape="circle" icon="close" />
       </Button.Group>
     );
     const rightButtons = form.isFieldsTouched() ? (
