@@ -119,14 +119,14 @@ class Pages extends Component {
   })
 
   render() {
-    const { items, pathname, query } = this.props;
+    const { items, selected, pathname, query } = this.props;
 
     return (
       <Tree
-        selectedKeys={[pathname]}
+        selectedKeys={selected}
         draggable
         className="draggable-tree"
-        defaultExpandedKeys={items.map(item => item.id)}
+        defaultExpandedKeys={items.map(item => item.id || item.pathname)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
@@ -137,9 +137,11 @@ class Pages extends Component {
 }
 Pages.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
+  selected: PropTypes.arrayOf(PropTypes.string),
 };
 Pages.defaultProps = {
   items: [],
+  selected: [],
 };
 export default Pages;
 

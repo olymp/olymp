@@ -36,7 +36,7 @@ class PageForm extends Component {
       >
         <TabPane tab="Navigation" key="0">
           <Panel>
-            <Tree items={navigation} />
+            <Tree items={navigation} selected={[item.id || item.pathname]} />
           </Panel>
         </TabPane>
         <TabPane tab="Seite" key="1">
