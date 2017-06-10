@@ -1,14 +1,14 @@
 import React from 'react';
-import { createComponent, Container, Grid, border, fade } from 'olymp-fela';
+import { createComponent, Container, Grid, border } from 'olymp-fela';
 import { H2 } from '../../components';
 import Panel from '../panel/panel';
 
 export default {
   label: 'Magazin',
   category: 'Collections',
-  editable: true,
-  component: ({ getData, ...props }) => (
-    <Container>
+  editable: false,
+  component: ({ attributes, getData, ...props }) => (
+    <Container {...attributes}>
       <Grid>
         <Grid.Item medium={8}>
           <Panel title="Der hallux rigidus - Ein typisches Männerproblem" bordered="Der hallux rigidus">
@@ -33,13 +33,6 @@ export default {
       </Grid>
     </Container>
   ),
-  actions: [{
-    tooltip: 'Überschrift',
-    toggle: ({ setData, getData, ...p }) => {
-      const title = prompt('Überschrift', getData('title', ''));
-      setData({ title });
-    },
-  }],
 };
 
 const Image = createComponent(({ theme }) => ({

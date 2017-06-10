@@ -8,8 +8,8 @@ export default {
   label: 'Neuigkeiten, Einrichtungen',
   category: 'Panel',
   editable: false,
-  component: ({ className, ...props }) => (
-    <Container className={className}>
+  component: ({ className, attributes }) => (
+    <Container {...attributes} className={className}>
       <Panel medium={7} title="Neuigkeiten" bordered="Neuigkeiten" background="rgb(62, 167, 62)" color="#FFF">
         <ul>
           <Li>

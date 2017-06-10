@@ -8,8 +8,8 @@ export default {
   label: 'Veranstaltungen, Magazin',
   category: 'Panel',
   editable: false,
-  component: ({ className, ...props }) => (
-    <Container className={className}>
+  component: ({ className, attributes }) => (
+    <Container {...attributes} className={className}>
       <Carousel
         title="Magazin"
         bordered="Magazin"

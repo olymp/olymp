@@ -6,11 +6,12 @@ import capitalize from 'lodash/upperFirst';
 @withRouter
 class Content extends Component {
   render() {
-    const { pathname, children } = this.props;
+    const { pathname, children, query, search, dispatch, location, router, ...rest } = this.props;
     const path = pathname.split('/').filter(p => p);
+
     return (
       <Container>
-        <h1>{children || capitalize(path[path.length - 1])}</h1>
+        <h1 {...rest}>{children || capitalize(path[path.length - 1])}</h1>
         <h5>Startseite {path.map(p => `/ ${capitalize(p)}`)}</h5>
       </Container>
     );
@@ -34,26 +35,19 @@ const Header = createComponent(({ theme }) => ({
       fontWeight: 200,
     },
   }
-}), ({ className, children }) => (
+}), ({ className, children, ...rest }) => (
   <div className={className}>
-    <Content>{children}</Content>
+    <Content {...rest}>{children}</Content>
   </div>
 ), p => Object.keys(p));
 
 export default {
-  label: 'Überschrift',
+  label: 'Kopfleiste',
   category: 'Template',
   editable: true,
-  component: ({ getData, ...props }) => (
-    <Header>
-      {getData('title')}
+  component: ({ attributes, children }) => (
+    <Header {...attributes}>
+      {children}
     </Header>
   ),
-  actions: [{
-    tooltip: 'Überschrift',
-    toggle: ({ setData, getData, ...p }) => {
-      const title = prompt('Überschrift', getData('title', ''));
-      setData({ title });
-    },
-  }],
 };

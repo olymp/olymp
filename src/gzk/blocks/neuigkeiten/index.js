@@ -6,25 +6,25 @@ import Panel from '../panel/panel';
 export default {
   label: 'Neuigkeiten',
   category: 'Collections',
-  editable: true,
-  component: ({ getData, ...props }) => (
-    <Container>
+  editable: false,
+  component: ({ attributes, getData, ...props }) => (
+    <Container {...attributes}>
       <Grid>
         <Grid.Item medium={8}>
-          <Panel title="Vertreterversammlung der KV Hessen wählt neue Vorsitzende">
+          <Panel title="Vertreterversammlung der KV Hessen wählt neue Vorsitzende" bordered="Vertreterversammlung">
             <Image url="https://res.cloudinary.com/djyenzorc/image/upload/w_100,h_119,c_fill/f_auto,q_auto,fl_lossy/v1481083897/pyyfbp0dwkmxb1uzwzhs.jpg" />
             <p>Herzlichen Glückwunsch Dr. Klaus-Wolfgang Richter zu seiner Wiederwahl zum Vorsitzenden der Vertretersammlung mit 49 von 50 Stimmen!</p>
             <a href="/">Mehr erfahren...</a>
             <H5>Presseartikel vom 15. Dezember 2016</H5>
           </Panel>
-          <Panel title="Knorpelschäden und Arthrose">
+          <Panel title="Knorpelschäden und Arthrose" bordered="Knorpelschäden">
             <Image url="https://res.cloudinary.com/djyenzorc/image/upload/x_134,y_197,w_853,h_1249,c_crop/f_auto,q_auto,fl_lossy/v1481083829/sewtk0tjyyd8hiqmkoj4.jpg" />
             <p>Prävention und moderne Behandlungsmöglichkeiten von Knorpelschäden und Arthrose - Ein Vortrag von Dr. Heino Kniffler.</p>
             <a href="/">Mehr erfahren...</a>
             <H5>Vortrag am 24. Januar 2017, 18:00 Uhr</H5>
           </Panel>
         </Grid.Item>
-        <Grid.Item medium={4} padding="1rem 0.5rem">
+        <Grid.Item medium={4} paddingMini="1rem 1rem 0 1rem" paddingMedium="1rem 1.5rem">
           <H2>Vorträge & Veranstaltungen</H2>
           <ul>
             <Li>
@@ -100,13 +100,6 @@ export default {
       </Grid>
     </Container>
   ),
-  actions: [{
-    tooltip: 'Überschrift',
-    toggle: ({ setData, getData, ...p }) => {
-      const title = prompt('Überschrift', getData('title', ''));
-      setData({ title });
-    },
-  }],
 };
 
 const Image = createComponent(({ theme }) => ({
