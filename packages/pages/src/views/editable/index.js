@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Prompt, withRouter } from 'olymp';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { Button, Form } from 'antd';
+import { orderBy } from 'lodash';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
 import Page from '../page';
@@ -63,7 +64,7 @@ export default class PageSidebar extends Component {
           <PageForm
             form={form}
             item={item}
-            navigation={navigation}
+            navigation={orderBy(navigation, ['type', 'name'], ['desc', 'desc'])}
             items={flatNavigation}
             tab={`${tab}`}
             onTabClick={key => this.setState({ tab: key })}

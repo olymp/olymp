@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Form, Tabs } from 'antd';
 import { slugify, unflatten } from 'olymp';
 import { Panel, SectionH } from 'olymp-ui';
+import { createComponent, border } from 'olymp-fela';
 import { queryPage, queryPages, mutatePage } from '../../gql';
 import { Input, PageType, State, Parent } from '../../edits';
 import Tree from './tree';
@@ -34,12 +35,12 @@ class PageForm extends Component {
         size="small"
         tabBarStyle={{ marginBottom: 0 }}
       >
-        <Tabs.TabPane tab="Navigation" key="0">
+        <TabPane tab="Navigation" key="0">
           <Panel>
             <Tree items={navigation} />
           </Panel>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Seite" key="1">
+        </TabPane>
+        <TabPane tab="Seite" key="1">
           <Panel padding={16} alignLabel="left">
             <Input form={form} item={item} field="name" label="Name" onChange={this.handleNameChange} rules={['required']} type="text" size="large" />
             <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
@@ -52,17 +53,17 @@ class PageForm extends Component {
             <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
             <Input form={form} item={item} field="sorting" placeholder="+name, -id" label="Sortieren" type="text" size="large" />
           </Panel>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Collection" key="2">
+        </TabPane>
+        <TabPane tab="Collection" key="2">
           <Panel paddingX={16}>
             Hier kommt bei Bindings quasi der Parent rein
           </Panel>
-        </Tabs.TabPane>
-        {/* <Tabs.TabPane tab="Text" key="2">
+        </TabPane>
+        {/* <TabPane tab="Text" key="2">
           <Panel paddingX={16}>
             <SlateTree form={form} item={item} field="blocks" label={null} />
           </Panel>
-        </Tabs.TabPane> */}
+        </TabPane> */}
       </Tabs>
     );
   }
@@ -84,3 +85,8 @@ PageForm.defaultProps = {
 };
 PageForm.WithData = queryPages(queryPage(mutatePage(Form.create(PageForm))));
 export default PageForm;
+
+const TabPane = createComponent(({ theme }) => ({
+  backgroundColor: theme.light,
+  borderBottom: border(theme),
+}), Tabs.TabPane, p => Object.keys(p));

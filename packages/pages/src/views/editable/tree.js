@@ -9,42 +9,65 @@ import { queryPages, reorderPage, movePage } from '../../gql';
 @reorderPage
 @movePage
 class Pages extends Component {
-  state = {
-    expandedKeys: [],
-  };
+  onDrop = ({ node, dragNode, dropPosition, dropToGap }) => { // reorder or move nodes on drop
+    const { items, reorder, move } = this.props;
+    const pageId = dragNode.props.eventKey;
+    const positions = node.props.pos.split('-');
+    let childIds = [];
+    let parent;
+    positions.shift();
 
-  onDrop = (info) => { // reorder or move nodes on drop
-    const { reorder, move } = this.props;
-    const parent = info.dropToGap && info.node.props.parent
-      ? info.node.props.parent
-      : info.node.props.item;
-    const page = info.dragNode.props.item;
-    const pageId = page.pageId || page.id; // get real pageId in case of binding
+    if (dropToGap) {
+      const placeBefore = dropPosition - Number(positions[positions.length - 1]) === -1;
+      const position = !placeBefore ? dropPosition : Number(positions[positions.length - 1]);
+      positions.pop();
+      parent = this.getParent(items, positions);
+      childIds = parent.children
+        .filter(child => child.id !== pageId)
+        .map(child => child.id);
+      childIds.splice(position, 0, pageId);
+    } else {
+      parent = this.getParent(items, positions);
+      childIds = parent.children
+        .filter(child => child.id !== pageId)
+        .map(child => child.id);
+      childIds.push(pageId);
+    }
 
-    // Get all IDs of children in order
-    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
-    childIds.splice(info.dropPosition, 0, page.id);
+    console.log({
+      id: pageId,
+      parentId: parent.id,
+      sorting: childIds.join(','),
+    });
 
-    // Check if new parent is itself??
-    if (parent.id === pageId) return;
-    if (parent.id !== page.parentId) { // parent changed
+    if (pageId !== parent.id) {
       move({
         variables: {
           id: pageId,
           parentId: parent.id,
-          sorting: childIds.join(','),
         },
       });
-    } else { // just moved inside existing parent
-      // Disallow sort if parent has fixed sorting
-      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) return;
-      reorder({
-        variables: {
-          id: parent.id,
-          sorting: childIds.join(','),
-        },
-      });
+      if (parent.id) {
+        reorder({
+          variables: {
+            id: parent.id,
+            sorting: childIds.join(','),
+          },
+        });
+      }
     }
+  }
+
+  getParent = (tree, levels) => {
+    const level = levels[0];
+    const parent = tree[level];
+    levels.shift();
+
+    if (level === undefined) {
+      return { id: null, children: [] }; // top-level
+    } else if (!parent.children.length || !levels.length) {
+      return parent;
+    } return this.getParent(parent.children, levels);
   }
 
   getNodeIcon = (item) => {
@@ -59,7 +82,9 @@ class Pages extends Component {
     } else if (item.type === 'LINK') {
       return <Badge type="link" tooltip="Link" />;
     } else if (item.type === 'PLACEHOLDER') {
-      return <Badge type="ellipsis" tooltip="Platzhalter" />;
+      return <Badge type="file" tooltip="Platzhalter" />;
+    } else if (item.type === 'PAGE') {
+      return <Badge type="file-text" tooltip="Seite" />;
     } else if (item.type === 'MENU') {
       return <Badge type="bars" tooltip="Menü" />;
     } return null;
@@ -68,6 +93,7 @@ class Pages extends Component {
   loop = (data, parent) => data.map((item) => {
     const { query } = this.props;
     const children = item.children && item.children.length ? this.loop(item.children, item) : undefined;
+
     return (
       <Tree.Node
         key={item.id || item.pathname}
@@ -76,15 +102,15 @@ class Pages extends Component {
         title={
           <Tree.Title disabled={item.state === 'DRAFT'}>
             <Link to={{ pathname: item.pathname, query: { ...query, '@page': item.pageId || item.id } }}>
-              {item.name}
+              {item.name || 'Kein Name'}
             </Link>
-            {this.getNodeIcon(item)}
             {item.bindingId && (
               <Button
                 to={{ query: { ...query, '@page': undefined, [`@${item.binding.split(' ')[0]}`]: item.bindingId } }}
                 type="api"
               />
             )}
+            {this.getNodeIcon(item)}
           </Tree.Title>
         }
       >
@@ -95,14 +121,13 @@ class Pages extends Component {
 
   render() {
     const { items, pathname, query } = this.props;
-    const { expandedKeys } = this.state;
+
     return (
       <Tree
         selectedKeys={[pathname]}
         draggable
-        defaultExpandAll
         className="draggable-tree"
-        defaultExpandedKeys={expandedKeys}
+        defaultExpandedKeys={items.map(item => item.id)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >

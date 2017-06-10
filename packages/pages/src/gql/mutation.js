@@ -27,7 +27,7 @@ const ok = (props, mutate) => () => {
           slug = `${parent.slug}${slug}`.replace('//', '/');
         } parentId = parent.parentId;
       }
-      router.push({ pathname: slug, query });
+      router.push({ pathname: slug, query: { ...query, '@page': item.id } });
     }).catch(onError);
   });
 };
@@ -60,11 +60,8 @@ export const reorderPage = graphql(gql`
 });
 
 export const movePage = graphql(gql`
-  mutation movePage($id: String, $parentId: String, $sorting: String) {
-    item: page(id: $parentId, input: { sorting: $sorting }) {
-      id sorting
-    }
-    item2: page(id: $id, input: { parentId: $parentId }) {
+  mutation movePage($id: String, $parentId: String) {
+    item: page(id: $id, input: { parentId: $parentId }) {
       id parentId
     }
   }
