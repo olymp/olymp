@@ -67,6 +67,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       new webpack.DefinePlugin({
         'process.env.SSR': JSON.stringify(isSSR),
         'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.GM_KEY': process.env.GM_KEY,
         'process.env.DEV_PORT': JSON.stringify(devPort),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
         'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
