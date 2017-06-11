@@ -37,7 +37,6 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
     const { query, templates, collections, collectionList, location } = props;
     const collection = collectionList.filter(({ name }) => query[`@${name.toLowerCase()}`] !== undefined)[0];
 
-    console.log(collection);
     return (
       <ThemeProvider theme={theme}>
         <LightboxProvider>
