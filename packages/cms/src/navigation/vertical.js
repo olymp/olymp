@@ -72,7 +72,7 @@ const VerticalMenu = createComponent(({ deviceWidth, theme }) => ({
   }
 }), Menu, p => Object.keys(p));
 
-export default withLang(withAuth(({ auth, lang, className, deviceWidth, children, query, ...rest }) => (
+export default withLang(withAuth(({ auth, lang, className, deviceWidth, children, query, collectionList, ...rest }) => (
   <VerticalMenu className={className} deviceWidth={deviceWidth} selectedKeys={Object.keys(query)}>
     <Menu.Item key="@page">
       <Popover placement="right" content={lang.PAGE_MANAGER}>
@@ -128,13 +128,15 @@ export default withLang(withAuth(({ auth, lang, className, deviceWidth, children
 
     <Separator />
 
-    <Menu.Item key="@artikel">
-      <Popover placement="right" content="Artikel-Liste">
-        <Link to={{ query: { '@artikel': null, '@deviceWidth': deviceWidth } }}>
-          <Icon type="file-text" />
-        </Link>
-      </Popover>
-    </Menu.Item>
+    {collectionList.map(collection => (
+      <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+        <Popover placement="right" content={`@${collection.name}-Liste`}>
+          <Link to={{ query: { [`@${collection.name.toLowerCase()}`]: null, '@deviceWidth': deviceWidth } }}>
+            <Icon type="file-text" />
+          </Link>
+        </Popover>
+      </Menu.Item>
+    ))}
 
     <Filler />
 

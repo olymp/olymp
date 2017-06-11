@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth as withAuth, withRouter, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
+import { auth as withAuth, withRouter, withLangProvider, SimpleSwitch, SimpleRoute, withCollections } from 'olymp';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
 import { AuthModals } from 'olymp-auth';
@@ -7,6 +7,7 @@ import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from 'olymp-pages';
 import { CollectionRoute } from 'olymp-collection';
 import { CloudinaryRoute, LightboxProvider, Lightbox } from 'olymp-cloudinary';
+import { CollectionOldRoute } from 'olymp-collection-old';
 import { NavigationVertical } from './navigation';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
@@ -33,9 +34,10 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
 
   // Container for authed users
   const IfAuth = (props) => {
-    const { query, templates, collections, location } = props;
-    const collection = Object.keys(modules).filter(key => query[`@${key}`] !== undefined).map(key => ({ key, ...modules[key] }))[0];
+    const { query, templates, collections, collectionList, location } = props;
+    const collection = collectionList.filter(({ name }) => query[`@${name.toLowerCase()}`] !== undefined)[0];
 
+    console.log(collection);
     return (
       <ThemeProvider theme={theme}>
         <LightboxProvider>
@@ -43,12 +45,12 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
             <Lightbox />
             <GatewayDest name="modal" />
             <AuthModals />
-            <NavigationVertical collections={collections} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
+            <NavigationVertical collectionList={collectionList} deviceWidth={query[`@deviceWidth`]} {...location} location={location} />
             <SimpleSwitch>
               {/*<SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
               {/*<SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
               <SimpleRoute match={query[`@template`] !== undefined} render={() => <TemplateRoute {...props} />} />
-              <SimpleRoute match={!!collection} render={() => <CollectionRoute {...props} modules={modules} collection={collection} Wrapped={Wrapped} />} />
+              <SimpleRoute match={!!collection} render={() => <CollectionOldRoute {...props} typeName={collection && collection.name} Wrapped={Wrapped} />} />
               <SimpleRoute match={query[`@page`] !== undefined} render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />} />
               <SimpleRoute match={query[`@media`] !== undefined} render={() => <CloudinaryRoute {...props} />} />
               {/*<SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
@@ -85,6 +87,7 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
   @withNavigation
   @withLangProvider(LANG)
   @withTemplates
+  @withCollections
   class CMS extends Component {
     render() {
       const { auth, navigation } = this.props;
