@@ -12,7 +12,7 @@ class Content extends Component {
     return (
       <Container>
         <h1 {...rest}>{children || capitalize(path[path.length - 1])}</h1>
-        <h5>Startseite {path.map(p => `/ ${capitalize(p)}`)}</h5>
+        <h5 contentEditable={false}>Startseite {path.map(p => `/ ${capitalize(p)}`)}</h5>
       </Container>
     );
   }
@@ -20,7 +20,7 @@ class Content extends Component {
 
 const Header = createComponent(({ theme }) => ({
   width: '100%',
-  backgroundColor: '#ffa210',
+  backgroundColor: '#71636a',
   color: theme.light,
   borderBottomRightRadius: 75,
   paddingX: theme.space3,
