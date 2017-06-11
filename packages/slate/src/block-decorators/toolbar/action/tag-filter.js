@@ -84,7 +84,7 @@ export default fn => Block => (props) => {
             }
           },
 
-          tooltip: 'Inhalte nach Tags filtern',
+          label: 'Inhalte nach Tags filtern',
         },
         ...actions
       ]}

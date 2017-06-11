@@ -3,7 +3,7 @@ import Toolbar, { Button } from './toolbar';
 import { Menu } from 'antd';
 import { get } from 'lodash';
 
-const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, component }, i) => {
+const Action = ({ node, state, onChange }) => ({ toggle, active, label, component }, i) => {
   const setData = (data) => {
     const transform = state
       .transform()
@@ -12,9 +12,11 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, compon
     onChange(transform);
     return Promise.resolve();
   };
+
   const getData = (name, defaultValue) => {
     return node.data.get(name) || defaultValue;
   };
+
   if (component) {
     const Com = component;
     return (
@@ -26,8 +28,8 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, tooltip, compon
     );
   } return (
     <Menu.Item key={i}>
-      <Button onMouseDown={() => toggle({ setData, getData, state, onChange })}>
-        {tooltip}
+      <Button active={active({ getData, state })} onMouseDown={() => toggle({ setData, getData, state, onChange })}>
+        {label}
       </Button>
     </Menu.Item>
   );

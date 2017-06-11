@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown, Menu, Button, Icon, Tooltip } from 'antd';
 import classNames from 'classnames';
 
-export default ({ toggle, options, separated, right, active, icon, tooltip }) => {
+export default ({ toggle, options, separated, right, active, icon, label }) => {
   const menu = (
     <Menu onClick={toggle} style={{ minWidth: 200 }}>
       {options.map(({ value, label, active }) => active ? (
@@ -18,11 +18,11 @@ export default ({ toggle, options, separated, right, active, icon, tooltip }) =>
     <Button type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} data-active={active}>
       <i className={`fa fa-${icon}`} /> <i className="fa fa-caret-down" />
     </Button>
-  )
+  );
 
-  return tooltip ? (
+  return label ? (
     <Dropdown overlay={menu}>
-      <Tooltip placement="top" overlay={<span>{tooltip}</span>}>
+      <Tooltip placement="top" overlay={<span>{label}</span>}>
         {button}
       </Tooltip>
     </Dropdown>

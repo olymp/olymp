@@ -6,28 +6,28 @@ export default {
   ...Image,
   label: 'Galerie',
   actions: [{
-    tooltip: 'Bilder auswählen',
+    label: 'Bilder auswählen',
     component: p => <Mediathek {...p} multi />,
     toggle: () => {},
   },
   {
-    tooltip: 'Bildbezeichnung',
+    label: 'Bildbezeichnung',
     toggle: ({ setData, getData }) => {
       setData({ caption: !getData('caption', false) });
     },
   },
   {
-    tooltip: 'Bildquelle',
+    label: 'Bildquelle',
     toggle: ({ setData, getData }) => {
       setData({ source: !getData('source', false) });
     },
   },
   {
-    tooltip: '+',
+    label: '+',
     toggle: ({ setData, getData }) => setData({ columns: getData('columns', 1) + 1 }),
   },
   {
-    tooltip: '-',
+    label: '-',
     toggle: ({ setData, getData }) => {
       const columns = getData('columns', 1);
       setData({ columns: columns > 1 ? columns - 1 : 1 });

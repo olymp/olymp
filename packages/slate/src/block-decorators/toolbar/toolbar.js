@@ -30,7 +30,7 @@ const addAction = ({ editor, state, node }) => {
     right: true,
     separated: true,
     options,
-    tooltip: 'Absätze um Block hinzufügen/entfernen',
+    label: 'Absätze um Block hinzufügen/entfernen',
     toggle: ({ key }) => {
       const p = Raw.deserializeNode({ kind: 'block', type: 'line', nodes: [{ kind: 'text', text: '', ranges: [] }] });
       if (key === '+<<') {
@@ -94,7 +94,7 @@ const removeAction = ({ editor, state, node }) => ({
   icon: 'trash-o',
   right: true,
   separated: true,
-  tooltip: 'Block löschen',
+  label: 'Block löschen',
   toggle: () => {
     const newState = state.transform().unsetSelection();
 
@@ -112,7 +112,7 @@ const moveActions = ({ editor, state, node }) => ([{
   icon: 'arrow-up',
   right: true,
   separated: true,
-  tooltip: 'Block um eine Stelle nach oben verschieben',
+  label: 'Block um eine Stelle nach oben verschieben',
   toggle: () => {
     const { document } = state;
     const parent = document.getParent(node.key);
@@ -127,7 +127,7 @@ const moveActions = ({ editor, state, node }) => ([{
   type: 'block.moveDown',
   icon: 'arrow-down',
   right: true,
-  tooltip: 'Block um eine Stelle nach unten verschieben',
+  label: 'Block um eine Stelle nach unten verschieben',
   toggle: () => {
     const { document } = state;
     const parent = document.getParent(node.key);

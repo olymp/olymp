@@ -11,7 +11,7 @@ export default class ToolbarAction extends Component {
   }
 
   render() {
-    const { toggle, type, active, icon, separated, options, exceptions, right, multi, showModal, tooltip } = this.props;
+    const { toggle, type, active, icon, separated, options, exceptions, right, multi, showModal, label } = this.props;
 
     if (options && options.length < 10 && !multi && !showModal && !exceptions) {
       return <Select {...this.props} />;
@@ -20,7 +20,7 @@ export default class ToolbarAction extends Component {
     }
 
     return (
-      <Tooltip placement="top" overlay={<span>{tooltip}</span>}>
+      <Tooltip placement="top" overlay={<span>{label}</span>}>
         <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onMouseDown={this.onMouseDown(toggle)} data-active={active}>
           <i className={`fa fa-${icon}`} />
         </Button>

@@ -25,8 +25,10 @@ export const Menu = createComponent(({ theme }) => ({
   },
 }), AntMenu, p => Object.keys(p));
 
-export const Button = createComponent(() => ({
+export const Button = createComponent(({ theme, active }) => ({
   paddingX: 20,
+  backgroundColor: active && theme.dark2,
+  color: active && theme.light1,
 }), ({ className, onMouseDown, children, innerKey, ...props }) => (
   <div className={className} onMouseDown={onMouseDown}>
     {children}
@@ -34,9 +36,9 @@ export const Button = createComponent(() => ({
 ), p => Object.keys(p));
 
 export default createComponent(({ theme }) => ({
-  /*width: '100%',
+  /* width: '100%',
   display: 'flex',
-  justifyContent: 'center',*/
+  justifyContent: 'center', */
 }), (props) => {
   const { isOpened, className, children } = props;
   return (

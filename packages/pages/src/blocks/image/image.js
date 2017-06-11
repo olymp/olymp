@@ -3,82 +3,14 @@ import { Image as CloudinaryImage } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 import Mediathek from './mediathek';
 
-export default {
-  // Meta-Data
-  label: 'Bild',
-  category: 'Media',
-  editable: false,
-  // Component
-  component: ({ getData, ...p }) => (
-    <Gallery
-      {...p}
-      images={getData('value', [{ url: 'http://placekitten.com/1000/300' }])}
-      title={getData('title')}
-      subtitle={getData('subtitle')}
-      caption={getData('caption')}
-      source={getData('source')}
-      columns={getData('columns', 1)}
-    />
-  ),
-  // Styles
-  styles: {
-    width: '100%',
-    height: 'auto',
-  },
-  // Editor Plugins like onKeyDown
-  plugin: {},
-  // Block decorators like resize
-  decorators: [],
-  // Actions
-  actions: [{
-    component: p => <Mediathek {...p} multi={false} />,
-    toggle: () => {},
-  },
-  {
-    tooltip: 'Bildunterschrift',
-    toggle: ({ setData, getData, ...p }) => {
-      const image = getData('value', [{}])[0];
-      const title = prompt('Titel', getData('title', image.caption));
-      const subtitle = prompt('Untertitel', getData('subtitle', image.source));
-      setData({ title, subtitle });
-    },
-  }],
-};
-
-const Gallery = createComponent(() => ({
-  width: '100%',
-  onAfter: {
-    content: '""',
-    clear: 'both',
-    display: 'block',
-    visibility: 'hidden',
-    height: 0,
-  }
-}), ({ className, images, attributes, title, subtitle, caption, source, columns }) => (
-  <div className={className}>
-    {images.map((image, i) => (
-      <ImageContainer
-        image={image}
-        attributes={attributes}
-        title={title || (caption && image.caption)}
-        subtitle={subtitle || (source && image.source)}
-        width={`${100 / columns}%`}
-        key={image.id || i}
-      />
-    ))}
-  </div>
-), p => Object.keys(p));
-
-const ImageContainer = createComponent(({ width }) => ({
+const ImageContainer = createComponent(({ width, float }) => ({
   width,
+  float,
   position: 'relative',
-  float: 'left',
-}), ({ className, image, attributes, title, subtitle }) => (
+}), ({ className, image, showTitle }) => (
   <div className={className}>
-    <Image {...attributes} value={image} alt="" />
-    {(title || subtitle) && (
-      <Label title={title} subtitle={subtitle} />
-    )}
+    <Image contentEditable={false} value={image} alt="" />
+    {showTitle && <Label title={image.caption} subtitle={image.source} />}
   </div>
 ), p => Object.keys(p));
 
@@ -106,7 +38,69 @@ const Label = createComponent(({ theme }) => ({
   },
 }), ({ className, title, subtitle }) => (
   <div className={className}>
+    test
     {title && <h3>{title}</h3>}
     {subtitle && <p>{subtitle}</p>}
   </div>
 ), p => Object.keys(p));
+
+export default {
+  // Meta-Data
+  label: 'Bild',
+  category: 'Media',
+  editable: false,
+  // Component
+  component: ({ getData, ...p }) => (
+    <ImageContainer
+      {...p}
+      image={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
+      showTitle={getData('showTitle')}
+      width="100%"
+      float="left"
+    />
+  ),
+  // Styles
+  styles: {
+    width: '100%',
+    height: 'auto',
+  },
+  // Editor Plugins like onKeyDown
+  plugin: {},
+  // Block decorators like resize
+  decorators: [],
+  // Actions
+  actions: [{
+    component: p => <Mediathek {...p} multi={false} />,
+    toggle: () => {},
+  },
+  {
+    label: 'Bildunterschrift',
+    toggle: ({ setData, getData }) => setData({ showTitle: !getData('showTitle') }),
+    active: ({ getData }) => getData('showTitle'),
+  }],
+  Label,
+};
+
+/* const Gallery = createComponent(() => ({
+  width: '100%',
+  onAfter: {
+    content: '""',
+    clear: 'both',
+    display: 'block',
+    visibility: 'hidden',
+    height: 0,
+  }
+}), ({ className, images, attributes, showTitle, caption, source, columns }) => (
+  <div className={className} {...attributes}>
+    {images.map((image, i) => (
+      <ImageContainer
+        image={image}
+        showTitle={showTitle}
+        title={caption && image.caption}
+        subtitle={source && image.source}
+        width={`${100 / columns}%`}
+        key={image.id || i}
+      />
+    ))}
+  </div>
+), p => Object.keys(p)); */

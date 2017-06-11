@@ -35,7 +35,7 @@ export default {
     toggle: () => {},
   },
   {
-    tooltip: 'Bildunterschrift',
+    label: 'Bildunterschrift',
     toggle: ({ setData, getData, ...p }) => {
       const image = getData('value', [{}])[0];
       const title = prompt('Titel', getData('title', image.caption));

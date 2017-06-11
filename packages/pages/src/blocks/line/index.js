@@ -141,7 +141,7 @@ export default {
   actions: [{
     type: 'small',
     icon: 'align-left',
-    tooltip: 'Stil 1',
+    label: 'Stil 1',
     component: ({ setData }) => (
       <Dropdown overlay={(
         <Menu onClick={({ key }) => setData({ type: key })} style={{ minWidth: 200 }}>
@@ -161,11 +161,3 @@ export default {
     active: ({ type }) => false,
   }],
 };
-
-/*component: () => (
-  <Dropdown overlay={menu}>
-    <a placement="top" overlay={<span>{tooltip}</span>}>
-      Stile
-    </a>
-  </Dropdown>
-)*/

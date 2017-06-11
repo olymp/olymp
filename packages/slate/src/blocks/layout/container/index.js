@@ -13,7 +13,7 @@ export default {
   actions: [{
     type: 'small',
     icon: 'align-left',
-    tooltip: 'Linksbündig',
+    label: 'Linksbündig',
     toggle: ({ setData }) => setData({ alignment: 'left' }),
     active: ({ alignment }) => alignment === 'left',
   }],
