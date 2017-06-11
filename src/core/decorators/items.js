@@ -47,7 +47,8 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
     update = (nextProps, lastProps) => {
       const oldType = lastProps && lastProps.collection && lastProps.collection.name;
       const newType = nextProps && nextProps.collection && nextProps.collection.name;
-      if (!lastProps || oldType !== newType || !isEqual(nextProps.query, lastProps.query)) {
+      console.log(lastProps, oldType, newType)
+      if (!lastProps || oldType !== newType) {
         if (this.subscription) this.subscription.unsubscribe();
         const { client, collection, fieldNames, location, force } = nextProps;
         if (!collection) return;
@@ -67,7 +68,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
               }
             `,
             variables: {
-              query,
+              // query,
             },
           });
         } else if (fieldNames.indexOf('state') !== -1) {
@@ -113,6 +114,7 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
     }
 
     render() {
+      console.log(this.items);
       return (
         <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} gqlQuery={this.newQuery || this.props.query} isLoading={this.isLoading} />
       );

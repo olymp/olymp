@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { withApollo, graphql } from 'react-apollo';
-import { saveItem, removeItem } from './item';
 import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 
@@ -18,10 +17,7 @@ const userFields = `
   token
   name
 `;
-export const Wrap = (WrappedComponent, typeNameArg) => {
-  if (typeof WrappedComponent === 'string') {
-    return RealComponent => Wrap(RealComponent, WrappedComponent);
-  }
+export default (WrappedComponent) => {
   @withApollo
   @graphql(gql`
     query getType($name: String!) {
@@ -90,7 +86,7 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
     options: ({ routeParams = {}, collection, typeName }) => ({
       skip: !!collection,
       variables: {
-        name: capitalize(typeNameArg || routeParams.model || typeName),
+        name: capitalize(routeParams.model || typeName),
       },
     }),
   })
@@ -101,15 +97,8 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
       typeName: PropTypes.string,
       includeStamps: PropTypes.bool,
     }
-    save = item => {
-      return saveItem(item, typeNameArg || this.props.typeName, this.props.client, { id: item.id, fieldNames: this.getAttributes() });
-    }
-    remove = id => {
-      return removeItem(id, typeNameArg || this.props.typeName, this.props.client, { fieldNames: this.getAttributes() });
-    }
     getAttributes = (col) => {
       const collection = col || (this.props.data && this.props.data.type) || this.props.collection || null;
-
       return `${collection.fields.map(field => {
         if (field.type.kind === 'ENUM' || field.type.kind === 'SCALAR') return field.name;
         else if (field.type.kind === 'LIST' && field.type.ofType && (field.type.ofType.kind === 'ENUM' || field.type.ofType.kind === 'SCALAR')) return field.name;
@@ -167,17 +156,12 @@ export const Wrap = (WrappedComponent, typeNameArg) => {
       const { data, ...rest } = this.props;
       const collection = (this.props.data && this.props.data.type) || this.props.collection || null;
 
-      console.log(collection, this.props);
       return <WrappedComponent
         {...rest}
-        collectionLoading={data && data.loading}
         collection={collection && this.getWithSpecialFields(collection)}
-        saveCollectionItem={this.save}
-        removeCollectionItem={this.remove}
         fieldNames={collection && this.getAttributes()}
       />;
     }
   }
   return WithCollectionComponent;
 };
-export default Wrap;
