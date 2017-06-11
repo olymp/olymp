@@ -46,9 +46,9 @@ export default (options = {}) => (Block) => {
       };
 
       const alignActions = actions === false ? [] : [
-        { type: 'align.left', icon: 'align-left', tooltip: 'Linksbündig', toggle: () => this.setAlignment('left'), active: alignment === 'left' },
-        { type: 'align.center', icon: 'align-center', tooltip: 'Zentriert', toggle: () => this.setAlignment(), active: !alignment },
-        { type: 'align.right', icon: 'align-right', tooltip: 'Rechtsbündig', toggle: () => this.setAlignment('right'), active: alignment === 'right' },
+        { type: 'align.left', icon: 'align-left', label: 'Linksbündig', toggle: () => this.setAlignment('left'), active: alignment === 'left' },
+        { type: 'align.center', icon: 'align-center', label: 'Zentriert', toggle: () => this.setAlignment(), active: !alignment },
+        { type: 'align.right', icon: 'align-right', label: 'Rechtsbündig', toggle: () => this.setAlignment('right'), active: alignment === 'right' },
       ];
 
       return (
