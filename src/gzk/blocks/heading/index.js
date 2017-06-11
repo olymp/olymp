@@ -42,8 +42,8 @@ const Header = createComponent(({ theme }) => ({
 ), p => Object.keys(p));
 
 export default {
-  label: 'Kopfleiste',
-  category: 'Template',
+  label: 'Überschrift',
+  category: 'Kopfleiste',
   editable: true,
   component: ({ attributes, children }) => (
     <Header {...attributes}>

@@ -28,7 +28,7 @@ const Action = ({ node, state, onChange }) => ({ toggle, active, label, componen
     );
   } return (
     <Menu.Item key={i}>
-      <Button active={active({ getData, state })} onMouseDown={() => toggle({ setData, getData, state, onChange })}>
+      <Button active={!!active && active({ getData, state })} onMouseDown={() => toggle({ setData, getData, state, onChange })}>
         {label}
       </Button>
     </Menu.Item>
@@ -39,6 +39,7 @@ export default (props) => {
   const block = state.blocks.size === 1 && state.blocks.get(0).kind === 'block' && blockTypes[state.blocks.get(0).type];
   const node = state.blocks.get(0);
   const actions = get(block, 'slate.actions', []);
+
   return (
     <Toolbar isOpened={!!block}>
       {actions.map(Action({ ...props, node }))}

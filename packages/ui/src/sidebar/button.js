@@ -1,10 +1,13 @@
+import React from 'react';
 import { createComponent } from 'olymp-fela';
 import { Button as AntButton } from 'antd';
 
 const Button = createComponent(({ theme }) => ({
   display: 'block!important',
-  // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+  boxShadow: theme.boxShadow,
   paddingTop: 1,
-}), AntButton, p => Object.keys(p));
+  backgroundColor: theme.light,
+  color: theme.dark2,
+}), p => <AntButton size="large" {...p} />, p => Object.keys(p));
 
 export default Button;
