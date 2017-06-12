@@ -21,14 +21,14 @@ export default {
           <H2>Ausgaben als PDFs</H2>
           <ul>
             <Li>Gesund im Zentrum - <b>Sport</b></Li>
-            <Li>Gesund im Zentrum - <b>Rinder</b></Li>
-            <Li>Gesund im Zentrum - <b>Beni</b></Li>
+            <Li>Gesund im Zentrum - <b>Gesundheit</b></Li>
+            <Li>Gesund im Zentrum - <b>Fitness</b></Li>
           </ul>
 
           <H2>Schlagworte</H2>
-          <Tag>Beni</Tag>
-          <Tag>Rinder</Tag>
           <Tag>Sport</Tag>
+          <Tag>Gesundheit</Tag>
+          <Tag>Fitness</Tag>
         </Grid.Item>
       </Grid>
     </Container>
