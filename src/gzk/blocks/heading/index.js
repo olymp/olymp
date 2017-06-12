@@ -11,7 +11,7 @@ class Content extends Component {
 
     return (
       <Container>
-        <h1 {...rest}>{children || capitalize(path[path.length - 1])}</h1>
+        <h1 {...rest}>{children}</h1>
         <h5 contentEditable={false}>Startseite {path.map(p => `/ ${capitalize(p)}`)}</h5>
       </Container>
     );

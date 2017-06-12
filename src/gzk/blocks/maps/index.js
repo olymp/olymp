@@ -6,17 +6,14 @@ import Image from '../image';
 export default {
   label: 'Karte',
   category: 'Kopfleiste',
-  editable: false,
+  editable: true,
   component: ({ getData, ...p }) => (
-    <MapContainer
-      {...p}
-      showTitle={getData('showTitle')}
-    />
+    <MapContainer {...p} showTitle={getData('showTitle', true)} />
   ),
   actions: [{
     label: 'Titel',
-    toggle: ({ setData, getData }) => setData({ showTitle: !getData('showTitle') }),
-    active: ({ getData }) => getData('showTitle'),
+    toggle: ({ setData, getData }) => setData({ showTitle: !getData('showTitle', true) }),
+    active: ({ getData }) => getData('showTitle', true),
   }],
 };
 
@@ -26,7 +23,7 @@ const MapContainer = createComponent(({ theme }) => ({
   position: 'relative',
   display: 'block',
   ...Image.styles({ theme }),
-}), ({ attributes, className, showTitle }) => (
+}), ({ attributes, className, showTitle, children }) => (
   <div className={className} {...attributes}>
     <GoogleMap
       center={{ lat: 59.724465, lng: 30.080121 }}
@@ -41,6 +38,6 @@ const MapContainer = createComponent(({ theme }) => ({
     >
       <GoogleMap.Marker lat={59.724465} lng={30.080121} />
     </GoogleMap>
-    {showTitle && <Image.Label />}
+    {showTitle && <Image.Label>{children}</Image.Label>}
   </div>
 ), p => Object.keys(p));

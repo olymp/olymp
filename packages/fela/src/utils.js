@@ -27,12 +27,4 @@ export const gradient = (color1, color2, deg) => {
   }
 
   return `linear-gradient(${tDeg + 90}deg, ${tColor1.toRgbString()} 0%, ${tColor2.toRgbString()} 100%)`;
-
-  /* return `
-    background: ${tColor1.toString()}; // Old browsers
-    background: -moz-linear-gradient(${tDeg - 90}, ${tColor1.toRgbString()} 0%, ${tColor2.toRgbString()} 100%); // FF3.6-15
-    background: -webkit-linear-gradient(${tDeg - 90}, ${tColor1.toRgbString()} 0%, ${tColor2.toRgbString()} 100%); // Chrome10-25,Safari5.1-6
-    background: linear-gradient(${tDeg + 90}, ${tColor1.toRgbString()} 0%, ${tColor2.toRgbString()} 100%); // W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='${tColor1.toString()}', endColorstr='${tColor2.toString()}',GradientType=1 ); // IE6-9 fallback on horizontal gradient
-  `; */
 };

@@ -5,7 +5,6 @@ import { ThemeProvider } from 'olymp-fela';
 import { AuthModals } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from 'olymp-pages';
-import { CollectionRoute } from 'olymp-collection';
 import { CloudinaryRoute, LightboxProvider, Lightbox } from 'olymp-cloudinary';
 import { CollectionOldRoute } from 'olymp-collection-old';
 import { NavigationVertical } from './navigation';

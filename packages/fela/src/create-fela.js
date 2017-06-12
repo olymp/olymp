@@ -8,7 +8,6 @@ import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
 import normalize from './normalize';
-import { border } from './utils';
 
 export default () => {
   const renderer = createRenderer({
