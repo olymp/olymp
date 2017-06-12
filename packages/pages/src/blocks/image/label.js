@@ -11,7 +11,7 @@ const Label = createComponent(({ theme }) => ({
   backgroundColor: theme.light2,
   color: theme.light2,
   '& h1, h2, h3, h4, h5, h6': {
-    color: theme.light,
+    // color: theme.light,
   },
   ifSmallDown: {
     position: 'relative',
