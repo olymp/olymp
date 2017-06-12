@@ -31,8 +31,17 @@ export default (options = {}) => Block => {
 
     getData = (name, defaultValue) => {
       const { node } = this.props;
-
       return node.data.get(name) || defaultValue;
+    };
+
+    setActive = () => {
+      const { node, editor } = this.props;
+      const transform = editor
+        .getState()
+        .transform()
+        .moveToRangeOf(node)
+        .apply();
+      editor.onChange(transform);
     };
 
     render() {
@@ -50,6 +59,7 @@ export default (options = {}) => Block => {
           active={active}
           getData={this.getData}
           setData={this.setData}
+          setActive={this.setActive}
           readOnly={editor.props.readOnly}
           {...blockProps}
         >
