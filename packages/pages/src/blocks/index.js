@@ -1,5 +1,6 @@
 // export { default as Gallery } from './gallery';
 export { default as Image } from './image';
+export * from './image-text';
 export { default as Container } from './layout/container';
 export { default as Line } from './line';
 export { default as Maps } from './maps';
