@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
-import GoogleMap from './maps';
+import Maps from './maps';
 
 const MapContainer = createComponent(({ theme }) => ({
   width: '100%',
@@ -8,21 +8,22 @@ const MapContainer = createComponent(({ theme }) => ({
   position: 'relative',
   display: 'block',
 }), ({ attributes, className }) => (
-  <GoogleMap
-    center={{ lat: 59.724465, lng: 30.080121 }}
-    zoom={1}
-    options={() => ({
-      panControl: false,
-      mapTypeControl: false,
-      zoomControl: false,
-      scrollwheel: false,
-      gestureHandling: 'none',
-    })}
-    className={className}
-    {...attributes}
-  >
-    <GoogleMap.Marker lat={59.724465} lng={30.080121} />
-  </GoogleMap>
+  <div className={className}>
+    <Maps
+      center={{ lat: 59.724465, lng: 30.080121 }}
+      zoom={1}
+      options={() => ({
+        panControl: false,
+        mapTypeControl: false,
+        zoomControl: false,
+        scrollwheel: false,
+        gestureHandling: 'none',
+      })}
+      {...attributes}
+    >
+      <Maps.Marker lat={59.724465} lng={30.080121} />
+    </Maps>
+  </div>
 ), p => Object.keys(p));
 
 export default {
@@ -30,4 +31,5 @@ export default {
   category: 'Medien',
   editable: false,
   component: MapContainer,
+  Maps
 };
