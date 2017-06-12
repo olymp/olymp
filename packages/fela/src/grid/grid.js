@@ -4,6 +4,7 @@ import { createComponent } from 'react-fela';
 
 const Grid = createComponent(() => ({
   minWidth: '100%',
+  marginX: '-0.5rem',
   onAfter: {
     content: '""',
     clear: 'both',
