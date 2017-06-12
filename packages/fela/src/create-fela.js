@@ -63,12 +63,21 @@ export default () => {
           borderTop: border,
           borderBottom: border,
         }),
-        ellipsis: ellipsis => ellipsis === true ? ({
+        ellipsis: ellipsis => (ellipsis === true ? ({
           whiteSpace: 'nowrap',
           overflowX: 'hidden',
           textOverflow: 'ellipsis',
           maxWidth: '100%',
-        }) : ({ }),
+        }) : ({ })),
+        clearfix: clearfix => (clearfix === true ? ({
+          ':after': {
+            content: '""',
+            clear: 'both',
+            display: 'block',
+            visibility: 'hidden',
+            height: 0,
+          }
+        }) : ({ })),
       }),
       removeUndefined()
     ],
