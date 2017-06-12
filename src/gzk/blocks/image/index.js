@@ -2,7 +2,8 @@ import { Blocks } from 'olymp-pages';
 import { fade } from 'olymp-fela';
 
 export default {
-  ...Blocks.Image,
+  ...Blocks.ImageWithLabel,
+  label: 'Bild',
   category: 'Kopfleiste',
   styles: ({ theme }) => ({
     borderBottomRightRadius: 75,

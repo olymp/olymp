@@ -2,20 +2,16 @@ import React from 'react';
 import { Image as CloudinaryImage, ImageEdit } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 
-const ImageContainer = createComponent(({ width, float }) => ({
+const Image = createComponent(({ width }) => ({
   width,
-  float,
-  position: 'relative',
-}), ({ className, image, attributes, onMouseDown }) => (
-  <div className={className} {...attributes}>
-    <Image contentEditable={false} value={image} alt="" onMouseDown={onMouseDown} />
-  </div>
-), p => Object.keys(p));
-
-const Image = createComponent(() => ({
-  width: '100%',
   display: 'block',
-}), p => <CloudinaryImage {...p} />, p => Object.keys(p));
+}), ({ attributes, value, className }) => (
+  <CloudinaryImage
+    className={className}
+    value={value}
+    {...attributes}
+  />
+), p => Object.keys(p));
 
 export default {
   // Meta-Data
@@ -23,12 +19,10 @@ export default {
   category: 'Medien',
   editable: false,
   // Component
-  component: ({ getData, setActive, ...p }) => (
-    <ImageContainer
+  component: ({ getData, ...p }) => (
+    <Image
       {...p}
-      onMouseDown={setActive}
-      image={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
-      showTitle={getData('showTitle')}
+      value={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
       width="100%"
     />
   ),
@@ -46,4 +40,5 @@ export default {
     component: ({ setData, getData, ...p }) => <ImageEdit {...p} onChange={value => setData({ value })} value={getData('value', [])} multi={false} />,
     toggle: () => {},
   }],
+  Image,
 };
