@@ -47,6 +47,7 @@ env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
+const graphcoolUri = process.env.GRAPHCOOL_URI;
 const devPort = parseInt(process.env.DEV_PORT, 10);
 
 // Client assets
@@ -149,11 +150,10 @@ try {
   } else server(app);
 } catch (err) { console.log('No server.js or server/index.js file found, using default settings', err); }
 
-let style;
 // Setup server side routing.
 app.get('*', (request, response) => {
   const networkInterface = createNetworkInterface({
-    uri: `http://localhost:${port}/graphql`,
+    uri: graphcoolUri || `http://localhost:${port}/graphql`,
     opts: {
       credentials: 'same-origin',
       headers: request.headers,

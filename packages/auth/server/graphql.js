@@ -116,6 +116,7 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
           });
         },
         invitation: (source, args, context) => {
+          if (!adapter.db) return;
           if (!context.user || !context.user.isAdmin) throw new Error('No permission');
           const collection = adapter.db.collection('invitation');
           const hook = Mutation && Mutation.invitation ? Mutation.invitation : defaultHook;

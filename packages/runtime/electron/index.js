@@ -12,7 +12,7 @@ import App from '@app';
 import { AppContainer } from 'react-hot-loader';
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
+  uri: process.env.GRAPHQL_URL || process.env.GRAPCOOL_URI || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',

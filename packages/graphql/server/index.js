@@ -11,7 +11,7 @@ import createSitemap from 'olymp-sitemap';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 
 export default (server, options) => {
-  let adapter;
+  let adapter = {};
 
   if (options.adapter && options.adapter.indexOf('mongodb') === 0) adapter = require('./store-mongo')(options.adapter);
   // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);

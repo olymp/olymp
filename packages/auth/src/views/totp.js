@@ -11,7 +11,10 @@ import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './bas
     totp { qr, token, enabled }
   }
 `, {
-  options: ({ isOpen }) => ({ fetchPolicy: 'network-only', skip: !isOpen })
+  options: ({ isOpen }) => ({
+    fetchPolicy: 'network-only',
+    skip: !isOpen
+  })
 })
 export default class AuthTotp extends Component {
   static defaultProps = { data: {} };
