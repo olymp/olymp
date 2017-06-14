@@ -19,7 +19,7 @@ export const gradient = (color1, color2, deg) => {
   let tColor2 = tinycolor(darken(color1)).spin(-3);
   let tDeg = deg || 90;
 
-  if (color2 && deg) { // color1, color2, deg
+  if (typeof color2 === 'string') { // color1, color2, (deg)
     tColor1 = tinycolor(color1);
     tColor2 = tinycolor(color2);
   } else if (!deg && color2 === parseInt(color2, 10)) { // color1, deg

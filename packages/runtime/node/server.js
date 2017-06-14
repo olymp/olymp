@@ -47,19 +47,20 @@ env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
-const graphcoolUri = process.env.GRAPHCOOL_URI;
 const devPort = parseInt(process.env.DEV_PORT, 10);
 
 // Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
-const clientAssets = fs.existsSync(clientAssetsPath) ? JSON.parse(fs.readFileSync(clientAssetsPath)) : null; // eslint-disable-line import/no-dynamic-require
+const clientAssets = fs.existsSync(clientAssetsPath) ?
+  JSON.parse(fs.readFileSync(clientAssetsPath)) :
+  null; // eslint-disable-line import/no-dynamic-require
 const app = express();
 app.emitter = new EventEmitter();
 
 // Websocket Server
 app.listenWS = (options) => {
-  var wss = new WebSocketServer(options);
-  /*wss.httpServer.on('connection', (x, y) => {
+  const wss = new WebSocketServer(options);
+  /* wss.httpServer.on('connection', (x, y) => {
     console.log('WWWWS', 'CONNECTION', x, y);
   })
   wss.httpServer.on('clientError', (ex) => {
@@ -79,11 +80,12 @@ app.listenWS = (options) => {
   })
   wss.httpServer.on('upgrade', (request, socket) => {
     console.log('WWWWS', 'upgrade', request, socket);
-  })*/
+  }) */
   wss.on('connection', socket => {
     const onPing = message => {
       socket.send(JSON.stringify({ type: 'pong', version }));
-    }
+    };
+
     const onMessage = raw => {
       if (!raw) return;
       if (raw === 'ping') return onPing(raw);
@@ -99,7 +101,7 @@ app.listenWS = (options) => {
     socket.on('message', onMessage);
   });
   return wss;
-}
+};
 
 // app.wss.close();
 // ---
@@ -153,7 +155,7 @@ try {
 // Setup server side routing.
 app.get('*', (request, response) => {
   const networkInterface = createNetworkInterface({
-    uri: graphcoolUri || `http://localhost:${port}/graphql`,
+    uri: process.env.GRAPHQL_URL || `http://localhost:${port}/graphql`,
     opts: {
       credentials: 'same-origin',
       headers: request.headers,
