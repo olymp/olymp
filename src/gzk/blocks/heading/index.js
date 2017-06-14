@@ -28,11 +28,10 @@ const Header = createComponent(({ theme }) => ({
   '> div': {
     '> h1': {
       lineHeight: 'initial',
-      fontWeight: 200,
       // fontStyle: 'italic',
     },
     '> h5': {
-      fontWeight: 200,
+      // fontWeight: 200,
     },
   }
 }), ({ className, children, ...rest }) => (
