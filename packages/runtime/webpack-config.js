@@ -70,7 +70,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
         'process.env.DEV_PORT': JSON.stringify(devPort),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? JSON.stringify(process.env.GRAPHQL_URL) : undefined,
-        'process.env.GRAPHCOOL_URI': process.env.GRAPHCOOL_URI ? JSON.stringify(process.env.GRAPHCOOL_URI) : undefined,
         'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
         'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY ? JSON.stringify(process.env.FILESTACK_KEY) : undefined,
       }),

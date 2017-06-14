@@ -2,18 +2,22 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'olymp';
 import { createComponent } from 'react-fela';
-import { gradient, border } from 'olymp-fela';
+import { border } from 'olymp-fela';
 import Toggler from './toggler';
+import Container from '../container';
 import Nav from './nav';
 import Item from './item';
 import Sub from './sub';
 
 const renderItem = props => <Item {...props} />;
 const renderNav = props => <Nav {...props} sub />;
+const WithContainer = ({ container, ...rest }) => (container ?
+  <Container {...rest} /> :
+  <div {...rest} />);
 
-const Navbar = createComponent(({ theme, inverse, vertically, full, fill }) => ({
+const Navbar = createComponent(({ theme, inverse, vertically, full, fill, container }) => ({
   backgroundColor: inverse && theme.color,
-  background: inverse && gradient(theme.color),
+  background: inverse && theme.color,
   borderRadius: !full && theme.borderRadius,
   margin: !full && theme.space2,
   width: full && '100%',
@@ -29,27 +33,29 @@ const Navbar = createComponent(({ theme, inverse, vertically, full, fill }) => (
   ifMini: {
     margin: theme.space0,
   },
-}), ({ className, brand, logo, children, pages, ...props }) => (
+}), ({ className, brand, logo, children, pages, container, ...props }) => (
   <nav className={className}>
-    {brand ? <Brand {...props} renderItem={renderItem} renderNav={renderNav}>{brand}</Brand> : null}
-    {logo ? <Logo vertically={props.vertically}>{logo}</Logo> : null}
+    <WithContainer container={container}>
+      {brand ? <Brand {...props} renderItem={renderItem} renderNav={renderNav}>{brand}</Brand> : null}
+      {logo ? <Logo vertically={props.vertically}>{logo}</Logo> : null}
 
-    {pages && !!pages.length && (
-      <Toggler
-        {...props}
-        pages={pages}
-        renderItem={renderItem}
-        renderNav={renderNav}
-        hasLogo={!!logo || !!brand}
-      >
-        <Sub />
-      </Toggler>
-    )}
+      {pages && !!pages.length && (
+        <Toggler
+          {...props}
+          pages={pages}
+          renderItem={renderItem}
+          renderNav={renderNav}
+          hasLogo={!!logo || !!brand}
+        >
+          <Sub />
+        </Toggler>
+      )}
 
-    {Children.map(children, child => cloneElement(
-      child,
-      { ...props, renderItem, renderNav }
-    ))}
+      {Children.map(children, child => cloneElement(
+        child,
+        { ...props, renderItem, renderNav }
+      ))}
+    </WithContainer>
   </nav>
 ), p => Object.keys(p));
 Navbar.displayName = 'Navbar';
@@ -81,7 +87,7 @@ const Brand = createComponent(({ theme, vertically, inverse }) => ({
   float: `${vertically ? 'none' : 'left'} !important`,
   width: 'auto !important',
   color: inverse ? theme.light : theme.dark,
-  borderRight: inverse && !vertically && border(theme, theme.dark4),
+  // borderRight: inverse && !vertically && border(theme, theme.dark4),
   fontSize: `calc(${theme.fontSize} + 4px)`,
   flex: 'none !important',
   '> a': {

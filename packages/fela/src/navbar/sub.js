@@ -9,8 +9,8 @@ export default createComponent(({ theme, fill, vertically, right, inverse }) => 
   display: fill && 'flex',
   flex: fill && '1 1',
   marginLeft: right && 'auto',
-  borderRight: inverse && !right && !vertically && border(theme, theme.dark4),
-  borderLeft: inverse && right && !vertically && border(theme, theme.dark4),
+  // borderRight: inverse && !right && !vertically && border(theme, theme.dark4),
+  // borderLeft: inverse && right && !vertically && border(theme, theme.dark4),
   borderTop: vertically && border(theme, theme.dark4),
   ifMini: {
     float: 'none',
