@@ -2,9 +2,10 @@ import React from 'react';
 import { createComponent, border } from 'olymp-fela';
 
 export const H1 = createComponent(({ theme }) => ({
+  textAlign: 'left',
   position: 'relative',
   borderBottom: border(theme),
-  fontWeight: 200,
+  fontWeight: 'bold',
   marginBottom: theme.space1,
 }), ({ className, children, color, bordered }) => (
   <h1 className={className}>
@@ -14,9 +15,10 @@ export const H1 = createComponent(({ theme }) => ({
 ), p => Object.keys(p));
 
 export const H2 = createComponent(({ theme }) => ({
+  textAlign: 'left',
   position: 'relative',
   borderBottom: border(theme),
-  fontWeight: 200,
+  fontWeight: 'bold',
   marginBottom: theme.space1,
 }), ({ className, children, color, bordered }) => (
   <h2 className={className}>
