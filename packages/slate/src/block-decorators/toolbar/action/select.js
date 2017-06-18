@@ -9,8 +9,8 @@ export default ({ toggle, options, separated, right, active, icon, label }) => {
         ({ value, label, active }) =>
           active
             ? <Menu.Item key={value} style={{ fontWeight: 'bold' }}>
-                <Icon type="check" /> {label}
-              </Menu.Item>
+              <Icon type="check" /> {label}
+            </Menu.Item>
             : <Menu.Item key={value}>{label}</Menu.Item>
       )}
     </Menu>
@@ -29,11 +29,11 @@ export default ({ toggle, options, separated, right, active, icon, label }) => {
 
   return label
     ? <Dropdown overlay={menu}>
-        <Tooltip placement="top" overlay={<span>{label}</span>}>
-          {button}
-        </Tooltip>
-      </Dropdown>
-    : <Dropdown overlay={menu}>
+      <Tooltip placement="top" overlay={<span>{label}</span>}>
         {button}
-      </Dropdown>;
+      </Tooltip>
+    </Dropdown>
+    : <Dropdown overlay={menu}>
+      {button}
+    </Dropdown>;
 };

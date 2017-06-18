@@ -3,7 +3,7 @@ import { withItem, gql, withApollo, graphql } from 'olymp';
 
 export const fieldNames =
   'id, height, width, url, type, colors, tags, caption, source, createdAt, format, bytes, pages';
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @withApollo
   @graphql(
     gql`

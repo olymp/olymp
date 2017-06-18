@@ -13,8 +13,7 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 export default (server, options) => {
   let adapter = {};
 
-  if (options.adapter && options.adapter.indexOf('mongodb') === 0)
-    adapter = require('./store-mongo')(options.adapter);
+  if (options.adapter && options.adapter.indexOf('mongodb') === 0) { adapter = require('./store-mongo')(options.adapter); }
   // if (options.adapter && options.adapter.indexOf('redis') === 0) adapter = require('./store-redis')(options.adapter);
   server.adapter = adapter;
 
@@ -22,36 +21,38 @@ export default (server, options) => {
   const mail = options.mail && process.env.POSTMARK_KEY
     ? createMail(options.mail)
     : null;
-  /*if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `
+  /* if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `
 Hallo
 ## kopo [Anmelden](http://google.de)
 [Anmelden](http://google.de)
 ` }).then(x => x.json()).then(x => console.log(x)).catch(err => console.error(err));*/
   createSitemap(Schema, {});
   tagsGraphQL(Schema, { adapter });
-  if (options.google)
+  if (options.google) {
     googleGraphQL(
       Schema,
       typeof options.google === 'object' ? options.google : {}
     );
-  if (options.pages)
+  }
+  if (options.pages) {
     pagesGraphQL(
       Schema,
       typeof options.pages === 'object'
         ? Object.assign({ adapter }, options.pages)
         : { adapter }
     );
-  if (options.media)
+  }
+  if (options.media) {
     cloudinaryGraphQL(
       Schema,
       typeof options.media === 'object'
         ? Object.assign({ adapter }, options.media)
         : { uri: options.media }
     );
-  if (process.env.FILESTACK_KEY) filestackGraphQL(Schema, { adapter });
+  }
+  if (process.env.FILESTACK_KEY) { filestackGraphQL(Schema, { adapter }); }
   if (options.auth) {
-    if (typeof options.auth === 'string')
-      options.auth = { secret: options.auth };
+    if (typeof options.auth === 'string') { options.auth = { secret: options.auth }; }
     const { auth } = authGraphQL(
       Schema,
       Object.assign({ adapter, mail }, options.auth)
@@ -66,13 +67,12 @@ Hallo
         req.user = cache.get(req.session.userId);
         if (req.user) {
           return next();
-        } else {
-          auth.getUser(req.session.userId).then(x => {
-            req.user = x;
-            cache.set(req.session.userId, req.user);
-            next();
-          });
         }
+        auth.getUser(req.session.userId).then((x) => {
+          req.user = x;
+          cache.set(req.session.userId, req.user);
+          next();
+        });
       } else {
         next();
       }

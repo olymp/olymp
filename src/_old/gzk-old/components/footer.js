@@ -10,16 +10,16 @@ export default class Footer extends Component {
     const { navigation, user, location } = this.props;
 
     const pages = this.props.pages.map(x => x.children)[1] || [];
-    const nav = pages.map(item => {
+    const nav = pages.map((item) => {
       const secondLvl = (item.children || []).map(item =>
-        <NavLink
+        (<NavLink
           to={item.slug}
           key={item.slug}
           className="item"
           activeClassName="active"
         >
           {item.name}
-        </NavLink>
+        </NavLink>)
       );
       if (secondLvl.length > 0) {
         return (
@@ -56,11 +56,11 @@ export default class Footer extends Component {
             {nav}
             {!user && location
               ? <Link
-                  className="item"
-                  to={{ pathname: location.pathname, query: { login: null } }}
-                >
-                  <i className="fa fa-sign-in" />
-                </Link>
+                className="item"
+                to={{ pathname: location.pathname, query: { login: null } }}
+              >
+                <i className="fa fa-sign-in" />
+              </Link>
               : null}
           </ul>
         </nav>

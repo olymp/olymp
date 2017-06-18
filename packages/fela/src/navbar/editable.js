@@ -12,13 +12,13 @@ import {
 const Handle = sortableHandle(() =>
   <Icon type="appstore" className="sortHandle" />
 );
-const Li = sortableElement(props => {
+const Li = sortableElement((props) => {
   const { editable, children, page, location, router, isSubmenu } = props;
   const { query, pathname } = location;
   const navigation = !!query && query.navigation;
 
   let matches = [];
-  page.children.forEach(e => {
+  page.children.forEach((e) => {
     matches = matches.concat(
       e.children.filter(child => child.id === navigation)
     );
@@ -35,15 +35,15 @@ const Li = sortableElement(props => {
     >
       {page.blocks || editable
         ? <NavLink to={page.path || page.slug} className="nav-link">
-            {page.name}
-          </NavLink>
+          {page.name}
+        </NavLink>
         : <span
-            onClick={() =>
+          onClick={() =>
               router.push({ pathname, query: { navigation: page.id } })}
-            className="nav-link"
-          >
-            {page.name}
-          </span>}
+          className="nav-link"
+        >
+          {page.name}
+        </span>}
       {children}
       {editable && !page.noOrdering ? <Handle /> : null}
     </div>
@@ -98,25 +98,25 @@ export default class Navbar extends Component {
       >
         {editable || (page.children && page.children.length)
           ? <Ul
-              onSortEnd={this.onSortEnd(page.children)}
-              sortEndCreator={this.onSortEnd}
-              axis="y"
-              useDragHandle
-              className="dropdown-menu"
-            >
-              {(page.children || [])
+            onSortEnd={this.onSortEnd(page.children)}
+            sortEndCreator={this.onSortEnd}
+            axis="y"
+            useDragHandle
+            className="dropdown-menu"
+          >
+            {(page.children || [])
                 .map((child, i) => this.getMenu(child, i, true))}
-              {editable
+            {editable
                 ? <li className="nav-item">
-                    <NavLink
-                      to={{ ...location, query: { '@new-page': page.id } }}
-                      className="nav-link"
-                    >
-                      <Icon type="plus-circle" />
-                    </NavLink>
-                  </li>
+                  <NavLink
+                    to={{ ...location, query: { '@new-page': page.id } }}
+                    className="nav-link"
+                  >
+                    <Icon type="plus-circle" />
+                  </NavLink>
+                </li>
                 : null}
-            </Ul>
+          </Ul>
           : null}
       </Li>
     );
@@ -173,13 +173,13 @@ export default class Navbar extends Component {
               {(pages || []).map((page, i) => this.getMenu(page, i))}
               {editable
                 ? <div className="nav-item">
-                    <NavLink
-                      to={{ ...location, query: { '@new-page': null } }}
-                      className="nav-link"
-                    >
-                      <Icon type="plus-circle" />
-                    </NavLink>
-                  </div>
+                  <NavLink
+                    to={{ ...location, query: { '@new-page': null } }}
+                    className="nav-link"
+                  >
+                    <Icon type="plus-circle" />
+                  </NavLink>
+                </div>
                 : null}
             </Ul>
           </div>

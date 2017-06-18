@@ -5,9 +5,8 @@ const defaultEmptyFunc = () => null;
 export default (options = {}) => {
   const { getMarkdownType } = options;
   const self = {
-    getType: chars => {
-      if (getMarkdownType && getMarkdownType(chars))
-        return getMarkdownType(chars);
+    getType: (chars) => {
+      if (getMarkdownType && getMarkdownType(chars)) { return getMarkdownType(chars); }
       switch (chars) {
         case '*':
         case '-':
@@ -42,44 +41,40 @@ export default (options = {}) => {
       }
     },
     onSpace: (e, state) => {
-      if (state.isExpanded) return undefined;
-      let { selection } = state;
+      if (state.isExpanded) { return undefined; }
+      const { selection } = state;
       const { startText, startBlock, startOffset } = state;
       const chars = startBlock.text.slice(0, startOffset).replace(/\s*/g, '');
       const type = self.getType(chars);
 
-      if (!type) return undefined;
-      if (type === 'list-item' && startBlock.type === 'list-item')
-        return undefined;
+      if (!type) { return undefined; }
+      if (type === 'list-item' && startBlock.type === 'list-item') { return undefined; }
       e.preventDefault();
 
       let transform = state.transform().setBlock(type);
 
-      if (type === 'list-item')
-        transform = transform.wrapBlock('bulleted-list');
+      if (type === 'list-item') { transform = transform.wrapBlock('bulleted-list'); }
 
       return transform.extendToStartOf(startBlock).delete().apply();
     },
     onBackspace: (e, state) => {
-      if (state.isExpanded) return undefined;
-      if (state.startOffset !== 0) return undefined;
+      if (state.isExpanded) { return undefined; }
+      if (state.startOffset !== 0) { return undefined; }
       const { startBlock } = state;
 
-      if (startBlock.type === 'line') return undefined;
+      if (startBlock.type === 'line') { return undefined; }
       e.preventDefault();
 
       let transform = state.transform().setBlock('line');
 
-      if (startBlock.type === 'list-item')
-        transform = transform.unwrapBlock('bulleted-list');
+      if (startBlock.type === 'list-item') { transform = transform.unwrapBlock('bulleted-list'); }
       return transform.apply();
     },
     onEnter: (e, state) => {
-      if (state.isExpanded) return undefined;
+      if (state.isExpanded) { return undefined; }
       const { startBlock, startOffset, endOffset } = state;
-      if (startOffset === 0 && startBlock.length === 0)
-        return self.onBackspace(e, state);
-      if (endOffset !== startBlock.length) return undefined;
+      if (startOffset === 0 && startBlock.length === 0) { return self.onBackspace(e, state); }
+      if (endOffset !== startBlock.length) { return undefined; }
 
       if (
         startBlock.type !== 'heading-one' &&

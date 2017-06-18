@@ -80,7 +80,7 @@ export default class CollectionListSidebar extends Component {
     );
   };
 
-  resolveField = fieldName => {
+  resolveField = (fieldName) => {
     const { collection } = this.props;
     const { fields } = collection;
 
@@ -88,7 +88,7 @@ export default class CollectionListSidebar extends Component {
   };
 
   renderMenu = ({ id, state }) =>
-    <Menu>
+    (<Menu>
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
@@ -98,11 +98,11 @@ export default class CollectionListSidebar extends Component {
       <Menu.Item disabled>
         {state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen'}
       </Menu.Item>
-    </Menu>;
+    </Menu>);
 
   render() {
     const { router, id, collection, isLoading, refetch, typeName } = this.props;
-    const items = (this.props.items || []).map(item => {
+    const items = (this.props.items || []).map((item) => {
       const name = this.resolveFieldValue(item, 'name', {
         defaultFieldName: 'name',
         defaultValue: item.kurz || item.name || 'Kein Titel',

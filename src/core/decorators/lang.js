@@ -14,15 +14,15 @@ export class LangProvider extends Component {
   }
 }
 
-export const withLangProvider = (langOption = {}) => WrappedComponent => {
+export const withLangProvider = (langOption = {}) => (WrappedComponent) => {
   const withLangProvider = ({ lang, ...props }) =>
-    <LangProvider lang={{ ...langOption, ...({} || lang) }}>
+    (<LangProvider lang={{ ...langOption, ...({} || lang) }}>
       <WrappedComponent {...props} />
-    </LangProvider>;
+    </LangProvider>);
   return withLangProvider;
 };
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const withLang = (props, context) =>
     <WrappedComponent lang={context.lang} {...props} />;
   withLang.contextTypes = {

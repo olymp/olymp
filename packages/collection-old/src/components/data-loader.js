@@ -11,7 +11,7 @@ export default ({
 }) => {
   const containerStyle = { width: '100%', minHeight: 100, ...style };
   const text = content =>
-    <div
+    (<div
       style={{
         textAlign: 'center',
         display: 'block',
@@ -23,16 +23,16 @@ export default ({
       <h1>
         {content}
       </h1>
-    </div>;
+    </div>);
 
   if (isEmpty) {
     return Array.isArray(isEmpty) && !isEmpty.length
       ? <div style={containerStyle} className={className}>
-          {text(placeholder)}
-        </div>
+        {text(placeholder)}
+      </div>
       : <div style={style} className={className}>
-          {children}
-        </div>;
+        {children}
+      </div>;
   }
 
   return (

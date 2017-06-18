@@ -11,8 +11,8 @@ const randomFromDate = (start, end) => {
   const diffInDays = current.diff(startOfYear, 'days');
   let counter = start;
   for (let i = 0; true; i += 1) {
-    if (counter > end) counter = start;
-    if (i === diffInDays) return counter;
+    if (counter > end) { counter = start; }
+    if (i === diffInDays) { return counter; }
     counter += 1;
   }
 };
@@ -53,41 +53,39 @@ const withState = WrappedComponent =>
     };
 
     progress = () => {
-      if (this.unmount) return;
+      if (this.unmount) { return; }
       const total = this.dateStart ? this.interval : 0;
       const current = this.dateStart ? new Date() - this.dateStart : 0;
       const progress = Math.round(current / total * 100);
       if (progress === this.state.progress) {
-        if (this.timer) this.timer3 = setTimeout(this.progress, 10);
+        if (this.timer) { this.timer3 = setTimeout(this.progress, 10); }
         return;
       }
       this.setState({ progress });
-      if (this.timer) this.timer3 = setTimeout(this.progress, 10);
+      if (this.timer) { this.timer3 = setTimeout(this.progress, 10); }
     };
 
     stop = () => {
-      if (this.timer) window.clearTimeout(this.timer);
-      if (this.timer2) window.clearTimeout(this.timer2);
-      if (this.timer3) window.clearTimeout(this.timer3);
+      if (this.timer) { window.clearTimeout(this.timer); }
+      if (this.timer2) { window.clearTimeout(this.timer2); }
+      if (this.timer3) { window.clearTimeout(this.timer3); }
       this.timer = null;
       this.timer2 = null;
       this.timer3 = null;
     };
 
     toggleAnimating = () => {
-      if (this.unmount) return;
+      if (this.unmount) { return; }
       this.setState({
         animating: false,
       });
     };
 
-    toggleImage = newIndex => {
-      if (this.unmount) return;
+    toggleImage = (newIndex) => {
+      if (this.unmount) { return; }
       const { children, slidesToShow } = this.props;
       let nextImage;
-      if (typeof newIndex === 'number') nextImage = newIndex;
-      else if (newIndex === 'previous') nextImage = this.getPrevious();
-      else nextImage = this.getNext();
+      if (typeof newIndex === 'number') { nextImage = newIndex; } else if (newIndex === 'previous') { nextImage = this.getPrevious(); } else { nextImage = this.getNext(); }
       this.stop();
       this.setState({
         currentImage: nextImage,
@@ -98,22 +96,20 @@ const withState = WrappedComponent =>
       this.start();
     };
 
-    getPrevious = index => {
+    getPrevious = (index) => {
       const { children, slidesToShow } = this.props;
-      if (!children) return 0;
+      if (!children) { return 0; }
       const { currentImage } = this.state;
-      if (index === undefined || typeof index !== 'number')
-        index = currentImage;
+      if (index === undefined || typeof index !== 'number') { index = currentImage; }
       const newIndex = index - slidesToShow;
       return newIndex < 0 ? children.length + newIndex : newIndex;
     };
 
-    getNext = index => {
+    getNext = (index) => {
       const { children, slidesToShow } = this.props;
-      if (!children) return 0;
+      if (!children) { return 0; }
       const { currentImage } = this.state;
-      if (index === undefined || typeof index !== 'number')
-        index = currentImage;
+      if (index === undefined || typeof index !== 'number') { index = currentImage; }
       return (index + slidesToShow) % children.length;
     };
 
@@ -131,12 +127,11 @@ const withState = WrappedComponent =>
     }
   };
 
-const Dots = ({ children, toggleImage, currentImage }) => {
-  return (
-    <div className="gz-slider-dots">
-      {children &&
+const Dots = ({ children, toggleImage, currentImage }) => (
+  <div className="gz-slider-dots">
+    {children &&
         children.map((x, i) =>
-          <button
+          (<button
             key={i}
             onClick={() => toggleImage(i)}
             className={cn(
@@ -145,29 +140,26 @@ const Dots = ({ children, toggleImage, currentImage }) => {
             )}
           >
             •
-          </button>
+          </button>)
         )}
-    </div>
+  </div>
   );
-};
 
-const Arrows = ({ toggleImage }) => {
-  return (
-    <div className="gz-slider-arrows">
-      <button
-        className="gz-slider-arrow-l"
-        onClick={() => toggleImage('previous')}
-      >
-        <i className="fa fa-chevron-left" />
-      </button>
-      <button className="gz-slider-arrow-r" onClick={() => toggleImage('next')}>
-        <i className="fa fa-chevron-right" />
-      </button>
-    </div>
+const Arrows = ({ toggleImage }) => (
+  <div className="gz-slider-arrows">
+    <button
+      className="gz-slider-arrow-l"
+      onClick={() => toggleImage('previous')}
+    >
+      <i className="fa fa-chevron-left" />
+    </button>
+    <button className="gz-slider-arrow-r" onClick={() => toggleImage('next')}>
+      <i className="fa fa-chevron-right" />
+    </button>
+  </div>
   );
-};
 
-const SingleSlider = props => {
+const SingleSlider = (props) => {
   const {
     children,
     className,
@@ -196,12 +188,12 @@ const SingleSlider = props => {
         </div>}
       <Dots {...props} />
       <Arrows {...props} />
-      {/*<Progress className="gz-slider-progress" strokeWidth={5} width={50} percent={progress} format={() => ''} />*/}
+      {/* <Progress className="gz-slider-progress" strokeWidth={5} width={50} percent={progress} format={() => ''} />*/}
     </div>
   );
 };
 
-const MultiSlider = props => {
+const MultiSlider = (props) => {
   const {
     children,
     innerClassName,
@@ -227,7 +219,7 @@ const MultiSlider = props => {
       onMouseLeave={start}
     >
       {images.map(currentImage =>
-        <div
+        (<div
           key={currentImage}
           className={cn(innerClassName, 'gz-slider-inner')}
         >
@@ -241,11 +233,11 @@ const MultiSlider = props => {
                 {children && children[currentImage]}
               </div>}
           </div>
-        </div>
+        </div>)
       )}
       <Dots {...props} />
       <Arrows {...props} />
-      {/*<Progress className="gz-slider-progress" strokeWidth={5} width={50} percent={progress} format={() => ''} />*/}
+      {/* <Progress className="gz-slider-progress" strokeWidth={5} width={50} percent={progress} format={() => ''} />*/}
     </div>
   );
 };

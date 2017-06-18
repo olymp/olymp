@@ -1,9 +1,9 @@
 export default (array, attrib = 'name') => {
   // can be 'name', x => x.name || x.title, (todo: ['name', 'title'], [x => x.name, x => x.title])
   array = [...array];
-  const getAttrib = x => {
-    if (attrib && typeof attrib === 'string') return x[attrib];
-    if (attrib && typeof attrib === 'function') return attrib(x);
+  const getAttrib = (x) => {
+    if (attrib && typeof attrib === 'string') { return x[attrib]; }
+    if (attrib && typeof attrib === 'function') { return attrib(x); }
     return '';
   };
   array.sort((a, b) => compare(getAttrib(a), getAttrib(b)));

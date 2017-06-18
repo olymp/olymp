@@ -1,6 +1,6 @@
 export default (text, beautify) => {
-  if (!text) return text;
-  if (beautify) text = text.split('/').join('-').split('&').join('-');
+  if (!text) { return text; }
+  if (beautify) { text = text.split('/').join('-').split('&').join('-'); }
   return encodeURIComponent(text.split(' ').join('-').toLowerCase())
     .split('%C3%A4')
     .join('ä')

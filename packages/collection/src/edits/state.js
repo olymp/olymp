@@ -12,28 +12,26 @@ const StateInput = ({
   placeholder,
   form,
   ...rest
-}) => {
-  return (
-    <Form.Item key={field} label={label} {...layout}>
-      {form.getFieldDecorator(field, {
-        initialValue: item ? item[field] : undefined,
-        rules: getRules(rules, label),
-      })(
-        <Select style={{ width: '100%' }} {...rest}>
-          <Select.Option value="DRAFT">
-            <b style={{ color: 'blue' }}><Icon type="inbox" /></b> Ablage
+}) => (
+  <Form.Item key={field} label={label} {...layout}>
+    {form.getFieldDecorator(field, {
+      initialValue: item ? item[field] : undefined,
+      rules: getRules(rules, label),
+    })(
+      <Select style={{ width: '100%' }} {...rest}>
+        <Select.Option value="DRAFT">
+          <b style={{ color: 'blue' }}><Icon type="inbox" /></b> Ablage
           </Select.Option>
-          <Select.Option value="PUBLISHED">
-            <b style={{ color: 'green' }}><Icon type="check" /></b>{' '}
+        <Select.Option value="PUBLISHED">
+          <b style={{ color: 'green' }}><Icon type="check" /></b>{' '}
             Veröffentlicht
           </Select.Option>
-          <Select.Option value="REMOVED">
-            <b style={{ color: 'red' }}><Icon type="delete" /></b> Gelöscht
+        <Select.Option value="REMOVED">
+          <b style={{ color: 'red' }}><Icon type="delete" /></b> Gelöscht
           </Select.Option>
-        </Select>
+      </Select>
       )}
-    </Form.Item>
+  </Form.Item>
   );
-};
 StateInput.defaultProps = { layout };
 export default StateInput;

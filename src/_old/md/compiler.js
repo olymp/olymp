@@ -1,19 +1,19 @@
-'use strict';
+
 
 module.exports = remarkReact;
 
 // var toHAST = require('mdast-util-to-hast');
 // var sanitize = require('hast-util-sanitize');
 // var toH = require('hast-to-hyperscript');
-var globalCreateElement;
+let globalCreateElement;
 
 try {
   globalCreateElement = require('react').createElement;
 } catch (err) {}
 
-var own = {}.hasOwnProperty;
+const own = {}.hasOwnProperty;
 
-var TABLE_ELEMENTS = ['table', 'thead', 'tbody', 'tfoot', 'tr'];
+const TABLE_ELEMENTS = ['table', 'thead', 'tbody', 'tfoot', 'tr'];
 
 /**
  * Attach a react compiler.
@@ -30,14 +30,14 @@ var TABLE_ELEMENTS = ['table', 'thead', 'tbody', 'tfoot', 'tr'];
  *   - `h()`.
  */
 function remarkReact(options) {
-  var settings = options || {};
-  var createElement = settings.createElement || globalCreateElement;
-  var clean = settings.sanitize !== false;
-  var scheme = clean && typeof settings.sanitize !== 'boolean'
+  const settings = options || {};
+  const createElement = settings.createElement || globalCreateElement;
+  const clean = settings.sanitize !== false;
+  const scheme = clean && typeof settings.sanitize !== 'boolean'
     ? settings.sanitize
     : null;
-  var toHastOptions = settings.toHast || {};
-  var components = Object.assign(
+  const toHastOptions = settings.toHast || {};
+  const components = Object.assign(
     {
       td: createTableCellComponent('td'),
       th: createTableCellComponent('th'),
@@ -48,13 +48,11 @@ function remarkReact(options) {
   this.Compiler = compile;
 
   function h(name, props, children) {
-    var component = own.call(components, name) ? components[name] : name;
-    if (!component) return null;
+    const component = own.call(components, name) ? components[name] : name;
+    if (!component) { return null; }
 
     if (children && TABLE_ELEMENTS.indexOf(component) !== -1) {
-      children = children.filter(function(child) {
-        return child !== '\n';
-      });
+      children = children.filter(child => child !== '\n');
     }
 
     return createElement(component, props, children);
@@ -73,8 +71,8 @@ function remarkReact(options) {
       children = [],
     } = node;
     let t = tag || type;
-    if (!props.key) props.key = key;
-    if (!props.value) props.value = value;
+    if (!props.key) { props.key = key; }
+    if (!props.value) { props.value = value; }
     if (t === 'heading') {
       t = `heading${depth || 1}`;
     } else if (t === 'link') {
@@ -94,7 +92,7 @@ function remarkReact(options) {
     return TableCell;
 
     function TableCell(props) {
-      var fixedProps = xtend(props, {
+      const fixedProps = xtend(props, {
         children: undefined,
         style: { textAlign: props.align },
       });

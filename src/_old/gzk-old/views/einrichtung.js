@@ -36,7 +36,7 @@ export default class Praxis extends Component {
   render() {
     const { item, location, patch, save, auth } = this.props;
     const tage = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-    if (!item) return <Spin size="large" />;
+    if (!item) { return <Spin size="large" />; }
     const readOnly =
       !auth ||
       !auth.user ||
@@ -51,58 +51,58 @@ export default class Praxis extends Component {
               ? [
                   { property: 'og:image', content: item.peak },
                   { name: 'keywords', content: item.tags },
-                ]
+              ]
               : []
           }
         />
         {!readOnly
           ? <Gateway into="button1">
-              <a href="javascript:;" onClick={save}>
+            <a href="javascript:;" onClick={save}>
                 Einrichtung speichern
               </a>
-            </Gateway>
+          </Gateway>
           : null}
         {!readOnly
           ? <Gateway into="button2">
-              <Link to={{ ...location, query: { '@Einrichtung': item.id } }}>
+            <Link to={{ ...location, query: { '@Einrichtung': item.id } }}>
                 Praxis bearbeiten
               </Link>
-            </Gateway>
+          </Gateway>
           : null}
         <style>{getStyle(item.farbe || '#FFA210')}</style>
         {item.peak
           ? <Image
-              style={{ height: 400 }}
-              cloudinary={{ height: 400 }}
-              lightbox
-              onImageClick={({ showLightbox }) => showLightbox()}
-              showMediathek={false}
-              container="div"
-              value={item.peak}
-              className="gz-image-box mb-2"
+            style={{ height: 400 }}
+            cloudinary={{ height: 400 }}
+            lightbox
+            onImageClick={({ showLightbox }) => showLightbox()}
+            showMediathek={false}
+            container="div"
+            value={item.peak}
+            className="gz-image-box mb-2"
+          >
+            <div
+              className="gz-image-content"
+              style={{ backgroundColor: item.farbe }}
             >
-              <div
-                className="gz-image-content"
-                style={{ backgroundColor: item.farbe }}
-              >
-                <h1>{item.slogan}</h1>
-                <p>{item.willkommen}</p>
-              </div>
-            </Image>
+              <h1>{item.slogan}</h1>
+              <p>{item.willkommen}</p>
+            </div>
+          </Image>
           : <div className="page-header panel">
-              <div className="container">
-                <h1 className="pull-left">{item.name}</h1>
-                <ol className="breadcrumb pull-left">
-                  <li>
-                    <a href="/">Home</a>
-                  </li>
-                  <li className="active">
-                    {item.name || item.slogan}
-                    {item.willkommen}
-                  </li>
-                </ol>
-              </div>
-            </div>}
+            <div className="container">
+              <h1 className="pull-left">{item.name}</h1>
+              <ol className="breadcrumb pull-left">
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li className="active">
+                  {item.name || item.slogan}
+                  {item.willkommen}
+                </li>
+              </ol>
+            </div>
+          </div>}
         <div className="container">
           <div className="row">
             <aside className="col-sm-4">
@@ -110,125 +110,125 @@ export default class Praxis extends Component {
                 <li className="widget">
                   {item.logo
                     ? <h4>
-                        <figure className="mb-1">
-                          <img
-                            src={cloudinaryUrl(
+                      <figure className="mb-1">
+                        <img
+                          src={cloudinaryUrl(
                               item.logo.url,
                               item.logo,
                               item.logo.crop
                             )}
-                            className="img-responsive"
-                            alt
-                          />
-                        </figure>
-                      </h4>
+                          className="img-responsive"
+                          alt
+                        />
+                      </figure>
+                    </h4>
                     : <h4>
-                        {item.name}
-                      </h4>}
+                      {item.name}
+                    </h4>}
                   <ul className="list-unstyled iconized-list mb-1">
                     {item.etage
                       ? <li>
-                          <i className="fa fa-home" /> Etage: {item.etage}
-                        </li>
+                        <i className="fa fa-home" /> Etage: {item.etage}
+                      </li>
                       : null}
                     {item.telefon
                       ? <li>
-                          <i className="fa fa-phone" /> Telefon: {item.telefon}
-                        </li>
+                        <i className="fa fa-phone" /> Telefon: {item.telefon}
+                      </li>
                       : null}
                     {item.telefonPrivat
                       ? <li>
-                          <i className="fa fa-phone" /> Privatpatienten:{' '}
-                          {item.telefonPrivat}
-                        </li>
+                        <i className="fa fa-phone" /> Privatpatienten:{' '}
+                        {item.telefonPrivat}
+                      </li>
                       : null}
                     {item.fax
                       ? <li><i className="fa fa-fax" /> Fax: {item.fax}</li>
                       : null}
                     {item.eMail
                       ? <li>
-                          <i className="fa fa-envelope-o" /> E-Mail:{' '}
-                          {item.eMail}
-                        </li>
+                        <i className="fa fa-envelope-o" /> E-Mail:{' '}
+                        {item.eMail}
+                      </li>
                       : null}
                     {item.website
                       ? <li>
-                          <a href={item.website} target="_blank">
-                            <i className="fa fa-link" />
-                            <bold style={{ color: item.farbe }}>
-                              {' '}Eigene Website besuchen
+                        <a href={item.website} target="_blank">
+                          <i className="fa fa-link" />
+                          <bold style={{ color: item.farbe }}>
+                            {' '}Eigene Website besuchen
                             </bold>
-                          </a>
-                        </li>
+                        </a>
+                      </li>
                       : null}
                   </ul>
                 </li>
                 {(item.zeiten && item.zeiten.length) || item.freifeld
                   ? <li className="widget">
-                      <h4>Öffnungszeiten</h4>
-                      <ul className="list-unstyled bulleted-list iconized-list">
-                        {(item.zeiten || []).map((zeit, index) =>
-                          <li
+                    <h4>Öffnungszeiten</h4>
+                    <ul className="list-unstyled bulleted-list iconized-list">
+                      {(item.zeiten || []).map((zeit, index) =>
+                          (<li
                             key={index}
                             style={{ display: zeit ? 'block' : 'none' }}
                           >
                             <i className="fa fa-icon" />{tage[index]}.&nbsp;{zeit}
-                          </li>
+                          </li>)
                         )}
-                      </ul>
-                      {item.freifeld ? <i>{item.freifeld}</i> : null}
-                    </li>
+                    </ul>
+                    {item.freifeld ? <i>{item.freifeld}</i> : null}
+                  </li>
                   : null}
                 {item.leistungen && item.leistungen.length
                   ? <li className="widget">
-                      <h4>Leistungsangebot</h4>
-                      <Accordion name="leistungsangebot">
-                        {item.leistungen.map(leistung =>
-                          <AccordionItem
+                    <h4>Leistungsangebot</h4>
+                    <Accordion name="leistungsangebot">
+                      {item.leistungen.map(leistung =>
+                          (<AccordionItem
                             key={leistung.id}
                             title={leistung.name}
                           >
                             <div>
                               <SlateMate value={leistung.text} readOnly />
                             </div>
-                          </AccordionItem>
+                          </AccordionItem>)
                         )}
-                      </Accordion>
-                    </li>
+                    </Accordion>
+                  </li>
                   : null}
                 {item.vorsorgen && item.vorsorgen.length
                   ? <li className="widget">
-                      <h4>Vorsorge</h4>
-                      <Accordion name="vorsorge">
-                        {item.vorsorgen.map(leistung =>
-                          <AccordionItem
+                    <h4>Vorsorge</h4>
+                    <Accordion name="vorsorge">
+                      {item.vorsorgen.map(leistung =>
+                          (<AccordionItem
                             key={leistung.id}
                             title={leistung.name}
                           >
                             <div>
                               <SlateMate value={leistung.text} readOnly />
                             </div>
-                          </AccordionItem>
+                          </AccordionItem>)
                         )}
-                      </Accordion>
-                    </li>
+                    </Accordion>
+                  </li>
                   : null}
                 {item.aesthetik && item.aesthetik.length
                   ? <li className="widget">
-                      <h4>Ästhetik</h4>
-                      <Accordion name="ästhetik">
-                        {item.aesthetik.map(leistung =>
-                          <AccordionItem
+                    <h4>Ästhetik</h4>
+                    <Accordion name="ästhetik">
+                      {item.aesthetik.map(leistung =>
+                          (<AccordionItem
                             key={leistung.id}
                             title={leistung.name}
                           >
                             <div>
                               <SlateMate value={leistung.text} readOnly />
                             </div>
-                          </AccordionItem>
+                          </AccordionItem>)
                         )}
-                      </Accordion>
-                    </li>
+                    </Accordion>
+                  </li>
                   : null}
                 <li>
                   <br />
@@ -236,15 +236,15 @@ export default class Praxis extends Component {
                 {(item.personen || [])
                   .filter(p => p.text || p.beschreibung)
                   .map(person =>
-                    <li key={person.id} className="widget">
+                    (<li key={person.id} className="widget">
                       {person.bild
                         ? <div className="col-md-4 pl-0">
-                            <Image
-                              value={person.bild}
-                              style={{ width: 100, height: 100 }}
-                              cloudinary={{ width: 200, height: 200 }}
-                            />
-                          </div>
+                          <Image
+                            value={person.bild}
+                            style={{ width: 100, height: 100 }}
+                            cloudinary={{ width: 200, height: 200 }}
+                          />
+                        </div>
                         : null}
                       <h5>
                         <a href={person.link || 'javascript:;'} target="_blank">
@@ -259,23 +259,23 @@ export default class Praxis extends Component {
                       <ul className="list-unstyled iconized-list">
                         {person.telefon
                           ? <li>
-                              <i className="fa fa-phone" /> Telefon:{' '}
-                              {person.telefon}
-                            </li>
+                            <i className="fa fa-phone" /> Telefon:{' '}
+                            {person.telefon}
+                          </li>
                           : null}
                         {person.fax
                           ? <li>
-                              <i className="fa fa-phone" /> Fax: {person.fax}
-                            </li>
+                            <i className="fa fa-phone" /> Fax: {person.fax}
+                          </li>
                           : null}
                         {person.eMail
                           ? <li>
-                              <i className="fa fa-envelope-o" /> E-Mail:{' '}
-                              {person.eMail}
-                            </li>
+                            <i className="fa fa-envelope-o" /> E-Mail:{' '}
+                            {person.eMail}
+                          </li>
                           : null}
                       </ul>
-                    </li>
+                    </li>)
                   )}
               </ul>
             </aside>

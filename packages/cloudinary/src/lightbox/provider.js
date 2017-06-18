@@ -33,11 +33,11 @@ export default class LightboxProvider extends Component {
     }
   }
 
-  add = image => {
+  add = (image) => {
     this.images.push(image);
   };
 
-  remove = ref => {
+  remove = (ref) => {
     this.images = this.images.filter(image => image.ref !== ref);
   };
 

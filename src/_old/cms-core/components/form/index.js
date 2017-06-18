@@ -26,13 +26,13 @@ export default class FormComponent extends Component {
       ...rest
     } = this.props;
 
-    let toAntSchema = x => x;
+    const toAntSchema = x => x;
     const mappedFields = fields.reduce((result, field) => {
       // EXCLUDING
-      if (excludedFields.includes(field.name)) return result;
+      if (excludedFields.includes(field.name)) { return result; }
 
       // DISABLED
-      if (field['@'].disabled) return result;
+      if (field['@'].disabled) { return result; }
 
       // RELATION
       if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
@@ -52,7 +52,7 @@ export default class FormComponent extends Component {
       }
 
       // RANGE
-      if (field['@'].end) return result;
+      if (field['@'].end) { return result; }
       if (field['@'].start) {
         const end = fields.find(x => x['@'].end);
         field['@'].endField = end;

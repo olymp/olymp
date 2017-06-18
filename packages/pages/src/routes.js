@@ -2,22 +2,22 @@ import React from 'react';
 import { IFrame } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 
-export const EditablePageRoute = props => {
+export const EditablePageRoute = (props) => {
   const { Wrapped, flatNavigation, query, pathname } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
-  const deviceWidth = query[`@deviceWidth`];
+  const deviceWidth = query['@deviceWidth'];
   if (!match) {
     return (
       <EditablePage
         {...props}
         deviceWidth={deviceWidth}
         render={match =>
-          <IFrame disabled={!deviceWidth}>
+          (<IFrame disabled={!deviceWidth}>
             <Wrapped {...props}>
               <Error404 />
             </Wrapped>
-          </IFrame>}
+          </IFrame>)}
       />
     );
   }
@@ -29,16 +29,16 @@ export const EditablePageRoute = props => {
       bindingId={bindingId}
       binding={binding}
       render={children =>
-        <IFrame disabled={!deviceWidth}>
+        (<IFrame disabled={!deviceWidth}>
           <Wrapped {...props} match={match}>
             {children}
           </Wrapped>
-        </IFrame>}
+        </IFrame>)}
     />
   );
 };
 
-export const PageRoute = props => {
+export const PageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
@@ -46,11 +46,11 @@ export const PageRoute = props => {
     <Wrapped {...props} match={match}>
       {match
         ? <Page.WithData
-            {...props}
-            id={pageId || aliasId || id}
-            bindingId={bindingId}
-            binding={binding}
-          />
+          {...props}
+          id={pageId || aliasId || id}
+          bindingId={bindingId}
+          binding={binding}
+        />
         : <Error404 />}
     </Wrapped>
   );

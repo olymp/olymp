@@ -37,10 +37,10 @@ export const removeItem = (id, typeName, client, { onRemoved, fieldNames }) =>
         message: 'Gelöscht',
         description: 'Der Eintrag wurde gelöscht!',
       });
-      if (onRemoved) onRemoved(data, this.props);
+      if (onRemoved) { onRemoved(data, this.props); }
       return true;
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       notification.error({
         message: 'Fehler',
@@ -49,10 +49,9 @@ export const removeItem = (id, typeName, client, { onRemoved, fieldNames }) =>
       throw err;
     });
 
-const strip = obj => {
-  if (!obj) return;
-  if (Array.isArray(obj)) obj.forEach(x => strip(x));
-  else if (typeof obj === 'object') {
+const strip = (obj) => {
+  if (!obj) { return; }
+  if (Array.isArray(obj)) { obj.forEach(x => strip(x)); } else if (typeof obj === 'object') {
     delete obj.__typename;
     Object.keys(obj).forEach(x => strip(obj[x]));
   }
@@ -76,7 +75,7 @@ export const saveItem = (
      },*/
     updateQueries: !id
       ? {
-          [`${typeName.toLowerCase()}List`]: (
+        [`${typeName.toLowerCase()}List`]: (
             previousQueryResult,
             { mutationResult }
           ) => ({
@@ -86,7 +85,7 @@ export const saveItem = (
               mutationResult.data[typeName],
             ],
           }),
-        }
+      }
       : {},
   })
     .then(({ data }) => {
@@ -94,10 +93,10 @@ export const saveItem = (
         message: 'Gespeichert',
         description: 'Änderungen wurden gespeichert!',
       });
-      if (onSaved) onSaved(data, this.props);
+      if (onSaved) { onSaved(data, this.props); }
       return data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       notification.error({
         message: 'Fehler',
@@ -107,7 +106,7 @@ export const saveItem = (
     });
 };
 
-export default ({ fieldNames, typeName }) => WrappedComponent => {
+export default ({ fieldNames, typeName }) => (WrappedComponent) => {
   @withApollo
   class WithItemComponent extends Component {
     static defaultProps = {
@@ -145,7 +144,7 @@ export default ({ fieldNames, typeName }) => WrappedComponent => {
         (nextProps.data &&
           nextProps.data[typeName] !== lastProps.data[typeName])
       ) {
-        if (!fieldNames || !typeName) return;
+        if (!fieldNames || !typeName) { return; }
         const capitalized = capitalize(typeName);
         if (nextProps.data) {
           this.patchedItem = {};
@@ -202,11 +201,11 @@ export default ({ fieldNames, typeName }) => WrappedComponent => {
         }
       }
     };
-    refetch = fieldNames => {
+    refetch = (fieldNames) => {
       this.update({ ...this.props, fieldNames }, this.props);
     };
-    patch = patch => {
-      if (this.unmount) return;
+    patch = (patch) => {
+      if (this.unmount) { return; }
       this.patchedItem = {
         ...this.patchedItem,
         ...patch,
@@ -219,7 +218,7 @@ export default ({ fieldNames, typeName }) => WrappedComponent => {
     save = (data, opt) => {
       const { onSaved, typeName, client, fieldNames } = this.props;
       this.setState({ saving: true });
-      const then = x => {
+      const then = (x) => {
         this.setState({ saving: false });
         return x;
       };
@@ -230,7 +229,7 @@ export default ({ fieldNames, typeName }) => WrappedComponent => {
           fieldNames,
         })
           .then(then)
-          .catch(err => {
+          .catch((err) => {
             this.setState({ saving: false });
             throw err;
           });
@@ -241,7 +240,7 @@ export default ({ fieldNames, typeName }) => WrappedComponent => {
         fieldNames,
       })
         .then(then)
-        .catch(err => {
+        .catch((err) => {
           this.setState({ saving: false });
           throw err;
         });

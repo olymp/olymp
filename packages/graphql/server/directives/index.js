@@ -39,7 +39,7 @@ export default ({ adapter, resolvers }) => ({
           `).definitions;
 
           // Iterate over queries
-          definitions[0].fields.forEach(field => {
+          definitions[0].fields.forEach((field) => {
             // Add to AST
             Query.fields.push(field);
             // Create resolvers for queries
@@ -47,7 +47,7 @@ export default ({ adapter, resolvers }) => ({
             resolvers.Query[field.name.value] = isList ? list(name) : one(name);
           });
           // Iterate over mutations
-          definitions[1].fields.forEach(field => {
+          definitions[1].fields.forEach((field) => {
             // Add to AST
             Mutation.fields.push(field);
             // Create resolvers for mutations
@@ -158,8 +158,8 @@ export default ({ adapter, resolvers }) => ({
         const type = isList ? node.type.type : node.type;
         const collectionName = type.name.value;
 
-        if (directive.arguments.find(x => x.name.value === 'ignore')) return;
-        if (!resolvers[parentName]) resolvers[parentName] = {};
+        if (directive.arguments.find(x => x.name.value === 'ignore')) { return; }
+        if (!resolvers[parentName]) { resolvers[parentName] = {}; }
 
         // one-to-one / one-to-many
         if (!isList) {

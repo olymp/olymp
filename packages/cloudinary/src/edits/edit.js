@@ -9,7 +9,7 @@ export default withState(
   'setOpen',
   false
 )(({ onChange, value, isOpen, setOpen, multi }) =>
-  <div onClick={() => setOpen(true)}>
+  (<div onClick={() => setOpen(true)}>
     {multi ? 'Bilder' : 'Bild'} wählen
     <Portal
       isOpened={isOpen}
@@ -24,7 +24,7 @@ export default withState(
         selected={(value || []).map(image => image.id)}
       />
     </Portal>
-  </div>
+  </div>)
 );
 
 const CloudinaryModal = createComponent(
@@ -49,7 +49,7 @@ const CloudinaryModal = createComponent(
     },
   }),
   ({ onChange, onClose, className, selected, multi }) =>
-    <div className={className}>
+    (<div className={className}>
       <div>
         <Cloudinary
           multi={multi}
@@ -58,6 +58,6 @@ const CloudinaryModal = createComponent(
           selected={selected}
         />
       </div>
-    </div>,
+    </div>),
   p => Object.keys(p)
 );

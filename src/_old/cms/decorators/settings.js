@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp';
 
-export default attributes => WrappedComponent => {
+export default attributes => (WrappedComponent) => {
   @graphql(gql`
   query settingsList {
     items: settingsList {

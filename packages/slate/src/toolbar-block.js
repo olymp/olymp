@@ -7,7 +7,7 @@ const Action = ({ node, state, onChange }) => (
   { toggle, active, label, component },
   i
 ) => {
-  const setData = data => {
+  const setData = (data) => {
     const transform = state
       .transform()
       .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } })
@@ -16,9 +16,7 @@ const Action = ({ node, state, onChange }) => (
     return Promise.resolve();
   };
 
-  const getData = (name, defaultValue) => {
-    return node.data.get(name) || defaultValue;
-  };
+  const getData = (name, defaultValue) => node.data.get(name) || defaultValue;
 
   if (component) {
     const Com = component;
@@ -47,7 +45,7 @@ const Action = ({ node, state, onChange }) => (
     </Menu.Item>
   );
 };
-export default props => {
+export default (props) => {
   const { state, blockTypes, onChange } = props;
   const block =
     state.blocks.size === 1 &&

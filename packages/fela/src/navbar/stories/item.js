@@ -59,7 +59,7 @@ const nav = [
 ];
 
 storiefy('Basic usage', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav>
       <Navbar.Item title="Left Group - Item 1" />
       <Navbar.Item title="Left Group - Item 2" />
@@ -77,25 +77,25 @@ storiefy('Basic usage', () =>
         </Navbar.Nav>
       </Navbar.Item>
     </Navbar.Nav>
-  </Navbar>
+  </Navbar>)
 );
 storiefy('Title', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav>
       <Navbar.Item pathname="/" title={text('title', 'Title')} />
     </Navbar.Nav>
-  </Navbar>
+  </Navbar>)
 );
 storiefy('Link vs. Placeholder', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav>
       <Navbar.Item pathname="/" title="Link" pages={nav} />
       <Navbar.Item title="Placeholder" pages={nav} />
     </Navbar.Nav>
-  </Navbar>
+  </Navbar>)
 );
 storiefy('Submenu', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav>
       <Navbar.Item
         pathname="/"
@@ -114,15 +114,15 @@ storiefy('Submenu', () =>
         ]}
       />
     </Navbar.Nav>
-  </Navbar>
+  </Navbar>)
 );
 storiefy('Mega-Dropdown-Submenu', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav>
       <Navbar.Item pages={nav} mega={boolean('mega', true)} title="Hover me!" />
     </Navbar.Nav>
     <Navbar.Nav right>
       <Navbar.Item pages={nav} mega={boolean('mega', true)} title="Me too!" />
     </Navbar.Nav>
-  </Navbar>
+  </Navbar>)
 );

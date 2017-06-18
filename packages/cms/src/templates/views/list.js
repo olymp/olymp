@@ -41,12 +41,12 @@ class ListSidebar extends Component {
         subtitle="Templates sichten und verwalten"
       >
         {items.map(item =>
-          <List.Item
+          (<List.Item
             active={item.id === id}
             label={item.name}
             onClick={() => onClick(item)}
             key={item.id}
-          />
+          />)
         )}
       </Sidebar>
     );

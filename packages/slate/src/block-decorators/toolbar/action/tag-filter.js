@@ -5,7 +5,7 @@ import intersection from 'lodash/intersection';
 const INCLUDED_TAGS = 'incl-tags';
 const EXCLUDED_TAGS = 'excl-tags';
 
-export default fn => Block => props => {
+export default fn => Block => (props) => {
   const { children, getData, setData, data, actions = [] } = props;
 
   const items = (!!data && !data.loading && fn(data)) || [];
@@ -14,10 +14,10 @@ export default fn => Block => props => {
   const excludedTags = getData(EXCLUDED_TAGS, []);
 
   const tagObj = { Alle: items.length, Ohne: 0 };
-  items.forEach(item => {
+  items.forEach((item) => {
     if (item.tags && item.tags.length) {
-      (item.tags || []).forEach(tag => {
-        if (!tagObj[tag]) tagObj[tag] = 0;
+      (item.tags || []).forEach((tag) => {
+        if (!tagObj[tag]) { tagObj[tag] = 0; }
 
         tagObj[tag] += 1;
       });
@@ -84,7 +84,7 @@ export default fn => Block => props => {
               anzahl: count,
             })),
 
-          toggle: tagSelection => {
+          toggle: (tagSelection) => {
             if (tagSelection) {
               if (tagSelection.include && tagSelection.exclude) {
                 setData({

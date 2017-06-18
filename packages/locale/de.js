@@ -7,14 +7,14 @@ import momentLegacy from 'moment';
 import 'moment/locale/de';
 
 export const withLocale = WrappedComponent => props =>
-  <LocaleProvider locale={enUS}>
+  (<LocaleProvider locale={enUS}>
     <WrappedComponent {...props} />
-  </LocaleProvider>;
+  </LocaleProvider>);
 
-export const moment = function() {
+export const moment = function () {
   return momentLegacy.utc.apply(this, arguments);
 };
 export default props =>
-  <LocaleProvider locale={enUS}>
+  (<LocaleProvider locale={enUS}>
     {props.children}
-  </LocaleProvider>;
+  </LocaleProvider>);

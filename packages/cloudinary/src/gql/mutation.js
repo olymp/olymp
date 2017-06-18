@@ -10,13 +10,13 @@ const ok = (item, mutate) => {
     },
     updateQueries: item.removed
       ? {
-          fileList: (prev, { mutationResult }) => ({
-            ...prev,
-            items: prev.items.filter(
+        fileList: (prev, { mutationResult }) => ({
+          ...prev,
+          items: prev.items.filter(
               item => item.id !== mutationResult.data.item.id
             ),
-          }),
-        }
+        }),
+      }
       : undefined,
   })
     .then(({ data: { item } }) => {

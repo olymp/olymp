@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 const getSidebarTypes = blockTypes =>
   Object.keys(blockTypes)
-    .filter(key => {
+    .filter((key) => {
       const block = blockTypes[key];
       return block.slate && block.slate.sidebar !== false;
     })
@@ -11,7 +11,7 @@ const getSidebarTypes = blockTypes =>
 export default (options = {}) => {
   const { marks, nodes } = options;
   let { blockTypes } = options;
-  if (!blockTypes) blockTypes = {};
+  if (!blockTypes) { blockTypes = {}; }
   return Editor =>
     class SlateBlocksDecorator extends Component {
       static propTypes = {

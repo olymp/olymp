@@ -19,12 +19,12 @@ export class WebsocketProvider extends Component {
       },
     };
   }
-  unlisten = token => name => {
-    if (!this.listeners[name]) this.listeners[name] = {};
+  unlisten = token => (name) => {
+    if (!this.listeners[name]) { this.listeners[name] = {}; }
     delete this.listeners[name][token];
   };
   on = (name, fc) => {
-    if (!this.listeners[name]) this.listeners[name] = {};
+    if (!this.listeners[name]) { this.listeners[name] = {}; }
     const token = shortid.generate();
     this.listeners[name][token] = fc;
     return this.unlisten(token);
@@ -33,7 +33,7 @@ export class WebsocketProvider extends Component {
     this.ws.send(JSON.stringify({ ...data, type }));
   };
   showNotification = (message, description, btn) => {
-    if (!this.key) this.key = `open${Date.now()}`;
+    if (!this.key) { this.key = `open${Date.now()}`; }
     if (!message) {
       notification.close(this.key);
     } else {
@@ -46,7 +46,7 @@ export class WebsocketProvider extends Component {
       });
     }
   };
-  connected = connected => {
+  connected = (connected) => {
     // if (this.state.connected === connected) return;
     if (connected === true) {
       this.showNotification();
@@ -83,13 +83,12 @@ export class WebsocketProvider extends Component {
       }
       this.lastVersion = version;
     };
-    this.ws.onmessage = event => {
+    this.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === 'pong') return onPong(data);
-      if (this.listeners[data.type])
-        this.listeners[data.type].forEach(fc => fc(data));
+      if (data.type === 'pong') { return onPong(data); }
+      if (this.listeners[data.type]) { this.listeners[data.type].forEach(fc => fc(data)); }
     };
-    this.ws.onopen = event => {
+    this.ws.onopen = (event) => {
       this.connected(true);
       interval = setInterval(() => {
         if (!hasPong) {
@@ -99,7 +98,7 @@ export class WebsocketProvider extends Component {
         this.ws.send('ping');
       }, 3000);
     };
-    this.ws.onerror = error => {
+    this.ws.onerror = (error) => {
       console.error('uws error', error);
     };
     this.ws.onclose = () => {
@@ -119,7 +118,7 @@ export class WebsocketProvider extends Component {
   }
 }
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const withWebsocket = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withWebsocket.contextTypes = {

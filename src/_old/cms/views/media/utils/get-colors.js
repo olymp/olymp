@@ -1,6 +1,6 @@
 export default (data = []) => {
   const colors = data.reduce((state, file) => {
-    (file.palette || []).forEach(color => {
+    (file.palette || []).forEach((color) => {
       if (state[color] === undefined) {
         state[color] = 0; // eslint-disable-line no-param-reassign
       }

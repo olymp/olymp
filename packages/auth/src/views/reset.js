@@ -31,15 +31,14 @@ export default class AuthReset extends Component {
   ok = () => {
     const { auth, token, onOk, onClose, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
-      if (values.password2 !== values.password)
-        return onError(new Error('Die Passwörter stimmen nicht überein!'));
+      if (err) { return onError(err); }
+      if (values.password2 !== values.password) { return onError(new Error('Die Passwörter stimmen nicht überein!')); }
       auth
         .reset(token, values.password)
         .then(({ email }) => {
           onSuccess(
             'Zurücksetzung erfolgreich',
-            `Sie können sich jetzt anmelden`
+            'Sie können sich jetzt anmelden'
           );
           onOk({ email });
         })

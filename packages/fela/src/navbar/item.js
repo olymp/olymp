@@ -23,14 +23,14 @@ const NavItem = createComponent(
     },
   }),
   ({ className, pathname, children, title, fill, pages, onClick, ...props }) =>
-    <div className={className}>
+    (<div className={className}>
       {pathname
         ? <Link to={pathname} inverse={props.inverse}>
-            {title}
-          </Link>
+          {title}
+        </Link>
         : <Placeholder onClick={onClick} inverse={props.inverse}>
-            {title}
-          </Placeholder>}
+          {title}
+        </Placeholder>}
 
       {pages &&
         !!pages.length &&
@@ -39,7 +39,7 @@ const NavItem = createComponent(
       {Children.map(children, child =>
         cloneElement(child, { ...props, sub: true })
       )}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 NavItem.displayName = 'Navbar.Item';

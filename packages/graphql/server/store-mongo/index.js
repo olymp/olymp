@@ -2,7 +2,7 @@ const MongoClient = require('bluebird').promisifyAll(require('mongodb'))
   .MongoClient;
 const ShortId = require('shortid');
 
-module.exports = config => {
+module.exports = (config) => {
   let returnArgs = {};
   if (typeof config === 'string') {
     config = { url: config };
@@ -10,7 +10,7 @@ module.exports = config => {
 
   const read = (kind, { id, filter, attributes } = {}) => {
     const collection = returnArgs.db.collection(kind);
-    if (id) filter = { id };
+    if (id) { filter = { id }; }
     return returnArgs.db.collection(kind).findOneAsync(filter, attributes);
   };
 
@@ -18,8 +18,8 @@ module.exports = config => {
     const collection = returnArgs.db.collection(kind);
     const newData = data;
 
-    if (stamp) newData.updatedAt = new Date();
-    if (typeof stamp === 'object') newData.updatedBy = stamp;
+    if (stamp) { newData.updatedAt = new Date(); }
+    if (typeof stamp === 'object') { newData.updatedBy = stamp; }
 
     if (patch && newData.id) {
       // patch (daten holen, ändern, speichern)
@@ -34,8 +34,8 @@ module.exports = config => {
     }
 
     newData.id = ShortId.generate();
-    if (stamp) newData.createdAt = new Date();
-    if (typeof stamp === 'object') newData.createdBy = stamp;
+    if (stamp) { newData.createdAt = new Date(); }
+    if (typeof stamp === 'object') { newData.createdBy = stamp; }
 
     // insert (neu anlegen)
     return collection.insertOneAsync(newData).then(() =>
@@ -51,11 +51,11 @@ module.exports = config => {
   const list = (kind, { sort, filter, attributes } = {}) => {
     const newAttributes = attributes
       ? attributes.reduce((prev, next) => {
-          const newPrev = prev;
-          newPrev[next] = 1;
+        const newPrev = prev;
+        newPrev[next] = 1;
 
-          return newPrev;
-        }, {})
+        return newPrev;
+      }, {})
       : undefined;
 
     const sortObj = {};
@@ -88,7 +88,7 @@ module.exports = config => {
   };
 
   MongoClient.connect(config.url, (err, db) => {
-    if (err) console.error('Redis error', err);
+    if (err) { console.error('Redis error', err); }
     console.log('Connected correctly to server.');
     returnArgs.client = db;
     returnArgs.db = db;

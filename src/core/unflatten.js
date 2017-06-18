@@ -21,7 +21,7 @@ const unflatten = (
   }
 
   // Rekursion
-  return children.map(item => {
+  return children.map((item) => {
     const path = setPath ? setPath(currentPath, item) : undefined;
 
     return {

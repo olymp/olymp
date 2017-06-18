@@ -1,6 +1,6 @@
 import { message } from 'antd';
 
-export const onError = err => {
+export const onError = (err) => {
   let description;
   if (err && err.message) {
     description = err.message;
@@ -15,12 +15,12 @@ export const onSuccess = (text, description) => {
   message.success(description || text);
 };
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
-export const onEnterFocus = ref => e => {
+export const onEnterFocus = ref => (e) => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   }
   return false;
 };
-export const onEnterOk = onOk => e => {
-  if (e.key === 'Enter') onOk();
+export const onEnterOk = onOk => (e) => {
+  if (e.key === 'Enter') { onOk(); }
 };

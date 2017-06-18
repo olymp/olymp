@@ -17,13 +17,11 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
     `,
     resolvers: {
       Mutation: {
-        reorderPages: (source, args) => {
-          return Promise.all(
+        reorderPages: (source, args) => Promise.all(
             args.ids.map((id, order) =>
               adapter.write('page', { id, order }, { patch: true })
             )
-          );
-        },
+          ),
       },
     },
     hooks: {
@@ -96,12 +94,12 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
   });
 
   setTimeout(() => {
-    if (!adapter.client) return;
+    if (!adapter.client) { return; }
     const collection = adapter.client.collection('page');
     collection
       .findOne({})
-      .then(one => {
-        if (one) return;
+      .then((one) => {
+        if (one) { return; }
         adapter.client.collection('page').insertOne({
           id: require('shortid').generate(),
           name: 'Home',

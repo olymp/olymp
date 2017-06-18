@@ -15,7 +15,7 @@ const List = ({ list, title, location }) => {
       <h2 className="section-title mb-0">{title}</h2>
       <div className="list-group">
         {list.map(item =>
-          <Link
+          (<Link
             className="list-group-item"
             key={item.id}
             to={`/news${item.slug}`}
@@ -31,14 +31,14 @@ const List = ({ list, title, location }) => {
             </b>
             <br />
             {item.name}
-          </Link>
+          </Link>)
         )}
       </div>
     </div>
   );
 };
 const News = ({ item, highlight }) =>
-  <div
+  (<div
     className="gz-panel mb-2"
     style={{ borderBottomRightRadius: '110px', width: '100%' }}
   >
@@ -46,8 +46,8 @@ const News = ({ item, highlight }) =>
       <div>
         {item.bild
           ? <div style={{ float: 'left' }}>
-              <Image container className="mr-1" value={item.bild} width={100} />
-            </div>
+            <Image container className="mr-1" value={item.bild} width={100} />
+          </div>
           : null}
         <h2 className="card-title mb-0 gz-simple-header">{item.name}</h2>
         <small>
@@ -63,8 +63,8 @@ const News = ({ item, highlight }) =>
           </b>
           {item.tags && item.tags.length
             ? <b style={{ float: 'right' }}>
-                {item.tags.join(', ')}
-              </b>
+              {item.tags.join(', ')}
+            </b>
             : null}
         </small>
       </div>
@@ -73,7 +73,7 @@ const News = ({ item, highlight }) =>
         Mehr erfahren
       </Link>
     </div>
-  </div>;
+  </div>);
 
 const fieldNames =
   'id name art slug extrakt date bild { url, crop, width, height } ort tags';
@@ -120,7 +120,7 @@ export default class TermineBlock extends Component {
     const { pathname, query } = location;
     // const src = getData('src');
 
-    if (data.loading || !data.items) return <Spin size="large" />;
+    if (data.loading || !data.items) { return <Spin size="large" />; }
 
     const anstehend = data.items.filter(
       x =>
@@ -156,24 +156,24 @@ export default class TermineBlock extends Component {
               <div>
                 {anstehend.length
                   ? <List
-                      title="Vorträge & Veranstaltungen"
-                      list={anstehend}
-                      location={location}
-                    />
+                    title="Vorträge & Veranstaltungen"
+                    list={anstehend}
+                    location={location}
+                  />
                   : null}
                 {!anstehend.length && zuletzt.length
                   ? <List
-                      title="Vorträge & Veranstaltungen"
-                      list={zuletzt}
-                      location={location}
-                    />
+                    title="Vorträge & Veranstaltungen"
+                    list={zuletzt}
+                    location={location}
+                  />
                   : null}
                 {publikationen.length
                   ? <List
-                      title="Publikationen"
-                      list={publikationen}
-                      location={location}
-                    />
+                    title="Publikationen"
+                    list={publikationen}
+                    location={location}
+                  />
                   : null}
                 {presse.length
                   ? <List title="Presse" list={presse} location={location} />

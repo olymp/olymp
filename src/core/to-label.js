@@ -1,6 +1,6 @@
 import capitalize from 'lodash/upperFirst';
 
-export default x => {
+export default (x) => {
   const uml = x
     .replace(/ae/g, 'ä')
     .replace(/oe/g, 'ö')

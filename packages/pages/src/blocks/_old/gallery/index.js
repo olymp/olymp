@@ -49,7 +49,7 @@ export default class ImagesBlock extends Component {
     };
 
     const imageBlock = (image, i) =>
-      <div
+      (<div
         style={{
           ...styles,
           height: 'auto',
@@ -66,7 +66,7 @@ export default class ImagesBlock extends Component {
             onCancel={() => setData({ showMedia: false })}
             lightbox={!!image}
             onImageClick={
-              !!image
+              image
                 ? ({ showLightbox }) => showLightbox()
                 : () => setData({ showMedia: true })
             }
@@ -77,16 +77,16 @@ export default class ImagesBlock extends Component {
           />
           {auth && auth.user && image && i !== images.length
             ? <figcaption>
-                <a
-                  href="javascript:;"
-                  onClick={() => setData({ images: images.splice(i, 1) })}
-                >
+              <a
+                href="javascript:;"
+                onClick={() => setData({ images: images.splice(i, 1) })}
+              >
                   Entfernen
                 </a>
-              </figcaption>
+            </figcaption>
             : null}
         </figure>
-      </div>;
+      </div>);
 
     return (
       <GenericBlock {...rest}>

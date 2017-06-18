@@ -17,12 +17,12 @@ export default {
   actions: [
     {
       component: ({ setData, getData, ...p }) =>
-        <ImageEdit
+        (<ImageEdit
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', [])}
           multi={false}
-        />,
+        />),
       toggle: () => {},
     },
   ],

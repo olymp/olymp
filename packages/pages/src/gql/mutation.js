@@ -4,7 +4,7 @@ import { onError, onSuccess } from 'olymp-ui';
 const ok = (props, mutate) => () => {
   const { form, item, router, query, flatNavigation } = props;
   form.validateFields((err, values) => {
-    if (err) return onError(err);
+    if (err) { return onError(err); }
     mutate({
       variables: {
         id: item.id,
@@ -12,11 +12,11 @@ const ok = (props, mutate) => () => {
       },
       updateQueries: !item.id
         ? {
-            pageList: (prev, { mutationResult }) => ({
-              ...prev,
-              items: [...prev.items, mutationResult.data.item],
-            }),
-          }
+          pageList: (prev, { mutationResult }) => ({
+            ...prev,
+            items: [...prev.items, mutationResult.data.item],
+          }),
+        }
         : undefined,
     })
       .then(({ data: { item } }) => {

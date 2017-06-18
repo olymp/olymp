@@ -12,7 +12,7 @@ const AuthProfileModal = ({
   extraFields,
   pathname,
 }) =>
-  <Base
+  (<Base
     isOpen={isOpen}
     title="Profil"
     okText="Speichern"
@@ -23,5 +23,5 @@ const AuthProfileModal = ({
     <Modal.Links>
       <AuthProfile.Extra pathname={pathname} />
     </Modal.Links>
-  </Base>;
+  </Base>);
 export default AuthProfile(AuthProfileModal);

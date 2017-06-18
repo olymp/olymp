@@ -34,7 +34,7 @@ export const Container = createComponent(
   ({ deviceWidth, ...p }) => Object.keys(p)
 );
 
-export default ({ auth, theme, modules }) => Wrapped => {
+export default ({ auth, theme, modules }) => (Wrapped) => {
   const filterPublic = pages =>
     pages
       .filter(page => page.state === 'PUBLISHED')
@@ -44,7 +44,7 @@ export default ({ auth, theme, modules }) => Wrapped => {
       }));
 
   // Container for authed users
-  const IfAuth = props => {
+  const IfAuth = (props) => {
     const { query, templates, collections, collectionList, location } = props;
     const collection = collectionList.filter(
       ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
@@ -59,47 +59,47 @@ export default ({ auth, theme, modules }) => Wrapped => {
             <AuthModals />
             <NavigationVertical
               collectionList={collectionList}
-              deviceWidth={query[`@deviceWidth`]}
+              deviceWidth={query['@deviceWidth']}
               {...location}
               location={location}
             />
             <SimpleSwitch>
-              {/*<SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
-              {/*<SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
+              {/* <SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
+              {/* <SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
               <SimpleRoute
-                match={query[`@template`] !== undefined}
+                match={query['@template'] !== undefined}
                 render={() => <TemplateRoute {...props} />}
               />
               <SimpleRoute
                 match={!!collection}
                 render={() =>
-                  <CollectionOldRoute
+                  (<CollectionOldRoute
                     {...props}
                     typeName={collection && collection.name}
                     Wrapped={Wrapped}
-                  />}
+                  />)}
               />
               <SimpleRoute
-                match={query[`@page`] !== undefined}
+                match={query['@page'] !== undefined}
                 render={() =>
                   <EditablePageRoute {...props} Wrapped={Wrapped} />}
               />
               <SimpleRoute
-                match={query[`@media`] !== undefined}
+                match={query['@media'] !== undefined}
                 render={() => <CloudinaryRoute {...props} />}
               />
-              {/*<SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
+              {/* <SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
               <SimpleRoute
-                match={query[`@settings`] !== undefined}
+                match={query['@settings'] !== undefined}
                 render={() => <SettingsRoute {...props} />}
               />
               <SimpleRoute
                 render={() =>
-                  <PageRoute
+                  (<PageRoute
                     {...props}
                     navigation={filterPublic(props.navigation)}
                     Wrapped={Wrapped}
-                  />}
+                  />)}
               />
             </SimpleSwitch>
           </Container>
@@ -109,7 +109,7 @@ export default ({ auth, theme, modules }) => Wrapped => {
   };
 
   // Container for non-authed users
-  const NoAuth = props => {
+  const NoAuth = (props) => {
     const { templates, navigation } = props;
 
     return (
@@ -140,7 +140,7 @@ export default ({ auth, theme, modules }) => Wrapped => {
   class CMS extends Component {
     render() {
       const { auth, navigation } = this.props;
-      /*const routes = flatNavigation.filter(x => x.slug).map(({ id, slug, binding, pageId, bindingId }) => (
+      /* const routes = flatNavigation.filter(x => x.slug).map(({ id, slug, binding, pageId, bindingId }) => (
         <DataRoute key={id} id={pageId || id} bindingId={bindingId} binding={binding} match={pathname === slug} component={PageSidebar} location={location} navigation={navigation} flatNavigation={flatNavigation} />
       ));*/
 

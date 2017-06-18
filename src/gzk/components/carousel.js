@@ -5,27 +5,27 @@ import './carousel.less';
 
 export default class Carousel extends Component {
   renderLeftNav = (onClick, disabled) =>
-    <button
+    (<button
       className="image-gallery-left-nav"
       disabled={disabled}
       onClick={onClick}
     >
       <i className="fa fa-angle-left" />
-    </button>;
+    </button>);
 
   renderRightNav = (onClick, disabled) =>
-    <button
+    (<button
       className="image-gallery-right-nav"
       disabled={disabled}
       onClick={onClick}
     >
       <i className="fa fa-angle-right" />
-    </button>;
+    </button>);
 
   renderPlayPauseButton = (onClick, isPlaying) => null;
 
   renderFullscreenButton = (onClick, isFullscreen) =>
-    <button
+    (<button
       type="button"
       className={cn('image-gallery-play-button', isFullscreen && 'active')}
       onClick={onClick}
@@ -34,7 +34,7 @@ export default class Carousel extends Component {
         className="fa fa-expand"
         style={{ color: 'white', padding: '15px 20px' }}
       />
-    </button>;
+    </button>);
 
   getHeight = width => Math.floor(width / this.props.ratio);
 

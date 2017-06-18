@@ -4,10 +4,10 @@ import { gql, withApollo } from 'olymp';
 import { GoogleMap } from 'olymp-cms-core';
 
 const Marker = ({ lat, lng }) =>
-  <i
+  (<i
     style={{ marginTop: '-20px' }}
     className="fa fa-map-marker fa-2x text-primary"
-  />;
+  />);
 
 const defaultAddress = { lat: 59.724465, lng: 30.080121 };
 const actions = props => [

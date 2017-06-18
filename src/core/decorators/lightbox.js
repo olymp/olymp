@@ -11,7 +11,7 @@ export default ({ getImage } = {}) => WrappedComponent =>
     };
     setImage(props) {
       const image = (getImage || defaultGetImage)(props);
-      if (image) this.context.lightbox.add(this.id, image);
+      if (image) { this.context.lightbox.add(this.id, image); }
     }
     componentWillMount() {
       this.setImage(this.props);
@@ -33,7 +33,7 @@ export default ({ getImage } = {}) => WrappedComponent =>
         <WrappedComponent
           {...this.props}
           onClick={() => {
-            if (onClick) onClick();
+            if (onClick) { onClick(); }
 
             this.context.lightbox.show(this.id);
           }}
@@ -69,7 +69,7 @@ export const useLightbox = WrappedComponent =>
         document.removeEventListener('keydown', this.onKeyDown);
       }
     }
-    onKeyDown = e => {
+    onKeyDown = (e) => {
       const { visible } = this.state;
       const images = Object.keys(this.lightboxes).map(
         key => this.lightboxes[key]
@@ -86,10 +86,10 @@ export const useLightbox = WrappedComponent =>
     add = (ref, image) => {
       this.lightboxes[ref] = image;
     };
-    remove = ref => {
+    remove = (ref) => {
       delete this.lightboxes[ref];
     };
-    show = ref => {
+    show = (ref) => {
       const images = Object.keys(this.lightboxes).map(
         key => this.lightboxes[key]
       );
@@ -107,9 +107,9 @@ export const useLightbox = WrappedComponent =>
       );
       const image = visible ? images[visible] : {};
       const footer = image.caption || image.source
-        ? <span>
-            {image.caption} <span className="source">{image.source}</span>
-          </span>
+        ? (<span>
+          {image.caption} <span className="source">{image.source}</span>
+        </span>)
         : false;
 
       return (
@@ -117,24 +117,24 @@ export const useLightbox = WrappedComponent =>
           {children}
           {visible !== false
             ? <Modal
-                visible
-                width="100xd"
-                className="athena-lightbox"
-                footer={footer}
+              visible
+              width="100xd"
+              className="athena-lightbox"
+              footer={footer}
                 // mainSrc={image.url}
                 // imageTitle={image.caption}
                 // nextSrc={images[(visible + 1) % images.length]}
                 // prevSrc={images[(visible + images.length - 1) % images.length]}
-                onCancel={this.hide}
-              >
-                <img
-                  src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), {
-                    maxWidth: 960,
-                  })}
-                  width="100%"
-                  height="auto"
-                />
-              </Modal>
+              onCancel={this.hide}
+            >
+              <img
+                src={cloudinaryUrl(image.url.replace('.pdf', '.jpg'), {
+                  maxWidth: 960,
+                })}
+                width="100%"
+                height="auto"
+              />
+            </Modal>
             : null}
         </WrappedComponent>
       );

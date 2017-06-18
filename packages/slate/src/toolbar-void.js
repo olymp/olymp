@@ -4,7 +4,7 @@ import { Menu } from 'antd';
 import { sortBy } from 'lodash';
 import addBlock from './utils/add-block';
 
-export default props => {
+export default (props) => {
   const { state, blockTypes, onChange, defaultNode } = props;
   const node = state.blocks.get(0);
   const show = !state.isBlurred && state.isCollapsed && node.isEmpty;
@@ -15,8 +15,8 @@ export default props => {
     ...blockTypes[key].slate,
     type: key,
   }));
-  sortBy(types, ['category', 'label']).forEach(action => {
-    const onMouseDown = e => {
+  sortBy(types, ['category', 'label']).forEach((action) => {
+    const onMouseDown = (e) => {
       e.preventDefault();
       onChange(addBlock(state, action, { defaultNode }));
     };
@@ -28,7 +28,7 @@ export default props => {
       </Menu.Item>
     );
     if (action.category) {
-      if (!categories[action.category]) categories[action.category] = [];
+      if (!categories[action.category]) { categories[action.category] = []; }
       categories[action.category].push(item);
     } else {
       menuItems.push(item);
@@ -38,7 +38,7 @@ export default props => {
   return (
     <Toolbar isOpened={!!show}>
       {Object.keys(categories).map(key =>
-        <Menu.SubMenu
+        (<Menu.SubMenu
           title={
             <Button>
               {key}
@@ -47,7 +47,7 @@ export default props => {
           key={key}
         >
           {categories[key]}
-        </Menu.SubMenu>
+        </Menu.SubMenu>)
       )}
       <Menu.Divider />
       {menuItems}

@@ -57,9 +57,9 @@ export default createComponent(
     },
   }),
   ({ title, children, padding, background, color, bordered, ...rest }) =>
-    <Grid.Item mini={12} {...rest}>
+    (<Grid.Item mini={12} {...rest}>
       <H2 color={background} bordered={bordered}>{title}</H2>
       <div>{children}</div>
-    </Grid.Item>,
+    </Grid.Item>),
   p => Object.keys(p)
 );

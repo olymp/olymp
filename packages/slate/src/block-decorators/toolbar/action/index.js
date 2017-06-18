@@ -5,7 +5,7 @@ import Modal from './modal';
 import Select from './select';
 
 export default class ToolbarAction extends Component {
-  onMouseDown = action => e => {
+  onMouseDown = action => (e) => {
     e.preventDefault();
     action();
   };

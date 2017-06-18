@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const component = props => {
+const component = (props) => {
   // const color = '#DF86A8';
   const { children, page } = props;
   return (

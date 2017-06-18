@@ -5,15 +5,15 @@ import { SimpleRoute } from 'olymp';
 
 // MODAL
 const Modal2 = ({ prefix, exclude = [], ...rest }) =>
-  <div>
+  (<div>
     {Object.keys(Modal)
       .filter(key => exclude.findIndex(x => x === key) === -1)
-      .map(key => {
+      .map((key) => {
         const Komp = Modal[key];
 
         return <Komp prefix={prefix} key={key} {...rest} />;
       })}
-  </div>;
+  </div>);
 Object.keys(Modal).forEach(key => (Modal2[key] = Modal[key]));
 
 // SPLITVIEW

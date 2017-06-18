@@ -26,8 +26,8 @@ export default class MediaList extends Component {
               <Image value={item} width={200} ratio={1} />
               {item.format === 'pdf'
                 ? <span className="label">
-                    <Icon type="file-pdf" />
-                  </span>
+                  <Icon type="file-pdf" />
+                </span>
                 : undefined}
             </div>
           );

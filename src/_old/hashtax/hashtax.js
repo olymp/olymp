@@ -3,18 +3,16 @@ import { throttle, interpolate } from './utils';
 import { textToAst, astToReact } from './processors';
 import connect from './connect';
 
-export default options => {
-  const createTemplate = text => {
+export default (options) => {
+  const createTemplate = (text) => {
     const ast = textToAst(text);
-    const component = ({ children, value, ...props }) => {
-      return (
-        <div>
-          {ast.map(
+    const component = ({ children, value, ...props }) => (
+      <div>
+        {ast.map(
             toReact({ ...props, value, arg0: value, content: children })
           )}
-        </div>
+      </div>
       );
-    };
     component.propTypes = {};
     interpolate(text, v => (component.propTypes[v] = PropTypes.string));
     return component;
@@ -22,11 +20,11 @@ export default options => {
 
   const components = options.components
     ? Object.keys(options.components).reduce((store, key) => {
-        store[key] = typeof options.components[key] === 'string'
+      store[key] = typeof options.components[key] === 'string'
           ? connect(createTemplate(options.components[key]))
           : connect(options.components[key]);
-        return store;
-      }, {})
+      return store;
+    }, {})
     : {};
   const decorators = options.decorators || {};
   const fallback = options.fallback;
@@ -52,7 +50,7 @@ export default options => {
           this.throttler = throttle(newThrottle);
         }
         this.throttler(() => {
-          if (this.unmounting) return;
+          if (this.unmounting) { return; }
           this.forceUpdate();
         });
         return false;
@@ -66,7 +64,7 @@ export default options => {
     }
     render() {
       const { value, className, style, type, ...context } = this.props;
-      if (!value) return null;
+      if (!value) { return null; }
 
       // value to AST
       const ast = textToAst(value);

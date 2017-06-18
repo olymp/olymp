@@ -21,7 +21,7 @@ const defaultComponents = {
   heading4: props => <h4 {...props} />,
   heading5: props => <h5 {...props} />,
   heading6: props => <h6 {...props} />,
-  link: props => {
+  link: (props) => {
     if (props.href.indexOf('/') === 0) {
       return <Link to={props.href} />;
     }
@@ -29,7 +29,7 @@ const defaultComponents = {
   },
 };
 
-export default components => {
+export default (components) => {
   const remarkReactComponents = { ...defaultComponents, ...components };
   return ({ value, ...props }) => {
     const instance = remark()

@@ -3,7 +3,7 @@ import { IFrame } from 'olymp-fela';
 import { Collection } from './views';
 
 const cache = {};
-export default props => {
+export default (props) => {
   const {
     Wrapped,
     collection,
@@ -40,11 +40,11 @@ export default props => {
         router.push({ pathname, query: { ...query, [`@${key}`]: undefined } })}
       pageId={pageId || id}
       render={children =>
-        <IFrame disabled={!deviceWidth}>
+        (<IFrame disabled={!deviceWidth}>
           <Wrapped {...props} match={match}>
             {children}
           </Wrapped>
-        </IFrame>}
+        </IFrame>)}
     />
   );
 };

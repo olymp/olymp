@@ -19,11 +19,11 @@ export default {
   editable: false,
   // Component
   component: ({ getData, ...p }) =>
-    <Image
+    (<Image
       {...p}
       value={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
       width="100%"
-    />,
+    />),
   // Styles
   styles: {
     width: '100%',
@@ -37,12 +37,12 @@ export default {
   actions: [
     {
       component: ({ setData, getData, ...p }) =>
-        <ImageEdit
+        (<ImageEdit
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', [])}
           multi={false}
-        />,
+        />),
       toggle: () => {},
     },
   ],

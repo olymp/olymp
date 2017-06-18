@@ -23,19 +23,19 @@ export const MediaList = ({
   onRemove,
   ...rest
 }) =>
-  <Thumbs {...rest}>
+  (<Thumbs {...rest}>
     {(items || [])
       .map((item, index) =>
-        <Thumb
+        (<Thumb
           item={item}
           onClick={e => onClick(item.id, index, e)}
           onRemove={onRemove ? () => onRemove(item.id) : undefined}
           isActive={selected.findIndex(x => x === item.id) >= 0}
           height={itemHeight}
           key={item.id}
-        />
+        />)
       )}
-  </Thumbs>;
+  </Thumbs>);
 MediaList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   itemHeight: PropTypes.number,

@@ -10,7 +10,7 @@ const MapContainer = createComponent(
     display: 'block',
   }),
   ({ attributes, className }) =>
-    <div className={className}>
+    (<div className={className}>
       <Maps
         center={{ lat: 59.724465, lng: 30.080121 }}
         zoom={1}
@@ -25,7 +25,7 @@ const MapContainer = createComponent(
       >
         <Maps.Marker lat={59.724465} lng={30.080121} />
       </Maps>
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 

@@ -26,7 +26,7 @@ class MdExample extends Component {
   constructor(props) {
     super(props);
   }
-  editor = ref => {
+  editor = (ref) => {
     const cm = ref.getCodeMirror();
     cm.refresh();
   };

@@ -14,11 +14,11 @@ export default createComponent(
     },
   }),
   ({ className, children, buttons }) =>
-    <div className={className}>
+    (<div className={className}>
       {children}
       <div>
         {buttons}
       </div>
-    </div>,
+    </div>),
   p => Object.keys(p)
 );

@@ -146,16 +146,16 @@ export default {
       icon: 'align-left',
       label: 'Stil 1',
       component: ({ setData }) =>
-        <Dropdown
+        (<Dropdown
           overlay={
             <Menu
               onClick={({ key }) => setData({ type: key })}
               style={{ minWidth: 200 }}
             >
               {Object.keys(styles({})).map(key =>
-                <Menu.Item key={key}>
+                (<Menu.Item key={key}>
                   {key}
-                </Menu.Item>
+                </Menu.Item>)
               )}
             </Menu>
           }
@@ -163,7 +163,7 @@ export default {
           <a href="javascript:;">
             Stil
           </a>
-        </Dropdown>,
+        </Dropdown>),
       toggle: ({ setData }) => setData({ type: 'style2' }),
       active: ({ type }) => false,
     },

@@ -45,11 +45,11 @@ export default class AuthProfileForm extends Component {
         Passwort???
         {extraFields
           ? extraFields({
-              layout,
-              getFieldDecorator,
-              state: this.state,
-              setState: this.setState,
-            })
+            layout,
+            getFieldDecorator,
+            state: this.state,
+            setState: this.setState,
+          })
           : null}
       </div>
     );

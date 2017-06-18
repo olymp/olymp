@@ -15,15 +15,9 @@ function attacher({ components, props }) {
     if (match) {
       return match.reduce((state, current) => {
         let [x, y] = current.split('=');
-        if (y && y.indexOf('{') === 0) y = props[y.substr(1).slice(0, -1)];
-        if (y && y.indexOf('"') === 0) y = y.substr(1).slice(0, -1);
-        if (allowed && !allowed[x]) return state;
-        else if (!allowed) state[x] = y;
-        else if (allowed[x] === PropTypes.number)
-          state[x] = y !== null && y !== undefined ? parseInt(y) : null;
-        else if (allowed[x] === PropTypes.bool)
-          state[x] = y === 'true' ? true : y === 'false' ? false : null;
-        else state[x] = y;
+        if (y && y.indexOf('{') === 0) { y = props[y.substr(1).slice(0, -1)]; }
+        if (y && y.indexOf('"') === 0) { y = y.substr(1).slice(0, -1); }
+        if (allowed && !allowed[x]) { return state; } else if (!allowed) { state[x] = y; } else if (allowed[x] === PropTypes.number) { state[x] = y !== null && y !== undefined ? parseInt(y) : null; } else if (allowed[x] === PropTypes.bool) { state[x] = y === 'true' ? true : y === 'false' ? false : null; } else { state[x] = y; }
         return state;
       }, {});
     }
@@ -39,12 +33,12 @@ function attacher({ components, props }) {
         arg = match[3],
         content = match[4],
         end = match[5];
-      if (!arg) return;
-      if (!end) full = full.split('\n')[0];
+      if (!arg) { return; }
+      if (!end) { full = full.split('\n')[0]; }
       const tag = arg.trim().split(' ')[0];
-      if (!components[tag]) return;
-      if (silent) return true;
-      let props = getArgsFromStr(
+      if (!components[tag]) { return; }
+      if (silent) { return true; }
+      const props = getArgsFromStr(
         arg.trim().substr(tag.length + 1),
         components[tag].propTypes
       );
@@ -55,7 +49,7 @@ function attacher({ components, props }) {
         // children: this.tokenizeBlock(content, now)
       });
       eat(start + (content ? LINE : ''));
-      if (!content || !end) return node;
+      if (!content || !end) { return node; }
       const now = eat.now();
       node.children = this.tokenizeBlock(content, now);
       eat(content)(node.children);
@@ -64,12 +58,12 @@ function attacher({ components, props }) {
     }
   }
   function compile(token) {
-    var value = this.block(token);
-    var flag = this.encode(token.size || '', token);
-    var fence = repeat(MARKER, 3);
+    const value = this.block(token);
+    const flag = this.encode(token.size || '', token);
+    const fence = repeat(MARKER, 3);
     return fence + flag + (value ? LINE + value : '') + LINE + fence;
   }
-  var proto = this.Parser.prototype;
+  const proto = this.Parser.prototype;
   // proto.expressions.rules.foo = FOO_EXPRESSION;
   proto.blockTokenizers.react = parse;
   proto.blockMethods.splice(

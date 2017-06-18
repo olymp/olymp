@@ -11,22 +11,14 @@ const addAction = ({ editor, state, node }) => {
   const last = node.nodes.last();
 
   const options = [];
-  if (!prev || prev.type !== 'line')
-    options.push({ label: 'Neuer Paragraph darüber', value: '+<<' });
-  else options.push({ label: 'Paragraph darüber löschen', value: '-<<' });
+  if (!prev || prev.type !== 'line') { options.push({ label: 'Neuer Paragraph darüber', value: '+<<' }); } else { options.push({ label: 'Paragraph darüber löschen', value: '-<<' }); }
 
   if (!node.isVoid) {
-    if (!first || first.type !== 'line')
-      options.push({ label: 'An Anfang', value: '+<' });
-    else options.push({ label: 'Anfang löschen', value: '-<' });
-    if (!last || last.type !== 'line')
-      options.push({ label: 'Ans Ende', value: '+>' });
-    else options.push({ label: 'Ende löschen', value: '->' });
+    if (!first || first.type !== 'line') { options.push({ label: 'An Anfang', value: '+<' }); } else { options.push({ label: 'Anfang löschen', value: '-<' }); }
+    if (!last || last.type !== 'line') { options.push({ label: 'Ans Ende', value: '+>' }); } else { options.push({ label: 'Ende löschen', value: '->' }); }
   }
 
-  if (!next || next.type !== 'line')
-    options.push({ label: 'Neuer Paragraph darunter', value: '+>>' });
-  else options.push({ label: 'Paragraph darunter löschen', value: '->>' });
+  if (!next || next.type !== 'line') { options.push({ label: 'Neuer Paragraph darunter', value: '+>>' }); } else { options.push({ label: 'Paragraph darunter löschen', value: '->>' }); }
 
   return {
     type: 'block.add',
@@ -156,11 +148,11 @@ export default class Toolbar extends Component {
     const { editor, node, readOnly, style, remove, add, move } = this.props;
     const actions = [...this.props.actions];
 
-    if (readOnly) return null;
+    if (readOnly) { return null; }
 
     // Add remove action if (remove = true)
-    if (remove) actions.push(removeAction(this.props));
-    if (add) actions.push(addAction(this.props));
+    if (remove) { actions.push(removeAction(this.props)); }
+    if (add) { actions.push(addAction(this.props)); }
 
     const blockTypes = editor.props.sidebarTypes || [];
     const block = blockTypes.find(({ type }) => type === node.type) || node;
@@ -174,7 +166,7 @@ export default class Toolbar extends Component {
       const element = <Menu.Item key={type}>{label || type}</Menu.Item>;
 
       if (category) {
-        if (!categories[category]) categories[category] = [];
+        if (!categories[category]) { categories[category] = []; }
         categories[category].push(element);
       } else {
         menuItems.push(element);
@@ -184,9 +176,9 @@ export default class Toolbar extends Component {
     const menu = (
       <Menu onClick={this.onChangeType}>
         {Object.keys(categories).map(key =>
-          <Menu.SubMenu title={key} key={key}>
+          (<Menu.SubMenu title={key} key={key}>
             {categories[key].map(item => item)}
-          </Menu.SubMenu>
+          </Menu.SubMenu>)
         )}
         {menuItems.map(item => item)}
       </Menu>

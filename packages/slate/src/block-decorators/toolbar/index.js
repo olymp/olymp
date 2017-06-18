@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Toolbar from './toolbar';
 
-export default (options = {}) => Block => {
+export default (options = {}) => (Block) => {
   const { actions = () => [], remove, move, add } = options;
 
   return class BlockToolbarDecorator extends Component {
@@ -40,14 +40,14 @@ export default (options = {}) => Block => {
         <Block
           {...rest}
           renderToolbar={style =>
-            <Toolbar
+            (<Toolbar
               {...rest}
               style={style}
               actions={[...this.props.actions, ...actions(this.props)]}
               add={add}
               remove={remove}
               move={move}
-            />}
+            />)}
         >
           {children}
         </Block>

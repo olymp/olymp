@@ -9,17 +9,17 @@ import {
 import './nav.less';
 
 const Plus = ({ location, page }) =>
-  <NavLink
+  (<NavLink
     to={{ ...location, query: { '@new-page': page ? page.id : null } }}
     style={{ paddingLeft: 0, paddingRight: 0 }}
     className="item"
     activeClassName="active"
   >
     <i className="fa fa-plus" />
-  </NavLink>;
+  </NavLink>);
 
 const Handle = sortableHandle(() =>
-  <span
+  (<span
     className="grippy"
     style={{
       zIndex: 1,
@@ -29,10 +29,10 @@ const Handle = sortableHandle(() =>
       width: '15px',
       height: '100%',
     }}
-  />
+  />)
 );
 
-const Li = sortableElement(props => {
+const Li = sortableElement((props) => {
   const { renderNav, page, level, readOnly, sortEndCreator, style } = props;
 
   if (page.blocks || !readOnly) {
@@ -59,14 +59,14 @@ const Li = sortableElement(props => {
         {renderNav
           ? renderNav(props)
           : <UlWrapped
-              {...props}
-              className={null}
-              axis="y"
-              useDragHandle
-              onSortEnd={sortEndCreator(page.children)}
-              level={level + 1}
-              items={page.children}
-            />}
+            {...props}
+            className={null}
+            axis="y"
+            useDragHandle
+            onSortEnd={sortEndCreator(page.children)}
+            level={level + 1}
+            items={page.children}
+          />}
       </li>
     );
   }
@@ -85,19 +85,19 @@ const Li = sortableElement(props => {
       {renderNav
         ? renderNav(props)
         : <UlWrapped
-            {...props}
-            className={null}
-            axis="y"
-            useDragHandle
-            onSortEnd={sortEndCreator(page.children)}
-            level={level + 1}
-            items={page.children}
-          />}
+          {...props}
+          className={null}
+          axis="y"
+          useDragHandle
+          onSortEnd={sortEndCreator(page.children)}
+          level={level + 1}
+          items={page.children}
+        />}
     </li>
   );
 });
 
-const Ul = sortableContainer(props => {
+const Ul = sortableContainer((props) => {
   const { items, className, children, location, level, readOnly, page } = props;
 
   return (
@@ -109,30 +109,30 @@ const Ul = sortableContainer(props => {
       {children}
       {!readOnly
         ? <li
-            className="nav-item"
-            style={{
-              textAlign: 'center',
-              width: level
+          className="nav-item"
+          style={{
+            textAlign: 'center',
+            width: level
                 ? '100%'
                 : `${100 / (readOnly ? items.length : items.length + 1)}%`,
-            }}
-          >
-            <Plus location={location} page={page} />
-          </li>
+          }}
+        >
+          <Plus location={location} page={page} />
+        </li>
         : null}
     </ul>
   );
 });
 
-const UlWrapped = props => {
+const UlWrapped = (props) => {
   const { level, readOnly, rollen } = props;
   let { items } = props;
 
   // Personen den Rollen-Seiten zuordnen
   if (props.page && props.page.name === 'Über Uns') {
-    items = (items || []).map(page => {
+    items = (items || []).map((page) => {
       const children = [...(page.children || [])];
-      (rollen[page.name] || []).forEach(person => {
+      (rollen[page.name] || []).forEach((person) => {
         if (children.findIndex(x => x.id === person.id) === -1) {
           children.push({
             id: person.id,
@@ -149,24 +149,23 @@ const UlWrapped = props => {
 
   return (
     <Ul {...props}>
-      {(items || [])
-        .map((page, index) =>
-          <Li
-            {...props}
-            collection={`list${level}`}
-            index={index}
-            key={page.id}
-            page={page}
-            style={
-              !level
-                ? {
-                    width: `${100 /
-                      (readOnly ? items.length : items.length + 1)}%`,
-                  }
-                : {}
-            }
-          />
-        )}
+      {(items || []).map((page, index) =>
+        (<Li
+          {...props}
+          collection={`list${level}`}
+          index={index}
+          key={page.id}
+          page={page}
+          style={
+            !level
+              ? {
+                width: `${100 /
+                    (readOnly ? items.length : items.length + 1)}%`,
+              }
+              : {}
+          }
+        />)
+      )}
     </Ul>
   );
 };

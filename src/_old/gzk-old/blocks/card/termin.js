@@ -127,9 +127,7 @@ export default class GzCardTermin extends Component {
                       art.toLowerCase().replace('presse', 'presseartikel')
                     )}
                     {art.indexOf('P') === 0 ? ' vom ' : ' am '}
-                    {moment(date)
-                      .utcOffset('+01:00')
-                      .format('DD. MMMM YYYY')}{' '}
+                    {moment(date).utcOffset('+01:00').format('DD. MMMM YYYY')}{' '}
                     <small>
                       {moment(date)
                         .utcOffset('+01:00')

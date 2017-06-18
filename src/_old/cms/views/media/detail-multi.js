@@ -10,18 +10,18 @@ const FormItemLayout = {
   style: { marginBottom: '0' },
 };
 
-const MediaForm = Form.create()(props => {
+const MediaForm = Form.create()((props) => {
   const { images = [], form, save, remove, onClose } = props;
   const { getFieldDecorator } = form;
 
   const tags = {};
   let source;
-  images.forEach(image => {
-    if (source === undefined) source = image.source;
+  images.forEach((image) => {
+    if (source === undefined) { source = image.source; }
     source = image.source === source && source;
 
-    (image.tags || []).forEach(tag => {
-      if (!tags[tag]) tags[tag] = 0;
+    (image.tags || []).forEach((tag) => {
+      if (!tags[tag]) { tags[tag] = 0; }
       tags[tag] += 1;
     });
   });
@@ -79,7 +79,7 @@ export default class MultiMediaDetail extends Component {
           .then(() => {
             onClose();
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
           });
       },
@@ -99,7 +99,7 @@ export default class MultiMediaDetail extends Component {
       content: 'Vorherige Schlagworte oder Quellen werden damit überschrieben!',
       onOk() {
         form.validateFields((err, { tags, source }) => {
-          if (err) return;
+          if (err) { return; }
           setLoading(true);
 
           Promise.all(
@@ -114,7 +114,7 @@ export default class MultiMediaDetail extends Component {
             .then(() => {
               onClose();
             })
-            .catch(err => {
+            .catch((err) => {
               console.error(err);
             });
         });
@@ -142,11 +142,11 @@ export default class MultiMediaDetail extends Component {
           {loading
             ? <Spin size="large" />
             : <MediaForm
-                {...this.props}
-                ref={form => (this.form = form)}
-                save={this.save}
-                remove={this.remove}
-              />}
+              {...this.props}
+              ref={form => (this.form = form)}
+              save={this.save}
+              remove={this.remove}
+            />}
         </div>
 
         <ListMini {...this.props} />

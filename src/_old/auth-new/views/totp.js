@@ -28,12 +28,12 @@ export default class AuthTotp extends Component {
     const { auth, onClose, onOk, form, data } = this.props;
     const enabled = data.totp && data.totp.enabled;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       if (enabled) {
         auth
           .totpConfirm(data.totp.token)
           .then(() => {
-            onSuccess('Gespeichert', `2-Faktor Authentifizierung deaktiviert`);
+            onSuccess('Gespeichert', '2-Faktor Authentifizierung deaktiviert');
             onClose();
           })
           .catch(onError);
@@ -41,7 +41,7 @@ export default class AuthTotp extends Component {
         auth
           .totpConfirm(data.totp.token, values.token)
           .then(() => {
-            onSuccess('Gespeichert', `2-Faktor Authentifizierung aktiviert`);
+            onSuccess('Gespeichert', '2-Faktor Authentifizierung aktiviert');
             onClose();
           })
           .catch(onError);

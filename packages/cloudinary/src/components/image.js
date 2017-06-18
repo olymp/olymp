@@ -37,7 +37,7 @@ class Img extends Component {
     );
   }
 }
-/*const Img = ({ src, children, maxSize, style, className, ...rest }) => (
+/* const Img = ({ src, children, maxSize, style, className, ...rest }) => (
   <Image
     cloudName={src.url.split('http://res.cloudinary.com/')[1].split('/')[0]}
     publicId={src.id}

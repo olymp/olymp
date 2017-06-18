@@ -31,10 +31,10 @@ export default ({ files, onImageChange, client, refetch }) => {
     .then(({ body }) => {
       body.id = body.public_id;
       notification.close(key);
-      if (refetch) refetch({ token: cloudinary.signature });
-      if (onImageChange) onImageChange(body);
+      if (refetch) { refetch({ token: cloudinary.signature }); }
+      if (onImageChange) { onImageChange(body); }
     })
-    .catch(err => {
+    .catch((err) => {
       notification.close(key);
       console.error(err);
     });

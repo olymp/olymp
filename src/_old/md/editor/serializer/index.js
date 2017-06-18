@@ -17,9 +17,9 @@ function deserialize(string, options = {}) {
     nodes: text !== undefined ? [getInnerTextNode(text)] : [],
   });
   const nodes = [];
-  const deserializeNode = line => {
-    //const split = line.match(/#[A-Za-z0-9]([A-Za-z0-9 -])+[A-Za-z0-9]#/g);
-    //split.forEach();
+  const deserializeNode = (line) => {
+    // const split = line.match(/#[A-Za-z0-9]([A-Za-z0-9 -])+[A-Za-z0-9]#/g);
+    // split.forEach();
     const node = getTextNode();
     const split = line.split('{').forEach((x, i) => {
       if (x.indexOf('}') !== -1) {
@@ -55,8 +55,8 @@ function deserialize(string, options = {}) {
 function gather(state, filter) {
   const nodes = [];
   function runner(node, level = 0) {
-    if (filter(node, level)) nodes.push(node);
-    if (node.nodes) node.nodes.map(node => runner(node, level++));
+    if (filter(node, level)) { nodes.push(node); }
+    if (node.nodes) { node.nodes.map(node => runner(node, level++)); }
   }
   state.document.nodes.map(runner);
   return nodes;
@@ -64,13 +64,13 @@ function gather(state, filter) {
 function getNode(state, criteria) {
   let found;
   function runner(nodes) {
-    nodes.some(node => {
+    nodes.some((node) => {
       if (criteria(node)) {
         found = node;
         return true;
       } else if (node.nodes) {
         runner(node.nodes);
-        if (found) return true;
+        if (found) { return true; }
       }
       return false;
     });
@@ -80,13 +80,13 @@ function getNode(state, criteria) {
 }
 
 function serializeNode(node) {
-  if (node.nodes) return node.nodes.map(serializeNode).join('\n');
+  if (node.nodes) { return node.nodes.map(serializeNode).join('\n'); }
   return node.text;
 }
 
 function serialize(state) {
   return state.document.nodes.map(serializeNode).join('\n');
-  /*return state.document.nodes
+  /* return state.document.nodes
     .map(block => block.text)
     .join('\n')*/
 }

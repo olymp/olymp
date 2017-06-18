@@ -10,18 +10,18 @@ const data = { email: 'bkniffler@me.com', password: 'asd', realm: 'admn' };
 const register = payload =>
   handler
     .auth(
-      {
-        method: 'register',
-        payload: Object.assign(
+    {
+      method: 'register',
+      payload: Object.assign(
           payload,
-          {
+        {
             // _noEmail: true
-          }
+        }
         ),
-      },
+    },
       {}
     )
-    .then(x => {
+    .then((x) => {
       console.log('register ok');
       return x;
     });
@@ -29,17 +29,17 @@ const register = payload =>
 const login = (password, realm) => payload =>
   handler
     .auth(
-      {
-        method: 'login',
-        payload: {
-          email: payload.user.email,
-          password: password,
-          realm: realm,
-        },
+    {
+      method: 'login',
+      payload: {
+        email: payload.user.email,
+        password,
+        realm,
       },
+    },
       {}
     )
-    .then(x => {
+    .then((x) => {
       console.log('login ok');
       return x;
     });
@@ -47,28 +47,27 @@ const login = (password, realm) => payload =>
 const verify = payload =>
   handler
     .auth(
-      {
-        method: 'verify',
-        payload: {
-          token: payload.token,
-        },
+    {
+      method: 'verify',
+      payload: {
+        token: payload.token,
       },
+    },
       {}
     )
-    .then(x => {
+    .then((x) => {
       console.log('verify ok');
       return x;
     });
 
-const checkConfirmAfterRegister = payload => {
-  if (payload.user.confirmed !== false)
-    throw new Error('Confirmed is not false');
+const checkConfirmAfterRegister = (payload) => {
+  if (payload.user.confirmed !== false) { throw new Error('Confirmed is not false'); }
   console.log('check-confirm-after-register ok');
   return payload;
 };
 
-const checkConfirmAfterConfirm = payload => {
-  if (payload.user.confirmed !== true) throw new Error('Confirmed is not true');
+const checkConfirmAfterConfirm = (payload) => {
+  if (payload.user.confirmed !== true) { throw new Error('Confirmed is not true'); }
   console.log('check-confirm-after-confirm ok');
   return payload;
 };
@@ -76,15 +75,15 @@ const checkConfirmAfterConfirm = payload => {
 const confirm = payload =>
   handler
     .auth(
-      {
-        method: 'confirm',
-        payload: {
-          token: payload.token,
-        },
+    {
+      method: 'confirm',
+      payload: {
+        token: payload.token,
       },
+    },
       {}
     )
-    .then(x => {
+    .then((x) => {
       console.log('authenticate ok');
       return x;
     });

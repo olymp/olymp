@@ -3,14 +3,14 @@ const fs = require('fs');
 const path = require('path');
 
 const defaultHook = (source, args, context) => {
-  if (!context.user) throw new Error('Must be authenticated');
+  if (!context.user) { throw new Error('Must be authenticated'); }
   return Promise.resolve(args);
 };
 
 const regenerateSitemap = () =>
   new Promise((yay, nay) => {
     const generator = new SitemapGenerator(process.env.URL);
-    generator.on('done', sitemap => {
+    generator.on('done', (sitemap) => {
       yay(
         sitemap
           .split('%C3%A4')
@@ -34,9 +34,8 @@ const regenerateSitemap = () =>
   });
 const writeSitemap = sitemap =>
   new Promise((yay, nay) => {
-    fs.writeFile(path.resolve(KYT.PUBLIC_DIR, 'sitemap.xml'), sitemap, err => {
-      if (err) nay(err);
-      else yay(true);
+    fs.writeFile(path.resolve(KYT.PUBLIC_DIR, 'sitemap.xml'), sitemap, (err) => {
+      if (err) { nay(err); } else { yay(true); }
     });
   });
 

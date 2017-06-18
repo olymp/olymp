@@ -18,31 +18,29 @@ const Styled = createComponent(
       marginTop: -6,
     },
   }),
-  ({ collectionTree, location, auth, className }) => {
-    return (
-      <Dropdown
-        overlay={
-          <CmsAction
-            collections={collectionTree}
-            {...location}
-            location={location}
-            auth={auth}
-          />
+  ({ collectionTree, location, auth, className }) => (
+    <Dropdown
+      overlay={
+        <CmsAction
+          collections={collectionTree}
+          {...location}
+          location={location}
+          auth={auth}
+        />
         }
-        overlayClassName="ant-dropdown-left"
-        placement="bottomLeft"
+      overlayClassName="ant-dropdown-left"
+      placement="bottomLeft"
+    >
+      <Button
+        type="primary"
+        shape="circle"
+        size="large"
+        className={className}
       >
-        <Button
-          type="primary"
-          shape="circle"
-          size="large"
-          className={className}
-        >
-          <img src="/logo.png" alt="Olymp CMS" />
-        </Button>
-      </Dropdown>
-    );
-  },
+        <img src="/logo.png" alt="Olymp CMS" />
+      </Button>
+    </Dropdown>
+    ),
   p => Object.keys(p)
 );
 

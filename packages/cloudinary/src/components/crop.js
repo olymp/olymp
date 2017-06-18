@@ -24,7 +24,7 @@ const StyledCrop = createComponent(
   p => Object.keys(p)
 );
 
-export const CropSelect = props => {
+export const CropSelect = (props) => {
   const { value, onChange, style } = props;
 
   return (
@@ -72,12 +72,12 @@ class Crop extends Component {
           crop={
             crop
               ? {
-                  width: crop[0] / width * 100,
-                  height: crop[1] / height * 100,
-                  x: crop[2] / width * 100,
-                  y: crop[3] / height * 100,
-                  aspect,
-                }
+                width: crop[0] / width * 100,
+                height: crop[1] / height * 100,
+                x: crop[2] / width * 100,
+                y: crop[3] / height * 100,
+                aspect,
+              }
               : { aspect }
           }
         />

@@ -10,7 +10,7 @@ const actions = props => [
       const { setData, getData } = props;
       const current = getData('text');
       const text = window.prompt('Text', current);
-      if (text) setData({ text });
+      if (text) { setData({ text }); }
     },
     active: false,
   },
@@ -21,7 +21,7 @@ const actions = props => [
       const { setData, getData } = props;
       const current = getData('description');
       const description = window.prompt('Beschreibung', current);
-      if (description) setData({ description });
+      if (description) { setData({ description }); }
     },
     active: false,
   },

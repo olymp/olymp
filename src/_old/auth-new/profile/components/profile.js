@@ -3,7 +3,7 @@ import { withAuth } from 'olymp';
 import { Form } from 'antd';
 import { onError, onSuccess } from '../../views/base';
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @withAuth
   @Form.create()
   class AuthProfile extends Component {
@@ -11,7 +11,7 @@ export default WrappedComponent => {
       const { auth, onClose, form } = this.props;
 
       form.validateFields((err, values) => {
-        if (err) return onError(err);
+        if (err) { return onError(err); }
 
         const user = { ...auth.user, ...values };
         delete user.__typename;

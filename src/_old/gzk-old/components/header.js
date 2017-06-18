@@ -23,9 +23,9 @@ class Menu extends Component {
   };
   renderUtil = (fn, props) => {
     const x = fn && fn(props);
-    if (x) return x;
+    if (x) { return x; }
   };
-  renderPlus = props => {
+  renderPlus = (props) => {
     const { location, page, renderPlus } = props;
     const to = { ...location, query: { '@page': page ? page.id : null } };
     const style = { paddingLeft: 0, paddingRight: 0 };
@@ -36,7 +36,7 @@ class Menu extends Component {
       </Link>
     );
   };
-  renderHandle = props => {
+  renderHandle = (props) => {
     const { location, renderHandle } = props;
     const style = {
       zIndex: 1,
@@ -100,7 +100,7 @@ class Menu extends Component {
       sortEndCreator,
       renderMenu,
     } = this.props;
-    if (!page) return null;
+    if (!page) { return null; }
     return (
       <SortContainer
         onSortEnd={sortEndCreator(page.children)}
@@ -138,8 +138,8 @@ class Menu extends Component {
               )}
             {!disabled
               ? <li className="nav-item" style={{ margin: 0 }}>
-                  {this.renderPlus({ ...this.props })}
-                </li>
+                {this.renderPlus({ ...this.props })}
+              </li>
               : null}
             {children}
           </ul>}

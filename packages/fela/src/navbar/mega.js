@@ -9,14 +9,14 @@ const SuperNav = createComponent(
     width: 700,
   }),
   ({ className, pages, inverse }) =>
-    <div className={className}>
+    (<div className={className}>
       <Grid size={pages.length}>
         {pages.map(({ id, name, children }, i) =>
-          <Grid.Item small={1} key={id || i}>
+          (<Grid.Item small={1} key={id || i}>
             <Column>
               <Title pathname="/" inverse={inverse}>{name}</Title>
               {children.map((child, cI) =>
-                <Item key={child.id || cI}>
+                (<Item key={child.id || cI}>
                   <Link2 to={child.pathname} inverse={inverse}>
                     {child.name}
                   </Link2>
@@ -24,22 +24,22 @@ const SuperNav = createComponent(
                     !!child.children.length &&
                     <SubMenu>
                       {child.children.map((c, ccI) =>
-                        <Link2
+                        (<Link2
                           to={c.pathname}
                           inverse={inverse}
                           key={c.id || ccI}
                         >
                           {c.name}
-                        </Link2>
+                        </Link2>)
                       )}
                     </SubMenu>}
-                </Item>
+                </Item>)
               )}
             </Column>
-          </Grid.Item>
+          </Grid.Item>)
         )}
       </Grid>
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 SuperNav.displayName = 'Navbar.Mega';

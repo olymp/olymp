@@ -30,7 +30,7 @@ const getFormSchema = ({ fields }) =>
         // Group
         const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
 
-        if (!result.tabs[group]) result.tabs[group] = [];
+        if (!result.tabs[group]) { result.tabs[group] = []; }
         result.tabs[group].push(field);
       }
       return result;

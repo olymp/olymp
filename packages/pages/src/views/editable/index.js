@@ -14,7 +14,7 @@ import Page from '../page';
 export default class PageSidebar extends Component {
   state = { tab: 0 };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     if (
       (props.query['@page'] !== this.props.query['@page'] ||
         props.query.parent !== this.props.query.parent) &&
@@ -42,7 +42,7 @@ export default class PageSidebar extends Component {
       this.props.item || flatNavigation.find(page => page.slug === '/');
 
     const value = query['@page'] || item.id;
-    if (value === 'new') item = { parentId: query.parent, type: 'PAGE' };
+    if (value === 'new') { item = { parentId: query.parent, type: 'PAGE' }; }
 
     const leftButtons = (
       <Button.Group>
@@ -58,20 +58,20 @@ export default class PageSidebar extends Component {
       </Button.Group>
     );
     const rightButtons = form.isFieldsTouched()
-      ? <Button.Group>
-          <Sidebar.Button onClick={save} shape="circle" icon="save" />
-        </Button.Group>
-      : <Button.Group>
-          <Sidebar.Button
-            onClick={() =>
+      ? (<Button.Group>
+        <Sidebar.Button onClick={save} shape="circle" icon="save" />
+      </Button.Group>)
+      : (<Button.Group>
+        <Sidebar.Button
+          onClick={() =>
               router.push({
                 pathname,
                 query: { ...query, '@page': 'new', parent: item.id },
               })}
-            shape="circle"
-            icon="plus"
-          />
-        </Button.Group>;
+          shape="circle"
+          icon="plus"
+        />
+      </Button.Group>);
     const title = value === 'new' ? 'Neue Seite' : item.name;
     const description = value === 'new'
       ? 'Neue Seite erstellen'

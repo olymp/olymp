@@ -21,9 +21,9 @@ const Label = createComponent(
     },
   }),
   ({ className, children }) =>
-    <div className={className}>
+    (<div className={className}>
       {children}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 

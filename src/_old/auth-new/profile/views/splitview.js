@@ -11,7 +11,7 @@ const AuthProfileSplitView = ({
   pathname,
   deviceWidth,
 }) =>
-  <SplitView deviceWidth={deviceWidth}>
+  (<SplitView deviceWidth={deviceWidth}>
     <Sidebar title="links" subtitle="links">
       <List.Item
         to={{ pathname, query: { '@totp': null } }}
@@ -35,5 +35,5 @@ const AuthProfileSplitView = ({
     >
       <AuthProfile.Form form={form} extraFields={extraFields} auth={auth} />
     </Sidebar>
-  </SplitView>;
+  </SplitView>);
 export default AuthProfile(AuthProfileSplitView);

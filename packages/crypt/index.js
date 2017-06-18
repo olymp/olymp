@@ -1,6 +1,6 @@
 export const encrypt = (data, key) => {
   const stringifySafe = require('json-stringify-safe');
-  if (!data || Object.keys(data).length === 0) return null;
+  if (!data || Object.keys(data).length === 0) { return null; }
   let result = stringifySafe(data);
   if (data && key) {
     const AES = require('crypto-js/aes');
@@ -13,7 +13,7 @@ export const encrypt = (data, key) => {
   return result;
 };
 export const decrypt = (data, key) => {
-  if (!data) return null;
+  if (!data) { return null; }
   let result = data;
   if (data && key) {
     const AES = require('crypto-js/aes');

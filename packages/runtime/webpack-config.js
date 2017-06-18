@@ -21,7 +21,7 @@ process.noDeprecation = true;
 
 module.exports = ({ mode, target, port, devPort, ssr }) => {
   const isSSR = ssr !== false;
-  if (!isSSR) console.log('SSR OFF');
+  if (!isSSR) { console.log('SSR OFF'); }
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
@@ -297,7 +297,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           filename: 'offline.html',
           template: path.resolve(__dirname, target, 'template.js'),
           inject: false,
-          /*minify: {
+          /* minify: {
           removeComments: true,
           collapseWhitespace: true,
           removeRedundantAttributes: true,
@@ -338,7 +338,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           filename: 'index.html',
           template: path.resolve(__dirname, target, 'template.js'),
           inject: false,
-          /*minify: {
+          /* minify: {
           removeComments: true,
           collapseWhitespace: true,
           removeRedundantAttributes: true,
@@ -526,7 +526,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       include: babel.include,
       loaders: ['happypack/loader?id=babel'],
     });
-    /*config.module.rules.push({
+    /* config.module.rules.push({
       test: /\.svg$/,
       loaders: [
         'happypack/loader?id=babel', {
@@ -538,7 +538,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     });*/
   } else {
     config.module.rules.push(babel);
-    /*config.module.rules.push({
+    /* config.module.rules.push({
       test: /\.svg$/,
       loaders: [{
         loader: babel.loader,

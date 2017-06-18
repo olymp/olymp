@@ -8,7 +8,7 @@ export default {
   category: 'Collections',
   editable: false,
   component: ({ attributes, getData, ...props }) =>
-    <Container {...attributes}>
+    (<Container {...attributes}>
       <Grid>
         <Grid.Item medium={8}>
           <Panel
@@ -47,7 +47,7 @@ export default {
           <Tag>Fitness</Tag>
         </Grid.Item>
       </Grid>
-    </Container>,
+    </Container>),
 };
 
 const Image = createComponent(

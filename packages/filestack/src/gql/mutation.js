@@ -1,7 +1,7 @@
 import { gql, graphql } from 'olymp';
 import { onError, onSuccess } from 'olymp-ui';
 
-const transform = image => {
+const transform = (image) => {
   const newImage = {
     createdById: null,
     state: !image.state ? 'PUBLISHED' : image.state,
@@ -12,7 +12,7 @@ const transform = image => {
     source: null,
   };
 
-  Object.keys(image).forEach(key => {
+  Object.keys(image).forEach((key) => {
     switch (key) {
       case 'originalPath':
         break;
@@ -54,13 +54,13 @@ const ok = (item, mutate) => {
     },
     updateQueries: !item.id || item.state === 'REMOVED'
       ? {
-          fileStackList: (prev, { mutationResult }) => ({
-            ...prev,
-            items: !item.id
+        fileStackList: (prev, { mutationResult }) => ({
+          ...prev,
+          items: !item.id
               ? { ...prev.items, item }
               : prev.items.filter(i => i.id !== mutationResult.data.item.id),
-          }),
-        }
+        }),
+      }
       : undefined,
   })
     .then(({ data: { item } }) => {

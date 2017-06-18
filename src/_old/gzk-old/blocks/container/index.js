@@ -10,7 +10,7 @@ import {
 @useGenericBlock({
   label: 'Kontainer',
   editable: true,
-  /*resize: {
+  /* resize: {
     coverOnResize: true,
   },*/
   actions: props => [

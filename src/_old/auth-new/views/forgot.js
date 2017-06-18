@@ -16,13 +16,13 @@ export default class AuthForgot extends Component {
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       auth
         .forgot(values.email)
         .then(({ name }) => {
           onSuccess(
             'E-Mail abgeschickt',
-            `Bitte bestätigen Sie die Zurücksetzung`
+            'Bitte bestätigen Sie die Zurücksetzung'
           );
           onOk({ email: values.email });
         })

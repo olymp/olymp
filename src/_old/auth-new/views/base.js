@@ -20,7 +20,7 @@ const def = (
   },
   { theme }
 ) =>
-  <Modal
+  (<Modal
     showLogo={showLogo !== false}
     isOpen={isOpen}
     title={title}
@@ -41,14 +41,14 @@ const def = (
         {theme.copyright || 'made with ❤ by olymp'}
       </Link>
     </Modal.Copyright>
-  </Modal>;
+  </Modal>);
 def.contextTypes = {
   theme: React.PropTypes.object,
 };
 
 export default def;
 
-export const onError = err => {
+export const onError = (err) => {
   let description;
   if (err && err.message) {
     description = err.message;
@@ -72,13 +72,13 @@ export const onSuccess = (message, description) => {
 
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
-export const onEnterFocus = ref => e => {
+export const onEnterFocus = ref => (e) => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   }
   return false;
 };
 
-export const onEnterOk = onOk => e => {
-  if (e.key === 'Enter') onOk();
+export const onEnterOk = onOk => (e) => {
+  if (e.key === 'Enter') { onOk(); }
 };

@@ -13,12 +13,13 @@ const send = (options, argsOrFn) => {
     To: args.to,
     Subject: args.subject,
   };
-  if (args.markdown)
+  if (args.markdown) {
     body.HtmlBody = md.toHTML(
       args.markdown.split('\n').map(x => x.trim()).join('\n'),
       args
     );
-  if (args.plain) body.TextBody = args.plain;
+  }
+  if (args.plain) { body.TextBody = args.plain; }
   return fetch('https://api.postmarkapp.com/email', {
     method: 'POST',
     body: JSON.stringify(body),
@@ -55,7 +56,5 @@ const send = (options, argsOrFn) => {
     },
   });*/
 };
-const createSender = options => args => {
-  return send(options, args);
-};
+const createSender = options => args => send(options, args);
 module.exports = createSender;

@@ -28,19 +28,19 @@ export default class CMSMenu extends Component {
         }}
         onClick={this.handleClick}
       >
-        {Object.keys(collections).map(key => {
+        {Object.keys(collections).map((key) => {
           const wrapper = children =>
-            <Menu.SubMenu key={key} title={capitalize(key)}>
+            (<Menu.SubMenu key={key} title={capitalize(key)}>
               {children}
-            </Menu.SubMenu>;
+            </Menu.SubMenu>);
           const groupItem = (collections[key] || []).map(({ name, title }) =>
-            <Menu.Item key={`/@/${name}`}>
+            (<Menu.Item key={`/@/${name}`}>
               <Link
                 to={{ pathname, query: { [`@${uncapitalize(name)}`]: null } }}
               >
                 {capitalize(title || name)}
               </Link>
-            </Menu.Item>
+            </Menu.Item>)
           );
 
           return collections[key].length === 1 ? groupItem : wrapper(groupItem);

@@ -23,7 +23,7 @@ const fieldNames =
 })
 export default class BlockEinrichtungen extends Component {
   state = {};
-  onClick = e => {
+  onClick = (e) => {
     e.preventDefault();
     const { setData } = this.props;
     setData({ src: '...' });
@@ -35,7 +35,7 @@ export default class BlockEinrichtungen extends Component {
     this.setState({ hover: item.einrichtungId || item.id });
   };
   renderImage = (item, size) =>
-    <div className="pl-1 pr-1 gz-height-250" key={item.id}>
+    (<div className="pl-1 pr-1 gz-height-250" key={item.id}>
       <Image
         onImageClick={() => this.props.router.push(item.slug)}
         value={item.peak}
@@ -53,8 +53,8 @@ export default class BlockEinrichtungen extends Component {
           {item.name}
         </Link>
       </Image>
-    </div>;
-  renderItem = item => {
+    </div>);
+  renderItem = (item) => {
     const style = {};
     if (this.state.hover === (item.einrichtungId || item.id)) {
       style.color = item.farbe || '#8EBC45';

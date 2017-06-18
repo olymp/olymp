@@ -17,14 +17,14 @@ export default class AuthLogin extends Component {
   ok = () => {
     const { auth, onClose, form, onTotp } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       auth
         .login(values.email, values.password, values.totp)
         .then(({ name }) => {
           onSuccess('Anmeldung erfolgreich', `Wilkommen, ${name}`);
           onClose();
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.message.indexOf('Please provide a totp token') !== -1) {
             onTotp();
           } else {

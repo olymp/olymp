@@ -10,7 +10,7 @@ class SelectionSidebar extends Component {
     const id = item.id;
 
     form.validateFields((err, input) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       mutate({
         variables: {
           id,
@@ -18,11 +18,11 @@ class SelectionSidebar extends Component {
         },
         updateQueries: !id
           ? {
-              [`${type}List`]: (prev, { mutationResult }) => ({
-                ...prev,
-                items: [...prev.items, mutationResult.data.item],
-              }),
-            }
+            [`${type}List`]: (prev, { mutationResult }) => ({
+              ...prev,
+              items: [...prev.items, mutationResult.data.item],
+            }),
+          }
           : undefined,
       })
         .then(({ data: { item } }) => {

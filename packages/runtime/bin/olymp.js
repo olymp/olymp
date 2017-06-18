@@ -14,7 +14,7 @@ env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const command = process.argv[process.argv.length - 1];
 
-/*const exists = (p, throwError) => {
+/* const exists = (p, throwError) => {
   const doesExist = fs.existsSync(path.resolve(appRootDir.get(), `${p}.js`)) || fs.existsSync(path.resolve(appRootDir.get(), p, 'index.js'));
   if (!doesExist && throwError) throw new Error(`${p} not found in your root dir!`);
   else if (!doesExist) console.log(`${p} not found in your root dir!`);
@@ -59,7 +59,7 @@ if (command === 'dev') {
     createConfig({ target: 'web', mode: 'development', port, devPort }),
   ]);
   compiler.compilers[0].watch({ aggregateTimeout: 300 }, (err, compilation) => {
-    if (err) return console.log('[webpack] error:', err);
+    if (err) { return console.log('[webpack] error:', err); }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
     stats.forEach(c => console.log(c.toString()));

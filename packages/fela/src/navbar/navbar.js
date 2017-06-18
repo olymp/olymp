@@ -35,12 +35,12 @@ const Navbar = createComponent(
     },
   }),
   ({ className, brand, logo, children, pages, container, ...props }) =>
-    <nav className={className}>
+    (<nav className={className}>
       <WithContainer container={container}>
         {brand
           ? <Brand {...props} renderItem={renderItem} renderNav={renderNav}>
-              {brand}
-            </Brand>
+            {brand}
+          </Brand>
           : null}
         {logo ? <Logo vertically={props.vertically}>{logo}</Logo> : null}
 
@@ -60,7 +60,7 @@ const Navbar = createComponent(
           cloneElement(child, { ...props, renderItem, renderNav })
         )}
       </WithContainer>
-    </nav>,
+    </nav>),
   p => Object.keys(p)
 );
 Navbar.displayName = 'Navbar';

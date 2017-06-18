@@ -26,7 +26,7 @@ export default class Artikel extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;
     const readOnly = !auth.user || auth.user.einrichtung;
-    if (!item) return <Spin size="large" />;
+    if (!item) { return <Spin size="large" />; }
 
     const meta = [
       {
@@ -35,58 +35,58 @@ export default class Artikel extends Component {
           item.extrakt || 'Ein neuer Artikel in unserem Gesundheitsmagazin!',
       },
     ];
-    if (item.peak) meta.push({ property: 'og:image', content: item.peak.url });
+    if (item.peak) { meta.push({ property: 'og:image', content: item.peak.url }); }
     // style="border-bottom-right-radius:130px;200px;"
     return (
       <div>
         <Helmet title={item.name} meta={meta} />
         {!readOnly
           ? <Gateway into="button1">
-              <a href="javascript:;" onClick={save}>
+            <a href="javascript:;" onClick={save}>
                 Artikel speichern
               </a>
-            </Gateway>
+          </Gateway>
           : null}
         {!readOnly
           ? <Gateway into="button2">
-              <Link to={{ ...location, query: { '@Artikel': item.id } }}>
+            <Link to={{ ...location, query: { '@Artikel': item.id } }}>
                 Artikel bearbeiten
               </Link>
-            </Gateway>
+          </Gateway>
           : null}
         <style>{getStyle(item.farbe || '#FFA210')}</style>
         {item.bild
           ? <Image
-              height={400}
-              lightbox
-              onImageClick={({ showLightbox }) => showLightbox()}
-              showMediathek={false}
-              container="div"
-              value={item.bild}
-              className="gz-image-box"
+            height={400}
+            lightbox
+            onImageClick={({ showLightbox }) => showLightbox()}
+            showMediathek={false}
+            container="div"
+            value={item.bild}
+            className="gz-image-box"
+          >
+            <div
+              className="gz-image-content"
+              style={{ backgroundColor: item.farbe }}
             >
-              <div
-                className="gz-image-content"
-                style={{ backgroundColor: item.farbe }}
-              >
-                <h1>{item.name}</h1>
-                <p>{item.extrakt}</p>
-              </div>
-            </Image>
+              <h1>{item.name}</h1>
+              <p>{item.extrakt}</p>
+            </div>
+          </Image>
           : <div className="page-header panel">
-              <div className="container">
-                <h1 className="pull-left">{item.name}</h1>
-                <ol className="breadcrumb pull-left">
-                  <li>
-                    <a href="/">Home</a>
-                  </li>
-                  <li className="active">
-                    {item.name}
-                    {item.extrakt}
-                  </li>
-                </ol>
-              </div>
-            </div>}
+            <div className="container">
+              <h1 className="pull-left">{item.name}</h1>
+              <ol className="breadcrumb pull-left">
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li className="active">
+                  {item.name}
+                  {item.extrakt}
+                </li>
+              </ol>
+            </div>
+          </div>}
         <div className="container">
           <div className="row">
             <aside className="col-sm-4" />

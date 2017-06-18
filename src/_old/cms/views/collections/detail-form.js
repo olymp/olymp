@@ -45,12 +45,12 @@ export default class CollectionDetailForm extends Component {
           {Object.keys(schema.tabs).length === 1
             ? <Form {...form} fields={schema.tabs.Allgemein} item={item} />
             : <Tabs tabPosition="right">
-                {Object.keys(schema.tabs).map(key =>
-                  <Tabs.TabPane tab={key} key={key}>
+              {Object.keys(schema.tabs).map(key =>
+                  (<Tabs.TabPane tab={key} key={key}>
                     <Form {...form} fields={schema.tabs[key]} item={item} />
-                  </Tabs.TabPane>
+                  </Tabs.TabPane>)
                 )}
-              </Tabs>}
+            </Tabs>}
         </div>
       </div>
     );

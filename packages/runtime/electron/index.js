@@ -23,7 +23,10 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
-let client, mountNode, container, renderer;
+let client,
+  mountNode,
+  container,
+  renderer;
 function renderApp() {
   return render(
     <AppContainer>

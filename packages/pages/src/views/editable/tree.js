@@ -69,7 +69,7 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
-  getNodeIcon = item => {
+  getNodeIcon = (item) => {
     if (item.sorting && item.sorting[0] === '+') {
       return <Badge type="arrow-up" tooltip="Austeigend sortiert" />;
     } else if (item.sorting && item.sorting[0] === '-') {
@@ -91,7 +91,7 @@ class Pages extends Component {
   };
 
   loop = (data, parent) =>
-    data.map(item => {
+    data.map((item) => {
       const { query } = this.props;
       const children = item.children && item.children.length
         ? this.loop(item.children, item)
@@ -200,9 +200,9 @@ const Button = createComponent(
     },
   }),
   ({ className, to, type }) =>
-    <Link to={to} className={className}>
+    (<Link to={to} className={className}>
       <Icon type={type} />
-    </Link>,
+    </Link>),
   p => Object.keys(p)
 );
 
@@ -218,10 +218,10 @@ const Badge = createComponent(
     },
   }),
   ({ className, type, tooltip }) =>
-    <Tooltip title={tooltip}>
+    (<Tooltip title={tooltip}>
       <a href="javascript:;" className={className}>
         <Icon type={type} />
       </a>
-    </Tooltip>,
+    </Tooltip>),
   p => Object.keys(p)
 );

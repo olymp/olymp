@@ -46,33 +46,32 @@ export default class UploadModal extends Component {
     !this.props.data.cloudinaryRequest
       ? {}
       : {
-          showUploadList: true,
-          data: {
-            api_key: this.props.data.cloudinaryRequest.apiKey,
-            signature: this.props.data.cloudinaryRequest.signature,
-            timestamp: this.props.data.cloudinaryRequest.timestamp,
-          },
-          action: this.props.data.cloudinaryRequest.url,
-          onChange: info => {
-            if (info.file.status === 'uploading') {
-              this.setState({ uploading: true });
-            } else if (info.file.status === 'done') {
-              const file = info.file.response;
-              file.id = file.public_id;
-              this.props
+        showUploadList: true,
+        data: {
+          api_key: this.props.data.cloudinaryRequest.apiKey,
+          signature: this.props.data.cloudinaryRequest.signature,
+          timestamp: this.props.data.cloudinaryRequest.timestamp,
+        },
+        action: this.props.data.cloudinaryRequest.url,
+        onChange: (info) => {
+          if (info.file.status === 'uploading') {
+            this.setState({ uploading: true });
+          } else if (info.file.status === 'done') {
+            const file = info.file.response;
+            file.id = file.public_id;
+            this.props
                 .done({
                   id: file.id,
                   token: this.props.data.cloudinaryRequest.signature,
                 })
                 .then(() => {
-                  if (this.props.onSave) this.props.onSave(file);
-                  else this.setState({ uploading: false });
+                  if (this.props.onSave) { this.props.onSave(file); } else { this.setState({ uploading: false }); }
                 });
-            } else if (info.file.status === 'error') {
-              console.log('error');
-            }
-          },
-        };
+          } else if (info.file.status === 'error') {
+            console.log('error');
+          }
+        },
+      };
 
   handleCancel = () => {
     this.props.onClose();
@@ -82,7 +81,7 @@ export default class UploadModal extends Component {
     const { save, onClose } = this.props;
     const form = this.form;
     form.validateFields((err, values) => {
-      if (err) return;
+      if (err) { return; }
       save(values, { commit: false }).then(onClose);
     });
   };
@@ -109,14 +108,14 @@ export default class UploadModal extends Component {
     );
     return modal
       ? <Modal
-          {...modalSettings}
-          title="Upload"
-          onCancel={onClose}
-          onOk={onClose}
-          footer={[]}
-        >
-          {inner}
-        </Modal>
+        {...modalSettings}
+        title="Upload"
+        onCancel={onClose}
+        onOk={onClose}
+        footer={[]}
+      >
+        {inner}
+      </Modal>
       : inner;
   }
 }

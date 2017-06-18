@@ -38,7 +38,7 @@ const transformASTTypeToInput = (
           copy.name.value = newName;
           break;
         case Kind.FIELD_DEFINITION:
-          if (exclude.indexOf(node.name.value) !== -1) return null; // Delete this node
+          if (exclude.indexOf(node.name.value) !== -1) { return null; } // Delete this node
           copy.kind = Kind.INPUT_VALUE_DEFINITION;
           const fieldName = copy.name.value;
           let typeName = null;

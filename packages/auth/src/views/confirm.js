@@ -31,11 +31,11 @@ export default class AuthConfirm extends Component {
   ok = () => {
     const { auth, onOk, form, token } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       auth
         .confirm(token)
         .then(({ email }) => {
-          onSuccess('Konto bestätigt', `Sie können sich jetzt anmelden`);
+          onSuccess('Konto bestätigt', 'Sie können sich jetzt anmelden');
           onOk({ email });
         })
         .catch(onError);

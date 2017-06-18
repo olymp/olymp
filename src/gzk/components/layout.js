@@ -10,9 +10,9 @@ export const Header = createComponent(
     },
   }),
   ({ children, className }) =>
-    <Layout.Header className={className} container>
+    (<Layout.Header className={className} container>
       {children}
-    </Layout.Header>,
+    </Layout.Header>),
   p => Object.keys(p)
 );
 

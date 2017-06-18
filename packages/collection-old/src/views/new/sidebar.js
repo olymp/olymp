@@ -5,13 +5,13 @@ import { Panel, SectionH, List } from 'olymp-ui';
 import { createComponent, border } from 'olymp-fela';
 
 class PageForm extends Component {
-  handleNameChange = e => {
+  handleNameChange = (e) => {
     // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
   };
-  handleTypeChange = e => {
+  handleTypeChange = (e) => {
     // set slug if unset
     const { form } = this.props;
     if (e === 'MENU') {
@@ -40,12 +40,12 @@ class PageForm extends Component {
         <TabPane tab="Navigation" key="0">
           <Panel>
             {items.map(item =>
-              <List.Item
+              (<List.Item
                 active={item.id === id}
                 label={item.name}
                 onClick={() => onClick(item)}
                 key={item.id}
-              />
+              />)
             )}
           </Panel>
         </TabPane>

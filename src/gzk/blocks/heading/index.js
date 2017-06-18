@@ -48,9 +48,9 @@ const Header = createComponent(
     },
   }),
   ({ className, children, ...rest }) =>
-    <div className={className}>
+    (<div className={className}>
       <Content {...rest}>{children}</Content>
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 
@@ -59,7 +59,7 @@ export default {
   category: 'Kopfleiste',
   editable: true,
   component: ({ attributes, children }) =>
-    <Header {...attributes}>
+    (<Header {...attributes}>
       {children}
-    </Header>,
+    </Header>),
 };

@@ -54,7 +54,7 @@ export default createComponent(
     },
   }),
   ({ className, title, size, bordered, ...p }) =>
-    <Grid.Item
+    (<Grid.Item
       mini={12}
       medium={size}
       className={className}
@@ -63,6 +63,6 @@ export default createComponent(
     >
       <H2 bordered={bordered}>{title}</H2>
       <Carousel slideInterval={7500} ratio={0.33 * size} {...p} />
-    </Grid.Item>,
+    </Grid.Item>),
   p => Object.keys(p)
 );

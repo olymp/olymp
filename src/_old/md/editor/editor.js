@@ -5,8 +5,8 @@ import createTrailingBlock from './plugin-trailing-block';
 
 export default class SlateEditor extends Component {
   fetch(value) {
-    if (!this.props.suggestions) return Promise.resolve([]);
-    return new Promise(yay => {
+    if (!this.props.suggestions) { return Promise.resolve([]); }
+    return new Promise((yay) => {
       yay(
         this.props.suggestions.filter(
           x => x.key.toLowerCase().indexOf(value.toLowerCase()) !== -1

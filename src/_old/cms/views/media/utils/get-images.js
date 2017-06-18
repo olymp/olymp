@@ -1,5 +1,5 @@
 export default (files, { color, text, tag }) =>
-  files.filter(item => {
+  files.filter((item) => {
     if (color && (item.palette || []).indexOf(color) === -1) {
       return false;
     } else if (tag && (item.tags || []).indexOf(tag) === -1) {

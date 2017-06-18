@@ -7,7 +7,7 @@ export default {
   category: 'Panel',
   editable: false,
   component: ({ className, attributes }) =>
-    <Container {...attributes} className={className}>
+    (<Container {...attributes} className={className}>
       <Panel medium={4} title="Vorsorge" bordered="Vorsorge">
         Wir bieten eine Fülle an Präventionsleistungen auf allen Fachgebieten
         an. Hierbei handelt es sich um vorbeugenden Maßnahmen die dazu dienen,
@@ -32,5 +32,5 @@ export default {
           allowFullScreen
         />
       </Panel>
-    </Container>,
+    </Container>),
 };

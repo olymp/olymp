@@ -10,8 +10,8 @@ const getFunc = (ast, directives, resolvers, hooks, throwOnMissing) => (
 ) => {
   if (node.directives && node.directives.length) {
     let current = node;
-    node.directives.forEach(directive => {
-      if (!current) return;
+    node.directives.forEach((directive) => {
+      if (!current) { return; }
       const directiveName = directive.name.value;
       if (directiveName in directives) {
         const staticFunctions = directives[directiveName].resolveStatic;
@@ -29,10 +29,9 @@ const getFunc = (ast, directives, resolvers, hooks, throwOnMissing) => (
               resolvers,
             })
           );
-          if (typeof ret !== typeof undefined) current = ret;
+          if (typeof ret !== typeof undefined) { current = ret; }
         }
-      } else if (throwOnMissing)
-        throw new Error(`Unknown directive '${directiveName}'`);
+      } else if (throwOnMissing) { throw new Error(`Unknown directive '${directiveName}'`); }
     });
     return current;
   }
@@ -40,12 +39,10 @@ const getFunc = (ast, directives, resolvers, hooks, throwOnMissing) => (
 };
 
 module.exports = (ast, directives, resolvers, hooks, throwOnMissing = true) => {
-  Object.keys(directives).forEach(key => {
+  Object.keys(directives).forEach((key) => {
     const directiveHooks = directives[key] && directives[key].hooks;
-    if (directiveHooks && directiveHooks.before)
-      hooks.before.push(directiveHooks.before);
-    if (directiveHooks && directiveHooks.after)
-      hooks.after.push(directiveHooks.after);
+    if (directiveHooks && directiveHooks.before) { hooks.before.push(directiveHooks.before); }
+    if (directiveHooks && directiveHooks.after) { hooks.after.push(directiveHooks.after); }
   });
 
   const func = getFunc(ast, directives, resolvers, hooks, throwOnMissing);

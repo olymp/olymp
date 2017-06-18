@@ -25,11 +25,11 @@ const Toggler = createComponent(
     },
   }),
   ({ className, children, ...props }) =>
-    <div className={className}>
+    (<div className={className}>
       <Button {...props} />
 
       {Children.map(children, child => cloneElement(child, props))}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 export default Toggler;
@@ -47,9 +47,9 @@ const Button = createComponent(
     },
   }),
   ({ className, inverse }) =>
-    <button className={className}>
+    (<button className={className}>
       <Icon inverse={inverse} />
-    </button>,
+    </button>),
   ['inverse']
 );
 
@@ -59,8 +59,8 @@ const Icon = createComponent(
     fill: inverse ? theme.light : theme.color,
   }),
   ({ className }) =>
-    <svg className={className} width={20} height={20} viewBox="0 0 1792 1792">
+    (<svg className={className} width={20} height={20} viewBox="0 0 1792 1792">
       <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z" />
-    </svg>,
+    </svg>),
   p => Object.keys(p)
 );

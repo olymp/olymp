@@ -13,7 +13,7 @@ const ParentSelect = ({
   form,
   ...rest
 }) =>
-  <Form.Item key={field} label={label} {...layout}>
+  (<Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: item ? item[field] : initialValue,
       rules: getRules(rules, label),
@@ -25,6 +25,6 @@ const ParentSelect = ({
         {...rest}
       />
     )}
-  </Form.Item>;
+  </Form.Item>);
 ParentSelect.defaultProps = { layout };
 export default ParentSelect;
