@@ -3,7 +3,7 @@ import { createComponent } from 'react-fela';
 
 export const purify = (Wrapped, types) => {
   if (types) Wrapped.propTypes = types;
-  const propTypes = Object.keys(Wrapped.propTypes || {}).map(x => x);
+  const propTypes = Object.keys(Wrapped.propTypes || {}).map(x => x);
 
   class FinalComponent extends Component {
     static contextTypes = {
@@ -17,26 +17,30 @@ export const purify = (Wrapped, types) => {
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
       const filteredProps = getPropTypes(propTypes, this.props);
-      const shouldUpdate = !shallowEqual(this.filteredProps, filteredProps) ||
+      const shouldUpdate =
+        !shallowEqual(this.filteredProps, filteredProps) ||
         !shallowEqual(this.context, nextContext);
       if (!shouldUpdate) return false;
       this.filteredProps = filteredProps;
       return true;
     }
     render() {
-      return <Wrapped {...this.filteredProps} />
+      return <Wrapped {...this.filteredProps} />;
     }
-  } return FinalComponent;
+  }
+  return FinalComponent;
 };
 
 const getPropTypes = (propTypes, props) => {
   const newProps = {};
-  Object.keys(props).forEach(key => { if(propTypes.indexOf(key) !== -1) newProps[key] = props[key] });
+  Object.keys(props).forEach(key => {
+    if (propTypes.indexOf(key) !== -1) newProps[key] = props[key];
+  });
   return newProps;
-}
+};
 export const pureStyled = (styles, Wrapped, types) => {
   if (types) Wrapped.propTypes = types;
-  const propTypes = Object.keys(Wrapped.propTypes || {}).map(x => x);
+  const propTypes = Object.keys(Wrapped.propTypes || {}).map(x => x);
   const Styled = createComponent(styles, Wrapped, propTypes);
 
   class FinalComponent extends Component {
@@ -51,16 +55,18 @@ export const pureStyled = (styles, Wrapped, types) => {
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
       const filteredProps = getPropTypes(propTypes, this.props);
-      const shouldUpdate = !shallowEqual(this.filteredProps, filteredProps) ||
+      const shouldUpdate =
+        !shallowEqual(this.filteredProps, filteredProps) ||
         !shallowEqual(this.context, nextContext);
       if (!shouldUpdate) return false;
       this.filteredProps = filteredProps;
       return true;
     }
     render() {
-      return <Styled {...this.filteredProps} />
+      return <Styled {...this.filteredProps} />;
     }
-  } return FinalComponent;
+  }
+  return FinalComponent;
 };
 
 function shallowEqual(objA, objB) {
@@ -68,7 +74,12 @@ function shallowEqual(objA, objB) {
     return true;
   }
 
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+  if (
+    typeof objA !== 'object' ||
+    objA === null ||
+    typeof objB !== 'object' ||
+    objB === null
+  ) {
     return false;
   }
 

@@ -69,8 +69,13 @@ export const offline = ({ styles, scripts }) => `
     <meta name="msapplication-TileColor" content="#FBA139">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#FBA139">
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`)}
-    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
+    ${styles.map(
+      style =>
+        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
+    )}
+    ${styles.map(
+      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
+    )}
     <style id="css-markup"></style>
   </head>
   <body>
@@ -107,7 +112,9 @@ export const electron = ({ styles, scripts }) => `
     <meta name="msapplication-TileColor" content="#FBA139">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#FBA139">
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
+    ${styles.map(
+      style => `<link rel="stylesheet" type="text/css" href="${style}">`
+    )}
     <style id="css-markup"></style>
     <style>
       body {
@@ -126,7 +133,17 @@ export const electron = ({ styles, scripts }) => `
 </html>
 `;
 
-export default ({ helmet, cssMarkup, styles, scripts, root, initialState, asyncState, gaTrackingId, segmentKey }) => `
+export default ({
+  helmet,
+  cssMarkup,
+  styles,
+  scripts,
+  root,
+  initialState,
+  asyncState,
+  gaTrackingId,
+  segmentKey,
+}) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -155,18 +172,26 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, asyncS
     ${helmet.title.toString()}
     ${helmet.meta.toString()}
     ${helmet.link.toString()}
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`)}
-    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
+    ${styles.map(
+      style =>
+        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
+    )}
+    ${styles.map(
+      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
+    )}
     <style id="css-markup">${cssMarkup || ''}</style>
-    ${segmentKey ? `
+    ${segmentKey
+      ? `
       <script type="text/javascript">
         !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
         analytics.load('${segmentKey}');
         analytics.page();
         }}();
       </script>
-    ` : ''}
-    ${gaTrackingId ? `<script type="text/javascript">
+    `
+      : ''}
+    ${gaTrackingId
+      ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -185,12 +210,17 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, asyncS
 
       ga('create', '${gaTrackingId}', 'auto');
       ga('send', 'pageview');
-    </script>` : ''}
+    </script>`
+      : ''}
   </head>
   <body>
     <div id="app"><div>${root}</div></div>
-    <script type='text/javascript'>window.INITIAL_DATA=${serialize(initialState)}</script>
-    <script type='text/javascript'>window.ASYNC_STATE=${serialize(asyncState)}</script>
+    <script type='text/javascript'>window.INITIAL_DATA=${serialize(
+      initialState
+    )}</script>
+    <script type='text/javascript'>window.ASYNC_STATE=${serialize(
+      asyncState
+    )}</script>
     <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
     <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
     ${scripts.map(script => `<script async src="${script}"></script>`)}

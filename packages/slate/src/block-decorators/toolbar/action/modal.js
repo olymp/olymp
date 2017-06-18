@@ -18,7 +18,7 @@ export default class ToolbarActionModal extends Component {
     } else {
       toggle(value);
     }
-  }
+  };
 
   renderTable = (options = [], multi, exception) => {
     const { toggle } = this.props;
@@ -36,7 +36,7 @@ export default class ToolbarActionModal extends Component {
       return {
         key: value,
         name: label,
-        ...rest
+        ...rest,
       };
     });
     if (attributes.disabled) delete attributes.disabled;
@@ -48,15 +48,18 @@ export default class ToolbarActionModal extends Component {
       dataIndex: key,
     }));
 
-    const rowSelection = multi ? {
-      type: 'select',
-      selectedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => this.changeSelection(selectedRows, modus),
-    } : {
-      type: 'radio',
-      selectedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows[0]),
-    };
+    const rowSelection = multi
+      ? {
+          type: 'select',
+          selectedRowKeys,
+          onChange: (selectedRowKeys, selectedRows) =>
+            this.changeSelection(selectedRows, modus),
+        }
+      : {
+          type: 'radio',
+          selectedRowKeys,
+          onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows[0]),
+        };
     rowSelection.getCheckboxProps = record => ({
       disabled: record.disabled,
     });
@@ -77,16 +80,34 @@ export default class ToolbarActionModal extends Component {
     if (exception) tableProps.title = () => 'Mit Ausnahme von';
 
     return <Table {...tableProps} />;
-  }
+  };
 
   render() {
-    const { toggle, type, active, icon, separated, options, exceptions, right, multi, label } = this.props;
+    const {
+      toggle,
+      type,
+      active,
+      icon,
+      separated,
+      options,
+      exceptions,
+      right,
+      multi,
+      label,
+    } = this.props;
     const { modal } = this.state;
 
     return (
       <div key={type}>
         <Tooltip placement="top" overlay={<span>{label}</span>}>
-          <Button key={type} type="ghost" size="small" className={classNames('slate-toolbar-button', { separated, right })} onClick={() => this.setState({ modal: { ...modal, [type]: true } })} data-active={active}>
+          <Button
+            key={type}
+            type="ghost"
+            size="small"
+            className={classNames('slate-toolbar-button', { separated, right })}
+            onClick={() => this.setState({ modal: { ...modal, [type]: true } })}
+            data-active={active}
+          >
             <i className={`fa fa-${icon}`} />
           </Button>
         </Tooltip>

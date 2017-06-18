@@ -1,9 +1,13 @@
-const convertGeocode = (result) => {
-  const newResult = { };
-  (result.address_components || []).forEach((component) => {
-    component.types.forEach((type) => {
-      const newType = type.split('_')
-        .map((frag, i) => i > 0 ? `${frag[0].toUpperCase()}${frag.substr(1)}` : frag) // eslint-disable-line
+const convertGeocode = result => {
+  const newResult = {};
+  (result.address_components || []).forEach(component => {
+    component.types.forEach(type => {
+      const newType = type
+        .split('_')
+        .map(
+          (frag, i) =>
+            i > 0 ? `${frag[0].toUpperCase()}${frag.substr(1)}` : frag
+        ) // eslint-disable-line
         .join('');
       newResult[newType] = component.long_name;
       newResult[`${newType}Short`] = component.short_name;
@@ -33,10 +37,14 @@ module.exports = (schema, { config } = {}) => {
     `,
     resolvers: {
       Query: {
-        geocode: (source, args) => maps('geocode', args)
-          .then(result => result.json.results.map(convertGeocode)[0]),
-        geocodeList: (source, args) => maps('geocode', args)
-          .then(result => result.json.results.map(convertGeocode)),
+        geocode: (source, args) =>
+          maps('geocode', args).then(
+            result => result.json.results.map(convertGeocode)[0]
+          ),
+        geocodeList: (source, args) =>
+          maps('geocode', args).then(result =>
+            result.json.results.map(convertGeocode)
+          ),
       },
     },
     schema: `

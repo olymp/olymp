@@ -27,21 +27,23 @@ export default ({
     throttled = () => {
       if (throttleProp) {
         this.setState({ [throttleProp]: this.state[prop] });
-      } if (onThrottle) {
+      }
+      if (onThrottle) {
         onThrottle({ ...this.props, ...this.state });
       }
-    }
+    };
     shouldComponentUpdate(newProps, newState) {
       if (!handleUpdate) return true;
-      if (newState[prop] !== this.state[prop]) {
+      if (newState[prop] !== this.state[prop]) {
         return true;
-      } return false;
+      }
+      return false;
     }
     componentWillReceiveProps(newProps) {
-      if (newProps[prop] !== this.props[prop]) {
+      if (newProps[prop] !== this.props[prop]) {
         const newState = {
           [prop]: newProps[prop],
-        }
+        };
         if (throttleProp) newState[throttleProp] = newProps[prop];
         return this.setState(newState);
       }
@@ -53,10 +55,11 @@ export default ({
           this.throttled();
         }
       }, cooldown || 500);
-    }
+    };
     render() {
       const state = { ...this.state, [`set${capitalize(prop)}`]: this.set };
       return <WrappedComponent {...this.props} {...state} />;
     }
-  } return WithStateComponent;
+  }
+  return WithStateComponent;
 };

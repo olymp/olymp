@@ -1,9 +1,9 @@
 const cloudinary = require('cloudinary');
 const lodash = require('lodash');
 
-const transform = (image) => {
+const transform = image => {
   const newImage = {};
-  Object.keys(image).forEach((key) => {
+  Object.keys(image).forEach(key => {
     if (key === 'public_id') {
       newImage.id = image.public_id;
       return;
@@ -33,58 +33,76 @@ const transform = (image) => {
   return newImage;
 };
 
-const transformSignature = ({ cloud_name }, { signature, api_key, timestamp }) => ({
+const transformSignature = (
+  { cloud_name },
+  { signature, api_key, timestamp }
+) => ({
   url: `https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, // eslint-disable-line
   signature,
   timestamp,
   apiKey: api_key,
 });
 
-const getImages = (config, images = [], nextCursor) => new Promise((yay, nay) => {
-  cloudinary.api.resources((result) => {
-    if (result.error) return nay(result.error);
+const getImages = (config, images = [], nextCursor) =>
+  new Promise((yay, nay) => {
+    cloudinary.api.resources(
+      result => {
+        if (result.error) return nay(result.error);
 
-    // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
-    const results = result.resources && result.resources.length
-        ? images.concat(result.resources.map(transform))
-        : [];
+        // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
+        const results = result.resources && result.resources.length
+          ? images.concat(result.resources.map(transform))
+          : [];
 
-      // Falls noch weitere Bilder in Mediathek sind, diese auch laden
-    if (result.next_cursor) {
-      console.error('WARNING, MORE THAN 500 IMAGES!');
-      return getImages(config, results, result.next_cursor).then(yay);
-    } return yay(results);
-  }, Object.assign({}, config, {
-    tags: true,
-    context: true,
-    type: 'upload',
-    colors: true,
-    max_results: 500,
-    next_cursor: nextCursor,
-  }));
-});
+        // Falls noch weitere Bilder in Mediathek sind, diese auch laden
+        if (result.next_cursor) {
+          console.error('WARNING, MORE THAN 500 IMAGES!');
+          return getImages(config, results, result.next_cursor).then(yay);
+        }
+        return yay(results);
+      },
+      Object.assign({}, config, {
+        tags: true,
+        context: true,
+        type: 'upload',
+        colors: true,
+        max_results: 500,
+        next_cursor: nextCursor,
+      })
+    );
+  });
 
 const getImageById = (config, id) =>
   new Promise(yay =>
     cloudinary.api.resource(
       id,
-      (result) => {
+      result => {
         yay(transform(result));
-      }, Object.assign({}, config, {
+      },
+      Object.assign({}, config, {
         tags: true,
         context: true,
         type: 'upload',
         colors: true,
         pages: true,
         //prefix: ''
-      }))
+      })
+    )
   );
 
 const getSignedRequest = config =>
   new Promise(yay =>
-    yay(transformSignature(config, cloudinary.utils.sign_request({
-      timestamp: Math.round(new Date().getTime() / 1000),
-    }, config)))
+    yay(
+      transformSignature(
+        config,
+        cloudinary.utils.sign_request(
+          {
+            timestamp: Math.round(new Date().getTime() / 1000),
+          },
+          config
+        )
+      )
+    )
   );
 
 const updateImage = (id, tags, source, caption, config, removed) => {
@@ -102,11 +120,15 @@ const updateImage = (id, tags, source, caption, config, removed) => {
     context.push('removed=true');
   }
 
-  return new Promise((yay) => {
-    cloudinary.api.update(id, result => yay(transform(result)), Object.assign({}, config, {
-      tags: (tags || []).join(','),
-      context: context.join('|'),
-    }));
+  return new Promise(yay => {
+    cloudinary.api.update(
+      id,
+      result => yay(transform(result)),
+      Object.assign({}, config, {
+        tags: (tags || []).join(','),
+        context: context.join('|'),
+      })
+    );
   });
 };
 
@@ -135,28 +157,39 @@ module.exports = (schema, { uri, adapter } = {}) => {
     `,
     resolvers: {
       Query: {
-        file: (source, args) => adapter.db.collection('file').findOne({ id: args.id }).then((item) => {
-          if (item) return item;
-          return getImageById(config, args.id).then((image) => {
-            adapter.db.collection('file').updateOne({ id: args.id }, image, { upsert: true }).catch(err => console.error(err));
-            return image;
-          });
-        }),
+        file: (source, args) =>
+          adapter.db.collection('file').findOne({ id: args.id }).then(item => {
+            if (item) return item;
+            return getImageById(config, args.id).then(image => {
+              adapter.db
+                .collection('file')
+                .updateOne({ id: args.id }, image, { upsert: true })
+                .catch(err => console.error(err));
+              return image;
+            });
+          }),
         fileList: (source, { tags }) => {
-          const getFiltered = items => tags // eslint-disable-line
-            ? items.filter(item => lodash.intersection(tags, item.tags).length > 0)
-            : items;
+          const getFiltered = items =>
+            tags // eslint-disable-line
+              ? items.filter(
+                  item => lodash.intersection(tags, item.tags).length > 0
+                )
+              : items;
 
-          return getImages(config).then((images) => {
+          return getImages(config).then(images => {
             const filtered = getFiltered(images.filter(x => !x.removed));
             Promise.all(
-              filtered.map(item => adapter.db.collection('file').updateOne({ id: item.id }, item, { upsert: true }))
+              filtered.map(item =>
+                adapter.db
+                  .collection('file')
+                  .updateOne({ id: item.id }, item, { upsert: true })
+              )
             ).catch(err => console.error(err));
             return filtered;
           });
         },
         cloudinaryRequest: () =>
-          getSignedRequest(config).then((signed) => {
+          getSignedRequest(config).then(signed => {
             invalidationTokens.push(signed.signature);
             return signed;
           }),
@@ -187,7 +220,10 @@ module.exports = (schema, { uri, adapter } = {}) => {
         },
         cloudinaryRequestDone: (source, args) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
-            invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
+            invalidationTokens.splice(
+              invalidationTokens.indexOf(args.token),
+              1
+            );
             return getImageById(config, args.id).then(image => {
               console.log('IMAGE', image, args);
               return image;
@@ -236,7 +272,8 @@ module.exports = (schema, { uri, adapter } = {}) => {
 
 exports.testEndpoint = (config = {}) => (req, res) => {
   res.send(`
-    <form action="${config.endpoint || '/upload'}" method="post" enctype="multipart/form-data">
+    <form action="${config.endpoint ||
+      '/upload'}" method="post" enctype="multipart/form-data">
       <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>

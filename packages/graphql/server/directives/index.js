@@ -16,8 +16,12 @@ export default ({ adapter, resolvers }) => ({
         addInputTypes(node.name.value, ast);
 
         // Find Query object in AST
-        const Query = ast.definitions.find(x => x.name && x.name.value === 'Query');
-        const Mutation = ast.definitions.find(x => x.name && x.name.value === 'Mutation');
+        const Query = ast.definitions.find(
+          x => x.name && x.name.value === 'Query'
+        );
+        const Mutation = ast.definitions.find(
+          x => x.name && x.name.value === 'Mutation'
+        );
         if (Query && Mutation) {
           // Get name of decorated type
           const name = node.name.value;
@@ -35,17 +39,15 @@ export default ({ adapter, resolvers }) => ({
           `).definitions;
 
           // Iterate over queries
-          definitions[0].fields.forEach((field) => {
+          definitions[0].fields.forEach(field => {
             // Add to AST
             Query.fields.push(field);
             // Create resolvers for queries
             const isList = field.type.kind === 'ListType';
-            resolvers.Query[field.name.value] = isList
-              ? list(name)
-              : one(name);
+            resolvers.Query[field.name.value] = isList ? list(name) : one(name);
           });
           // Iterate over mutations
-          definitions[1].fields.forEach((field) => {
+          definitions[1].fields.forEach(field => {
             // Add to AST
             Mutation.fields.push(field);
             // Create resolvers for mutations
@@ -99,14 +101,23 @@ export default ({ adapter, resolvers }) => ({
     },
     hooks: {
       before: (args, { model, type, returnType }, { ast }) => {
-        if (type === 'QUERY' && returnType.toString().indexOf('[') === 0 && hasDirective(ast, model, 'state')) {
-          const query = (args.query || {});
+        if (
+          type === 'QUERY' &&
+          returnType.toString().indexOf('[') === 0 &&
+          hasDirective(ast, model, 'state')
+        ) {
+          const query = args.query || {};
           if (!query.state) {
             query.state = { eq: 'PUBLISHED' };
             args.query = query;
           }
           return args;
-        } else if (type === 'MUTATION' && args.input && !args.input.state && !args.id) {
+        } else if (
+          type === 'MUTATION' &&
+          args.input &&
+          !args.input.state &&
+          !args.id
+        ) {
           args.input.state = 'DRAFT';
           return args;
         }
@@ -136,7 +147,8 @@ export default ({ adapter, resolvers }) => ({
     },
   },
   // Field
-  relation: { // aggregation
+  relation: {
+    // aggregation
     name: 'relation',
     description: 'Marks a type as a relative.',
     resolveStatic: {
@@ -160,23 +172,33 @@ export default ({ adapter, resolvers }) => ({
 
           // one-to-many property set (parent -> [children])
           if (directive.arguments.length > 0) {
-            const property = directive.arguments.find(x => x.name.value === 'property');
-            const relationType = directive.arguments.find(x => x.name.value === 'type');
+            const property = directive.arguments.find(
+              x => x.name.value === 'property'
+            );
+            const relationType = directive.arguments.find(
+              x => x.name.value === 'type'
+            );
             if (property && relationType && relationType.value.value) {
               const relIsList = relationType.value.value === 'one-to-many';
-              const propType = relIsList ? parse(`
+              const propType = relIsList
+                ? parse(`
                 type ___Field {
                   ${property.value.value}: [${parentName}]
                 }
-              `).definitions[0] : parse(`
+              `).definitions[0]
+                : parse(`
                 type ___Field {
                   ${property.value.value}: ${parentName}
                 }
               `).definitions[0];
 
-              const def = ast.definitions.find(x => x.name && x.name.value === node.type.name.value);
+              const def = ast.definitions.find(
+                x => x.name && x.name.value === node.type.name.value
+              );
               propType.fields.forEach(field => def.fields.push(field));
-              resolvers[parentName][property.value.value] = relIsList ? list(collectionName, property.value.value, node.name.value) : one(collectionName, property.value.value, node.name.value);
+              resolvers[parentName][property.value.value] = relIsList
+                ? list(collectionName, property.value.value, node.name.value)
+                : one(collectionName, property.value.value, node.name.value);
             }
           }
         } else {
@@ -211,11 +233,13 @@ export default ({ adapter, resolvers }) => ({
         const collectionName = type.name.value;
         addInputTypes(collectionName, ast);
 
-        const field = isList ? parse(`
+        const field = isList
+          ? parse(`
           type Query {
             func(query: ${collectionName}Query, sort: ${collectionName}Sort, limit: Int, skip: Int): [${collectionName}]
           }
-        `).definitions[0].fields[0] : parse(`
+        `).definitions[0].fields[0]
+          : parse(`
           type Query {
             func(id: String, query: ${collectionName}Query): ${collectionName}
           }
@@ -238,14 +262,19 @@ export default ({ adapter, resolvers }) => ({
 
         const field = parse(`
           type Mutation {
-            func(id: String, input: ${capitalize(type.name.value)}Input, operationType: OPERATION_TYPE, type: MUTATION_TYPE): ${type.name.value}
+            func(id: String, input: ${capitalize(
+              type.name.value
+            )}Input, operationType: OPERATION_TYPE, type: MUTATION_TYPE): ${type
+          .name.value}
           }
         `).definitions[0].fields[0];
 
         node.arguments = node.arguments.concat(field.arguments);
-        resolvers.Mutation[node.name.value] = write(collectionName, node.name.value);
+        resolvers.Mutation[node.name.value] = write(
+          collectionName,
+          node.name.value
+        );
       },
     },
   },
 });
-

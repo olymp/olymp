@@ -6,15 +6,15 @@ import momentLegacy from 'moment';
 // momento.locale('de');
 import 'moment/locale/de';
 
-export const withLocale = WrappedComponent => props => (
+export const withLocale = WrappedComponent => props =>
   <LocaleProvider locale={enUS}>
     <WrappedComponent {...props} />
-  </LocaleProvider>
-);
+  </LocaleProvider>;
 
-export const moment = function() { return momentLegacy.utc.apply(this, arguments); };
-export default props => (
+export const moment = function() {
+  return momentLegacy.utc.apply(this, arguments);
+};
+export default props =>
   <LocaleProvider locale={enUS}>
     {props.children}
-  </LocaleProvider>
-);
+  </LocaleProvider>;

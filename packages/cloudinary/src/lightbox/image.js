@@ -9,7 +9,7 @@ export default class Lightbox extends Component {
 
   static contextTypes = {
     lightbox: React.PropTypes.object,
-  }
+  };
 
   componentWillMount() {
     const { value } = this.props;
@@ -32,10 +32,15 @@ export default class Lightbox extends Component {
     lightbox.remove(this.ref);
   }
 
-  add = (value) => {
+  add = value => {
     const { width = 800, height, retina, mode } = this.props;
     const { lightbox } = this.context;
-    const getSrcSet = w => `${url(value.url, { width: Math.floor(w), dpr: retina ? 2 : undefined, mode })} ${Math.floor(w)}w`;
+    const getSrcSet = w =>
+      `${url(value.url, {
+        width: Math.floor(w),
+        dpr: retina ? 2 : undefined,
+        mode,
+      })} ${Math.floor(w)}w`;
 
     lightbox.add({
       ref: this.ref,
@@ -47,22 +52,38 @@ export default class Lightbox extends Component {
         getSrcSet(width / 2),
         getSrcSet(width / 4),
       ],
-      thumbnail: url(value.url, { width: 50, height: 50, dpr: retina ? 2 : undefined, mode: 'fill' }),
-      caption: value.caption && value.source ? `${value.caption} - ${value.source}` : value.caption || value.source || '',
+      thumbnail: url(value.url, {
+        width: 50,
+        height: 50,
+        dpr: retina ? 2 : undefined,
+        mode: 'fill',
+      }),
+      caption: value.caption && value.source
+        ? `${value.caption} - ${value.source}`
+        : value.caption || value.source || '',
     });
-  }
+  };
 
-  onClick = (e) => {
+  onClick = e => {
     const { onClick, router, pathname, query } = this.props;
     router.push({ pathname, query: { ...query, lightbox: this.ref } });
     if (onClick) onClick(e);
-  }
+  };
 
   render() {
-    const { onClick, router, pathname, query, value, search, dispatch, location, retina, ...rest } = this.props;
+    const {
+      onClick,
+      router,
+      pathname,
+      query,
+      value,
+      search,
+      dispatch,
+      location,
+      retina,
+      ...rest
+    } = this.props;
 
-    return (
-      <Image onClick={this.onClick} value={value} {...rest} />
-    );
+    return <Image onClick={this.onClick} value={value} {...rest} />;
   }
 }

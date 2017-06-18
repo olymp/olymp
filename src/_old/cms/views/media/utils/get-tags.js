@@ -5,7 +5,8 @@ export default (data = []) => {
         state[tag] = []; // eslint-disable-line no-param-reassign
       }
       state[tag].push(file);
-    }); return state;
+    });
+    return state;
   }, {});
   return Object.keys(tags).map(key => ({
     tag: key,

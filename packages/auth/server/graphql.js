@@ -8,9 +8,12 @@ const defaultHook = (source, args, context) => {
   return Promise.resolve(args);
 };
 
-module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutation } = {}) => {
+module.exports = (
+  schema,
+  { adapter, secret, mail, attributes = '', Query, Mutation } = {}
+) => {
   const token = getToken({ secret });
-  const password = getPassword({ });
+  const password = getPassword({});
   const auth = getAuth({ adapter, password, token, mail, confirm: false });
 
   // checkToken(token: String): Boolean
@@ -39,39 +42,57 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
     `,
     resolvers: {
       Query: {
-        checkTokenMail: (source, args) => auth.checkTokenValue(args.token, 'email'),
+        checkTokenMail: (source, args) =>
+          auth.checkTokenValue(args.token, 'email'),
         checkToken: (source, args) => auth.checkToken(args.token),
-        verify: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
+        verify: (source, args, context) =>
+          context.session &&
+          context.session.userId &&
+          auth.getUser(context.session.userId),
         // verify: (source, args) => auth.verify(args.token),
         invitationList: (source, args, context) => {
-          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          if (!context.user || !context.user.isAdmin)
+            throw new Error('No permission');
           const hook = Query && Query.userList ? Query.userList : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item => adapter.list('invitation', item));
+          return hook(source, Object.assign({}, args), context).then(item =>
+            adapter.list('invitation', item)
+          );
         },
         invitation: (source, args, context) => {
-          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          if (!context.user || !context.user.isAdmin)
+            throw new Error('No permission');
           const hook = Query && Query.user ? Query.user : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item => adapter.read('invitation', item));
+          return hook(source, Object.assign({}, args), context).then(item =>
+            adapter.read('invitation', item)
+          );
         },
         userList: (source, args, context) => {
-          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          if (!context.user || !context.user.isAdmin)
+            throw new Error('No permission');
           const hook = Query && Query.userList ? Query.userList : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item => adapter.list('user', item));
+          return hook(source, Object.assign({}, args), context).then(item =>
+            adapter.list('user', item)
+          );
         },
         user: (source, args, context) => {
           if (context.user && context.user.isAdmin) {
           } else if (context.user && context.user.id === args.id) {
           } else throw new Error('No permission');
           const hook = Query && Query.user ? Query.user : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item => adapter.read('user', item));
+          return hook(source, Object.assign({}, args), context).then(item =>
+            adapter.read('user', item)
+          );
         },
-        totp: (source, args, context) => auth.totp(context.session.userId).then((x) => {
-          return x;
-        }),
+        totp: (source, args, context) =>
+          auth.totp(context.session.userId).then(x => {
+            return x;
+          }),
       },
       Mutation: {
         register: (source, args) => {
-          return auth.register(args.input, args.password, args.token).then(x => x.user);
+          return auth
+            .register(args.input, args.password, args.token)
+            .then(x => x.user);
         },
         forgot: (source, args) => {
           return auth.forgot(args.email);
@@ -79,13 +100,17 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         reset: (source, args) => {
           return auth.reset(args.token, args.password).then(({ user }) => user);
         },
-        totpConfirm: (source, args, context) => auth.totpConfirm(args.token, args.totp).then((x) => {
-          return x;
-        }),
-        login: (source, args, context) => auth.login(args.email, args.password, args.totp).then((userAndToken) => {
-          context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
-          return userAndToken.user;
-        }),
+        totpConfirm: (source, args, context) =>
+          auth.totpConfirm(args.token, args.totp).then(x => {
+            return x;
+          }),
+        login: (source, args, context) =>
+          auth
+            .login(args.email, args.password, args.totp)
+            .then(userAndToken => {
+              context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
+              return userAndToken.user;
+            }),
         logout: (source, args, context) => {
           delete context.session.userId; // eslint-disable-line no-param-reassign
           return true;
@@ -98,7 +123,8 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
           } else if (context.user && context.user.id === args.id) {
           } else throw new Error('No permission');
           const hook = Mutation && Mutation.user ? Mutation.user : defaultHook;
-          return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
+          return hook(source, Object.assign({}, args), context).then(args => {
+            // eslint-disable-line no-shadow
             if (args.operationType && args.operationType === 'REMOVE') {
               return adapter.remove('user', Object.assign({}, args));
             } else if (args.input) {
@@ -117,10 +143,14 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
         },
         invitation: (source, args, context) => {
           if (!adapter.db) return;
-          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          if (!context.user || !context.user.isAdmin)
+            throw new Error('No permission');
           const collection = adapter.db.collection('invitation');
-          const hook = Mutation && Mutation.invitation ? Mutation.invitation : defaultHook;
-          return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
+          const hook = Mutation && Mutation.invitation
+            ? Mutation.invitation
+            : defaultHook;
+          return hook(source, Object.assign({}, args), context).then(args => {
+            // eslint-disable-line no-shadow
             if (args.operationType && args.operationType === 'REMOVE') {
               return adapter.remove('invitation', Object.assign({}, args));
             } else if (args.input) {
@@ -131,12 +161,22 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
             console.log('ARGS', args);
             args.expiry = +new Date();
             args.token = token.create({ email: args.email });
-            return adapter.write('invitation', Object.assign({}, args)).then(u => {
-              console.log('INVITE', u.token, u);
-              if (mail) mail(mails.invite({ email: u.email, token: u.token, name: u.name }))
-                .then(x => console.log('Mail success', x.ok)).catch(err => console.error(err));
-              return u;
-            });
+            return adapter
+              .write('invitation', Object.assign({}, args))
+              .then(u => {
+                console.log('INVITE', u.token, u);
+                if (mail)
+                  mail(
+                    mails.invite({
+                      email: u.email,
+                      token: u.token,
+                      name: u.name,
+                    })
+                  )
+                    .then(x => console.log('Mail success', x.ok))
+                    .catch(err => console.error(err));
+                return u;
+              });
             // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
             // else return collection.insertOne(args);
           });
@@ -174,12 +214,20 @@ module.exports = (schema, { adapter, secret, mail, attributes = '', Query, Mutat
   setTimeout(() => {
     if (!adapter.db) return;
     const collection = adapter.db.collection('user');
-    collection.findOne({ }).then((one) => {
-      if (one) return;
-      auth.register({ email: 'admin@olymp-cms.com', name: 'Administrator' }, 'admin12').then(({ token }) => {
-        auth.confirm(token);
-      });
-    }).catch(err => console.log(err));
+    collection
+      .findOne({})
+      .then(one => {
+        if (one) return;
+        auth
+          .register(
+            { email: 'admin@olymp-cms.com', name: 'Administrator' },
+            'admin12'
+          )
+          .then(({ token }) => {
+            auth.confirm(token);
+          });
+      })
+      .catch(err => console.log(err));
   }, 5000);
   return { auth };
 };

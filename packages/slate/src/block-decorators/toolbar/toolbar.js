@@ -11,17 +11,21 @@ const addAction = ({ editor, state, node }) => {
   const last = node.nodes.last();
 
   const options = [];
-  if (!prev || prev.type !== 'line') options.push({ label: 'Neuer Paragraph darüber', value: '+<<' });
+  if (!prev || prev.type !== 'line')
+    options.push({ label: 'Neuer Paragraph darüber', value: '+<<' });
   else options.push({ label: 'Paragraph darüber löschen', value: '-<<' });
 
   if (!node.isVoid) {
-    if (!first || first.type !== 'line') options.push({ label: 'An Anfang', value: '+<' });
+    if (!first || first.type !== 'line')
+      options.push({ label: 'An Anfang', value: '+<' });
     else options.push({ label: 'Anfang löschen', value: '-<' });
-    if (!last || last.type !== 'line') options.push({ label: 'Ans Ende', value: '+>' });
+    if (!last || last.type !== 'line')
+      options.push({ label: 'Ans Ende', value: '+>' });
     else options.push({ label: 'Ende löschen', value: '->' });
   }
 
-  if (!next || next.type !== 'line') options.push({ label: 'Neuer Paragraph darunter', value: '+>>' });
+  if (!next || next.type !== 'line')
+    options.push({ label: 'Neuer Paragraph darunter', value: '+>>' });
   else options.push({ label: 'Paragraph darunter löschen', value: '->>' });
 
   return {
@@ -32,57 +36,46 @@ const addAction = ({ editor, state, node }) => {
     options,
     label: 'Absätze um Block hinzufügen/entfernen',
     toggle: ({ key }) => {
-      const p = Raw.deserializeNode({ kind: 'block', type: 'line', nodes: [{ kind: 'text', text: '', ranges: [] }] });
+      const p = Raw.deserializeNode({
+        kind: 'block',
+        type: 'line',
+        nodes: [{ kind: 'text', text: '', ranges: [] }],
+      });
       if (key === '+<<') {
         const parent = state.document.getParent(node.key) || node;
         editor.onChange(
-          state.transform()
+          state
+            .transform()
             .insertNodeByKey(parent.key, parent.nodes.indexOf(node), p)
             .apply()
         );
       } else if (key === '-<<') {
-        editor.onChange(
-          state.transform()
-            .removeNodeByKey(prev.key)
-            .apply()
-        );
+        editor.onChange(state.transform().removeNodeByKey(prev.key).apply());
       } else if (key === '+>>') {
         const parent = state.document.getParent(node.key) || node;
         editor.onChange(
-          state.transform()
+          state
+            .transform()
             .insertNodeByKey(parent.key, parent.nodes.indexOf(node) + 1, p)
             .apply()
         );
       } else if (key === '->>') {
-        editor.onChange(
-          state.transform()
-            .removeNodeByKey(next.key)
-            .apply()
-        );
+        editor.onChange(state.transform().removeNodeByKey(next.key).apply());
       } else if (key === '+<') {
         editor.onChange(
-          state.transform()
-            .insertNodeByKey(node.key, 0, p)
-            .apply()
+          state.transform().insertNodeByKey(node.key, 0, p).apply()
         );
       } else if (key === '-<') {
-        editor.onChange(
-          state.transform()
-            .removeNodeByKey(first.key)
-            .apply()
-        );
+        editor.onChange(state.transform().removeNodeByKey(first.key).apply());
       } else if (key === '+>') {
         editor.onChange(
-          state.transform()
+          state
+            .transform()
             .insertNodeByKey(node.key, node.nodes.size, p)
             .apply()
         );
       } else if (key === '->') {
-        editor.onChange(
-          state.transform()
-            .removeNodeByKey(last.key)
-            .apply()
-        );
+        editor.onChange(state.transform().removeNodeByKey(last.key).apply());
       }
     },
   };
@@ -98,60 +91,66 @@ const removeAction = ({ editor, state, node }) => ({
   toggle: () => {
     const newState = state.transform().unsetSelection();
 
-    editor.onChange(
-      newState
-        .removeNodeByKey(node.key)
-        .apply()
-    );
+    editor.onChange(newState.removeNodeByKey(node.key).apply());
   },
 });
 
 // Toolbar actions to move a block up/down
-const moveActions = ({ editor, state, node }) => ([{
-  type: 'block.moveUp',
-  icon: 'arrow-up',
-  right: true,
-  separated: true,
-  label: 'Block um eine Stelle nach oben verschieben',
-  toggle: () => {
-    const { document } = state;
-    const parent = document.getParent(node.key);
-    const index = parent.nodes.indexOf(node) - 1;
-    const newState = state
-      .transform()
-      .moveNodeByKey(node.key, parent.key, index === -1 ? 0 : index)
-      .apply();
-    editor.onChange(newState);
+const moveActions = ({ editor, state, node }) => [
+  {
+    type: 'block.moveUp',
+    icon: 'arrow-up',
+    right: true,
+    separated: true,
+    label: 'Block um eine Stelle nach oben verschieben',
+    toggle: () => {
+      const { document } = state;
+      const parent = document.getParent(node.key);
+      const index = parent.nodes.indexOf(node) - 1;
+      const newState = state
+        .transform()
+        .moveNodeByKey(node.key, parent.key, index === -1 ? 0 : index)
+        .apply();
+      editor.onChange(newState);
+    },
   },
-}, {
-  type: 'block.moveDown',
-  icon: 'arrow-down',
-  right: true,
-  label: 'Block um eine Stelle nach unten verschieben',
-  toggle: () => {
-    const { document } = state;
-    const parent = document.getParent(node.key);
-    const index = parent.nodes.indexOf(node) + 1;
-    const newState = state
-      .transform()
-      .moveNodeByKey(node.key, parent.key, index > parent.nodes.count() ? parent.nodes.count() : index)
-      .apply();
-    editor.onChange(newState);
+  {
+    type: 'block.moveDown',
+    icon: 'arrow-down',
+    right: true,
+    label: 'Block um eine Stelle nach unten verschieben',
+    toggle: () => {
+      const { document } = state;
+      const parent = document.getParent(node.key);
+      const index = parent.nodes.indexOf(node) + 1;
+      const newState = state
+        .transform()
+        .moveNodeByKey(
+          node.key,
+          parent.key,
+          index > parent.nodes.count() ? parent.nodes.count() : index
+        )
+        .apply();
+      editor.onChange(newState);
+    },
   },
-}]);
+];
 
 export default class Toolbar extends Component {
   onChangeType = ({ key }) => {
     const { editor, readOnly, node, state } = this.props;
     const blockTypes = editor.props.sidebarTypes || [];
-    const newBlock = (blockTypes.find(({ type }) => type === key) || node);
+    const newBlock = blockTypes.find(({ type }) => type === key) || node;
     editor.onChange(
       state
         .transform()
-        .setNodeByKey(node.key, { type: newBlock.type, isVoid: newBlock.isVoid })
+        .setNodeByKey(node.key, {
+          type: newBlock.type,
+          isVoid: newBlock.isVoid,
+        })
         .apply()
     );
-  }
+  };
 
   render() {
     const { editor, node, readOnly, style, remove, add, move } = this.props;
@@ -168,7 +167,10 @@ export default class Toolbar extends Component {
     const categories = {};
     const menuItems = [];
 
-    sortBy(blockTypes, ['category', 'label']).forEach(({ type, label, category }) => {
+    sortBy(blockTypes, [
+      'category',
+      'label',
+    ]).forEach(({ type, label, category }) => {
       const element = <Menu.Item key={type}>{label || type}</Menu.Item>;
 
       if (category) {
@@ -181,18 +183,21 @@ export default class Toolbar extends Component {
 
     const menu = (
       <Menu onClick={this.onChangeType}>
-        {Object.keys(categories).map(key => (
+        {Object.keys(categories).map(key =>
           <Menu.SubMenu title={key} key={key}>
             {categories[key].map(item => item)}
           </Menu.SubMenu>
-        ))}
+        )}
         {menuItems.map(item => item)}
       </Menu>
     );
 
     return (
       <div className="slate-fix-toolbar" style={style} contentEditable={false}>
-        {move && moveActions(this.props).map((action, index) => <Action {...action} key={index} />)}
+        {move &&
+          moveActions(this.props).map((action, index) =>
+            <Action {...action} key={index} />
+          )}
 
         <Tooltip placement="top" overlay={<span>Typ des Blockes ändern</span>}>
           <Dropdown overlay={menu}>

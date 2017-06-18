@@ -5,11 +5,5 @@ const states = {
   PUBLISHED: 'Öffentlich',
 };
 
-export default props => (
-  <Sidebar
-    {...props}
-    activePage="media"
-    filter={undefined}
-    states={states}
-  />
-);
+export default props =>
+  <Sidebar {...props} activePage="media" filter={undefined} states={states} />;

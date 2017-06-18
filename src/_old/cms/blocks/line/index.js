@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { useGenericBlock, GenericBlock } from 'olymp-slate';
 
-
 @useGenericBlock({
   label: 'Linie',
   category: 'Template',
@@ -9,7 +8,6 @@ import { useGenericBlock, GenericBlock } from 'olymp-slate';
   align: true,
 })
 export default class LineBlock extends Component {
-
   render() {
     const { children, ...rest } = this.props;
 

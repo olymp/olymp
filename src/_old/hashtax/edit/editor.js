@@ -6,18 +6,22 @@ import { Popover, Tag } from 'antd';
 import { parseComponent } from '../processors';
 import { styled } from 'olymp';
 
-const deserialize = (value) => {
+const deserialize = value => {
   console.log('DESERIALIZE', value);
   return Raw.deserialize(value, { terse: true });
 };
-const serialize = (state) => {
+const serialize = state => {
   console.log('SERIALIZE', state);
   return Raw.serialize(state, { terse: true });
 };
 
-const Highlighted = styled(() => ({
-  fontWeight: 'bold',
-}), 'span', p => p);
+const Highlighted = styled(
+  () => ({
+    fontWeight: 'bold',
+  }),
+  'span',
+  p => p
+);
 
 const addMarks = (startChar, closeChar, markType, characters, string) => {
   const mark = Mark.create({ type: markType });
@@ -25,7 +29,8 @@ const addMarks = (startChar, closeChar, markType, characters, string) => {
   while (true) {
     start = string.indexOf(startChar, start + startChar.length);
     if (start === -1) break;
-    const end = string.indexOf(closeChar, start + startChar.length) + startChar.length;
+    const end =
+      string.indexOf(closeChar, start + startChar.length) + startChar.length;
     const size = end === 0 ? characters.size : end;
     for (let i = start; i < size; i + 1) {
       let char = characters.get(i);
@@ -35,7 +40,8 @@ const addMarks = (startChar, closeChar, markType, characters, string) => {
       characters.set(i, char);
     }
     start = size;
-  } return characters;
+  }
+  return characters;
 };
 
 const decorate = (text, block) => {
@@ -55,7 +61,7 @@ const decorate = (text, block) => {
   }
 
   return characters.asImmutable();
-}
+};
 
 export default class SlateEditor extends Component {
   static contextTypes = {
@@ -65,29 +71,32 @@ export default class SlateEditor extends Component {
   getContentEditor = (propType, val) => {
     return val;
     // return <Input value={val} pla ceholder={propType} />;
-  }
+  };
 
-  getContent = (text) => {
+  getContent = text => {
     const { components } = this.context.Hashtax;
-    const { type, args, decorators, raw } = parseComponent(text.split('#').join(''));
+    const { type, args, decorators, raw } = parseComponent(
+      text.split('#').join('')
+    );
     const component = components[type];
 
-    if (component && component.propTypes){
+    if (component && component.propTypes) {
       return {
         content: (
           <div>
-            {Object.keys(component.propTypes).map(key => (
+            {Object.keys(component.propTypes).map(key =>
               <p key={key}>
                 <b>{key}: </b>
                 {this.getContentEditor(key, args[key])}
               </p>
-            ))}
+            )}
           </div>
         ),
         title: type,
       };
-    } return undefined;
-  }
+    }
+    return undefined;
+  };
 
   getSchema = () => ({
     marks: {
@@ -104,21 +113,25 @@ export default class SlateEditor extends Component {
               {inner}
             </Popover>
           );
-        } return inner;
+        }
+        return inner;
       },
-      'hashtax-inline-var': ({ children }) => <Tag color="blue">{children}</Tag>,
+      'hashtax-inline-var': ({ children }) =>
+        <Tag color="blue">{children}</Tag>,
       'hashtax-var': ({ children }) => <Tag color="yellow">{children}</Tag>,
     },
-    rules: [{
-      match: () => true,
-      decorate,
-    }]
+    rules: [
+      {
+        match: () => true,
+        decorate,
+      },
+    ],
   });
 
   constructor(props) {
     super(props);
     this.plugins = [];
-    this.state = { };
+    this.state = {};
     this.value = props.value || '';
     this.editorState = deserialize(this.value);
   }
@@ -132,26 +145,35 @@ export default class SlateEditor extends Component {
 
   onChange = value => {
     this.editorState = value;
-    this.setState({ }, () => {
+    this.setState({}, () => {
       const newValue = serialize(value);
       if (newValue !== this.value) {
         this.value = newValue;
         this.props.onChange(newValue);
       }
     });
-  }
+  };
 
   onKeyDown = e => {
     const key = window.event ? e.keyCode : e.which;
-    if (key === 220) { // #
-    } else if (key === 56) { // {
+    if (key === 220) {
+      // #
+    } else if (key === 56) {
+      // {
     }
-  }
+  };
 
   render() {
     const { editorState } = this;
     return (
-      <Slate {...this.props} schema={this.getSchema()} plugins={this.plugins} state={editorState} onChange={this.onChange} onKeyDown={this.onKeyDown} />
+      <Slate
+        {...this.props}
+        schema={this.getSchema()}
+        plugins={this.plugins}
+        state={editorState}
+        onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+      />
     );
   }
 }

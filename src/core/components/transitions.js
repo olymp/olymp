@@ -11,7 +11,7 @@ const FirstChild = props => Children.toArray(props.children)[0] || null;
 const withTransition = (Transition, { delayLeave } = {}) => {
   class TransitionManager extends Component {
     static contextTypes = {
-      gatewayRegistry: React.PropTypes.instanceOf(GatewayRegistry).isRequired
+      gatewayRegistry: React.PropTypes.instanceOf(GatewayRegistry).isRequired,
     };
     static defaultProps = {
       speed: 300,
@@ -22,11 +22,16 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     state = { animation: null };
     delay = () => {
       const { speed } = this.props;
-      return delayLeave && Object.keys(this.context.gatewayRegistry._children.modal).find(key => {
-        const { isOpen } = this.context.gatewayRegistry._children.modal[key].props;
-        return isOpen !== false;
-      }) ? (speed * 2) : speed;
-    }
+      return delayLeave &&
+        Object.keys(this.context.gatewayRegistry._children.modal).find(key => {
+          const { isOpen } = this.context.gatewayRegistry._children.modal[
+            key
+          ].props;
+          return isOpen !== false;
+        })
+        ? speed * 2
+        : speed;
+    };
     componentWillAppear(callback) {
       const { speed, enter, appear } = this.props;
       if (enter === false || appear === false) return callback();
@@ -61,7 +66,15 @@ const withTransition = (Transition, { delayLeave } = {}) => {
       const { speed } = this.props;
       const { animation, active, delay } = this.state;
       const type = `${animation}${active ? '-active' : ''}`;
-      return <Transition {...this.props} type={type} phase={animation} state={active} delay={this.props.delay === false ? 0 : ((delay || speed) - speed)} />;
+      return (
+        <Transition
+          {...this.props}
+          type={type}
+          phase={animation}
+          state={active}
+          delay={this.props.delay === false ? 0 : (delay || speed) - speed}
+        />
+      );
     }
   }
   return props => {
@@ -69,18 +82,25 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     const opened = isOpen === undefined ? true : !!isOpen;
     return (
       <ReactTransitionGroup component={FirstChild}>
-        {opened ? <TransitionManager {...props} /> :null}
+        {opened ? <TransitionManager {...props} /> : null}
       </ReactTransitionGroup>
-    )
+    );
   };
-}
+};
 
 export const createTransition = (fn, options) => {
   const Inner = withTransition(
-    createComponent(fn, ({ className, children }) => {
-      const child = Children.only(children);
-      return cloneElement(child, { className: cn(child.props.className, className) });
-    }, p => Object.keys(p)), options
+    createComponent(
+      fn,
+      ({ className, children }) => {
+        const child = Children.only(children);
+        return cloneElement(child, {
+          className: cn(child.props.className, className),
+        });
+      },
+      p => Object.keys(p)
+    ),
+    options
   );
   const component = (props, { theme }) => {
     if (!theme.transition) {
@@ -88,44 +108,47 @@ export const createTransition = (fn, options) => {
       const opened = isOpen === undefined ? true : !!isOpen;
       return opened ? Children.only(props.children) : null;
     }
-    return <Inner {...props} />
+    return <Inner {...props} />;
   };
   component.contextTypes = { theme: React.PropTypes.object };
   return component;
-}
+};
 
-export const TransitionFade = createTransition(({ type, delay, speed }) => {
-  if (type === 'enter') {
-    return {
-      opacity: 0,
-      zIndex: 99999,
-    };
-  } else if (type === 'enter-active') {
-    return {
-      opacity: 1,
-      zIndex: 99999,
-      transition: `opacity ${speed}ms ease-in-out`,
-      willChange: 'transform',
-    };
-  } else if (type === 'leave') {
-    return {
-      opacity: 1,
-      position: 'absolute',
-      width: '100%',
-      pointerEvents: 'none',
-    };
-  } else if (type === 'leave-active') {
-    return {
-      opacity: 0,
-      pointerEvents: 'none',
-      position: 'absolute',
-      width: '100%',
-      transition: `opacity ${speed}ms ease-in-out`,
-      transitionDelay: `${delay}ms`,
-      willChange: 'transform',
-    };
-  }
-}, { delayLeave: true });
+export const TransitionFade = createTransition(
+  ({ type, delay, speed }) => {
+    if (type === 'enter') {
+      return {
+        opacity: 0,
+        zIndex: 99999,
+      };
+    } else if (type === 'enter-active') {
+      return {
+        opacity: 1,
+        zIndex: 99999,
+        transition: `opacity ${speed}ms ease-in-out`,
+        willChange: 'transform',
+      };
+    } else if (type === 'leave') {
+      return {
+        opacity: 1,
+        position: 'absolute',
+        width: '100%',
+        pointerEvents: 'none',
+      };
+    } else if (type === 'leave-active') {
+      return {
+        opacity: 0,
+        pointerEvents: 'none',
+        position: 'absolute',
+        width: '100%',
+        transition: `opacity ${speed}ms ease-in-out`,
+        transitionDelay: `${delay}ms`,
+        willChange: 'transform',
+      };
+    }
+  },
+  { delayLeave: true }
+);
 
 export const TransitionSlide = createTransition(({ type, delay, speed }) => {
   if (type === 'enter') {
@@ -161,8 +184,10 @@ export const TransitionSlide = createTransition(({ type, delay, speed }) => {
 
 export const Transition = (props, { theme }) => {
   if (!theme.transition) theme.transition = 'fade';
-  if (theme.transition === 'fade') return <TransitionFade {...props} speed={theme.transitionSpeed || 250} />;
-  if (theme.transition === 'slide') return <TransitionSlide {...props} speed={theme.transitionSpeed || 500} />;
+  if (theme.transition === 'fade')
+    return <TransitionFade {...props} speed={theme.transitionSpeed || 250} />;
+  if (theme.transition === 'slide')
+    return <TransitionSlide {...props} speed={theme.transitionSpeed || 500} />;
   const { isOpen } = props;
   const opened = isOpen === undefined ? true : !!isOpen;
   return opened ? Children.only(props.children) : null;

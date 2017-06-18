@@ -3,27 +3,31 @@ import { throttle, interpolate } from './utils';
 import { textToAst, astToReact } from './processors';
 import connect from './connect';
 
-export default (options) => {
-  const createTemplate = (text) => {
+export default options => {
+  const createTemplate = text => {
     const ast = textToAst(text);
     const component = ({ children, value, ...props }) => {
       return (
         <div>
-          {ast.map(toReact({ ...props, value, arg0: value, content: children }))}
+          {ast.map(
+            toReact({ ...props, value, arg0: value, content: children })
+          )}
         </div>
-      )
+      );
     };
     component.propTypes = {};
-    interpolate(text, v => component.propTypes[v] = PropTypes.string);
+    interpolate(text, v => (component.propTypes[v] = PropTypes.string));
     return component;
   };
 
-  const components = options.components ? Object.keys(options.components).reduce((store, key) => {
-    store[key] = typeof options.components[key] === 'string'
-      ? connect(createTemplate(options.components[key]))
-      : connect(options.components[key]);
-    return store;
-  }, {}) : {};
+  const components = options.components
+    ? Object.keys(options.components).reduce((store, key) => {
+        store[key] = typeof options.components[key] === 'string'
+          ? connect(createTemplate(options.components[key]))
+          : connect(options.components[key]);
+        return store;
+      }, {})
+    : {};
   const decorators = options.decorators || {};
   const fallback = options.fallback;
   let toReact = astToReact({ components, decorators, fallback });
@@ -38,7 +42,7 @@ export default (options) => {
       type: 'div',
       throttle: null,
       value: '',
-    }
+    };
     // Allow throttling for better performance
     shouldComponentUpdate(newProps) {
       const newThrottle = newProps.throttle;
@@ -67,7 +71,11 @@ export default (options) => {
       // value to AST
       const ast = textToAst(value);
       // AST to React components
-      return createElement(type, { className, style }, ast.map(toReact(context)));
+      return createElement(
+        type,
+        { className, style },
+        ast.map(toReact(context))
+      );
     }
   }
   Hashtax.render = (value, context) => textToAst(value).map(toReact(context));
@@ -85,4 +93,3 @@ export default (options) => {
   };
   return Hashtax;
 };
-

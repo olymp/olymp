@@ -15,8 +15,24 @@ export default class CollectionDetail extends Component {
       <Tabs defaultActiveKey="1" size="small">
         <Tabs.TabPane tab={typeName} key="1">
           <Panel minWidth={560} margin="0 30px" padding={16}>
-            <Input form={form} item={item} field="name" label="Name" rules={['required']} type="text" size="large" />
-            <Input form={form} item={item} field="email" label="E-Mail" rules={['required']} type="text" size="large" />
+            <Input
+              form={form}
+              item={item}
+              field="name"
+              label="Name"
+              rules={['required']}
+              type="text"
+              size="large"
+            />
+            <Input
+              form={form}
+              item={item}
+              field="email"
+              label="E-Mail"
+              rules={['required']}
+              type="text"
+              size="large"
+            />
             <Button onClick={this.ok}>Save</Button>
           </Panel>
         </Tabs.TabPane>

@@ -5,28 +5,48 @@ import { url as optimizeUrl } from '../utils';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-const StyledCropSelect = createComponent(({ theme }) => ({
-  width: 150,
-  float: 'left',
-}), Select, p => Object.keys(p));
+const StyledCropSelect = createComponent(
+  ({ theme }) => ({
+    width: 150,
+    float: 'left',
+  }),
+  Select,
+  p => Object.keys(p)
+);
 
-const StyledCrop = createComponent(({ theme }) => ({
-  '> .ReactCrop--crop-wrapper': {
-    backgroundColor: 'white',
-  }
-}), ReactCrop, p => Object.keys(p));
+const StyledCrop = createComponent(
+  ({ theme }) => ({
+    '> .ReactCrop--crop-wrapper': {
+      backgroundColor: 'white',
+    },
+  }),
+  ReactCrop,
+  p => Object.keys(p)
+);
 
-export const CropSelect = (props) => {
+export const CropSelect = props => {
   const { value, onChange, style } = props;
 
   return (
-    <StyledCropSelect defaultValue={`${value || 0}`} size="large" onChange={option => onChange(parseFloat(option, 10))}>
+    <StyledCropSelect
+      defaultValue={`${value || 0}`}
+      size="large"
+      onChange={option => onChange(parseFloat(option, 10))}
+    >
       <Select.Option key="0" value="0">Freie Auswahl</Select.Option>
-      <Select.Option key="1" value={`${(3 / 2).toString()}`}>Postkarte 3:2</Select.Option>
-      <Select.Option key="2" value={`${(2 / 3).toString()}`}>Portrait 2:3</Select.Option>
+      <Select.Option key="1" value={`${(3 / 2).toString()}`}>
+        Postkarte 3:2
+      </Select.Option>
+      <Select.Option key="2" value={`${(2 / 3).toString()}`}>
+        Portrait 2:3
+      </Select.Option>
       <Select.Option key="3" value="1">Quadratisch 1:1</Select.Option>
-      <Select.Option key="4" value={`${(19 / 7).toString()}`}>Landschaft 19:7</Select.Option>
-      <Select.Option key="5" value={`${(16 / 9).toString()}`}>Kino 16:9</Select.Option>
+      <Select.Option key="4" value={`${(19 / 7).toString()}`}>
+        Landschaft 19:7
+      </Select.Option>
+      <Select.Option key="5" value={`${(16 / 9).toString()}`}>
+        Kino 16:9
+      </Select.Option>
     </StyledCropSelect>
   );
 };
@@ -41,17 +61,25 @@ class Crop extends Component {
     const aspect = this.props.aspect || (this.state.isSquare && 1);
 
     return (
-      <div onKeyDown={e => this.setState({ isSquare: e && e.shiftKey })} onKeyUp={e => this.setState({ isSquare: false })}>
+      <div
+        onKeyDown={e => this.setState({ isSquare: e && e.shiftKey })}
+        onKeyUp={e => this.setState({ isSquare: false })}
+      >
         <StyledCrop
           src={optimizeUrl(url)}
-          onChange={(p, { width, height, x, y }) => onChange([width, height, x, y])}
-          crop={crop ? {
-            width: (crop[0] / width) * 100,
-            height: (crop[1] / height) * 100,
-            x: (crop[2] / width) * 100,
-            y: (crop[3] / height) * 100,
-            aspect,
-          } : { aspect }}
+          onChange={(p, { width, height, x, y }) =>
+            onChange([width, height, x, y])}
+          crop={
+            crop
+              ? {
+                  width: crop[0] / width * 100,
+                  height: crop[1] / height * 100,
+                  x: crop[2] / width * 100,
+                  y: crop[3] / height * 100,
+                  aspect,
+                }
+              : { aspect }
+          }
         />
       </div>
     );

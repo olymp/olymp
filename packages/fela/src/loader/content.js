@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
 import { connect } from 'react-fela';
 
-const mapStylesToProps = ({ height }) => (renderer) => ({
+const mapStylesToProps = ({ height }) => renderer => ({
   container: renderer.renderRule(({ color }) => ({
     height: height || '100%',
     width: '100%',
@@ -10,7 +10,8 @@ const mapStylesToProps = ({ height }) => (renderer) => ({
     animationIterationCount: 'infinite',
     animationTimingFunction: 'linear',
     // background: '#f6f7f8',
-    background: 'linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%)',
+    background:
+      'linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%)',
     backgroundSize: '200% 100%',
     minHeight: '96px',
     animationName: renderer.renderKeyframe(() => ({
@@ -27,6 +28,7 @@ const mapStylesToProps = ({ height }) => (renderer) => ({
 const component = ({ styles, isLoading, children }) => {
   if (isLoading) {
     return <div className={styles.container} />;
-  } return Children.only(children);
+  }
+  return Children.only(children);
 };
 export default connect(mapStylesToProps)(component);

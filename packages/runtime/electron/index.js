@@ -12,7 +12,11 @@ import App from '@app';
 import { AppContainer } from 'react-hot-loader';
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || process.env.GRAPCOOL_URI || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
+  uri:
+    process.env.GRAPHQL_URL ||
+      process.env.GRAPCOOL_URI ||
+      (process.env.URL && `${process.env.URL}/graphql`) ||
+      '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
@@ -33,7 +37,7 @@ function renderApp() {
         </ApolloProvider>
       </HashRouter>
     </AppContainer>,
-    container,
+    container
   );
 }
 function load() {
@@ -56,8 +60,5 @@ if (module.hot) {
   // Accept changes to this file for hot reloading.
   module.hot.accept('@app');
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept(
-    '@app',
-    () => renderApp(require('@app').default),
-  );
+  module.hot.accept('@app', () => renderApp(require('@app').default));
 }

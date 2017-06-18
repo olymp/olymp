@@ -40,28 +40,28 @@ export default class SidebarComponent extends Component {
   };
   throttle = throttleInput();
 
-  setQuery = (gqlQuery) => {
+  setQuery = gqlQuery => {
     const { refetch } = this.props;
 
     refetch({
       ...this.state.gqlQuery,
-      ...gqlQuery
+      ...gqlQuery,
     });
     this.setState({
       filtering: true,
       searchText: '',
       gqlQuery: {
         ...this.state.gqlQuery,
-        ...gqlQuery
+        ...gqlQuery,
       },
     });
-  }
+  };
 
   setQueryToState = (eq = 'PUBLISHED') => {
     const { refetch } = this.props;
 
     const gqlQuery = {
-      state: (eq === 'ALL') ? { null: false } : { eq }
+      state: eq === 'ALL' ? { null: false } : { eq },
     };
 
     refetch(gqlQuery);
@@ -70,9 +70,9 @@ export default class SidebarComponent extends Component {
       gqlQuery,
       searchText: '',
     });
-  }
+  };
 
-  search = (e) => {
+  search = e => {
     const { refetch } = this.props;
     const { searchText } = this.state;
 
@@ -94,7 +94,7 @@ export default class SidebarComponent extends Component {
         gqlQuery,
       });
     });
-  }
+  };
 
   render() {
     const { items = [], isLoading, filter, multi, refetch } = this.props;
@@ -111,27 +111,31 @@ export default class SidebarComponent extends Component {
           searchFn={!!refetch && this.search}
           setPage={page => this.setState({ page })}
           pageSize={PAGE_SIZE}
-          filter={typeof filter === 'function' ? filter(this.setQuery) : undefined}
+          filter={
+            typeof filter === 'function' ? filter(this.setQuery) : undefined
+          }
           setQueryToState={this.setQueryToState}
         />
 
-        {isLoading ? (
-          <Panel>
-            <Spin size="large" />
-          </Panel>
-          ) : (
-            <Panel>
-              {!!activeItems && !!multi && !!activeItems.length && (
-                <SubPanel seperator>
-                  {activeItems.map((item, index) => <SidebarCard {...item} key={index} />)}
-                </SubPanel>
-              )}
-              <SubPanel>
-                {unactiveItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((item, index) =>
-                  <SidebarCard {...item} key={index} />)}
-              </SubPanel>
+        {isLoading
+          ? <Panel>
+              <Spin size="large" />
             </Panel>
-        )}
+          : <Panel>
+              {!!activeItems &&
+                !!multi &&
+                !!activeItems.length &&
+                <SubPanel seperator>
+                  {activeItems.map((item, index) =>
+                    <SidebarCard {...item} key={index} />
+                  )}
+                </SubPanel>}
+              <SubPanel>
+                {unactiveItems
+                  .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+                  .map((item, index) => <SidebarCard {...item} key={index} />)}
+              </SubPanel>
+            </Panel>}
       </Sidebar>
     );
   }

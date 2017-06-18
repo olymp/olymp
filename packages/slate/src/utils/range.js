@@ -1,5 +1,4 @@
-
-export const getRangeClientRectsChrome = (range) => {
+export const getRangeClientRectsChrome = range => {
   var tempRange = range.cloneRange();
   var clientRects = [];
 
@@ -23,13 +22,22 @@ export const getRangeClientRectsChrome = (range) => {
     tempRange.setEndBefore(ancestor);
   }
 
-  throw new Error('Found an unexpected detached subtree when getting range client rects.');
+  throw new Error(
+    'Found an unexpected detached subtree when getting range client rects.'
+  );
 };
 
-export const isChrome = typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-export const getRangeClientRects = isChrome ? getRangeClientRectsChrome : function(range) { return Array.from(range.getClientRects()); };
+export const isChrome =
+  typeof navigator !== 'undefined' &&
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor);
+export const getRangeClientRects = isChrome
+  ? getRangeClientRectsChrome
+  : function(range) {
+      return Array.from(range.getClientRects());
+    };
 
-export const getRangeBoundingClientRect = (range) => {
+export const getRangeBoundingClientRect = range => {
   var rects = getRangeClientRects(range);
   var top = 0;
   var right = 0;
@@ -37,7 +45,7 @@ export const getRangeBoundingClientRect = (range) => {
   var left = 0;
 
   if (rects.length) {
-    ({top, right, bottom, left} = rects[0]);
+    ({ top, right, bottom, left } = rects[0]);
     for (var ii = 1; ii < rects.length; ii++) {
       var rect = rects[ii];
       if (rect.height !== 0 || rect.width !== 0) {
@@ -79,7 +87,13 @@ export const getVisibleSelectionRect = () => {
 
 export const getCollapsedClientRect = () => {
   const selection = document.getSelection();
-  if (selection.rangeCount === 0 || !selection.getRangeAt || !selection.getRangeAt(0) || !selection.getRangeAt(0).startContainer || !selection.getRangeAt(0).startContainer.getBoundingClientRect) {
+  if (
+    selection.rangeCount === 0 ||
+    !selection.getRangeAt ||
+    !selection.getRangeAt(0) ||
+    !selection.getRangeAt(0).startContainer ||
+    !selection.getRangeAt(0).startContainer.getBoundingClientRect
+  ) {
     return null;
   }
 

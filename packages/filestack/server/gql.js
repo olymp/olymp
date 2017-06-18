@@ -15,22 +15,30 @@ export default (schema, { adapter } = {}) => {
     `,
     resolvers: {
       FileStack: {
-        createdBy: source => adapter.db.collection('user').findOne({ id: source.createdById }),
+        createdBy: source =>
+          adapter.db.collection('user').findOne({ id: source.createdById }),
       },
       Query: {
-        fileStack: (source, args) => adapter.db.collection('file').findOne({ id: args.id }),
-        fileStackList: (source, { tags }) => adapter.db.collection('file').findOne({ tags }),
+        fileStack: (source, args) =>
+          adapter.db.collection('file').findOne({ id: args.id }),
+        fileStackList: (source, { tags }) =>
+          adapter.db.collection('file').findOne({ tags }),
       },
       Mutation: {
         fileStack: (source, { id, input }, context) => {
           if (!id) id = shortId.generate();
           let item;
-          return fetch(`https://www.filestackapi.com/api/file/${input.handle}/metadata?width=true&height=true`)
+          return fetch(
+            `https://www.filestackapi.com/api/file/${input.handle}/metadata?width=true&height=true`
+          )
             .then(response => response.json())
-            .then((json) => {
+            .then(json => {
               item = transform({ id, ...input, ...json }, context.user);
-              return adapter.db.collection('file').updateOne({ id }, item, { upsert: true });
-            }).then(() => item);
+              return adapter.db
+                .collection('file')
+                .updateOne({ id }, item, { upsert: true });
+            })
+            .then(() => item);
         },
       },
     },

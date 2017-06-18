@@ -1,4 +1,5 @@
-const MongoClient = require('bluebird').promisifyAll(require('mongodb')).MongoClient;
+const MongoClient = require('bluebird').promisifyAll(require('mongodb'))
+  .MongoClient;
 const ShortId = require('shortid');
 
 module.exports = config => {
@@ -22,11 +23,13 @@ module.exports = config => {
 
     if (patch && newData.id) {
       // patch (daten holen, ändern, speichern)
-      return read(kind, { id: newData.id })
-        .then(item => write(kind, Object.assign({}, item, newData)));
+      return read(kind, { id: newData.id }).then(item =>
+        write(kind, Object.assign({}, item, newData))
+      );
     } else if (newData.id) {
       // update (vorhandes ersetzen)
-      return collection.replaceOneAsync({ id: newData.id }, newData)
+      return collection
+        .replaceOneAsync({ id: newData.id }, newData)
         .then(() => read(kind, { id: newData.id, attributes }));
     }
 
@@ -35,24 +38,32 @@ module.exports = config => {
     if (typeof stamp === 'object') newData.createdBy = stamp;
 
     // insert (neu anlegen)
-    return collection.insertOneAsync(newData)
-      .then(() => write(kind, Object.assign({}, newData))
-        .then(() => read(kind, {
+    return collection.insertOneAsync(newData).then(() =>
+      write(kind, Object.assign({}, newData)).then(() =>
+        read(kind, {
           id: newData.id,
           attributes,
-        })));
+        })
+      )
+    );
   };
 
   const list = (kind, { sort, filter, attributes } = {}) => {
-    const newAttributes = attributes ? attributes.reduce((prev, next) => {
-      const newPrev = prev;
-      newPrev[next] = 1;
+    const newAttributes = attributes
+      ? attributes.reduce((prev, next) => {
+          const newPrev = prev;
+          newPrev[next] = 1;
 
-      return newPrev;
-    }, {}) : undefined;
+          return newPrev;
+        }, {})
+      : undefined;
 
     const sortObj = {};
-    (sort || []).forEach((item) => sortObj[item.replace('-', '')] = item.indexOf('-') === 0 ? -1 : 1);
+    (sort || [])
+      .forEach(
+        item =>
+          (sortObj[item.replace('-', '')] = item.indexOf('-') === 0 ? -1 : 1)
+      );
 
     return returnArgs.db
       .collection(kind)
@@ -62,7 +73,9 @@ module.exports = config => {
 
   const remove = (kind, { id }) => {
     const collection = returnArgs.db.collection(kind);
-    return read(kind, { id }).then(item => write(kind, Object.assign({}, item, { state: 'REMOVED' })));
+    return read(kind, { id }).then(item =>
+      write(kind, Object.assign({}, item, { state: 'REMOVED' }))
+    );
     // return collection.deleteOneAsync({ id });
   };
 

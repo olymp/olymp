@@ -7,29 +7,38 @@ const defaultHook = (source, args, context) => {
   return Promise.resolve(args);
 };
 
-const regenerateSitemap = () => new Promise((yay, nay) => {
-  const generator = new SitemapGenerator(process.env.URL);
-  generator.on('done', (sitemap) => {
-    yay(sitemap
-      .split('%C3%A4').join('ä')
-      .split('%C3%B6').join('ö')
-      .split('%C3%BC').join('ü')
-      .split('%C3%A4').join('Ä')
-      .split('%C3%B6').join('Ö')
-      .split('%C3%BC').join('Ü')
-    );
+const regenerateSitemap = () =>
+  new Promise((yay, nay) => {
+    const generator = new SitemapGenerator(process.env.URL);
+    generator.on('done', sitemap => {
+      yay(
+        sitemap
+          .split('%C3%A4')
+          .join('ä')
+          .split('%C3%B6')
+          .join('ö')
+          .split('%C3%BC')
+          .join('ü')
+          .split('%C3%A4')
+          .join('Ä')
+          .split('%C3%B6')
+          .join('Ö')
+          .split('%C3%BC')
+          .join('Ü')
+      );
+    });
+    generator.on('clienterror', (queueError, errorData) => {
+      nay(queueError);
+    });
+    generator.start();
   });
-  generator.on('clienterror', (queueError, errorData) => {
-    nay(queueError);
+const writeSitemap = sitemap =>
+  new Promise((yay, nay) => {
+    fs.writeFile(path.resolve(KYT.PUBLIC_DIR, 'sitemap.xml'), sitemap, err => {
+      if (err) nay(err);
+      else yay(true);
+    });
   });
-  generator.start();
-});
-const writeSitemap = (sitemap) => new Promise((yay, nay) => {
-  fs.writeFile(path.resolve(KYT.PUBLIC_DIR, 'sitemap.xml'), sitemap, (err) => {
-    if (err) nay(err);
-    else yay(true);
-  });
-});
 
 module.exports = (schema, { Mutation }) => {
   schema.addSchema({
@@ -41,7 +50,9 @@ module.exports = (schema, { Mutation }) => {
       Mutation: {
         createSitemap: (source, args, context) => {
           const hook = Mutation && Mutation.page ? Mutation.page : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(regenerateSitemap).then(writeSitemap);
+          return hook(source, Object.assign({}, args), context)
+            .then(regenerateSitemap)
+            .then(writeSitemap);
         },
       },
     },

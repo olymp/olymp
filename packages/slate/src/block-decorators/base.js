@@ -2,11 +2,24 @@ import React, { Component } from 'react';
 import { createComponent } from 'olymp-fela';
 
 export default (options = {}) => Block => {
-  const { isVoid, isAtomic, sidebar, label, category, icon, defaultNodes, props } = options;
+  const {
+    isVoid,
+    isAtomic,
+    sidebar,
+    label,
+    category,
+    icon,
+    defaultNodes,
+    props,
+  } = options;
 
-  const StyledBlock = createComponent(({ active }) => ({
-    outline: active && '2px solid rgba(48, 48, 48, 0.67)',
-  }), p => <Block {...p} />, p => Object.keys(p));
+  const StyledBlock = createComponent(
+    ({ active }) => ({
+      outline: active && '2px solid rgba(48, 48, 48, 0.67)',
+    }),
+    p => <Block {...p} />,
+    p => Object.keys(p)
+  );
 
   return class BaseDecorator extends Component {
     static slate = {
@@ -16,10 +29,10 @@ export default (options = {}) => Block => {
       label,
       category,
       icon,
-      defaultNodes
+      defaultNodes,
     };
 
-    setData = (data) => {
+    setData = data => {
       const { node, editor } = this.props;
       const transform = editor
         .getState()
@@ -51,7 +64,12 @@ export default (options = {}) => Block => {
         if (data !== undefined) state[prop] = data;
         return state;
       }, {});
-      const active = !editor.props.readOnly && children.findIndex(child => parseInt(child.key, 10) === parseInt(state.selection.startKey, 10)) >= 0;
+      const active =
+        !editor.props.readOnly &&
+        children.findIndex(
+          child =>
+            parseInt(child.key, 10) === parseInt(state.selection.startKey, 10)
+        ) >= 0;
 
       return (
         <StyledBlock

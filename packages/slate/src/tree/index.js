@@ -9,7 +9,8 @@ export default class SlateTree extends Component {
     expandedKeys: [],
     selectedNode: null,
   };
-  onDrop = (info) => { // reorder or move nodes on drop
+  onDrop = info => {
+    // reorder or move nodes on drop
     const { reorder, move } = this.props;
     const parent = info.dropToGap && info.node.props.title.props.parent
       ? info.node.props.title.props.parent
@@ -18,12 +19,15 @@ export default class SlateTree extends Component {
     const pageId = page.pageId || page.id; // get real pageId in case of binding
 
     // Get all IDs of children in order
-    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
+    const childIds = (parent.children || [])
+      .map(child => child.id)
+      .filter(x => x !== page.id);
     childIds.splice(info.dropPosition, 0, page.id);
 
     // Check if new parent is itself??
     if (parent.id === pageId) return;
-    if (parent.id !== page.parentId) { // parent changed
+    if (parent.id !== page.parentId) {
+      // parent changed
       move({
         variables: {
           id: pageId,
@@ -31,7 +35,8 @@ export default class SlateTree extends Component {
           sorting: childIds.join(','),
         },
       });
-    } else { // just moved inside existing parent
+    } else {
+      // just moved inside existing parent
       // Disallow sort if parent has fixed sorting
       if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) return;
       reorder({
@@ -41,20 +46,24 @@ export default class SlateTree extends Component {
         },
       });
     }
-  }
-  onClick = (node) => {
+  };
+  onClick = node => {
     this.setState({ selectedNode: node });
-  }
+  };
   getTextLength = (node, length = 0) => {
     const text = node.text ? node.text.length : 0;
-    const children = node.nodes ? node.nodes.reduce((length, node) => {
-      return this.getTextLength(node, length);
-    }, 0) : 0;
-    const ranges = node.ranges ? node.ranges.reduce((length, node) => {
-      return this.getTextLength(node, length);
-    }, 0) : 0;
+    const children = node.nodes
+      ? node.nodes.reduce((length, node) => {
+          return this.getTextLength(node, length);
+        }, 0)
+      : 0;
+    const ranges = node.ranges
+      ? node.ranges.reduce((length, node) => {
+          return this.getTextLength(node, length);
+        }, 0)
+      : 0;
     return length + text + children + ranges;
-  }
+  };
   loop = (nodes, parentPath = '') => {
     const items = [];
     for (let i = 0; i < nodes.length; i++) {
@@ -62,7 +71,9 @@ export default class SlateTree extends Component {
       const path = parentPath ? `${parentPath}.nodes[${i}]` : `nodes[${i}]`;
       if (node && node.kind !== 'text') {
         const lastNode = items[items.length - 1];
-        const children = node.nodes && node.nodes.length ? this.loop(node.nodes, path) : undefined;
+        const children = node.nodes && node.nodes.length
+          ? this.loop(node.nodes, path)
+          : undefined;
         const length = this.getTextLength(node);
         if (lastNode && lastNode.type === 'line' && node.type === 'line') {
           lastNode.length += length;
@@ -78,29 +89,36 @@ export default class SlateTree extends Component {
         }
       }
     }
-    return items.map(({ kind, type, text, length, children, node, path }, i) => (
-      <Tree.Node key={i} title={(
-        <Tree.Title>
-          <a href="javascript:;" onClick={() => this.onClick({ kind, type, text, length, children, path })}>
-            {text || type || kind} {length ? `(${length})` : ''}
-          </a>
-          {type !== 'line' && <a href="javascript:;"><Icon type="appstore-o" /></a>}
-        </Tree.Title>
-      )}>
+    return items.map(({ kind, type, text, length, children, node, path }, i) =>
+      <Tree.Node
+        key={i}
+        title={
+          <Tree.Title>
+            <a
+              href="javascript:;"
+              onClick={() =>
+                this.onClick({ kind, type, text, length, children, path })}
+            >
+              {text || type || kind} {length ? `(${length})` : ''}
+            </a>
+            {type !== 'line' &&
+              <a href="javascript:;"><Icon type="appstore-o" /></a>}
+          </Tree.Title>
+        }
+      >
         {children}
       </Tree.Node>
-    ));
-  }
+    );
+  };
   render() {
     const { value, pathname, query } = this.props;
     const { expandedKeys, selectedNode } = this.state;
     return (
       <div>
-        {selectedNode && (
+        {selectedNode &&
           <div>
             {selectedNode.type || selectedNode.kind}
-          </div>
-        )}
+          </div>}
         <Tree
           selectedKeys={[pathname]}
           draggable

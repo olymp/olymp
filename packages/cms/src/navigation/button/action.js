@@ -4,11 +4,10 @@ import capitalize from 'lodash/upperFirst';
 import uncapitalize from 'lodash/lowerFirst';
 import { Link } from 'olymp';
 
-const wrapper = children => (
+const wrapper = children =>
   <Menu.SubMenu key={key} title={capitalize(key)}>
     {children}
-  </Menu.SubMenu>
-);
+  </Menu.SubMenu>;
 
 export default class CmsAction extends Component {
   handleClick = ({ key }) => {
@@ -23,16 +22,30 @@ export default class CmsAction extends Component {
     const { location, collections, query, pathname } = this.props;
 
     return (
-      <Menu style={{ minWidth: 150, borderRadius: '4px', boxShadow: '0 1px 6px rgba(0, 0, 0, .2)' }} onClick={this.handleClick}>
-        {Object.keys(collections).map((key) => collections[key].length === 1 ? (
-            (collections[key] || []).map(({ name, title }) => (
-              <Menu.Item key={`/@/${name}`}>
-                <Link to={{ pathname, query: { [`@${uncapitalize(name)}`]: null } }}>
-                  {capitalize(title || name)}
-                </Link>
-              </Menu.Item>
-            ))
-          ) : wrapper(groupItem)
+      <Menu
+        style={{
+          minWidth: 150,
+          borderRadius: '4px',
+          boxShadow: '0 1px 6px rgba(0, 0, 0, .2)',
+        }}
+        onClick={this.handleClick}
+      >
+        {Object.keys(collections).map(
+          key =>
+            collections[key].length === 1
+              ? (collections[key] || []).map(({ name, title }) =>
+                  <Menu.Item key={`/@/${name}`}>
+                    <Link
+                      to={{
+                        pathname,
+                        query: { [`@${uncapitalize(name)}`]: null },
+                      }}
+                    >
+                      {capitalize(title || name)}
+                    </Link>
+                  </Menu.Item>
+                )
+              : wrapper(groupItem)
         )}
         <Menu.Divider />
         <Menu.Item key="media">
@@ -52,14 +65,16 @@ export default class CmsAction extends Component {
           </Link>
         </Menu.Item>
         <Menu.Item key="profile">
-          <Link to={{ pathname, query: { 'profile': null } }}>
+          <Link to={{ pathname, query: { profile: null } }}>
             Profil
           </Link>
         </Menu.Item>
         <Menu.Divider />
         <Menu.SubMenu title="Gerät">
           <Menu.Item key="device">
-            <Link to={{ pathname, query: { ...query, '@deviceWidth': undefined } }}>
+            <Link
+              to={{ pathname, query: { ...query, '@deviceWidth': undefined } }}
+            >
               Standart
             </Link>
           </Menu.Item>

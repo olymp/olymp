@@ -11,12 +11,20 @@ const navItemStyles = ({ theme, inverse }) => ({
   ellipsis: true,
 });
 
-export const Link = createComponent(({ theme, inverse }) => ({
-  ...navItemStyles({ theme, inverse }),
-  cursor: 'pointer',
-  onHover: {
-    color: inverse ? theme.light : theme.dark,
-  }
-}), ({ inverse, ...p }) => <NavLink {...p} />, p => Object.keys(p));
+export const Link = createComponent(
+  ({ theme, inverse }) => ({
+    ...navItemStyles({ theme, inverse }),
+    cursor: 'pointer',
+    onHover: {
+      color: inverse ? theme.light : theme.dark,
+    },
+  }),
+  ({ inverse, ...p }) => <NavLink {...p} />,
+  p => Object.keys(p)
+);
 
-export const Placeholder = createComponent(p => navItemStyles(p), 'span', ({ inverse, ...p }) => Object.keys(p));
+export const Placeholder = createComponent(
+  p => navItemStyles(p),
+  'span',
+  ({ inverse, ...p }) => Object.keys(p)
+);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default () => (
+export default () =>
   <div className="ui vertical masthead center aligned segment">
     <div className="ui text container center">
       <h1 className="ui inverted header" style={{ marginTop: '50px' }}>
@@ -8,5 +8,4 @@ export default () => (
       </h1>
       <h4>Die gesuchte Seite wurde nicht gefunden.</h4>
     </div>
-  </div>
-);
+  </div>;

@@ -4,18 +4,20 @@ import shortID from 'shortid';
 function deserialize(string, options = {}) {
   const getInnerTextNode = text => ({
     kind: 'text',
-    ranges: [{
-      text,
-      marks: [],
-    }],
-  })
+    ranges: [
+      {
+        text,
+        marks: [],
+      },
+    ],
+  });
   const getTextNode = text => ({
     kind: 'block',
     type: 'line',
     nodes: text !== undefined ? [getInnerTextNode(text)] : [],
   });
   const nodes = [];
-  const deserializeNode = (line) => {
+  const deserializeNode = line => {
     //const split = line.match(/#[A-Za-z0-9]([A-Za-z0-9 -])+[A-Za-z0-9]#/g);
     //split.forEach();
     const node = getTextNode();
@@ -28,7 +30,7 @@ function deserialize(string, options = {}) {
           nodes: [getTextNode(key)],
           data: {
             key,
-            id: shortID.generate()
+            id: shortID.generate(),
           },
         });
         node.nodes.push(getInnerTextNode(line));
@@ -47,7 +49,7 @@ function deserialize(string, options = {}) {
     },
   };
 
-  return options.toRaw ? raw : Raw.deserialize(raw)
+  return options.toRaw ? raw : Raw.deserialize(raw);
 }
 
 function gather(state, filter) {
@@ -66,11 +68,11 @@ function getNode(state, criteria) {
       if (criteria(node)) {
         found = node;
         return true;
-      }
-      else if (node.nodes) {
+      } else if (node.nodes) {
         runner(node.nodes);
         if (found) return true;
-      } return false;
+      }
+      return false;
     });
   }
   runner(state.document.nodes);
@@ -95,4 +97,4 @@ export default {
   serialize,
   gather,
   getNode,
-}
+};

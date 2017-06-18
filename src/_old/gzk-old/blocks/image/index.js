@@ -1,21 +1,28 @@
 import React, { Component, PropTypes } from 'react';
-import { useBlockBase, useBlockResize, useBlockAlign, useBlockToolbar } from 'olymp-slate';
+import {
+  useBlockBase,
+  useBlockResize,
+  useBlockAlign,
+  useBlockToolbar,
+} from 'olymp-slate';
 import { Image } from 'olymp-cms';
 
 const defaultImage = 'whoa.jpg';
-const actions = props => [{
-  type: 'image.src',
-  icon: 'picture-o',
-  toggle: () => {
-    const { setData } = props;
-    setData({ showMedia: true });
+const actions = props => [
+  {
+    type: 'image.src',
+    icon: 'picture-o',
+    toggle: () => {
+      const { setData } = props;
+      setData({ showMedia: true });
+    },
+    active: false,
   },
-  active: false,
-}];
+];
 
 @useBlockBase()
 @useBlockAlign()
-@useBlockResize({ })
+@useBlockResize({})
 @useBlockToolbar({ actions, remove: true, move: true })
 export default class ImageBlock extends Component {
   static propTypes = {
@@ -24,13 +31,22 @@ export default class ImageBlock extends Component {
     className: PropTypes.string,
     attributes: PropTypes.object,
     getData: PropTypes.func,
-  }
+  };
   static title = 'Bild';
   static icon = 'image';
   static category = 'Media';
 
   render() {
-    const { style, setData, getData, editor, className, children, isFocused, attributes } = this.props;
+    const {
+      style,
+      setData,
+      getData,
+      editor,
+      className,
+      children,
+      isFocused,
+      attributes,
+    } = this.props;
     const value = getData('image', { url: defaultImage });
     const { readOnly } = editor.props;
     const height = style.height.replace('-', '');
@@ -54,7 +70,9 @@ export default class ImageBlock extends Component {
             container="div"
             onChange={image => setData({ showMedia: undefined, image })}
             lightbox
-            onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => {}}
+            onImageClick={
+              readOnly ? ({ showLightbox }) => showLightbox() : () => {}
+            }
             showMediathek={getData('showMedia')}
             height={height}
             width="100%"

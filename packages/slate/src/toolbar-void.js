@@ -4,16 +4,19 @@ import { Menu } from 'antd';
 import { sortBy } from 'lodash';
 import addBlock from './utils/add-block';
 
-export default (props) => {
+export default props => {
   const { state, blockTypes, onChange, defaultNode } = props;
   const node = state.blocks.get(0);
   const show = !state.isBlurred && state.isCollapsed && node.isEmpty;
 
   const categories = {};
   const menuItems = [];
-  const types = Object.keys(blockTypes).map(key => ({ ...blockTypes[key].slate, type: key }));
-  sortBy(types, ['category', 'label']).forEach((action) => {
-    const onMouseDown = (e) => {
+  const types = Object.keys(blockTypes).map(key => ({
+    ...blockTypes[key].slate,
+    type: key,
+  }));
+  sortBy(types, ['category', 'label']).forEach(action => {
+    const onMouseDown = e => {
       e.preventDefault();
       onChange(addBlock(state, action, { defaultNode }));
     };
@@ -34,15 +37,18 @@ export default (props) => {
 
   return (
     <Toolbar isOpened={!!show}>
-      {Object.keys(categories).map(key => (
-        <Menu.SubMenu title={(
-          <Button>
-            {key}
-          </Button>
-        )} key={key}>
+      {Object.keys(categories).map(key =>
+        <Menu.SubMenu
+          title={
+            <Button>
+              {key}
+            </Button>
+          }
+          key={key}
+        >
           {categories[key]}
         </Menu.SubMenu>
-      ))}
+      )}
       <Menu.Divider />
       {menuItems}
     </Toolbar>

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp';
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   @withRouter
   class AuthRoutes extends Component {
-    get = (type) => {
+    get = type => {
       const { query, prefix } = this.props;
 
       return prefix ? query[`${prefix}${type}`] : query[type];
-    }
+    };
 
     set = (type, value) => {
       const { query, prefix } = this.props;
@@ -22,14 +22,12 @@ export default (WrappedComponent) => {
       }
 
       return r;
-    }
+    };
 
     render() {
       const { prefix, ...rest } = this.props;
 
-      return (
-        <WrappedComponent get={this.get} set={this.set} {...rest} />
-      );
+      return <WrappedComponent get={this.get} set={this.set} {...rest} />;
     }
   }
 

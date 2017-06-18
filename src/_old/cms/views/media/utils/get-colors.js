@@ -5,7 +5,8 @@ export default (data = []) => {
         state[color] = 0; // eslint-disable-line no-param-reassign
       }
       state[color] = state[color] + 1; // eslint-disable-line no-param-reassign
-    }); return state;
+    });
+    return state;
   }, {});
   return Object.keys(colors).map(color => ({
     color,

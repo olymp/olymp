@@ -2,7 +2,17 @@ import React from 'react';
 import { Form, Select } from 'antd';
 import { layout, getRules } from 'olymp-ui';
 
-const PageTypeInput = ({ item, field, label, layout, initialValue, rules, placeholder, form, ...rest }) => {
+const PageTypeInput = ({
+  item,
+  field,
+  label,
+  layout,
+  initialValue,
+  rules,
+  placeholder,
+  form,
+  ...rest
+}) => {
   return (
     <Form.Item key={field} label={label} {...layout}>
       {form.getFieldDecorator(field, {

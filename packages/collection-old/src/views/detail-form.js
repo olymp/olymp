@@ -27,23 +27,30 @@ export default class CollectionDetailForm extends Component {
           inline
           clean
         >
-          <div style={{ float: 'right', width: '20%', textAlign: 'right' }} key="save">
-            <Button style={{ border: 0, backgroundColor: '#FFFFFF' }} icon="save" onClick={onSave}>Speichern</Button>
+          <div
+            style={{ float: 'right', width: '20%', textAlign: 'right' }}
+            key="save"
+          >
+            <Button
+              style={{ border: 0, backgroundColor: '#FFFFFF' }}
+              icon="save"
+              onClick={onSave}
+            >
+              Speichern
+            </Button>
           </div>
         </Form>
 
         <div className="ant-form-content pt-1">
-          {Object.keys(schema.tabs).length === 1 ? (
-            <Form {...form} fields={schema.tabs.Allgemein} item={item} />
-          ) : (
-            <Tabs tabPosition="right">
-              {Object.keys(schema.tabs).map(key => (
-                <Tabs.TabPane tab={key} key={key}>
-                  <Form {...form} fields={schema.tabs[key]} item={item} />
-                </Tabs.TabPane>
-              ))}
-            </Tabs>
-          )}
+          {Object.keys(schema.tabs).length === 1
+            ? <Form {...form} fields={schema.tabs.Allgemein} item={item} />
+            : <Tabs tabPosition="right">
+                {Object.keys(schema.tabs).map(key =>
+                  <Tabs.TabPane tab={key} key={key}>
+                    <Form {...form} fields={schema.tabs[key]} item={item} />
+                  </Tabs.TabPane>
+                )}
+              </Tabs>}
         </div>
       </div>
     );

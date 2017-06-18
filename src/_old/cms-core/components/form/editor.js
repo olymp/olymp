@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
-import { ColorEditor, DateEditor, DateRangeEditor, DetailEditor, TimeRangeEditor, TagsEditor, SuggestEditor } from 'olymp-ui';
+import {
+  ColorEditor,
+  DateEditor,
+  DateRangeEditor,
+  DetailEditor,
+  TimeRangeEditor,
+  TagsEditor,
+  SuggestEditor,
+} from 'olymp-ui';
 import FormEditor from './edit';
 import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
@@ -14,7 +22,7 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-const getValidationRules = (field) => {
+const getValidationRules = field => {
   const rules = [];
   const required = !!field['@'] && !!field['@'].required;
   const label = (!!field['@'] && field['@'].label) || capitalize(field.name);
@@ -22,7 +30,11 @@ const getValidationRules = (field) => {
   if (field.name === 'name') {
     rules.push({ required, message: `'${label}' muss angegeben werden!` });
   } else if (field.type.name === 'Email') {
-    rules.push({ required, type: 'email', message: 'Keine gültige E-Mail Adresse!' });
+    rules.push({
+      required,
+      type: 'email',
+      message: 'Keine gültige E-Mail Adresse!',
+    });
   } else if (field.type.name === 'Website') {
     rules.push({ required, type: 'url', message: 'Keine gültige Website!' });
   } else if (field.type.name !== 'Boolean') {
@@ -46,13 +58,23 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
     return 'DRAFT';
   } else if (name === 'slug' && getFieldValue('name')) {
     // Bei Slug
-    let url = '/' + encodeURIComponent(getFieldValue('name').split(' ').join('-').toLowerCase())
-      .split('%C3%A4').join('ä')
-      .split('%C3%B6').join('ö')
-      .split('%C3%BC').join('ü')
-      .split('%C3%A4').join('Ä')
-      .split('%C3%B6').join('Ö')
-      .split('%C3%BC').join('Ü');
+    let url =
+      '/' +
+      encodeURIComponent(
+        getFieldValue('name').split(' ').join('-').toLowerCase()
+      )
+        .split('%C3%A4')
+        .join('ä')
+        .split('%C3%B6')
+        .join('ö')
+        .split('%C3%BC')
+        .join('ü')
+        .split('%C3%A4')
+        .join('Ä')
+        .split('%C3%B6')
+        .join('Ö')
+        .split('%C3%BC')
+        .join('Ü');
     if (getFieldValue('date')) {
       url = moment(getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
     }
@@ -66,8 +88,16 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
 export default class FieldEditor extends Component {
   state = { start: undefined, end: undefined };
 
-  fieldToEditor = (props) => {
-    const { edits, className, editorClassName, style, editorStyle, field, label } = this.props;
+  fieldToEditor = props => {
+    const {
+      edits,
+      className,
+      editorClassName,
+      style,
+      editorStyle,
+      field,
+      label,
+    } = this.props;
     const { idField, start, suggest } = field['@'];
     const { type, name } = field;
 
@@ -79,41 +109,64 @@ export default class FieldEditor extends Component {
     };
 
     let Editor;
-    edits.forEach((editFn) => {
+    edits.forEach(editFn => {
       const Edit = editFn(type);
 
       if (Edit) {
-        Editor = React.cloneElement(
-          Edit,
-          editProps
-        );
+        Editor = React.cloneElement(Edit, editProps);
       }
     });
     if (Editor) return Editor;
 
     if (idField && idField.type) {
       if (idField.type.kind === 'LIST' && idField.type.ofType) {
-        return <DetailEditor {...editProps} tags typeName={idField.type.ofType.name} />;
-      } return <DetailEditor {...editProps} typeName={idField.type.name} />;
+        return (
+          <DetailEditor
+            {...editProps}
+            tags
+            typeName={idField.type.ofType.name}
+          />
+        );
+      }
+      return <DetailEditor {...editProps} typeName={idField.type.name} />;
     }
     if (type.kind === 'LIST') {
       if (type.ofType.name === 'String') {
         if (name === 'tags') {
           return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
-        } return <Select {...editProps} tags searchPlaceholder="Suche ..." />;
-      } if (type.ofType.name.indexOf('Nested') === 0) {
-        return <FormEditor {...editProps} typeName={type.ofType.name} type={type} />;
-      } return null;
+        }
+        return <Select {...editProps} tags searchPlaceholder="Suche ..." />;
+      }
+      if (type.ofType.name.indexOf('Nested') === 0) {
+        return (
+          <FormEditor {...editProps} typeName={type.ofType.name} type={type} />
+        );
+      }
+      return null;
     }
     if (type.kind === 'OBJECT') {
       return null;
     }
     if (suggest) {
-      return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
+      return (
+        <SuggestEditor
+          {...editProps}
+          collection={suggest.arg0}
+          field={suggest.arg1}
+        />
+      );
     }
     if (start) {
-      if (type.name === 'Date') return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />;
-      if (type.name === 'DateTime') return <DateRangeEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
+      if (type.name === 'Date')
+        return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />;
+      if (type.name === 'DateTime')
+        return (
+          <DateRangeEditor
+            {...editProps}
+            format="DD.MM.YYYY HH:mm"
+            showTime={{ format: 'HH:mm' }}
+          />
+        );
     }
     if (type.kind === 'ENUM' && type.enumValues) {
       let resolveName = item => item;
@@ -124,33 +177,63 @@ export default class FieldEditor extends Component {
 
       return (
         <Select {...editProps}>
-          {type.enumValues.map(x => (
-            <Select.Option key={x.name} value={x.name}>{resolveName(x.name)}</Select.Option>
-          ))}
+          {type.enumValues.map(x =>
+            <Select.Option key={x.name} value={x.name}>
+              {resolveName(x.name)}
+            </Select.Option>
+          )}
         </Select>
       );
     }
     switch (type.name) {
       case 'Json':
-        return <SlateMate {...editProps} placeholder={label || 'Hier Text eingeben!'} style={{ borderBottom: '1px solid #e9e9e9' }} />;
+        return (
+          <SlateMate
+            {...editProps}
+            placeholder={label || 'Hier Text eingeben!'}
+            style={{ borderBottom: '1px solid #e9e9e9' }}
+          />
+        );
       case 'Boolean':
         return <Checkbox {...editProps}>{label}</Checkbox>;
       case 'Date':
         return <DateEditor {...editProps} format="DD.MM.YYYY" />;
       case 'DateTime':
-        return <DateEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
+        return (
+          <DateEditor
+            {...editProps}
+            format="DD.MM.YYYY HH:mm"
+            showTime={{ format: 'HH:mm' }}
+          />
+        );
       case 'Color':
-        return <ColorEditor {...editProps} addonBefore={<i className="fa fa-eyedropper" />} />;
+        return (
+          <ColorEditor
+            {...editProps}
+            addonBefore={<i className="fa fa-eyedropper" />}
+          />
+        );
       case 'Markdown':
         return <Input {...editProps} type="textarea" autosize />;
       case 'Slug':
-        return <Input {...editProps} addonBefore={<i className="fa fa-globe" />} />;
+        return (
+          <Input {...editProps} addonBefore={<i className="fa fa-globe" />} />
+        );
       case 'Email':
-        return <Input {...editProps} addonBefore={<i className="fa fa-envelope-o" />} />;
+        return (
+          <Input
+            {...editProps}
+            addonBefore={<i className="fa fa-envelope-o" />}
+          />
+        );
       case 'PhoneNumber':
-        return <Input {...editProps} addonBefore={<i className="fa fa-phone" />} />;
+        return (
+          <Input {...editProps} addonBefore={<i className="fa fa-phone" />} />
+        );
       case 'Website':
-        return <Input {...editProps} addonBefore={<i className="fa fa-link" />} />;
+        return (
+          <Input {...editProps} addonBefore={<i className="fa fa-link" />} />
+        );
       case 'Int':
         return <InputNumber {...editProps} placeholder={label || 0} />;
       case 'TimeRange':
@@ -162,10 +245,16 @@ export default class FieldEditor extends Component {
       default:
         return <Input {...editProps} />;
     }
-  }
+  };
 
   render() {
-    const { field, getFieldDecorator, getFieldValue, setFieldsValue, item } = this.props;
+    const {
+      field,
+      getFieldDecorator,
+      getFieldValue,
+      setFieldsValue,
+      item,
+    } = this.props;
     // const { start, end } = this.state;
 
     const editor = this.props.editor || this.fieldToEditor();
@@ -181,7 +270,7 @@ export default class FieldEditor extends Component {
       return (
         <div>
           {this.fieldToEditor({
-            onChange: (e) => {
+            onChange: e => {
               setFieldsValue({
                 [field.name]: e[0],
                 [field['@'].endField.name]: e[1],
@@ -192,22 +281,20 @@ export default class FieldEditor extends Component {
           })}
           {getFieldDecorator(field.name, {
             initialValue: start,
-            rules
+            rules,
           })(<DateEditor style={{ display: 'none' }} />)}
           {getFieldDecorator(field['@'].endField.name, {
             initialValue: end,
-            rules: getValidationRules(field['@'].endField)
+            rules: getValidationRules(field['@'].endField),
           })(<DateEditor style={{ display: 'none' }} />)}
         </div>
       );
     }
 
-    return (
-      getFieldDecorator(field.name, {
-        initialValue: getInitialValue(this.props, field),
-        rules,
-        valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
-      })(editor)
-    );
+    return getFieldDecorator(field.name, {
+      initialValue: getInitialValue(this.props, field),
+      rules,
+      valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
+    })(editor);
   }
 }

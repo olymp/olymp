@@ -8,9 +8,15 @@ export default {
   label: 'Neuigkeiten, Einrichtungen',
   category: 'Panel',
   editable: false,
-  component: ({ className, attributes }) => (
+  component: ({ className, attributes }) =>
     <Container {...attributes} className={className}>
-      <Panel medium={7} title="Neuigkeiten" bordered="Neuigkeiten" background="rgb(62, 167, 62)" color="#FFF">
+      <Panel
+        medium={7}
+        title="Neuigkeiten"
+        bordered="Neuigkeiten"
+        background="rgb(62, 167, 62)"
+        color="#FFF"
+      >
         <ul>
           <Li>
             <b>Presseartikel vom 15. Dezember 2016</b>
@@ -39,11 +45,19 @@ export default {
         bordered="Einrichtungen"
         size={5}
         items={[
-          { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Z1pLCLtn51l_edd3gh.jpg' },
-          { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/ZJwg-TF0c51l_xfh4q5.jpg' },
-          { url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Wke6YQMjq1x_vprqa2.jpg' },
+          {
+            url:
+              'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Z1pLCLtn51l_edd3gh.jpg',
+          },
+          {
+            url:
+              'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/ZJwg-TF0c51l_xfh4q5.jpg',
+          },
+          {
+            url:
+              'https://res.cloudinary.com/djyenzorc/image/upload/v1482483297/Wke6YQMjq1x_vprqa2.jpg',
+          },
         ]}
       />
-    </Container>
-  ),
+    </Container>,
 };

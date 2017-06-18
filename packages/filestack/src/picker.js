@@ -7,16 +7,17 @@ export default class PageSidebar extends Component {
   onSuccess = ({ filesFailed, filesUploaded }) => {
     const { save } = this.props;
 
-    filesUploaded.forEach((item) => {
+    filesUploaded.forEach(item => {
       if (item.status === 'Stored') {
         return save(item);
-      } return false;
+      }
+      return false;
     });
-  }
+  };
 
-  onError = (error) => {
+  onError = error => {
     console.log(error);
-  }
+  };
 
   render() {
     const { className } = this.props;
@@ -29,12 +30,11 @@ export default class PageSidebar extends Component {
         options={{
           lang: 'de',
         }}
-        render={({ onPick }) => (
+        render={({ onPick }) =>
           <div className={className}>
             <strong>Find an avatar</strong>
             <button onClick={onPick}>Pick</button>
-          </div>
-        )}
+          </div>}
       />
     );
   }

@@ -27,23 +27,24 @@ class CloudinaryView extends Component {
     if (!isEqual(stateSelected.sort(), selected.sort())) {
       this.setState({ selected });
     }
-  }
+  };
 
   getUploadPops = () => {
     const { data, done, refetchKey } = this.props;
     const { uploading } = this.state;
-    const saveProgress = file => this.setState({
-      uploading: [
-        ...this.state.uploading.filter(x => x.name !== file.name),
-        {
-          name: file.name,
-          percent: file.percent,
-          size: file.size,
-          status: file.status,
-          response: file.response,
-        },
-      ]
-    });
+    const saveProgress = file =>
+      this.setState({
+        uploading: [
+          ...this.state.uploading.filter(x => x.name !== file.name),
+          {
+            name: file.name,
+            percent: file.percent,
+            size: file.size,
+            status: file.status,
+            response: file.response,
+          },
+        ],
+      });
 
     if (!data || !data.cloudinaryRequest) return {};
 
@@ -70,12 +71,14 @@ class CloudinaryView extends Component {
 
           if (!uploading.find(file => file.percent < 100)) {
             // Write data in DB
-            uploading.forEach((f) => {
+            uploading.forEach(f => {
               const response = { ...file.response };
               response.id = response.public_id;
               done({ id: response.id, token: signature }).then(({ data }) => {
                 // remove file from uploading
-                this.setState({ uploading: uploading.filter(x => x.name !== file.name) });
+                this.setState({
+                  uploading: uploading.filter(x => x.name !== file.name),
+                });
                 if (data && data.cloudinaryRequestDone) {
                   this.onSelect([data.cloudinaryRequestDone.id]);
                   refetchKey();
@@ -89,13 +92,13 @@ class CloudinaryView extends Component {
         }
       },
     };
-  }
+  };
 
   onSelect = (selectionIds, index, e) => {
     const { multi, handleSelection } = this.props;
     let selected = [...this.state.selected];
 
-    selectionIds.forEach((selectionId) => {
+    selectionIds.forEach(selectionId => {
       const itemIndex = selected.findIndex(item => item === selectionId);
       if (itemIndex < 0) {
         if (multi && e && e.shiftKey) {
@@ -109,7 +112,7 @@ class CloudinaryView extends Component {
     });
 
     handleSelection(selected, this);
-  }
+  };
 
   onClick = (id, i, e) => {
     const { handleSelection } = this.props;
@@ -123,25 +126,33 @@ class CloudinaryView extends Component {
       this.setState({ selection: index });
       handleSelection([id], this);
     }
-  }
+  };
 
   onRemove = id => {
     const { selected, selection } = this.state;
     const index = selected.findIndex(itemId => itemId === id);
 
-    if (index < selection || (index === selection && index === selected.length - 1)) {
+    if (
+      index < selection ||
+      (index === selection && index === selected.length - 1)
+    ) {
       this.setState({ selection: selection - 1 });
     }
 
     this.onSelect([id]);
-  }
+  };
 
   render() {
     const { onClose, deviceWidth, format, onSelect } = this.props;
     const { selected, search, filter, uploading } = this.state;
-    const selection = this.state.selection >= 0 && this.state.selection < selected.length ? this.state.selection : 0;
+    const selection = this.state.selection >= 0 &&
+      this.state.selection < selected.length
+      ? this.state.selection
+      : 0;
 
-    const items = !format ? this.props.items : this.props.items.filter(x => x.format === format);
+    const items = !format
+      ? this.props.items
+      : this.props.items.filter(x => x.format === format);
     const filteredItems = this.state.filteredItems || items;
 
     return (
@@ -151,15 +162,26 @@ class CloudinaryView extends Component {
           upload={this.getUploadPops()}
           onClose={onClose}
           filter={filter}
-          onFilter={(filter, filteredItems) => this.setState({ filter, filteredItems })}
+          onFilter={(filter, filteredItems) =>
+            this.setState({ filter, filteredItems })}
           search={search}
           onSearch={search => this.setState({ search })}
         />
-        <Dragzone uploading={uploading} clickable={false} {...this.getUploadPops()}>
-          <Gallery onClick={this.onClick} selected={selected} items={filteredItems} />
+        <Dragzone
+          uploading={uploading}
+          clickable={false}
+          {...this.getUploadPops()}
+        >
+          <Gallery
+            onClick={this.onClick}
+            selected={selected}
+            items={filteredItems}
+          />
         </Dragzone>
         <SelectionSidebar
-          items={selected.map(x => items.find(item => item.id === x)).filter(x => x)}
+          items={selected
+            .map(x => items.find(item => item.id === x))
+            .filter(x => x)}
           activeItemId={selected[selection]}
           onClick={index => this.setState({ selection: index })}
           onRemove={this.onRemove}

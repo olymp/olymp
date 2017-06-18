@@ -12,12 +12,11 @@ export class AmpProvider extends Component {
   render() {
     return Children.only(this.props.children);
   }
-};
+}
 
-export default (WrappedComponent) => {
-  const withAmp = (props, context) => (
-    <WrappedComponent {...context} {...props} />
-  );
+export default WrappedComponent => {
+  const withAmp = (props, context) =>
+    <WrappedComponent {...context} {...props} />;
   withAmp.contextTypes = {
     amp: React.PropTypes.bool,
   };

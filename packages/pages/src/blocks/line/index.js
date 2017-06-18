@@ -48,12 +48,14 @@ const styles = theme => ({
   },
   style11: {
     height: 6,
-    background: 'url(http://ibrahimjabbari.com/english/images/hr-11.png) repeat-x 0 0',
+    background:
+      'url(http://ibrahimjabbari.com/english/images/hr-11.png) repeat-x 0 0',
     border: 0,
   },
   style12: {
     height: 6,
-    background: 'url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0',
+    background:
+      'url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0',
     border: 0,
   },
   style13: {
@@ -124,40 +126,46 @@ const styles = theme => ({
       borderColor: theme.dark4,
       borderWidth: '0 0 1px 0',
       borderRadius: 20,
-    }
+    },
   },
 });
 
-const component = createComponent(({ getData, theme }) => (
-  styles(theme)[getData('type', 'style1')]
-), ({ attributes, className }) => (
-  <hr {...attributes} className={className} />
-), p => Object.keys(p));
+const component = createComponent(
+  ({ getData, theme }) => styles(theme)[getData('type', 'style1')],
+  ({ attributes, className }) => <hr {...attributes} className={className} />,
+  p => Object.keys(p)
+);
 
 export default {
   label: 'Linie',
   category: 'Template',
   component,
-  actions: [{
-    type: 'small',
-    icon: 'align-left',
-    label: 'Stil 1',
-    component: ({ setData }) => (
-      <Dropdown overlay={(
-        <Menu onClick={({ key }) => setData({ type: key })} style={{ minWidth: 200 }}>
-          {Object.keys(styles({ })).map(key => (
-            <Menu.Item key={key}>
-              {key}
-            </Menu.Item>
-          ))}
-        </Menu>
-      )}>
-        <a href="javascript:;">
-          Stil
-        </a>
-      </Dropdown>
-    ),
-    toggle: ({ setData }) => setData({ type: 'style2' }),
-    active: ({ type }) => false,
-  }],
+  actions: [
+    {
+      type: 'small',
+      icon: 'align-left',
+      label: 'Stil 1',
+      component: ({ setData }) =>
+        <Dropdown
+          overlay={
+            <Menu
+              onClick={({ key }) => setData({ type: key })}
+              style={{ minWidth: 200 }}
+            >
+              {Object.keys(styles({})).map(key =>
+                <Menu.Item key={key}>
+                  {key}
+                </Menu.Item>
+              )}
+            </Menu>
+          }
+        >
+          <a href="javascript:;">
+            Stil
+          </a>
+        </Dropdown>,
+      toggle: ({ setData }) => setData({ type: 'style2' }),
+      active: ({ type }) => false,
+    },
+  ],
 };

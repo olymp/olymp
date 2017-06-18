@@ -18,10 +18,18 @@ export default class CollectionListSidebar extends Component {
     const { typeName, location } = this.props;
     const { pathname } = location;
 
-    return { pathname, query: { ...location.query, [`@${typeName.toLowerCase()}`]: id } };
-  }
+    return {
+      pathname,
+      query: { ...location.query, [`@${typeName.toLowerCase()}`]: id },
+    };
+  };
 
-  resolveFieldValue = (item, field, { defaultFieldName, defaultValue }, fieldProps) => {
+  resolveFieldValue = (
+    item,
+    field,
+    { defaultFieldName, defaultValue },
+    fieldProps
+  ) => {
     const fieldName = this.resolveFieldName(item, field, defaultFieldName);
     const meta = this.resolveField(fieldName);
 
@@ -29,42 +37,57 @@ export default class CollectionListSidebar extends Component {
     const startField = this.resolveFieldName(item, 'start');
     const endField = this.resolveFieldName(item, 'end');
     if (startField && endField && fieldName === startField) {
-      const start =!!item[startField] && (
-        <FieldValue value={item[startField]} meta={meta} fieldProps={fieldProps} />
-      );
-      const end = !!item[endField] && (
-        <FieldValue value={item[endField]} meta={meta} fieldProps={fieldProps} />
-      );
+      const start =
+        !!item[startField] &&
+        <FieldValue
+          value={item[startField]}
+          meta={meta}
+          fieldProps={fieldProps}
+        />;
+      const end =
+        !!item[endField] &&
+        <FieldValue
+          value={item[endField]}
+          meta={meta}
+          fieldProps={fieldProps}
+        />;
 
       if (start && end) {
         return <span>{start} bis<br />{end}</span>;
       } else if (start) {
         return <span>Ab {start}</span>;
-      } if (end) {
+      }
+      if (end) {
         return <span>Bis {end}</span>;
       }
     }
 
     return (
-      <FieldValue value={item[fieldName] || defaultValue} meta={meta} fieldProps={fieldProps} />
+      <FieldValue
+        value={item[fieldName] || defaultValue}
+        meta={meta}
+        fieldProps={fieldProps}
+      />
     );
-  }
+  };
 
   resolveFieldName = (item, field, defaultFieldName) => {
     const { collection } = this.props;
     const { specialFields } = collection;
 
-    return (!!specialFields[field] && specialFields[field].field) || defaultFieldName;
-  }
+    return (
+      (!!specialFields[field] && specialFields[field].field) || defaultFieldName
+    );
+  };
 
-  resolveField = (fieldName) => {
+  resolveField = fieldName => {
     const { collection } = this.props;
     const { fields } = collection;
 
     return fields.find(x => x.name === fieldName);
-  }
+  };
 
-  renderMenu = ({ id, state }) => (
+  renderMenu = ({ id, state }) =>
     <Menu>
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
@@ -73,30 +96,46 @@ export default class CollectionListSidebar extends Component {
         Kopieren
       </Menu.Item>
       <Menu.Item disabled>
-        {state !== 'REMOVED'
-          ? 'Löschen'
-          : 'Wiederherstellen'
-        }
+        {state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen'}
       </Menu.Item>
-    </Menu>
-  )
+    </Menu>;
 
   render() {
-    const { router, id, collection, isLoading, refetch, typeName, onSearch, search, onClick } = this.props;
-    const items = (this.props.items || []).map((item) => {
-      const name = this.resolveFieldValue(item, 'name', { defaultFieldName: 'name', defaultValue: item.kurz || item.name || 'Kein Titel' });
+    const {
+      router,
+      id,
+      collection,
+      isLoading,
+      refetch,
+      typeName,
+      onSearch,
+      search,
+      onClick,
+    } = this.props;
+    const items = (this.props.items || []).map(item => {
+      const name = this.resolveFieldValue(item, 'name', {
+        defaultFieldName: 'name',
+        defaultValue: item.kurz || item.name || 'Kein Titel',
+      });
       const description = this.resolveFieldValue(item, 'description', {});
       const image = item[this.resolveFieldName(item, 'image', 'bild')];
-      const color = (
-        collection.specialFields && collection.specialFields.color && !!item[collection.specialFields.color.field] && collection.specialFields.color.arg0
-      ) || item[this.resolveFieldName(item, 'color', 'farbe')];
+      const color =
+        (collection.specialFields &&
+          collection.specialFields.color &&
+          !!item[collection.specialFields.color.field] &&
+          collection.specialFields.color.arg0) ||
+        item[this.resolveFieldName(item, 'color', 'farbe')];
 
       return {
         name,
         description,
         image,
         color,
-        extra: <Dropdown overlay={this.renderMenu(item)}><Icon type="edit" /></Dropdown>,
+        extra: (
+          <Dropdown overlay={this.renderMenu(item)}>
+            <Icon type="edit" />
+          </Dropdown>
+        ),
         isActive: item.id === id,
         onClick: () => router.push(this.getLink(item)),
       };
@@ -105,17 +144,32 @@ export default class CollectionListSidebar extends Component {
     const menu = (
       <Menu>
         <Menu.Item key="1">
-          <a href="javascript:;" onClick={() => router.push(this.getLink({ id: null }))}>Hinzufügen</a>
+          <a
+            href="javascript:;"
+            onClick={() => router.push(this.getLink({ id: null }))}
+          >
+            Hinzufügen
+          </a>
         </Menu.Item>
         <Menu.Item key="2" disabled>Import</Menu.Item>
         <Menu.Item key="3">
-          <a href="javascript:;" onClick={() => collectionToCsvDownload(collection, this.props.items)}>Export</a>
+          <a
+            href="javascript:;"
+            onClick={() =>
+              collectionToCsvDownload(collection, this.props.items)}
+          >
+            Export
+          </a>
         </Menu.Item>
       </Menu>
     );
     const actions = (
       <Dropdown overlay={menu}>
-        <Button shape="circle" size="large" onClick={() => router.push(this.getLink({ id: null }))}>
+        <Button
+          shape="circle"
+          size="large"
+          onClick={() => router.push(this.getLink({ id: null }))}
+        >
           <Icon type="plus" />
         </Button>
       </Dropdown>
@@ -124,27 +178,35 @@ export default class CollectionListSidebar extends Component {
       <Sidebar
         rightButtons={
           <Popover content={`${collection.name} hinzufügen`}>
-            <Sidebar.Button onClick={() => onClick({ id: 'new' })} shape="circle" icon="plus" />
+            <Sidebar.Button
+              onClick={() => onClick({ id: 'new' })}
+              shape="circle"
+              icon="plus"
+            />
           </Popover>
         }
         header={
-          <List.Filter placeholder="Filter ..." onChange={onSearch} value={search} />
+          <List.Filter
+            placeholder="Filter ..."
+            onChange={onSearch}
+            value={search}
+          />
         }
         isOpen
         padding={0}
         title={collection.name}
         subtitle={`${collection.name} sichten und verwalten`}
       >
-        {items.map(item => (
+        {items.map(item =>
           <List.Item
             active={item.id === id}
             label={item.name}
             onClick={item.onClick}
             key={item.id}
           />
-        ))}
+        )}
       </Sidebar>
-    )
+    );
     return (
       <List
         items={items}

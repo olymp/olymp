@@ -1,6 +1,14 @@
 import React from 'react';
 import wrap from './util';
-import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus, AuthTotp } from '../views';
+import {
+  AuthRegister,
+  AuthLogin,
+  AuthConfirm,
+  AuthReset,
+  AuthForgot,
+  AuthStatus,
+  AuthTotp,
+} from '../views';
 import { AuthUsers, AuthInvitations } from '../admin';
 import { AuthProfileModal } from '../profile';
 
@@ -12,15 +20,19 @@ export const Profile = wrap(({ query, router, pathname, get }) =>
   />
 );
 
-export const Register = wrap(({ query, router, pathname, register, get, set }) =>
-  <AuthRegister
-    extraFields={register}
-    isOpen={get('register', query) !== undefined}
-    token={get('register', query)}
-    pathname={pathname}
-    onClose={() => router.push(pathname)}
-    onOk={({ email, token }) => token ? router.push({ pathname, query: set('login', email) }) : router.push({ pathname, query: set('status-register', email) })}
-  />
+export const Register = wrap(
+  ({ query, router, pathname, register, get, set }) =>
+    <AuthRegister
+      extraFields={register}
+      isOpen={get('register', query) !== undefined}
+      token={get('register', query)}
+      pathname={pathname}
+      onClose={() => router.push(pathname)}
+      onOk={({ email, token }) =>
+        token
+          ? router.push({ pathname, query: set('login', email) })
+          : router.push({ pathname, query: set('status-register', email) })}
+    />
 );
 
 export const Login = wrap(({ query, router, pathname, get, set }) =>
@@ -60,14 +72,18 @@ export const Forgot = wrap(({ query, router, pathname, get, set }) =>
     email={get('forgot', query)}
     pathname={pathname}
     onClose={() => router.push(pathname)}
-    onOk={({ email }) => router.push({ pathname, query: set('status-forgot', email) })}
+    onOk={({ email }) =>
+      router.push({ pathname, query: set('status-forgot', email) })}
   />
 );
 
 export const StatusForgot = wrap(({ query, router, pathname, get }) =>
   <AuthStatus
     isOpen={get('status-forgot', query) !== undefined}
-    text={`Wir haben eine E-Mail an ${get('status-forgot', query)} geschickt. Bitte befolgen Sie den Anweisungen darin um ein neues Passwort zu erhalten.`}
+    text={`Wir haben eine E-Mail an ${get(
+      'status-forgot',
+      query
+    )} geschickt. Bitte befolgen Sie den Anweisungen darin um ein neues Passwort zu erhalten.`}
     pathname={pathname}
     onClose={() => router.push(pathname)}
   />
@@ -76,7 +92,10 @@ export const StatusForgot = wrap(({ query, router, pathname, get }) =>
 export const StatusRegister = wrap(({ query, router, pathname, get }) =>
   <AuthStatus
     isOpen={get('status-register', query) !== undefined}
-    text={`Wir haben eine E-Mail an ${get('status-register', query)} geschickt. Bitte befolgen Sie den Anweisungen darin um die Registrierung abzuschließen.`}
+    text={`Wir haben eine E-Mail an ${get(
+      'status-register',
+      query
+    )} geschickt. Bitte befolgen Sie den Anweisungen darin um die Registrierung abzuschließen.`}
     pathname={pathname}
     onClose={() => router.push(pathname)}
   />
@@ -84,7 +103,9 @@ export const StatusRegister = wrap(({ query, router, pathname, get }) =>
 
 export const Totp = wrap(({ query, router, pathname, get }) =>
   <AuthTotp
-    isOpen={get('totp', query) !== undefined && get('login', query) === undefined}
+    isOpen={
+      get('totp', query) !== undefined && get('login', query) === undefined
+    }
     pathname={pathname}
     onClose={() => router.push(pathname)}
   />

@@ -4,12 +4,12 @@ import React, { Component, PropTypes, Children } from 'react';
 export default class DataProvider extends Component {
   static childContextTypes = {
     hashtaxData: PropTypes.object,
-  }
+  };
   static contextTypes = {
     hashtaxData: PropTypes.object,
-  }
+  };
   getChildContext() {
-    const hashtaxData = this.context.hashtaxData || {};
+    const hashtaxData = this.context.hashtaxData || {};
     const props = this.props;
     return {
       hashtaxData: {

@@ -6,14 +6,20 @@ import gql from 'graphql-tag';
 const baseAttributes = 'id, name, email, isAdmin';
 let attributes = baseAttributes;
 
-export const auth = (obj) => WrappedComponent => {
-  if (obj && obj.extraAttributes) attributes = `${baseAttributes}, ${obj.extraAttributes}`;
+export const auth = obj => WrappedComponent => {
+  if (obj && obj.extraAttributes)
+    attributes = `${baseAttributes}, ${obj.extraAttributes}`;
   const inner = WrappedComponent => {
     const component = props => {
       const auth = {
         user: props.data.user,
         loading: props.data.loading,
-        ...authMethods(props.client, props.data.refetch, props.data.user, props.data.loading),
+        ...authMethods(
+          props.client,
+          props.data.refetch,
+          props.data.user,
+          props.data.loading
+        ),
       };
       return <WrappedComponent auth={auth} {...props} />;
     };
@@ -24,7 +30,8 @@ export const auth = (obj) => WrappedComponent => {
             ${attributes}
           }
         }
-      `, {
+      `,
+      {
         // forceFetch: true,
       }
     )(withApollo(component));
@@ -42,13 +49,13 @@ export const auth = (obj) => WrappedComponent => {
       if (this.props.auth.loading) return <Spin />;
       return <WrappedComponent {...this.props} />;
     }
-  } return inner(UserProvider);
+  }
+  return inner(UserProvider);
 };
 
 export default WrappedComponent => {
-  const withUserRenderer = (props, context) => (
-    <WrappedComponent {...context} {...props} />
-  );
+  const withUserRenderer = (props, context) =>
+    <WrappedComponent {...context} {...props} />;
   withUserRenderer.contextTypes = {
     auth: React.PropTypes.object,
   };
@@ -57,7 +64,7 @@ export default WrappedComponent => {
 
 /////////////////
 const authMethods = (client, refetch, user, loading) => ({
-  can: (method) => {
+  can: method => {
     if (loading) return true;
     if (!user) return false;
     if (user.isAdmin) return true;
@@ -73,141 +80,167 @@ const authMethods = (client, refetch, user, loading) => ({
     return user.isAdmin;
   },
   invitation: (invitation, id) => {
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation invitation($invitation: InvitationInput) {
           invitation(input: $invitation) {
             id, name, email
           }
         }
-      `, variables: { invitation },
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      // if (refetch) refetch({});
-      return data.invitation;
-    });
+      `,
+        variables: { invitation },
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        // if (refetch) refetch({});
+        return data.invitation;
+      });
   },
   save: (user, id) => {
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation user($user: UserInput) {
           user(input: $user) {
             ${attributes}
           }
         }
-      `, variables: { user },
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      // if (refetch) refetch({});
-      return data.user;
-    });
+      `,
+        variables: { user },
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        // if (refetch) refetch({});
+        return data.user;
+      });
   },
   logout: () => {
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation logout {
           logout
         }
       `,
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      if (refetch) refetch({});
-    });
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        if (refetch) refetch({});
+      });
   },
   forgot: email => {
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation forgot {
           forgot(email:"${email}")
         }
       `,
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      return data.forgot;
-    });
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        return data.forgot;
+      });
   },
   reset: (token, password) => {
     if (typeof localStorage === 'undefined') return;
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation reset {
           reset(token:"${token}", password:"${password}") {
             email
           }
         }
-      `
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      return data.reset;
-    });
+      `,
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        return data.reset;
+      });
   },
-  confirm: (token) => {
-    return client.mutate({
-      mutation: gql`
+  confirm: token => {
+    return client
+      .mutate({
+        mutation: gql`
         mutation confirm {
           confirm(token:"${token}") {
             email
           }
         }
-      `
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      return data.confirm;
-    });
+      `,
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        return data.confirm;
+      });
   },
   login: (email, password, totp) => {
     if (typeof localStorage === 'undefined') return;
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation login {
-          user: login(email:"${email}", password:"${password}"${totp ? `, totp:"${totp}"` : ''}) {
+          user: login(email:"${email}", password:"${password}"${totp
+          ? `, totp:"${totp}"`
+          : ''}) {
             ${attributes}
           }
         }
       `,
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      const { user } = data;
-      if (refetch) refetch({ });
-      return user;
-    });
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        const { user } = data;
+        if (refetch) refetch({});
+        return user;
+      });
   },
   register: (user, password, token) => {
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation register($user: UserInput, $password: String, $token: String) {
           register(input: $user, password: $password, token: $token) {
             ${attributes}
           }
         }
-      `, variables: { user, password, token },
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      return data.register;
-    });
+      `,
+        variables: { user, password, token },
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        return data.register;
+      });
   },
   checkToken: key => {
-    return client.mutate({
-      query: gql`
+    return client
+      .mutate({
+        query: gql`
         query checkToken {
           checkToken(token:"${key}")
         }
       `,
-    }).then(({ data }) => {
-      return data.checkToken;
-    });
+      })
+      .then(({ data }) => {
+        return data.checkToken;
+      });
   },
   totpConfirm: (token, totp) => {
-    return client.mutate({
-      mutation: gql`
+    return client
+      .mutate({
+        mutation: gql`
         mutation totpConfirm($token: String, $totp: String) {
           totpConfirm(token: $token, totp: $totp)
         }
-      `, variables: { token, totp },
-    }).then(({ data, errors }) => {
-      if (errors) throw errors[0];
-      if (!data.totpConfirm) throw new Error('Could not activate TOTP');
-      return data.totpConfirm;
-    });
+      `,
+        variables: { token, totp },
+      })
+      .then(({ data, errors }) => {
+        if (errors) throw errors[0];
+        if (!data.totpConfirm) throw new Error('Could not activate TOTP');
+        return data.totpConfirm;
+      });
   },
 });

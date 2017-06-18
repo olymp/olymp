@@ -11,27 +11,36 @@ const barFields = ['state', 'tags'];
 
 const getFormSchema = ({ fields }) =>
   // { header: [], bar: [], tabs: {} }
-  fields.reduce((result, field) => {
-    if (headFields.includes(field.name)) { // Head
-      result.header.push(field);
-    } else if (barFields.includes(field.name)) { // Bar
-      result.bar.splice(barFields.indexOf(field.name), 0, field);
-      result.bar.join();
-    } else if (field.type.name === 'Json') { // if slate => own group
-      result.tabs[capitalize(field.name)] = [field];
-    } else if (field.type.name === 'Image') { // if image => own group
-      result.tabs[capitalize(field.name)] = [field];
-    } else { // Group
-      const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
+  fields.reduce(
+    (result, field) => {
+      if (headFields.includes(field.name)) {
+        // Head
+        result.header.push(field);
+      } else if (barFields.includes(field.name)) {
+        // Bar
+        result.bar.splice(barFields.indexOf(field.name), 0, field);
+        result.bar.join();
+      } else if (field.type.name === 'Json') {
+        // if slate => own group
+        result.tabs[capitalize(field.name)] = [field];
+      } else if (field.type.name === 'Image') {
+        // if image => own group
+        result.tabs[capitalize(field.name)] = [field];
+      } else {
+        // Group
+        const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
 
-      if (!result.tabs[group]) result.tabs[group] = [];
-      result.tabs[group].push(field);
-    } return result;
-  }, {
-    header: [],
-    bar: [],
-    tabs: {},
-  });
+        if (!result.tabs[group]) result.tabs[group] = [];
+        result.tabs[group].push(field);
+      }
+      return result;
+    },
+    {
+      header: [],
+      bar: [],
+      tabs: {},
+    }
+  );
 
 @withRouter
 @withItem

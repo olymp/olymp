@@ -1,12 +1,12 @@
-import Block from 'slate/lib/models/block'
-import Character from 'slate/lib/models/character'
-import Document from 'slate/lib/models/document'
-import Inline from 'slate/lib/models/inline'
-import Mark from 'slate/lib/models/mark'
-import Selection from 'slate/lib/models/selection'
-import State from 'slate/lib/models/state'
-import Text from 'slate/lib/models/text'
-import isEmpty from 'is-empty'
+import Block from 'slate/lib/models/block';
+import Character from 'slate/lib/models/character';
+import Document from 'slate/lib/models/document';
+import Inline from 'slate/lib/models/inline';
+import Mark from 'slate/lib/models/mark';
+import Selection from 'slate/lib/models/selection';
+import State from 'slate/lib/models/state';
+import Text from 'slate/lib/models/text';
+import isEmpty from 'is-empty';
 
 /**
  * Raw.
@@ -15,7 +15,6 @@ import isEmpty from 'is-empty'
  */
 
 const Raw = {
-
   /**
    * Deserialize a JSON `object`.
    *
@@ -25,7 +24,7 @@ const Raw = {
    */
 
   deserialize(object, options) {
-    return Raw.deserializeState(object, options)
+    return Raw.deserializeState(object, options);
   },
 
   /**
@@ -37,17 +36,19 @@ const Raw = {
    */
 
   deserializeBlock(object, options = {}) {
-    if (options.terse) object = Raw.untersifyBlock(object)
+    if (options.terse) object = Raw.untersifyBlock(object);
 
     return Block.create({
       key: object.key,
       type: object.type,
       data: object.data,
       isVoid: object.isVoid,
-      nodes: Block.createList(object.nodes.map((node) => {
-        return Raw.deserializeNode(node, options)
-      }))
-    })
+      nodes: Block.createList(
+        object.nodes.map(node => {
+          return Raw.deserializeNode(node, options);
+        })
+      ),
+    });
   },
 
   /**
@@ -62,10 +63,12 @@ const Raw = {
     return Document.create({
       key: object.key,
       data: object.data,
-      nodes: Block.createList(object.nodes.map((node) => {
-        return Raw.deserializeNode(node, options)
-      }))
-    })
+      nodes: Block.createList(
+        object.nodes.map(node => {
+          return Raw.deserializeNode(node, options);
+        })
+      ),
+    });
   },
 
   /**
@@ -77,17 +80,19 @@ const Raw = {
    */
 
   deserializeInline(object, options = {}) {
-    if (options.terse) object = Raw.untersifyInline(object)
+    if (options.terse) object = Raw.untersifyInline(object);
 
     return Inline.create({
       key: object.key,
       type: object.type,
       data: object.data,
       isVoid: object.isVoid,
-      nodes: Inline.createList(object.nodes.map((node) => {
-        return Raw.deserializeNode(node, options)
-      }))
-    })
+      nodes: Inline.createList(
+        object.nodes.map(node => {
+          return Raw.deserializeNode(node, options);
+        })
+      ),
+    });
   },
 
   /**
@@ -99,7 +104,7 @@ const Raw = {
    */
 
   deserializeMark(object, options) {
-    return Mark.create(object)
+    return Mark.create(object);
   },
 
   /**
@@ -112,12 +117,16 @@ const Raw = {
 
   deserializeNode(object, options) {
     switch (object.kind) {
-      case 'block': return Raw.deserializeBlock(object, options)
-      case 'document': return Raw.deserializeDocument(object, options)
-      case 'inline': return Raw.deserializeInline(object, options)
-      case 'text': return Raw.deserializeText(object, options)
+      case 'block':
+        return Raw.deserializeBlock(object, options);
+      case 'document':
+        return Raw.deserializeDocument(object, options);
+      case 'inline':
+        return Raw.deserializeInline(object, options);
+      case 'text':
+        return Raw.deserializeText(object, options);
       default: {
-        throw new Error(`Unrecognized node kind "${object.kind}".`)
+        throw new Error(`Unrecognized node kind "${object.kind}".`);
       }
     }
   },
@@ -131,20 +140,22 @@ const Raw = {
    */
 
   deserializeRange(object, options = {}) {
-    if (options.terse) object = Raw.untersifyRange(object)
+    if (options.terse) object = Raw.untersifyRange(object);
 
-    const marks = Mark.createSet(object.marks.map((mark) => {
-      return Raw.deserializeMark(mark, options)
-    }))
+    const marks = Mark.createSet(
+      object.marks.map(mark => {
+        return Raw.deserializeMark(mark, options);
+      })
+    );
 
-    return Character.createList(object.text
-      .split('')
-      .map((char) => {
+    return Character.createList(
+      object.text.split('').map(char => {
         return Character.create({
           text: char,
           marks,
-        })
-      }))
+        });
+      })
+    );
   },
 
   /**
@@ -162,7 +173,7 @@ const Raw = {
       focusKey: object.focusKey,
       focusOffset: object.focusOffset,
       isFocused: object.isFocused,
-    })
+    });
   },
 
   /**
@@ -174,16 +185,16 @@ const Raw = {
    */
 
   deserializeState(object, options = {}) {
-    if (options.terse) object = Raw.untersifyState(object)
+    if (options.terse) object = Raw.untersifyState(object);
 
-    const document = Raw.deserializeDocument(object.document, options)
-    let selection
+    const document = Raw.deserializeDocument(object.document, options);
+    let selection;
 
     if (object.selection != null) {
-      selection = Raw.deserializeSelection(object.selection, options)
+      selection = Raw.deserializeSelection(object.selection, options);
     }
 
-    return State.create({ document, selection }, options)
+    return State.create({ document, selection }, options);
   },
 
   /**
@@ -195,14 +206,14 @@ const Raw = {
    */
 
   deserializeText(object, options = {}) {
-    if (options.terse) object = Raw.untersifyText(object)
+    if (options.terse) object = Raw.untersifyText(object);
 
     return Text.create({
       key: object.key,
       characters: object.ranges.reduce((characters, range) => {
-        return characters.concat(Raw.deserializeRange(range, options))
-      }, Character.createList())
-    })
+        return characters.concat(Raw.deserializeRange(range, options));
+      }, Character.createList()),
+    });
   },
 
   /**
@@ -214,7 +225,7 @@ const Raw = {
    */
 
   serialize(model, options) {
-    return Raw.serializeState(model, options)
+    return Raw.serializeState(model, options);
   },
 
   /**
@@ -234,16 +245,14 @@ const Raw = {
       type: block.type,
       nodes: block.nodes
         .toArray()
-        .map(node => Raw.serializeNode(node, options))
-    }
+        .map(node => Raw.serializeNode(node, options)),
+    };
 
     if (!options.preserveKeys) {
-      delete object.key
+      delete object.key;
     }
 
-    return options.terse
-      ? Raw.tersifyBlock(object)
-      : object
+    return options.terse ? Raw.tersifyBlock(object) : object;
   },
 
   /**
@@ -261,16 +270,14 @@ const Raw = {
       kind: document.kind,
       nodes: document.nodes
         .toArray()
-        .map(node => Raw.serializeNode(node, options))
-    }
+        .map(node => Raw.serializeNode(node, options)),
+    };
 
     if (!options.preserveKeys) {
-      delete object.key
+      delete object.key;
     }
 
-    return options.terse
-      ? Raw.tersifyDocument(object)
-      : object
+    return options.terse ? Raw.tersifyDocument(object) : object;
   },
 
   /**
@@ -290,16 +297,14 @@ const Raw = {
       type: inline.type,
       nodes: inline.nodes
         .toArray()
-        .map(node => Raw.serializeNode(node, options))
-    }
+        .map(node => Raw.serializeNode(node, options)),
+    };
 
     if (!options.preserveKeys) {
-      delete object.key
+      delete object.key;
     }
 
-    return options.terse
-      ? Raw.tersifyInline(object)
-      : object
+    return options.terse ? Raw.tersifyInline(object) : object;
   },
 
   /**
@@ -314,12 +319,10 @@ const Raw = {
     const object = {
       data: mark.data.toJSON(),
       kind: mark.kind,
-      type: mark.type
-    }
+      type: mark.type,
+    };
 
-    return options.terse
-      ? Raw.tersifyMark(object)
-      : object
+    return options.terse ? Raw.tersifyMark(object) : object;
   },
 
   /**
@@ -332,12 +335,16 @@ const Raw = {
 
   serializeNode(node, options) {
     switch (node.kind) {
-      case 'block': return Raw.serializeBlock(node, options)
-      case 'document': return Raw.serializeDocument(node, options)
-      case 'inline': return Raw.serializeInline(node, options)
-      case 'text': return Raw.serializeText(node, options)
+      case 'block':
+        return Raw.serializeBlock(node, options);
+      case 'document':
+        return Raw.serializeDocument(node, options);
+      case 'inline':
+        return Raw.serializeInline(node, options);
+      case 'text':
+        return Raw.serializeText(node, options);
       default: {
-        throw new Error(`Unrecognized node kind "${node.kind}".`)
+        throw new Error(`Unrecognized node kind "${node.kind}".`);
       }
     }
   },
@@ -356,12 +363,10 @@ const Raw = {
       text: range.text,
       marks: range.marks
         .toArray()
-        .map(mark => Raw.serializeMark(mark, options))
-    }
+        .map(mark => Raw.serializeMark(mark, options)),
+    };
 
-    return options.terse
-      ? Raw.tersifyRange(object)
-      : object
+    return options.terse ? Raw.tersifyRange(object) : object;
   },
 
   /**
@@ -381,11 +386,9 @@ const Raw = {
       focusOffset: selection.focusOffset,
       isBackward: selection.isBackward,
       isFocused: selection.isFocused,
-    }
+    };
 
-    return options.terse
-      ? Raw.tersifySelection(object)
-      : object
+    return options.terse ? Raw.tersifySelection(object) : object;
   },
 
   /**
@@ -400,18 +403,16 @@ const Raw = {
     const object = {
       document: Raw.serializeDocument(state.document, options),
       selection: Raw.serializeSelection(state.selection, options),
-      kind: state.kind
-    }
+      kind: state.kind,
+    };
 
     if (!options.preserveSelection) {
-      delete object.selection
+      delete object.selection;
     }
 
-    const ret = options.terse
-      ? Raw.tersifyState(object)
-      : object
+    const ret = options.terse ? Raw.tersifyState(object) : object;
 
-    return ret
+    return ret;
   },
 
   /**
@@ -429,16 +430,14 @@ const Raw = {
       ranges: text
         .getRanges()
         .toArray()
-        .map(range => Raw.serializeRange(range, options))
-    }
+        .map(range => Raw.serializeRange(range, options)),
+    };
 
     if (!options.preserveKeys) {
-      delete object.key
+      delete object.key;
     }
 
-    return options.terse
-      ? Raw.tersifyText(object)
-      : object
+    return options.terse ? Raw.tersifyText(object) : object;
   },
 
   /**
@@ -449,14 +448,14 @@ const Raw = {
    */
 
   tersifyBlock(object) {
-    const ret = {}
-    ret.kind = object.kind
-    ret.type = object.type
-    if (object.key) ret.key = object.key
-    if (!object.isVoid) ret.nodes = object.nodes
-    if (object.isVoid) ret.isVoid = object.isVoid
-    if (!isEmpty(object.data)) ret.data = object.data
-    return ret
+    const ret = {};
+    ret.kind = object.kind;
+    ret.type = object.type;
+    if (object.key) ret.key = object.key;
+    if (!object.isVoid) ret.nodes = object.nodes;
+    if (object.isVoid) ret.isVoid = object.isVoid;
+    if (!isEmpty(object.data)) ret.data = object.data;
+    return ret;
   },
 
   /**
@@ -467,11 +466,11 @@ const Raw = {
    */
 
   tersifyDocument(object) {
-    const ret = {}
-    ret.nodes = object.nodes
-    if (object.key) ret.key = object.key
-    if (!isEmpty(object.data)) ret.data = object.data
-    return ret
+    const ret = {};
+    ret.nodes = object.nodes;
+    if (object.key) ret.key = object.key;
+    if (!isEmpty(object.data)) ret.data = object.data;
+    return ret;
   },
 
   /**
@@ -482,14 +481,14 @@ const Raw = {
    */
 
   tersifyInline(object) {
-    const ret = {}
-    ret.kind = object.kind
-    ret.type = object.type
-    if (object.key) ret.key = object.key
-    if (!object.isVoid) ret.nodes = object.nodes
-    if (object.isVoid) ret.isVoid = object.isVoid
-    if (!isEmpty(object.data)) ret.data = object.data
-    return ret
+    const ret = {};
+    ret.kind = object.kind;
+    ret.type = object.type;
+    if (object.key) ret.key = object.key;
+    if (!object.isVoid) ret.nodes = object.nodes;
+    if (object.isVoid) ret.isVoid = object.isVoid;
+    if (!isEmpty(object.data)) ret.data = object.data;
+    return ret;
   },
 
   /**
@@ -500,10 +499,10 @@ const Raw = {
    */
 
   tersifyMark(object) {
-    const ret = {}
-    ret.type = object.type
-    if (!isEmpty(object.data)) ret.data = object.data
-    return ret
+    const ret = {};
+    ret.type = object.type;
+    if (!isEmpty(object.data)) ret.data = object.data;
+    return ret;
   },
 
   /**
@@ -514,10 +513,10 @@ const Raw = {
    */
 
   tersifyRange(object) {
-    const ret = {}
-    ret.text = object.text
-    if (!isEmpty(object.marks)) ret.marks = object.marks
-    return ret
+    const ret = {};
+    ret.text = object.text;
+    if (!isEmpty(object.marks)) ret.marks = object.marks;
+    return ret;
   },
 
   /**
@@ -534,7 +533,7 @@ const Raw = {
       focusKey: object.focusKey,
       focusOffset: object.focusOffset,
       isFocused: object.isFocused,
-    }
+    };
   },
 
   /**
@@ -546,13 +545,13 @@ const Raw = {
 
   tersifyState(object) {
     if (object.selection == null) {
-      return object.document
+      return object.document;
     }
 
     return {
       document: object.document,
-      selection: object.selection
-    }
+      selection: object.selection,
+    };
   },
 
   /**
@@ -563,17 +562,17 @@ const Raw = {
    */
 
   tersifyText(object) {
-    const ret = {}
-    ret.kind = object.kind
-    if (object.key) ret.key = object.key
+    const ret = {};
+    ret.kind = object.kind;
+    if (object.key) ret.key = object.key;
 
     if (object.ranges.length == 1 && object.ranges[0].marks == null) {
-      ret.text = object.ranges[0].text
+      ret.text = object.ranges[0].text;
     } else {
-      ret.ranges = object.ranges
+      ret.ranges = object.ranges;
     }
 
-    return ret
+    return ret;
   },
 
   /**
@@ -594,13 +593,13 @@ const Raw = {
         nodes: [
           {
             kind: 'text',
-            text: ''
-          }
-        ]
-      }
+            text: '',
+          },
+        ],
+      };
     }
 
-    return object
+    return object;
   },
 
   /**
@@ -621,13 +620,13 @@ const Raw = {
         nodes: [
           {
             kind: 'text',
-            text: ''
-          }
-        ]
-      }
+            text: '',
+          },
+        ],
+      };
     }
 
-    return object
+    return object;
   },
 
   /**
@@ -641,8 +640,8 @@ const Raw = {
     return {
       kind: 'range',
       text: object.text,
-      marks: object.marks || []
-    }
+      marks: object.marks || [],
+    };
   },
 
   /**
@@ -660,8 +659,8 @@ const Raw = {
       focusKey: object.focusKey,
       focusOffset: object.focusOffset,
       isBackward: null,
-      isFocused: false
-    }
+      isFocused: false,
+    };
   },
 
   /**
@@ -677,7 +676,7 @@ const Raw = {
         kind: 'state',
         document: object.document,
         selection: object.selection,
-      }
+      };
     }
 
     return {
@@ -686,9 +685,9 @@ const Raw = {
         data: object.data,
         key: object.key,
         kind: 'document',
-        nodes: object.nodes
-      }
-    }
+        nodes: object.nodes,
+      },
+    };
   },
 
   /**
@@ -699,18 +698,20 @@ const Raw = {
    */
 
   untersifyText(object) {
-    if (object.ranges) return object
+    if (object.ranges) return object;
 
     return {
       key: object.key,
       kind: object.kind,
-      ranges: [{
-        text: object.text,
-        marks: object.marks || []
-      }]
-    }
-  }
-}
+      ranges: [
+        {
+          text: object.text,
+          marks: object.marks || [],
+        },
+      ],
+    };
+  },
+};
 
 /**
  * Export.
@@ -718,4 +719,4 @@ const Raw = {
  * @type {Object}
  */
 
-export default Raw
+export default Raw;

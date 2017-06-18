@@ -6,7 +6,7 @@ import isEqual from 'lodash/isEqual';
 import lowerFirst from 'lodash/lowerFirst';
 import { withRouter } from '../router';
 
-export default ({ name, state } = {}) => (WrappedComponent) => {
+export default ({ name, state } = {}) => WrappedComponent => {
   @withCollection(name || '')
   @withApollo
   @withRouter
@@ -38,16 +38,18 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
       this.unmount = true;
     }
 
-    setQuery = (query) => {
+    setQuery = query => {
       this.newQuery = query;
       this.update({ ...this.props, force: true });
       this.forceUpdate();
-    }
+    };
 
     update = (nextProps, lastProps) => {
-      const oldType = lastProps && lastProps.collection && lastProps.collection.name;
-      const newType = nextProps && nextProps.collection && nextProps.collection.name;
-      console.log(lastProps, oldType, newType)
+      const oldType =
+        lastProps && lastProps.collection && lastProps.collection.name;
+      const newType =
+        nextProps && nextProps.collection && nextProps.collection.name;
+      console.log(lastProps, oldType, newType);
       if (!lastProps || oldType !== newType) {
         if (this.subscription) this.subscription.unsubscribe();
         const { client, collection, fieldNames, location, force } = nextProps;
@@ -82,7 +84,11 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
               }
             `,
             variables: {
-              state: state || (location.query && location.query.state ? location.query.state.split('-') : ['PUBLISHED']),
+              state:
+                state ||
+                  (location.query && location.query.state
+                    ? location.query.state.split('-')
+                    : ['PUBLISHED']),
             },
           });
         } else {
@@ -104,19 +110,25 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
             if (this.unmount) return;
             this.items = data.items;
             this.isLoading = false;
-            this.setState({ });
+            this.setState({});
           },
-          error: (error) => {
+          error: error => {
             console.log('there was an error sending the query', error);
           },
         });
       }
-    }
+    };
 
     render() {
       console.log(this.items);
       return (
-        <WrappedComponent {...this.props} items={this.items} refetch={this.setQuery} gqlQuery={this.newQuery || this.props.query} isLoading={this.isLoading} />
+        <WrappedComponent
+          {...this.props}
+          items={this.items}
+          refetch={this.setQuery}
+          gqlQuery={this.newQuery || this.props.query}
+          isLoading={this.isLoading}
+        />
       );
     }
   }

@@ -10,7 +10,7 @@ import ltake from 'lodash/take';
 import lisEqual from 'lodash/isEqual';
 import lintersection from 'lodash/intersection';
 
-export const toString = (arg) => {
+export const toString = arg => {
   if (arg && typeof arg === 'object') return arg.name || arg.id;
   return ltoString(arg);
 };
@@ -25,4 +25,5 @@ export const lowerCase = llowerCase;
 export const groupBy = lgroupBy;
 export const isEqual = lisEqual;
 export const take = ltake;
-export const addOrRemove = (arr = [], item, shouldAdd) => shouldAdd ? [...arr, item] : arr.filter(x => x !== item);
+export const addOrRemove = (arr = [], item, shouldAdd) =>
+  shouldAdd ? [...arr, item] : arr.filter(x => x !== item);

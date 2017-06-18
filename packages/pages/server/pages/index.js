@@ -18,7 +18,11 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
     resolvers: {
       Mutation: {
         reorderPages: (source, args) => {
-          return Promise.all(args.ids.map((id, order) => adapter.write('page', { id, order }, { patch: true })));
+          return Promise.all(
+            args.ids.map((id, order) =>
+              adapter.write('page', { id, order }, { patch: true })
+            )
+          );
         },
       },
     },
@@ -94,11 +98,17 @@ module.exports = (schema, { adapter, attributes, globalAttributes }) => {
   setTimeout(() => {
     if (!adapter.client) return;
     const collection = adapter.client.collection('page');
-    collection.findOne({ }).then((one) => {
-      if (one) return;
-      adapter.client.collection('page').insertOne(
-        { id: require('shortid').generate(), name: 'Home', slug: '/', state: 'PUBLISHED' }
-      );
-    }).catch(err => console.log(err));
+    collection
+      .findOne({})
+      .then(one => {
+        if (one) return;
+        adapter.client.collection('page').insertOne({
+          id: require('shortid').generate(),
+          name: 'Home',
+          slug: '/',
+          state: 'PUBLISHED',
+        });
+      })
+      .catch(err => console.log(err));
   }, 5000);
 };

@@ -16,26 +16,27 @@ class SelectionSidebar extends Component {
           id,
           input,
         },
-        updateQueries: !id ? {
-          [`${type}List`]: (prev, { mutationResult }) => ({
-            ...prev,
-            items: [...prev.items, mutationResult.data.item],
-          }),
-        } : undefined,
-      }).then(({ data: { item } }) => {
-        onSuccess('Gespeichert', `${type} gespeichert`);
-        form.resetFields();
-      }).catch(onError);
+        updateQueries: !id
+          ? {
+              [`${type}List`]: (prev, { mutationResult }) => ({
+                ...prev,
+                items: [...prev.items, mutationResult.data.item],
+              }),
+            }
+          : undefined,
+      })
+        .then(({ data: { item } }) => {
+          onSuccess('Gespeichert', `${type} gespeichert`);
+          form.resetFields();
+        })
+        .catch(onError);
     });
-  }
+  };
 
   render() {
     const { item, form, type, children, onCancel } = this.props;
 
-    const detail = React.cloneElement(
-      children,
-      { form, item }
-    );
+    const detail = React.cloneElement(children, { form, item });
 
     return (
       <Sidebar
@@ -49,7 +50,10 @@ class SelectionSidebar extends Component {
           </div>
         }
       >
-        <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={location => 'Änderungen verwerfen?'}
+        />
         {detail}
       </Sidebar>
     );
@@ -59,4 +63,3 @@ SelectionSidebar.propTypes = {
   item: PropTypes.object,
 };
 export default SelectionSidebar;
-

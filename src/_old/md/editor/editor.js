@@ -7,7 +7,11 @@ export default class SlateEditor extends Component {
   fetch(value) {
     if (!this.props.suggestions) return Promise.resolve([]);
     return new Promise(yay => {
-      yay(this.props.suggestions.filter(x => x.key.toLowerCase().indexOf(value.toLowerCase()) !== -1));
+      yay(
+        this.props.suggestions.filter(
+          x => x.key.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        )
+      );
     });
   }
   constructor(props) {
@@ -17,14 +21,12 @@ export default class SlateEditor extends Component {
       createSuggestPlugin({
         trigger: '+',
         groupBy: i => i.key.split('-')[0],
-        fetch: this.fetch
-      })
+        fetch: this.fetch,
+      }),
     ];
   }
-  render() {
+  render() {
     const value = this.props.state || this.props.value || Plain.deserialize('');
-    return (
-      <Slate plugins={this.plugins} state={value} {...this.props} />
-    )
+    return <Slate plugins={this.plugins} state={value} {...this.props} />;
   }
 }

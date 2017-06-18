@@ -6,27 +6,25 @@ export class LangProvider extends Component {
   };
   getChildContext() {
     return {
-      lang: this.props.lang || {},
+      lang: this.props.lang || {},
     };
   }
   render() {
     return Children.only(this.props.children);
   }
-};
+}
 
-export const withLangProvider = (langOption = {}) => (WrappedComponent) => {
-  const withLangProvider = ({ lang, ...props }) => (
-    <LangProvider lang={{ ...langOption, ...({} || lang) }}>
+export const withLangProvider = (langOption = {}) => WrappedComponent => {
+  const withLangProvider = ({ lang, ...props }) =>
+    <LangProvider lang={{ ...langOption, ...({} || lang) }}>
       <WrappedComponent {...props} />
-    </LangProvider>
-  );
+    </LangProvider>;
   return withLangProvider;
 };
 
-export default (WrappedComponent) => {
-  const withLang = (props, context) => (
-    <WrappedComponent lang={context.lang} {...props} />
-  );
+export default WrappedComponent => {
+  const withLang = (props, context) =>
+    <WrappedComponent lang={context.lang} {...props} />;
   withLang.contextTypes = {
     lang: React.PropTypes.object,
   };

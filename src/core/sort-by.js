@@ -1,6 +1,7 @@
-export default (array, attrib = 'name') => { // can be 'name', x => x.name || x.title, (todo: ['name', 'title'], [x => x.name, x => x.title])
+export default (array, attrib = 'name') => {
+  // can be 'name', x => x.name || x.title, (todo: ['name', 'title'], [x => x.name, x => x.title])
   array = [...array];
-  const getAttrib = (x) => {
+  const getAttrib = x => {
     if (attrib && typeof attrib === 'string') return x[attrib];
     if (attrib && typeof attrib === 'function') return attrib(x);
     return '';
@@ -11,11 +12,14 @@ export default (array, attrib = 'name') => { // can be 'name', x => x.name || x.
 
 const compare = (left, right, idx) => {
   idx = idx === undefined ? 0 : idx++;
-  const run = right.length <= left.length ? (idx < right.length - 1) : (idx < left.length - 1);
+  const run = right.length <= left.length
+    ? idx < right.length - 1
+    : idx < left.length - 1;
   if (!run) {
     if (left[0].localeCompare(right[0]) === 0) {
       return left.localeCompare(right);
-    } return left[0].localeCompare(right[0]);
+    }
+    return left[0].localeCompare(right[0]);
   }
 
   if (left.localeCompare(right) !== left[0].localeCompare(right[0])) {
@@ -26,7 +30,8 @@ const compare = (left, right, idx) => {
     }
     if (left[0].localeCompare(right[0]) === 0) {
       return compare(myLeft, myRight, idx);
-    } return left[0].localeCompare(right[0]);
-  } return left.localeCompare(right);
+    }
+    return left[0].localeCompare(right[0]);
+  }
+  return left.localeCompare(right);
 };
-

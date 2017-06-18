@@ -12,15 +12,22 @@ export default class AuthStatus extends Component {
     const { getFieldDecorator } = form;
 
     return (
-      <Base isOpen={isOpen} title="Status" onOk={this.ok} onCancel={onClose} cancelText="Schließen">
+      <Base
+        isOpen={isOpen}
+        title="Status"
+        onOk={this.ok}
+        onCancel={onClose}
+        cancelText="Schließen"
+      >
         <p style={{ textAlign: 'center' }}>
           {text}
         </p>
         <Modal.Links>
-          <Link to={{ pathname, query: { login: null, register: undefined } }}>Zur Anmeldung</Link>
+          <Link to={{ pathname, query: { login: null, register: undefined } }}>
+            Zur Anmeldung
+          </Link>
         </Modal.Links>
       </Base>
     );
   }
 }
-

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-const getStyle = (align) => {
+const getStyle = align => {
   if (align === 'left') {
     return {
       float: 'left',
@@ -11,14 +11,15 @@ const getStyle = (align) => {
       float: 'right',
       marginLeft: '10px',
     };
-  } return {
+  }
+  return {
     float: 'initial',
     display: 'block',
     margin: '0px auto',
   };
 };
 
-export default (options = {}) => (Block) => {
+export default (options = {}) => Block => {
   const { actions = true, enable } = options;
   return class AlignmentDecorator extends Component {
     static slate = Block.slate;
@@ -27,14 +28,14 @@ export default (options = {}) => (Block) => {
       setData: PropTypes.func,
       editor: PropTypes.object,
       style: PropTypes.object,
-    }
+    };
 
-    setAlignment = (align) => {
+    setAlignment = align => {
       const { setData } = this.props;
       if (align === 'left') setData({ align });
       else if (align === 'right') setData({ align });
       else setData({ align: null });
-    }
+    };
 
     render() {
       if (enable === false) return <Block {...this.props} />;
@@ -45,14 +46,40 @@ export default (options = {}) => (Block) => {
         ...getStyle(alignment),
       };
 
-      const alignActions = actions === false ? [] : [
-        { type: 'align.left', icon: 'align-left', label: 'Linksbündig', toggle: () => this.setAlignment('left'), active: alignment === 'left' },
-        { type: 'align.center', icon: 'align-center', label: 'Zentriert', toggle: () => this.setAlignment(), active: !alignment },
-        { type: 'align.right', icon: 'align-right', label: 'Rechtsbündig', toggle: () => this.setAlignment('right'), active: alignment === 'right' },
-      ];
+      const alignActions = actions === false
+        ? []
+        : [
+            {
+              type: 'align.left',
+              icon: 'align-left',
+              label: 'Linksbündig',
+              toggle: () => this.setAlignment('left'),
+              active: alignment === 'left',
+            },
+            {
+              type: 'align.center',
+              icon: 'align-center',
+              label: 'Zentriert',
+              toggle: () => this.setAlignment(),
+              active: !alignment,
+            },
+            {
+              type: 'align.right',
+              icon: 'align-right',
+              label: 'Rechtsbündig',
+              toggle: () => this.setAlignment('right'),
+              active: alignment === 'right',
+            },
+          ];
 
       return (
-        <Block {...this.props} actions={alignActions} style={style} alignment={alignment} setAlignment={this.setAlignment} />
+        <Block
+          {...this.props}
+          actions={alignActions}
+          style={style}
+          alignment={alignment}
+          setAlignment={this.setAlignment}
+        />
       );
     }
   };
