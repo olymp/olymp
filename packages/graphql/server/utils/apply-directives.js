@@ -7,7 +7,6 @@ const getFunc = (ast, directives, resolvers, hooks, throwOnMissing) => (node, ke
       if (!current) return;
       const directiveName = directive.name.value;
       if (directiveName in directives) {
-        console.log(directiveName);
         const staticFunctions = directives[directiveName].resolveStatic;
         if (staticFunctions[method]) {
           const ret = staticFunctions[method].call({}, current, directive, Object.assign({

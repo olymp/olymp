@@ -5,6 +5,7 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
+const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
@@ -234,6 +235,12 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   if (isNode) {
     if (isDev) {
       config.plugins.push(new StartServerPlugin('main.js'));
+      config.plugins.push(
+        new ReloadServerPlugin({
+          // Defaults to process.cwd() + "/server.js"
+          script: path.resolve(__dirname, 'node', 'index.js'),
+        })
+      );
     }
     config.plugins.push(new webpack.BannerPlugin({ banner: 'require("source-map-support").install();', raw: true, entryOnly: true }));
     config.plugins.push(new webpack.NormalModuleReplacementPlugin(/\.(less|css|scss)$/, 'node-noop'));
@@ -317,7 +324,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     ].map(modulesDir => nodeExternals({
       modulesDir,
       whitelist: [
-        'webpack/hot/poll?1000',
+        v => v.indexOf('webpack/hot/poll') === 0,
         'source-map-support/register',
         v => v === 'olymp' || v.indexOf('olymp-') === 0 || v.indexOf('olymp-') === 0,
         v => v === 'antd' || v.indexOf('antd/') === 0,
@@ -388,7 +395,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       id: 'less',
       threads: 4,
       tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
-      loaders: [ {
+      loaders: [{
         path: 'style-loader',
         query: JSON.stringify({ insertAt: 'top' })
       }, {
@@ -401,13 +408,13 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     }));
     config.module.rules.push({
       test: /\.less$/,
-      loaders: [ 'happypack/loader?id=less' ]
+      loaders: ['happypack/loader?id=less']
     });
     config.plugins.push(new HappyPack({
       id: 'css',
       threads: 4,
       tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
-      loaders: [ {
+      loaders: [{
         path: 'style-loader',
         query: JSON.stringify({ insertAt: 'top' })
       }, {
@@ -417,7 +424,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     }));
     config.module.rules.push({
       test: /\.css$/,
-      loaders: [ 'happypack/loader?id=css' ]
+      loaders: ['happypack/loader?id=css'],
     });
   }
 
