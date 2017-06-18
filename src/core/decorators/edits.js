@@ -1,35 +1,31 @@
 import React, { Component } from 'react';
 
-export const withEdits = WrappedComponent => class WithEdits extends Component {
-  static contextTypes = {
-    edits: React.PropTypes.array,
+export const withEdits = WrappedComponent =>
+  class WithEdits extends Component {
+    static contextTypes = {
+      edits: React.PropTypes.array,
+    };
+
+    render() {
+      return <WrappedComponent edits={this.context.edits} {...this.props} />;
+    }
   };
 
-  render() {
-    return <WrappedComponent edits={this.context.edits} {...this.props} />;
-  }
-};
-
-export const useEdits = (edits = []) => WrappedComponent => class UseEdits extends Component {
-  static childContextTypes = {
-    edits: React.PropTypes.array,
-  }
-
-  getChildContext() {
-    return {
-      edits: [
-        ...edits,
-        ...(this.props.edits || [])
-      ],
+export const useEdits = (edits = []) => WrappedComponent =>
+  class UseEdits extends Component {
+    static childContextTypes = {
+      edits: React.PropTypes.array,
     };
-  }
 
-  render() {
-    const { edits, ...rest } = this.props;
+    getChildContext() {
+      return {
+        edits: [...edits, ...(this.props.edits || [])],
+      };
+    }
 
-    return (
-      <WrappedComponent {...rest} />
-    );
-  }
-};
+    render() {
+      const { edits, ...rest } = this.props;
 
+      return <WrappedComponent {...rest} />;
+    }
+  };

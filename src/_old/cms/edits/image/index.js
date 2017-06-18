@@ -13,7 +13,15 @@ const defaultImage = {
 @withImageUpload()
 export default class ImageComponent extends Component {
   onImageClick = () => {
-    const { showLightbox, showMediathek, onImageClick, readOnly, auth, onChange, lightbox } = this.props;
+    const {
+      showLightbox,
+      showMediathek,
+      onImageClick,
+      readOnly,
+      auth,
+      onChange,
+      lightbox,
+    } = this.props;
 
     if (!readOnly) {
       if (onImageClick) {
@@ -26,10 +34,22 @@ export default class ImageComponent extends Component {
     if (lightbox) {
       showLightbox();
     }
-  }
+  };
 
   render() {
-    const { cloudinary, asImg, style, className, width, height, ratio, children, border, retina, mode } = this.props;
+    const {
+      cloudinary,
+      asImg,
+      style,
+      className,
+      width,
+      height,
+      ratio,
+      children,
+      border,
+      retina,
+      mode,
+    } = this.props;
     let { value } = this.props;
 
     if (!value) {

@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 export default class LightboxGallery extends Component {
   static contextTypes = {
     lightbox: React.PropTypes.object,
-  }
+  };
   static childContextTypes = {
     lightbox: React.PropTypes.object,
-  }
+  };
 
   getChildContext() {
     const { lightbox } = this.context;

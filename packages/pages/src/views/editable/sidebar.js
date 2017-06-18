@@ -7,25 +7,30 @@ import { Input, PageType, State, Parent, TagSelect } from '../../edits';
 import Tree from './tree';
 
 class PageForm extends Component {
-  handleNameChange = (e) => { // set slug if unset
+  handleNameChange = e => {
+    // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
-  }
-  handleTypeChange = (e) => { // set slug if unset
+  };
+  handleTypeChange = e => {
+    // set slug if unset
     const { form } = this.props;
     if (e === 'MENU') {
       form.setFieldsValue({ parentId: null });
     }
-  }
+  };
   render() {
     const { form, item, items, navigation, tab, onTabClick } = this.props;
-    const tree = unflatten(items.map(({ id, name, parentId }) => ({
-      value: id,
-      label: name,
-      parent: parentId,
-      children: [],
-    })), { id: 'value', parentId: 'parent' });
+    const tree = unflatten(
+      items.map(({ id, name, parentId }) => ({
+        value: id,
+        label: name,
+        parent: parentId,
+        children: [],
+      })),
+      { id: 'value', parentId: 'parent' }
+    );
 
     return (
       <Tabs
@@ -41,15 +46,81 @@ class PageForm extends Component {
         </TabPane>
         <TabPane tab="Seite" key="1">
           <Panel padding={16} alignLabel="left">
-            <Input form={form} item={item} field="name" label="Name" onChange={this.handleNameChange} rules={['required']} type="text" size="large" />
-            <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
-            <State form={form} item={item} field="state" label="Status" rules={['required']} />
-            <PageType form={form} item={item} field="type" label="Art" size="large" onChange={this.handleTypeChange} />
-            {(form.getFieldValue('type') || item.type) !== 'MENU' && <Parent form={form} treeData={tree} item={item} field="parentId" label="Menü" placeholder="Übergeordnetes Menü" size="large" />}
-            {(form.getFieldValue('type') || item.type) === 'LINK' && <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />}
-            {(form.getFieldValue('type') || item.type) === 'ALIAS' && <Parent form={form} treeData={tree} item={item} field="aliasId" label="Alias" placeholder="Alias zu.." size="large" />}
-            <SectionH title="Erweitert" description="Datenanbindung, Sortierung Unterseiten" />
-            <Input form={form} item={item} field="binding" placeholder="typ id name" label="Bindung" type="text" size="large" />
+            <Input
+              form={form}
+              item={item}
+              field="name"
+              label="Name"
+              onChange={this.handleNameChange}
+              rules={['required']}
+              type="text"
+              size="large"
+            />
+            <Input
+              form={form}
+              item={item}
+              field="slug"
+              label="Slug"
+              type="text"
+              size="large"
+            />
+            <State
+              form={form}
+              item={item}
+              field="state"
+              label="Status"
+              rules={['required']}
+            />
+            <PageType
+              form={form}
+              item={item}
+              field="type"
+              label="Art"
+              size="large"
+              onChange={this.handleTypeChange}
+            />
+            {(form.getFieldValue('type') || item.type) !== 'MENU' &&
+              <Parent
+                form={form}
+                treeData={tree}
+                item={item}
+                field="parentId"
+                label="Menü"
+                placeholder="Übergeordnetes Menü"
+                size="large"
+              />}
+            {(form.getFieldValue('type') || item.type) === 'LINK' &&
+              <Input
+                form={form}
+                item={item}
+                field="href"
+                label="Ext. Link"
+                type="text"
+                size="large"
+              />}
+            {(form.getFieldValue('type') || item.type) === 'ALIAS' &&
+              <Parent
+                form={form}
+                treeData={tree}
+                item={item}
+                field="aliasId"
+                label="Alias"
+                placeholder="Alias zu.."
+                size="large"
+              />}
+            <SectionH
+              title="Erweitert"
+              description="Datenanbindung, Sortierung Unterseiten"
+            />
+            <Input
+              form={form}
+              item={item}
+              field="binding"
+              placeholder="typ id name"
+              label="Bindung"
+              type="text"
+              size="large"
+            />
             <TagSelect
               form={form}
               item={item}
@@ -92,7 +163,11 @@ PageForm.defaultProps = {
 };
 export default PageForm;
 
-const TabPane = createComponent(({ theme }) => ({
-  backgroundColor: theme.light,
-  borderBottom: border(theme),
-}), Tabs.TabPane, p => Object.keys(p));
+const TabPane = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.light,
+    borderBottom: border(theme),
+  }),
+  Tabs.TabPane,
+  p => Object.keys(p)
+);

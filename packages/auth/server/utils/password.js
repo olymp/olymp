@@ -1,4 +1,6 @@
-const { randomBytesAsync, pbkdf2Async } = require('bluebird').promisifyAll(require('crypto'));
+const { randomBytesAsync, pbkdf2Async } = require('bluebird').promisifyAll(
+  require('crypto')
+);
 
 module.exports = (config = {}) => {
   const SALT_LENGTH = config['saltLength'] || 32;
@@ -7,23 +9,32 @@ module.exports = (config = {}) => {
 
   const setPassword = (user, password) => {
     if (!password) throw new Error('Missing password');
-    return randomBytesAsync(SALT_LENGTH).then(salt => {
-      return salt.toString('hex');
-    }).then(salt => {
-      user.salt = salt;
-      return pbkdf2Async(password, salt, ITERATIONS, KEY_LENGTH, 'SHA1');
-    }).then(crypt => {
-      user.hash = new Buffer(crypt, 'binary').toString('hex');
-      return user;
-    });
+    return randomBytesAsync(SALT_LENGTH)
+      .then(salt => {
+        return salt.toString('hex');
+      })
+      .then(salt => {
+        user.salt = salt;
+        return pbkdf2Async(password, salt, ITERATIONS, KEY_LENGTH, 'SHA1');
+      })
+      .then(crypt => {
+        user.hash = new Buffer(crypt, 'binary').toString('hex');
+        return user;
+      });
   };
 
   const matchPassword = (user, password) => {
     if (!password) throw new Error('Missing password');
-    return pbkdf2Async(password, user.salt, ITERATIONS, KEY_LENGTH, 'SHA1').then(crypt => {
-      return (new Buffer(crypt, 'binary').toString('hex') === user.hash);
+    return pbkdf2Async(
+      password,
+      user.salt,
+      ITERATIONS,
+      KEY_LENGTH,
+      'SHA1'
+    ).then(crypt => {
+      return new Buffer(crypt, 'binary').toString('hex') === user.hash;
     });
   };
 
-  return {set: setPassword, match: matchPassword};
-}
+  return { set: setPassword, match: matchPassword };
+};

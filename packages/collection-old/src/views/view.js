@@ -10,7 +10,20 @@ import { SplitView } from 'olymp-ui';
 @withRouter
 export default class CollectionView extends Component {
   render() {
-    const { collection, fieldNames, onClose, saving, children, location, items, refetch, collectionLoading, typeName, data, router } = this.props;
+    const {
+      collection,
+      fieldNames,
+      onClose,
+      saving,
+      children,
+      location,
+      items,
+      refetch,
+      collectionLoading,
+      typeName,
+      data,
+      router,
+    } = this.props;
     const { query, pathname } = location;
     const id = location.query && location.query[`@${typeName.toLowerCase()}`];
 
@@ -22,12 +35,27 @@ export default class CollectionView extends Component {
           items={data && data.items}
           onClose={onClose}
           filter={[]}
-          onFilter={(filter, filteredItems) => this.setState({ filter, filteredItems })}
+          onFilter={(filter, filteredItems) =>
+            this.setState({ filter, filteredItems })}
           search={''}
           onSearch={search => this.setState({ search })}
-          onClick={item => router.push({ pathname, query: { ...query, [`@${typeName.toLowerCase()}`]: item.id, xyz: console.log(item) } })}
+          onClick={item =>
+            router.push({
+              pathname,
+              query: {
+                ...query,
+                [`@${typeName.toLowerCase()}`]: item.id,
+                xyz: console.log(item),
+              },
+            })}
         />
-        {id !== undefined && <Detail id={id === 'new' ? null : id} fieldNames={fieldNames} collection={collection} typeName={typeName} />}
+        {id !== undefined &&
+          <Detail
+            id={id === 'new' ? null : id}
+            fieldNames={fieldNames}
+            collection={collection}
+            typeName={typeName}
+          />}
       </SplitView>
     );
   }

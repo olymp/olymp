@@ -7,13 +7,13 @@ export default class CountdownTimer extends Component {
     interval: number,
     formatFunc: func,
     tickCallback: func,
-    completeCallback: func
+    completeCallback: func,
   };
   static defaultProps = {
     interval: 1000,
     formatFunc: null,
     tickCallback: null,
-    completeCallback: null
+    completeCallback: null,
   };
 
   constructor(props) {
@@ -21,7 +21,7 @@ export default class CountdownTimer extends Component {
     this.state = {
       timeRemaining: this.props.initialTimeRemaining,
       timeoutId: null,
-      prevTime: null
+      prevTime: null,
     };
   }
 
@@ -30,12 +30,17 @@ export default class CountdownTimer extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.state.timeoutId) { clearTimeout(this.state.timeoutId); }
-    this.setState({ prevTime: null, timeRemaining: newProps.initialTimeRemaining });
+    if (this.state.timeoutId) {
+      clearTimeout(this.state.timeoutId);
+    }
+    this.setState({
+      prevTime: null,
+      timeRemaining: newProps.initialTimeRemaining,
+    });
   }
 
   componentDidUpdate() {
-    if ((!this.state.prevTime) && this.state.timeRemaining > 0) {
+    if (!this.state.prevTime && this.state.timeRemaining > 0) {
       this.tick();
     }
   }
@@ -46,40 +51,44 @@ export default class CountdownTimer extends Component {
 
   tick = () => {
     var currentTime = Date.now();
-    var dt = this.state.prevTime ? (currentTime - this.state.prevTime) : 0;
+    var dt = this.state.prevTime ? currentTime - this.state.prevTime : 0;
     var interval = this.props.interval;
 
     // correct for small variations in actual timeout time
-    var timeRemainingInInterval = (interval - (dt % interval));
+    var timeRemainingInInterval = interval - dt % interval;
     var timeout = timeRemainingInInterval;
 
-    if (timeRemainingInInterval < (interval / 2.0)) {
+    if (timeRemainingInInterval < interval / 2.0) {
       timeout += interval;
     }
 
     var timeRemaining = Math.max(this.state.timeRemaining - dt, 0);
-    var countdownComplete = (this.state.prevTime && timeRemaining <= 0);
+    var countdownComplete = this.state.prevTime && timeRemaining <= 0;
 
     if (this.isMounted()) {
-      if (this.state.timeoutId) { clearTimeout(this.state.timeoutId); }
+      if (this.state.timeoutId) {
+        clearTimeout(this.state.timeoutId);
+      }
       this.setState({
         timeoutId: countdownComplete ? null : setTimeout(this.tick, timeout),
         prevTime: currentTime,
-        timeRemaining: timeRemaining
+        timeRemaining: timeRemaining,
       });
     }
 
     if (countdownComplete) {
-      if (this.props.completeCallback) { this.props.completeCallback(); }
+      if (this.props.completeCallback) {
+        this.props.completeCallback();
+      }
       return;
     }
 
     if (this.props.tickCallback) {
       this.props.tickCallback(timeRemaining);
     }
-  }
+  };
 
-  getFormattedTime = (milliseconds) => {
+  getFormattedTime = milliseconds => {
     if (this.props.formatFunc) {
       return this.props.formatFunc(milliseconds);
     }
@@ -95,7 +104,7 @@ export default class CountdownTimer extends Component {
     hours = hours < 10 ? '0' + hours : hours;
 
     return hours + ':' + minutes + ':' + seconds;
-  }
+  };
 
   render() {
     var timeRemaining = this.state.timeRemaining;

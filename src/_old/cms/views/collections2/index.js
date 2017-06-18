@@ -4,7 +4,18 @@ import { Modal, withRouter, withItems, graphql } from 'olymp';
 @withRouter
 export default class CollectionView extends Component {
   render() {
-    const { typeName, collection, fieldNames, onClose, saving, children, location, items, refetch, collectionLoading } = this.props;
+    const {
+      typeName,
+      collection,
+      fieldNames,
+      onClose,
+      saving,
+      children,
+      location,
+      items,
+      refetch,
+      collectionLoading,
+    } = this.props;
     const { query } = location;
 
     const id = query && query[`@${typeName.toLowerCase()}`];

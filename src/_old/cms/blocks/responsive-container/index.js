@@ -37,7 +37,11 @@ const text = {
   marginRight: 'auto!important',
 };
 
-const Styled = createComponent(() => text, props => <GenericBlock {...props} />, props => props);
+const Styled = createComponent(
+  () => text,
+  props => <GenericBlock {...props} />,
+  props => props
+);
 
 @useGenericBlock({
   label: 'Responsive Container',
@@ -45,8 +49,6 @@ const Styled = createComponent(() => text, props => <GenericBlock {...props} />,
 })
 export default class ContainerBlock extends Component {
   render() {
-    return (
-      <Styled {...this.props} />
-    );
+    return <Styled {...this.props} />;
   }
 }

@@ -6,32 +6,39 @@ const map = {
   four: 4,
   five: 5,
   six: 6,
-}
+};
 
-export const getHeaders = (nodes) => {
+export const getHeaders = nodes => {
   const headers = [];
   const getHeadersNested = ({ kind, type, nodes }) => {
     if (type && type.indexOf('heading-') === 0) {
       const size = map[type.split('-')[1]];
       const text = getText(nodes);
-      const slug = text.toLowerCase().replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
+      const slug = text
+        .toLowerCase()
+        .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
       headers.push({ id: shortId.generate(), text, slug, children: [] });
     }
     (nodes || []).map(getHeadersNested);
-  }
+  };
   (nodes || []).map(getHeadersNested);
 
   const newHeaders = [];
   let currentPath = [];
   headers.forEach(header => {
     const lastItem = currentPath.length && currentPath[currentPath.length - 1];
-    const mod = (lastItem && (header.size - lastItem.size)) || 0;
-    if (mod > 0) { // is deeper into tree
+    const mod = (lastItem && header.size - lastItem.size) || 0;
+    if (mod > 0) {
+      // is deeper into tree
       currentPath = [...currentPath, header];
     } else {
-      currentPath = [...currentPath.slice(0, currentPath.length - 1 + mod), header];
+      currentPath = [
+        ...currentPath.slice(0, currentPath.length - 1 + mod),
+        header,
+      ];
     }
-    const parent = currentPath.length > 1 && currentPath[currentPath.length - 2];
+    const parent =
+      currentPath.length > 1 && currentPath[currentPath.length - 2];
     if (parent && parent !== header) {
       parent.children.push(header);
     } else {
@@ -39,8 +46,8 @@ export const getHeaders = (nodes) => {
     }
   });
   return newHeaders;
-}
-export const getText = (children) => {
+};
+export const getText = children => {
   var res = '';
   if (!children) return '';
   if (Array.isArray(children)) {
@@ -54,8 +61,10 @@ export const getText = (children) => {
     }
   }
   return res;
-}
-export const getId = (x) => {
-  return getText(x).toLowerCase().replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
-}
+};
+export const getId = x => {
+  return getText(x)
+    .toLowerCase()
+    .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
+};
 export default getText;

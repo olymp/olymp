@@ -60,7 +60,7 @@ const nav = [
 
 storiefy(
   'Basic usage',
-  () => (
+  () =>
     <Navbar brand="Show me on screen < 479px" inverse>
       <Navbar.Toggler>
         <Navbar.Nav>
@@ -81,7 +81,6 @@ storiefy(
           </Navbar.Item>
         </Navbar.Nav>
       </Navbar.Toggler>
-    </Navbar>
-  ),
+    </Navbar>,
   ''
 );

@@ -5,11 +5,20 @@ import shortid from 'shortid';
 export default class Websocket extends Component {
   emit = data => {
     this.ws.send(JSON.stringify(data));
-  }
+  };
   open = (type, data) => {
-    const { onMessage, onOpen, onClose, onError, initialData, endpoint } = this.props;
+    const {
+      onMessage,
+      onOpen,
+      onClose,
+      onError,
+      initialData,
+      endpoint,
+    } = this.props;
     if (this.ws) this.close();
-    const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${endpoint || location.host}`;
+    const url = `${location.href.indexOf('https') === 0
+      ? 'wss'
+      : 'ws'}://${endpoint || location.host}`;
     this.ws = new WebSocket(url);
     this.ws.onmessage = event => {
       const data = JSON.parse(event.data);
@@ -25,11 +34,11 @@ export default class Websocket extends Component {
     this.ws.onclose = event => {
       if (onClose) onClose(event);
     };
-  }
+  };
   close = (type, data) => {
     this.ws.close();
     this.ws = null;
-  }
+  };
   componentDidMount() {
     this.open();
     const { onRef } = this.props;
@@ -45,4 +54,4 @@ export default class Websocket extends Component {
   render() {
     return null;
   }
-};
+}

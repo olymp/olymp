@@ -26,17 +26,22 @@ class MdExample extends Component {
   constructor(props) {
     super(props);
   }
-  editor = (ref) => {
+  editor = ref => {
     const cm = ref.getCodeMirror();
     cm.refresh();
-  }
+  };
   render() {
     const options = { mode: 'markdown', lineWrapping: true, lineNumbers: true };
     return (
       <Portal isOpened>
         <div className={this.props.className}>
           <div>
-            <CodeMirror ref={this.editor} value={this.state.text} onChange={(text) => this.setState({ text })} options={options} />
+            <CodeMirror
+              ref={this.editor}
+              value={this.state.text}
+              onChange={text => this.setState({ text })}
+              options={options}
+            />
           </div>
           <div>
             <Remark value={this.state.text} />
@@ -46,32 +51,35 @@ class MdExample extends Component {
     );
   }
 }
-export default styled(() => ({
-  backgroundColor: 'white',
-  position: 'fixed',
-  top: 0,
-  bottom: 0,
-  width: '100%',
-  height: '100%',
-  zIndex: 10,
-  '& .CodeMirror': {
+export default styled(
+  () => ({
+    backgroundColor: 'white',
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    width: '100%',
     height: '100%',
-  },
-  '> div': {
-    float: 'left',
-    width: '50%',
-    height: '100%',
-    '> div': {
+    zIndex: 10,
+    '& .CodeMirror': {
       height: '100%',
     },
-  },
-  '> div:nth-child(2)': {
-    background: '#f5f2f0',
-    borderLeft: '1px solid #cccccc',
-    overflowY: 'auto',
     '> div': {
-      paddingLeft: 20,
-      paddingRight: 20,
+      float: 'left',
+      width: '50%',
+      height: '100%',
+      '> div': {
+        height: '100%',
+      },
     },
-  }
-}), MdExample);
+    '> div:nth-child(2)': {
+      background: '#f5f2f0',
+      borderLeft: '1px solid #cccccc',
+      overflowY: 'auto',
+      '> div': {
+        paddingLeft: 20,
+        paddingRight: 20,
+      },
+    },
+  }),
+  MdExample
+);

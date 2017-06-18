@@ -2,7 +2,12 @@ import React, { Component, PropTypes, Children } from 'react';
 import { Gateway } from 'react-gateway';
 import { Button } from 'antd';
 import { Editor, Html, Raw, Plain } from 'slate';
-import { withSlateState, withAutoMarkdown, withUniqueId, useBlocks } from './editor-decorators';
+import {
+  withSlateState,
+  withAutoMarkdown,
+  withUniqueId,
+  useBlocks,
+} from './editor-decorators';
 import withBlockTypes from './decorators';
 import { getId } from './utils/get-text';
 import './style.less';
@@ -12,7 +17,7 @@ import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';
 import ToolbarVoid from './toolbar-void';
 
-const getIdByTag = (children) => {
+const getIdByTag = children => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
 };
@@ -27,7 +32,25 @@ const options = {
     { type: 'code', label: <span>{'>'}</span> },
   ],
   toolbarTypes: [
-    { type: ['heading-one', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six'], label: <b>H</b>, description: ['Überschrift 1', 'Überschrift 2', 'Überschrift 3', 'Überschrift 4', 'Überschrift 5', 'Überschrift 6'] },
+    {
+      type: [
+        'heading-one',
+        'heading-two',
+        'heading-three',
+        'heading-four',
+        'heading-five',
+        'heading-six',
+      ],
+      label: <b>H</b>,
+      description: [
+        'Überschrift 1',
+        'Überschrift 2',
+        'Überschrift 3',
+        'Überschrift 4',
+        'Überschrift 5',
+        'Überschrift 6',
+      ],
+    },
     { type: 'block-quote', label: <span>{'"'}</span> },
     { type: 'numbered-list', label: <span>ol</span> },
     { type: 'bulleted-list', label: <span>ul</span> },
@@ -41,14 +64,12 @@ const options = {
         let newVal = value;
 
         if (isActive) {
-          newVal = value
-            .transform()
-            .unwrapInline('link')
-            .apply();
+          newVal = value.transform().unwrapInline('link').apply();
         } else {
           let href = window.prompt('URL');
           if (href) {
-            if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) href = `http://${href}`;
+            if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1)
+              href = `http://${href}`;
             newVal = newVal
               .transform()
               .wrapInline({
@@ -61,125 +82,162 @@ const options = {
         }
         onChange(newVal);
       },
-      isActive: ({ value }) => value && value.inlines.some(inline => inline.type === 'link'),
+      isActive: ({ value }) =>
+        value && value.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
   nodes: {
     paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
-    link: ({ node, attributes, children }) => <a {...attributes} href={node.data.get('href')} target={node.data.get('target')} rel="noopener noreferrer">{children}</a>,
-    'block-quote': ({ children, attributes }) => <blockquote {...attributes}>{children}</blockquote>,
-    'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
-    'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
-    'heading-one': ({ children, attributes }) => <h1 {...attributes} id={getIdByTag(children)}>{children}</h1>,
-    'heading-two': ({ children, attributes }) => <h2 {...attributes} id={getIdByTag(children)}>{children}</h2>,
-    'heading-three': ({ children, attributes }) => <h3 {...attributes} id={getIdByTag(children)}>{children}</h3>,
-    'heading-four': ({ children, attributes }) => <h4 {...attributes} id={getIdByTag(children)}>{children}</h4>,
-    'heading-five': ({ children, attributes }) => <h5 {...attributes} id={getIdByTag(children)}>{children}</h5>,
-    'heading-six': ({ children, attributes }) => <h6 {...attributes} id={getIdByTag(children)}>{children}</h6>,
-    'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
-    'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+    link: ({ node, attributes, children }) =>
+      <a
+        {...attributes}
+        href={node.data.get('href')}
+        target={node.data.get('target')}
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>,
+    'block-quote': ({ children, attributes }) =>
+      <blockquote {...attributes}>{children}</blockquote>,
+    'bulleted-list': ({ children, attributes }) =>
+      <ul {...attributes}>{children}</ul>,
+    'numbered-list': ({ children, attributes }) =>
+      <ol {...attributes}>{children}</ol>,
+    'heading-one': ({ children, attributes }) =>
+      <h1 {...attributes} id={getIdByTag(children)}>{children}</h1>,
+    'heading-two': ({ children, attributes }) =>
+      <h2 {...attributes} id={getIdByTag(children)}>{children}</h2>,
+    'heading-three': ({ children, attributes }) =>
+      <h3 {...attributes} id={getIdByTag(children)}>{children}</h3>,
+    'heading-four': ({ children, attributes }) =>
+      <h4 {...attributes} id={getIdByTag(children)}>{children}</h4>,
+    'heading-five': ({ children, attributes }) =>
+      <h5 {...attributes} id={getIdByTag(children)}>{children}</h5>,
+    'heading-six': ({ children, attributes }) =>
+      <h6 {...attributes} id={getIdByTag(children)}>{children}</h6>,
+    'bulleted-list-item': ({ children, attributes }) =>
+      <li {...attributes}>{children}</li>,
+    'numbered-list-item': ({ children, attributes }) =>
+      <li {...attributes}>{children}</li>,
   },
   marks: {
-    bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
+    bold: ({ children, attributes }) =>
+      <strong {...attributes}>{children}</strong>,
     code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
     italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
     underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
-    center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
+    center: ({ children, attributes }) =>
+      <center {...attributes}>{children}</center>,
   },
-  getMarkdownType: (chars) => {
+  getMarkdownType: chars => {
     switch (chars) {
       case '*':
       case '-':
-      case '+': return 'bulleted-list-item';
-      case '>': return 'block-quote';
-      case '#': return 'heading-one';
-      case '##': return 'heading-two';
-      case '###': return 'heading-three';
-      case '####': return 'heading-four';
-      case '#####': return 'heading-five';
-      case '######': return 'heading-six';
-      case '1.': return 'numbered-list-item';
-      default: return null;
+      case '+':
+        return 'bulleted-list-item';
+      case '>':
+        return 'block-quote';
+      case '#':
+        return 'heading-one';
+      case '##':
+        return 'heading-two';
+      case '###':
+        return 'heading-three';
+      case '####':
+        return 'heading-four';
+      case '#####':
+        return 'heading-five';
+      case '######':
+        return 'heading-six';
+      case '1.':
+        return 'numbered-list-item';
+      default:
+        return null;
     }
   },
 };
 
 const serializer = new Html({
-  rules: [{
-    deserialize(el, next) {
-      const types = {
-        p: 'line',
-        li: 'list-item',
-        ul: 'bulleted-list',
-        ol: 'numbered-list',
-        blockquote: 'quote',
-        pre: 'code',
-        h1: 'heading-one',
-        h2: 'heading-two',
-        h3: 'heading-three',
-        h4: 'heading-four',
-        h5: 'heading-five',
-        h6: 'heading-six',
-      };
-      const block = types[el.tagName];
-      if (!block) return undefined;
-      return {
-        kind: 'block',
-        type: block,
-        nodes: next(el.children),
-      };
+  rules: [
+    {
+      deserialize(el, next) {
+        const types = {
+          p: 'line',
+          li: 'list-item',
+          ul: 'bulleted-list',
+          ol: 'numbered-list',
+          blockquote: 'quote',
+          pre: 'code',
+          h1: 'heading-one',
+          h2: 'heading-two',
+          h3: 'heading-three',
+          h4: 'heading-four',
+          h5: 'heading-five',
+          h6: 'heading-six',
+        };
+        const block = types[el.tagName];
+        if (!block) return undefined;
+        return {
+          kind: 'block',
+          type: block,
+          nodes: next(el.children),
+        };
+      },
     },
-  }, {
-    deserialize(el, next) {
-      const marks = {
-        strong: 'bold',
-        em: 'italic',
-        u: 'underline',
-        s: 'strikethrough',
-        code: 'code',
-        left: 'left',
-        center: 'center',
-        right: 'right',
-        justify: 'justify',
-      };
-      const mark = marks[el.tagName];
-      if (!mark) return undefined;
-      return {
-        kind: 'mark',
-        type: mark,
-        nodes: next(el.children),
-      };
+    {
+      deserialize(el, next) {
+        const marks = {
+          strong: 'bold',
+          em: 'italic',
+          u: 'underline',
+          s: 'strikethrough',
+          code: 'code',
+          left: 'left',
+          center: 'center',
+          right: 'right',
+          justify: 'justify',
+        };
+        const mark = marks[el.tagName];
+        if (!mark) return undefined;
+        return {
+          kind: 'mark',
+          type: mark,
+          nodes: next(el.children),
+        };
+      },
     },
-  }, {
-    // Special case for code blocks, which need to grab the nested children.
-    deserialize(el, next) {
-      if (el.tagName !== 'pre') return undefined;
-      const code = el.children[0];
-      const children = code && code.tagName === 'code'
-        ? code.children
-        : el.children;
+    {
+      // Special case for code blocks, which need to grab the nested children.
+      deserialize(el, next) {
+        if (el.tagName !== 'pre') return undefined;
+        const code = el.children[0];
+        const children = code && code.tagName === 'code'
+          ? code.children
+          : el.children;
 
-      return {
-        kind: 'block',
-        type: 'code',
-        nodes: next(children),
-      };
+        return {
+          kind: 'block',
+          type: 'code',
+          nodes: next(children),
+        };
+      },
     },
-  }, {
-    // Special case for links, to grab their href.
-    deserialize(el, next) {
-      if (el.tagName !== 'a') return undefined;
-      return {
-        kind: 'inline',
-        type: 'link',
-        nodes: next(el.children),
-        data: {
-          href: el.attribs.href,
-        },
-      };
+    {
+      // Special case for links, to grab their href.
+      deserialize(el, next) {
+        if (el.tagName !== 'a') return undefined;
+        return {
+          kind: 'inline',
+          type: 'link',
+          nodes: next(el.children),
+          data: {
+            href: el.attribs.href,
+          },
+        };
+      },
     },
-  }],
+  ],
 });
 
 export const htmlSerializer = serializer;
@@ -189,10 +247,14 @@ export const rawSerializer = Raw;
 @withUniqueId()
 @withSlateState({ terse: true })
 @useBlocks(options)
-// @withToolbar(options)
+export default // @withToolbar(options)
 // @withSidebar(options)
-export default class SlateEditor extends Component {
-  plugins = [withAutoMarkdown(options), TrailingBlock({ type: 'line' }), InsertBlockOnEnter({ type: 'line' })];
+class SlateEditor extends Component {
+  plugins = [
+    withAutoMarkdown(options),
+    TrailingBlock({ type: 'line' }),
+    InsertBlockOnEnter({ type: 'line' }),
+  ];
   state = {};
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -205,68 +267,86 @@ export default class SlateEditor extends Component {
     autoMarkDownKeyDown: PropTypes.func,
     plugins: PropTypes.array,
     className: PropTypes.string,
-  }
+  };
 
   onPaste = (e, data, state) => {
     if (data.type !== 'html') return undefined;
     const { document } = serializer.deserialize(data.html);
-    return state
-      .transform()
-      .insertFragment(document)
-      .apply();
-  }
+    return state.transform().insertFragment(document).apply();
+  };
 
   onKeyDown = (e, data, state) => {
     if (e.shiftKey && data.key === 'enter') {
       // shift + enter
-      return state
-        .transform()
-        .insertText('\n')
-        .apply();
+      return state.transform().insertText('\n').apply();
     } else if (e.metaKey || e.ctrlKey) {
       // cmd/ctrl + ???
       switch (data.key) {
         case 'b':
-          return state
-            .transform()
-            .toggleMark('bold')
-            .apply();
+          return state.transform().toggleMark('bold').apply();
         case 'u':
-          return state
-            .transform()
-            .toggleMark('underlined')
-            .apply();
+          return state.transform().toggleMark('underlined').apply();
         case 'i':
-          return state
-            .transform()
-            .toggleMark('italic')
-            .apply();
+          return state.transform().toggleMark('italic').apply();
         default:
           return undefined;
       }
     }
     return undefined;
-  }
+  };
 
   render = () => {
-    const { children, showUndo, onChange, readOnly, marks, nodes, plugins, className, spellcheck, style, blockTypes, ...rest } = this.props;
+    const {
+      children,
+      showUndo,
+      onChange,
+      readOnly,
+      marks,
+      nodes,
+      plugins,
+      className,
+      spellcheck,
+      style,
+      blockTypes,
+      ...rest
+    } = this.props;
     const value = this.props.value || Plain.deserialize('');
 
-    const undo = !!value && !!value.history && !!value.history.undos && !!value.history.undos['_head'] && value.history.undos['_head'].value;
+    const undo =
+      !!value &&
+      !!value.history &&
+      !!value.history.undos &&
+      !!value.history.undos['_head'] &&
+      value.history.undos['_head'].value;
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
         <Gateway into="undo">
-          {false && undo && undo.length ? (
-            <Button shape="circle" size="large" onClick={() => onChange(value.transform().undo().apply())}>
-              <i className="fa fa-undo" aria-hidden="true" />
-            </Button>
-          ) : null}
+          {false && undo && undo.length
+            ? <Button
+                shape="circle"
+                size="large"
+                onClick={() => onChange(value.transform().undo().apply())}
+              >
+                <i className="fa fa-undo" aria-hidden="true" />
+              </Button>
+            : null}
         </Gateway>
         {children}
-        {readOnly !== true && <ToolbarBlock state={value} blockTypes={blockTypes} onChange={onChange} />}
-        {readOnly !== true && <ToolbarVoid state={value} blockTypes={blockTypes} onChange={onChange} />}
-        {readOnly !== true && <ToolbarText state={value} onChange={onChange} {...options} />}
+        {readOnly !== true &&
+          <ToolbarBlock
+            state={value}
+            blockTypes={blockTypes}
+            onChange={onChange}
+          />}
+        {readOnly !== true &&
+          <ToolbarVoid
+            state={value}
+            blockTypes={blockTypes}
+            onChange={onChange}
+          />}
+        {readOnly !== true &&
+          <ToolbarText state={value} onChange={onChange} {...options} />}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
           <Editor
@@ -285,5 +365,5 @@ export default class SlateEditor extends Component {
         </div>
       </div>
     );
-  }
+  };
 }

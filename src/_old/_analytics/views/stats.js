@@ -8,22 +8,13 @@ class Stats extends Component {
 
     return (
       <SplitView deviceWidth={deviceWidth}>
-        <Sidebar
-          title="links"
-          subtitle="links"
-        >
-        </Sidebar>
+        <Sidebar title="links" subtitle="links" />
 
         <Container>
           {/* <Placeholder>Vorschau</Placeholder> */}
         </Container>
 
-        <Sidebar
-          right
-          title="rechts"
-          subtitle="rechts"
-        >
-        </Sidebar>
+        <Sidebar right title="rechts" subtitle="rechts" />
       </SplitView>
     );
   }

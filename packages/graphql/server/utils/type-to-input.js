@@ -7,16 +7,25 @@ function fetchType(name, ast) {
   let currentNode;
   visit(ast, {
     enter(node) {
-      if (node.kind.endsWith('TypeDefinition') && node.name && node.name.value === name) {
+      if (
+        node.kind.endsWith('TypeDefinition') &&
+        node.name &&
+        node.name.value === name
+      ) {
         currentNode = node;
         return BREAK;
-      } return undefined;
+      }
+      return undefined;
     },
   });
   return currentNode;
 }
 
-const transformASTTypeToInput = (type, { newName, ast, exclude = [], optional = [] }, generatedInputHistory = []) => {
+const transformASTTypeToInput = (
+  type,
+  { newName, ast, exclude = [], optional = [] },
+  generatedInputHistory = []
+) => {
   const definitions = ast.definitions || ast;
   return visit(type, {
     enter(node /* , key, parent, path, ancestors*/) {
@@ -34,15 +43,24 @@ const transformASTTypeToInput = (type, { newName, ast, exclude = [], optional = 
           const fieldName = copy.name.value;
           let typeName = null;
           visit(copy, {
-            [Kind.NAMED_TYPE](typeNode) { typeName = typeNode.name.value; },
+            [Kind.NAMED_TYPE](typeNode) {
+              typeName = typeNode.name.value;
+            },
           });
           const fieldType = fetchType(typeName, ast);
           if (fieldType && fieldType.kind === Kind.OBJECT_TYPE_DEFINITION) {
             const inputName = `${capitalize(fieldType.name.value)}Input`;
             if (generatedInputHistory.indexOf(inputName) === -1) {
               generatedInputHistory.push(inputName);
-              if (!fetchType(inputName, ast) && fieldType.name.value !== type.name.value) {
-                const newInput = transformASTTypeToInput(fieldType, { newName: inputName, ast }, generatedInputHistory);
+              if (
+                !fetchType(inputName, ast) &&
+                fieldType.name.value !== type.name.value
+              ) {
+                const newInput = transformASTTypeToInput(
+                  fieldType,
+                  { newName: inputName, ast },
+                  generatedInputHistory
+                );
                 definitions.push(newInput);
               }
             }

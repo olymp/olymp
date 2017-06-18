@@ -22,16 +22,16 @@ export class WebsocketProvider extends Component {
   unlisten = token => name => {
     if (!this.listeners[name]) this.listeners[name] = {};
     delete this.listeners[name][token];
-  }
+  };
   on = (name, fc) => {
     if (!this.listeners[name]) this.listeners[name] = {};
     const token = shortid.generate();
     this.listeners[name][token] = fc;
     return this.unlisten(token);
-  }
+  };
   emit = (type, data) => {
-    this.ws.send(JSON.stringify({...data, type}));
-  }
+    this.ws.send(JSON.stringify({ ...data, type }));
+  };
   showNotification = (message, description, btn) => {
     if (!this.key) this.key = `open${Date.now()}`;
     if (!message) {
@@ -45,26 +45,28 @@ export class WebsocketProvider extends Component {
         duration: 0,
       });
     }
-  }
-  connected = (connected) => {
+  };
+  connected = connected => {
     // if (this.state.connected === connected) return;
     if (connected === true) {
       this.showNotification();
     } else if (connected === null) {
       this.showNotification(
         'Offline',
-        'Sie sind derzeit nicht zum Internet verbunden.',
+        'Sie sind derzeit nicht zum Internet verbunden.'
       );
     } else if (connected === false) {
       this.showNotification(
         'Server Offline',
-        'Der Server steht zurzeit nicht zur Verfügung.',
+        'Der Server steht zurzeit nicht zur Verfügung.'
       );
     }
     this.setState({ connected });
-  }
+  };
   connect = () => {
-    const url = `${location.href.indexOf('https') === 0 ? 'wss' : 'ws'}://${location.host}`;
+    const url = `${location.href.indexOf('https') === 0
+      ? 'wss'
+      : 'ws'}://${location.host}`;
     this.ws = new WebSocket(url);
     let interval;
     let hasPong = true;
@@ -74,18 +76,18 @@ export class WebsocketProvider extends Component {
         this.showNotification(
           'Neues Update verfügbar',
           'Möchten Sie die neue Version sofort benutzen?',
-          (
-            <Button size="small" onClick={() => location.reload()}>
-              Ja, Seite neu laden
-            </Button>
-          ),
+          <Button size="small" onClick={() => location.reload()}>
+            Ja, Seite neu laden
+          </Button>
         );
-      } this.lastVersion = version;
+      }
+      this.lastVersion = version;
     };
     this.ws.onmessage = event => {
       const data = JSON.parse(event.data);
       if (data.type === 'pong') return onPong(data);
-      if (this.listeners[data.type]) this.listeners[data.type].forEach(fc => fc(data));
+      if (this.listeners[data.type])
+        this.listeners[data.type].forEach(fc => fc(data));
     };
     this.ws.onopen = event => {
       this.connected(true);
@@ -108,19 +110,18 @@ export class WebsocketProvider extends Component {
       }
       setTimeout(this.connect, 5000);
     };
-  }
-  componentDidMount() {
+  };
+  componentDidMount() {
     this.connect();
   }
   render() {
     return Children.only(this.props.children);
   }
-};
+}
 
-export default (WrappedComponent) => {
-  const withWebsocket = (props, context) => (
-    <WrappedComponent {...context} {...props} />
-  );
+export default WrappedComponent => {
+  const withWebsocket = (props, context) =>
+    <WrappedComponent {...context} {...props} />;
   withWebsocket.contextTypes = {
     socket: React.PropTypes.object,
   };

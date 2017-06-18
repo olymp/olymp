@@ -3,10 +3,11 @@ const GraphQLError = require('graphql/error').GraphQLError;
 
 exports.defaultScalars = {
   Json: {
-    description: 'The JSON scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/ publications/files/ECMA-ST/ECMA-404.pdf).',
+    description:
+      'The JSON scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/ publications/files/ECMA-ST/ECMA-404.pdf).',
     serialize: value => value,
     parseValue: value => value,
-    parseLiteral: (ast) => {
+    parseLiteral: ast => {
       switch (ast.kind) {
         case Kind.STRING:
         case Kind.BOOLEAN:
@@ -16,8 +17,10 @@ exports.defaultScalars = {
           return parseFloat(ast.value);
         case Kind.OBJECT: {
           const value = Object.create(null);
-          ast.fields.forEach((field) => {
-            value[field.name.value] = exports.defaultScalars.Json.parseLiteral(field.value);
+          ast.fields.forEach(field => {
+            value[field.name.value] = exports.defaultScalars.Json.parseLiteral(
+              field.value
+            );
           });
 
           return value;
@@ -33,7 +36,7 @@ exports.defaultScalars = {
     description: 'TimeRange scalar type',
     parseValue: value => value,
     serialize: value => value,
-    parseLiteral: (ast) => {
+    parseLiteral: ast => {
       switch (ast.kind) {
         case Kind.STRING:
           return ast.value;
@@ -45,7 +48,8 @@ exports.defaultScalars = {
     },
   },
   Color: {
-    description: 'The Color scalar type represents color in "red" or "#FFF" or "#FFFFFF" format.',
+    description:
+      'The Color scalar type represents color in "red" or "#FFF" or "#FFFFFF" format.',
     parseValue(value) {
       return value;
     },
@@ -54,13 +58,17 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
-        throw new GraphQLError(`Query error: Can only parse STRING got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse STRING got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
   },
   Markdown: {
-    description: 'The Markdown scalar type represents text in markdown language.',
+    description:
+      'The Markdown scalar type represents text in markdown language.',
     parseValue(value) {
       return value;
     },
@@ -69,7 +77,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
-        throw new GraphQLError(`Query error: Can only parse STRING got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse STRING got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
@@ -84,7 +95,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
-        throw new GraphQLError(`Query error: Can only parse STRING got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse STRING got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
@@ -99,7 +113,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
-        throw new GraphQLError(`Query error: Can only parse STRING got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse STRING got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
@@ -114,7 +131,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
-        throw new GraphQLError(`Query error: Can only parse STRING got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse STRING got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
@@ -129,7 +149,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.STRING) {
-        throw new GraphQLError(`Query error: Can only parse STRING got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse STRING got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
@@ -144,7 +167,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.INT) {
-        throw new GraphQLError(`Query error: Can only parse INT got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse INT got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },
@@ -159,7 +185,10 @@ exports.defaultScalars = {
     },
     parseLiteral(ast) {
       if (ast.kind !== Kind.INT) {
-        throw new GraphQLError(`Query error: Can only parse INT got a: ${ast.kind}.`, [ast]);
+        throw new GraphQLError(
+          `Query error: Can only parse INT got a: ${ast.kind}.`,
+          [ast]
+        );
       }
       return ast.value;
     },

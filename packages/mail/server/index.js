@@ -3,13 +3,21 @@ const md = require('./md');
 // const helper = require('sendgrid').mail;
 
 const send = (options, argsOrFn) => {
-  const args = Object.assign({}, options, (typeof argsOrFn === 'function' ? argsOrFn(options) : argsOrFn) || {});
+  const args = Object.assign(
+    {},
+    options,
+    (typeof argsOrFn === 'function' ? argsOrFn(options) : argsOrFn) || {}
+  );
   const body = {
     From: args.from,
     To: args.to,
     Subject: args.subject,
   };
-  if (args.markdown) body.HtmlBody = md.toHTML(args.markdown.split('\n').map(x => x.trim()).join('\n'), args);
+  if (args.markdown)
+    body.HtmlBody = md.toHTML(
+      args.markdown.split('\n').map(x => x.trim()).join('\n'),
+      args
+    );
   if (args.plain) body.TextBody = args.plain;
   return fetch('https://api.postmarkapp.com/email', {
     method: 'POST',
@@ -17,7 +25,7 @@ const send = (options, argsOrFn) => {
     headers: {
       'X-Postmark-Server-Token': process.env.POSTMARK_KEY,
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
   });
   /* sendgrid

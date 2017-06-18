@@ -2,14 +2,25 @@ import React from 'react';
 import { SplitView, Sidebar, Container, List } from 'olymp-ui';
 import AuthProfile from '../components';
 
-const AuthProfileSplitView = ({ onClose, form, onOk, auth, extraFields, pathname, deviceWidth }) => (
+const AuthProfileSplitView = ({
+  onClose,
+  form,
+  onOk,
+  auth,
+  extraFields,
+  pathname,
+  deviceWidth,
+}) =>
   <SplitView deviceWidth={deviceWidth}>
-    <Sidebar
-      title="links"
-      subtitle="links"
-    >
-      <List.Item to={{ pathname, query: { '@totp': null } }} label="Allgemeine Informationen" />
-      <List.Item to={{ pathname, query: { '@totp': null } }} label="Zwei-Faktor-Authentifizierung" />
+    <Sidebar title="links" subtitle="links">
+      <List.Item
+        to={{ pathname, query: { '@totp': null } }}
+        label="Allgemeine Informationen"
+      />
+      <List.Item
+        to={{ pathname, query: { '@totp': null } }}
+        label="Zwei-Faktor-Authentifizierung"
+      />
     </Sidebar>
 
     <Container>
@@ -24,6 +35,5 @@ const AuthProfileSplitView = ({ onClose, form, onOk, auth, extraFields, pathname
     >
       <AuthProfile.Form form={form} extraFields={extraFields} auth={auth} />
     </Sidebar>
-  </SplitView>
-);
+  </SplitView>;
 export default AuthProfile(AuthProfileSplitView);

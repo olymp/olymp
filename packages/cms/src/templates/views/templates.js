@@ -13,7 +13,15 @@ class Templates extends Component {
   };
 
   render() {
-    const { id, setText, item, form, deviceWidth, handleListClick, onClose } = this.props;
+    const {
+      id,
+      setText,
+      item,
+      form,
+      deviceWidth,
+      handleListClick,
+      onClose,
+    } = this.props;
     const { search } = this.state;
     const text = this.props.text || item.text;
 
@@ -31,7 +39,11 @@ class Templates extends Component {
           <Placeholder>Vorschau</Placeholder>
         </Container>
 
-        <SelectionSidebar item={item} onCancel={() => handleListClick({ id: null })} setText={setText} />
+        <SelectionSidebar
+          item={item}
+          onCancel={() => handleListClick({ id: null })}
+          setText={setText}
+        />
       </SplitView>
     );
   }

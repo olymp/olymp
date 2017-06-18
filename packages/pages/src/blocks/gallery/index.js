@@ -29,32 +29,35 @@ import Image from '../image';
 export default {
   ...Image,
   label: 'Galerie',
-  actions: [{
-    label: 'Bilder auswählen',
-    component: p => <ImageEdit {...p} multi />,
-    toggle: () => {},
-  },
-  {
-    label: 'Bildbezeichnung',
-    toggle: ({ setData, getData }) => {
-      setData({ caption: !getData('caption', false) });
+  actions: [
+    {
+      label: 'Bilder auswählen',
+      component: p => <ImageEdit {...p} multi />,
+      toggle: () => {},
     },
-  },
-  {
-    label: 'Bildquelle',
-    toggle: ({ setData, getData }) => {
-      setData({ source: !getData('source', false) });
+    {
+      label: 'Bildbezeichnung',
+      toggle: ({ setData, getData }) => {
+        setData({ caption: !getData('caption', false) });
+      },
     },
-  },
-  {
-    label: '+',
-    toggle: ({ setData, getData }) => setData({ columns: getData('columns', 1) + 1 }),
-  },
-  {
-    label: '-',
-    toggle: ({ setData, getData }) => {
-      const columns = getData('columns', 1);
-      setData({ columns: columns > 1 ? columns - 1 : 1 });
+    {
+      label: 'Bildquelle',
+      toggle: ({ setData, getData }) => {
+        setData({ source: !getData('source', false) });
+      },
     },
-  }],
+    {
+      label: '+',
+      toggle: ({ setData, getData }) =>
+        setData({ columns: getData('columns', 1) + 1 }),
+    },
+    {
+      label: '-',
+      toggle: ({ setData, getData }) => {
+        const columns = getData('columns', 1);
+        setData({ columns: columns > 1 ? columns - 1 : 1 });
+      },
+    },
+  ],
 };

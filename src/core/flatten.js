@@ -13,14 +13,15 @@ const flatten = (items = [], options = {}) => {
     flattenArr.push(newNode);
   };
 
-  items.forEach((item, index) => helper(item, null, index, {
-    parentId: 'parentId',
-    id: 'id',
-    ...options,
-  }));
+  items.forEach((item, index) =>
+    helper(item, null, index, {
+      parentId: 'parentId',
+      id: 'id',
+      ...options,
+    })
+  );
 
   return flattenArr;
 };
 
-export default (items, options) =>
-  flatten(items, options);
+export default (items, options) => flatten(items, options);

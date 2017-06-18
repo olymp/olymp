@@ -1,6 +1,3 @@
-
-
-export default (schema) => {
+export default schema => {
   return { ok: true };
 };
-

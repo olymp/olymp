@@ -5,7 +5,10 @@ import { render } from 'react-dom';
 import { AmpProvider, routerQueryMiddleware } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import {
+  AsyncComponentProvider,
+  createAsyncContext,
+} from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
@@ -16,8 +19,12 @@ import { UserAgentProvider } from '@quentin-sommer/react-useragent';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux'
+import createHistory from 'history/createBrowserHistory';
+import {
+  ConnectedRouter,
+  routerReducer,
+  routerMiddleware,
+} from 'react-router-redux';
 // End Redux stuff
 
 const init = require('@app').init;
@@ -38,7 +45,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     onUpdateFailed: () => {
       console.log('SW Event:', 'onUpdateFailed');
-    }
+    },
   });
 } else {
   // const { whyDidYouUpdate } = require('why-did-you-update');
@@ -58,17 +65,30 @@ if (process.env.NODE_ENV === 'production') {
 }*/
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
+  uri:
+    process.env.GRAPHQL_URL ||
+      (process.env.URL && `${process.env.URL}/graphql`) ||
+      '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
   },
 });
 
-let client, mountNode, container, renderer, store, history, rehydrateState, asyncContext;
+let client,
+  mountNode,
+  container,
+  renderer,
+  store,
+  history,
+  rehydrateState,
+  asyncContext;
 function renderApp() {
   const app = (
-    <AsyncComponentProvider rehydrateState={rehydrateState} asyncContext={asyncContext}>
+    <AsyncComponentProvider
+      rehydrateState={rehydrateState}
+      asyncContext={asyncContext}
+    >
       <AppContainer>
         <ApolloProvider store={store} client={client}>
           <ConnectedRouter history={history}>
@@ -101,17 +121,18 @@ function load() {
   });
   // Redux stuff
   history = createHistory();
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   store = createStore(
     combineReducers({
       apollo: client.reducer(),
-      router: routerReducer
+      router: routerReducer,
     }),
     window.INITIAL_DATA || {},
     composeEnhancers(
       applyMiddleware(routerQueryMiddleware),
       applyMiddleware(routerMiddleware(history)),
-      applyMiddleware(client.middleware()),
+      applyMiddleware(client.middleware())
     )
   );
   // End Redux stuff
@@ -131,8 +152,5 @@ if (module.hot) {
   // Accept changes to this file for hot reloading.
   module.hot.accept('@app');
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept(
-    '@app',
-    () => renderApp(require('@app').default),
-  );
+  module.hot.accept('@app', () => renderApp(require('@app').default));
 }

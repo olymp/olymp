@@ -1,7 +1,7 @@
 // let filteredItems = items;
 
-    // Auflösungs-Filter
-    /* const solutionString = solution && solution.length ? solution[0] : undefined;
+// Auflösungs-Filter
+/* const solutionString = solution && solution.length ? solution[0] : undefined;
     switch (solutionString) {
       case 'Hohe Auflösung':
         filteredItems = items.filter(item => item.height * item.width > 500000);
@@ -26,9 +26,9 @@
     }
     */
 
-    // Sortierung
-    // let sortByKey = sortByState && sortByState.length ? sortByState[0] : undefined;
-    /* switch (sortByKey) {
+// Sortierung
+// let sortByKey = sortByState && sortByState.length ? sortByState[0] : undefined;
+/* switch (sortByKey) {
       case 'Name':
         sortByKey = 'label';
         break;
@@ -54,12 +54,12 @@
     }
     sortByKey = [sortByKey]; */
 
-    // Bisher gefilterte Ergebnisse zwischenspiechern für "Alle-Ansicht"
-    // (dort kann man nicht nach tags filtern, aber nach dem Rest)
-    // const preFilteredItems = filteredItems;
+// Bisher gefilterte Ergebnisse zwischenspiechern für "Alle-Ansicht"
+// (dort kann man nicht nach tags filtern, aber nach dem Rest)
+// const preFilteredItems = filteredItems;
 
-    // Auflösungen/Quellen zusammensuchen
-    /* const solutions = {};
+// Auflösungen/Quellen zusammensuchen
+/* const solutions = {};
     const sources = {};
     const types = {};
     const getOtherFilters = (tree) => {

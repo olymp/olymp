@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import upperFirst from 'lodash/upperFirst';
 
-const getMenuItem = (field) => {
+const getMenuItem = field => {
   if (['Date', 'DateTime'].includes(field.type.name)) {
     return (
       <Menu.SubMenu key={field.name} title={upperFirst(field.name)}>
@@ -52,7 +52,9 @@ const getMenuItem = (field) => {
       </Menu.SubMenu>
     );
   }
-  if (['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(field.type.name)) {
+  if (
+    ['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(field.type.name)
+  ) {
     return (
       <Menu.SubMenu key={field.name} title={upperFirst(field.name)}>
         <Menu.Item key={`${field.name}-eq`}>Gleich</Menu.Item>
@@ -81,12 +83,15 @@ const getMenuItem = (field) => {
 
 export const handleFilterClick = (collection, onFilter, key) => {
   if (!onFilter || !key) return;
-  const field = key.indexOf('-') !== -1 && collection.fields.find(x => x.name === key.split('-')[0]);
+  const field =
+    key.indexOf('-') !== -1 &&
+    collection.fields.find(x => x.name === key.split('-')[0]);
   if (field) {
     const type = key.split('-')[1];
     let value = prompt('Wert', '');
     if (value) {
-      if (['Float', 'Date', 'DateTime'].includes(field.type.name)) value = parseFloat(value);
+      if (['Float', 'Date', 'DateTime'].includes(field.type.name))
+        value = parseFloat(value);
       if (['Int'].includes(field.type.name)) value = parseInt(value);
       const query = { [field.name]: { [type]: value } };
       onFilter(query, field);
@@ -94,11 +99,11 @@ export const handleFilterClick = (collection, onFilter, key) => {
   }
 };
 
-export const getFilterMenu = (collection, onFilter) => (
+export const getFilterMenu = (collection, onFilter) =>
   <Menu onClick={e => handleFilterClick(collection, onFilter, e.key)}>
-    {collection && collection.fields.filter(({ name }) => name !== 'id').map(getMenuItem)}
-  </Menu>
-  );
+    {collection &&
+      collection.fields.filter(({ name }) => name !== 'id').map(getMenuItem)}
+  </Menu>;
 
 export default class FilterComponent extends Component {
   render() {

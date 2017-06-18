@@ -4,16 +4,17 @@ import * as SplitView from './splitview';
 import { SimpleRoute } from 'olymp';
 
 // MODAL
-const Modal2 = ({ prefix, exclude = [], ...rest }) => (
+const Modal2 = ({ prefix, exclude = [], ...rest }) =>
   <div>
-    {Object.keys(Modal).filter(key => exclude.findIndex(x => x === key) === -1).map((key) => {
-      const Komp = Modal[key];
+    {Object.keys(Modal)
+      .filter(key => exclude.findIndex(x => x === key) === -1)
+      .map(key => {
+        const Komp = Modal[key];
 
-      return <Komp prefix={prefix} key={key} {...rest} />;
-    })}
-  </div>
-);
-Object.keys(Modal).forEach(key => Modal2[key] = Modal[key]);
+        return <Komp prefix={prefix} key={key} {...rest} />;
+      })}
+  </div>;
+Object.keys(Modal).forEach(key => (Modal2[key] = Modal[key]));
 
 // SPLITVIEW
 // KEINE AHNUNG WIE MAN DAS AM SINNVOLLSTEN EXPORTIERT!
@@ -25,7 +26,7 @@ const SplitView2 = {};
     return <SimpleRoute match={key === 'Profile'} key={key} render={() => <Komp prefix={prefix} {...rest} />} />;
   });
 */
-Object.keys(SplitView).forEach(key => SplitView2[key] = SplitView[key]);
+Object.keys(SplitView).forEach(key => (SplitView2[key] = SplitView[key]));
 
 export default {
   Modal: Modal2,

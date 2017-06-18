@@ -19,18 +19,25 @@ class SelectionSidebar extends Component {
           id,
           input,
         },
-        updateQueries: !id ? {
-          templateList: (prev, { mutationResult }) => ({
-            ...prev,
-            items: [...prev.items.filter(item => item.id !== id), mutationResult.data.item],
-          }),
-        } : undefined,
-      }).then(({ data: { item } }) => {
-        onSuccess('Gespeichert', 'Das Template wurde gespeichert');
-        form.resetFields();
-      }).catch(onError);
+        updateQueries: !id
+          ? {
+              templateList: (prev, { mutationResult }) => ({
+                ...prev,
+                items: [
+                  ...prev.items.filter(item => item.id !== id),
+                  mutationResult.data.item,
+                ],
+              }),
+            }
+          : undefined,
+      })
+        .then(({ data: { item } }) => {
+          onSuccess('Gespeichert', 'Das Template wurde gespeichert');
+          form.resetFields();
+        })
+        .catch(onError);
     });
-  }
+  };
 
   render() {
     const { item, form, onCancel, setText } = this.props;
@@ -47,12 +54,23 @@ class SelectionSidebar extends Component {
         }
         right
       >
-        <Prompt when={form.isFieldsTouched()} message={location => 'Änderungen verwerfen?'} />
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={location => 'Änderungen verwerfen?'}
+        />
 
         <Tabs defaultActiveKey="1" size="small">
           <Tabs.TabPane tab="Template" key="1">
             <Panel paddingX={16} alignLabel="left">
-              <Input form={form} item={item} field="name" label="Name" rules={['required']} type="text" size="large" />
+              <Input
+                form={form}
+                item={item}
+                field="name"
+                label="Name"
+                rules={['required']}
+                type="text"
+                size="large"
+              />
             </Panel>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Text" key="2">

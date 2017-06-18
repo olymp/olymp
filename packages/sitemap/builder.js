@@ -34,15 +34,39 @@ function SitemapGenerator(uri, options) {
   };
 
   // excluded filetypes
-  var exclude = ['gif', 'jpg', 'jpeg', 'png', 'ico', 'bmp', 'ogg', 'webp',
-    'mp4', 'webm', 'mp3', 'ttf', 'woff', 'json', 'rss', 'atom', 'gz', 'zip',
-    'rar', '7z', 'css', 'js', 'gzip', 'exe', 'svg'];
+  var exclude = [
+    'gif',
+    'jpg',
+    'jpeg',
+    'png',
+    'ico',
+    'bmp',
+    'ogg',
+    'webp',
+    'mp4',
+    'webm',
+    'mp3',
+    'ttf',
+    'woff',
+    'json',
+    'rss',
+    'atom',
+    'gz',
+    'zip',
+    'rar',
+    '7z',
+    'css',
+    'js',
+    'gzip',
+    'exe',
+    'svg',
+  ];
   var exts = exclude.join('|');
-  var extRegex = new RegExp('\.(' + exts + ')', 'i');
+  var extRegex = new RegExp('.(' + exts + ')', 'i');
 
   // throw error if no baseUrl is provided
   if (!uri) {
-    throw new TypeError('First parameter \'uri\' is required!');
+    throw new TypeError("First parameter 'uri' is required!");
   }
 
   // set default status
@@ -95,15 +119,18 @@ function SitemapGenerator(uri, options) {
 
   // restrict crawler to subpages if initial page is privided
   if (this.options.restrictToBasepath) {
-    this.crawler.addFetchCondition(function (parsedUrl) {
-      var baseUrlPath = url.resolve(self.baseUrl.hostname, self.baseUrl.pathname);
+    this.crawler.addFetchCondition(function(parsedUrl) {
+      var baseUrlPath = url.resolve(
+        self.baseUrl.hostname,
+        self.baseUrl.pathname
+      );
       var baseUrlRegex = new RegExp(baseUrlPath + '.*');
       return stringifyUrl(parsedUrl).match(baseUrlRegex);
     });
   }
 
   // file type exclusion
-  this.crawler.addFetchCondition(function (parsedUrl) {
+  this.crawler.addFetchCondition(function(parsedUrl) {
     return !parsedUrl.path.match(extRegex);
   });
 
@@ -114,21 +141,21 @@ function SitemapGenerator(uri, options) {
   this.crawler.discoverResources = this._discoverResources;
 
   // register event handlers and emit own events
-  this.crawler.on('fetch404', function (queueItem) {
+  this.crawler.on('fetch404', function(queueItem) {
     self.store.error.push(queueItem.url);
     self.emit('fetch', http.STATUS_CODES['404'], queueItem.url);
   });
 
-  this.crawler.on('fetchtimeout', function (queueItem, response) {
+  this.crawler.on('fetchtimeout', function(queueItem, response) {
     self.store.error.push(queueItem.url);
     self.emit('fetch', http.STATUS_CODES['408'], response);
   });
 
-  this.crawler.on('clienterror', function (queueError, errorData) {
+  this.crawler.on('clienterror', function(queueError, errorData) {
     self.emit('clienterror', queueError, errorData);
   });
 
-  this.crawler.on('fetchdisallowed', function (queueItem) {
+  this.crawler.on('fetchdisallowed', function(queueItem) {
     if (self.store.ignored.indexOf(queueItem.url) === -1) {
       self.store.ignored.push(queueItem.url);
       self.emit('ignore', queueItem.url);
@@ -136,19 +163,22 @@ function SitemapGenerator(uri, options) {
   });
 
   // fetch complete event
-  this.crawler.on('fetchcomplete', function (queueItem) {
+  this.crawler.on('fetchcomplete', function(queueItem) {
     self.store.found.push(queueItem.url);
     self.emit('fetch', http.STATUS_CODES['200'], queueItem.url);
   });
 
   // crawler done event
-  this.crawler.on('complete', this._buildXML.bind(this, function (sitemap) {
-    // update status
-    this.status = 'idle';
+  this.crawler.on(
+    'complete',
+    this._buildXML.bind(this, function(sitemap) {
+      // update status
+      this.status = 'idle';
 
-    // emit done event
-    this.emit('done', sitemap, this.store);
-  }));
+      // emit done event
+      this.emit('done', sitemap, this.store);
+    })
+  );
 
   EventEmitter.call(this);
 }
@@ -158,7 +188,7 @@ util.inherits(SitemapGenerator, EventEmitter);
 /**
  * Parses response data for links.
  */
-SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
+SitemapGenerator.prototype._discoverResources = function(buffer, queueItem) {
   var $ = cheerio.load(buffer.toString('utf8'));
 
   // cancel if meta robots nofollow is present
@@ -174,7 +204,7 @@ SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
   }
 
   // parse links
-  var links = $('a[href]').map(function () {
+  var links = $('a[href]').map(function() {
     var href = $(this).attr('href');
 
     // exclude "mailto:" etc
@@ -216,12 +246,15 @@ SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
  *
  * @param  {Function} callback Callback function to execute
  */
-SitemapGenerator.prototype._buildXML = function (callback) {
+SitemapGenerator.prototype._buildXML = function(callback) {
   var sitemap = null;
 
-  if (this.store.found.length > 0 && this.store.found.length !== this.crawler.noindex.length) {
+  if (
+    this.store.found.length > 0 &&
+    this.store.found.length !== this.crawler.noindex.length
+  ) {
     // Remove urls with a robots meta tag 'noindex' before building the sitemap
-    this.crawler.noindex.forEach(function (page) {
+    this.crawler.noindex.forEach(function(page) {
       var index = this.store.found.indexOf(page);
       if (index !== -1) {
         // remove url from found array
@@ -232,16 +265,16 @@ SitemapGenerator.prototype._buildXML = function (callback) {
     }, this);
 
     // xml base
-    var xml = xmlbuilder.create('urlset', { version: '1.0', encoding: 'UTF-8' })
+    var xml = xmlbuilder
+      .create('urlset', { version: '1.0', encoding: 'UTF-8' })
       .att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
     // add elements
-    forIn(this.store.found, function (foundURL) {
-      xml.ele('url')
-        .ele({
-          loc: foundURL,
-          lastmod: moment().format('YYYY-MM-DDTHH:mm:ss-00:00'), // 2016-06-06T20:00:00-00:00
-        });
+    forIn(this.store.found, function(foundURL) {
+      xml.ele('url').ele({
+        loc: foundURL,
+        lastmod: moment().format('YYYY-MM-DDTHH:mm:ss-00:00'), // 2016-06-06T20:00:00-00:00
+      });
     });
 
     // finish xml markup
@@ -256,9 +289,11 @@ SitemapGenerator.prototype._buildXML = function (callback) {
 /**
  * Starts the crawler.
  */
-SitemapGenerator.prototype.start = function () {
+SitemapGenerator.prototype.start = function() {
   if (this.status === 'crawling') {
-    throw new Error('This SitemapGenerator instance is already crawling a site.');
+    throw new Error(
+      'This SitemapGenerator instance is already crawling a site.'
+    );
   }
 
   // update status

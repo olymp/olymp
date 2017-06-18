@@ -5,16 +5,19 @@ import { Image } from '../components';
 import { intersection, upperFirst, orderBy } from 'lodash';
 
 class ListSidebar extends Component {
-  getTags = (items) => {
+  getTags = items => {
     const { search } = this.props;
     const tags = { 'Ohne Schlagworte': [] };
 
-    items.forEach((item) => {
+    items.forEach(item => {
       if (!item.tags.length) {
         tags['Ohne Schlagworte'].push(item);
       } else {
-        item.tags.forEach((tag) => {
-          if (!search || tag.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+        item.tags.forEach(tag => {
+          if (
+            !search ||
+            tag.toLowerCase().indexOf(search.toLowerCase()) !== -1
+          ) {
             if (!tags[tag]) tags[tag] = [];
             tags[tag].push(item);
           }
@@ -23,7 +26,7 @@ class ListSidebar extends Component {
     });
 
     return tags;
-  }
+  };
 
   getDirectories = () => {
     const { filter, onFilter } = this.props;
@@ -33,10 +36,15 @@ class ListSidebar extends Component {
     }));
     const tags = this.getTags(items);
 
-    return Object.keys(tags).map((tag) => {
+    return Object.keys(tags).map(tag => {
       const active = !!filter.find(x => x === tag);
-      const filteredTags = !active ? [...filter, tag] : filter.filter(x => x !== tag);
-      const filteredItems = items.filter(item => intersection(item.tags, filteredTags).length === filteredTags.length);
+      const filteredTags = !active
+        ? [...filter, tag]
+        : filter.filter(x => x !== tag);
+      const filteredItems = items.filter(
+        item =>
+          intersection(item.tags, filteredTags).length === filteredTags.length
+      );
       const countFilter = (this.getTags(filteredItems)[tag] || []).length;
       const countAll = tags[tag].length;
       const disabled = !countFilter;
@@ -47,22 +55,36 @@ class ListSidebar extends Component {
         disabled,
         onClick: () => onFilter(filteredTags, filteredItems),
         label: upperFirst(tag),
-        description: countFilter === countAll ? text : `${countFilter} von ${text}`,
+        description: countFilter === countAll
+          ? text
+          : `${countFilter} von ${text}`,
         image: tags[tag][0],
         countFilter,
         countAll,
         key: tag,
       };
     });
-  }
+  };
 
   image = ({ image }) => {
     return <Image value={image} mode="fill" width={37} height={37} retina />;
-  }
+  };
 
   render() {
-    const { items, upload, onClose, search, onSearch, onFilter, filter } = this.props;
-    const directories = orderBy(this.getDirectories(), ['active', 'disabled', 'countFilter', 'countAll', 'label'], ['desc', 'asc', 'desc', 'desc', 'asc']);
+    const {
+      items,
+      upload,
+      onClose,
+      search,
+      onSearch,
+      onFilter,
+      filter,
+    } = this.props;
+    const directories = orderBy(
+      this.getDirectories(),
+      ['active', 'disabled', 'countFilter', 'countAll', 'label'],
+      ['desc', 'asc', 'desc', 'desc', 'asc']
+    );
 
     return (
       <Sidebar
@@ -79,15 +101,32 @@ class ListSidebar extends Component {
           </Popover>
         }
         header={
-          <List.Filter placeholder="Filter ..." onChange={onSearch} value={search} />
+          <List.Filter
+            placeholder="Filter ..."
+            onChange={onSearch}
+            value={search}
+          />
         }
         isOpen
         padding={0}
         title="Mediathek"
         subtitle="Medien sichten und verwalten"
       >
-        {directories.find(dir => dir.disabled) ? <List.Item label="Zurück" icon="left" onClick={() => onFilter(filter.slice(0, -1), items)} /> : null}
-        {directories.filter(dir => !dir.active).map(dir => !dir.disabled ? <List.Item {...dir} image={this.image(dir)} /> : null)}
+        {directories.find(dir => dir.disabled)
+          ? <List.Item
+              label="Zurück"
+              icon="left"
+              onClick={() => onFilter(filter.slice(0, -1), items)}
+            />
+          : null}
+        {directories
+          .filter(dir => !dir.active)
+          .map(
+            dir =>
+              !dir.disabled
+                ? <List.Item {...dir} image={this.image(dir)} />
+                : null
+          )}
       </Sidebar>
     );
   }

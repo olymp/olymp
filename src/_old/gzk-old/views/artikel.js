@@ -4,17 +4,23 @@ import { Spin } from 'antd';
 import { Image, SlateMate } from 'olymp-cms';
 import { Gateway } from 'react-gateway';
 
-const fieldNames = 'id, name, farbe, extrakt, slug, text, bild { height, width, url, crop }';
+const fieldNames =
+  'id, name, farbe, extrakt, slug, text, bild { height, width, url, crop }';
 @withAuth
-@graphql(gql`
+@graphql(
+  gql`
   query artikel($slug: String) {
     artikel(query: { slug: { eq: $slug } }) {
       ${fieldNames}
     }
   }
-`, {
-  options: ({ location }) => ({ variables: { slug: location.pathname.split('/artikel')[1] } }),
-})
+`,
+  {
+    options: ({ location }) => ({
+      variables: { slug: location.pathname.split('/artikel')[1] },
+    }),
+  }
+)
 @withItem({ typeName: 'artikel', fieldNames })
 export default class Artikel extends Component {
   render() {
@@ -23,50 +29,74 @@ export default class Artikel extends Component {
     if (!item) return <Spin size="large" />;
 
     const meta = [
-      { name: 'description', content: item.extrakt || 'Ein neuer Artikel in unserem Gesundheitsmagazin!' },
+      {
+        name: 'description',
+        content:
+          item.extrakt || 'Ein neuer Artikel in unserem Gesundheitsmagazin!',
+      },
     ];
     if (item.peak) meta.push({ property: 'og:image', content: item.peak.url });
     // style="border-bottom-right-radius:130px;200px;"
     return (
       <div>
         <Helmet title={item.name} meta={meta} />
-        {!readOnly ? <Gateway into="button1">
-          <a href="javascript:;" onClick={save}>
-            Artikel speichern
-          </a>
-        </Gateway> : null}
-        {!readOnly ? <Gateway into="button2">
-          <Link to={{ ...location, query: { '@Artikel': item.id } }}>
-            Artikel bearbeiten
-          </Link>
-        </Gateway> : null}
+        {!readOnly
+          ? <Gateway into="button1">
+              <a href="javascript:;" onClick={save}>
+                Artikel speichern
+              </a>
+            </Gateway>
+          : null}
+        {!readOnly
+          ? <Gateway into="button2">
+              <Link to={{ ...location, query: { '@Artikel': item.id } }}>
+                Artikel bearbeiten
+              </Link>
+            </Gateway>
+          : null}
         <style>{getStyle(item.farbe || '#FFA210')}</style>
-        {item.bild ? <Image height={400} lightbox onImageClick={({ showLightbox }) => showLightbox()} showMediathek={false} container="div" value={item.bild} className="gz-image-box">
-          <div className="gz-image-content" style={{ backgroundColor: item.farbe }}>
-            <h1>{item.name}</h1>
-            <p>{item.extrakt}</p>
-          </div>
-        </Image> : (
-          <div className="page-header panel">
-            <div className="container">
-              <h1 className="pull-left">{item.name}</h1>
-              <ol className="breadcrumb pull-left">
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li className="active">
-                  {item.name}
-                  {item.extrakt}
-                </li>
-              </ol>
-            </div>
-          </div>
-        )}
+        {item.bild
+          ? <Image
+              height={400}
+              lightbox
+              onImageClick={({ showLightbox }) => showLightbox()}
+              showMediathek={false}
+              container="div"
+              value={item.bild}
+              className="gz-image-box"
+            >
+              <div
+                className="gz-image-content"
+                style={{ backgroundColor: item.farbe }}
+              >
+                <h1>{item.name}</h1>
+                <p>{item.extrakt}</p>
+              </div>
+            </Image>
+          : <div className="page-header panel">
+              <div className="container">
+                <h1 className="pull-left">{item.name}</h1>
+                <ol className="breadcrumb pull-left">
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  <li className="active">
+                    {item.name}
+                    {item.extrakt}
+                  </li>
+                </ol>
+              </div>
+            </div>}
         <div className="container">
           <div className="row">
             <aside className="col-sm-4" />
             <div className="col-sm-8">
-              <SlateMate className="frontend-editor mt-2 mb-3" value={item.text} onChange={text => patch({ text })} readOnly={readOnly} />
+              <SlateMate
+                className="frontend-editor mt-2 mb-3"
+                value={item.text}
+                onChange={text => patch({ text })}
+                readOnly={readOnly}
+              />
             </div>
           </div>
         </div>

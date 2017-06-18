@@ -2,16 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import { useGenericBlock, GenericBlock } from 'olymp-slate';
 import Image from '../../edits/image';
 
-const actions = props => [{
-  type: 'image-src',
-  icon: 'picture-o',
-  tooltip: 'Bild und Bildausschnitt auswählen',
-  toggle: () => {
-    const { setData } = props;
-    setData({ showMedia: true });
+const actions = props => [
+  {
+    type: 'image-src',
+    icon: 'picture-o',
+    tooltip: 'Bild und Bildausschnitt auswählen',
+    toggle: () => {
+      const { setData } = props;
+      setData({ showMedia: true });
+    },
+    active: false,
   },
-  active: false,
-}];
+];
 
 @useGenericBlock({
   label: 'Bild',
@@ -33,7 +35,7 @@ export default class ImageBlock extends Component {
     className: PropTypes.string,
     getData: PropTypes.func,
     setData: PropTypes.func,
-  }
+  };
 
   render() {
     const { setData, getData, readOnly } = this.props;
@@ -62,7 +64,11 @@ export default class ImageBlock extends Component {
           onChange={image => setData({ showMedia: undefined, image })}
           onCancel={() => setData({ showMedia: false })}
           lightbox
-          onImageClick={readOnly ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
+          onImageClick={
+            readOnly
+              ? ({ showLightbox }) => showLightbox()
+              : () => setData({ showMedia: true })
+          }
           showMediathek={getData('showMedia')}
           width={styles.width}
           value={value}

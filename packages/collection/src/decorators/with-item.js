@@ -3,20 +3,24 @@ import { graphql } from 'react-apollo';
 import { notification } from 'antd';
 import gql from 'graphql-tag';
 
-export default ({ fieldNames, typeName }) => (WrappedComponent) => {
-  @graphql(gql`
+export default ({ fieldNames, typeName }) => WrappedComponent => {
+  @graphql(
+    gql`
     query ${typeName.toLowerCase()}($id: String!) {
       item: ${typeName.toLowerCase()}(query: { id: {eq: $id} }) {
         ${fieldNames}
       }
     }
-  `, { /* eslint-disable */
-    options: ({ id }) => ({
-      variables: {
-        id,
-      },
-    }),
-  })
+  `,
+    {
+      /* eslint-disable */
+      options: ({ id }) => ({
+        variables: {
+          id,
+        },
+      }),
+    }
+  )
   @graphql(gql`
     mutation ${typeName.toLowerCase()}($id: String, $input: ${typeName}Input) {
       item: ${typeName.toLowerCase()}(id: $id, input: $input, type: UPDATE) {
@@ -36,27 +40,40 @@ export default ({ fieldNames, typeName }) => (WrappedComponent) => {
           id: data.item ? data.item.id : undefined,
           input,
         },
-      }).then((item) => {
-        this.setState({ saving: false, patched: {}, isDirty: false });
-        notification.success({ message: 'Gespeichert', description: 'Änderungen wurden gespeichert!' });
-      }).catch((err) => {
-        this.setState({ saving: false });
-        console.error(err);
-        notification.error({ message: 'Fehler', description: 'Fehler beim Speichern.' });
-        throw err;
-      });
-    }
+      })
+        .then(item => {
+          this.setState({ saving: false, patched: {}, isDirty: false });
+          notification.success({
+            message: 'Gespeichert',
+            description: 'Änderungen wurden gespeichert!',
+          });
+        })
+        .catch(err => {
+          this.setState({ saving: false });
+          console.error(err);
+          notification.error({
+            message: 'Fehler',
+            description: 'Fehler beim Speichern.',
+          });
+          throw err;
+        });
+    };
 
-    patch = (fields) => {
+    patch = fields => {
       const patched = { ...this.state.patched, ...fields };
       this.setState({ isDirty: true, patched });
-    }
+    };
 
     render() {
       const { data } = this.props;
       const { patched } = this.state;
       return (
-        <WrappedComponent {...this.props} item={{ ...data.item, ...patched }} patch={this.patch} save={this.save} />
+        <WrappedComponent
+          {...this.props}
+          item={{ ...data.item, ...patched }}
+          patch={this.patch}
+          save={this.save}
+        />
       );
     }
   }

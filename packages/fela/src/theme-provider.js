@@ -43,7 +43,8 @@ const getTheme = theme => ({
   innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
 
   // Font
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   fontSize: '1rem',
   fontSizeSmall: '0.9rem',
   fontSizeH1: '1.6rem',
@@ -55,7 +56,5 @@ const getTheme = theme => ({
   ...theme,
 });
 
-export default ({ theme, ...rest }) => (
-  <FelaThemeProvider theme={getTheme(theme)} {...rest} />
-);
-
+export default ({ theme, ...rest }) =>
+  <FelaThemeProvider theme={getTheme(theme)} {...rest} />;

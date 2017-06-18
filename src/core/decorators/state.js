@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import capitalize from 'lodash/upperFirst';
 
 export default (propertyName, defaultValue) => WrappedComponent => {
-  const properties = typeof propertyName != 'object' ? { [propertyName]: defaultValue } : propertyName;
+  const properties = typeof propertyName != 'object'
+    ? { [propertyName]: defaultValue }
+    : propertyName;
   class WithStateComponent extends Component {
     state = properties;
     render() {
@@ -13,5 +15,6 @@ export default (propertyName, defaultValue) => WrappedComponent => {
       }, {});
       return <WrappedComponent {...this.props} {...more} />;
     }
-  } return WithStateComponent;
+  }
+  return WithStateComponent;
 };

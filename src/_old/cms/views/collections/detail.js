@@ -10,34 +10,52 @@ const barFields = ['state', 'tags'];
 
 const getFormSchema = ({ fields }) =>
   // { header: [], bar: [], tabs: {} }
-  fields.reduce((result, field) => {
-    if (headFields.includes(field.name)) { // Head
-      result.header.push(field);
-    } else if (barFields.includes(field.name)) { // Bar
-      result.bar.splice(barFields.indexOf(field.name), 0, field);
-      result.bar.join();
-    } else if (field.type.name === 'Json') { // if slate => own group
-      result.tabs[capitalize(field.name)] = [field];
-    } else if (field.type.name === 'Image') { // if image => own group
-      result.tabs[capitalize(field.name)] = [field];
-    } else { // Group
-      const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
+  fields.reduce(
+    (result, field) => {
+      if (headFields.includes(field.name)) {
+        // Head
+        result.header.push(field);
+      } else if (barFields.includes(field.name)) {
+        // Bar
+        result.bar.splice(barFields.indexOf(field.name), 0, field);
+        result.bar.join();
+      } else if (field.type.name === 'Json') {
+        // if slate => own group
+        result.tabs[capitalize(field.name)] = [field];
+      } else if (field.type.name === 'Image') {
+        // if image => own group
+        result.tabs[capitalize(field.name)] = [field];
+      } else {
+        // Group
+        const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
 
-      if (!result.tabs[group]) result.tabs[group] = [];
-      result.tabs[group].push(field);
-    } return result;
-  }, {
-    header: [],
-    bar: [],
-    tabs: {},
-  });
+        if (!result.tabs[group]) result.tabs[group] = [];
+        result.tabs[group].push(field);
+      }
+      return result;
+    },
+    {
+      header: [],
+      bar: [],
+      tabs: {},
+    }
+  );
 
 @withItem({})
 @withRouter
 @withForm
 export default class CollectionDetail extends Component {
   handleCreate = () => {
-    const { save, refetch, gqlQuery, typeName, id, location, router, form } = this.props;
+    const {
+      save,
+      refetch,
+      gqlQuery,
+      typeName,
+      id,
+      location,
+      router,
+      form,
+    } = this.props;
     const { pathname } = location;
 
     form.validateFields((err, values) => {
@@ -45,14 +63,19 @@ export default class CollectionDetail extends Component {
         return;
       }
 
-      save(values, { commit: false }).then((obj) => {
+      save(values, { commit: false }).then(obj => {
         if (!id) {
-          router.push({ pathname, query: { [`@${typeName.toLowerCase()}`]: obj[typeName.toLowerCase()].id } });
+          router.push({
+            pathname,
+            query: {
+              [`@${typeName.toLowerCase()}`]: obj[typeName.toLowerCase()].id,
+            },
+          });
         }
         if (refetch) refetch(gqlQuery);
       });
     });
-  }
+  };
 
   render() {
     const { item, collection, loading } = this.props;

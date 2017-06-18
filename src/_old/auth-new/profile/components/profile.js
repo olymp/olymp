@@ -3,7 +3,7 @@ import { withAuth } from 'olymp';
 import { Form } from 'antd';
 import { onError, onSuccess } from '../../views/base';
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   @withAuth
   @Form.create()
   class AuthProfile extends Component {
@@ -16,18 +16,29 @@ export default (WrappedComponent) => {
         const user = { ...auth.user, ...values };
         delete user.__typename;
 
-        auth.save(user).then(() => {
-          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
-          onClose();
-        }).catch(onError);
+        auth
+          .save(user)
+          .then(() => {
+            onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
+            onClose();
+          })
+          .catch(onError);
       });
-    }
+    };
 
     render() {
       const { form, auth, pathname, isOpen, onClose } = this.props;
 
       return (
-        <WrappedComponent form={form} title="Profil" onOk={this.ok} auth={auth} pathname={pathname} isOpen={isOpen} onClose={onClose} />
+        <WrappedComponent
+          form={form}
+          title="Profil"
+          onOk={this.ok}
+          auth={auth}
+          pathname={pathname}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
       );
     }
   }

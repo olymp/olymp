@@ -33,12 +33,17 @@ function remarkReact(options) {
   var settings = options || {};
   var createElement = settings.createElement || globalCreateElement;
   var clean = settings.sanitize !== false;
-  var scheme = clean && (typeof settings.sanitize !== 'boolean') ? settings.sanitize : null;
+  var scheme = clean && typeof settings.sanitize !== 'boolean'
+    ? settings.sanitize
+    : null;
   var toHastOptions = settings.toHast || {};
-  var components = Object.assign({
-    td: createTableCellComponent('td'),
-    th: createTableCellComponent('th')
-  }, settings.remarkReactComponents);
+  var components = Object.assign(
+    {
+      td: createTableCellComponent('td'),
+      th: createTableCellComponent('th'),
+    },
+    settings.remarkReactComponents
+  );
 
   this.Compiler = compile;
 
@@ -47,7 +52,7 @@ function remarkReact(options) {
     if (!component) return null;
 
     if (children && TABLE_ELEMENTS.indexOf(component) !== -1) {
-      children = children.filter(function (child) {
+      children = children.filter(function(child) {
         return child !== '\n';
       });
     }
@@ -56,7 +61,17 @@ function remarkReact(options) {
   }
 
   function compile(node, key) {
-    const { tag, type, position, depth, value, ordered, url, props = {}, children = [] } = node;
+    const {
+      tag,
+      type,
+      position,
+      depth,
+      value,
+      ordered,
+      url,
+      props = {},
+      children = [],
+    } = node;
     let t = tag || type;
     if (!props.key) props.key = key;
     if (!props.value) props.value = value;
@@ -71,7 +86,8 @@ function remarkReact(options) {
       t = 'li';
     } else if (t === 'root') {
       t = 'div';
-    } return h(t, props, children.map((child, key) => compile(child, key)));
+    }
+    return h(t, props, children.map((child, key) => compile(child, key)));
   }
 
   function createTableCellComponent(tagName) {
@@ -80,12 +96,10 @@ function remarkReact(options) {
     function TableCell(props) {
       var fixedProps = xtend(props, {
         children: undefined,
-        style: {textAlign: props.align}
+        style: { textAlign: props.align },
       });
       delete fixedProps.align;
       return createElement(tagName, fixedProps, props.children);
     }
   }
 }
-
-

@@ -5,7 +5,7 @@ import hashtax from './hashtax';
 class HashtaxProvider extends Component {
   static childContextTypes = {
     Hashtax: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);

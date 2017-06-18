@@ -7,23 +7,22 @@ class Settings extends Component {
 
     return (
       <SplitView deviceWidth={deviceWidth}>
-        <Sidebar
-          title="Einstellungen"
-        >
-          <List.Item to={{ pathname, query: { '@totp': null } }} label="Profil" />
-          <List.Item to={{ pathname, query: { '@totp': null } }} label="Zwei-Faktor-Authentifizierung" />
+        <Sidebar title="Einstellungen">
+          <List.Item
+            to={{ pathname, query: { '@totp': null } }}
+            label="Profil"
+          />
+          <List.Item
+            to={{ pathname, query: { '@totp': null } }}
+            label="Zwei-Faktor-Authentifizierung"
+          />
         </Sidebar>
 
         <Container>
           <Placeholder>Einstellungen</Placeholder>
         </Container>
 
-        <Sidebar
-          right
-          title="rechts"
-          subtitle="rechts"
-        >
-        </Sidebar>
+        <Sidebar right title="rechts" subtitle="rechts" />
       </SplitView>
     );
   }

@@ -5,7 +5,10 @@ import { Sidebar, List } from 'olymp-ui';
 class ListSidebar extends Component {
   render() {
     const { id, onClick, onClose, search, onSearch, type } = this.props;
-    const items = this.props.items.filter(item => !search || item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+    const items = this.props.items.filter(
+      item =>
+        !search || item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
 
     return (
       <Sidebar
@@ -16,23 +19,31 @@ class ListSidebar extends Component {
         }
         rightButtons={
           <Popover content={`${type} hinzufügen`}>
-            <Sidebar.Button onClick={() => onClick({ id: null })} shape="circle" icon="plus" />
+            <Sidebar.Button
+              onClick={() => onClick({ id: null })}
+              shape="circle"
+              icon="plus"
+            />
           </Popover>
         }
         title={type}
         subtitle={`${type} sichten und verwalten`}
         header={
-          <List.Filter placeholder="Filter ..." onChange={search => this.setState({ search })} value={search} />
+          <List.Filter
+            placeholder="Filter ..."
+            onChange={search => this.setState({ search })}
+            value={search}
+          />
         }
       >
-        {items.map(item => (
+        {items.map(item =>
           <List.Item
             active={item.id === id}
             label={item.name}
             onClick={() => onClick(item)}
             key={item.id}
           />
-        ))}
+        )}
       </Sidebar>
     );
   }

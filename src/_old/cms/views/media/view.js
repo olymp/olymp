@@ -11,7 +11,8 @@ import List from './list';
 import Upload from './upload';
 import Crop, { CropSelect } from './crop';
 
-const fieldNames = 'id, url, tags, colors, width, height, createdAt, caption, source, format';
+const fieldNames =
+  'id, url, tags, colors, width, height, createdAt, caption, source, format';
 const ACTIVE_COLOR = '#EEE';
 
 @graphql(gql`
@@ -27,23 +28,24 @@ export default class MediaView extends Component {
   state = {
     tags: [],
     selected: [],
-    aspect: 0
+    aspect: 0,
   };
 
-  getNode = (images) => {
+  getNode = images => {
     const { tags } = this.state;
     const tree = {};
 
-    (images || []).forEach((image) => {
-      (image.tags || []).forEach((tag) => {
+    (images || []).forEach(image => {
+      (image.tags || []).forEach(tag => {
         const isActive = tags.findIndex(x => x === tag) !== -1;
 
         if (!tree[tag]) {
           tree[tag] = {
             name: !isActive ? capitalize(tag) : `'${capitalize(tag)}' aufheben`,
-            onClick: () => this.setState(
-              { tags: !isActive ? [...tags, tag] : tags.filter(x => x !== tag) }
-            ),
+            onClick: () =>
+              this.setState({
+                tags: !isActive ? [...tags, tag] : tags.filter(x => x !== tag),
+              }),
             color: isActive && ACTIVE_COLOR,
             isActive,
             image,
@@ -55,51 +57,68 @@ export default class MediaView extends Component {
         tree[tag].images.push(image);
         tree[tag].tags = [
           ...tree[tag].tags,
-          ...image.tags.filter(x => tree[tag].tags.findIndex(y => y === x) === -1),
+          ...image.tags.filter(
+            x => tree[tag].tags.findIndex(y => y === x) === -1
+          ),
         ];
-        tree[tag].description = `${tree[tag].images.length} Bilder mit ${tree[tag].tags.length} Schlagworten`;
+        tree[tag].description = `${tree[tag].images.length} Bilder mit ${tree[
+          tag
+        ].tags.length} Schlagworten`;
       });
     });
 
     return tree;
-  }
+  };
 
   onClose = () => {
     const { id, onClose, router, location } = this.props;
     if (onClose) onClose();
-    if (id) router.push({ pathname: location.pathname, query: { ...location.query, '@media': null } });
-  }
+    if (id)
+      router.push({
+        pathname: location.pathname,
+        query: { ...location.query, '@media': null },
+      });
+  };
 
   onClick = (item, isActive) => {
     const { id, router, location, onChange, multi } = this.props;
-    const selected = ([...this.state.selected]);
+    const selected = [...this.state.selected];
 
     if (id && !selected.length) {
       selected.push(id);
     }
 
     if (multi) {
-      this.setState(
-        { selected: !isActive ? [...selected, item.id] : selected.filter(x => x !== item.id) }
-      );
+      this.setState({
+        selected: !isActive
+          ? [...selected, item.id]
+          : selected.filter(x => x !== item.id),
+      });
 
-      if (!onChange) router.replaceWith({ pathname: location.pathname, query: { ...location.query, '@media': null } });
+      if (!onChange)
+        router.replaceWith({
+          pathname: location.pathname,
+          query: { ...location.query, '@media': null },
+        });
     } else if (onChange) {
-      this.setState(
-        { selected: !isActive ? [item.id] : [] }
-      );
+      this.setState({ selected: !isActive ? [item.id] : [] });
     } else {
-      router.push({ pathname: location.pathname, query: { ...location.query, '@media': item.id } });
+      router.push({
+        pathname: location.pathname,
+        query: { ...location.query, '@media': item.id },
+      });
     }
-  }
+  };
 
   onSaveCrop = () => {
     const { data, onChange, onClose, multi } = this.props;
     const { items } = data;
     const { selected } = this.state;
-    const result = selected.map(id => this.cropImages[id] || items.find(x => x.id === id));
+    const result = selected.map(
+      id => this.cropImages[id] || items.find(x => x.id === id)
+    );
     onChange(multi ? result : result[0]);
-  }
+  };
 
   render() {
     const { data, onChange, onClose, multi } = this.props;
@@ -108,8 +127,13 @@ export default class MediaView extends Component {
 
     let currentNode = this.getNode(items || []);
     let images = items;
-    tags.forEach((tag) => {
-      if (currentNode && currentNode[tag] && currentNode[tag].images && currentNode[tag].images.length) {
+    tags.forEach(tag => {
+      if (
+        currentNode &&
+        currentNode[tag] &&
+        currentNode[tag].images &&
+        currentNode[tag].images.length
+      ) {
         images = currentNode[tag].images;
         currentNode = this.getNode(images, currentNode);
       }
@@ -129,15 +153,24 @@ export default class MediaView extends Component {
     }
 
     let detail;
-    if (selected.length && onChange) { // crop one or more
+    if (selected.length && onChange) {
+      // crop one or more
       detail = (
         <div>
           <h3>{selected.length > 1 ? 'Bilder' : 'Bild'} zurechtschneiden</h3>
-          <CropSelect value={aspect} onChange={aspect => this.setState({ aspect })} style={{ width: '100%', marginBottom: '1rem' }} />
+          <CropSelect
+            value={aspect}
+            onChange={aspect => this.setState({ aspect })}
+            style={{ width: '100%', marginBottom: '1rem' }}
+          />
 
           {selected.map(id =>
             <div key={id}>
-              <Crop item={this.cropImages[id] || items.find(x => x.id === id)} onChange={image => this.cropImages[id] = image} aspect={aspect} />
+              <Crop
+                item={this.cropImages[id] || items.find(x => x.id === id)}
+                onChange={image => (this.cropImages[id] = image)}
+                aspect={aspect}
+              />
             </div>
           )}
           <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
@@ -149,28 +182,29 @@ export default class MediaView extends Component {
           <div style={{ clear: 'both' }} />
         </div>
       );
-    } else if (selected.length > 1 && !onChange) { // batch edit items
+    } else if (selected.length > 1 && !onChange) {
+      // batch edit items
       detail = (
         <div>
           <h3>{selected.length} Bilder ausgewählt</h3>
           <DetailMulti
             images={selected.map(x => items.find(item => item.id === x))}
-            deselect={id => this.setState({ selected: selected.filter(x => x !== id) })}
+            deselect={id =>
+              this.setState({ selected: selected.filter(x => x !== id) })}
             onClose={this.onClose}
           />
         </div>
       );
-    } else if (selected.length === 1) { // edit one
+    } else if (selected.length === 1) {
+      // edit one
       detail = selected.map(id =>
         <div key={id}>
           <h3>Bild bearbeiten</h3>
-          <Detail
-            id={id}
-            onClose={this.onClose}
-          />
+          <Detail id={id} onClose={this.onClose} />
         </div>
       );
-    } else { // none selected
+    } else {
+      // none selected
       detail = (
         <div>
           <h3>Bild auswählen oder hochladen</h3>
@@ -190,19 +224,27 @@ export default class MediaView extends Component {
           isLoading={loading}
           noChangeAllowed={!!onChange}
         />
-        <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }} >
+        <div className="col-md-8 py-1 px-0" style={{ minHeight: 400 }}>
           <div className="container olymp-container pr-0">
-            {loading ? <Spin size="large" /> : (
-              <List
-                selected={selected}
-                onClick={this.onClick}
-                images={images}
-                multi={multi}
-              />
-            )}
+            {loading
+              ? <Spin size="large" />
+              : <List
+                  selected={selected}
+                  onClick={this.onClick}
+                  images={images}
+                  multi={multi}
+                />}
           </div>
         </div>
-        <div style={{ position: 'fixed', height: '100%', overflowY: 'auto', width: 'calc((100% - 340px) / 3)', right: 0 }}>
+        <div
+          style={{
+            position: 'fixed',
+            height: '100%',
+            overflowY: 'auto',
+            width: 'calc((100% - 340px) / 3)',
+            right: 0,
+          }}
+        >
           <div className="p-1">
             {detail}
           </div>

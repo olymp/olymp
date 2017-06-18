@@ -16,15 +16,23 @@ export default class Accordion extends Component {
     const { pathname, query } = location;
     const active = location.query && location.query[name];
 
-    const items = Children.toArray(children).map((item) => {
+    const items = Children.toArray(children).map(item => {
       const { title, children } = item.props;
       const slug = slugify(title, true);
       return (
         <div className="panel panel-default" key={slug}>
           <div className="panel-title">
-            <Link to={{ pathname, query: { ...query, [name]: active != slug ? slug : undefined } }}>
+            <Link
+              to={{
+                pathname,
+                query: { ...query, [name]: active != slug ? slug : undefined },
+              }}
+            >
               {title}
-              <i className="fa pull-right fa-caret-down" style={{ paddingTop: 4 }} />
+              <i
+                className="fa pull-right fa-caret-down"
+                style={{ paddingTop: 4 }}
+              />
             </Link>
           </div>
           <div className="collapse panel-collapse in">

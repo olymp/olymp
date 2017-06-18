@@ -7,11 +7,28 @@ import { url } from '../utils';
 // http://cloudinary.com/documentation/image_transformation_reference
 class Img extends Component {
   render() {
-    const { retina, value, mode, children, maxSize, width, height, style, className, ...rest } = this.props;
+    const {
+      retina,
+      value,
+      mode,
+      children,
+      maxSize,
+      width,
+      height,
+      style,
+      className,
+      ...rest
+    } = this.props;
     return (
       <img
         {...rest}
-        src={url(value.url, { ...value, width, height, dpr: retina ? 2 : undefined, mode })}
+        src={url(value.url, {
+          ...value,
+          width,
+          height,
+          dpr: retina ? 2 : undefined,
+          mode,
+        })}
         width={width}
         height={height}
         style={style}

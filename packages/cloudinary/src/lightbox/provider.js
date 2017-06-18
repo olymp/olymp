@@ -6,11 +6,11 @@ export default class LightboxProvider extends Component {
   images = [];
   state = {
     images: [],
-  }
+  };
 
   static childContextTypes = {
     lightbox: React.PropTypes.object,
-  }
+  };
 
   getChildContext() {
     const { images } = this.state;
@@ -33,13 +33,13 @@ export default class LightboxProvider extends Component {
     }
   }
 
-  add = (image) => {
+  add = image => {
     this.images.push(image);
-  }
+  };
 
-  remove = (ref) => {
+  remove = ref => {
     this.images = this.images.filter(image => image.ref !== ref);
-  }
+  };
 
   render() {
     const { children } = this.props;

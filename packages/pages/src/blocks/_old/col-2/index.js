@@ -5,11 +5,10 @@ export default {
   label: 'Container',
   category: 'Template',
   editable: true,
-  component: ({ attributes, children }) => (
+  component: ({ attributes, children }) =>
     <Container {...attributes}>
       {children}
-    </Container>
-  ),
+    </Container>,
   plugin: {
     onKeyDown: (e, data, state) => {
       const { document, selection } = state;
@@ -28,18 +27,24 @@ export default {
 
       if (state.startBlock.type !== 'table-cell') return undefined;
       switch (data.key) {
-        case 'backspace': return this.onBackspace(e, state);
-        case 'delete': return this.onDelete(e, state);
-        case 'enter': return this.onEnter(e, state);
-        default: return undefined;
+        case 'backspace':
+          return this.onBackspace(e, state);
+        case 'delete':
+          return this.onDelete(e, state);
+        case 'enter':
+          return this.onEnter(e, state);
+        default:
+          return undefined;
       }
-    }
+    },
   },
-  actions: [{
-    type: 'small',
-    icon: 'align-left',
-    tooltip: 'Linksbündig',
-    toggle: ({ setData }) => setData({ alignment: 'left' }),
-    active: ({ alignment }) => alignment === 'left',
-  }],
+  actions: [
+    {
+      type: 'small',
+      icon: 'align-left',
+      tooltip: 'Linksbündig',
+      toggle: ({ setData }) => setData({ alignment: 'left' }),
+      active: ({ alignment }) => alignment === 'left',
+    },
+  ],
 };

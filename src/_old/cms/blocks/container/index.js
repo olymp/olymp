@@ -13,7 +13,15 @@ import { useGenericBlock, GenericBlock } from 'olymp-slate';
 export default class ContainerBlock extends Component {
   render() {
     return (
-      <GenericBlock {...this.props} style={{ ...this.props.style, position: 'relative', minHeight: 30, overflow: 'hidden' }} />
+      <GenericBlock
+        {...this.props}
+        style={{
+          ...this.props.style,
+          position: 'relative',
+          minHeight: 30,
+          overflow: 'hidden',
+        }}
+      />
     );
   }
 }

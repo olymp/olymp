@@ -1,25 +1,17 @@
 const { parse, visit, BREAK, Kind } = require('graphql/language');
 const addDefinition = require('./add-definition');
 
-const attribs = [
-  'eq',
-  'ne',
-  'lt',
-  'gt',
-  'gte',
-  'lte',
-  'in',
-  'nin',
-];
-exports.adaptQuery = (obj) => {
+const attribs = ['eq', 'ne', 'lt', 'gt', 'gte', 'lte', 'in', 'nin'];
+exports.adaptQuery = obj => {
   obj = Object.assign({}, obj);
   if (obj.skipQuery) return {};
   delete obj.skipQuery;
-  Object.keys(obj).forEach((key) => {
+  Object.keys(obj).forEach(key => {
     if (obj[key] && Array.isArray(obj[key])) {
-      obj[key] = obj[key].map(item => typeof item === 'object' ? exports.adaptQuery(item) : item);
-    }
-    else if (obj[key] && typeof obj[key] === 'object') {
+      obj[key] = obj[key].map(
+        item => (typeof item === 'object' ? exports.adaptQuery(item) : item)
+      );
+    } else if (obj[key] && typeof obj[key] === 'object') {
       obj[key] = exports.adaptQuery(obj[key]);
     }
     if (key === 'and') {
@@ -77,10 +69,10 @@ exports.adaptQuery = (obj) => {
   return obj;
 };
 
-exports.adaptSort = (obj) => {
+exports.adaptSort = obj => {
   if (obj.skipSort) return {};
   delete obj.skipSort;
-  Object.keys(obj).forEach((key) => {
+  Object.keys(obj).forEach(key => {
     obj[key] = obj[key] === 'DESC' ? -1 : 1;
   });
   return obj;
@@ -93,17 +85,20 @@ function fetchType(name, ast) {
       if (node.kind !== 'NamedType' && node.name && node.name.value === name) {
         currentNode = node;
         return BREAK;
-      } return undefined;
+      }
+      return undefined;
     },
   });
   return currentNode;
 }
 exports.addInputTypes = (collectionName, ast) => {
-  const getArgument = (field) => {
+  const getArgument = field => {
     if (!field.type.name) return null;
     const fieldType = fetchType(field.type.name.value, ast);
     if (['Date', 'DateTime'].includes(field.type.name.value)) {
-      addDefinition(ast, parse(`
+      addDefinition(
+        ast,
+        parse(`
         input DateQuery {
           eq: Float,
           ne: Float,
@@ -117,11 +112,14 @@ exports.addInputTypes = (collectionName, ast) => {
           between: [Float],
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: DateQuery`;
     }
     if (['Int'].includes(field.type.name.value)) {
-      addDefinition(ast, parse(`
+      addDefinition(
+        ast,
+        parse(`
         input IntQuery {
           eq: Int,
           ne: Int,
@@ -134,11 +132,14 @@ exports.addInputTypes = (collectionName, ast) => {
           between: [Int],
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: IntQuery`;
     }
     if (['Float'].includes(field.type.name.value)) {
-      addDefinition(ast, parse(`
+      addDefinition(
+        ast,
+        parse(`
         input IntQuery {
           eq: Float,
           ne: Float,
@@ -151,21 +152,31 @@ exports.addInputTypes = (collectionName, ast) => {
           between: [Float],
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: IntQuery`;
     }
     if (['Boolean'].includes(field.type.name.value)) {
-      addDefinition(ast, parse(`
+      addDefinition(
+        ast,
+        parse(`
         input BooleanQuery {
           eq: Float,
           ne: Float,
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: BooleanQuery`;
     }
-    if (['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(field.type.name.value)) {
-      addDefinition(ast, parse(`
+    if (
+      ['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(
+        field.type.name.value
+      )
+    ) {
+      addDefinition(
+        ast,
+        parse(`
         input StringQuery {
           eq: String,
           ne: String,
@@ -175,11 +186,14 @@ exports.addInputTypes = (collectionName, ast) => {
           contains: String,
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: StringQuery`;
     }
     if (fieldType && fieldType.kind === 'EnumTypeDefinition') {
-      addDefinition(ast, parse(`
+      addDefinition(
+        ast,
+        parse(`
         input ${fieldType.name.value}Query {
           eq: ${fieldType.name.value},
           ne: ${fieldType.name.value},
@@ -187,46 +201,60 @@ exports.addInputTypes = (collectionName, ast) => {
           nin: [${fieldType.name.value}],
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: ${fieldType.name.value}Query`;
     }
     if (fieldType && fieldType.kind === 'ObjectTypeDefinition') {
-      addDefinition(ast, parse(`
+      addDefinition(
+        ast,
+        parse(`
         input GenericQuery {
           null: Boolean
         }
-      `).definitions[0]);
+      `).definitions[0]
+      );
       return `${field.name.value}: GenericQuery`;
     }
     // if (fieldType) console.log(fieldType);
   };
-  const getSort = (field) => {
+  const getSort = field => {
     if (!field.name) return null;
     return `${field.name.value}: SORT_DIRECTION`;
   };
   let collectionAst = null;
   visit(ast, {
     enter(node) {
-      if (node.kind.endsWith('TypeDefinition') && node.name && node.name.value === collectionName) {
+      if (
+        node.kind.endsWith('TypeDefinition') &&
+        node.name &&
+        node.name.value === collectionName
+      ) {
         collectionAst = node;
         return BREAK;
-      } return undefined;
+      }
+      return undefined;
     },
   });
 
-  addDefinition(ast, parse(`
+  addDefinition(
+    ast,
+    parse(`
     input ${collectionName}Query {
       skipQuery: Boolean
       ${collectionAst.fields.map(getArgument).filter(x => x).join('\n')}
       and: [${collectionName}Query]
       or: [${collectionName}Query]
     }
-  `).definitions[0]);
-  addDefinition(ast, parse(`
+  `).definitions[0]
+  );
+  addDefinition(
+    ast,
+    parse(`
     input ${collectionName}Sort {
       skipSort: Boolean
       ${collectionAst.fields.map(getSort).filter(x => x).join('\n')}
     }
-  `).definitions[0]);
+  `).definitions[0]
+  );
 };
-

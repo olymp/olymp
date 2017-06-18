@@ -12,12 +12,10 @@ if (!ss.id) {
 
 const renderer = createFela();
 
-export const FelaDecorator = story => (
+export const FelaDecorator = story =>
   <FelaProvider renderer={renderer} mountNode={ss}>
     <ThemeProvider>{story()}</ThemeProvider>
-  </FelaProvider>
-);
+  </FelaProvider>;
 
-export const RouterDecorator = story => (
-  <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
-);
+export const RouterDecorator = story =>
+  <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>;

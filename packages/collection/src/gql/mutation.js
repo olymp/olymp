@@ -1,6 +1,6 @@
-
 export default graphql(
-  gql`mutation cloudinaryRequestDone($id: String, $token: String) { cloudinaryRequestDone(id: $id, token: $token) { ${fieldNames} } }`, {
+  gql`mutation cloudinaryRequestDone($id: String, $token: String) { cloudinaryRequestDone(id: $id, token: $token) { ${fieldNames} } }`,
+  {
     props({ ownProps, mutate }) {
       return {
         done({ id, token }) {
@@ -19,4 +19,4 @@ export default graphql(
       };
     },
   }
-)
+);

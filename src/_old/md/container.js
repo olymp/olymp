@@ -9,7 +9,9 @@ const EXPRESSION = /^((\+{1,}) ([^\n\+]+)?[ \t]*)(?:\n([\s\S]*?)(\n\2[ \t]*(?=\n
 
 function attacher({ components, props }) {
   const getArgsFromStr = (str, allowed) => {
-    const match = str ? str.match(/(?:[^\s"'\]\[]+|"[^"]*"|'[^']*'|\[[^']*\])+/g) : null;
+    const match = str
+      ? str.match(/(?:[^\s"'\]\[]+|"[^"]*"|'[^']*'|\[[^']*\])+/g)
+      : null;
     if (match) {
       return match.reduce((state, current) => {
         let [x, y] = current.split('=');
@@ -17,25 +19,35 @@ function attacher({ components, props }) {
         if (y && y.indexOf('"') === 0) y = y.substr(1).slice(0, -1);
         if (allowed && !allowed[x]) return state;
         else if (!allowed) state[x] = y;
-        else if (allowed[x] === PropTypes.number) state[x] = y !== null && y !== undefined ? parseInt(y) : null;
-        else if (allowed[x] === PropTypes.bool) state[x] = y === 'true' ? true : y === 'false' ? false : null;
+        else if (allowed[x] === PropTypes.number)
+          state[x] = y !== null && y !== undefined ? parseInt(y) : null;
+        else if (allowed[x] === PropTypes.bool)
+          state[x] = y === 'true' ? true : y === 'false' ? false : null;
         else state[x] = y;
         return state;
       }, {});
-    } return {};
-  }
+    }
+    return {};
+  };
   function parse(eat, value, silent) {
     // let match = value.match(EXPRESSION);
     // console.log(match);
     const match = value.match(EXPRESSION);
     if (match) {
-      let full = match[0], start = match[1], arg = match[3], content = match[4], end = match[5];
+      let full = match[0],
+        start = match[1],
+        arg = match[3],
+        content = match[4],
+        end = match[5];
       if (!arg) return;
       if (!end) full = full.split('\n')[0];
       const tag = arg.trim().split(' ')[0];
       if (!components[tag]) return;
       if (silent) return true;
-      let props = getArgsFromStr(arg.trim().substr(tag.length+1), components[tag].propTypes);
+      let props = getArgsFromStr(
+        arg.trim().substr(tag.length + 1),
+        components[tag].propTypes
+      );
       const node = eat(full).reset({
         props,
         type: 'react',
@@ -60,7 +72,11 @@ function attacher({ components, props }) {
   var proto = this.Parser.prototype;
   // proto.expressions.rules.foo = FOO_EXPRESSION;
   proto.blockTokenizers.react = parse;
-  proto.blockMethods.splice(proto.blockMethods.indexOf('fences') + 1, 0, 'react');
+  proto.blockMethods.splice(
+    proto.blockMethods.indexOf('fences') + 1,
+    0,
+    'react'
+  );
   this.Compiler.prototype.react = compile;
 }
 

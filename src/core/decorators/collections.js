@@ -4,8 +4,9 @@ import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
 import withAuth from './auth';
 
-export default (WrappedComponent) => {
-  @graphql(gql`
+export default WrappedComponent => {
+  @graphql(
+    gql`
     query schema {
       schema: __schema {
         types {
@@ -24,17 +25,29 @@ export default (WrappedComponent) => {
         }
       }
     }
-  `, {
-    options: ({ auth }) => ({
-      skip: !auth || !auth.user,
-    }),
-  })
+  `,
+    {
+      options: ({ auth }) => ({
+        skip: !auth || !auth.user,
+      }),
+    }
+  )
   class WithCollectionsComponent extends Component {
     list() {
       const { data = {} } = this.props;
       const { schema } = data;
 
-      return schema && schema.types ? schema.types.filter(x => (x.interfaces || []).filter(y => y.name === 'CollectionType' || y.name === 'CollectionInterface').length) : [];
+      return schema && schema.types
+        ? schema.types.filter(
+            x =>
+              (x.interfaces || [])
+                .filter(
+                  y =>
+                    y.name === 'CollectionType' ||
+                    y.name === 'CollectionInterface'
+                ).length
+          )
+        : [];
     }
 
     group() {
@@ -50,7 +63,7 @@ export default (WrappedComponent) => {
       const groups = {};
       collections.map(({ name, description }, i) => {
         const attributes = {};
-        description.split('\n').forEach((x) => {
+        description.split('\n').forEach(x => {
           const y = x.split(':');
 
           if (y.length === 2) {
@@ -70,13 +83,13 @@ export default (WrappedComponent) => {
       });
 
       // Collections innerhalb Gruppe sortieren
-      Object.keys(groups).forEach((key) => {
+      Object.keys(groups).forEach(key => {
         groups[key] = sortBy(groups[key], ['order', 'name']);
       });
 
       // Undefined-Gruppe auflösen
       if (groups.undefined) {
-        groups.undefined.forEach((collection) => {
+        groups.undefined.forEach(collection => {
           if (!groups[collection.name]) groups[collection.name] = [];
 
           groups[collection.name].push(collection);
@@ -93,7 +106,13 @@ export default (WrappedComponent) => {
       const list = this.list();
       const group = this.group();
 
-      return <WrappedComponent {...rest} collectionList={list} collectionTree={group} />;
+      return (
+        <WrappedComponent
+          {...rest}
+          collectionList={list}
+          collectionTree={group}
+        />
+      );
     }
   }
 

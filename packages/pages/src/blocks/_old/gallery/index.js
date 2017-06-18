@@ -9,16 +9,18 @@ import Image from '../../edits/image';
   props: ['image', 'showMedia'],
   category: 'Media',
   editable: false,
-  actions: props => [{
-    type: 'image-src',
-    icon: 'picture-o',
-    toggle: () => {
-      const { setData } = props;
-      setData({ showMedia: true });
+  actions: props => [
+    {
+      type: 'image-src',
+      icon: 'picture-o',
+      toggle: () => {
+        const { setData } = props;
+        setData({ showMedia: true });
+      },
+      active: false,
+      tooltip: 'Bilder für die Galerie auswählen',
     },
-    active: false,
-    tooltip: 'Bilder für die Galerie auswählen',
-  }],
+  ],
 })
 @withAuth
 export default class ImagesBlock extends Component {
@@ -28,7 +30,7 @@ export default class ImagesBlock extends Component {
     className: PropTypes.string,
     getData: PropTypes.func,
     setData: PropTypes.func,
-  }
+  };
 
   render() {
     const { setData, getData, className, readOnly, auth } = this.props;
@@ -46,34 +48,54 @@ export default class ImagesBlock extends Component {
       display: 'block',
     };
 
-    const imageBlock = (image, i) => (
-      <div style={{ ...styles, height: 'auto', width: '20%', float: 'left', padding: '.5rem' }} key={i}>
+    const imageBlock = (image, i) =>
+      <div
+        style={{
+          ...styles,
+          height: 'auto',
+          width: '20%',
+          float: 'left',
+          padding: '.5rem',
+        }}
+        key={i}
+      >
         <figure className={className} style={{ margin: 0 }}>
           <Image
             onChange={images => setData({ showMedia: undefined, images })}
             multi
             onCancel={() => setData({ showMedia: false })}
             lightbox={!!image}
-            onImageClick={!!image ? ({ showLightbox }) => showLightbox() : () => setData({ showMedia: true })}
+            onImageClick={
+              !!image
+                ? ({ showLightbox }) => showLightbox()
+                : () => setData({ showMedia: true })
+            }
             showMediathek={!image && showMedia}
             width="100%"
             value={image}
             style={innerStyle}
           />
-          {auth && auth.user && image && i !== images.length ? (
-            <figcaption>
-              <a href="javascript:;" onClick={() => setData({ images: images.splice(i, 1) })}>
-                Entfernen
-              </a>
-            </figcaption>
-          ) : null}
+          {auth && auth.user && image && i !== images.length
+            ? <figcaption>
+                <a
+                  href="javascript:;"
+                  onClick={() => setData({ images: images.splice(i, 1) })}
+                >
+                  Entfernen
+                </a>
+              </figcaption>
+            : null}
         </figure>
-      </div>
-    );
+      </div>;
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader className={className} style={style} isEmpty={images} placeholder="Keine Bilder vorhanden">
+        <DataLoader
+          className={className}
+          style={style}
+          isEmpty={images}
+          placeholder="Keine Bilder vorhanden"
+        >
           {(images || []).map((image, i) => imageBlock(image, i))}
 
           {auth && auth.user ? imageBlock(undefined, images.length) : null}

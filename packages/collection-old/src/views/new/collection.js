@@ -14,36 +14,72 @@ export default class CollectionSidebar extends Component {
   state = { tab: 0 };
 
   render() {
-    const { form, router, pathname, save, query, binding, navigation, flatNavigation, render, deviceWidth, typeName, items } = this.props;
+    const {
+      form,
+      router,
+      pathname,
+      save,
+      query,
+      binding,
+      navigation,
+      flatNavigation,
+      render,
+      deviceWidth,
+      typeName,
+      items,
+    } = this.props;
     const { tab } = this.state;
     let item = this.props.item;
 
     const id = query[`@${typeName}`];
-    if (id === 'new' || !id) item = { };
+    if (id === 'new' || !id) item = {};
 
     const leftButtons = (
       <Button.Group>
-        <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, [`@${typeName}`]: undefined, parent: undefined } })} shape="circle" icon="close" />
+        <Sidebar.Button
+          onClick={() =>
+            router.push({
+              pathname,
+              query: {
+                ...query,
+                [`@${typeName}`]: undefined,
+                parent: undefined,
+              },
+            })}
+          shape="circle"
+          icon="close"
+        />
       </Button.Group>
     );
-    const rightButtons = form.isFieldsTouched() ? (
-      <Button.Group>
-        <Sidebar.Button onClick={save} shape="circle" icon="save" />
-      </Button.Group>
-    ) : (
-      <Button.Group>
-        <Sidebar.Button onClick={() => router.push({ pathname, query: { ...query, [`@${typeName}`]: 'new', parent: item.id } })} shape="circle" icon="plus" />
-      </Button.Group>
-    );
+    const rightButtons = form.isFieldsTouched()
+      ? <Button.Group>
+          <Sidebar.Button onClick={save} shape="circle" icon="save" />
+        </Button.Group>
+      : <Button.Group>
+          <Sidebar.Button
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { ...query, [`@${typeName}`]: 'new', parent: item.id },
+              })}
+            shape="circle"
+            icon="plus"
+          />
+        </Button.Group>;
     const title = id === 'new' ? 'Neue Seite' : item.name;
-    const description = id === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
+    const description = id === 'new'
+      ? 'Neue Seite erstellen'
+      : 'Seite bearbeiten';
     const P = form.getFieldDecorator('blocks', {
       initialValue: item.blocks,
     })(<Content readOnly={false} binding={binding} />);
 
     return (
       <SplitView deviceWidth={deviceWidth}>
-        <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
         <Sidebar
           leftButtons={leftButtons}
           rightButtons={rightButtons}

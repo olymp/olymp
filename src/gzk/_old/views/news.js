@@ -5,17 +5,23 @@ import { Image, SlateMate } from 'olymp-cms';
 import { Gateway } from 'react-gateway';
 import moment from 'moment';
 
-const fieldNames = 'id, art, date, name, extrakt, slug, text, bild { height, width, url, crop }';
+const fieldNames =
+  'id, art, date, name, extrakt, slug, text, bild { height, width, url, crop }';
 @withAuth
-@graphql(gql`
+@graphql(
+  gql`
   query termin($slug: String) {
     termin(query: { slug: { eq: $slug } }) {
       ${fieldNames}
     }
   }
-`, {
-  options: ({ location }) => ({ variables: { slug: location.pathname.split('/news')[1] } }),
-})
+`,
+  {
+    options: ({ location }) => ({
+      variables: { slug: location.pathname.split('/news')[1] },
+    }),
+  }
+)
 @withItem({ typeName: 'termin', fieldNames })
 export default class News extends Component {
   render() {
@@ -27,45 +33,76 @@ export default class News extends Component {
       <div>
         <Helmet
           title={item.name}
-          meta={item.peak ? [
-            { property: 'og:image', content: item.peak },
-          ] : []}
+          meta={item.peak ? [{ property: 'og:image', content: item.peak }] : []}
         />
-        {!readOnly ? <Gateway into="button1">
-          <a href="javascript:;" onClick={save}>
-            News speichern
-          </a>
-        </Gateway> : null}
-        {!readOnly ? <Gateway into="button2">
-          <Link to={{ ...location, query: { '@Termin': item.id } }}>
-            News bearbeiten
-          </Link>
-        </Gateway> : null}
+        {!readOnly
+          ? <Gateway into="button1">
+              <a href="javascript:;" onClick={save}>
+                News speichern
+              </a>
+            </Gateway>
+          : null}
+        {!readOnly
+          ? <Gateway into="button2">
+              <Link to={{ ...location, query: { '@Termin': item.id } }}>
+                News bearbeiten
+              </Link>
+            </Gateway>
+          : null}
         <style>{getStyle(item.farbe || '#FFA210')}</style>
         <div className="frontend-editor mt-2 mb-1">
           <div className="gz-element">
             <div style={{ position: 'relative' }}>
-              <Link to="/news" style={{ position: 'absolute', left: '-140px', textAlign: 'right' }}>
+              <Link
+                to="/news"
+                style={{
+                  position: 'absolute',
+                  left: '-140px',
+                  textAlign: 'right',
+                }}
+              >
                 <i className="fa fa-arrow-left" /><br /> Zurück zu News
               </Link>
-              {item.bild ? <div style={{ float: 'left' }}>
-                <Image container className="mr-1" value={item.bild} width={100} height={130} cloudinary={{ width: 200, height: 260 }} />
-              </div> : null}
-              {item.art && <h1 className="gz-simple-header">{item.art[0]}{item.art.toLowerCase().substr(1)}</h1>}
+              {item.bild
+                ? <div style={{ float: 'left' }}>
+                    <Image
+                      container
+                      className="mr-1"
+                      value={item.bild}
+                      width={100}
+                      height={130}
+                      cloudinary={{ width: 200, height: 260 }}
+                    />
+                  </div>
+                : null}
+              {item.art &&
+                <h1 className="gz-simple-header">
+                  {item.art[0]}{item.art.toLowerCase().substr(1)}
+                </h1>}
               <h5 className="card-title mb-0 gz-simple-header">{item.name}</h5>
               <small>
-                <b>{moment(item.date).utcOffset('+01:00').format('DD. MMMM YYYY HH:mm').replace(' 00:00', '')}</b>
-                {item.tags && item.tags.length ? (
-                  <b style={{ float: 'right' }}>
-                    {item.tags.join(', ')}
-                  </b>
-                ) : null}
+                <b>
+                  {moment(item.date)
+                    .utcOffset('+01:00')
+                    .format('DD. MMMM YYYY HH:mm')
+                    .replace(' 00:00', '')}
+                </b>
+                {item.tags && item.tags.length
+                  ? <b style={{ float: 'right' }}>
+                      {item.tags.join(', ')}
+                    </b>
+                  : null}
               </small>
               {item.extrakt && <p className="mt-1"><b>{item.extrakt}</b></p>}
             </div>
           </div>
         </div>
-        <SlateMate className="frontend-editor mb-3" value={item.text} onChange={text => patch({ text })} readOnly={readOnly} />
+        <SlateMate
+          className="frontend-editor mb-3"
+          value={item.text}
+          onChange={text => patch({ text })}
+          readOnly={readOnly}
+        />
       </div>
     );
   }

@@ -1,7 +1,23 @@
 // http://res.cloudinary.com/demo/image/upload/f_auto,q_auto,w_250,h_250,c_fit/sample.jpg
 const defaultState = 'f_auto,q_auto,fl_lossy';
 
-export default (url, { mode, effect, border, width, height, cropX, cropY, quality, blur, dpr, crop: crop0 } = {}, crop) => {
+export default (
+  url,
+  {
+    mode,
+    effect,
+    border,
+    width,
+    height,
+    cropX,
+    cropY,
+    quality,
+    blur,
+    dpr,
+    crop: crop0,
+  } = {},
+  crop
+) => {
   if (!crop) crop = crop0;
   if (!mode) mode = 'fill';
 
@@ -13,7 +29,9 @@ export default (url, { mode, effect, border, width, height, cropX, cropY, qualit
     cropY = crop[3];
   }
   if (url.indexOf('http://res.cloudinary.com/') === 0) {
-    url = url.split('ttp://res.cloudinary.com/').join('ttps://res.cloudinary.com/');
+    url = url
+      .split('ttp://res.cloudinary.com/')
+      .join('ttps://res.cloudinary.com/');
   }
   if (url.indexOf('https://res.cloudinary.com/') !== 0) return url;
   let part = defaultState;
@@ -40,7 +58,7 @@ export default (url, { mode, effect, border, width, height, cropX, cropY, qualit
     part += `,dpr_${dpr}.0`;
   }
   if (border) {
-    Object.keys(border).map((key) => {
+    Object.keys(border).map(key => {
       part = `bo_${border[key]}px_solid_${key}/${part}`;
     });
   }

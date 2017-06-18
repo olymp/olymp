@@ -2,29 +2,39 @@ export default () => ({
   Artikel: {
     icon: 'newspaper-o',
     detail: {
-      fields: [{
-        name: 'name',
-        type: 'text',
-      }],
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+        },
+      ],
     },
     list: {
-      fields: [{
-        name: 'name',
-      }, {
-        name: 'date',
-      }, {
-        name: 'bild',
-      }],
+      fields: [
+        {
+          name: 'name',
+        },
+        {
+          name: 'date',
+        },
+        {
+          name: 'bild',
+        },
+      ],
     },
     interfaces: ['CollectionInterface'],
-    decorators: [{
-      name: 'collection',
-      options: { name: 'Artikel' },
-    }, {
-      name: 'stamp',
-    }, {
-      name: 'state',
-    }],
+    decorators: [
+      {
+        name: 'collection',
+        options: { name: 'Artikel' },
+      },
+      {
+        name: 'stamp',
+      },
+      {
+        name: 'state',
+      },
+    ],
     schema: `
       # v1
       # icon:newspaper-o
@@ -47,5 +57,5 @@ export default () => ({
         text: String
       }
     `,
-  }
+  },
 });
