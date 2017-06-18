@@ -20,14 +20,14 @@ const NavItem = createComponent(({ fill, inverse, vertically, right }) => ({
     display: 'block',
     width: '100%',
   },
-}), ({ className, pathname, children, title, fill, pages, ...props }) => (
+}), ({ className, pathname, children, title, fill, pages, onClick, ...props }) => (
   <div className={className}>
     {pathname ? (
       <Link to={pathname} inverse={props.inverse}>
         {title}
       </Link>
     ) : (
-      <Placeholder onClick={() => {}} inverse={props.inverse}>
+      <Placeholder onClick={onClick} inverse={props.inverse}>
         {title}
       </Placeholder>
     )}
@@ -40,14 +40,17 @@ const NavItem = createComponent(({ fill, inverse, vertically, right }) => ({
 NavItem.displayName = 'Navbar.Item';
 NavItem.propTypes = {
   /** title/label */
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
   /** path for react-router or undefined for placeholder */
   pathname: PropTypes.string,
   /** submenu is mega dropdown menu */
   mega: PropTypes.bool,
+  /**  */
+  onClick: PropTypes.func,
 };
 NavItem.defaultProps = {
   pathname: undefined,
   mega: false,
+  onClick: () => {},
 };
 export default NavItem;
