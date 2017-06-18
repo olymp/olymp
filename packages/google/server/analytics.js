@@ -1,6 +1,6 @@
 const googleAuth = require('google-oauth-jwt');
 
-module.exports = function(app, base) {
+module.exports = function (app, base) {
   const config = app.get('googleAnalytics');
 
   if (config) {

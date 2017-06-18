@@ -117,7 +117,7 @@ export default class GzBox extends Component {
 }
 
 export const GzBoxContent = @useBlockBase({
-  isVoid: false,
+  isVoid: false ,
   sidebar: false,
 })
 class GzBoxContent extends Component {

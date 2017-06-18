@@ -31,12 +31,12 @@ export default class MediaView extends Component {
     aspect: 0,
   };
 
-  getNode = images => {
+  getNode = (images) => {
     const { tags } = this.state;
     const tree = {};
 
-    (images || []).forEach(image => {
-      (image.tags || []).forEach(tag => {
+    (images || []).forEach((image) => {
+      (image.tags || []).forEach((tag) => {
         const isActive = tags.findIndex(x => x === tag) !== -1;
 
         if (!tree[tag]) {
@@ -72,12 +72,13 @@ export default class MediaView extends Component {
 
   onClose = () => {
     const { id, onClose, router, location } = this.props;
-    if (onClose) onClose();
-    if (id)
+    if (onClose) { onClose(); }
+    if (id) {
       router.push({
         pathname: location.pathname,
         query: { ...location.query, '@media': null },
       });
+    }
   };
 
   onClick = (item, isActive) => {
@@ -95,11 +96,12 @@ export default class MediaView extends Component {
           : selected.filter(x => x !== item.id),
       });
 
-      if (!onChange)
+      if (!onChange) {
         router.replaceWith({
           pathname: location.pathname,
           query: { ...location.query, '@media': null },
         });
+      }
     } else if (onChange) {
       this.setState({ selected: !isActive ? [item.id] : [] });
     } else {
@@ -127,7 +129,7 @@ export default class MediaView extends Component {
 
     let currentNode = this.getNode(items || []);
     let images = items;
-    tags.forEach(tag => {
+    tags.forEach((tag) => {
       if (
         currentNode &&
         currentNode[tag] &&
@@ -165,13 +167,13 @@ export default class MediaView extends Component {
           />
 
           {selected.map(id =>
-            <div key={id}>
+            (<div key={id}>
               <Crop
                 item={this.cropImages[id] || items.find(x => x.id === id)}
                 onChange={image => (this.cropImages[id] = image)}
                 aspect={aspect}
               />
-            </div>
+            </div>)
           )}
           <div style={{ clear: 'both', float: 'right', marginTop: '1rem' }}>
             <Button key="submit" type="primary" onClick={this.onSaveCrop}>
@@ -198,10 +200,10 @@ export default class MediaView extends Component {
     } else if (selected.length === 1) {
       // edit one
       detail = selected.map(id =>
-        <div key={id}>
+        (<div key={id}>
           <h3>Bild bearbeiten</h3>
           <Detail id={id} onClose={this.onClose} />
-        </div>
+        </div>)
       );
     } else {
       // none selected
@@ -229,11 +231,11 @@ export default class MediaView extends Component {
             {loading
               ? <Spin size="large" />
               : <List
-                  selected={selected}
-                  onClick={this.onClick}
-                  images={images}
-                  multi={multi}
-                />}
+                selected={selected}
+                onClick={this.onClick}
+                images={images}
+                multi={multi}
+              />}
           </div>
         </div>
         <div

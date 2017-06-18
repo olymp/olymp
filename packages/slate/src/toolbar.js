@@ -36,9 +36,9 @@ export const Button = createComponent(
     color: active && theme.light1,
   }),
   ({ className, onMouseDown, children, innerKey, ...props }) =>
-    <div className={className} onMouseDown={onMouseDown}>
+    (<div className={className} onMouseDown={onMouseDown}>
       {children}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 
@@ -48,7 +48,7 @@ export default createComponent(
   display: 'flex',
   justifyContent: 'center', */
   }),
-  props => {
+  (props) => {
     const { isOpened, className, children } = props;
     return (
       <Portal isOpened={!!isOpened}>

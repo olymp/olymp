@@ -45,7 +45,7 @@ export default class GZNetzwerke extends Component {
     { slug, website, peak, kurz, name, farbe, id, tags, bild },
     index
   ) =>
-    <a
+    (<a
       href={website}
       rel="noopener noreferrer"
       className={cn(
@@ -65,7 +65,7 @@ export default class GZNetzwerke extends Component {
       <b>{name}</b>
       <br />
       <small>{tags.join(', ')}</small>
-    </a>;
+    </a>);
   render() {
     const { children, title, items, router, size } = this.props;
     return (

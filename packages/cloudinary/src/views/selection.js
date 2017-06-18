@@ -27,21 +27,19 @@ class SelectionSidebar extends Component {
     tags: false,
   };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     const { items: stateItems, source, tags } = this.state;
     const propItems = props.items;
-    const items = propItems.map(propItem => {
+    const items = propItems.map((propItem) => {
       const stateItem = stateItems.find(item => item.id === propItem.id);
 
-      return stateItem
-        ? stateItem
-        : {
-            ...propItem,
-            source: source && stateItems[0]
+      return stateItem || {
+        ...propItem,
+        source: source && stateItems[0]
               ? stateItems[0].source
               : propItem.source,
-            tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
-          }; // nur neue Items hinzufügen, ansonsten Items aus State verwenden
+        tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
+      }; // nur neue Items hinzufügen, ansonsten Items aus State verwenden
     });
 
     this.setState({ items });
@@ -55,12 +53,11 @@ class SelectionSidebar extends Component {
   };
 
   patchItem = (id, changes) => {
-    const items = this.state.items.map(item => {
+    const items = this.state.items.map((item) => {
       if (item.id === id) {
         return this.patch(item, changes);
-      } else {
-        return item;
       }
+      return item;
     });
 
     this.setState({ items });
@@ -103,9 +100,9 @@ class SelectionSidebar extends Component {
 
   isEqual = (obj1, obj2) => {
     // null, undefined, false, '' => null
-    const nulize = obj => {
+    const nulize = (obj) => {
       const clone = {};
-      Object.keys(obj).forEach(key => {
+      Object.keys(obj).forEach((key) => {
         if (obj[key]) {
           clone[key] = obj[key];
         } else {
@@ -126,7 +123,7 @@ class SelectionSidebar extends Component {
     items.forEach(item => save(item));
   };
 
-  onRemove = id => {
+  onRemove = (id) => {
     const { onRemove, items: propItems } = this.props;
     const { items: stateItems } = this.state;
 
@@ -145,7 +142,7 @@ class SelectionSidebar extends Component {
     const { items: stateItems } = this.state;
     let changes = false;
 
-    stateItems.forEach(stateItem => {
+    stateItems.forEach((stateItem) => {
       const propItem = propItems.find(item => item.id === stateItem.id);
 
       if (!this.isEqual(propItem, stateItem)) {
@@ -172,30 +169,30 @@ class SelectionSidebar extends Component {
           header={
             items.length > 1
               ? <StyledGallery
-                  items={items}
-                  itemHeight={60}
-                  selected={[activeItemId]}
-                  onClick={(id, index) => onClick(index)}
-                  onRemove={this.onRemove}
-                  justifyContent="space-around"
-                />
+                items={items}
+                itemHeight={60}
+                selected={[activeItemId]}
+                onClick={(id, index) => onClick(index)}
+                onRemove={this.onRemove}
+                justifyContent="space-around"
+              />
               : null
           }
           footer={
             <div>
               {!onSelect
                 ? <Button
-                    onClick={this.onSave}
-                    type="primary"
-                    disabled={!items.length}
-                  >
-                    {items.length > 1 ? 'Alle speichern' : 'Speichern'}
-                  </Button>
+                  onClick={this.onSave}
+                  type="primary"
+                  disabled={!items.length}
+                >
+                  {items.length > 1 ? 'Alle speichern' : 'Speichern'}
+                </Button>
                 : <Button
-                    onClick={() => onSelect(items)}
-                    type="primary"
-                    disabled={!items.length}
-                  >
+                  onClick={() => onSelect(items)}
+                  type="primary"
+                  disabled={!items.length}
+                >
                     Übernehmen
                   </Button>}
               <Button onClick={this.onCancel} disabled={!items.length}>
@@ -214,14 +211,14 @@ class SelectionSidebar extends Component {
         >
           {items.length
             ? <Detail
-                item={activeItem}
-                multi={items.length > 1}
-                patchItem={changes => this.patchItem(activeItem.id, changes)}
-                patchItems={this.patchItems}
-                source={source}
-                tags={tags}
-                editable={!onSelect}
-              />
+              item={activeItem}
+              multi={items.length > 1}
+              patchItem={changes => this.patchItem(activeItem.id, changes)}
+              patchItems={this.patchItems}
+              source={source}
+              tags={tags}
+              editable={!onSelect}
+            />
             : <Placeholder>
                 Dateien auswählen
               </Placeholder>}

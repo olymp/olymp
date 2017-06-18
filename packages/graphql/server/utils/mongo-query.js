@@ -2,11 +2,11 @@ const { parse, visit, BREAK, Kind } = require('graphql/language');
 const addDefinition = require('./add-definition');
 
 const attribs = ['eq', 'ne', 'lt', 'gt', 'gte', 'lte', 'in', 'nin'];
-exports.adaptQuery = obj => {
+exports.adaptQuery = (obj) => {
   obj = Object.assign({}, obj);
-  if (obj.skipQuery) return {};
+  if (obj.skipQuery) { return {}; }
   delete obj.skipQuery;
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     if (obj[key] && Array.isArray(obj[key])) {
       obj[key] = obj[key].map(
         item => (typeof item === 'object' ? exports.adaptQuery(item) : item)
@@ -41,8 +41,8 @@ exports.adaptQuery = obj => {
       return;
     }
     if (key === 'null') {
-      if (obj.null) obj.$eq = null;
-      if (!obj.null) obj.$ne = null;
+      if (obj.null) { obj.$eq = null; }
+      if (!obj.null) { obj.$ne = null; }
       delete obj.null;
       return;
     }
@@ -69,10 +69,10 @@ exports.adaptQuery = obj => {
   return obj;
 };
 
-exports.adaptSort = obj => {
-  if (obj.skipSort) return {};
+exports.adaptSort = (obj) => {
+  if (obj.skipSort) { return {}; }
   delete obj.skipSort;
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     obj[key] = obj[key] === 'DESC' ? -1 : 1;
   });
   return obj;
@@ -92,8 +92,8 @@ function fetchType(name, ast) {
   return currentNode;
 }
 exports.addInputTypes = (collectionName, ast) => {
-  const getArgument = field => {
-    if (!field.type.name) return null;
+  const getArgument = (field) => {
+    if (!field.type.name) { return null; }
     const fieldType = fetchType(field.type.name.value, ast);
     if (['Date', 'DateTime'].includes(field.type.name.value)) {
       addDefinition(
@@ -218,8 +218,8 @@ exports.addInputTypes = (collectionName, ast) => {
     }
     // if (fieldType) console.log(fieldType);
   };
-  const getSort = field => {
-    if (!field.name) return null;
+  const getSort = (field) => {
+    if (!field.name) { return null; }
     return `${field.name.value}: SORT_DIRECTION`;
   };
   let collectionAst = null;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createComponent } from 'olymp-fela';
 
-export default (options = {}) => Block => {
+export default (options = {}) => (Block) => {
   const {
     isVoid,
     isAtomic,
@@ -32,7 +32,7 @@ export default (options = {}) => Block => {
       defaultNodes,
     };
 
-    setData = data => {
+    setData = (data) => {
       const { node, editor } = this.props;
       const transform = editor
         .getState()
@@ -61,7 +61,7 @@ export default (options = {}) => Block => {
       const { node, editor, state, children } = this.props;
       const blockProps = (props || []).reduce((state, prop) => {
         const data = this.getData(prop);
-        if (data !== undefined) state[prop] = data;
+        if (data !== undefined) { state[prop] = data; }
         return state;
       }, {});
       const active =

@@ -7,7 +7,7 @@ function combineASTTypes(types) {
   );
 }
 
-module.exports = schemas => {
+module.exports = (schemas) => {
   const result = { kind: 'Document', definitions: [] };
   const queries = [];
   const mutations = [];
@@ -33,10 +33,10 @@ module.exports = schemas => {
   );
   const query = combineASTTypes(queries);
   const mutation = combineASTTypes(mutations);
-  if (queries.length) result.definitions.push(query);
-  if (mutations.length) result.definitions.push(mutation);
-  if (subscription.length) result.definitions.push(subscription);
-  withoutRootTypes.forEach(schema => {
+  if (queries.length) { result.definitions.push(query); }
+  if (mutations.length) { result.definitions.push(mutation); }
+  if (subscription.length) { result.definitions.push(subscription); }
+  withoutRootTypes.forEach((schema) => {
     result.definitions = [...result.definitions, ...schema.definitions];
   });
   return result;

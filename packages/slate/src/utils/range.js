@@ -1,19 +1,19 @@
-export const getRangeClientRectsChrome = range => {
-  var tempRange = range.cloneRange();
-  var clientRects = [];
+export const getRangeClientRectsChrome = (range) => {
+  const tempRange = range.cloneRange();
+  const clientRects = [];
 
   for (
-    var ancestor = range.endContainer;
+    let ancestor = range.endContainer;
     ancestor != null;
     ancestor = ancestor.parentNode
   ) {
-    var atCommonAncestor = ancestor === range.commonAncestorContainer;
+    const atCommonAncestor = ancestor === range.commonAncestorContainer;
     if (atCommonAncestor) {
       tempRange.setStart(range.startContainer, range.startOffset);
     } else {
       tempRange.setStart(tempRange.endContainer, 0);
     }
-    var rects = Array.from(tempRange.getClientRects());
+    const rects = Array.from(tempRange.getClientRects());
     clientRects.push(rects);
     if (atCommonAncestor) {
       clientRects.reverse();
@@ -33,21 +33,21 @@ export const isChrome =
   /Google Inc/.test(navigator.vendor);
 export const getRangeClientRects = isChrome
   ? getRangeClientRectsChrome
-  : function(range) {
-      return Array.from(range.getClientRects());
-    };
+  : function (range) {
+    return Array.from(range.getClientRects());
+  };
 
-export const getRangeBoundingClientRect = range => {
-  var rects = getRangeClientRects(range);
-  var top = 0;
-  var right = 0;
-  var bottom = 0;
-  var left = 0;
+export const getRangeBoundingClientRect = (range) => {
+  const rects = getRangeClientRects(range);
+  let top = 0;
+  let right = 0;
+  let bottom = 0;
+  let left = 0;
 
   if (rects.length) {
     ({ top, right, bottom, left } = rects[0]);
-    for (var ii = 1; ii < rects.length; ii++) {
-      var rect = rects[ii];
+    for (let ii = 1; ii < rects.length; ii++) {
+      const rect = rects[ii];
       if (rect.height !== 0 || rect.width !== 0) {
         top = Math.min(top, rect.top);
         right = Math.max(right, rect.right);
@@ -68,7 +68,7 @@ export const getRangeBoundingClientRect = range => {
 };
 
 export const getVisibleSelectionRect = () => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === 'undefined') { return null; }
   const selection = window.getSelection();
   if (!selection.rangeCount) {
     return null;

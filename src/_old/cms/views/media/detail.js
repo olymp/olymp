@@ -11,7 +11,7 @@ const FormItemLayout = {
   style: { marginBottom: '0' },
 };
 
-const MediaForm = Form.create()(props => {
+const MediaForm = Form.create()((props) => {
   const { item, form, save, remove, onClose } = props;
   const { getFieldDecorator } = form;
 
@@ -76,8 +76,8 @@ const MediaForm = Form.create()(props => {
       </Form.Item>
       {item.format === 'pdf'
         ? <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
-            <Input disabled placeholder="Seiten" defaultValue={item.pages} />
-          </Form.Item>
+          <Input disabled placeholder="Seiten" defaultValue={item.pages} />
+        </Form.Item>
         : undefined}
       <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
         <Input
@@ -122,7 +122,7 @@ export default class MediaDetail extends Component {
 
     const form = this.form;
     form.validateFields((err, values) => {
-      if (err) return;
+      if (err) { return; }
       save(values, { commit: false }).then(onClose);
     });
   };

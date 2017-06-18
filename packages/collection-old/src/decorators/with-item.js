@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 const ok = props => () => {
   const { form, item, router, query, pathname, mutate, typeName } = props;
   form.validateFields((err, values) => {
-    if (err) return onError(err);
+    if (err) { return onError(err); }
     mutate({
       variables: {
         id: item && item.id,
@@ -15,11 +15,11 @@ const ok = props => () => {
       },
       updateQueries: !item || !item.id
         ? {
-            pageList: (prev, { mutationResult }) => ({
-              ...prev,
-              items: [...prev.items, mutationResult.data.item],
-            }),
-          }
+          pageList: (prev, { mutationResult }) => ({
+            ...prev,
+            items: [...prev.items, mutationResult.data.item],
+          }),
+        }
         : undefined,
     })
       .then(({ data: { item } }) => {
@@ -34,7 +34,7 @@ const ok = props => () => {
   });
 };
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`

@@ -37,12 +37,12 @@ class ListSidebar extends Component {
         }
       >
         {items.map(item =>
-          <List.Item
+          (<List.Item
             active={item.id === id}
             label={item.name}
             onClick={() => onClick(item)}
             key={item.id}
-          />
+          />)
         )}
       </Sidebar>
     );

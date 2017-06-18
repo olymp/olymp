@@ -9,7 +9,7 @@ export default {
   category: 'Panel',
   editable: false,
   component: ({ className, attributes }) =>
-    <Container {...attributes} className={className}>
+    (<Container {...attributes} className={className}>
       <Panel
         medium={7}
         title="Neuigkeiten"
@@ -59,5 +59,5 @@ export default {
           },
         ]}
       />
-    </Container>,
+    </Container>),
 };

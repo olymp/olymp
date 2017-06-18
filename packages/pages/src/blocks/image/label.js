@@ -57,7 +57,7 @@ export default {
   editable: false,
   // Component
   component: ({ getData, ...p }) =>
-    <ImageWithLabel
+    (<ImageWithLabel
       {...p}
       image={
         getData('value', [
@@ -71,7 +71,7 @@ export default {
       }
       showTitle={getData('showTitle', true)}
       width="100%"
-    />,
+    />),
   actions: [
     ...Image.actions,
     {

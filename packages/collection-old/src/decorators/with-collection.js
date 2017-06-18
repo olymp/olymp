@@ -17,7 +17,7 @@ const userFields = `
   token
   name
 `;
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @withApollo
   @graphql(
     gql`

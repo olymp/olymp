@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-const getStyle = align => {
+const getStyle = (align) => {
   if (align === 'left') {
     return {
       float: 'left',
@@ -19,7 +19,7 @@ const getStyle = align => {
   };
 };
 
-export default (options = {}) => Block => {
+export default (options = {}) => (Block) => {
   const { actions = true, enable } = options;
   return class AlignmentDecorator extends Component {
     static slate = Block.slate;
@@ -30,15 +30,13 @@ export default (options = {}) => Block => {
       style: PropTypes.object,
     };
 
-    setAlignment = align => {
+    setAlignment = (align) => {
       const { setData } = this.props;
-      if (align === 'left') setData({ align });
-      else if (align === 'right') setData({ align });
-      else setData({ align: null });
+      if (align === 'left') { setData({ align }); } else if (align === 'right') { setData({ align }); } else { setData({ align: null }); }
     };
 
     render() {
-      if (enable === false) return <Block {...this.props} />;
+      if (enable === false) { return <Block {...this.props} />; }
       const { getData } = this.props;
       const alignment = getData('align');
       const style = {
@@ -49,28 +47,28 @@ export default (options = {}) => Block => {
       const alignActions = actions === false
         ? []
         : [
-            {
-              type: 'align.left',
-              icon: 'align-left',
-              label: 'Linksbündig',
-              toggle: () => this.setAlignment('left'),
-              active: alignment === 'left',
-            },
-            {
-              type: 'align.center',
-              icon: 'align-center',
-              label: 'Zentriert',
-              toggle: () => this.setAlignment(),
-              active: !alignment,
-            },
-            {
-              type: 'align.right',
-              icon: 'align-right',
-              label: 'Rechtsbündig',
-              toggle: () => this.setAlignment('right'),
-              active: alignment === 'right',
-            },
-          ];
+          {
+            type: 'align.left',
+            icon: 'align-left',
+            label: 'Linksbündig',
+            toggle: () => this.setAlignment('left'),
+            active: alignment === 'left',
+          },
+          {
+            type: 'align.center',
+            icon: 'align-center',
+            label: 'Zentriert',
+            toggle: () => this.setAlignment(),
+            active: !alignment,
+          },
+          {
+            type: 'align.right',
+            icon: 'align-right',
+            label: 'Rechtsbündig',
+            toggle: () => this.setAlignment('right'),
+            active: alignment === 'right',
+          },
+        ];
 
       return (
         <Block

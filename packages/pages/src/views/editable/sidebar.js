@@ -7,13 +7,13 @@ import { Input, PageType, State, Parent, TagSelect } from '../../edits';
 import Tree from './tree';
 
 class PageForm extends Component {
-  handleNameChange = e => {
+  handleNameChange = (e) => {
     // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
   };
-  handleTypeChange = e => {
+  handleTypeChange = (e) => {
     // set slug if unset
     const { form } = this.props;
     if (e === 'MENU') {

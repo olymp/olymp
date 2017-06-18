@@ -27,7 +27,7 @@ export default class News extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;
     const readOnly = !auth.user || auth.user.einrichtung;
-    if (!item) return <Spin size="large" />;
+    if (!item) { return <Spin size="large" />; }
     // style="border-bottom-right-radius:130px;200px;"
     return (
       <div>
@@ -37,17 +37,17 @@ export default class News extends Component {
         />
         {!readOnly
           ? <Gateway into="button1">
-              <a href="javascript:;" onClick={save}>
+            <a href="javascript:;" onClick={save}>
                 News speichern
               </a>
-            </Gateway>
+          </Gateway>
           : null}
         {!readOnly
           ? <Gateway into="button2">
-              <Link to={{ ...location, query: { '@Termin': item.id } }}>
+            <Link to={{ ...location, query: { '@Termin': item.id } }}>
                 News bearbeiten
               </Link>
-            </Gateway>
+          </Gateway>
           : null}
         <style>{getStyle(item.farbe || '#FFA210')}</style>
         <div className="frontend-editor mt-2 mb-1">
@@ -65,15 +65,15 @@ export default class News extends Component {
               </Link>
               {item.bild
                 ? <div style={{ float: 'left' }}>
-                    <Image
-                      container
-                      className="mr-1"
-                      value={item.bild}
-                      width={100}
-                      height={130}
-                      cloudinary={{ width: 200, height: 260 }}
-                    />
-                  </div>
+                  <Image
+                    container
+                    className="mr-1"
+                    value={item.bild}
+                    width={100}
+                    height={130}
+                    cloudinary={{ width: 200, height: 260 }}
+                  />
+                </div>
                 : null}
               {item.art &&
                 <h1 className="gz-simple-header">
@@ -89,8 +89,8 @@ export default class News extends Component {
                 </b>
                 {item.tags && item.tags.length
                   ? <b style={{ float: 'right' }}>
-                      {item.tags.join(', ')}
-                    </b>
+                    {item.tags.join(', ')}
+                  </b>
                   : null}
               </small>
               {item.extrakt && <p className="mt-1"><b>{item.extrakt}</b></p>}

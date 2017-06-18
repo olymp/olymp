@@ -9,7 +9,7 @@ export default ({
   initialValue,
   cooldown,
   handleUpdate,
-}) => WrappedComponent => {
+}) => (WrappedComponent) => {
   class WithStateComponent extends Component {
     constructor(props) {
       super(props);
@@ -22,7 +22,7 @@ export default ({
         def = props[prop];
       }
       this.state = { [prop]: def };
-      if (throttleProp) this.state[throttleProp] = def;
+      if (throttleProp) { this.state[throttleProp] = def; }
     }
     throttled = () => {
       if (throttleProp) {
@@ -33,7 +33,7 @@ export default ({
       }
     };
     shouldComponentUpdate(newProps, newState) {
-      if (!handleUpdate) return true;
+      if (!handleUpdate) { return true; }
       if (newState[prop] !== this.state[prop]) {
         return true;
       }
@@ -44,11 +44,11 @@ export default ({
         const newState = {
           [prop]: newProps[prop],
         };
-        if (throttleProp) newState[throttleProp] = newProps[prop];
+        if (throttleProp) { newState[throttleProp] = newProps[prop]; }
         return this.setState(newState);
       }
     }
-    set = v => {
+    set = (v) => {
       this.setState({ [prop]: v });
       setTimeout(() => {
         if (this.state[prop] === v) {

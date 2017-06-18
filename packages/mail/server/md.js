@@ -52,7 +52,7 @@ module.exports = {
       options
     );
   },
-  toPlain: value => {
+  toPlain: (value) => {
     const handlers = {
       root: (props, children) => children.join('\n'),
       link: (props, children) => `${children} (${props.url})`,

@@ -11,9 +11,9 @@ const ImageContainer = createComponent(
     position: 'relative',
   }),
   ({ className, attributes, children }) =>
-    <div className={className} {...attributes}>
+    (<div className={className} {...attributes}>
       {children}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 

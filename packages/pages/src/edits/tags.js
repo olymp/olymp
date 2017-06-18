@@ -14,7 +14,7 @@ const TagSelect = ({
   options,
   ...rest
 }) =>
-  <Form.Item key={field} label={label} {...layout}>
+  (<Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: item
         ? (item[field] || '')
@@ -25,12 +25,12 @@ const TagSelect = ({
     })(
       <Select mode="multiple" placeholder={placeholder || label} {...rest}>
         {options.map(option =>
-          <Select.Option value={option.id} key={option.id}>
+          (<Select.Option value={option.id} key={option.id}>
             {option.name}
-          </Select.Option>
+          </Select.Option>)
         )}
       </Select>
     )}
-  </Form.Item>;
+  </Form.Item>);
 TagSelect.defaultProps = { layout };
 export default TagSelect;

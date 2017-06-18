@@ -1,9 +1,9 @@
 const cloudinary = require('cloudinary');
 const lodash = require('lodash');
 
-const transform = image => {
+const transform = (image) => {
   const newImage = {};
-  Object.keys(image).forEach(key => {
+  Object.keys(image).forEach((key) => {
     if (key === 'public_id') {
       newImage.id = image.public_id;
       return;
@@ -46,8 +46,8 @@ const transformSignature = (
 const getImages = (config, images = [], nextCursor) =>
   new Promise((yay, nay) => {
     cloudinary.api.resources(
-      result => {
-        if (result.error) return nay(result.error);
+      (result) => {
+        if (result.error) { return nay(result.error); }
 
         // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
         const results = result.resources && result.resources.length
@@ -76,7 +76,7 @@ const getImageById = (config, id) =>
   new Promise(yay =>
     cloudinary.api.resource(
       id,
-      result => {
+      (result) => {
         yay(transform(result));
       },
       Object.assign({}, config, {
@@ -85,7 +85,7 @@ const getImageById = (config, id) =>
         type: 'upload',
         colors: true,
         pages: true,
-        //prefix: ''
+        // prefix: ''
       })
     )
   );
@@ -120,7 +120,7 @@ const updateImage = (id, tags, source, caption, config, removed) => {
     context.push('removed=true');
   }
 
-  return new Promise(yay => {
+  return new Promise((yay) => {
     cloudinary.api.update(
       id,
       result => yay(transform(result)),
@@ -158,9 +158,9 @@ module.exports = (schema, { uri, adapter } = {}) => {
     resolvers: {
       Query: {
         file: (source, args) =>
-          adapter.db.collection('file').findOne({ id: args.id }).then(item => {
-            if (item) return item;
-            return getImageById(config, args.id).then(image => {
+          adapter.db.collection('file').findOne({ id: args.id }).then((item) => {
+            if (item) { return item; }
+            return getImageById(config, args.id).then((image) => {
               adapter.db
                 .collection('file')
                 .updateOne({ id: args.id }, image, { upsert: true })
@@ -176,7 +176,7 @@ module.exports = (schema, { uri, adapter } = {}) => {
                 )
               : items;
 
-          return getImages(config).then(images => {
+          return getImages(config).then((images) => {
             const filtered = getFiltered(images.filter(x => !x.removed));
             Promise.all(
               filtered.map(item =>
@@ -189,7 +189,7 @@ module.exports = (schema, { uri, adapter } = {}) => {
           });
         },
         cloudinaryRequest: () =>
-          getSignedRequest(config).then(signed => {
+          getSignedRequest(config).then((signed) => {
             invalidationTokens.push(signed.signature);
             return signed;
           }),
@@ -224,7 +224,7 @@ module.exports = (schema, { uri, adapter } = {}) => {
               invalidationTokens.indexOf(args.token),
               1
             );
-            return getImageById(config, args.id).then(image => {
+            return getImageById(config, args.id).then((image) => {
               console.log('IMAGE', image, args);
               return image;
             });

@@ -35,7 +35,7 @@ export const Modal = (
   let copyright = null;
   let links = null;
   let footer = null;
-  const children = Children.toArray(props.children).filter(child => {
+  const children = Children.toArray(props.children).filter((child) => {
     if (child.type && child.type === component.Copyright) {
       copyright = child;
       return false;
@@ -189,9 +189,9 @@ component.Copyright = createComponent(
 );
 
 component.Footer = ({ children, className }) =>
-  <div className={cn('ant-modal-footer', className)}>
+  (<div className={cn('ant-modal-footer', className)}>
     {children}
-  </div>;
+  </div>);
 component.Button = props => <AntButton {...props} />;
 
 component.Links = createComponent(

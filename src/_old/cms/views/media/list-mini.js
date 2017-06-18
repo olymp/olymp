@@ -8,7 +8,7 @@ export default class MediaListMini extends Component {
     return (
       <div>
         {(images || []).map(image =>
-          <div
+          (<div
             onClick={() => deselect(image.id)}
             key={image.id}
             style={{ cursor: 'pointer' }}
@@ -23,7 +23,7 @@ export default class MediaListMini extends Component {
                 float: 'left',
               }}
             />
-          </div>
+          </div>)
         )}
       </div>
     );

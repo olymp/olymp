@@ -3,37 +3,37 @@ const { buildSchema } = require('./utils');
 const { defaultScalars, defaultTypes } = require('./defaults');
 
 export default ({ adapter } = {}) => {
-  let _schemas = {};
+  const _schemas = {};
 
   const getFinalSchema = () => {
-    let moduleQueries = ['hello: String'];
-    let moduleTypeDefinitions = [];
-    let moduleHooks = { before: [], after: [] };
-    let moduleMutations = ['hello: String'];
-    let moduleResolvers = {
+    const moduleQueries = ['hello: String'];
+    const moduleTypeDefinitions = [];
+    const moduleHooks = { before: [], after: [] };
+    const moduleMutations = ['hello: String'];
+    const moduleResolvers = {
       Query: { hello: () => 'World23423!' },
       Mutation: { hello: () => 'World2!' },
     };
 
-    Object.keys(_schemas).forEach(schemaName => {
+    Object.keys(_schemas).forEach((schemaName) => {
       const { query, mutation, resolvers, schema, hooks } = _schemas[
         schemaName
       ];
-      if (schema) moduleTypeDefinitions.push(schema);
-      if (query) moduleQueries.push(query);
-      if (mutation) moduleMutations.push(mutation);
-      if (hooks && hooks.before) moduleHooks.before.push(hooks.before);
-      if (hooks && hooks.after) moduleHooks.after.push(hooks.after);
-      Object.keys(resolvers || {}).forEach(name => {
-        if (name === 'Query')
-          Object.keys(resolvers.Query).forEach(key => {
+      if (schema) { moduleTypeDefinitions.push(schema); }
+      if (query) { moduleQueries.push(query); }
+      if (mutation) { moduleMutations.push(mutation); }
+      if (hooks && hooks.before) { moduleHooks.before.push(hooks.before); }
+      if (hooks && hooks.after) { moduleHooks.after.push(hooks.after); }
+      Object.keys(resolvers || {}).forEach((name) => {
+        if (name === 'Query') {
+          Object.keys(resolvers.Query).forEach((key) => {
             moduleResolvers.Query[key] = resolvers.Query[key];
           });
-        else if (name === 'Mutation')
-          Object.keys(resolvers.Mutation).forEach(key => {
+        } else if (name === 'Mutation') {
+          Object.keys(resolvers.Mutation).forEach((key) => {
             moduleResolvers.Mutation[key] = resolvers.Mutation[key];
           });
-        else moduleResolvers[name] = resolvers[name];
+        } else { moduleResolvers[name] = resolvers[name]; }
       });
     });
 
@@ -60,7 +60,7 @@ export default ({ adapter } = {}) => {
     Object.keys(defaultScalars).forEach(key =>
       Object.assign(schema.getType(key), defaultScalars[key])
     );
-    const getContext = ctx => {
+    const getContext = (ctx) => {
       const context = Object.assign(
         { schema, resolvers: moduleResolvers, adapter, ast },
         ctx
@@ -73,28 +73,26 @@ export default ({ adapter } = {}) => {
   };
   return {
     getSchema: () => getFinalSchema(),
-    addSchema: args => {
-      if (_schemas[args.name]) return _schemas[args.name];
+    addSchema: (args) => {
+      if (_schemas[args.name]) { return _schemas[args.name]; }
       _schemas[args.name] = args;
       return _schemas[args.name];
     },
   };
 };
 
-const getHook = (hooks, context) => {
-  return (args, info) => {
-    let promise = Promise.resolve(args);
-    let currentArgs;
-    let error;
-    hooks.forEach(hook => {
-      promise = promise.then(newArgs => {
-        if (newArgs) currentArgs = newArgs;
-        return hook(currentArgs, info, context);
-      });
+const getHook = (hooks, context) => (args, info) => {
+  let promise = Promise.resolve(args);
+  let currentArgs;
+  let error;
+  hooks.forEach((hook) => {
+    promise = promise.then((newArgs) => {
+      if (newArgs) { currentArgs = newArgs; }
+      return hook(currentArgs, info, context);
     });
-    return promise.then(newArgs => {
-      if (error) throw error;
-      return newArgs || currentArgs;
-    });
-  };
+  });
+  return promise.then((newArgs) => {
+    if (error) { throw error; }
+    return newArgs || currentArgs;
+  });
 };

@@ -58,7 +58,7 @@ const StyledCardParagraph = createComponent(
 );
 
 export default ({ name, description, image, ...rest }) =>
-  <StyledCard {...rest}>
+  (<StyledCard {...rest}>
     {!!image &&
       <Image
         value={image}
@@ -76,4 +76,4 @@ export default ({ name, description, image, ...rest }) =>
       {!!description &&
         <StyledCardParagraph>{description}</StyledCardParagraph>}
     </StyledCardContent>
-  </StyledCard>;
+  </StyledCard>);

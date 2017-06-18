@@ -10,7 +10,7 @@ const dropdown = createComponent(
     },
   }),
   ({ onSelect, value, children, content, style, className }) =>
-    <Dropdown
+    (<Dropdown
       overlay={
         <Menu
           selectedKeys={[value]}
@@ -24,7 +24,7 @@ const dropdown = createComponent(
         {content}
         <Icon type="down" />
       </span>
-    </Dropdown>,
+    </Dropdown>),
   p => Object.keys(p)
 );
 dropdown.Item = Menu.Item;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Cloudinary } from './views';
 
 export default ({ query, pathname, router }) =>
-  <Cloudinary
+  (<Cloudinary
     selected={(query['@media'] || '').split(',').filter(x => x)}
     handleSelection={selected =>
       router.push({
@@ -12,4 +12,4 @@ export default ({ query, pathname, router }) =>
     // onSelect={items => console.log(items)} // => Selection-Mode
     onClose={() =>
       router.push({ pathname, query: { ...query, '@media': undefined } })}
-  />;
+  />);

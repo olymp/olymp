@@ -160,14 +160,14 @@ export default class SidebarHeader extends Component {
                 <Col span="6" className="pr-0">
                   {filtering
                     ? <Button
-                        onClick={e => setQueryToState()}
-                        style={{ width: '100%' }}
-                      >
+                      onClick={e => setQueryToState()}
+                      style={{ width: '100%' }}
+                    >
                         Reset
                       </Button>
                     : <Dropdown overlay={filter}>
-                        <Button style={{ width: '100%' }}>Filter</Button>
-                      </Dropdown>}
+                      <Button style={{ width: '100%' }}>Filter</Button>
+                    </Dropdown>}
                 </Col>}
             </Input.Group>
           </Panel>}

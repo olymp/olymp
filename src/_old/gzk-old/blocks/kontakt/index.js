@@ -17,7 +17,7 @@ const actions = props => [
       const { setData, getData } = props;
       const currentUrl = getData('url') || defaultVideo;
       const url = window.prompt('URL', currentUrl);
-      if (url) setData({ url });
+      if (url) { setData({ url }); }
     },
     active: false,
   },

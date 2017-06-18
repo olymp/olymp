@@ -6,9 +6,9 @@ export default {
   category: 'Template',
   editable: true,
   component: ({ attributes, children }) =>
-    <Container {...attributes}>
+    (<Container {...attributes}>
       {children}
-    </Container>,
+    </Container>),
   plugin: {
     onKeyDown: (e, data, state) => {
       const { document, selection } = state;
@@ -25,7 +25,7 @@ export default {
         }
       }
 
-      if (state.startBlock.type !== 'table-cell') return undefined;
+      if (state.startBlock.type !== 'table-cell') { return undefined; }
       switch (data.key) {
         case 'backspace':
           return this.onBackspace(e, state);

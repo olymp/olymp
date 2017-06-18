@@ -8,7 +8,7 @@ const map = {
   six: 6,
 };
 
-export const getHeaders = nodes => {
+export const getHeaders = (nodes) => {
   const headers = [];
   const getHeadersNested = ({ kind, type, nodes }) => {
     if (type && type.indexOf('heading-') === 0) {
@@ -25,7 +25,7 @@ export const getHeaders = nodes => {
 
   const newHeaders = [];
   let currentPath = [];
-  headers.forEach(header => {
+  headers.forEach((header) => {
     const lastItem = currentPath.length && currentPath[currentPath.length - 1];
     const mod = (lastItem && header.size - lastItem.size) || 0;
     if (mod > 0) {
@@ -47,9 +47,9 @@ export const getHeaders = nodes => {
   });
   return newHeaders;
 };
-export const getText = children => {
-  var res = '';
-  if (!children) return '';
+export const getText = (children) => {
+  let res = '';
+  if (!children) { return ''; }
   if (Array.isArray(children)) {
     return children.map(x => getText(x)).join();
   }
@@ -62,9 +62,7 @@ export const getText = children => {
   }
   return res;
 };
-export const getId = x => {
-  return getText(x)
+export const getId = x => getText(x)
     .toLowerCase()
     .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
-};
 export default getText;

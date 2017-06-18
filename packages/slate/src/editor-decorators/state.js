@@ -5,7 +5,7 @@ import { getHeaders } from '../utils/get-text';
 
 const parseValue = (v, initialState, terse) => {
   resetKeyGenerator();
-  if (!v) return Plain.deserialize('');
+  if (!v) { return Plain.deserialize(''); }
   const value = JSON.parse(JSON.stringify(v));
   try {
     return Raw.deserialize(value, { terse });
@@ -32,8 +32,7 @@ export default (
     initialState,
     terse,
   } = {}
-) => {
-  return Editor =>
+) => Editor =>
     class SlateStateDecorator extends Component {
       static propTypes = {};
       isFocused = false;
@@ -59,7 +58,7 @@ export default (
         return false;
       }
 
-      changeValue = value => {
+      changeValue = (value) => {
         const { onChangeHeadings } = this.props;
         this.value = value;
         this.forceUpdate();
@@ -92,11 +91,10 @@ export default (
                 }, []);
 
               if (rawValue && flattenNodes(rawValue.nodes).length) {
-                if (onChangeHeadings)
-                  onChangeHeadings(getHeaders(rawValue.nodes));
+                if (onChangeHeadings) { onChangeHeadings(getHeaders(rawValue.nodes)); }
                 changeValue(this.props, rawValue, value);
               } else {
-                if (onChangeHeadings) onChangeHeadings(null);
+                if (onChangeHeadings) { onChangeHeadings(null); }
                 changeValue(this.props, null, value);
               }
             });
@@ -114,4 +112,3 @@ export default (
         );
       }
     };
-};

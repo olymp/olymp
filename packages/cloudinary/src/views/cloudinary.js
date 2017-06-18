@@ -20,7 +20,7 @@ class CloudinaryView extends Component {
     filteredItems: null,
   };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     const { selected: stateSelected } = this.state;
     const { selected } = props;
 
@@ -46,7 +46,7 @@ class CloudinaryView extends Component {
         ],
       });
 
-    if (!data || !data.cloudinaryRequest) return {};
+    if (!data || !data.cloudinaryRequest) { return {}; }
 
     const { apiKey, signature, timestamp, url } = data.cloudinaryRequest;
     return {
@@ -71,7 +71,7 @@ class CloudinaryView extends Component {
 
           if (!uploading.find(file => file.percent < 100)) {
             // Write data in DB
-            uploading.forEach(f => {
+            uploading.forEach((f) => {
               const response = { ...file.response };
               response.id = response.public_id;
               done({ id: response.id, token: signature }).then(({ data }) => {
@@ -98,7 +98,7 @@ class CloudinaryView extends Component {
     const { multi, handleSelection } = this.props;
     let selected = [...this.state.selected];
 
-    selectionIds.forEach(selectionId => {
+    selectionIds.forEach((selectionId) => {
       const itemIndex = selected.findIndex(item => item === selectionId);
       if (itemIndex < 0) {
         if (multi && e && e.shiftKey) {
@@ -128,7 +128,7 @@ class CloudinaryView extends Component {
     }
   };
 
-  onRemove = id => {
+  onRemove = (id) => {
     const { selected, selection } = this.state;
     const index = selected.findIndex(itemId => itemId === id);
 

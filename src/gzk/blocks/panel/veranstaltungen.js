@@ -9,7 +9,7 @@ export default {
   category: 'Panel',
   editable: false,
   component: ({ className, attributes }) =>
-    <Container {...attributes} className={className}>
+    (<Container {...attributes} className={className}>
       <Carousel
         title="Magazin"
         bordered="Magazin"
@@ -65,5 +65,5 @@ export default {
           </Li>
         </ul>
       </Panel>
-    </Container>,
+    </Container>),
 };

@@ -14,7 +14,7 @@ const fieldNames = [
 
 @withCollection
 export default class SubForm extends Component {
-  removeItem = index => {
+  removeItem = (index) => {
     const { onChange, value } = this.props;
     return onChange((value || []).filter((x, i) => i !== index));
   };
@@ -31,19 +31,19 @@ export default class SubForm extends Component {
     );
   };
 
-  mouseDown = index => e => {
+  mouseDown = index => (e) => {
     e.preventDefault();
     this.removeItem(index);
   };
 
   getHeader = (title, index) =>
-    <div>
+    (<div>
       {title}
       <i
         className="fa fa-close pull-right"
         onMouseDown={this.mouseDown(index)}
       />
-    </div>;
+    </div>);
 
   render() {
     const { value, collection, onChange, ...rest } = this.props;
@@ -51,7 +51,7 @@ export default class SubForm extends Component {
       <div>
         <Collapse accordion>
           {(value || []).map((value, i) =>
-            <Collapse.Panel
+            (<Collapse.Panel
               header={this.getHeader(value.name || `Eintrag ${i}`, i)}
               key={i}
             >
@@ -65,7 +65,7 @@ export default class SubForm extends Component {
                     <FormItem key={field.name} field={field} item={value} />
                   )}
               </div>
-            </Collapse.Panel>
+            </Collapse.Panel>)
           )}
         </Collapse>
         <Button onClick={this.createItem}>Erstellen</Button>

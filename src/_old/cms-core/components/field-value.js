@@ -5,7 +5,7 @@ import { Plain, Raw } from 'slate';
 import moment from 'moment';
 
 const resolveFieldValue = (value, meta, fieldProps) => {
-  if (!meta) return null;
+  if (!meta) { return null; }
 
   if (
     (meta.type.kind === 'SCALAR' && meta.type.name !== 'Json') ||
@@ -32,10 +32,8 @@ const resolveFieldValue = (value, meta, fieldProps) => {
         return value;
     }
   } else if (meta.type.kind === 'LIST') {
-    if (value && value.length && value.map(x => x.name).join('').length > 0)
-      return value.map(x => x.name).join(', ');
-    if (value && value.length)
-      return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`;
+    if (value && value.length && value.map(x => x.name).join('').length > 0) { return value.map(x => x.name).join(', '); }
+    if (value && value.length) { return `${value.length} ${value.length > 1 ? 'Elemente' : 'Element'}`; }
     return null;
   } else {
     /* if (meta.type.kind === 'OBJECT') */ switch (meta.type.name) {
@@ -64,7 +62,7 @@ export default class FieldValue extends Component {
 
     const content = resolveFieldValue(value, meta, fieldProps) || null;
 
-    if (typeof content === 'string') return <span>{content}</span>;
+    if (typeof content === 'string') { return <span>{content}</span>; }
     return content;
   }
 }

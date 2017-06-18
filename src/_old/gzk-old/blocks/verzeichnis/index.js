@@ -43,7 +43,7 @@ const fieldNames =
 })
 export default class VerzeichnisBlock extends Component {
   state = {};
-  onClick = e => {
+  onClick = (e) => {
     e.preventDefault();
     const { setData } = this.props;
     setData({ src: '...' });
@@ -55,7 +55,7 @@ export default class VerzeichnisBlock extends Component {
     this.setState({ hover: item.einrichtungId || item.id });
   };
   renderImage = ({ slug, kurz, name, farbe, id }) => ({ original, srcSet }) =>
-    <div className="image-gallery-image gz-image-box">
+    (<div className="image-gallery-image gz-image-box">
       <img src={original} srcSet={srcSet} />
       <Link
         to={slug}
@@ -64,7 +64,7 @@ export default class VerzeichnisBlock extends Component {
       >
         {kurz || name}
       </Link>
-    </div>;
+    </div>);
   renderItem = (item, i) => {
     const style = {};
     if (this.state.hover === (item.einrichtungId || item.id)) {
@@ -92,8 +92,8 @@ export default class VerzeichnisBlock extends Component {
       <div className="col-sm-4">
         {image && image.peak
           ? <Link to={image.slug} title={image.name}>
-              <Image url={image.peak.url} />
-            </Link>
+            <Image url={image.peak.url} />
+          </Link>
           : null}
         <h2 className="section-title mt-1">{title}</h2>
         <ul className="gz-styled-list">
@@ -111,11 +111,11 @@ export default class VerzeichnisBlock extends Component {
       style,
       data,
     } = this.props;
-    if (data.loading) return <Spin size="large" />;
+    if (data.loading) { return <Spin size="large" />; }
     let personen = [],
       spezial = [];
-    data.items.forEach(item => {
-      if (item.personen)
+    data.items.forEach((item) => {
+      if (item.personen) {
         item.personen.forEach(person =>
           personen.push({
             ...person,
@@ -125,7 +125,8 @@ export default class VerzeichnisBlock extends Component {
             slug: item.slug,
           })
         );
-      if (item.fachrichtungen)
+      }
+      if (item.fachrichtungen) {
         item.fachrichtungen.forEach(leistung =>
           spezial.push({
             id: leistung,
@@ -136,6 +137,7 @@ export default class VerzeichnisBlock extends Component {
             slug: item.slug,
           })
         );
+      }
     });
 
     const items =

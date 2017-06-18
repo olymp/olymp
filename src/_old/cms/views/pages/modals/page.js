@@ -19,7 +19,7 @@ const getInitialValue = ({ item, form }, name) => {
   } else if (name === 'slug' && form.getFieldValue('name')) {
     // Bei Slug
     return (
-      '/' +
+      `/${
       encodeURIComponent(
         form.getFieldValue('name').split(' ').join('-').toLowerCase()
       )
@@ -34,18 +34,18 @@ const getInitialValue = ({ item, form }, name) => {
         .split('%C3%B6')
         .join('Ö')
         .split('%C3%BC')
-        .join('Ü')
+        .join('Ü')}`
     );
   }
 
   return undefined;
 };
 
-const PageForm = Form.create()(props => {
+const PageForm = Form.create()((props) => {
   const { item, data, form, onCreate, onCancel, saving } = props;
   const { getFieldDecorator } = form;
 
-  if (!item || !data.items)
+  if (!item || !data.items) {
     return (
       <Modal
         {...modalSettings}
@@ -56,6 +56,7 @@ const PageForm = Form.create()(props => {
         <Spin size="large" />
       </Modal>
     );
+  }
 
   let items = (data.items || []).map(({ id, name, parentId }) => ({
     value: id,

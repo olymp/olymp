@@ -32,14 +32,14 @@ export const H = createComponent(
     },
   }),
   ({ level, children, ...rest }) => {
-    if (!level) level = 1;
+    if (!level) { level = 1; }
     return React.createElement(`h${level}`, rest, children);
   },
   ['level', 'itemProp']
 );
 
 export const SectionH = ({ title, description }) =>
-  <div key={0}>
+  (<div key={0}>
     <H marginBottom={0} textAlign="center" level={3} light color>
       {title}
     </H>
@@ -47,4 +47,4 @@ export const SectionH = ({ title, description }) =>
       <H marginTop={0} textAlign="center" level={5} fontSize={12} light>
         {description}
       </H>}
-  </div>;
+  </div>);

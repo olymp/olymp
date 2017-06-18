@@ -32,7 +32,7 @@ export default class CollectionSidebar extends Component {
     let item = this.props.item;
 
     const id = query[`@${typeName}`];
-    if (id === 'new' || !id) item = {};
+    if (id === 'new' || !id) { item = {}; }
 
     const leftButtons = (
       <Button.Group>
@@ -52,20 +52,20 @@ export default class CollectionSidebar extends Component {
       </Button.Group>
     );
     const rightButtons = form.isFieldsTouched()
-      ? <Button.Group>
-          <Sidebar.Button onClick={save} shape="circle" icon="save" />
-        </Button.Group>
-      : <Button.Group>
-          <Sidebar.Button
-            onClick={() =>
+      ? (<Button.Group>
+        <Sidebar.Button onClick={save} shape="circle" icon="save" />
+      </Button.Group>)
+      : (<Button.Group>
+        <Sidebar.Button
+          onClick={() =>
               router.push({
                 pathname,
                 query: { ...query, [`@${typeName}`]: 'new', parent: item.id },
               })}
-            shape="circle"
-            icon="plus"
-          />
-        </Button.Group>;
+          shape="circle"
+          icon="plus"
+        />
+      </Button.Group>);
     const title = id === 'new' ? 'Neue Seite' : item.name;
     const description = id === 'new'
       ? 'Neue Seite erstellen'

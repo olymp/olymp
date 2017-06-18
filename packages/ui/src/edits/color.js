@@ -3,15 +3,15 @@ import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
 import { withColors } from 'olymp-core/decorators';
 
-let ColorPicker = null;
+const ColorPicker = null;
 if (typeof document !== 'undefined') {
   // ColorPicker = require('@mapbox/react-colorpickr');
 }
 
 const hasNativePicker = () => {
-  if (!ColorPicker) return true;
-  if (typeof document === 'undefined') return true;
-  if (!document.createElement) return true;
+  if (!ColorPicker) { return true; }
+  if (typeof document === 'undefined') { return true; }
+  if (!document.createElement) { return true; }
   const i = document.createElement('input');
   i.setAttribute('type', 'color');
   return i.type !== 'text';
@@ -45,13 +45,13 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
           option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       >
         {newColors.map((color, i) =>
-          <Select.Option value={tinycolor(color.color).toRgbString()} key={i}>
+          (<Select.Option value={tinycolor(color.color).toRgbString()} key={i}>
             <i
               className="fa fa-square"
               style={{ color: tinycolor(color.color).toRgbString() }}
             />{' '}
             {color.name}
-          </Select.Option>
+          </Select.Option>)
         )}
 
         <Select.Option value={'other'} key={'other'}>

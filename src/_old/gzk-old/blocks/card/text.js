@@ -37,8 +37,8 @@ export default class GzCard extends Component {
       >
         {title
           ? <h2 contentEditable={false}>
-              {title}
-            </h2>
+            {title}
+          </h2>
           : null}
         <div className={cn('gz-panel')}>
           {children}

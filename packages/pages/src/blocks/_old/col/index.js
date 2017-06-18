@@ -5,7 +5,7 @@ export default {
   category: 'Template',
   editable: true,
   component: ({ attributes, children }) =>
-    <div {...attributes}>
+    (<div {...attributes}>
       {children}
-    </div>,
+    </div>),
 };

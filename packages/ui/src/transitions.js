@@ -23,7 +23,7 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     delay = () => {
       const { speed } = this.props;
       return delayLeave &&
-        Object.keys(this.context.gatewayRegistry._children.modal).find(key => {
+        Object.keys(this.context.gatewayRegistry._children.modal).find((key) => {
           const { isOpen } = this.context.gatewayRegistry._children.modal[
             key
           ].props;
@@ -34,7 +34,7 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     };
     componentWillAppear(callback) {
       const { speed, enter, appear } = this.props;
-      if (enter === false || appear === false) return callback();
+      if (enter === false || appear === false) { return callback(); }
       state(this, { animation: 'enter', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
@@ -44,7 +44,7 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     }
     componentWillEnter(callback) {
       const { speed, enter } = this.props;
-      if (enter === false) return callback();
+      if (enter === false) { return callback(); }
       state(this, { animation: 'enter', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
@@ -54,12 +54,12 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     }
     componentWillLeave(callback) {
       const { speed, leave } = this.props;
-      if (leave === false) return callback();
+      if (leave === false) { return callback(); }
       state(this, { animation: 'leave', active: false })
         .then(() => delay(1))
         .then(() => state(this, { active: true, delay: this.delay() }))
         .then(() => delay(this.state.delay))
-        //.then(() => state(this, { animation: null }))
+        // .then(() => state(this, { animation: null }))
         .then(callback);
     }
     render() {
@@ -77,7 +77,7 @@ const withTransition = (Transition, { delayLeave } = {}) => {
       );
     }
   }
-  return props => {
+  return (props) => {
     const { isOpen } = props;
     const opened = isOpen === undefined ? true : !!isOpen;
     return (
@@ -183,11 +183,9 @@ export const TransitionSlide = createTransition(({ type, delay, speed }) => {
 });
 
 export const Transition = (props, { theme }) => {
-  if (!theme.transition) theme.transition = 'fade';
-  if (theme.transition === 'fade')
-    return <TransitionFade {...props} speed={theme.transitionSpeed || 250} />;
-  if (theme.transition === 'slide')
-    return <TransitionSlide {...props} speed={theme.transitionSpeed || 500} />;
+  if (!theme.transition) { theme.transition = 'fade'; }
+  if (theme.transition === 'fade') { return <TransitionFade {...props} speed={theme.transitionSpeed || 250} />; }
+  if (theme.transition === 'slide') { return <TransitionSlide {...props} speed={theme.transitionSpeed || 500} />; }
   const { isOpen } = props;
   const opened = isOpen === undefined ? true : !!isOpen;
   return opened ? Children.only(props.children) : null;

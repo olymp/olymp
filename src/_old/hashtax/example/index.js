@@ -28,15 +28,15 @@ const Hashtax = hashtax(
       }
     }
   `)(({ children, data, ...rest }) =>
-        <div>
-          {(data.items || []).map(item =>
-            <DataProvider item={item} key={item.id}>
+    (<div>
+      {(data.items || []).map(item =>
+            (<DataProvider item={item} key={item.id}>
               <WrappedComponent {...rest}>
                 {children}
               </WrappedComponent>
-            </DataProvider>
+            </DataProvider>)
           )}
-        </div>
+    </div>)
       ),
   }
 );

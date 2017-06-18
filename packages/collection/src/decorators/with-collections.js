@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
 import { withAuth } from 'olymp';
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @graphql(
     gql`
     query schema {
@@ -35,7 +35,7 @@ export default WrappedComponent => {
   class WithCollectionsComponent extends Component {
     list() {
       const { data } = this.props;
-      if (!data) return [];
+      if (!data) { return []; }
       const { schema } = data;
       return schema && schema.types
         ? schema.types.filter(
@@ -52,7 +52,7 @@ export default WrappedComponent => {
 
     group(collections) {
       const { data } = this.props;
-      if (!data) return {};
+      if (!data) { return {}; }
       const { schema } = data;
 
       if (!schema || !collections.length) {
@@ -63,7 +63,7 @@ export default WrappedComponent => {
       const groups = {};
       collections.map(({ name, description }, i) => {
         const attributes = {};
-        description.split('\n').forEach(x => {
+        description.split('\n').forEach((x) => {
           const y = x.split(':');
 
           if (y.length === 2) {
@@ -78,19 +78,19 @@ export default WrappedComponent => {
         };
 
         // Gruppieren
-        if (!groups[attributes.group]) groups[attributes.group] = [];
+        if (!groups[attributes.group]) { groups[attributes.group] = []; }
         groups[attributes.group].push(collections[i]);
       });
 
       // Collections innerhalb Gruppe sortieren
-      Object.keys(groups).forEach(key => {
+      Object.keys(groups).forEach((key) => {
         groups[key] = sortBy(groups[key], ['order', 'name']);
       });
 
       // Undefined-Gruppe auflösen
       if (groups.undefined) {
-        groups.undefined.forEach(collection => {
-          if (!groups[collection.name]) groups[collection.name] = [];
+        groups.undefined.forEach((collection) => {
+          if (!groups[collection.name]) { groups[collection.name] = []; }
 
           groups[collection.name].push(collection);
         });

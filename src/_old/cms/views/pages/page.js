@@ -34,9 +34,9 @@ export default class CmsPage extends Component {
 
   createAnchors = nodes =>
     (nodes || []).map((node, i) =>
-      <Anchor key={i} href={`#${node.slug}`} title={node.text}>
+      (<Anchor key={i} href={`#${node.slug}`} title={node.text}>
         {this.createAnchors(node.children)}
-      </Anchor>
+      </Anchor>)
     );
 
   render() {
@@ -50,7 +50,7 @@ export default class CmsPage extends Component {
       showAnchor,
     } = this.props;
 
-    if (!item) return <Spin size="large" />;
+    if (!item) { return <Spin size="large" />; }
 
     // todo: einfacher
     // const readOnly = this.props.readOnly || (!auth || !auth.user);
@@ -62,8 +62,7 @@ export default class CmsPage extends Component {
       location &&
       location.query &&
       Object.keys(location.query).find(x => location.query[x] !== undefined)
-    )
-      readOnly = true;
+    ) { readOnly = true; }
 
     return (
       <div>
@@ -88,34 +87,34 @@ export default class CmsPage extends Component {
         <Gateway into="action">
           {!readOnly
             ? <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key="page:1">
-                      <a href="javascript:;" onClick={save}>
+              overlay={
+                <Menu>
+                  <Menu.Item key="page:1">
+                    <a href="javascript:;" onClick={save}>
                         Speichern
                       </a>
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item key="page:visitor" disabled>
+                    {false ? <Icon type="check" /> : null}Besucher-Modus
                     </Menu.Item>
-                    <Menu.Divider />
-                    <Menu.Item key="page:visitor" disabled>
-                      {false ? <Icon type="check" /> : null}Besucher-Modus
-                    </Menu.Item>
-                    <Menu.Item key="page:settings">
-                      <Link to={{ ...location, query: { '@page': item.id } }}>
+                  <Menu.Item key="page:settings">
+                    <Link to={{ ...location, query: { '@page': item.id } }}>
                         Einstellungen
                       </Link>
-                    </Menu.Item>
-                    <Menu.Item key="page:delete" disabled>
+                  </Menu.Item>
+                  <Menu.Item key="page:delete" disabled>
                       Seite löschen
                     </Menu.Item>
-                  </Menu>
+                </Menu>
                 }
-                overlayClassName="ant-dropdown-left"
-                placement="bottomLeft"
-              >
-                <Button shape="circle" size="large">
-                  <Icon type="file" />
-                </Button>
-              </Dropdown>
+              overlayClassName="ant-dropdown-left"
+              placement="bottomLeft"
+            >
+              <Button shape="circle" size="large">
+                <Icon type="file" />
+              </Button>
+            </Dropdown>
             : null}
         </Gateway>
       </div>

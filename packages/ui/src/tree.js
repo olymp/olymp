@@ -42,9 +42,9 @@ Tree.Title = createComponent(
     },
   }),
   ({ className, children }) =>
-    <span className={className}>
+    (<span className={className}>
       {children}
-    </span>,
+    </span>),
   p => Object.keys(p)
 );
 

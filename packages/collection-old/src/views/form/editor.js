@@ -23,7 +23,7 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-const getValidationRules = field => {
+const getValidationRules = (field) => {
   const rules = [];
   const required = !!field['@'] && !!field['@'].required;
   const label = (!!field['@'] && field['@'].label) || capitalize(field.name);
@@ -60,7 +60,7 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
   } else if (name === 'slug' && getFieldValue('name')) {
     // Bei Slug
     let url =
-      '/' +
+      `/${
       encodeURIComponent(
         getFieldValue('name').split(' ').join('-').toLowerCase()
       )
@@ -75,9 +75,9 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
         .split('%C3%B6')
         .join('Ö')
         .split('%C3%BC')
-        .join('Ü');
+        .join('Ü')}`;
     if (getFieldValue('date')) {
-      url = moment(getFieldValue('date')).format('DD-MM-YYYY') + '-' + url;
+      url = `${moment(getFieldValue('date')).format('DD-MM-YYYY')}-${url}`;
     }
     return url;
   }
@@ -88,7 +88,7 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
 export default class FieldEditor extends Component {
   state = { start: undefined, end: undefined };
 
-  fieldToEditor = props => {
+  fieldToEditor = (props) => {
     const {
       className,
       editorClassName,
@@ -119,14 +119,14 @@ export default class FieldEditor extends Component {
           style={{ maxWidth: 300, maxHeight: 300 }}
         />,
     ];
-    (edits || []).forEach(editFn => {
+    (edits || []).forEach((editFn) => {
       const Edit = editFn(type);
 
       if (Edit) {
         Editor = React.cloneElement(Edit, editProps);
       }
     });
-    if (Editor) return Editor;
+    if (Editor) { return Editor; }
 
     if (idField && idField.type) {
       if (idField.type.kind === 'LIST' && idField.type.ofType) {
@@ -167,9 +167,8 @@ export default class FieldEditor extends Component {
       );
     }
     if (start) {
-      if (type.name === 'Date')
-        return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />;
-      if (type.name === 'DateTime')
+      if (type.name === 'Date') { return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />; }
+      if (type.name === 'DateTime') {
         return (
           <DateRangeEditor
             {...editProps}
@@ -177,6 +176,7 @@ export default class FieldEditor extends Component {
             showTime={{ format: 'HH:mm' }}
           />
         );
+      }
     }
     if (type.kind === 'ENUM' && type.enumValues) {
       let resolveName = item => item;
@@ -188,9 +188,9 @@ export default class FieldEditor extends Component {
       return (
         <Select {...editProps}>
           {type.enumValues.map(x =>
-            <Select.Option key={x.name} value={x.name}>
+            (<Select.Option key={x.name} value={x.name}>
               {resolveName(x.name)}
-            </Select.Option>
+            </Select.Option>)
           )}
         </Select>
       );
@@ -271,7 +271,7 @@ export default class FieldEditor extends Component {
     const isDateRange = !!field['@'].start && !!field['@'].endField;
     const rules = getValidationRules(field);
 
-    if (!editor || !getFieldDecorator) return null;
+    if (!editor || !getFieldDecorator) { return null; }
 
     if (isDateRange) {
       const start = this.state.start || item[field.name];
@@ -280,7 +280,7 @@ export default class FieldEditor extends Component {
       return (
         <div>
           {this.fieldToEditor({
-            onChange: e => {
+            onChange: (e) => {
               setFieldsValue({
                 [field.name]: e[0],
                 [field['@'].endField.name]: e[1],

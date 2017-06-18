@@ -5,9 +5,9 @@ import uncapitalize from 'lodash/lowerFirst';
 import { Link } from 'olymp';
 
 const wrapper = children =>
-  <Menu.SubMenu key={key} title={capitalize(key)}>
+  (<Menu.SubMenu key={key} title={capitalize(key)}>
     {children}
-  </Menu.SubMenu>;
+  </Menu.SubMenu>);
 
 export default class CmsAction extends Component {
   handleClick = ({ key }) => {
@@ -34,16 +34,16 @@ export default class CmsAction extends Component {
           key =>
             collections[key].length === 1
               ? (collections[key] || []).map(({ name, title }) =>
-                  <Menu.Item key={`/@/${name}`}>
-                    <Link
-                      to={{
-                        pathname,
-                        query: { [`@${uncapitalize(name)}`]: null },
-                      }}
-                    >
-                      {capitalize(title || name)}
-                    </Link>
-                  </Menu.Item>
+                (<Menu.Item key={`/@/${name}`}>
+                  <Link
+                    to={{
+                      pathname,
+                      query: { [`@${uncapitalize(name)}`]: null },
+                    }}
+                  >
+                    {capitalize(title || name)}
+                  </Link>
+                </Menu.Item>)
                 )
               : wrapper(groupItem)
         )}

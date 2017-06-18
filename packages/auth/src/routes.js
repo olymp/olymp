@@ -12,7 +12,7 @@ import {
 } from './views';
 import { AuthUsers, AuthInvitations } from './admin';
 
-export default withRouter(props => {
+export default withRouter((props) => {
   const { copyright, query, router, pathname, register } = props;
   const texts = {
     forgot: `Wir haben eine E-Mail an ${query[

@@ -16,7 +16,7 @@ export default class Accordion extends Component {
     const { pathname, query } = location;
     const active = location.query && location.query[name];
 
-    const items = Children.toArray(children).map(item => {
+    const items = Children.toArray(children).map((item) => {
       const { title, children } = item.props;
       const slug = slugify(title, true);
       return (

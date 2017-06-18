@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import { notification } from 'antd';
 import gql from 'graphql-tag';
 
-export default ({ fieldNames, typeName }) => WrappedComponent => {
+export default ({ fieldNames, typeName }) => (WrappedComponent) => {
   @graphql(
     gql`
     query ${typeName.toLowerCase()}($id: String!) {

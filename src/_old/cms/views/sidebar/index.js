@@ -40,7 +40,7 @@ export default class SidebarComponent extends Component {
   };
   throttle = throttleInput();
 
-  setQuery = gqlQuery => {
+  setQuery = (gqlQuery) => {
     const { refetch } = this.props;
 
     refetch({
@@ -72,11 +72,11 @@ export default class SidebarComponent extends Component {
     });
   };
 
-  search = e => {
+  search = (e) => {
     const { refetch } = this.props;
     const { searchText } = this.state;
 
-    if (!e.target.value) return this.setQueryToState();
+    if (!e.target.value) { return this.setQueryToState(); }
 
     const gqlQuery = {
       ...this.state.gqlQuery,
@@ -87,7 +87,7 @@ export default class SidebarComponent extends Component {
       searchText: e.target.value,
     });
     this.throttle(() => {
-      if (!searchText) return;
+      if (!searchText) { return; }
       refetch(gqlQuery);
       this.setState({
         filtering: true,
@@ -119,10 +119,10 @@ export default class SidebarComponent extends Component {
 
         {isLoading
           ? <Panel>
-              <Spin size="large" />
-            </Panel>
+            <Spin size="large" />
+          </Panel>
           : <Panel>
-              {!!activeItems &&
+            {!!activeItems &&
                 !!multi &&
                 !!activeItems.length &&
                 <SubPanel seperator>
@@ -130,12 +130,12 @@ export default class SidebarComponent extends Component {
                     <SidebarCard {...item} key={index} />
                   )}
                 </SubPanel>}
-              <SubPanel>
-                {unactiveItems
+            <SubPanel>
+              {unactiveItems
                   .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
                   .map((item, index) => <SidebarCard {...item} key={index} />)}
-              </SubPanel>
-            </Panel>}
+            </SubPanel>
+          </Panel>}
       </Sidebar>
     );
   }

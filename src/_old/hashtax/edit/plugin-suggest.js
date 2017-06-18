@@ -22,17 +22,18 @@ export default ({
   renderItem,
   groupBy,
 }) => {
-  if (!trigger) trigger = '@';
-  if (!fetch) fetch = value => [];
-  if (!renderItem)
+  if (!trigger) { trigger = '@'; }
+  if (!fetch) { fetch = value => []; }
+  if (!renderItem) {
     renderItem = item =>
       <Select.Option key={item.key}>{item.key}</Select.Option>;
+  }
   class suggest extends Component {
     state = {
       data: [],
       value: '',
     };
-    handleKeyDown = e => {
+    handleKeyDown = (e) => {
       const { state, editor, node } = this.props;
       const isBackspaceAndEmpty = e.keyCode === 8 && !this.state.value;
       const isEsc = e.keyCode === 27;
@@ -79,14 +80,12 @@ export default ({
             })
             .collapseToStartOfNextText();
         } else {
-          transform
-            .insertText('\n')
-            .move(-1)[fn]({
-              isVoid: false,
-              type: item.type,
-              nodes: [createP()],
-              data: { key, id: shortID.generate() },
-            });
+          transform.insertText('\n').move(-1)[fn]({
+            isVoid: false,
+            type: item.type,
+            nodes: [createP()],
+            data: { key, id: shortID.generate() },
+          });
         }
         editor.props.onChange(transform.focus().apply());
       } else if (item) {
@@ -101,13 +100,13 @@ export default ({
         );
       }
     };
-    handleChange = value => {
+    handleChange = (value) => {
       const data = fetch(value);
       if (!data || !data.then) {
         this.setState({ value, data });
       } else {
         this.setState({ value });
-        data.then(data => {
+        data.then((data) => {
           this.setState({ data });
         });
       }
@@ -128,9 +127,9 @@ export default ({
       } else if (groupBy) {
         const groups = GroupBy(data, groupBy);
         children = Object.keys(groups).map(key =>
-          <Select.OptGroup key={key} label={key}>
+          (<Select.OptGroup key={key} label={key}>
             {groups[key].map(renderItem)}
-          </Select.OptGroup>
+          </Select.OptGroup>)
         );
       } else {
         children = data.map(renderItem);
@@ -161,7 +160,7 @@ export default ({
   }
   return {
     onBeforeInput(e, data, state, editor) {
-      if (e.data !== trigger) return;
+      if (e.data !== trigger) { return; }
       e.preventDefault();
       return state
         .transform()

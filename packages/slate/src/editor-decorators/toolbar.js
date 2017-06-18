@@ -7,10 +7,10 @@ import addBlock from '../utils/add-block';
 
 export default (options = {}) => {
   let { defaultNode, toolbarTypes, toolbarMarks, toolbarActions } = options;
-  if (!defaultNode) defaultNode = 'line';
-  if (!toolbarActions) toolbarActions = [];
-  if (!toolbarTypes) toolbarTypes = [];
-  if (!toolbarMarks) toolbarMarks = [];
+  if (!defaultNode) { defaultNode = 'line'; }
+  if (!toolbarActions) { toolbarActions = []; }
+  if (!toolbarTypes) { toolbarTypes = []; }
+  if (!toolbarMarks) { toolbarMarks = []; }
 
   return Editor =>
     class SlateToolbarDecorator extends Component {
@@ -32,7 +32,7 @@ export default (options = {}) => {
       componentDidMount() {
         const { menu } = this.state;
         const { value } = this.props;
-        if (!menu) return;
+        if (!menu) { return; }
 
         if (value.isBlurred || value.isCollapsed) {
           menu.removeAttribute('style');
@@ -40,7 +40,7 @@ export default (options = {}) => {
         }
 
         const rect = getVisibleSelectionRect();
-        if (!rect) return;
+        if (!rect) { return; }
         const height = 30; // menu.offsetHeight
         const width = 308; // menu.offsetWidth
         const top = rect.top + window.scrollY - height;
@@ -58,9 +58,7 @@ export default (options = {}) => {
         e.preventDefault();
         onChange(addBlock(value, props, defaultNode));
       };
-      renderBlockButton = props => {
-        return this.renderOptionButton(props, hasBlock, this.onClickBlock);
-      };
+      renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
       onClickMark = (e, type) => {
         e.stopPropagation();
         e.preventDefault();
@@ -70,10 +68,8 @@ export default (options = {}) => {
 
         this.props.onChange(value);
       };
-      renderMarkButton = props => {
-        return this.renderOptionButton(props, hasMark, this.onClickMark);
-      };
-      renderActionButton = props => {
+      renderMarkButton = props => this.renderOptionButton(props, hasMark, this.onClickMark);
+      renderActionButton = (props) => {
         const isActive = props.isActive ? props.isActive(this.props) : false;
         const isActiveFn = () => isActive;
         const fn = e => props.onClick(this.props, isActive, e);

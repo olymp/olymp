@@ -65,7 +65,7 @@ const app = express();
 app.emitter = new EventEmitter();
 
 // Websocket Server
-app.listenWS = options => {
+app.listenWS = (options) => {
   const wss = new WebSocketServer(options);
   /* wss.httpServer.on('connection', (x, y) => {
     console.log('WWWWS', 'CONNECTION', x, y);
@@ -88,19 +88,25 @@ app.listenWS = options => {
   wss.httpServer.on('upgrade', (request, socket) => {
     console.log('WWWWS', 'upgrade', request, socket);
   }) */
-  wss.on('connection', socket => {
-    const onPing = message => {
+  wss.on('connection', (socket) => {
+    const onPing = (message) => {
       socket.send(JSON.stringify({ type: 'pong', version }));
     };
 
-    const onMessage = raw => {
-      if (!raw) return;
-      if (raw === 'ping') return onPing(raw);
+    const onMessage = (raw) => {
+      if (!raw) {
+        return;
+      }
+      if (raw === 'ping') {
+        return onPing(raw);
+      }
       console.log('UWS', raw);
       let json = {};
       try {
         json = JSON.parse(raw);
-        if (json) app.emitter.emit('uws', { json, raw, socket });
+        if (json) {
+          app.emitter.emit('uws', { json, raw, socket });
+        }
       } catch (err) {
         console.error('Websocket error', err);
       }
@@ -150,7 +156,9 @@ const domain = process.env.URL !== undefined
   ? process.env.URL.split('/')[2]
   : undefined;
 
-if (isProd) app.set('trust proxy', trust);
+if (isProd) {
+  app.set('trust proxy', trust);
+}
 app.use(
   session({
     store: process.env.REDIS_URL
@@ -173,7 +181,9 @@ try {
   const server = require('@root/server');
   if (server.default) {
     server.default(app);
-  } else server(app);
+  } else {
+    server(app);
+  }
 } catch (err) {
   console.log(
     'No server.js or server/index.js file found, using default settings',
@@ -223,7 +233,9 @@ app.get('*', (request, response) => {
   const asyncContext = createAsyncContext();
 
   // Create our React application and render it into a string.
-  if (typeof init !== undefined && init) init({ renderer, client, store });
+  if (typeof init !== undefined && init) {
+    init({ renderer, client, store });
+  }
   const reactApp = (
     <AsyncComponentProvider asyncContext={asyncContext}>
       <ApolloProvider store={store} client={client}>
@@ -252,8 +264,8 @@ app.get('*', (request, response) => {
         ? []
         : [
           isProd
-            ? `${clientAssets.main.js}`
-            : `http://localhost:${devPort}/main.js`,
+              ? `${clientAssets.main.js}`
+              : `http://localhost:${devPort}/main.js`,
         ];
       const styles = request.isAmp
         ? []
@@ -286,7 +298,7 @@ app.get('*', (request, response) => {
       response.send(html);
       // responseRenderer.toStream().pipe(response);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       response.status(500).send(err);
     });

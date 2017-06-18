@@ -25,7 +25,7 @@ module.exports = (schema, { adapter }) => {
                 )
               )
             )
-            .then(array => {
+            .then((array) => {
               const flattened = flatten(array).filter(x => x);
               const grouped = groupBy(flattened);
               const result = Object.keys(grouped).reduce((result, item) => {
@@ -42,10 +42,10 @@ module.exports = (schema, { adapter }) => {
             .collection(args.collection.toLowerCase())
             .find({}, { [args.field]: 1 })
             .toArray()
-            .then(array => {
+            .then((array) => {
               const grouped = groupBy(array, args.field);
               const result = Object.keys(grouped).reduce((result, item) => {
-                if (item === 'undefined') return result;
+                if (item === 'undefined') { return result; }
                 result.push({ id: item, count: grouped[item].length });
                 return result;
               }, []);

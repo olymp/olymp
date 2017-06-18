@@ -32,9 +32,8 @@ export default class AuthRegister extends Component {
   ok = () => {
     const { auth, onClose, onOk, form, token } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
-      if (values.password2 !== values.password)
-        return onError(new Error('Die Passwörter stimmen nicht überein!'));
+      if (err) { return onError(err); }
+      if (values.password2 !== values.password) { return onError(new Error('Die Passwörter stimmen nicht überein!')); }
       const user = { ...values };
       delete user.password;
       delete user.password2;
@@ -43,7 +42,7 @@ export default class AuthRegister extends Component {
         .then(() => {
           onSuccess(
             'Registrierung abgeschickt',
-            `Bitte checken Sie Ihre E-Mails`
+            'Bitte checken Sie Ihre E-Mails'
           );
           onOk({ email: values.email, token });
         })
@@ -168,11 +167,11 @@ export default class AuthRegister extends Component {
           </Form.Item>}
         {valid && extraFields
           ? extraFields({
-              layout,
-              getFieldDecorator,
-              state: this.state,
-              setState: this.setState,
-            })
+            layout,
+            getFieldDecorator,
+            state: this.state,
+            setState: this.setState,
+          })
           : null}
         <Modal.Links>
           <Link to={{ pathname, query: { login: null, register: undefined } }}>

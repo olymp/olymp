@@ -5,7 +5,7 @@ import { DraggableCore } from 'react-draggable';
 import cn from 'classnames';
 
 const Cover = ({ children, style }) =>
-  <div
+  (<div
     style={{
       backgroundColor: 'black',
       position: 'absolute',
@@ -17,9 +17,9 @@ const Cover = ({ children, style }) =>
     }}
   >
     {children}
-  </div>;
+  </div>);
 
-export default (options = {}) => Block => {
+export default (options = {}) => (Block) => {
   const {
     coverOnResize,
     enable,
@@ -63,8 +63,8 @@ export default (options = {}) => Block => {
     onResizeStop = (event, { deltaX, deltaY }) => {
       const { setData } = this.props;
       const newState = {};
-      if (this.state.width) newState.width = this.state.width;
-      if (this.state.height) newState.height = this.state.height;
+      if (this.state.width) { newState.width = this.state.width; }
+      if (this.state.height) { newState.height = this.state.height; }
       setData(newState);
       this.setState({ resize: false });
     };
@@ -80,11 +80,11 @@ export default (options = {}) => Block => {
           : getData('width', initialWidth);
         const relWidth = Math.round(12 / elementDimensions.width * width);
 
-        if (relWidth >= 0) newState.width = relWidth;
+        if (relWidth >= 0) { newState.width = relWidth; }
       }
       if (resizeY !== false) {
         const height = y || getData('width', initialWidth);
-        if (height >= 0) newState.height = height;
+        if (height >= 0) { newState.height = height; }
       }
 
       if (
@@ -96,35 +96,35 @@ export default (options = {}) => Block => {
     };
 
     render() {
-      if (enable === false) return <Block {...this.props} />;
+      if (enable === false) { return <Block {...this.props} />; }
       const { editor, alignment, style, className } = this.props;
       const { resize, height, width } = this.state;
 
       const children = editor.props.readOnly
         ? this.props.children
         : [
-            ...this.props.children,
-            resize && coverOnResize ? <Cover key="resizableCover" /> : null,
-            <DraggableCore
-              key="resizableHandle"
-              onStop={this.onResizeStop}
-              onStart={this.onResizeStart}
-              onDrag={this.onResize}
-            >
-              <span
-                className={cn(
+          ...this.props.children,
+          resize && coverOnResize ? <Cover key="resizableCover" /> : null,
+          <DraggableCore
+            key="resizableHandle"
+            onStop={this.onResizeStop}
+            onStart={this.onResizeStart}
+            onDrag={this.onResize}
+          >
+            <span
+              className={cn(
                   'react-resizable-handle',
                   alignment === 'right' ? 'handle-left' : 'handle-right'
                 )}
-              />
-            </DraggableCore>,
-          ];
+            />
+          </DraggableCore>,
+        ];
 
       const blockStyle = {
         ...style,
         // todo: display: 'inline-block'
       };
-      if (height) blockStyle.height = `${height}px`;
+      if (height) { blockStyle.height = `${height}px`; }
 
       return (
         <Block

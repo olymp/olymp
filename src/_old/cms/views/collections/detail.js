@@ -29,7 +29,7 @@ const getFormSchema = ({ fields }) =>
         // Group
         const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
 
-        if (!result.tabs[group]) result.tabs[group] = [];
+        if (!result.tabs[group]) { result.tabs[group] = []; }
         result.tabs[group].push(field);
       }
       return result;
@@ -63,7 +63,7 @@ export default class CollectionDetail extends Component {
         return;
       }
 
-      save(values, { commit: false }).then(obj => {
+      save(values, { commit: false }).then((obj) => {
         if (!id) {
           router.push({
             pathname,
@@ -72,7 +72,7 @@ export default class CollectionDetail extends Component {
             },
           });
         }
-        if (refetch) refetch(gqlQuery);
+        if (refetch) { refetch(gqlQuery); }
       });
     });
   };

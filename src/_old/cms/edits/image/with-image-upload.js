@@ -6,7 +6,7 @@ export default ({ getImage } = {}) => WrappedComponent =>
   class WithImageUpload extends Component {
     state = {};
 
-    show = value => {
+    show = (value) => {
       this.image = value &&
         typeof value === 'object' &&
         value.url &&
@@ -21,7 +21,7 @@ export default ({ getImage } = {}) => WrappedComponent =>
       this.setState({ visible: false });
     };
 
-    onOk = image => {
+    onOk = (image) => {
       const { onChange } = this.props;
 
       onChange(image);
@@ -31,11 +31,11 @@ export default ({ getImage } = {}) => WrappedComponent =>
     onCancel = () => {
       const { onCancel } = this.props;
 
-      if (onCancel) onCancel();
+      if (onCancel) { onCancel(); }
       this.hide();
     };
 
-    componentWillReceiveProps = nextProps => {
+    componentWillReceiveProps = (nextProps) => {
       const nextGivenImage = (getImage || defaultGetImage)(nextProps);
 
       if (!this.image) {

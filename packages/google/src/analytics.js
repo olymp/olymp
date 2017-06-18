@@ -3,7 +3,7 @@ import moment from 'moment';
 import Static from './static';
 import { DateRange } from './../../edits';
 
-var firstRun = true;
+let firstRun = true;
 export default class Analytics extends Component {
   static contextTypes = {
     apiClient: React.PropTypes.object.isRequired,
@@ -22,11 +22,11 @@ export default class Analytics extends Component {
   componentDidUpdate() {
     if (firstRun) {
       // Embed API laden
-      (function(w, d, s, g, js, fs) {
+      (function (w, d, s, g, js, fs) {
         g = w.gapi || (w.gapi = {});
         g.analytics = {
           q: [],
-          ready: function(f) {
+          ready(f) {
             this.q.push(f);
           },
         };
@@ -34,10 +34,10 @@ export default class Analytics extends Component {
         fs = d.getElementsByTagName(s)[0];
         js.src = 'https://apis.google.com/js/platform.js';
         fs.parentNode.insertBefore(js, fs);
-        js.onload = function() {
+        js.onload = function () {
           g.load('analytics');
         };
-      })(window, document, 'script');
+      }(window, document, 'script'));
 
       // Auth
       this.auth();
@@ -49,7 +49,7 @@ export default class Analytics extends Component {
   auth() {
     const { apiClient } = this.context;
 
-    apiClient.get('/google-analytics').then(response => {
+    apiClient.get('/google-analytics').then((response) => {
       gapi.analytics.ready(() => {
         gapi.analytics.auth.authorize({
           serverAuth: {
@@ -65,7 +65,7 @@ export default class Analytics extends Component {
   }
 
   _(value) {
-    let obj = {
+    const obj = {
       label: value,
       format: x => x,
     };
@@ -136,7 +136,7 @@ export default class Analytics extends Component {
     _query['end-date'] =
       query['end-date'] || moment().subtract(1, 'days').format('YYYY-MM-DD');
 
-    this.setState({ query: _query, chart: chart });
+    this.setState({ query: _query, chart });
   }
 
   updateDates(date) {
@@ -200,14 +200,14 @@ export default class Analytics extends Component {
 
             <div className="ui vertical fluid menu">
               <a
-                className={'teal item' + (chart.type == 'PIE' ? ' active' : '')}
+                className={`teal item${chart.type == 'PIE' ? ' active' : ''}`}
                 onClick={() => this.setState({ chart: { type: 'PIE' } })}
               >
                 Kuchendiagramm
               </a>
               <a
                 className={
-                  'teal item' + (chart.type == 'LINE' ? ' active' : '')
+                  `teal item${chart.type == 'LINE' ? ' active' : ''}`
                 }
                 onClick={() => this.setState({ chart: { type: 'LINE' } })}
               >
@@ -226,8 +226,8 @@ export default class Analytics extends Component {
             {loaded
               ? <Static query={query} chart={chart} _={x => this._(x)} />
               : <div className="ui active dimmer">
-                  <div className="ui text loader">Loading</div>
-                </div>}
+                <div className="ui text loader">Loading</div>
+              </div>}
           </div>
         </div>
       </div>
@@ -253,30 +253,30 @@ class MenuItem extends Component {
     const { active } = this.state;
 
     return (
-      <div className={'teal item' + (active ? ' active' : '')}>
+      <div className={`teal item${active ? ' active' : ''}`}>
         <a href="javascript:;" onClick={() => this.setQuery()}>
           {_(metric).label}
         </a>
 
         {false && active
           ? <div className="menu">
-              <a className="item">ga:users</a>
-              <a className="item">ga:newUsers</a>
-              <a className="item">ga:percentNewSessions</a>
-              <span className="item" style={{ textDecoration: 'line-through' }}>
+            <a className="item">ga:users</a>
+            <a className="item">ga:newUsers</a>
+            <a className="item">ga:percentNewSessions</a>
+            <span className="item" style={{ textDecoration: 'line-through' }}>
                 ga:1dayUsers
               </span>
-              <span className="item" style={{ textDecoration: 'line-through' }}>
+            <span className="item" style={{ textDecoration: 'line-through' }}>
                 ga:7dayUsers
               </span>
-              <span className="item" style={{ textDecoration: 'line-through' }}>
+            <span className="item" style={{ textDecoration: 'line-through' }}>
                 ga:14dayUsers
               </span>
-              <span className="item" style={{ textDecoration: 'line-through' }}>
+            <span className="item" style={{ textDecoration: 'line-through' }}>
                 ga:30dayUsers
               </span>
-              <a className="item">ga:sessionsPerUser</a>
-            </div>
+            <a className="item">ga:sessionsPerUser</a>
+          </div>
           : null}
       </div>
     );

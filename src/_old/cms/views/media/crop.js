@@ -4,7 +4,7 @@ import ReactCrop from 'react-image-crop';
 import { cloudinaryUrl } from 'olymp';
 // import 'react-image-crop/dist/ReactCrop.css';
 
-export const CropSelect = props => {
+export const CropSelect = (props) => {
   const { value, onChange, style } = props;
   return (
     <Select
@@ -64,12 +64,12 @@ export default class Crop extends Component {
 
     const crop = item && item.crop
       ? {
-          width: item.crop[0] / item.width * 100,
-          height: item.crop[1] / item.height * 100,
-          x: item.crop[2] / item.width * 100,
-          y: item.crop[3] / item.height * 100,
-          aspect,
-        }
+        width: item.crop[0] / item.width * 100,
+        height: item.crop[1] / item.height * 100,
+        x: item.crop[2] / item.width * 100,
+        y: item.crop[3] / item.height * 100,
+        aspect,
+      }
       : { aspect };
 
     if (!item) {

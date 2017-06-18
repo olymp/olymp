@@ -1,6 +1,6 @@
 export default (data = []) => {
   const tags = data.reduce((state, file) => {
-    (file.tags || []).forEach(tag => {
+    (file.tags || []).forEach((tag) => {
       if (state[tag] === undefined) {
         state[tag] = []; // eslint-disable-line no-param-reassign
       }

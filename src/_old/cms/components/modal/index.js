@@ -12,22 +12,22 @@ export default class ModalView extends Component {
     return (
       <Modal>
         <Affix className="athena-cms-menu athena-cms-modal-menu">
-          {!!onClose
+          {onClose
             ? <a href="javascript:;" style={{ zIndex: 4 }}>
-                <Button
-                  type="primary"
-                  shape="circle"
-                  size="large"
-                  onClick={onClose}
-                >
-                  <Icon type="close" />
-                </Button>
-              </a>
+              <Button
+                type="primary"
+                shape="circle"
+                size="large"
+                onClick={onClose}
+              >
+                <Icon type="close" />
+              </Button>
+            </a>
             : <Link to={{ pathname }} style={{ zIndex: 4 }}>
-                <Button type="primary" shape="circle" size="large">
-                  <Icon type="close" />
-                </Button>
-              </Link>}
+              <Button type="primary" shape="circle" size="large">
+                <Icon type="close" />
+              </Button>
+            </Link>}
           <GatewayDest name="cms-action" />
         </Affix>
 

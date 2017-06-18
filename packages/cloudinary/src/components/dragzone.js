@@ -19,10 +19,10 @@ const ProgressWrapper = createComponent(
     position: 'relative',
   }),
   ({ onClick, children, className, disabled, ...p }) =>
-    <div className={className} onClick={onClick}>
+    (<div className={className} onClick={onClick}>
       {!disabled && <Progress {...p} />}
       {children}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 
@@ -41,9 +41,9 @@ const Progress = createComponent(
     },
   }),
   ({ className, ...p }) =>
-    <div className={className}>
+    (<div className={className}>
       <AntProgress {...p} />
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 

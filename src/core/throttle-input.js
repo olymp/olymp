@@ -1,9 +1,9 @@
-module.exports = function(limit) {
-  if (!limit) limit = 1000;
-  var _callback = null;
-  return function(callback) {
+module.exports = function (limit) {
+  if (!limit) { limit = 1000; }
+  let _callback = null;
+  return function (callback) {
     _callback = callback;
-    setTimeout(function() {
+    setTimeout(() => {
       if (_callback === callback) {
         callback();
       }

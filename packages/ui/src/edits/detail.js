@@ -9,12 +9,12 @@ export default class DetailEditor extends Component {
 
     return items && items.length
       ? <Select value={value} {...rest}>
-          {items.map(item =>
-            <Select.Option key={item.id} value={item.id}>
+        {items.map(item =>
+            (<Select.Option key={item.id} value={item.id}>
               {item.name}
-            </Select.Option>
+            </Select.Option>)
           )}
-        </Select>
+      </Select>
       : <Select {...rest} disabled />;
   }
 }

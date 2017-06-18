@@ -30,12 +30,12 @@ export default class AuthUsers extends Component {
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       const user = { ...values };
       auth
         .save(user)
         .then(({ name }) => {
-          onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
+          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
           onClose();
         })
         .catch(onError);
@@ -56,11 +56,12 @@ export default class AuthUsers extends Component {
     const { search } = this.state;
 
     let items = data.items || [];
-    if (search)
+    if (search) {
       items = items.filter(
         ({ name }) =>
           name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
+    }
 
     return (
       <Modal
@@ -90,12 +91,12 @@ export default class AuthUsers extends Component {
               value={search}
             />
             {items.map(item =>
-              <List.Item
+              (<List.Item
                 to={{ pathname, query: { '@users': item.id } }}
                 key={item.id}
                 label={item.name}
                 description={item.isAdmin ? 'Administrator' : 'Benutzer'}
-              />
+              />)
             )}
           </List>
           {id && id === 'new' && <AuthUsersDetail id={null} />}
@@ -136,13 +137,13 @@ class AuthUsersDetail extends Component {
     const { auth, form, data } = this.props;
     const item = data.item || {};
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       const user = { ...item, ...values };
       delete user.__typename;
       auth
         .save(user)
         .then(({ name }) => {
-          onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
+          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
         })
         .catch(onError);
     });

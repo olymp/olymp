@@ -13,11 +13,11 @@ const Input = ({
   form,
   ...rest
 }) =>
-  <Form.Item key={field} label={label} {...layout}>
+  (<Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: item ? item[field] : undefined,
       rules: getRules(rules, label),
     })(<AntInput placeholder={placeholder || label} {...rest} />)}
-  </Form.Item>;
+  </Form.Item>);
 Input.defaultProps = { layout };
 export default Input;

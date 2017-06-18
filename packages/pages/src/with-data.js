@@ -6,22 +6,20 @@ import { get } from 'lodash';
 
 // interpolate a string value using props
 const interpolate = (value, propsOrFunc) => {
-  if (typeof value !== 'string') return value;
-  if (value.indexOf('{') === -1) return value;
-  return value.replace(/\{\{?\:?(.+?)\}?\}/g, (m, v) => {
-    return typeof propsOrFunc === 'function'
+  if (typeof value !== 'string') { return value; }
+  if (value.indexOf('{') === -1) { return value; }
+  return value.replace(/\{\{?\:?(.+?)\}?\}/g, (m, v) => typeof propsOrFunc === 'function'
       ? propsOrFunc(v, v)
-      : get(propsOrFunc, v, v);
-  });
+      : get(propsOrFunc, v, v));
 };
 
 const defaultFields = 'id name';
-const deserializeBinding = value => {
+const deserializeBinding = (value) => {
   // value e.g. 'event id name slug' or 'event'
-  if (!value) return {};
+  if (!value) { return {}; }
   value = value.trim();
   const firstSpace = value.indexOf(' ');
-  if (firstSpace === -1) return { type: value, fields: defaultFields }; // no space = only typename
+  if (firstSpace === -1) { return { type: value, fields: defaultFields }; } // no space = only typename
   return {
     type: value.substr(0, firstSpace),
     fields: value.substr(firstSpace),
@@ -29,9 +27,9 @@ const deserializeBinding = value => {
 };
 
 const NavCache = {};
-export const withNavigation = Wrapped => {
+export const withNavigation = (Wrapped) => {
   // Prepare Data, gather bound navigation items
-  const withNavigationPrepare = Wrapped => {
+  const withNavigationPrepare = (Wrapped) => {
     // get PageList
     @queryPages
     class WithNavPrepareInner extends Component {
@@ -78,7 +76,7 @@ export const withNavigation = Wrapped => {
           children = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
-              (data.items || []).forEach(item => {
+              (data.items || []).forEach((item) => {
                 const slug = child.slug
                   ? interpolate(child.slug, item)
                   : item.slug;
@@ -99,7 +97,7 @@ export const withNavigation = Wrapped => {
           if (sorting[0] === '+' || sorting[0] === '-') {
             const fields = [];
             const directions = [];
-            sorting.split(',').forEach(sorter => {
+            sorting.split(',').forEach((sorter) => {
               fields.push(sorter.substr(1));
               directions.push(sorter[0] === '-' ? 'desc' : 'asc');
             });
@@ -107,9 +105,9 @@ export const withNavigation = Wrapped => {
           } else {
             const sortIndex = sorting.split(',');
             children = sortBy(children, [
-              o => {
+              (o) => {
                 const index = sortIndex.indexOf(o.id);
-                if (index === -1) return 99;
+                if (index === -1) { return 99; }
                 return index;
               },
             ]);
@@ -138,7 +136,7 @@ export const withNavigation = Wrapped => {
 let cache = {};
 let lastType;
 export const DataRoute = ({ binding, component, ...rest }) => {
-  if (!binding) return createElement(component || SimpleRoute, rest);
+  if (!binding) { return createElement(component || SimpleRoute, rest); }
   const { type, fields } = deserializeBinding(binding);
   const key = `route-${type}-${fields}`;
   if (lastType !== (component || SimpleRoute)) {
@@ -146,13 +144,11 @@ export const DataRoute = ({ binding, component, ...rest }) => {
     cache = {};
     lastType = component || SimpleRoute;
   }
-  if (!cache[key])
-    cache[key] = withData(component || SimpleRoute, { fields, type });
+  if (!cache[key]) { cache[key] = withData(component || SimpleRoute, { fields, type }); }
   return createElement(cache[key], rest);
 };
 // Helper for DataRoute, actual decorator
-export const withData = (Wrapped, { type, fields, render }) => {
-  return graphql(
+export const withData = (Wrapped, { type, fields, render }) => graphql(
     gql`
     query ${type || 'page'}($id: String) {
       item: ${type || 'page'}(id: $id) {
@@ -160,15 +156,12 @@ export const withData = (Wrapped, { type, fields, render }) => {
       }
     }
   `,
-    {
-      options: ({ bindingId }) => ({
-        variables: {
-          id: bindingId,
-        },
-      }),
-      name: 'nav_data',
-    }
-  )(({ nav_data, ...rest }) => {
-    return <Wrapped {...rest} binding={nav_data.item} />;
-  });
-};
+  {
+    options: ({ bindingId }) => ({
+      variables: {
+        id: bindingId,
+      },
+    }),
+    name: 'nav_data',
+  }
+  )(({ nav_data, ...rest }) => <Wrapped {...rest} binding={nav_data.item} />);

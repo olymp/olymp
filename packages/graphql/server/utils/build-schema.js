@@ -13,8 +13,8 @@ module.exports = (schemaFragments, resolvers, directives, hooks) => {
   initialAST.forEach(({ definitions }) =>
     definitions
       .filter(x => x.kind === 'ObjectTypeDefinition')
-      .forEach(definition => {
-        if (['Query', 'Mutation'].includes(definition.name.value)) return;
+      .forEach((definition) => {
+        if (['Query', 'Mutation'].includes(definition.name.value)) { return; }
         const input = transformASTTypeToInput(definition, {
           newName: `${capitalize(definition.name.value)}Input`,
           ast: definitions,
@@ -31,8 +31,8 @@ module.exports = (schemaFragments, resolvers, directives, hooks) => {
   );
   transformedAST.definitions
     .filter(x => x.kind === 'ObjectTypeDefinition')
-    .forEach(definition => {
-      if (['Query', 'Mutation'].includes(definition.name.value)) return;
+    .forEach((definition) => {
+      if (['Query', 'Mutation'].includes(definition.name.value)) { return; }
       const input = transformASTTypeToInput(definition, {
         newName: `${capitalize(definition.name.value)}Input`,
         ast: transformedAST,

@@ -1,7 +1,7 @@
-const convertGeocode = result => {
+const convertGeocode = (result) => {
   const newResult = {};
-  (result.address_components || []).forEach(component => {
-    component.types.forEach(type => {
+  (result.address_components || []).forEach((component) => {
+    component.types.forEach((type) => {
       const newType = type
         .split('_')
         .map(

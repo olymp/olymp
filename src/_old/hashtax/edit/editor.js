@@ -6,11 +6,11 @@ import { Popover, Tag } from 'antd';
 import { parseComponent } from '../processors';
 import { styled } from 'olymp';
 
-const deserialize = value => {
+const deserialize = (value) => {
   console.log('DESERIALIZE', value);
   return Raw.deserialize(value, { terse: true });
 };
-const serialize = state => {
+const serialize = (state) => {
   console.log('SERIALIZE', state);
   return Raw.serialize(state, { terse: true });
 };
@@ -28,7 +28,7 @@ const addMarks = (startChar, closeChar, markType, characters, string) => {
   let start = -startChar.length;
   while (true) {
     start = string.indexOf(startChar, start + startChar.length);
-    if (start === -1) break;
+    if (start === -1) { break; }
     const end =
       string.indexOf(closeChar, start + startChar.length) + startChar.length;
     const size = end === 0 ? characters.size : end;
@@ -48,7 +48,7 @@ const decorate = (text, block) => {
   const characters = text.characters.asMutable();
   const string = text.text;
 
-  if (!string) return text.characters;
+  if (!string) { return text.characters; }
 
   if (string.indexOf('#') !== -1) {
     addMarks('#', '#', 'hashtax-inline', characters, string);
@@ -68,12 +68,11 @@ export default class SlateEditor extends Component {
     Hashtax: PropTypes.func,
   };
 
-  getContentEditor = (propType, val) => {
-    return val;
+  getContentEditor = (propType, val) => val
     // return <Input value={val} pla ceholder={propType} />;
-  };
+  ;
 
-  getContent = text => {
+  getContent = (text) => {
     const { components } = this.context.Hashtax;
     const { type, args, decorators, raw } = parseComponent(
       text.split('#').join('')
@@ -85,10 +84,10 @@ export default class SlateEditor extends Component {
         content: (
           <div>
             {Object.keys(component.propTypes).map(key =>
-              <p key={key}>
+              (<p key={key}>
                 <b>{key}: </b>
                 {this.getContentEditor(key, args[key])}
-              </p>
+              </p>)
             )}
           </div>
         ),
@@ -143,7 +142,7 @@ export default class SlateEditor extends Component {
     }
   }
 
-  onChange = value => {
+  onChange = (value) => {
     this.editorState = value;
     this.setState({}, () => {
       const newValue = serialize(value);
@@ -154,7 +153,7 @@ export default class SlateEditor extends Component {
     });
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     const key = window.event ? e.keyCode : e.which;
     if (key === 220) {
       // #

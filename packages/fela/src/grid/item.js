@@ -27,8 +27,8 @@ const GridItem = createComponent(
     },
     ifSmallUp: small
       ? {
-          width: `${100 / gridSize * small}%`,
-        }
+        width: `${100 / gridSize * small}%`,
+      }
       : {},
     ifMedium: {
       display: (medium === 0 || medium === false) && 'none',
@@ -36,8 +36,8 @@ const GridItem = createComponent(
     },
     ifMediumUp: medium
       ? {
-          width: `${100 / gridSize * medium}%`,
-        }
+        width: `${100 / gridSize * medium}%`,
+      }
       : {},
     ifLarge: {
       display: (large === 0 || large === false) && 'none',
@@ -45,8 +45,8 @@ const GridItem = createComponent(
     },
     ifLargeUp: large
       ? {
-          width: `${100 / gridSize * large}%`,
-        }
+        width: `${100 / gridSize * large}%`,
+      }
       : {},
     ifHuge: {
       display: (huge === 0 || huge === false) && 'none',
@@ -59,8 +59,8 @@ const GridItem = createComponent(
     },
     ifHugeUp: huge
       ? {
-          width: `${100 / gridSize * huge}%`,
-        }
+        width: `${100 / gridSize * huge}%`,
+      }
       : {},
   }),
   'div',

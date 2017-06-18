@@ -7,8 +7,8 @@ import { hasBlock } from '../utils/has';
 
 export default (options = {}) => {
   let { sidebarTypes, defaultNode } = options;
-  if (!defaultNode) defaultNode = 'line';
-  if (!sidebarTypes) sidebarTypes = [];
+  if (!defaultNode) { defaultNode = 'line'; }
+  if (!sidebarTypes) { sidebarTypes = []; }
 
   return Editor =>
     class SlateSidebarDecorator extends Component {
@@ -25,7 +25,7 @@ export default (options = {}) => {
       componentDidMount() {
         const sideBarMenu = this.gwRef;
         const { value } = this.props;
-        if (!sideBarMenu) return;
+        if (!sideBarMenu) { return; }
 
         if (value.isBlurred || !value.isCollapsed) {
           sideBarMenu.removeAttribute('style');
@@ -48,7 +48,7 @@ export default (options = {}) => {
 
         sideBarMenu.style.display = 'block';
         sideBarMenu.style.top = `${top}px`;
-        sideBarMenu.style.left = `3px`;
+        sideBarMenu.style.left = '3px';
       }
       componentDidUpdate() {
         this.componentDidMount();
@@ -58,7 +58,7 @@ export default (options = {}) => {
         e.preventDefault();
         onChange(addBlock(value, props, { defaultNode, ...this.props }));
       };
-      renderButton = props => {
+      renderButton = (props) => {
         const { value } = this.props;
         const isActive = hasBlock(value, props.type);
         const onMouseDown = e => this.onClickBlock(e, props);
@@ -83,9 +83,9 @@ export default (options = {}) => {
         const categories = {};
         const menuItems = [];
 
-        sortBy(theSidebarTypes, ['category', 'label']).forEach(x => {
+        sortBy(theSidebarTypes, ['category', 'label']).forEach((x) => {
           if (x.category) {
-            if (!categories[x.category]) categories[x.category] = [];
+            if (!categories[x.category]) { categories[x.category] = []; }
             categories[x.category].push(this.renderButton(x));
           } else {
             menuItems.push(this.renderButton(x));
@@ -95,9 +95,9 @@ export default (options = {}) => {
         const menu = (
           <Menu style={{ minWidth: 150 }}>
             {Object.keys(categories).map(key =>
-              <Menu.SubMenu title={key} key={key}>
+              (<Menu.SubMenu title={key} key={key}>
                 {categories[key].map(x => x)}
-              </Menu.SubMenu>
+              </Menu.SubMenu>)
             )}
             <Menu.Divider />
             {menuItems.map(x => x)}

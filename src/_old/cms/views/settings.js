@@ -32,24 +32,24 @@ export default class SettingView extends Component {
 
     const tabs = {};
     if (collection && collection.fields) {
-      collection.fields.forEach(field => {
+      collection.fields.forEach((field) => {
         const key = field['@'] && field['@'].detail
           ? field['@'].detail.arg0
           : 'Allgemein';
 
-        if (!tabs[key]) tabs[key] = [];
+        if (!tabs[key]) { tabs[key] = []; }
         tabs[key].push(field);
       });
     }
 
     const content = collectionLoading || !fieldNames || !collection || !items
-      ? <div style={{ minHeight: 400 }}>
-          <Spin size="large" />
-        </div>
-      : <div>
-          <Tabs tabPosition="right" className="mt-2">
-            {Object.keys(tabs).map(key =>
-              <Tabs.TabPane tab={key} key={key}>
+      ? (<div style={{ minHeight: 400 }}>
+        <Spin size="large" />
+      </div>)
+      : (<div>
+        <Tabs tabPosition="right" className="mt-2">
+          {Object.keys(tabs).map(key =>
+              (<Tabs.TabPane tab={key} key={key}>
                 <Form
                   {...form}
                   vertical
@@ -63,10 +63,10 @@ export default class SettingView extends Component {
                 >
                   Speichern
                 </Button>
-              </Tabs.TabPane>
+              </Tabs.TabPane>)
             )}
-          </Tabs>
-        </div>;
+        </Tabs>
+      </div>);
 
     return (
       <Modal>

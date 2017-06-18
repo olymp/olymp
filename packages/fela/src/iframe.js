@@ -52,7 +52,7 @@ export default ({ children, disabled }) =>
   disabled
     ? React.Children.only(children)
     : <StyledFrameComponent>
-        <FrameInner>
-          {children}
-        </FrameInner>
-      </StyledFrameComponent>;
+      <FrameInner>
+        {children}
+      </FrameInner>
+    </StyledFrameComponent>;

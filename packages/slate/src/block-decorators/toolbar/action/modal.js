@@ -39,9 +39,9 @@ export default class ToolbarActionModal extends Component {
         ...rest,
       };
     });
-    if (attributes.disabled) delete attributes.disabled;
+    if (attributes.disabled) { delete attributes.disabled; }
 
-    if (!this[modus]) this[modus] = selectedRowKeys;
+    if (!this[modus]) { this[modus] = selectedRowKeys; }
 
     const columns = Object.keys(attributes).map(key => ({
       title: capitalize(key),
@@ -50,16 +50,16 @@ export default class ToolbarActionModal extends Component {
 
     const rowSelection = multi
       ? {
-          type: 'select',
-          selectedRowKeys,
-          onChange: (selectedRowKeys, selectedRows) =>
+        type: 'select',
+        selectedRowKeys,
+        onChange: (selectedRowKeys, selectedRows) =>
             this.changeSelection(selectedRows, modus),
-        }
+      }
       : {
-          type: 'radio',
-          selectedRowKeys,
-          onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows[0]),
-        };
+        type: 'radio',
+        selectedRowKeys,
+        onChange: (selectedRowKeys, selectedRows) => toggle(selectedRows[0]),
+      };
     rowSelection.getCheckboxProps = record => ({
       disabled: record.disabled,
     });
@@ -77,7 +77,7 @@ export default class ToolbarActionModal extends Component {
       size: 'middle',
       pagination: false,
     };
-    if (exception) tableProps.title = () => 'Mit Ausnahme von';
+    if (exception) { tableProps.title = () => 'Mit Ausnahme von'; }
 
     return <Table {...tableProps} />;
   };

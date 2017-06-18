@@ -13,7 +13,7 @@ const MapContainer = createComponent(
     ...Image.styles({ theme }),
   }),
   ({ attributes, className, showTitle, children }) =>
-    <div className={className} {...attributes}>
+    (<div className={className} {...attributes}>
       <Maps
         center={{ lat: 59.724465, lng: 30.080121 }}
         zoom={1}
@@ -28,7 +28,7 @@ const MapContainer = createComponent(
         <Maps.Marker lat={59.724465} lng={30.080121} />
       </Maps>
       {showTitle && <Image.Label>{children}</Image.Label>}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 

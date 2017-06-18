@@ -14,7 +14,7 @@ export class AmpProvider extends Component {
   }
 }
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const withAmp = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withAmp.contextTypes = {

@@ -7,10 +7,8 @@ if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
   require('codemirror/mode/markdown/markdown');
 }
 
-const fallback = props => {
-  return <div>No component of type {props.name} found</div>;
-};
-const gallery = props => {
+const fallback = props => <div>No component of type {props.name} found</div>;
+const gallery = (props) => {
   const { name, alt, width, height, float, children } = props;
   const src = name
     ? `https://res.cloudinary.com/djyenzorc/image/upload/f_auto,q_auto,fl_lossy/v1480883925/${name}`
@@ -27,7 +25,7 @@ const gallery = props => {
     </div>
   );
 };
-const bordered = props => {
+const bordered = (props) => {
   const { children, color } = props;
   return (
     <div style={{ border: `1px solid ${color || 'red'}` }}>

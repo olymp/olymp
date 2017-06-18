@@ -61,14 +61,14 @@ const nav2 = [
 ];
 
 storiefy('Basic usage', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav pages={nav1} />
     <Navbar.Nav pages={nav2} />
-  </Navbar>
+  </Navbar>)
 );
 storiefy('Right aligned', () =>
-  <Navbar brand="Olymp ❤ CMS" inverse>
+  (<Navbar brand="Olymp ❤ CMS" inverse>
     <Navbar.Nav pages={nav1} right={boolean('right [nav1]', false)} />
     <Navbar.Nav pages={nav2} right={boolean('right [nav2]', true)} />
-  </Navbar>
+  </Navbar>)
 );

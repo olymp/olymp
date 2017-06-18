@@ -15,9 +15,9 @@ const Grid = createComponent(
     },
   }),
   ({ children, size, ...rest }) =>
-    <div {...rest}>
+    (<div {...rest}>
       {Children.map(children, child => cloneElement(child, { gridSize: size }))}
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 Grid.propTypes = {

@@ -15,9 +15,9 @@ export default class CollectionList extends Component {
 
   ok = () => {
     const { form, item, router, mutate } = this.props;
-    let id = !this.props.id || this.props.id === 'new' ? null : this.props.id;
+    const id = !this.props.id || this.props.id === 'new' ? null : this.props.id;
     form.validateFields((err, input) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       mutate({
         variables: {
           id,
@@ -25,11 +25,11 @@ export default class CollectionList extends Component {
         },
         updateQueries: !id
           ? {
-              artikelList: (prev, { mutationResult }) => ({
-                ...prev,
-                items: [...prev.items, mutationResult.data.item],
-              }),
-            }
+            artikelList: (prev, { mutationResult }) => ({
+              ...prev,
+              items: [...prev.items, mutationResult.data.item],
+            }),
+          }
           : undefined,
       })
         .then(({ data: { item } }) => {
@@ -58,11 +58,12 @@ export default class CollectionList extends Component {
     let { items } = this.props;
     const { search } = this.state;
 
-    if (search)
+    if (search) {
       items = items.filter(
         ({ name }) =>
           name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
+    }
 
     const leftButtons = (
       <div>
@@ -114,7 +115,7 @@ export default class CollectionList extends Component {
               value={search}
             />
             {items.map(item =>
-              <List.Item
+              (<List.Item
                 active={id === item.id}
                 to={{
                   pathname,
@@ -123,7 +124,7 @@ export default class CollectionList extends Component {
                 key={item.id}
                 label={item.name}
                 description={item.isAdmin ? 'Administrator' : 'Benutzer'}
-              />
+              />)
             )}
           </List>
           {id &&

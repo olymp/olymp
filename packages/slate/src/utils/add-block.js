@@ -12,7 +12,7 @@ export default (
   { type, isVoid, isAtomic, defaultNodes },
   { defaultNode }
 ) => {
-  if (!defaultNode) defaultNode = 'line';
+  if (!defaultNode) { defaultNode = 'line'; }
 
   let transform = value.transform();
   const { document, blocks } = value;

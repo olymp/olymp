@@ -10,8 +10,8 @@ import ltake from 'lodash/take';
 import lisEqual from 'lodash/isEqual';
 import lintersection from 'lodash/intersection';
 
-export const toString = arg => {
-  if (arg && typeof arg === 'object') return arg.name || arg.id;
+export const toString = (arg) => {
+  if (arg && typeof arg === 'object') { return arg.name || arg.id; }
   return ltoString(arg);
 };
 export const toObject = arg => ltoObject(arg);

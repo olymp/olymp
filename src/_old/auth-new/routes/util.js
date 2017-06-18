@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp';
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   @withRouter
   class AuthRoutes extends Component {
-    get = type => {
+    get = (type) => {
       const { query, prefix } = this.props;
 
       return prefix ? query[`${prefix}${type}`] : query[type];

@@ -26,13 +26,13 @@ export default (schema, { adapter } = {}) => {
       },
       Mutation: {
         fileStack: (source, { id, input }, context) => {
-          if (!id) id = shortId.generate();
+          if (!id) { id = shortId.generate(); }
           let item;
           return fetch(
             `https://www.filestackapi.com/api/file/${input.handle}/metadata?width=true&height=true`
           )
             .then(response => response.json())
-            .then(json => {
+            .then((json) => {
               item = transform({ id, ...input, ...json }, context.user);
               return adapter.db
                 .collection('file')

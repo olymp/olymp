@@ -16,12 +16,12 @@ export default class AuthMe extends Component {
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       const user = { ...values };
       auth
         .save(user)
         .then(({ name }) => {
-          onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
+          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
           onClose();
         })
         .catch(onError);
@@ -83,11 +83,11 @@ export default class AuthMe extends Component {
         </Form.Item>
         {extraFields
           ? extraFields({
-              layout,
-              getFieldDecorator,
-              state: this.state,
-              setState: this.setState,
-            })
+            layout,
+            getFieldDecorator,
+            state: this.state,
+            setState: this.setState,
+          })
           : null}
         <Modal.Links>
           <Link to={{ pathname, query: { totp: null, profile: undefined } }}>

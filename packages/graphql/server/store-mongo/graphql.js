@@ -32,8 +32,7 @@ module.exports = ({
     }
 
     filter.state = { $in: args.documentState };
-    if (args.documentState.indexOf('PUBLISHED') !== -1)
-      filter.state.$in.push(null);
+    if (args.documentState.indexOf('PUBLISHED') !== -1) { filter.state.$in.push(null); }
 
     return adapter.list(tableName, Object.assign({}, args, { filter }));
   };
@@ -51,9 +50,9 @@ module.exports = ({
       delete args.input;
     }
     delete args.operationType;
-    if (!args.documentState) args.documentState = ['DRAFT'];
+    if (!args.documentState) { args.documentState = ['DRAFT']; }
 
-    /*Object.keys(args).filter(x => x.name !== 'Image').forEach((property) => {
+    /* Object.keys(args).filter(x => x.name !== 'Image').forEach((property) => {
       const type = schema._typeMap[key]._fields[property].type;
       if (type.constructor.name === 'GraphQLObjectType' && args[property] && args[property].id) {
         args[property] = args[property].id;

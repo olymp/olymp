@@ -7,7 +7,7 @@ exports.defaultScalars = {
       'The JSON scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/ publications/files/ECMA-ST/ECMA-404.pdf).',
     serialize: value => value,
     parseValue: value => value,
-    parseLiteral: ast => {
+    parseLiteral: (ast) => {
       switch (ast.kind) {
         case Kind.STRING:
         case Kind.BOOLEAN:
@@ -17,7 +17,7 @@ exports.defaultScalars = {
           return parseFloat(ast.value);
         case Kind.OBJECT: {
           const value = Object.create(null);
-          ast.fields.forEach(field => {
+          ast.fields.forEach((field) => {
             value[field.name.value] = exports.defaultScalars.Json.parseLiteral(
               field.value
             );
@@ -36,7 +36,7 @@ exports.defaultScalars = {
     description: 'TimeRange scalar type',
     parseValue: value => value,
     serialize: value => value,
-    parseLiteral: ast => {
+    parseLiteral: (ast) => {
       switch (ast.kind) {
         case Kind.STRING:
           return ast.value;

@@ -2,11 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const { upperFirst, camelCase } = require('lodash');
 
-let index = ``;
+let index = '';
 fs.readdir(path.resolve(__dirname, 'white'), (err, files) => {
-  files.forEach(file => {
+  files.forEach((file) => {
     let fileName = file.split('.')[0];
-    if (fileName === '500px') fileName = 'px500';
+    if (fileName === '500px') { fileName = 'px500'; }
     const name = `${upperFirst(camelCase(fileName))}`;
     const content = fs.readFileSync(path.resolve(__dirname, 'white', file), {
       encoding: 'utf8',

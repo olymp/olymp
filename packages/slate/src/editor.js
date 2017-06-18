@@ -17,7 +17,7 @@ import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';
 import ToolbarVoid from './toolbar-void';
 
-const getIdByTag = children => {
+const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
 };
@@ -68,8 +68,7 @@ const options = {
         } else {
           let href = window.prompt('URL');
           if (href) {
-            if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1)
-              href = `http://${href}`;
+            if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) { href = `http://${href}`; }
             newVal = newVal
               .transform()
               .wrapInline({
@@ -90,14 +89,14 @@ const options = {
   nodes: {
     paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
     link: ({ node, attributes, children }) =>
-      <a
+      (<a
         {...attributes}
         href={node.data.get('href')}
         target={node.data.get('target')}
         rel="noopener noreferrer"
       >
         {children}
-      </a>,
+      </a>),
     'block-quote': ({ children, attributes }) =>
       <blockquote {...attributes}>{children}</blockquote>,
     'bulleted-list': ({ children, attributes }) =>
@@ -130,7 +129,7 @@ const options = {
     center: ({ children, attributes }) =>
       <center {...attributes}>{children}</center>,
   },
-  getMarkdownType: chars => {
+  getMarkdownType: (chars) => {
     switch (chars) {
       case '*':
       case '-':
@@ -177,7 +176,7 @@ const serializer = new Html({
           h6: 'heading-six',
         };
         const block = types[el.tagName];
-        if (!block) return undefined;
+        if (!block) { return undefined; }
         return {
           kind: 'block',
           type: block,
@@ -199,7 +198,7 @@ const serializer = new Html({
           justify: 'justify',
         };
         const mark = marks[el.tagName];
-        if (!mark) return undefined;
+        if (!mark) { return undefined; }
         return {
           kind: 'mark',
           type: mark,
@@ -210,7 +209,7 @@ const serializer = new Html({
     {
       // Special case for code blocks, which need to grab the nested children.
       deserialize(el, next) {
-        if (el.tagName !== 'pre') return undefined;
+        if (el.tagName !== 'pre') { return undefined; }
         const code = el.children[0];
         const children = code && code.tagName === 'code'
           ? code.children
@@ -226,7 +225,7 @@ const serializer = new Html({
     {
       // Special case for links, to grab their href.
       deserialize(el, next) {
-        if (el.tagName !== 'a') return undefined;
+        if (el.tagName !== 'a') { return undefined; }
         return {
           kind: 'inline',
           type: 'link',
@@ -270,7 +269,7 @@ class SlateEditor extends Component {
   };
 
   onPaste = (e, data, state) => {
-    if (data.type !== 'html') return undefined;
+    if (data.type !== 'html') { return undefined; }
     const { document } = serializer.deserialize(data.html);
     return state.transform().insertFragment(document).apply();
   };
@@ -316,20 +315,20 @@ class SlateEditor extends Component {
       !!value &&
       !!value.history &&
       !!value.history.undos &&
-      !!value.history.undos['_head'] &&
-      value.history.undos['_head'].value;
+      !!value.history.undos._head &&
+      value.history.undos._head.value;
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
         <Gateway into="undo">
           {false && undo && undo.length
             ? <Button
-                shape="circle"
-                size="large"
-                onClick={() => onChange(value.transform().undo().apply())}
-              >
-                <i className="fa fa-undo" aria-hidden="true" />
-              </Button>
+              shape="circle"
+              size="large"
+              onClick={() => onChange(value.transform().undo().apply())}
+            >
+              <i className="fa fa-undo" aria-hidden="true" />
+            </Button>
             : null}
         </Gateway>
         {children}

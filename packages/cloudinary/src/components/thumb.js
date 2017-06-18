@@ -84,29 +84,29 @@ const CloseLabel = createComponent(
 const Thumb = ({ item, onClick, onRemove, isActive, height }) =>
   item
     ? <ImageContainer isActive={isActive}>
-        <Image
-          value={item}
-          mode="fill"
-          height={height}
-          onClick={onClick}
-          style={{ maxWidth: '100%' }}
-          retina
-        />
-        {item.format === 'pdf'
+      <Image
+        value={item}
+        mode="fill"
+        height={height}
+        onClick={onClick}
+        style={{ maxWidth: '100%' }}
+        retina
+      />
+      {item.format === 'pdf'
           ? <ImageLabel>
-              <Icon type="file-pdf" />
-            </ImageLabel>
+            <Icon type="file-pdf" />
+          </ImageLabel>
           : undefined}
-        {isActive
+      {isActive
           ? onRemove
             ? <CloseLabel onClick={onRemove}>
-                <Icon type="close" />
-              </CloseLabel>
+              <Icon type="close" />
+            </CloseLabel>
             : <CheckLabel>
-                <Icon type="check" />
-              </CheckLabel>
+              <Icon type="check" />
+            </CheckLabel>
           : undefined}
-      </ImageContainer>
+    </ImageContainer>
     : null;
 Thumb.propTypes = {
   item: object,

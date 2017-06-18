@@ -6,9 +6,9 @@ export default {
   category: 'Template',
   editable: true,
   component: ({ attributes, className, children }) =>
-    <Container {...attributes} className={className}>
+    (<Container {...attributes} className={className}>
       {children}
-    </Container>,
+    </Container>),
   actions: [
     {
       type: 'small',

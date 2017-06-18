@@ -30,12 +30,12 @@ export default class AuthInvitations extends Component {
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       const user = { ...values };
       auth
         .save(user)
         .then(({ name }) => {
-          onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
+          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
           onClose();
         })
         .catch(onError);
@@ -56,11 +56,12 @@ export default class AuthInvitations extends Component {
     const { search } = this.state;
 
     let items = data.items || [];
-    if (search)
+    if (search) {
       items = items.filter(
         ({ name }) =>
           name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
+    }
 
     return (
       <Modal
@@ -90,12 +91,12 @@ export default class AuthInvitations extends Component {
               value={search}
             />
             {items.map(item =>
-              <List.Item
+              (<List.Item
                 to={{ pathname, query: { '@invitations': item.id } }}
                 key={item.id}
                 label={item.name}
                 description="Benutzer"
-              />
+              />)
             )}
           </List>
           {id && id === 'new' && <AuthInviationDetail id={null} />}
@@ -136,13 +137,13 @@ class AuthInviationDetail extends Component {
     const { auth, form, data } = this.props;
     const item = data.item || {};
     form.validateFields((err, values) => {
-      if (err) return onError(err);
+      if (err) { return onError(err); }
       const invitation = { ...item, ...values };
       delete invitation.__typename;
       auth
         .invitation(invitation)
         .then(({ name }) => {
-          onSuccess('Gespeichert', `Das Profil wurde gespeichert`);
+          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
         })
         .catch(onError);
     });

@@ -18,7 +18,7 @@ export default WrappedComponent =>
         if (value && typeof value === 'string' && value.indexOf('{{') !== -1) {
           // interpolate hashtax text
           const text = interpolate(value, all);
-          if (text) store[key] = <Hashtax value={text} />;
+          if (text) { store[key] = <Hashtax value={text} />; }
         } else if (
           value &&
           typeof value === 'string' &&

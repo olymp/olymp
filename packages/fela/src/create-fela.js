@@ -66,48 +66,48 @@ export default () => {
         ellipsis: ellipsis =>
           ellipsis === true
             ? {
-                whiteSpace: 'nowrap',
-                overflowX: 'hidden',
-                textOverflow: 'ellipsis',
-                maxWidth: '100%',
-              }
+              whiteSpace: 'nowrap',
+              overflowX: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '100%',
+            }
             : {},
         clearfix: clearfix =>
           clearfix === true
             ? {
-                ':after': {
-                  content: '""',
-                  clear: 'both',
-                  display: 'block',
-                  visibility: 'hidden',
-                  height: 0,
-                },
-              }
+              ':after': {
+                content: '""',
+                clear: 'both',
+                display: 'block',
+                visibility: 'hidden',
+                height: 0,
+              },
+            }
             : {},
         center: center =>
           center === true
             ? {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }
             : {},
         centerX: center =>
           center === true
             ? {
-                position: 'absolute',
-                left: '50%',
-                transform: 'translateX(-50%)',
-              }
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }
             : {},
         centerY: center =>
           center === true
             ? {
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }
             : {},
       }),
       removeUndefined(),

@@ -20,7 +20,7 @@ if (module.hot) {
   });
 }
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   console.error(
     `${new Date().toUTCString()} uncaughtException: ${err.message}`
   );

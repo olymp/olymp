@@ -67,25 +67,25 @@ export default class Accordion extends Component {
         />,
         remove
           ? <i
-              key={2}
-              className="fa fa-trash pull-right"
-              style={{ paddingTop: '4px' }}
-              onMouseDown={e => this.remove(e, index)}
-            />
+            key={2}
+            className="fa fa-trash pull-right"
+            style={{ paddingTop: '4px' }}
+            onMouseDown={e => this.remove(e, index)}
+          />
           : null,
       ];
       const inner = typeof item.props.label === 'function'
         ? item.props.label({
-            active: index === active,
-            onClick: () => this.setActive(index),
-            children: itemChildren,
-          })
-        : <AccordionItem onClick={() => this.setActive(index)}>
-            {itemChildren}
-          </AccordionItem>;
+          active: index === active,
+          onClick: () => this.setActive(index),
+          children: itemChildren,
+        })
+        : (<AccordionItem onClick={() => this.setActive(index)}>
+          {itemChildren}
+        </AccordionItem>);
 
       if (tab) {
-        if (isActive) content = React.Children.only(item.props.children);
+        if (isActive) { content = React.Children.only(item.props.children); }
         return inner;
       }
       return (
@@ -96,7 +96,7 @@ export default class Accordion extends Component {
       );
     });
 
-    if (items.length === 0) return null;
+    if (items.length === 0) { return null; }
 
     let inner = items;
     if (tab) {

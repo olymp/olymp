@@ -1,6 +1,6 @@
 export const batch = (limit = 500) => {
   let _callback = null;
-  return callback => {
+  return (callback) => {
     _callback = callback;
     setTimeout(() => {
       if (_callback === callback) {

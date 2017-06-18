@@ -9,7 +9,7 @@ export default class SlateTree extends Component {
     expandedKeys: [],
     selectedNode: null,
   };
-  onDrop = info => {
+  onDrop = (info) => {
     // reorder or move nodes on drop
     const { reorder, move } = this.props;
     const parent = info.dropToGap && info.node.props.title.props.parent
@@ -25,7 +25,7 @@ export default class SlateTree extends Component {
     childIds.splice(info.dropPosition, 0, page.id);
 
     // Check if new parent is itself??
-    if (parent.id === pageId) return;
+    if (parent.id === pageId) { return; }
     if (parent.id !== page.parentId) {
       // parent changed
       move({
@@ -38,7 +38,7 @@ export default class SlateTree extends Component {
     } else {
       // just moved inside existing parent
       // Disallow sort if parent has fixed sorting
-      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) return;
+      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) { return; }
       reorder({
         variables: {
           id: parent.id,
@@ -47,20 +47,16 @@ export default class SlateTree extends Component {
       });
     }
   };
-  onClick = node => {
+  onClick = (node) => {
     this.setState({ selectedNode: node });
   };
   getTextLength = (node, length = 0) => {
     const text = node.text ? node.text.length : 0;
     const children = node.nodes
-      ? node.nodes.reduce((length, node) => {
-          return this.getTextLength(node, length);
-        }, 0)
+      ? node.nodes.reduce((length, node) => this.getTextLength(node, length), 0)
       : 0;
     const ranges = node.ranges
-      ? node.ranges.reduce((length, node) => {
-          return this.getTextLength(node, length);
-        }, 0)
+      ? node.ranges.reduce((length, node) => this.getTextLength(node, length), 0)
       : 0;
     return length + text + children + ranges;
   };
@@ -90,7 +86,7 @@ export default class SlateTree extends Component {
       }
     }
     return items.map(({ kind, type, text, length, children, node, path }, i) =>
-      <Tree.Node
+      (<Tree.Node
         key={i}
         title={
           <Tree.Title>
@@ -107,7 +103,7 @@ export default class SlateTree extends Component {
         }
       >
         {children}
-      </Tree.Node>
+      </Tree.Node>)
     );
   };
   render() {

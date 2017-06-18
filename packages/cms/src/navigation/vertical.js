@@ -99,7 +99,7 @@ export default withLang(
       collectionList,
       ...rest
     }) =>
-      <VerticalMenu
+      (<VerticalMenu
         className={className}
         deviceWidth={deviceWidth}
         selectedKeys={Object.keys(query)}
@@ -133,16 +133,16 @@ export default withLang(
         </Menu.Item>
         {auth.user && auth.user.isAdmin
           ? <Menu.Item key="@users">
-              <Popover placement="right" content="Benutzer-Management">
-                <Link
-                  to={{
-                    query: { '@users': null, '@deviceWidth': deviceWidth },
-                  }}
-                >
-                  <Icon type="team" />
-                </Link>
-              </Popover>
-            </Menu.Item>
+            <Popover placement="right" content="Benutzer-Management">
+              <Link
+                to={{
+                  query: { '@users': null, '@deviceWidth': deviceWidth },
+                }}
+              >
+                <Icon type="team" />
+              </Link>
+            </Popover>
+          </Menu.Item>
           : null}
         <Menu.Item key="@stats">
           <Popover placement="right" content="Statistiken">
@@ -175,7 +175,7 @@ export default withLang(
         <Separator />
 
         {collectionList.map(collection =>
-          <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+          (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
             <Popover placement="right" content={`@${collection.name}-Liste`}>
               <Link
                 to={{
@@ -188,7 +188,7 @@ export default withLang(
                 <Icon type="file-text" />
               </Link>
             </Popover>
-          </Menu.Item>
+          </Menu.Item>)
         )}
 
         <Filler />
@@ -236,6 +236,6 @@ export default withLang(
             </a>
           </Popover>
         </Menu.Item>
-      </VerticalMenu>
+      </VerticalMenu>)
   )
 );

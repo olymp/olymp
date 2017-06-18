@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) =>
     graphql(

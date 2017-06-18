@@ -47,12 +47,12 @@ export default class MagazinBlock extends Component {
     const { children, style, data } = this.props;
     const { items, pdfs } = data;
 
-    if (data.loading || !items) return <Spin size="large" />;
+    if (data.loading || !items) { return <Spin size="large" />; }
     // Tags ermitteln
     const tags = {};
     items.filter(x => x.tags).forEach(item =>
-      item.tags.forEach(tag => {
-        if (!tags[tag]) tags[tag] = [];
+      item.tags.forEach((tag) => {
+        if (!tags[tag]) { tags[tag] = []; }
         tags[tag].push(item.slug);
       })
     );
@@ -71,7 +71,7 @@ export default class MagazinBlock extends Component {
                   <h2 className="section-title">Ausgaben als PDFs</h2>
                   <div className="list-group">
                     {pdfs.map((pdf, i) =>
-                      <a
+                      (<a
                         className="list-group-item"
                         rel="noopener noreferrer"
                         href={pdf.url}
@@ -79,7 +79,7 @@ export default class MagazinBlock extends Component {
                         key={i}
                       >
                         Gesund im Zentrum - {pdf.caption}
-                      </a>
+                      </a>)
                     )}
                   </div>
                 </div>
@@ -89,11 +89,11 @@ export default class MagazinBlock extends Component {
                   <h2 className="section-title">Schlagworte</h2>
                   <ul className="list-unstyled list-inline taxo-list">
                     {Object.keys(tags).map(key =>
-                      <li key={key} style={{ marginRight: 5, float: 'left' }}>
+                      (<li key={key} style={{ marginRight: 5, float: 'left' }}>
                         <a href="javascript:void(0)">
                           {capitalize(key)} ({tags[key].length})
                         </a>
-                      </li>
+                      </li>)
                     )}
                   </ul>
                 </div>
@@ -103,7 +103,7 @@ export default class MagazinBlock extends Component {
           <section className="col-sm-8 col-sm-push-4">
             <div className="row events-carousel events-no-carousel">
               {items.map(item =>
-                <Link
+                (<Link
                   to={`/artikel${item.slug}`}
                   className="gz-image-box col-md-4 col-sm-6 col-xs-12 mb-2"
                   key={item.id}
@@ -119,7 +119,7 @@ export default class MagazinBlock extends Component {
                   >
                     {item.name}
                   </span>
-                </Link>
+                </Link>)
               )}
             </div>
           </section>

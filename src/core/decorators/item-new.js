@@ -3,7 +3,7 @@ import { withApollo, graphql } from 'react-apollo';
 import { notification } from 'antd';
 import gql from 'graphql-tag';
 
-export default ({ fieldNames, typeName }) => WrappedComponent => {
+export default ({ fieldNames, typeName }) => (WrappedComponent) => {
   @withApollo
   @graphql(
     gql`

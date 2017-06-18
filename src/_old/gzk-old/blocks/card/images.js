@@ -57,10 +57,10 @@ export default class GzCardImages extends Component {
     original,
     srcSet,
   }) =>
-    <div className="image-gallery-image gz-image-box">
+    (<div className="image-gallery-image gz-image-box">
       <img src={original} srcSet={srcSet} />
       {/* <Link to={`/artikel${slug}`} className="gz-image-content" style={{ backgroundColor: farbe }}>{name}</Link>*/}
-    </div>;
+    </div>);
   render() {
     const {
       children,

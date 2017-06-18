@@ -55,7 +55,7 @@ class Stats extends Component {
         },
       });
 
-      report.on('success', res => {
+      report.on('success', (res) => {
         this.setState({
           header: res.columnHeaders,
           data: res.rows,
@@ -88,7 +88,7 @@ class Stats extends Component {
           <thead>
             <tr>
               {(header || []).map(item =>
-                <th key={item.name}>
+                (<th key={item.name}>
                   <a
                     href="javascript:;"
                     onClick={() => this.changeSort(item.name)}
@@ -96,25 +96,25 @@ class Stats extends Component {
                     {_(item.name).label}
                     {sortBy == item.name
                       ? <i
-                          className={
-                            'caret icon' + (!sortAsc ? ' up' : ' down')
+                        className={
+                            `caret icon${!sortAsc ? ' up' : ' down'}`
                           }
-                        />
+                      />
                       : null}
                   </a>
-                </th>
+                </th>)
               )}
             </tr>
           </thead>
           <tbody>
             {(data || []).map((items, index) =>
-              <tr key={index}>
+              (<tr key={index}>
                 {items.map((item, index) =>
-                  <td key={item}>
+                  (<td key={item}>
                     {_(header[index].name).format(item)}
-                  </td>
+                  </td>)
                 )}
-              </tr>
+              </tr>)
             )}
           </tbody>
         </table>

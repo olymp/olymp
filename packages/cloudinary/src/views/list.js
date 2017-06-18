@@ -5,20 +5,20 @@ import { Image } from '../components';
 import { intersection, upperFirst, orderBy } from 'lodash';
 
 class ListSidebar extends Component {
-  getTags = items => {
+  getTags = (items) => {
     const { search } = this.props;
     const tags = { 'Ohne Schlagworte': [] };
 
-    items.forEach(item => {
+    items.forEach((item) => {
       if (!item.tags.length) {
         tags['Ohne Schlagworte'].push(item);
       } else {
-        item.tags.forEach(tag => {
+        item.tags.forEach((tag) => {
           if (
             !search ||
             tag.toLowerCase().indexOf(search.toLowerCase()) !== -1
           ) {
-            if (!tags[tag]) tags[tag] = [];
+            if (!tags[tag]) { tags[tag] = []; }
             tags[tag].push(item);
           }
         });
@@ -36,7 +36,7 @@ class ListSidebar extends Component {
     }));
     const tags = this.getTags(items);
 
-    return Object.keys(tags).map(tag => {
+    return Object.keys(tags).map((tag) => {
       const active = !!filter.find(x => x === tag);
       const filteredTags = !active
         ? [...filter, tag]
@@ -66,9 +66,7 @@ class ListSidebar extends Component {
     });
   };
 
-  image = ({ image }) => {
-    return <Image value={image} mode="fill" width={37} height={37} retina />;
-  };
+  image = ({ image }) => <Image value={image} mode="fill" width={37} height={37} retina />;
 
   render() {
     const {
@@ -114,10 +112,10 @@ class ListSidebar extends Component {
       >
         {directories.find(dir => dir.disabled)
           ? <List.Item
-              label="Zurück"
-              icon="left"
-              onClick={() => onFilter(filter.slice(0, -1), items)}
-            />
+            label="Zurück"
+            icon="left"
+            onClick={() => onFilter(filter.slice(0, -1), items)}
+          />
           : null}
         {directories
           .filter(dir => !dir.active)
