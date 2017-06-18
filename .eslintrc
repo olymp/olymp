@@ -31,7 +31,16 @@
     "import/no-unresolved": 0,
     "import/extensions": 0,
     "import/no-extraneous-dependencies": 0,
-    "curly": ["error", "all"]
+    "curly": [
+      "error",
+      "all"
+    ],
+    // Temporary warnings
+    "react/prop-types": 1,
+    "no-param-reassign": 1,
+    "no-shadow": 1,
+    "no-unused-vars": 1,
+    "consistent-return": 1,
+    "no-use-before-define": 1
   }
 }
-
