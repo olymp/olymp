@@ -4,7 +4,11 @@
   "description": "",
   "main": "./src/core/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "eslint": "eslint packages/**",
+    "eslint-src": "eslint src/**",
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
+    "prettier-src": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"src/**/*.js\""
   },
   "engines": {
     "node": ">=6.1.0"
@@ -144,7 +148,7 @@
     "tinycolor2": "1.4.1",
     "type-of": "^2.0.1",
     "url-loader": "^0.5.9",
-    "uws": "^0.14.5",
+    "uws": "^8.14.0",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-node-externals": "^1.6.0",
@@ -157,12 +161,16 @@
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "enzyme": "^2.8.2",
-    "eslint": "^4.0.0",
+    "eslint": "3",
     "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-prettier": "^2.2.0",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
     "jest": "^20.0.4",
+    "prettier": "^1.4.4",
+    "prettier-eslint-cli": "^4.1.1",
     "watchman": "^0.1.8"
   }
 }
