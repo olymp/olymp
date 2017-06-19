@@ -311,7 +311,7 @@ class SlateEditor extends Component {
         state.document.getPreviousBlock(blockType.key) || state.document;
       return state
         .transform()
-        .collapseToStartOf(prev)
+        .collapseToEndOf(prev)
         .removeNodeByKey(blockType.key, { normalize: true })
         .apply();
     } else if (e.metaKey || e.ctrlKey) {
