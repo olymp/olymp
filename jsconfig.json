@@ -1,12 +1,12 @@
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "experimentalDecorators": true
-    },
-    "include": [
-      "packages"
-    ],
-    "exclude": [
-      "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "ES6",
+    "experimentalDecorators": true
+  },
+  "include": [
+    "packages"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

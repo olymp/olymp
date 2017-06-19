@@ -1,12 +1,15 @@
 {
   "presets": [
     "react",
-    ["env", {
-      "loose": true,
-      "targets": {
-        "node": "current"
+    [
+      "env",
+      {
+        "loose": true,
+        "targets": {
+          "node": "current"
+        }
       }
-    }]
+    ]
   ],
   "plugins": [
     "transform-decorators-legacy",
