@@ -28,6 +28,7 @@ const component = createComponent(
 );
 
 export default {
+  key: 'Pages.ImageText.Label',
   editable: true,
   component,
 };
