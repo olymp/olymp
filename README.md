@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/npm/dm/olymp.svg" alt="Downloads">
   </a>
   <a href="https://www.npmjs.com/package/vue">
-    <img src="https://img.shields.io/npm/v/olymp.svg" alt="Version">+
+    <img src="https://img.shields.io/npm/v/olymp.svg" alt="Version">
   </a>
   <a href="https://www.npmjs.com/package/vue">
     <img src="https://img.shields.io/npm/l/olymp.svg" alt="License">
