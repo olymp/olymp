@@ -15,6 +15,9 @@ export default (
   if (!defaultNode) {
     defaultNode = 'line';
   }
+  if (defaultNodes && typeof defaultNodes === 'function') {
+    defaultNodes = defaultNodes();
+  }
 
   let transform = value.transform();
   const { document, blocks } = value;

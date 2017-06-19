@@ -19,7 +19,6 @@ const component = createComponent(
 
 export default {
   key: 'Pages.ImageText.Image',
-  editable: false,
   component,
   actions: [
     {

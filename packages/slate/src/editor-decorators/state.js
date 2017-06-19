@@ -92,7 +92,6 @@ export default (
                 return newArr;
               }, []);
 
-            console.log(rawValue);
             if (rawValue && flattenNodes(rawValue.nodes).length) {
               if (onChangeHeadings) {
                 onChangeHeadings(getHeaders(rawValue.nodes));
