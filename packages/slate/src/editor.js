@@ -5,7 +5,6 @@ import { Editor, Html, Raw, Plain } from 'slate';
 import {
   withSlateState,
   withAutoMarkdown,
-  withUniqueId,
   useBlocks,
 } from './editor-decorators';
 import withBlockTypes from './decorators';
@@ -29,7 +28,7 @@ const options = {
     { type: 'bold', label: <b>B</b> },
     { type: 'italic', label: <i>I</i> },
     { type: 'underlined', label: <u>U</u> },
-    { type: 'center', icon: 'to-top' },
+    { type: 'center', label: <span>&#8452;</span> },
     { type: 'code', label: <span>{'>'}</span> },
   ],
   toolbarTypes: [
@@ -253,7 +252,6 @@ const serializer = new Html({
 export const htmlSerializer = serializer;
 
 @withBlockTypes
-@withUniqueId()
 @withSlateState({ terse: true })
 @useBlocks(options)
 export default // @withToolbar(options)
