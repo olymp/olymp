@@ -19,20 +19,20 @@ export default WrappedComponent =>
 
 export const useBlockTypes = (types) => {
   const blockTypes = Object.keys(types).reduce((result, key) => {
-    let { component, styles, editable, ...rest } = types[key];
+    let { component, styles, editable, slate, ...rest } = types[key];
+    const newKey = types[key].key || key;
     if (styles && typeof styles === 'object') {
       component = createComponent(() => styles, component, p => Object.keys(p));
     }
     if (styles && typeof styles === 'function') {
       component = createComponent(styles, component, p => Object.keys(p));
     }
-    result[key] = useBlockBase({ isVoid: !editable, isAtomic: true })(
+    result[newKey] = useBlockBase({ isVoid: !editable, isAtomic: true })(
       component
     );
-    result[key].slate = { ...result[key].slate, key, ...rest };
+    result[newKey].slate = { ...slate, ...rest, key: newKey };
     return result;
   }, {});
-  console.log(blockTypes);
   return WrappedComponent =>
     class UseBlockTypes extends Component {
       static childContextTypes = {

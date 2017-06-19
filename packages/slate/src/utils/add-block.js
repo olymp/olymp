@@ -12,7 +12,6 @@ export default (
   { type, isVoid, isAtomic, defaultNodes },
   { defaultNode }
 ) => {
-  console.log(defaultNodes, isAtomic);
   if (!defaultNode) {
     defaultNode = 'line';
   }

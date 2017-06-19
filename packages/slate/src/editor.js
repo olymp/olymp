@@ -290,7 +290,6 @@ class SlateEditor extends Component {
     const blockType =
       state.startBlock &&
       get(this.props.blockTypes, `${state.startBlock.type}.slate`);
-    console.log(blockType);
     if (e.shiftKey && data.key === 'enter') {
       // shift + enter
       return state.transform().insertText('\n').apply();
@@ -333,6 +332,8 @@ class SlateEditor extends Component {
       !!value.history.undos &&
       !!value.history.undos._head &&
       value.history.undos._head.value;
+
+    console.log(nodes);
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>

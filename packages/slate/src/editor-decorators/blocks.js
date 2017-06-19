@@ -28,49 +28,6 @@ export default (options = {}) => {
         plugins: [],
         blockTypes: {},
       };
-      /* onDocumentChange = (document, state) => {
-      const blocks = document.getBlocks();
-      const last = blocks.last();
-      const newBlockTypes = { ...blockTypes, ...this.props.blockTypes };
-      console.log(newBlockTypes, Object.keys(newBlockTypes).indexOf(last.type), Object.keys(newBlockTypes).indexOf(last.type) === -1);
-      if (Object.keys(newBlockTypes).indexOf(last.type) === -1) return undefined;
-
-      const normalized = state
-        .transform()
-        .collapseToEndOf(last)
-        .splitBlock()
-        .setBlock({
-          type: 'line',
-          isVoid: false,
-          data: {},
-        })
-        .apply({
-          save: false,
-        });
-
-      this.props.onChange(normalized);*/
-      /* onBeforeChange = (state) => {
-      const { document } = state;
-      const newBlockTypes = { ...blockTypes, ...this.props.blockTypes };
-      const blocks = document.getBlocks();
-      const last = blocks.last();
-      if (Object.keys(newBlockTypes).indexOf(last.type) === -1) return undefined;
-
-      const normalized = state
-        .transform()
-        .collapseToEndOf(last)
-        .splitBlock()
-        .setBlock({
-          type: 'line',
-          isVoid: false,
-          data: {},
-        })
-        .apply({
-          save: false,
-        });
-
-      return normalized;
-    }*/
       render() {
         const { sidebarTypes } = this.props;
         const newNodes = {
