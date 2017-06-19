@@ -1,4 +1,4 @@
-export { Block, Editor } from 'slate';
+export { Block, Editor, Raw } from 'slate';
 export {
   useBlockBase,
   useBlockResize,
@@ -20,7 +20,6 @@ export {
   default as SlateMate,
   SlateMateFrontend,
   htmlSerializer,
-  rawSerializer,
 } from './editor';
 export { default as withBlockTypes, useBlockTypes } from './decorators';
 export { default as SlateTreeEdit } from './tree';

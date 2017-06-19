@@ -61,7 +61,9 @@ export default (options = {}) => (Block) => {
       const { node, editor, state, children } = this.props;
       const blockProps = (props || []).reduce((state, prop) => {
         const data = this.getData(prop);
-        if (data !== undefined) { state[prop] = data; }
+        if (data !== undefined) {
+          state[prop] = data;
+        }
         return state;
       }, {});
       const active =

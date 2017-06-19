@@ -1,7 +1,7 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
 
-const Label = createComponent(
+const component = createComponent(
   ({ theme }) => ({
     position: 'absolute',
     bottom: 0,
@@ -29,5 +29,5 @@ const Label = createComponent(
 
 export default {
   editable: true,
-  component: Label,
+  component,
 };
