@@ -2,15 +2,12 @@
   "version": "15.0.7",
   "name": "olymp",
   "description": "",
-  "main": "./src/core/index.js",
+  "main": "./packages/core",
   "scripts": {
     "test": "jest",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
-    "eslint-src": "eslint src/** --quiet",
-    "eslint-src-all": "eslint src/**",
-    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
-    "prettier-src": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"src/**/*.js\""
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\""
   },
   "engines": {
     "node": ">=6.1.0"
