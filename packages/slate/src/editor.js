@@ -251,6 +251,24 @@ const serializer = new Html({
 
 export const htmlSerializer = serializer;
 
+const getTopMost = (blockTypes, state, prev) => {
+  const next = prev ? state.document.getParent(prev.key) : state.startBlock;
+  const nextType = next && next.type;
+  const prevType = prev && prev.type;
+  const isAtomic =
+    nextType &&
+    blockTypes[nextType] &&
+    blockTypes[nextType].slate &&
+    blockTypes[nextType].slate.isAtomic;
+  if (
+    !nextType ||
+    !isAtomic ||
+    (prevType && prevType.indexOf(nextType) !== 0)
+  ) {
+    return prev;
+  }
+  return getTopMost(blockTypes, state, next);
+};
 @withBlockTypes
 @withSlateState({ terse: true })
 @useBlocks(options)
@@ -285,12 +303,17 @@ class SlateEditor extends Component {
   };
 
   onKeyDown = (e, data, state) => {
-    const blockType =
-      state.startBlock &&
-      get(this.props.blockTypes, `${state.startBlock.type}.slate`);
+    const blockType = getTopMost(this.props.blockTypes, state);
     if (e.shiftKey && data.key === 'enter') {
-      // shift + enter
       return state.transform().insertText('\n').apply();
+    } else if (data.key === 'backspace' && blockType) {
+      const prev =
+        state.document.getPreviousBlock(blockType.key) || state.document;
+      return state
+        .transform()
+        .collapseToStartOf(prev)
+        .removeNodeByKey(blockType.key, { normalize: true })
+        .apply();
     } else if (e.metaKey || e.ctrlKey) {
       // cmd/ctrl + ???
       switch (data.key) {
