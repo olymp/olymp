@@ -8,9 +8,6 @@ build/
 logs
 *.log
 
-# yarn
-yarn.lock
-
 # Runtime data
 pids
 *.pid
