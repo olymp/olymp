@@ -58,8 +58,15 @@ if (command === 'dev') {
     }),
     createConfig({ target: 'web', mode: 'development', port, devPort }),
   ]);
-  compiler.compilers[0].watch({ aggregateTimeout: 300 }, (err, compilation) => {
-    if (err) { return console.log('[webpack] error:', err); }
+  const watch = {
+    aggregateTimeout: 300,
+    poll: false,
+    ignored: /node_modules/,
+  };
+  compiler.compilers[0].watch(watch, (err, compilation) => {
+    if (err) {
+      return console.log('[webpack] error:', err);
+    }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
     stats.forEach(c => console.log(c.toString()));
@@ -70,6 +77,7 @@ if (command === 'dev') {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    watchOptions: watch,
     host: 'localhost',
     port: devPort,
     historyApiFallback: true,
