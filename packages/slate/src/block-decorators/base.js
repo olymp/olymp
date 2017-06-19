@@ -3,6 +3,7 @@ import { createComponent } from 'olymp-fela';
 
 export default (options = {}) => (Block) => {
   const {
+    key,
     isVoid,
     isAtomic,
     sidebar,
@@ -23,8 +24,9 @@ export default (options = {}) => (Block) => {
 
   return class BaseDecorator extends Component {
     static slate = {
+      key,
       isVoid: isVoid !== false,
-      isAtomic: isAtomic !== false,
+      isAtomic,
       sidebar,
       label,
       category,

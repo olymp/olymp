@@ -333,8 +333,6 @@ class SlateEditor extends Component {
       !!value.history.undos._head &&
       value.history.undos._head.value;
 
-    console.log(nodes);
-
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
         <Gateway into="undo">
