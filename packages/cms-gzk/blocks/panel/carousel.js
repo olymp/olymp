@@ -62,7 +62,13 @@ export default createComponent(
       paddingMedium="1rem 0.5rem"
     >
       <H2 bordered={bordered}>{title}</H2>
-      <Carousel slideInterval={7500} ratio={0.33 * size} {...p} />
+      <Carousel
+        slideInterval={7500}
+        ratio={0.33 * size}
+        radius="0:0:400"
+        thumbRadius="100:0:0"
+        {...p}
+      />
     </Grid.Item>),
   p => Object.keys(p)
 );

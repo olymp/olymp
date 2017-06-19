@@ -17,19 +17,30 @@ export default (
     blur,
     retina,
     crop: crop0,
+    radius,
   } = {},
   crop
 ) => {
-  if (!crop) { crop = crop0; }
-  if (!mode) { mode = 'fill'; }
+  if (!crop) {
+    crop = crop0;
+  }
+  if (!mode) {
+    mode = 'fill';
+  }
 
   // RETINA
   // if (retina && width) width *= 2; geht so nicht, da cloudinary einen Fehler wirft, wenn die angefragt Größe > als die tatsächlich ist
   // if (retina && height) height *= 2;
-  if (retina && maxWidth && maxWidth * 2 < width) { maxWidth *= 2; }
-  if (retina && maxHeight && maxHeight * 2 < height) { maxHeight *= 2; }
+  if (retina && maxWidth && maxWidth * 2 < width) {
+    maxWidth *= 2;
+  }
+  if (retina && maxHeight && maxHeight * 2 < height) {
+    maxHeight *= 2;
+  }
 
-  if (!url) { return url; }
+  if (!url) {
+    return url;
+  }
   if (crop) {
     width = crop[0];
     height = crop[1];
@@ -41,7 +52,9 @@ export default (
       .split('ttp://res.cloudinary.com/')
       .join('ttps://res.cloudinary.com/');
   }
-  if (url.indexOf('https://res.cloudinary.com/') !== 0) { return url; }
+  if (url.indexOf('https://res.cloudinary.com/') !== 0) {
+    return url;
+  }
   let part = defaultState;
   if (cropX !== undefined && cropY !== undefined) {
     part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
@@ -50,8 +63,12 @@ export default (
   }
 
   if (maxWidth || maxHeight) {
-    if (maxWidth) { part += `,w_${maxWidth}`; }
-    if (maxHeight) { part += `,h_${maxHeight}`; }
+    if (maxWidth) {
+      part += `,w_${maxWidth}`;
+    }
+    if (maxHeight) {
+      part += `,h_${maxHeight}`;
+    }
     part += `,c_${mode}`;
   }
   if (quality) {
@@ -62,6 +79,9 @@ export default (
   }
   if (part === defaultState) {
     part += ',q_75';
+  }
+  if (radius) {
+    part += `,r_${radius}`;
   }
   if (border) {
     Object.keys(border).map((key) => {

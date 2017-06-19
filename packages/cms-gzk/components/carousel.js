@@ -39,7 +39,7 @@ export default class Carousel extends Component {
   getHeight = width => Math.floor(width / this.props.ratio);
 
   render() {
-    const { items } = this.props;
+    const { items, radius, thumbRadius } = this.props;
 
     const images =
       items &&
@@ -47,31 +47,41 @@ export default class Carousel extends Component {
         original: cloudinaryUrl(url, {
           width: 800,
           height: this.getHeight(800),
+          radius,
           ...rest,
         }),
         srcSet: `
         ${cloudinaryUrl(url, {
           width: 400,
           height: this.getHeight(400),
+          radius,
           ...rest,
         })} 400w,
         ${cloudinaryUrl(url, {
           width: 800,
           height: this.getHeight(800),
+          radius,
           ...rest,
         })} 800w,
         ${cloudinaryUrl(url, {
           width: 1200,
           height: this.getHeight(1200),
+          radius,
           ...rest,
         })} 1200w,
         ${cloudinaryUrl(url, {
           width: 1600,
           height: this.getHeight(1600),
+          radius,
           ...rest,
         })} 1600w
       `,
-        thumbnail: cloudinaryUrl(url, { width: 150, height: 150, ...rest }),
+        thumbnail: cloudinaryUrl(url, {
+          width: 150,
+          height: 150,
+          radius: thumbRadius,
+          ...rest,
+        }),
         renderItem: render,
       }));
 
