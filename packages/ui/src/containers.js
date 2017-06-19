@@ -4,8 +4,6 @@ export const SplitView = createComponent(
   ({ deviceWidth, center }) => ({
     display: 'flex',
     flex: 1,
-    background:
-      'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
     minHeight: 600,
     '> :first-child': {
       flex: 0,
