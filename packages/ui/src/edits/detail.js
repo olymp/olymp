@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withItems } from 'olymp-core/decorators';
+import { withItems } from 'olymp';
 import { Select } from 'antd';
 
 @withItems()

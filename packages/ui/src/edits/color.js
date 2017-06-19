@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
-import { withColors } from 'olymp-core/decorators';
+import { withColors } from 'olymp';
 
 const ColorPicker = null;
 if (typeof document !== 'undefined') {
