@@ -7,6 +7,7 @@ export default (options = {}) => (Block) => {
     isVoid,
     isAtomic,
     sidebar,
+    actions,
     label,
     category,
     icon,
@@ -26,6 +27,7 @@ export default (options = {}) => (Block) => {
     static slate = {
       key,
       isVoid: isVoid !== false,
+      actions,
       isAtomic,
       sidebar,
       label,

@@ -13,7 +13,6 @@ export {
   withSidebar,
   withToolbar,
   withAutoMarkdown,
-  withUniqueId,
   useBlocks,
 } from './editor-decorators';
 export {
