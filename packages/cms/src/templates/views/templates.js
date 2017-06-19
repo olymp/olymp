@@ -26,7 +26,7 @@ class Templates extends Component {
     const text = this.props.text || item.text;
 
     return (
-      <SplitView deviceWidth={deviceWidth}>
+      <SplitView deviceWidth={deviceWidth} background>
         <ListSidebar
           id={id}
           onClick={handleListClick}

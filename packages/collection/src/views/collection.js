@@ -40,7 +40,7 @@ export default (type, collection) => {
       })(<Page readOnly={false} binding={item} />);
 
       return (
-        <SplitView deviceWidth={deviceWidth}>
+        <SplitView deviceWidth={deviceWidth} background>
           <ListSidebar
             id={id}
             onClick={handleListClick}
