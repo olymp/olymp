@@ -18,10 +18,16 @@ export default (
   } = {},
   crop
 ) => {
-  if (!crop) { crop = crop0; }
-  if (!mode) { mode = 'fill'; }
+  if (!crop) {
+    crop = crop0;
+  }
+  if (!mode) {
+    mode = 'fill';
+  }
 
-  if (!url) { return url; }
+  if (!url) {
+    return url;
+  }
   if (crop) {
     width = crop[0];
     height = crop[1];
@@ -33,7 +39,9 @@ export default (
       .split('ttp://res.cloudinary.com/')
       .join('ttps://res.cloudinary.com/');
   }
-  if (url.indexOf('https://res.cloudinary.com/') !== 0) { return url; }
+  if (url.indexOf('https://res.cloudinary.com/') !== 0) {
+    return url;
+  }
   let part = defaultState;
   if (cropX !== undefined && cropY !== undefined) {
     part = `x_${cropX},y_${cropY},w_${width},h_${height},c_crop/${part}`;
