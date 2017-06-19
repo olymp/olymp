@@ -21,7 +21,9 @@ process.noDeprecation = true;
 
 module.exports = ({ mode, target, port, devPort, ssr }) => {
   const isSSR = ssr !== false;
-  if (!isSSR) { console.log('SSR OFF'); }
+  if (!isSSR) {
+    console.log('SSR OFF');
+  }
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
@@ -44,18 +46,11 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           moment: path.resolve(appRoot, 'node_modules', 'moment'),
           lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
           olymp: olympRoot,
-          hashtax: path.resolve(olympRoot, 'src', 'hashtax'),
-          'olymp-icons': path.resolve(olympRoot, 'src', 'icons'),
           '@root': appRoot,
           '@app': isNode && !isSSR
             ? path.resolve(__dirname, 'noop')
             : path.resolve(appRoot, 'app'),
         },
-        fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => {
-          // get all folders in src and create 'olymp-xxx' alias
-          obj[`olymp-${item}`] = path.resolve(olympRoot, 'src', item);
-          return obj;
-        }, {}),
         fs
           .readdirSync(path.resolve(olympRoot, 'packages'))
           .reduce((obj, item) => {
@@ -88,7 +83,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           : undefined,
       }),
       // new PrepackWebpackPlugin({ }),
-      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de/),
+      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
@@ -463,7 +458,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       new HappyPack({
         id: 'less',
         threads: 4,
-        tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
         loaders: [
           {
             path: 'style-loader',
@@ -488,7 +482,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       new HappyPack({
         id: 'css',
         threads: 4,
-        tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
         loaders: [
           {
             path: 'style-loader',
@@ -512,7 +505,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       new HappyPack({
         id: 'babel',
         threads: 4,
-        tempDir: path.resolve(appRoot, 'build', target, 'happypack'),
         loaders: [
           {
             path: babel.loader,
