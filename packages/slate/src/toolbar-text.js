@@ -10,14 +10,16 @@ export default class ToolbarText extends Component {
     e.preventDefault();
     onChange(addBlock(state, props, defaultNode));
   };
-  renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
+  renderBlockButton = props =>
+    this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
     e.stopPropagation();
     e.preventDefault();
     const { state, onChange } = this.props;
     onChange(state.transform().toggleMark(type).apply());
   };
-  renderMarkButton = props => this.renderOptionButton(props, hasMark, this.onClickMark);
+  renderMarkButton = props =>
+    this.renderOptionButton(props, hasMark, this.onClickMark);
   renderActionButton = (props) => {
     const isActive = props.isActive ? props.isActive(this.props) : false;
     const isActiveFn = () => isActive;
@@ -69,14 +71,7 @@ export default class ToolbarText extends Component {
     this.setState({ menu });
   };
   render() {
-    const {
-      state,
-      blockTypes,
-      onChange,
-      toolbarMarks,
-      toolbarTypes,
-      toolbarActions,
-    } = this.props;
+    const { state, toolbarMarks, toolbarTypes, toolbarActions } = this.props;
     const show = !state.isBlurred && !state.isCollapsed;
 
     return (

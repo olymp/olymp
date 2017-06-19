@@ -11,7 +11,9 @@ const getSidebarTypes = blockTypes =>
 export default (options = {}) => {
   const { marks, nodes } = options;
   let { blockTypes } = options;
-  if (!blockTypes) { blockTypes = {}; }
+  if (!blockTypes) {
+    blockTypes = {};
+  }
   return Editor =>
     class SlateBlocksDecorator extends Component {
       static propTypes = {

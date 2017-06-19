@@ -16,6 +16,7 @@ export default (props) => {
     type: key,
   }));
   sortBy(types, ['category', 'label']).forEach((action) => {
+    if (!action.label) { return; }
     const onMouseDown = (e) => {
       e.preventDefault();
       onChange(addBlock(state, action, { defaultNode }));
@@ -28,7 +29,9 @@ export default (props) => {
       </Menu.Item>
     );
     if (action.category) {
-      if (!categories[action.category]) { categories[action.category] = []; }
+      if (!categories[action.category]) {
+        categories[action.category] = [];
+      }
       categories[action.category].push(item);
     } else {
       menuItems.push(item);
