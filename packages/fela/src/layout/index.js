@@ -3,7 +3,7 @@ import { createComponent } from 'react-fela';
 import Container from '../container';
 
 const WithContainer = ({ container, ...rest }) =>
-  container ? <Container {...rest} /> : <div {...rest} />;
+  (container ? <Container {...rest} /> : <div {...rest} />);
 
 const Layout = createComponent(
   () => ({
