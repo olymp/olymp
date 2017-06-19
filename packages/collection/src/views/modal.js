@@ -17,7 +17,9 @@ export default class CollectionList extends Component {
     const { form, item, router, mutate } = this.props;
     const id = !this.props.id || this.props.id === 'new' ? null : this.props.id;
     form.validateFields((err, input) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       mutate({
         variables: {
           id,
@@ -87,7 +89,7 @@ export default class CollectionList extends Component {
         title={typeName}
         subtitle={description || 'Bearbeiten'}
       >
-        <SplitView>
+        <SplitView background>
           <List side="left">
             <List.Title
               buttons={

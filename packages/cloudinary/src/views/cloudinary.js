@@ -46,7 +46,9 @@ class CloudinaryView extends Component {
         ],
       });
 
-    if (!data || !data.cloudinaryRequest) { return {}; }
+    if (!data || !data.cloudinaryRequest) {
+      return {};
+    }
 
     const { apiKey, signature, timestamp, url } = data.cloudinaryRequest;
     return {
@@ -156,7 +158,7 @@ class CloudinaryView extends Component {
     const filteredItems = this.state.filteredItems || items;
 
     return (
-      <SplitView deviceWidth={deviceWidth}>
+      <SplitView deviceWidth={deviceWidth} background>
         <ListSidebar
           items={items}
           upload={this.getUploadPops()}
