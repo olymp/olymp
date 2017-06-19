@@ -26,7 +26,7 @@ export const Container = createComponent(
     height: '100%',
     '> :last-child': {
       flex: 1,
-      minHeight: '100%',
+      height: '100%',
       overflowY: 'auto',
     },
   }),
