@@ -1,12 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import {
-  useBlockBase,
-  useGenericBlock,
-  useBlockToolbar,
-  GenericBlock,
-  Block,
-} from 'olymp-slate';
-import { cn } from 'olymp';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { useGenericBlock, GenericBlock } from 'olymp-slate';
 
 const defaultVideo = 'https://www.youtube.com/embed/zalYJacOhpo';
 const actions = props => [
@@ -17,7 +11,9 @@ const actions = props => [
       const { setData, getData } = props;
       const currentUrl = getData('url') || defaultVideo;
       const url = window.prompt('URL', currentUrl);
-      if (url) { setData({ url }); }
+      if (url) {
+        setData({ url });
+      }
     },
     active: false,
   },

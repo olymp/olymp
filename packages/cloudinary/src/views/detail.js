@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Spin, Checkbox, Popconfirm } from 'antd';
 import moment from 'moment';

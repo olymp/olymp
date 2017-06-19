@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import { Select } from 'antd';
 import { url as optimizeUrl } from '../utils';

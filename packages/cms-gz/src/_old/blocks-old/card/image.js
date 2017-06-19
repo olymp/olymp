@@ -1,13 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { CloudinaryImage } from 'olymp';
-import {
-  useBlockBase,
-  useGenericBlock,
-  useBlockToolbar,
-  GenericBlock,
-  Block,
-} from 'olymp-slate';
-import { Image } from 'olymp-cms';
+import { useGenericBlock, GenericBlock } from 'olymp-slate';
 
 const defaultImage = 'whoa.jpg';
 const actions = props => [

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withAuth } from 'olymp';
 import { DataLoader } from 'olymp-cms-core';
 import { useGenericBlock, GenericBlock } from 'olymp-slate';

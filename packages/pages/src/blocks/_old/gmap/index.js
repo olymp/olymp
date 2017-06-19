@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { useGenericBlock, GenericBlock } from 'olymp-slate';
 import { gql, withApollo } from 'olymp';
 import { GoogleMap } from 'olymp-cms-core';

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // defaultColors = [{ color: 'red', name: 'Termin' (optional) }, 'blue', ...]
 export const withColors = WrappedComponent =>
   class WithColors extends Component {
     static contextTypes = {
-      defaultColors: React.PropTypes.array,
+      defaultColors: PropTypes.array,
     };
 
     render() {
@@ -17,7 +18,7 @@ export const withColors = WrappedComponent =>
 export const useColors = (defaultColors = []) => WrappedComponent =>
   class UseColors extends Component {
     static childContextTypes = {
-      defaultColors: React.PropTypes.array,
+      defaultColors: PropTypes.array,
     };
 
     getChildContext() {

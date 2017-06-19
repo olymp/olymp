@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, notification } from 'antd';
 import { Sidebar, Placeholder } from 'olymp-ui';
 import { isEqual } from 'lodash';
@@ -33,13 +34,15 @@ class SelectionSidebar extends Component {
     const items = propItems.map((propItem) => {
       const stateItem = stateItems.find(item => item.id === propItem.id);
 
-      return stateItem || {
-        ...propItem,
-        source: source && stateItems[0]
-              ? stateItems[0].source
-              : propItem.source,
-        tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
-      }; // nur neue Items hinzufügen, ansonsten Items aus State verwenden
+      return (
+        stateItem || {
+          ...propItem,
+          source: source && stateItems[0]
+            ? stateItems[0].source
+            : propItem.source,
+          tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
+        }
+      ); // nur neue Items hinzufügen, ansonsten Items aus State verwenden
     });
 
     this.setState({ items });

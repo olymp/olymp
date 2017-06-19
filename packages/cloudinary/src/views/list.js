@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Popover, Upload } from 'antd';
 import { Sidebar, List } from 'olymp-ui';
 import { Image } from '../components';
@@ -18,7 +19,9 @@ class ListSidebar extends Component {
             !search ||
             tag.toLowerCase().indexOf(search.toLowerCase()) !== -1
           ) {
-            if (!tags[tag]) { tags[tag] = []; }
+            if (!tags[tag]) {
+              tags[tag] = [];
+            }
             tags[tag].push(item);
           }
         });
@@ -66,7 +69,8 @@ class ListSidebar extends Component {
     });
   };
 
-  image = ({ image }) => <Image value={image} mode="fill" width={37} height={37} retina />;
+  image = ({ image }) =>
+    <Image value={image} mode="fill" width={37} height={37} retina />;
 
   render() {
     const {

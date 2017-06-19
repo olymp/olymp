@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Tree } from 'olymp-ui';
 import { Icon } from 'antd';
 import withBlockTypes from '../decorators';
@@ -25,7 +25,9 @@ export default class SlateTree extends Component {
     childIds.splice(info.dropPosition, 0, page.id);
 
     // Check if new parent is itself??
-    if (parent.id === pageId) { return; }
+    if (parent.id === pageId) {
+      return;
+    }
     if (parent.id !== page.parentId) {
       // parent changed
       move({
@@ -38,7 +40,9 @@ export default class SlateTree extends Component {
     } else {
       // just moved inside existing parent
       // Disallow sort if parent has fixed sorting
-      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) { return; }
+      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) {
+        return;
+      }
       reorder({
         variables: {
           id: parent.id,
@@ -56,7 +60,10 @@ export default class SlateTree extends Component {
       ? node.nodes.reduce((length, node) => this.getTextLength(node, length), 0)
       : 0;
     const ranges = node.ranges
-      ? node.ranges.reduce((length, node) => this.getTextLength(node, length), 0)
+      ? node.ranges.reduce(
+          (length, node) => this.getTextLength(node, length),
+          0
+        )
       : 0;
     return length + text + children + ranges;
   };

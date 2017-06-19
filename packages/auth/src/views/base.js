@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, Modal } from 'olymp';
 import { notification } from 'antd';
 
@@ -43,7 +44,7 @@ const def = (
     </Modal.Copyright>
   </Modal>);
 def.contextTypes = {
-  theme: React.PropTypes.object,
+  theme: PropTypes.object,
 };
 
 export default def;
@@ -80,5 +81,7 @@ export const onEnterFocus = ref => (e) => {
 };
 
 export const onEnterOk = onOk => (e) => {
-  if (e.key === 'Enter') { onOk(); }
+  if (e.key === 'Enter') {
+    onOk();
+  }
 };

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'olymp';
 
 @withRouter
@@ -9,7 +10,7 @@ export default class LightboxProvider extends Component {
   };
 
   static childContextTypes = {
-    lightbox: React.PropTypes.object,
+    lightbox: PropTypes.object,
   };
 
   getChildContext() {

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const getStyle = (align) => {
   if (align === 'left') {
@@ -32,11 +33,19 @@ export default (options = {}) => (Block) => {
 
     setAlignment = (align) => {
       const { setData } = this.props;
-      if (align === 'left') { setData({ align }); } else if (align === 'right') { setData({ align }); } else { setData({ align: null }); }
+      if (align === 'left') {
+        setData({ align });
+      } else if (align === 'right') {
+        setData({ align });
+      } else {
+        setData({ align: null });
+      }
     };
 
     render() {
-      if (enable === false) { return <Block {...this.props} />; }
+      if (enable === false) {
+        return <Block {...this.props} />;
+      }
       const { getData } = this.props;
       const alignment = getData('align');
       const style = {

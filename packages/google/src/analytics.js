@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import Static from './static';
 import { DateRange } from './../../edits';
@@ -6,7 +7,7 @@ import { DateRange } from './../../edits';
 let firstRun = true;
 export default class Analytics extends Component {
   static contextTypes = {
-    apiClient: React.PropTypes.object.isRequired,
+    apiClient: PropTypes.object.isRequired,
   };
 
   state = {
@@ -206,9 +207,7 @@ export default class Analytics extends Component {
                 Kuchendiagramm
               </a>
               <a
-                className={
-                  `teal item${chart.type == 'LINE' ? ' active' : ''}`
-                }
+                className={`teal item${chart.type == 'LINE' ? ' active' : ''}`}
                 onClick={() => this.setState({ chart: { type: 'LINE' } })}
               >
                 Liniendiagramm

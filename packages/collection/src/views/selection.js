@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Prompt } from 'olymp';
 import { Form, Button } from 'antd';
 import { Sidebar, onError, onSuccess } from 'olymp-ui';
@@ -10,7 +11,9 @@ class SelectionSidebar extends Component {
     const id = item.id;
 
     form.validateFields((err, input) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       mutate({
         variables: {
           id,

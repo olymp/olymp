@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { message } from 'antd';
 import { isEqual } from 'lodash';
 import { SplitView } from 'olymp-ui';

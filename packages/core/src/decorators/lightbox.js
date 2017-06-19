@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import cloudinaryUrl from '../cloudinary-url';
 
@@ -7,11 +8,13 @@ export default ({ getImage } = {}) => WrappedComponent =>
   class Lightbox extends Component {
     id = Math.random().toString(36).substr(2, 9);
     static contextTypes = {
-      lightbox: React.PropTypes.object,
+      lightbox: PropTypes.object,
     };
     setImage(props) {
       const image = (getImage || defaultGetImage)(props);
-      if (image) { this.context.lightbox.add(this.id, image); }
+      if (image) {
+        this.context.lightbox.add(this.id, image);
+      }
     }
     componentWillMount() {
       this.setImage(this.props);
@@ -33,7 +36,9 @@ export default ({ getImage } = {}) => WrappedComponent =>
         <WrappedComponent
           {...this.props}
           onClick={() => {
-            if (onClick) { onClick(); }
+            if (onClick) {
+              onClick();
+            }
 
             this.context.lightbox.show(this.id);
           }}
@@ -48,7 +53,7 @@ export const useLightbox = WrappedComponent =>
     lightboxes = {};
     state = { visible: false };
     static childContextTypes = {
-      lightbox: React.PropTypes.object,
+      lightbox: PropTypes.object,
     };
 
     getChildContext() {

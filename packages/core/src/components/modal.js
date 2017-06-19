@@ -1,4 +1,5 @@
-import React, { Component, Children } from 'react';
+import React, { Children } from 'react';
+import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { Button as AntButton } from 'antd';
 import cn from 'classnames';
@@ -91,7 +92,7 @@ export const Modal = (
     </Gateway>
   );
 };
-Modal.contextTypes = { theme: React.PropTypes.object };
+Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
   ({

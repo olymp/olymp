@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, Children } from 'react';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 import { Gateway } from 'react-gateway';
 import { Button } from 'antd';
 import { Editor, Html, Raw, Plain } from 'slate';

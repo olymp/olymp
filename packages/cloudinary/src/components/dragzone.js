@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Upload, Progress as AntProgress } from 'antd';
 import { createComponent } from 'olymp-fela';
 
