@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import useBlockBase from '../block-decorators/base';
 import { createComponent } from 'olymp-fela';
 
 export default WrappedComponent =>
   class WithBlockTypes extends Component {
     static contextTypes = {
-      blockTypes: React.PropTypes.object,
+      blockTypes: PropTypes.object,
     };
     render() {
       return (
@@ -40,7 +41,7 @@ export const useBlockTypes = (types) => {
   return WrappedComponent =>
     class UseBlockTypes extends Component {
       static childContextTypes = {
-        blockTypes: React.PropTypes.object,
+        blockTypes: PropTypes.object,
       };
       getChildContext() {
         return {

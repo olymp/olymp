@@ -1,8 +1,9 @@
-import React, { Component, Children, PropTypes } from 'react';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 
 export class LangProvider extends Component {
   static childContextTypes = {
-    lang: React.PropTypes.object,
+    lang: PropTypes.object,
   };
   getChildContext() {
     return {
@@ -26,7 +27,7 @@ export default (WrappedComponent) => {
   const withLang = (props, context) =>
     <WrappedComponent lang={context.lang} {...props} />;
   withLang.contextTypes = {
-    lang: React.PropTypes.object,
+    lang: PropTypes.object,
   };
   return withLang;
 };

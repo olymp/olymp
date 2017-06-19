@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { EditorBlock } from 'draft-wysiwyg';
 
 export default function (size) {

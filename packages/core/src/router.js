@@ -1,10 +1,5 @@
-import React, {
-  PropTypes,
-  Children,
-  Component,
-  createElement,
-  cloneElement,
-} from 'react';
+import React, { Children, Component, createElement, cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import { Link as LinkLegacy, NavLink as NavLinkLegacy } from 'react-router-dom';
 export { Route, Switch, Redirect, Prompt } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -44,11 +39,18 @@ export const withRouter = (WrappedComponent) => {
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
-        if (router.lastPath === to.pathname && router.lastSearch === to.search) { return; }
+        if (
+          router.lastPath === to.pathname &&
+          router.lastSearch === to.search
+        ) {
+          return;
+        }
         router.lastPath = to.pathname;
         router.lastSearch = to.search;
       } else {
-        if (router.lastPath === to) { return; }
+        if (router.lastPath === to) {
+          return;
+        }
         router.lastPath = to;
         router.lastSearch = null;
       }
@@ -61,11 +63,18 @@ export const withRouter = (WrappedComponent) => {
       if (to.query) {
         to.search = stringifyQuery(to.query);
         delete to.query;
-        if (router.lastPath === to.pathname && router.lastSearch === to.search) { return; }
+        if (
+          router.lastPath === to.pathname &&
+          router.lastSearch === to.search
+        ) {
+          return;
+        }
         router.lastPath = to.pathname;
         router.lastSearch = to.search;
       } else {
-        if (router.lastPath === to) { return; }
+        if (router.lastPath === to) {
+          return;
+        }
         router.lastPath = to;
         router.lastSearch = null;
       }
@@ -104,8 +113,12 @@ export const SimpleSwitch = ({ children, ...rest }) => {
       notFound = route;
     }
   }
-  if (match) { return match; }
-  if (!match && notFound) { return cloneElement(notFound, { match: true }); }
+  if (match) {
+    return match;
+  }
+  if (!match && notFound) {
+    return cloneElement(notFound, { match: true });
+  }
   return null;
 };
 
@@ -117,8 +130,12 @@ export const SimpleRoute = ({
   ...rest
 }) => {
   rest = { ...rest, ...location, location };
-  if (match && component) { return createElement(component, rest); }
-  if (match && render) { return render(rest); }
+  if (match && component) {
+    return createElement(component, rest);
+  }
+  if (match && render) {
+    return render(rest);
+  }
   return null;
 };
 
@@ -153,9 +170,13 @@ function memoize(func) {
 
 export const parseQuery = memoize((str) => {
   const ret = Object.create(null);
-  if (typeof str !== 'string') { return ret; }
+  if (typeof str !== 'string') {
+    return ret;
+  }
   str = str.trim().replace(/^(\?|#|&)/, '');
-  if (!str) { return ret; }
+  if (!str) {
+    return ret;
+  }
   str.split('&').forEach((param) => {
     const parts = param.replace(/\+/g, ' ').split('=');
     const key = parts.shift();
@@ -173,40 +194,43 @@ export const parseQuery = memoize((str) => {
   return ret;
 });
 
-export const stringifyQuery = memoize(obj => obj
-    ? Object.keys(obj)
-        .sort()
-        .map((key) => {
-          const val = obj[key];
-          if (val === undefined) {
-            return '';
-          }
-          if (val === null) {
-            return key;
-            // return encodeURIComponent(key);
-          }
-          if (Array.isArray(val)) {
-            const result = [];
+export const stringifyQuery = memoize(
+  obj =>
+    obj
+      ? Object.keys(obj)
+          .sort()
+          .map((key) => {
+            const val = obj[key];
+            if (val === undefined) {
+              return '';
+            }
+            if (val === null) {
+              return key;
+              // return encodeURIComponent(key);
+            }
+            if (Array.isArray(val)) {
+              const result = [];
 
-            val.slice().forEach((val2) => {
-              if (val2 === undefined) {
-                return;
-              }
+              val.slice().forEach((val2) => {
+                if (val2 === undefined) {
+                  return;
+                }
 
-              if (val2 === null) {
-                result.push(key);
-                // result.push(encodeURIComponent(key));
-              } else {
-                result.push(`${key}=${encodeURIComponent(val2)}`);
-                // result.push(encodeURIComponent(key) + '=' + encodeURIComponent(val2));
-              }
-            });
+                if (val2 === null) {
+                  result.push(key);
+                  // result.push(encodeURIComponent(key));
+                } else {
+                  result.push(`${key}=${encodeURIComponent(val2)}`);
+                  // result.push(encodeURIComponent(key) + '=' + encodeURIComponent(val2));
+                }
+              });
 
-            return result.join('&');
-          }
-          return `${key}=${encodeURIComponent(val)}`;
-          // return encodeURIComponent(key, opts) + '=' + encodeURIComponent(val, opts);
-        })
-        .filter(x => x.length > 0)
-        .join('&')
-    : '');
+              return result.join('&');
+            }
+            return `${key}=${encodeURIComponent(val)}`;
+            // return encodeURIComponent(key, opts) + '=' + encodeURIComponent(val, opts);
+          })
+          .filter(x => x.length > 0)
+          .join('&')
+      : ''
+);

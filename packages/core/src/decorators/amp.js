@@ -1,8 +1,9 @@
-import React, { Component, Children, PropTypes } from 'react';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 
 export class AmpProvider extends Component {
   static childContextTypes = {
-    amp: React.PropTypes.bool,
+    amp: PropTypes.bool,
   };
   getChildContext() {
     return {
@@ -18,7 +19,7 @@ export default (WrappedComponent) => {
   const withAmp = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withAmp.contextTypes = {
-    amp: React.PropTypes.bool,
+    amp: PropTypes.bool,
   };
   return withAmp;
 };

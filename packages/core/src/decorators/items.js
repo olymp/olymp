@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import withCollection from './collection';
-import isEqual from 'lodash/isEqual';
 import lowerFirst from 'lodash/lowerFirst';
 import { withRouter } from '../router';
 
@@ -34,7 +34,9 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
     }
 
     componentWillUnmount() {
-      if (this.subscription) { this.subscription.unsubscribe(); }
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+      }
       this.unmount = true;
     }
 
@@ -51,9 +53,13 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
         nextProps && nextProps.collection && nextProps.collection.name;
       console.log(lastProps, oldType, newType);
       if (!lastProps || oldType !== newType) {
-        if (this.subscription) { this.subscription.unsubscribe(); }
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
         const { client, collection, fieldNames, location, force } = nextProps;
-        if (!collection) { return; }
+        if (!collection) {
+          return;
+        }
         const query = this.newQuery || this.props.query;
         this.items = null;
         const queryName = `${lowerFirst(collection.name)}List`;
@@ -107,7 +113,9 @@ export default ({ name, state } = {}) => (WrappedComponent) => {
 
         this.subscription = watchQuery.subscribe({
           next: ({ data }) => {
-            if (this.unmount) { return; }
+            if (this.unmount) {
+              return;
+            }
             this.items = data.items;
             this.isLoading = false;
             this.setState({});

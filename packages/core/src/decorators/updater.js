@@ -1,4 +1,5 @@
-import React, { Component, Children, PropTypes } from 'react';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 import { Button, notification } from 'antd';
 import shortid from 'shortid';
 
@@ -6,7 +7,7 @@ export class WebsocketProvider extends Component {
   listeners = {};
   state = { connected: false };
   static childContextTypes = {
-    socket: React.PropTypes.object,
+    socket: PropTypes.object,
   };
   getChildContext() {
     return {
@@ -20,11 +21,15 @@ export class WebsocketProvider extends Component {
     };
   }
   unlisten = token => (name) => {
-    if (!this.listeners[name]) { this.listeners[name] = {}; }
+    if (!this.listeners[name]) {
+      this.listeners[name] = {};
+    }
     delete this.listeners[name][token];
   };
   on = (name, fc) => {
-    if (!this.listeners[name]) { this.listeners[name] = {}; }
+    if (!this.listeners[name]) {
+      this.listeners[name] = {};
+    }
     const token = shortid.generate();
     this.listeners[name][token] = fc;
     return this.unlisten(token);
@@ -33,7 +38,9 @@ export class WebsocketProvider extends Component {
     this.ws.send(JSON.stringify({ ...data, type }));
   };
   showNotification = (message, description, btn) => {
-    if (!this.key) { this.key = `open${Date.now()}`; }
+    if (!this.key) {
+      this.key = `open${Date.now()}`;
+    }
     if (!message) {
       notification.close(this.key);
     } else {
@@ -85,8 +92,12 @@ export class WebsocketProvider extends Component {
     };
     this.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === 'pong') { return onPong(data); }
-      if (this.listeners[data.type]) { this.listeners[data.type].forEach(fc => fc(data)); }
+      if (data.type === 'pong') {
+        return onPong(data);
+      }
+      if (this.listeners[data.type]) {
+        this.listeners[data.type].forEach(fc => fc(data));
+      }
     };
     this.ws.onopen = (event) => {
       this.connected(true);
@@ -122,7 +133,7 @@ export default (WrappedComponent) => {
   const withWebsocket = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withWebsocket.contextTypes = {
-    socket: React.PropTypes.object,
+    socket: PropTypes.object,
   };
   return withWebsocket;
 };

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import { slugify, unflatten } from 'olymp';
 import { Panel, SectionH } from 'olymp-ui';

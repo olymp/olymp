@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LightBox from 'react-images';
 import { withRouter } from 'olymp';
 
 @withRouter
 export default class Lightbox extends Component {
   static contextTypes = {
-    lightbox: React.PropTypes.object,
+    lightbox: PropTypes.object,
   };
 
   render() {

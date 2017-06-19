@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { throttleInput } from 'olymp';
 import { findDOMNode } from 'react-dom';
 import { DraggableCore } from 'react-draggable';
@@ -63,8 +64,12 @@ export default (options = {}) => (Block) => {
     onResizeStop = (event, { deltaX, deltaY }) => {
       const { setData } = this.props;
       const newState = {};
-      if (this.state.width) { newState.width = this.state.width; }
-      if (this.state.height) { newState.height = this.state.height; }
+      if (this.state.width) {
+        newState.width = this.state.width;
+      }
+      if (this.state.height) {
+        newState.height = this.state.height;
+      }
       setData(newState);
       this.setState({ resize: false });
     };
@@ -80,11 +85,15 @@ export default (options = {}) => (Block) => {
           : getData('width', initialWidth);
         const relWidth = Math.round(12 / elementDimensions.width * width);
 
-        if (relWidth >= 0) { newState.width = relWidth; }
+        if (relWidth >= 0) {
+          newState.width = relWidth;
+        }
       }
       if (resizeY !== false) {
         const height = y || getData('width', initialWidth);
-        if (height >= 0) { newState.height = height; }
+        if (height >= 0) {
+          newState.height = height;
+        }
       }
 
       if (
@@ -96,7 +105,9 @@ export default (options = {}) => (Block) => {
     };
 
     render() {
-      if (enable === false) { return <Block {...this.props} />; }
+      if (enable === false) {
+        return <Block {...this.props} />;
+      }
       const { editor, alignment, style, className } = this.props;
       const { resize, height, width } = this.state;
 
@@ -124,7 +135,9 @@ export default (options = {}) => (Block) => {
         ...style,
         // todo: display: 'inline-block'
       };
-      if (height) { blockStyle.height = `${height}px`; }
+      if (height) {
+        blockStyle.height = `${height}px`;
+      }
 
       return (
         <Block

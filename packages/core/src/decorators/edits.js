@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export const withEdits = WrappedComponent =>
   class WithEdits extends Component {
     static contextTypes = {
-      edits: React.PropTypes.array,
+      edits: PropTypes.array,
     };
 
     render() {
@@ -14,7 +15,7 @@ export const withEdits = WrappedComponent =>
 export const useEdits = (edits = []) => WrappedComponent =>
   class UseEdits extends Component {
     static childContextTypes = {
-      edits: React.PropTypes.array,
+      edits: PropTypes.array,
     };
 
     getChildContext() {

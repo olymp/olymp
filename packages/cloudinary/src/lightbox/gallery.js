@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class LightboxGallery extends Component {
   static contextTypes = {
-    lightbox: React.PropTypes.object,
+    lightbox: PropTypes.object,
   };
   static childContextTypes = {
-    lightbox: React.PropTypes.object,
+    lightbox: PropTypes.object,
   };
 
   getChildContext() {

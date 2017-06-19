@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Popover } from 'antd';
 import { Sidebar, List } from 'olymp-ui';
 import { queryTemplates } from '../gql';

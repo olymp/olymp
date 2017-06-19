@@ -1,5 +1,4 @@
-import React, { Component, PropTypes, Children } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, Children } from 'react';
 import cn from 'classnames';
 
 import './accordion.less';
@@ -85,7 +84,9 @@ export default class Accordion extends Component {
         </AccordionItem>);
 
       if (tab) {
-        if (isActive) { content = React.Children.only(item.props.children); }
+        if (isActive) {
+          content = React.Children.only(item.props.children);
+        }
         return inner;
       }
       return (
@@ -96,7 +97,9 @@ export default class Accordion extends Component {
       );
     });
 
-    if (items.length === 0) { return null; }
+    if (items.length === 0) {
+      return null;
+    }
 
     let inner = items;
     if (tab) {

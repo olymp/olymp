@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'olymp';
 import { url } from '../utils';
 import Image from '../components/image';
@@ -8,7 +9,7 @@ export default class Lightbox extends Component {
   ref = Math.random().toString(36).substr(2, 9);
 
   static contextTypes = {
-    lightbox: React.PropTypes.object,
+    lightbox: PropTypes.object,
   };
 
   componentWillMount() {
@@ -67,7 +68,9 @@ export default class Lightbox extends Component {
   onClick = (e) => {
     const { onClick, router, pathname, query } = this.props;
     router.push({ pathname, query: { ...query, lightbox: this.ref } });
-    if (onClick) { onClick(e); }
+    if (onClick) {
+      onClick(e);
+    }
   };
 
   render() {

@@ -1,12 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import {
-  useBlockBase,
-  useGenericBlock,
-  useBlockToolbar,
-  GenericBlock,
-  Block,
-} from 'olymp-slate';
-import { Image, MediaModal } from 'olymp-cms';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { useGenericBlock, GenericBlock } from 'olymp-slate';
+import { MediaModal } from 'olymp-cms';
 import Carousel from '../../components/carousel';
 
 const defaultImage = 'whoa.jpg';
