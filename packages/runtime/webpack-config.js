@@ -11,9 +11,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
-const HappyPack = require('happypack');
-
-HappyPack.ThreadPool({ size: 5 });
 
 const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..', '..');
@@ -223,6 +220,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     ]);
     // babel.options.presets.push(['react-optimize']);
   }
+  config.module.rules.push(babel);
 
   // webpack plugins
   if (isWeb && isProd) {
@@ -440,7 +438,6 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         fallback: 'style-loader',
       }),
     });
-    config.module.rules.push(babel);
     config.module.rules.push({
       test: /\.css$/,
       loader: ExtractTextPlugin.extract({
@@ -453,97 +450,40 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         fallback: 'style-loader',
       }),
     });
-    config.module.rules.push(babel);
   } else if (isWeb && isDev) {
-    config.plugins.push(
-      new HappyPack({
-        id: 'less',
-        threads: 4,
-        loaders: [
-          {
-            path: 'style-loader',
-            query: JSON.stringify({ insertAt: 'top' }),
-          },
-          {
-            path: 'css-loader',
-            query: JSON.stringify({ modules: false, sourceMap: true }),
-          },
-          {
-            loader: 'less-loader',
-            query: JSON.stringify({ modifyVars: theme, sourceMap: true }),
-          },
-        ],
-      })
-    );
     config.module.rules.push({
       test: /\.less$/,
-      loaders: ['happypack/loader?id=less'],
+      use: [
+        {
+          loader: 'style-loader',
+          options: { insertAt: 'top' },
+        },
+        {
+          loader: 'css-loader',
+          options: { modules: false, sourceMap: true },
+        },
+        {
+          loader: 'less-loader',
+          options: {
+            modifyVars: theme,
+            sourceMap: true,
+          },
+        },
+      ],
     });
-    config.plugins.push(
-      new HappyPack({
-        id: 'css',
-        threads: 4,
-        loaders: [
-          {
-            path: 'style-loader',
-            query: JSON.stringify({ insertAt: 'top' }),
-          },
-          {
-            path: 'css-loader',
-            query: JSON.stringify({ modules: false, sourceMap: true }),
-          },
-        ],
-      })
-    );
     config.module.rules.push({
       test: /\.css$/,
-      loaders: ['happypack/loader?id=css'],
+      use: [
+        {
+          loader: 'style-loader',
+          options: { insertAt: 'top' },
+        },
+        {
+          loader: 'css-loader',
+          options: { modules: false, sourceMap: true },
+        },
+      ],
     });
   }
-
-  if (isDev) {
-    config.plugins.push(
-      new HappyPack({
-        id: 'babel',
-        threads: 4,
-        loaders: [
-          {
-            path: babel.loader,
-            query: JSON.stringify(babel.options),
-          },
-        ],
-      })
-    );
-    config.module.rules.push({
-      test: babel.test,
-      include: babel.include,
-      loaders: ['happypack/loader?id=babel'],
-    });
-    /* config.module.rules.push({
-      test: /\.svg$/,
-      loaders: [
-        'happypack/loader?id=babel', {
-        loader: 'react-svg-loader',
-        query: {
-          jsx: true
-        },
-      }]
-    });*/
-  } else {
-    config.module.rules.push(babel);
-    /* config.module.rules.push({
-      test: /\.svg$/,
-      loaders: [{
-        loader: babel.loader,
-        query: babel.options,
-      }, {
-        loader: 'react-svg-loader',
-        query: {
-          jsx: true
-        },
-      }]
-    });*/
-  }
-
   return config;
 };
