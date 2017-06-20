@@ -25,14 +25,12 @@ export default (server, options) => {
   if (process.env.FILESTACK_KEY) {
     filestackGraphQL(Schema, process.env.FILESTACK_KEY, options.filestack);
   }
-  if (options.auth) {
-    if (typeof options.auth === 'string') {
-      options.auth = { secret: options.auth };
-    }
-    const auth = createAuth({ db, mail, ...options.auth });
-    authGraphQL(Schema, { auth });
-    server.use(authCache(auth));
+  if (typeof options.auth === 'string') {
+    options.auth = { secret: options.auth };
   }
+  const auth = createAuth({ mail, ...options.auth });
+  authGraphQL(Schema, { auth });
+  server.use(authCache(auth));
 
   if (options.schemas) {
     if (typeof options.schemas === 'function') {
