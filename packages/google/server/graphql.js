@@ -27,8 +27,8 @@ const convertGeocode = (result) => {
   return newResult;
 };
 
-module.exports = (schema, { config } = {}) => {
-  const maps = require('./maps')(config);
+export default (schema, key) => {
+  const maps = require('./maps')(key);
   schema.addSchema({
     name: 'geocode',
     query: `
