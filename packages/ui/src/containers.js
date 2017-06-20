@@ -7,12 +7,10 @@ export const SplitView = createComponent(
     background:
       background === true &&
         'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
-    minHeight: 600,
     '> :first-child': {
       flex: 0,
       overflowY: 'auto',
     },
-    // '> :not(:first-child)': {
     '> :nth-child(2)': {
       flex: 1,
       overflowY: 'auto',

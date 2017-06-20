@@ -22,6 +22,9 @@ export default class PageSidebar extends Component {
     ) {
       this.setState({ tab: 1 });
     }
+    if (props.query['@page'] !== this.props.query['@page']) {
+      this.props.form.resetFields();
+    }
   };
 
   render() {
@@ -42,7 +45,9 @@ export default class PageSidebar extends Component {
       this.props.item || flatNavigation.find(page => page.slug === '/');
 
     const value = query['@page'] || item.id;
-    if (value === 'new') { item = { parentId: query.parent, type: 'PAGE' }; }
+    if (value === 'new') {
+      item = { parentId: query.parent, type: 'PAGE' };
+    }
 
     const leftButtons = (
       <Button.Group>
