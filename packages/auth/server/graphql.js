@@ -1,22 +1,11 @@
-const getAuth = require('./auth');
-const getToken = require('./utils/token');
-const getPassword = require('./utils/password');
 const mails = require('./mails');
 
 const defaultHook = (source, args, context) => {
-  if (!context.user) { throw new Error('Must be authenticated'); }
+  if (!context.user) throw new Error('Must be authenticated');
   return Promise.resolve(args);
 };
 
-module.exports = (
-  schema,
-  { adapter, secret, mail, attributes = '', Query, Mutation } = {}
-) => {
-  const token = getToken({ secret });
-  const password = getPassword({});
-  const auth = getAuth({ adapter, password, token, mail, confirm: false });
-
-  // checkToken(token: String): Boolean
+module.exports = (schema, { db, mail, attributes = '', auth } = {}) => {
   schema.addSchema({
     name: 'user',
     query: `
@@ -42,74 +31,61 @@ module.exports = (
     `,
     resolvers: {
       Query: {
-        checkTokenMail: (source, args) =>
-          auth.checkTokenValue(args.token, 'email'),
+        checkTokenMail: (source, args) => auth.checkTokenValue(args.token, 'email'),
         checkToken: (source, args) => auth.checkToken(args.token),
-        verify: (source, args, context) =>
-          context.session &&
-          context.session.userId &&
-          auth.getUser(context.session.userId),
+        verify: (source, args, context) => context.session && context.session.userId && auth.getUser(context.session.userId),
         // verify: (source, args) => auth.verify(args.token),
         invitationList: (source, args, context) => {
-          if (!context.user || !context.user.isAdmin) { throw new Error('No permission'); }
-          const hook = Query && Query.userList ? Query.userList : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item =>
-            adapter.list('invitation', item)
-          );
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          return db.collection('invitation').find({ });
         },
         invitation: (source, args, context) => {
-          if (!context.user || !context.user.isAdmin) { throw new Error('No permission'); }
-          const hook = Query && Query.user ? Query.user : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item =>
-            adapter.read('invitation', item)
-          );
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          return db.collection('invitation').findOne({ id: args.id });
         },
         userList: (source, args, context) => {
-          if (!context.user || !context.user.isAdmin) { throw new Error('No permission'); }
-          const hook = Query && Query.userList ? Query.userList : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item =>
-            adapter.list('user', item)
-          );
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          return db.collection('user').find({ });
         },
         user: (source, args, context) => {
           if (context.user && context.user.isAdmin) {
           } else if (context.user && context.user.id === args.id) {
-          } else { throw new Error('No permission'); }
-          const hook = Query && Query.user ? Query.user : defaultHook;
-          return hook(source, Object.assign({}, args), context).then(item =>
-            adapter.read('user', item)
-          );
+          } else throw new Error('No permission');
+          return db.collection('user').findOne({ id: args.id });
         },
-        totp: (source, args, context) =>
-          auth.totp(context.session.userId).then(x => x),
+        totp: (source, args, context) => auth.totp(context.session.userId).then((x) => {
+          return x;
+        }),
       },
       Mutation: {
-        register: (source, args) => auth
-            .register(args.input, args.password, args.token)
-            .then(x => x.user),
-        forgot: (source, args) => auth.forgot(args.email),
-        reset: (source, args) => auth.reset(args.token, args.password).then(({ user }) => user),
-        totpConfirm: (source, args, context) =>
-          auth.totpConfirm(args.token, args.totp).then(x => x),
-        login: (source, args, context) =>
-          auth
-            .login(args.email, args.password, args.totp)
-            .then((userAndToken) => {
-              context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
-              return userAndToken.user;
-            }),
+        register: (source, args) => {
+          return auth.register(args.input, args.password, args.token).then(x => x.user);
+        },
+        forgot: (source, args) => {
+          return auth.forgot(args.email);
+        },
+        reset: (source, args) => {
+          return auth.reset(args.token, args.password).then(({ user }) => user);
+        },
+        totpConfirm: (source, args) => auth.totpConfirm(args.token, args.totp).then((x) => {
+          return x;
+        }),
+        login: (source, args, context) => auth.login(args.email, args.password, args.totp).then((userAndToken) => {
+          context.session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
+          return userAndToken.user;
+        }),
         logout: (source, args, context) => {
           delete context.session.userId; // eslint-disable-line no-param-reassign
           return true;
         },
-        confirm: (source, args) => auth.confirm(args.token).then(({ user }) => user),
+        confirm: (source, args) => {
+          return auth.confirm(args.token).then(({ user }) => user);
+        },
         user: (source, args, context) => {
           if (context.user && context.user.isAdmin) {
           } else if (context.user && context.user.id === args.id) {
-          } else { throw new Error('No permission'); }
-          const hook = Mutation && Mutation.user ? Mutation.user : defaultHook;
-          return hook(source, Object.assign({}, args), context).then((args) => {
-            // eslint-disable-line no-shadow
+          } else throw new Error('No permission');
+          return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
             if (args.operationType && args.operationType === 'REMOVE') {
               return adapter.remove('user', Object.assign({}, args));
             } else if (args.input) {
@@ -120,21 +96,15 @@ module.exports = (
             }
             delete args.operationType; // eslint-disable-line no-param-reassign
             delete args.isAdmin;
-            console.log('ARGS', args);
             return adapter.write('user', Object.assign({}, args));
             // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
             // else return collection.insertOne(args);
           });
         },
         invitation: (source, args, context) => {
-          if (!adapter.db) { return; }
-          if (!context.user || !context.user.isAdmin) { throw new Error('No permission'); }
-          const collection = adapter.db.collection('invitation');
-          const hook = Mutation && Mutation.invitation
-            ? Mutation.invitation
-            : defaultHook;
-          return hook(source, Object.assign({}, args), context).then((args) => {
-            // eslint-disable-line no-shadow
+          if (!context.user || !context.user.isAdmin) throw new Error('No permission');
+          const collection = db.collection('invitation');
+          return hook(source, Object.assign({}, args), context).then((args) => { // eslint-disable-line no-shadow
             if (args.operationType && args.operationType === 'REMOVE') {
               return adapter.remove('invitation', Object.assign({}, args));
             } else if (args.input) {
@@ -144,24 +114,13 @@ module.exports = (
             delete args.operationType; // eslint-disable-line no-param-reassign
             console.log('ARGS', args);
             args.expiry = +new Date();
-            args.token = token.create({ email: args.email });
-            return adapter
-              .write('invitation', Object.assign({}, args))
-              .then((u) => {
-                console.log('INVITE', u.token, u);
-                if (mail) {
-                  mail(
-                    mails.invite({
-                      email: u.email,
-                      token: u.token,
-                      name: u.name,
-                    })
-                  )
-                    .then(x => console.log('Mail success', x.ok))
-                    .catch(err => console.error(err));
-                }
-                return u;
-              });
+            args.token = auth.tokenEngine.create({ email: args.email });
+            return adapter.write('invitation', Object.assign({}, args)).then(u => {
+              console.log('INVITE', u.token, u);
+              if (mail) mail(mails.invite({ email: u.email, token: u.token, name: u.name }))
+                .then(x => console.log('Mail success', x.ok)).catch(err => console.error(err));
+              return u;
+            });
             // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
             // else return collection.insertOne(args);
           });
@@ -197,22 +156,14 @@ module.exports = (
   });
 
   setTimeout(() => {
-    if (!adapter.db) { return; }
-    const collection = adapter.db.collection('user');
-    collection
-      .findOne({})
-      .then((one) => {
-        if (one) { return; }
-        auth
-          .register(
-            { email: 'admin@olymp-cms.com', name: 'Administrator' },
-            'admin12'
-          )
-          .then(({ token }) => {
-            auth.confirm(token);
-          });
-      })
-      .catch(err => console.log(err));
+    if (!db) return;
+    const collection = db.collection('user');
+    collection.findOne({ }).then((one) => {
+      if (one) return;
+      auth.register({ email: 'admin@olymp-cms.com', name: 'Administrator' }, 'admin12').then(({ token }) => {
+        auth.confirm(token);
+      });
+    }).catch(err => console.log(err));
   }, 5000);
   return { auth };
 };

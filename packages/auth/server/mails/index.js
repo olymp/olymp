@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   register: ({ email, token }) => ({ url }) => ({
     to: email,
     subject: 'Registrierung',

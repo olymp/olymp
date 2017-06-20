@@ -2,7 +2,7 @@ const { randomBytesAsync, pbkdf2Async } = require('bluebird').promisifyAll(
   require('crypto')
 );
 
-module.exports = (config = {}) => {
+export default (config = {}) => {
   const SALT_LENGTH = config.saltLength || 32;
   const KEY_LENGTH = config.keyLength || 128; // more
   const ITERATIONS = config.iterations || 4096; // more.. http://stackoverflow.com/questions/6054082/recommended-of-iterations-when-using-pbkdf2-sha256
