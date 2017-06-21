@@ -7,13 +7,10 @@ import {
   AuthReset,
   AuthForgot,
   AuthStatus,
-  AuthProfile,
-  AuthTotp,
 } from './views';
-import { AuthUsers, AuthInvitations } from './admin';
 
 export default withRouter((props) => {
-  const { copyright, query, router, pathname, register } = props;
+  const { query, router, pathname, register } = props;
   const texts = {
     forgot: `Wir haben eine E-Mail an ${query[
       'status-forgot'
@@ -25,8 +22,8 @@ export default withRouter((props) => {
   const redirect = newQuery =>
     router.push({ pathname, query: { ...query, ...newQuery } });
   const inQuery = key => query[key] !== undefined;
-
   const p = { pathname, onClose: () => router.push(pathname) };
+
   return (
     <div>
       <AuthLogin
@@ -73,14 +70,6 @@ export default withRouter((props) => {
         {...p}
         isOpen={inQuery('status-register')}
         text={texts.register}
-      />
-      <AuthProfile {...p} isOpen={inQuery('profile')} />
-      <AuthTotp {...p} isOpen={inQuery('totp') && !inQuery('login')} />
-      <AuthUsers {...p} isOpen={inQuery('@users')} id={query['@users']} />
-      <AuthInvitations
-        {...p}
-        isOpen={inQuery('@invitations')}
-        id={query['@invitations']}
       />
     </div>
   );

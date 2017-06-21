@@ -3,7 +3,7 @@ import { createComponent } from 'react-fela';
 import Container from '../container';
 
 const WithContainer = ({ container, ...rest }) =>
-  (container ? <Container {...rest} /> : <div {...rest} />);
+  container ? <Container {...rest} /> : <div {...rest} />;
 
 const Layout = createComponent(
   () => ({
@@ -35,6 +35,7 @@ Layout.Footer = createComponent(
 Layout.Body = createComponent(
   () => ({
     flex: 1,
+    overflowY: 'auto',
   }),
   WithContainer,
   p => Object.keys(p)

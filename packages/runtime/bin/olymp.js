@@ -114,9 +114,9 @@ if (command === 'dev') {
     }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    stats.forEach(c =>
+    /* stats.forEach(c =>
       fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
-    );
+    ); */
     stats.forEach(c => console.log(c.toString()));
   });
 } else if (command.indexOf('build:') === 0) {

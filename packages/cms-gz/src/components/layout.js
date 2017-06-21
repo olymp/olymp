@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import Logo from './logo';
 import { Navbar, Layout, createComponent } from 'olymp-fela';
 
+export const App = createComponent(
+  ({ theme }) => ({
+    backgroundColor: '#FFFFFF',
+  }),
+  Layout,
+  p => Object.keys(p)
+);
+
 export const Header = createComponent(
   ({ theme }) => ({
     paddingY: theme.space3,
@@ -39,7 +47,7 @@ export default class GzLayout extends Component {
     ];
 
     return (
-      <Layout>
+      <App>
         <Header>
           <Navbar
             pages={nav}
@@ -64,7 +72,7 @@ export default class GzLayout extends Component {
             <Navbar.Nav pages={footer} right />
           </Navbar>
         </Layout.Footer>
-      </Layout>
+      </App>
     );
   }
 }

@@ -1,13 +1,13 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import { Button as AntButton } from 'antd';
+import { Button as AntButton, Modal as AntModal } from 'antd';
+import { Gateway } from 'react-gateway';
 import cn from 'classnames';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
 import { Transition } from './transitions';
-import { Gateway } from 'react-gateway';
 ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
@@ -59,6 +59,7 @@ export const Modal = (
           className={cn('ant-modal-wrap', className)}
           modalClassName="ant-modal"
         >
+          <AntModal visible={false} />
           {showLogo &&
             theme.logo &&
             <div className="logo">
@@ -237,7 +238,7 @@ const TitleButtons = createComponent(
     top: 14,
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p)
+  ({ left, right, ...p }) => p
 );
 
 export default component;

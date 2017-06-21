@@ -9,7 +9,7 @@ import {
 } from 'olymp';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
-import { AuthModals } from 'olymp-auth';
+import { AuthModals, AuthUsers } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from 'olymp-pages';
 import { CloudinaryRoute, LightboxProvider, Lightbox } from 'olymp-cloudinary';
@@ -24,6 +24,7 @@ export const Container = createComponent(
   ({ deviceWidth }) => ({
     display: 'flex',
     height: '100%',
+    backgroundColor: '#eeeeee',
     '> :last-child': {
       flex: 1,
       height: '100%',
@@ -64,8 +65,6 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
               location={location}
             />
             <SimpleSwitch>
-              {/* <SimpleRoute match={query['@profile'] !== undefined} render={() => <AuthRoutes.SplitView.Profile prefix="@" />} />*/}
-              {/* <SimpleRoute match={query[`@users`] !== undefined} render={() => <AuthRoutes.SplitView.Users prefix="@" />} />*/}
               <SimpleRoute
                 match={query['@template'] !== undefined}
                 render={() => <TemplateRoute {...props} />}
@@ -92,6 +91,10 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
               <SimpleRoute
                 match={query['@settings'] !== undefined}
                 render={() => <SettingsRoute {...props} />}
+              />
+              <SimpleRoute
+                match={query['@users'] !== undefined}
+                render={() => <AuthUsers {...props} />}
               />
               <SimpleRoute
                 render={() =>

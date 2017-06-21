@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
-import { withColors } from 'olymp';
+import { withColors } from '../decorators';
 
 const ColorPicker = null;
 if (typeof document !== 'undefined') {
@@ -9,9 +9,15 @@ if (typeof document !== 'undefined') {
 }
 
 const hasNativePicker = () => {
-  if (!ColorPicker) { return true; }
-  if (typeof document === 'undefined') { return true; }
-  if (!document.createElement) { return true; }
+  if (!ColorPicker) {
+    return true;
+  }
+  if (typeof document === 'undefined') {
+    return true;
+  }
+  if (!document.createElement) {
+    return true;
+  }
   const i = document.createElement('input');
   i.setAttribute('type', 'color');
   return i.type !== 'text';
