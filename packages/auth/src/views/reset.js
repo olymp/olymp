@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link, Modal, withRouter, graphql, gql, withAuth } from 'olymp';
-import { Form, Input, Spin, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
+import { Link, graphql, gql, withAuth } from 'olymp';
+import { Modal } from 'olymp-ui';
+import { Form, Input } from 'antd';
+import { Key } from 'olymp-icons';
 import Base, {
   onEnterFocus,
   onEnterOk,
@@ -31,8 +32,12 @@ export default class AuthReset extends Component {
   ok = () => {
     const { auth, token, onOk, onClose, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
-      if (values.password2 !== values.password) { return onError(new Error('Die Passwörter stimmen nicht überein!')); }
+      if (err) {
+        return onError(err);
+      }
+      if (values.password2 !== values.password) {
+        return onError(new Error('Die Passwörter stimmen nicht überein!'));
+      }
       auth
         .reset(token, values.password)
         .then(({ email }) => {
