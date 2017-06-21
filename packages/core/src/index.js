@@ -14,9 +14,6 @@ export { default as throttleInput } from './throttle-input';
 export { default as traverse } from './traverse';
 export { default as toLabel } from './to-label';
 
-// COMPONENTS
-export * from './components';
-
 // DECORATORS
 export * from './decorators';
 

@@ -1,4 +1,3 @@
-export { withColors, useColors } from './colors';
 export { withEdits, useEdits } from './edits';
 export { default as withCollection } from './collection';
 export { default as withCollections } from './collections';
@@ -9,7 +8,6 @@ export { default as withState } from './state';
 export { default as withThrottle } from './throttle';
 export { auth, setAuthFields, default as withAuth } from './auth';
 export { default as withForm } from './form';
-export { default as withLightbox, useLightbox } from './lightbox';
 export { default as withAmp, AmpProvider } from './amp';
 export { default as Websocket } from './websocket';
 export { default as withLang, withLangProvider, LangProvider } from './lang';
