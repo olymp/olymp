@@ -67,7 +67,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
       ],
     },
     plugins: [
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
         'process.env.SSR': JSON.stringify(isSSR),
         'process.env.NODE_ENV': JSON.stringify(mode),
