@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import { Link, Modal, withAuth } from 'olymp';
-import { Form, Input, Button, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import Base, {
-  onEnterFocus,
-  onEnterOk,
-  layout,
-  onError,
-  onSuccess,
-} from './base';
+import { Link, withAuth } from 'olymp';
+import { Modal } from 'olymp-ui';
+import { Form, Input } from 'antd';
+import { EnvelopeO } from 'olymp-icons';
+import Base, { onEnterOk, layout, onError, onSuccess } from './base';
 
 @withAuth
 @Form.create()
@@ -16,7 +11,9 @@ export default class AuthForgot extends Component {
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       auth
         .forgot(values.email)
         .then(({ name }) => {

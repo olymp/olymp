@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import { Countdown, Link, Modal, graphql, gql, withAuth } from 'olymp';
-import { Form, Input, Button, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import Base, {
-  onEnterFocus,
-  onEnterOk,
-  layout,
-  onSuccess,
-  onError,
-} from './base';
+import { Link, graphql, gql, withAuth } from 'olymp';
+import { Countdown, Modal } from 'olymp-ui';
+import { Form } from 'antd';
+import Base, { onSuccess, onError } from './base';
 
 @withAuth
 @Form.create()
@@ -31,7 +25,9 @@ export default class AuthConfirm extends Component {
   ok = () => {
     const { auth, onOk, form, token } = this.props;
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       auth
         .confirm(token)
         .then(({ email }) => {

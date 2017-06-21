@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Link, Modal, withRouter, withAuth } from 'olymp';
-import { Form, Input, notification } from 'antd';
+import { Link, withRouter, withAuth } from 'olymp';
+import { Modal } from 'olymp-ui';
+import { Form, Input } from 'antd';
 import { EnvelopeO, Key } from 'olymp-icons';
 import Base, {
   onEnterFocus,
@@ -17,7 +18,9 @@ export default class AuthLogin extends Component {
   ok = () => {
     const { auth, onClose, form, onTotp } = this.props;
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       auth
         .login(values.email, values.password, values.totp)
         .then(({ name }) => {
@@ -35,7 +38,7 @@ export default class AuthLogin extends Component {
   };
 
   render() {
-    const { isOpen, email, form, saving, pathname, onClose, totp } = this.props;
+    const { isOpen, email, form, pathname, onClose, totp } = this.props;
     const { getFieldDecorator } = form;
 
     return (

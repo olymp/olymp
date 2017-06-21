@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Modal } from 'olymp';
+import { Link } from 'olymp';
+import { Modal } from 'olymp-ui';
 import { notification } from 'antd';
 
 const def = (

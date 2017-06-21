@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Link, Modal, graphql, gql, withAuth } from 'olymp';
-import { Form, Input, notification } from 'antd';
+import { Link, graphql, gql, withAuth } from 'olymp';
+import { Modal } from 'olymp-ui';
+import { Form, Input } from 'antd';
 import { EnvelopeO, Key } from 'olymp-icons';
 import Base, {
   onEnterFocus,
@@ -32,8 +33,12 @@ export default class AuthRegister extends Component {
   ok = () => {
     const { auth, onClose, onOk, form, token } = this.props;
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
-      if (values.password2 !== values.password) { return onError(new Error('Die Passwörter stimmen nicht überein!')); }
+      if (err) {
+        return onError(err);
+      }
+      if (values.password2 !== values.password) {
+        return onError(new Error('Die Passwörter stimmen nicht überein!'));
+      }
       const user = { ...values };
       delete user.password;
       delete user.password2;

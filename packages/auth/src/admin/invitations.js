@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Link, graphql, gql, withAuth } from 'olymp';
-import { Button, Form, Input, Icon, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
+import { Button, Form, Input, Icon } from 'antd';
+import { EnvelopeO } from 'olymp-icons';
 import {
   Modal,
   SplitView,
   List,
   Panel,
   onEnterFocus,
-  onEnterOk,
   layout,
   onError,
   onSuccess,
@@ -30,7 +29,9 @@ export default class AuthInvitations extends Component {
   ok = () => {
     const { auth, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       const user = { ...values };
       auth
         .save(user)
@@ -137,7 +138,9 @@ class AuthInviationDetail extends Component {
     const { auth, form, data } = this.props;
     const item = data.item || {};
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       const invitation = { ...item, ...values };
       delete invitation.__typename;
       auth

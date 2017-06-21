@@ -1,143 +1,58 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql, withAuth } from 'olymp';
-import { Button, Form, Input, Icon, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import {
-  Modal,
-  SplitView,
-  List,
-  Panel,
-  onEnterFocus,
-  onEnterOk,
-  layout,
-  onError,
-  onSuccess,
-} from 'olymp-ui';
+import { withAuth } from 'olymp';
+import { createComponent } from 'olymp-fela';
+import { SplitView, Sidebar, Container, List } from 'olymp-ui';
+import { Form, Input, Button, Checkbox, Spin } from 'antd';
+import { EnvelopeO } from 'olymp-icons';
+import { onError, onSuccess, onEnterFocus } from '../views/base';
+import AuthTotp from './totp';
 
-@graphql(
-  gql`
-  query userList {
-    items: userList { id, name, isAdmin }
-  }
-`,
-  {
-    options: ({ isOpen }) => ({ skip: !isOpen }),
-  }
-)
-export default class AuthUsers extends Component {
-  static defaultProps = { data: {} };
-  state = { search: '' };
-  ok = () => {
-    const { auth, onClose, onOk, form } = this.props;
-    form.validateFields((err, values) => {
-      if (err) { return onError(err); }
-      const user = { ...values };
-      auth
-        .save(user)
-        .then(({ name }) => {
-          onSuccess('Gespeichert', 'Das Profil wurde gespeichert');
-          onClose();
-        })
-        .catch(onError);
-    });
-  };
+const layout = { labelCol: { span: 10 }, wrapperCol: { span: 14 } };
 
-  render() {
-    const {
-      id,
-      isOpen,
-      email,
-      form,
-      saving,
-      pathname,
-      onClose,
-      data,
-    } = this.props;
-    const { search } = this.state;
+export const H1 = createComponent(
+  ({ theme }) => ({
+    color: theme.color,
+    textAlign: 'center',
+    fontWeight: 200,
+  }),
+  'h1',
+  p => Object.keys(p)
+);
 
-    let items = data.items || [];
-    if (search) {
-      items = items.filter(
-        ({ name }) =>
-          name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      );
-    }
+export const H3 = createComponent(
+  ({ theme }) => ({
+    textAlign: 'center',
+    fontWeight: 200,
+  }),
+  'h3',
+  p => Object.keys(p)
+);
 
-    return (
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        width="auto"
-        padding={0}
-        title="Benutzerverwaltung"
-        subtitle="Benutzer bearbeiten, hinzufügen, löschen"
-      >
-        <SplitView>
-          <List side="left">
-            <List.Title
-              buttons={
-                <Button size="small" onClick={() => console.log()}>
-                  <Link to={{ pathname, query: { '@users': 'new' } }}>
-                    <Icon type="plus" />
-                  </Link>
-                </Button>
-              }
-            >
-              Benutzer
-            </List.Title>
-            <List.Filter
-              placeholder="Filter ..."
-              onChange={search => this.setState({ search })}
-              value={search}
-            />
-            {items.map(item =>
-              (<List.Item
-                to={{ pathname, query: { '@users': item.id } }}
-                key={item.id}
-                label={item.name}
-                description={item.isAdmin ? 'Administrator' : 'Benutzer'}
-              />)
-            )}
-          </List>
-          {id && id === 'new' && <AuthUsersDetail id={null} />}
-          {id && id !== 'new' && <AuthUsersDetail key={id} id={id} />}
-        </SplitView>
-        <Modal.Links>
-          <Link
-            to={{
-              pathname,
-              query: { '@invitations': null, '@users': undefined },
-            }}
-          >
-            Einladungen verwalten
-          </Link>
-        </Modal.Links>
-      </Modal>
-    );
-  }
-}
+export const FormItem = createComponent(
+  ({ theme }) => ({
+    marginY: theme.space3,
+    '& .ant-form-item-control': {
+      '> *': {
+        width: '100%',
+      },
+    },
+  }),
+  Form.Item,
+  p => Object.keys(p)
+);
 
 @withAuth
-@graphql(
-  gql`
-  query user($id: String) {
-    item: user(id: $id) { id, name, email }
-  }
-`,
-  {
-    options: ({ id }) => ({
-      fetchPolicy: !id ? 'cache-only' : undefined,
-      variables: { id },
-    }),
-  }
-)
 @Form.create()
-class AuthUsersDetail extends Component {
+export default class AuthProfile extends Component {
+  state = { totp: false };
+
   ok = () => {
     const { auth, form, data } = this.props;
     const item = data.item || {};
     form.validateFields((err, values) => {
-      if (err) { return onError(err); }
+      if (err) {
+        return onError(err);
+      }
       const user = { ...item, ...values };
       delete user.__typename;
       auth
@@ -150,46 +65,94 @@ class AuthUsersDetail extends Component {
   };
 
   render() {
-    const { form, saving, pathname, data } = this.props;
-    const { getFieldDecorator } = form;
-    const item = data.item || {};
+    const { form, auth, pathname, extraFields, deviceWidth } = this.props;
+    const { totp } = this.state;
+
+    console.log(this.props);
 
     return (
-      <Panel minWidth={560} margin="0 30px" padding={16}>
-        <Form.Item key="name" label="Name" {...layout}>
-          {getFieldDecorator('name', {
-            initialValue: item.name,
-            rules: [
-              { required: true, message: 'Bitte geben Sie Ihren Namen an' },
-            ],
-          })(
-            <Input
-              type="text"
-              placeholder="Name"
-              onKeyPress={onEnterFocus(() => this.mail)}
-              size="large"
-            />
-          )}
-        </Form.Item>
-        <Form.Item key="email" label="E-Mail" {...layout}>
-          {getFieldDecorator('email', {
-            initialValue: item.email,
-            rules: [
-              { required: true, message: 'Bitte geben Sie Ihre E-Mail an!' },
-            ],
-          })(
-            <Input
-              type="email"
-              placeholder="E-Mail"
-              onKeyPress={onEnterFocus(() => this.pw1)}
-              ref={x => (this.mail = x)}
-              size="large"
-              addonAfter={<EnvelopeO size={10} />}
-            />
-          )}
-        </Form.Item>
-        <Button onClick={this.ok}>Save</Button>
-      </Panel>
+      <SplitView deviceWidth={deviceWidth}>
+        <Sidebar title="links" subtitle="links">
+          <List.Item
+            to={{ pathname, query: { '@totp': null } }}
+            label="Allgemeine Informationen"
+          />
+          <List.Item
+            to={{ pathname, query: { '@totp': null } }}
+            label="Zwei-Faktor-Authentifizierung"
+          />
+        </Sidebar>
+
+        <Container>
+          <H1>{auth.user.name}</H1>
+          <H3>Profil bearbeiten</H3>
+
+          <Form onSubmit={this.ok}>
+            <FormItem key="name" label="Name" {...layout}>
+              {form.getFieldDecorator('name', {
+                initialValue: auth.user && auth.user.name,
+                rules: [
+                  { required: true, message: 'Bitte geben Sie Ihren Namen an' },
+                ],
+              })(
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  onKeyPress={onEnterFocus(() => this.mail)}
+                  size="large"
+                />
+              )}
+            </FormItem>
+            <FormItem key="email" label="E-Mail" {...layout}>
+              {form.getFieldDecorator('email', {
+                initialValue: auth.user && auth.user.email,
+                rules: [
+                  {
+                    required: true,
+                    message: 'Bitte geben Sie Ihre E-Mail an!',
+                  },
+                ],
+              })(
+                <Input
+                  type="email"
+                  placeholder="E-Mail"
+                  onKeyPress={onEnterFocus(() => this.pw1)}
+                  ref={x => (this.mail = x)}
+                  size="large"
+                  addonAfter={<EnvelopeO size={10} />}
+                />
+              )}
+            </FormItem>
+            {/* <Form.Item key="password" label="Passwort" {...layout}>
+            {form.getFieldDecorator('password', {
+              rules: [{ validator: this.checkConfirm }],
+            })(<Input type="password" placeholder="Passwort" />)}
+          </Form.Item> */}
+            <FormItem key="totp" label="2-Faktor-Authentifizierung" {...layout}>
+              <Checkbox
+                checked={totp}
+                onChange={({ target: { checked } }) =>
+                  this.setState({ totp: checked })}
+                disabled
+              >
+                <Spin size="small" /> {totp ? 'Aktiviert' : 'Deaktiviert'}
+              </Checkbox>
+
+              {totp && <AuthTotp {...this.props} isOpen={totp} />}
+            </FormItem>
+            {extraFields
+              ? extraFields({
+                layout,
+                getFieldDecorator: form.getFieldDecorator,
+                state: this.state,
+                setState: this.setState,
+              })
+              : null}
+
+            <Button type="primary" onClick={this.ok}>Save</Button>
+          </Form>
+        </Container>
+      </SplitView>
     );
   }
 }

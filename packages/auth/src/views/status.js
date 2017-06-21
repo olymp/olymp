@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { Link, Modal, withAuth } from 'olymp';
-import { Form, Input, Button, notification } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
-import Base, { onEnterFocus, onEnterOk, layout } from './base';
+import { Link, withAuth } from 'olymp';
+import { Modal } from 'olymp-ui';
+import Base from './base';
 
 @withAuth
-@Form.create()
 export default class AuthStatus extends Component {
   render() {
-    const { isOpen, form, saving, pathname, onClose, text } = this.props;
-    const { getFieldDecorator } = form;
+    const { isOpen, pathname, onClose, text } = this.props;
 
     return (
       <Base
