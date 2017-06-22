@@ -19,7 +19,7 @@ export const SplitView = createComponent(
     },
   }),
   'div',
-  ({ deviceWidth, ...p }) => Object.keys(p)
+  ({ deviceWidth, center, background, ...p }) => Object.keys(p)
 );
 
 export const Panel = createComponent(
