@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Logo from './logo';
-import { Navbar, Layout, createComponent } from 'olymp-fela';
+import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
 
 export const App = createComponent(
   ({ theme }) => ({
@@ -16,10 +16,13 @@ export const Header = createComponent(
     ifSmallDown: {
       paddingY: theme.space0,
     },
+    boxShadow: theme.boxShadow,
   }),
   ({ children, className }) =>
-    (<Layout.Header className={className} container>
-      {children}
+    (<Layout.Header className={className}>
+      <Container>
+        {children}
+      </Container>
     </Layout.Header>),
   p => Object.keys(p)
 );
@@ -58,20 +61,25 @@ export default class GzLayout extends Component {
           />
         </Header>
         <Layout.Body affix>
-          {children}
+          <Layout>
+            <Layout.Body>
+              {children}
+            </Layout.Body>
+
+            <Layout.Footer container>
+              <Navbar full>
+                <Navbar.Nav
+                  pages={[
+                    {
+                      name: `GesundheitsZentrum Kelkheim. Copyright ${new Date().getFullYear()}`,
+                    },
+                  ]}
+                />
+                <Navbar.Nav pages={footer} right />
+              </Navbar>
+            </Layout.Footer>
+          </Layout>
         </Layout.Body>
-        <Layout.Footer container>
-          <Navbar full>
-            <Navbar.Nav
-              pages={[
-                {
-                  name: `GesundheitsZentrum Kelkheim. Copyright ${new Date().getFullYear()}`,
-                },
-              ]}
-            />
-            <Navbar.Nav pages={footer} right />
-          </Navbar>
-        </Layout.Footer>
       </App>
     );
   }
