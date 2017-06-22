@@ -21,22 +21,25 @@ export default (uri) => {
     `,
     resolvers: {
       queries: {
-        file: (source, args, { db }) =>
-          db.collection('file').findOne({ id: args.id }).then((item) => {
+        file: (source, args, { db, app }) =>
+          db.collection('item').findOne({ id: args.id }).then((item) => {
             if (item) {
               return item;
             }
             return getImageById(config, args.id).then((image) => {
               db
-                .collection('file')
-                .update({ id: args.id }, image, { upsert: true })
+                .collection('item')
+                .update(
+                  { id: args.id },
+                  { ...image, _type: 'file', _appId: app.id },
+                  { upsert: true }
+                )
                 .catch(err => console.error(err));
               return image;
             });
           }),
-        fileList: (source, { tags, query }, { db }) => {
+        fileList: (source, { tags, query }, { db, app }) => {
           const mongoQuery = adaptQuery(query);
-          console.log(mongoQuery);
           const getFiltered = items =>
             tags // eslint-disable-line
               ? items.filter(item => intersection(tags, item.tags).length > 0)
@@ -47,8 +50,12 @@ export default (uri) => {
             Promise.all(
               filtered.map(item =>
                 db
-                  .collection('file')
-                  .update({ id: item.id }, item, { upsert: true })
+                  .collection('item')
+                  .update(
+                    { id: item.id },
+                    { ...item, _type: 'file', _appId: app.id },
+                    { upsert: true }
+                  )
               )
             ).catch(err => console.error(err));
             return filtered;
@@ -90,10 +97,7 @@ export default (uri) => {
               invalidationTokens.indexOf(args.token),
               1
             );
-            return getImageById(config, args.id).then((image) => {
-              console.log('IMAGE', image, args);
-              return image;
-            });
+            return getImageById(config, args.id).then(image => image);
           }
           throw new Error('Invalid');
         },

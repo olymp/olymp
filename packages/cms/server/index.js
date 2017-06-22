@@ -7,6 +7,7 @@ import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';*/
 import monk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
+import { get } from 'lodash';
 
 const {
   APP,
@@ -23,7 +24,6 @@ export default (server, options) => {
   const db = monk(MONGODB_URI);
   const schema = createSchema({ directives });
   const modules = {
-    ...colModules,
     helloWorld: {
       queries: `
       helloWorld: String
@@ -34,24 +34,27 @@ export default (server, options) => {
         },
       },
     },
+    ...get(options, 'modules', {}),
+    ...colModules,
   };
   const mail = createMail(POSTMARK_KEY, options.mail);
 
   const authEngine = createAuthEngine({ db, mail, secret: AUTH_SECRET });
   server.use(authCache(authEngine));
 
+  let cachedApp = null;
   server.use((req, res, next) => {
     req.mail = mail;
     req.db = db;
     req.schema = schema;
     req.authEngine = authEngine;
+    req.app = cachedApp;
     next();
   });
 
   modules.auth = authGraphQL(options.auth);
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
-  schema.apply(modules);
   /*
   createSitemap(schema, options.sitemap);
   googleGraphQL(schema, GM_KEY, options.google);
@@ -91,8 +94,20 @@ export default (server, options) => {
     if (!app) {
       throw new Error('App not found');
     }
+    cachedApp = app;
     schema.apply(modules);
   });
+
+  /* db.collection('page').find({}).then((items) => {
+    items.forEach((item) => {
+      db.collection('item').insert({ ...item, _type: 'page', _appId: 'gzk' });
+    });
+  });
+  db.collection('file').find({}).then((items) => {
+    items.forEach((item) => {
+      db.collection('item').insert({ ...item, _type: 'file', _appId: 'gzk' });
+    });
+  });*/
 };
 
 /* if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `

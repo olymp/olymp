@@ -1,5 +1,7 @@
 import { get, set, lowerFirst } from 'lodash';
 import { addFields } from 'olymp-graphql/server';
+import adaptQuery from './adapt-query';
+import shortId from 'shortid';
 
 export default (ast, node, resolvers) => {
   const name = node.name.value;
@@ -16,8 +18,9 @@ export default (ast, node, resolvers) => {
       { replace: false }
     );
     if (!get(resolvers, `RootQuery.${table}`)) {
-      set(resolvers, `RootQuery.${table}`, (source, { id }, { db }) =>
-        db.collection(table).findOne({ id })
+      set(resolvers, `RootQuery.${table}`, (source, { id, query }, { db }) =>
+        // db.collection(table).findOne(id ? { id } : adaptQuery(query))
+        db.collection('item').findOne(id ? { id } : adaptQuery(query))
       );
     }
 
@@ -29,8 +32,14 @@ export default (ast, node, resolvers) => {
       { replace: false }
     );
     if (!get(resolvers, `RootQuery.${table}List`)) {
-      set(resolvers, `RootQuery.${table}List`, (source, args, { db }) =>
-        db.collection(table).find({})
+      set(
+        resolvers,
+        `RootQuery.${table}List`,
+        (source, { query }, { db, app }) =>
+          // db.collection(table).find(adaptQuery(query))
+          db
+            .collection('item')
+            .find({ ...adaptQuery(query), _type: table, _appId: app.id })
       );
     }
   }
@@ -51,7 +60,7 @@ export default (ast, node, resolvers) => {
       set(
         resolvers,
         `RootMutation.${table}`,
-        (source, { id, input, type }, { db }) => {
+        /* (source, { id, input, type }, { db }) => {
           if (!id) {
             db.collection(table).insert(input);
           } else if (type === 'REPLACE') {
@@ -59,6 +68,24 @@ export default (ast, node, resolvers) => {
           } else {
             db.collection(table).update({ $set: input });
           }
+        }*/
+        (source, { id, input, type }, { db, app }) => {
+          let promise;
+          if (!id) {
+            id = shortId.generate();
+            promise = db
+              .collection('item')
+              .insert({ ...input, _type: table, _appId: app.id, id });
+          } else if (type === 'REPLACE') {
+            promise = db
+              .collection('item')
+              .update({ id }, { ...input, _type: table, _appId: app.id, id });
+          } else {
+            promise = db
+              .collection('item')
+              .update({ id }, { $set: { ...input } });
+          }
+          return promise.then(() => db.collection('item').findOne({ id }));
         }
       );
     }

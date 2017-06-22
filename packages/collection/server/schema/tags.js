@@ -8,8 +8,8 @@ export default {
   `,
   resolvers: {
     queries: {
-      tags: (source, args) =>
-        adapter.client
+      tags: (source, args, { db }) =>
+        db
           .collections()
           .then(collections =>
             Promise.all(
@@ -33,8 +33,8 @@ export default {
             }, []);
             return orderBy(result, ['count', 'id'], ['desc', 'asc']);
           }),
-      suggestions: (source, args) =>
-        adapter.client
+      suggestions: (source, args, { db }) =>
+        db
           .collection(args.collection.toLowerCase())
           .find({}, { [args.field]: 1 })
           .toArray()

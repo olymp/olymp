@@ -1,5 +1,10 @@
 import { addQueryInput, addSortInput, addQueries } from '../mongodb';
-import { addInput, addFields } from 'olymp-graphql/server';
+import {
+  addInput,
+  addFields,
+  addInterfaces,
+  getDirectiveValue,
+} from 'olymp-graphql/server';
 
 export default {
   name: 'collection',
@@ -11,6 +16,7 @@ export default {
         node,
         `
         id: String
+        name: String
         tags: [String]
         state: DOCUMENT_STATE
         createdAt: DateTime
@@ -20,6 +26,9 @@ export default {
       `
       );
       addInput(ast, node);
+      if (getDirectiveValue(node, 'collection', 'name')) {
+        addInterfaces(ast, node, 'CollectionInterface');
+      }
       addQueryInput(ast, node);
       addSortInput(ast, node);
       addQueries(ast, node, resolvers);
