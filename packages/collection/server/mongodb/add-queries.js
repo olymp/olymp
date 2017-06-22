@@ -5,11 +5,19 @@ export default (ast, node, resolvers) => {
   const name = node.name.value;
   const table = lowerFirst(name);
 
-  const Query = ast.definitions.find(
-    x => x.name && x.name.value === 'RootQuery'
-  );
+  const Query = ast.definitions.find(x => get(x, 'name.value') === 'RootQuery');
 
   if (Query) {
+    // Add one query
+    addFields(
+      ast,
+      Query,
+      `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`
+    );
+    set(resolvers, `RootQuery.${table}`, (source, { id }, { db }) =>
+      db.collection(table).findOne({ id })
+    );
+
     // Add list query
     addFields(
       ast,
@@ -19,20 +27,10 @@ export default (ast, node, resolvers) => {
     set(resolvers, `RootQuery.${table}List`, (source, args, { db }) =>
       db.collection(table).find({})
     );
-
-    // Add one query
-    addFields(
-      ast,
-      Query,
-      `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`
-    );
-    set(resolvers, `RootQuery.${table}`, (source, { id }, { db }) =>
-      db.collection(table).find({ id })
-    );
   }
 
   const Mutation = ast.definitions.find(
-    x => x.name && x.name.value === 'RootMutation'
+    x => get(x, 'name.value') === 'RootMutation'
   );
 
   if (Mutation) {
