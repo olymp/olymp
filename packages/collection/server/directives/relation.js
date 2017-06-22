@@ -6,7 +6,7 @@ export default {
   name: 'relation',
   description: 'Marks a type as a relative.',
   resolveStatic: {
-    enter(node, directive, { resolvers, parent, ancestors, ast }) {
+    enter2(node, directive, { resolvers, parent, ancestors, ast }) {
       const isList = node.type.kind === 'ListType';
       const type = isList ? node.type.type : node.type;
 
@@ -37,7 +37,7 @@ export default {
         const idField = `${leftField}Id`;
         addFields(ast, parent, `${idField}: String`);
         // Add resolver
-        set(resolvers, `${leftTable}.${leftField}`, (source, args, { db }) =>
+        set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
           db.collection(rightTable).findOne({
             id: source[idField],
           })

@@ -5,7 +5,7 @@ export default {
   name: 'collection',
   description: 'Marks a type as a relative.',
   resolveStatic: {
-    enter(node, d, { ast }) {
+    enter(node, d, { ast, resolvers }) {
       addFields(
         ast,
         node,
@@ -22,7 +22,7 @@ export default {
       addInput(ast, node);
       addQueryInput(ast, node);
       addSortInput(ast, node);
-      addQueries(ast, node);
+      addQueries(ast, node, resolvers);
     },
     leave(node) {
       /* resolvers.Query = resolvers.Query || {};
