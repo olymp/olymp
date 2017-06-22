@@ -4,6 +4,11 @@ import { createComponent } from 'react-fela';
 const GridItem = createComponent(
   ({
     gridSize,
+    offsetMini,
+    offsetSmall,
+    offsetMedium,
+    offsetLarge,
+    offsetHuge,
     mini,
     small,
     medium,
@@ -17,6 +22,7 @@ const GridItem = createComponent(
   }) => ({
     float: 'left',
     width: `${100 / gridSize * (mini || gridSize)}%`,
+    marginLeft: `${100 / gridSize * (offsetMini || 0)}%`,
     ifMini: {
       display: (mini === 0 || mini === false) && 'none',
       padding: paddingMini,
@@ -28,6 +34,7 @@ const GridItem = createComponent(
     ifSmallUp: small
       ? {
         width: `${100 / gridSize * small}%`,
+        marginLeft: `${100 / gridSize * (offsetSmall || 0)}%`,
       }
       : {},
     ifMedium: {
@@ -37,6 +44,7 @@ const GridItem = createComponent(
     ifMediumUp: medium
       ? {
         width: `${100 / gridSize * medium}%`,
+        marginLeft: `${100 / gridSize * (offsetMedium || 0)}%`,
       }
       : {},
     ifLarge: {
@@ -46,6 +54,7 @@ const GridItem = createComponent(
     ifLargeUp: large
       ? {
         width: `${100 / gridSize * large}%`,
+        marginLeft: `${100 / gridSize * (offsetLarge || 0)}%`,
       }
       : {},
     ifHuge: {
@@ -60,13 +69,18 @@ const GridItem = createComponent(
     ifHugeUp: huge
       ? {
         width: `${100 / gridSize * huge}%`,
+        marginLeft: `${100 / gridSize * (offsetHuge || 0)}%`,
       }
       : {},
   }),
   'div',
   ({
     gridSize,
-    offset,
+    offsetMini,
+    offsetSmall,
+    offsetMedium,
+    offsetLarge,
+    offsetHuge,
     mini,
     small,
     medium,
@@ -96,6 +110,11 @@ GridItem.propTypes = {
 };
 GridItem.defaultProps = {
   gridSize: 12,
+  offsetMini: 0,
+  offsetSmall: 0,
+  offsetMedium: 0,
+  offsetLarge: 0,
+  offsetHuge: 0,
   mini: undefined,
   small: undefined,
   medium: undefined,
