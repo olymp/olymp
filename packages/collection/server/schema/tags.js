@@ -12,7 +12,6 @@ export default {
         db
           .collection()
           .find({}, { tags: 1 })
-          .toArray()
           .then(array => array.map(({ tags }) => tags))
           .then((array) => {
             const grouped = groupBy(array);
@@ -29,7 +28,6 @@ export default {
         db
           .collection(args.collection.toLowerCase())
           .find({}, { [args.field]: 1 })
-          .toArray()
           .then((array) => {
             const grouped = groupBy(array, args.field);
             const result = Object.keys(grouped).reduce((result, item) => {

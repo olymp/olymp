@@ -98,7 +98,6 @@ Modal.contextTypes = { theme: PropTypes.object };
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
     backgroundColor: theme.color,
-    height: '100%',
     background: `linear-gradient(0deg, ${theme.colorStart ||
       tinycolor(theme.color)
         .darken(6)
@@ -111,6 +110,7 @@ const component = createComponent(
         .setAlpha(topTransparency || 1)
         .toRgbString()})`,
     display: 'flex',
+    height: '100%',
     '> .ant-modal': {
       top: 0,
       outline: 0,
