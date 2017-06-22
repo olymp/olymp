@@ -14,10 +14,10 @@ const {
   POSTMARK_KEY,
   GM_KEY,
   CLOUDINARY_URI,
+  // FILESTACK_KEY,
   AUTH_SECRET,
   NODE_ENV,
 } = process.env;
-// FILESTACK_KEY,
 
 export default (server, options) => {
   const db = monk(MONGODB_URI);
