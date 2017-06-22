@@ -12,21 +12,27 @@ export default (ast, node, resolvers) => {
     addFields(
       ast,
       Query,
-      `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`
+      `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`,
+      { replace: false }
     );
-    set(resolvers, `RootQuery.${table}`, (source, { id }, { db }) =>
-      db.collection(table).findOne({ id })
-    );
+    if (!get(resolvers, `RootQuery.${table}`)) {
+      set(resolvers, `RootQuery.${table}`, (source, { id }, { db }) =>
+        db.collection(table).findOne({ id })
+      );
+    }
 
     // Add list query
     addFields(
       ast,
       Query,
-      `${table}List(query: ${name}Query, sort: ${name}Sort, limit: Int, skip: Int): [${name}]`
+      `${table}List(query: ${name}Query, sort: ${name}Sort, limit: Int, skip: Int): [${name}]`,
+      { replace: false }
     );
-    set(resolvers, `RootQuery.${table}List`, (source, args, { db }) =>
-      db.collection(table).find({})
-    );
+    if (!get(resolvers, `RootQuery.${table}List`)) {
+      set(resolvers, `RootQuery.${table}List`, (source, args, { db }) =>
+        db.collection(table).find({})
+      );
+    }
   }
 
   const Mutation = ast.definitions.find(
@@ -38,20 +44,23 @@ export default (ast, node, resolvers) => {
     addFields(
       ast,
       Mutation,
-      `${table}(id: String, type: MUTATION_TYPE, input: ${name}Input): ${name}`
+      `${table}(id: String, type: MUTATION_TYPE, input: ${name}Input): ${name}`,
+      { replace: false }
     );
-    set(
-      resolvers,
-      `RootMutation.${table}`,
-      (source, { id, input, type }, { db }) => {
-        if (!id) {
-          db.collection(table).insert(input);
-        } else if (type === 'REPLACE') {
-          db.collection(table).update(input);
-        } else {
-          db.collection(table).update({ $set: input });
+    if (!get(resolvers, `RootMutation.${table}`)) {
+      set(
+        resolvers,
+        `RootMutation.${table}`,
+        (source, { id, input, type }, { db }) => {
+          if (!id) {
+            db.collection(table).insert(input);
+          } else if (type === 'REPLACE') {
+            db.collection(table).update(input);
+          } else {
+            db.collection(table).update({ $set: input });
+          }
         }
-      }
-    );
+      );
+    }
   }
 };

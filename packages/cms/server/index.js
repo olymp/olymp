@@ -2,9 +2,9 @@ import createSchema from 'olymp-graphql/server';
 import createMail from 'olymp-mail/server';
 import { authGraphQL, authCache, createAuthEngine } from 'olymp-auth/server';
 import { pagesGraphQL } from 'olymp-pages/server';
+import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 /* import createSitemap from 'olymp-sitemap/server';
-import { googleGraphQL } from 'olymp-google/server';
-import { cloudinaryGraphQL } from 'olymp-cloudinary/server';*/
+import { googleGraphQL } from 'olymp-google/server';*/
 import monk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
 
@@ -50,11 +50,10 @@ export default (server, options) => {
 
   modules.auth = authGraphQL(options.auth);
   modules.pages = pagesGraphQL();
+  modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
   schema.apply(modules);
   /*
   createSitemap(schema, options.sitemap);
-  schema.addSchema(tagsSchema);
-  schema.addSchema(collectionSchema);
   googleGraphQL(schema, GM_KEY, options.google);
   pagesGraphQL(schema, options.pages);
   cloudinaryGraphQL(schema, CLOUDINARY_URI, options.cloudinary);

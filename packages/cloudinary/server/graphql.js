@@ -1,188 +1,54 @@
-const cloudinary = require('cloudinary');
-const lodash = require('lodash');
+import { intersection } from 'lodash';
+import { adaptQuery } from 'olymp-collection/server';
+import {
+  parseURI,
+  getImageById,
+  getImages,
+  getSignedRequest,
+  updateImage,
+} from './cloudinary';
 
-const transform = (image) => {
-  const newImage = {};
-  Object.keys(image).forEach((key) => {
-    if (key === 'public_id') {
-      newImage.id = image.public_id;
-      return;
-    } else if (key === 'secureUrl') {
-      return;
-    } else if (key === 'url') {
-      newImage.url = image.secureUrl || image.url;
-      return;
-    } else if (key === 'colors') {
-      return;
-    } else if (key === 'context' && image[key].custom) {
-      newImage.caption = image[key].custom.caption;
-      newImage.source = image[key].custom.source;
-      newImage.removed = image[key].custom.removed;
-      return;
-    } else if (key === 'predominant') {
-      // Geht nur bei Single Pictures!!!
-      newImage.colors = image.predominant.google.map(x => x[0]);
-      return;
-    } else if (key === 'pages') {
-      // Geht nur bei Single Pictures und PDFs!!!
-      newImage.pages = image.pages;
-      return;
-    }
-    newImage[lodash.camelCase(key)] = image[key];
-  });
-  return newImage;
-};
-
-const transformSignature = (
-  { cloud_name },
-  { signature, api_key, timestamp }
-) => ({
-  url: `https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, // eslint-disable-line
-  signature,
-  timestamp,
-  apiKey: api_key,
-});
-
-const getImages = (config, images = [], nextCursor) =>
-  new Promise((yay, nay) => {
-    cloudinary.api.resources(
-      (result) => {
-        if (result.error) { return nay(result.error); }
-
-        // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
-        const results = result.resources && result.resources.length
-          ? images.concat(result.resources.map(transform))
-          : [];
-
-        // Falls noch weitere Bilder in Mediathek sind, diese auch laden
-        if (result.next_cursor) {
-          console.error('WARNING, MORE THAN 500 IMAGES!');
-          return getImages(config, results, result.next_cursor).then(yay);
-        }
-        return yay(results);
-      },
-      Object.assign({}, config, {
-        tags: true,
-        context: true,
-        type: 'upload',
-        colors: true,
-        max_results: 500,
-        next_cursor: nextCursor,
-      })
-    );
-  });
-
-const getImageById = (config, id) =>
-  new Promise(yay =>
-    cloudinary.api.resource(
-      id,
-      (result) => {
-        yay(transform(result));
-      },
-      Object.assign({}, config, {
-        tags: true,
-        context: true,
-        type: 'upload',
-        colors: true,
-        pages: true,
-        // prefix: ''
-      })
-    )
-  );
-
-const getSignedRequest = config =>
-  new Promise(yay =>
-    yay(
-      transformSignature(
-        config,
-        cloudinary.utils.sign_request(
-          {
-            timestamp: Math.round(new Date().getTime() / 1000),
-          },
-          config
-        )
-      )
-    )
-  );
-
-const updateImage = (id, tags, source, caption, config, removed) => {
-  const context = [];
-
-  if (source) {
-    context.push(`source=${source}`);
-  }
-
-  if (caption) {
-    context.push(`caption=${caption}`);
-  }
-
-  if (removed) {
-    context.push('removed=true');
-  }
-
-  return new Promise((yay) => {
-    cloudinary.api.update(
-      id,
-      result => yay(transform(result)),
-      Object.assign({}, config, {
-        tags: (tags || []).join(','),
-        context: context.join('|'),
-      })
-    );
-  });
-};
-
-module.exports = (schema, { uri, adapter } = {}) => {
-  const config = {};
-  if (uri) {
-    const split1 = uri.split('@');
-    const split2 = split1[0].split('://');
-    const split3 = split2[1].split(':');
-    config.cloud_name = split1[1];
-    config.api_key = split3[0];
-    config.api_secret = split3[1];
-  }
-
+export default (uri) => {
+  const config = parseURI(uri);
   const invalidationTokens = [];
-  schema.addSchema({
+  return {
     name: 'file',
-    query: `
-      file(id: String): File
-      fileList(tags: [String]): [File]
+    queries: `
       cloudinaryRequest: CloudinaryRequest
     `,
-    mutation: `
-      file(id: String, input: FileInput, operationType: OPERATION_TYPE): File
+    mutations: `
       cloudinaryRequestDone(id: String, token: String): File
     `,
     resolvers: {
       queries: {
-        file: (source, args) =>
-          adapter.db.collection('file').findOne({ id: args.id }).then((item) => {
-            if (item) { return item; }
+        file: (source, args, { db }) =>
+          db.collection('file').findOne({ id: args.id }).then((item) => {
+            if (item) {
+              return item;
+            }
             return getImageById(config, args.id).then((image) => {
-              adapter.db
+              db
                 .collection('file')
-                .updateOne({ id: args.id }, image, { upsert: true })
+                .update({ id: args.id }, image, { upsert: true })
                 .catch(err => console.error(err));
               return image;
             });
           }),
-        fileList: (source, { tags }) => {
+        fileList: (source, { tags, query }, { db }) => {
+          const mongoQuery = adaptQuery(query);
+          console.log(mongoQuery);
           const getFiltered = items =>
             tags // eslint-disable-line
-              ? items.filter(
-                  item => lodash.intersection(tags, item.tags).length > 0
-                )
+              ? items.filter(item => intersection(tags, item.tags).length > 0)
               : items;
 
           return getImages(config).then((images) => {
             const filtered = getFiltered(images.filter(x => !x.removed));
             Promise.all(
               filtered.map(item =>
-                adapter.db
+                db
                   .collection('file')
-                  .updateOne({ id: item.id }, item, { upsert: true })
+                  .update({ id: item.id }, item, { upsert: true })
               )
             ).catch(err => console.error(err));
             return filtered;
@@ -242,7 +108,7 @@ module.exports = (schema, { uri, adapter } = {}) => {
         caption: String
         source: String
       }
-      type File {
+      type File @collection {
         id: String
         format: String
         version: Int
@@ -267,10 +133,10 @@ module.exports = (schema, { uri, adapter } = {}) => {
         apiKey: String
       }
     `,
-  });
+  };
 };
 
-exports.testEndpoint = (config = {}) => (req, res) => {
+export const uploadTest = (config = {}) => (req, res) => {
   res.send(`
     <form action="${config.endpoint ||
       '/upload'}" method="post" enctype="multipart/form-data">
