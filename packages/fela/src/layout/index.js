@@ -2,18 +2,18 @@ import React from 'react';
 import { createComponent } from 'react-fela';
 import Container from '../container';
 
-const WithContainer = ({ container, ...rest }) =>
+const WithContainer = ({ container, fullSize, affix, ...rest }) =>
   container ? <Container {...rest} /> : <div {...rest} />;
 
 const Layout = createComponent(
-  () => ({
+  ({ fullHeight }) => ({
     display: 'flex',
     height: '100%',
-    minHeight: '100vh',
+    minHeight: fullHeight ? '100vh' : '100%',
     flexDirection: 'column',
   }),
   'div',
-  p => Object.keys(p)
+  ({ fullHeight, ...p }) => Object.keys(p)
 );
 
 Layout.Header = createComponent(
@@ -33,12 +33,12 @@ Layout.Footer = createComponent(
 );
 
 Layout.Body = createComponent(
-  () => ({
+  ({ affix }) => ({
     flex: 1,
-    overflowY: 'auto',
+    overflowY: affix && 'auto',
   }),
   WithContainer,
-  p => Object.keys(p)
+  ({ affix, ...p }) => Object.keys(p)
 );
 
 export default Layout;

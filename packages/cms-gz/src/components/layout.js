@@ -6,7 +6,7 @@ export const App = createComponent(
   ({ theme }) => ({
     backgroundColor: '#FFFFFF',
   }),
-  Layout,
+  p => <Layout {...p} />,
   p => Object.keys(p)
 );
 
@@ -47,7 +47,7 @@ export default class GzLayout extends Component {
     ];
 
     return (
-      <App>
+      <App fullHeight>
         <Header>
           <Navbar
             pages={nav}
@@ -57,7 +57,7 @@ export default class GzLayout extends Component {
             mega
           />
         </Header>
-        <Layout.Body>
+        <Layout.Body affix>
           {children}
         </Layout.Body>
         <Layout.Footer container>

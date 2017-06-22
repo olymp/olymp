@@ -96,15 +96,8 @@ export const Modal = (
 Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
-  ({
-    theme,
-    padding,
-    width,
-    showLogo,
-    bottomTransparency,
-    topTransparency,
-  }) => ({
-    backgroundColor: 'whitesmoke',
+  ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
+    backgroundColor: theme.color,
     background: `linear-gradient(0deg, ${theme.colorStart ||
       tinycolor(theme.color)
         .darken(6)
@@ -118,6 +111,11 @@ const component = createComponent(
         .toRgbString()})`,
     display: 'flex',
     '> .ant-modal': {
+      top: 0,
+      outline: 0,
+      width: width || 480,
+      margin: 'auto',
+      paddingY: theme.space4,
       '> .logo': {
         pointerEvents: 'none',
         margin: 'auto',
@@ -128,19 +126,25 @@ const component = createComponent(
           height: '75px',
         },
         '> h3': {
-          color: 'rgba(255, 255, 255, 0.99)',
+          color: theme.light1,
           fontWeight: 200,
           fontSize: 40,
         },
       },
       '> div > div': {
         '> .ant-modal-content': {
-          borderRadius: 0,
+          borderRadius: theme.borderRadius,
           '> .ant-modal-close': {
             display: 'none',
           },
           '> .ant-modal-body': {
-            padding,
+            padding: padding || theme.space2,
+            '> *': {
+              marginY: theme.space3,
+            },
+            '& .ant-input-group-wrapper': {
+              width: '100%',
+            },
           },
           '> .ant-modal-header > .ant-modal-title': {
             color: theme.color,
@@ -152,19 +156,15 @@ const component = createComponent(
             textAlign: 'center',
           },
           '> .ant-modal-footer': {
+            display: 'flex',
+            padding: theme.space1,
             '> .ant-btn': {
-              width: 'calc(50% - 4px)',
-              maxWidth: 200,
+              flex: '1 1',
+              margin: theme.space1,
             },
           },
         },
       },
-      top: 0,
-      outline: 0,
-      width: width || 400,
-      margin: 'auto',
-      paddingBottom: 24,
-      paddingTop: 24,
     },
   }),
   Modal,
