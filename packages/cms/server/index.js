@@ -1,56 +1,99 @@
-import createSchema from 'olymp-graphql';
+import createSchema from 'olymp-graphql/server';
 import createMail from 'olymp-mail/server';
-import { googleGraphQL } from 'olymp-google/server';
-import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
-import { filestackGraphQL } from 'olymp-filestack/server';
-import { authGraphQL, authCache, createAuth } from 'olymp-auth/server';
-import { tagsGraphQL } from 'olymp-collection/server';
+import { authGraphQL, authCache, createAuthEngine } from 'olymp-auth/server';
 import { pagesGraphQL } from 'olymp-pages/server';
-import createSitemap from 'olymp-sitemap';
-import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
-import expressMongoDb from 'express-mongo-db';
+/* import createSitemap from 'olymp-sitemap/server';
+import { googleGraphQL } from 'olymp-google/server';
+import { cloudinaryGraphQL } from 'olymp-cloudinary/server';*/
 import monk from 'monk';
+import { modules as colModules, directives } from 'olymp-collection/server';
+
+const {
+  APP,
+  MONGODB_URI,
+  POSTMARK_KEY,
+  GM_KEY,
+  CLOUDINARY_URI,
+  AUTH_SECRET,
+  NODE_ENV,
+} = process.env;
+// FILESTACK_KEY,
 
 export default (server, options) => {
-  const db = monk(process.env.MONGODB_URI);
+  const db = monk(MONGODB_URI);
+  const schema = createSchema({ directives });
+  const modules = {
+    ...colModules,
+    helloWorld: {
+      queries: `
+      helloWorld: String
+    `,
+      resolvers: {
+        queries: {
+          helloWorld: () => 'Hello World!',
+        },
+      },
+    },
+  };
+  const mail = createMail(POSTMARK_KEY, options.mail);
 
-  const Schema = createSchema();
-  const mail = createMail(process.env.POSTMARK_KEY, options.mail);
+  const authEngine = createAuthEngine({ db, mail, secret: AUTH_SECRET });
+  server.use(authCache(authEngine));
 
-  createSitemap(Schema, options.sitemap);
-  tagsGraphQL(Schema, options.tags);
-  googleGraphQL(Schema, process.env.GM_KEY, options.google);
-  pagesGraphQL(Schema, options.pages);
-  cloudinaryGraphQL(Schema, process.env.CLOUDINARY_URI, options.cloudinary);
-  if (process.env.FILESTACK_KEY) {
-    filestackGraphQL(Schema, process.env.FILESTACK_KEY, options.filestack);
-  }
-  if (typeof options.auth === 'string') {
-    options.auth = { secret: options.auth };
-  }
-  const auth = createAuth({ mail, ...options.auth });
-  authGraphQL(Schema, { auth });
-  server.use(authCache(auth));
+  server.use((req, res, next) => {
+    req.mail = mail;
+    req.db = db;
+    req.schema = schema;
+    req.authEngine = authEngine;
+    next();
+  });
+
+  modules.auth = authGraphQL(options.auth);
+  modules.pages = pagesGraphQL();
+  schema.apply(modules);
+  /*
+  createSitemap(schema, options.sitemap);
+  schema.addSchema(tagsSchema);
+  schema.addSchema(collectionSchema);
+  googleGraphQL(schema, GM_KEY, options.google);
+  pagesGraphQL(schema, options.pages);
+  cloudinaryGraphQL(schema, CLOUDINARY_URI, options.cloudinary);
 
   if (options.schemas) {
-    if (typeof options.schemas === 'function') {
-      options.schemas({ schema: Schema, mail });
-    } else if (Array.isArray(options.schemas)) {
-      options.schemas.forEach(s => s(Schema, { db, mail }));
+    options.schemas({ schema, mail, authEngine, server, db });
+  }
+
+  let cachedApp = null;
+  // Add GraphQL API
+  server.post('/graphql', (req, res, next) => {
+    if (cachedApp) {
+      return schema.express(req, res, next);
     }
+    db
+      .collection('apps')
+      .findOne({ id: APP })
+      .then((app) => {
+        if (!app) {
+          throw new Error('App not found');
+        }
+        cachedApp = app;
+        // attach schemata
+        // schema.addSchema();
+        schema.express(req, res, next);
+      })
+      .catch(err => next(err));
+  });*/
+  server.post('/graphql', schema.express);
+  if (NODE_ENV !== 'production') {
+    server.get('/graphql', schema.graphi);
   }
 
-  if (process.env.NODE_ENV !== 'production') {
-    server.get('/graphql', graphiqlExpress({ endpointURL: '/graphql' }));
-  }
-
-  const { schema, getContext } = Schema.getSchema();
-  server.post('/graphql', server.schema.express);
-
-  server.post(
-    '/graphql',
-    graphqlExpress(request => ({ schema, context: getContext(request) }))
-  );
+  db.collection('apps').findOne({ id: APP }).then((app) => {
+    if (!app) {
+      throw new Error('App not found');
+    }
+    schema.apply(modules);
+  });
 };
 
 /* if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `
@@ -58,3 +101,11 @@ Hallo
 ## kopo [Anmelden](http://google.de)
 [Anmelden](http://google.de)
 ` }).then(x => x.json()).then(x => console.log(x)).catch(err => console.error(err));*/
+
+/*
+import { filestackGraphQL } from 'olymp-filestack/server';
+
+if (FILESTACK_KEY) {
+  filestackGraphQL(schema, FILESTACK_KEY, options.filestack);
+}
+*/

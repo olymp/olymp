@@ -39,12 +39,8 @@ export default (WrappedComponent) => {
       return schema && schema.types
         ? schema.types.filter(
             x =>
-              (x.interfaces || [])
-                .filter(
-                  y =>
-                    y.name === 'CollectionType' ||
-                    y.name === 'CollectionInterface'
-                ).length
+              (x.interfaces || []).filter(y => y.name === 'CollectionInterface')
+                .length
           )
         : [];
     }
@@ -77,7 +73,9 @@ export default (WrappedComponent) => {
         };
 
         // Gruppieren
-        if (!groups[attributes.group]) { groups[attributes.group] = []; }
+        if (!groups[attributes.group]) {
+          groups[attributes.group] = [];
+        }
         groups[attributes.group].push(collections[i]);
       });
 
@@ -89,7 +87,9 @@ export default (WrappedComponent) => {
       // Undefined-Gruppe auflösen
       if (groups.undefined) {
         groups.undefined.forEach((collection) => {
-          if (!groups[collection.name]) { groups[collection.name] = []; }
+          if (!groups[collection.name]) {
+            groups[collection.name] = [];
+          }
 
           groups[collection.name].push(collection);
         });

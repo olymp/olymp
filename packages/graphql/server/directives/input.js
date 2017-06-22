@@ -1,11 +1,11 @@
-const { addInputTypes } = require('../utils');
+const { addInput } = require('../utils');
 
-export default () => ({
+export default {
   name: 'input',
   description: 'Marks a type as a relative.',
   resolveStatic: {
     enter2(node, directive, { ast }) {
-      addInputTypes(node.name.value, ast);
+      addInput(ast, node);
     },
   },
-});
+};

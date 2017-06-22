@@ -1,4 +1,5 @@
 import maps from '@google/maps';
+
 export default (key) => {
   const googleMapsClient = maps.createClient({
     key,

@@ -73,6 +73,7 @@
     "file-loader": "^0.11.1",
     "google-map-react": "^0.24.0",
     "graphql": "^0.10.1",
+    "graphql-modules": "^0.2.1",
     "graphql-server-express": "^0.8.5",
     "graphql-tag": "^2.4.0",
     "graphql-tools": "^1.0.0",

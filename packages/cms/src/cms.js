@@ -13,7 +13,7 @@ import { AuthModals, AuthUsers } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from 'olymp-pages';
 import { CloudinaryRoute, LightboxProvider, Lightbox } from 'olymp-cloudinary';
-import { CollectionOldRoute } from 'olymp-collection-old';
+import { CollectionRoute } from 'olymp-collection';
 import { NavigationVertical } from './navigation';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
@@ -72,7 +72,7 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
               <SimpleRoute
                 match={!!collection}
                 render={() =>
-                  (<CollectionOldRoute
+                  (<CollectionRoute
                     {...props}
                     typeName={collection && collection.name}
                     Wrapped={Wrapped}

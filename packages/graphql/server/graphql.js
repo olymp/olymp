@@ -1,98 +1,24 @@
-import directives from './directives';
-const { buildSchema } = require('./utils');
-const { defaultScalars, defaultTypes } = require('./defaults');
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import { bundle } from 'graphql-modules';
+import buildSchema from './schema-builder';
+import { values } from 'lodash';
+import * as scalarModules from './scalars';
+import * as defaultDirectives from './directives';
 
-export default ({ adapter } = {}) => {
-  const _schemas = {};
-
-  const getFinalSchema = () => {
-    const moduleQueries = ['hello: String'];
-    const moduleTypeDefinitions = [];
-    const moduleHooks = { before: [], after: [] };
-    const moduleMutations = ['hello: String'];
-    const moduleResolvers = {
-      Query: { hello: () => 'World23423!' },
-      Mutation: { hello: () => 'World2!' },
-    };
-
-    Object.keys(_schemas).forEach((schemaName) => {
-      const { query, mutation, resolvers, schema, hooks } = _schemas[
-        schemaName
-      ];
-      if (schema) { moduleTypeDefinitions.push(schema); }
-      if (query) { moduleQueries.push(query); }
-      if (mutation) { moduleMutations.push(mutation); }
-      if (hooks && hooks.before) { moduleHooks.before.push(hooks.before); }
-      if (hooks && hooks.after) { moduleHooks.after.push(hooks.after); }
-      Object.keys(resolvers || {}).forEach((name) => {
-        if (name === 'Query') {
-          Object.keys(resolvers.Query).forEach((key) => {
-            moduleResolvers.Query[key] = resolvers.Query[key];
-          });
-        } else if (name === 'Mutation') {
-          Object.keys(resolvers.Mutation).forEach((key) => {
-            moduleResolvers.Mutation[key] = resolvers.Mutation[key];
-          });
-        } else { moduleResolvers[name] = resolvers[name]; }
-      });
+export default ({ modules, directives = {} }) => {
+  let schema = null;
+  const apply = (modules) => {
+    schema = buildSchema({
+      ...bundle(values({ ...scalarModules, ...modules })),
+      directives: { ...defaultDirectives, ...directives },
     });
-
-    const { schema, ast } = buildSchema(
-      moduleTypeDefinitions.concat([
-        defaultTypes,
-        `
-          type Query {
-            ${moduleQueries.join('\n')}
-          }
-          type Mutation {
-            ${moduleMutations.join('\n')}
-          }
-          schema {
-            query: Query
-            mutation: Mutation
-          }
-        `,
-      ]),
-      moduleResolvers,
-      directives({ adapter, resolvers: moduleResolvers }),
-      moduleHooks
-    );
-    Object.keys(defaultScalars).forEach(key =>
-      Object.assign(schema.getType(key), defaultScalars[key])
-    );
-    const getContext = (ctx) => {
-      const context = Object.assign(
-        { schema, resolvers: moduleResolvers, adapter, ast },
-        ctx
-      );
-      context.beforeHook = getHook(moduleHooks.before, context);
-      context.afterHook = getHook(moduleHooks.after, context);
-      return context;
-    };
-    return { schema, getContext };
   };
+  if (modules) {
+    apply(modules);
+  }
   return {
-    getSchema: () => getFinalSchema(),
-    addSchema: (args) => {
-      if (_schemas[args.name]) { return _schemas[args.name]; }
-      _schemas[args.name] = args;
-      return _schemas[args.name];
-    },
+    express: graphqlExpress(context => ({ schema, context })),
+    graphi: graphiqlExpress({ endpointURL: '/graphql' }),
+    apply: modules => apply(modules),
   };
-};
-
-const getHook = (hooks, context) => (args, info) => {
-  let promise = Promise.resolve(args);
-  let currentArgs;
-  let error;
-  hooks.forEach((hook) => {
-    promise = promise.then((newArgs) => {
-      if (newArgs) { currentArgs = newArgs; }
-      return hook(currentArgs, info, context);
-    });
-  });
-  return promise.then((newArgs) => {
-    if (error) { throw error; }
-    return newArgs || currentArgs;
-  });
 };

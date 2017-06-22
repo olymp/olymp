@@ -139,13 +139,19 @@ function load() {
   rehydrateState = window.ASYNC_STATE;
   asyncContext = createAsyncContext();
 
-  if (typeof init !== undefined && init) { init({ renderer, client, store }); }
+  if (typeof init !== undefined && init) {
+    init({ renderer, client, store });
+  }
 
   return renderApp();
 }
 
 // Execute the first render of our app.
-if (window.POLYFILLED) { load(); } else { window.GO = load; }
+if (window.POLYFILLED) {
+  load();
+} else {
+  window.GO = load;
+}
 
 if (module.hot) {
   // Accept changes to this file for hot reloading.

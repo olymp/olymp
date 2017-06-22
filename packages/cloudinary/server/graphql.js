@@ -156,7 +156,7 @@ module.exports = (schema, { uri, adapter } = {}) => {
       cloudinaryRequestDone(id: String, token: String): File
     `,
     resolvers: {
-      Query: {
+      queries: {
         file: (source, args) =>
           adapter.db.collection('file').findOne({ id: args.id }).then((item) => {
             if (item) { return item; }
@@ -194,7 +194,7 @@ module.exports = (schema, { uri, adapter } = {}) => {
             return signed;
           }),
       },
-      Mutation: {
+      mutations: {
         file: (source, args) => {
           // imagesCache = null;
           // imageCache = null;

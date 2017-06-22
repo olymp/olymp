@@ -18,13 +18,13 @@ export default (schema, { adapter } = {}) => {
         createdBy: source =>
           adapter.db.collection('user').findOne({ id: source.createdById }),
       },
-      Query: {
+      queries: {
         fileStack: (source, args) =>
           adapter.db.collection('file').findOne({ id: args.id }),
         fileStackList: (source, { tags }) =>
           adapter.db.collection('file').findOne({ tags }),
       },
-      Mutation: {
+      mutations: {
         fileStack: (source, { id, input }, context) => {
           if (!id) { id = shortId.generate(); }
           let item;

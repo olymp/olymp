@@ -192,12 +192,12 @@ try {
 }
 
 // Setup server side routing.
-app.get('*', (request, response) => {
+app.get('*', (req, res) => {
   const networkInterface = createNetworkInterface({
     uri: process.env.GRAPHQL_URL || `http://localhost:${port}/graphql`,
     opts: {
       credentials: 'same-origin',
-      headers: request.headers,
+      headers: req.headers,
     },
   });
   const client = new ApolloClient({
@@ -208,7 +208,7 @@ app.get('*', (request, response) => {
   const renderer = createFela();
   const context = {};
 
-  const [pathname, search] = decodeURI(request.url).split('?');
+  const [pathname, search] = decodeURI(req.url).split('?');
   const staticRouter = new StaticRouter();
   staticRouter.props = {
     location: { pathname, search },
@@ -242,8 +242,8 @@ app.get('*', (request, response) => {
         <ConnectedRouter history={history}>
           <Provider renderer={renderer}>
             <GatewayProvider>
-              <UserAgentProvider ua={request.headers['user-agent']}>
-                <AmpProvider amp={request.isAmp}>
+              <UserAgentProvider ua={req.headers['user-agent']}>
+                <AmpProvider amp={req.isAmp}>
                   <App />
                 </AmpProvider>
               </UserAgentProvider>
@@ -257,24 +257,24 @@ app.get('*', (request, response) => {
   return asyncBootstrapper(reactApp)
     .then(() => getDataFromTree(reactApp))
     .then(() => {
-      const reactAppString = request.isAmp
+      const reactAppString = req.isAmp
         ? renderToStaticMarkup(reactApp)
         : renderToString(reactApp);
-      const scripts = request.isAmp
+      const scripts = req.isAmp
         ? []
         : [
           isProd
               ? `${clientAssets.main.js}`
               : `http://localhost:${devPort}/main.js`,
         ];
-      const styles = request.isAmp
+      const styles = req.isAmp
         ? []
         : isProd ? [`${clientAssets.main.css}`] : [];
       const cssMarkup = renderer.renderToString();
       const asyncState = asyncContext.getState();
 
-      // Generate the html response.
-      const html = (request.isAmp ? amp : template)({
+      // Generate the html res.
+      const html = (req.isAmp ? amp : template)({
         root: reactAppString,
         scripts,
         styles,
@@ -287,20 +287,20 @@ app.get('*', (request, response) => {
       });
 
       // Check if the render result contains a redirect, if so we need to set
-      // the specific status and redirect header and end the response.
+      // the specific status and redirect header and end the res.
       if (context.url) {
-        response.status(301).setHeader('Location', context.url);
-        response.end();
+        res.status(301).setHeader('Location', context.url);
+        res.end();
         return;
       }
 
-      response.status(context.missed ? 404 : 200);
-      response.send(html);
+      res.status(context.missed ? 404 : 200);
+      res.send(html);
       // responseRenderer.toStream().pipe(response);
     })
     .catch((err) => {
       console.error(err);
-      response.status(500).send(err);
+      res.status(500).send(err);
     });
 });
 

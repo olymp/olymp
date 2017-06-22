@@ -1,3 +1,5 @@
+import createMaps from './maps';
+
 const convertGeocode = (result) => {
   const newResult = {};
   (result.address_components || []).forEach((component) => {
@@ -28,7 +30,7 @@ const convertGeocode = (result) => {
 };
 
 export default (schema, key) => {
-  const maps = require('./maps')(key);
+  const maps = createMaps(key);
   schema.addSchema({
     name: 'geocode',
     query: `
@@ -36,7 +38,7 @@ export default (schema, key) => {
       geocodeList(address: String, region: String, language: String): [Geocode]
     `,
     resolvers: {
-      Query: {
+      queries: {
         geocode: (source, args) =>
           maps('geocode', args).then(
             result => result.json.results.map(convertGeocode)[0]

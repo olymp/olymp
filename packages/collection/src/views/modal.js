@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'olymp';
 import { Button, Form, Icon } from 'antd';
-import { onError, onSuccess } from 'olymp-ui';
-import { Modal, SplitView, List } from 'olymp-ui';
+import { onError, onSuccess, Modal, SplitView, List } from 'olymp-ui';
 import { lowerFirst } from 'lodash';
 
 @withRouter
