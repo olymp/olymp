@@ -1,4 +1,4 @@
-import { flatten, orderBy, groupBy } from 'lodash';
+import { orderBy, groupBy } from 'lodash';
 
 export default {
   name: 'tag',
@@ -10,20 +10,12 @@ export default {
     queries: {
       tags: (source, args, { db }) =>
         db
-          .collections()
-          .then(collections =>
-            Promise.all(
-              collections.map(collection =>
-                collection
-                  .find({}, { tags: 1 })
-                  .toArray()
-                  .then(array => array.map(({ tags }) => tags))
-              )
-            )
-          )
+          .collection()
+          .find({}, { tags: 1 })
+          .toArray()
+          .then(array => array.map(({ tags }) => tags))
           .then((array) => {
-            const flattened = flatten(array).filter(x => x);
-            const grouped = groupBy(flattened);
+            const grouped = groupBy(array);
             const result = Object.keys(grouped).reduce((result, item) => {
               result.push({
                 id: item,

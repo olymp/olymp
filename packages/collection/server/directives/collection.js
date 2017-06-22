@@ -15,15 +15,15 @@ export default {
         ast,
         node,
         `
-        id: String
-        name: String
-        tags: [String]
-        state: DOCUMENT_STATE
-        createdAt: DateTime
-        updatedAt: DateTime
-        createdBy: User @relation
-        updatedBy: User @relation
-      `
+          id: String
+          name: String
+          tags: [String]
+          state: DOCUMENT_STATE
+          createdAt: DateTime
+          updatedAt: DateTime
+          createdBy: User @relation
+          updatedBy: User @relation
+        `
       );
       addInput(ast, node);
       if (getDirectiveValue(node, 'collection', 'name')) {
