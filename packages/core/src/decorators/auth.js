@@ -118,13 +118,13 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation user($user: UserInput) {
-          user(input: $user) {
+        mutation user($user: UserInput, $id: String) {
+          user(input: $user, id: $id) {
             ${attributes}
           }
         }
       `,
-        variables: { user },
+        variables: { user, id: user.id },
       })
       .then(({ data, errors }) => {
         if (errors) {

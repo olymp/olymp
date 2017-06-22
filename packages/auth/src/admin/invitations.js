@@ -27,7 +27,7 @@ export default class AuthInvitations extends Component {
   static defaultProps = { data: {} };
   state = { search: '' };
   ok = () => {
-    const { auth, onClose, onOk, form } = this.props;
+    const { auth, onClose, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
@@ -44,16 +44,7 @@ export default class AuthInvitations extends Component {
   };
 
   render() {
-    const {
-      id,
-      isOpen,
-      email,
-      form,
-      saving,
-      pathname,
-      onClose,
-      data,
-    } = this.props;
+    const { id, isOpen, pathname, onClose, data } = this.props;
     const { search } = this.state;
 
     let items = data.items || [];
@@ -191,7 +182,7 @@ class AuthInviationDetail extends Component {
             />
           )}
         </Form.Item>
-        <Button onClick={this.ok}>Save</Button>
+        <Button onClick={this.ok}>Speichern</Button>
       </Panel>
     );
   }
