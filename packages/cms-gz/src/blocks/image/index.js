@@ -2,13 +2,13 @@ import { Blocks } from 'olymp-pages';
 import { fade } from 'olymp-fela';
 
 export default {
-  ...Blocks.ImageWithLabel,
+  ...Blocks.ImageText,
   label: 'Bild',
   category: 'Kopfleiste',
   styles: ({ theme }) => ({
     borderBottomRightRadius: 75,
     overflow: 'hidden',
-    '> div': {
+    '> div:nth-child(2)': {
       backgroundColor: fade('#ffa210', 90),
       color: theme.light,
       borderBottomRightRadius: 75,
@@ -22,7 +22,7 @@ export default {
     },
     ifMediumUp: {
       borderBottomRightRadius: 100,
-      '> div': {
+      '> div:nth-child(2)': {
         width: '66%',
         left: 'auto',
         right: 0,

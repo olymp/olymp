@@ -5,7 +5,7 @@ export default {
   key: 'Pages.ImageText.Image',
   label: 'Bild',
   category: 'Medien',
-  component: ({ getData, setActive, children }) =>
+  component: ({ getData, setActive }) =>
     (<Image
       onClick={setActive}
       width="100%"
