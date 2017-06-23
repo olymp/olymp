@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
+import { omit } from 'olymp';
 import { Form } from 'antd';
 import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
@@ -14,7 +15,7 @@ const ok = props => () => {
     mutate({
       variables: {
         id: item && item.id,
-        input: values,
+        input: omit(values),
       },
       updateQueries: !item || !item.id
         ? {

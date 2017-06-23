@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
 import { Dropdown, Menu, Icon, Button, Popover } from 'antd';
+import { Image } from 'olymp-cloudinary';
 import {
   FieldValue,
   collectionToCsvDownload,
@@ -203,6 +204,16 @@ export default class CollectionListSidebar extends Component {
       >
         {items.map(item =>
           (<List.Item
+            image={
+              (item.image || item.bild) &&
+              <Image
+                value={item.image || item.bild}
+                mode="fill"
+                width={37}
+                height={37}
+                retina
+              />
+            }
             active={item.id === id}
             label={item.name}
             onClick={item.onClick}

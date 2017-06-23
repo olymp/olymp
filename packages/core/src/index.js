@@ -13,6 +13,7 @@ export { default as lorem } from './lorem';
 export { default as throttleInput } from './throttle-input';
 export { default as traverse } from './traverse';
 export { default as toLabel } from './to-label';
+export { default as omit } from './omit';
 
 // DECORATORS
 export * from './decorators';
