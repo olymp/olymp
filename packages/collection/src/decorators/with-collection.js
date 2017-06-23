@@ -144,7 +144,6 @@ export default (WrappedComponent) => {
     getWithSpecialFields = collection => {
       if (!collection) return;
       const specialFields = {};
-      console.log(collection);
       const fields = collection.fields.map(item => {
         const field = { ...item, '@': {} };
         if (!field.description) return field;
