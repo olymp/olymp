@@ -1,16 +1,5 @@
 import React from 'react';
-import { Image as CloudinaryImage, ImageEdit } from 'olymp-cloudinary';
-import { createComponent } from 'olymp-fela';
-
-const Image = createComponent(
-  ({ width }) => ({
-    width,
-    display: 'block',
-  }),
-  ({ attributes, value, className }) =>
-    <CloudinaryImage className={className} value={value} {...attributes} />,
-  p => Object.keys(p)
-);
+import { Image, ImageEdit } from 'olymp-cloudinary';
 
 export default {
   // Meta-Data

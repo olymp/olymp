@@ -1,27 +1,65 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import LazyLoad from 'react-lazy-load';
+import { createComponent } from 'olymp-fela';
 import { url } from '../utils';
 
 // const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
-class Img extends Component {
-  render() {
-    const {
-      retina,
-      value,
-      mode,
-      children,
-      maxSize,
-      width,
-      height,
-      style,
-      className,
-      ...rest
-    } = this.props;
+
+const Loader = createComponent(
+  () => ({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  }),
+  p => <LazyLoad {...p} />,
+  ({ lazy, ...p }) => Object.keys(p)
+);
+
+const Img = createComponent(
+  ({ width }) => ({
+    width: width || '100%',
+    display: 'block',
+  }),
+  'img',
+  ({ lazy, ...p }) => Object.keys(p)
+);
+
+const Background = createComponent(
+  () => ({
+    width: '100%',
+    display: 'block',
+    filter: 'blur(8px)',
+  }),
+  'img',
+  ['className', 'src']
+);
+
+const Container = createComponent(
+  ({ width, height }) => ({
+    width,
+    height,
+    overflow: 'hidden',
+    position: 'relative',
+  }),
+  'div',
+  ['className', 'children']
+);
+
+const LazyImage = (props) => {
+  const { className, retina, value, mode, lazy, ...rest } = props;
+  const oWidth = (value.crop && value.crop[0]) || value.width;
+  const oHeight = (value.crop && value.crop[1]) || value.height;
+  let width = props.width;
+  let height = props.height;
+
+  if (!lazy || typeof width === 'string') {
+    // old image-comp
     return (
-      <img
+      <Img
         {...rest}
         src={url(value.url, {
           ...value,
@@ -30,39 +68,63 @@ class Img extends Component {
           dpr: retina ? 2 : undefined,
           mode,
         })}
+        alt={value.caption}
         width={width}
         height={height}
-        style={style}
         className={className}
       />
     );
   }
-}
-/* const Img = ({ src, children, maxSize, style, className, ...rest }) => (
-  <Image
-    cloudName={src.url.split('http://res.cloudinary.com/')[1].split('/')[0]}
-    publicId={src.id}
-    style={style}
-    className={className}
-    secure
-  >
-    <Transformation // Maximum size to 640px to prevent loading to big images/too much traffic
-      crop="fit"
-      width={maxSize || MAX_SIZE}
-      height={maxSize || MAX_SIZE}
-    />
-    <Transformation
-      crop="fill"
-      dpr="auto"
-      fetch_format="auto" // f=auto
-      quality="auto" // q=auto
-      flags="lossy" // fl=lossy
-      {...rest}
-    />
-  </Image>
-);*/
-Img.propTypes = {
-  width: PropTypes.number,
+
+  if (oWidth >= oHeight && (!!width === !!height || width)) {
+    width = width || 640;
+    height = width / oWidth * oHeight;
+  } else {
+    height = height || 640;
+    width = height / oHeight * oWidth;
+  }
+
+  const ratio = Math.round(height / width);
+  width = Math.round(width);
+  height = Math.round(height);
+
+  return (
+    <Container className={className} width={width} height={height}>
+      {(value.format === 'jpg' || value.format === 'pdf') &&
+        <Background
+          src={url(value.url, {
+            ...value,
+            width: 50,
+            height: ratio * 50,
+            quality: 1,
+          })}
+        />}
+      <Loader width="100%" height="auto" offset={100}>
+        <Img
+          {...rest}
+          src={url(value.url, {
+            ...value,
+            width,
+            height,
+            dpr: retina ? 2 : undefined,
+            mode,
+          })}
+          alt={value.caption}
+          width="100%"
+          height="auto"
+        />
+      </Loader>
+    </Container>
+  );
+};
+LazyImage.propTypes = {
+  lazy: PropTypes.bool,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.number,
 };
-export default Img;
+LazyImage.defaultProps = {
+  lazy: true,
+  width: undefined,
+  height: undefined,
+};
+export default LazyImage;

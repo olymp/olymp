@@ -4,6 +4,21 @@ import { createComponent } from 'olymp-fela';
 import { Icon } from 'antd';
 // import Image from '../../cms/cloudinary/image';
 
+const ImgContainer = createComponent(
+  ({ disabled }) => ({
+    marginRight: 8,
+    maxWidth: 37,
+    maxHeight: 37,
+    opacity: disabled ? 0.667 : 1,
+    overflow: 'hidden',
+    '> *': {
+      margin: '0 auto',
+    },
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const Content = createComponent(
   ({ active, disabled, theme }) => ({
     display: 'flex',
@@ -45,10 +60,12 @@ const Content = createComponent(
   }),
   ({ image, label, description, className, disabled, icon }) =>
     (<div className={className}>
-      {image &&
-        typeof image === 'string' &&
-        <img src={image} width={37} height={37} />}
-      {image && typeof image !== 'string' && image}
+      <ImgContainer>
+        {image &&
+          typeof image === 'string' &&
+          <img src={image} width={37} height={37} />}
+        {image && typeof image !== 'string' && image}
+      </ImgContainer>
       <div>
         <strong>{label}</strong>
         {description}

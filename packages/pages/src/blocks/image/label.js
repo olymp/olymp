@@ -64,8 +64,7 @@ export default {
           {
             url: 'http://placekitten.com/1100/330',
             caption: 'Eine Katze',
-            source:
-              'Der Text hier solange zu sehen bis Beni den Bug mit editable false behebt!',
+            source: 'Text',
           },
         ])[0]
       }

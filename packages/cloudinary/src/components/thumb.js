@@ -8,6 +8,7 @@ const ImageContainer = createComponent(
   ({ theme, isActive }) => ({
     position: 'relative',
     margin: '.5rem',
+    padding: 1,
     cursor: 'pointer',
     // outline: isActive ? `3px solid ${theme.color}` : 'none',
     // transform: isActive ? 'scale(1.15)' : 'none',
@@ -15,11 +16,8 @@ const ImageContainer = createComponent(
     backgroundColor: isActive ? theme.color : '#FFF',
     border: isActive ? `1px solid ${theme.color}` : '1px solid #ddd',
     // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
-    '> img': {
+    '> div': {
       opacity: isActive ? 0.6 : 1,
-      backgroundColor: '#FFF',
-      display: 'block',
-      padding: 1,
     },
     ':hover': {
       // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.4)',
@@ -47,7 +45,7 @@ const ImageLabel = createComponent(
     lineHeight: 1,
     // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   }),
-  'div',
+  'span',
   p => Object.keys(p)
 );
 
@@ -66,7 +64,7 @@ const CheckLabel = createComponent(
     padding: 5,
     lineHeight: 1,
   }),
-  'div',
+  'span',
   p => Object.keys(p)
 );
 

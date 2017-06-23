@@ -49,5 +49,6 @@ MediaList.defaultProps = {
   itemHeight: 80,
   selected: [],
   onClick: () => {},
+  onRemove: () => {},
 };
 export default MediaList;
