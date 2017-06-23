@@ -4,6 +4,7 @@ import { createComponent } from 'olymp-fela';
 import Image from './image';
 
 const Maps = Blocks.Maps.Maps;
+const Label = Blocks.ImageTextLabel.component;
 const MapContainer = createComponent(
   ({ theme }) => ({
     width: '100%',
@@ -27,7 +28,7 @@ const MapContainer = createComponent(
       >
         <Maps.Marker lat={59.724465} lng={30.080121} />
       </Maps>
-      {showTitle && <Image.Label>{children}</Image.Label>}
+      {showTitle && <Label>{children}</Label>}
     </div>),
   p => Object.keys(p)
 );
