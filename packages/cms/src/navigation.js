@@ -1,5 +1,6 @@
 import React from 'react';
-import { withAuth, Link, withLang } from 'olymp';
+import { Link, withLang } from 'olymp';
+import { withAuth } from 'olymp-auth';
 import { Menu, Icon, Popover } from 'antd';
 import tinycolor from 'tinycolor2';
 import { createComponent } from 'olymp-fela';

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Link, withAuth } from 'olymp';
+import { Link } from 'olymp';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { EnvelopeO } from 'olymp-icons';
+import withAuth from '../with-auth';
 import Base, { onEnterOk, layout, onError, onSuccess } from './base';
 
 @withAuth

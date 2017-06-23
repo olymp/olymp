@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Link, withRouter, withAuth } from 'olymp';
+import { Link, withRouter } from 'olymp';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { EnvelopeO, Key } from 'olymp-icons';
+import withAuth from '../with-auth';
 import Base, {
   onEnterFocus,
   onEnterOk,

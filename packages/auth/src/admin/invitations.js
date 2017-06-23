@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql, withAuth } from 'olymp';
+import { Link, graphql, gql } from 'olymp';
+import withAuth from '../with-auth';
 import { Button, Form, Input, Icon } from 'antd';
 import { EnvelopeO } from 'olymp-icons';
 import {

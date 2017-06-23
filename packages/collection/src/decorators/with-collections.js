@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
-import { withAuth } from 'olymp';
+import { withAuth } from 'olymp-auth';
 
 export default (WrappedComponent) => {
   @graphql(
@@ -35,7 +35,9 @@ export default (WrappedComponent) => {
   class WithCollectionsComponent extends Component {
     list() {
       const { data } = this.props;
-      if (!data) { return []; }
+      if (!data) {
+        return [];
+      }
       const { schema } = data;
       return schema && schema.types
         ? schema.types.filter(
@@ -52,7 +54,9 @@ export default (WrappedComponent) => {
 
     group(collections) {
       const { data } = this.props;
-      if (!data) { return {}; }
+      if (!data) {
+        return {};
+      }
       const { schema } = data;
 
       if (!schema || !collections.length) {
@@ -78,7 +82,9 @@ export default (WrappedComponent) => {
         };
 
         // Gruppieren
-        if (!groups[attributes.group]) { groups[attributes.group] = []; }
+        if (!groups[attributes.group]) {
+          groups[attributes.group] = [];
+        }
         groups[attributes.group].push(collections[i]);
       });
 
@@ -90,7 +96,9 @@ export default (WrappedComponent) => {
       // Undefined-Gruppe auflösen
       if (groups.undefined) {
         groups.undefined.forEach((collection) => {
-          if (!groups[collection.name]) { groups[collection.name] = []; }
+          if (!groups[collection.name]) {
+            groups[collection.name] = [];
+          }
 
           groups[collection.name].push(collection);
         });

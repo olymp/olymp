@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, withAuth } from 'olymp';
+import { graphql, gql } from 'olymp';
+import withAuth from '../with-auth';
 import { Form, Input } from 'antd';
 import { Key } from 'olymp-icons';
 import { onEnterFocus, onError, onSuccess } from '../views/base';
