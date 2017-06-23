@@ -28,7 +28,6 @@ export default class FormItem extends Component {
       ) || []),
     ].join('\n');
 
-    const rules = getValidationRules(field);
     const editor = getEditor({ field });
 
     if (!editor) {
@@ -49,7 +48,7 @@ export default class FormItem extends Component {
       >
         {form.getFieldDecorator(field.name, {
           initialValue: getInitialValue(this.props, field),
-          rules,
+          rules: getValidationRules(field),
           valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
         })(editor)}
       </Form.Item>

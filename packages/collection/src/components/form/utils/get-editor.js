@@ -39,6 +39,9 @@ export default ({
   editorStyle,
   field,
   label,
+  key,
+  onChange,
+  initialValue,
 }) => {
   const { idField, start, suggest } = field['@'];
   const { type, name } = field;
@@ -47,6 +50,9 @@ export default ({
     placeholder: label || null,
     style: { ...editorStyle, ...style },
     className: cn(editorClassName, className),
+    key,
+    onChange,
+    initialValue,
   };
 
   for (let i = 0; i < edits.length; i += 1) {
