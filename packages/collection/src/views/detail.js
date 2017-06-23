@@ -1,44 +1,69 @@
 import React, { Component } from 'react';
-import { withAuth } from 'olymp-auth';
-import { Button, Tabs } from 'antd';
-import { Panel } from 'olymp-ui';
-import { Input } from '../edits';
+import { withItem } from '../decorators';
+import { Spin } from 'antd';
+import DetailForm from './detail-form';
+import capitalize from 'lodash/upperFirst';
+import { withRouter } from 'olymp';
+import './detail.less';
 
-@withAuth
+const headFields = ['name'];
+const barFields = ['state', 'tags'];
+
+const getFormSchema = ({ fields }) =>
+  // { header: [], bar: [], tabs: {} }
+  fields.reduce(
+    (result, field) => {
+      if (headFields.includes(field.name)) {
+        // Head
+        result.header.push(field);
+      } else if (barFields.includes(field.name)) {
+        // Bar
+        result.bar.splice(barFields.indexOf(field.name), 0, field);
+        result.bar.join();
+      } else if (field.type.name === 'Json') {
+        // if slate => own group
+        result.tabs[capitalize(field.name)] = [field];
+      } else if (field.type.name === 'Image') {
+        // if image => own group
+        result.tabs[capitalize(field.name)] = [field];
+      } else {
+        // Group
+        const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
+
+        if (!result.tabs[group]) { result.tabs[group] = []; }
+        result.tabs[group].push(field);
+      }
+      return result;
+    },
+    {
+      header: [],
+      bar: [],
+      tabs: {},
+    }
+  );
+
+@withRouter
+@withItem
 export default class CollectionDetail extends Component {
   render() {
-    const { form, saving, pathname, data, typeName } = this.props;
-    const { getFieldDecorator } = form;
-    const item = data.item || {};
+    const { id, item, collection, loading, onSave } = this.props;
+    if (id && !item) {
+      return (
+        <div style={{ minHeight: 400 }}>
+          <Spin size="large" />
+        </div>
+      );
+    }
 
     return (
-      <Tabs defaultActiveKey="1" size="small">
-        <Tabs.TabPane tab={typeName} key="1">
-          <Panel minWidth={560} margin="0 30px" padding={16}>
-            <Input
-              form={form}
-              item={item}
-              field="name"
-              label="Name"
-              rules={['required']}
-              type="text"
-              size="large"
-            />
-            <Input
-              form={form}
-              item={item}
-              field="email"
-              label="E-Mail"
-              rules={['required']}
-              type="text"
-              size="large"
-            />
-            <Button onClick={this.ok}>Save</Button>
-          </Panel>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Tab 2" key="2">Content of Tab Pane 2</Tabs.TabPane>
-        <Tabs.TabPane tab="Tab 3" key="3">Content of Tab Pane 3</Tabs.TabPane>
-      </Tabs>
+      <div className="container olymp-container p-1">
+        <DetailForm
+          {...this.props}
+          item={item || {}}
+          schema={getFormSchema(collection)}
+          onCreate={onSave}
+        />
+      </div>
     );
   }
 }
