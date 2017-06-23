@@ -28,15 +28,17 @@ export default (WrappedComponent) => {
   `,
     {
       options: ({ auth }) => ({
-        skip: !auth || !auth.user,
+        skip: !auth.isAuthenticated(),
       }),
     }
   )
   class WithCollectionsComponent extends Component {
     list() {
-      const { data = {} } = this.props;
+      const { data } = this.props;
+      if (!data) {
+        return [];
+      }
       const { schema } = data;
-
       return schema && schema.types
         ? schema.types.filter(
             x =>
@@ -50,10 +52,12 @@ export default (WrappedComponent) => {
         : [];
     }
 
-    group() {
-      const { data = {} } = this.props;
+    group(collections) {
+      const { data } = this.props;
+      if (!data) {
+        return {};
+      }
       const { schema } = data;
-      const collections = this.list();
 
       if (!schema || !collections.length) {
         return {};
@@ -108,14 +112,10 @@ export default (WrappedComponent) => {
     render() {
       const { data, ...rest } = this.props;
       const list = this.list();
-      const group = this.group();
+      const group = this.group(list);
 
       return (
-        <WrappedComponent
-          {...rest}
-          collectionList={list}
-          collectionTree={group}
-        />
+        <WrappedComponent {...rest} collections={list} collectionTree={group} />
       );
     }
   }

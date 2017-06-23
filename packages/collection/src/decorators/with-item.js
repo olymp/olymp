@@ -1,81 +1,85 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { graphql } from 'react-apollo';
-import { notification } from 'antd';
+import { onSuccess, onError } from 'olymp-ui';
+import { Form } from 'antd';
 import gql from 'graphql-tag';
 
-export default ({ fieldNames, typeName }) => (WrappedComponent) => {
-  @graphql(
-    gql`
-    query ${typeName.toLowerCase()}($id: String!) {
-      item: ${typeName.toLowerCase()}(query: { id: {eq: $id} }) {
-        ${fieldNames}
-      }
-    }
-  `,
-    {
-      /* eslint-disable */
-      options: ({ id }) => ({
-        variables: {
-          id,
-        },
-      }),
-    }
-  )
-  @graphql(gql`
-    mutation ${typeName.toLowerCase()}($id: String, $input: ${typeName}Input) {
-      item: ${typeName.toLowerCase()}(id: $id, input: $input, type: UPDATE) {
-        ${fieldNames}
-      }
-    }
-  `)
-  class WithItemComponent extends Component {
-    state = { isDirty: false, patched: {} };
-
-    save = () => {
-      const { mutate, data } = this.props;
-      const input = this.state.patched;
-      this.setState({ saving: true });
-      return mutate({
-        variables: {
-          id: data.item ? data.item.id : undefined,
-          input,
-        },
-      })
-        .then(item => {
-          this.setState({ saving: false, patched: {}, isDirty: false });
-          notification.success({
-            message: 'Gespeichert',
-            description: 'Änderungen wurden gespeichert!',
-          });
-        })
-        .catch(err => {
-          this.setState({ saving: false });
-          console.error(err);
-          notification.error({
-            message: 'Fehler',
-            description: 'Fehler beim Speichern.',
-          });
-          throw err;
+const ok = props => () => {
+  const { form, item, router, query, pathname, mutate, typeName } = props;
+  form.validateFields((err, values) => {
+    if (err) { return onError(err); }
+    mutate({
+      variables: {
+        id: item && item.id,
+        input: values,
+      },
+      updateQueries: !item || !item.id
+        ? {
+          pageList: (prev, { mutationResult }) => ({
+            ...prev,
+            items: [...prev.items, mutationResult.data.item],
+          }),
+        }
+        : undefined,
+    })
+      .then(({ data: { item } }) => {
+        onSuccess('Gespeichert');
+        form.resetFields();
+        router.push({
+          pathname,
+          query: { ...query, [`@${typeName}`]: item.id },
         });
-    };
+      })
+      .catch(onError);
+  });
+};
 
-    patch = fields => {
-      const patched = { ...this.state.patched, ...fields };
-      this.setState({ isDirty: true, patched });
-    };
+export default (WrappedComponent) => {
+  const cache = {};
+  const bound = ({ typeName, fieldNames }) => {
+    const mutation = graphql(gql`
+      mutation ${typeName.toLowerCase()}($id: String, $input: ${typeName}Input) {
+        item: ${typeName.toLowerCase()}(id: $id, input: $input) {
+          ${fieldNames}
+        }
+      }
+    `);
+    const query = graphql(
+      gql`
+      query ${typeName.toLowerCase()}($id: String!) {
+        item: ${typeName.toLowerCase()}(query: { id: {eq: $id} }) {
+          ${fieldNames}
+        }
+      }
+    `,
+      {
+        /* eslint-disable */
+        props: ({ ownProps, data }) => ({
+          ...ownProps,
+          item: data.item,
+        }),
+        options: ({ id }) => ({
+          fetchPolicy: !id ? 'cache-only' : undefined,
+          variables: {
+            id,
+          },
+        }),
+      }
+    );
+    return Form.create({})(
+      query(
+        mutation(props => <WrappedComponent {...props} onSave={ok(props)} />)
+      )
+    );
+  };
 
-    render() {
-      const { data } = this.props;
-      const { patched } = this.state;
-      return (
-        <WrappedComponent
-          {...this.props}
-          item={{ ...data.item, ...patched }}
-          patch={this.patch}
-          save={this.save}
-        />
-      );
+  return props => {
+    if (props.typeName && props.fieldNames && props.collection) {
+      const name = `${props.typeName}|${props.fieldNames}`;
+      const Bound = cache[name] || bound(props);
+      cache[name] = Bound;
+      return <Bound {...props} />;
     }
-  }
-  return WithItemComponent;
+    return null;
+  };
 };

@@ -18,7 +18,10 @@ const userFields = `
   token
   name
 `;
-export default (WrappedComponent) => {
+export const Wrap = (WrappedComponent, typeNameArg) => {
+  if (typeof WrappedComponent === 'string') {
+    return RealComponent => Wrap(RealComponent, WrappedComponent);
+  }
   @withApollo
   @graphql(
     gql`
@@ -90,7 +93,7 @@ export default (WrappedComponent) => {
       options: ({ routeParams = {}, collection, typeName }) => ({
         skip: !!collection,
         variables: {
-          name: capitalize(routeParams.model || typeName),
+          name: capitalize(typeNameArg || routeParams.model || typeName),
         },
       }),
     }
@@ -102,12 +105,29 @@ export default (WrappedComponent) => {
       typeName: PropTypes.string,
       includeStamps: PropTypes.bool,
     };
+    save = item => {
+      return saveItem(
+        item,
+        typeNameArg || this.props.typeName,
+        this.props.client,
+        { id: item.id, fieldNames: this.getAttributes() }
+      );
+    };
+    remove = id => {
+      return removeItem(
+        id,
+        typeNameArg || this.props.typeName,
+        this.props.client,
+        { fieldNames: this.getAttributes() }
+      );
+    };
     getAttributes = col => {
       const collection =
         col ||
         (this.props.data && this.props.data.type) ||
         this.props.collection ||
         null;
+
       return `${collection.fields
         .map(field => {
           if (field.type.kind === 'ENUM' || field.type.kind === 'SCALAR')
@@ -144,7 +164,6 @@ export default (WrappedComponent) => {
     getWithSpecialFields = collection => {
       if (!collection) return;
       const specialFields = {};
-      console.log(collection);
       const fields = collection.fields.map(item => {
         const field = { ...item, '@': {} };
         if (!field.description) return field;
@@ -203,7 +222,10 @@ export default (WrappedComponent) => {
       return (
         <WrappedComponent
           {...rest}
+          collectionLoading={data && data.loading}
           collection={collection && this.getWithSpecialFields(collection)}
+          saveCollectionItem={this.save}
+          removeCollectionItem={this.remove}
           fieldNames={collection && this.getAttributes()}
         />
       );
@@ -211,3 +233,4 @@ export default (WrappedComponent) => {
   }
   return WithCollectionComponent;
 };
+export default Wrap;
