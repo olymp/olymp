@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Tabs } from 'antd';
-import Form from './component';
+import FormComponent from './component';
 
 export default class CollectionDetailForm extends Component {
   render() {
@@ -8,7 +8,7 @@ export default class CollectionDetailForm extends Component {
 
     return (
       <div className={className} style={style}>
-        <Form
+        <FormComponent
           {...form}
           fields={schema.header}
           item={item}
@@ -17,7 +17,7 @@ export default class CollectionDetailForm extends Component {
           clean
         />
 
-        <Form
+        <FormComponent
           {...form}
           fields={schema.bar}
           item={item}
@@ -39,15 +39,23 @@ export default class CollectionDetailForm extends Component {
               Speichern
             </Button>
           </div>
-        </Form>
+        </FormComponent>
 
         <div className="ant-form-content pt-1">
           {Object.keys(schema.tabs).length === 1
-            ? <Form {...form} fields={schema.tabs.Allgemein} item={item} />
+            ? <FormComponent
+              {...form}
+              fields={schema.tabs.Allgemein}
+              item={item}
+            />
             : <Tabs tabPosition="right">
               {Object.keys(schema.tabs).map(key =>
                   (<Tabs.TabPane tab={key} key={key}>
-                    <Form {...form} fields={schema.tabs[key]} item={item} />
+                    <FormComponent
+                      {...form}
+                      fields={schema.tabs[key]}
+                      item={item}
+                    />
                   </Tabs.TabPane>)
                 )}
             </Tabs>}

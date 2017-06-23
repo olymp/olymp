@@ -3,7 +3,8 @@ import { Spin } from 'antd';
 import { upperFirst } from 'lodash';
 import { withRouter } from 'olymp';
 import { withItem } from '../decorators';
-import { Form } from '../components';
+import { DetailForm } from '../components';
+import { Form } from 'antd';
 
 const headFields = ['name'];
 const barFields = ['state', 'tags'];
@@ -45,6 +46,7 @@ const getFormSchema = ({ fields }) =>
 
 @withRouter
 @withItem
+@Form.create()
 export default class CollectionDetail extends Component {
   render() {
     const { id, item, collection, loading, onSave } = this.props;
@@ -57,8 +59,8 @@ export default class CollectionDetail extends Component {
     }
 
     return (
-      <div className="container olymp-container p-1">
-        <Form
+      <div className="">
+        <DetailForm
           {...this.props}
           item={item || {}}
           schema={getFormSchema(collection)}
