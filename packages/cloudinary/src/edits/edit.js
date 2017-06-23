@@ -4,31 +4,50 @@ import { Cloudinary } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 import { withState } from 'recompose';
 
+const transform = image => ({
+  url: image.url,
+  crop: image.crop,
+  width: image.width,
+  height: image.height,
+  caption: image.caption,
+  source: image.source,
+});
 export default withState(
   'isOpen',
   'setOpen',
   false
-)(({ onChange, value, isOpen, setOpen, multi }) =>
-  (<div onClick={() => setOpen(true)}>
-    {multi ? 'Bilder' : 'Bild'} wählen
-    <Portal
-      isOpened={isOpen}
-      onClose={() => setOpen(false)}
-      closeOnEsc
-      closeOnOutsideClick
-    >
-      <CloudinaryModal
-        multi={multi}
-        onChange={(value) => {
-          onChange(value);
-          setOpen(false);
-        }}
+)(({ onChange, value, isOpen, setOpen, multi }) => {
+  let v = [];
+  if (!multi && value) {
+    v = [value];
+  }
+  if (multi && value) {
+    v = value;
+  }
+
+  return (
+    <div onClick={() => setOpen(true)}>
+      {multi ? 'Bilder' : 'Bild'} {v.length ? 'wechseln' : 'wählen'}
+      <Portal
+        isOpened={isOpen}
         onClose={() => setOpen(false)}
-        selected={(value || []).map(image => image.id)}
-      />
-    </Portal>
-  </div>)
-);
+        closeOnEsc
+        closeOnOutsideClick
+      >
+        <CloudinaryModal
+          multi={multi}
+          onChange={(value = []) => {
+            const v = value.map(transform);
+            onChange(multi ? v : v[0]);
+            setOpen(false);
+          }}
+          onClose={() => setOpen(false)}
+          selected={v.map(image => image.id)}
+        />
+      </Portal>
+    </div>
+  );
+});
 
 const CloudinaryModal = createComponent(
   ({ theme }) => ({
