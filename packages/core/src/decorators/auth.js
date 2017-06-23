@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, withApollo } from 'react-apollo';
+import { createComponent } from 'olymp-fela';
 import { Spin } from 'antd';
 import gql from 'graphql-tag';
+
+const Spinner = createComponent(
+  () => ({
+    center: true,
+  }),
+  p => <Spin {...p} />,
+  p => Object.keys(p)
+);
 
 const baseAttributes = 'id, name, email, isAdmin';
 let attributes = baseAttributes;
@@ -48,8 +57,8 @@ export const auth = obj => (WrappedComponent) => {
       };
     }
     render() {
-      if (this.props.auth.loading) {
-        return <Spin />;
+      if (true || this.props.auth.loading) {
+        return <Spinner />;
       }
       return <WrappedComponent {...this.props} />;
     }
