@@ -16,7 +16,38 @@ import InsertBlockOnEnter from 'slate-insert-block-on-enter';
 import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';
 import ToolbarVoid from './toolbar-void';
-import { get } from 'lodash';
+import {
+  AlignCenter,
+  Code,
+  ListUl,
+  ListOl,
+  QuoteLeft,
+  Header,
+  Link,
+  Bold,
+  Italic,
+  Underline,
+} from 'olymp-icons';
+import { createComponent } from 'olymp-fela';
+
+const I = createComponent(
+  ({ theme }) => ({
+    marginTop: 3,
+    marginBottom: -3,
+    display: 'block',
+    '> svg': {
+      fill: theme.light2,
+    },
+    onHover: {
+      '> svg': {
+        fill: theme.light,
+      },
+    },
+  }),
+  ({ className, icon: Icon }) =>
+    <span className={className}><Icon size={14} color="" /></span>,
+  p => Object.keys(p)
+);
 
 const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
@@ -26,11 +57,11 @@ const getIdByTag = (children) => {
 const options = {
   defaultNode: 'line',
   toolbarMarks: [
-    { type: 'bold', label: <b>B</b> },
-    { type: 'italic', label: <i>I</i> },
-    { type: 'underlined', label: <u>U</u> },
-    { type: 'center', label: <span>&#8452;</span> },
-    { type: 'code', label: <span>{'>'}</span> },
+    { type: 'bold', label: <I icon={Bold} /> },
+    { type: 'italic', label: <I icon={Italic} /> },
+    { type: 'underlined', label: <I icon={Underline} /> },
+    { type: 'center', label: <I icon={AlignCenter} /> },
+    { type: 'code', label: <I icon={Code} /> },
   ],
   toolbarTypes: [
     {
@@ -42,7 +73,7 @@ const options = {
         'heading-five',
         'heading-six',
       ],
-      label: <b>H</b>,
+      label: <I icon={Header} />,
       description: [
         'Überschrift 1',
         'Überschrift 2',
@@ -52,14 +83,14 @@ const options = {
         'Überschrift 6',
       ],
     },
-    { type: 'block-quote', label: <span>{'"'}</span> },
-    { type: 'numbered-list', label: <span>ol</span> },
-    { type: 'bulleted-list', label: <span>ul</span> },
+    { type: 'block-quote', label: <I icon={QuoteLeft} /> },
+    { type: 'numbered-list', label: <I icon={ListUl} /> },
+    { type: 'bulleted-list', label: <I icon={ListOl} /> },
   ],
   toolbarActions: [
     {
       type: 'link', // ['link', 'link-page', 'link-media'],
-      icon: 'link',
+      label: <I icon={Link} />,
       description: 'Link', // ['Extern', 'Intern', 'Datei'],
       onClick: ({ value, onChange }, isActive) => {
         let newVal = value;
