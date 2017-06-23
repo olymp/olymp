@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
-import Container from '../container';
+import Container from './container';
 
 const WithContainer = ({ container, fullSize, affix, ...rest }) =>
   container ? <Container {...rest} /> : <div {...rest} />;

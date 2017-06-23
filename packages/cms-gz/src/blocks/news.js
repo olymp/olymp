@@ -1,7 +1,7 @@
 import React from 'react';
 import { createComponent, Container, Grid, border } from 'olymp-fela';
-import { H2 } from '../../components';
-import Panel from '../panel/panel';
+import { H2 } from '../components';
+import Panel from './panel/panel';
 
 export default {
   label: 'Neuigkeiten',
