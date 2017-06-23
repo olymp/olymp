@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Tabs, Form, Button } from 'antd';
 import { Prompt } from 'olymp';
 import { Sidebar, Panel, onError, onSuccess } from 'olymp-ui';
-import { Input } from 'olymp-collection';
+import { InputEdit } from 'olymp-collection';
 import { mutateTemplate } from '../gql';
 
 @Form.create()
@@ -65,7 +65,7 @@ class SelectionSidebar extends Component {
         <Tabs defaultActiveKey="1" size="small">
           <Tabs.TabPane tab="Template" key="1">
             <Panel paddingX={16} alignLabel="left">
-              <Input
+              <InputEdit
                 form={form}
                 item={item}
                 field="name"

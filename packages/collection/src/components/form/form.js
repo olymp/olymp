@@ -26,7 +26,6 @@ export default class FormComponent extends Component {
       ...rest
     } = this.props;
 
-    const toAntSchema = x => x;
     const mappedFields = fields.reduce((result, field) => {
       // EXCLUDING
       if (excludedFields.includes(field.name)) {

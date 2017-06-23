@@ -1,14 +1,15 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { lowerFirst } from 'lodash';
 
 export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) =>
     graphql(
       gql`
-        query ${typeName.toLowerCase()}List($query: ${typeName}Query) {
-          items: ${typeName.toLowerCase()}List(query: $query) {
+        query ${lowerFirst(typeName)}List($query: ${typeName}Query) {
+          items: ${lowerFirst(typeName)}List(query: $query) {
             ${fieldNames}
           }
         }

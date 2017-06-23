@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import { toLabel } from 'olymp';
-import FieldEditor from './editor';
+import { getEditor, getValidationRules, getInitialValue } from './utils';
 
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } };
 const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 
 export default class FormItem extends Component {
   render() {
-    const { field, clean, itemStyle, style, ...rest } = this.props;
-    const { item, getFieldValue, getFieldError } = this.props;
+    const { field, clean, itemStyle, style, form, ...rest } = this.props;
+    const { getFieldValue, getFieldError } = form;
 
     const title = field['@'] && field['@'].label
       ? field['@'].label.arg0
@@ -28,6 +28,13 @@ export default class FormItem extends Component {
       ) || []),
     ].join('\n');
 
+    const rules = getValidationRules(field);
+    const editor = getEditor({ field });
+
+    if (!editor) {
+      return null;
+    }
+
     return (
       <Form.Item
         label={!clean && label}
@@ -40,12 +47,42 @@ export default class FormItem extends Component {
           ? formItemLayout0
           : formItemLayout)}
       >
-        <FieldEditor
-          field={field}
-          label={isBool ? extra : !!clean && label}
-          {...rest}
-        />
+        {form.getFieldDecorator(field.name, {
+          initialValue: getInitialValue(this.props, field),
+          rules,
+          valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
+        })(editor)}
       </Form.Item>
     );
   }
 }
+
+/*
+const isDateRange = !!field['@'].start && !!field['@'].endField;
+if (isDateRange) {
+  const start = this.state.start || item[field.name];
+  const end = this.state.end || item[field['@'].endField.name];
+
+  return (
+    <div>
+      {this.fieldToEditor({
+        onChange: (e) => {
+          setFieldsValue({
+            [field.name]: e[0],
+            [field['@'].endField.name]: e[1],
+          });
+          this.setState({ start: e[0], end: e[1] });
+        },
+        value: [start, end],
+      })}
+      {getFieldDecorator(field.name, {
+        initialValue: start,
+        rules,
+      })(<DateEditor style={{ display: 'none' }} />)}
+      {getFieldDecorator(field['@'].endField.name, {
+        initialValue: end,
+        rules: getValidationRules(field['@'].endField),
+      })(<DateEditor style={{ display: 'none' }} />)}
+    </div>
+  );
+}*/

@@ -2,12 +2,15 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
 import { Form } from 'antd';
+import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 
 const ok = props => () => {
   const { form, item, router, query, pathname, mutate, typeName } = props;
   form.validateFields((err, values) => {
-    if (err) { return onError(err); }
+    if (err) {
+      return onError(err);
+    }
     mutate({
       variables: {
         id: item && item.id,
@@ -15,7 +18,7 @@ const ok = props => () => {
       },
       updateQueries: !item || !item.id
         ? {
-          pageList: (prev, { mutationResult }) => ({
+          [`${typeName.toLowerCase()}List`]: (prev, { mutationResult }) => ({
             ...prev,
             items: [...prev.items, mutationResult.data.item],
           }),
@@ -27,7 +30,7 @@ const ok = props => () => {
         form.resetFields();
         router.push({
           pathname,
-          query: { ...query, [`@${typeName}`]: item.id },
+          query: { ...query, [`@${lowerFirst(typeName)}`]: item.id },
         });
       })
       .catch(onError);
@@ -38,16 +41,16 @@ export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`
-      mutation ${typeName.toLowerCase()}($id: String, $input: ${typeName}Input) {
-        item: ${typeName.toLowerCase()}(id: $id, input: $input) {
+      mutation ${lowerFirst(typeName)}($id: String, $input: ${typeName}Input) {
+        item: ${lowerFirst(typeName)}(id: $id, input: $input) {
           ${fieldNames}
         }
       }
     `);
     const query = graphql(
       gql`
-      query ${typeName.toLowerCase()}($id: String!) {
-        item: ${typeName.toLowerCase()}(query: { id: {eq: $id} }) {
+      query ${lowerFirst(typeName)}($id: String!) {
+        item: ${lowerFirst(typeName)}(query: { id: {eq: $id} }) {
           ${fieldNames}
         }
       }

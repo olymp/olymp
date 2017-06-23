@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Spin } from 'antd';
-import { upperFirst } from 'lodash';
+import { Spin, Button } from 'antd';
 import { withRouter } from 'olymp';
 import { withItem } from '../decorators';
 import { DetailForm } from '../components';
 import { Form } from 'antd';
 
+/*
+import { upperFirst } from 'lodash';
 const headFields = ['name'];
 const barFields = ['state', 'tags'];
 
@@ -42,7 +43,7 @@ const getFormSchema = ({ fields }) =>
       bar: [],
       tabs: {},
     }
-  );
+  );*/
 
 @withRouter
 @withItem
@@ -59,11 +60,18 @@ export default class CollectionDetail extends Component {
     }
 
     return (
-      <div className="">
+      <div>
+        <Button
+          style={{ border: 0, backgroundColor: '#FFFFFF' }}
+          icon="save"
+          onClick={onSave}
+        >
+          Speichern
+        </Button>
         <DetailForm
           {...this.props}
           item={item || {}}
-          schema={getFormSchema(collection)}
+          fields={collection && collection.fields}
           onCreate={onSave}
         />
       </div>

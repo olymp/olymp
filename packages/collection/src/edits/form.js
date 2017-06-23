@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withCollection } from '../decorators';
-import Editor from '../components/form/editor';
+import { getEditor } from '../components/form/utils';
 import { Button, Collapse } from 'antd';
 
 const fieldNames = [
@@ -61,9 +61,12 @@ export default class SubForm extends Component {
                     ({ name }) =>
                       name !== 'id' && fieldNames.indexOf(name) === -1
                   )
-                  .map(field =>
-                    <Editor key={field.name} field={field} item={value} />
-                  )}
+                  .map((field) => {
+                    const Editor = getEditor({ field });
+                    return (
+                      <Editor key={field.name} field={field} item={value} />
+                    );
+                  })}
               </div>
             </Collapse.Panel>)
           )}

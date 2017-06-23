@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { Button, Tabs } from 'antd';
-import FormComponent from './component';
+import FormComponent from './form';
 
 export default class CollectionDetailForm extends Component {
   render() {
     const { schema, onSave, className, style, form, item } = this.props;
-
+    return (
+      <FormComponent
+        {...form}
+        fields={schema.header}
+        item={item}
+        editorStyle={{ textAlign: 'center' }}
+        clean
+      />
+    );
     return (
       <div className={className} style={style}>
         <FormComponent
