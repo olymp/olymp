@@ -10,7 +10,7 @@ export default {
     queries: {
       tags: (source, args, { db }) =>
         db
-          .collection()
+          .collection('items')
           .find({}, { tags: 1 })
           .then(array => array.map(({ tags }) => tags))
           .then((array) => {
