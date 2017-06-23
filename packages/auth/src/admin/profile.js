@@ -111,7 +111,10 @@ export default class AuthProfile extends Component {
           </FormItem>
           {auth.user.isAdmin &&
             <FormItem key="isAdmin" label="Administrator" {...layout}>
-              {form.getFieldDecorator('isAdmin', {
+              <Checkbox checked={user.isAdmin} disabled>
+                {user.isAdmin ? 'ist Administrator' : 'ist kein Administrator'}
+              </Checkbox>
+              {/* form.getFieldDecorator('isAdmin', {
                 initialValue: user.isAdmin,
                 valuePropName: 'checked',
               })(
@@ -120,7 +123,7 @@ export default class AuthProfile extends Component {
                     ? 'ist Administrator'
                     : 'ist kein Administrator'}
                 </Checkbox>
-              )}
+              ) */}
             </FormItem>}
           {/* <Form.Item key="password" label="Passwort" {...layout}>
             {form.getFieldDecorator('password', {
