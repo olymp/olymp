@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tree } from 'olymp-ui';
 import { Icon } from 'antd';
-import withBlockTypes from '../decorators';
+import withBlockTypes from './decorators';
 
 @withBlockTypes
 export default class SlateTree extends Component {

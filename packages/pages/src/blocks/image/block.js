@@ -1,11 +1,11 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
-import { Block, Raw, createBlockList } from 'olymp-slate';
+import { createBlockList } from 'olymp-slate';
 import Image from './image';
 import Label from './label';
 
 const component = createComponent(
-  ({ width, float }) => ({
+  ({ float }) => ({
     width: '100%',
     float,
     position: 'relative',

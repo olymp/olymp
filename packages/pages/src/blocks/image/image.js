@@ -2,27 +2,15 @@ import React from 'react';
 import { Image, ImageEdit } from 'olymp-cloudinary';
 
 export default {
-  // Meta-Data
+  key: 'Pages.ImageText.Image',
   label: 'Bild',
   category: 'Medien',
-  editable: false,
-  // Component
-  component: ({ getData, ...p }) =>
+  component: ({ getData, setActive, children }) =>
     (<Image
-      {...p}
-      value={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
+      onClick={setActive}
       width="100%"
+      value={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
     />),
-  // Styles
-  styles: {
-    width: '100%',
-    height: 'auto',
-  },
-  // Editor Plugins like onKeyDown
-  plugin: {},
-  // Block decorators like resize
-  decorators: [],
-  // Actions
   actions: [
     {
       component: ({ setData, getData, ...p }) =>
@@ -35,5 +23,4 @@ export default {
       toggle: () => {},
     },
   ],
-  Image,
 };

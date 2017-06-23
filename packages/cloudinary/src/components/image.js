@@ -58,16 +58,20 @@ const LazyImage = (props) => {
 
   if (!lazy || typeof width === 'string') {
     // old image-comp
+    const options = {
+      ...value,
+      dpr: retina ? 2 : undefined,
+      mode,
+    };
+    if (typeof width !== 'string') {
+      options.width = width;
+      options.height = height;
+    }
+
     return (
       <Img
         {...rest}
-        src={url(value.url, {
-          ...value,
-          width,
-          height,
-          dpr: retina ? 2 : undefined,
-          mode,
-        })}
+        src={url(value.url, options)}
         alt={value.caption}
         width={width}
         height={height}
