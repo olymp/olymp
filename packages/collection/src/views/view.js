@@ -35,7 +35,7 @@ export default class CollectionView extends Component {
         <Sidebar
           collection={collection}
           typeName={typeName}
-          items={data && data.items}
+          items={items}
           onClose={onClose}
           filter={[]}
           onFilter={(filter, filteredItems) =>
