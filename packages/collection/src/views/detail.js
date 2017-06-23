@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withAuth } from 'olymp';
+import { withAuth } from 'olymp-auth';
 import { Button, Tabs } from 'antd';
 import { Panel } from 'olymp-ui';
 import { Input } from '../edits';

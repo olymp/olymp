@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import {
-  auth as withAuth,
-  withRouter,
-  withLangProvider,
-  SimpleSwitch,
-  SimpleRoute,
-  withCollections,
-} from 'olymp';
+import { withCollections } from 'olymp-collection';
+import { withRouter, withLangProvider, SimpleSwitch, SimpleRoute } from 'olymp';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
-import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
+import { AuthModals, AuthUsers, AuthUser, auth as withAuth } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from 'olymp-pages';
 import { CloudinaryRoute, LightboxProvider, Lightbox } from 'olymp-cloudinary';

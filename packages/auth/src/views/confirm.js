@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql, withAuth } from 'olymp';
+import { Link, graphql, gql } from 'olymp';
 import { Countdown, Modal } from 'olymp-ui';
 import { Form } from 'antd';
+import withAuth from '../with-auth';
 import Base, { onSuccess, onError } from './base';
 
 @withAuth

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withAuth } from 'olymp';
+import withAuth from '../with-auth';
 import { createComponent, Grid } from 'olymp-fela';
 import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
