@@ -101,7 +101,7 @@ export default ({ attributes = '' } = {}) => ({
         }
         delete args.operationType; // eslint-disable-line no-param-reassign
         delete args.isAdmin;
-        return db.write('user', Object.assign({}, args));
+        return db.collection('user').update({ id: user.id }, args);
         // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
         // else return collection.insertOne(args);
       },
@@ -118,10 +118,9 @@ export default ({ attributes = '' } = {}) => ({
           delete args.input; // eslint-disable-line no-param-reassign
         }
         delete args.operationType; // eslint-disable-line no-param-reassign
-        console.log('ARGS', args);
         args.expiry = +new Date();
         args.token = authEngine.tokenEngine.create({ email: args.email });
-        return db.write('invitation', Object.assign({}, args)).then((u) => {
+        return db.collection('invitation').insert(args).then((u) => {
           console.log('INVITE', u.token, u);
           if (mail) {
             mail(
