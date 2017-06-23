@@ -1,3 +1,3 @@
-export { default as ImageText } from './block';
-export { default as ImageTextImage } from './image';
-export { default as ImageTextLabel } from './label';
+export { default as ImageBlock } from './block';
+export { default as ImageBlockImage } from './image';
+export { default as ImageBlockLabel } from './label';
