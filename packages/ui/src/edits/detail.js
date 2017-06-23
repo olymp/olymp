@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withItems } from 'olymp';
+// import { withItems } from 'olymp';
 import { Select } from 'antd';
 
-@withItems()
+// @withItems()
 export default class DetailEditor extends Component {
   render() {
     const { data, collection, items, children, value, ...rest } = this.props;

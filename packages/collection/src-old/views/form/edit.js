@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withCollection } from 'olymp';
+import { withCollection } from '../../decorators';
 import FormItem from './edit';
 import { Button, Collapse } from 'antd';
 
