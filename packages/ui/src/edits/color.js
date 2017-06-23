@@ -25,6 +25,9 @@ const hasNativePicker = () => {
 
 const ColorEditor = ({ value, colors = [], ...rest }) => {
   const newColors = [...colors];
+  if (!value) {
+    value = '#000000';
+  }
 
   let isOwnColor;
   if (value && value !== 'other') {
@@ -73,12 +76,13 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
     if (hasNativePicker()) {
       picker = (
         <Input
-          {...rest}
-          placeholder={name}
           type="color"
+          {...rest}
+          style={{ width: 100 }}
+          placeholder={name}
           addonBefore={<i className="fa fa-eyedropper" />}
-          value={tinycolor(value || '#000000').toHexString()}
-          defaultValue={tinycolor(value || '#000000').toHexString()}
+          value={tinycolor(value).toHexString()}
+          defaultValue={tinycolor(value).toHexString()}
         />
       );
     } else {

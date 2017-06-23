@@ -112,7 +112,7 @@ export default class CollectionListSidebar extends Component {
       refetch,
       typeName,
       onSearch,
-      search,
+      searchText,
       onClick,
     } = this.props;
     const items = (this.props.items || []).map((item) => {
@@ -130,6 +130,7 @@ export default class CollectionListSidebar extends Component {
         item[this.resolveFieldName(item, 'color', 'farbe')];
 
       return {
+        id: item.id,
         name,
         description,
         image,
@@ -192,7 +193,7 @@ export default class CollectionListSidebar extends Component {
           <List.Filter
             placeholder="Filter ..."
             onChange={onSearch}
-            value={search}
+            value={searchText}
           />
         }
         isOpen

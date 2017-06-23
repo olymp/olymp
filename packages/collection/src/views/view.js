@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { withItems, withCollection } from '../decorators';
-import { withRouter } from 'olymp';
+import { withRouter, withSearch } from 'olymp';
 import Detail from './detail';
 import Sidebar from './sidebar';
 import { SplitView } from 'olymp-ui';
 
+@withSearch('search')
 @withCollection
 @withItems
 @withRouter
@@ -23,6 +24,8 @@ export default class CollectionView extends Component {
       typeName,
       data,
       router,
+      performSearch,
+      searchText,
     } = this.props;
     const { query, pathname } = location;
     const id = location.query && location.query[`@${typeName.toLowerCase()}`];
@@ -37,8 +40,8 @@ export default class CollectionView extends Component {
           filter={[]}
           onFilter={(filter, filteredItems) =>
             this.setState({ filter, filteredItems })}
-          search={''}
-          onSearch={search => this.setState({ search })}
+          searchText={searchText}
+          onSearch={performSearch}
           onClick={item =>
             router.push({
               pathname,

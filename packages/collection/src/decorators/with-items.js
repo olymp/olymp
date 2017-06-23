@@ -7,19 +7,27 @@ export default (WrappedComponent) => {
   const bound = ({ typeName, fieldNames }) =>
     graphql(
       gql`
-    query ${typeName.toLowerCase()}List {
-      items: ${typeName.toLowerCase()}List {
-        ${fieldNames}
-      }
-    }
-  `,
+        query ${typeName.toLowerCase()}List($query: ${typeName}Query) {
+          items: ${typeName.toLowerCase()}List(query: $query) {
+            ${fieldNames}
+          }
+        }
+      `,
       {
         /* eslint-disable */
-        options: ({ id }) => ({
-          variables: {},
+        options: ({ id, searchTerm }) => ({
+          variables: {
+            query: searchTerm
+              ? {
+                  name: {
+                    contains: searchTerm,
+                  },
+                }
+              : null,
+          },
         }),
       }
-    )(props => <WrappedComponent {...props} />);
+    )(props => <WrappedComponent {...props} items={props.data.items} />);
   return props => {
     if (props.typeName && props.fieldNames && props.collection) {
       const name = `${props.typeName}|${props.fieldNames}`;
