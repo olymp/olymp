@@ -210,10 +210,10 @@ export default withLang(
             </Link>
           </Menu.Item>
         </Menu.SubMenu>
-        <Menu.Item key="@profile">
+        <Menu.Item key="@user">
           <Popover placement="right" content="Profil">
             <Link
-              to={{ query: { '@profile': null, '@deviceWidth': deviceWidth } }}
+              to={{ query: { '@user': null, '@deviceWidth': deviceWidth } }}
             >
               <Icon type="user" />
             </Link>

@@ -9,7 +9,7 @@ import {
 } from 'olymp';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
-import { AuthModals, AuthUsers } from 'olymp-auth';
+import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute, withNavigation } from 'olymp-pages';
 import { CloudinaryRoute, LightboxProvider, Lightbox } from 'olymp-cloudinary';
@@ -95,6 +95,10 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
               <SimpleRoute
                 match={query['@users'] !== undefined}
                 render={() => <AuthUsers {...props} />}
+              />
+              <SimpleRoute
+                match={query['@user'] !== undefined}
+                render={() => <AuthUser {...props} />}
               />
               <SimpleRoute
                 render={() =>
