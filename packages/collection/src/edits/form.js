@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { withCollection } from '../../decorators';
-import FormItem from './edit';
+import { withCollection } from '../decorators';
+import Editor from '../components/form/editor';
 import { Button, Collapse } from 'antd';
 
 const fieldNames = [
@@ -62,7 +62,7 @@ export default class SubForm extends Component {
                       name !== 'id' && fieldNames.indexOf(name) === -1
                   )
                   .map(field =>
-                    <FormItem key={field.name} field={field} item={value} />
+                    <Editor key={field.name} field={field} item={value} />
                   )}
               </div>
             </Collapse.Panel>)

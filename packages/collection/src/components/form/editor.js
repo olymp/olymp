@@ -9,7 +9,7 @@ import {
   TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
-import FormEditor from './edit';
+import { FormEdit } from '../../edits';
 import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
@@ -59,23 +59,21 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
     return 'DRAFT';
   } else if (name === 'slug' && getFieldValue('name')) {
     // Bei Slug
-    let url =
-      `/${
-      encodeURIComponent(
-        getFieldValue('name').split(' ').join('-').toLowerCase()
-      )
-        .split('%C3%A4')
-        .join('ä')
-        .split('%C3%B6')
-        .join('ö')
-        .split('%C3%BC')
-        .join('ü')
-        .split('%C3%A4')
-        .join('Ä')
-        .split('%C3%B6')
-        .join('Ö')
-        .split('%C3%BC')
-        .join('Ü')}`;
+    let url = `/${encodeURIComponent(
+      getFieldValue('name').split(' ').join('-').toLowerCase()
+    )
+      .split('%C3%A4')
+      .join('ä')
+      .split('%C3%B6')
+      .join('ö')
+      .split('%C3%BC')
+      .join('ü')
+      .split('%C3%A4')
+      .join('Ä')
+      .split('%C3%B6')
+      .join('Ö')
+      .split('%C3%BC')
+      .join('Ü')}`;
     if (getFieldValue('date')) {
       url = `${moment(getFieldValue('date')).format('DD-MM-YYYY')}-${url}`;
     }
@@ -126,7 +124,9 @@ export default class FieldEditor extends Component {
         Editor = React.cloneElement(Edit, editProps);
       }
     });
-    if (Editor) { return Editor; }
+    if (Editor) {
+      return Editor;
+    }
 
     if (idField && idField.type) {
       if (idField.type.kind === 'LIST' && idField.type.ofType) {
@@ -145,11 +145,13 @@ export default class FieldEditor extends Component {
         if (name === 'tags') {
           return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
         }
-        return <Select {...editProps} tags searchPlaceholder="Suche ..." />;
+        return (
+          <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />
+        );
       }
       if (type.ofType.name.indexOf('Nested') === 0) {
         return (
-          <FormEditor {...editProps} typeName={type.ofType.name} type={type} />
+          <FormEdit {...editProps} typeName={type.ofType.name} type={type} />
         );
       }
       return null;
@@ -167,7 +169,9 @@ export default class FieldEditor extends Component {
       );
     }
     if (start) {
-      if (type.name === 'Date') { return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />; }
+      if (type.name === 'Date') {
+        return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />;
+      }
       if (type.name === 'DateTime') {
         return (
           <DateRangeEditor
@@ -271,7 +275,9 @@ export default class FieldEditor extends Component {
     const isDateRange = !!field['@'].start && !!field['@'].endField;
     const rules = getValidationRules(field);
 
-    if (!editor || !getFieldDecorator) { return null; }
+    if (!editor || !getFieldDecorator) {
+      return null;
+    }
 
     if (isDateRange) {
       const start = this.state.start || item[field.name];

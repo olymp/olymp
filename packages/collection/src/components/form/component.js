@@ -70,8 +70,7 @@ export default class FormComponent extends Component {
 
     return (
       <Form
-        layout={vertical && 'vertical'}
-        inline={inline}
+        layout={(vertical && 'vertical') || (inline && 'inline')}
         style={style}
         className={className}
       >

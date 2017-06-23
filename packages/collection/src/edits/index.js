@@ -1,2 +1,3 @@
-export { default as Input } from './input';
-export { default as State } from './state';
+export { default as InputEdit } from './input';
+export { default as StateEdit } from './state';
+export { default as FormEdit } from './form';

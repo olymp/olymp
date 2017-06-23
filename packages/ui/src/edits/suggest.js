@@ -23,7 +23,7 @@ export default class SuggestionEditor extends Component {
   render() {
     const suggestions = this.props.data.suggestions || [];
     return (
-      <Select {...this.props} combobox>
+      <Select {...this.props} mode="combobox">
         {suggestions.map(tag =>
           <Select.Option key={tag.id}>{tag.id}</Select.Option>
         )}

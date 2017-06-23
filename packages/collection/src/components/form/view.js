@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Tabs } from 'antd';
-import { Form } from '../components';
+import Form from './component';
 
 export default class CollectionDetailForm extends Component {
   render() {
