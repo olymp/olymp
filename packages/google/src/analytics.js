@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Static from './static';
-import { DateRange } from './../../edits';
+// import Static from './static';
+import { DateRangeEditor } from 'olymp-ui';
 
 let firstRun = true;
 export default class Analytics extends Component {
@@ -190,7 +190,7 @@ export default class Analytics extends Component {
             </div>
 
             <div className="ui vertical fluid menu">
-              <DateRange
+              <DateRangeEditor
                 value={{
                   dateStart: moment(query['start-date']).toDate(),
                   dateEnd: moment(query['end-date']).toDate(),
@@ -222,11 +222,14 @@ export default class Analytics extends Component {
           style={{ padding: 0, overflowY: 'scroll' }}
         >
           <div className="ui container">
-            {loaded
+            {
+              /* loaded
               ? <Static query={query} chart={chart} _={x => this._(x)} />
-              : <div className="ui active dimmer">
+              : */
+              <div className="ui active dimmer">
                 <div className="ui text loader">Loading</div>
-              </div>}
+              </div>
+            }
           </div>
         </div>
       </div>
