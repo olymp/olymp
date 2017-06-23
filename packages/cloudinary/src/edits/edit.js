@@ -19,7 +19,10 @@ export default withState(
     >
       <CloudinaryModal
         multi={multi}
-        onChange={value => onChange(value).then(() => setOpen(false))}
+        onChange={(value) => {
+          onChange(value);
+          setOpen(false);
+        }}
         onClose={() => setOpen(false)}
         selected={(value || []).map(image => image.id)}
       />

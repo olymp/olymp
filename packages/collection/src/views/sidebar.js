@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
 import { Dropdown, Menu, Icon, Button, Popover } from 'antd';
-import { FieldValue, collectionToCsvDownload } from '../components';
-import { getFilterMenu } from './filter';
+import {
+  FieldValue,
+  collectionToCsvDownload,
+  getFilterMenu,
+} from '../components';
 import { Sidebar, List } from 'olymp-ui';
 
 const states = {

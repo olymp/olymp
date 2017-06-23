@@ -13,7 +13,8 @@ import FormEditor from './edit';
 import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
-import { withEdits, cn } from 'olymp';
+import { cn } from 'olymp';
+import { ImageEdit } from 'olymp-cloudinary';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -84,13 +85,11 @@ const getInitialValue = ({ item = {}, getFieldValue }, field) => {
   return undefined;
 };
 
-@withEdits
 export default class FieldEditor extends Component {
   state = { start: undefined, end: undefined };
 
   fieldToEditor = (props) => {
     const {
-      edits,
       className,
       editorClassName,
       style,
@@ -109,7 +108,18 @@ export default class FieldEditor extends Component {
     };
 
     let Editor;
-    edits.forEach((editFn) => {
+    const edits = [
+      type =>
+        type.kind === 'OBJECT' &&
+        type.name === 'Image' &&
+        <ImageEdit
+          asImg
+          mode="fit"
+          retina
+          style={{ maxWidth: 300, maxHeight: 300 }}
+        />,
+    ];
+    (edits || []).forEach((editFn) => {
       const Edit = editFn(type);
 
       if (Edit) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withItems, withCollection } from '../decorators';
 import { withRouter } from 'olymp';
 import Detail from './detail';
-import List from './list-sidebar';
+import Sidebar from './sidebar';
 import { SplitView } from 'olymp-ui';
 
 @withCollection
@@ -29,7 +29,7 @@ export default class CollectionView extends Component {
 
     return (
       <SplitView>
-        <List
+        <Sidebar
           collection={collection}
           typeName={typeName}
           items={data && data.items}
@@ -45,7 +45,6 @@ export default class CollectionView extends Component {
               query: {
                 ...query,
                 [`@${typeName.toLowerCase()}`]: item.id,
-                xyz: console.log(item),
               },
             })}
         />

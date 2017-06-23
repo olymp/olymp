@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { withItem } from '../decorators';
 import { Spin } from 'antd';
-import DetailForm from './detail-form';
-import capitalize from 'lodash/upperFirst';
+import { upperFirst } from 'lodash';
 import { withRouter } from 'olymp';
-import './detail.less';
+import { withItem } from '../decorators';
+import DetailForm from './detail-form';
 
 const headFields = ['name'];
 const barFields = ['state', 'tags'];
@@ -22,15 +21,17 @@ const getFormSchema = ({ fields }) =>
         result.bar.join();
       } else if (field.type.name === 'Json') {
         // if slate => own group
-        result.tabs[capitalize(field.name)] = [field];
+        result.tabs[upperFirst(field.name)] = [field];
       } else if (field.type.name === 'Image') {
         // if image => own group
-        result.tabs[capitalize(field.name)] = [field];
+        result.tabs[upperFirst(field.name)] = [field];
       } else {
         // Group
         const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
 
-        if (!result.tabs[group]) { result.tabs[group] = []; }
+        if (!result.tabs[group]) {
+          result.tabs[group] = [];
+        }
         result.tabs[group].push(field);
       }
       return result;
