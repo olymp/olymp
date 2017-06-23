@@ -3,6 +3,8 @@ import { Image, ImageEdit } from 'olymp-cloudinary';
 
 export default {
   key: 'Pages.ImageText.Image',
+  label: 'Bild',
+  category: 'Medien',
   component: ({ getData, setActive, children }) =>
     (<Image
       onClick={setActive}
