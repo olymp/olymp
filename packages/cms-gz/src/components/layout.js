@@ -5,6 +5,14 @@ import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
 export const App = createComponent(
   ({ theme }) => ({
     backgroundColor: '#FFFFFF',
+    fontFamily: 'Oxygen, sans-serif',
+    fontSize: '105%',
+    lineHeight: 1.75,
+    '& h1, h2, h3, h4, h5, h6': {
+      fontFamily: 'Raleway, sans-serif',
+      fontWeight: 200,
+      lineHeight: 1.5,
+    },
   }),
   p => <Layout {...p} />,
   p => Object.keys(p)

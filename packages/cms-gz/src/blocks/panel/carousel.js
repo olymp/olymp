@@ -59,7 +59,7 @@ export default createComponent(
       medium={size}
       className={className}
       paddingMini="0.5rem 1rem"
-      paddingMedium="1rem"
+      paddingMedium="1rem 1rem 0 1rem"
     >
       <H1 bordered={bordered}>{title}</H1>
       <Carousel

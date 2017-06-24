@@ -6,7 +6,6 @@ export const H1 = createComponent(
     textAlign: 'left',
     position: 'relative',
     borderBottom: border(theme),
-    fontWeight: 200,
     marginBottom: theme.space1,
   }),
   ({ className, children, color, bordered }) =>
@@ -22,7 +21,6 @@ export const H2 = createComponent(
     textAlign: 'left',
     position: 'relative',
     borderBottom: border(theme),
-    fontWeight: 200,
     marginBottom: theme.space1,
   }),
   ({ className, children, color, bordered }) =>
