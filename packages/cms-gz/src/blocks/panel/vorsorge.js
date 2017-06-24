@@ -1,5 +1,5 @@
 import React from 'react';
-import Panel from './panel';
+import { Panel } from '../../components';
 import Container from './container';
 
 export default {

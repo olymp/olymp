@@ -1,4 +1,5 @@
 export * from './panel';
+export * from './heading';
 export { default as ImageHeader } from './image';
 export { default as HeadingHeader } from './header';
 export { default as MapsHeader } from './maps';

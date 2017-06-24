@@ -1,7 +1,6 @@
 import React from 'react';
 import Container from './container';
-import Li from './li';
-import Panel from './panel';
+import { Panel, Li } from '../../components';
 import Carousel from './carousel';
 
 export default {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, createComponent, fade } from 'olymp-fela';
-import { H2 } from '../../components';
+import { H1 } from './heading';
 
 export default createComponent(
   ({
@@ -11,7 +11,7 @@ export default createComponent(
   }) => ({
     width: '100%',
     paddingTop: theme.space3,
-    paddingX: theme.space2,
+    paddingX: theme.space3,
     position: 'relative',
     textAlign: 'justify',
     display: 'flex',
@@ -58,7 +58,7 @@ export default createComponent(
   }),
   ({ title, children, padding, background, color, bordered, ...rest }) =>
     (<Grid.Item mini={12} {...rest}>
-      <H2 color={background} bordered={bordered}>{title}</H2>
+      <H1 color={background} bordered={bordered}>{title}</H1>
       <div>{children}</div>
     </Grid.Item>),
   p => Object.keys(p)
