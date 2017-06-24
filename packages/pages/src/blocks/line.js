@@ -137,6 +137,7 @@ const component = createComponent(
 );
 
 export default {
+  key: 'Pages.Line',
   label: 'Linie',
   category: 'Template',
   component,

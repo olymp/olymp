@@ -30,6 +30,7 @@ const MapContainer = createComponent(
 );
 
 export default {
+  key: 'Pages-Maps',
   label: 'Karte',
   category: 'Medien',
   editable: false,
