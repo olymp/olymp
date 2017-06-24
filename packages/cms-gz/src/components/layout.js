@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Logo from './logo';
 import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
+import { withScroll } from 'olymp';
 
 export const App = createComponent(
   ({ theme }) => ({
@@ -18,21 +19,24 @@ export const App = createComponent(
   p => Object.keys(p)
 );
 
-export const Header = createComponent(
-  ({ theme }) => ({
-    paddingY: theme.space3,
-    ifSmallDown: {
-      paddingY: theme.space0,
-    },
-    boxShadow: theme.boxShadow,
-  }),
-  ({ children, className }) =>
-    (<Layout.Header className={className}>
-      <Container>
-        {children}
-      </Container>
-    </Layout.Header>),
-  p => Object.keys(p)
+export const Header = withScroll(
+  createComponent(
+    ({ theme, scrollTop }) => ({
+      paddingY: theme.space3,
+      ifSmallDown: {
+        paddingY: theme.space0,
+      },
+      boxShadow: scrollTop && theme.boxShadow,
+      transition: 'box-shadow 0.3s ease-in-out',
+    }),
+    ({ children, className }) =>
+      (<Layout.Header className={className}>
+        <Container>
+          {children}
+        </Container>
+      </Layout.Header>),
+    p => Object.keys(p)
+  )
 );
 
 export default class GzLayout extends Component {
