@@ -23,7 +23,7 @@ export const Content = createComponent(
     },
   }),
   'div',
-  ({ padding, background, color, ...p }) => Object.keys(p)
+  ({ padding, background, color, accent, ...p }) => Object.keys(p)
 );
 
 export default createComponent(
