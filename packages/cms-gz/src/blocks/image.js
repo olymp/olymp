@@ -1,10 +1,13 @@
 import React from 'react';
-import { createComponent } from 'olymp-fela';
+import { createComponent, fade } from 'olymp-fela';
 import { Blocks } from 'olymp-pages';
-import { fade } from 'olymp-fela';
 
-const component = createComponent(
-  ({ theme }) => ({
+export default {
+  ...Blocks.ImageBlock,
+  key: 'GZK.Header.ImageBlock',
+  label: 'Bild',
+  category: 'Kopfleiste',
+  styles: ({ theme }) => ({
     borderBottomRightRadius: 75,
     overflow: 'hidden',
     position: 'relative',
@@ -45,17 +48,4 @@ const component = createComponent(
       },
     },
   }),
-  ({ className, attributes, children }) =>
-    (<div className={className} {...attributes}>
-      {children}
-    </div>),
-  p => Object.keys(p)
-);
-
-export default {
-  ...Blocks.ImageBlock,
-  key: 'GZK.Pages.ImageBlock',
-  label: 'Bild',
-  category: 'Seiten',
-  component,
 };

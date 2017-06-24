@@ -1,7 +1,7 @@
 import React from 'react';
 import { Blocks } from 'olymp-pages';
 import { createComponent } from 'olymp-fela';
-import { ImagePageBlockImage } from '../image';
+import Image from './image';
 
 const Maps = Blocks.Maps.Maps;
 const Label = Blocks.ImageBlockLabel.component;
@@ -11,7 +11,7 @@ const MapContainer = createComponent(
     height: 300,
     position: 'relative',
     display: 'block',
-    ...ImagePageBlockImage.styles({ theme }),
+    ...Image.styles({ theme }),
   }),
   ({ attributes, className, children }) =>
     (<div className={className} {...attributes}>
@@ -34,7 +34,9 @@ const MapContainer = createComponent(
 );
 
 export default {
-  key: 'GZK.Pages.MapsBlock.Maps',
+  key: 'GZK.Header.MapsBlock',
+  label: 'Karte',
+  category: 'Kopfleiste',
   editable: true,
   component: p => <MapContainer {...p} />,
 };
