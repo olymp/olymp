@@ -34,6 +34,7 @@ const Li = createComponent(
 );
 
 export default {
+  key: 'GZK.Collections.NewsBlock',
   label: 'Neuigkeiten',
   category: 'Collections',
   editable: false,

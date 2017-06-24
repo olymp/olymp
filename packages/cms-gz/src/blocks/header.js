@@ -55,6 +55,7 @@ const Header = createComponent(
 );
 
 export default {
+  key: 'GZK.Pages.HeaderBlock',
   label: 'Überschrift',
   category: 'Kopfleiste',
   editable: true,

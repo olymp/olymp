@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'olymp-fela';
 
 export default {
-  key: 'Pages.Container',
+  key: 'Pages.Template.ContainerBlock',
   label: 'Container',
   category: 'Template',
   editable: true,

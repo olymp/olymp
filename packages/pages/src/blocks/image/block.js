@@ -18,7 +18,7 @@ const component = createComponent(
 );
 
 export default {
-  key: 'Pages.ImageBlock',
+  key: 'Pages.Media.ImageBlock',
   defaultNodes: () => createBlockList([Image, Label]),
   label: 'Bild mit Text',
   category: 'Medien',

@@ -28,7 +28,7 @@ const component = createComponent(
 );
 
 export default {
-  key: 'Pages.ImageBlock.Label',
+  key: 'Pages.Media.ImageBlock.Label',
   editable: true,
   component,
 };

@@ -2,7 +2,48 @@ import React from 'react';
 import { createComponent, Container, Grid, border } from 'olymp-fela';
 import { H2, Panel } from '../components';
 
+const Image = createComponent(
+  ({ theme }) => ({
+    marginRight: theme.space2,
+    width: 100,
+    height: 'auto',
+    float: 'left',
+  }),
+  ({ className, url }) => <img className={className} src={url} alt="" />,
+  p => Object.keys(p)
+);
+
+const Li = createComponent(
+  ({ theme }) => ({
+    paddingTop: theme.space2,
+    borderBottom: border(theme),
+    ':last-of-type': {
+      marginBottom: theme.space3,
+    },
+  }),
+  'li',
+  p => Object.keys(p)
+);
+
+const Tag = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.dark4,
+    paddingY: theme.space2,
+    paddingX: theme.space3,
+    margin: theme.space2,
+    marginLeft: 0,
+    display: 'inline-block',
+    onHover: {
+      backgroundColor: theme.color,
+      color: theme.light,
+    },
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 export default {
+  key: 'GZK.Collections.MagazinBlock',
   label: 'Magazin',
   category: 'Collections',
   editable: false,
@@ -48,43 +89,3 @@ export default {
       </Grid>
     </Container>),
 };
-
-const Image = createComponent(
-  ({ theme }) => ({
-    marginRight: theme.space2,
-    width: 100,
-    height: 'auto',
-    float: 'left',
-  }),
-  ({ className, url }) => <img className={className} src={url} alt="" />,
-  p => Object.keys(p)
-);
-
-const Li = createComponent(
-  ({ theme }) => ({
-    paddingTop: theme.space2,
-    borderBottom: border(theme),
-    ':last-of-type': {
-      marginBottom: theme.space3,
-    },
-  }),
-  'li',
-  p => Object.keys(p)
-);
-
-const Tag = createComponent(
-  ({ theme }) => ({
-    backgroundColor: theme.dark4,
-    paddingY: theme.space2,
-    paddingX: theme.space3,
-    margin: theme.space2,
-    marginLeft: 0,
-    display: 'inline-block',
-    onHover: {
-      backgroundColor: theme.color,
-      color: theme.light,
-    },
-  }),
-  'div',
-  p => Object.keys(p)
-);
