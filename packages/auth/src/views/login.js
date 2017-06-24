@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'olymp';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
+import { FaEnvelope, FaStar } from 'olymp-icons';
 import withAuth from '../with-auth';
 import Base, {
   onEnterFocus,
@@ -56,7 +56,7 @@ export default class AuthLogin extends Component {
               placeholder="E-Mail"
               onKeyPress={onEnterFocus(() => this.input)}
               size="large"
-              addonAfter={<EnvelopeO size={10} />}
+              addonAfter={<FaEnvelope size={10} />}
             />
           )}
         </Form.Item>
@@ -70,7 +70,7 @@ export default class AuthLogin extends Component {
               onKeyPress={onEnterOk(this.ok)}
               ref={x => (this.input = x)}
               size="large"
-              addonAfter={<Key size={10} />}
+              addonAfter={<FaStar size={10} />}
             />
           )}
         </Form.Item>
@@ -83,7 +83,7 @@ export default class AuthLogin extends Component {
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.totp = x)}
                 size="large"
-                addonAfter={<Key size={10} />}
+                addonAfter={<FaStar size={10} />}
               />
             )}
           </Form.Item>}

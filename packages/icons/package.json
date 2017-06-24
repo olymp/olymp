@@ -2,13 +2,10 @@
   "version": "0.0.1",
   "name": "olymp-icons",
   "description": "",
-  "main": "./src",
+  "main": "./fa5",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-  }
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
 }

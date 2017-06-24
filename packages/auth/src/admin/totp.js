@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp';
-import withAuth from '../with-auth';
 import { Form, Input } from 'antd';
-import { Key } from 'olymp-icons';
+import { FaStar } from 'olymp-icons';
 import { onEnterFocus, onError, onSuccess } from '../views/base';
 
 @graphql(
@@ -81,7 +80,7 @@ export default class AuthTotp extends Component {
               placeholder="Token"
               onKeyPress={onEnterFocus(() => this.ok)}
               size="large"
-              addonAfter={<Key size={10} />}
+              addonAfter={<FaStar size={10} />}
             />
           )}
         </Form.Item>

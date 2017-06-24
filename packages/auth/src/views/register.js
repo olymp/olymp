@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, graphql, gql } from 'olymp';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
-import { EnvelopeO, Key } from 'olymp-icons';
+import { FaEnvelope, FaStar } from 'olymp-icons';
 import withAuth from '../with-auth';
 import Base, {
   onEnterFocus,
@@ -130,7 +130,7 @@ export default class AuthRegister extends Component {
                 onKeyPress={onEnterFocus(() => this.pw1)}
                 ref={x => (this.mail = x)}
                 size="large"
-                addonAfter={<EnvelopeO size={10} />}
+                addonAfter={<FaEnvelope size={10} />}
               />
             )}
           </Form.Item>}
@@ -147,7 +147,7 @@ export default class AuthRegister extends Component {
                 onKeyPress={onEnterFocus(() => this.pw2)}
                 ref={x => (this.pw1 = x)}
                 size="large"
-                addonAfter={<Key size={10} />}
+                addonAfter={<FaStar size={10} />}
               />
             )}
           </Form.Item>}
@@ -167,7 +167,7 @@ export default class AuthRegister extends Component {
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.pw2 = x)}
                 size="large"
-                addonAfter={<Key size={10} />}
+                addonAfter={<FaStar size={10} />}
               />
             )}
           </Form.Item>}

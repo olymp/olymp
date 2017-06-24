@@ -15,7 +15,10 @@ const component = createComponent(
 
 export default {
   key: 'GZK.Pages.ImageBlock',
-  defaultNodes: () => createBlockList([ImageText, Blocks.Container]),
+  defaultNodes: () => {
+    console.log(createBlockList([ImageText, Blocks.Container]));
+    return createBlockList([ImageText, Blocks.Container]);
+  },
   label: 'Bild',
   category: 'Seiten',
   editable: true,

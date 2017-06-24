@@ -3,7 +3,7 @@ import withAuth from '../with-auth';
 import { createComponent, Grid } from 'olymp-fela';
 import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
-import { EnvelopeO } from 'olymp-icons';
+import { FaEnvelope } from 'olymp-icons';
 import { onError, onSuccess, onEnterFocus } from '../views/base';
 
 const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
@@ -105,7 +105,7 @@ export default class AuthProfile extends Component {
                 placeholder="E-Mail"
                 ref={x => (this.mail = x)}
                 size="large"
-                addonAfter={<EnvelopeO size={10} />}
+                addonAfter={<FaEnvelope size={10} />}
               />
             )}
           </FormItem>

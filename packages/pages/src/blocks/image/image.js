@@ -10,6 +10,9 @@ export default {
       className={className}
       onClick={setActive}
       width="100%"
+      xy={console.log(
+        getData('value', { url: 'http://placekitten.com/1000/300' })
+      )}
       value={getData('value', { url: 'http://placekitten.com/1000/300' })}
     />),
   actions: [

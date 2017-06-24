@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, graphql, gql } from 'olymp';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
-import { Key } from 'olymp-icons';
+import { FaStar } from 'olymp-icons';
 import withAuth from '../with-auth';
 import Base, {
   onEnterFocus,
@@ -78,7 +78,7 @@ export default class AuthReset extends Component {
                 placeholder="Password"
                 onKeyPress={onEnterFocus(() => this.input)}
                 size="large"
-                addonAfter={<Key size={10} />}
+                addonAfter={<FaStar size={10} />}
               />
             )}
           </Form.Item>}
@@ -98,7 +98,7 @@ export default class AuthReset extends Component {
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.input = x)}
                 size="large"
-                addonAfter={<Key size={10} />}
+                addonAfter={<FaStar size={10} />}
               />
             )}
           </Form.Item>}

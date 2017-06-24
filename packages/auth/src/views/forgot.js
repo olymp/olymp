@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'olymp';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
-import { EnvelopeO } from 'olymp-icons';
+import { FaEnvelope } from 'olymp-icons';
 import withAuth from '../with-auth';
 import Base, { onEnterOk, layout, onError, onSuccess } from './base';
 
@@ -51,7 +51,7 @@ export default class AuthForgot extends Component {
               placeholder="E-Mail"
               onKeyPress={onEnterOk(this.ok)}
               size="large"
-              addonAfter={<EnvelopeO size={10} />}
+              addonAfter={<FaEnvelope size={10} />}
             />
           )}
         </Form.Item>

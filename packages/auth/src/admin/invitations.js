@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, graphql, gql } from 'olymp';
 import withAuth from '../with-auth';
 import { Button, Form, Input, Icon } from 'antd';
-import { EnvelopeO } from 'olymp-icons';
+import { FaEnvelope } from 'olymp-icons';
 import {
   Modal,
   SplitView,
@@ -179,7 +179,7 @@ class AuthInviationDetail extends Component {
               onKeyPress={onEnterFocus(() => this.pw1)}
               ref={x => (this.mail = x)}
               size="large"
-              addonAfter={<EnvelopeO size={10} />}
+              addonAfter={<FaEnvelope size={10} />}
             />
           )}
         </Form.Item>
