@@ -1,7 +1,7 @@
 import React from 'react';
 import { Blocks } from 'olymp-pages';
 import { createComponent } from 'olymp-fela';
-import Image from './image';
+import { ImagePageBlockImage } from '../image';
 
 const Maps = Blocks.Maps.Maps;
 const Label = Blocks.ImageBlockLabel.component;
@@ -11,9 +11,9 @@ const MapContainer = createComponent(
     height: 300,
     position: 'relative',
     display: 'block',
-    ...Image.styles({ theme }),
+    ...ImagePageBlockImage.styles({ theme }),
   }),
-  ({ attributes, className, showTitle, children }) =>
+  ({ attributes, className, children }) =>
     (<div className={className} {...attributes}>
       <Maps
         center={{ lat: 59.724465, lng: 30.080121 }}
@@ -28,23 +28,13 @@ const MapContainer = createComponent(
       >
         <Maps.Marker lat={59.724465} lng={30.080121} />
       </Maps>
-      {showTitle && <Label>{children}</Label>}
+      <Label>{children}</Label>
     </div>),
   p => Object.keys(p)
 );
 
 export default {
-  label: 'Karte',
-  category: 'Kopfleiste',
+  key: 'GZK.Pages.MapsBlock.Maps',
   editable: true,
-  component: ({ getData, ...p }) =>
-    <MapContainer {...p} showTitle={getData('showTitle', true)} />,
-  actions: [
-    {
-      label: 'Titel',
-      toggle: ({ setData, getData }) =>
-        setData({ showTitle: !getData('showTitle', true) }),
-      active: ({ getData }) => getData('showTitle', true),
-    },
-  ],
+  component: p => <MapContainer {...p} />,
 };

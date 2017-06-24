@@ -60,6 +60,7 @@ const Text = createComponent(
 );
 
 export default {
+  key: 'GZK.Collections.PhoneBlock',
   label: 'Telefon',
   category: 'Collections',
   editable: true,

@@ -3,8 +3,9 @@ import { fade } from 'olymp-fela';
 
 export default {
   ...Blocks.ImageBlock,
-  label: 'Bild',
-  category: 'Kopfleiste',
+  key: 'GZK.Pages.ImageBlock.Image',
+  label: undefined,
+  category: undefined,
   styles: ({ theme }) => ({
     borderBottomRightRadius: 75,
     overflow: 'hidden',

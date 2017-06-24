@@ -40,10 +40,6 @@ const Header = createComponent(
     '> div': {
       '> h1': {
         lineHeight: 'initial',
-        // fontStyle: 'italic',
-      },
-      '> h5': {
-        // fontWeight: 200,
       },
     },
   }),
@@ -55,9 +51,7 @@ const Header = createComponent(
 );
 
 export default {
-  key: 'GZK.Pages.HeaderBlock',
-  label: 'Überschrift',
-  category: 'Kopfleiste',
+  key: 'GZK.Pages.HeaderBlock.Header',
   editable: true,
   component: ({ attributes, children }) =>
     (<Header {...attributes}>
