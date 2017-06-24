@@ -9,7 +9,7 @@ export default {
     (<Image
       onClick={setActive}
       width="100%"
-      value={getData('value', [{ url: 'http://placekitten.com/1000/300' }])[0]}
+      value={getData('value', { url: 'http://placekitten.com/1000/300' })}
     />),
   actions: [
     {
@@ -17,7 +17,7 @@ export default {
         (<ImageEdit
           {...p}
           onChange={value => setData({ value })}
-          value={getData('value', [])}
+          value={getData('value', {})}
           multi={false}
         />),
       toggle: () => {},

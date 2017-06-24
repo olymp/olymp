@@ -51,6 +51,11 @@ const Container = createComponent(
 
 const LazyImage = (props) => {
   const { className, retina, value, mode, lazy, ...rest } = props;
+
+  if (!value) {
+    return <div />;
+  }
+
   const oWidth = (value.crop && value.crop[0]) || value.width;
   const oHeight = (value.crop && value.crop[1]) || value.height;
   let width = props.width;
