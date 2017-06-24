@@ -9,12 +9,7 @@ export default {
   editable: false,
   component: ({ className, attributes }) =>
     (<Container {...attributes} className={className}>
-      <Panel
-        medium={7}
-        title="Neuigkeiten"
-        background="rgb(62, 167, 62)"
-        color="#FFF"
-      >
+      <Panel medium={7} title="Neuigkeiten" accent="rgb(62, 167, 62)">
         <ul>
           <Li>
             <b>Presseartikel vom 15. Dezember 2016</b>

@@ -27,7 +27,7 @@ export const Content = createComponent(
 );
 
 export default createComponent(
-  ({ theme, background = theme.dark5 }) => ({
+  ({ theme, background = theme.dark5, accent }) => ({
     width: '100%',
     paddingTop: theme.space3,
     paddingX: theme.space3,
@@ -50,7 +50,7 @@ export default createComponent(
     onHover: {
       onAfter: {
         backgroundColor: fade(
-          background === theme.dark5 ? theme.color : background
+          accent || (background === theme.dark5 ? theme.color : background)
         ),
       },
     },
@@ -60,10 +60,24 @@ export default createComponent(
       paddingY: theme.space2,
     },
   }),
-  ({ title, children, padding, background, color, bordered, ...rest }) =>
+  ({
+    title,
+    children,
+    padding,
+    background,
+    accent,
+    color,
+    bordered,
+    ...rest
+  }) =>
     (<Grid.Item mini={12} {...rest}>
-      <H1 color={background} bordered={bordered}>{title}</H1>
-      <Content padding={padding} background={background} color={color}>
+      <H1 color={accent || background} bordered={bordered}>{title}</H1>
+      <Content
+        padding={padding}
+        accent={accent}
+        background={background}
+        color={color}
+      >
         {children}
       </Content>
     </Grid.Item>),

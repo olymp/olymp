@@ -27,12 +27,7 @@ export default {
           },
         ]}
       />
-      <Panel
-        medium={7}
-        title="Veranstaltungen"
-        background="rgb(73, 146, 195)"
-        color="#FFF"
-      >
+      <Panel medium={7} title="Veranstaltungen" accent="rgb(73, 146, 195)">
         <ul>
           <Li>
             <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
