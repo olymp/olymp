@@ -7,6 +7,10 @@ const component = createComponent(
   ({ theme }) => ({
     borderBottomRightRadius: 75,
     overflow: 'hidden',
+    position: 'relative',
+    '> div:nth-child(1) > div > img': {
+      borderBottomRightRadius: 75,
+    },
     '> div:nth-child(2)': {
       backgroundColor: fade('#ffa210', 90),
       color: theme.light,
@@ -21,6 +25,9 @@ const component = createComponent(
     },
     ifMediumUp: {
       borderBottomRightRadius: 100,
+      '> div:nth-child(1) > div > img': {
+        borderBottomRightRadius: 100,
+      },
       '> div:nth-child(2)': {
         width: '66%',
         left: 'auto',
