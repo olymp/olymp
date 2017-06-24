@@ -8,10 +8,10 @@ export const H1 = createComponent(
     borderBottom: border(theme),
     marginBottom: theme.space1,
   }),
-  ({ className, children, color, bordered }) =>
+  ({ className, children, color, bordered = true }) =>
     (<h1 className={className}>
       {children}
-      <Border color={color}>{bordered}</Border>
+      <Border color={color}>{bordered === true ? children : bordered}</Border>
     </h1>),
   p => Object.keys(p)
 );
@@ -23,10 +23,10 @@ export const H2 = createComponent(
     borderBottom: border(theme),
     marginBottom: theme.space1,
   }),
-  ({ className, children, color, bordered }) =>
+  ({ className, children, color, bordered = true }) =>
     (<h2 className={className}>
       {children}
-      <Border color={color}>{bordered}</Border>
+      <Border color={color}>{bordered === true ? children : bordered}</Border>
     </h2>),
   p => Object.keys(p)
 );

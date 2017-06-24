@@ -11,7 +11,6 @@ export default {
     (<Container {...attributes} className={className}>
       <Carousel
         title="Magazin"
-        bordered="Magazin"
         size={5}
         items={[
           {
@@ -31,7 +30,6 @@ export default {
       <Panel
         medium={7}
         title="Veranstaltungen"
-        bordered="Veranstaltungen"
         background="rgb(73, 146, 195)"
         color="#FFF"
       >

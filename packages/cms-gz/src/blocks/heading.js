@@ -6,7 +6,7 @@ export const H1 = {
   category: 'Template',
   editable: true,
   component: ({ attributes, children }) =>
-    (<Heading1 {...attributes} bordered={children}>
+    (<Heading1 {...attributes}>
       {children}
     </Heading1>),
 };
@@ -16,7 +16,7 @@ export const H2 = {
   category: 'Template',
   editable: true,
   component: ({ attributes, children }) =>
-    (<Heading2 {...attributes} bordered={children}>
+    (<Heading2 {...attributes}>
       {children}
     </Heading2>),
 };

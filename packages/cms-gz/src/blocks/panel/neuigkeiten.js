@@ -12,7 +12,6 @@ export default {
       <Panel
         medium={7}
         title="Neuigkeiten"
-        bordered="Neuigkeiten"
         background="rgb(62, 167, 62)"
         color="#FFF"
       >
@@ -41,7 +40,6 @@ export default {
       </Panel>
       <Carousel
         title="Einrichtungen"
-        bordered="Einrichtungen"
         size={5}
         items={[
           {

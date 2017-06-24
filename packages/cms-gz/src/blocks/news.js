@@ -2,6 +2,37 @@ import React from 'react';
 import { createComponent, Container, Grid, border } from 'olymp-fela';
 import { H2, Panel } from '../components';
 
+const Image = createComponent(
+  ({ theme }) => ({
+    marginRight: theme.space2,
+    width: 100,
+    height: 'auto',
+    float: 'left',
+  }),
+  ({ className, url }) => <img className={className} src={url} alt="" />,
+  p => Object.keys(p)
+);
+
+const H5 = createComponent(
+  ({ theme }) => ({
+    marginTop: theme.space3,
+  }),
+  ({ className, children }) => <h5 className={className}>{children}</h5>,
+  p => Object.keys(p)
+);
+
+const Li = createComponent(
+  ({ theme }) => ({
+    paddingTop: theme.space2,
+    borderBottom: border(theme),
+    ':last-of-type': {
+      marginBottom: theme.space3,
+    },
+  }),
+  'li',
+  p => Object.keys(p)
+);
+
 export default {
   label: 'Neuigkeiten',
   category: 'Collections',
@@ -23,7 +54,7 @@ export default {
             <a href="/">Mehr erfahren...</a>
             <H5>Presseartikel vom 15. Dezember 2016</H5>
           </Panel>
-          <Panel title="Knorpelschäden und Arthrose" bordered="Knorpelschäden">
+          <Panel title="Knorpelschäden und Arthrose">
             <Image url="https://res.cloudinary.com/djyenzorc/image/upload/x_134,y_197,w_853,h_1249,c_crop/f_auto,q_auto,fl_lossy/v1481083829/sewtk0tjyyd8hiqmkoj4.jpg" />
             <p>
               Prävention und moderne Behandlungsmöglichkeiten von Knorpelschäden
@@ -131,34 +162,3 @@ export default {
       </Grid>
     </Container>),
 };
-
-const Image = createComponent(
-  ({ theme }) => ({
-    marginRight: theme.space2,
-    width: 100,
-    height: 'auto',
-    float: 'left',
-  }),
-  ({ className, url }) => <img className={className} src={url} alt="" />,
-  p => Object.keys(p)
-);
-
-const H5 = createComponent(
-  ({ theme }) => ({
-    marginTop: theme.space3,
-  }),
-  ({ className, children }) => <h5 className={className}>{children}</h5>,
-  p => Object.keys(p)
-);
-
-const Li = createComponent(
-  ({ theme }) => ({
-    paddingTop: theme.space2,
-    borderBottom: border(theme),
-    ':last-of-type': {
-      marginBottom: theme.space3,
-    },
-  }),
-  'li',
-  p => Object.keys(p)
-);
