@@ -1,8 +1,8 @@
 export * from './panel';
 export * from './heading';
-export { default as Maps } from './maps';
-export { default as Image } from './image';
-export { default as Header } from './header';
-export { default as Magazin } from './magazin';
-export { default as News } from './news';
-export { default as Numbers } from './phone';
+export { default as GZKMapsBlock } from './maps';
+export { default as GZKImageBlock } from './image';
+export { default as GZKHeaderBlock } from './header';
+export { default as GZKMagazinBlock } from './magazin';
+export { default as GZKNewsBlock } from './news';
+export { default as GZKNumbersBlock } from './phone';

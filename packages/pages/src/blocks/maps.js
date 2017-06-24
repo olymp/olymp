@@ -30,10 +30,9 @@ const MapContainer = createComponent(
 );
 
 export default {
-  key: 'Pages.Template.MapsBlock',
+  key: 'Pages.Media.MapsBlock',
   label: 'Karte',
   category: 'Medien',
   editable: false,
   component: MapContainer,
-  Maps,
 };

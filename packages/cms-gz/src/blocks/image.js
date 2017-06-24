@@ -1,5 +1,4 @@
-import React from 'react';
-import { createComponent, fade } from 'olymp-fela';
+import { fade } from 'olymp-fela';
 import { Blocks } from 'olymp-pages';
 
 export default {

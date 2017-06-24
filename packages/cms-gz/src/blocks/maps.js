@@ -1,9 +1,9 @@
 import React from 'react';
 import { Blocks } from 'olymp-pages';
 import { createComponent } from 'olymp-fela';
+import { Maps } from 'olymp-google';
 import Image from './image';
 
-const Maps = Blocks.Maps.Maps;
 const Label = Blocks.ImageBlockLabel.component;
 const MapContainer = createComponent(
   ({ theme }) => ({
