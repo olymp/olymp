@@ -2,7 +2,7 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 import { createBlockList } from 'olymp-slate';
 import { Blocks } from 'olymp-pages';
-import ImageText from './image';
+import ImagePageBlockImage from './image';
 
 const component = createComponent(
   () => ({}),
@@ -15,10 +15,7 @@ const component = createComponent(
 
 export default {
   key: 'GZK.Pages.ImageBlock',
-  defaultNodes: () => {
-    console.log(createBlockList([ImageText, Blocks.Container]));
-    return createBlockList([ImageText, Blocks.Container]);
-  },
+  defaultNodes: () => createBlockList([ImagePageBlockImage, Blocks.Container]),
   label: 'Bild',
   category: 'Seiten',
   editable: true,

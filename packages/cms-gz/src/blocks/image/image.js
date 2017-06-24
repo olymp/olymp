@@ -1,8 +1,9 @@
+import React from 'react';
 import { Blocks } from 'olymp-pages';
 import { fade } from 'olymp-fela';
 
 export default {
-  ...Blocks.ImageBlock,
+  ...Blocks.ImageBlockImage,
   key: 'GZK.Pages.ImageBlock.Image',
   label: undefined,
   category: undefined,
