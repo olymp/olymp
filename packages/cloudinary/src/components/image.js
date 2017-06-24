@@ -29,12 +29,15 @@ const Img = createComponent(
 );
 
 const Background = createComponent(
-  () => ({
+  ({ theme }) => ({
     width: '100%',
     display: 'block',
-    filter: 'blur(8px)',
+    height: '100%',
+    backgroundColor: theme.dark3,
+    // filter: 'blur(8px)',
   }),
-  'img',
+  'div',
+  // 'img',
   ['className', 'src']
 );
 
@@ -49,7 +52,7 @@ const Container = createComponent(
   ['className', 'children']
 );
 
-const LazyImage = (props) => {
+const LazyImage = props => {
   const { className, retina, value, mode, lazy, ...rest } = props;
 
   if (!value) {
@@ -96,18 +99,15 @@ const LazyImage = (props) => {
   const ratio = Math.round(height / width);
   width = Math.round(width);
   height = Math.round(height);
-
+  /*src={url(value.url, {
+    ...value,
+    width: 50,
+    height: ratio * 50,
+    quality: 1,
+  })*/
   return (
     <Container className={className} width={width} height={height}>
-      {(value.format === 'jpg' || value.format === 'pdf') &&
-        <Background
-          src={url(value.url, {
-            ...value,
-            width: 50,
-            height: ratio * 50,
-            quality: 1,
-          })}
-        />}
+      {(value.format === 'jpg' || value.format === 'pdf') && <Background />}
       <Loader width="100%" height="auto" offset={100}>
         <Img
           {...rest}
