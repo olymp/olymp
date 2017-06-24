@@ -1,10 +1,10 @@
 import React, { Children } from 'react';
 import { connect } from 'react-fela';
 
-const mapStylesToProps = ({ height }) => renderer => ({
+const mapStylesToProps = ({ height, width }) => renderer => ({
   container: renderer.renderRule(({ color }) => ({
     height: height || '100%',
-    width: '100%',
+    width: width || '100%',
     animationDuration: '1s',
     animationFillMode: 'forwards',
     animationIterationCount: 'infinite',
@@ -29,6 +29,7 @@ const component = ({ styles, isLoading, children }) => {
   if (isLoading) {
     return <div className={styles.container} />;
   }
-  return Children.only(children);
+  if (children) return Children.only(children);
+  return null;
 };
 export default connect(mapStylesToProps)(component);
