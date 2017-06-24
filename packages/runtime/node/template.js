@@ -13,7 +13,7 @@ export const amp = ({ helmet, cssMarkup, root }) => `
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Language" content="de" />
-      <link rel="mask-icon" color="#FBA139" href="/logo.svg">
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FBA139">
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
       <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
       <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -51,7 +51,7 @@ export const offline = ({ styles, scripts }) => `
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
-    <link rel="mask-icon" color="#FBA139" href="/logo.svg">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FBA139">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -94,7 +94,7 @@ export const electron = ({ styles, scripts }) => `
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
-    <link rel="mask-icon" color="#FBA139" href="/logo.svg">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FBA139">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -151,7 +151,7 @@ export default ({
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
-    <link rel="mask-icon" color="#FBA139" href="/logo.svg">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FBA139">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
