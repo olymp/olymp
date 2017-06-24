@@ -34,6 +34,12 @@ export default createComponent(
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
+    '& a': {
+      color: theme.dark2,
+      onHover: {
+        color: accent,
+      },
+    },
     onAfter: {
       content: '""',
       position: 'absolute',
