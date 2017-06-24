@@ -1,8 +1,8 @@
 // export { default as Gallery } from './gallery';
 export * from './image';
-export { default as Container } from './container';
-export { default as Line } from './line';
-export { default as Maps } from './maps';
+export { default as ContainerBlock } from './container';
+export { default as LineBlock } from './line';
+export { default as MapsBlock } from './maps';
 
 /*
 export { default as ContainerOld } from './container-old';

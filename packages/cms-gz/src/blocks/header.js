@@ -51,7 +51,9 @@ const Header = createComponent(
 );
 
 export default {
-  key: 'GZK.Pages.HeaderBlock.Header',
+  key: 'GZK.Header.Header',
+  label: 'Überschrift',
+  category: 'Kopfleiste',
   editable: true,
   component: ({ attributes, children }) =>
     (<Header {...attributes}>

@@ -46,7 +46,7 @@ const Info = createComponent(
     paddingBottom: theme.space3,
     color: theme.dark2,
   }),
-  'p',
+  'div',
   p => Object.keys(p)
 );
 
@@ -55,7 +55,7 @@ const Text = createComponent(
     paddingY: theme.space3,
     color: theme.dark2,
   }),
-  'p',
+  'div',
   p => Object.keys(p)
 );
 

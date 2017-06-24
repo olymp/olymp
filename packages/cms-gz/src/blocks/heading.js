@@ -1,7 +1,7 @@
 import React from 'react';
 import { H1 as Heading1, H2 as Heading2 } from '../components';
 
-export const H1 = {
+export const GZKH1Block = {
   key: 'GZK.Template.H1BLock',
   label: 'Überschrift groß',
   category: 'Template',
@@ -15,7 +15,7 @@ export const H1 = {
   }),
 };
 
-export const H2 = {
+export const GZKH2Block = {
   key: 'GZK.Template.H2BLock',
   label: 'Überschrift klein',
   category: 'Template',
