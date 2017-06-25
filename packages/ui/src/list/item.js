@@ -60,12 +60,13 @@ const Content = createComponent(
   }),
   ({ image, label, description, className, disabled, icon }) =>
     (<div className={className}>
-      <ImgContainer>
-        {image &&
-          typeof image === 'string' &&
-          <img src={image} width={37} height={37} />}
-        {image && typeof image !== 'string' && image}
-      </ImgContainer>
+      {image &&
+        <ImgContainer>
+          {image &&
+            typeof image === 'string' &&
+            <img src={image} width={37} height={37} />}
+          {image && typeof image !== 'string' && image}
+        </ImgContainer>}
       <div>
         <strong>{label}</strong>
         {description}
