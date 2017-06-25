@@ -12,7 +12,7 @@ const Label = Blocks.ImageBlockLabel.component;
 
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 const component = withColor(
-  item => item.farbe
+  ({ item }) => item.farbe
 )(({ className, attributes, children, item }) =>
   (<div>
     <Peak
@@ -27,7 +27,7 @@ const component = withColor(
           <VCard org={item} />
         </Grid.Item>
         <Content>
-          <Slate readOnly value={item.text} xy={console.log(item)} />
+          <Slate readOnly value={item.text} />
           {/* children*/}
         </Content>
       </Grid>
