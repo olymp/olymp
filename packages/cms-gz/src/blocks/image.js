@@ -3,6 +3,7 @@ import { Blocks } from 'olymp-pages';
 
 export const ImageStyles = ({ theme, color = theme.color }) => ({
   overflow: 'hidden',
+  maxHeight: 450,
   position: 'relative',
   '> div:nth-child(1) > div > img': {
     borderBottomRightRadius: 45,
