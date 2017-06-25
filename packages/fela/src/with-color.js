@@ -57,7 +57,6 @@ export const withColor = getColorFromProps => WrappedComponent =>
     setColor = (props = this.props) => {
       const { setColor } = this.context;
       const newColor = getColorFromProps(props);
-      console.log(newColor);
       if (newColor !== this.color) {
         setColor(this.id, newColor);
         this.color = newColor;

@@ -58,7 +58,7 @@ export default class GzLayout extends Component {
       .filter(x => x.slug !== '/');
     const footer = [
       ...(pages.map(x => x.children)[1] || []),
-      { name: 'Einloggen', pathname: '/?login' },
+      { name: 'Einloggen', pathname: `${location.pathname}?login` },
     ];
 
     return (
