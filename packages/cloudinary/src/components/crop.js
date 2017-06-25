@@ -58,7 +58,7 @@ class Crop extends Component {
   };
 
   render() {
-    const { url, crop, width, height, onChange } = this.props;
+    const { value, crop, width, height, onChange } = this.props;
     const aspect = this.props.aspect || (this.state.isSquare && 1);
 
     return (
@@ -67,7 +67,7 @@ class Crop extends Component {
         onKeyUp={e => this.setState({ isSquare: false })}
       >
         <StyledCrop
-          src={optimizeUrl(url)}
+          src={optimizeUrl(value)}
           onChange={(p, { width, height, x, y }) =>
             onChange([width, height, x, y])}
           crop={
@@ -87,7 +87,7 @@ class Crop extends Component {
   }
 }
 Crop.propTypes = {
-  url: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   aspect: PropTypes.number,
