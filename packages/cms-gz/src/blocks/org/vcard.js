@@ -108,36 +108,43 @@ export default createComponent(
         {website &&
           <List label="Homepage"><a href={website}>{website}</a></List>}
 
-        <H2 color={farbe}>Öffnungszeiten</H2>
-        <List label="Montag">{niceTime(zeiten[0])}</List>
-        <List label="Dienstag">{niceTime(zeiten[1])}</List>
-        <List label="Mittwoch">{niceTime(zeiten[2])}</List>
-        <List label="Donnerstag">{niceTime(zeiten[3])}</List>
-        <List label="Freitag">{niceTime(zeiten[4])}</List>
-        <List label="Samstag">{niceTime(zeiten[5])}</List>
-        <Text>{freifeld}</Text>
+        {zeiten &&
+          <div>
+            <H2 color={farbe}>Öffnungszeiten</H2>
+            <List label="Montag">{niceTime(zeiten[0])}</List>
+            <List label="Dienstag">{niceTime(zeiten[1])}</List>
+            <List label="Mittwoch">{niceTime(zeiten[2])}</List>
+            <List label="Donnerstag">{niceTime(zeiten[3])}</List>
+            <List label="Freitag">{niceTime(zeiten[4])}</List>
+            <List label="Samstag">{niceTime(zeiten[5])}</List>
+            <Text>{freifeld}</Text>
+          </div>}
 
         {leistungen &&
           !!leistungen.length &&
           <H2 color={farbe}>Leistungsangebot</H2>}
-        {leistungen.map((item, i) =>
-          <Accordion {...item} farbe={farbe} key={item.id || i} />
-        )}
+        {leistungen &&
+          leistungen.map((item, i) =>
+            <Accordion {...item} farbe={farbe} key={item.id || i} />
+          )}
 
         {vorsorgen && !!vorsorgen.length && <H2 color={farbe}>Vorsorge</H2>}
-        {vorsorgen.map((item, i) =>
-          <Accordion {...item} farbe={farbe} key={item.id || i} />
-        )}
+        {vorsorgen &&
+          vorsorgen.map((item, i) =>
+            <Accordion {...item} farbe={farbe} key={item.id || i} />
+          )}
 
         {aesthetik && !!aesthetik.length && <H2 color={farbe}>Ästethik</H2>}
-        {aesthetik.map((item, i) =>
-          <Accordion {...item} farbe={farbe} key={item.id || i} />
-        )}
+        {aesthetik &&
+          aesthetik.map((item, i) =>
+            <Accordion {...item} farbe={farbe} key={item.id || i} />
+          )}
 
         {personen && !!personen.length && <H2 color={farbe}>Personen</H2>}
-        {personen.map((item, i) =>
-          <Person {...item} farbe={farbe} key={item.id || i} />
-        )}
+        {personen &&
+          personen.map((item, i) =>
+            <Person {...item} farbe={farbe} key={item.id || i} />
+          )}
       </div>
     </div>),
   p => Object.keys(p)
