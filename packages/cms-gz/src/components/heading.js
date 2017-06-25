@@ -6,7 +6,8 @@ export const H1 = createComponent(
     textAlign: 'left',
     position: 'relative',
     borderBottom: border(theme),
-    marginBottom: theme.space1,
+    marginTop: theme.space3,
+    marginBottom: theme.space2,
   }),
   ({ className, children, color, bordered = true }) =>
     (<h1 className={className}>
@@ -21,7 +22,8 @@ export const H2 = createComponent(
     textAlign: 'left',
     position: 'relative',
     borderBottom: border(theme),
-    marginBottom: theme.space1,
+    marginTop: theme.space3,
+    marginBottom: theme.space2,
   }),
   ({ className, children, color, bordered = true }) =>
     (<h2 className={className}>

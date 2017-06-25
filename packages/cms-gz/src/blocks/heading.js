@@ -10,10 +10,6 @@ export const GZKH1Block = {
     (<Heading1 className={className} {...attributes}>
       {children}
     </Heading1>),
-  styles: ({ theme }) => ({
-    marginTop: theme.space3,
-    marginBottom: theme.space2,
-  }),
 };
 
 export const GZKH2Block = {
@@ -25,8 +21,4 @@ export const GZKH2Block = {
     (<Heading2 className={className} {...attributes}>
       {children}
     </Heading2>),
-  styles: ({ theme }) => ({
-    marginTop: theme.space3,
-    marginBottom: theme.space2,
-  }),
 };

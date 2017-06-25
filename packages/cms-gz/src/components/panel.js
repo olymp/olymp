@@ -29,7 +29,6 @@ export const Content = createComponent(
 export default createComponent(
   ({ theme, background = theme.dark5, accent }) => ({
     width: '100%',
-    paddingTop: theme.space3,
     paddingX: theme.space3,
     position: 'relative',
     display: 'flex',

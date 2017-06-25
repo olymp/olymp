@@ -116,6 +116,7 @@ const LazyImage = (props) => {
           alt={value.caption}
           width="100%"
           height="auto"
+          className={className}
         />
       </Loader>
     </Container>

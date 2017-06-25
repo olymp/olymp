@@ -65,11 +65,7 @@ export default {
             <H5>Vortrag am 24. Januar 2017, 18:00 Uhr</H5>
           </Panel>
         </Grid.Item>
-        <Grid.Item
-          medium={4}
-          paddingMini="1rem 1rem 0 1rem"
-          paddingMedium="1rem 1.5rem"
-        >
+        <Grid.Item medium={4} paddingMini="0.5rem 1rem" paddingMedium="0 1rem">
           <H2>Vorträge & Veranstaltungen</H2>
           <ul>
             <Li>
