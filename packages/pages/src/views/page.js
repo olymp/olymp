@@ -7,7 +7,12 @@ import { ContentLoader } from 'olymp-fela';
 
 const Page = withBlockTypes(props =>
   (<ContentLoader height={200} isLoading={props.isLoading}>
-    <SlateMate {...props} showUndo key={props.bindingId} />
+    <SlateMate
+      {...props}
+      showUndo
+      key={props.bindingId}
+      xy={console.log(props.bindingId)}
+    />
   </ContentLoader>)
 );
 Page.propTypes = {
@@ -20,9 +25,10 @@ Page.defaultProps = {
   readOnly: true,
 };
 Page.WithData = queryPage(
-  mapProps(({ item, data }) => ({
+  mapProps(({ item, data, ...rest }) => ({
     value: item && item.blocks,
     isLoading: data.loading,
+    ...rest,
   }))(Page)
 );
 export default Page;
