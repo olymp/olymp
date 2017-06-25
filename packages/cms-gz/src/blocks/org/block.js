@@ -13,7 +13,7 @@ const Label = Blocks.ImageBlockLabel.component;
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 const component = withColor(
   ({ item }) => item.farbe
-)(({ className, attributes, children, item }) =>
+)(({ className, attributes, item }) =>
   (<div>
     <Peak
       value={item.peak}
@@ -117,10 +117,11 @@ const Peak = createComponent(
           <Image {...rest} width="100%" />
         </div>
       </div>
-      <Label>
-        <h1>{header}</h1>
-        <p>{subheader}</p>
-      </Label>
+      {(header || subheader) &&
+        <Label>
+          <h1>{header}</h1>
+          <p>{subheader}</p>
+        </Label>}
     </div>),
   p => Object.keys(p)
 );
