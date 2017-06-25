@@ -1,14 +1,14 @@
 import { fade } from 'olymp-fela';
 import { Blocks } from 'olymp-pages';
 
-export const ImageStyles = ({ theme }) => ({
+export const ImageStyles = ({ theme, color = theme.color }) => ({
   overflow: 'hidden',
   position: 'relative',
   '> div:nth-child(1) > div > img': {
     borderBottomRightRadius: 45,
   },
   '> div:nth-child(2)': {
-    backgroundColor: fade('#ffa210', 90),
+    backgroundColor: fade(color, 90),
     color: theme.light,
     '> p': {
       color: theme.light,
@@ -23,7 +23,7 @@ export const ImageStyles = ({ theme }) => ({
       width: '66%',
       left: 'auto',
       right: 0,
-      backgroundColor: fade('#ffa210', 90),
+      backgroundColor: fade(color, 90),
       borderTopLeftRadius: 50,
       borderBottomRightRadius: 100,
       minHeight: 100,

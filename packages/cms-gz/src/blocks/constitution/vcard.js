@@ -71,6 +71,7 @@ export default createComponent(
   ({ theme }) => ({
     width: '100%',
     padding: theme.space3,
+    paddingTop: theme.space1,
   }),
   ({
     className,

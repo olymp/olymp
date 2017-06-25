@@ -11,7 +11,7 @@ const constitution = {
   name: 'Orthopädische Praxisklinik',
   kurz: 'Orthopädie',
   art: 'FACHARZTPRAXIS',
-  farbe: '#f18e00',
+  farbe: 'purple',
   slug: '/ortho',
   slogan: 'Bewegung ist Leben',
   willkommen:
@@ -732,6 +732,7 @@ export default {
         value={constitution.peak}
         header={constitution.slogan}
         subheader={constitution.willkommen}
+        color={constitution.farbe}
       />
       <Container className={className} {...attributes}>
         <Grid>
@@ -744,4 +745,14 @@ export default {
         </Grid>
       </Container>
     </div>),
+  styles: ({ theme }) => ({
+    '& h1': {
+      '> span': {
+        backgroundColor: constitution.farbe,
+      },
+    },
+    '& a': {
+      color: constitution.farbe,
+    },
+  }),
 };
