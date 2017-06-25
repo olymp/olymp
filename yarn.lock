@@ -220,9 +220,9 @@ ansi-styles@^3.0.0:
   dependencies:
     color-convert "^1.0.0"
 
-antd@^2.11.0:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-2.11.1.tgz#3b5e643060beabff2727fca75919792c1bcae484"
+antd@^2.11.2:
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-2.11.2.tgz#7c39773e61b894d830b0548ff85c6dac07317618"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -3857,9 +3857,9 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "3.0.x"
 
-html-webpack-plugin@^2.28.0:
-  version "2.28.0"
-  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.28.0.tgz#2e7863b57e5fd48fe263303e2ffc934c3064d009"
+html-webpack-plugin@^2.29.0:
+  version "2.29.0"
+  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.29.0.tgz#e987f421853d3b6938c8c4c8171842e5fd17af23"
   dependencies:
     bluebird "^3.4.7"
     html-minifier "^3.2.3"

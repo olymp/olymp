@@ -14,6 +14,7 @@ import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
 import capitalize from 'lodash/upperFirst';
 import { withEdits, cn } from 'olymp';
+import { FaMagic } from 'olymp-icons';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -211,12 +212,7 @@ export default class FieldEditor extends Component {
           />
         );
       case 'Color':
-        return (
-          <ColorEditor
-            {...editProps}
-            addonBefore={<i className="fa fa-eyedropper" />}
-          />
-        );
+        return <ColorEditor {...editProps} addonBefore={<FaMagic />} />;
       case 'Markdown':
         return <Input {...editProps} type="textarea" autosize />;
       case 'Slug':

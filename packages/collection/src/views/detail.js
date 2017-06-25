@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Spin, Button } from 'antd';
+import { Button } from 'antd';
 import { withRouter } from 'olymp';
 import { withItem } from '../decorators';
 import { DetailForm } from '../components';
 import { Form } from 'antd';
+import { ContentLoader } from 'olymp-fela';
 
 /*
 import { upperFirst } from 'lodash';
@@ -50,31 +51,26 @@ const getFormSchema = ({ fields }) =>
 @Form.create()
 export default class CollectionDetail extends Component {
   render() {
-    const { id, item, collection, loading, onSave } = this.props;
-    if (id && !item) {
-      return (
-        <div style={{ minHeight: 400 }}>
-          <Spin size="large" />
-        </div>
-      );
-    }
+    const { id, item, collection, data, onSave } = this.props;
 
     return (
-      <div>
-        <Button
-          style={{ border: 0, backgroundColor: '#FFFFFF' }}
-          icon="save"
-          onClick={onSave}
-        >
-          Speichern
-        </Button>
+      <ContentLoader isLoading={id && !item}>
         <DetailForm
           {...this.props}
+          button={
+            <Button
+              style={{ border: 0, backgroundColor: '#FFFFFF' }}
+              icon="save"
+              onClick={onSave}
+            >
+              Speichern
+            </Button>
+          }
           item={item || {}}
           fields={collection && collection.fields}
           onCreate={onSave}
         />
-      </div>
+      </ContentLoader>
     );
   }
 }

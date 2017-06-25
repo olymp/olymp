@@ -2,6 +2,7 @@ import React from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
 import { withColors } from '../decorators';
+import { FaMagic } from 'olymp-icons';
 
 const ColorPicker = null;
 if (typeof document !== 'undefined') {
@@ -23,7 +24,7 @@ const hasNativePicker = () => {
   return i.type !== 'text';
 };
 
-const ColorEditor = ({ value, colors = [], ...rest }) => {
+const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
   const newColors = [...colors];
   if (!value) {
     value = '#000000';
@@ -77,12 +78,12 @@ const ColorEditor = ({ value, colors = [], ...rest }) => {
       picker = (
         <Input
           type="color"
-          {...rest}
           style={{ width: 100 }}
           placeholder={name}
-          addonBefore={<i className="fa fa-eyedropper" />}
+          addonBefore={<FaMagic size={13} color="#383838" />}
           value={tinycolor(value).toHexString()}
           defaultValue={tinycolor(value).toHexString()}
+          onChange={onChange}
         />
       );
     } else {

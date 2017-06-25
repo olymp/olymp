@@ -13,6 +13,7 @@ import { FormEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
 import { cn } from 'olymp';
 import { ImageEdit } from 'olymp-cloudinary';
+import { FaMagic } from 'olymp-icons';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -150,12 +151,7 @@ export default ({
         />
       );
     case 'Color':
-      return (
-        <ColorEditor
-          {...editProps}
-          addonBefore={<i className="fa fa-eyedropper" />}
-        />
-      );
+      return <ColorEditor {...editProps} addonBefore={<FaMagic />} />;
     case 'Markdown':
       return <Input {...editProps} type="textarea" autosize />;
     case 'Slug':
