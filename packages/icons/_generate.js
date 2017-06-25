@@ -3,12 +3,14 @@ const path = require('path');
 const { upperFirst, camelCase } = require('lodash');
 
 const base = 'fa5';
-const readFrom = path.resolve('svgs/light');
+const readFrom = path.resolve(
+  '/Users/bkniffler/Downloads/fontawesome-5.0.0-alpha1-mac/svgs/light'
+);
 
 let index = '';
 fs.readdir(readFrom, (err, files) => {
   files.forEach((file) => {
-    const fileName = file.split('.')[0];
+    const fileName = `fa-${file.split('.')[0]}`;
     const name = `Fa${upperFirst(camelCase(fileName))}`;
     const content = fs.readFileSync(path.resolve(readFrom, file), {
       encoding: 'utf8',
