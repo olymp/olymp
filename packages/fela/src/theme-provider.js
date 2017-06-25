@@ -1,4 +1,5 @@
 import { ThemeProvider as FelaThemeProvider } from 'react-fela';
+import { WithColorProvider } from './with-color';
 import React from 'react';
 
 const getTheme = theme => ({
@@ -57,4 +58,6 @@ const getTheme = theme => ({
 });
 
 export default ({ theme, ...rest }) =>
-  <FelaThemeProvider theme={getTheme(theme)} {...rest} />;
+  (<FelaThemeProvider theme={getTheme(theme)}>
+    <WithColorProvider {...rest} />
+  </FelaThemeProvider>);

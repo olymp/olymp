@@ -5,7 +5,7 @@ import { Blocks } from 'olymp-pages';
 import { graphql, gql } from 'olymp';
 import VCard from './vcard';
 import { ImageStyles } from '../image';
-import { withColor } from '../../decorators';
+import { withColor } from 'olymp-fela';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 
 const Label = Blocks.ImageBlockLabel.component;

@@ -6,6 +6,7 @@ export { default as Layout } from './layout';
 export { default as Navbar } from './navbar';
 export { default as IFrame } from './iframe';
 export { default as withPulse } from './with-pulse';
+export * from './with-color';
 export * from './loader';
 export * from './utils';
 export { createComponent } from 'react-fela';
