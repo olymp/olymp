@@ -4,9 +4,9 @@ export default createComponent(
   ({ theme }) => ({
     paddingBottom: theme.space2,
     '> a': {
-      color: theme.dark2,
+      color: theme.color,
       onHover: {
-        color: theme.dark1,
+        textDecoration: 'underline',
       },
     },
     ':last-of-type': {

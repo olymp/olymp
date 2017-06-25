@@ -21,9 +21,9 @@ class Content extends Component {
     return (
       <Container>
         <h1 {...rest}>{children}</h1>
-        <h5 contentEditable={false}>
+        <span contentEditable={false}>
           Startseite {path.map(p => `/ ${capitalize(p)}`)}
-        </h5>
+        </span>
       </Container>
     );
   }
@@ -39,6 +39,7 @@ const Header = createComponent(
     paddingY: '1.33rem',
     '> div': {
       '> h1': {
+        color: theme.light,
         lineHeight: 'initial',
       },
     },

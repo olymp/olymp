@@ -6,7 +6,7 @@ export const Content = createComponent(
   ({
     theme,
     background = theme.dark5,
-    color = theme.dark2,
+    color = theme.dark,
     padding = theme.space3,
   }) => ({
     backgroundColor: background,

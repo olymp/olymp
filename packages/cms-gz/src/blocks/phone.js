@@ -44,7 +44,6 @@ const Info = createComponent(
   ({ theme }) => ({
     paddingTop: theme.space2,
     paddingBottom: theme.space3,
-    color: theme.dark2,
   }),
   'div',
   p => Object.keys(p)
@@ -53,7 +52,6 @@ const Info = createComponent(
 const Text = createComponent(
   ({ theme }) => ({
     paddingY: theme.space3,
-    color: theme.dark2,
   }),
   'div',
   p => Object.keys(p)

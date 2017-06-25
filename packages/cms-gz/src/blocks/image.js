@@ -10,6 +10,15 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
   '> div:nth-child(2)': {
     backgroundColor: fade(color, 90),
     color: theme.light,
+    '> h1': {
+      color: theme.light,
+    },
+    '> h2': {
+      color: theme.light,
+    },
+    '> h3': {
+      color: theme.light,
+    },
     '> p': {
       color: theme.light,
     },

@@ -12,10 +12,8 @@ export default {
       <Panel medium={7} title="Neuigkeiten" accent="rgb(62, 167, 62)">
         <ul>
           <Li>
-            <a href="javascript:;">
-              <b>Presseartikel vom 15. Dezember 2016</b>
-              <p>Vertreterversammlung der KV Hessen wählt neue Vorsitzende</p>
-            </a>
+            <b>Presseartikel vom 15. Dezember 2016</b>
+            <p>Vertreterversammlung der KV Hessen wählt neue Vorsitzende</p>
           </Li>
           <Li>
             <b>Publikation vom 08. Dezember 2016</b>
