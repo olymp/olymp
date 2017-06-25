@@ -6,12 +6,13 @@ export const GZKH1Block = {
   label: 'Überschrift groß',
   category: 'Template',
   editable: true,
-  component: ({ attributes, children }) =>
-    (<Heading1 {...attributes}>
+  component: ({ className, attributes, children }) =>
+    (<Heading1 className={className} {...attributes}>
       {children}
     </Heading1>),
   styles: ({ theme }) => ({
-    paddingY: theme.space2,
+    marginTop: theme.space3,
+    marginBottom: theme.space2,
   }),
 };
 
@@ -20,11 +21,12 @@ export const GZKH2Block = {
   label: 'Überschrift klein',
   category: 'Template',
   editable: true,
-  component: ({ attributes, children }) =>
-    (<Heading2 {...attributes}>
+  component: ({ className, attributes, children }) =>
+    (<Heading2 className={className} {...attributes}>
       {children}
     </Heading2>),
   styles: ({ theme }) => ({
-    paddingY: theme.space2,
+    marginTop: theme.space3,
+    marginBottom: theme.space2,
   }),
 };
