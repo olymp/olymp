@@ -38,12 +38,39 @@ const ok = props => () => {
   });
 };
 
+const del = props => () => {
+  const { form, item, router, query, pathname, mutate, typeName } = props;
+  return mutate({
+    variables: {
+      id: item && item.id,
+      type: 'REMOVE',
+    },
+    updateQueries: {
+      [`${typeName.toLowerCase()}List`]: prev => ({
+        ...prev,
+        items: prev.items.filter(x => x.id !== item.id),
+      }),
+    },
+  })
+    .then(({ data }) => {
+      onSuccess('Gelöscht');
+      form.resetFields();
+      router.push({
+        pathname,
+        query: { ...query, [`@${lowerFirst(typeName)}`]: null },
+      });
+    })
+    .catch(onError);
+};
+
 export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`
-      mutation ${lowerFirst(typeName)}($id: String, $input: ${typeName}Input) {
-        item: ${lowerFirst(typeName)}(id: $id, input: $input) {
+      mutation ${lowerFirst(
+        typeName
+      )}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
+        item: ${lowerFirst(typeName)}(id: $id, input: $input, type: $type) {
           ${fieldNames}
         }
       }
@@ -72,7 +99,13 @@ export default (WrappedComponent) => {
     );
     return Form.create({})(
       query(
-        mutation(props => <WrappedComponent {...props} onSave={ok(props)} />)
+        mutation(props =>
+          <WrappedComponent
+            {...props}
+            onSave={ok(props)}
+            onDelete={del(props)}
+          />
+        )
       )
     );
   };

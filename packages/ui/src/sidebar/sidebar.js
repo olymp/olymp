@@ -12,7 +12,7 @@ const StyledInner = createComponent(
     boxShadow: theme.boxShadow,
     // borderLeft: right && '1px solid #eee',
     // borderRight: !right && '1px solid #eee',
-    zIndex: 1,
+    zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
     '> .ant-modal-content': {

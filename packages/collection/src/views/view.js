@@ -33,6 +33,7 @@ export default class CollectionView extends Component {
     return (
       <SplitView>
         <Sidebar
+          id={id}
           collection={collection}
           typeName={typeName}
           items={items}

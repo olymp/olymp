@@ -76,6 +76,10 @@ export default (ast, node, resolvers) => {
             promise = db
               .collection('item')
               .insert({ ...input, _type: table, _appId: app.id, id });
+          } else if (type === 'REMOVE') {
+            promise = db
+              .collection('item')
+              .update({ id }, { ...input, state: 'REMOVED' });
           } else if (type === 'REPLACE') {
             promise = db
               .collection('item')
