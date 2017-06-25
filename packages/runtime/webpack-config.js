@@ -215,7 +215,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           preventFullImport: true,
         },
         'olymp-icons': {
-          transform: 'olymp-icons/fa5/${member}',
+          transform: 'olymp-icons/fa5/lib/${member}',
           kebabCase: true,
           preventFullImport: true,
         },
