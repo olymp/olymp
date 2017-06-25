@@ -10,3 +10,4 @@ export * from './with-color';
 export * from './loader';
 export * from './utils';
 export { createComponent } from 'react-fela';
+export { default as getAntStyle } from './ant-style';

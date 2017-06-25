@@ -12,10 +12,11 @@ import NavigationVertical from './navigation';
 import { SettingsRoute } from './settings';
 import { TemplateRoute, withTemplates } from './templates';
 import * as LANG from './lang/de';
-import { createComponent } from 'olymp-fela';
+import { createComponent, getAntStyle } from 'olymp-fela';
 
 export const Container = createComponent(
-  () => ({
+  ({ theme }) => ({
+    ...getAntStyle({ theme }),
     display: 'flex',
     height: '100%',
     backgroundColor: '#f5f5f5',

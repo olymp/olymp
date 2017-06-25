@@ -17,7 +17,6 @@ export class WithColorProvider extends Component {
     };
   }
   setColor = (id, color) => {
-    console.log(id, color);
     if (!id) {
       return;
     }
