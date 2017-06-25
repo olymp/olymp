@@ -4,9 +4,10 @@ import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import VCard from './vcard';
 import { ImageStyles } from '../image';
+import { withColor } from '../../decorators';
 
 const Label = Blocks.ImageBlockLabel.component;
-const constitution = {
+const org = {
   id: 'Oxbfx5',
   name: 'Orthopädische Praxisklinik',
   kurz: 'Orthopädie',
@@ -707,7 +708,7 @@ const Content = createComponent(
 const Peak = createComponent(
   ImageStyles,
   ({ className, header, subheader, ...rest }) =>
-    (<div className={className}>
+    (<div className={className} contentEditable={false}>
       <div>
         <div>
           <Image {...rest} width="100%" />
@@ -722,37 +723,39 @@ const Peak = createComponent(
 );
 
 export default {
-  key: 'GZK.Collections.ConstitutionBlock',
+  key: 'GZK.Collections.OrgBlock',
   label: 'Einrichtung',
   category: 'Collections',
   editable: true,
-  component: ({ className, attributes, children }) =>
+  component: withColor(() => org.farbe)(({ className, attributes, children }) =>
     (<div>
       <Peak
-        value={constitution.peak}
-        header={constitution.slogan}
-        subheader={constitution.willkommen}
-        color={constitution.farbe}
+        value={org.peak}
+        header={org.slogan}
+        subheader={org.willkommen}
+        color={org.farbe}
       />
       <Container className={className} {...attributes}>
         <Grid>
           <Grid.Item medium={5}>
-            <VCard constitution={constitution} />
+            <VCard org={org} />
           </Grid.Item>
           <Content>
             {children}
           </Content>
         </Grid>
       </Container>
-    </div>),
+    </div>)
+  ),
   styles: ({ theme }) => ({
     '& h1': {
+      color: 'white',
       '> span': {
-        backgroundColor: constitution.farbe,
+        backgroundColor: org.farbe,
       },
     },
     '& a': {
-      color: constitution.farbe,
+      color: org.farbe,
     },
   }),
 };

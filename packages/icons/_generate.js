@@ -11,7 +11,7 @@ let index = '';
 fs.readdir(readFrom, (err, files) => {
   files.forEach((file) => {
     const fileName = `fa-${file.split('.')[0]}`;
-    const name = `Fa${upperFirst(camelCase(fileName))}`;
+    const name = `${upperFirst(camelCase(fileName))}`;
     const content = fs.readFileSync(path.resolve(readFrom, file), {
       encoding: 'utf8',
     });

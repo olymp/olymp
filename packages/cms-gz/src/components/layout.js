@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Logo from './logo';
 import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
+import { WithColorProvider } from '../decorators';
 import { withScroll } from 'olymp';
 
 export const App = createComponent(
@@ -15,7 +16,10 @@ export const App = createComponent(
       lineHeight: 1.5,
     },
   }),
-  p => <Layout {...p} />,
+  p =>
+    (<WithColorProvider>
+      <Layout {...p} />
+    </WithColorProvider>),
   p => Object.keys(p)
 );
 

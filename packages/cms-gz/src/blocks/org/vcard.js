@@ -75,7 +75,7 @@ export default createComponent(
   }),
   ({
     className,
-    constitution: {
+    org: {
       farbe,
       name,
       etage,
@@ -93,7 +93,7 @@ export default createComponent(
       personen,
     },
   }) =>
-    (<div>
+    (<div contentEditable={false}>
       <Logo>{logo}</Logo>
 
       <div className={className}>

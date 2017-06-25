@@ -68,11 +68,12 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     },
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.DefinePlugin({
+      new webpack.DefinePlugin(Object.assign({
         'process.env.SSR': JSON.stringify(isSSR),
         'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
         'process.env.DEV_PORT': JSON.stringify(devPort),
+      }, !isNode ? {
+        'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? JSON.stringify(process.env.GRAPHQL_URL)
           : undefined,
@@ -82,7 +83,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
           ? JSON.stringify(process.env.FILESTACK_KEY)
           : undefined,
-      }),
+      } : {})),
       // new PrepackWebpackPlugin({ }),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
