@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ThemeProvider as FelaThemeProvider } from 'react-fela';
-import { func } from 'prop-types';
 
 const getTheme = theme => ({
   // Colors
@@ -57,48 +56,7 @@ const getTheme = theme => ({
   ...theme,
 });
 
-export default class WithColorProvider extends Component {
-  state = {
-    colors: {},
-    color: null,
-  };
-  static childContextTypes = {
-    setColor: func,
-  };
-  getChildContext() {
-    return {
-      setColor: this.setColor,
-    };
-  }
-  setColor = (id, color) => {
-    if (!id) {
-      return;
-    }
-    const colors = { ...this.state.colors };
-    if (color) {
-      this.setState({ colors: { ...colors, [id]: color }, color });
-      return;
-    }
-    delete colors[id];
-    this.setState({
-      colors,
-      color: Object.keys(colors).length
-        ? colors[Object.keys(colors).length - 1]
-        : null,
-    });
-  };
-  render() {
-    const { children } = this.props;
-    const { color } = this.state;
-    const theme = getTheme(this.props.theme);
-    if (color) {
-      theme.color = color;
-    }
-
-    return (
-      <FelaThemeProvider theme={theme}>
-        {children}
-      </FelaThemeProvider>
-    );
-  }
-}
+export default ({ children, theme }) =>
+  (<FelaThemeProvider theme={getTheme(theme)}>
+    {children}
+  </FelaThemeProvider>);

@@ -10,8 +10,8 @@ const Page = withBlockTypes(props =>
     <SlateMate
       {...props}
       showUndo
-      key={props.bindingId}
-      xy={console.log(props.bindingId)}
+      key={props.id + (props.bindingId || '')}
+      x={console.log(props.id + (props.bindingId || ''))}
     />
   </ContentLoader>)
 );

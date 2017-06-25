@@ -8,9 +8,10 @@ export default getColorFromProps => WrappedComponent =>
       setColor: func,
     };
     id = shortId.generate();
+    color = null;
     setColor = (props = this.props) => {
       const { setColor } = this.context;
-      const newColor = getColorFromProps(props);
+      const newColor = getColorFromProps(props) || null;
       if (newColor !== this.color) {
         setColor(this.id, newColor);
         this.color = newColor;

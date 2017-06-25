@@ -7,6 +7,7 @@ export { default as Navbar } from './navbar';
 export { default as IFrame } from './iframe';
 export { default as withPulse } from './with-pulse';
 export { default as withColor } from './with-color';
+export { default as WithColorProvider } from './with-color-provider';
 export * from './heading';
 export * from './loader';
 export * from './utils';
