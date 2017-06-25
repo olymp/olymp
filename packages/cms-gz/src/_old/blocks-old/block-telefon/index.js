@@ -3,7 +3,7 @@ import { Link, withRouter, graphql, gql } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp-slate';
 
 const fieldNames =
-  'id slug image { url } telefon farbe name kurz personen { id name } leistungen { id name }';
+  'id slug image { url } telefon farbe name title personen { id name } leistungen { id name }';
 @withRouter
 @graphql(
   gql`

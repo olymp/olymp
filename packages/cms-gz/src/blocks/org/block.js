@@ -40,7 +40,7 @@ const componentWithData = graphql(
   query einrichtung($id: String) {
     item: einrichtung(id: $id) {
       name
-      kurz
+      title
       art
       farbe
       slug

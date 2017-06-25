@@ -15,7 +15,7 @@ import Accordion from '../components/accordion2';
 
 const AccordionItem = Accordion.Item;
 
-const fieldNames = `id, name, kurz, art, farbe, slug, slogan, willkommen, etage, freifeld, zeiten, eMail, fax, telefonPrivat, telefon,
+const fieldNames = `id, name, title, art, farbe, slug, slogan, willkommen, etage, freifeld, zeiten, eMail, fax, telefonPrivat, telefon,
   website, image { url, width, height, crop }, logo { url, width, height, crop }, fachrichtungen, tags, aesthetik { id, name, link, text }, vorsorgen { id, name, link, text }, leistungen { id, name, link, text },
   personen { id, name, beschreibung, bild { url, width, height, crop }, telefon, fax, eMail, text }, text`;
 @graphql(

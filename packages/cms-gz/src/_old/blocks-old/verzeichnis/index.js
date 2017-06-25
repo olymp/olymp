@@ -7,7 +7,7 @@ import Carousel from '../../components/carousel';
 import './theme.less';
 
 const fieldNames =
-  'id slug image { url } telefon farbe name kurz fachrichtungen personen { id name }';
+  'id slug image { url } telefon farbe name title fachrichtungen personen { id name }';
 @withRouter
 @graphql(
   gql`
@@ -111,7 +111,9 @@ export default class VerzeichnisBlock extends Component {
       style,
       data,
     } = this.props;
-    if (data.loading) { return <Spin size="large" />; }
+    if (data.loading) {
+      return <Spin size="large" />;
+    }
     let personen = [],
       spezial = [];
     data.items.forEach((item) => {
@@ -168,7 +170,7 @@ export default class VerzeichnisBlock extends Component {
           {this.renderSection(
             0,
             'Einrichtungen',
-            sortBy(data.items, x => x.kurz || x.name)
+            sortBy(data.items, x => x.name || x.title)
           )}
           {this.renderSection(1, 'Spezialitäten', sortBy(spezial, 'name'))}
           {this.renderSection(

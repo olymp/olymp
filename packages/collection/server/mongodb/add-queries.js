@@ -39,7 +39,11 @@ export default (ast, node, resolvers) => {
           // db.collection(table).find(adaptQuery(query))
           db
             .collection('item')
-            .find({ ...adaptQuery(query), _type: table, _appId: app.id })
+            .find(
+              { ...adaptQuery(query), _type: table, _appId: app.id },
+              { rawCursor: true }
+            )
+            .then(cursor => cursor.sort({ name: 1 }).toArray())
       );
     }
   }
