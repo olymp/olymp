@@ -10,6 +10,24 @@ export default ({ theme }) => {
     '& ::selection': {
       background: color,
     },
+    '& h1': {
+      color: theme.dark,
+    },
+    '& h2': {
+      color: theme.dark,
+    },
+    '& h3': {
+      color: theme.dark,
+    },
+    '& h4': {
+      color: theme.dark,
+    },
+    '& h5': {
+      color: theme.dark,
+    },
+    '& h6': {
+      color: theme.dark,
+    },
     '& .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected': {
       backgroundColor: transparent3,
     },
