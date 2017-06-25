@@ -3,6 +3,7 @@ import { gql, graphql } from 'olymp';
 const isNew = props => props.query['@page'] === 'new';
 const getId = (id, query) =>
   query['@page'] && query['@page'] !== 'new' ? query['@page'] : id;
+
 export default graphql(
   gql`
   query page($id: String) {

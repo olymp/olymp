@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
-import { createComponent } from 'olymp-fela';
+import { createComponent, withPulse } from 'olymp-fela';
 import { url } from '../utils';
 
 // const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
@@ -28,17 +28,19 @@ const Img = createComponent(
   ({ lazy, ...p }) => Object.keys(p)
 );
 
-const Background = createComponent(
-  ({ theme }) => ({
-    width: '100%',
-    display: 'block',
-    height: '100%',
-    backgroundColor: theme.dark3,
-    // filter: 'blur(8px)',
-  }),
-  'div',
-  // 'img',
-  ['className', 'src']
+const Background = withPulse(
+  createComponent(
+    ({ theme }) => ({
+      width: '100%',
+      display: 'block',
+      height: '100%',
+      backgroundColor: theme.dark3,
+      // filter: 'blur(8px)',
+    }),
+    'div',
+    // 'img',
+    ['className', 'src']
+  )
 );
 
 const Container = createComponent(
@@ -52,7 +54,7 @@ const Container = createComponent(
   ['className', 'children']
 );
 
-const LazyImage = props => {
+const LazyImage = (props) => {
   const { className, retina, value, mode, lazy, ...rest } = props;
 
   if (!value) {
@@ -96,15 +98,8 @@ const LazyImage = props => {
     width = height / oHeight * oWidth;
   }
 
-  const ratio = Math.round(height / width);
   width = Math.round(width);
   height = Math.round(height);
-  /*src={url(value.url, {
-    ...value,
-    width: 50,
-    height: ratio * 50,
-    quality: 1,
-  })*/
   return (
     <Container className={className} width={width} height={height}>
       {(value.format === 'jpg' || value.format === 'pdf') && <Background />}

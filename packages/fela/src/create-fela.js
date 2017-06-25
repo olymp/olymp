@@ -7,6 +7,7 @@ import unit from 'fela-plugin-unit';
 import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
+import embedded from 'fela-plugin-embedded';
 import normalize from './normalize';
 
 export default () => {
@@ -14,6 +15,7 @@ export default () => {
     selectorPrefix: 'o',
     plugins: [
       extend(),
+      embedded(),
       prefixer(),
       fallbackValue(),
       unit(),
