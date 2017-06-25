@@ -6,6 +6,7 @@ const Avatar = createComponent(
   ({ theme }) => ({
     float: 'right',
     margin: theme.space2,
+    marginRight: 0,
   }),
   p =>
     <Image {...p} width={100} height={100} mode="fill" retina lazy={false} />,
@@ -15,7 +16,7 @@ const Avatar = createComponent(
 const H3 = createComponent(
   ({ theme, farbe }) => ({
     borderBottom: border(theme, farbe),
-    display: 'inline-block',
+    display: 'inline',
     paddingRight: theme.space1,
   }),
   'h3',
