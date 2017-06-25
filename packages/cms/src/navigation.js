@@ -24,6 +24,8 @@ const VerticalMenu = createComponent(
     flexDirection: 'column',
     // boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
     borderRight: 0,
+    width: 55,
+    maxWidth: 55,
     boxShadow: `${theme.innerShadow}!important`,
     background: `linear-gradient(0deg, ${theme.colorStart ||
       tinycolor(theme.color)
