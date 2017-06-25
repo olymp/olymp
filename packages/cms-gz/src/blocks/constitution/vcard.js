@@ -29,6 +29,7 @@ const ListLabel = createComponent(
   ({ theme }) => ({
     paddingLeft: theme.space2,
     color: theme.dark2,
+    fontWeight: 'bold',
   }),
   ({ children, ...rest }) =>
     <Grid.Item {...rest} medium={1}>{children}:</Grid.Item>,
@@ -36,8 +37,12 @@ const ListLabel = createComponent(
 );
 
 const ListContent = createComponent(
-  ({ theme, color = theme.color }) => ({
+  ({ theme }) => ({
     textAlign: 'right',
+    ifSmallDown: {
+      paddingLeft: theme.space2,
+      textAlign: 'left',
+    },
   }),
   p => <Grid.Item {...p} medium={2} />,
   p => Object.keys(p)
