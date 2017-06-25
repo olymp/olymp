@@ -6,20 +6,32 @@ import { get } from 'lodash';
 
 // interpolate a string value using props
 const interpolate = (value, propsOrFunc) => {
-  if (typeof value !== 'string') { return value; }
-  if (value.indexOf('{') === -1) { return value; }
-  return value.replace(/\{\{?\:?(.+?)\}?\}/g, (m, v) => typeof propsOrFunc === 'function'
-      ? propsOrFunc(v, v)
-      : get(propsOrFunc, v, v));
+  if (typeof value !== 'string') {
+    return value;
+  }
+  if (value.indexOf('{') === -1) {
+    return value;
+  }
+  return value.replace(
+    /\{\{?\:?(.+?)\}?\}/g,
+    (m, v) =>
+      typeof propsOrFunc === 'function'
+        ? propsOrFunc(v, v)
+        : get(propsOrFunc, v, v)
+  );
 };
 
 const defaultFields = 'id name';
 const deserializeBinding = (value) => {
   // value e.g. 'event id name slug' or 'event'
-  if (!value) { return {}; }
+  if (!value) {
+    return {};
+  }
   value = value.trim();
   const firstSpace = value.indexOf(' ');
-  if (firstSpace === -1) { return { type: value, fields: defaultFields }; } // no space = only typename
+  if (firstSpace === -1) {
+    return { type: value, fields: defaultFields };
+  } // no space = only typename
   return {
     type: value.substr(0, firstSpace),
     fields: value.substr(firstSpace),
@@ -84,6 +96,7 @@ export const withNavigation = (Wrapped) => {
                   ...child,
                   pageId: child.id,
                   bindingId: item.id,
+                  bindingObj: item,
                   slug,
                   name: item.name,
                   id: item.id,
@@ -107,7 +120,9 @@ export const withNavigation = (Wrapped) => {
             children = sortBy(children, [
               (o) => {
                 const index = sortIndex.indexOf(o.id);
-                if (index === -1) { return 99; }
+                if (index === -1) {
+                  return 99;
+                }
                 return index;
               },
             ]);
@@ -136,7 +151,9 @@ export const withNavigation = (Wrapped) => {
 let cache = {};
 let lastType;
 export const DataRoute = ({ binding, component, ...rest }) => {
-  if (!binding) { return createElement(component || SimpleRoute, rest); }
+  if (!binding) {
+    return createElement(component || SimpleRoute, rest);
+  }
   const { type, fields } = deserializeBinding(binding);
   const key = `route-${type}-${fields}`;
   if (lastType !== (component || SimpleRoute)) {
@@ -144,11 +161,14 @@ export const DataRoute = ({ binding, component, ...rest }) => {
     cache = {};
     lastType = component || SimpleRoute;
   }
-  if (!cache[key]) { cache[key] = withData(component || SimpleRoute, { fields, type }); }
+  if (!cache[key]) {
+    cache[key] = withData(component || SimpleRoute, { fields, type });
+  }
   return createElement(cache[key], rest);
 };
 // Helper for DataRoute, actual decorator
-export const withData = (Wrapped, { type, fields, render }) => graphql(
+export const withData = (Wrapped, { type, fields, render }) =>
+  graphql(
     gql`
     query ${type || 'page'}($id: String) {
       item: ${type || 'page'}(id: $id) {
@@ -156,12 +176,12 @@ export const withData = (Wrapped, { type, fields, render }) => graphql(
       }
     }
   `,
-  {
-    options: ({ bindingId }) => ({
-      variables: {
-        id: bindingId,
-      },
-    }),
-    name: 'nav_data',
-  }
+    {
+      options: ({ bindingId }) => ({
+        variables: {
+          id: bindingId,
+        },
+      }),
+      name: 'nav_data',
+    }
   )(({ nav_data, ...rest }) => <Wrapped {...rest} binding={nav_data.item} />);

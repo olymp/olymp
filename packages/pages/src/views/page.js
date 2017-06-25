@@ -7,7 +7,7 @@ import { ContentLoader } from 'olymp-fela';
 
 const Page = withBlockTypes(props =>
   (<ContentLoader height={200} isLoading={props.isLoading}>
-    <SlateMate {...props} showUndo />
+    <SlateMate {...props} showUndo key={props.bindingId} />
   </ContentLoader>)
 );
 Page.propTypes = {

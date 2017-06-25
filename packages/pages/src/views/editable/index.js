@@ -35,6 +35,8 @@ export default class PageSidebar extends Component {
       save,
       query,
       binding,
+      bindingId,
+      bindingObj,
       navigation,
       flatNavigation,
       render,
@@ -85,7 +87,14 @@ export default class PageSidebar extends Component {
       (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
     const P = form.getFieldDecorator('blocks', {
       initialValue: item.blocks,
-    })(<Page readOnly={!isPage} binding={binding} />);
+    })(
+      <Page
+        readOnly={!isPage}
+        binding={binding}
+        bindingId={bindingId}
+        bindingObj={bindingObj}
+      />
+    );
 
     return (
       <SplitView deviceWidth={deviceWidth}>

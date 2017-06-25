@@ -86,9 +86,9 @@ const componentWithData = graphql(
   }
 `,
   {
-    options: ({ id }) => ({
+    options: ({ id, editor }) => ({
       variables: {
-        id: id || 'BJuOod57-',
+        id: editor.props.bindingId || 'BJuOod57-',
       },
     }),
     props: ({ ownProps, data }) => ({
