@@ -33,7 +33,7 @@ export default class News extends Component {
       <div>
         <Helmet
           title={item.name}
-          meta={item.peak ? [{ property: 'og:image', content: item.peak }] : []}
+          meta={item.image ? [{ property: 'og:image', content: item.image }] : []}
         />
         {!readOnly
           ? <Gateway into="button1">

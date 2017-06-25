@@ -42,7 +42,7 @@ import Carousel from '../../components/carousel';
 export default class GZNetzwerke extends Component {
   static defaultProps = { size: 1 };
   renderItem = (
-    { slug, website, peak, kurz, name, farbe, id, tags, bild },
+    { slug, website, image, kurz, name, farbe, id, tags, bild },
     index
   ) =>
     (<a

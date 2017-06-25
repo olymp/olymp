@@ -35,7 +35,7 @@ export default class Artikel extends Component {
           item.extrakt || 'Ein neuer Artikel in unserem Gesundheitsmagazin!',
       },
     ];
-    if (item.peak) { meta.push({ property: 'og:image', content: item.peak.url }); }
+    if (item.image) { meta.push({ property: 'og:image', content: item.image.url }); }
     // style="border-bottom-right-radius:130px;200px;"
     return (
       <div>

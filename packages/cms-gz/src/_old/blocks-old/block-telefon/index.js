@@ -3,7 +3,7 @@ import { Link, withRouter, graphql, gql } from 'olymp';
 import { useGenericBlock, GenericBlock } from 'olymp-slate';
 
 const fieldNames =
-  'id slug peak { url } telefon farbe name kurz personen { id name } leistungen { id name }';
+  'id slug image { url } telefon farbe name kurz personen { id name } leistungen { id name }';
 @withRouter
 @graphql(
   gql`
@@ -38,7 +38,7 @@ export default class BlockEinrichtungen extends Component {
     (<div className="pl-1 pr-1 gz-height-250" key={item.id}>
       <Image
         onImageClick={() => this.props.router.push(item.slug)}
-        value={item.peak}
+        value={item.image}
         container="div"
         height="100%"
         width="100%"

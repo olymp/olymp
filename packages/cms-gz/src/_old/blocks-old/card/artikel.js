@@ -36,7 +36,7 @@ import Carousel from '../../components/carousel';
 export default class GzCardArtikel extends Component {
   static defaultProps = { title: 'Magazin', size: 1 };
   onImageClick = slug => () => this.props.router.push(`/artikel${slug}`);
-  renderItem = ({ slug, peak, kurz, name, farbe, id }) => ({
+  renderItem = ({ slug, image, kurz, name, farbe, id }) => ({
     original,
     srcSet,
   }) => {

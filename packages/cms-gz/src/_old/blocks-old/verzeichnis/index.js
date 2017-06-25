@@ -7,7 +7,7 @@ import Carousel from '../../components/carousel';
 import './theme.less';
 
 const fieldNames =
-  'id slug peak { url } telefon farbe name kurz fachrichtungen personen { id name }';
+  'id slug image { url } telefon farbe name kurz fachrichtungen personen { id name }';
 @withRouter
 @graphql(
   gql`
@@ -90,9 +90,9 @@ export default class VerzeichnisBlock extends Component {
       : null;
     return (
       <div className="col-sm-4">
-        {image && image.peak
+        {image && image.image
           ? <Link to={image.slug} title={image.name}>
-            <Image url={image.peak.url} />
+            <Image url={image.image.url} />
           </Link>
           : null}
         <h2 className="section-title mt-1">{title}</h2>
@@ -143,8 +143,8 @@ export default class VerzeichnisBlock extends Component {
     const items =
       data &&
       data.items &&
-      data.items.filter(x => x.peak).map(item => ({
-        url: item.peak.url,
+      data.items.filter(x => x.image).map(item => ({
+        url: item.image.url,
         render: this.renderImage(item),
       }));
 

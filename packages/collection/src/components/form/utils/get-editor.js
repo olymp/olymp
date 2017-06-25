@@ -18,7 +18,6 @@ import { FaMagic } from 'olymp-icons';
 const states = {
   PUBLISHED: 'Öffentlich',
   DRAFT: 'Entwurf',
-  ARCHIVED: 'Archiv',
   REMOVED: 'Papierkorb',
 };
 const edits = [

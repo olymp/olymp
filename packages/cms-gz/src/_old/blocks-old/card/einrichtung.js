@@ -7,7 +7,7 @@ import Carousel from '../../components/carousel';
   gql`
   query einrichtungList {
     items: einrichtungList(sort: { name: ASC }, query: { state: { eq: PUBLISHED } }) {
-      id name slug farbe peak { url, width, height, crop } telefon
+      id name slug farbe image { url, width, height, crop } telefon
     }
   }
 `,
@@ -44,7 +44,7 @@ import Carousel from '../../components/carousel';
 export default class GzCardArtikel extends Component {
   static defaultProps = { title: 'Einrichtungen', size: 1 };
   onImageClick = slug => () => this.props.router.push(slug);
-  renderItem = ({ slug, peak, kurz, name, farbe, id }) => ({
+  renderItem = ({ slug, image, kurz, name, farbe, id }) => ({
     original,
     srcSet,
   }) => {
@@ -67,8 +67,8 @@ export default class GzCardArtikel extends Component {
     const items =
       data &&
       data.items &&
-      data.items.filter(x => x.peak).map(item => ({
-        url: item.peak.url,
+      data.items.filter(x => x.image).map(item => ({
+        url: item.image.url,
         render: this.renderItem(item),
       }));
 

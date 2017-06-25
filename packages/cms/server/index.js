@@ -22,6 +22,15 @@ const {
 
 export default (server, options) => {
   const db = monk(MONGODB_URI);
+
+  db.collection('item').find({ _type: 'einrichtung' }).then((items) => {
+    items.forEach((item) => {
+      item.image = item.peak;
+      delete item.peak;
+      db.collection('item').update({ id: item.id }, item);
+    });
+  });
+
   const schema = createSchema({ directives });
   const modules = {
     helloWorld: {
@@ -90,7 +99,7 @@ export default (server, options) => {
     server.get('/graphql', schema.graphi);
   }
 
-  db.collection('apps').findOne({ id: APP }).then((app) => {
+  db.collection('app').findOne({ id: APP }).then((app) => {
     if (!app) {
       throw new Error('App not found');
     }

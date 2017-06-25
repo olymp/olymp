@@ -16,7 +16,7 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<div>
     <Peak
-      value={item.peak}
+      value={item.image}
       header={item.slogan}
       subheader={item.willkommen}
       color={item.farbe}
@@ -56,7 +56,7 @@ const componentWithData = graphql(
       telefonPrivat
       website
 
-      peak {
+      image {
         url
         crop
         width

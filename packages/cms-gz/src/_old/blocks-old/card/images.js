@@ -48,7 +48,7 @@ export default class GzCardImages extends Component {
     className: PropTypes.string,
     getData: PropTypes.func,
   };
-  renderItem = ({ slug, peak, kurz, name, farbe, id }) => ({
+  renderItem = ({ slug, image, kurz, name, farbe, id }) => ({
     original,
     srcSet,
   }) =>
