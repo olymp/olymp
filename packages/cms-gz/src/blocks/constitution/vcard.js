@@ -58,7 +58,7 @@ const Logo = createComponent(
     marginTop: theme.space2,
   }),
   ({ children, className }) =>
-    <Image className={className} value={children} width={400} />,
+    <Image className={className} value={children} width="100%" retina />,
   p => Object.keys(p)
 );
 

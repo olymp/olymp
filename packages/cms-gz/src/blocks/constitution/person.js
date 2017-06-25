@@ -19,7 +19,7 @@ const H3 = createComponent(
     paddingRight: theme.space1,
   }),
   'h3',
-  p => Object.keys(p)
+  ({ farbe, ...p }) => Object.keys(p)
 );
 
 export default createComponent(
