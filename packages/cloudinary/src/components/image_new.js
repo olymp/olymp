@@ -20,7 +20,7 @@ const url = (url, options) => {
 };
 
 const Container = createComponent(
-  ({ ratio, width, maxWidth, maxHeight }) => ({
+  ({ ratio, width, maxWidth, maxHeight, showLoading }) => ({
     position: 'relative',
     width: width || '100%',
     overflow: 'hidden',
@@ -39,7 +39,7 @@ const Container = createComponent(
       right: 0,
       bottom: 0,
     },
-    ...ContentLoaderStyles,
+    ...(showLoading ? ContentLoaderStyles : {}),
   }),
   ({ lazy, ...p }) => (lazy ? <LazyLoad {...p} /> : <div {...p} />),
   ({ ratio, ...p }) => Object.keys(p)
@@ -64,6 +64,16 @@ const LazyImage = (props) => {
   let width = typeof pWidth !== 'string' && pWidth;
   let height = typeof pWidth !== 'string' && pHeight;
   let ratio = pRatio;
+
+  // todo: <Img value={bild} options={{ c: 'pad' }} width={200} ratio={1} /> auch mit height=200 statt ratio=1 möglich!
+  /* <Image
+          value={bild}
+          options={{ c: 'pad' }}
+          maxSize={200}
+          width="70%"
+          ratio={1}
+        /> optimieren!
+        */
 
   if (typeof pWidth === 'string') {
     console.warn('Use of percentage width is not recommended!');
@@ -124,6 +134,7 @@ const LazyImage = (props) => {
       maxHeight={maxHeight}
       ratio={ratio}
       lazy={lazy}
+      showLoading={value.format === 'jpg' || value.format === 'pdf'}
     >
       <img
         src={url(value.url, options)}
