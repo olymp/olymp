@@ -41,7 +41,6 @@ export default ({
   label,
   key,
   onChange,
-  initialValue,
 }) => {
   const { idField, start, suggest } = field['@'];
   const { type, name } = field;
@@ -52,7 +51,6 @@ export default ({
     className: cn(editorClassName, className),
     key,
     onChange,
-    initialValue,
   };
 
   for (let i = 0; i < edits.length; i += 1) {
