@@ -87,7 +87,8 @@ const Title = createComponent(
 
 const Link2 = createComponent(
   ({ theme }) => ({
-    padding: `${theme.space1} ${theme.space0} !important`,
+    // TODO important padding: `${theme.space1} ${theme.space0} !important`,
+    padding: `${theme.space1} ${theme.space0}`,
   }),
   p => <Link {...p} />,
   p => Object.keys(p)
