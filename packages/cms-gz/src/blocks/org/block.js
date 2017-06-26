@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, gql } from 'olymp';
-import { createComponent, Grid, withColor } from 'olymp-fela';
+import { createComponent, Grid, withColor, ContentLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -48,29 +48,31 @@ const Peak = createComponent(
 const component = withColor(
   ({ item }) => item.farbe
 )(({ className, attributes, item }) =>
-  (<div>
-    {item.image
-      ? <Peak
-        value={item.image}
-        header={item.slogan}
-        subheader={item.willkommen}
-        color={item.farbe}
-      />
-      : <Header subheader={item.willkommen} color={item.farbe}>
-        {item.slogan}
-      </Header>}
-    <Container className={className} color={item.farbe} {...attributes}>
-      <Grid>
-        <Grid.Item medium={5}>
-          <VCard org={item} />
-        </Grid.Item>
-        <Content>
-          <Slate readOnly value={item.text} />
-          {/* children*/}
-        </Content>
-      </Grid>
-    </Container>
-  </div>)
+  (<ContentLoader isLoading={!item.name}>
+    <div>
+      {item.image
+        ? <Peak
+          value={item.image}
+          header={item.slogan}
+          subheader={item.willkommen}
+          color={item.farbe}
+        />
+        : <Header subheader={item.willkommen} color={item.farbe}>
+          {item.slogan}
+        </Header>}
+      <Container className={className} color={item.farbe} {...attributes}>
+        <Grid>
+          <Grid.Item medium={5}>
+            <VCard org={item} />
+          </Grid.Item>
+          <Content>
+            <Slate readOnly value={item.text} />
+            {/* children*/}
+          </Content>
+        </Grid>
+      </Container>
+    </div>
+  </ContentLoader>)
 );
 
 const componentWithData = graphql(
@@ -113,11 +115,47 @@ const componentWithData = graphql(
 
       fachrichtungen
       tags
-      # aesthetik: [NestedEinrichtungLeistung]
-      # vorsorgen: [NestedEinrichtungLeistung]
-      # leistungen: [NestedEinrichtungLeistung]
-      # prophylaxen: [NestedEinrichtungLeistung]
-      # personen: [NestedEinrichtungPerson]
+      aesthetik {
+        id
+        link
+        name
+        text
+      }
+      vorsorgen {
+        id
+        link
+        name
+        text
+      }
+      leistungen {
+        id
+        link
+        name
+        text
+      }
+      prophylaxen {
+        id
+        link
+        name
+        text
+      }
+      personen {
+        id
+        name
+        beschreibung
+        bild {
+          url
+          crop
+          width
+          height
+          caption
+          source
+        }
+        telefon
+        fax
+        eMail
+        text
+      }
 
       text
     }
