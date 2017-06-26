@@ -25,7 +25,7 @@ const Item = createComponent(
     textAlign: 'center',
   }),
   ({ className, website, name, tags, bild, size }) =>
-    (<Grid.Item className={className} mini={1} gridSize={size}>
+    (<Grid.Item className={className} mini={size} medium={1} gridSize={size}>
       <a href={website} rel="noopener noreferrer">
         <Image
           value={bild}
