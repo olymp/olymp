@@ -2,6 +2,21 @@ import React, { Children, cloneElement, Component } from 'react';
 import { withRouter } from 'olymp';
 import { createComponent } from 'react-fela';
 
+const Container = createComponent(
+  ({ theme, open }) => ({
+    ifMini: {
+      '> div': {
+        display: !open && 'none',
+        ':nth-child(1)': {
+          display: 'block',
+        },
+      },
+    },
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const Button = createComponent(
   ({ theme, open, inverse, size = 20 }) => ({
     float: 'right',
@@ -70,7 +85,7 @@ class Toggler extends Component {
     const open = query.nav === null;
 
     return (
-      <div className={className}>
+      <Container className={className} open={open}>
         <Button
           {...props}
           open={open}
@@ -81,8 +96,8 @@ class Toggler extends Component {
             })}
         />
 
-        {open && Children.map(children, child => cloneElement(child, props))}
-      </div>
+        {Children.map(children, child => cloneElement(child, props))}
+      </Container>
     );
   }
 }

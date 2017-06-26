@@ -22,6 +22,7 @@ const Image = createComponent(
 const Item = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
+    marginY: theme.space2,
     textAlign: 'center',
   }),
   ({ className, website, name, tags, bild, size }) =>
