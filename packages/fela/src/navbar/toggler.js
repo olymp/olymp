@@ -1,6 +1,5 @@
 import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
-import { border } from 'olymp-fela';
 
 const Toggler = createComponent(
   ({ hasLogo }) => ({
@@ -26,7 +25,7 @@ const Toggler = createComponent(
   }),
   ({ className, children, ...props }) =>
     (<div className={className}>
-      <Button {...props} />
+      <Button {...props} open />
 
       {Children.map(children, child => cloneElement(child, props))}
     </div>),
@@ -35,32 +34,56 @@ const Toggler = createComponent(
 export default Toggler;
 
 const Button = createComponent(
-  ({ theme, inverse }) => ({
+  ({ theme, open, inverse, size = 20 }) => ({
     float: 'right',
-    border: border(theme, theme.color),
-    backgroundColor: inverse ? theme.dark4 : theme.light,
     padding: theme.space2,
     margin: theme.space1,
-    borderRadius: theme.borderRadius,
     ifSmallUp: {
       display: 'none',
     },
-  }),
-  ({ className, inverse }) =>
-    (<button className={className}>
-      <Icon inverse={inverse} />
-    </button>),
-  ['inverse']
-);
 
-const Icon = createComponent(
-  ({ theme, inverse }) => ({
-    display: 'block',
-    fill: inverse ? theme.light : theme.color,
+    width: Math.round(size * 1.3),
+    height: size,
+    position: 'relative',
+    transform: 'rotate(0deg)',
+    transition: '.5s ease-in-out',
+    cursor: 'pointer',
+    '> span': {
+      display: 'block',
+      position: 'absolute',
+      height: Math.round(size / 6),
+      borderRadius: Math.round(size / 6),
+      width: '100%',
+      background: inverse ? theme.light : theme.color,
+      left: 0,
+      transform: 'rotate(0deg)',
+      transition: '.25s ease-in-out',
+      ':nth-child(1)': {
+        top: open ? Math.round(size / 3) : 0,
+        width: open && '0%',
+        left: open && '50%',
+      },
+      ':nth-child(2)': {
+        top: Math.round(size / 3),
+        transform: open && 'rotate(45deg)',
+      },
+      ':nth-child(3)': {
+        top: Math.round(size / 3),
+        transform: open && 'rotate(-45deg)',
+      },
+      ':nth-child(4)': {
+        top: open ? Math.round(size / 3) : Math.round(size / 3) * 2,
+        width: open && '0%',
+        left: open && '50%',
+      },
+    },
   }),
   ({ className }) =>
-    (<svg className={className} width={20} height={20} viewBox="0 0 1792 1792">
-      <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z" />
-    </svg>),
+    (<div className={className}>
+      <span />
+      <span />
+      <span />
+      <span />
+    </div>),
   p => Object.keys(p)
 );

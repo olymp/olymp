@@ -2,7 +2,6 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'olymp';
 import { createComponent } from 'react-fela';
-import { border } from 'olymp-fela';
 import Toggler from './toggler';
 import Container from '../container';
 import Nav from './nav';
@@ -15,7 +14,7 @@ const WithContainer = ({ container, ...rest }) =>
   container ? <Container {...rest} /> : <div {...rest} />;
 
 const Navbar = createComponent(
-  ({ theme, inverse, vertically, full, fill, container }) => ({
+  ({ theme, inverse, vertically, full, fill }) => ({
     backgroundColor: inverse && theme.color,
     background: inverse && theme.color,
     borderRadius: !full && theme.borderRadius,
