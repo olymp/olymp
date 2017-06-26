@@ -1,16 +1,16 @@
 import React from 'react';
 import { createComponent, Container, Grid, border } from 'olymp-fela';
-import { H2, Panel } from '../components';
 import { graphql, gql, Link } from 'olymp';
+import { Img } from 'olymp-cloudinary';
+import moment from 'moment';
+import { H2, Panel } from '../components';
 
 const Image = createComponent(
   ({ theme }) => ({
-    marginRight: theme.space2,
-    width: 100,
-    height: 'auto',
     float: 'left',
+    marginRight: theme.space3,
   }),
-  ({ className, url }) => <img className={className} src={url} alt="" />,
+  p => <Img {...p} />,
   p => Object.keys(p)
 );
 
@@ -55,18 +55,20 @@ const component = graphql(
       items: data.items || [],
     }),
   }
-)(({ attributes, getData, items, ...props }) =>
+)(({ attributes, items }) =>
   (<Container {...attributes}>
     <Grid>
       <Grid.Item medium={8}>
         {items.map(item =>
-          (<Panel id={item.id} title={item.name} bordered="Vertreterversammlung">
-            <Image value={item.bild} />
-            <p>
-              {item.extrakt}
-            </p>
-            <Link to={item.slug || '/'}>Mehr erfahren...</Link>
-            <H5>{item.art} vom {item.date}</H5>
+          (<Panel id={item.id} title={item.name} key={item.id}>
+            <Image value={item.bild} width={200} ratio={1} />
+            <div>
+              <p>
+                {item.extrakt}
+              </p>
+              <Link to={item.slug || '/'}>Mehr erfahren...</Link>
+              <H5>{item.art} vom {moment(item.date).format('DD.MM.YYYY')}</H5>
+            </div>
           </Panel>)
         )}
       </Grid.Item>
