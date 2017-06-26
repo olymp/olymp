@@ -29,15 +29,6 @@ const Img = createComponent(
   ({ lazy, ...p }) => Object.keys(p)
 );
 
-const AmpImg = createComponent(
-  ({ width }) => ({
-    width: width || '100%',
-    display: 'block',
-  }),
-  rest => <amp-img {...rest} layout="responsive" />,
-  ({ lazy, ...p }) => Object.keys(p)
-);
-
 const Background = withPulse(
   createComponent(
     ({ theme }) => ({
@@ -87,8 +78,8 @@ const LazyImage = withAmp((props) => {
       options.height = height;
     }
     return (
-      <AmpImg
-        {...rest}
+      <amp-img
+        layout="responsive"
         src={url(value.url, options)}
         alt={value.caption}
         width={options.width}
