@@ -20,15 +20,22 @@ const Loader = createComponent(
   ({ lazy, ...p }) => Object.keys(p)
 );
 
-const Img = withAmp(
-  createComponent(
-    ({ width }) => ({
-      width: width || '100%',
-      display: 'block',
-    }),
-    ({ amp, ...rest }) => (amp ? <amp-img {...rest} /> : <img {...rest} />),
-    ({ lazy, ...p }) => Object.keys(p)
-  )
+const Img = createComponent(
+  ({ width }) => ({
+    width: width || '100%',
+    display: 'block',
+  }),
+  rest => <img {...rest} />,
+  ({ lazy, ...p }) => Object.keys(p)
+);
+
+const AmpImg = createComponent(
+  ({ width }) => ({
+    width: width || '100%',
+    display: 'block',
+  }),
+  rest => <amp-img {...rest} layout="responsive" />,
+  ({ lazy, ...p }) => Object.keys(p)
 );
 
 const Background = withPulse(
@@ -57,8 +64,8 @@ const Container = createComponent(
   ['className', 'children']
 );
 
-const LazyImage = (props) => {
-  const { className, retina, value, mode, lazy, ...rest } = props;
+const LazyImage = withAmp((props) => {
+  const { className, retina, value, mode, lazy, amp, ...rest } = props;
 
   if (!value) {
     return <div />;
@@ -68,6 +75,27 @@ const LazyImage = (props) => {
   const oHeight = (value.crop && value.crop[1]) || value.height;
   let width = props.width;
   let height = props.height;
+
+  if (amp) {
+    const options = {
+      ...value,
+      dpr: retina ? 2 : undefined,
+      mode,
+    };
+    if (typeof width !== 'string') {
+      options.width = width;
+      options.height = height;
+    }
+    return (
+      <AmpImg
+        {...rest}
+        src={url(value.url, options)}
+        alt={value.caption}
+        width={options.width}
+        height={options.height}
+      />
+    );
+  }
 
   if (!lazy || typeof width === 'string') {
     // old image-comp
@@ -124,7 +152,7 @@ const LazyImage = (props) => {
       </Loader>
     </Container>
   );
-};
+});
 LazyImage.propTypes = {
   lazy: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
