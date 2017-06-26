@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
 import { createComponent, ContentLoaderStyles } from 'olymp-fela';
+import { withAmp } from 'olymp';
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
@@ -45,7 +46,7 @@ const Container = createComponent(
   ({ ratio, ...p }) => Object.keys(p)
 );
 
-const LazyImage = (props) => {
+const LazyImage = withAmp((props) => {
   const {
     className,
     options: pOptions,
@@ -57,9 +58,12 @@ const LazyImage = (props) => {
     maxWidth,
     maxHeight,
     maxSize,
+    amp,
     ...rest
   } = props;
-  if (!value) { return null; }
+  if (!value) {
+    return null;
+  }
   const oWidth = (value.crop && value.crop[0]) || value.width;
   const oHeight = (value.crop && value.crop[1]) || value.height;
   let width = typeof pWidth !== 'string' && pWidth;
@@ -75,15 +79,6 @@ const LazyImage = (props) => {
           ratio={1}
         /> optimieren!
         */
-
-  if (typeof pWidth === 'string') {
-    console.warn('Use of percentage width is not recommended!');
-    if (maxHeight) {
-      console.warn(
-        'Use of percentage width an maxHeight will not work correctly! Use a fix width instead!'
-      );
-    }
-  }
 
   // max size, if no size is set
   if (typeof pWidth === 'string' || (!width && !height)) {
@@ -127,6 +122,18 @@ const LazyImage = (props) => {
     ...pOptions,
   };
 
+  if (amp) {
+    return (
+      <amp-img
+        layout="responsive"
+        src={url(value.url, options)}
+        alt={value.caption}
+        width={options.width}
+        height={options.height}
+      />
+    );
+  }
+
   return (
     <Container
       className={className}
@@ -146,7 +153,7 @@ const LazyImage = (props) => {
       />
     </Container>
   );
-};
+});
 LazyImage.propTypes = {
   lazy: PropTypes.bool,
   ratio: PropTypes.number,
