@@ -66,8 +66,9 @@ const Logo = createComponent(
     (<Img
       className={className}
       value={children}
-      width="100%"
+      width={400}
       maxWidth={children.width}
+      maxHeight={160}
     />),
   p => Object.keys(p)
 );

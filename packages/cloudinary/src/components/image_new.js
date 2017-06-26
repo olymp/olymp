@@ -64,6 +64,15 @@ const LazyImage = (props) => {
   let height = typeof pWidth !== 'string' && pHeight;
   let ratio = pRatio;
 
+  if (typeof pWidth === 'string') {
+    console.warn('Use of percentage width is not recommended!');
+    if (maxHeight) {
+      console.error(
+        'Use of percentage width an maxHeight will not work! Use a fix width instead!'
+      );
+    }
+  }
+
   // max size, if no size is set
   if (typeof pWidth === 'string' || (!width && !height)) {
     if (oWidth >= oHeight) {
