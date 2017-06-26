@@ -13,7 +13,7 @@ const niceTime = (time) => {
 };
 
 const List = createComponent(
-  ({ theme }) => ({
+  () => ({
     width: '100%',
     display: 'block',
   }),
@@ -61,6 +61,8 @@ const Logo = createComponent(
   ({ theme }) => ({
     width: '100%',
     marginTop: theme.space2,
+    marginX: 'auto',
+    maxWidth: '100%',
   }),
   ({ children, className }) =>
     <Image className={className} value={children} width="100%" retina />,
@@ -93,7 +95,7 @@ export default createComponent(
       personen,
     },
   }) =>
-    (<div contentEditable={false}>
+    (<div>
       <Logo>{logo}</Logo>
 
       <div className={className}>
