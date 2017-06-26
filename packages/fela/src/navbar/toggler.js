@@ -1,53 +1,20 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children, cloneElement, Component } from 'react';
 import { createComponent } from 'react-fela';
-
-const Toggler = createComponent(
-  ({ hasLogo }) => ({
-    width: '100%',
-    ifMini: {
-      '> div': {
-        // display: 'none',
-        // clear: hasLogo && 'both',
-      },
-      onHover: {
-        '> div': {
-          display: 'block',
-        },
-      },
-      onAfter: {
-        content: '""',
-        clear: 'both',
-        display: 'block',
-        visibility: 'hidden',
-        height: 0,
-      },
-    },
-  }),
-  ({ className, children, ...props }) =>
-    (<div className={className}>
-      <Button {...props} />
-
-      {Children.map(children, child => cloneElement(child, props))}
-    </div>),
-  p => Object.keys(p)
-);
-export default Toggler;
 
 const Button = createComponent(
   ({ theme, open, inverse, size = 20 }) => ({
     float: 'right',
     padding: theme.space2,
     margin: theme.space3,
-    ifSmallUp: {
-      display: 'none',
-    },
-
     width: Math.round(size * 1.3),
     height: size,
     position: 'relative',
     transform: 'rotate(0deg)',
     transition: '.5s ease-in-out',
     cursor: 'pointer',
+    ifSmallUp: {
+      display: 'none',
+    },
     '> span': {
       display: 'block',
       position: 'absolute',
@@ -78,8 +45,8 @@ const Button = createComponent(
       },
     },
   }),
-  ({ className }) =>
-    (<div className={className}>
+  ({ className, onClick }) =>
+    (<div className={className} onClick={onClick}>
       <span />
       <span />
       <span />
@@ -88,10 +55,24 @@ const Button = createComponent(
   p => Object.keys(p)
 );
 
-/* class Toggler extends Component {
+class Toggler extends Component {
   state = { open: false };
 
   render() {
-    return
+    const { className, children, ...props } = this.props;
+    const { open } = this.state;
+
+    return (
+      <div className={className}>
+        <Button
+          {...props}
+          open={open}
+          onClick={() => this.setState({ open: !open })}
+        />
+
+        {open && Children.map(children, child => cloneElement(child, props))}
+      </div>
+    );
   }
-} */
+}
+export default Toggler;
