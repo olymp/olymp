@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
 import { createComponent, ContentLoaderStyles } from 'olymp-fela';
@@ -21,7 +21,7 @@ const url = (url, options) => {
 };
 
 const Container = createComponent(
-  ({ ratio, width, maxWidth, maxHeight, showLoading }) => ({
+  ({ ratio, width, maxWidth, maxHeight, visible }) => ({
     position: 'relative',
     width: width || '100%',
     overflow: 'hidden',
@@ -40,38 +40,46 @@ const Container = createComponent(
       right: 0,
       bottom: 0,
     },
-    ...(showLoading ? ContentLoaderStyles : {}),
+    ...(!visible ? ContentLoaderStyles : {}),
   }),
-  ({ lazy, ...p }) => (lazy ? <LazyLoad {...p} /> : <div {...p} />),
+  ({ lazy, onVisible, ...p }) =>
+    lazy ? <LazyLoad {...p} onContentVisible={onVisible} /> : <div {...p} />,
   ({ ratio, ...p }) => Object.keys(p)
 );
 
-const LazyImage = withAmp((props) => {
-  const {
-    className,
-    options: pOptions,
-    value,
-    lazy,
-    ratio: pRatio,
-    width: pWidth,
-    height: pHeight,
-    maxWidth,
-    maxHeight,
-    maxSize,
-    amp,
-    ...rest
-  } = props;
-  if (!value) {
-    return null;
-  }
-  const oWidth = (value.crop && value.crop[0]) || value.width;
-  const oHeight = (value.crop && value.crop[1]) || value.height;
-  let width = typeof pWidth !== 'string' && pWidth;
-  let height = typeof pWidth !== 'string' && pHeight;
-  let ratio = pRatio;
+@withAmp
+class LazyImage extends Component {
+  state = { visible: false };
 
-  // todo: <Img value={bild} options={{ c: 'pad' }} width={200} ratio={1} /> auch mit height=200 statt ratio=1 möglich!
-  /* <Image
+  render() {
+    const {
+      className,
+      options: pOptions,
+      value,
+      lazy,
+      ratio: pRatio,
+      width: pWidth,
+      height: pHeight,
+      maxWidth,
+      maxHeight,
+      maxSize,
+      amp,
+      ...rest
+    } = this.props;
+    const { visible } = this.state;
+
+    if (!value) {
+      return <div />;
+    }
+
+    const oWidth = (value.crop && value.crop[0]) || value.width;
+    const oHeight = (value.crop && value.crop[1]) || value.height;
+    let width = typeof pWidth !== 'string' && pWidth;
+    let height = typeof pWidth !== 'string' && pHeight;
+    let ratio = pRatio || oHeight / oWidth;
+
+    // todo: <Img value={bild} options={{ c: 'pad' }} width={200} ratio={1} /> auch mit height=200 statt ratio=1 möglich!
+    /* <Image
           value={bild}
           options={{ c: 'pad' }}
           maxSize={200}
@@ -80,80 +88,82 @@ const LazyImage = withAmp((props) => {
         /> optimieren!
         */
 
-  // max size, if no size is set
-  if (typeof pWidth === 'string' || (!width && !height)) {
-    if (oWidth >= oHeight) {
-      width = maxSize;
-    } else {
-      height = maxSize;
+    // max size, if no size is set
+    if (typeof pWidth === 'string' || (!width && !height)) {
+      if (oWidth >= oHeight) {
+        width = maxSize;
+      } else {
+        height = maxSize;
+      }
     }
-  }
 
-  if (ratio) {
-    if (height) {
+    if (ratio) {
+      if (height) {
+        width = height / ratio;
+      } else {
+        height = ratio * width;
+      }
+    } else if (oWidth >= oHeight && (!!width === !!height || width)) {
+      height = width / oWidth * oHeight;
+    } else {
+      width = height / oHeight * oWidth;
+    }
+    ratio = height / width;
+
+    // maxWidth/maxHeight
+    if (maxWidth && width > maxWidth) {
+      width = maxWidth;
+    }
+    if (maxHeight && height > maxHeight) {
+      height = maxHeight;
       width = height / ratio;
-    } else {
-      height = ratio * width;
     }
-  } else if (oWidth >= oHeight && (!!width === !!height || width)) {
-    height = width / oWidth * oHeight;
-  } else {
-    width = height / oHeight * oWidth;
-  }
-  ratio = height / width;
 
-  // maxWidth/maxHeight
-  if (width > maxWidth) {
-    width = maxWidth;
-  }
-  if (height > maxHeight) {
-    height = maxHeight;
-    width = height / ratio;
-  }
+    const options = {
+      w: Math.round(width),
+      h: Math.round(width * ratio),
+      c: 'fill',
+      f: 'auto',
+      q: 'auto:eco',
+      fl: 'lossy',
+      dpr: 2,
+      ...pOptions,
+    };
 
-  const options = {
-    w: Math.round(width),
-    h: Math.round(width * ratio),
-    c: 'fill',
-    f: 'auto',
-    q: 'auto:eco',
-    fl: 'lossy',
-    dpr: 2,
-    ...pOptions,
-  };
+    if (amp) {
+      return (
+        <amp-img
+          layout="responsive"
+          src={url(value.url, options)}
+          alt={value.caption}
+          width={width}
+          height={Math.round(width * ratio)}
+        />
+      );
+    }
 
-  if (amp) {
     return (
-      <amp-img
-        layout="responsive"
-        src={url(value.url, options)}
-        alt={value.caption}
-        width={width}
-        height={height}
-      />
+      <Container
+        className={className}
+        width={typeof pWidth === 'string' ? pWidth : width}
+        maxWidth={maxWidth}
+        maxHeight={maxHeight}
+        ratio={ratio}
+        lazy={lazy}
+        visible={visible}
+        onVisible={() => this.setState({ visible: true })}
+      >
+        <img
+          src={url(value.url, options)}
+          alt={value.caption}
+          width="100%"
+          height="auto"
+          {...rest}
+        />
+      </Container>
     );
   }
-
-  return (
-    <Container
-      className={className}
-      width={typeof pWidth === 'string' ? pWidth : width}
-      maxWidth={maxWidth}
-      maxHeight={maxHeight}
-      ratio={ratio}
-      lazy={lazy}
-      showLoading={value.format === 'jpg' || value.format === 'pdf'}
-    >
-      <img
-        src={url(value.url, options)}
-        alt={value.caption}
-        width="100%"
-        height="auto"
-        {...rest}
-      />
-    </Container>
-  );
-});
+}
 LazyImage.propTypes = {
   lazy: PropTypes.bool,
   ratio: PropTypes.number,
@@ -166,7 +176,7 @@ LazyImage.propTypes = {
     url: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
-  }).isRequired,
+  }),
   className: PropTypes.string,
   options: PropTypes.object,
 };
@@ -178,6 +188,7 @@ LazyImage.defaultProps = {
   maxWidth: undefined,
   maxHeight: undefined,
   maxSize: 400,
+  value: undefined,
   className: undefined,
   options: {},
 };
