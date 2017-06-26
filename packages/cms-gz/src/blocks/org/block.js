@@ -29,7 +29,7 @@ const Content = createComponent(
 
 const Peak = createComponent(
   ImageStyles,
-  ({ className, header, subheader, value, color }) =>
+  ({ className, header, subheader, value }) =>
     (<div className={className}>
       <div>
         <div>

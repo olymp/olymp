@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent, Grid } from 'olymp-fela';
-import { Image } from 'olymp-cloudinary';
+import { Img } from 'olymp-cloudinary';
 import { H2 } from '../../components';
 import Accordion from './accordion';
 import Person from './person';
@@ -59,13 +59,16 @@ const Text = createComponent(
 
 const Logo = createComponent(
   ({ theme }) => ({
-    width: '100%',
     marginTop: theme.space2,
     marginX: 'auto',
-    maxWidth: '100%',
   }),
   ({ children, className }) =>
-    <Image className={className} value={children} width="100%" retina />,
+    (<Img
+      className={className}
+      value={children}
+      width="100%"
+      maxWidth={children.width}
+    />),
   p => Object.keys(p)
 );
 
