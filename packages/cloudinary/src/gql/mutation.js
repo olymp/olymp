@@ -31,8 +31,8 @@ const ok = (item, mutate) => {
 
 export default graphql(
   gql`
-  mutation file($id: String, $input: FileInput, $operationType: OPERATION_TYPE) {
-    item: file(id: $id, input: $input, operationType: $operationType) {
+  mutation file($id: String, $input: FileInput, $operationType: MUTATION_TYPE) {
+    item: file(id: $id, input: $input, type: $operationType) {
       id format version resourceType type createdAt height width bytes tags url caption source removed pages colors
     }
   }
