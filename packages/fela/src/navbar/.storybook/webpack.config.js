@@ -1,11 +1,15 @@
 const path = require('path');
 const fs = require('fs');
 const appRoot = process.cwd();
-const olympRoot = path.resolve(__dirname, '..', '..', '..', '..');
+const olympRoot = path.resolve(__dirname, '..', '..', '..', '..', '..');
 
 module.exports = function (storybookBaseConfig, configType) {
-  if (!storybookBaseConfig.resolve.modules) { storybookBaseConfig.resolve.modules = []; }
-  if (!storybookBaseConfig.resolve.alias) { storybookBaseConfig.resolve.alias = {}; }
+  if (!storybookBaseConfig.resolve.modules) {
+    storybookBaseConfig.resolve.modules = [];
+  }
+  if (!storybookBaseConfig.resolve.alias) {
+    storybookBaseConfig.resolve.alias = {};
+  }
   storybookBaseConfig.resolve.modules.push(
     path.resolve(olympRoot, 'node_modules')
   );
@@ -13,7 +17,7 @@ module.exports = function (storybookBaseConfig, configType) {
     path.resolve(appRoot, 'node_modules')
   );
   storybookBaseConfig.resolve.alias.olymp = olympRoot;
-  fs.readdirSync(path.resolve(olympRoot, 'src')).reduce((obj, item) => {
+  fs.readdirSync(path.resolve(olympRoot, 'packages')).reduce((obj, item) => {
     // get all folders in src and create 'olymp-xxx' alias
     storybookBaseConfig.resolve.alias[`olymp-${item}`] = path.resolve(
       olympRoot,

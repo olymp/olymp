@@ -1,4 +1,5 @@
 import React, { Children, cloneElement, Component } from 'react';
+import { withRouter } from 'olymp';
 import { createComponent } from 'react-fela';
 
 const Button = createComponent(
@@ -55,19 +56,29 @@ const Button = createComponent(
   p => Object.keys(p)
 );
 
+@withRouter
 class Toggler extends Component {
-  state = { open: false };
-
   render() {
-    const { className, children, ...props } = this.props;
-    const { open } = this.state;
+    const {
+      className,
+      children,
+      router,
+      pathname,
+      query,
+      ...props
+    } = this.props;
+    const open = query.nav === null;
 
     return (
       <div className={className}>
         <Button
           {...props}
           open={open}
-          onClick={() => this.setState({ open: !open })}
+          onClick={() =>
+            router.push({
+              pathname,
+              query: { ...query, nav: !open ? null : undefined },
+            })}
         />
 
         {open && Children.map(children, child => cloneElement(child, props))}
