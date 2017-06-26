@@ -16,13 +16,12 @@ class Content extends Component {
       location,
       router,
       editor,
-      ...rest
     } = this.props;
     const path = pathname.split('/').filter(p => p);
 
     return (
       <Container>
-        <h1 {...rest}>{children}</h1>
+        <h1>{children}</h1>
         <p
           contentEditable={!editor || editor.props.readOnly ? undefined : false}
         >
