@@ -3,21 +3,22 @@ import { IFrame, ContentLoader } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { Helmet } from 'olymp';
 
-const renderHelmet = ({ name, description, tags }) => (
-  <Helmet
-    title={name}
-    meta={[
-      {
-        name: 'description',
-        content: description,
-      },
-      {
-        name: 'keywords',
-        content: tags ? tags.join(',') : undefined,
-      },
-    ]}
-  />
-  );
+const renderHelmet = ({ name, description, tags }) => {
+  const meta = [];
+  if (description) {
+    meta.push({
+      name: 'description',
+      content: description,
+    });
+  }
+  if (tags) {
+    meta.push({
+      name: 'keywords',
+      content: tags ? tags.join(',') : undefined,
+    });
+  }
+  return <Helmet title={name} meta={meta} />;
+};
 export const EditablePageRoute = (props) => {
   const { Wrapped, flatNavigation, query, pathname, loading } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
@@ -71,7 +72,7 @@ export const PageRoute = (props) => {
 
   return (
     <Wrapped {...props} match={match}>
-      {renderHelmet(match)}
+      {renderHelmet(match || {})}
       <ContentLoader isLoading={loading}>
         {match
           ? <Page.WithData
