@@ -9,6 +9,7 @@ const navItemStyles = ({ theme, inverse }) => ({
   fontFamily: theme.fontFamily,
   textDecoration: 'none',
   ellipsis: true,
+  cursor: 'default',
 });
 
 export const Link = createComponent(
