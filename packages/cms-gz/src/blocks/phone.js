@@ -1,11 +1,12 @@
 import React from 'react';
 import { createComponent, Container } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
-import { H1 } from '../components';
+import { H1, Logo } from '../components';
 
 const StyledLink = createComponent(
-  ({ color }) => ({
-    color,
+  ({ theme }) => ({
+    color: theme.dark,
+    marginLeft: 20,
   }),
   p => <Link {...p} />,
   p => Object.keys(p)
@@ -20,7 +21,8 @@ const MarginContainer = createComponent(
 );
 
 const Entry = createComponent(
-  ({ theme }) => ({
+  ({ theme, color }) => ({
+    position: 'relative',
     width: '100%',
     borderRadius: theme.borderRadius,
     paddingX: theme.space3,
@@ -30,6 +32,9 @@ const Entry = createComponent(
     },
     onHover: {
       backgroundColor: theme.dark5,
+      '> a': {
+        color,
+      },
     },
   }),
   ({ className, children, number }) =>
@@ -91,8 +96,9 @@ const component = graphql(
     <H1>Telefonnummern</H1>
     <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
     {items.map(item =>
-      (<Entry number={item.telefon} key={item.id}>
-        <StyledLink to={item.slug} color={item.farbe}>
+      (<Entry number={item.telefon} key={item.id} color={item.farbe}>
+        <Logo color={item.farbe} icon={16} />
+        <StyledLink to={item.slug}>
           {item.title || item.name}
         </StyledLink>
       </Entry>)
