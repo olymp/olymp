@@ -1,6 +1,15 @@
 import React from 'react';
 import { createComponent, Container } from 'olymp-fela';
+import { graphql, gql, Link } from 'olymp';
 import { H1 } from '../components';
+
+const StyledLink = createComponent(
+  ({ color }) => ({
+    color,
+  }),
+  p => <Link {...p} />,
+  p => Object.keys(p)
+);
 
 const MarginContainer = createComponent(
   ({ theme }) => ({
@@ -57,29 +66,47 @@ const Text = createComponent(
   p => Object.keys(p)
 );
 
+const component = graphql(
+  gql`
+  query einrichtungList {
+    items: einrichtungList {
+      id
+      name
+      farbe
+      title
+      telefon
+      slug
+    }
+  }
+`,
+  {
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      data,
+      items: data.items || [],
+    }),
+  }
+)(({ attributes, children, items }) =>
+  (<MarginContainer>
+    <H1>Telefonnummern</H1>
+    <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
+    {items.map(item =>
+      (<Entry number={item.telefon} key={item.id}>
+        <StyledLink to={item.slug} color={item.farbe}>
+          {item.title || item.name}
+        </StyledLink>
+      </Entry>)
+    )}
+    <Text {...attributes}>
+      {children}
+    </Text>
+  </MarginContainer>)
+);
+
 export default {
   key: 'GZK.Collections.PhoneBlock',
   label: 'Telefon',
   category: 'Collections',
   editable: true,
-  component: ({ attributes, children }) =>
-    (<MarginContainer>
-      <H1>Telefonnummern</H1>
-      <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
-      <Entry number="06195 6772 200">
-        <a href="#">Privatpraxis für HNO-Heilkunde</a>
-      </Entry>
-      <Entry number="06195 6772 200">
-        <a href="#">Privatpraxis für HNO-Heilkunde</a>
-      </Entry>
-      <Entry number="06195 6772 200">
-        <a href="#">Privatpraxis für HNO-Heilkunde</a>
-      </Entry>
-      <Entry number="06195 6772 200">
-        <a href="#">Privatpraxis für HNO-Heilkunde</a>
-      </Entry>
-      <Text {...attributes}>
-        {children}
-      </Text>
-    </MarginContainer>),
+  component,
 };

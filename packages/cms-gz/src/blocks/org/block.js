@@ -77,6 +77,7 @@ const componentWithData = graphql(
   gql`
   query einrichtung($id: String) {
     item: einrichtung(id: $id) {
+      id
       name
       title
       art
