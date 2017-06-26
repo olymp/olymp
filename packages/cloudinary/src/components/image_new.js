@@ -23,6 +23,7 @@ const Container = createComponent(
   ({ ratio, width, maxWidth, maxHeight }) => ({
     position: 'relative',
     width: width || '100%',
+    overflow: 'hidden',
     maxWidth: maxWidth || '100%',
     maxHeight: maxHeight || 'auto',
     onBefore: {
@@ -67,8 +68,8 @@ const LazyImage = (props) => {
   if (typeof pWidth === 'string') {
     console.warn('Use of percentage width is not recommended!');
     if (maxHeight) {
-      console.error(
-        'Use of percentage width an maxHeight will not work! Use a fix width instead!'
+      console.warn(
+        'Use of percentage width an maxHeight will not work correctly! Use a fix width instead!'
       );
     }
   }

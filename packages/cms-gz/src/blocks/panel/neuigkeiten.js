@@ -4,6 +4,7 @@ import { Panel, Li } from '../../components';
 import Carousel from './carousel';
 
 export default {
+  key: 'GZK.Panel.Neuigkeiten',
   label: 'Neuigkeiten, Einrichtungen',
   category: 'Panel',
   editable: false,

@@ -4,7 +4,8 @@ import { Panel, Li } from '../../components';
 import Carousel from './carousel';
 
 export default {
-  label: 'Veranstaltungen, Magazin',
+  key: 'GZK.Panel.Magazin',
+  label: 'Magazin, Veranstaltungen',
   category: 'Panel',
   editable: false,
   component: ({ className, attributes }) =>

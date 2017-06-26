@@ -3,6 +3,7 @@ import { Panel } from '../../components';
 import Container from './container';
 
 export default {
+  key: 'GZK.Panel.Vorsorge',
   label: 'Vorsorge, Medizin, Video',
   category: 'Panel',
   editable: false,
