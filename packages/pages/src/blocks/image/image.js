@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ImageEdit } from 'olymp-cloudinary';
+import { Image, SimpleImageEdit } from 'olymp-cloudinary';
 
 export default {
   key: 'Pages.Media.ImageBlock.Image',
@@ -15,7 +15,7 @@ export default {
   actions: [
     {
       component: ({ setData, getData, ...p }) =>
-        (<ImageEdit
+        (<SimpleImageEdit
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', {})}

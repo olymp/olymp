@@ -80,7 +80,6 @@ const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
           type="color"
           style={{ width: 100 }}
           placeholder={name}
-          addonBefore={<FaMagic size={13} color="#383838" />}
           value={tinycolor(value).toHexString()}
           defaultValue={tinycolor(value).toHexString()}
           onChange={onChange}

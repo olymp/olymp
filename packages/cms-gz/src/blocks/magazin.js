@@ -1,6 +1,7 @@
 import React from 'react';
 import { createComponent, Container, Grid, border } from 'olymp-fela';
 import { H2, Panel } from '../components';
+import { graphql, gql, Link } from 'olymp';
 
 const Image = createComponent(
   ({ theme }) => ({
@@ -42,46 +43,66 @@ const Tag = createComponent(
   p => Object.keys(p)
 );
 
+const component = graphql(
+  gql`
+  query artikelList {
+    items: artikelList {
+      id
+      name
+      farbe
+      extrakt
+      slug
+      bild { width height url crop }
+    }
+  }
+`,
+  {
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      data,
+      items: data.items || [],
+    }),
+  }
+)(({ attributes, items, getData, ...props }) =>
+  (<Container {...attributes}>
+    <Grid>
+      <Grid.Item medium={8}>
+        {items.map(item =>
+          (<Panel
+            accent={item.farbe}
+            key={item.id}
+            title={item.name}
+            bordered="Der hallux rigidus"
+          >
+            <Image value={item.bild} />
+            <p>
+              {item.extrakt}
+            </p>
+            <Link to={item.slug}>Weiterlesen...</Link>
+          </Panel>)
+        )}
+      </Grid.Item>
+      <Grid.Item medium={4} paddingMini="0.5rem 1rem" paddingMedium="0 1rem">
+        <H2>Ausgaben als PDFs</H2>
+        <ul>
+          <Li>Gesund im Zentrum - <b>Sport</b></Li>
+          <Li>Gesund im Zentrum - <b>Gesundheit</b></Li>
+          <Li>Gesund im Zentrum - <b>Fitness</b></Li>
+        </ul>
+
+        <H2>Schlagworte</H2>
+        <Tag>Sport</Tag>
+        <Tag>Gesundheit</Tag>
+        <Tag>Fitness</Tag>
+      </Grid.Item>
+    </Grid>
+  </Container>)
+);
+
 export default {
   key: 'GZK.Collections.MagazinBlock',
   label: 'Magazin',
   category: 'Collections',
   editable: false,
-  component: ({ attributes, getData, ...props }) =>
-    (<Container {...attributes}>
-      <Grid>
-        <Grid.Item medium={8}>
-          <Panel
-            title="Der hallux rigidus - Ein typisches Männerproblem"
-            bordered="Der hallux rigidus"
-          >
-            <Image url="https://res.cloudinary.com/djyenzorc/image/upload/x_312,y_438,w_5890,h_3337,c_crop/f_auto,q_auto,fl_lossy/v1478466042/bkgzpJatL_wqz5on.jpg" />
-            <p>
-              Beim Hallux rigidus handelt es sich um eine fortschreitende
-              Arthrose im Großzehengrundgelenk. Diese geht mit einer
-              Bewegungseinschränkung einher, um nach vielen Jahren in einer
-              Steifheit zu enden (rigidus=steif). Männer sind sehr viel häufiger
-              betroffen als Frauen. Bei Frauen bildet sich dafür öfter ein
-              Hallux valgus, eine Abweichung der Großzehe zur Außenseite, was
-              dann aber auch zur Ausbildung einer sog. sekundären Arthrose
-              führen kann.
-            </p>
-            <a href="/">Weiterlesen...</a>
-          </Panel>
-        </Grid.Item>
-        <Grid.Item medium={4} paddingMini="0.5rem 1rem" paddingMedium="0 1rem">
-          <H2>Ausgaben als PDFs</H2>
-          <ul>
-            <Li>Gesund im Zentrum - <b>Sport</b></Li>
-            <Li>Gesund im Zentrum - <b>Gesundheit</b></Li>
-            <Li>Gesund im Zentrum - <b>Fitness</b></Li>
-          </ul>
-
-          <H2>Schlagworte</H2>
-          <Tag>Sport</Tag>
-          <Tag>Gesundheit</Tag>
-          <Tag>Fitness</Tag>
-        </Grid.Item>
-      </Grid>
-    </Container>),
+  component,
 };
