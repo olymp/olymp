@@ -68,11 +68,13 @@ const component = graphql(
       <Grid.Item medium={8}>
         {items.map(item =>
           (<Panel accent={item.farbe} key={item.id} title={item.name}>
-            <Image value={item.bild} width={250} />
-            <p>
-              {item.extrakt}
-            </p>
-            <Link to={item.slug}>Weiterlesen...</Link>
+            <Image value={item.bild} width={200} ratio={1} />
+            <div>
+              <p>
+                {item.extrakt}
+              </p>
+              <Link to={item.slug}>Weiterlesen...</Link>
+            </div>
           </Panel>)
         )}
       </Grid.Item>
