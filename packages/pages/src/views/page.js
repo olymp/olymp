@@ -6,7 +6,7 @@ import { mapProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 
 const Page = withBlockTypes(props =>
-  (<ContentLoader height={200} isLoading={props.isLoading}>
+  (<ContentLoader isLoading={props.isLoading}>
     <SlateMate {...props} showUndo key={props.id + (props.bindingId || '')} />
   </ContentLoader>)
 );

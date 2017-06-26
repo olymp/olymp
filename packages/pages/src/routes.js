@@ -3,39 +3,43 @@ import { IFrame, ContentLoader } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 
 export const EditablePageRoute = (props) => {
-  const { Wrapped, flatNavigation, query, pathname } = props;
+  const { Wrapped, flatNavigation, query, pathname, loading } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   const deviceWidth = query['@deviceWidth'];
 
   if (!match) {
     return (
-      <EditablePage
-        {...props}
-        deviceWidth={deviceWidth}
-        render={match =>
-          (<IFrame disabled={!deviceWidth}>
-            <Wrapped {...props}>
-              <Error404 />
-            </Wrapped>
-          </IFrame>)}
-      />
+      <ContentLoader isLoading={loading}>
+        <EditablePage
+          {...props}
+          deviceWidth={deviceWidth}
+          render={match =>
+            (<IFrame disabled={!deviceWidth}>
+              <Wrapped {...props}>
+                <Error404 />
+              </Wrapped>
+            </IFrame>)}
+        />
+      </ContentLoader>
     );
   }
   return (
-    <EditablePage
-      {...props}
-      deviceWidth={deviceWidth}
-      id={pageId || aliasId || id}
-      bindingId={bindingId}
-      binding={binding}
-      render={children =>
-        (<IFrame disabled={!deviceWidth}>
-          <Wrapped {...props} match={match}>
-            {children}
-          </Wrapped>
-        </IFrame>)}
-    />
+    <ContentLoader isLoading={loading}>
+      <EditablePage
+        {...props}
+        deviceWidth={deviceWidth}
+        id={pageId || aliasId || id}
+        bindingId={bindingId}
+        binding={binding}
+        render={children =>
+          (<IFrame disabled={!deviceWidth}>
+            <Wrapped {...props} match={match}>
+              {children}
+            </Wrapped>
+          </IFrame>)}
+      />
+    </ContentLoader>
   );
 };
 
@@ -45,8 +49,8 @@ export const PageRoute = (props) => {
   const { id, binding, pageId, aliasId, bindingId } = match || {};
 
   return (
-    <ContentLoader height={200} isLoading={loading}>
-      <Wrapped {...props} match={match}>
+    <Wrapped {...props} match={match}>
+      <ContentLoader isLoading={loading}>
         {match
           ? <Page.WithData
             {...props}
@@ -55,7 +59,7 @@ export const PageRoute = (props) => {
             binding={binding}
           />
           : <Error404 />}
-      </Wrapped>
-    </ContentLoader>
+      </ContentLoader>
+    </Wrapped>
   );
 };
