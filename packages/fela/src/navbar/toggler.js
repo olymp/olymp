@@ -6,8 +6,8 @@ const Toggler = createComponent(
     width: '100%',
     ifMini: {
       '> div': {
-        display: 'none',
-        clear: hasLogo && 'both',
+        // display: 'none',
+        // clear: hasLogo && 'both',
       },
       onHover: {
         '> div': {
@@ -25,7 +25,7 @@ const Toggler = createComponent(
   }),
   ({ className, children, ...props }) =>
     (<div className={className}>
-      <Button {...props} open />
+      <Button {...props} />
 
       {Children.map(children, child => cloneElement(child, props))}
     </div>),
@@ -37,7 +37,7 @@ const Button = createComponent(
   ({ theme, open, inverse, size = 20 }) => ({
     float: 'right',
     padding: theme.space2,
-    margin: theme.space1,
+    margin: theme.space3,
     ifSmallUp: {
       display: 'none',
     },
@@ -87,3 +87,11 @@ const Button = createComponent(
     </div>),
   p => Object.keys(p)
 );
+
+/* class Toggler extends Component {
+  state = { open: false };
+
+  render() {
+    return
+  }
+} */
