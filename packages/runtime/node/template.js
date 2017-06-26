@@ -1,7 +1,7 @@
 /* eslint-disable prefer-template, max-len */
 import serialize from 'serialize-javascript';
 
-const replaceInline = str => str.replace(/style="([^"]*)"/, '');
+const replaceInline = str => str.replace(/style="([^"]*)"/g, '');
 export const amp = ({ helmet, cssMarkup, root }) => `
   <!DOCTYPE html>
   <html amp lang="de">
