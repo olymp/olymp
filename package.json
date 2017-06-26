@@ -1,5 +1,5 @@
 {
-  "version": "15.1.5",
+  "version": "15.1.6",
   "name": "olymp",
   "description": "",
   "main": "./packages/core",
@@ -131,7 +131,7 @@
     "react-sortable-hoc": "^0.6.3",
     "react-svg-loader": "^1.1.1",
     "recompose": "^0.23.5",
-    "redux": "^3.7.0",
+    "redux": "^3.7.1",
     "reload-server-webpack-plugin": "^1.0.1",
     "remark": "^7.0.1",
     "rimraf": "^2.6.1",

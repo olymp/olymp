@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
+import { withAmp } from 'olymp';
 import { createComponent, withPulse } from 'olymp-fela';
 import { url } from '../utils';
 
@@ -19,13 +20,15 @@ const Loader = createComponent(
   ({ lazy, ...p }) => Object.keys(p)
 );
 
-const Img = createComponent(
-  ({ width }) => ({
-    width: width || '100%',
-    display: 'block',
-  }),
-  'img',
-  ({ lazy, ...p }) => Object.keys(p)
+const Img = withAmp(
+  createComponent(
+    ({ width }) => ({
+      width: width || '100%',
+      display: 'block',
+    }),
+    ({ amp, ...rest }) => (amp ? <amp-img {...rest} /> : <img {...rest} />),
+    ({ lazy, ...p }) => Object.keys(p)
+  )
 );
 
 const Background = withPulse(

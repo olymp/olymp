@@ -15,14 +15,16 @@ class Content extends Component {
       dispatch,
       location,
       router,
+      editor,
       ...rest
     } = this.props;
     const path = pathname.split('/').filter(p => p);
 
+    console.log(this.props);
     return (
       <Container>
         <h1 {...rest}>{children}</h1>
-        <p contentEditable={false}>
+        <p contentEditable={editor.props.readOnly ? undefined : false}>
           {subheader || `Startseite ${path.map(p => `/ ${capitalize(p)}`)}`}
         </p>
       </Container>
@@ -30,35 +32,30 @@ class Content extends Component {
   }
 }
 
-const Header = createComponent(
-  ({ theme, color }) => ({
-    width: '100%',
-    backgroundColor: color || '#71636a',
-    color: theme.light,
-    borderBottomRightRadius: 60,
-    paddingX: theme.space3,
-    paddingY: '1.33rem',
-    '> div': {
-      '> h1': {
-        color: theme.light,
-        lineHeight: 'initial',
-      },
-    },
-  }),
-  ({ className, children, ...rest }) =>
-    (<div className={className}>
-      <Content {...rest}>{children}</Content>
-    </div>),
-  p => Object.keys(p)
-);
-
 export default {
   key: 'GZK.Header.Header',
   label: 'Überschrift',
   category: 'Kopfleiste',
   editable: true,
-  component: ({ attributes, children, subheader, color }) =>
-    (<Header {...attributes} subheader={subheader} color={color}>
-      {children}
-    </Header>),
+  component: createComponent(
+    ({ theme, color }) => ({
+      width: '100%',
+      backgroundColor: color || '#71636a',
+      color: theme.light,
+      borderBottomRightRadius: 60,
+      paddingX: theme.space3,
+      paddingY: '1.33rem',
+      '> div': {
+        '> h1': {
+          color: theme.light,
+          lineHeight: 'initial',
+        },
+      },
+    }),
+    ({ className, attributes, ...rest }) =>
+      (<div className={className} {...attributes}>
+        <Content {...rest} />
+      </div>),
+    p => Object.keys(p)
+  ),
 };
