@@ -63,6 +63,7 @@ export const withNavigation = (Wrapped) => {
             }, Wrapped);
         }
         const Comp = NavCache[key];
+
         return Comp ? <Comp {...this.props} /> : <Wrapped {...this.props} />;
       }
     }
@@ -76,6 +77,7 @@ export const withNavigation = (Wrapped) => {
       const { data } = this.props;
       const items = (data && data.items) || [];
       const flatNavigation = [];
+      let loading = true;
       const navigation = unflatten(items, {
         pathProp: 'pathname',
         sort: (children, parent) => {
@@ -83,6 +85,7 @@ export const withNavigation = (Wrapped) => {
           children = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
+              loading = loading && data.loading;
               (data.items || []).forEach((item) => {
                 const slug = child.slug
                   ? interpolate(child.slug, item)
@@ -127,14 +130,17 @@ export const withNavigation = (Wrapped) => {
         setPath: (current, { slug, ...rest }) => {
           const pathname = `${current || ''}${slug || ''}`.replace('//', '/');
           flatNavigation.push({ ...rest, slug, pathname });
+
           return pathname;
         },
       });
+
       return (
         <Wrapped
           {...this.props}
-          navigation={navigation}
-          flatNavigation={flatNavigation}
+          loading={loading}
+          navigation={!loading ? navigation : []}
+          flatNavigation={!loading ? flatNavigation : []}
         />
       );
     }
@@ -161,8 +167,9 @@ export const DataRoute = ({ binding, component, ...rest }) => {
   }
   return createElement(cache[key], rest);
 };
+
 // Helper for DataRoute, actual decorator
-export const withData = (Wrapped, { type, fields, render }) =>
+export const withData = (Wrapped, { type, fields }) =>
   graphql(
     gql`
     query ${type || 'page'}($id: String) {

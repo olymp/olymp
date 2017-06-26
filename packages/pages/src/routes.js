@@ -1,5 +1,5 @@
 import React from 'react';
-import { IFrame } from 'olymp-fela';
+import { IFrame, ContentLoader } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 
 export const EditablePageRoute = (props) => {
@@ -40,20 +40,22 @@ export const EditablePageRoute = (props) => {
 };
 
 export const PageRoute = (props) => {
-  const { Wrapped, flatNavigation, pathname } = props;
+  const { Wrapped, flatNavigation, pathname, loading } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
 
   return (
-    <Wrapped {...props} match={match}>
-      {match
-        ? <Page.WithData
-          {...props}
-          id={pageId || aliasId || id}
-          bindingId={bindingId}
-          binding={binding}
-        />
-        : <Error404 />}
-    </Wrapped>
+    <ContentLoader height={200} isLoading={loading}>
+      <Wrapped {...props} match={match}>
+        {match
+          ? <Page.WithData
+            {...props}
+            id={pageId || aliasId || id}
+            bindingId={bindingId}
+            binding={binding}
+          />
+          : <Error404 />}
+      </Wrapped>
+    </ContentLoader>
   );
 };
