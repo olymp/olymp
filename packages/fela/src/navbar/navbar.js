@@ -90,12 +90,14 @@ export default Navbar;
 
 const Brand = createComponent(
   ({ theme, vertically, inverse }) => ({
-    float: `${vertically ? 'none' : 'left'} !important`,
-    width: 'auto !important',
+    // TODO important float: `${vertically ? 'none' : 'left'} !important`,
+    float: vertically ? 'none' : 'left',
+    // TODO important width: 'auto !important',
+    width: 'auto',
     color: inverse ? theme.light : theme.dark,
-    // borderRight: inverse && !vertically && border(theme, theme.dark4),
     fontSize: `calc(${theme.fontSize} + 4px)`,
-    flex: 'none !important',
+    // TODO important flex: 'none !important',
+    flex: 'none',
     '> a': {
       paddingY: `calc(${theme.space3} - 2px)`,
     },

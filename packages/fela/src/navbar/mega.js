@@ -75,8 +75,10 @@ const Title = createComponent(
     display: 'block',
     fontWeight: 'bold',
     marginBottom: theme.space3,
-    padding: `${theme.space0} !important`,
-    color: `${inverse ? theme.light : theme.dark} !important`,
+    // TODO important padding: `${theme.space0} !important`,
+    padding: theme.space0,
+    // TODO important color: `${inverse ? theme.light : theme.dark} !important`,
+    color: inverse ? theme.light : theme.dark,
   }),
   ({ pathname, ...p }) =>
     pathname ? <Link to={pathname} {...p} /> : <Placeholder {...p} />,
