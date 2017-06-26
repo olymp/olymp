@@ -128,8 +128,8 @@ const LazyImage = withAmp((props) => {
         layout="responsive"
         src={url(value.url, options)}
         alt={value.caption}
-        width={options.width}
-        height={options.height}
+        width={width}
+        height={height}
       />
     );
   }
