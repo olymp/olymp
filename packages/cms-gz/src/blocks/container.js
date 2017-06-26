@@ -3,7 +3,7 @@ import { border } from 'olymp-fela';
 
 export default {
   ...Blocks.ContainerBlock,
-  key: 'GZK.Template.ContainerBlock',
+  // key: 'GZK.Template.ContainerBlock',
   label: 'Container',
   category: 'Template',
   styles: ({ theme, color = theme.color }) => ({

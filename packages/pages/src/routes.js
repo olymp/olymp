@@ -7,6 +7,7 @@ export const EditablePageRoute = (props) => {
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   const deviceWidth = query['@deviceWidth'];
+
   if (!match) {
     return (
       <EditablePage
@@ -42,6 +43,7 @@ export const PageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
+
   return (
     <Wrapped {...props} match={match}>
       {match

@@ -9,6 +9,7 @@ class Content extends Component {
     const {
       pathname,
       children,
+      subheader,
       query,
       search,
       dispatch,
@@ -21,20 +22,20 @@ class Content extends Component {
     return (
       <Container>
         <h1 {...rest}>{children}</h1>
-        <span contentEditable={false}>
-          Startseite {path.map(p => `/ ${capitalize(p)}`)}
-        </span>
+        <p contentEditable={false}>
+          {subheader || `Startseite ${path.map(p => `/ ${capitalize(p)}`)}`}
+        </p>
       </Container>
     );
   }
 }
 
 const Header = createComponent(
-  ({ theme }) => ({
+  ({ theme, color }) => ({
     width: '100%',
-    backgroundColor: '#71636a',
+    backgroundColor: color || '#71636a',
     color: theme.light,
-    borderBottomRightRadius: 75,
+    borderBottomRightRadius: 60,
     paddingX: theme.space3,
     paddingY: '1.33rem',
     '> div': {
@@ -56,8 +57,8 @@ export default {
   label: 'Überschrift',
   category: 'Kopfleiste',
   editable: true,
-  component: ({ attributes, children }) =>
-    (<Header {...attributes}>
+  component: ({ attributes, children, subheader, color }) =>
+    (<Header {...attributes} subheader={subheader} color={color}>
       {children}
     </Header>),
 };

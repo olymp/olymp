@@ -1,27 +1,65 @@
 import React from 'react';
-import { createComponent, Container, Grid } from 'olymp-fela';
+import { graphql, gql } from 'olymp';
+import { createComponent, Grid, withColor } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
-import { graphql, gql } from 'olymp';
+import { SlateMate, withBlockTypes } from 'olymp-slate';
 import VCard from './vcard';
 import { ImageStyles } from '../image';
-import { withColor } from 'olymp-fela';
-import { SlateMate, withBlockTypes } from 'olymp-slate';
+import HeaderBlock from '../header';
+import ContainerBlock from '../container';
 
 const Label = Blocks.ImageBlockLabel.component;
-
+const Header = HeaderBlock.component;
+const Container = createComponent(
+  ContainerBlock.styles,
+  ContainerBlock.component,
+  p => Object.keys(p)
+);
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
+
+const Content = createComponent(
+  ({ theme }) => ({
+    width: '100%',
+    paddingX: theme.space3,
+  }),
+  p => <Grid.Item medium={7} {...p} />,
+  p => Object.keys(p)
+);
+
+const Peak = createComponent(
+  ImageStyles,
+  ({ className, header, subheader, value, color }) =>
+    (<div className={className} contentEditable={false}>
+      <div>
+        <div>
+          <Image value={value} width="100%" />
+        </div>
+      </div>
+      {(header || subheader) &&
+        <Label>
+          <h1>{header}</h1>
+          <p>{subheader}</p>
+        </Label>}
+    </div>),
+  p => Object.keys(p)
+);
+
 const component = withColor(
   ({ item }) => item.farbe
 )(({ className, attributes, item }) =>
   (<div>
-    <Peak
-      value={item.image}
-      header={item.slogan}
-      subheader={item.willkommen}
-      color={item.farbe}
-    />
-    <Container className={className} {...attributes}>
+    {item.image
+      ? <Peak
+        value={item.image}
+        header={item.slogan}
+        subheader={item.willkommen}
+        color={item.farbe}
+      />
+      : <Header subheader={item.willkommen} color={item.farbe}>
+        {item.slogan}
+      </Header>}
+    <Container className={className} color={item.farbe} {...attributes}>
       <Grid>
         <Grid.Item medium={5}>
           <VCard org={item} />
@@ -86,7 +124,7 @@ const componentWithData = graphql(
   }
 `,
   {
-    options: ({ id, editor }) => ({
+    options: ({ editor }) => ({
       variables: {
         id: editor.props.bindingId || 'BJuOod57-',
       },
@@ -99,48 +137,10 @@ const componentWithData = graphql(
   }
 )(component);
 
-const Content = createComponent(
-  ({ theme }) => ({
-    width: '100%',
-    paddingX: theme.space3,
-  }),
-  p => <Grid.Item medium={7} {...p} />,
-  p => Object.keys(p)
-);
-
-const Peak = createComponent(
-  ImageStyles,
-  ({ className, header, subheader, ...rest }) =>
-    (<div className={className} contentEditable={false}>
-      <div>
-        <div>
-          <Image {...rest} width="100%" />
-        </div>
-      </div>
-      {(header || subheader) &&
-        <Label>
-          <h1>{header}</h1>
-          <p>{subheader}</p>
-        </Label>}
-    </div>),
-  p => Object.keys(p)
-);
-
 export default {
   key: 'GZK.Collections.OrgBlock',
   label: 'Einrichtung',
   category: 'Collections',
   editable: false,
   component: componentWithData,
-  /* styles: ({ theme }) => ({
-    '& h1': {
-      color: 'white',
-      '> span': {
-        backgroundColor: org.farbe,
-      },
-    },
-    '& a': {
-      color: org.farbe,
-    },
-  }),*/
 };
