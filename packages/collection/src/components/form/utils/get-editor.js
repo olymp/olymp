@@ -6,6 +6,7 @@ import {
   DateRangeEditor,
   DetailEditor,
   TimeRangeEditor,
+  TimeRangesEditor,
   TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
@@ -68,6 +69,9 @@ export default ({
     return <DetailEditor {...editProps} typeName={idField.type.name} />;
   }
   if (type.kind === 'LIST') {
+    if (type.ofType.name === 'TimeRange') {
+      return <TimeRangesEditor {...editProps} />;
+    }
     if (type.ofType.name === 'String') {
       if (name === 'tags') {
         return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;

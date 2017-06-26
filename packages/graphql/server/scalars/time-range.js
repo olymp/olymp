@@ -8,6 +8,8 @@ const timeRange = {
   serialize: value => value,
   parseLiteral: (ast) => {
     switch (ast.kind) {
+      case Kind.INT:
+        return ast.value;
       case Kind.STRING:
         return ast.value;
       case Kind.LIST:

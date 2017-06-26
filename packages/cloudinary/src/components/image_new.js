@@ -59,6 +59,7 @@ const LazyImage = (props) => {
     maxSize,
     ...rest
   } = props;
+  if (!value) { return null; }
   const oWidth = (value.crop && value.crop[0]) || value.width;
   const oHeight = (value.crop && value.crop[1]) || value.height;
   let width = typeof pWidth !== 'string' && pWidth;

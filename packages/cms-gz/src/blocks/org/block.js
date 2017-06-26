@@ -90,7 +90,7 @@ const componentWithData = graphql(
 
       etage
       freifeld
-      zeiten
+      openings
       eMail
       fax
       telefon

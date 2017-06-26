@@ -4,12 +4,13 @@ import { Img } from 'olymp-cloudinary';
 import { H2 } from '../../components';
 import Accordion from './accordion';
 import Person from './person';
+import moment from 'moment';
 
-const niceTime = (time) => {
-  if (!time) {
+const niceTime = (times) => {
+  if (times.length === 0) {
     return 'Geschlossen';
   }
-  return `${time.replace(/-/g, ' - ').replace(/,/g, ' Uhr, ')} Uhr`;
+  return times.map(time => time.join('-')).join(', ');
 };
 
 const List = createComponent(
@@ -62,17 +63,18 @@ const Logo = createComponent(
     marginTop: theme.space2,
     marginX: 'auto',
   }),
-  ({ children, className }) =>
+  ({ value, className }) =>
     (<Img
       className={className}
-      value={children}
+      value={value}
       width={400}
-      maxWidth={children.width}
+      maxWidth={value && value.width}
       maxHeight={160}
     />),
   p => Object.keys(p)
 );
-
+const weekdays = moment.weekdays();
+weekdays.push(weekdays.splice(0, 1)[0]);
 export default createComponent(
   ({ theme }) => ({
     width: '100%',
@@ -90,7 +92,7 @@ export default createComponent(
       telefon,
       telefonPrivat,
       website,
-      zeiten,
+      openings,
       freifeld,
       logo,
       vorsorgen,
@@ -100,8 +102,7 @@ export default createComponent(
     },
   }) =>
     (<div>
-      <Logo>{logo}</Logo>
-
+      <Logo value={logo} />
       <div className={className}>
         <H2 color={farbe}>{name}</H2>
         {etage && <List label="Etage">{etage}</List>}
@@ -114,15 +115,12 @@ export default createComponent(
         {website &&
           <List label="Homepage"><a href={website}>{website}</a></List>}
 
-        {zeiten &&
+        {openings &&
           <div>
             <H2 color={farbe}>Öffnungszeiten</H2>
-            <List label="Montag">{niceTime(zeiten[0])}</List>
-            <List label="Dienstag">{niceTime(zeiten[1])}</List>
-            <List label="Mittwoch">{niceTime(zeiten[2])}</List>
-            <List label="Donnerstag">{niceTime(zeiten[3])}</List>
-            <List label="Freitag">{niceTime(zeiten[4])}</List>
-            <List label="Samstag">{niceTime(zeiten[5])}</List>
+            {openings.map((value, index) =>
+              <List label={weekdays[index]}>{niceTime(value)}</List>
+            )}
             <Text>{freifeld}</Text>
           </div>}
 
