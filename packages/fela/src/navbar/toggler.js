@@ -5,11 +5,15 @@ import { createComponent } from 'react-fela';
 const Container = createComponent(
   ({ theme, open }) => ({
     ifMini: {
-      '> div': {
-        display: !open && 'none',
-        ':nth-child(1)': {
-          display: 'block',
-        },
+      '> div:nth-child(2)': {
+        clear: 'both',
+        transform: open ? 'scaleY(1)' : 'scaleY(0)',
+        maxHeight: open ? 500 : 0,
+        overflow: 'auto',
+        transformOrigin: 'top',
+        transition: !open
+          ? 'transform 0.167s ease-in-out, max-height 0.167s linear 0.167s'
+          : 'max-height 0.12s linear, transform 0.12s ease-in-out 0.12s',
       },
     },
   }),
@@ -96,7 +100,9 @@ class Toggler extends Component {
             })}
         />
 
-        {Children.map(children, child => cloneElement(child, props))}
+        <div>
+          {Children.map(children, child => cloneElement(child, props))}
+        </div>
       </Container>
     );
   }
