@@ -10,7 +10,8 @@ import {
   State,
   Parent,
   TagSelect,
-  // JsonInputt,
+  JsonInput,
+  InputNumber,
 } from '../../edits';
 import Tree from './tree';
 
@@ -138,13 +139,13 @@ class PageForm extends Component {
               label="Felder"
               size="large"
             />
-            {/* <JsonInput
+            <JsonInput
               form={form}
               item={item}
               field="binding.query"
               label="Filter"
               size="large"
-            />*/}
+            />
             <TagSelect
               form={form}
               item={item}
@@ -152,6 +153,13 @@ class PageForm extends Component {
               field="sorting"
               placeholder="+name, -id"
               label="Sortieren"
+              size="large"
+            />
+            <InputNumber
+              form={form}
+              item={item}
+              field="order"
+              label="Reihenfolge"
               size="large"
             />
           </Panel>

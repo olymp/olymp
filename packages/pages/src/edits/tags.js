@@ -17,7 +17,7 @@ const TagSelect = ({
 }) =>
   (<Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
-      initialValue: get(item, field || '', []),
+      initialValue: get(item, field || '', []) || [],
       rules: getRules(rules, label),
     })(
       <Select

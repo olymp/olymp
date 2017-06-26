@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Input as AntInput, Form } from 'antd';
 import { layout, getRules } from 'olymp-ui';
 import { get } from 'lodash';
 
-const Component = ({ onChange, value, ...rest }) => {
-  const newChange = (x) => {
-    console.log(x);
+class JsonInput extends Component {
+  state = { text: '' };
+  componentWillReceiveProps = (newProps) => {
+    this.setState({
+      text: newProps.value ? JSON.stringify(newProps.value) : '',
+    });
+  };
+  onChange = (x) => {
+    this.setState({ text: x.target.value });
     try {
-      onChange(JSON.parse(x));
+      this.props.onChange(JSON.parse(x.target.value));
     } catch (err) {}
   };
-  const newValue = value ? JSON.stringify(value) : '';
-  return <AntInput value={newValue} onChange={newChange} {...rest} />;
-};
+  render() {
+    const { onChange, value, ...rest } = this.props;
+    const newValue = value ? JSON.stringify(value) : '';
+    return (
+      <AntInput value={this.state.text} onChange={this.onChange} {...rest} />
+    );
+  }
+}
 
 const Input = ({
   item,
@@ -29,7 +40,7 @@ const Input = ({
     {form.getFieldDecorator(field, {
       initialValue: get(item, field),
       rules: getRules(rules, label),
-    })(<Component placeholder={placeholder} label={label} />)}
+    })(<JsonInput placeholder={placeholder} label={label} />)}
   </Form.Item>);
 Input.defaultProps = { layout };
 export default Input;

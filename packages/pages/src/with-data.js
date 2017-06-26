@@ -74,7 +74,6 @@ export const withNavigation = (Wrapped) => {
   class WithNavInner extends Component {
     render() {
       const { data } = this.props;
-      const newProps = {};
       const items = (data && data.items) || [];
       const flatNavigation = [];
       const navigation = unflatten(items, {
