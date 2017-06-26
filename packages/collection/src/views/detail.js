@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
 import { withRouter } from 'olymp';
 import { withItem } from '../decorators';
 import { DetailForm } from '../components';

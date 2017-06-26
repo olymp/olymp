@@ -3,7 +3,6 @@ import Portal from 'react-portal';
 import { Cloudinary } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 import { withState } from 'recompose';
-import { Image } from '../components';
 
 const transform = image => ({
   url: image.url,
@@ -28,7 +27,7 @@ export default withState(
 
   return (
     <div onClick={() => setOpen(true)}>
-      {!multi && <Image value={v[0]} />}
+      {multi ? 'Bilder' : 'Bild'} {v.length ? 'wechseln' : 'wählen'}
       <Portal
         isOpened={isOpen}
         onClose={() => setOpen(false)}
