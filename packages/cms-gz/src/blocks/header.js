@@ -20,11 +20,12 @@ class Content extends Component {
     } = this.props;
     const path = pathname.split('/').filter(p => p);
 
-    console.log(this.props);
     return (
       <Container>
         <h1 {...rest}>{children}</h1>
-        <p contentEditable={editor.props.readOnly ? undefined : false}>
+        <p
+          contentEditable={!editor || editor.props.readOnly ? undefined : false}
+        >
           {subheader || `Startseite ${path.map(p => `/ ${capitalize(p)}`)}`}
         </p>
       </Container>
