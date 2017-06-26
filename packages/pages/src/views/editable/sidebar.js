@@ -4,7 +4,14 @@ import { Tabs } from 'antd';
 import { slugify, unflatten } from 'olymp';
 import { Panel, SectionH } from 'olymp-ui';
 import { createComponent, border } from 'olymp-fela';
-import { Input, PageType, State, Parent, TagSelect } from '../../edits';
+import {
+  Input,
+  PageType,
+  State,
+  Parent,
+  TagSelect,
+  // JsonInputt,
+} from '../../edits';
 import Tree from './tree';
 
 class PageForm extends Component {
@@ -116,16 +123,32 @@ class PageForm extends Component {
             <Input
               form={form}
               item={item}
-              field="binding"
-              placeholder="typ id name"
-              label="Bindung"
+              field="binding.type"
+              placeholder="typ"
+              label="Bindungstyp"
               type="text"
               size="large"
             />
             <TagSelect
               form={form}
               item={item}
-              options={items.filter(i => i.parentId === item.id)}
+              options={['id', 'name', 'slug']}
+              field="binding.fields"
+              placeholder="+name, -id"
+              label="Felder"
+              size="large"
+            />
+            {/* <JsonInput
+              form={form}
+              item={item}
+              field="binding.query"
+              label="Filter"
+              size="large"
+            />*/}
+            <TagSelect
+              form={form}
+              item={item}
+              options={['+name', '-name']}
               field="sorting"
               placeholder="+name, -id"
               label="Sortieren"

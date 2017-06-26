@@ -9,7 +9,7 @@ import { upperFirst } from 'lodash';
 
 const getFormSchema = ({ fields }) =>
   fields.reduce((result, field) => {
-    if (field.type.name === 'Json') {
+    if (field.type.name === 'Blocks') {
       // if slate => own group
       result[upperFirst(field.name)] = [field];
     } else if (field.type.name === 'Image') {

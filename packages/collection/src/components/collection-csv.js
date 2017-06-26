@@ -4,7 +4,9 @@ import { Plain, Raw } from 'slate';
 const SEPERATOR = '|';
 export const collectionToCsv = (collection, items) => {
   const fields = collection.fields.filter((field) => {
-    if (field.type.name === 'Image') { return true; }
+    if (field.type.name === 'Image') {
+      return true;
+    }
     return field.type.kind !== 'OBJECT';
   });
   return items.reduce((csv, item, index) => {
@@ -36,8 +38,10 @@ export const collectionToCsv = (collection, items) => {
 
               return item[name].name;
             }
-          } else if (type.name === 'Json') {
-            if (!item[name]) { return ''; }
+          } else if (type.name === 'Blocks') {
+            if (!item[name]) {
+              return '';
+            }
             const raw = Raw.deserialize(
               JSON.parse(JSON.stringify(item[name])),
               { terse: true }

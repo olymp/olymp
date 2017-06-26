@@ -129,7 +129,7 @@ export default ({
     );
   }
   switch (type.name) {
-    case 'Json':
+    case 'Blocks':
       return (
         <SlateMate
           {...editProps}

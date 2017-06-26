@@ -3,6 +3,17 @@ import { Input as AntInput, Form } from 'antd';
 import { layout, getRules } from 'olymp-ui';
 import { get } from 'lodash';
 
+const Component = ({ onChange, value, ...rest }) => {
+  const newChange = (x) => {
+    console.log(x);
+    try {
+      onChange(JSON.parse(x));
+    } catch (err) {}
+  };
+  const newValue = value ? JSON.stringify(value) : '';
+  return <AntInput value={newValue} onChange={newChange} {...rest} />;
+};
+
 const Input = ({
   item,
   field,
@@ -18,7 +29,7 @@ const Input = ({
     {form.getFieldDecorator(field, {
       initialValue: get(item, field),
       rules: getRules(rules, label),
-    })(<AntInput placeholder={placeholder || label} {...rest} />)}
+    })(<Component placeholder={placeholder} label={label} />)}
   </Form.Item>);
 Input.defaultProps = { layout };
 export default Input;

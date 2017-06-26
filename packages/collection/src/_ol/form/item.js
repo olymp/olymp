@@ -36,7 +36,7 @@ export default class FormItem extends Component {
         help={errors}
         hasFeedback
         style={{ ...itemStyle, ...style }}
-        {...(field.type.name === 'Json' || clean
+        {...(field.type.name === 'Blocks' || clean
           ? formItemLayout0
           : formItemLayout)}
       >

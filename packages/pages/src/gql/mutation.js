@@ -4,7 +4,9 @@ import { onError, onSuccess } from 'olymp-ui';
 const ok = (props, mutate) => () => {
   const { form, item, router, query, flatNavigation } = props;
   form.validateFields((err, values) => {
-    if (err) { return onError(err); }
+    if (err) {
+      return onError(err);
+    }
     mutate({
       variables: {
         id: item.id,
@@ -41,7 +43,7 @@ export default graphql(
   gql`
   mutation page($id: String, $input: PageInput) {
     item: page(id: $id, input: $input) {
-      id slug order name type binding aliasId href sorting parentId blocks state headings { id slug text children { id slug text } }
+      id slug order name type binding { id type query fields } aliasId href sorting parentId blocks state
     }
   }
 `,

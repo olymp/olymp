@@ -2,7 +2,7 @@ import React, { Component, createElement } from 'react';
 import { gql, graphql, SimpleRoute, unflatten } from 'olymp';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
-import { get } from 'lodash';
+import { get, upperFirst, lowerFirst } from 'lodash';
 
 // interpolate a string value using props
 const interpolate = (value, propsOrFunc) => {
@@ -21,23 +21,6 @@ const interpolate = (value, propsOrFunc) => {
   );
 };
 
-const defaultFields = 'id name';
-const deserializeBinding = (value) => {
-  // value e.g. 'event id name slug' or 'event'
-  if (!value) {
-    return {};
-  }
-  value = value.trim();
-  const firstSpace = value.indexOf(' ');
-  if (firstSpace === -1) {
-    return { type: value, fields: defaultFields };
-  } // no space = only typename
-  return {
-    type: value.substr(0, firstSpace),
-    fields: value.substr(firstSpace),
-  };
-};
-
 const NavCache = {};
 export const withNavigation = (Wrapped) => {
   // Prepare Data, gather bound navigation items
@@ -51,18 +34,31 @@ export const withNavigation = (Wrapped) => {
         const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
         if (!NavCache[key]) {
           NavCache[key] = items
-            .filter(item => item.binding)
+            .filter(item => item.binding && item.binding.type)
             .reduce((store, value) => {
-              const { type, fields } = deserializeBinding(value.binding);
+              const { type, fields, query } = value.binding;
+              const sort = value.sorting
+                ? value.sorting.reduce((store, item) => {
+                  const [c, ...rest] = item.split('');
+                  store[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
+                  return store;
+                }, {})
+                : {};
               return graphql(
                 gql`
-              query ${type}List {
-                items: ${type}List {
-                  ${fields}
+                  query ${lowerFirst(type)}List(
+                    $query: ${upperFirst(type)}Query,
+                    $sort: ${upperFirst(type)}Sort
+                  ) {
+                    items: ${lowerFirst(type)}List(query: $query, sort: $sort) {
+                      ${fields || 'id name slug'}
+                    }
+                  }
+                `,
+                {
+                  name: `nav_${value.id}`,
+                  options: () => ({ variables: { query, sort } }),
                 }
-              }
-            `,
-                { name: `nav_${value.id}` }
               )(store);
             }, Wrapped);
         }
@@ -84,7 +80,7 @@ export const withNavigation = (Wrapped) => {
       const navigation = unflatten(items, {
         pathProp: 'pathname',
         sort: (children, parent) => {
-          const sorting = parent ? parent.sorting || '+order' : '+order';
+          const sorting = parent ? parent.sorting || ['+order'] : ['+order'];
           children = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
@@ -107,16 +103,16 @@ export const withNavigation = (Wrapped) => {
             }
             return state;
           }, []);
-          if (sorting[0] === '+' || sorting[0] === '-') {
+          if (sorting.length) {
             const fields = [];
             const directions = [];
-            sorting.split(',').forEach((sorter) => {
+            sorting.forEach((sorter) => {
               fields.push(sorter.substr(1));
               directions.push(sorter[0] === '-' ? 'desc' : 'asc');
             });
             children = orderBy(children, fields, directions);
           } else {
-            const sortIndex = sorting.split(',');
+            const sortIndex = sorting;
             children = sortBy(children, [
               (o) => {
                 const index = sortIndex.indexOf(o.id);
@@ -151,11 +147,11 @@ export const withNavigation = (Wrapped) => {
 let cache = {};
 let lastType;
 export const DataRoute = ({ binding, component, ...rest }) => {
-  if (!binding) {
+  if (!binding || !binding.type) {
     return createElement(component || SimpleRoute, rest);
   }
-  const { type, fields } = deserializeBinding(binding);
-  const key = `route-${type}-${fields}`;
+  const { type, fields, query } = binding;
+  const key = `route-${type}-${fields || 'id name slug'}`;
   if (lastType !== (component || SimpleRoute)) {
     // TODO better way to wipe cache
     cache = {};

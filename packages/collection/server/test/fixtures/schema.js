@@ -16,7 +16,7 @@ export default `
     extrakt: Markdown
     # list(4)
     tags: [String]
-    blocks: Json
+    blocks: Blocks
     text: String
   }
 `;

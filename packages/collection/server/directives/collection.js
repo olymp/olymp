@@ -25,7 +25,6 @@ export default {
           updatedBy: User @relation
         `
       );
-      addInput(ast, node);
       if (getDirectiveValue(node, 'collection', 'name')) {
         addInterfaces(ast, node, 'CollectionInterface');
       }
@@ -33,10 +32,14 @@ export default {
       addSortInput(ast, node);
       addQueries(ast, node, resolvers);
     },
-    leave(node) {
-      /* resolvers.Query = resolvers.Query || {};
-      resolvers.Mutation = resolvers.Mutation || {};
-      resolvers[node.name.value] = resolvers[node.name.value] || {};*/
+    enter2(node, d, { ast, resolvers }) {
+      addInput(ast, node);
+      if (getDirectiveValue(node, 'collection', 'name')) {
+        addInterfaces(ast, node, 'CollectionInterface');
+      }
+      addQueryInput(ast, node);
+      addSortInput(ast, node);
+      addQueries(ast, node, resolvers);
     },
   },
 };

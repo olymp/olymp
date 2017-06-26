@@ -4,6 +4,7 @@ import { withRouter, Link } from 'olymp';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Tooltip } from 'antd';
+import { lowerCase } from 'lodash';
 import { reorderPage, movePage } from '../../gql';
 
 @withRouter
@@ -123,13 +124,15 @@ class Pages extends Component {
                 showOnHover
               />
               {item.bindingId &&
+                item.binding &&
+                item.binding.type &&
                 <Button
                   to={{
                     query: {
                       ...query,
                       '@page': undefined,
                       parent: undefined,
-                      [`@${item.binding.split(' ')[0]}`]: item.bindingId,
+                      [`@${lowerCase(item.binding.type)}`]: item.bindingId,
                     },
                   }}
                   type="api"

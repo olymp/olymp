@@ -39,29 +39,30 @@ export default () => ({
       field: String
       prefix: String
     }
+    type PageBinding {
+      id: String
+      type: String
+      fields: [String]
+      query: Json
+    }
     type Page @collection {
       id: String
       type: PAGE_TYPE
       menu: String
-      binding: String
-      sorting: String
-      aliasId: String
+      binding: PageBinding
+      sorting: [String]
       alias: Page @relation
       gql: PageGQL
       headings: [PageHeading]
       href: String
       state: DOCUMENT_STATE
-      parentId: String
       parent: Page @relation(property: "children", type: "1-n")
       order: Int
       name: String
       description: String
       slug: String
-      blocks: Json
+      blocks: Blocks
       text: String
-      templateName: String
-      templateData: Json
-      showHeadings: Boolean
     }
     type Settings @collection {
       id: String

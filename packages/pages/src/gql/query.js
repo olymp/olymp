@@ -8,7 +8,7 @@ export default graphql(
   gql`
   query page($id: String) {
     item: page(id: $id) {
-      id slug order type name binding parentId sorting aliasId href blocks state headings { id slug text children { id slug text } }
+      id slug order type name binding { id type query fields } parentId sorting aliasId href blocks state
     }
   }
 `,
@@ -29,7 +29,7 @@ export const queryPages = graphql(
   gql`
   query pageList {
     items: pageList(query: {state: {in: [PUBLISHED, DRAFT]}}) {
-      id slug order type name binding parentId sorting state
+      id slug order type name binding { id type query fields } parentId sorting state
     }
   }
 `,

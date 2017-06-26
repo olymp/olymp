@@ -74,7 +74,7 @@ export default class SubForm extends Component {
                       label={field.name}
                       key={field.name}
                       hasFeedback
-                      {...(field.type.name === 'Json'
+                      {...(field.type.name === 'Blocks'
                         ? formItemLayout0
                         : formItemLayout)}
                     >

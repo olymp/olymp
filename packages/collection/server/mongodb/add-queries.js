@@ -35,7 +35,7 @@ export default (ast, node, resolvers) => {
       set(
         resolvers,
         `RootQuery.${table}List`,
-        (source, { query }, { db, app }) =>
+        (source, { query, sort }, { db, app }) =>
           // db.collection(table).find(adaptQuery(query))
           db
             .collection('item')
@@ -43,7 +43,14 @@ export default (ast, node, resolvers) => {
               { ...adaptQuery(query), _type: table, _appId: app.id },
               { rawCursor: true }
             )
-            .then(cursor => cursor.sort({ name: 1 }).toArray())
+            .then((cursor) => {
+              const obj = sort || { name: 'ASC' };
+              const sorting = Object.keys(obj).reduce((store, key) => {
+                store[key] = obj[key] === 'DESC' ? -1 : 1;
+                return store;
+              }, {});
+              return cursor.sort(sorting).toArray();
+            })
       );
     }
   }

@@ -190,7 +190,7 @@ export default class FieldEditor extends Component {
       );
     }
     switch (type.name) {
-      case 'Json':
+      case 'Blocks':
         return (
           <SlateMate
             {...editProps}
