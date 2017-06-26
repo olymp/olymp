@@ -25,7 +25,7 @@ import createRedisStore from 'connect-redis';
 import fs from 'fs';
 import useragent from 'express-useragent';
 import bodyparser from 'body-parser';
-import { Server as WebSocketServer } from 'uws';
+import { Server as WebSocketServer } from 'ws';
 import { createFela } from 'olymp-fela';
 import { EventEmitter } from 'events';
 import { UserAgentProvider } from '@quentin-sommer/react-useragent';
@@ -67,27 +67,6 @@ app.emitter = new EventEmitter();
 // Websocket Server
 app.listenWS = (options) => {
   const wss = new WebSocketServer(options);
-  /* wss.httpServer.on('connection', (x, y) => {
-    console.log('WWWWS', 'CONNECTION', x, y);
-  })
-  wss.httpServer.on('clientError', (ex) => {
-    console.log('WWWWS', ex);
-  })
-  wss.httpServer.on('abort', (ex) => {
-    console.log('WWWWS', 'abort');
-  })
-  wss.httpServer.on('aborted', (ex) => {
-    console.log('WWWWS', 'aborted');
-  })
-  wss.httpServer.on('request', (ex) => {
-    console.log('WWWWS', 'request');
-  })
-  wss.httpServer.on('close', (ex) => {
-    console.log('WWWWS', 'close');
-  })
-  wss.httpServer.on('upgrade', (request, socket) => {
-    console.log('WWWWS', 'upgrade', request, socket);
-  }) */
   wss.on('connection', (socket) => {
     const onPing = (message) => {
       socket.send(JSON.stringify({ type: 'pong', version }));
@@ -100,12 +79,12 @@ app.listenWS = (options) => {
       if (raw === 'ping') {
         return onPing(raw);
       }
-      console.log('UWS', raw);
+      console.log('WS', raw);
       let json = {};
       try {
         json = JSON.parse(raw);
         if (json) {
-          app.emitter.emit('uws', { json, raw, socket });
+          app.emitter.emit('ws', { json, raw, socket });
         }
       } catch (err) {
         console.error('Websocket error', err);

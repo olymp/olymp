@@ -110,7 +110,7 @@ export class WebsocketProvider extends Component {
       }, 3000);
     };
     this.ws.onerror = (error) => {
-      console.error('uws error', error);
+      console.error('ws error', error);
     };
     this.ws.onclose = () => {
       this.connected(false);

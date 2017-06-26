@@ -1,5 +1,5 @@
 {
-  "version": "15.1.8",
+  "version": "15.1.10",
   "name": "olymp",
   "description": "",
   "main": "./packages/core",
@@ -150,14 +150,14 @@
     "tinycolor2": "1.4.1",
     "type-of": "^2.0.1",
     "url-loader": "^0.5.9",
-    "uws": "^8.14.0",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0",
     "webpack-node-externals": "^1.6.0",
     "webpack-visualizer-plugin": "^0.1.11",
     "webpack2-externals-plugin": "^1.0.0",
     "whatwg-fetch": "^2.0.3",
-    "why-did-you-update": "^0.0.8"
+    "why-did-you-update": "^0.0.8",
+    "ws": "^3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
