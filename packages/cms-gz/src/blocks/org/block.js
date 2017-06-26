@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql, gql } from 'olymp';
 import { createComponent, Grid, withColor, ContentLoader } from 'olymp-fela';
-import { Image } from 'olymp-cloudinary';
+import { Img } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import VCard from './vcard';
@@ -33,7 +33,7 @@ const Peak = createComponent(
     (<div className={className}>
       <div>
         <div>
-          <Image value={value} width="100%" />
+          <Img value={value} width="100%" maxSize={1000} />
         </div>
       </div>
       {(header || subheader) &&

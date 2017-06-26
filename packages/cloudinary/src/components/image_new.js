@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
 import { createComponent, ContentLoaderStyles } from 'olymp-fela';
 
-const MAX_SIZE = 400; // Maximum size to 400px to prevent loading to big images/too much traffic
-
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
 
@@ -22,10 +20,11 @@ const url = (url, options) => {
 };
 
 const Container = createComponent(
-  ({ ratio, width, maxWidth }) => ({
+  ({ ratio, width, maxWidth, maxHeight }) => ({
     position: 'relative',
     width: width || '100%',
     maxWidth: maxWidth || '100%',
+    maxHeight: maxHeight || 'auto',
     onBefore: {
       display: 'block',
       content: '""',
@@ -56,6 +55,7 @@ const LazyImage = (props) => {
     height: pHeight,
     maxWidth,
     maxHeight,
+    maxSize,
     ...rest
   } = props;
   const oWidth = (value.crop && value.crop[0]) || value.width;
@@ -67,9 +67,9 @@ const LazyImage = (props) => {
   // max size, if no size is set
   if (typeof pWidth === 'string' || (!width && !height)) {
     if (oWidth >= oHeight) {
-      width = MAX_SIZE;
+      width = maxSize;
     } else {
-      height = MAX_SIZE;
+      height = maxSize;
     }
   }
 
@@ -111,6 +111,7 @@ const LazyImage = (props) => {
       className={className}
       width={typeof pWidth === 'string' ? pWidth : width}
       maxWidth={maxWidth}
+      maxHeight={maxHeight}
       ratio={ratio}
       lazy={lazy}
     >
@@ -131,6 +132,7 @@ LazyImage.propTypes = {
   height: PropTypes.number,
   maxWidth: PropTypes.number,
   maxHeight: PropTypes.number,
+  maxSize: PropTypes.number,
   value: PropTypes.shape({
     url: PropTypes.string,
     width: PropTypes.number,
@@ -146,6 +148,7 @@ LazyImage.defaultProps = {
   height: undefined,
   maxWidth: undefined,
   maxHeight: undefined,
+  maxSize: 400,
   className: undefined,
   options: {},
 };
