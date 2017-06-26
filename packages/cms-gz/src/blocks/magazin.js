@@ -2,15 +2,14 @@ import React from 'react';
 import { createComponent, Container, Grid, border } from 'olymp-fela';
 import { H2, Panel } from '../components';
 import { graphql, gql, Link } from 'olymp';
+import { Img } from 'olymp-cloudinary';
 
 const Image = createComponent(
   ({ theme }) => ({
-    marginRight: theme.space2,
-    width: 100,
-    height: 'auto',
     float: 'left',
+    marginRight: theme.space3,
   }),
-  ({ className, url }) => <img className={className} src={url} alt="" />,
+  p => <Img {...p} />,
   p => Object.keys(p)
 );
 
@@ -68,13 +67,8 @@ const component = graphql(
     <Grid>
       <Grid.Item medium={8}>
         {items.map(item =>
-          (<Panel
-            accent={item.farbe}
-            key={item.id}
-            title={item.name}
-            bordered="Der hallux rigidus"
-          >
-            <Image value={item.bild} />
+          (<Panel accent={item.farbe} key={item.id} title={item.name}>
+            <Image value={item.bild} width={250} />
             <p>
               {item.extrakt}
             </p>
