@@ -150,28 +150,17 @@ export default ({
         />
       );
     case 'Color':
-      return <ColorEditor {...editProps} addonBefore={<FaMagic />} />;
+      return <ColorEditor {...editProps} />;
     case 'Markdown':
       return <Input {...editProps} type="textarea" autosize />;
     case 'Slug':
-      return (
-        <Input {...editProps} addonBefore={<i className="fa fa-globe" />} />
-      );
+      return <Input {...editProps} />;
     case 'Email':
-      return (
-        <Input
-          {...editProps}
-          addonBefore={<i className="fa fa-envelope-o" />}
-        />
-      );
+      return <Input {...editProps} />;
     case 'PhoneNumber':
-      return (
-        <Input {...editProps} addonBefore={<i className="fa fa-phone" />} />
-      );
+      return <Input {...editProps} />;
     case 'Website':
-      return (
-        <Input {...editProps} addonBefore={<i className="fa fa-link" />} />
-      );
+      return <Input {...editProps} />;
     case 'Int':
       return <InputNumber {...editProps} placeholder={label || 0} />;
     case 'TimeRange':
