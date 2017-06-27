@@ -7,7 +7,7 @@ const Header = createComponent(
     flexShrink: 0,
   }),
   WithContainer,
-  p => Object.keys(p)
+  ({ affix, ...p }) => Object.keys(p)
 );
 Header.displayName = 'Layout.Header';
 Header.propTypes = {

@@ -7,7 +7,7 @@ const Footer = createComponent(
     flexShrink: 0,
   }),
   WithContainer,
-  p => Object.keys(p)
+  ({ affix, ...p }) => Object.keys(p)
 );
 Footer.displayName = 'Layout.Footer';
 Footer.propTypes = {

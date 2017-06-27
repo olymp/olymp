@@ -111,7 +111,7 @@ GridItem.propTypes = {
   /** The column size for huge and up */
   huge: PropTypes.number,
   /** The items height */
-  height: PropTypes.string,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 GridItem.defaultProps = {
   gridSize: 12,
