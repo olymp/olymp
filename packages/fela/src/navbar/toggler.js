@@ -11,9 +11,7 @@ const Container = createComponent(
         maxHeight: open ? 500 : 0,
         overflow: 'auto',
         transformOrigin: 'top',
-        transition: !open
-          ? 'transform 0.167s ease-in-out, max-height 0.167s linear 0.167s'
-          : 'max-height 0.12s linear, transform 0.12s ease-in-out 0.12s',
+        transition: 'all 0.25s ease-in-out',
       },
     },
   }),
@@ -29,8 +27,6 @@ const Button = createComponent(
     width: Math.round(size * 1.3),
     height: size,
     position: 'relative',
-    transform: 'rotate(0deg)',
-    transition: '.5s ease-in-out',
     cursor: 'pointer',
     ifSmallUp: {
       display: 'none',
