@@ -1,5 +1,6 @@
 import React, { Children } from 'react';
 import { createComponent } from 'react-fela';
+import ContentLoader from './content';
 import Container from '../container';
 import Grid from '../grid';
 
