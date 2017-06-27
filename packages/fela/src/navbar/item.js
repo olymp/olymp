@@ -22,8 +22,18 @@ const NavItem = createComponent(
       width: '100%',
     },
   }),
-  ({ className, pathname, children, title, fill, pages, onClick, ...props }) =>
-    (<div className={className}>
+  ({
+    className,
+    pathname,
+    children,
+    title,
+    fill,
+    pages,
+    onClick,
+    onItemMouseEnter,
+    ...props
+  }) =>
+    (<div className={className} onMouseEnter={() => onItemMouseEnter(props)}>
       {pathname
         ? <Link to={pathname} inverse={props.inverse}>
           {title}
