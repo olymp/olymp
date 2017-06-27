@@ -82,17 +82,8 @@ class Toggler extends Component {
     const toggleMenu = this.props.toggleMenu || toggleState;
 
     return (
-      <Container className={className} open={open}>
-        <Button
-          {...props}
-          open={isOpen || open}
-          onClick={toggleMenu}
-          /* onClick={() =>
-            router.push({
-              pathname,
-              query: { ...query, nav: !open ? null : undefined },
-            })} */
-        />
+      <Container className={className} open={isOpen || open}>
+        <Button {...props} open={isOpen || open} onClick={toggleMenu} />
 
         <div>
           {Children.map(children, child => cloneElement(child, props))}
