@@ -1,5 +1,5 @@
 {
-  "version": "15.1.14",
+  "version": "15.1.16",
   "name": "olymp",
   "description": "",
   "main": "./packages/core",
@@ -106,9 +106,7 @@
     "rapscallion": "^2.1.7",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
-    "react-addons-css-transition-group": "^15.6.0",
     "react-addons-perf": "^15.4.2",
-    "react-addons-transition-group": "^15.6.0",
     "react-apollo": "^1.2.0",
     "react-async-bootstrapper": "^1.1.1",
     "react-async-component": "^1.0.0-beta.3",
