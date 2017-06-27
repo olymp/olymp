@@ -3,12 +3,21 @@
   "name": "react-fela",
   "description": "",
   "main": "./src",
-  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "author": "Benjamin Kniffler <bkniffler@me.com>, Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
   "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "olymp": "^15.1.14",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   },
   "devDependencies": {
+    "@storybook/addon-info": "^3.1.6",
+    "@storybook/addon-knobs": "^3.1.6",
+    "@storybook/react": "^3.1.6",
+    "raw-loader": "^0.5.1"
   }
 }

@@ -13,6 +13,32 @@ const renderNav = props => <Nav {...props} sub />;
 const WithContainer = ({ container, ...rest }) =>
   container ? <Container {...rest} /> : <div {...rest} />;
 
+const Brand = createComponent(
+  ({ theme, vertically, inverse }) => ({
+    // TODO important float: `${vertically ? 'none' : 'left'} !important`,
+    float: vertically ? 'none' : 'left',
+    // TODO important width: 'auto !important',
+    width: 'auto',
+    color: inverse ? theme.light : theme.dark,
+    fontSize: `calc(${theme.fontSize} + 4px)`,
+    // TODO important flex: 'none !important',
+    flex: 'none',
+    '> a': {
+      paddingY: `calc(${theme.space3} - 2px)`,
+    },
+  }),
+  ({ children, pages, ...p }) => <Item pathname="/" {...p} title={children} />,
+  p => Object.keys(p)
+);
+
+const Logo = createComponent(
+  ({ vertically }) => ({
+    float: vertically ? 'none' : 'left',
+  }),
+  ({ vertically, ...p }) => <NavLink to="/" {...p} />,
+  p => Object.keys(p)
+);
+
 const Navbar = createComponent(
   ({ theme, inverse, vertically, full, fill }) => ({
     backgroundColor: inverse && theme.color,
@@ -86,29 +112,3 @@ Navbar.defaultProps = {
   fill: false,
 };
 export default Navbar;
-
-const Brand = createComponent(
-  ({ theme, vertically, inverse }) => ({
-    // TODO important float: `${vertically ? 'none' : 'left'} !important`,
-    float: vertically ? 'none' : 'left',
-    // TODO important width: 'auto !important',
-    width: 'auto',
-    color: inverse ? theme.light : theme.dark,
-    fontSize: `calc(${theme.fontSize} + 4px)`,
-    // TODO important flex: 'none !important',
-    flex: 'none',
-    '> a': {
-      paddingY: `calc(${theme.space3} - 2px)`,
-    },
-  }),
-  ({ children, pages, ...p }) => <Item pathname="/" {...p} title={children} />,
-  p => Object.keys(p)
-);
-
-const Logo = createComponent(
-  ({ vertically }) => ({
-    float: vertically ? 'none' : 'left',
-  }),
-  ({ vertically, ...p }) => <NavLink to="/" {...p} />,
-  p => Object.keys(p)
-);

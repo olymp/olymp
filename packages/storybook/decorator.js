@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, createFela } from 'react-fela';
+import { ThemeProvider, createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
 import { MemoryRouter } from 'react-router';
 

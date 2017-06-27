@@ -1,7 +1,7 @@
 import React from 'react';
 import { boolean, text, object } from '@storybook/addon-knobs';
 import Navbar from '../index';
-import { storiesOf } from '../.storybook';
+import { storiesOf } from 'olymp-storybook';
 
 const storiefy = storiesOf('Navbar.Toggler');
 const nav = [

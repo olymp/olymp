@@ -1,9 +1,10 @@
 const path = require('path');
 const fs = require('fs');
-const appRoot = process.cwd();
-const olympRoot = path.resolve(__dirname, '..', '..', '..', '..', '..');
 
-module.exports = function (storybookBaseConfig, configType) {
+const appRoot = process.cwd();
+const olympRoot = path.resolve(__dirname, '..', '..', '..');
+
+module.exports = function (storybookBaseConfig) {
   if (!storybookBaseConfig.resolve.modules) {
     storybookBaseConfig.resolve.modules = [];
   }
@@ -21,7 +22,7 @@ module.exports = function (storybookBaseConfig, configType) {
     // get all folders in src and create 'olymp-xxx' alias
     storybookBaseConfig.resolve.alias[`olymp-${item}`] = path.resolve(
       olympRoot,
-      'src',
+      'packages',
       item
     );
     return obj;
@@ -32,7 +33,7 @@ module.exports = function (storybookBaseConfig, configType) {
   );
   storybookBaseConfig.module.rules[0].include[0] = path.resolve(
     olympRoot,
-    'src'
+    'packages'
   );
   storybookBaseConfig.module.rules.push({ test: /\.md$/, loader: 'raw' });
   return storybookBaseConfig;
