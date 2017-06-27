@@ -22,7 +22,7 @@ const loaderSchema = [
       {
         medium: 7,
         children: range(9).map(() => ({
-          height: 300,
+          height: 180,
           width: '100%',
         })),
       },
@@ -89,10 +89,14 @@ const component = graphql(
   (<SchemaLoader isLoading={isLoading} schema={loaderSchema}>
     <Container {...attributes}>
       <Grid>
-        <Grid.Item medium={8}>
+        <Grid.Item
+          medium={8}
+          paddingMini="0.5rem 1rem"
+          paddingMedium="0 0 0 0.5rem"
+        >
           {items.map(item =>
-            (<Panel id={item.id} title={item.name} key={item.id}>
-              <Image value={item.bild} width={200} ratio={1} />
+            (<Panel id={item.id} title={item.name} key={item.id} paddingLeft={0}>
+              <Image value={item.bild} width={100} ratio={1} />
               <div>
                 <p>
                   {item.extrakt}

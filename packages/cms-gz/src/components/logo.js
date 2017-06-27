@@ -61,6 +61,12 @@ const Icon = createComponent(
     top: icon && '50%',
     bottom: icon && '50%',
     transform: icon && 'translate(-50%, -50%)',
+    onHover: {
+      transform: icon
+        ? 'translate(-50%, -50%) perspective(500px) translate3d(0,0,100px)'
+        : 'perspective(500px) translate3d(0,0px,20px)',
+    },
+    transition: 'fill 1s ease-in-out, transform 100ms ease-out',
   }),
   ({ className, children, color, icon }) =>
     (<svg

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { cn } from 'olymp';
 import { GatewayRegistry } from 'react-gateway';
-import ReactTransitionGroup from 'react-addons-transition-group';
+import { TransitionGroup } from 'react-transition-group';
 
 const delay = t => new Promise(yay => setTimeout(yay, t));
 const state = (t, args) => new Promise(yay => t.setState(args, yay));
@@ -88,9 +88,9 @@ const withTransition = (Transition, { delayLeave } = {}) => {
     const { isOpen } = props;
     const opened = isOpen === undefined ? true : !!isOpen;
     return (
-      <ReactTransitionGroup component={FirstChild}>
+      <TransitionGroup component={FirstChild}>
         {opened ? <TransitionManager {...props} /> : null}
-      </ReactTransitionGroup>
+      </TransitionGroup>
     );
   };
 };

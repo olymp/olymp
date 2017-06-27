@@ -7,7 +7,8 @@ import {
   createComponent,
   WithColorProvider,
 } from 'olymp-fela';
-import { withScroll } from 'olymp';
+import { withScroll, withApollo } from 'olymp';
+import { prefetchPage } from 'olymp-pages';
 
 export const App = createComponent(
   ({ theme }) => ({
@@ -45,9 +46,13 @@ export const Header = withScroll(
   )
 );
 
+@withApollo
 export default class GzLayout extends Component {
   static defaultProps = {
     pages: [],
+  };
+  prefetch = ({ id }) => {
+    prefetchPage(this.props.client, id);
   };
   render() {
     const {
@@ -76,6 +81,7 @@ export default class GzLayout extends Component {
             full
             right
             mega
+            onItemMouseEnter={this.prefetch}
           />
         </Header>
         <Layout.Body affix>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IFrame, ContentLoader } from 'olymp-fela';
+import { IFrame, ContentLoader, PageTransition } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { Helmet } from 'olymp';
 
@@ -74,14 +74,17 @@ export const PageRoute = (props) => {
     <Wrapped {...props} match={match}>
       {renderHelmet(match || {})}
       <ContentLoader height={600} isLoading={loading}>
-        {match
-          ? <Page.WithData
-            {...props}
-            id={pageId || aliasId || id}
-            bindingId={bindingId}
-            binding={binding}
-          />
-          : <Error404 />}
+        <PageTransition>
+          {match
+            ? <Page.WithData
+              {...props}
+              key={id}
+              id={pageId || aliasId || id}
+              bindingId={bindingId}
+              binding={binding}
+            />
+            : <Error404 />}
+        </PageTransition>
       </ContentLoader>
     </Wrapped>
   );

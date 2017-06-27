@@ -27,9 +27,16 @@ export const Content = createComponent(
 );
 
 export default createComponent(
-  ({ theme, background = theme.dark5, accent }) => ({
+  ({
+    theme,
+    paddingLeft = theme.space3,
+    paddingRight = theme.space3,
+    background = theme.dark5,
+    accent,
+  }) => ({
     width: '100%',
-    paddingX: theme.space3,
+    paddingLeft,
+    paddingRight,
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
@@ -73,6 +80,8 @@ export default createComponent(
     accent,
     color,
     bordered,
+    paddingLeft,
+    paddingRight,
     ...rest
   }) =>
     (<Grid.Item mini={12} {...rest}>
