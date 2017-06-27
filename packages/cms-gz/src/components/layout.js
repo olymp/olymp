@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Logo from './logo';
+import { withScroll, withApollo, withRouter } from 'olymp';
 import {
   Navbar,
   Layout,
@@ -7,8 +7,8 @@ import {
   createComponent,
   WithColorProvider,
 } from 'olymp-fela';
-import { withScroll, withApollo } from 'olymp';
 import { prefetchPage } from 'olymp-pages';
+import Logo from './logo';
 
 export const App = createComponent(
   ({ theme }) => ({
@@ -47,6 +47,7 @@ export const Header = withScroll(
 );
 
 @withApollo
+@withRouter
 export default class GzLayout extends Component {
   static defaultProps = {
     pages: [],
@@ -63,6 +64,9 @@ export default class GzLayout extends Component {
       location,
       links,
       children,
+      router,
+      query,
+      pathname,
       ...rest
     } = this.props;
     const nav = (pages.map(x => x.children)[0] || [])
@@ -71,6 +75,7 @@ export default class GzLayout extends Component {
       ...(pages.map(x => x.children)[1] || []),
       { name: 'Einloggen', pathname: `${location.pathname}?login` },
     ];
+    const open = query.nav === null;
 
     return (
       <App fullHeight>
@@ -82,6 +87,12 @@ export default class GzLayout extends Component {
             right
             mega
             onItemMouseEnter={this.prefetch}
+            toggleMenu={() =>
+              router.push({
+                pathname,
+                query: { ...query, nav: !open ? null : undefined },
+              })}
+            isOpen={open}
           />
         </Header>
         <Layout.Body affix>
