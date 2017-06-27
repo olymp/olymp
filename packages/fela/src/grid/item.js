@@ -19,8 +19,10 @@ const GridItem = createComponent(
     paddingMedium,
     paddingLarge,
     paddingHuge,
+    height,
   }) => ({
     float: 'left',
+    height,
     width: `${100 / gridSize * (mini || gridSize)}%`,
     marginLeft: `${100 / gridSize * (offsetMini || 0)}%`,
     ifMini: {
@@ -91,6 +93,7 @@ const GridItem = createComponent(
     paddingMedium,
     paddingLarge,
     paddingHuge,
+    height,
     ...p
   }) => Object.keys(p)
 );
@@ -107,6 +110,8 @@ GridItem.propTypes = {
   large: PropTypes.number,
   /** The column size for huge and up */
   huge: PropTypes.number,
+  /** The items height */
+  height: PropTypes.string,
 };
 GridItem.defaultProps = {
   gridSize: 12,
@@ -120,5 +125,6 @@ GridItem.defaultProps = {
   medium: undefined,
   large: undefined,
   huge: undefined,
+  height: undefined,
 };
 export default GridItem;

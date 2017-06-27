@@ -30,6 +30,9 @@ const Entry = createComponent(
     '> span': {
       float: 'right',
     },
+    '> a': {
+      color: theme.dark,
+    },
     onHover: {
       backgroundColor: theme.dark5,
       '> a': {
@@ -92,7 +95,7 @@ const component = graphql(
     }),
   }
 )(({ attributes, children, items }) =>
-  (<MarginContainer>
+  (<MarginContainer {...attributes}>
     <H1>Telefonnummern</H1>
     <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
     {items.map(item =>
@@ -103,9 +106,6 @@ const component = graphql(
         </StyledLink>
       </Entry>)
     )}
-    <Text {...attributes}>
-      {children}
-    </Text>
   </MarginContainer>)
 );
 
@@ -113,6 +113,6 @@ export default {
   key: 'GZK.Collections.PhoneBlock',
   label: 'Telefon',
   category: 'Collections',
-  editable: true,
+  editable: false,
   component,
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, gql } from 'olymp';
-import { createComponent, Grid, withColor, ContentLoader } from 'olymp-fela';
+import { createComponent, Grid, withColor, SchemaLoader } from 'olymp-fela';
 import { Img } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -8,7 +8,26 @@ import VCard from './vcard';
 import { ImageStyles } from '../image';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container';
+import { range } from 'lodash';
 
+const loaderSchema = [
+  {
+    height: 450,
+    width: '100%',
+  },
+  {
+    height: 600,
+    width: 'container',
+    grid: [
+      {
+        medium: 5,
+      },
+      {
+        medium: 7,
+      },
+    ],
+  },
+];
 const Label = Blocks.ImageBlockLabel.component;
 const Header = HeaderBlock.component;
 const Container = createComponent(
@@ -21,14 +40,17 @@ const Slate = withBlockTypes(props => <SlateMate {...props} />);
 const Content = createComponent(
   ({ theme }) => ({
     width: '100%',
-    paddingX: theme.space3,
+    paddingX: theme.space5,
   }),
   p => <Grid.Item medium={7} {...p} />,
   p => Object.keys(p)
 );
 
 const Peak = createComponent(
-  ImageStyles,
+  props => ({
+    ...ImageStyles(props),
+    marginBottom: props.theme.space3,
+  }),
   ({ className, header, subheader, value }) =>
     (<div className={className}>
       <div>
@@ -48,7 +70,7 @@ const Peak = createComponent(
 const component = withColor(
   ({ item }) => item.farbe
 )(({ className, attributes, item }) =>
-  (<ContentLoader isLoading={!item.name}>
+  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {item.image
         ? <Peak
@@ -72,7 +94,7 @@ const component = withColor(
         </Grid>
       </Container>
     </div>
-  </ContentLoader>)
+  </SchemaLoader>)
 );
 
 const componentWithData = graphql(

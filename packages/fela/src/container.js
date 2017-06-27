@@ -1,8 +1,9 @@
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ theme }) => ({
+  ({ theme, height }) => ({
     minHeight: 30,
+    height,
     position: 'relative',
     marginX: 'auto',
     onAfter: {
@@ -34,5 +35,5 @@ export default createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  ({ height, ...p }) => Object.keys(p)
 );

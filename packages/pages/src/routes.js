@@ -27,7 +27,7 @@ export const EditablePageRoute = (props) => {
 
   if (!match) {
     return (
-      <ContentLoader isLoading={loading}>
+      <ContentLoader height={600} isLoading={loading}>
         <EditablePage
           {...props}
           deviceWidth={deviceWidth}
@@ -46,7 +46,7 @@ export const EditablePageRoute = (props) => {
     );
   }
   return (
-    <ContentLoader isLoading={loading}>
+    <ContentLoader height={600} isLoading={loading}>
       <EditablePage
         {...props}
         deviceWidth={deviceWidth}
@@ -73,7 +73,7 @@ export const PageRoute = (props) => {
   return (
     <Wrapped {...props} match={match}>
       {renderHelmet(match || {})}
-      <ContentLoader isLoading={loading}>
+      <ContentLoader height={600} isLoading={loading}>
         {match
           ? <Page.WithData
             {...props}

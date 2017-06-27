@@ -96,9 +96,11 @@ export default ({ auth, theme, modules }) => (Wrapped) => {
                 render={() => <AuthUser {...props} />}
               />
               <SimpleRoute
-                render={() =>
+                render={rest =>
                   (<PageRoute
+                    {...rest}
                     {...props}
+                    key={location.key}
                     navigation={filterPublic(props.navigation)}
                     Wrapped={Wrapped}
                   />)}

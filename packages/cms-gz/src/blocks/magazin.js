@@ -1,8 +1,37 @@
 import React from 'react';
-import { createComponent, Container, Grid, border } from 'olymp-fela';
+import {
+  createComponent,
+  Container,
+  Grid,
+  border,
+  SchemaLoader,
+} from 'olymp-fela';
 import { H2, Panel } from '../components';
 import { graphql, gql, Link } from 'olymp';
 import { Img } from 'olymp-cloudinary';
+import { range } from 'lodash';
+
+const loaderSchema = [
+  {
+    height: 0,
+  },
+  {
+    width: 'container',
+    grid: [
+      {
+        medium: 7,
+        children: range(9).map(() => ({
+          height: 300,
+          width: '100%',
+        })),
+      },
+      {
+        medium: 5,
+        height: 500,
+      },
+    ],
+  },
+];
 
 const Image = createComponent(
   ({ theme }) => ({
@@ -59,40 +88,43 @@ const component = graphql(
     props: ({ ownProps, data }) => ({
       ...ownProps,
       data,
+      isLoading: data.loading,
       items: data.items || [],
     }),
   }
-)(({ attributes, items, getData, ...props }) =>
-  (<Container {...attributes}>
-    <Grid>
-      <Grid.Item medium={8}>
-        {items.map(item =>
-          (<Panel accent={item.farbe} key={item.id} title={item.name}>
-            <Image value={item.bild} width={200} ratio={1} />
-            <div>
-              <p>
-                {item.extrakt}
-              </p>
-              <Link to={item.slug}>Weiterlesen...</Link>
-            </div>
-          </Panel>)
-        )}
-      </Grid.Item>
-      <Grid.Item medium={4} paddingMini="0.5rem 1rem" paddingMedium="0 1rem">
-        <H2>Ausgaben als PDFs</H2>
-        <ul>
-          <Li>Gesund im Zentrum - <b>Sport</b></Li>
-          <Li>Gesund im Zentrum - <b>Gesundheit</b></Li>
-          <Li>Gesund im Zentrum - <b>Fitness</b></Li>
-        </ul>
+)(({ attributes, items, getData, isLoading, ...props }) =>
+  (<SchemaLoader isLoading={isLoading} schema={loaderSchema}>
+    <Container {...attributes}>
+      <Grid>
+        <Grid.Item medium={8}>
+          {items.map(item =>
+            (<Panel accent={item.farbe} key={item.id} title={item.name}>
+              <Image value={item.bild} width={200} ratio={1} />
+              <div>
+                <p>
+                  {item.extrakt}
+                </p>
+                <Link to={item.slug}>Weiterlesen...</Link>
+              </div>
+            </Panel>)
+          )}
+        </Grid.Item>
+        <Grid.Item medium={4} paddingMini="0.5rem 1rem" paddingMedium="0 1rem">
+          <H2>Ausgaben als PDFs</H2>
+          <ul>
+            <Li>Gesund im Zentrum - <b>Sport</b></Li>
+            <Li>Gesund im Zentrum - <b>Gesundheit</b></Li>
+            <Li>Gesund im Zentrum - <b>Fitness</b></Li>
+          </ul>
 
-        <H2>Schlagworte</H2>
-        <Tag>Sport</Tag>
-        <Tag>Gesundheit</Tag>
-        <Tag>Fitness</Tag>
-      </Grid.Item>
-    </Grid>
-  </Container>)
+          <H2>Schlagworte</H2>
+          <Tag>Sport</Tag>
+          <Tag>Gesundheit</Tag>
+          <Tag>Fitness</Tag>
+        </Grid.Item>
+      </Grid>
+    </Container>
+  </SchemaLoader>)
 );
 
 export default {

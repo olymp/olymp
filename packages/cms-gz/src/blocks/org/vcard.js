@@ -7,7 +7,7 @@ import Person from './person';
 import moment from 'moment';
 
 const niceTime = (times) => {
-  if (times.length === 0) {
+  if (times.length === 0 || !Array.isArray(times)) {
     return 'Geschlossen';
   }
   return times.map(time => time.join('-')).join(', ');
