@@ -8,7 +8,6 @@ import VCard from './vcard';
 import { ImageStyles } from '../image';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container';
-import { range } from 'lodash';
 
 const loaderSchema = [
   {
@@ -16,14 +15,25 @@ const loaderSchema = [
     width: '100%',
   },
   {
-    height: 600,
     width: 'container',
     grid: [
       {
         medium: 5,
+        children: [
+          {
+            height: 100,
+          },
+          {
+            height: 200,
+          },
+          {
+            height: 400,
+          },
+        ],
       },
       {
         medium: 7,
+        height: 800,
       },
     ],
   },

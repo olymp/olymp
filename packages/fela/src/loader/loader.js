@@ -3,6 +3,7 @@ import { createComponent } from 'react-fela';
 import Container from '../container';
 import Grid from '../grid';
 
+// const loaderSchema2 = `450f,[c[m5[100,200,400]]g]`
 const Panel = createComponent(
   ({ height, width, pad, theme }) => ({
     height,

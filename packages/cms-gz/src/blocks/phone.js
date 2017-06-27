@@ -1,7 +1,18 @@
 import React from 'react';
-import { createComponent, Container } from 'olymp-fela';
+import { createComponent, Container, SchemaLoader } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
 import { H1, Logo } from '../components';
+import { range } from 'lodash';
+
+const loaderSchema = [
+  {
+    height: 0,
+  },
+  ...range(20).map(i => ({
+    height: 43,
+    width: '100%',
+  })),
+];
 
 const StyledLink = createComponent(
   ({ theme }) => ({
@@ -91,21 +102,26 @@ const component = graphql(
     props: ({ ownProps, data }) => ({
       ...ownProps,
       data,
+      isLoading: data.loading,
       items: data.items || [],
     }),
   }
-)(({ attributes, children, items }) =>
+)(({ attributes, children, items, isLoading }) =>
   (<MarginContainer {...attributes}>
     <H1>Telefonnummern</H1>
     <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
-    {items.map(item =>
-      (<Entry number={item.telefon} key={item.id} color={item.farbe}>
-        <Logo color={item.farbe} icon={16} />
-        <StyledLink to={item.slug}>
-          {item.title || item.name}
-        </StyledLink>
-      </Entry>)
-    )}
+    <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
+      <div>
+        {items.map(item =>
+          (<Entry number={item.telefon} key={item.id} color={item.farbe}>
+            <Logo color={item.farbe} icon={16} />
+            <StyledLink to={item.slug}>
+              {item.title || item.name}
+            </StyledLink>
+          </Entry>)
+        )}
+      </div>
+    </SchemaLoader>
   </MarginContainer>)
 );
 
