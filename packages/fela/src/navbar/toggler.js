@@ -1,4 +1,5 @@
 import React, { Children, cloneElement, Component } from 'react';
+import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
 const Container = createComponent(
@@ -71,27 +72,26 @@ const Button = createComponent(
 );
 
 class Toggler extends Component {
+  state = { open: false };
+
   render() {
-    const {
-      className,
-      children,
-      router,
-      pathname,
-      query,
-      ...props
-    } = this.props;
-    const open = query.nav === null;
+    const { className, children, isOpen, ...props } = this.props;
+    const { open } = this.state;
+
+    const toggleState = () => this.setState({ open: !open });
+    const toggleMenu = this.props.toggleMenu || toggleState;
 
     return (
       <Container className={className} open={open}>
         <Button
           {...props}
-          open={open}
-          onClick={() =>
+          open={isOpen || open}
+          onClick={toggleMenu}
+          /* onClick={() =>
             router.push({
               pathname,
               query: { ...query, nav: !open ? null : undefined },
-            })}
+            })} */
         />
 
         <div>
@@ -101,4 +101,12 @@ class Toggler extends Component {
     );
   }
 }
+Toggler.PropTypes = {
+  toggleMenu: PropTypes.func,
+  isOpen: PropTypes.bool,
+};
+Toggler.defaultProps = {
+  toggleMenu: undefined,
+  isOpen: false,
+};
 export default Toggler;
