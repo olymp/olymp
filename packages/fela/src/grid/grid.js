@@ -28,4 +28,6 @@ Grid.propTypes = {
 Grid.defaultProps = {
   size: 12,
 };
+Grid.displayName = 'Grid';
+
 export default Grid;
