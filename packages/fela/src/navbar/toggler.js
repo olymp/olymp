@@ -1,5 +1,4 @@
 import React, { Children, cloneElement, Component } from 'react';
-import { withRouter } from 'olymp';
 import { createComponent } from 'react-fela';
 
 const Container = createComponent(
@@ -71,7 +70,6 @@ const Button = createComponent(
   p => Object.keys(p)
 );
 
-@withRouter
 class Toggler extends Component {
   render() {
     const {
