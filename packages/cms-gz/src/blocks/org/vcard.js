@@ -63,8 +63,9 @@ const Logo = createComponent(
     marginTop: theme.space2,
     marginX: 'auto',
   }),
-  ({ value, className }) =>
+  ({ value, className, title }) =>
     (<Img
+      alt={title}
       className={className}
       value={value}
       width={400}
@@ -86,6 +87,7 @@ export default createComponent(
     org: {
       farbe,
       name,
+      titel,
       etage,
       eMail,
       fax,
@@ -102,7 +104,7 @@ export default createComponent(
     },
   }) =>
     (<div>
-      <Logo value={logo} />
+      <Logo value={logo} title={name || titel} />
       <div className={className}>
         <H2 color={farbe}>{name}</H2>
         {etage && <List label="Etage">{etage}</List>}

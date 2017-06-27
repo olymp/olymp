@@ -61,11 +61,11 @@ const Peak = createComponent(
     ...ImageStyles(props),
     marginBottom: props.theme.space3,
   }),
-  ({ className, header, subheader, value }) =>
+  ({ className, header, subheader, value, title }) =>
     (<div className={className}>
       <div>
         <div>
-          <Img value={value} width="100%" maxSize={1000} />
+          <Img value={value} alt={title} width="100%" maxSize={1000} />
         </div>
       </div>
       {(header || subheader) &&
@@ -84,6 +84,7 @@ const component = withColor(
     <div>
       {item.image
         ? <Peak
+          title={item.name || item.titel}
           value={item.image}
           header={item.slogan}
           subheader={item.willkommen}
