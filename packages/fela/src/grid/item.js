@@ -127,4 +127,5 @@ GridItem.defaultProps = {
   huge: undefined,
   height: undefined,
 };
+GridItem.displayName = 'GridItem';
 export default GridItem;

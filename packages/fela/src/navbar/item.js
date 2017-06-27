@@ -33,7 +33,12 @@ const NavItem = createComponent(
     onItemMouseEnter,
     ...props
   }) =>
-    (<div className={className} onMouseEnter={() => onItemMouseEnter(props)}>
+    (<div
+      className={className}
+      onMouseEnter={
+        onItemMouseEnter ? () => onItemMouseEnter(props) : undefined
+      }
+    >
       {pathname
         ? <Link to={pathname} inverse={props.inverse}>
           {title}

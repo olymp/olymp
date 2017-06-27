@@ -53,7 +53,7 @@ const Text = createComponent(
 
 const Container = createComponent(
   ({ theme }) => ({
-    marginY: theme.space2,
+    marginY: 0,
   }),
   ({ className, name, farbe, text, active, onClick }) =>
     (<div className={className}>
