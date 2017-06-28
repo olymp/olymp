@@ -40,6 +40,7 @@ storiefy('Full featured', () =>
     width={number('width', 500)}
     height={number('height', undefined)}
     lazy={boolean('lazy', true)}
+    alt={text('alt', 'cat picture')}
     maxResolution={number('maxResolution', 4000000)}
     minWidth={number('minWidth', undefined)}
     maxWidth={number('maxWidth', undefined)}

@@ -50,7 +50,7 @@ class LazyImage extends Component {
       maxWidth,
       maxHeight,
       amp,
-      caption,
+      alt,
       setUrl,
       maxResolution,
     } = this.props;
@@ -107,7 +107,7 @@ class LazyImage extends Component {
           className={className}
           layout="responsive"
           src={setUrl(width, height)}
-          alt={caption}
+          alt={alt}
           width={width}
           height={height}
         />
@@ -127,12 +127,7 @@ class LazyImage extends Component {
         visible={visible}
         onVisible={() => this.setState({ visible: true })}
       >
-        <img
-          src={setUrl(width, height)}
-          alt={caption}
-          width="100%"
-          height="auto"
-        />
+        <img src={setUrl(width, height)} alt={alt} width="100%" height="auto" />
       </Container>
     );
   }
@@ -141,7 +136,7 @@ LazyImage.propTypes = {
   setUrl: PropTypes.func.isRequired,
   ratio: PropTypes.number.isRequired,
   lazy: PropTypes.bool,
-
+  alt: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.number,
   minWidth: PropTypes.number,
@@ -154,7 +149,7 @@ LazyImage.defaultProps = {
   setUrl: (w, h) => `https://lorempixel.com/${w}/${h}/cats/${w}x${h}`,
   ratio: 0.75,
   lazy: true,
-
+  alt: '',
   width: undefined,
   height: undefined,
   minWidth: undefined,
