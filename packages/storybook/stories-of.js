@@ -6,30 +6,33 @@ import { createComponent } from 'react-fela';
 
 const Container = createComponent(
   ({ customStyle }) => ({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '1rem',
     backgroundColor: '#eeeeee',
+    '> div': {
+      width: '100%',
+      '> div': {
+        '> *': {
+          marginX: 'auto',
+          display: 'table',
+        },
+      },
+    },
     ...customStyle,
   }),
   'div',
   ({ customStyle, ...p }) => Object.keys(p)
 );
 
-export default (title, centered, customStyle) => (subtitle, compFn, text) =>
+export default (title, customStyle) => (subtitle, compFn, text) =>
   storiesOf(title, module)
     .addDecorator(withKnobs)
-    .addDecorator(
-      storyFn =>
-        centered
-          ? <Container customStyle={customStyle || {}}>{storyFn()}</Container>
-          : <div>{storyFn()}</div>
+    .addDecorator(storyFn =>
+      (<Container customStyle={customStyle || {}}>
+        {storyFn()}
+      </Container>)
     )
     .addDecorator(RouterDecorator)
     .addDecorator(FelaDecorator)
