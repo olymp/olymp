@@ -14,10 +14,12 @@ const Container = createComponent(
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: '1rem',
+    backgroundColor: '#eeeeee',
     ...customStyle,
   }),
   'div',
-  p => Object.keys(p)
+  ({ customStyle, ...p }) => Object.keys(p)
 );
 
 export default (title, centered, customStyle) => (subtitle, compFn, text) =>
