@@ -19,7 +19,7 @@ const Container = createComponent(
       width: '100%',
       paddingTop: `${ratio * 100}%`,
     },
-    '> *': {
+    '> img': {
       position: 'absolute',
       top: 0,
       left: 0,

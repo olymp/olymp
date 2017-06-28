@@ -7,6 +7,7 @@ import Image from './image';
 export const ImageStyles = ({ theme, color = theme.color }) => ({
   // overflow: 'hidden',
   position: 'relative',
+  overflow: 'hidden',
   '> div:nth-child(1)': {
     '& img': {
       borderBottomRightRadius: 100,
