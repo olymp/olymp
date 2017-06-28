@@ -55,13 +55,7 @@ class MediaDetail extends Component {
                 crop={item.crop}
                 onChange={crop => patchItem({ crop })}
               />
-              : <LightboxImage
-                value={item}
-                mode="fill"
-                width="100%"
-                style={{ maxWidth: '100%' }}
-                retina
-              />}
+              : <LightboxImage value={item} width="100%" />}
           </Form.Item>
           <Form.Item key="id" label="ID" {...FormItemLayout}>
             <Input value={item.id} disabled placeholder="ID" />

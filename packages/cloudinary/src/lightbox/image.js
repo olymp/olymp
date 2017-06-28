@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'olymp';
-import { url } from '../utils';
-import Image from '../components/image';
+import Image, { getUrl } from '../components/image';
 
 @withRouter
 export default class Lightbox extends Component {
@@ -34,30 +33,26 @@ export default class Lightbox extends Component {
   }
 
   add = (value) => {
-    const { width = 800, height, retina, mode } = this.props;
     const { lightbox } = this.context;
+    const width = 800;
     const getSrcSet = w =>
-      `${url(value.url, {
-        width: Math.floor(w),
-        dpr: retina ? 2 : undefined,
-        mode,
+      `${getUrl(value, {
+        w: Math.floor(w),
       })} ${Math.floor(w)}w`;
 
     lightbox.add({
       ref: this.ref,
       gallery: lightbox.gallery,
-      src: url(value.url, { width, height, dpr: retina ? 2 : undefined, mode }),
+      src: getUrl(value, { w: width }),
       srcset: [
         getSrcSet(width),
         getSrcSet(width / 4 * 3),
         getSrcSet(width / 2),
         getSrcSet(width / 4),
       ],
-      thumbnail: url(value.url, {
-        width: 50,
-        height: 50,
-        dpr: retina ? 2 : undefined,
-        mode: 'fill',
+      thumbnail: getUrl(value, {
+        w: 50,
+        h: 50,
       }),
       caption: value.caption && value.source
         ? `${value.caption} - ${value.source}`
@@ -75,15 +70,14 @@ export default class Lightbox extends Component {
 
   render() {
     const {
+      value,
       onClick,
       router,
       pathname,
       query,
-      value,
       search,
       dispatch,
       location,
-      retina,
       ...rest
     } = this.props;
 
