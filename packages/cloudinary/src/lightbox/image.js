@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'olymp';
-import Image, { getUrl } from '../components/image';
+import Image, { cloudinaryUrl } from '../components/image';
 
 @withRouter
 export default class Lightbox extends Component {
@@ -36,21 +36,21 @@ export default class Lightbox extends Component {
     const { lightbox } = this.context;
     const width = 800;
     const getSrcSet = w =>
-      `${getUrl(value, {
+      `${cloudinaryUrl(value, {
         w: Math.floor(w),
       })} ${Math.floor(w)}w`;
 
     lightbox.add({
       ref: this.ref,
       gallery: lightbox.gallery,
-      src: getUrl(value, { w: width }),
+      src: cloudinaryUrl(value, { w: width }),
       srcset: [
         getSrcSet(width),
         getSrcSet(width / 4 * 3),
         getSrcSet(width / 2),
         getSrcSet(width / 4),
       ],
-      thumbnail: getUrl(value, {
+      thumbnail: cloudinaryUrl(value, {
         w: 50,
         h: 50,
       }),

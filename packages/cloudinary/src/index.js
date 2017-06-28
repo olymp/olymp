@@ -4,4 +4,3 @@ export { default as CloudinaryRoute } from './route';
 export * from './lightbox';
 export * from './components';
 export * from './edits';
-export * from './utils';

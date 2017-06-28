@@ -5,7 +5,7 @@ import { Image } from 'olymp-fela';
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
 
-export const getUrl = (value, options) => {
+export const cloudinaryUrl = (value, options) => {
   const newOptions = {
     c: 'fill',
     f: 'auto',
@@ -44,7 +44,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
     <Image
       {...rest}
       setUrl={(w, h) =>
-        getUrl(value, {
+        cloudinaryUrl(value, {
           w,
           h,
           g: avatar ? 'face' : 'center',
