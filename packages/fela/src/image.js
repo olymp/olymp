@@ -8,14 +8,11 @@ import { ContentLoaderStyles } from './loader';
 const Container = createComponent(
   ({ ratio, width, minWidth, minHeight, maxWidth, maxHeight, visible }) => ({
     position: 'relative',
-    width: width || '100%',
-    overflow: 'hidden',
+    width,
     minWidth,
     minHeight,
     maxWidth,
     maxHeight,
-    // maxWidth: maxWidth || '100%',
-    // maxHeight: maxHeight || 'auto',
     onBefore: {
       display: 'block',
       content: '""',
@@ -45,6 +42,8 @@ class LazyImage extends Component {
     const {
       className,
       lazy,
+      width: pWidth,
+      height: pHeight,
       minWidth,
       minHeight,
       maxWidth,
@@ -53,6 +52,7 @@ class LazyImage extends Component {
       alt,
       setUrl,
       maxResolution,
+      ...rest
     } = this.props;
     const { visible } = this.state;
     let { width, height, ratio } = this.props;
@@ -126,6 +126,7 @@ class LazyImage extends Component {
         lazy={lazy}
         visible={visible}
         onVisible={() => this.setState({ visible: true })}
+        {...rest}
       >
         <img src={setUrl(width, height)} alt={alt} width="100%" height="auto" />
       </Container>

@@ -32,7 +32,28 @@ storiefy('Min-/max-dimensions', () =>
 );
 
 storiefy('Lazy loading', () =>
-  <Image width="100%" maxResolution={2500000} lazy={boolean('lazy', true)} />
+  (<div>
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+    <Image width={200} lazy={boolean('lazy', true)} />
+  </div>)
 );
 
 storiefy('Full featured', () =>
