@@ -11,7 +11,7 @@ const getURL = () => {
   }
   return null;
 };
-const renderHelmet = (pathname, { name, description, tags }) => {
+const renderHelmet = (pathname, { name, description, tags } = {}) => {
   const meta = [];
   const link = [];
   meta.push({
@@ -79,7 +79,7 @@ export const EditablePageRoute = (props) => {
           render={match =>
             (<IFrame disabled={!deviceWidth}>
               <Wrapped {...props}>
-                {renderHelmet({
+                {renderHelmet(pathname, {
                   name: '404',
                   description: 'Seite wurde nicht gefunden',
                 })}
@@ -101,7 +101,7 @@ export const EditablePageRoute = (props) => {
         render={children =>
           (<IFrame disabled={!deviceWidth}>
             <Wrapped {...props} match={match}>
-              {renderHelmet(match)}
+              {renderHelmet(pathname, match)}
               {children}
             </Wrapped>
           </IFrame>)}

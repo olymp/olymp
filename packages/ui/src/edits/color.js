@@ -79,7 +79,6 @@ const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
         <Input
           type="color"
           style={{ width: 100 }}
-          placeholder={name}
           value={tinycolor(value).toHexString()}
           defaultValue={tinycolor(value).toHexString()}
           onChange={onChange}
