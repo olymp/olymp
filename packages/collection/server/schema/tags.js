@@ -8,8 +8,8 @@ export default {
   `,
   resolvers: {
     queries: {
-      tags: (source, args, { db }) =>
-        db
+      tags: (source, args, { monk }) =>
+        monk
           .collection('items')
           .find({}, { tags: 1 })
           .then(array => array.map(({ tags }) => tags))
@@ -24,8 +24,8 @@ export default {
             }, []);
             return orderBy(result, ['count', 'id'], ['desc', 'asc']);
           }),
-      suggestions: (source, args, { db }) =>
-        db
+      suggestions: (source, args, { monk }) =>
+        monk
           .collection(args.collection.toLowerCase())
           .find({}, { [args.field]: 1 })
           .then((array) => {

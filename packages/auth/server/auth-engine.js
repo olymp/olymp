@@ -18,10 +18,10 @@ const cleanUser = (user) => {
   return cleaned;
 };
 
-export default ({ db, secret, mail, issuer }) => {
+export default ({ monk, secret, mail, issuer }) => {
   const passwordEngine = createPasswordEngine({});
   const tokenEngine = createTokenEngine({ secret });
-  const collection = db.collection('user');
+  const collection = monk.collection('user');
   return {
     passwordEngine,
     tokenEngine,
@@ -156,7 +156,7 @@ export default ({ db, secret, mail, issuer }) => {
     totp: (id) => {
       const secret = speakeasy.generateSecret({ length: 20 }).base32;
       let user = null;
-      return db
+      return monk
         .read('user', { id })
         .then((currentUser) => {
           if (!currentUser) {
@@ -206,7 +206,7 @@ export default ({ db, secret, mail, issuer }) => {
               throw new Error('TOTP token error');
             }
           }
-          return db.read('user', { id });
+          return monk.read('user', { id });
         })
         .then((currentUser) => {
           if (!currentUser) {

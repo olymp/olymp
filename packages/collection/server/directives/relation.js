@@ -44,8 +44,8 @@ export default {
       // Only add xxxId field to store/access the id
       if (relationType === '1-1') {
         addFields(ast, leftNode, `${leftField}Id: String`);
-        set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
-          db.collection(rightTable).findOne({
+        set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+          monk.collection(rightTable).findOne({
             id: source[`${leftField}Id`],
           })
         );
@@ -58,15 +58,15 @@ export default {
           `query: ${rightType}Query, sort: ${rightType}Sort, limit: Int, skip: Int`
         );*/
         addFields(ast, leftNode, `${leftField}Id: String`);
-        set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
-          db.collection('item').findOne({
+        set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+          monk.collection('item').findOne({
             id: source[`${leftField}Id`],
             _type: rightTable,
           })
         );
         addFields(ast, leftNode, `${rightField}: [${leftType}]`);
-        set(resolvers, `${rightType}.${rightField}`, (source, args, { db }) =>
-          db.collection(leftTable).find({ [`${leftField}Id`]: source.id })
+        set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
+          monk.collection(leftTable).find({ [`${leftField}Id`]: source.id })
         );
       }
 
@@ -77,13 +77,13 @@ export default {
 
         if (relationType === '1-n') {
           addFields(ast, rightNode, `${rightField}: [${leftType}]`);
-          set(resolvers, `${rightType}.${rightField}`, (source, args, { db }) =>
-            db.collection(leftTable).find({})
+          set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
+            monk.collection(leftTable).find({})
           );
         } else if (relationType === '1-1') {
           addFields(ast, rightNode, `${rightField}: ${leftType}`);
-          set(resolvers, `${rightType}.${rightField}`, (source, args, { db }) =>
-            db.collection(leftTable).findOne({})
+          set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
+            monk.collection(leftTable).findOne({})
           );
         }
       }*/

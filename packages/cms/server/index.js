@@ -5,7 +5,7 @@ import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 /* import createSitemap from 'olymp-sitemap/server';
 import { googleGraphQL } from 'olymp-google/server';*/
-import monk from 'monk';
+import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
 import { get } from 'lodash';
 
@@ -21,7 +21,7 @@ const {
 } = process.env;
 
 export default (server, options) => {
-  const db = monk(MONGODB_URI);
+  const monk = createMonk(MONGODB_URI);
 
   const schema = createSchema({ directives });
   const modules = {
@@ -40,13 +40,13 @@ export default (server, options) => {
   };
   const mail = createMail(POSTMARK_KEY, options.mail);
 
-  const authEngine = createAuthEngine({ db, mail, secret: AUTH_SECRET });
+  const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET });
   server.use(authCache(authEngine));
 
   let cachedApp = null;
   server.use((req, res, next) => {
     req.mail = mail;
-    req.db = db;
+    req.monk = monk;
     req.schema = schema;
     req.authEngine = authEngine;
     req.app = cachedApp;
@@ -63,7 +63,7 @@ export default (server, options) => {
   cloudinaryGraphQL(schema, CLOUDINARY_URI, options.cloudinary);
 
   if (options.schemas) {
-    options.schemas({ schema, mail, authEngine, server, db });
+    options.schemas({ schema, mail, authEngine, server, monk });
   }
 
   let cachedApp = null;
@@ -72,7 +72,7 @@ export default (server, options) => {
     if (cachedApp) {
       return schema.express(req, res, next);
     }
-    db
+    monk
       .collection('apps')
       .findOne({ id: APP })
       .then((app) => {
@@ -91,7 +91,7 @@ export default (server, options) => {
     server.get('/graphql', schema.graphi);
   }
 
-  db.collection('app').findOne({ id: APP }).then((app) => {
+  monk.collection('app').findOne({ id: APP }).then((app) => {
     if (!app) {
       throw new Error('App not found');
     }
@@ -99,14 +99,14 @@ export default (server, options) => {
     schema.apply(modules);
   });
 
-  /* db.collection('page').find({}).then((items) => {
+  /* monk.collection('page').find({}).then((items) => {
     items.forEach((item) => {
-      db.collection('item').insert({ ...item, _type: 'page', _appId: 'gzk' });
+      monk.collection('item').insert({ ...item, _type: 'page', _appId: 'gzk' });
     });
   });
-  db.collection('file').find({}).then((items) => {
+  monk.collection('file').find({}).then((items) => {
     items.forEach((item) => {
-      db.collection('item').insert({ ...item, _type: 'file', _appId: 'gzk' });
+      monk.collection('item').insert({ ...item, _type: 'file', _appId: 'gzk' });
     });
   });*/
 };

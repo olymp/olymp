@@ -18,9 +18,9 @@ export default (ast, node, resolvers) => {
       { replace: false }
     );
     if (!get(resolvers, `RootQuery.${table}`)) {
-      set(resolvers, `RootQuery.${table}`, (source, { id, query }, { db }) =>
-        // db.collection(table).findOne(id ? { id } : adaptQuery(query))
-        db.collection('item').findOne(id ? { id } : adaptQuery(query))
+      set(resolvers, `RootQuery.${table}`, (source, { id, query }, { monk }) =>
+        // monk.collection(table).findOne(id ? { id } : adaptQuery(query))
+        monk.collection('item').findOne(id ? { id } : adaptQuery(query))
       );
     }
 
@@ -35,9 +35,9 @@ export default (ast, node, resolvers) => {
       set(
         resolvers,
         `RootQuery.${table}List`,
-        (source, { query, sort }, { db, app }) =>
-          // db.collection(table).find(adaptQuery(query))
-          db
+        (source, { query, sort }, { monk, app }) =>
+          // monk.collection(table).find(adaptQuery(query))
+          monk
             .collection('item')
             .find(
               { ...adaptQuery(query), _type: table, _appId: app.id },
@@ -71,36 +71,36 @@ export default (ast, node, resolvers) => {
       set(
         resolvers,
         `RootMutation.${table}`,
-        /* (source, { id, input, type }, { db }) => {
+        /* (source, { id, input, type }, { monk }) => {
           if (!id) {
-            db.collection(table).insert(input);
+            monk.collection(table).insert(input);
           } else if (type === 'REPLACE') {
-            db.collection(table).update(input);
+            monk.collection(table).update(input);
           } else {
-            db.collection(table).update({ $set: input });
+            monk.collection(table).update({ $set: input });
           }
         }*/
-        (source, { id, input, type }, { db, app }) => {
+        (source, { id, input, type }, { monk, app }) => {
           let promise;
           if (!id) {
             id = shortId.generate();
-            promise = db
+            promise = monk
               .collection('item')
               .insert({ ...input, _type: table, _appId: app.id, id });
           } else if (type === 'REMOVE') {
-            promise = db
+            promise = monk
               .collection('item')
               .update({ id }, { ...input, state: 'REMOVED' });
           } else if (type === 'REPLACE') {
-            promise = db
+            promise = monk
               .collection('item')
               .update({ id }, { ...input, _type: table, _appId: app.id, id });
           } else {
-            promise = db
+            promise = monk
               .collection('item')
               .update({ id }, { $set: { ...input } });
           }
-          return promise.then(() => db.collection('item').findOne({ id }));
+          return promise.then(() => monk.collection('item').findOne({ id }));
         }
       );
     }

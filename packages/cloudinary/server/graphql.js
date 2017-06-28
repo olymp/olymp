@@ -21,13 +21,13 @@ export default (uri) => {
     `,
     resolvers: {
       queries: {
-        file: (source, args, { db, app }) =>
-          db.collection('item').findOne({ id: args.id }).then((item) => {
+        file: (source, args, { monk, app }) =>
+          monk.collection('item').findOne({ id: args.id }).then((item) => {
             if (item) {
               return item;
             }
             return getImageById(config, args.id).then((image) => {
-              db
+              monk
                 .collection('item')
                 .update(
                   { id: args.id },
@@ -38,7 +38,7 @@ export default (uri) => {
               return image;
             });
           }),
-        fileList: (source, { tags, query }, { db, app }) => {
+        fileList: (source, { tags, query }, { monk, app }) => {
           const mongoQuery = adaptQuery(query);
           const getFiltered = items =>
             tags // eslint-disable-line
@@ -49,7 +49,7 @@ export default (uri) => {
             const filtered = getFiltered(images.filter(x => !x.removed));
             Promise.all(
               filtered.map(item =>
-                db
+                monk
                   .collection('item')
                   .update(
                     { id: item.id },

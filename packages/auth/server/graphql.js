@@ -32,31 +32,31 @@ export default ({ attributes = '' } = {}) => ({
       verify: (source, args, { authEngine, session }) =>
         session && session.userId && authEngine.getUser(session.userId),
       // verify: (source, args) => auth.verify(args.token),
-      invitationList: (source, args, { user, db }) => {
+      invitationList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
         }
-        return db.collection('invitation').find({});
+        return monk.collection('invitation').find({});
       },
-      invitation: (source, args, { user, db }) => {
+      invitation: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
         }
-        return db.collection('invitation').findOne({ id: args.id });
+        return monk.collection('invitation').findOne({ id: args.id });
       },
-      userList: (source, args, { user, db }) => {
+      userList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
         }
-        return db.collection('user').find({});
+        return monk.collection('user').find({});
       },
-      user: (source, args, { user, db }) => {
+      user: (source, args, { user, monk }) => {
         if (user && user.isAdmin) {
         } else if (user && user.id === args.id) {
         } else {
           throw new Error('No permission');
         }
-        return db.collection('user').findOne({ id: args.id });
+        return monk.collection('user').findOne({ id: args.id });
       },
       totp: (source, args, { session, authEngine }) =>
         authEngine.totp(session.userId).then(x => x),
@@ -84,7 +84,7 @@ export default ({ attributes = '' } = {}) => ({
       },
       confirm: (source, args, { authEngine }) =>
         authEngine.confirm(args.token).then(({ user }) => user),
-      user: (source, args, { user, db }) => {
+      user: (source, args, { user, monk }) => {
         if (user && user.isAdmin) {
         } else if (user && user.id === args.id) {
         } else {
@@ -92,7 +92,7 @@ export default ({ attributes = '' } = {}) => ({
         }
         // eslint-disable-line no-shadow
         if (args.type && args.type === 'REMOVE') {
-          return db.remove('user', Object.assign({}, args));
+          return monk.remove('user', Object.assign({}, args));
         } else if (args.input) {
           const id = args.id;
           args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
@@ -101,18 +101,18 @@ export default ({ attributes = '' } = {}) => ({
         }
         delete args.type; // eslint-disable-line no-param-reassign
         delete args.isAdmin;
-        return db.collection('user').update({ id: user.id }, args);
+        return monk.collection('user').update({ id: user.id }, args);
         // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
         // else return collection.insertOne(args);
       },
-      invitation: (source, args, { user, db, mail, authEngine }) => {
+      invitation: (source, args, { user, monk, mail, authEngine }) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
         }
-        const collection = db.collection('invitation');
+        const collection = monk.collection('invitation');
         // eslint-disable-line no-shadow
         if (args.type && args.type === 'REMOVE') {
-          return db.remove('invitation', Object.assign({}, args));
+          return monk.remove('invitation', Object.assign({}, args));
         } else if (args.input) {
           args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
           delete args.input; // eslint-disable-line no-param-reassign
@@ -120,7 +120,7 @@ export default ({ attributes = '' } = {}) => ({
         delete args.type; // eslint-disable-line no-param-reassign
         args.expiry = +new Date();
         args.token = authEngine.tokenEngine.create({ email: args.email });
-        return db.collection('invitation').insert(args).then((u) => {
+        return monk.collection('invitation').insert(args).then((u) => {
           console.log('INVITE', u.token, u);
           if (mail) {
             mail(
@@ -178,7 +178,7 @@ export default ({ attributes = '' } = {}) => ({
     if (!db) {
       return;
     }
-    const collection = db.collection('user');
+    const collection = monk.collection('user');
     collection
       .findOne({})
       .then((one) => {

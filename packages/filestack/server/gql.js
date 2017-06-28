@@ -15,26 +15,28 @@ export default (schema, { adapter } = {}) => {
     `,
     resolvers: {
       FileStack: {
-        createdBy: source =>
-          adapter.db.collection('user').findOne({ id: source.createdById }),
+        createdBy: (source, args, { monk }) =>
+          monk.collection('user').findOne({ id: source.createdById }),
       },
       queries: {
-        fileStack: (source, args) =>
-          adapter.db.collection('file').findOne({ id: args.id }),
-        fileStackList: (source, { tags }) =>
-          adapter.db.collection('file').findOne({ tags }),
+        fileStack: (source, args, { monk }) =>
+          monk.collection('file').findOne({ id: args.id }),
+        fileStackList: (source, { tags }, { monk }) =>
+          monk.collection('file').findOne({ tags }),
       },
       mutations: {
-        fileStack: (source, { id, input }, context) => {
-          if (!id) { id = shortId.generate(); }
+        fileStack: (source, { id, input }, { monk, user }) => {
+          if (!id) {
+            id = shortId.generate();
+          }
           let item;
           return fetch(
             `https://www.filestackapi.com/api/file/${input.handle}/metadata?width=true&height=true`
           )
             .then(response => response.json())
             .then((json) => {
-              item = transform({ id, ...input, ...json }, context.user);
-              return adapter.db
+              item = transform({ id, ...input, ...json }, user);
+              return monk
                 .collection('file')
                 .updateOne({ id }, item, { upsert: true });
             })

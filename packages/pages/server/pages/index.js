@@ -5,10 +5,10 @@ export default () => ({
   `,
   resolvers: {
     mutations: {
-      reorderPages: (source, args, { db }) =>
+      reorderPages: (source, args, { monk }) =>
         Promise.all(
           args.ids.map((id, order) =>
-            db.collection('page').update({ id }, { $set: { order } })
+            monk.collection('page').update({ id }, { $set: { order } })
           )
         ),
     },
