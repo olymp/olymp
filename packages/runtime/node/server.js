@@ -24,6 +24,7 @@ import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
 import fs from 'fs';
 import useragent from 'express-useragent';
+import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 import { Server as WebSocketServer } from 'ws';
 import { createFela } from 'olymp-fela';
@@ -99,6 +100,9 @@ app.listenWS = (options) => {
 // ---
 
 app.use(helmet());
+if (process.env.NODE_ENV === 'production') {
+  app.use(sslRedirect());
+}
 
 // Compress (gzip) assets in production.
 app.use(compression());

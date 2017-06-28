@@ -1,5 +1,5 @@
 {
-  "version": "15.1.17",
+  "version": "15.1.18",
   "name": "olymp",
   "description": "",
   "main": "./packages/core",
@@ -80,6 +80,7 @@
     "graphql-tools": "^1.0.0",
     "happypack": "^4.0.0-beta.1",
     "helmet": "^3.6.1",
+    "heroku-ssl-redirect": "^0.0.4",
     "hoist-non-react-statics": "1.2.0",
     "html-webpack-plugin": "^2.29.0",
     "isomorphic-fetch": "2.2.1",
