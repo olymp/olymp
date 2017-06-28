@@ -5,56 +5,56 @@ import { Image } from 'olymp-fela';
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
 
-class CloudinaryImage extends Component {
-  getUrl = (value, options) => {
-    const newUrl = value.url
-      .split('ttp://res.cloudinary.com/')
-      .join('ttps://res.cloudinary.com/');
-
-    const crop = value.crop && value.crop.length
-      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
-          .crop[3]},c_crop/`
-      : '';
-
-    let query = '';
-    Object.keys(options).forEach(
-      key => (query = `${query}${key}_${options[key]},`)
-    );
-
-    return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
+export const getUrl = (value, options) => {
+  const newOptions = {
+    c: 'fill',
+    f: 'auto',
+    q: 'auto:eco',
+    fl: 'lossy',
+    dpr: 2,
+    ...options,
   };
 
-  render() {
-    const { options, value, ratio, avatar, alt, ...rest } = this.props;
+  const newUrl = value.url
+    .split('ttp://res.cloudinary.com/')
+    .join('ttps://res.cloudinary.com/');
 
-    if (!value) {
-      return <div />;
-    }
+  const crop = value.crop && value.crop.length
+    ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
+        .crop[3]},c_crop/`
+    : '';
 
-    const width = (value.crop && value.crop[0]) || value.width;
-    const height = (value.crop && value.crop[1]) || value.height;
+  let query = '';
+  Object.keys(newOptions).forEach(
+    key => (query = `${query}${key}_${newOptions[key]},`)
+  );
 
-    return (
-      <Image
-        {...rest}
-        setUrl={(w, h) =>
-          this.getUrl(value, {
-            w,
-            h,
-            c: 'fill',
-            f: 'auto',
-            q: 'auto:eco',
-            fl: 'lossy',
-            dpr: 2,
-            g: avatar ? 'face' : 'center',
-            ...options,
-          })}
-        alt={alt || value.caption}
-        ratio={ratio || height / width}
-      />
-    );
+  return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
+};
+
+const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
+  if (!value) {
+    return <div />;
   }
-}
+
+  const width = (value.crop && value.crop[0]) || value.width;
+  const height = (value.crop && value.crop[1]) || value.height;
+
+  return (
+    <Image
+      {...rest}
+      setUrl={(w, h) =>
+        getUrl(value, {
+          w,
+          h,
+          g: avatar ? 'face' : 'center',
+          ...options,
+        })}
+      alt={alt || value.caption}
+      ratio={ratio || height / width}
+    />
+  );
+};
 CloudinaryImage.propTypes = {
   value: PropTypes.shape({
     url: PropTypes.string,
