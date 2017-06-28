@@ -23,6 +23,8 @@ const GoogleMap = ({ children, center, zoom, key, ...rest }) =>
     defaultZoom={defaultZoom}
     zoom={zoom}
     bootstrapURLKeys={{ key }}
+    onGoogleApiLoaded={({ map, maps }) => console.log(map, maps)}
+    yesIWantToUseGoogleMapApiInternals
     {...rest}
   >
     {children}

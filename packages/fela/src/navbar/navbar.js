@@ -76,7 +76,6 @@ const Navbar = createComponent(
             pages={pages}
             renderItem={renderItem}
             renderNav={renderNav}
-            // hasLogo={!!logo || !!brand}
           >
             <Sub />
           </Toggler>}
