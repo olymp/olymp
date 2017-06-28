@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import { Select } from 'antd';
-import { url as optimizeUrl } from '../utils';
+import { cloudinaryUrl } from './image';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -67,7 +67,7 @@ class Crop extends Component {
         onKeyUp={e => this.setState({ isSquare: false })}
       >
         <StyledCrop
-          src={optimizeUrl(value)}
+          src={cloudinaryUrl(value)}
           onChange={(p, { width, height, x, y }) =>
             onChange([width, height, x, y])}
           crop={
