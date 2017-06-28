@@ -6,7 +6,7 @@ import { Helmet } from 'olymp';
 const getURL = () => {
   if (process.env.URL) {
     return process.env.URL;
-  } else if (typeof window !== 'undefined') {
+  } else if (process.env.IS_WEB) {
     return `${window.location.protocol}//${window.location.host}`;
   }
   return null;
@@ -111,17 +111,9 @@ export const EditablePageRoute = (props) => {
 };
 
 export const PageRoute = (props) => {
-  const {
-    Wrapped,
-    flatNavigation,
-    pathname,
-    loading,
-    location,
-    ...rest
-  } = props;
+  const { Wrapped, flatNavigation, pathname, loading, ...rest } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
-  console.log(window.location, rest);
 
   return (
     <Wrapped {...props} match={match}>
