@@ -82,14 +82,7 @@ const CloseLabel = createComponent(
 const Thumb = ({ item, onClick, onRemove, isActive, height }) =>
   item
     ? <ImageContainer isActive={isActive}>
-      <Image
-        value={item}
-        mode="fill"
-        height={height}
-        onClick={onClick}
-        style={{ maxWidth: '100%' }}
-        retina
-      />
+      <Image value={item} height={height} onClick={onClick} />
       {item.format === 'pdf'
           ? <ImageLabel>
             <Icon type="file-pdf" />
