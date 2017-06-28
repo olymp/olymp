@@ -151,7 +151,7 @@ LazyImage.propTypes = {
   maxResolution: PropTypes.number,
 };
 LazyImage.defaultProps = {
-  setUrl: (w, h) => `https://lorempixel.com/${w}/${h}`,
+  setUrl: (w, h) => `https://lorempixel.com/${w}/${h}/cats/${w}x${h}`,
   ratio: 0.75,
   lazy: true,
 
