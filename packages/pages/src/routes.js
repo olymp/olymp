@@ -3,8 +3,9 @@ import { IFrame, ContentLoader, PageTransition } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { Helmet } from 'olymp';
 
-const renderHelmet = ({ name, description, tags }) => {
+const renderHelmet = (pathname, { name, description, tags }) => {
   const meta = [];
+  const link = [];
   if (description) {
     meta.push({
       name: 'description',
@@ -17,7 +18,18 @@ const renderHelmet = ({ name, description, tags }) => {
       content: tags ? tags.join(',') : undefined,
     });
   }
-  return <Helmet title={name} meta={meta} />;
+  if (process.env.URL && process.env.AMP) {
+    link.push({
+      rel: 'amphtml',
+      href: process.env.URL.split('://').join('://amp.') + pathname,
+    });
+    link.push({
+      rel: 'canonical',
+      href: process.env.URL + pathname,
+    });
+  }
+
+  return <Helmet title={name} meta={meta} link={link} />;
 };
 export const EditablePageRoute = (props) => {
   const { Wrapped, flatNavigation, query, pathname, loading } = props;
@@ -72,7 +84,7 @@ export const PageRoute = (props) => {
 
   return (
     <Wrapped {...props} match={match}>
-      {renderHelmet(match || {})}
+      {renderHelmet(pathname, match || {})}
       <ContentLoader height={600} isLoading={loading}>
         <PageTransition>
           {match

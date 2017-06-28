@@ -73,6 +73,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
       }, !isNode ? {
+        'process.env.AMP': JSON.stringify(process.env.AMP),
         'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? JSON.stringify(process.env.GRAPHQL_URL)
