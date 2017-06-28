@@ -12,13 +12,6 @@ export default {
       REMOVE
       INSERT
     }
-    enum OPERATION_TYPE {
-      INSERT
-      UPDATE
-      PATCH
-      REMOVE
-      REPLACE
-    }
     enum SORT_DIRECTION {
       ASC,
       DESC

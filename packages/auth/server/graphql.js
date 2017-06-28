@@ -20,8 +20,8 @@ export default ({ attributes = '' } = {}) => ({
       reset(token: String, password: String): User
       login(email: Email, password: String, totp: String): User
       logout: Boolean
-      user(id: String, input: UserInput, operationType: OPERATION_TYPE): User
-      invitation(id: String, input: InvitationInput, operationType: OPERATION_TYPE): Invitation
+      user(id: String, input: UserInput, type: USER_MUTATION_TYPE): User
+      invitation(id: String, input: InvitationInput, type: USER_MUTATION_TYPE): Invitation
     `,
   resolvers: {
     queries: {
@@ -91,7 +91,7 @@ export default ({ attributes = '' } = {}) => ({
           throw new Error('No permission');
         }
         // eslint-disable-line no-shadow
-        if (args.operationType && args.operationType === 'REMOVE') {
+        if (args.type && args.type === 'REMOVE') {
           return db.remove('user', Object.assign({}, args));
         } else if (args.input) {
           const id = args.id;
@@ -99,7 +99,7 @@ export default ({ attributes = '' } = {}) => ({
           delete args.input; // eslint-disable-line no-param-reassign
           args.id = id;
         }
-        delete args.operationType; // eslint-disable-line no-param-reassign
+        delete args.type; // eslint-disable-line no-param-reassign
         delete args.isAdmin;
         return db.collection('user').update({ id: user.id }, args);
         // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
@@ -111,13 +111,13 @@ export default ({ attributes = '' } = {}) => ({
         }
         const collection = db.collection('invitation');
         // eslint-disable-line no-shadow
-        if (args.operationType && args.operationType === 'REMOVE') {
+        if (args.type && args.type === 'REMOVE') {
           return db.remove('invitation', Object.assign({}, args));
         } else if (args.input) {
           args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
           delete args.input; // eslint-disable-line no-param-reassign
         }
-        delete args.operationType; // eslint-disable-line no-param-reassign
+        delete args.type; // eslint-disable-line no-param-reassign
         args.expiry = +new Date();
         args.token = authEngine.tokenEngine.create({ email: args.email });
         return db.collection('invitation').insert(args).then((u) => {
@@ -141,6 +141,12 @@ export default ({ attributes = '' } = {}) => ({
     },
   },
   schema: `
+    enum USER_MUTATION_TYPE {
+      UPDATE
+      REPLACE
+      REMOVE
+      INSERT
+    }
     type Invitation @input {
       id: String
       email: Email
