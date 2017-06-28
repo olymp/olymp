@@ -1,5 +1,5 @@
 import React from 'react';
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 
 export default createComponent(
   ({ theme }) => ({

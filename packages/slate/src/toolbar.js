@@ -1,7 +1,7 @@
 import React from 'react';
 import Portal from 'react-portal';
 import { Menu as AntMenu } from 'antd';
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 
 export const Menu = createComponent(
   ({ theme }) => ({

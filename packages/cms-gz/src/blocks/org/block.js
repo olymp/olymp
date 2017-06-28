@@ -5,7 +5,7 @@ import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import VCard from './vcard';
-import { ImageStyles } from '../image/image';
+import { ImageStyles } from '../image/block';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container';
 

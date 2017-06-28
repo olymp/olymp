@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import useBlockBase from './block-decorators/base';
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 
 export default WrappedComponent =>
   class WithBlockTypes extends Component {
