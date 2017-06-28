@@ -2,7 +2,7 @@ import React from 'react';
 import { Blocks } from 'olymp-pages';
 import { createComponent } from 'olymp-fela';
 import { Maps } from 'olymp-google';
-import Image from './image';
+import { ImageStyles } from './image/block';
 
 const Label = Blocks.ImageBlockLabel.component;
 const MapContainer = createComponent(
@@ -11,7 +11,7 @@ const MapContainer = createComponent(
     height: 300,
     position: 'relative',
     display: 'block',
-    ...Image.styles({ theme }),
+    ...ImageStyles({ theme }),
   }),
   ({ attributes, className, children }) =>
     (<div className={className} {...attributes}>
