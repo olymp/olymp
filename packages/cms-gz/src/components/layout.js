@@ -78,7 +78,7 @@ export default class GzLayout extends Component {
     const open = query.nav === null;
 
     return (
-      <App fullHeight>
+      <App>
         <Header>
           <Navbar
             pages={nav}
@@ -95,7 +95,7 @@ export default class GzLayout extends Component {
             isOpen={open}
           />
         </Header>
-        <Layout.Body affix>
+        <Layout.Body>
           <Layout>
             <Layout.Body>
               {children}

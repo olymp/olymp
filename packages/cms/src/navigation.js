@@ -7,27 +7,28 @@ import { createComponent } from 'olymp-fela';
 
 const Separator = createComponent(
   ({ theme }) => ({
-    borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+    borderLeft: '1px solid rgba(0, 0, 0, 0.05)',
   }),
-  'li'
+  'li',
+  p => Object.keys(p)
 );
 const Filler = createComponent(
   ({ theme }) => ({
     flex: 1,
   }),
-  'li'
+  'li',
+  p => Object.keys(p)
 );
 const VerticalMenu = createComponent(
   ({ deviceWidth, theme }) => ({
     overflow: 'visible',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     // boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
     borderRight: 0,
-    width: 55,
-    maxWidth: 55,
+    height: 45,
     boxShadow: `${theme.innerShadow}!important`,
-    background: `linear-gradient(0deg, ${theme.colorStart ||
+    background: `linear-gradient(270deg, ${theme.colorStart ||
       tinycolor(theme.color)
         .darken(6)
         .spin(-6)
@@ -108,7 +109,7 @@ export default withLang(
         selectedKeys={Object.keys(query)}
       >
         <Menu.Item key="@page">
-          <Popover placement="right" content={lang.PAGE_MANAGER}>
+          <Popover placement="bottom" content={lang.PAGE_MANAGER}>
             <Link
               to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}
             >
@@ -117,7 +118,7 @@ export default withLang(
           </Popover>
         </Menu.Item>
         <Menu.Item key="@template">
-          <Popover placement="right" content="Template-Liste">
+          <Popover placement="bottom" content="Template-Liste">
             <Link
               to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}
             >
@@ -126,7 +127,7 @@ export default withLang(
           </Popover>
         </Menu.Item>
         <Menu.Item key="@media">
-          <Popover placement="right" content="Mediathek">
+          <Popover placement="bottom" content="Mediathek">
             <Link
               to={{ query: { '@media': null, '@deviceWidth': deviceWidth } }}
             >
@@ -136,7 +137,7 @@ export default withLang(
         </Menu.Item>
         {auth.user && auth.user.isAdmin
           ? <Menu.Item key="@users">
-            <Popover placement="right" content="Benutzer-Management">
+            <Popover placement="bottom" content="Benutzer-Management">
               <Link
                 to={{
                   query: { '@users': null, '@deviceWidth': deviceWidth },
@@ -148,7 +149,7 @@ export default withLang(
           </Menu.Item>
           : null}
         <Menu.Item key="@stats">
-          <Popover placement="right" content="Statistiken">
+          <Popover placement="bottom" content="Statistiken">
             <Link
               to={{ query: { '@stats': null, '@deviceWidth': deviceWidth } }}
             >
@@ -157,7 +158,7 @@ export default withLang(
           </Popover>
         </Menu.Item>
         <Menu.Item key="@share">
-          <Popover placement="right" content="Teilen">
+          <Popover placement="bottom" content="Teilen">
             <Link
               to={{ query: { '@share': null, '@deviceWidth': deviceWidth } }}
             >
@@ -166,7 +167,7 @@ export default withLang(
           </Popover>
         </Menu.Item>
         <Menu.Item key="@trash">
-          <Popover placement="right" content="Papierkorb">
+          <Popover placement="bottom" content="Papierkorb">
             <Link
               to={{ query: { '@trash': null, '@deviceWidth': deviceWidth } }}
             >
@@ -179,7 +180,7 @@ export default withLang(
 
         {collectionList.map(collection =>
           (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-            <Popover placement="right" content={`@${collection.name}-Liste`}>
+            <Popover placement="bottom" content={`@${collection.name}-Liste`}>
               <Link
                 to={{
                   query: {
@@ -214,7 +215,7 @@ export default withLang(
           </Menu.Item>
         </Menu.SubMenu>
         <Menu.Item key="@user">
-          <Popover placement="right" content="Profil">
+          <Popover placement="bottom" content="Profil">
             <Link
               to={{ query: { '@user': null, '@deviceWidth': deviceWidth } }}
             >
@@ -223,7 +224,7 @@ export default withLang(
           </Popover>
         </Menu.Item>
         <Menu.Item key="@settings">
-          <Popover placement="right" content="Einstellungen">
+          <Popover placement="bottom" content="Einstellungen">
             <Link
               to={{ query: { '@settings': null, '@deviceWidth': deviceWidth } }}
             >
@@ -233,7 +234,7 @@ export default withLang(
         </Menu.Item>
         <Separator />
         <Menu.Item key="logoff" title="Abmelden">
-          <Popover placement="right" content="Abmelden">
+          <Popover placement="bottom" content="Abmelden">
             <a onClick={auth.logout} href="javascript:;">
               <Icon type="poweroff" />
             </a>

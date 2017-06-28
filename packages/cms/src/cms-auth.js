@@ -14,6 +14,7 @@ const Container = createComponent(
   ({ theme }) => ({
     ...getAntStyle({ theme }),
     display: 'flex',
+    flexDirection: 'column',
     height: '100%',
     backgroundColor: '#f5f5f5',
     '> :last-child': {
