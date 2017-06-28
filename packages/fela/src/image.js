@@ -20,7 +20,7 @@ const Container = createComponent(
       width: '100%',
       paddingTop: `${ratio * 100}%`,
     },
-    '> *': {
+    '> img': {
       center: true,
     },
     ...(!visible ? ContentLoaderStyles : {}),
