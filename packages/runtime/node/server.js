@@ -100,8 +100,15 @@ app.listenWS = (options) => {
 // ---
 
 app.use(helmet());
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && process.env.URL) {
   app.use(sslRedirect());
+  /* app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.URL);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+  });*/
 }
 
 // Compress (gzip) assets in production.

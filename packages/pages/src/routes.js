@@ -3,12 +3,40 @@ import { IFrame, ContentLoader, PageTransition } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { Helmet } from 'olymp';
 
+const getURL = () => {
+  if (process.env.URL) {
+    return process.env.URL;
+  } else if (typeof window !== 'undefined') {
+    return `${window.location.protocol}//${window.location.host}`;
+  }
+  return null;
+};
 const renderHelmet = (pathname, { name, description, tags }) => {
   const meta = [];
   const link = [];
+  meta.push({
+    property: 'og:title',
+    content: name,
+  });
+  meta.push({
+    property: 'twitter:title',
+    content: name,
+  });
+  meta.push({
+    property: 'og:type',
+    content: 'article',
+  });
   if (description) {
     meta.push({
       name: 'description',
+      content: description,
+    });
+    meta.push({
+      property: 'og:description',
+      content: description,
+    });
+    meta.push({
+      property: 'twitter:description',
       content: description,
     });
   }
@@ -18,14 +46,19 @@ const renderHelmet = (pathname, { name, description, tags }) => {
       content: tags ? tags.join(',') : undefined,
     });
   }
-  if (process.env.URL && process.env.AMP) {
+  const url = getURL();
+  if (url) {
     link.push({
       rel: 'amphtml',
-      href: process.env.URL.split('://').join('://amp.') + pathname,
+      href: `${url + pathname}?amp`,
     });
     link.push({
       rel: 'canonical',
-      href: process.env.URL + pathname,
+      href: url + pathname,
+    });
+    meta.push({
+      property: 'og:url',
+      content: url + pathname,
     });
   }
 
@@ -78,9 +111,17 @@ export const EditablePageRoute = (props) => {
 };
 
 export const PageRoute = (props) => {
-  const { Wrapped, flatNavigation, pathname, loading } = props;
+  const {
+    Wrapped,
+    flatNavigation,
+    pathname,
+    loading,
+    location,
+    ...rest
+  } = props;
   const match = flatNavigation.find(({ slug }) => pathname === slug);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
+  console.log(window.location, rest);
 
   return (
     <Wrapped {...props} match={match}>

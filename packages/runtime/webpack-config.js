@@ -68,23 +68,32 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
     },
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.DefinePlugin(Object.assign({
-        'process.env.SSR': JSON.stringify(isSSR),
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.env.DEV_PORT': JSON.stringify(devPort),
-      }, !isNode ? {
-        'process.env.AMP': JSON.stringify(process.env.AMP),
-        'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
-        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
-          ? JSON.stringify(process.env.GRAPHQL_URL)
-          : undefined,
-        'process.env.URL': process.env.URL
-          ? JSON.stringify(process.env.URL)
-          : undefined,
-        'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-          ? JSON.stringify(process.env.FILESTACK_KEY)
-          : undefined,
-      } : {})),
+      new webpack.DefinePlugin(
+        Object.assign(
+          {
+            'process.env.SSR': JSON.stringify(isSSR),
+            'process.env.NODE_ENV': JSON.stringify(mode),
+            'process.env.DEV_PORT': JSON.stringify(devPort),
+          },
+          !isNode
+            ? {
+              'process.env.AMP': process.env.AMP
+                  ? JSON.stringify(process.env.AMP)
+                  : undefined,
+              'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
+              'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
+                  ? JSON.stringify(process.env.GRAPHQL_URL)
+                  : undefined,
+              'process.env.URL': process.env.URL
+                  ? JSON.stringify(process.env.URL)
+                  : undefined,
+              'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
+                  ? JSON.stringify(process.env.FILESTACK_KEY)
+                  : undefined,
+            }
+            : {}
+        )
+      ),
       // new PrepackWebpackPlugin({ }),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
