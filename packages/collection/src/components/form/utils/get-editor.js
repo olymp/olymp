@@ -14,7 +14,6 @@ import { FormEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
 import { cn } from 'olymp';
 import { ImageEdit } from 'olymp-cloudinary';
-import { FaMagic } from 'olymp-icons';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -22,15 +21,7 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 const edits = [
-  type =>
-    type.kind === 'OBJECT' &&
-    type.name === 'Image' &&
-    <ImageEdit
-      asImg
-      mode="fit"
-      retina
-      style={{ maxWidth: 300, maxHeight: 300 }}
-    />,
+  type => type.kind === 'OBJECT' && type.name === 'Image' && <ImageEdit />,
 ];
 
 export default ({

@@ -69,8 +69,7 @@ class ListSidebar extends Component {
     });
   };
 
-  image = ({ image }) =>
-    <Image value={image} mode="fill" width={37} height={37} retina />;
+  image = ({ image }) => <Image value={image} width={37} height={37} />;
 
   render() {
     const {

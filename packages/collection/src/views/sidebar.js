@@ -206,13 +206,7 @@ export default class CollectionListSidebar extends Component {
           (<List.Item
             image={
               (item.image || item.bild) &&
-              <Image
-                value={item.image || item.bild}
-                mode="fill"
-                width={37}
-                height={37}
-                retina
-              />
+              <Image value={item.image || item.bild} width={37} height={37} />
             }
             active={item.id === id}
             label={item.name}
@@ -221,17 +215,6 @@ export default class CollectionListSidebar extends Component {
           />)
         )}
       </Sidebar>
-    );
-    return (
-      <List
-        items={items}
-        isLoading={isLoading}
-        refetch={refetch}
-        activePage={typeName}
-        actions={actions}
-        filter={onFilter => getFilterMenu(collection, onFilter)}
-        states={states}
-      />
     );
   }
 }

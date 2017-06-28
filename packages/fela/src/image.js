@@ -32,7 +32,7 @@ const Container = createComponent(
 );
 
 @withAmp
-class LazyImage extends Component {
+class Image extends Component {
   state = { visible: false };
 
   render() {
@@ -55,6 +55,10 @@ class LazyImage extends Component {
     const { visible } = this.state;
     let { width, height, ratio } = this.props;
     let isPercentage = false;
+
+    if (!ratio) {
+      ratio = 0.75;
+    }
 
     // width = percent
     if (typeof width === 'string') {
@@ -136,7 +140,8 @@ class LazyImage extends Component {
     );
   }
 }
-LazyImage.propTypes = {
+Image.displayName = 'Image';
+Image.propTypes = {
   setUrl: PropTypes.func.isRequired,
   ratio: PropTypes.number.isRequired,
   lazy: PropTypes.bool,
@@ -149,7 +154,7 @@ LazyImage.propTypes = {
   maxHeight: PropTypes.number,
   maxResolution: PropTypes.number,
 };
-LazyImage.defaultProps = {
+Image.defaultProps = {
   setUrl: (w, h) => `https://lorempixel.com/${w}/${h}/cats/${w}x${h}`,
   ratio: 0.75,
   lazy: true,
@@ -162,4 +167,4 @@ LazyImage.defaultProps = {
   maxHeight: undefined,
   maxResolution: 111000, // 333*333px
 };
-export default LazyImage;
+export default Image;
