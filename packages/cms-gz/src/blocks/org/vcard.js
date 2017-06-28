@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent, Grid } from 'olymp-fela';
-import { Img } from 'olymp-cloudinary';
+import { Image } from 'olymp-cloudinary';
 import { H2 } from '../../components';
 import Accordion from './accordion';
 import Person from './person';
@@ -64,8 +64,7 @@ const Logo = createComponent(
     marginX: 'auto',
   }),
   ({ value, className, title }) =>
-    (<Img
-      alt={title}
+    (<Image
       className={className}
       value={value}
       width={400}

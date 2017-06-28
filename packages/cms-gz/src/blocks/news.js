@@ -7,7 +7,7 @@ import {
   SchemaLoader,
 } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
-import { Img } from 'olymp-cloudinary';
+import { Image } from 'olymp-cloudinary';
 import moment from 'moment';
 import { H2, Panel } from '../components';
 import { range } from 'lodash';
@@ -34,12 +34,12 @@ const loaderSchema = [
   },
 ];
 
-const Image = createComponent(
+const Img = createComponent(
   ({ theme }) => ({
     float: 'left',
     marginRight: theme.space3,
   }),
-  p => <Img {...p} />,
+  p => <Image {...p} />,
   p => Object.keys(p)
 );
 
@@ -96,7 +96,7 @@ const component = graphql(
         >
           {items.map(item =>
             (<Panel id={item.id} title={item.name} key={item.id} paddingLeft={0}>
-              <Image value={item.bild} width={100} ratio={1} />
+              <Img value={item.bild} width={100} ratio={1} avatar />
               <div>
                 <p>
                   {item.extrakt}

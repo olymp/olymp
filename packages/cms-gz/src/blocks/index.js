@@ -1,7 +1,7 @@
 export * from './panel';
 export * from './org';
+export * from './image';
 export { default as GZKMapsBlock } from './maps';
-export { default as GZKImageBlock } from './image';
 export { default as GZKContainerBlock } from './container';
 export { default as GZKContainerTextBlock } from './container-text';
 export { default as GZKHeaderBlock } from './header';

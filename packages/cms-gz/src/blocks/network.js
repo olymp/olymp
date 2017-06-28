@@ -1,9 +1,9 @@
 import React from 'react';
 import { graphql, gql } from 'olymp';
 import { createComponent, Container, Grid } from 'olymp-fela';
-import { Img } from 'olymp-cloudinary';
+import { Image } from 'olymp-cloudinary';
 
-const Image = createComponent(
+const Img = createComponent(
   ({ theme }) => ({
     marginX: 'auto',
     marginBottom: theme.space3,
@@ -15,7 +15,7 @@ const Image = createComponent(
       opacity: 1,
     },
   }),
-  p => <Img {...p} />,
+  p => <Image {...p} />,
   p => Object.keys(p)
 );
 
@@ -28,10 +28,10 @@ const Item = createComponent(
   ({ className, website, name, tags, bild, size }) =>
     (<Grid.Item className={className} mini={size} medium={1} gridSize={size}>
       <a href={website} rel="noopener noreferrer">
-        <Image
+        <Img
           value={bild}
           options={{ c: 'pad' }}
-          maxSize={200}
+          maxResolution={40000}
           width="70%"
           ratio={1}
         />

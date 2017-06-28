@@ -8,8 +8,8 @@ const Avatar = createComponent(
     margin: theme.space2,
     marginRight: 0,
   }),
-  p =>
-    <Image {...p} width={100} height={100} mode="fill" retina lazy={false} />,
+  ({ className, value }) =>
+    <Image className={className} value={value} width={100} ratio={1} avatar />,
   p => Object.keys(p)
 );
 

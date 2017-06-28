@@ -1,157 +1,85 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LazyLoad from 'react-lazy-load';
-import { withAmp } from 'olymp';
-import { createComponent, withPulse } from 'olymp-fela';
-import { url } from '../utils';
-
-// const MAX_SIZE = 640; // Maximum size to 640px to prevent loading to big images/too much traffic
+import { Image } from 'olymp-fela';
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
 
-const Loader = createComponent(
-  () => ({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  }),
-  p => <LazyLoad {...p} />,
-  ({ lazy, ...p }) => Object.keys(p)
-);
+class CloudinaryImage extends Component {
+  getUrl = (value, options) => {
+    const newUrl = value.url
+      .split('ttp://res.cloudinary.com/')
+      .join('ttps://res.cloudinary.com/');
 
-const Img = createComponent(
-  ({ width }) => ({
-    width: width || '100%',
-    display: 'block',
-  }),
-  rest => <img {...rest} />,
-  ({ lazy, ...p }) => Object.keys(p)
-);
+    const crop = value.crop && value.crop.length
+      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
+          .crop[3]},c_crop/`
+      : '';
 
-const Background = withPulse(
-  createComponent(
-    ({ theme }) => ({
-      width: '100%',
-      display: 'block',
-      height: '100%',
-      backgroundColor: theme.dark3,
-      // filter: 'blur(8px)',
-    }),
-    'div',
-    // 'img',
-    ['className', 'src']
-  )
-);
-
-const Container = createComponent(
-  ({ width, height }) => ({
-    width,
-    height,
-    overflow: 'hidden',
-    position: 'relative',
-  }),
-  'div',
-  ['className', 'children']
-);
-
-const LazyImage = withAmp((props) => {
-  const { className, retina, value, mode, lazy, amp, ...rest } = props;
-
-  if (!value) {
-    return <div />;
-  }
-
-  const oWidth = (value.crop && value.crop[0]) || value.width;
-  const oHeight = (value.crop && value.crop[1]) || value.height;
-  let width = props.width;
-  let height = props.height;
-
-  if (amp) {
-    const options = {
-      ...value,
-      dpr: retina ? 2 : undefined,
-      mode,
-    };
-    if (typeof width !== 'string') {
-      options.width = width;
-      options.height = height;
-    }
-    return (
-      <amp-img
-        layout="responsive"
-        src={url(value.url, options)}
-        alt={value.caption}
-        width={options.width}
-        height={options.height}
-      />
+    let query = '';
+    Object.keys(options).forEach(
+      key => (query = `${query}${key}_${options[key]},`)
     );
-  }
 
-  if (!lazy || typeof width === 'string') {
-    // old image-comp
-    const options = {
-      ...value,
-      dpr: retina ? 2 : undefined,
-      mode,
-    };
-    if (typeof width !== 'string') {
-      options.width = width;
-      options.height = height;
+    return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
+  };
+
+  render() {
+    const { options, value, ratio, avatar, alt, ...rest } = this.props;
+
+    if (!value) {
+      return <div />;
     }
 
+    const width = (value.crop && value.crop[0]) || value.width;
+    const height = (value.crop && value.crop[1]) || value.height;
+
     return (
-      <Img
+      <Image
         {...rest}
-        src={url(value.url, options)}
-        alt={value.caption}
-        width={width}
-        height={height}
-        className={className}
+        setUrl={(w, h) =>
+          this.getUrl(value, {
+            w,
+            h,
+            c: 'fill',
+            f: 'auto',
+            q: 'auto:eco',
+            fl: 'lossy',
+            dpr: 2,
+            g: avatar ? 'face' : 'center',
+            ...options,
+          })}
+        alt={alt || value.caption}
+        ratio={ratio || height / width}
       />
     );
   }
-
-  if (oWidth >= oHeight && (!!width === !!height || width)) {
-    width = width || 640;
-    height = width / oWidth * oHeight;
-  } else {
-    height = height || 640;
-    width = height / oHeight * oWidth;
-  }
-
-  width = Math.round(width);
-  height = Math.round(height);
-  return (
-    <Container className={className} width={width} height={height}>
-      {(value.format === 'jpg' || value.format === 'pdf') && <Background />}
-      <Loader width="100%" height="auto" offset={100}>
-        <Img
-          {...rest}
-          src={url(value.url, {
-            ...value,
-            width,
-            height,
-            dpr: retina ? 2 : undefined,
-            mode,
-          })}
-          alt={value.caption}
-          width="100%"
-          height="auto"
-          className={className}
-        />
-      </Loader>
-    </Container>
-  );
-});
-LazyImage.propTypes = {
-  lazy: PropTypes.bool,
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height: PropTypes.number,
+}
+CloudinaryImage.propTypes = {
+  value: PropTypes.shape({
+    url: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
+  }),
+  ratio: PropTypes.number,
+  options: PropTypes.shape({
+    w: PropTypes.number,
+    h: PropTypes.number,
+    c: PropTypes.string,
+    f: PropTypes.string,
+    q: PropTypes.string,
+    fl: PropTypes.string,
+    dpr: PropTypes.number,
+    // ...
+  }),
+  avatar: PropTypes.bool,
+  alt: PropTypes.string,
 };
-LazyImage.defaultProps = {
-  lazy: true,
-  width: undefined,
-  height: undefined,
+CloudinaryImage.defaultProps = {
+  value: undefined,
+  ratio: undefined,
+  options: {},
+  avatar: false,
+  alt: undefined,
 };
-export default LazyImage;
+export default CloudinaryImage;
