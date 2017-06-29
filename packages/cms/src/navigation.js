@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, withLang } from 'olymp';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent } from 'olymp-fela';
+import { createComponent, Image } from 'olymp-fela';
 import { GatewayRegistry } from 'react-gateway';
 
 const IconOnly = createComponent(
@@ -15,13 +15,10 @@ const IconOnly = createComponent(
 );
 const UserIcon = createComponent(
   ({ theme }) => ({
-    borderRadius: 100,
-    height: 30,
-    transform: 'translateY(25%)',
-    marginRight: 8,
-    marginLeft: 10,
+    float: 'left',
+    margin: theme.space2,
   }),
-  'img',
+  p => <Image {...p} width={30} height={30} circle />,
   p => Object.keys(p)
 );
 const VerticalMenu = createComponent(
@@ -130,7 +127,10 @@ export default withLang(
         </RightMenuItem>
         <RightMenuItem key="@user">
           <Link to={{ query: { '@user': null } }}>
-            <UserIcon src="http://wfarm2.dataknet.com/static/resources/icons/set3/c9f1cdf473a8.png" />
+            <UserIcon
+              setUrl={() =>
+                'http://wfarm2.dataknet.com/static/resources/icons/set3/c9f1cdf473a8.png'}
+            />
             Benjamin Kniffler
           </Link>
         </RightMenuItem>
