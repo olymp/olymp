@@ -187,7 +187,7 @@ export default ({ attributes = '' } = {}) => ({
         }
         auth
           .register(
-            { email: 'admin@olymp-cms.com', name: 'Administrator' },
+            { email: 'admin@olymp-athena.com', name: 'Administrator' },
             'admin12'
           )
           .then(({ token }) => {

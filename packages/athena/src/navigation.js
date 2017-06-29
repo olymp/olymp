@@ -60,18 +60,12 @@ const VerticalMenu = createComponent(
   Menu,
   p => Object.keys(p)
 );
+
 const RightMenuItem = createComponent(
   () => ({
     float: 'right!important',
   }),
   p => <Menu.Item {...p} />,
-  p => Object.keys(p)
-);
-const Separator = createComponent(
-  ({ theme }) => ({
-    borderRight: '1px solid black',
-  }),
-  RightMenuItem,
   p => Object.keys(p)
 );
 
