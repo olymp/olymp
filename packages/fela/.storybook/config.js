@@ -15,4 +15,4 @@ PropVal.propTypes = {
 setAddon(infoAddon);
 configure(() => require('../src/navbar/.stories'), module);
 configure(() => require('../src/.stories'), module);
-configure(() => require('../../icons/.storybook/fa5'), module);
+configure(() => require('../../icons/.storybook/stories'), module);
