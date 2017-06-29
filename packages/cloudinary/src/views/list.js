@@ -58,9 +58,8 @@ class ListSidebar extends Component {
         disabled,
         onClick: () => onFilter(filteredTags, filteredItems),
         label: upperFirst(tag),
-        description: countFilter === countAll
-          ? text
-          : `${countFilter} von ${text}`,
+        description:
+          countFilter === countAll ? text : `${countFilter} von ${text}`,
         image: tags[tag][0],
         countFilter,
         countAll,
@@ -89,9 +88,6 @@ class ListSidebar extends Component {
 
     return (
       <Sidebar
-        leftButtons={
-          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-        }
         rightButtons={
           <Upload {...upload}>
             <Sidebar.Button shape="circle" icon="plus" />

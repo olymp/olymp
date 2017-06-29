@@ -51,19 +51,6 @@ export default class PageSidebar extends Component {
       item = { parentId: query.parent, type: 'PAGE' };
     }
 
-    const leftButtons = (
-      <Button.Group>
-        <Sidebar.Button
-          onClick={() =>
-            router.push({
-              pathname,
-              query: { ...query, '@page': undefined, parent: undefined },
-            })}
-          shape="circle"
-          icon="close"
-        />
-      </Button.Group>
-    );
     const rightButtons = form.isFieldsTouched()
       ? (<Button.Group>
         <Sidebar.Button onClick={save} shape="circle" icon="save" />
@@ -103,7 +90,6 @@ export default class PageSidebar extends Component {
           message={() => 'Änderungen verwerfen?'}
         />
         <Sidebar
-          leftButtons={leftButtons}
           rightButtons={rightButtons}
           isOpen
           onClose={() => router.push(pathname)}

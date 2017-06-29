@@ -152,6 +152,8 @@ const component = createComponent(
             fontSize: 40,
             fontWeight: 200,
             padding: 10,
+            lineHeight: '30px',
+            paddingTop: 0,
           },
           '> .ant-modal-header': {
             textAlign: 'center',

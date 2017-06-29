@@ -92,14 +92,19 @@ export default withLang(
         ]}
         name="navigation"
       >
+        <Menu.Item key="@home">
+          <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
+            <IconOnly type="home" />
+          </Link>
+        </Menu.Item>
         <Menu.Item key="@page">
           <Link to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}>
-            <Icon type="home" /> Seitenmanager
+            <Icon type="edit" /> Seiten
           </Link>
         </Menu.Item>
         <Menu.Item key="@media">
           <Link to={{ query: { '@media': null } }}>
-            <Icon type="picture" /> Mediathek
+            <Icon type="picture" /> Medien
           </Link>
         </Menu.Item>
         <Menu.SubMenu
@@ -134,12 +139,12 @@ export default withLang(
           </Link>
         </Menu.Item>
         {children}
-        {/* <RightMenuItem key="plus">
+        <RightMenuItem key="plus">
           <Link to={{ query: { '@plus': null } }}>
             <IconOnly type="plus" />
           </Link>
-        </RightMenuItem> */}
-        <RightMenuItem key="plus">
+        </RightMenuItem>
+        <RightMenuItem key="logout">
           <a onClick={auth.logout} href="javascript:;">
             <IconOnly type="poweroff" />
           </a>
