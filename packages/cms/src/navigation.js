@@ -3,9 +3,27 @@ import PropTypes from 'prop-types';
 import { Link, withLang } from 'olymp';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent, Image } from 'olymp-fela';
+import { createComponent } from 'olymp-fela';
 import { GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
+
+const getInitials = (name) => {
+  if (name) {
+    const array = name.split(' ');
+
+    switch (array.length) {
+      case 1:
+        return array[0].charAt(0).toUpperCase();
+      default:
+        return (
+          array[0].charAt(0).toUpperCase() +
+          array[array.length - 1].charAt(0).toUpperCase()
+        );
+    }
+  }
+
+  return false;
+};
 
 const IconOnly = createComponent(
   ({ theme }) => ({
@@ -14,16 +32,27 @@ const IconOnly = createComponent(
   Icon,
   p => Object.keys(p)
 );
+
 const UserIcon = createComponent(
-  ({ theme }) => ({
+  ({ theme, name }) => ({
     float: 'left',
     borderRadius: '50%',
     marginTop: theme.space2,
     marginRight: '0.75rem',
+    background: `url(https://invatar0.appspot.com/svg/${getInitials(
+      name
+    )}.jpg?s=26&bg=${theme.color.replace(
+      '#',
+      '%23'
+    )}&color=${theme.light.replace(
+      '#',
+      '%23'
+    )}) center center no-repeat, ${theme.color}`,
   }),
   p => <Gravatar {...p} size={30} />,
   p => Object.keys(p)
 );
+
 const VerticalMenu = createComponent(
   ({ deviceWidth, theme }) => ({
     zIndex: 3,
@@ -123,14 +152,18 @@ export default withLang(
           </Link>
         </Menu.Item>
         {children}
-        <RightMenuItem key="plus">
+        {/* <RightMenuItem key="plus">
           <Link to={{ query: { '@plus': null } }}>
             <IconOnly type="plus" />
           </Link>
-        </RightMenuItem>
+        </RightMenuItem> */}
         <RightMenuItem key="@user">
           <Link to={{ query: { '@user': null } }}>
-            <UserIcon email={auth.user.email} default="mm" />
+            <UserIcon
+              email={auth.user.email}
+              name={auth.user.name}
+              default="blank"
+            />
             {auth.user.name}
           </Link>
         </RightMenuItem>
