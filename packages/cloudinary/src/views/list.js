@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Popover, Upload } from 'antd';
+import { Upload } from 'antd';
 import { Sidebar, List } from 'olymp-ui';
 import { Image } from '../components';
 import { intersection, upperFirst, orderBy } from 'lodash';
@@ -90,16 +90,12 @@ class ListSidebar extends Component {
     return (
       <Sidebar
         leftButtons={
-          <Popover content="Mediathek schließen">
-            <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-          </Popover>
+          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
         }
         rightButtons={
-          <Popover content="Datei hochladen">
-            <Upload {...upload}>
-              <Sidebar.Button shape="circle" icon="plus" />
-            </Upload>
-          </Popover>
+          <Upload {...upload}>
+            <Sidebar.Button shape="circle" icon="plus" />
+          </Upload>
         }
         header={
           <List.Filter

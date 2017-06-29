@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
-import { Dropdown, Menu, Icon, Button, Popover } from 'antd';
+import { Dropdown, Menu, Icon, Button } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import {
   FieldValue,
@@ -182,13 +182,11 @@ export default class CollectionListSidebar extends Component {
     return (
       <Sidebar
         rightButtons={
-          <Popover content={`${collection.name} hinzufügen`}>
-            <Sidebar.Button
-              onClick={() => onClick({ id: 'new' })}
-              shape="circle"
-              icon="plus"
-            />
-          </Popover>
+          <Sidebar.Button
+            onClick={() => onClick({ id: 'new' })}
+            shape="circle"
+            icon="plus"
+          />
         }
         header={
           <List.Filter

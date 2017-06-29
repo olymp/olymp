@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Popover } from 'antd';
 import { Sidebar, List } from 'olymp-ui';
 import { queryTemplates } from '../gql';
 
@@ -16,18 +15,14 @@ class ListSidebar extends Component {
     return (
       <Sidebar
         leftButtons={
-          <Popover content="Templates schließen">
-            <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-          </Popover>
+          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
         }
         rightButtons={
-          <Popover content="Template hinzufügen">
-            <Sidebar.Button
-              onClick={() => onClick({ id: null })}
-              shape="circle"
-              icon="plus"
-            />
-          </Popover>
+          <Sidebar.Button
+            onClick={() => onClick({ id: null })}
+            shape="circle"
+            icon="plus"
+          />
         }
         header={
           <List.Filter
