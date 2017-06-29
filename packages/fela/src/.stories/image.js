@@ -3,6 +3,14 @@ import { text, number, boolean, select } from '@storybook/addon-knobs';
 import { storiesOf } from 'olymp-storybook';
 import { createComponent, Image } from '../index';
 
+const Container = createComponent(
+  ({ theme }) => ({
+    marginX: 'auto',
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const Img = createComponent(
   ({ theme }) => ({
     border: '1px solid gray',
@@ -29,7 +37,7 @@ storiefy('Maximum resolution', () =>
 
 storiefy('Fix height', () => <Image height={number('height', 250)} />);
 
-storiefy('Min-/max-dimensions', () =>
+storiefy('Width/height-limitations', () =>
   (<Image
     width={number('width', 500)}
     maxResolution={2500000}
@@ -41,28 +49,28 @@ storiefy('Min-/max-dimensions', () =>
 );
 
 storiefy('Lazy loading', () =>
-  (<div>
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-    <Image width={200} lazy={boolean('lazy', true)} />
-  </div>)
+  (<Container>
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+    <Img width={200} lazy={boolean('lazy', true)} />
+  </Container>)
 );
 
 storiefy('Rounded', () =>
