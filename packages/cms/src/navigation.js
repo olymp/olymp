@@ -1,46 +1,33 @@
-import React from 'react';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 import { Link, withLang } from 'olymp';
 import { withAuth } from 'olymp-auth';
-import { Menu, Icon, Popover } from 'antd';
-import tinycolor from 'tinycolor2';
+import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
+import { GatewayRegistry } from 'react-gateway';
 
-const Separator = createComponent(
+const IconOnly = createComponent(
   ({ theme }) => ({
-    borderLeft: '1px solid rgba(0, 0, 0, 0.05)',
+    marginRight: '0!important',
   }),
-  'li',
+  Icon,
   p => Object.keys(p)
 );
-const Filler = createComponent(
+const UserIcon = createComponent(
   ({ theme }) => ({
-    flex: 1,
-  }),
-  'li',
-  p => Object.keys(p)
-);
-const Button = createComponent(
-  ({ theme }) => ({
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 6,
+    borderRadius: 100,
     height: 30,
-    lineHeight: '10px',
-    marginTop: 7,
-    padding: 9,
+    transform: 'translateY(25%)',
+    marginRight: 8,
+    marginLeft: 10,
   }),
-  'a',
+  'img',
   p => Object.keys(p)
 );
 const VerticalMenu = createComponent(
   ({ deviceWidth, theme }) => ({
-    overflow: 'visible',
-    display: 'flex',
-    flexDirection: 'row',
-    // boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
-    borderRight: 0,
-    height: 42,
-    minHeight: 42,
-    boxShadow: `${theme.innerShadow}!important`,
+    zIndex: 3,
+    /* boxShadow: `${theme.innerShadow}!important`,
     background: `linear-gradient(270deg, ${theme.colorStart ||
       tinycolor(theme.color)
         .darken(6)
@@ -48,60 +35,26 @@ const VerticalMenu = createComponent(
         .toRgbString()}, ${theme.colorEnd ||
       tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
     '> li.ant-menu-item': {
-      paddingX: 14,
-      // padding: 5,
-      // height: 'initial',
-      textAlign: 'center',
       '> a': {
-        // backgroundColor: 'white',
-        // borderRadius: 500,
-        // margin: 2,
         color: '#ffffff',
       },
-      '> a > i.anticon': {
-        margin: 0,
-        // color: theme.color,
-        color: '#FFFFFF',
-        padding: 6,
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderRadius: '50%',
-      },
-      ':hover > a > i.anticon': {
-        backgroundColor: 'rgba(0,0,0,0.30)',
-      },
-    },
-    '> li.ant-menu-submenu > .ant-menu-submenu-title': {
-      paddingX: 14,
-      color: '#FFFFFF',
-      textAlign: 'center',
-      '> i': {
-        margin: 0,
-        color: '#FFFFFF',
-        padding: 6,
-        backgroundColor: 'rgba(0,0,0,0.05)',
-        borderRadius: '50%',
-      },
-      ':hover > i.anticon': {
-        backgroundColor: 'rgba(0,0,0,0.30)',
-      },
-    },
-    '> li.ant-menu-item.ant-menu-item-selected': {
-      backgroundColor: 'transparent',
-    },
-    '> li.ant-menu-item:active': {
-      backgroundColor: 'transparent',
-    },
-    '> li.ant-menu-item-selected > a > i': {
-      backgroundColor: 'rgba(0,0,0,0.30)!important',
-    },
-    '> li.ant-menu-submenu-selected > div > i': {
-      backgroundColor: 'rgba(0,0,0,0.30)!important',
-    },
-    ifSmallDown: {
-      display: 'none',
-    },
+    },*/
   }),
   Menu,
+  p => Object.keys(p)
+);
+const RightMenuItem = createComponent(
+  () => ({
+    float: 'right!important',
+  }),
+  p => <Menu.Item {...p} />,
+  p => Object.keys(p)
+);
+const Separator = createComponent(
+  ({ theme }) => ({
+    borderRight: '1px solid black',
+  }),
+  RightMenuItem,
   p => Object.keys(p)
 );
 
@@ -117,149 +70,244 @@ export default withLang(
       collectionList,
       ...rest
     }) =>
-      (<VerticalMenu
+      (<GatewayDest
+        component={VerticalMenu}
+        mode="horizontal"
         className={className}
         deviceWidth={deviceWidth}
-        selectedKeys={Object.keys(query)}
+        selectedKeys={[
+          ...Object.keys(query),
+          ...Object.keys(query).map(x => query[x]),
+        ]}
+        name="navigation"
       >
         <Menu.Item key="@page">
-          <Popover placement="bottom" content={lang.PAGE_MANAGER}>
-            <Link
-              to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="home" />
-            </Link>
-          </Popover>
-        </Menu.Item>
-        <Menu.Item key="@template">
-          <Popover placement="bottom" content="Template-Liste">
-            <Link
-              to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="appstore-o" />
-            </Link>
-          </Popover>
+          <Link to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}>
+            <Icon type="home" /> Seitenmanager
+          </Link>
         </Menu.Item>
         <Menu.Item key="@media">
-          <Popover placement="bottom" content="Mediathek">
-            <Link
-              to={{ query: { '@media': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="picture" />
-            </Link>
-          </Popover>
+          <Link to={{ query: { '@media': null } }}>
+            <Icon type="picture" /> Mediathek
+          </Link>
         </Menu.Item>
-        {auth.user && auth.user.isAdmin
-          ? <Menu.Item key="@users">
-            <Popover placement="bottom" content="Benutzer-Management">
-              <Link
-                to={{
-                  query: { '@users': null, '@deviceWidth': deviceWidth },
-                }}
-              >
-                <Icon type="team" />
-              </Link>
-            </Popover>
-          </Menu.Item>
-          : null}
-        <Menu.Item key="@stats">
-          <Popover placement="bottom" content="Statistiken">
-            <Link
-              to={{ query: { '@stats': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="line-chart" />
-            </Link>
-          </Popover>
-        </Menu.Item>
-        <Menu.Item key="@share">
-          <Popover placement="bottom" content="Teilen">
-            <Link
-              to={{ query: { '@share': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="share-alt" />
-            </Link>
-          </Popover>
-        </Menu.Item>
-        <Menu.Item key="@trash">
-          <Popover placement="bottom" content="Papierkorb">
-            <Link
-              to={{ query: { '@trash': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="delete" />
-            </Link>
-          </Popover>
-        </Menu.Item>
-
-        <Separator />
-
-        {collectionList.map(collection =>
-          (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-            <Popover placement="bottom" content={`@${collection.name}-Liste`}>
+        <Menu.SubMenu
+          title={
+            <span>
+              <Icon type="file-text" /> Sammlungen
+            </span>
+          }
+        >
+          {collectionList.map(collection =>
+            (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
               <Link
                 to={{
                   query: {
                     [`@${collection.name.toLowerCase()}`]: null,
-                    '@deviceWidth': deviceWidth,
                   },
                 }}
               >
-                <Icon type="file-text" />
+                {collection.name}
               </Link>
-            </Popover>
-          </Menu.Item>)
-        )}
-
-        <Filler />
-
-        <Menu.SubMenu title={<Icon type="laptop" />}>
-          <Menu.Item key="@device-no">
-            <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
-              <Icon type="laptop" /> Normal
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="@deviceWidth700">
-            <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
-              <Icon type="tablet" /> Tablet
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="@deviceWidth400">
-            <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
-              <Icon type="phone" /> Mobil
-            </Link>
-          </Menu.Item>
+            </Menu.Item>)
+          )}
         </Menu.SubMenu>
-        <Menu.Item key="@user">
-          <Popover placement="bottom" content="Profil">
-            <Link
-              to={{ query: { '@user': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="user" />
-            </Link>
-          </Popover>
+        <Menu.Item key="charts">
+          <Link to={{ query: { '@charts': null } }}>
+            <IconOnly type="line-chart" />
+          </Link>
         </Menu.Item>
-        <Menu.Item key="@settings">
-          <Popover placement="bottom" content="Einstellungen">
-            <Link
-              to={{ query: { '@settings': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="setting" />
-            </Link>
-          </Popover>
+        <Menu.Item key="settings">
+          <Link to={{ query: { '@settings': null } }}>
+            <IconOnly type="setting" />
+          </Link>
         </Menu.Item>
-        <Separator />
-        <Menu.Item key="logoff" title="Abmelden">
-          <Popover placement="bottom" content="Abmelden">
-            <a onClick={auth.logout} href="javascript:;">
-              <Icon type="poweroff" />
-            </a>
-          </Popover>
-        </Menu.Item>
-
-        <Menu.Item key="save" title="Speichern">
-          <Button onClick={auth.logout} href="javascript:;">
-            <Icon type="edit" /> Speichern
-          </Button>
-        </Menu.Item>
-      </VerticalMenu>)
+        {children}
+        <RightMenuItem key="plus">
+          <Link to={{ query: { '@plus': null } }}>
+            <IconOnly type="plus" />
+          </Link>
+        </RightMenuItem>
+        <RightMenuItem key="@user">
+          <Link to={{ query: { '@user': null } }}>
+            <UserIcon src="http://wfarm2.dataknet.com/static/resources/icons/set3/c9f1cdf473a8.png" />
+            Benjamin Kniffler
+          </Link>
+        </RightMenuItem>
+      </GatewayDest>)
   )
 );
+
+/*
+<Menu.Item key="@page">
+  <Popover placement="bottom" content={lang.PAGE_MANAGER}>
+    <Link
+      to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="home" />
+    </Link>
+  </Popover>
+</Menu.Item>
+<Menu.Item key="@template">
+  <Popover placement="bottom" content="Template-Liste">
+    <Link
+      to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="appstore-o" />
+    </Link>
+  </Popover>
+</Menu.Item>
+<Menu.Item key="@media">
+  <Popover placement="bottom" content="Mediathek">
+    <Link
+      to={{ query: { '@media': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="picture" />
+    </Link>
+  </Popover>
+</Menu.Item>
+{auth.user && auth.user.isAdmin
+  ? <Menu.Item key="@users">
+    <Popover placement="bottom" content="Benutzer-Management">
+      <Link
+        to={{
+          query: { '@users': null, '@deviceWidth': deviceWidth },
+        }}
+      >
+        <Icon type="team" />
+      </Link>
+    </Popover>
+  </Menu.Item>
+  : null}
+<Menu.Item key="@stats">
+  <Popover placement="bottom" content="Statistiken">
+    <Link
+      to={{ query: { '@stats': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="line-chart" />
+    </Link>
+  </Popover>
+</Menu.Item>
+<Menu.Item key="@share">
+  <Popover placement="bottom" content="Teilen">
+    <Link
+      to={{ query: { '@share': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="share-alt" />
+    </Link>
+  </Popover>
+</Menu.Item>
+<Menu.Item key="@trash">
+  <Popover placement="bottom" content="Papierkorb">
+    <Link
+      to={{ query: { '@trash': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="delete" />
+    </Link>
+  </Popover>
+</Menu.Item>
+
+{collectionList.map(collection =>
+  (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+    <Popover placement="bottom" content={`@${collection.name}-Liste`}>
+      <Link
+        to={{
+          query: {
+            [`@${collection.name.toLowerCase()}`]: null,
+            '@deviceWidth': deviceWidth,
+          },
+        }}
+      >
+        <Icon type="file-text" />
+      </Link>
+    </Popover>
+  </Menu.Item>)
+)}
+
+<Menu.SubMenu title={<Icon type="laptop" />}>
+  <Menu.Item key="@device-no">
+    <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
+      <Icon type="laptop" /> Normal
+    </Link>
+  </Menu.Item>
+  <Menu.Item key="@deviceWidth700">
+    <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
+      <Icon type="tablet" /> Tablet
+    </Link>
+  </Menu.Item>
+  <Menu.Item key="@deviceWidth400">
+    <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
+      <Icon type="phone" /> Mobil
+    </Link>
+  </Menu.Item>
+</Menu.SubMenu>
+<Menu.Item key="@user">
+  <Popover placement="bottom" content="Profil">
+    <Link
+      to={{ query: { '@user': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="user" />
+    </Link>
+  </Popover>
+</Menu.Item>
+<Menu.Item key="@settings">
+  <Popover placement="bottom" content="Einstellungen">
+    <Link
+      to={{ query: { '@settings': null, '@deviceWidth': deviceWidth } }}
+    >
+      <Icon type="setting" />
+    </Link>
+  </Popover>
+</Menu.Item>
+<Separator />
+<Menu.Item key="logoff" title="Abmelden">
+  <Popover placement="bottom" content="Abmelden">
+    <a onClick={auth.logout} href="javascript:;">
+      <Icon type="poweroff" />
+    </a>
+  </Popover>
+</Menu.Item>
+
+<Menu.Item key="save" title="Speichern">
+  <Button onClick={auth.logout} href="javascript:;">
+    Speichern
+  </Button>
+</Menu.Item>
+*/
+
+class GatewayDest extends Component {
+  static contextTypes = {
+    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
+  };
+
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  };
+
+  constructor(props, context) {
+    super(props, context);
+    this.gatewayRegistry = context.gatewayRegistry;
+  }
+
+  state = {
+    children: null,
+  };
+
+  componentWillMount() {
+    this.gatewayRegistry.addContainer(this.props.name, this);
+  }
+
+  componentWillUnmount() {
+    this.gatewayRegistry.removeContainer(this.props.name, this);
+  }
+
+  render() {
+    const { component, tagName, children, ...attrs } = this.props;
+    delete attrs.name;
+    return React.createElement(component || tagName || 'div', attrs, [
+      children,
+      Children.toArray(this.state.children).reverse(),
+    ]);
+  }
+}
