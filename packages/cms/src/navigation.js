@@ -5,6 +5,7 @@ import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent, Image } from 'olymp-fela';
 import { GatewayRegistry } from 'react-gateway';
+import Gravatar from 'react-gravatar';
 
 const IconOnly = createComponent(
   ({ theme }) => ({
@@ -16,9 +17,11 @@ const IconOnly = createComponent(
 const UserIcon = createComponent(
   ({ theme }) => ({
     float: 'left',
-    margin: theme.space2,
+    borderRadius: '50%',
+    marginTop: theme.space2,
+    marginRight: '0.75rem',
   }),
-  p => <Image {...p} width={30} height={30} circle />,
+  p => <Gravatar {...p} size={30} />,
   p => Object.keys(p)
 );
 const VerticalMenu = createComponent(
@@ -127,11 +130,8 @@ export default withLang(
         </RightMenuItem>
         <RightMenuItem key="@user">
           <Link to={{ query: { '@user': null } }}>
-            <UserIcon
-              setUrl={() =>
-                'http://wfarm2.dataknet.com/static/resources/icons/set3/c9f1cdf473a8.png'}
-            />
-            Benjamin Kniffler
+            <UserIcon email={auth.user.email} default="mm" />
+            {auth.user.name}
           </Link>
         </RightMenuItem>
       </GatewayDest>)

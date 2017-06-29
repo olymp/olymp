@@ -61,7 +61,6 @@ storiefy('Circle', () =>
     width={number('width', 250)}
     height={number('height', 250)}
     circle={boolean('circle', true)}
-    setUrl={() => 'https://lorempixel.com/385/289/cats/385x289'}
   />)
 );
 
