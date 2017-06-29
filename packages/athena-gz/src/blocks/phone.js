@@ -1,5 +1,5 @@
 import React from 'react';
-import { createComponent, Container, SchemaLoader } from 'olymp-fela';
+import { createComponent, SchemaLoader } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
 import { H1, Logo } from '../components';
 import { range } from 'lodash';
@@ -18,6 +18,10 @@ const StyledLink = createComponent(
   ({ theme }) => ({
     color: theme.dark,
     marginLeft: 20,
+    ifSmallDown: {
+      display: 'block',
+      ellipsis: true,
+    },
   }),
   p => <Link {...p} />,
   p => Object.keys(p)
@@ -27,11 +31,11 @@ const MarginContainer = createComponent(
   ({ theme }) => ({
     marginY: theme.space3,
   }),
-  p => <Container {...p} />,
+  'div',
   p => Object.keys(p)
 );
 
-const Entry = createComponent(
+const Item = createComponent(
   ({ theme, color }) => ({
     position: 'relative',
     width: '100%',
@@ -49,6 +53,9 @@ const Entry = createComponent(
       '> a': {
         color,
       },
+    },
+    ifSmallDown: {
+      paddingY: theme.space3,
     },
   }),
   ({ className, children, number }) =>
@@ -77,14 +84,6 @@ const Info = createComponent(
   p => Object.keys(p)
 );
 
-const Text = createComponent(
-  ({ theme }) => ({
-    paddingY: theme.space3,
-  }),
-  'div',
-  p => Object.keys(p)
-);
-
 const component = graphql(
   gql`
   query einrichtungList {
@@ -106,19 +105,19 @@ const component = graphql(
       items: data.items || [],
     }),
   }
-)(({ attributes, children, items, isLoading }) =>
+)(({ attributes, items, isLoading }) =>
   (<MarginContainer {...attributes}>
     <H1>Telefonnummern</H1>
     <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
     <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
       <div>
         {items.map(item =>
-          (<Entry number={item.telefon} key={item.id} color={item.farbe}>
+          (<Item number={item.telefon} key={item.id} color={item.farbe}>
             <Logo color={item.farbe} icon={16} />
             <StyledLink to={item.slug}>
               {item.title || item.name}
             </StyledLink>
-          </Entry>)
+          </Item>)
         )}
       </div>
     </SchemaLoader>

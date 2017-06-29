@@ -13,6 +13,15 @@ const niceTime = (times) => {
   return times.map(time => time.join('-')).join(', ');
 };
 
+const Container = createComponent(
+  ({ theme }) => ({
+    paddingX: theme.space3,
+    paddingBottom: theme.space1,
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const List = createComponent(
   () => ({
     width: '100%',
@@ -107,50 +116,69 @@ export default createComponent(
       <Logo value={logo} title={name || titel} />
       <div className={className}>
         <H2 color={farbe}>{name}</H2>
-        {etage && <List label="Etage">{etage}</List>}
-        {telefon &&
-          <List label="Telefon"><a href={`tel:${telefon}`}>{telefon}</a></List>}
-        {telefonPrivat && <List label="Privatpatienten">{telefonPrivat}</List>}
-        {fax && <List label="Fax">{fax}</List>}
-        {eMail &&
-          <List label="E-Mail"><a href={`mailto:${eMail}`}>{eMail}</a></List>}
-        {website &&
-          <List label="Homepage"><a href={website}>{website}</a></List>}
+        <Container>
+          {etage && <List label="Etage">{etage}</List>}
+          {telefon &&
+            <List label="Telefon">
+              <a href={`tel:${telefon}`}>{telefon}</a>
+            </List>}
+          {telefonPrivat &&
+            <List label="Privatpatienten">{telefonPrivat}</List>}
+          {fax && <List label="Fax">{fax}</List>}
+          {eMail &&
+            <List label="E-Mail"><a href={`mailto:${eMail}`}>{eMail}</a></List>}
+          {website &&
+            <List label="Homepage"><a href={website}>{website}</a></List>}
+        </Container>
 
         {openings &&
           <div>
             <H2 color={farbe}>Öffnungszeiten</H2>
-            {openings.map((value, index) =>
-              <List label={weekdays[index]}>{niceTime(value)}</List>
-            )}
-            <Text>{freifeld}</Text>
+            <Container>
+              {openings.map((value, index) =>
+                <List label={weekdays[index]}>{niceTime(value)}</List>
+              )}
+              <Text>{freifeld}</Text>
+            </Container>
           </div>}
 
         {leistungen &&
           !!leistungen.length &&
           <H2 color={farbe}>Leistungsangebot</H2>}
         {leistungen &&
-          leistungen.map((item, i) =>
-            <Accordion {...item} farbe={farbe} key={item.id || i} />
-          )}
+          !!leistungen.length &&
+          <Container>
+            {leistungen.map((item, i) =>
+              <Accordion {...item} farbe={farbe} key={item.id || i} />
+            )}
+          </Container>}
 
         {vorsorgen && !!vorsorgen.length && <H2 color={farbe}>Vorsorge</H2>}
         {vorsorgen &&
-          vorsorgen.map((item, i) =>
-            <Accordion {...item} farbe={farbe} key={item.id || i} />
-          )}
+          !!vorsorgen.length &&
+          <Container>
+            {vorsorgen.map((item, i) =>
+              <Accordion {...item} farbe={farbe} key={item.id || i} />
+            )}
+          </Container>}
 
         {aesthetik && !!aesthetik.length && <H2 color={farbe}>Ästethik</H2>}
         {aesthetik &&
-          aesthetik.map((item, i) =>
-            <Accordion {...item} farbe={farbe} key={item.id || i} />
-          )}
+          !!aesthetik.length &&
+          <Container>
+            {aesthetik.map((item, i) =>
+              <Accordion {...item} farbe={farbe} key={item.id || i} />
+            )}
+          </Container>}
 
         {personen && !!personen.length && <H2 color={farbe}>Personen</H2>}
         {personen &&
-          personen.map((item, i) =>
-            <Person {...item} farbe={farbe} key={item.id || i} />
-          )}
+          !!personen.length &&
+          <Container>
+            {personen.map((item, i) =>
+              <Person {...item} farbe={farbe} key={item.id || i} />
+            )}
+          </Container>}
       </div>
     </div>),
   p => Object.keys(p)

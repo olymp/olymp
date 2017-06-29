@@ -21,6 +21,26 @@ export const App = createComponent(
       fontWeight: 200,
       lineHeight: 1.5,
     },
+    ifSmallDown: {
+      '& h1': {
+        fontSize: theme.fontSizeH1,
+      },
+      '& h2': {
+        fontSize: theme.fontSizeH2,
+      },
+      '& h3': {
+        fontSize: theme.fontSizeH3,
+      },
+      '& h4': {
+        fontSize: theme.fontSizeH4,
+      },
+      '& h5': {
+        fontSize: theme.fontSizeH5,
+      },
+      '& h6': {
+        fontSize: theme.fontSizeH6,
+      },
+    },
   }),
   p => <WithColorProvider><Layout {...p} /></WithColorProvider>,
   p => Object.keys(p)
