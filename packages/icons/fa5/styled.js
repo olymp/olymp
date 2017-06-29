@@ -1,12 +1,13 @@
 import React from 'react';
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 
 export default Wrapped =>
   createComponent(
     ({ theme, color }) => ({
-      fill: color === true
-        ? theme.color
-        : typeof color === 'string' ? color : 'rgba(0, 0, 0, 0.85)',
+      fill:
+        color === true
+          ? theme.color
+          : typeof color === 'string' ? color : 'rgba(0, 0, 0, 0.85)',
     }),
     Wrapped,
     ['width', 'height', 'size', 'onClick']
