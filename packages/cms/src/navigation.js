@@ -41,12 +41,10 @@ const UserIcon = createComponent(
     // marginRight: '0.75rem',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
       name
-    )}.jpg?s=26&bg=${theme.color.replace(
-      '#',
-      '%23'
-    )}&color=${theme.light.replace(
-      '#',
-      '%23'
+    )}.jpg?s=26&bg=${encodeURIComponent(
+      theme.color
+    )}&color=${encodeURIComponent(
+      theme.light
     )}) center center no-repeat, ${theme.color}`,
   }),
   p => <Gravatar {...p} size={30} />,
