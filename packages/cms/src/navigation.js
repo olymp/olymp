@@ -37,8 +37,8 @@ const UserIcon = createComponent(
   ({ theme, name }) => ({
     float: 'left',
     borderRadius: '50%',
-    marginTop: theme.space2,
-    marginRight: '0.75rem',
+    marginY: theme.space2,
+    // marginRight: '0.75rem',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
       name
     )}.jpg?s=26&bg=${theme.color.replace(
@@ -157,6 +157,11 @@ export default withLang(
             <IconOnly type="plus" />
           </Link>
         </RightMenuItem> */}
+        <RightMenuItem key="plus">
+          <a onClick={auth.logout} href="javascript:;">
+            <IconOnly type="poweroff" />
+          </a>
+        </RightMenuItem>
         <RightMenuItem key="@user">
           <Link to={{ query: { '@user': null } }}>
             <UserIcon
@@ -164,7 +169,7 @@ export default withLang(
               name={auth.user.name}
               default="blank"
             />
-            {auth.user.name}
+            {/* auth.user.name */}
           </Link>
         </RightMenuItem>
       </GatewayDest>)
