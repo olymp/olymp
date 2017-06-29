@@ -1,4 +1,3 @@
-
 export { default as FaAlarmClock } from './lib/fa-alarm-clock';
 export { default as FaAlignCenter } from './lib/fa-align-center';
 export { default as FaAlignJustify } from './lib/fa-align-justify';
@@ -13,20 +12,34 @@ export { default as FaAngleLeft } from './lib/fa-angle-left';
 export { default as FaAngleRight } from './lib/fa-angle-right';
 export { default as FaAngleUp } from './lib/fa-angle-up';
 export { default as FaAreaChart } from './lib/fa-area-chart';
-export { default as FaArrowAltCircleDown } from './lib/fa-arrow-alt-circle-down';
-export { default as FaArrowAltCircleLeft } from './lib/fa-arrow-alt-circle-left';
-export { default as FaArrowAltCircleRight } from './lib/fa-arrow-alt-circle-right';
+export {
+  default as FaArrowAltCircleDown,
+} from './lib/fa-arrow-alt-circle-down';
+export {
+  default as FaArrowAltCircleLeft,
+} from './lib/fa-arrow-alt-circle-left';
+export {
+  default as FaArrowAltCircleRight,
+} from './lib/fa-arrow-alt-circle-right';
 export { default as FaArrowAltCircleUp } from './lib/fa-arrow-alt-circle-up';
 export { default as FaArrowAltDown } from './lib/fa-arrow-alt-down';
-export { default as FaArrowAltFromBottom } from './lib/fa-arrow-alt-from-bottom';
+export {
+  default as FaArrowAltFromBottom,
+} from './lib/fa-arrow-alt-from-bottom';
 export { default as FaArrowAltFromLeft } from './lib/fa-arrow-alt-from-left';
 export { default as FaArrowAltFromRight } from './lib/fa-arrow-alt-from-right';
 export { default as FaArrowAltFromTop } from './lib/fa-arrow-alt-from-top';
 export { default as FaArrowAltLeft } from './lib/fa-arrow-alt-left';
 export { default as FaArrowAltRight } from './lib/fa-arrow-alt-right';
-export { default as FaArrowAltSquareDown } from './lib/fa-arrow-alt-square-down';
-export { default as FaArrowAltSquareLeft } from './lib/fa-arrow-alt-square-left';
-export { default as FaArrowAltSquareRight } from './lib/fa-arrow-alt-square-right';
+export {
+  default as FaArrowAltSquareDown,
+} from './lib/fa-arrow-alt-square-down';
+export {
+  default as FaArrowAltSquareLeft,
+} from './lib/fa-arrow-alt-square-left';
+export {
+  default as FaArrowAltSquareRight,
+} from './lib/fa-arrow-alt-square-right';
 export { default as FaArrowAltSquareUp } from './lib/fa-arrow-alt-square-up';
 export { default as FaArrowAltToBottom } from './lib/fa-arrow-alt-to-bottom';
 export { default as FaArrowAltToLeft } from './lib/fa-arrow-alt-to-left';
@@ -69,7 +82,9 @@ export { default as FaBook } from './lib/fa-book';
 export { default as FaCalendarAlt } from './lib/fa-calendar-alt';
 export { default as FaCalendarCheck } from './lib/fa-calendar-check';
 export { default as FaCalendarEdit } from './lib/fa-calendar-edit';
-export { default as FaCalendarExclamation } from './lib/fa-calendar-exclamation';
+export {
+  default as FaCalendarExclamation,
+} from './lib/fa-calendar-exclamation';
 export { default as FaCalendarMinus } from './lib/fa-calendar-minus';
 export { default as FaCalendarPlus } from './lib/fa-calendar-plus';
 export { default as FaCalendarTimes } from './lib/fa-calendar-times';
@@ -130,7 +145,9 @@ export { default as FaEnvelope } from './lib/fa-envelope';
 export { default as FaEraser } from './lib/fa-eraser';
 export { default as FaExclamationCircle } from './lib/fa-exclamation-circle';
 export { default as FaExclamationSquare } from './lib/fa-exclamation-square';
-export { default as FaExclamationTriangle } from './lib/fa-exclamation-triangle';
+export {
+  default as FaExclamationTriangle,
+} from './lib/fa-exclamation-triangle';
 export { default as FaExclamation } from './lib/fa-exclamation';
 export { default as FaExpandArrowsAlt } from './lib/fa-expand-arrows-alt';
 export { default as FaExpandArrows } from './lib/fa-expand-arrows';

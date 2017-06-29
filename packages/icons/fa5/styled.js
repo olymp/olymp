@@ -1,14 +1,14 @@
-import React from 'react';
 import { createComponent } from 'react-fela';
 
-export default Wrapped =>
+const Icon = Wrapped =>
   createComponent(
     ({ theme, color }) => ({
-      fill:
-        color === true
-          ? theme.color
-          : typeof color === 'string' ? color : 'rgba(0, 0, 0, 0.85)',
+      fill: color === true
+        ? theme.color
+        : typeof color === 'string' ? color : theme.dark,
     }),
     Wrapped,
     ['width', 'height', 'size', 'onClick']
   );
+Icon.displayName = 'Icon';
+export default Icon;
