@@ -70,6 +70,7 @@ const Logo = createComponent(
       width={400}
       maxWidth={value && value.width}
       maxHeight={160}
+      alt={title}
     />),
   p => Object.keys(p)
 );
