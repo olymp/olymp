@@ -19,6 +19,18 @@ const Filler = createComponent(
   'li',
   p => Object.keys(p)
 );
+const Button = createComponent(
+  ({ theme }) => ({
+    backgroundColor: 'rgba(0,0,0,0.05)',
+    borderRadius: 6,
+    height: 30,
+    lineHeight: '10px',
+    marginTop: 7,
+    padding: 9,
+  }),
+  'a',
+  p => Object.keys(p)
+);
 const VerticalMenu = createComponent(
   ({ deviceWidth, theme }) => ({
     overflow: 'visible',
@@ -26,7 +38,8 @@ const VerticalMenu = createComponent(
     flexDirection: 'row',
     // boxShadow: 'inset -10px 0 3px -9px hsla(0,0%,0%,.2)!important',
     borderRight: 0,
-    height: 45,
+    height: 42,
+    minHeight: 42,
     boxShadow: `${theme.innerShadow}!important`,
     background: `linear-gradient(270deg, ${theme.colorStart ||
       tinycolor(theme.color)
@@ -43,6 +56,7 @@ const VerticalMenu = createComponent(
         // backgroundColor: 'white',
         // borderRadius: 500,
         // margin: 2,
+        color: '#ffffff',
       },
       '> a > i.anticon': {
         margin: 0,
@@ -239,6 +253,12 @@ export default withLang(
               <Icon type="poweroff" />
             </a>
           </Popover>
+        </Menu.Item>
+
+        <Menu.Item key="save" title="Speichern">
+          <Button onClick={auth.logout} href="javascript:;">
+            <Icon type="edit" /> Speichern
+          </Button>
         </Menu.Item>
       </VerticalMenu>)
   )
