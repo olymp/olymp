@@ -6,7 +6,16 @@ import { withAmp } from 'olymp';
 import { ContentLoaderStyles } from './loader';
 
 const Container = createComponent(
-  ({ ratio, width, minWidth, minHeight, maxWidth, maxHeight, visible }) => ({
+  ({
+    ratio,
+    width,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    visible,
+    circle,
+  }) => ({
     position: 'relative',
     overflow: 'hidden',
     width,
@@ -14,6 +23,7 @@ const Container = createComponent(
     minHeight,
     maxWidth,
     maxHeight,
+    borderRadius: circle && '50%',
     onBefore: {
       display: 'block',
       content: '""',
@@ -39,6 +49,7 @@ class Image extends Component {
     const {
       className,
       lazy,
+      circle,
       width: pWidth, // prevent ...rest
       height: pHeight, // prevent ...rest
       ratio: pRatio, // prevent ...rest
@@ -126,14 +137,15 @@ class Image extends Component {
         maxHeight={maxHeight}
         ratio={ratio}
         lazy={lazy}
+        circle={circle}
         visible={visible}
         onVisible={() => this.setState({ visible: true })}
       >
         <img
           src={setUrl(width, height)}
           alt={alt}
-          width="100%"
-          height="auto"
+          width={width > height ? '100%' : 'auto'}
+          height={height > width ? '100%' : 'auto'}
           {...rest}
         />
       </Container>
@@ -145,6 +157,7 @@ Image.propTypes = {
   setUrl: PropTypes.func.isRequired,
   ratio: PropTypes.number.isRequired,
   lazy: PropTypes.bool,
+  circle: PropTypes.bool,
   alt: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.number,
@@ -158,6 +171,7 @@ Image.defaultProps = {
   setUrl: (w, h) => `https://lorempixel.com/${w}/${h}/cats/${w}x${h}`,
   ratio: 0.75,
   lazy: true,
+  circle: false,
   alt: '',
   width: undefined,
   height: undefined,
