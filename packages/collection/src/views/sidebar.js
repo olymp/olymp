@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
 import { Dropdown, Menu, Icon, Button } from 'antd';
 import { Image } from 'olymp-cloudinary';
-import {
-  FieldValue,
-  collectionToCsvDownload,
-  getFilterMenu,
-} from '../components';
+import { FieldValue, collectionToCsvDownload } from '../components';
 import { Sidebar, List } from 'olymp-ui';
 
 const states = {
@@ -105,17 +101,7 @@ export default class CollectionListSidebar extends Component {
     </Menu>);
 
   render() {
-    const {
-      router,
-      id,
-      collection,
-      isLoading,
-      refetch,
-      typeName,
-      onSearch,
-      searchText,
-      onClick,
-    } = this.props;
+    const { router, id, collection, onSearch, searchText, form } = this.props;
     const items = (this.props.items || []).map((item) => {
       const name = this.resolveFieldValue(item, 'name', {
         defaultFieldName: 'name',
@@ -146,48 +132,35 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
-    const menu = (
-      <Menu>
-        <Menu.Item key="1">
-          <a
-            href="javascript:;"
-            onClick={() => router.push(this.getLink({ id: null }))}
-          >
-            Hinzufügen
-          </a>
-        </Menu.Item>
-        <Menu.Item key="2" disabled>Import</Menu.Item>
-        <Menu.Item key="3">
-          <a
-            href="javascript:;"
-            onClick={() =>
-              collectionToCsvDownload(collection, this.props.items)}
-          >
-            Export
-          </a>
-        </Menu.Item>
-      </Menu>
-    );
-    const actions = (
-      <Dropdown overlay={menu}>
-        <Button
+    const leftButtons = (
+      <Button.Group>
+        <Sidebar.Button
+          onClick={() => router.push(this.getLink({ id: undefined }))}
           shape="circle"
-          size="large"
-          onClick={() => router.push(this.getLink({ id: null }))}
-        >
-          <Icon type="plus" />
-        </Button>
-      </Dropdown>
+          icon="close"
+        />
+      </Button.Group>
     );
+    const rightButtons = form.isFieldsTouched()
+      ? (<Button.Group>
+        <Sidebar.Button
+          onClick={() => console.log('save fehlt')}
+          shape="circle"
+          icon="save"
+        />
+      </Button.Group>)
+      : (<Button.Group>
+        <Sidebar.Button
+          onClick={() => router.push(this.getLink({ id: null }))}
+          shape="circle"
+          icon="plus"
+        />
+      </Button.Group>);
+
     return (
       <Sidebar
-        rightButtons={
-          <Sidebar.Button
-            onClick={() => onClick({ id: 'new' })}
-            shape="circle"
-            icon="plus"
-          />
-        }
+        leftButtons={leftButtons}
+        rightButtons={rightButtons}
         header={
           <List.Filter
             placeholder="Filter ..."

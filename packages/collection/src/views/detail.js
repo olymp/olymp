@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
-import { withItem } from '../decorators';
-import { DetailForm } from '../components';
-import { Form, Menu, Icon } from 'antd';
+import { Menu, Icon } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
 import { Gateway } from 'react-gateway';
+import { withItem } from '../decorators';
+import { DetailForm } from '../components';
 
 const getFormSchema = ({ fields }) =>
   fields.reduce((result, field) => {
@@ -59,19 +59,9 @@ const RightMenuItem = createComponent(
 
 @withRouter
 @withItem
-@Form.create()
 export default class CollectionDetail extends Component {
   render() {
-    const {
-      id,
-      item,
-      collection,
-      data,
-      onSave,
-      onDelete,
-      pathname,
-      query,
-    } = this.props;
+    const { id, item, collection, onSave, pathname, query } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = query.tab || Object.keys(schema)[0];
