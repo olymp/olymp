@@ -5,7 +5,9 @@ import WithContainer from './with-container';
 const Body = createComponent(
   ({ affix }) => ({
     flex: 1,
+    display: affix && 'flex',
     overflowY: affix && 'auto',
+    flexDirection: affix && 'column',
   }),
   WithContainer,
   ({ affix, ...p }) => Object.keys(p)

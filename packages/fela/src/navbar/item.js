@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { fade } from 'olymp-fela';
 import { Link, Placeholder } from './link';
+import { FaEnvelope } from 'olymp-icons';
 
 const NavItem = createComponent(
   ({ fill, inverse, vertically, right }) => ({
@@ -42,9 +43,11 @@ const NavItem = createComponent(
       {pathname
         ? <Link to={pathname} inverse={props.inverse}>
           {title}
+          {pages && !!pages.length && <FaEnvelope />}
         </Link>
         : <Placeholder onClick={onClick} inverse={props.inverse}>
           {title}
+          {pages && !!pages.length && <FaEnvelope />}
         </Placeholder>}
 
       {pages &&

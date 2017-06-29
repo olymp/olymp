@@ -78,7 +78,7 @@ export default class GzLayout extends Component {
     const open = query.nav === null;
 
     return (
-      <App>
+      <App affix>
         <Header>
           <Navbar
             pages={nav}

@@ -29,7 +29,8 @@ const Container = createComponent(
 
 const SimpleSwitchContainer = createComponent(
   ({ theme }) => ({
-    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
   }),
   'div',
   p => Object.keys(p)
@@ -38,11 +39,8 @@ const SimpleSwitchContainer = createComponent(
 export default (props) => {
   const {
     query,
-    templates,
-    collections,
     collectionList,
     location,
-    theme,
     navigation,
     wrapper: Wrapped,
   } = props;
