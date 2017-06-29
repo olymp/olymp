@@ -52,20 +52,10 @@ const UserIcon = createComponent(
 );
 
 const VerticalMenu = createComponent(
-  ({ deviceWidth, theme }) => ({
+  ({ theme }) => ({
     zIndex: 3,
-    /* boxShadow: `${theme.innerShadow}!important`,
-    background: `linear-gradient(270deg, ${theme.colorStart ||
-      tinycolor(theme.color)
-        .darken(6)
-        .spin(-6)
-        .toRgbString()}, ${theme.colorEnd ||
-      tinycolor(theme.color).lighten(6).spin(12).toRgbString()})`,
-    '> li.ant-menu-item': {
-      '> a': {
-        color: '#ffffff',
-      },
-    },*/
+    // boxShadow: theme.boxShadow,
+    // borderBottom: 0,
   }),
   Menu,
   p => Object.keys(p)

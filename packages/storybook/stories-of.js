@@ -16,7 +16,7 @@ const Container = createComponent(
       '> div': {
         '> *': {
           marginX: 'auto',
-          display: 'table',
+          // display: 'table',
         },
       },
     },

@@ -6,7 +6,7 @@ const Layout = createComponent(
   ({ fullHeight, affix }) => ({
     display: 'flex',
     height: '100%',
-    // minHeight: fullHeight || affix ? '100vh' : '100%',
+    minHeight: fullHeight || affix ? '100vh' : '100%',
     maxHeight: affix && 1, // workaround for affix
     flexDirection: 'column',
   }),
