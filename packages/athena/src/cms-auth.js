@@ -5,10 +5,10 @@ import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute } from 'olymp-collection';
+import { createComponent, getAntStyle } from 'olymp-fela';
 import NavigationVertical from './navigation';
 import { SettingsRoute } from './settings';
 import { TemplateRoute } from './templates';
-import { createComponent, getAntStyle } from 'olymp-fela';
 
 const Container = createComponent(
   ({ theme }) => ({
@@ -25,6 +25,14 @@ const Container = createComponent(
   }),
   'div',
   ({ deviceWidth, ...p }) => Object.keys(p)
+);
+
+const SimpleSwitchContainer = createComponent(
+  ({ theme }) => ({
+    position: 'relative',
+  }),
+  'div',
+  p => Object.keys(p)
 );
 
 export default (props) => {
@@ -53,52 +61,54 @@ export default (props) => {
         {...location}
         location={location}
       />
-      <SimpleSwitch>
-        <SimpleRoute
-          match={query['@template'] !== undefined}
-          render={() => <TemplateRoute {...props} />}
-        />
-        <SimpleRoute
-          match={!!collection}
-          render={() =>
-            (<CollectionRoute
-              {...props}
-              typeName={collection && collection.name}
-              Wrapped={Wrapped}
-            />)}
-        />
-        <SimpleRoute
-          match={query['@page'] !== undefined}
-          render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />}
-        />
-        <SimpleRoute
-          match={query['@media'] !== undefined}
-          render={() => <CloudinaryRoute {...props} />}
-        />
-        {/* <SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
-        <SimpleRoute
-          match={query['@settings'] !== undefined}
-          render={() => <SettingsRoute {...props} />}
-        />
-        <SimpleRoute
-          match={query['@users'] !== undefined}
-          render={() => <AuthUsers {...props} />}
-        />
-        <SimpleRoute
-          match={query['@user'] !== undefined}
-          render={() => <AuthUser {...props} />}
-        />
-        <SimpleRoute
-          render={rest =>
-            (<PageRoute
-              {...rest}
-              {...props}
-              key={location.key}
-              navigation={navigation}
-              Wrapped={Wrapped}
-            />)}
-        />
-      </SimpleSwitch>
+      <SimpleSwitchContainer>
+        <SimpleSwitch>
+          <SimpleRoute
+            match={query['@template'] !== undefined}
+            render={() => <TemplateRoute {...props} />}
+          />
+          <SimpleRoute
+            match={!!collection}
+            render={() =>
+              (<CollectionRoute
+                {...props}
+                typeName={collection && collection.name}
+                Wrapped={Wrapped}
+              />)}
+          />
+          <SimpleRoute
+            match={query['@page'] !== undefined}
+            render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />}
+          />
+          <SimpleRoute
+            match={query['@media'] !== undefined}
+            render={() => <CloudinaryRoute {...props} />}
+          />
+          {/* <SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
+          <SimpleRoute
+            match={query['@settings'] !== undefined}
+            render={() => <SettingsRoute {...props} />}
+          />
+          <SimpleRoute
+            match={query['@users'] !== undefined}
+            render={() => <AuthUsers {...props} />}
+          />
+          <SimpleRoute
+            match={query['@user'] !== undefined}
+            render={() => <AuthUser {...props} />}
+          />
+          <SimpleRoute
+            render={rest =>
+              (<PageRoute
+                {...rest}
+                {...props}
+                key={location.key}
+                navigation={navigation}
+                Wrapped={Wrapped}
+              />)}
+          />
+        </SimpleSwitch>
+      </SimpleSwitchContainer>
     </Container>
   );
 };
