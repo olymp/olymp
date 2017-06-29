@@ -24,6 +24,9 @@ export default {
         minWidth: 75,
         backgroundColor: color,
       },
+      ifSmallDown: {
+        // marginY: theme.space1,
+      },
     },
     '& h2': {
       textAlign: 'left',
@@ -41,6 +44,9 @@ export default {
         position: 'absolute',
         minWidth: 75,
         backgroundColor: color,
+      },
+      ifSmallDown: {
+        // marginY: theme.space1,
       },
     },
     '& a': {

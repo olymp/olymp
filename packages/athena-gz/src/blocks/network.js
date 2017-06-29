@@ -25,8 +25,8 @@ const Item = createComponent(
     marginY: theme.space2,
     textAlign: 'center',
   }),
-  ({ className, website, name, tags, bild, size }) =>
-    (<Grid.Item className={className} mini={size} medium={1} gridSize={size}>
+  ({ className, website, name, tags, bild }) =>
+    (<Grid.Item className={className} mini={5} medium={2} gridSize={10}>
       <a href={website} rel="noopener noreferrer">
         <Img
           value={bild}
@@ -80,10 +80,8 @@ const component = graphql(
     ({ className, attributes, items }) =>
       (<div className={className} {...attributes}>
         <Container>
-          <Grid size={items.length}>
-            {items.map(item =>
-              <Item {...item} size={items.length} key={item.id} />
-            )}
+          <Grid size={10}>
+            {items.map(item => <Item {...item} key={item.id} />)}
           </Grid>
         </Container>
       </div>),

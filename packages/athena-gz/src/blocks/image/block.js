@@ -50,6 +50,7 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
       width: 'calc(100% - 2rem)',
       borderRadius: theme.borderRadius,
       margin: theme.space3,
+      marginBottom: 0,
       padding: theme.space2,
       textAlign: 'center',
       '> h1': {

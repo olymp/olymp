@@ -85,6 +85,9 @@ const Content = createComponent(
   ({ theme }) => ({
     width: '100%',
     paddingX: theme.space5,
+    ifSmallDown: {
+      paddingX: theme.space3,
+    },
   }),
   p => <Grid.Item medium={7} {...p} />,
   p => Object.keys(p)

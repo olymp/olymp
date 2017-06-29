@@ -1,6 +1,6 @@
 import { createComponent } from 'react-fela';
 
-const Icon = Wrapped =>
+export default Wrapped =>
   createComponent(
     ({ theme, color }) => ({
       fill: color === true
@@ -10,5 +10,3 @@ const Icon = Wrapped =>
     Wrapped,
     ['width', 'height', 'size', 'onClick']
   );
-Icon.displayName = 'Icon';
-export default Icon;

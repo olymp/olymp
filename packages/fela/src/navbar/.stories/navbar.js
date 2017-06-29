@@ -103,7 +103,7 @@ storiefy('Vertical nav', () =>
 );
 storiefy(
   'Fill empty space',
-  () => <Navbar pages={nav} inverse fill={boolean('fill', true)} />,
+  () => <Navbar pages={nav} inverse full fill={boolean('fill', true)} />,
   'Works with flex!'
 );
 storiefy('Pass props to deeper Components', () =>

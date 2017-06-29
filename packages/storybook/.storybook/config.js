@@ -13,5 +13,6 @@ PropVal.propTypes = {
 };
 
 setAddon(infoAddon);
-configure(() => require('../src/navbar/.stories'), module);
-configure(() => require('../src/.stories'), module);
+configure(() => require('../../fela/src/navbar/.stories'), module);
+configure(() => require('../../fela/src/.stories'), module);
+configure(() => require('../../icons/.storybook/stories'), module);

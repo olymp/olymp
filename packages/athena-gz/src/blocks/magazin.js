@@ -96,11 +96,7 @@ const component = graphql(
   (<SchemaLoader isLoading={isLoading} schema={loaderSchema}>
     <Container {...attributes}>
       <Grid>
-        <Grid.Item
-          medium={8}
-          paddingMini="0.5rem 1rem"
-          paddingMedium="0 0 0 0.5rem"
-        >
+        <Grid.Item medium={8} paddingMedium="0 0 0 0.5rem">
           {items.map(item =>
             (<Panel
               accent={item.farbe}
@@ -120,7 +116,7 @@ const component = graphql(
         </Grid.Item>
         <Grid.Item
           medium={4}
-          paddingMini="0.5rem 1rem"
+          paddingMini="0.5rem 1rem 0 1rem"
           paddingMedium="0 0.5rem 0 0"
         >
           <H2>Ausgaben als PDFs</H2>

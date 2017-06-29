@@ -89,11 +89,7 @@ const component = graphql(
   (<SchemaLoader isLoading={isLoading} schema={loaderSchema}>
     <Container {...attributes}>
       <Grid>
-        <Grid.Item
-          medium={8}
-          paddingMini="0.5rem 1rem"
-          paddingMedium="0 0 0 0.5rem"
-        >
+        <Grid.Item medium={8} paddingMedium="0 0 0 0.5rem">
           {items.map(item =>
             (<Panel id={item.id} title={item.name} key={item.id} paddingLeft={0}>
               <Img value={item.bild} width={100} ratio={1} avatar />
@@ -107,7 +103,11 @@ const component = graphql(
             </Panel>)
           )}
         </Grid.Item>
-        <Grid.Item medium={4} paddingMini="0.5rem 1rem" paddingMedium="0 1rem">
+        <Grid.Item
+          medium={4}
+          paddingMini="1rem 1rem 0 1rem"
+          paddingMedium="0 1rem"
+        >
           <H2>Vorträge & Veranstaltungen</H2>
           <ul>
             <Li>

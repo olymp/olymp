@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'olymp-fela';
 
@@ -43,7 +43,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
   return (
     <Image
       {...rest}
-      setUrl={(w, h) =>
+      src={(w, h) =>
         cloudinaryUrl(value, {
           w,
           h,

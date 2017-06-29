@@ -5,7 +5,7 @@ import { FelaDecorator, RouterDecorator } from './decorator';
 import { createComponent } from 'react-fela';
 
 const Container = createComponent(
-  ({ customStyle }) => ({
+  ({ theme, customStyle }) => ({
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
@@ -14,9 +14,12 @@ const Container = createComponent(
     '> div': {
       width: '100%',
       '> div': {
-        '> *': {
-          marginX: 'auto',
-        },
+        display: 'flex',
+        justifyContent: 'center',
+        /* padding: theme.space4,
+        margin: theme.space3,
+        backgroundColor: '#ffffff',
+        border: '1px solid #dddddd', */
       },
     },
     ...customStyle,
