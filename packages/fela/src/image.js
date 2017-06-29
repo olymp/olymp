@@ -14,7 +14,7 @@ const Container = createComponent(
     maxWidth,
     maxHeight,
     visible,
-    circle,
+    rounded,
   }) => ({
     position: 'relative',
     overflow: 'hidden',
@@ -23,7 +23,7 @@ const Container = createComponent(
     minHeight,
     maxWidth,
     maxHeight,
-    borderRadius: circle && '50%',
+    borderRadius: rounded && '50%',
     onBefore: {
       display: 'block',
       content: '""',
@@ -49,10 +49,12 @@ class Image extends Component {
     const {
       className,
       lazy,
-      circle,
+      rounded,
+      mode,
       width: pWidth, // prevent ...rest
       height: pHeight, // prevent ...rest
       ratio: pRatio, // prevent ...rest
+      srcRatio: pSrcRatio, // prevent ...rest
       minWidth,
       minHeight,
       maxWidth,
@@ -64,11 +66,14 @@ class Image extends Component {
       ...rest
     } = this.props;
     const { visible } = this.state;
-    let { width, height, ratio } = this.props;
+    let { width, height, ratio, srcRatio } = this.props;
     let isPercentage = false;
 
     if (!ratio) {
       ratio = 0.75;
+    }
+    if (!srcRatio) {
+      srcRatio = ratio;
     }
 
     // width = percent
@@ -111,15 +116,19 @@ class Image extends Component {
       width = Math.sqrt(maxResolution / ratio);
     }
 
+    const imgHeight = mode === 'padded'
+      ? Math.round(width * srcRatio)
+      : Math.round(width * ratio);
     height = Math.round(width * ratio);
     width = Math.round(width);
 
     if (amp) {
+      // todo: works only with standart cases
       return (
         <amp-img
           className={className}
           layout="responsive"
-          src={setUrl(width, height)}
+          src={setUrl(width, imgHeight)}
           alt={alt}
           width={width}
           height={height}
@@ -137,15 +146,15 @@ class Image extends Component {
         maxHeight={maxHeight}
         ratio={ratio}
         lazy={lazy}
-        circle={circle}
+        rounded={rounded}
         visible={visible}
         onVisible={() => this.setState({ visible: true })}
       >
         <img
-          src={setUrl(width, height)}
+          src={setUrl(width, imgHeight)}
           alt={alt}
-          width={width > height ? '100%' : 'auto'}
-          height={height > width ? '100%' : 'auto'}
+          width={width >= imgHeight ? '100%' : 'auto'}
+          height={width < imgHeight ? '100%' : 'auto'}
           {...rest}
         />
       </Container>
@@ -156,8 +165,10 @@ Image.displayName = 'Image';
 Image.propTypes = {
   setUrl: PropTypes.func.isRequired,
   ratio: PropTypes.number.isRequired,
+  srcRatio: PropTypes.number.isRequired,
+  mode: PropTypes.oneOf(['filled', 'padded']).isRequired,
   lazy: PropTypes.bool,
-  circle: PropTypes.bool,
+  rounded: PropTypes.bool,
   alt: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.number,
@@ -169,9 +180,11 @@ Image.propTypes = {
 };
 Image.defaultProps = {
   setUrl: (w, h) => `https://lorempixel.com/${w}/${h}/cats/${w}x${h}`,
+  mode: 'filled',
   ratio: 0.75,
+  srcRatio: 0.75,
   lazy: true,
-  circle: false,
+  rounded: false,
   alt: '',
   width: undefined,
   height: undefined,

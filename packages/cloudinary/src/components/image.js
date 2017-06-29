@@ -52,6 +52,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
         })}
       alt={alt || value.caption}
       ratio={ratio || height / width}
+      srcRatio={height / width}
     />
   );
 };

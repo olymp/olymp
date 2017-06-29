@@ -30,10 +30,10 @@ const Item = createComponent(
       <a href={website} rel="noopener noreferrer">
         <Img
           value={bild}
-          options={{ c: 'pad' }}
           maxResolution={40000}
           width="70%"
           ratio={1}
+          mode="padded"
         />
         <h3>{name}</h3>
         <p>{tags.join(', ')}</p>
