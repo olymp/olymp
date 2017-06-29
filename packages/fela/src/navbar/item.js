@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { fade } from 'olymp-fela';
 import { Link, Placeholder } from './link';
-import { FaEnvelope } from 'olymp-icons';
+import { FaAngleDown, FaAngleRight } from 'olymp-icons';
+
+const Icon = createComponent(
+  ({ theme }) => ({
+    marginLeft: theme.space1,
+    marginBottom: -2,
+  }),
+  ({ className, right }) =>
+    right
+      ? <FaAngleRight className={className} size={15} />
+      : <FaAngleDown className={className} size={15} />,
+  p => Object.keys(p)
+);
 
 const NavItem = createComponent(
   ({ fill, inverse, vertically, right }) => ({
@@ -29,6 +41,8 @@ const NavItem = createComponent(
     children,
     title,
     fill,
+    inverse,
+    vertically,
     pages,
     onClick,
     onItemMouseEnter,
@@ -41,18 +55,18 @@ const NavItem = createComponent(
       }
     >
       {pathname
-        ? <Link to={pathname} inverse={props.inverse}>
+        ? <Link to={pathname} inverse={inverse}>
           {title}
-          {pages && !!pages.length && <FaEnvelope />}
+          {pages && !!pages.length && <Icon right={vertically} />}
         </Link>
-        : <Placeholder onClick={onClick} inverse={props.inverse}>
+        : <Placeholder onClick={onClick} inverse={inverse}>
           {title}
-          {pages && !!pages.length && <FaEnvelope />}
+          {pages && !!pages.length && <Icon right={vertically} />}
         </Placeholder>}
 
       {pages &&
         !!pages.length &&
-        props.renderNav({ ...props, pages, sub: true })}
+        props.renderNav({ ...props, inverse, vertically, pages, sub: true })}
 
       {Children.map(children, child =>
         cloneElement(child, { ...props, sub: true })
