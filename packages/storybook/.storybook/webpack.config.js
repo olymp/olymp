@@ -17,6 +17,12 @@ module.exports = function (storybookBaseConfig) {
   storybookBaseConfig.resolve.modules.push(
     path.resolve(appRoot, 'node_modules')
   );
+  storybookBaseConfig.resolve.alias['@storybook/addon-knobs'] = path.resolve(
+    __dirname,
+    '..',
+    'node_modules',
+    '@storybook/addon-knobs'
+  );
   storybookBaseConfig.resolve.alias.olymp = olympRoot;
   fs.readdirSync(path.resolve(olympRoot, 'packages')).reduce((obj, item) => {
     // get all folders in src and create 'olymp-xxx' alias
