@@ -51,6 +51,9 @@ export default {
           lineHeight: 'initial',
         },
       },
+      ifSmallDown: {
+        borderBottomRightRadius: 50,
+      },
     }),
     ({ className, attributes, ...rest }) =>
       (<div className={className} {...attributes}>

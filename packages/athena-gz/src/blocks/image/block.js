@@ -5,14 +5,8 @@ import { Blocks } from 'olymp-pages';
 import Image from './image';
 
 export const ImageStyles = ({ theme, color = theme.color }) => ({
-  // overflow: 'hidden',
   position: 'relative',
   overflow: 'hidden',
-  '> div:nth-child(1)': {
-    '& img': {
-      borderBottomRightRadius: 100,
-    },
-  },
   '> div:nth-child(2)': {
     backgroundColor: fade(color, 90),
     color: theme.light,
@@ -30,8 +24,7 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
     },
   },
   ifMediumUp: {
-    borderBottomRightRadius: 100,
-    '> div:nth-child(1) > div > img': {
+    '> div:nth-child(1) > div > div > div > img': {
       borderBottomRightRadius: 100,
     },
     '> div:nth-child(2)': {
@@ -46,6 +39,9 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
     },
   },
   ifSmallDown: {
+    '> div:nth-child(1) > div > div > div > img': {
+      borderBottomRightRadius: 50,
+    },
     '> div:nth-child(2)': {
       width: 'calc(100% - 2rem)',
       borderRadius: theme.borderRadius,
@@ -74,5 +70,7 @@ export default {
   styles: ImageStyles,
   defaultNodes: () => createBlockList([Image, Blocks.ImageBlockLabel]),
   component: ({ className, children, attributes }) =>
-    <div className={className} {...attributes}>{children}</div>,
+    (<div className={className} {...attributes}>
+      {children}
+    </div>),
 };
