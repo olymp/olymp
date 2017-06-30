@@ -128,8 +128,8 @@ export default withLang(
             </Menu.Item>)
           )}
         </Menu.SubMenu>
-        <Menu.Item key="charts">
-          <Link to={{ query: { '@charts': null } }}>
+        <Menu.Item key="@analytics">
+          <Link to={{ query: { '@analytics': null } }}>
             <IconOnly type="line-chart" />
           </Link>
         </Menu.Item>

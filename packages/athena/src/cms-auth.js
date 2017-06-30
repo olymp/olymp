@@ -5,6 +5,7 @@ import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute } from 'olymp-collection';
+import { AnalyticsRoutes } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
 import NavigationVertical from './navigation';
 import { SettingsRoute } from './settings';
@@ -86,6 +87,10 @@ export default (props) => {
           <SimpleRoute
             match={query['@settings'] !== undefined}
             render={() => <SettingsRoute {...props} />}
+          />
+          <AnalyticsRoutes
+            match={query['@analytics'] !== undefined}
+            render={() => <AuthUsers {...props} />}
           />
           <SimpleRoute
             match={query['@users'] !== undefined}

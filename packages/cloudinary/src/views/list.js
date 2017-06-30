@@ -88,11 +88,6 @@ class ListSidebar extends Component {
 
     return (
       <Sidebar
-        rightButtons={
-          <Upload {...upload}>
-            <Sidebar.Button shape="circle" icon="plus" />
-          </Upload>
-        }
         header={
           <List.Filter
             placeholder="Filter ..."

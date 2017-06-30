@@ -4,13 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
-const env = require('node-env-file');
+require('dotenv').config();
+
 const createConfig = require(path.resolve(
   __dirname,
   '..',
   'webpack-config.js'
 ));
-env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const command = process.argv[process.argv.length - 1];
 

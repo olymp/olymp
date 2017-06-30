@@ -3,8 +3,8 @@ import createMail from 'olymp-mail/server';
 import { authGraphQL, authCache, createAuthEngine } from 'olymp-auth/server';
 import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
-/* import createSitemap from 'olymp-sitemap/server';
-import { googleGraphQL } from 'olymp-google/server';*/
+import { googleGraphQL } from 'olymp-google/server';
+/* import createSitemap from 'olymp-sitemap/server';*/
 import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
 import { get } from 'lodash';
@@ -13,11 +13,13 @@ const {
   APP,
   MONGODB_URI,
   POSTMARK_KEY,
-  GM_KEY,
   CLOUDINARY_URI,
   // FILESTACK_KEY,
   AUTH_SECRET,
   NODE_ENV,
+  GOOGLE_MAPS_KEY,
+  GOOGLE_CLIENT_EMAIL,
+  GOOGLE_PRIVATE_KEY,
 } = process.env;
 
 export default (server, options) => {
@@ -56,6 +58,11 @@ export default (server, options) => {
   modules.auth = authGraphQL(options.auth);
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
+  modules.google = googleGraphQL(
+    GOOGLE_MAPS_KEY,
+    GOOGLE_CLIENT_EMAIL,
+    GOOGLE_PRIVATE_KEY
+  );
   /*
   createSitemap(schema, options.sitemap);
   googleGraphQL(schema, GM_KEY, options.google);

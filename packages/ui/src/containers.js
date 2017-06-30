@@ -6,7 +6,7 @@ export const SplitView = createComponent(
     flex: 1,
     background:
       background === true &&
-        'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
+      'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
     '> :first-child': {
       flex: 0,
       overflowY: 'auto',
@@ -46,9 +46,10 @@ export const Panel = createComponent(
 );
 
 export const Container = createComponent(
-  ({ theme, width, padding, minHeight }) => ({
+  ({ theme, width, padding, minHeight, height }) => ({
     width: width || 700,
     maxWidth: width || 700,
+    height,
     minHeight,
     boxShadow: theme.boxShadow,
     marginX: 'auto',

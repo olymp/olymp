@@ -53,12 +53,25 @@ export default class CollectionListSidebar extends Component {
         />;
 
       if (start && end) {
-        return <span>{start} bis<br />{end}</span>;
+        return (
+          <span>
+            {start} bis<br />
+            {end}
+          </span>
+        );
       } else if (start) {
-        return <span>Ab {start}</span>;
+        return (
+          <span>
+            Ab {start}
+          </span>
+        );
       }
       if (end) {
-        return <span>Bis {end}</span>;
+        return (
+          <span>
+            Bis {end}
+          </span>
+        );
       }
     }
 
@@ -92,9 +105,7 @@ export default class CollectionListSidebar extends Component {
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
-      <Menu.Item disabled>
-        Kopieren
-      </Menu.Item>
+      <Menu.Item disabled>Kopieren</Menu.Item>
       <Menu.Item disabled>
         {state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen'}
       </Menu.Item>
@@ -141,26 +152,10 @@ export default class CollectionListSidebar extends Component {
         />
       </Button.Group>
     );
-    const rightButtons = form.isFieldsTouched()
-      ? (<Button.Group>
-        <Sidebar.Button
-          onClick={() => console.log('save fehlt')}
-          shape="circle"
-          icon="save"
-        />
-      </Button.Group>)
-      : (<Button.Group>
-        <Sidebar.Button
-          onClick={() => router.push(this.getLink({ id: null }))}
-          shape="circle"
-          icon="plus"
-        />
-      </Button.Group>);
 
     return (
       <Sidebar
         leftButtons={leftButtons}
-        rightButtons={rightButtons}
         header={
           <List.Filter
             placeholder="Filter ..."

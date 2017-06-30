@@ -136,15 +136,14 @@ app.use((req, res, next) => {
   next();
 });
 
-const trust = process.env.TRUST_PROXY !== undefined
-  ? parseInt(process.env.TRUST_PROXY)
-  : 2;
-const secure = process.env.COOKIE_SECURE !== undefined
-  ? `${process.env.COOKIE_SECURE}` === 'true'
-  : isProd;
-const domain = process.env.URL !== undefined
-  ? process.env.URL.split('/')[2]
-  : undefined;
+const trust =
+  process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
+const secure =
+  process.env.COOKIE_SECURE !== undefined
+    ? `${process.env.COOKIE_SECURE}` === 'true'
+    : isProd;
+const domain =
+  process.env.URL !== undefined ? process.env.URL.split('/')[2] : undefined;
 
 if (isProd) {
   app.set('trust proxy', trust);
@@ -273,7 +272,6 @@ app.get('*', (req, res) => {
         initialState: { apollo: client.getInitialState() },
         asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
-        segmentKey: process.env.SEGMENT_KEY,
       });
 
       // Check if the render result contains a redirect, if so we need to set
