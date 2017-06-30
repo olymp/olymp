@@ -3,21 +3,6 @@ import PropTypes from 'prop-types';
 import useBlockBase from '../block-decorators/base';
 import { createComponent } from 'olymp-fela';
 
-export default WrappedComponent =>
-  class WithBlockTypes extends Component {
-    static contextTypes = {
-      blockTypes: PropTypes.object,
-    };
-    render() {
-      return (
-        <WrappedComponent
-          blockTypes={this.context.blockTypes}
-          {...this.props}
-        />
-      );
-    }
-  };
-
 export default (types) => {
   const blockTypes = Object.keys(types).reduce((result, key) => {
     let { component, styles, editable, slate, ...rest } = types[key];
