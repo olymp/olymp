@@ -12,15 +12,9 @@ export const Content = createComponent(
     backgroundColor: background,
     color,
     padding,
-    borderBottomRightRadius: 100,
-    // display: 'flex',
     hyphens: 'auto',
     flex: '1 1',
     minHeight: 90,
-    '> iframe': {
-      display: 'block',
-      borderBottomRightRadius: 100,
-    },
   }),
   'div',
   ({ padding, background, color, accent, ...p }) => Object.keys(p)

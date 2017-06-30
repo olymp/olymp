@@ -11,7 +11,26 @@ const MapContainer = createComponent(
     height: 300,
     position: 'relative',
     display: 'block',
+    '> div > div > div > div': {
+      borderBottomRightRadius: 100,
+      overflow: 'hidden',
+      ifSmallDown: {
+        borderBottomRightRadius: 50,
+      },
+      '> div': {
+        // .gm-style
+        borderBottomRightRadius: 100,
+        overflow: 'hidden',
+        ifSmallDown: {
+          borderBottomRightRadius: 50,
+        },
+      },
+    },
     ...ImageStyles({ theme }),
+    ifSmallDown: {
+      ...ImageStyles({ theme }).ifSmallDown,
+      height: 150,
+    },
   }),
   ({ attributes, className, children }) =>
     (<div className={className} {...attributes}>
@@ -28,7 +47,9 @@ const MapContainer = createComponent(
       >
         <Maps.Marker lat={59.724465} lng={30.080121} />
       </Maps>
-      <Label>{children}</Label>
+      <Label>
+        {children}
+      </Label>
     </div>),
   p => Object.keys(p)
 );

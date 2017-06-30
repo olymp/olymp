@@ -27,6 +27,9 @@ export default createComponent(
           '> .image-gallery-swipe': {
             '> .image-gallery-slides': {
               borderBottomRightRadius: 100,
+              ifSmallDown: {
+                borderBottomRightRadius: 50,
+              },
             },
           },
         },
