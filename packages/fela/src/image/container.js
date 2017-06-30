@@ -43,7 +43,12 @@ const LazyContainer = createComponent(
     ...containerStyle(rest),
     ...(!visible ? ContentLoaderStyles : {}),
   }),
-  ({ onVisible, ...p }) => <LazyLoad {...p} onContentVisible={onVisible} />,
+  ({ onVisible, onClick, children, ...p }) =>
+    (<div onClick={onClick}>
+      <LazyLoad {...p} onContentVisible={onVisible}>
+        {children}
+      </LazyLoad>
+    </div>),
   ({ ratio, rounded, visible, ...p }) => Object.keys(p)
 );
 
