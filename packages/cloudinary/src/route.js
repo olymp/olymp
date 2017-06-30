@@ -10,6 +10,4 @@ export default ({ query, pathname, router }) =>
         query: { ...query, '@media': selected.join(',') },
       })}
     // onSelect={items => console.log(items)} // => Selection-Mode
-    onClose={() =>
-      router.push({ pathname, query: { ...query, '@media': undefined } })}
   />);

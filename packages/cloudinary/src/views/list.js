@@ -95,6 +95,15 @@ class ListSidebar extends Component {
             value={search}
           />
         }
+        leftButtons={
+          onClose &&
+          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
+        }
+        rightButtons={
+          <Upload {...upload}>
+            <Sidebar.Button shape="circle" icon="plus" />
+          </Upload>
+        }
         isOpen
         padding={0}
         title="Mediathek"
@@ -129,7 +138,7 @@ ListSidebar.propTypes = {
   filter: PropTypes.array,
 };
 ListSidebar.defaultProps = {
-  onClose: () => {},
+  onClose: null,
   onSearch: () => {},
   onFilter: () => {},
   items: [],

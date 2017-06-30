@@ -112,7 +112,15 @@ export default class CollectionListSidebar extends Component {
     </Menu>);
 
   render() {
-    const { router, id, collection, onSearch, searchText, form } = this.props;
+    const {
+      router,
+      id,
+      collection,
+      onSearch,
+      searchText,
+      form,
+      onClose,
+    } = this.props;
     const items = (this.props.items || []).map((item) => {
       const name = this.resolveFieldValue(item, 'name', {
         defaultFieldName: 'name',
@@ -143,24 +151,26 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
-    const leftButtons = (
-      <Button.Group>
-        <Sidebar.Button
-          onClick={() => router.push(this.getLink({ id: undefined }))}
-          shape="circle"
-          icon="close"
-        />
-      </Button.Group>
-    );
-
     return (
       <Sidebar
-        leftButtons={leftButtons}
         header={
           <List.Filter
             placeholder="Filter ..."
             onChange={onSearch}
             value={searchText}
+          />
+        }
+        leftButtons={
+          onClose &&
+          <Button.Group>
+            <Sidebar.Button onClick={onClose} shape="circle" icon="close" />
+          </Button.Group>
+        }
+        rightButtons={
+          <Sidebar.Button
+            onClick={() => router.push(this.getLink({ id: null }))}
+            shape="circle"
+            icon="plus"
           />
         }
         isOpen
