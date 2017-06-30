@@ -5,6 +5,18 @@ import moment from 'moment';
 import shortID from 'shortid';
 
 const analytics = bluebird.promisify(google.analytics('v3').data.ga.get);
+const dimensionObj = {
+  PAGE_TITLE: 'ga:pageTitle',
+  CITY: 'ga:city',
+  USER_GENDER: 'ga:userGender',
+  USER_AGE_BRACKET: 'ga:userAgeBracket',
+  DEVICE_CATEGORY: 'ga:deviceCategory',
+  BROWSER: 'ga:browser',
+  USER_TYPE: 'ga:userType',
+  SOURCE: 'ga:source',
+  REGION_ISO_CODE: 'ga:regionIsoCode',
+  SCREEN_RESOLUTION: 'ga:screenResolution',
+};
 
 export default (mapsKey, mail, key) => {
   const jwtClient = new google.auth.JWT(
@@ -27,38 +39,38 @@ export default (mapsKey, mail, key) => {
     queries: `
       geocode(address: String, region: String, language: String): Geocode
       geocodeList(address: String, region: String, language: String): [Geocode]
-      analyticsPageviews(start: String!, end: String!, pageTitle: Boolean, dimension: ANALYTICS_PAGEVIEW_DIMENSIONS, sort: ANALYTICS_PAGEVIEW_SORT): AnalyticsPageviews
+      analyticsPageviews(start: String!, end: String!, dimensions: [ANALYTICS_PAGEVIEW_DIMENSIONS], time: ANALYTICS_PAGEVIEW_TIMES, sort: ANALYTICS_PAGEVIEW_SORT): AnalyticsPageviews
     `,
     resolvers: {
       queries: {
         analyticsPageviews: (
           source,
-          { start, end, pageTitle, dimension, sort }
+          { start, end, time, dimensions = [], sort }
         ) => {
-          let dimensions = pageTitle ? 'ga:pageTitle,' : '';
+          const dimensionArray = dimensions.map(name => dimensionObj[name]);
           let sorts = '';
           if (!sort || sort === 'PAGEVIEWS') {
             sorts = '-ga:pageviews';
           } else if (sort === 'SESSIONS') {
             sorts = '-ga:sessions';
           }
-          if (dimension === 'MONTH') {
-            dimensions += 'ga:year,ga:month';
+          if (time === 'MONTH') {
+            dimensionArray.push('ga:year,ga:month');
             if (sort === 'DATE') {
               sorts = 'ga:year,ga:month';
             }
-          } else if (dimension === 'WEEK') {
-            dimensions += 'ga:year,ga:week';
+          } else if (time === 'WEEK') {
+            dimensionArray.push('ga:year,ga:week');
             if (sort === 'DATE') {
               sorts = 'ga:year,ga:week';
             }
-          } else if (dimension === 'DAY') {
-            dimensions += 'ga:date';
+          } else if (time === 'DAY') {
+            dimensionArray.push('ga:date');
             if (sort === 'DATE') {
               sorts = 'ga:date';
             }
           } else {
-            dimensions += 'ga:year';
+            dimensionArray.push('ga:year');
             if (sort === 'DATE') {
               sorts = 'ga:year';
             }
@@ -69,8 +81,8 @@ export default (mapsKey, mail, key) => {
             sort: sorts,
             'start-date': start,
             'end-date': end,
-            metrics: 'ga:sessions,ga:pageviews',
-            dimensions,
+            metrics: 'ga:sessions,ga:pageviews,ga:timeOnPage,ga:avgTimeOnPage',
+            dimensions: dimensionArray.join(','),
           }).then(({ columnHeaders, rows, totalsForAllResults }) => {
             const cols = columnHeaders.map(x => x.name.substr(3));
             const resultRows = rows
@@ -83,14 +95,14 @@ export default (mapsKey, mail, key) => {
               .map((x) => {
                 const { year, month, week, date, ...rest } = x;
                 rest.id = shortID.generate();
-                if (dimension === 'MONTH') {
+                if (time === 'MONTH') {
                   rest.date = +moment(`${year}${month}01`, 'YYYYMMDD');
-                } else if (dimension === 'WEEK') {
+                } else if (time === 'WEEK') {
                   rest.date = +moment(`${year}0101`, 'YYYYMMDD').add(
                     'week',
                     week
                   );
-                } else if (dimension === 'DAY') {
+                } else if (time === 'DAY') {
                   rest.date = +moment(date, 'YYYYMMDD');
                 } else {
                   rest.date = +moment(`${year}0101`, 'YYYYMMDD');
@@ -139,6 +151,8 @@ export default (mapsKey, mail, key) => {
         id: String
         sessions: Int
         pageviews: Int
+        timeOnPage: Float
+        avgTimeOnPage: Float
         rows: [AnalyticsPageviewRows]
       }
       type AnalyticsPageviewRows {
@@ -146,9 +160,15 @@ export default (mapsKey, mail, key) => {
         pageviews: Int
         sessions: Int
         pageTitle: String
+        city: String
+        deviceCategory: String
+        timeOnPage: Float
+        avgTimeOnPage: Float
+        userGender: String
+        userAgeBracket: String
         date: Date
       }
-      enum ANALYTICS_PAGEVIEW_DIMENSIONS {
+      enum ANALYTICS_PAGEVIEW_TIMES {
         YEAR
         MONTH
         WEEK
@@ -158,6 +178,18 @@ export default (mapsKey, mail, key) => {
         PAGEVIEWS
         SESSIONS
         DATE
+      }
+      enum ANALYTICS_PAGEVIEW_DIMENSIONS {
+        PAGE_TITLE
+        CITY
+        USER_GENDER
+        USER_AGE_BRACKET
+        DEVICE_CATEGORY
+        BROWSER
+        USER_TYPE
+        SOURCE
+        REGION_ISO_CODE
+        SCREEN_RESOLUTION
       }
     `,
   };

@@ -92,6 +92,11 @@ export default withLang(
         ]}
         name="navigation"
       >
+        <Menu.Item key="plus">
+          <Link to={{ query: { '@plus': null } }}>
+            <IconOnly type="plus" />
+          </Link>
+        </Menu.Item>
         <Menu.Item key="@home">
           <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
             <IconOnly type="home" />
@@ -139,11 +144,6 @@ export default withLang(
           </Link>
         </Menu.Item>
         {children}
-        <RightMenuItem key="plus">
-          <Link to={{ query: { '@plus': null } }}>
-            <IconOnly type="plus" />
-          </Link>
-        </RightMenuItem>
         <RightMenuItem key="logout">
           <a onClick={auth.logout} href="javascript:;">
             <IconOnly type="poweroff" />

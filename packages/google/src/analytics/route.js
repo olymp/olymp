@@ -16,9 +16,7 @@ import {
 
 const StyledLineChart = createComponent(
   () => ({
-    '& svg': {
-      overflow: 'visible',
-    },
+    '& svg': {},
   }),
   LineChart,
   p => Object.keys(p)
@@ -30,7 +28,7 @@ export const queryTemplate = graphql(
       item: analyticsPageviews(
         start: "180daysAgo"
         end: "today"
-        dimension: MONTH
+        time: MONTH
         sort: DATE
       ) {
         id
@@ -69,15 +67,12 @@ class AnalyticsRoute extends Component {
     const text = this.props.text || item.text;
 
     return (
-      <Container height={300}>
+      <Container height={350}>
         Pageviews: {item.pageviews}
         <br />
         Sessions: {item.sessions}
         <ResponsiveContainer>
-          <StyledLineChart
-            data={item.rows}
-            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-          >
+          <StyledLineChart data={item.rows}>
             <Line name="Pageviews" dataKey="pageviews" stroke="#8884d8" />
             <Line name="Sessions" dataKey="sessions" stroke="#82ca9d" />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -87,7 +82,7 @@ class AnalyticsRoute extends Component {
             />
             <YAxis />
             <Legend align="center" />
-            <Tooltip />
+            <Tooltip labelFormatter={v => moment(v).format('YYYY-MM')} />
           </StyledLineChart>
         </ResponsiveContainer>
       </Container>
