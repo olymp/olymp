@@ -2,7 +2,7 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withLang } from 'olymp';
 import { withAuth } from 'olymp-auth';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Button } from 'antd';
 import { createComponent } from 'olymp-fela';
 import { GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
@@ -30,6 +30,15 @@ const IconOnly = createComponent(
     marginRight: '0!important',
   }),
   Icon,
+  p => Object.keys(p)
+);
+const RoundButton = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.color,
+    color: theme.light,
+    borderColor: theme.color,
+  }),
+  Button,
   p => Object.keys(p)
 );
 
@@ -93,9 +102,7 @@ export default withLang(
         name="navigation"
       >
         <Menu.Item key="plus">
-          <Link to={{ query: { '@plus': null } }}>
-            <IconOnly type="plus" />
-          </Link>
+          <RoundButton shape="circle" icon="plus" />
         </Menu.Item>
         <Menu.Item key="@home">
           <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
