@@ -89,84 +89,90 @@ export default withLang(
       query,
       collectionList,
       ...rest
-    }) =>
-      (<GatewayDest
-        component={VerticalMenu}
-        mode="horizontal"
-        className={className}
-        deviceWidth={deviceWidth}
-        selectedKeys={[
-          ...Object.keys(query),
-          ...Object.keys(query).map(x => query[x]),
-        ]}
-        name="navigation"
-      >
-        <Menu.Item key="plus">
-          <RoundButton shape="circle" icon="plus" />
-        </Menu.Item>
-        <Menu.Item key="@home">
-          <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
-            <IconOnly type="home" />
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="@page">
-          <Link to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}>
-            <Icon type="edit" /> Seiten
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="@media">
-          <Link to={{ query: { '@media': null } }}>
-            <Icon type="picture" /> Medien
-          </Link>
-        </Menu.Item>
-        <Menu.SubMenu
-          title={
-            <span>
-              <Icon type="file-text" /> Sammlungen
-            </span>
-          }
+    }) => {
+      const keys = Object.keys(query);
+      if (!keys.filter(x => x[0] === '@').length) {
+        keys.push('@home');
+      }
+      return (
+        <GatewayDest
+          component={VerticalMenu}
+          mode="horizontal"
+          className={className}
+          deviceWidth={deviceWidth}
+          selectedKeys={keys}
+          name="navigation"
         >
-          {collectionList.map(collection =>
-            (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-              <Link
-                to={{
-                  query: {
-                    [`@${collection.name.toLowerCase()}`]: null,
-                  },
-                }}
-              >
-                {collection.name}
-              </Link>
-            </Menu.Item>)
-          )}
-        </Menu.SubMenu>
-        <Menu.Item key="@analytics">
-          <Link to={{ query: { '@analytics': null } }}>
-            <IconOnly type="line-chart" />
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="settings">
-          <Link to={{ query: { '@settings': null } }}>
-            <IconOnly type="setting" />
-          </Link>
-        </Menu.Item>
-        {children}
-        <RightMenuItem key="logout">
-          <a onClick={auth.logout} href="javascript:;">
-            <IconOnly type="poweroff" />
-          </a>
-        </RightMenuItem>
-        <RightMenuItem key="@user">
-          <Link to={{ query: { '@user': null } }}>
-            <UserIcon
-              email={auth.user.email}
-              name={auth.user.name}
-              default="blank"
-            />
-            {/* auth.user.name */}
-          </Link>
-        </RightMenuItem>
-      </GatewayDest>)
+          <Menu.Item key="plus">
+            <RoundButton shape="circle" icon="plus" />
+          </Menu.Item>
+          <Menu.Item key="@home">
+            <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
+              <IconOnly type="home" />
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="@page">
+            <Link
+              to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}
+            >
+              <Icon type="edit" /> Seiten
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="@media">
+            <Link to={{ query: { '@media': null } }}>
+              <Icon type="picture" /> Medien
+            </Link>
+          </Menu.Item>
+          <Menu.SubMenu
+            title={
+              <span>
+                <Icon type="file-text" /> Sammlungen
+              </span>
+            }
+          >
+            {collectionList.map(collection =>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                <Link
+                  to={{
+                    query: {
+                      [`@${collection.name.toLowerCase()}`]: null,
+                    },
+                  }}
+                >
+                  {collection.name}
+                </Link>
+              </Menu.Item>)
+            )}
+          </Menu.SubMenu>
+          <Menu.Item key="@analytics">
+            <Link to={{ query: { '@analytics': null } }}>
+              <IconOnly type="line-chart" />
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="settings">
+            <Link to={{ query: { '@settings': null } }}>
+              <IconOnly type="setting" />
+            </Link>
+          </Menu.Item>
+          {children}
+          <RightMenuItem key="logout">
+            <a onClick={auth.logout} href="javascript:;">
+              <IconOnly type="poweroff" />
+            </a>
+          </RightMenuItem>
+          <RightMenuItem key="@user">
+            <Link to={{ query: { '@user': null } }}>
+              <UserIcon
+                email={auth.user.email}
+                name={auth.user.name}
+                default="blank"
+              />
+              {/* auth.user.name */}
+            </Link>
+          </RightMenuItem>
+        </GatewayDest>
+      );
+    }
   )
 );
 
