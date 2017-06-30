@@ -1,9 +1,10 @@
+require('dotenv').config();
+
 import express from 'express';
 import compression from 'compression';
 import session from 'express-session';
 import path from 'path';
 import React from 'react';
-import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
@@ -51,7 +52,6 @@ const RedisStore = createRedisStore(session);
 // import { render, template } from 'rapscallion';
 
 global.fetch = fetch;
-env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
