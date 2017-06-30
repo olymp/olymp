@@ -16,7 +16,19 @@ import InsertBlockOnEnter from 'slate-insert-block-on-enter';
 import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';
 import ToolbarVoid from './toolbar-void';
-import { get } from 'lodash';
+import {
+  FaAlignCenter,
+  FaCode,
+  FaListUl,
+  FaListOl,
+  FaIndent,
+  FaHeading,
+  FaLink,
+  FaBold,
+  FaItalic,
+  FaUnderline,
+} from 'olymp-icons';
+import I from './icon';
 
 const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
@@ -26,11 +38,11 @@ const getIdByTag = (children) => {
 const options = {
   defaultNode: 'line',
   toolbarMarks: [
-    { type: 'bold', label: <b>B</b> },
-    { type: 'italic', label: <i>I</i> },
-    { type: 'underlined', label: <u>U</u> },
-    { type: 'center', label: <span>&#8452;</span> },
-    { type: 'code', label: <span>{'>'}</span> },
+    { type: 'bold', label: <I icon={FaBold} /> },
+    { type: 'italic', label: <I icon={FaItalic} /> },
+    { type: 'underlined', label: <I icon={FaUnderline} /> },
+    { type: 'center', label: <I icon={FaAlignCenter} /> },
+    { type: 'code', label: <I icon={FaCode} /> },
   ],
   toolbarTypes: [
     {
@@ -42,7 +54,7 @@ const options = {
         'heading-five',
         'heading-six',
       ],
-      label: <b>H</b>,
+      label: <I icon={FaHeading} />,
       description: [
         'Überschrift 1',
         'Überschrift 2',
@@ -52,14 +64,14 @@ const options = {
         'Überschrift 6',
       ],
     },
-    { type: 'block-quote', label: <span>{'"'}</span> },
-    { type: 'numbered-list', label: <span>ol</span> },
-    { type: 'bulleted-list', label: <span>ul</span> },
+    { type: 'block-quote', label: <I icon={FaIndent} /> },
+    { type: 'numbered-list', label: <I icon={FaListUl} /> },
+    { type: 'bulleted-list', label: <I icon={FaListOl} /> },
   ],
   toolbarActions: [
     {
       type: 'link', // ['link', 'link-page', 'link-media'],
-      icon: 'link',
+      label: <I icon={FaLink} />,
       description: 'Link', // ['Extern', 'Intern', 'Datei'],
       onClick: ({ value, onChange }, isActive) => {
         let newVal = value;
