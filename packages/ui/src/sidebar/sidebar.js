@@ -3,15 +3,22 @@ import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
 
 const StyledInner = createComponent(
-  ({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth }) => ({
+  ({
+    theme,
+    padding,
+    paddingX,
+    paddingY,
+    width,
+    minWidth,
+    maxWidth,
+    right,
+  }) => ({
     width,
     minWidth,
     maxWidth,
     height: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     boxShadow: theme.boxShadow,
-    // borderLeft: right && '1px solid #eee',
-    // borderRight: !right && '1px solid #eee',
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,

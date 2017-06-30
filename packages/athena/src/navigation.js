@@ -126,7 +126,7 @@ export default withLang(
           <Menu.SubMenu
             title={
               <span>
-                <Icon type="file-text" /> Sammlungen
+                <Icon type="database" /> Sammlungen
               </span>
             }
           >
@@ -146,7 +146,7 @@ export default withLang(
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
             <Link to={{ query: { '@analytics': null } }}>
-              <IconOnly type="line-chart" />
+              <Icon type="line-chart" /> Analytics
             </Link>
           </Menu.Item>
           <Menu.Item key="settings">
