@@ -8,7 +8,7 @@ import {
   withAutoMarkdown,
   useBlocks,
 } from './editor-decorators';
-import withBlockTypes from './decorators';
+import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import './style.less';
 import TrailingBlock from 'slate-trailing-block';
