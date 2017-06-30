@@ -128,15 +128,25 @@ const Sidebar = ({
       <div className="ant-modal-content">
         {leftButtons || rightButtons || title || subtitle || header
             ? <div className="ant-modal-header">
-              <Title>
-                {leftButtons &&
-                <TitleButtons left>{leftButtons}</TitleButtons>}
-                {rightButtons &&
-                <TitleButtons right>{rightButtons}</TitleButtons>}
-                <div className="ant-modal-title">{title}</div>
-                {subtitle &&
-                <div className="ant-modal-subtitle">{subtitle}</div>}
-              </Title>
+              {leftButtons || rightButtons || title || subtitle
+                  ? <Title>
+                    {leftButtons &&
+                    <TitleButtons left>
+                      {leftButtons}
+                    </TitleButtons>}
+                    {rightButtons &&
+                    <TitleButtons right>
+                      {rightButtons}
+                    </TitleButtons>}
+                    <div className="ant-modal-title">
+                      {title}
+                    </div>
+                    {subtitle &&
+                    <div className="ant-modal-subtitle">
+                      {subtitle}
+                    </div>}
+                  </Title>
+                  : null}
 
               {header}
             </div>
