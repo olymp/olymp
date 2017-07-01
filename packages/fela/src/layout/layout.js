@@ -5,8 +5,9 @@ import { createComponent } from 'react-fela';
 const Layout = createComponent(
   ({ fullHeight, affix }) => ({
     display: 'flex',
-    height: '100%',
-    minHeight: fullHeight ? '100vh' : '100%',
+    alignItems: 'stretch',
+    height: fullHeight || affix ? '100vh' : '100%',
+    minHeight: '100%',
     maxHeight: affix && '100vh',
     flexDirection: 'column',
   }),
