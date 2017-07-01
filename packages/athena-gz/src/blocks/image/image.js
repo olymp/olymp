@@ -8,7 +8,6 @@ export default {
       className={className}
       onClick={setActive}
       width="100%"
-      maxHeight={450}
       maxResolution={500000}
       value={getData('value', {
         url: 'https://lorempixel.com/1000/300/cats/',
