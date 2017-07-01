@@ -73,17 +73,22 @@ const Tag = createComponent(
 
 const component = graphql(
   gql`
-  query artikelList {
-    items: artikelList {
-      id
-      name
-      farbe
-      extrakt
-      slug
-      bild { width height url crop }
+    query artikelList {
+      items: artikelList {
+        id
+        name
+        farbe
+        extrakt
+        slug
+        bild {
+          width
+          height
+          url
+          crop
+        }
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
@@ -121,9 +126,15 @@ const component = graphql(
         >
           <H2>Ausgaben als PDFs</H2>
           <ul>
-            <Li>Gesund im Zentrum - <b>Sport</b></Li>
-            <Li>Gesund im Zentrum - <b>Gesundheit</b></Li>
-            <Li>Gesund im Zentrum - <b>Fitness</b></Li>
+            <Li>
+              Gesund im Zentrum - <b>Sport</b>
+            </Li>
+            <Li>
+              Gesund im Zentrum - <b>Gesundheit</b>
+            </Li>
+            <Li>
+              Gesund im Zentrum - <b>Fitness</b>
+            </Li>
           </ul>
 
           <H2>Schlagworte</H2>

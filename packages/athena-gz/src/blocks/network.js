@@ -35,8 +35,12 @@ const Item = createComponent(
           ratio={1}
           mode="padded"
         />
-        <h3>{name}</h3>
-        <p>{tags.join(', ')}</p>
+        <h3>
+          {name}
+        </h3>
+        <p>
+          {tags.join(', ')}
+        </p>
       </a>
     </Grid.Item>),
   p => Object.keys(p)
@@ -44,25 +48,25 @@ const Item = createComponent(
 
 const component = graphql(
   gql`
-  query netzwerkList {
-    items: netzwerkList {
-      id
-      name
-      beschreibung
-      bild {
-        url
-        crop
-        width
-        height
-        caption
-        source
+    query netzwerkList {
+      items: netzwerkList {
+        id
+        name
+        beschreibung
+        bild {
+          url
+          crop
+          width
+          height
+          caption
+          source
+        }
+        website
+        farbe
+        tags
       }
-      website
-      farbe
-      tags
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,

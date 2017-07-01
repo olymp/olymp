@@ -109,8 +109,12 @@ const Peak = createComponent(
       />
       {(header || subheader) &&
         <Label>
-          <h1>{header}</h1>
-          <p>{subheader}</p>
+          <h1>
+            {header}
+          </h1>
+          <p>
+            {subheader}
+          </p>
         </Label>}
     </div>),
   p => Object.keys(p)
@@ -150,74 +154,25 @@ const component = withColor(
 
 const componentWithData = graphql(
   gql`
-  query einrichtung($id: String) {
-    item: einrichtung(id: $id) {
-      id
-      name
-      title
-      art
-      farbe
-      slug
-      slogan
-      willkommen
-
-      etage
-      freifeld
-      openings
-      eMail
-      fax
-      telefon
-      telefonPrivat
-      website
-
-      image {
-        url
-        crop
-        width
-        height
-        caption
-        source
-      }
-      logo {
-        url
-        crop
-        width
-        height
-        caption
-        source
-      }
-
-      fachrichtungen
-      tags
-      aesthetik {
-        id
-        link
-        name
-        text
-      }
-      vorsorgen {
-        id
-        link
-        name
-        text
-      }
-      leistungen {
-        id
-        link
-        name
-        text
-      }
-      prophylaxen {
-        id
-        link
-        name
-        text
-      }
-      personen {
+    query einrichtung($id: String) {
+      item: einrichtung(id: $id) {
         id
         name
-        beschreibung
-        bild {
+        title
+        art
+        farbe
+        slug
+        slogan
+        willkommen
+        etage
+        freifeld
+        openings
+        eMail
+        fax
+        telefon
+        telefonPrivat
+        website
+        image {
           url
           crop
           width
@@ -225,16 +180,61 @@ const componentWithData = graphql(
           caption
           source
         }
-        telefon
-        fax
-        eMail
+        logo {
+          url
+          crop
+          width
+          height
+          caption
+          source
+        }
+        fachrichtungen
+        tags
+        aesthetik {
+          id
+          link
+          name
+          text
+        }
+        vorsorgen {
+          id
+          link
+          name
+          text
+        }
+        leistungen {
+          id
+          link
+          name
+          text
+        }
+        prophylaxen {
+          id
+          link
+          name
+          text
+        }
+        personen {
+          id
+          name
+          beschreibung
+          bild {
+            url
+            crop
+            width
+            height
+            caption
+            source
+          }
+          telefon
+          fax
+          eMail
+          text
+        }
         text
       }
-
-      text
     }
-  }
-`,
+  `,
   {
     options: ({ editor }) => ({
       variables: {

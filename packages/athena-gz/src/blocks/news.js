@@ -47,7 +47,10 @@ const H5 = createComponent(
   ({ theme }) => ({
     marginTop: theme.space3,
   }),
-  ({ className, children }) => <h5 className={className}>{children}</h5>,
+  ({ className, children }) =>
+    (<h5 className={className}>
+      {children}
+    </h5>),
   p => Object.keys(p)
 );
 
@@ -65,18 +68,23 @@ const Li = createComponent(
 
 const component = graphql(
   gql`
-  query terminList {
-    items: terminList {
-      id
-      date
-      art
-      name
-      extrakt
-      slug
-      bild { width height url crop }
+    query terminList {
+      items: terminList {
+        id
+        date
+        art
+        name
+        extrakt
+        slug
+        bild {
+          width
+          height
+          url
+          crop
+        }
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
@@ -98,7 +106,9 @@ const component = graphql(
                   {item.extrakt}
                 </p>
                 <Link to={item.slug || '/'}>Mehr erfahren...</Link>
-                <H5>{item.art} vom {moment(item.date).format('DD.MM.YYYY')}</H5>
+                <H5>
+                  {item.art} vom {moment(item.date).format('DD.MM.YYYY')}
+                </H5>
               </div>
             </Panel>)
           )}

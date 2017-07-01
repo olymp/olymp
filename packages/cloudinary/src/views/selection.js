@@ -37,9 +37,8 @@ class SelectionSidebar extends Component {
       return (
         stateItem || {
           ...propItem,
-          source: source && stateItems[0]
-            ? stateItems[0].source
-            : propItem.source,
+          source:
+            source && stateItems[0] ? stateItems[0].source : propItem.source,
           tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
         }
       ); // nur neue Items hinzufügen, ansonsten Items aus State verwenden
@@ -161,9 +160,12 @@ class SelectionSidebar extends Component {
   };
 
   render = () => {
-    const { activeItemId, onClick, onSelect } = this.props;
+    const { activeItem, onClick, onSelect } = this.props;
     const { items, source, tags } = this.state;
-    const activeItem = items.find(item => item.id === activeItemId);
+    const item = {
+      ...items.find(item => item.id === activeItem.id),
+      crop: activeItem.crop,
+    };
 
     return (
       <LightboxGallery>
@@ -174,7 +176,7 @@ class SelectionSidebar extends Component {
               ? <StyledGallery
                 items={items}
                 itemHeight={60}
-                selected={[activeItemId]}
+                selected={[activeItem]}
                 onClick={(id, index) => onClick(index)}
                 onRemove={this.onRemove}
                 justifyContent="space-around"
@@ -214,17 +216,15 @@ class SelectionSidebar extends Component {
         >
           {items.length
             ? <Detail
-              item={activeItem}
+              item={item}
               multi={items.length > 1}
-              patchItem={changes => this.patchItem(activeItem.id, changes)}
+              patchItem={changes => this.patchItem(item.id, changes)}
               patchItems={this.patchItems}
               source={source}
               tags={tags}
               editable={!onSelect}
             />
-            : <Placeholder>
-                Dateien auswählen
-              </Placeholder>}
+            : <Placeholder>Dateien auswählen</Placeholder>}
         </Sidebar>
       </LightboxGallery>
     );
@@ -232,7 +232,10 @@ class SelectionSidebar extends Component {
 }
 SelectionSidebar.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
-  activeItemId: PropTypes.string,
+  activeItem: PropTypes.shape({
+    id: PropTypes.string,
+    crop: PropTypes.arrayOf(PropTypes.number),
+  }),
   onClick: PropTypes.func,
   onSelect: PropTypes.func,
   onRemove: PropTypes.func,
@@ -240,7 +243,9 @@ SelectionSidebar.propTypes = {
 };
 SelectionSidebar.defaultProps = {
   items: [],
+  activeItem: {},
   onClick: () => {},
+  onSelect: undefined,
   onRemove: () => {},
   onCancel: () => {},
 };
