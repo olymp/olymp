@@ -16,6 +16,7 @@ export const SplitView = createComponent(
       overflowY: 'auto',
       margin: center && 'auto',
       maxWidth: deviceWidth,
+      maxHeight: '100%',
     },
   }),
   'div',
