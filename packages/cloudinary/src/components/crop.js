@@ -29,6 +29,8 @@ class Crop extends Component {
     const x = crop[2] / value.width * 100;
     const y = crop[3] / value.height * 100;
 
+    if (!value) { return <div />; }
+
     return (
       <div
         onKeyDown={e => this.setState({ isSquare: e && e.shiftKey })}
