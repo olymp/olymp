@@ -42,7 +42,10 @@ export const App = createComponent(
       },
     },
   }),
-  p => <WithColorProvider><Layout {...p} /></WithColorProvider>,
+  p =>
+    (<WithColorProvider>
+      <Layout fullHeight {...p} />
+    </WithColorProvider>),
   p => Object.keys(p)
 );
 
