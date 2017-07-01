@@ -114,6 +114,7 @@ class Image extends Component {
       amp,
       src,
       alt,
+      onClick,
       ...containerProps
     } = this.props;
     const { width, ratio, isPercentage } = this.initVals();
@@ -125,6 +126,7 @@ class Image extends Component {
         alt={alt}
         width={w >= h ? '100%' : 'auto'}
         height={w < h ? '100%' : 'auto'}
+        onClick={onClick}
       />
     );
 
@@ -163,6 +165,7 @@ Image.propTypes = {
 
   lazy: PropTypes.bool,
   alt: PropTypes.string,
+  onClick: PropTypes.func,
 };
 Image.defaultProps = {
   src: (w, h) => `https://lorempixel.com/${w}/${h}/cats/${w}x${h}`,
@@ -181,5 +184,6 @@ Image.defaultProps = {
 
   lazy: true,
   alt: '',
+  onClick: () => {},
 };
 export default Image;

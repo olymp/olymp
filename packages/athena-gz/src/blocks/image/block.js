@@ -24,7 +24,7 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
     },
   },
   ifMediumUp: {
-    '> div:nth-child(1) > div > div > div > img': {
+    '> div:nth-child(1) > div > div > img': {
       borderBottomRightRadius: 100,
     },
     '> div:nth-child(2)': {
@@ -39,7 +39,7 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
     },
   },
   ifSmallDown: {
-    '> div:nth-child(1) > div > div > div > img': {
+    '> div:nth-child(1) > div > div > img': {
       borderBottomRightRadius: 50,
     },
     '> div:nth-child(2)': {
