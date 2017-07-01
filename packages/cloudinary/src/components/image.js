@@ -19,10 +19,11 @@ export const cloudinaryUrl = (value, options) => {
     .split('ttp://res.cloudinary.com/')
     .join('ttps://res.cloudinary.com/');
 
-  const crop = value.crop && value.crop.length
-    ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
-        .crop[3]},c_crop/`
-    : '';
+  const crop =
+    value.crop && value.crop.length
+      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
+          .crop[3]},c_crop/`
+      : '';
 
   let query = '';
   Object.keys(newOptions).forEach(
