@@ -88,7 +88,9 @@ class CloudinaryView extends Component {
                   uploading: uploading.filter(x => x.name !== file.name),
                 });
                 if (data && data.cloudinaryRequestDone) {
-                  this.onSelect([data.cloudinaryRequestDone.id]);
+                  this.onSelect([
+                    { id: data.cloudinaryRequestDone.id, crop: undefined },
+                  ]);
                   refetchKey();
                 }
               });
@@ -102,11 +104,11 @@ class CloudinaryView extends Component {
     };
   };
 
-  onSelect = (selectionIds, index, e) => {
+  onSelect = (selections, index, e) => {
     const { multi, handleSelection } = this.props;
     let selected = [...this.state.selected];
 
-    selectionIds.forEach((selectionId) => {
+    selections.forEach(({ id: selectionId }) => {
       const itemIndex = selected.findIndex(({ id }) => id === selectionId);
       if (itemIndex < 0) {
         if (multi && e && e.shiftKey) {
@@ -129,7 +131,7 @@ class CloudinaryView extends Component {
 
     if (index < 0) {
       this.setState({ selection: selected.length });
-      this.onSelect([id], i, e);
+      this.onSelect([{ id, crop: undefined }], i, e);
     } else {
       this.setState({ selection: index });
       handleSelection([{ id, crop: undefined }], this);
@@ -147,7 +149,7 @@ class CloudinaryView extends Component {
       this.setState({ selection: selection - 1 });
     }
 
-    this.onSelect([id]);
+    this.onSelect([{ id, crop: undefined }]);
   };
 
   render() {
