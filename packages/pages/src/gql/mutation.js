@@ -41,12 +41,28 @@ const ok = (props, mutate) => () => {
 
 export default graphql(
   gql`
-  mutation page($id: String, $input: PageInput) {
-    item: page(id: $id, input: $input) {
-      id slug order name type binding { id type query fields } aliasId href sorting parentId blocks state
+    mutation page($id: String, $input: PageInput) {
+      item: page(id: $id, input: $input) {
+        id
+        slug
+        order
+        name
+        type
+        binding {
+          id
+          type
+          query
+          fields
+        }
+        aliasId
+        href
+        sorting
+        parentId
+        blocks
+        state
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, mutate }) => ({
       ...ownProps,
@@ -58,12 +74,13 @@ export default graphql(
 
 export const reorderPage = graphql(
   gql`
-  mutation reorderPage($id: String, $sorting: String) {
-    item: page(id: $id, input: { sorting: $sorting }) {
-      id sorting
+    mutation reorderPage($id: String, $sorting: [String]) {
+      item: page(id: $id, input: { sorting: $sorting }) {
+        id
+        sorting
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, mutate }) => ({
       ...ownProps,
@@ -74,12 +91,13 @@ export const reorderPage = graphql(
 
 export const movePage = graphql(
   gql`
-  mutation movePage($id: String, $parentId: String) {
-    item: page(id: $id, input: { parentId: $parentId }) {
-      id parentId
+    mutation movePage($id: String, $parentId: String) {
+      item: page(id: $id, input: { parentId: $parentId }) {
+        id
+        parentId
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, mutate }) => ({
       ...ownProps,

@@ -7,7 +7,23 @@ const getId = (id, query) =>
 const queryOne = gql`
   query page($id: String) {
     item: page(id: $id) {
-      id slug order type name binding { id type query fields } parentId sorting aliasId href blocks state
+      id
+      slug
+      order
+      type
+      name
+      binding {
+        id
+        type
+        query
+        fields
+      }
+      parentId
+      sorting
+      aliasId
+      href
+      blocks
+      state
     }
   }
 `;
@@ -31,12 +47,25 @@ export const prefetchPage = (client, id) =>
 
 export const queryPages = graphql(
   gql`
-  query pageList {
-    items: pageList(query: {state: {in: [PUBLISHED, DRAFT]}}) {
-      id slug order type name binding { id type query fields } parentId sorting state
+    query pageList {
+      items: pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
+        id
+        slug
+        order
+        type
+        name
+        binding {
+          id
+          type
+          query
+          fields
+        }
+        parentId
+        sorting
+        state
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
