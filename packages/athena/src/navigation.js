@@ -32,7 +32,8 @@ const IconOnly = createComponent(
   Icon,
   p => Object.keys(p)
 );
-const RoundButton = createComponent(
+
+/* const RoundButton = createComponent(
   ({ theme }) => ({
     backgroundColor: theme.color,
     color: theme.light,
@@ -40,7 +41,7 @@ const RoundButton = createComponent(
   }),
   Button,
   p => Object.keys(p)
-);
+); */
 
 const UserIcon = createComponent(
   ({ theme, name }) => ({
@@ -104,7 +105,7 @@ export default withLang(
           name="navigation"
         >
           <Menu.Item key="plus">
-            <RoundButton shape="circle" icon="plus" />
+            <IconOnly type="plus" />
           </Menu.Item>
           <Menu.Item key="@home">
             <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
