@@ -11,50 +11,46 @@ import { reorderPage, movePage } from '../../gql';
 @reorderPage
 @movePage
 class Pages extends Component {
-  onDrop = ({ node, dragNode, dropPosition, dropToGap }) => {
-    // reorder or move nodes on drop
-    const { items, reorder, move } = this.props;
-    const pageId = dragNode.props.eventKey;
-    const positions = node.props.pos.split('-');
-    let childIds = [];
-    let parent;
-    positions.shift();
+  onDrop = (info) => {
+    const { reorder, move } = this.props;
+    const parent =
+      info.dropToGap && info.node.props.parent
+        ? info.node.props.parent
+        : info.node.props.item;
+    const page = info.dragNode.props.item;
+    const pageId = page.pageId || page.id; // get real pageId in case of binding
 
-    if (dropToGap) {
-      const placeBefore =
-        dropPosition - Number(positions[positions.length - 1]) === -1;
-      const position = !placeBefore
-        ? dropPosition
-        : Number(positions[positions.length - 1]);
-      positions.pop();
-      parent = this.getParent(items, positions);
-      childIds = parent.children
-        .filter(child => child.id !== pageId)
-        .map(child => child.id);
-      childIds.splice(position, 0, pageId);
-    } else {
-      parent = this.getParent(items, positions);
-      childIds = parent.children
-        .filter(child => child.id !== pageId)
-        .map(child => child.id);
-      childIds.push(pageId);
+    // Get all IDs of children in order
+    const childIds = (parent.children || [])
+      .map(child => child.id)
+      .filter(x => x !== page.id);
+    childIds.splice(info.dropPosition, 0, page.id);
+
+    // Check if new parent is itself??
+    if (parent.id === pageId) {
+      return;
     }
-
-    if (pageId !== parent.id) {
+    if (parent.id !== page.parentId) {
+      // parent changed
       move({
         variables: {
           id: pageId,
           parentId: parent.id,
+          sorting: childIds,
         },
       });
-      if (parent.id) {
-        reorder({
-          variables: {
-            id: parent.id,
-            sorting: childIds.join(','),
-          },
-        });
+    } else {
+      // just moved inside existing parent
+      // Disallow sort if parent has fixed sorting
+      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) {
+        return;
       }
+      reorder({
+        variables: {
+          id: parent.id,
+          sorting: childIds,
+        },
+      });
     }
   };
 
@@ -95,9 +91,10 @@ class Pages extends Component {
   loop = (data, parent) =>
     data.map((item) => {
       const { query } = this.props;
-      const children = item.children && item.children.length
-        ? this.loop(item.children, item)
-        : undefined;
+      const children =
+        item.children && item.children.length
+          ? this.loop(item.children, item)
+          : undefined;
 
       return (
         <Tree.Node

@@ -91,8 +91,12 @@ export const reorderPage = graphql(
 
 export const movePage = graphql(
   gql`
-    mutation movePage($id: String, $parentId: String) {
-      item: page(id: $id, input: { parentId: $parentId }) {
+    mutation movePage($id: String, $parentId: String, $sorting: [String]) {
+      item: page(id: $parentId, input: { sorting: $sorting }) {
+        id
+        sorting
+      }
+      item2: page(id: $id, input: { parentId: $parentId }) {
         id
         parentId
       }
