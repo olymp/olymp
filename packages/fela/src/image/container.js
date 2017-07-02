@@ -35,7 +35,7 @@ const containerStyle = ({
 const Container = createComponent(
   containerStyle,
   'div',
-  ({ ratio, rounded, ...p }) => Object.keys(p)
+  ({ ratio, rounded, width, ...p }) => Object.keys(p)
 );
 
 const LazyContainer = createComponent(
@@ -47,7 +47,7 @@ const LazyContainer = createComponent(
     (<LazyLoad {...p} onContentVisible={onVisible}>
       {children}
     </LazyLoad>),
-  ({ ratio, rounded, visible, ...p }) => Object.keys(p)
+  ({ ratio, rounded, visible, width, ...p }) => Object.keys(p)
 );
 
 class ImageContainer extends Component {
