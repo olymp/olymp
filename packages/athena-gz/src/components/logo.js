@@ -15,9 +15,13 @@ export default class Logo extends Component {
     }
 
     return (
-      <Icon color={color} width={221} height={41}>
-        <Title color={color}>{title}</Title>
-        <SubTitle color={color}>{text}</SubTitle>
+      <Icon color={color} width={250} height={41}>
+        <Title color={color}>
+          {title}
+        </Title>
+        <SubTitle color={color}>
+          {text}
+        </SubTitle>
       </Icon>
     );
   }
@@ -72,7 +76,7 @@ const Icon = createComponent(
     (<svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      viewBox={`0 0 ${icon ? 41 : 221} ${icon ? 41 : 41}`}
+      viewBox={`0 0 ${icon ? 41 : 250} ${icon ? 41 : 41}`}
       version="1.1"
     >
       <g transform="scale(1.5)">
@@ -94,7 +98,9 @@ const Title = createComponent(
   }),
   ({ className, children }) =>
     (<text className={className}>
-      <tspan x="31" y="11">{children}</tspan>
+      <tspan x="31" y="11">
+        {children}
+      </tspan>
     </text>),
   p => Object.keys(p)
 );
@@ -107,7 +113,9 @@ const SubTitle = createComponent(
   }),
   ({ className, children }) =>
     (<text className={className}>
-      <tspan x="31" y="22">{children}</tspan>
+      <tspan x="31" y="22">
+        {children}
+      </tspan>
     </text>),
   p => Object.keys(p)
 );
