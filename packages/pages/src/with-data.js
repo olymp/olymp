@@ -77,11 +77,11 @@ export const withNavigation = (Wrapped) => {
       const { data } = this.props;
       const items = (data && data.items) || [];
       const flatNavigation = [];
-      let loading = true;
+      let loading = false;
+
       const navigation = unflatten(items, {
         pathProp: 'pathname',
         sort: (children, parent) => {
-          const sorting = parent ? parent.sorting || ['+order'] : ['+order'];
           children = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
@@ -105,16 +105,16 @@ export const withNavigation = (Wrapped) => {
             }
             return state;
           }, []);
-          if (sorting.length) {
+          if (!parent || !parent.sorting) {
             const fields = [];
             const directions = [];
-            sorting.forEach((sorter) => {
+            ['+order'].forEach((sorter) => {
               fields.push(sorter.substr(1));
               directions.push(sorter[0] === '-' ? 'desc' : 'asc');
             });
             children = orderBy(children, fields, directions);
           } else {
-            const sortIndex = sorting;
+            const sortIndex = parent.sorting;
             children = sortBy(children, [
               (o) => {
                 const index = sortIndex.indexOf(o.id);
