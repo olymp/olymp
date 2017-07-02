@@ -8,6 +8,10 @@ const Body = createComponent(
     display: affix && 'flex',
     overflowY: affix && 'auto',
     flexDirection: affix && 'column',
+    ifSmallDown: {
+      '-webkit-overflow-scrolling': 'touch',
+      overflowY: affix && 'scroll',
+    },
   }),
   WithContainer,
   ({ affix, ...p }) => Object.keys(p)
