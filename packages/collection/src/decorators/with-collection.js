@@ -22,37 +22,20 @@ export default (WrappedComponent) => {
   @withApollo
   @graphql(
     gql`
-    query getType($name: String!) {
-      type: __type(name:$name) {
-        name
-        description
-        fields {
-          description
+      query getType($name: String!) {
+        type: __type(name: $name) {
           name
-          type {
+          description
+          fields {
             description
-            kind
             name
-            enumValues {
-              name
-            }
-            fields {
-              description
-              name
-              type {
-                description
-                kind
-                name
-                ofType {
-                  kind
-                  name
-                }
-              }
-            }
-            ofType {
+            type {
               description
               kind
               name
+              enumValues {
+                name
+              }
               fields {
                 description
                 name
@@ -60,22 +43,40 @@ export default (WrappedComponent) => {
                   description
                   kind
                   name
-                  fields {
-                    description
-                    name
-                    type {
-                      description
-                      kind
-                      name
-                      ofType {
-                        kind
-                        name
-                      }
-                    }
-                  }
                   ofType {
                     kind
                     name
+                  }
+                }
+              }
+              ofType {
+                description
+                kind
+                name
+                fields {
+                  description
+                  name
+                  type {
+                    description
+                    kind
+                    name
+                    fields {
+                      description
+                      name
+                      type {
+                        description
+                        kind
+                        name
+                        ofType {
+                          kind
+                          name
+                        }
+                      }
+                    }
+                    ofType {
+                      kind
+                      name
+                    }
                   }
                 }
               }
@@ -83,8 +84,7 @@ export default (WrappedComponent) => {
           }
         }
       }
-    }
-  `,
+    `,
     {
       /* eslint-disable */
       options: ({ routeParams = {}, collection, typeName }) => ({

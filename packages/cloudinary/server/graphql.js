@@ -122,7 +122,6 @@ export default (uri) => {
         height: Int
         width: Int
         bytes: Int
-        tags: [String]
         url: String
         caption: String
         source: String
