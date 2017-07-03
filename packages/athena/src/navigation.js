@@ -165,8 +165,7 @@ export default withLang(
               <Icon type="line-chart" /> Analytics
             </Link>
           </Menu.Item>
-          {!!auth &&
-            !!auth.user &&
+          {!!auth.user &&
             auth.user.isAdmin &&
             <Menu.Item key="@users">
               <Link to={{ query: { '@users': null } }}>
@@ -205,7 +204,6 @@ export default withLang(
                 name={auth.user.name}
                 default="blank"
               />
-              {/* auth.user.name */}
             </Link>
           </RightMenuItem>
         </GatewayDest>
@@ -215,52 +213,12 @@ export default withLang(
 );
 
 /*
-<Menu.Item key="@page">
-  <Popover placement="bottom" content={lang.PAGE_MANAGER}>
-    <Link
-      to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}
-    >
-      <Icon type="home" />
-    </Link>
-  </Popover>
-</Menu.Item>
 <Menu.Item key="@template">
   <Popover placement="bottom" content="Template-Liste">
     <Link
       to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}
     >
       <Icon type="appstore-o" />
-    </Link>
-  </Popover>
-</Menu.Item>
-<Menu.Item key="@media">
-  <Popover placement="bottom" content="Mediathek">
-    <Link
-      to={{ query: { '@media': null, '@deviceWidth': deviceWidth } }}
-    >
-      <Icon type="picture" />
-    </Link>
-  </Popover>
-</Menu.Item>
-{auth.user && auth.user.isAdmin
-  ? <Menu.Item key="@users">
-    <Popover placement="bottom" content="Benutzer-Management">
-      <Link
-        to={{
-          query: { '@users': null, '@deviceWidth': deviceWidth },
-        }}
-      >
-        <Icon type="team" />
-      </Link>
-    </Popover>
-  </Menu.Item>
-  : null}
-<Menu.Item key="@stats">
-  <Popover placement="bottom" content="Statistiken">
-    <Link
-      to={{ query: { '@stats': null, '@deviceWidth': deviceWidth } }}
-    >
-      <Icon type="line-chart" />
     </Link>
   </Popover>
 </Menu.Item>
@@ -282,25 +240,6 @@ export default withLang(
     </Link>
   </Popover>
 </Menu.Item>
-
-{collectionList.map(collection =>
-  (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-    <Popover placement="bottom" content={`@${collection.name}-Liste`}>
-      <Link
-        to={{
-          query: {
-            [`@${collection.name.toLowerCase()}`]: null,
-            '@deviceWidth': deviceWidth,
-          },
-        }}
-      >
-        <Icon type="file-text" />
-      </Link>
-    </Popover>
-  </Menu.Item>)
-)}
-
-
 <Menu.Item key="@settings">
   <Popover placement="bottom" content="Einstellungen">
     <Link
@@ -309,20 +248,6 @@ export default withLang(
       <Icon type="setting" />
     </Link>
   </Popover>
-</Menu.Item>
-<Separator />
-<Menu.Item key="logoff" title="Abmelden">
-  <Popover placement="bottom" content="Abmelden">
-    <a onClick={auth.logout} href="javascript:;">
-      <Icon type="poweroff" />
-    </a>
-  </Popover>
-</Menu.Item>
-
-<Menu.Item key="save" title="Speichern">
-  <Button onClick={auth.logout} href="javascript:;">
-    Speichern
-  </Button>
 </Menu.Item>
 */
 
