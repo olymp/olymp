@@ -52,10 +52,10 @@ export const App = createComponent(
 export const Header = withScroll(
   createComponent(
     ({ theme, scrollTop }) => ({
-      paddingY: theme.space3,
+      /* paddingY: theme.space3,
       ifSmallDown: {
         paddingY: theme.space0,
-      },
+      }, */
       boxShadow: scrollTop && theme.boxShadow,
       transition: 'box-shadow 0.3s ease-in-out',
     }),
@@ -105,7 +105,7 @@ export default class GzLayout extends Component {
         <Header>
           <Navbar
             pages={nav}
-            logo={<Logo color={color} title={title} text={text} />}
+            brand={<Logo color={color} title={title} text={text} />}
             full
             right
             mega
