@@ -99,7 +99,11 @@ export default class AuthLogin extends Component {
           <Link
             to={{
               pathname,
-              query: { forgot: null, login: undefined, totp: undefined },
+              query: {
+                forgot: form.getFieldValue('email') || null,
+                login: undefined,
+                totp: undefined,
+              },
             }}
           >
             Passwort vergessen?
