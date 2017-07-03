@@ -13,6 +13,7 @@ const {
   APP,
   MONGODB_URI,
   POSTMARK_KEY,
+  POSTMARK_FROM,
   CLOUDINARY_URI,
   // FILESTACK_KEY,
   AUTH_SECRET,
@@ -40,7 +41,7 @@ export default (server, options) => {
     ...get(options, 'modules', {}),
     ...colModules,
   };
-  const mail = createMail(POSTMARK_KEY, options.mail);
+  const mail = createMail(POSTMARK_KEY, POSTMARK_FROM);
 
   const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET });
   server.use(authCache(authEngine));

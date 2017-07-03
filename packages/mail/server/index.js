@@ -3,6 +3,14 @@ import hashtax, { toPlain, toHtml } from 'olymp-hashtax';
 import htmlTemplate from './templates/default';
 
 export default (key, options = {}) => {
+  if (typeof options === 'string') {
+    options = { from: options };
+  }
+  if (options.from.indexOf('<') !== -1) {
+    const [fromName, fromMail] = options.from.split('<');
+    options.fromName = fromName.trim();
+    options.fromMail = fromMail.split('>')[1].trim();
+  }
   const send = (template, args = {}) => {
     const props = { ...options, ...args };
     const body = {
