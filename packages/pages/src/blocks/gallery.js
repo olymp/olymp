@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, SimpleImageEdit } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
+import { FaPlus, FaMinus } from 'olymp-icons';
 
 const Container = createComponent(
   ({ theme }) => ({
@@ -69,7 +70,7 @@ export default {
       toggle: () => {},
     },
     {
-      label: '+',
+      label: <FaMinus />,
       toggle: ({ setData, getData }) => {
         const size = getData('size', 4);
         setData({
@@ -78,7 +79,7 @@ export default {
       },
     },
     {
-      label: '-',
+      label: <FaPlus />,
       toggle: ({ setData, getData }) => {
         const size = getData('size', 4);
         setData({
