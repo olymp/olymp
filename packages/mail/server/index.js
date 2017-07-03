@@ -2,6 +2,12 @@ import fetch from 'isomorphic-fetch';
 import hashtax, { toPlain, toHtml } from 'olymp-hashtax';
 import htmlTemplate from './templates/default';
 
+const htmlRenderer = (name, { href, value }) => {
+  if (name === 'link') {
+    return `<a href=${href} itemprop="url" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">${value}</a>`;
+  }
+  return undefined;
+};
 export default (key, options = {}) => {
   if (typeof options === 'string') {
     options = { from: options };
@@ -22,7 +28,7 @@ export default (key, options = {}) => {
     body.TextBody = toPlain(hash, { trim: true, schema: {} });
     body.Subject = body.TextBody.split('\n')[0];
     body.HtmlBody = htmlTemplate(
-      toHtml(hash, { minify: true, schema: {} }),
+      toHtml(hash, { minify: true, renderer: htmlRenderer }),
       props
     );
     return fetch('https://api.postmarkapp.com/email', {

@@ -6,7 +6,7 @@ const defaultRenderer = (name, { value, children, href }) => {
   } else if (name === 'line' && !value) {
     return '<br />';
   } else if (name === 'line') {
-    return `<p>${value}</p>`;
+    return `<span>${value}</span>`;
   } else if (name === 'h1') {
     return `<h1>${value}</h1>`;
   } else if (name === 'link') {
@@ -14,8 +14,14 @@ const defaultRenderer = (name, { value, children, href }) => {
   }
 };
 
-export default (ast, { renderer, trim, context }) => {
-  renderer = renderer || defaultRenderer;
+export default (ast, { renderer, context }) => {
+  const render = (...args) => {
+    const v = renderer ? renderer(...args) : undefined;
+    if (v !== undefined) {
+      return v;
+    }
+    return defaultRenderer(...args);
+  };
   // object to react component
   const create = (name, props, decos) => {
     if (props.value) {
@@ -24,9 +30,9 @@ export default (ast, { renderer, trim, context }) => {
     if (props.children) {
       props.children = props.children.join('');
     }
-    let text = renderer(name, props);
+    let text = render(name, props);
     decos.forEach(({ type, args }) => {
-      const newText = renderer('@{type}', props, text);
+      const newText = render('@{type}', props, text);
       if (newText !== undefined) {
         text = newText;
       }

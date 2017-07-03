@@ -11,6 +11,7 @@ import { get } from 'lodash';
 
 const {
   APP,
+  URL,
   MONGODB_URI,
   POSTMARK_KEY,
   POSTMARK_FROM,
@@ -41,7 +42,10 @@ export default (server, options) => {
     ...get(options, 'modules', {}),
     ...colModules,
   };
-  const mail = createMail(POSTMARK_KEY, POSTMARK_FROM);
+  const mail = createMail(POSTMARK_KEY, {
+    from: POSTMARK_FROM,
+    url: URL,
+  });
 
   const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET });
   server.use(authCache(authEngine));

@@ -39,27 +39,28 @@ export default withRouter((props) => {
         token={query.register}
         onOk={({ email, token }) =>
           token
-            ? redirect({ login: email })
-            : redirect({ 'status-register': email })}
+            ? redirect({ register: undefined, login: email })
+            : redirect({ register: undefined, 'status-register': email })}
         extraFields={register}
       />
       <AuthForgot
         {...p}
         isOpen={inQuery('forgot')}
         email={query.forgot}
-        onOk={({ email }) => redirect({ 'status-forgot': email })}
+        onOk={({ email }) =>
+          redirect({ forgot: undefined, 'status-forgot': email })}
       />
       <AuthReset
         {...p}
         isOpen={inQuery('reset')}
         token={query.reset}
-        onOk={({ email }) => redirect({ login: email })}
+        onOk={({ email }) => redirect({ reset: undefined, login: email })}
       />
       <AuthConfirm
         {...p}
         isOpen={inQuery('confirm')}
         token={query.confirm}
-        onOk={({ email }) => redirect({ login: email })}
+        onOk={({ email }) => redirect({ confirm: undefined, login: email })}
       />
       <AuthStatus
         {...p}
