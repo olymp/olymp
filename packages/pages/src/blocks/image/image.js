@@ -1,22 +1,26 @@
 import React from 'react';
-import { Image, SimpleImageEdit } from 'olymp-cloudinary';
+import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 
 export default {
   key: 'Pages.Media.ImageBlock.Image',
   label: 'Bild',
   category: 'Medien',
-  component: ({ getData, setActive, className }) =>
-    (<Image
-      className={className}
-      onClick={setActive}
-      width={`${100 / getData('size', 4)}%`}
-      value={getData('value', {
-        url: 'https://lorempixel.com/400/300/cats/',
-        width: 400,
-        height: 300,
-      })}
-    />),
+  component: ({ getData, setActive, className, editor }) => {
+    const Img = editor.props.readOnly === true ? LightboxImage : Image;
+    return (
+      <Img
+        className={className}
+        onClick={setActive}
+        width={`${100 / getData('size', 4)}%`}
+        value={getData('value', {
+          url: 'https://lorempixel.com/400/300/cats/',
+          width: 400,
+          height: 300,
+        })}
+      />
+    );
+  },
   styles: ({ theme, getData }) => {
     const size = getData('size', 4) - 12;
     const alignment = getData('float', 'none');
