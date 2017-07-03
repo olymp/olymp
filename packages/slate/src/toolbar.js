@@ -1,9 +1,34 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { Menu as AntMenu } from 'antd';
+import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 
-export const Menu = createComponent(
+export const Button = createComponent(
+  ({ theme, active }) => ({
+    paddingX: 20,
+    backgroundColor: active && theme.dark2,
+    color: active && theme.light,
+    '> svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
+    '> div > svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
+  }),
+  ({ className, onMouseDown, children, tooltip }) =>
+    (<Tooltip placement="bottom" title={tooltip}>
+      <div className={className} onMouseDown={onMouseDown}>
+        {children}
+      </div>
+    </Tooltip>),
+  p => Object.keys(p)
+);
+
+export default createComponent(
   ({ theme }) => ({
     position: 'fixed',
     top: 0,
@@ -25,44 +50,11 @@ export const Menu = createComponent(
       },
     },
   }),
-  AntMenu,
-  p => Object.keys(p)
-);
-
-export const Button = createComponent(
-  ({ theme, active }) => ({
-    paddingX: 20,
-    backgroundColor: active && theme.dark2,
-    color: active && theme.light,
-    '> svg': {
-      fill: active ? theme.light : theme.light2,
-      size: 16,
-      marginBottom: -4,
-    },
-    '> div > svg': {
-      fill: active ? theme.light : theme.light2,
-      size: 16,
-      marginBottom: -4,
-    },
-  }),
-  ({ className, onMouseDown, children, innerKey, ...props }) =>
-    (<div className={className} onMouseDown={onMouseDown}>
-      {children}
-    </div>),
-  p => Object.keys(p)
-);
-
-export default createComponent(
-  ({ theme }) => ({
-    /* width: '100%',
-  display: 'flex',
-  justifyContent: 'center', */
-  }),
   (props) => {
     const { isOpened, className, children } = props;
     return (
       <Portal isOpened={!!isOpened}>
-        <Menu mode="horizontal">
+        <Menu className={className} mode="horizontal">
           {children}
         </Menu>
       </Portal>

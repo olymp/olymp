@@ -60,6 +60,7 @@ export default {
   }),
   actions: [
     {
+      tooltip: getData => `Bilder ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) =>
         (<SimpleImageEdit
           {...p}
@@ -70,7 +71,8 @@ export default {
       toggle: () => {},
     },
     {
-      label: <FaMinus />,
+      label: <FaPlus />,
+      tooltip: 'Spalte hinzufügen',
       toggle: ({ setData, getData }) => {
         const size = getData('size', 4);
         setData({
@@ -79,7 +81,8 @@ export default {
       },
     },
     {
-      label: <FaPlus />,
+      label: <FaMinus />,
+      tooltip: 'Spalte entfernen',
       toggle: ({ setData, getData }) => {
         const size = getData('size', 4);
         setData({

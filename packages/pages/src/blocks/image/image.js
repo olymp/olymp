@@ -28,6 +28,7 @@ export default {
   }),
   actions: [
     {
+      tooltip: getData => `Bild ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) =>
         (<SimpleImageEdit
           {...p}
@@ -39,6 +40,7 @@ export default {
     },
     {
       label: <FaAlignLeft />,
+      tooltip: 'Links anordnen',
       active: ({ getData }) => getData('float', 'none') === 'left',
       toggle: ({ setData, getData }) =>
         setData({
@@ -47,6 +49,7 @@ export default {
     },
     {
       label: <FaAlignRight />,
+      tooltip: 'Rechts anordner',
       active: ({ getData }) => getData('float', 'none') === 'right',
       toggle: ({ setData, getData }) =>
         setData({
@@ -55,6 +58,7 @@ export default {
     },
     {
       label: <FaPlus />,
+      tooltip: 'Größer',
       toggle: ({ setData, getData }) => {
         const size = getData('size', 4);
         setData({
@@ -64,6 +68,7 @@ export default {
     },
     {
       label: <FaMinus />,
+      tooltip: 'Kleiner',
       toggle: ({ setData, getData }) => {
         const size = getData('size', 4);
         setData({

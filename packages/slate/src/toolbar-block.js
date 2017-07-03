@@ -4,7 +4,7 @@ import { Menu } from 'antd';
 import { get } from 'lodash';
 
 const Action = ({ node, state, onChange }) => (
-  { toggle, active, label, component },
+  { toggle, active, label, component, ...rest },
   i
 ) => {
   const setData = (data) => {
@@ -18,6 +18,9 @@ const Action = ({ node, state, onChange }) => (
 
   const getData = (name, defaultValue) => node.data.get(name) || defaultValue;
 
+  const tooltip =
+    typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
+
   if (component) {
     const Com = component;
     return (
@@ -28,6 +31,7 @@ const Action = ({ node, state, onChange }) => (
               ? () => toggle({ setData, getData, state, onChange })
               : undefined
           }
+          tooltip={tooltip}
         >
           <Com setData={setData} getData={getData} />
         </Button>
@@ -39,6 +43,7 @@ const Action = ({ node, state, onChange }) => (
       <Button
         active={!!active && active({ getData, state })}
         onMouseDown={() => toggle({ setData, getData, state, onChange })}
+        tooltip={tooltip}
       >
         {label}
       </Button>
