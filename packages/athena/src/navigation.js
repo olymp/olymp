@@ -150,11 +150,14 @@ export default withLang(
               <Icon type="line-chart" /> Analytics
             </Link>
           </Menu.Item>
-          <Menu.Item key="settings">
-            <Link to={{ query: { '@settings': null } }}>
-              <IconOnly type="setting" />
-            </Link>
-          </Menu.Item>
+          {!!auth &&
+            !!auth.user &&
+            auth.user.isAdmin &&
+            <Menu.Item key="@users">
+              <Link to={{ query: { '@users': null } }}>
+                <Icon type="team" /> Benutzer
+              </Link>
+            </Menu.Item>}
           {children}
           <RightMenuItem key="logout">
             <a onClick={auth.logout} href="javascript:;">
