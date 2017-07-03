@@ -33,7 +33,12 @@ export const Button = createComponent(
   ({ theme, active }) => ({
     paddingX: 20,
     backgroundColor: active && theme.dark2,
-    color: active && theme.light1,
+    color: active && theme.light,
+    '> svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
   }),
   ({ className, onMouseDown, children, innerKey, ...props }) =>
     (<div className={className} onMouseDown={onMouseDown}>
