@@ -8,14 +8,13 @@ import Mega from './mega';
 const Nav = createComponent(
   ({ theme, inverse, vertically, right, sub }) =>
     sub && {
-      backgroundColor: inverse ? fade(theme.color) : '#FFFFFF',
-      border: !inverse && border(theme),
+      backgroundColor: inverse ? fade(theme.color, 85) : '#FFFFFF',
+      border: border(theme, inverse ? theme.color : theme.dark4),
       display: 'none',
       position: 'absolute',
       top: !vertically ? '100%' : -theme.borderWidth,
-      left: !right && (vertically ? '100%' : -theme.borderWidth),
+      left: !right && (vertically ? '100%' : 0),
       right: right && (!vertically ? 0 : '100%'),
-      boxShadow: theme.boxShadow,
       zIndex: 1,
       '> div': {
         textAlign: 'left',
@@ -27,14 +26,15 @@ const Nav = createComponent(
         right: 'auto',
         fontSize: theme.fontSizeSmall,
         backgroundColor: inverse && theme.dark5,
-        boxShadow: inverse ? theme.innerShadow : 'none',
         border: 'none',
       },
     },
   ({ mega, sub, vertically, children, ...props }) =>
     mega
       ? <Mega {...props} />
-      : <Sub {...props} vertically={sub || vertically}>{children}</Sub>,
+      : <Sub {...props} vertically={sub || vertically}>
+        {children}
+      </Sub>,
   p => Object.keys(p)
 );
 Nav.displayName = 'Navbar.Nav';

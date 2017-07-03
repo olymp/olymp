@@ -1,98 +1,92 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'olymp';
 import { createComponent } from 'react-fela';
 import Toggler from './toggler';
 import Container from '../container';
 import Nav from './nav';
 import Item from './item';
 import Sub from './sub';
+import Brand from './brand';
 
 const renderItem = props => <Item {...props} />;
 const renderNav = props => <Nav {...props} sub />;
 const WithContainer = ({ container, ...rest }) =>
   container ? <Container {...rest} /> : <div {...rest} />;
 
-const Brand = createComponent(
-  ({ theme, vertically, inverse }) => ({
-    // TODO important float: `${vertically ? 'none' : 'left'} !important`,
-    float: vertically ? 'none' : 'left',
-    // TODO important width: 'auto !important',
-    width: 'auto',
-    color: inverse ? theme.light : theme.dark,
-    fontSize: `calc(${theme.fontSize} + 4px)`,
-    // TODO important flex: 'none !important',
-    flex: 'none',
-    '> a': {
-      paddingY: `calc(${theme.space3} - 2px)`,
-    },
-  }),
-  ({ children, pages, ...p }) => <Item pathname="/" {...p} title={children} />,
-  p => Object.keys(p)
-);
-
-const Logo = createComponent(
+const Inner = createComponent(
   ({ vertically }) => ({
-    float: vertically ? 'none' : 'left',
+    /* flex start */
+    display: 'flex',
+    flexDirection: vertically ? 'column' : 'row',
+    alignItems: vertically ? 'flex-start' : 'stretch',
+    /* flex end */
+    clearfix: true,
   }),
-  ({ vertically, ...p }) => <NavLink to="/" {...p} />,
-  p => Object.keys(p)
+  'div',
+  ['className']
 );
 
 const Navbar = createComponent(
-  ({ theme, inverse, vertically, full, fill }) => ({
+  ({ theme, inverse, vertically, full }) => ({
     backgroundColor: inverse && theme.color,
     background: inverse && theme.color,
     borderRadius: !full && theme.borderRadius,
     margin: !full && theme.space2,
     width: full && '100%',
     minWidth: vertically && 200,
-    display: vertically ? 'inline-block' : fill && 'flex',
-    onAfter: {
-      content: '""',
-      clear: 'both',
-      display: 'block',
-      visibility: 'hidden',
-      height: 0,
-    },
     ifMini: {
       margin: theme.space0,
     },
   }),
-  ({ className, brand, logo, children, pages, container, ...props }) =>
+  ({
+    className,
+    brand,
+    children,
+    pages,
+    container,
+    inverse,
+    vertically,
+    ...props
+  }) =>
     (<nav className={className}>
       <WithContainer container={container}>
-        {brand
-          ? <Brand {...props} renderItem={renderItem} renderNav={renderNav}>
-            {brand}
-          </Brand>
-          : null}
-        {logo ? <Logo vertically={props.vertically}>{logo}</Logo> : null}
+        <Inner vertically={vertically}>
+          {brand &&
+            <Brand inverse={inverse} vertically={vertically}>
+              {brand}
+            </Brand>}
 
-        {pages &&
-          !!pages.length &&
-          <Toggler
-            {...props}
-            pages={pages}
-            renderItem={renderItem}
-            renderNav={renderNav}
-          >
-            <Sub />
-          </Toggler>}
+          {pages &&
+            !!pages.length &&
+            <Toggler
+              {...props}
+              inverse={inverse}
+              vertically={vertically}
+              pages={pages}
+              renderItem={renderItem}
+              renderNav={renderNav}
+            >
+              <Sub />
+            </Toggler>}
 
-        {Children.map(children, child =>
-          cloneElement(child, { ...props, renderItem, renderNav })
-        )}
+          {Children.map(children, child =>
+            cloneElement(child, {
+              ...props,
+              inverse,
+              vertically,
+              renderItem,
+              renderNav,
+            })
+          )}
+        </Inner>
       </WithContainer>
     </nav>),
   p => Object.keys(p)
 );
 Navbar.displayName = 'Navbar';
 Navbar.propTypes = {
-  /** node as brand, light styled */
+  /** node as brand */
   brand: PropTypes.node,
-  /** node as logo without styles */
-  logo: PropTypes.node,
   /** render nav vertically instead horizontally */
   vertically: PropTypes.bool,
   /** inverse theme with primary-color background */
@@ -104,7 +98,6 @@ Navbar.propTypes = {
 };
 Navbar.defaultProps = {
   brand: undefined,
-  logo: undefined,
   vertically: false,
   inverse: false,
   full: false,
