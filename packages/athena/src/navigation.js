@@ -2,7 +2,7 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withLang } from 'olymp';
 import { withAuth } from 'olymp-auth';
-import { Menu, Icon, Button } from 'antd';
+import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
 import { GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
@@ -104,9 +104,22 @@ export default withLang(
           selectedKeys={keys}
           name="navigation"
         >
-          <Menu.Item key="plus">
-            <IconOnly type="plus" />
-          </Menu.Item>
+          <Menu.SubMenu title={<IconOnly type="plus" />}>
+            {collectionList.map(collection =>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                <Link
+                  to={{
+                    query: {
+                      [`@${collection.name.toLowerCase()}`]: null,
+                    },
+                  }}
+                >
+                  {collection.name}
+                </Link>
+              </Menu.Item>)
+            )}
+          </Menu.SubMenu>
+
           <Menu.Item key="@home">
             <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
               <IconOnly type="home" />
