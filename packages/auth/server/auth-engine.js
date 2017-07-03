@@ -119,14 +119,11 @@ export default ({ monk, secret, mail, issuer }) => {
           let confirmationToken;
           if (!result.confirmed) {
             confirmationToken = tokenEngine.createFromUser(result);
-            console.log('CONFIRM', confirmationToken);
             if (mail) {
-              mail(
-                mails.register({
-                  email: rawUser.email,
-                  token: confirmationToken,
-                })
-              )
+              mail(mails.register, {
+                to: rawUser.email,
+                token: confirmationToken,
+              })
                 .then(x => console.log('Mail success'))
                 .catch(err => console.error(err));
             }
@@ -221,7 +218,6 @@ export default ({ monk, secret, mail, issuer }) => {
     },
     forgot: email =>
       collection.findOne({ email }).then((user) => {
-        console.log(email, user);
         if (!user) {
           throw new Error('No user matched.');
         }
@@ -229,10 +225,9 @@ export default ({ monk, secret, mail, issuer }) => {
           throw new Error('User not confirmed.');
         }
         const requestToken = tokenEngine.createFromUser(user);
-        console.log('FORGOT', requestToken);
 
         if (mail) {
-          mail(mails.forgot({ email: user.email, token: requestToken }))
+          mail(mails.forgot, { to: user.email, token: requestToken })
             .then(x => console.log('Mail success'))
             .catch(err => console.error(err));
         }

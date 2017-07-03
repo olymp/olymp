@@ -1,60 +1,31 @@
-const fetch = require('isomorphic-fetch');
-const md = require('./md');
-// const helper = require('sendgrid').mail;
+import fetch from 'isomorphic-fetch';
+import hashtax, { toPlain, toHtml } from 'olymp-hashtax';
+import htmlTemplate from './templates/default';
 
-const send = (options, argsOrFn) => {
-  const args = Object.assign(
-    {},
-    options,
-    (typeof argsOrFn === 'function' ? argsOrFn(options) : argsOrFn) || {}
-  );
-  const body = {
-    From: args.from,
-    To: args.to,
-    Subject: args.subject,
-  };
-  if (args.markdown) {
-    body.HtmlBody = md.toHTML(
-      args.markdown.split('\n').map(x => x.trim()).join('\n'),
-      args
+export default (key, options = {}) => {
+  const send = (template, args = {}) => {
+    const props = { ...options, ...args };
+    const body = {
+      From: props.from,
+      To: props.to,
+      Subject: props.subject,
+    };
+    const hash = hashtax(template, props);
+    body.TextBody = toPlain(hash, { trim: true, schema: {} });
+    body.Subject = body.TextBody.split('\n')[0];
+    body.HtmlBody = htmlTemplate(
+      toHtml(hash, { minify: true, schema: {} }),
+      props
     );
-  }
-  if (args.plain) { body.TextBody = args.plain; }
-  return fetch('https://api.postmarkapp.com/email', {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers: {
-      'X-Postmark-Server-Token': process.env.POSTMARK_KEY,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  });
-  /* sendgrid
-  return fetch('https://api.sendgrid.com/v3/mail/send', {
-    method: 'POST',
-    body: JSON.stringify({
-      personalizations: [{
-        to: [{
-          email: args.to,
-        }],
-      }],
-      from: {
-        email: args.from,
+    return fetch('https://api.postmarkapp.com/email', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'X-Postmark-Server-Token': key,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      subject: args.subject,
-      content: args.markdown ? [{
-        type: 'text/html',
-        value: md.toHTML(args.markdown.split('\n').map(x => x.trim()).join('\n'), args),
-      }] : [{
-        type: 'text/plain',
-        value: args.plain,
-      }],
-    }),
-    headers: {
-      Authorization: `BEARER ${process.env.SENDGRID_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-  });*/
+    });
+  };
+  return send;
 };
-const createSender = options => args => send(options, args);
-module.exports = createSender;
