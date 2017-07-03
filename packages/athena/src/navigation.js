@@ -25,6 +25,19 @@ const getInitials = (name) => {
   return false;
 };
 
+const getDeviceIcon = (deviceWidth) => {
+  switch (deviceWidth) {
+    case 400:
+      return <Icon type="phone" />;
+
+    case 700:
+      return <Icon type="tablet" />;
+
+    default:
+      return <Icon type="laptop" />;
+  }
+};
+
 const IconOnly = createComponent(
   ({ theme }) => ({
     marginRight: '0!important',
@@ -32,16 +45,6 @@ const IconOnly = createComponent(
   Icon,
   p => Object.keys(p)
 );
-
-/* const RoundButton = createComponent(
-  ({ theme }) => ({
-    backgroundColor: theme.color,
-    color: theme.light,
-    borderColor: theme.color,
-  }),
-  Button,
-  p => Object.keys(p)
-); */
 
 const UserIcon = createComponent(
   ({ theme, name }) => ({
@@ -64,10 +67,18 @@ const UserIcon = createComponent(
 const VerticalMenu = createComponent(
   ({ theme }) => ({
     zIndex: 3,
-    // boxShadow: theme.boxShadow,
-    // borderBottom: 0,
+    boxShadow: theme.boxShadow,
+    borderBottom: 0,
   }),
   Menu,
+  p => Object.keys(p)
+);
+
+const RightSubMenu = createComponent(
+  () => ({
+    float: 'right!important',
+  }),
+  p => <Menu.SubMenu {...p} />,
   p => Object.keys(p)
 );
 
@@ -81,16 +92,7 @@ const RightMenuItem = createComponent(
 
 export default withLang(
   withAuth(
-    ({
-      auth,
-      lang,
-      className,
-      deviceWidth,
-      children,
-      query,
-      collectionList,
-      ...rest
-    }) => {
+    ({ auth, className, deviceWidth, children, query, collectionList }) => {
       const keys = Object.keys(query);
       if (!keys.filter(x => x[0] === '@').length) {
         keys.push('@home');
@@ -171,12 +173,31 @@ export default withLang(
                 <Icon type="team" /> Benutzer
               </Link>
             </Menu.Item>}
+
           {children}
+
           <RightMenuItem key="logout">
             <a onClick={auth.logout} href="javascript:;">
               <IconOnly type="poweroff" />
             </a>
           </RightMenuItem>
+          <RightSubMenu title={getDeviceIcon(query['@deviceWidth'])}>
+            <Menu.Item key="@device-no">
+              <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
+                <Icon type="laptop" /> Normal
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="@deviceWidth700">
+              <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
+                <Icon type="tablet" /> Tablet
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="@deviceWidth400">
+              <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
+                <Icon type="phone" /> Mobil
+              </Link>
+            </Menu.Item>
+          </RightSubMenu>
           <RightMenuItem key="@user">
             <Link to={{ query: { '@user': null } }}>
               <UserIcon
@@ -279,32 +300,7 @@ export default withLang(
   </Menu.Item>)
 )}
 
-<Menu.SubMenu title={<Icon type="laptop" />}>
-  <Menu.Item key="@device-no">
-    <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
-      <Icon type="laptop" /> Normal
-    </Link>
-  </Menu.Item>
-  <Menu.Item key="@deviceWidth700">
-    <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
-      <Icon type="tablet" /> Tablet
-    </Link>
-  </Menu.Item>
-  <Menu.Item key="@deviceWidth400">
-    <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
-      <Icon type="phone" /> Mobil
-    </Link>
-  </Menu.Item>
-</Menu.SubMenu>
-<Menu.Item key="@user">
-  <Popover placement="bottom" content="Profil">
-    <Link
-      to={{ query: { '@user': null, '@deviceWidth': deviceWidth } }}
-    >
-      <Icon type="user" />
-    </Link>
-  </Popover>
-</Menu.Item>
+
 <Menu.Item key="@settings">
   <Popover placement="bottom" content="Einstellungen">
     <Link
