@@ -67,9 +67,8 @@ export default class PageSidebar extends Component {
         />
       </Button.Group>);
     const title = value === 'new' ? 'Neue Seite' : item.name;
-    const description = value === 'new'
-      ? 'Neue Seite erstellen'
-      : 'Seite bearbeiten';
+    const description =
+      value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
     const isPage =
       (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
     const P = form.getFieldDecorator('blocks', {
@@ -84,7 +83,7 @@ export default class PageSidebar extends Component {
     );
 
     return (
-      <SplitView deviceWidth={deviceWidth}>
+      <SplitView deviceWidth={deviceWidth} center>
         <Prompt
           when={form.isFieldsTouched()}
           message={() => 'Änderungen verwerfen?'}

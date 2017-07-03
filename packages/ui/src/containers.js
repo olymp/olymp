@@ -1,7 +1,7 @@
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 
 export const SplitView = createComponent(
-  ({ deviceWidth, center, background }) => ({
+  ({ theme, deviceWidth, center, background }) => ({
     display: 'flex',
     flex: 1,
     background:
@@ -14,7 +14,8 @@ export const SplitView = createComponent(
     '> :nth-child(2)': {
       flex: 1,
       overflowY: 'auto',
-      margin: center && 'auto',
+      margin: center && '0 auto',
+      borderX: center && border(theme),
       maxWidth: deviceWidth,
       maxHeight: '100%',
     },
