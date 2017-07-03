@@ -20,7 +20,7 @@ export const Button = createComponent(
     },
   }),
   ({ className, onMouseDown, children, tooltip }) =>
-    (<Tooltip placement="bottom" title={tooltip}>
+    (<Tooltip placement="bottom" title={tooltip || ''}>
       <div className={className} onMouseDown={onMouseDown}>
         {children}
       </div>

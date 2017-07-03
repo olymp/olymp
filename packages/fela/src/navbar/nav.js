@@ -15,7 +15,7 @@ const Nav = createComponent(
       top: !vertically ? '100%' : -theme.borderWidth,
       left: !right && (vertically ? '100%' : 0),
       right: right && (!vertically ? 0 : '100%'),
-      zIndex: 1,
+      zIndex: 10,
       '> div': {
         textAlign: 'left',
       },
