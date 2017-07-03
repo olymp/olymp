@@ -17,15 +17,36 @@ export default {
         height: 300,
       })}
     />),
-  styles: ({ theme, getData }) => ({
-    float: getData('float', 'none'),
-    margin: getData('float', 'none') === 'none' && '0 auto',
-    marginTop: getData('float', 'none') === 'none' && theme.space3,
-    marginBottom: theme.space3,
-    marginLeft: getData('float', 'none') !== 'left' && theme.space3,
-    marginRight: getData('float', 'none') !== 'right' && theme.space3,
-    zIndex: 1,
-  }),
+  styles: ({ theme, getData }) => {
+    const size = getData('size', 4) - 12;
+    const alignment = getData('float', 'none');
+    const normalized = alignment.replace('+', '');
+    return {
+      float: normalized,
+      margin: alignment === 'none' && '0 auto',
+      marginTop: alignment === 'none' && theme.space3,
+      marginBottom: theme.space3,
+      zIndex: 1,
+      extend: [
+        {
+          condition: normalized === 'left',
+          style: { marginRight: theme.space3 },
+        },
+        {
+          condition: alignment === 'left+',
+          style: { marginLeft: -75 },
+        },
+        {
+          condition: normalized === 'right',
+          style: { marginLeft: theme.space3 },
+        },
+        {
+          condition: alignment === 'right+',
+          style: { marginRight: -75 },
+        },
+      ],
+    };
+  },
   actions: [
     {
       tooltip: getData => `Bild ${getData('value') ? 'wechseln' : 'wählen'}`,
@@ -41,20 +62,32 @@ export default {
     {
       label: <FaAlignLeft />,
       tooltip: 'Links anordnen',
-      active: ({ getData }) => getData('float', 'none') === 'left',
-      toggle: ({ setData, getData }) =>
-        setData({
-          float: getData('float', 'none') === 'left' ? 'none' : 'left',
-        }),
+      active: ({ getData }) => getData('float', 'none').indexOf('left') === 0,
+      toggle: ({ setData, getData }) => {
+        const alignment = getData('float', 'none');
+        if (alignment === 'none') {
+          setData({ float: 'left' });
+        } else if (alignment === 'left') {
+          setData({ float: 'left+' });
+        } else {
+          setData({ float: null });
+        }
+      },
     },
     {
       label: <FaAlignRight />,
       tooltip: 'Rechts anordner',
-      active: ({ getData }) => getData('float', 'none') === 'right',
-      toggle: ({ setData, getData }) =>
-        setData({
-          float: getData('float', 'none') === 'right' ? 'none' : 'right',
-        }),
+      active: ({ getData }) => getData('float', 'none').indexOf('right') === 0,
+      toggle: ({ setData, getData }) => {
+        const alignment = getData('float', 'none');
+        if (alignment === 'none') {
+          setData({ float: 'right' });
+        } else if (alignment === 'right') {
+          setData({ float: 'right+' });
+        } else {
+          setData({ float: null });
+        }
+      },
     },
     {
       label: <FaPlus />,
