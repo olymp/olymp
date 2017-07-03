@@ -5,7 +5,7 @@ import { FelaDecorator, RouterDecorator } from './decorator';
 import { createComponent } from 'react-fela';
 
 const Container = createComponent(
-  ({ theme, customStyle }) => ({
+  ({ customStyle }) => ({
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
