@@ -28,9 +28,10 @@ const getFormSchema = ({ fields }) =>
   }, {});
 
 const Flex = createComponent(
-  () => ({
+  ({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
+    paddingTop: theme.space3,
     '> ul': {
       zIndex: 1,
     },
@@ -69,20 +70,22 @@ export default class CollectionDetail extends Component {
       <ContentLoader isLoading={id && !item}>
         <Flex>
           <Gateway into="navigation">
-            <RightMenuItem key="save">
-              <span onClick={onSave}>
-                <Icon type="save" /> Speichern
-              </span>
-            </RightMenuItem>
-            {keys.map(tab =>
-              (<RightMenuItem key={tab}>
-                <Link to={{ pathname, query: { ...query, tab } }}>
-                  {tab}
-                </Link>
-              </RightMenuItem>)
-            )}
+            <RightSubMenu>
+              <RightMenuItem key="save">
+                <span onClick={onSave}>
+                  <Icon type="save" /> Speichern
+                </span>
+              </RightMenuItem>
+              {keys.map(tab =>
+                (<RightMenuItem key={tab}>
+                  <Link to={{ pathname, query: { ...query, tab } }}>
+                    {tab}
+                  </Link>
+                </RightMenuItem>)
+              )}
+            </RightSubMenu>
           </Gateway>
-          <br />
+
           <DetailForm
             {...this.props}
             item={item || {}}
