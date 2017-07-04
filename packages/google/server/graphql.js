@@ -37,8 +37,8 @@ export default (mapsKey, mail, key) => {
   return {
     name: 'geocode',
     queries: `
-      geocode(address: String, region: String, language: String): Geocode
-      geocodeList(address: String, region: String, language: String): [Geocode]
+      geocode(address: String!, region: String, language: String): Geocode
+      geocodeList(address: String!, region: String, language: String): [Geocode]
       analyticsPageviews(start: String!, end: String!, dimensions: [ANALYTICS_PAGEVIEW_DIMENSIONS], time: ANALYTICS_PAGEVIEW_TIMES, sort: ANALYTICS_PAGEVIEW_SORT): AnalyticsPageviews
     `,
     resolvers: {

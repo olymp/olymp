@@ -12,7 +12,7 @@ export default (key) => {
       }
       googleMapsClient[method](payload, (err, result) => {
         if (err) {
-          nay(err);
+          nay(err.json.error_message);
         } else {
           yay(result);
         }
