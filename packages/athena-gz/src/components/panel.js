@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, createComponent, fade } from 'olymp-fela';
+import { Grid, createComponent, fade, border } from 'olymp-fela';
 import { H1 } from './heading';
 
 export const Content = createComponent(
@@ -9,13 +9,16 @@ export const Content = createComponent(
     color = theme.dark,
     padding = theme.space3,
   }) => ({
-    backgroundColor: background,
+    // backgroundColor: background,
+    borderBottom: border(theme, theme.dark4),
+    borderRight: border(theme, theme.dark4),
     borderBottomRightRadius: 100,
     color,
     padding,
+    paddingLeft: 0,
     hyphens: 'auto',
     flex: '1 1',
-    minHeight: 90,
+    // minHeight: 90,
   }),
   'div',
   ({ padding, background, color, accent, ...p }) => Object.keys(p)
@@ -51,8 +54,11 @@ export default createComponent(
       borderTopLeftRadius: 30,
       right: theme.space3,
     },
-    '> h2': {
+    /* '> h2': {
       marginBottom: theme.space1,
+    }, */
+    '> h1': {
+      marginBottom: 0,
     },
     onHover: {
       onAfter: {
