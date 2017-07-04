@@ -43,18 +43,11 @@ const Flex = createComponent(
   []
 );
 
-const RightSubMenu = createComponent(
+const RightMenu = createComponent(
   () => ({
     float: 'right!important',
   }),
-  p => <Menu.SubMenu {...p} />,
-  p => Object.keys(p)
-);
-const RightMenuItem = createComponent(
-  () => ({
-    float: 'right!important',
-  }),
-  p => <Menu.Item {...p} />,
+  p => <Menu {...p} />,
   p => Object.keys(p)
 );
 
@@ -70,20 +63,20 @@ export default class CollectionDetail extends Component {
       <ContentLoader isLoading={id && !item}>
         <Flex>
           <Gateway into="navigation">
-            <RightSubMenu>
-              <RightMenuItem key="save">
+            <RightMenu>
+              <Menu.Item key="save">
                 <span onClick={onSave}>
                   <Icon type="save" /> Speichern
                 </span>
-              </RightMenuItem>
+              </Menu.Item>
               {keys.map(tab =>
-                (<RightMenuItem key={tab}>
+                (<Menu.Item key={tab}>
                   <Link to={{ pathname, query: { ...query, tab } }}>
                     {tab}
                   </Link>
-                </RightMenuItem>)
+                </Menu.Item>)
               )}
-            </RightSubMenu>
+            </RightMenu>
           </Gateway>
 
           <DetailForm
