@@ -3,9 +3,9 @@ import { Grid, createComponent, fade } from 'olymp-fela';
 import { H1 } from './heading';
 
 export const Content = createComponent(
-  ({ theme, accent = theme.color, padding = theme.space3, size = 2 }) => ({
-    borderRight: `${size}px solid ${fade(accent)}`,
-    borderBottom: `${size}px solid ${fade(accent)}`,
+  ({ theme, accent, padding = theme.space3, size = 2 }) => ({
+    borderRight: `${size}px solid ${!accent ? theme.dark4 : fade(accent)}`,
+    borderBottom: `${size}px solid ${!accent ? theme.dark4 : fade(accent)}`,
     borderBottomRightRadius: 100,
     paddingTop: 0,
     paddingBottom: padding,
@@ -14,7 +14,7 @@ export const Content = createComponent(
     hyphens: 'auto',
     flex: '1 1',
     position: 'relative',
-    // minHeight: 90,
+    minHeight: 180,
     '> iframe': {
       borderBottomRightRadius: 100,
     },
