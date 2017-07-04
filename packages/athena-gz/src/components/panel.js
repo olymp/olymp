@@ -3,22 +3,34 @@ import { Grid, createComponent, fade, border } from 'olymp-fela';
 import { H1 } from './heading';
 
 export const Content = createComponent(
-  ({
-    theme,
-    background = theme.dark5,
-    color = theme.dark,
-    padding = theme.space3,
-  }) => ({
-    // backgroundColor: background,
-    borderBottom: border(theme, theme.dark4),
-    borderRight: border(theme, theme.dark4),
+  ({ theme, accent = theme.color, padding = theme.space3, size = 2 }) => ({
+    borderRight: `${size}px solid ${fade(accent)}`,
+    borderBottom: `${size}px solid ${fade(accent)}`,
     borderBottomRightRadius: 100,
-    color,
     padding,
     paddingLeft: 0,
     hyphens: 'auto',
     flex: '1 1',
+    position: 'relative',
     // minHeight: 90,
+    onBefore: {
+      content: '""',
+      position: 'absolute',
+      bottom: -size,
+      right: -size,
+      top: -size,
+      width: size,
+      backgroundImage: 'linear-gradient(to bottom, #FFF 33%, transparent)',
+    },
+    onAfter: {
+      content: '""',
+      position: 'absolute',
+      bottom: -size,
+      left: -size,
+      right: -size,
+      height: size,
+      backgroundImage: 'linear-gradient(to right, #FFF 33%, transparent)',
+    },
   }),
   'div',
   ({ padding, background, color, accent, ...p }) => Object.keys(p)
@@ -89,12 +101,7 @@ export default createComponent(
       <H1 color={accent || background} bordered={bordered}>
         {title}
       </H1>
-      <Content
-        padding={padding}
-        accent={accent}
-        background={background}
-        color={color}
-      >
+      <Content padding={padding} accent={accent} color={color}>
         {children}
       </Content>
     </Grid.Item>),
