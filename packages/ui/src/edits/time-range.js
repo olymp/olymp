@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import Slider from 'multirangeslider';
 import { createComponent } from 'olymp-fela';
-import { get } from 'lodash';
 
 class Elessar extends Component {
   resetValues(newProps = this.props) {
@@ -52,7 +51,6 @@ class Elessar extends Component {
     const { onChange } = this.props;
     const keys = Object.keys(e.data);
     const array = keys.map(key => [e.data[key].val[0], e.data[key].val[1]]);
-    console.log(array);
     onChange(array);
   };
 
