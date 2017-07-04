@@ -29,8 +29,12 @@ const List = createComponent(
   }),
   ({ className, label, children }) =>
     (<Grid size={3} className={className}>
-      <ListLabel>{label}</ListLabel>
-      <ListContent>{children}</ListContent>
+      <ListLabel>
+        {label}
+      </ListLabel>
+      <ListContent>
+        {children}
+      </ListContent>
     </Grid>),
   p => Object.keys(p)
 );
@@ -42,7 +46,9 @@ const ListLabel = createComponent(
     fontWeight: 'bold',
   }),
   ({ children, ...rest }) =>
-    <Grid.Item {...rest} medium={1}>{children}:</Grid.Item>,
+    (<Grid.Item {...rest} medium={1}>
+      {children}:
+    </Grid.Item>),
   p => Object.keys(p)
 );
 
@@ -115,20 +121,40 @@ export default createComponent(
     (<div>
       <Logo value={logo} title={name || titel} />
       <div className={className}>
-        <H2 color={farbe}>{name}</H2>
+        <H2 color={farbe}>
+          {name}
+        </H2>
         <Container>
-          {etage && <List label="Etage">{etage}</List>}
+          {etage &&
+            <List label="Etage">
+              {etage}
+            </List>}
           {telefon &&
             <List label="Telefon">
-              <a href={`tel:${telefon}`}>{telefon}</a>
+              <a href={`tel:${telefon}`}>
+                {telefon}
+              </a>
             </List>}
           {telefonPrivat &&
-            <List label="Privatpatienten">{telefonPrivat}</List>}
-          {fax && <List label="Fax">{fax}</List>}
+            <List label="Privatpatienten">
+              {telefonPrivat}
+            </List>}
+          {fax &&
+            <List label="Fax">
+              {fax}
+            </List>}
           {eMail &&
-            <List label="E-Mail"><a href={`mailto:${eMail}`}>{eMail}</a></List>}
+            <List label="E-Mail">
+              <a href={`mailto:${eMail}`}>
+                {eMail}
+              </a>
+            </List>}
           {website &&
-            <List label="Homepage"><a href={website}>{website}</a></List>}
+            <List label="Homepage">
+              <a href={website}>
+                {website}
+              </a>
+            </List>}
         </Container>
 
         {openings &&
@@ -136,9 +162,13 @@ export default createComponent(
             <H2 color={farbe}>Öffnungszeiten</H2>
             <Container>
               {openings.map((value, index) =>
-                <List label={weekdays[index]}>{niceTime(value)}</List>
+                (<List key={index} label={weekdays[index]}>
+                  {niceTime(value)}
+                </List>)
               )}
-              <Text>{freifeld}</Text>
+              <Text>
+                {freifeld}
+              </Text>
             </Container>
           </div>}
 
