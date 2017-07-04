@@ -2,14 +2,37 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { fade } from 'olymp-fela';
-import { Link, Placeholder } from './link';
+import Link from './link';
+import { FaAngleDown, FaAngleLeft, FaAngleRight } from 'olymp-icons';
+
+const Icon = createComponent(
+  ({ theme, inverse }) => ({
+    fill: `${inverse ? theme.light2 : theme.color} !important`,
+    centerY: true,
+    right: theme.space3,
+  }),
+  ({ className, vertically, right }) =>
+    !vertically
+      ? <FaAngleDown className={className} size={15} />
+      : right
+        ? <FaAngleLeft className={className} size={15} />
+        : <FaAngleRight className={className} size={15} />,
+  p => Object.keys(p)
+);
 
 const NavItem = createComponent(
-  ({ fill, inverse, vertically, right }) => ({
+  ({ theme, fill, inverse, vertically, right, pages }) => ({
+    /* flex start */
+    flex: fill && '1 1',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: fill ? 'column' : right && vertically && 'row-reverse',
+    /* flex end */
+    width: vertically && '100%',
     float: !vertically && 'left',
     position: 'relative',
-    flex: fill && '1 1',
-    textAlign: fill ? 'center' : right && vertically && 'right',
+    padding: theme.space3,
+    paddingRight: pages && pages.length ? theme.space4 : theme.space3,
     onHover: {
       backgroundColor: inverse && fade('#000000', 10),
       '> div': {
@@ -28,6 +51,9 @@ const NavItem = createComponent(
     children,
     title,
     fill,
+    inverse,
+    vertically,
+    right,
     pages,
     onClick,
     onItemMouseEnter,
@@ -39,20 +65,25 @@ const NavItem = createComponent(
         onItemMouseEnter ? () => onItemMouseEnter(props) : undefined
       }
     >
-      {pathname
-        ? <Link to={pathname} inverse={props.inverse}>
-          {title}
-        </Link>
-        : <Placeholder onClick={onClick} inverse={props.inverse}>
-          {title}
-        </Placeholder>}
+      <Link to={pathname} onClick={onClick} inverse={inverse}>
+        {title}
+        {pages &&
+          !!pages.length &&
+          <Icon vertically={vertically} right={right} inverse={inverse} />}
+      </Link>
 
       {pages &&
         !!pages.length &&
-        props.renderNav({ ...props, pages, sub: true })}
-
+        props.renderNav({
+          ...props,
+          inverse,
+          vertically,
+          right,
+          pages,
+          sub: true,
+        })}
       {Children.map(children, child =>
-        cloneElement(child, { ...props, sub: true })
+        cloneElement(child, { ...props, inverse, vertically, right, sub: true })
       )}
     </div>),
   p => Object.keys(p)
@@ -62,15 +93,15 @@ NavItem.propTypes = {
   /** title/label */
   title: PropTypes.node.isRequired,
   /** path for react-router or undefined for placeholder */
-  pathname: PropTypes.string,
+  to: PropTypes.string,
   /** submenu is mega dropdown menu */
   mega: PropTypes.bool,
   /**  */
   onClick: PropTypes.func,
 };
 NavItem.defaultProps = {
-  pathname: undefined,
+  to: undefined,
   mega: false,
-  onClick: () => {},
+  onClick: undefined,
 };
 export default NavItem;

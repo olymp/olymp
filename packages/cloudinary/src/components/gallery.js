@@ -30,8 +30,8 @@ export const MediaList = ({
         (<Thumb
           item={item}
           onClick={e => onClick(item.id, index, e)}
-          onRemove={onRemove ? () => onRemove(item.id) : undefined}
-          isActive={selected.findIndex(x => x === item.id) >= 0}
+          onRemove={() => onRemove(item.id)}
+          isActive={selected.findIndex(({ id }) => id === item.id) >= 0}
           height={itemHeight}
           key={item.id}
         />)
@@ -40,7 +40,12 @@ export const MediaList = ({
 MediaList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   itemHeight: PropTypes.number,
-  selected: PropTypes.arrayOf(PropTypes.string),
+  selected: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      crop: PropTypes.arrayOf(PropTypes.number),
+    })
+  ),
   onClick: PropTypes.func,
   onRemove: PropTypes.func,
 };

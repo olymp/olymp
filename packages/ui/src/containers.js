@@ -1,12 +1,12 @@
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 
 export const SplitView = createComponent(
-  ({ deviceWidth, center, background }) => ({
+  ({ theme, deviceWidth, center, background }) => ({
     display: 'flex',
     flex: 1,
     background:
       background === true &&
-        'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
+      'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
     '> :first-child': {
       flex: 0,
       overflowY: 'auto',
@@ -14,8 +14,10 @@ export const SplitView = createComponent(
     '> :nth-child(2)': {
       flex: 1,
       overflowY: 'auto',
-      margin: center && 'auto',
+      margin: center && '0 auto',
+      borderX: center && border(theme),
       maxWidth: deviceWidth,
+      maxHeight: '100%',
     },
   }),
   'div',
@@ -46,9 +48,10 @@ export const Panel = createComponent(
 );
 
 export const Container = createComponent(
-  ({ theme, width, padding, minHeight }) => ({
+  ({ theme, width, padding, minHeight, height }) => ({
     width: width || 700,
     maxWidth: width || 700,
+    height,
     minHeight,
     boxShadow: theme.boxShadow,
     marginX: 'auto',

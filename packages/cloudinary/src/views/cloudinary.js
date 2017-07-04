@@ -25,7 +25,12 @@ class CloudinaryView extends Component {
     const { selected: stateSelected } = this.state;
     const { selected } = props;
 
-    if (!isEqual(stateSelected.sort(), selected.sort())) {
+    if (
+      !isEqual(
+        stateSelected.map(item => item.id).sort(),
+        selected.map(item => item.id).sort()
+      )
+    ) {
       this.setState({ selected });
     }
   };
@@ -83,7 +88,9 @@ class CloudinaryView extends Component {
                   uploading: uploading.filter(x => x.name !== file.name),
                 });
                 if (data && data.cloudinaryRequestDone) {
-                  this.onSelect([data.cloudinaryRequestDone.id]);
+                  this.onSelect([
+                    { id: data.cloudinaryRequestDone.id, crop: undefined },
+                  ]);
                   refetchKey();
                 }
               });
@@ -97,17 +104,17 @@ class CloudinaryView extends Component {
     };
   };
 
-  onSelect = (selectionIds, index, e) => {
+  onSelect = (selections, index, e) => {
     const { multi, handleSelection } = this.props;
     let selected = [...this.state.selected];
 
-    selectionIds.forEach((selectionId) => {
-      const itemIndex = selected.findIndex(item => item === selectionId);
+    selections.forEach(({ id: selectionId }) => {
+      const itemIndex = selected.findIndex(({ id }) => id === selectionId);
       if (itemIndex < 0) {
         if (multi && e && e.shiftKey) {
-          selected.push(selectionId); // select multi
+          selected.push({ id: selectionId, crop: undefined }); // select multi
         } else {
-          selected = [selectionId]; // select single
+          selected = [{ id: selectionId, crop: undefined }]; // select single
         }
       } else {
         selected.splice(itemIndex, 1); // remove/deselect
@@ -120,20 +127,20 @@ class CloudinaryView extends Component {
   onClick = (id, i, e) => {
     const { handleSelection } = this.props;
     const { selected } = this.state;
-    const index = selected.findIndex(selectedId => selectedId === id);
+    const index = selected.findIndex(({ id: selectedId }) => selectedId === id);
 
     if (index < 0) {
       this.setState({ selection: selected.length });
-      this.onSelect([id], i, e);
+      this.onSelect([{ id, crop: undefined }], i, e);
     } else {
       this.setState({ selection: index });
-      handleSelection([id], this);
+      handleSelection([{ id, crop: undefined }], this);
     }
   };
 
   onRemove = (id) => {
     const { selected, selection } = this.state;
-    const index = selected.findIndex(itemId => itemId === id);
+    const index = selected.findIndex(({ id: itemId }) => itemId === id);
 
     if (
       index < selection ||
@@ -142,16 +149,16 @@ class CloudinaryView extends Component {
       this.setState({ selection: selection - 1 });
     }
 
-    this.onSelect([id]);
+    this.onSelect([{ id, crop: undefined }]);
   };
 
   render() {
     const { onClose, deviceWidth, format, onSelect } = this.props;
     const { selected, search, filter, uploading } = this.state;
-    const selection = this.state.selection >= 0 &&
-      this.state.selection < selected.length
-      ? this.state.selection
-      : 0;
+    const selection =
+      this.state.selection >= 0 && this.state.selection < selected.length
+        ? this.state.selection
+        : 0;
 
     const items = !format
       ? this.props.items
@@ -177,15 +184,16 @@ class CloudinaryView extends Component {
         >
           <Gallery
             onClick={this.onClick}
+            onRemove={this.onRemove}
             selected={selected}
             items={filteredItems}
           />
         </Dragzone>
         <SelectionSidebar
           items={selected
-            .map(x => items.find(item => item.id === x))
+            .map(x => items.find(item => item.id === x.id))
             .filter(x => x)}
-          activeItemId={selected[selection]}
+          activeItem={selected[selection]}
           onClick={index => this.setState({ selection: index })}
           onRemove={this.onRemove}
           onCancel={() => this.onSelect(selected)}
@@ -199,14 +207,22 @@ CloudinaryView.propTypes = {
   onClose: PropTypes.func,
   handleSelection: PropTypes.func,
   onSelect: PropTypes.func,
-  selected: PropTypes.arrayOf(PropTypes.string),
+  selected: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      crop: PropTypes.arrayOf(PropTypes.number),
+    })
+  ),
   format: PropTypes.string,
   multi: PropTypes.bool,
 };
 CloudinaryView.defaultProps = {
   handleSelection: (selected, x) => x.setState({ selected }),
+  onSelect: undefined,
+  onClose: undefined,
   selected: [],
   items: [],
   multi: true,
+  format: undefined,
 };
 export default CloudinaryView;

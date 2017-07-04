@@ -2,64 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { Grid } from '../index';
-import { Link, Placeholder } from './link';
-
-const SuperNav = createComponent(
-  () => ({
-    width: 700,
-  }),
-  ({ className, pages, inverse }) =>
-    (<div className={className}>
-      <Grid size={pages.length}>
-        {pages.map(({ id, name, children }, i) =>
-          (<Grid.Item small={1} key={id || i}>
-            <Column>
-              <Title pathname="/" inverse={inverse}>{name}</Title>
-              {children.map((child, cI) =>
-                (<Item key={child.id || cI}>
-                  <Link2 to={child.pathname} inverse={inverse}>
-                    {child.name}
-                  </Link2>
-                  {child.children &&
-                    !!child.children.length &&
-                    <SubMenu>
-                      {child.children.map((c, ccI) =>
-                        (<Link2
-                          to={c.pathname}
-                          inverse={inverse}
-                          key={c.id || ccI}
-                        >
-                          {c.name}
-                        </Link2>)
-                      )}
-                    </SubMenu>}
-                </Item>)
-              )}
-            </Column>
-          </Grid.Item>)
-        )}
-      </Grid>
-    </div>),
-  p => Object.keys(p)
-);
-SuperNav.displayName = 'Navbar.Mega';
-SuperNav.propTypes = {
-  /** Array of page-objects */
-  pages: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      pathname: PropTypes.string,
-      children: PropTypes.arrayOf(PropTypes.object),
-    })
-  ),
-  /** aligns mega-submenu right */
-  right: PropTypes.bool,
-};
-SuperNav.defaultProps = {
-  pages: [],
-  right: false,
-};
-export default SuperNav;
+import Link from './link';
 
 const Column = createComponent(
   ({ theme }) => ({
@@ -75,19 +18,18 @@ const Title = createComponent(
     display: 'block',
     fontWeight: 'bold',
     marginBottom: theme.space3,
-    // TODO important padding: `${theme.space0} !important`,
     padding: theme.space0,
-    // TODO important color: `${inverse ? theme.light : theme.dark} !important`,
     color: inverse ? theme.light : theme.dark,
   }),
-  ({ pathname, ...p }) =>
-    pathname ? <Link to={pathname} {...p} /> : <Placeholder {...p} />,
+  p =>
+    (<h4>
+      <Link {...p} />
+    </h4>),
   p => Object.keys(p)
 );
 
-const Link2 = createComponent(
+const PaddingLink = createComponent(
   ({ theme }) => ({
-    // TODO important padding: `${theme.space1} ${theme.space0} !important`,
     padding: `${theme.space1} ${theme.space0}`,
   }),
   p => <Link {...p} />,
@@ -116,3 +58,64 @@ const SubMenu = createComponent(
   'div',
   p => Object.keys(p)
 );
+
+const MegaNav = createComponent(
+  ({ theme }) => ({
+    width: 700,
+    paddingX: theme.space3,
+    paddingY: theme.space1,
+  }),
+  ({ className, pages, inverse }) =>
+    (<div className={className}>
+      <Grid size={pages.length}>
+        {pages.map(({ id, name, children, pathname, onClick }, i) =>
+          (<Grid.Item small={1} key={id || i}>
+            <Column>
+              <Title to={pathname} inverse={inverse}>
+                {name}
+              </Title>
+              {children.map((child, cI) =>
+                (<Item key={child.id || cI}>
+                  <PaddingLink to={child.pathname} inverse={inverse}>
+                    {child.name}
+                  </PaddingLink>
+                  {child.children &&
+                    !!child.children.length &&
+                    <SubMenu>
+                      {child.children.map((c, ccI) =>
+                        (<PaddingLink
+                          to={c.pathname}
+                          inverse={inverse}
+                          key={c.id || ccI}
+                        >
+                          {c.name}
+                        </PaddingLink>)
+                      )}
+                    </SubMenu>}
+                </Item>)
+              )}
+            </Column>
+          </Grid.Item>)
+        )}
+      </Grid>
+    </div>),
+  p => Object.keys(p)
+);
+MegaNav.displayName = 'Navbar.Mega';
+MegaNav.propTypes = {
+  /** Array of page-objects */
+  pages: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      pathname: PropTypes.string,
+      children: PropTypes.arrayOf(PropTypes.object),
+    })
+  ),
+  /** aligns mega-submenu right */
+  right: PropTypes.bool,
+};
+MegaNav.defaultProps = {
+  pages: [],
+  right: false,
+};
+export default MegaNav;

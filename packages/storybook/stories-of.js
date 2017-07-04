@@ -14,10 +14,12 @@ const Container = createComponent(
     '> div': {
       width: '100%',
       '> div': {
-        '> *': {
-          marginX: 'auto',
-          display: 'table',
-        },
+        display: 'flex',
+        justifyContent: 'center',
+        /* padding: theme.space4,
+        margin: theme.space3,
+        backgroundColor: '#ffffff',
+        border: '1px solid #dddddd', */
       },
     },
     ...customStyle,

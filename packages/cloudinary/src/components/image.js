@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'olymp-fela';
 
@@ -19,10 +19,11 @@ export const cloudinaryUrl = (value, options) => {
     .split('ttp://res.cloudinary.com/')
     .join('ttps://res.cloudinary.com/');
 
-  const crop = value.crop && value.crop.length
-    ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
-        .crop[3]},c_crop/`
-    : '';
+  const crop =
+    value.crop && value.crop.length
+      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
+          .crop[3]},c_crop/`
+      : '';
 
   let query = '';
   Object.keys(newOptions).forEach(
@@ -43,7 +44,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
   return (
     <Image
       {...rest}
-      setUrl={(w, h) =>
+      src={(w, h) =>
         cloudinaryUrl(value, {
           w,
           h,
@@ -52,6 +53,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
         })}
       alt={alt || value.caption}
       ratio={ratio || height / width}
+      srcRatio={height / width}
     />
   );
 };

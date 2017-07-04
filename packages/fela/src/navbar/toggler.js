@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
 const Container = createComponent(
-  ({ theme, open }) => ({
+  ({ open }) => ({
+    width: '100%',
     ifMini: {
       '> div:nth-child(2)': {
         clear: 'both',
@@ -85,9 +86,7 @@ class Toggler extends Component {
       <Container className={className} open={isOpen || open}>
         <Button {...props} open={isOpen || open} onClick={toggleMenu} />
 
-        <div>
-          {Children.map(children, child => cloneElement(child, props))}
-        </div>
+        {Children.map(children, child => cloneElement(child, props))}
       </Container>
     );
   }

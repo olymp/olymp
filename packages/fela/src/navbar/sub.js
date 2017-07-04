@@ -3,15 +3,18 @@ import { createComponent } from 'react-fela';
 import { border } from 'olymp-fela';
 
 export default createComponent(
-  ({ theme, fill, vertically, right, inverse }) => ({
+  ({ theme, fill, vertically, right }) => ({
+    /* flex start */
+    display: 'flex',
+    flex: fill && '1 1',
+    alignItems: 'stretch',
+    flexDirection: vertically ? 'column' : 'row',
+    /* flex end */
     float: right ? 'right' : 'left',
     width: fill && '100%',
+    height: !vertically && '100%',
     minWidth: vertically ? '100%' : 'auto',
-    display: fill && 'flex',
-    flex: fill && '1 1',
     marginLeft: right && 'auto',
-    // borderRight: inverse && !right && !vertically && border(theme, theme.dark4),
-    // borderLeft: inverse && right && !vertically && border(theme, theme.dark4),
     borderTop: vertically && border(theme, theme.dark4),
     ifMini: {
       float: 'none',

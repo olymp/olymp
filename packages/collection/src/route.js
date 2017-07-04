@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import View from './views';
 
-export default class CollectionOldRoute extends Component {
+export default class CollectionRoute extends Component {
   render() {
     const {
       typeName,

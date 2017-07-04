@@ -77,13 +77,16 @@ storiefy('Inverse theming', () =>
 storiefy('Full size', () =>
   <Navbar pages={nav} inverse full={boolean('full', true)} />
 );
+storiefy('Containered', () =>
+  <Navbar pages={nav} inverse full container={boolean('container', true)} />
+);
 storiefy('Brand', () =>
   <Navbar pages={nav} brand={text('brand', 'Olymp ❤ CMS')} inverse />
 );
-storiefy('Logo (without styles)', () =>
+storiefy('Logo', () =>
   (<Navbar
     pages={nav}
-    logo={
+    brand={
       <Icon
         color={boolean('inverse', true) ? 'white' : '#8e44ad'}
         size="32"
@@ -103,7 +106,7 @@ storiefy('Vertical nav', () =>
 );
 storiefy(
   'Fill empty space',
-  () => <Navbar pages={nav} inverse fill={boolean('fill', true)} />,
+  () => <Navbar pages={nav} inverse full fill={boolean('fill', true)} />,
   'Works with flex!'
 );
 storiefy('Pass props to deeper Components', () =>

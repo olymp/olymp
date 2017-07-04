@@ -123,13 +123,11 @@ export default ({ attributes = '' } = {}) => ({
         return monk.collection('invitation').insert(args).then((u) => {
           console.log('INVITE', u.token, u);
           if (mail) {
-            mail(
-              mails.invite({
-                email: u.email,
-                token: u.token,
-                name: u.name,
-              })
-            )
+            mail(mails.invite, {
+              to: u.email,
+              token: u.token,
+              name: u.name,
+            })
               .then(x => console.log('Mail success', x.ok))
               .catch(err => console.error(err));
           }
@@ -187,7 +185,7 @@ export default ({ attributes = '' } = {}) => ({
         }
         auth
           .register(
-            { email: 'admin@olymp-cms.com', name: 'Administrator' },
+            { email: 'admin@olymp-athena.com', name: 'Administrator' },
             'admin12'
           )
           .then(({ token }) => {

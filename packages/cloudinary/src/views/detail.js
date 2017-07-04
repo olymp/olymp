@@ -48,13 +48,7 @@ class MediaDetail extends Component {
         <Form>
           <Form.Item key="crop" {...FormForFullLayout}>
             {!editable
-              ? <Crop
-                value={item.url}
-                width={item.width}
-                height={item.height}
-                crop={item.crop}
-                onChange={crop => patchItem({ crop })}
-              />
+              ? <Crop value={item} onChange={crop => patchItem({ crop })} />
               : <LightboxImage value={item} width="100%" />}
           </Form.Item>
           <Form.Item key="id" label="ID" {...FormItemLayout}>

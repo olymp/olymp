@@ -1,9 +1,10 @@
+require('dotenv').config();
+
 import express from 'express';
 import compression from 'compression';
 import session from 'express-session';
 import path from 'path';
 import React from 'react';
-import env from 'node-env-file';
 import fetch from 'isomorphic-fetch';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
@@ -51,7 +52,6 @@ const RedisStore = createRedisStore(session);
 // import { render, template } from 'rapscallion';
 
 global.fetch = fetch;
-env(path.resolve(process.cwd(), '.env'), { raise: false });
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
@@ -136,15 +136,14 @@ app.use((req, res, next) => {
   next();
 });
 
-const trust = process.env.TRUST_PROXY !== undefined
-  ? parseInt(process.env.TRUST_PROXY)
-  : 2;
-const secure = process.env.COOKIE_SECURE !== undefined
-  ? `${process.env.COOKIE_SECURE}` === 'true'
-  : isProd;
-const domain = process.env.URL !== undefined
-  ? process.env.URL.split('/')[2]
-  : undefined;
+const trust =
+  process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
+const secure =
+  process.env.COOKIE_SECURE !== undefined
+    ? `${process.env.COOKIE_SECURE}` === 'true'
+    : isProd;
+const domain =
+  process.env.URL !== undefined ? process.env.URL.split('/')[2] : undefined;
 
 if (isProd) {
   app.set('trust proxy', trust);
@@ -273,7 +272,6 @@ app.get('*', (req, res) => {
         initialState: { apollo: client.getInitialState() },
         asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
-        segmentKey: process.env.SEGMENT_KEY,
       });
 
       // Check if the render result contains a redirect, if so we need to set

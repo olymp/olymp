@@ -1,31 +1,53 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink } from 'olymp';
 import { createComponent } from 'react-fela';
 
-const navItemStyles = ({ theme, inverse }) => ({
-  color: inverse ? theme.light2 : theme.dark2,
-  display: 'block',
-  padding: theme.space3,
-  fontFamily: theme.fontFamily,
-  textDecoration: 'none',
-  ellipsis: true,
-  cursor: 'default',
-});
-
-export const Link = createComponent(
+const Link = createComponent(
   ({ theme, inverse }) => ({
-    ...navItemStyles({ theme, inverse }),
     cursor: 'pointer',
     onHover: {
       color: inverse ? theme.light : theme.dark,
+      textDecoration: `underline solid ${inverse ? theme.light : theme.color}`,
+    },
+    '&.active': {
+      textDecoration: `underline solid ${inverse ? theme.light : theme.color}`,
     },
   }),
-  ({ inverse, ...p }) => <NavLink {...p} />,
+  ({ inverse, onClick, ...rest }) =>
+    onClick ? <span onClick={onClick} {...rest} /> : <NavLink {...rest} />,
   p => Object.keys(p)
 );
 
-export const Placeholder = createComponent(
-  p => navItemStyles(p),
+const Placeholder = createComponent(
+  () => ({
+    cursor: 'default',
+  }),
   'span',
   ({ inverse, ...p }) => Object.keys(p)
 );
+
+const NavbarLink = createComponent(
+  ({ theme, inverse }) => ({
+    color: inverse ? theme.light2 : theme.dark2,
+    display: 'block',
+    fontFamily: theme.fontFamily,
+    textDecoration: 'none',
+    ellipsis: true,
+  }),
+  ({ to, onClick, ...rest }) =>
+    to || onClick
+      ? <Link to={to} onClick={onClick} {...rest} />
+      : <Placeholder {...rest} />,
+  p => Object.keys(p)
+);
+NavbarLink.displayName = 'Navbar.Link';
+NavbarLink.propTypes = {
+  to: PropTypes.string,
+  onClick: PropTypes.func,
+};
+NavbarLink.defaultProps = {
+  to: undefined,
+  onClick: undefined,
+};
+export default NavbarLink;

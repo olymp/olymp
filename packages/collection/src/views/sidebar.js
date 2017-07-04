@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
-import { Dropdown, Menu, Icon, Button, Popover } from 'antd';
+import { Dropdown, Menu, Icon, Button } from 'antd';
 import { Image } from 'olymp-cloudinary';
-import {
-  FieldValue,
-  collectionToCsvDownload,
-  getFilterMenu,
-} from '../components';
+import { FieldValue, collectionToCsvDownload } from '../components';
 import { Sidebar, List } from 'olymp-ui';
 
 const states = {
@@ -57,12 +53,25 @@ export default class CollectionListSidebar extends Component {
         />;
 
       if (start && end) {
-        return <span>{start} bis<br />{end}</span>;
+        return (
+          <span>
+            {start} bis<br />
+            {end}
+          </span>
+        );
       } else if (start) {
-        return <span>Ab {start}</span>;
+        return (
+          <span>
+            Ab {start}
+          </span>
+        );
       }
       if (end) {
-        return <span>Bis {end}</span>;
+        return (
+          <span>
+            Bis {end}
+          </span>
+        );
       }
     }
 
@@ -96,9 +105,7 @@ export default class CollectionListSidebar extends Component {
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
-      <Menu.Item disabled>
-        Kopieren
-      </Menu.Item>
+      <Menu.Item disabled>Kopieren</Menu.Item>
       <Menu.Item disabled>
         {state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen'}
       </Menu.Item>
@@ -109,12 +116,10 @@ export default class CollectionListSidebar extends Component {
       router,
       id,
       collection,
-      isLoading,
-      refetch,
-      typeName,
       onSearch,
       searchText,
-      onClick,
+      form,
+      onClose,
     } = this.props;
     const items = (this.props.items || []).map((item) => {
       const name = this.resolveFieldValue(item, 'name', {
@@ -146,55 +151,26 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
-    const menu = (
-      <Menu>
-        <Menu.Item key="1">
-          <a
-            href="javascript:;"
-            onClick={() => router.push(this.getLink({ id: null }))}
-          >
-            Hinzufügen
-          </a>
-        </Menu.Item>
-        <Menu.Item key="2" disabled>Import</Menu.Item>
-        <Menu.Item key="3">
-          <a
-            href="javascript:;"
-            onClick={() =>
-              collectionToCsvDownload(collection, this.props.items)}
-          >
-            Export
-          </a>
-        </Menu.Item>
-      </Menu>
-    );
-    const actions = (
-      <Dropdown overlay={menu}>
-        <Button
-          shape="circle"
-          size="large"
-          onClick={() => router.push(this.getLink({ id: null }))}
-        >
-          <Icon type="plus" />
-        </Button>
-      </Dropdown>
-    );
     return (
       <Sidebar
-        rightButtons={
-          <Popover content={`${collection.name} hinzufügen`}>
-            <Sidebar.Button
-              onClick={() => onClick({ id: 'new' })}
-              shape="circle"
-              icon="plus"
-            />
-          </Popover>
-        }
         header={
           <List.Filter
             placeholder="Filter ..."
             onChange={onSearch}
             value={searchText}
+          />
+        }
+        leftButtons={
+          onClose &&
+          <Button.Group>
+            <Sidebar.Button onClick={onClose} shape="circle" icon="close" />
+          </Button.Group>
+        }
+        rightButtons={
+          <Sidebar.Button
+            onClick={() => router.push(this.getLink({ id: null }))}
+            shape="circle"
+            icon="plus"
           />
         }
         isOpen

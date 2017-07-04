@@ -1,39 +1,42 @@
 import React, { Component } from 'react';
+import { withRouter, withSearch, Prompt } from 'olymp';
+import { SplitView } from 'olymp-ui';
+import { Form } from 'antd';
 import { withItems, withCollection } from '../decorators';
-import { withRouter, withSearch } from 'olymp';
 import Detail from './detail';
 import Sidebar from './sidebar';
-import { SplitView } from 'olymp-ui';
 
 @withSearch('search')
 @withCollection
 @withItems
 @withRouter
+@Form.create()
 export default class CollectionView extends Component {
   render() {
     const {
       collection,
       fieldNames,
       onClose,
-      saving,
-      children,
       location,
       items,
-      refetch,
-      collectionLoading,
       typeName,
-      data,
       router,
       performSearch,
       searchText,
+      form,
     } = this.props;
     const { query, pathname } = location;
     const id = location.query && location.query[`@${typeName.toLowerCase()}`];
 
     return (
       <SplitView>
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
         <Sidebar
           id={id}
+          form={form}
           collection={collection}
           typeName={typeName}
           items={items}
@@ -55,6 +58,7 @@ export default class CollectionView extends Component {
         {id !== undefined &&
           <Detail
             id={id === 'new' ? null : id}
+            form={form}
             fieldNames={fieldNames}
             collection={collection}
             typeName={typeName}

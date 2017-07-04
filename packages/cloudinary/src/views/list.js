@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Popover, Upload } from 'antd';
+import { Upload } from 'antd';
 import { Sidebar, List } from 'olymp-ui';
 import { Image } from '../components';
 import { intersection, upperFirst, orderBy } from 'lodash';
@@ -58,9 +58,8 @@ class ListSidebar extends Component {
         disabled,
         onClick: () => onFilter(filteredTags, filteredItems),
         label: upperFirst(tag),
-        description: countFilter === countAll
-          ? text
-          : `${countFilter} von ${text}`,
+        description:
+          countFilter === countAll ? text : `${countFilter} von ${text}`,
         image: tags[tag][0],
         countFilter,
         countAll,
@@ -89,24 +88,21 @@ class ListSidebar extends Component {
 
     return (
       <Sidebar
-        leftButtons={
-          <Popover content="Mediathek schließen">
-            <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-          </Popover>
-        }
-        rightButtons={
-          <Popover content="Datei hochladen">
-            <Upload {...upload}>
-              <Sidebar.Button shape="circle" icon="plus" />
-            </Upload>
-          </Popover>
-        }
         header={
           <List.Filter
             placeholder="Filter ..."
             onChange={onSearch}
             value={search}
           />
+        }
+        leftButtons={
+          onClose &&
+          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
+        }
+        rightButtons={
+          <Upload {...upload}>
+            <Sidebar.Button shape="circle" icon="plus" />
+          </Upload>
         }
         isOpen
         padding={0}
@@ -142,7 +138,7 @@ ListSidebar.propTypes = {
   filter: PropTypes.array,
 };
 ListSidebar.defaultProps = {
-  onClose: () => {},
+  onClose: null,
   onSearch: () => {},
   onFilter: () => {},
   items: [],

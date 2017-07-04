@@ -4,18 +4,10 @@ import Navbar from '../index';
 import { storiesOf } from 'olymp-storybook';
 
 const storiefy = storiesOf('Navbar.Nav');
-const nav1 = [
-  {
-    id: 'home',
-    name: 'Nav 1 - Item 1',
-    pathname: '/',
-    children: [],
-  },
-];
-const nav2 = [
+const nav = [
   {
     id: 'm1',
-    name: 'Nav 2 - Item 1',
+    name: 'Item 1',
     pathname: '/m1',
     children: [
       {
@@ -54,21 +46,19 @@ const nav2 = [
   },
   {
     id: 'm2',
-    name: 'Nav 2 - Item 2',
+    name: 'Item 2',
     pathname: '/m2',
     children: [],
   },
 ];
 
 storiefy('Basic usage', () =>
-  (<Navbar brand="Olymp ❤ CMS" inverse>
-    <Navbar.Nav pages={nav1} />
-    <Navbar.Nav pages={nav2} />
+  (<Navbar brand="Olymp ❤ CMS" full inverse>
+    <Navbar.Nav pages={nav} />
   </Navbar>)
 );
 storiefy('Right aligned', () =>
-  (<Navbar brand="Olymp ❤ CMS" inverse>
-    <Navbar.Nav pages={nav1} right={boolean('right [nav1]', false)} />
-    <Navbar.Nav pages={nav2} right={boolean('right [nav2]', true)} />
+  (<Navbar brand="Olymp ❤ CMS" full inverse>
+    <Navbar.Nav pages={nav} right={boolean('right', true)} />
   </Navbar>)
 );

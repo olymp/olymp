@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "name": "olymp-hashtax",
+  "description": "",
+  "main": "./src",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}

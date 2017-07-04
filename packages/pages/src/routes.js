@@ -90,6 +90,7 @@ export const EditablePageRoute = (props) => {
       </ContentLoader>
     );
   }
+
   return (
     <ContentLoader height={600} isLoading={loading}>
       <EditablePage

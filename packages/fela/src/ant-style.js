@@ -50,7 +50,7 @@ export default ({ theme }) => {
       borderColor: transparent2,
     },
     '& .ant-checkbox-checked > .ant-checkbox-inner': {
-      backgroundColor: color,
+      // backgroundColor: color,
       borderColor: color,
     },
     '& .ant-radio-button-wrapper-focused': {
@@ -137,7 +137,7 @@ export default ({ theme }) => {
     '& .ant-menu-inline .ant-menu-selected, .ant-menu-inline .ant-menu-item-selected': {
       borderRight: `2px solid ${transparent}`,
     },
-    '& .ant-menu-item-selected': {
+    '& .ant-menu > .ant-menu-item-selected': {
       color: `${transparent}`,
       backgroundColor: `${transparent2}`,
     },

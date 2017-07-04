@@ -3,7 +3,7 @@
   "name": "react-fela",
   "description": "",
   "main": "./src",
-  "author": "Benjamin Kniffler <bkniffler@me.com>, Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook -p 6006",

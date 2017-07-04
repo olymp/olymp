@@ -5,7 +5,13 @@ import WithContainer from './with-container';
 const Body = createComponent(
   ({ affix }) => ({
     flex: 1,
+    display: affix && 'flex',
     overflowY: affix && 'auto',
+    flexDirection: affix && 'column',
+    ifSmallDown: {
+      '-webkit-overflow-scrolling': 'touch',
+      overflowY: affix && 'scroll',
+    },
   }),
   WithContainer,
   ({ affix, ...p }) => Object.keys(p)
