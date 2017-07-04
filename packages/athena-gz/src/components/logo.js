@@ -15,7 +15,7 @@ export default class Logo extends Component {
     }
 
     return (
-      <Icon color={color} width={250} height={41}>
+      <Icon color={color} width={190} height={36}>
         <Title color={color}>
           {title}
         </Title>
@@ -56,11 +56,9 @@ const Icon = createComponent(
     width,
     height,
     fill: color || theme.color,
-    marginTop: icon ? 0 : 6,
-    marginLeft: icon ? 0 : theme.space1,
     maxWidth: icon ? 'auto' : 999,
     overflow: 'initial',
-
+    display: 'block',
     position: icon && 'absolute',
     top: icon && '50%',
     bottom: icon && '50%',
@@ -76,7 +74,7 @@ const Icon = createComponent(
     (<svg
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      viewBox={`0 0 ${icon ? 41 : 250} ${icon ? 41 : 41}`}
+      viewBox={`0 0 ${icon ? 36 : 191} 36`}
       version="1.1"
     >
       <g transform="scale(1.5)">

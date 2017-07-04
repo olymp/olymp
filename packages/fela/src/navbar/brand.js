@@ -6,7 +6,11 @@ import { NavLink } from 'olymp';
 const Brand = createComponent(
   ({ theme, inverse }) => ({
     color: inverse ? theme.light : theme.dark,
-    center: true,
+    centerY: true,
+    paddingX: theme.space3,
+    '> *': {
+      marginX: `-${theme.space3}`,
+    },
     onHover: {
       color: inverse ? theme.light2 : theme.dark2,
     },
@@ -19,8 +23,12 @@ const Brand = createComponent(
 );
 
 const Inner = createComponent(
-  () => ({
+  ({ theme }) => ({
     visibility: 'hidden',
+    paddingX: theme.space3,
+    '> *': {
+      marginX: `-${theme.space3}`,
+    },
   }),
   'div',
   ['className']
@@ -29,8 +37,6 @@ const Inner = createComponent(
 const NavbarBrand = createComponent(
   ({ theme, vertically }) => ({
     position: 'relative',
-    paddingX: theme.space3,
-    paddingY: theme.space2,
     fontSize: `calc(${theme.fontSize} + 4px)`,
     whiteSpace: 'nowrap',
     float: vertically ? 'none' : 'left',
