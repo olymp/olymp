@@ -5,7 +5,7 @@ export const H1 = createComponent(
   ({ theme }) => ({
     textAlign: 'left',
     position: 'relative',
-    borderBottom: border(theme),
+    // borderBottom: border(theme),
     marginTop: theme.space3,
     marginBottom: theme.space2,
     ifSmallDown: {
@@ -15,7 +15,9 @@ export const H1 = createComponent(
   ({ className, children, color, bordered = true }) =>
     (<h1 className={className}>
       {children}
-      <Border color={color}>{bordered === true ? children : bordered}</Border>
+      <Border color={color}>
+        {bordered === true ? children : bordered}
+      </Border>
     </h1>),
   p => Object.keys(p)
 );
@@ -24,7 +26,7 @@ export const H2 = createComponent(
   ({ theme }) => ({
     textAlign: 'left',
     position: 'relative',
-    borderBottom: border(theme),
+    // borderBottom: border(theme),
     marginTop: theme.space3,
     marginBottom: theme.space2,
     ifSmallDown: {
@@ -34,21 +36,24 @@ export const H2 = createComponent(
   ({ className, children, color, bordered = true }) =>
     (<h2 className={className}>
       {children}
-      <Border color={color}>{bordered === true ? children : bordered}</Border>
+      <Border color={color}>
+        {bordered === true ? children : bordered}
+      </Border>
     </h2>),
   p => Object.keys(p)
 );
 
 export const Border = createComponent(
   ({ theme, color }) => ({
-    bottom: -1,
+    bottom: -2,
     display: 'block',
     overflow: 'hidden',
-    height: 1,
+    height: 2,
     left: 0,
     position: 'absolute',
     minWidth: 75,
-    backgroundColor: color || theme.color,
+    width: '100%', // macht bordered-prop eigentlich überflüssig
+    background: `linear-gradient(to right, ${color || theme.color}, #FFF)`,
   }),
   'span',
   ({ color, ...p }) => Object.keys(p)
