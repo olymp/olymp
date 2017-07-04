@@ -22,7 +22,6 @@ export default {
     );
   },
   styles: ({ theme, getData }) => {
-    const size = getData('size', 4) - 12;
     const alignment = getData('float', 'none');
     const normalized = alignment.replace('+', '');
     return {
