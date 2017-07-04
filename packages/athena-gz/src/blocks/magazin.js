@@ -114,7 +114,7 @@ const component = graphql(
                 <p>
                   {item.extrakt}
                 </p>
-                <Link to={item.slug}>Weiterlesen...</Link>
+                {item.slug && <Link to={item.slug}>Weiterlesen...</Link>}
               </div>
             </Panel>)
           )}
