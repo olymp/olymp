@@ -63,20 +63,18 @@ export default class CollectionDetail extends Component {
       <ContentLoader isLoading={id && !item}>
         <Flex>
           <Gateway into="navigation">
-            <RightMenu>
-              <Menu.Item key="save">
-                <span onClick={onSave}>
-                  <Icon type="save" /> Speichern
-                </span>
-              </Menu.Item>
-              {keys.map(tab =>
-                (<Menu.Item key={tab}>
-                  <Link to={{ pathname, query: { ...query, tab } }}>
-                    {tab}
-                  </Link>
-                </Menu.Item>)
-              )}
-            </RightMenu>
+            <Menu.Item key="save">
+              <span onClick={onSave}>
+                <Icon type="save" /> Speichern
+              </span>
+            </Menu.Item>
+            {keys.map(tab =>
+              (<Menu.Item key={tab}>
+                <Link to={{ pathname, query: { ...query, tab } }}>
+                  {tab}
+                </Link>
+              </Menu.Item>)
+            )}
           </Gateway>
 
           <DetailForm

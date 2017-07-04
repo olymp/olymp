@@ -1,10 +1,9 @@
-import React, { Component, Children } from 'react';
-import PropTypes from 'prop-types';
-import { Link, withLang } from 'olymp';
+import React from 'react';
+import { Link, withLang, Logo } from 'olymp';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent } from 'olymp-fela';
-import { GatewayRegistry } from 'react-gateway';
+import { createComponent, Modal } from 'olymp-fela';
+import { GatewayDest } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 
 const getInitials = (name) => {
@@ -25,33 +24,11 @@ const getInitials = (name) => {
   return false;
 };
 
-const getDeviceIcon = (deviceWidth) => {
-  switch (deviceWidth) {
-    case 400:
-      return <Icon type="phone" />;
-
-    case 700:
-      return <Icon type="tablet" />;
-
-    default:
-      return <Icon type="laptop" />;
-  }
-};
-
-const IconOnly = createComponent(
-  ({ theme }) => ({
-    marginRight: '0!important',
-  }),
-  Icon,
-  p => Object.keys(p)
-);
-
 const UserIcon = createComponent(
   ({ theme, name }) => ({
     float: 'left',
     borderRadius: '50%',
     marginY: theme.space2,
-    // marginRight: '0.75rem',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
       name
     )}.jpg?s=26&bg=${encodeURIComponent(
@@ -59,6 +36,9 @@ const UserIcon = createComponent(
     )}&color=${encodeURIComponent(
       theme.light
     )}) center center no-repeat, ${theme.color}`,
+    onHover: {
+      opacity: 0.85,
+    },
   }),
   p => <Gravatar {...p} size={30} />,
   p => Object.keys(p)
@@ -66,150 +46,158 @@ const UserIcon = createComponent(
 
 const VerticalMenu = createComponent(
   ({ theme }) => ({
+    position: 'relative',
     zIndex: 3,
+    backgroundColor: '#404040',
     boxShadow: theme.boxShadow,
-    borderBottom: 0,
+    paddingX: theme.space2,
+    display: 'flex',
+    justifyContent: 'space-between',
+    '> ul': {
+      zIndex: 3,
+    },
   }),
-  Menu,
+  'div',
   p => Object.keys(p)
 );
 
-const RightSubMenu = createComponent(
-  () => ({
-    float: 'right!important',
-  }),
-  p => <Menu.SubMenu {...p} />,
-  p => Object.keys(p)
-);
-
-const RightMenuItem = createComponent(
-  () => ({
-    float: 'right!important',
-  }),
-  p => <Menu.Item {...p} />,
-  p => Object.keys(p)
-);
+const Test = ({ keys, ...p }) =>
+  <Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 export default withLang(
-  withAuth(
-    ({ auth, className, deviceWidth, children, query, collectionList }) => {
-      const keys = Object.keys(query);
-      if (!keys.filter(x => x[0] === '@').length) {
-        keys.push('@home');
-      }
-      return (
-        <GatewayDest
-          component={VerticalMenu}
-          mode="horizontal"
-          className={className}
-          deviceWidth={deviceWidth}
-          selectedKeys={keys}
-          name="navigation"
-        >
-          <Menu.SubMenu title={<IconOnly type="plus" />}>
-            {collectionList.map(collection =>
-              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <Link
-                  to={{
-                    query: {
-                      [`@${collection.name.toLowerCase()}`]: null,
-                    },
-                  }}
-                >
-                  {collection.name}
-                </Link>
-              </Menu.Item>)
-            )}
-          </Menu.SubMenu>
-
-          <Menu.Item key="@home">
-            <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
-              <IconOnly type="home" />
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="@page">
-            <Link
-              to={{ query: { '@page': null, '@deviceWidth': deviceWidth } }}
-            >
-              <Icon type="edit" /> Seiten
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="@media">
-            <Link to={{ query: { '@media': null } }}>
-              <Icon type="picture" /> Medien
-            </Link>
-          </Menu.Item>
-          <Menu.SubMenu
-            title={
-              <span>
-                <Icon type="database" /> Sammlungen
-              </span>
-            }
-          >
-            {collectionList.map(collection =>
-              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <Link
-                  to={{
-                    query: {
-                      [`@${collection.name.toLowerCase()}`]: null,
-                    },
-                  }}
-                >
-                  {collection.name}
-                </Link>
-              </Menu.Item>)
-            )}
-          </Menu.SubMenu>
-          <Menu.Item key="@analytics">
-            <Link to={{ query: { '@analytics': null } }}>
-              <Icon type="line-chart" /> Analytics
-            </Link>
-          </Menu.Item>
-          {!!auth.user &&
-            auth.user.isAdmin &&
-            <Menu.Item key="@users">
-              <Link to={{ query: { '@users': null } }}>
-                <Icon type="team" /> Benutzer
-              </Link>
-            </Menu.Item>}
-
-          {children}
-
-          <RightMenuItem key="logout">
-            <a onClick={auth.logout} href="javascript:;">
-              <IconOnly type="poweroff" />
-            </a>
-          </RightMenuItem>
-          <RightSubMenu title={getDeviceIcon(query['@deviceWidth'])}>
-            <Menu.Item key="@device-no">
-              <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
-                <Icon type="laptop" /> Normal
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="@deviceWidth700">
-              <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
-                <Icon type="tablet" /> Tablet
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="@deviceWidth400">
-              <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
-                <Icon type="phone" /> Mobil
-              </Link>
-            </Menu.Item>
-          </RightSubMenu>
-          <RightMenuItem key="@user">
-            <Link to={{ query: { '@user': null } }}>
-              <UserIcon
-                email={auth.user.email}
-                name={auth.user.name}
-                default="blank"
-              />
-            </Link>
-          </RightMenuItem>
-        </GatewayDest>
-      );
+  withAuth(({ auth, deviceWidth, query, collectionList }) => {
+    const keys = Object.keys(query);
+    if (!keys.filter(x => x[0] === '@').length) {
+      keys.push('@home');
     }
-  )
+    return (
+      <div>
+        <Modal open={false} width={600} onClose={() => {}}>
+          test
+        </Modal>
+
+        <VerticalMenu>
+          <Test>
+            <Menu.SubMenu
+              title={
+                <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
+                  <Logo size={33} margin="0 0 -7px 0" />
+                </Link>
+              }
+            >
+              {collectionList.map(collection =>
+                (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                  <Link
+                    to={{
+                      query: {
+                        [`@${collection.name.toLowerCase()}`]: null,
+                      },
+                    }}
+                  >
+                    <Icon type="plus" /> {collection.name}
+                  </Link>
+                </Menu.Item>)
+              )}
+            </Menu.SubMenu>
+
+            <Menu.SubMenu
+              title={
+                <UserIcon
+                  email={auth.user.email}
+                  name={auth.user.name}
+                  default="blank"
+                />
+              }
+            >
+              <Menu.Item key="@user">
+                <Link to={{ query: { '@user': null } }}>
+                  <Icon type="user" /> Profil
+                </Link>
+              </Menu.Item>
+              <Menu.SubMenu
+                title={
+                  <span>
+                    <Icon type="laptop" /> Ansicht
+                  </span>
+                }
+              >
+                <Menu.Item key="@device-no">
+                  <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
+                    <Icon type="laptop" /> Normal
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="@deviceWidth700">
+                  <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
+                    <Icon type="tablet" /> Tablet
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="@deviceWidth400">
+                  <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
+                    <Icon type="phone" /> Mobil
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+              <Menu.Item key="logout">
+                <a onClick={auth.logout} href="javascript:;">
+                  <Icon type="poweroff" /> Abmelden
+                </a>
+              </Menu.Item>
+            </Menu.SubMenu>
+
+            <Menu.Item key="@page">
+              <Link
+                to={{
+                  query: { '@page': null, '@deviceWidth': deviceWidth },
+                }}
+              >
+                <Icon type="edit" /> Seiten
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="@media">
+              <Link to={{ query: { '@media': null } }}>
+                <Icon type="picture" /> Medien
+              </Link>
+            </Menu.Item>
+            <Menu.SubMenu
+              title={
+                <span>
+                  <Icon type="database" /> Sammlungen
+                </span>
+              }
+            >
+              {collectionList.map(collection =>
+                (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                  <Link
+                    to={{
+                      query: {
+                        [`@${collection.name.toLowerCase()}`]: null,
+                      },
+                    }}
+                  >
+                    <Icon type="api" /> {collection.name}
+                  </Link>
+                </Menu.Item>)
+              )}
+            </Menu.SubMenu>
+            <Menu.Item key="@analytics">
+              <Link to={{ query: { '@analytics': null } }}>
+                <Icon type="line-chart" /> Analytics
+              </Link>
+            </Menu.Item>
+            {!!auth.user &&
+              auth.user.isAdmin &&
+              <Menu.Item key="@users">
+                <Link to={{ query: { '@users': null } }}>
+                  <Icon type="team" /> Benutzer
+                </Link>
+              </Menu.Item>}
+          </Test>
+
+          <GatewayDest name="navigation" component={Test} />
+        </VerticalMenu>
+      </div>
+    );
+  })
 );
 
 /*
@@ -250,40 +238,3 @@ export default withLang(
   </Popover>
 </Menu.Item>
 */
-
-class GatewayDest extends Component {
-  static contextTypes = {
-    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
-  };
-
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    this.gatewayRegistry = context.gatewayRegistry;
-  }
-
-  state = {
-    children: null,
-  };
-
-  componentWillMount() {
-    this.gatewayRegistry.addContainer(this.props.name, this);
-  }
-
-  componentWillUnmount() {
-    this.gatewayRegistry.removeContainer(this.props.name, this);
-  }
-
-  render() {
-    const { component, tagName, children, ...attrs } = this.props;
-    delete attrs.name;
-    return React.createElement(component || tagName || 'div', attrs, [
-      children,
-      Children.toArray(this.state.children).reverse(),
-    ]);
-  }
-}
