@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, createComponent, fade, border } from 'olymp-fela';
+import { Grid, createComponent, fade } from 'olymp-fela';
 import { H1 } from './heading';
 
 export const Content = createComponent(
@@ -7,12 +7,17 @@ export const Content = createComponent(
     borderRight: `${size}px solid ${fade(accent)}`,
     borderBottom: `${size}px solid ${fade(accent)}`,
     borderBottomRightRadius: 100,
-    padding,
+    paddingTop: 0,
+    paddingBottom: padding,
     paddingLeft: 0,
+    paddingRight: padding,
     hyphens: 'auto',
     flex: '1 1',
     position: 'relative',
     // minHeight: 90,
+    '> iframe': {
+      borderBottomRightRadius: 100,
+    },
     onBefore: {
       content: '""',
       position: 'absolute',
@@ -65,12 +70,6 @@ export default createComponent(
       bottom: 0,
       borderTopLeftRadius: 30,
       right: theme.space3,
-    },
-    /* '> h2': {
-      marginBottom: theme.space1,
-    }, */
-    '> h1': {
-      marginBottom: 0,
     },
     onHover: {
       onAfter: {
