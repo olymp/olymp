@@ -10,11 +10,12 @@ const Link = createComponent(
       color: inverse ? theme.light : theme.dark,
       textDecoration: `underline solid ${inverse ? theme.light : theme.color}`,
     },
+    '&.active': {
+      textDecoration: `underline solid ${inverse ? theme.light : theme.color}`,
+    },
   }),
   ({ inverse, onClick, ...rest }) =>
-    onClick
-      ? <a href="javascript:;" onClick={onClick} {...rest} />
-      : <NavLink {...rest} />,
+    onClick ? <span onClick={onClick} {...rest} /> : <NavLink {...rest} />,
   p => Object.keys(p)
 );
 
