@@ -13,7 +13,7 @@ export default {
       borderBottom: border(theme),
       marginTop: theme.space3,
       marginBottom: theme.space2,
-      onAfter: {
+      /*onAfter: {
         content: '""',
         bottom: -1,
         display: 'block',
@@ -23,7 +23,7 @@ export default {
         position: 'absolute',
         minWidth: 75,
         backgroundColor: color,
-      },
+      },*/
       ifSmallDown: {
         // marginY: theme.space1,
       },
@@ -34,7 +34,7 @@ export default {
       borderBottom: border(theme),
       marginTop: theme.space3,
       marginBottom: theme.space2,
-      onAfter: {
+      /*onAfter: {
         content: '""',
         bottom: -1,
         display: 'block',
@@ -44,7 +44,7 @@ export default {
         position: 'absolute',
         minWidth: 75,
         backgroundColor: color,
-      },
+      },*/
       ifSmallDown: {
         // marginY: theme.space1,
       },

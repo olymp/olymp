@@ -3,7 +3,7 @@ import { Grid, createComponent, fade } from 'olymp-fela';
 import { H1 } from './heading';
 
 export const Content = createComponent(
-  ({ theme, accent, padding = theme.space3, size = 2 }) => ({
+  ({ theme, accent, padding = theme.space3, size = 1 }) => ({
     borderRight: `${size}px solid ${!accent ? theme.dark4 : fade(accent)}`,
     borderBottom: `${size}px solid ${!accent ? theme.dark4 : fade(accent)}`,
     borderBottomRightRadius: 100,
@@ -49,41 +49,41 @@ export default createComponent(
     background = theme.dark5,
     accent,
   }) => ({
-    width: '100%',
-    paddingLeft,
-    paddingRight,
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    '& a': {
-      color: theme.dark2,
-      onHover: {
-        color: accent,
+      width: '100%',
+      paddingLeft,
+      paddingRight,
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      '& a': {
+        color: theme.dark2,
+        onHover: {
+          color: accent,
+        },
       },
-    },
-    onAfter: {
-      content: '""',
-      position: 'absolute',
-      width: 33,
-      height: 33,
-      backgroundColor: theme.dark4,
-      bottom: 0,
-      borderTopLeftRadius: 30,
-      right: theme.space3,
-    },
-    onHover: {
       onAfter: {
-        backgroundColor: fade(
-          accent || (background === theme.dark5 ? theme.color : background)
-        ),
+        content: '""',
+        position: 'absolute',
+        width: 33,
+        height: 33,
+        backgroundColor: theme.dark4,
+        bottom: 0,
+        borderTopLeftRadius: 30,
+        right: theme.space3,
       },
-    },
-    ifSmallDown: {
-      float: 'none',
-      paddingX: theme.space3,
-      paddingY: theme.space2,
-    },
-  }),
+      onHover: {
+        onAfter: {
+          backgroundColor: fade(
+            accent || (background === theme.dark5 ? theme.color : background)
+          ),
+        },
+      },
+      ifSmallDown: {
+        float: 'none',
+        paddingX: theme.space3,
+        paddingY: theme.space2,
+      },
+    }),
   ({
     title,
     children,
