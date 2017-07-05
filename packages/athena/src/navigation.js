@@ -49,19 +49,20 @@ const VerticalMenu = createComponent(
     position: 'relative',
     zIndex: 3,
     backgroundColor: '#404040',
-    boxShadow: theme.boxShadow,
+    boxShadow: 'inset 0 -10px 10px -10px #000000',
     paddingX: theme.space2,
     display: 'flex',
     justifyContent: 'space-between',
     '> ul': {
       zIndex: 3,
+      boxShadow: 'inset 0 -10px 10px -10px #000000',
     },
   }),
   'div',
   p => Object.keys(p)
 );
 
-const Test = ({ keys, ...p }) =>
+const AntMenu = ({ keys, ...p }) =>
   <Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 export default withLang(
@@ -77,7 +78,7 @@ export default withLang(
         </Modal>
 
         <VerticalMenu>
-          <Test>
+          <AntMenu keys={keys}>
             <Menu.SubMenu
               title={
                 <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
@@ -191,9 +192,9 @@ export default withLang(
                   <Icon type="team" /> Benutzer
                 </Link>
               </Menu.Item>}
-          </Test>
+          </AntMenu>
 
-          <GatewayDest name="navigation" component={Test} />
+          <GatewayDest name="navigation" component={AntMenu} />
         </VerticalMenu>
       </div>
     );
