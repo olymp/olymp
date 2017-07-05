@@ -43,14 +43,6 @@ const Flex = createComponent(
   []
 );
 
-const RightMenu = createComponent(
-  () => ({
-    float: 'right!important',
-  }),
-  p => <Menu {...p} />,
-  p => Object.keys(p)
-);
-
 @withRouter
 @withItem
 export default class CollectionDetail extends Component {
