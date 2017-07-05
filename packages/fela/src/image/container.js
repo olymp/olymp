@@ -29,6 +29,7 @@ const containerStyle = ({
   },
   '> img': {
     center: true,
+    borderRadius: rounded && '50%',
   },
 });
 

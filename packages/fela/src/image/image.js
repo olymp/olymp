@@ -43,7 +43,7 @@ class Image extends Component {
     };
   };
 
-  limitWidth = (w, ratio) => {
+  limitWidth = (w, ratio, isPercentage) => {
     const {
       minWidth,
       minHeight,
@@ -57,7 +57,7 @@ class Image extends Component {
     if (minWidth && width < minWidth) {
       width = minWidth;
     }
-    if (minHeight && width * ratio < minHeight) {
+    if (!isPercentage && minHeight && width * ratio < minHeight) {
       width = minHeight / ratio;
     }
 
@@ -65,7 +65,7 @@ class Image extends Component {
     if (maxWidth && width > maxWidth) {
       width = maxWidth;
     }
-    if (maxHeight && width * ratio > maxHeight) {
+    if (!isPercentage && maxHeight && width * ratio > maxHeight) {
       width = maxHeight / ratio;
     }
 
@@ -77,10 +77,10 @@ class Image extends Component {
     return Math.round(width);
   };
 
-  getMode = (width, ratio) => {
+  getMode = (width, ratio, isPercentage) => {
     const { mode } = this.props;
     const srcRatio = this.props.srcRatio || ratio;
-    const w = this.limitWidth(width, ratio);
+    const w = this.limitWidth(width, ratio, isPercentage);
 
     const defaultResult = {
       layout: 'fill',
@@ -118,7 +118,7 @@ class Image extends Component {
       ...containerProps
     } = this.props;
     const { width, ratio, isPercentage } = this.initVals();
-    const { layout, w, h } = this.getMode(width, ratio);
+    const { layout, w, h } = this.getMode(width, ratio, isPercentage);
     const url = typeof src === 'function' ? src(w, h) : src;
     const image = (
       <Img
