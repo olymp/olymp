@@ -33,6 +33,25 @@ const loaderSchema = [
   },
 ];
 
+const Column = createComponent(
+  ({ theme }) => ({
+    textAlign: 'right',
+  }),
+  p => <Grid.Item {...p} />,
+  p => Object.keys(p)
+);
+
+const Content = createComponent(
+  ({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-between',
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const Img = createComponent(
   ({ theme }) => ({
     float: 'left',
@@ -69,8 +88,8 @@ const Tag = createComponent(
     backgroundColor: theme.dark5,
     paddingY: theme.space1,
     paddingX: theme.space2,
-    marginRight: theme.space1,
-    marginBottom: theme.space1,
+    marginRight: theme.space2,
+    marginBottom: theme.space2,
     fontSize: '90%',
     flex: 1,
     whiteSpace: 'nowrap',
@@ -130,7 +149,7 @@ const component = graphql(
     <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
       <Container {...attributes}>
         <Grid>
-          <Grid.Item medium={8} paddingMedium="0 0 0 0.5rem">
+          <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
             {items.map(item =>
               (<Panel
                 accent={item.farbe}
@@ -139,21 +158,24 @@ const component = graphql(
                 paddingLeft={0}
               >
                 <Img value={item.bild} width={100} ratio={1} avatar />
-                <div>
+                <Content>
                   <p>
                     {item.extrakt}
                   </p>
                   {item.slug && <Link to={item.slug}>Weiterlesen...</Link>}
-                </div>
+                </Content>
               </Panel>)
             )}
           </Grid.Item>
-          <Grid.Item
+          <Column
             medium={4}
+            offsetMedium={1}
+            offsetLarge={1}
+            offsetHuge={1}
             paddingMini="0.5rem 1rem 0 1rem"
             paddingMedium="0 0.5rem 0 0"
           >
-            <H2>Ausgaben als PDFs</H2>
+            <H2 right>Ausgaben als PDFs</H2>
             <ul>
               <Li>
                 Gesund im Zentrum - <b>Sport</b>
@@ -166,7 +188,7 @@ const component = graphql(
               </Li>
             </ul>
 
-            <H2>Schlagworte</H2>
+            <H2 right>Schlagworte</H2>
             <TagContainer>
               {orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(tag =>
                 (<Tag key={tag.tag}>
@@ -174,7 +196,7 @@ const component = graphql(
                 </Tag>)
               )}
             </TagContainer>
-          </Grid.Item>
+          </Column>
         </Grid>
       </Container>
     </SchemaLoader>
