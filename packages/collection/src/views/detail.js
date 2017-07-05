@@ -34,6 +34,7 @@ const Flex = createComponent(
     display: 'flex',
     flexDirection: 'column',
     paddingTop: theme.space3,
+    paddingX: theme.space3,
     '> ul': {
       zIndex: 1,
     },
