@@ -2,6 +2,7 @@ import mails from './mails';
 import createPasswordEngine from './utils/password-engine';
 import createTokenEngine from './utils/token-engine';
 import speakeasy from 'speakeasy';
+import shortId from 'shortid';
 
 const qr = (email, x, issuer) =>
   new Promise((yay, nay) => {
@@ -95,6 +96,7 @@ export default ({ monk, secret, mail, issuer }) => {
     register: (rawUser, pwd, key) => {
       const filter = { email: rawUser.email };
       rawUser.confirmed = !!key;
+      rawUser.id = shortId.generate();
       if (!pwd || pwd.length < 6) {
         throw new Error('Password too short');
       }
