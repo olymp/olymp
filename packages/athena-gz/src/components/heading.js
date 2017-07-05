@@ -1,6 +1,16 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
 
+const Subtitle = createComponent(
+  ({ theme }) => ({
+    color: theme.dark2,
+    marginTop: '-6px',
+    fontSize: '1rem',
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 export const H1 = createComponent(
   ({ theme }) => ({
     textAlign: 'left',
@@ -12,9 +22,12 @@ export const H1 = createComponent(
       marginY: theme.space1,
     },
   }),
-  ({ className, children, color, bordered = true }) =>
+  ({ className, children, color, bordered = true, subtitle }) =>
     (<h1 className={className}>
       {children}
+      <Subtitle>
+        {subtitle}
+      </Subtitle>
       <Border color={color}>
         {bordered === true ? children : bordered}
       </Border>

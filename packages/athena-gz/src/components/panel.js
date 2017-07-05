@@ -87,6 +87,7 @@ export default createComponent(
   }),
   ({
     title,
+    subtitle,
     children,
     padding,
     background,
@@ -98,7 +99,7 @@ export default createComponent(
     ...rest
   }) =>
     (<Grid.Item mini={12} {...rest}>
-      <H1 color={accent || background} bordered={bordered}>
+      <H1 color={accent || background} bordered={bordered} subtitle={subtitle}>
         {title}
       </H1>
       <Content padding={padding} accent={accent} color={color}>
