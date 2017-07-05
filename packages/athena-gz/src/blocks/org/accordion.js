@@ -43,13 +43,6 @@ const Text = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
     color: theme.dark2,
-    '& li': {
-      marginY: theme.space2,
-      onBefore: {
-        content: '"■ "',
-        color: theme.color,
-      },
-    },
   }),
   ({ className, children }) =>
     (<div className={className}>

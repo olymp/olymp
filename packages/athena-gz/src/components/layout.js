@@ -21,9 +21,6 @@ export const App = createComponent(
       fontWeight: 200,
       lineHeight: 1.5,
     },
-    '& p': {
-      marginBottom: theme.space2,
-    },
     ifSmallDown: {
       '& h1': {
         fontSize: theme.fontSizeH1,

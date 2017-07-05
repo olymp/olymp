@@ -13,7 +13,7 @@ export default {
       borderBottom: border(theme),
       marginTop: theme.space3,
       marginBottom: theme.space2,
-      /*onAfter: {
+      /* onAfter: {
         content: '""',
         bottom: -1,
         display: 'block',
@@ -34,7 +34,7 @@ export default {
       borderBottom: border(theme),
       marginTop: theme.space3,
       marginBottom: theme.space2,
-      /*onAfter: {
+      /* onAfter: {
         content: '""',
         bottom: -1,
         display: 'block',
@@ -51,6 +51,18 @@ export default {
     },
     '& a': {
       color,
+    },
+    '& p': {
+      marginBottom: theme.space2,
+    },
+    '& li': {
+      marginY: theme.space2,
+      onBefore: {
+        content: '"■"',
+        color,
+        position: 'absolute',
+        left: `-${theme.space3}`,
+      },
     },
     '& blockquote': {
       display: 'block',

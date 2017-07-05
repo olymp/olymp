@@ -1,5 +1,5 @@
 import React from 'react';
-import { createComponent, border } from 'olymp-fela';
+import { createComponent } from 'olymp-fela';
 
 export const H1 = createComponent(
   ({ theme }) => ({
