@@ -70,5 +70,5 @@ export const Border = createComponent(
       theme.color}, #FFF)`,
   }),
   'span',
-  ({ color, ...p }) => Object.keys(p)
+  ({ color, right, ...p }) => Object.keys(p)
 );
