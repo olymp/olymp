@@ -108,7 +108,7 @@ const Peak = createComponent(
         alt={title}
         width="100%"
         maxHeight={450}
-        maxResolution={500000}
+        maxResolution={750000}
       />
       {(header || subheader) &&
         <Label>
