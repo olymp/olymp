@@ -23,6 +23,20 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
       color: theme.light,
     },
   },
+  onAfter: {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 100,
+    height: 100,
+    backgroundColor: 'white',
+    zIndex: 5,
+    background: 'radial-gradient(circle 10000px at -0% 0%,transparent,transparent 100px,white 100px)',
+    backgroundSize: '100px 200px, 100px 200px',
+    backgroundPosition: '0 0,100% 0',
+    backgroundRepeat: 'no-repeat',
+  },
   ifMediumUp: {
     '> div:nth-child(1) > div > div > img': {
       borderBottomRightRadius: 100,
