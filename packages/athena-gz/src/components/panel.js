@@ -15,6 +15,7 @@ export const Content = createComponent(
     flex: '1 1',
     position: 'relative',
     minHeight: 180,
+    display: 'flex',
     '> iframe': {
       borderBottomRightRadius: 100,
     },
@@ -49,41 +50,41 @@ export default createComponent(
     background = theme.dark5,
     accent,
   }) => ({
-      width: '100%',
-      paddingLeft,
-      paddingRight,
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      '& a': {
-        color: theme.dark2,
-        onHover: {
-          color: accent,
-        },
-      },
-      onAfter: {
-        content: '""',
-        position: 'absolute',
-        width: 33,
-        height: 33,
-        backgroundColor: theme.dark4,
-        bottom: 0,
-        borderTopLeftRadius: 30,
-        right: theme.space3,
-      },
+    width: '100%',
+    paddingLeft,
+    paddingRight,
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    '& a': {
+      color: theme.dark2,
       onHover: {
-        onAfter: {
-          backgroundColor: fade(
-            accent || (background === theme.dark5 ? theme.color : background)
-          ),
-        },
+        color: accent,
       },
-      ifSmallDown: {
-        float: 'none',
-        paddingX: theme.space3,
-        paddingY: theme.space2,
+    },
+    onAfter: {
+      content: '""',
+      position: 'absolute',
+      width: 33,
+      height: 33,
+      backgroundColor: theme.dark4,
+      bottom: 0,
+      borderTopLeftRadius: 30,
+      right: theme.space3,
+    },
+    onHover: {
+      onAfter: {
+        backgroundColor: fade(
+          accent || (background === theme.dark5 ? theme.color : background)
+        ),
       },
-    }),
+    },
+    ifSmallDown: {
+      float: 'none',
+      paddingX: theme.space3,
+      paddingY: theme.space2,
+    },
+  }),
   ({
     title,
     children,

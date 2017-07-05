@@ -23,8 +23,8 @@ export const H1 = createComponent(
 );
 
 export const H2 = createComponent(
-  ({ theme }) => ({
-    textAlign: 'left',
+  ({ theme, right }) => ({
+    textAlign: right ? 'right' : 'left',
     position: 'relative',
     // borderBottom: border(theme),
     marginTop: theme.space3,
@@ -33,10 +33,10 @@ export const H2 = createComponent(
       marginY: theme.space1,
     },
   }),
-  ({ className, children, color, bordered = true }) =>
+  ({ className, children, color, bordered = true, right }) =>
     (<h2 className={className}>
       {children}
-      <Border color={color}>
+      <Border color={color} right={right}>
         {bordered === true ? children : bordered}
       </Border>
     </h2>),
@@ -44,7 +44,7 @@ export const H2 = createComponent(
 );
 
 export const Border = createComponent(
-  ({ theme, color }) => ({
+  ({ theme, color, right }) => ({
     bottom: -1,
     display: 'block',
     overflow: 'hidden',
@@ -53,7 +53,8 @@ export const Border = createComponent(
     position: 'absolute',
     minWidth: 75,
     width: '100%', // macht bordered-prop eigentlich überflüssig
-    background: `linear-gradient(to right, ${color || theme.color}, #FFF)`,
+    background: `linear-gradient(to ${right ? 'left' : 'right'}, ${color ||
+      theme.color}, #FFF)`,
   }),
   'span',
   ({ color, ...p }) => Object.keys(p)
