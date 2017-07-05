@@ -34,6 +34,14 @@ const loaderSchema = [
   },
 ];
 
+const Column = createComponent(
+  ({ theme }) => ({
+    textAlign: 'right',
+  }),
+  p => <Grid.Item {...p} />,
+  p => Object.keys(p)
+);
+
 const Img = createComponent(
   ({ theme }) => ({
     float: 'left',
@@ -97,7 +105,7 @@ const component = graphql(
   (<SchemaLoader isLoading={isLoading} schema={loaderSchema}>
     <Container {...attributes}>
       <Grid>
-        <Grid.Item medium={8} paddingMedium="0 0 0 0.5rem">
+        <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
           {items.map(item =>
             (<Panel id={item.id} title={item.name} key={item.id} paddingLeft={0}>
               <Img value={item.bild} width={100} ratio={1} avatar />
@@ -113,12 +121,15 @@ const component = graphql(
             </Panel>)
           )}
         </Grid.Item>
-        <Grid.Item
+        <Column
           medium={4}
+          offsetMedium={1}
+          offsetLarge={1}
+          offsetHuge={1}
           paddingMini="1rem 1rem 0 1rem"
           paddingMedium="0 1rem"
         >
-          <H2>Vorträge & Veranstaltungen</H2>
+          <H2 right>Vorträge & Veranstaltungen</H2>
           <ul>
             <Li>
               <b>25. April 2017, 18:00 Uhr</b>
@@ -148,7 +159,7 @@ const component = graphql(
             </Li>
           </ul>
 
-          <H2>Publikationen</H2>
+          <H2 right>Publikationen</H2>
           <ul>
             <Li>
               <b>25. April 2017, 18:00 Uhr</b>
@@ -178,7 +189,7 @@ const component = graphql(
             </Li>
           </ul>
 
-          <H2>Presse</H2>
+          <H2 right>Presse</H2>
           <ul>
             <Li>
               <b>25. April 2017, 18:00 Uhr</b>
@@ -207,7 +218,7 @@ const component = graphql(
               <p>MAXIMAL 5 ITEMS!</p>
             </Li>
           </ul>
-        </Grid.Item>
+        </Column>
       </Grid>
     </Container>
   </SchemaLoader>)
