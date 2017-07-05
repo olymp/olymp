@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent, border } from 'olymp-fela';
-import { Image } from 'olymp-cloudinary';
+import { LightboxImage } from 'olymp-cloudinary';
 
 const Avatar = createComponent(
   ({ theme }) => ({
@@ -9,7 +9,13 @@ const Avatar = createComponent(
     marginRight: 0,
   }),
   ({ className, value }) =>
-    <Image className={className} value={value} width={100} ratio={1} avatar />,
+    (<LightboxImage
+      className={className}
+      value={value}
+      width={100}
+      ratio={1}
+      avatar
+    />),
   p => Object.keys(p)
 );
 
@@ -32,8 +38,12 @@ export default createComponent(
   ({ className, name, bild, beschreibung, farbe }) =>
     (<div className={className}>
       <Avatar value={bild} />
-      <H3 farbe={farbe}>{name}</H3>
-      <p>{beschreibung}</p>
+      <H3 farbe={farbe}>
+        {name}
+      </H3>
+      <p>
+        {beschreibung}
+      </p>
     </div>),
   p => Object.keys(p)
 );
