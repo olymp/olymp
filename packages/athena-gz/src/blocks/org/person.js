@@ -37,7 +37,9 @@ export default createComponent(
     display: 'block',
     clear: 'both',
     hyphens: 'auto',
-    textAlign: 'justify',
+    '> p': {
+      textAlign: 'justify',
+    },
   }),
   ({ className, name, bild, beschreibung, farbe }) =>
     (<div className={className}>
