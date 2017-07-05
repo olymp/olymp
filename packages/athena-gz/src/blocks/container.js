@@ -1,19 +1,16 @@
 import { Blocks } from 'olymp-pages';
-import { border } from 'olymp-fela';
 
 export default {
   ...Blocks.ContainerBlock,
-  // key: 'GZK.Template.ContainerBlock',
   label: 'Container',
   category: 'Template',
   styles: ({ theme, color = theme.color }) => ({
     '& h1': {
       textAlign: 'left',
       position: 'relative',
-      borderBottom: border(theme),
       marginTop: theme.space3,
       marginBottom: theme.space2,
-      /* onAfter: {
+      onAfter: {
         content: '""',
         bottom: -1,
         display: 'block',
@@ -22,8 +19,9 @@ export default {
         left: 0,
         position: 'absolute',
         minWidth: 75,
-        backgroundColor: color,
-      },*/
+        width: '100%',
+        background: `linear-gradient(to right, ${color || theme.color}, #FFF)`,
+      },
       ifSmallDown: {
         // marginY: theme.space1,
       },
@@ -31,10 +29,9 @@ export default {
     '& h2': {
       textAlign: 'left',
       position: 'relative',
-      borderBottom: border(theme),
       marginTop: theme.space3,
       marginBottom: theme.space2,
-      /* onAfter: {
+      onAfter: {
         content: '""',
         bottom: -1,
         display: 'block',
@@ -43,8 +40,9 @@ export default {
         left: 0,
         position: 'absolute',
         minWidth: 75,
-        backgroundColor: color,
-      },*/
+        width: '100%',
+        background: `linear-gradient(to right, ${color || theme.color}, #FFF)`,
+      },
       ifSmallDown: {
         // marginY: theme.space1,
       },
@@ -71,7 +69,6 @@ export default {
       paddingLeft: theme.space4,
       marginX: 'auto',
       marginY: theme.space3,
-      // fontFamily: 'Times New Roman',
       fontFamily: 'Raleway, sans-serif',
       fontSize: '1.5rem',
       lineHeight: 1.2,

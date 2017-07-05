@@ -7,7 +7,7 @@ export const H1 = createComponent(
     position: 'relative',
     // borderBottom: border(theme),
     marginTop: theme.space3,
-    marginBottom: theme.space2,
+    marginBottom: theme.space3,
     ifSmallDown: {
       marginY: theme.space1,
     },
@@ -28,7 +28,7 @@ export const H2 = createComponent(
     position: 'relative',
     // borderBottom: border(theme),
     marginTop: theme.space3,
-    marginBottom: theme.space2,
+    marginBottom: theme.space3,
     ifSmallDown: {
       marginY: theme.space1,
     },
@@ -45,10 +45,10 @@ export const H2 = createComponent(
 
 export const Border = createComponent(
   ({ theme, color }) => ({
-    bottom: -2,
+    bottom: -1,
     display: 'block',
     overflow: 'hidden',
-    height: 2,
+    height: 1,
     left: 0,
     position: 'absolute',
     minWidth: 75,
