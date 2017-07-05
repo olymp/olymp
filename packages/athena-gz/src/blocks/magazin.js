@@ -9,7 +9,7 @@ import {
 import { H2, Panel } from '../components';
 import { graphql, gql, Link } from 'olymp';
 import { Image } from 'olymp-cloudinary';
-import { range } from 'lodash';
+import { orderBy, upperFirst, range } from 'lodash';
 
 const loaderSchema = [
   {
@@ -54,13 +54,27 @@ const Li = createComponent(
   p => Object.keys(p)
 );
 
+const TagContainer = createComponent(
+  ({ theme }) => ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const Tag = createComponent(
   ({ theme }) => ({
-    backgroundColor: theme.dark4,
-    paddingY: theme.space2,
-    paddingX: theme.space3,
-    margin: theme.space2,
-    marginLeft: 0,
+    backgroundColor: theme.dark5,
+    paddingY: theme.space1,
+    paddingX: theme.space2,
+    marginRight: theme.space1,
+    marginBottom: theme.space1,
+    fontSize: '90%',
+    flex: 1,
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
     display: 'inline-block',
     onHover: {
       backgroundColor: theme.color,
@@ -80,6 +94,7 @@ const component = graphql(
         farbe
         extrakt
         slug
+        tags
         bild {
           width
           height
@@ -97,55 +112,74 @@ const component = graphql(
       items: data.items || [],
     }),
   }
-)(({ attributes, items, getData, isLoading, ...props }) =>
-  (<SchemaLoader isLoading={isLoading} schema={loaderSchema}>
-    <Container {...attributes}>
-      <Grid>
-        <Grid.Item medium={8} paddingMedium="0 0 0 0.5rem">
-          {items.map(item =>
-            (<Panel
-              accent={item.farbe}
-              key={item.id}
-              title={item.name}
-              paddingLeft={0}
-            >
-              <Img value={item.bild} width={100} ratio={1} avatar />
-              <div>
-                <p>
-                  {item.extrakt}
-                </p>
-                {item.slug && <Link to={item.slug}>Weiterlesen...</Link>}
-              </div>
-            </Panel>)
-          )}
-        </Grid.Item>
-        <Grid.Item
-          medium={4}
-          paddingMini="0.5rem 1rem 0 1rem"
-          paddingMedium="0 0.5rem 0 0"
-        >
-          <H2>Ausgaben als PDFs</H2>
-          <ul>
-            <Li>
-              Gesund im Zentrum - <b>Sport</b>
-            </Li>
-            <Li>
-              Gesund im Zentrum - <b>Gesundheit</b>
-            </Li>
-            <Li>
-              Gesund im Zentrum - <b>Fitness</b>
-            </Li>
-          </ul>
+)(({ attributes, items, isLoading }) => {
+  const tags = items.reduce((tags, item) => {
+    (item.tags || []).forEach((tag) => {
+      const index = tags.findIndex(item => item.tag === tag);
 
-          <H2>Schlagworte</H2>
-          <Tag>Sport</Tag>
-          <Tag>Gesundheit</Tag>
-          <Tag>Fitness</Tag>
-        </Grid.Item>
-      </Grid>
-    </Container>
-  </SchemaLoader>)
-);
+      if (index === -1) {
+        tags.push({ tag, count: 1 });
+      } else {
+        tags[index].count += 1;
+      }
+    });
+    return tags;
+  }, []);
+
+  return (
+    <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
+      <Container {...attributes}>
+        <Grid>
+          <Grid.Item medium={8} paddingMedium="0 0 0 0.5rem">
+            {items.map(item =>
+              (<Panel
+                accent={item.farbe}
+                key={item.id}
+                title={item.name}
+                paddingLeft={0}
+              >
+                <Img value={item.bild} width={100} ratio={1} avatar />
+                <div>
+                  <p>
+                    {item.extrakt}
+                  </p>
+                  {item.slug && <Link to={item.slug}>Weiterlesen...</Link>}
+                </div>
+              </Panel>)
+            )}
+          </Grid.Item>
+          <Grid.Item
+            medium={4}
+            paddingMini="0.5rem 1rem 0 1rem"
+            paddingMedium="0 0.5rem 0 0"
+          >
+            <H2>Ausgaben als PDFs</H2>
+            <ul>
+              <Li>
+                Gesund im Zentrum - <b>Sport</b>
+              </Li>
+              <Li>
+                Gesund im Zentrum - <b>Gesundheit</b>
+              </Li>
+              <Li>
+                Gesund im Zentrum - <b>Fitness</b>
+              </Li>
+            </ul>
+
+            <H2>Schlagworte</H2>
+            <TagContainer>
+              {orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(tag =>
+                (<Tag key={tag.tag}>
+                  {upperFirst(tag.tag)} <small>({tag.count})</small>
+                </Tag>)
+              )}
+            </TagContainer>
+          </Grid.Item>
+        </Grid>
+      </Container>
+    </SchemaLoader>
+  );
+});
 
 export default {
   key: 'GZK.Collections.MagazinBlock',
