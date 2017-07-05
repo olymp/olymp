@@ -85,6 +85,9 @@ const Content = createComponent(
   ({ theme }) => ({
     width: '100%',
     paddingX: theme.space5,
+    '& img': {
+      borderRadius: theme.borderRadius,
+    },
     ifSmallDown: {
       paddingX: theme.space3,
     },
