@@ -43,6 +43,13 @@ const Text = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
     color: theme.dark2,
+    '& li': {
+      marginY: theme.space2,
+      onBefore: {
+        content: '"■ "',
+        color: theme.color,
+      },
+    },
   }),
   ({ className, children }) =>
     (<div className={className}>
@@ -57,8 +64,13 @@ const Container = createComponent(
   }),
   ({ className, name, farbe, text, active, onClick }) =>
     (<div className={className}>
-      <Link onClick={onClick} farbe={farbe} active={active}>{name}</Link>
-      {active && <Text>{text}</Text>}
+      <Link onClick={onClick} farbe={farbe} active={active}>
+        {name}
+      </Link>
+      {active &&
+        <Text>
+          {text}
+        </Text>}
     </div>),
   p => Object.keys(p)
 );
