@@ -44,6 +44,8 @@ const Text = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
     color: theme.dark2,
+    hyphens: 'auto',
+    textAlign: 'justify',
   }),
   ({ className, children }) =>
     (<div className={className}>

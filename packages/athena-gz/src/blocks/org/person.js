@@ -6,7 +6,7 @@ const Avatar = createComponent(
   ({ theme }) => ({
     float: 'right',
     margin: theme.space2,
-    marginRight: 0,
+    marginRight: `-${theme.space3}`,
   }),
   ({ className, value }) =>
     (<LightboxImage
@@ -15,6 +15,7 @@ const Avatar = createComponent(
       width={100}
       ratio={1}
       avatar
+      rounded
     />),
   p => Object.keys(p)
 );
@@ -34,6 +35,8 @@ export default createComponent(
     marginY: theme.space3,
     display: 'block',
     clear: 'both',
+    hyphens: 'auto',
+    textAlign: 'justify',
   }),
   ({ className, name, bild, beschreibung, farbe }) =>
     (<div className={className}>
