@@ -1,16 +1,10 @@
 import React from 'react';
-import {
-  createComponent,
-  Container,
-  Grid,
-  border,
-  SchemaLoader,
-} from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp';
-import { Image } from 'olymp-cloudinary';
+import { Container, Grid, SchemaLoader } from 'olymp-fela';
+import { graphql, gql } from 'olymp';
 import moment from 'moment';
+import { sortBy, range } from 'lodash';
 import { H2, Panel } from '../components';
-import { range } from 'lodash';
+import { Column, Content, Li, Img, More } from './magazin';
 
 const loaderSchema = [
   {
@@ -34,50 +28,22 @@ const loaderSchema = [
   },
 ];
 
-const Column = createComponent(
-  ({ theme }) => ({
-    textAlign: 'right',
-  }),
-  p => <Grid.Item {...p} />,
-  p => Object.keys(p)
-);
-
-const Img = createComponent(
-  ({ theme }) => ({
-    float: 'left',
-    marginRight: theme.space3,
-  }),
-  p => <Image {...p} />,
-  p => Object.keys(p)
-);
-
-const H5 = createComponent(
-  ({ theme }) => ({
-    marginTop: theme.space3,
-  }),
-  ({ className, children }) =>
-    (<h5 className={className}>
-      {children}
-    </h5>),
-  p => Object.keys(p)
-);
-
-const Li = createComponent(
-  ({ theme }) => ({
-    paddingTop: theme.space2,
-    borderBottom: border(theme),
-    ':last-of-type': {
-      marginBottom: theme.space3,
-    },
-  }),
-  'li',
-  p => Object.keys(p)
-);
+const getItems = (items, filter, title) =>
+  sortBy(items.filter(filter), ['date']).reverse().slice(0, 5).map(item =>
+    (<Li key={item.id}>
+      <b>
+        {title(item)}
+      </b>
+      <p>
+        {item.name}
+      </p>
+    </Li>)
+  );
 
 const component = graphql(
   gql`
     query terminList {
-      items: terminList {
+      items: terminList(sort: { date: DESC }) {
         id
         date
         art
@@ -107,17 +73,21 @@ const component = graphql(
       <Grid>
         <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
           {items.map(item =>
-            (<Panel id={item.id} title={item.name} key={item.id} paddingLeft={0}>
+            (<Panel
+              id={item.id}
+              title={item.name}
+              subtitle={`${item.art} vom ${moment(item.date).format(
+                'DD.MM.YYYY'
+              )}`}
+              key={item.id}
+            >
               <Img value={item.bild} width={100} ratio={1} avatar />
-              <div>
+              <Content>
                 <p>
                   {item.extrakt}
                 </p>
-                <Link to={item.slug || '/'}>Mehr erfahren...</Link>
-                <H5>
-                  {item.art} vom {moment(item.date).format('DD.MM.YYYY')}
-                </H5>
-              </div>
+                {item.slug && <More to={item.slug} />}
+              </Content>
             </Panel>)
           )}
         </Grid.Item>
@@ -131,92 +101,29 @@ const component = graphql(
         >
           <H2 right>Vorträge & Veranstaltungen</H2>
           <ul>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>
-                Ursachen und aktuelle Behandlungsmöglichkeiten von
-                Schulterschmerzen
-              </p>
-            </Li>
-            <Li>
-              <b>21. März 2017, 18:00 Uhr</b>
-              <p>Gelenkersatz am Knie</p>
-            </Li>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>
-                Ursachen und aktuelle Behandlungsmöglichkeiten von
-                Schulterschmerzen
-              </p>
-            </Li>
-            <Li>
-              <b>21. März 2017, 18:00 Uhr</b>
-              <p>Gelenkersatz am Knie</p>
-            </Li>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>MAXIMAL 5 ITEMS!</p>
-            </Li>
+            {getItems(
+              items,
+              item => item.art === 'VORTRAG' || item.art === 'VERANSTALTUNG',
+              item => `${moment(item.date).format('DD. MMMM YYYY, HH:mm')} Uhr`
+            )}
           </ul>
 
           <H2 right>Publikationen</H2>
           <ul>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>
-                Ursachen und aktuelle Behandlungsmöglichkeiten von
-                Schulterschmerzen
-              </p>
-            </Li>
-            <Li>
-              <b>21. März 2017, 18:00 Uhr</b>
-              <p>Gelenkersatz am Knie</p>
-            </Li>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>
-                Ursachen und aktuelle Behandlungsmöglichkeiten von
-                Schulterschmerzen
-              </p>
-            </Li>
-            <Li>
-              <b>21. März 2017, 18:00 Uhr</b>
-              <p>Gelenkersatz am Knie</p>
-            </Li>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>MAXIMAL 5 ITEMS!</p>
-            </Li>
+            {getItems(
+              items,
+              item => item.art === 'PUBLIKATION',
+              item => moment(item.date).format('DD. MMMM YYYY')
+            )}
           </ul>
 
           <H2 right>Presse</H2>
           <ul>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>
-                Ursachen und aktuelle Behandlungsmöglichkeiten von
-                Schulterschmerzen
-              </p>
-            </Li>
-            <Li>
-              <b>21. März 2017, 18:00 Uhr</b>
-              <p>Gelenkersatz am Knie</p>
-            </Li>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>
-                Ursachen und aktuelle Behandlungsmöglichkeiten von
-                Schulterschmerzen
-              </p>
-            </Li>
-            <Li>
-              <b>21. März 2017, 18:00 Uhr</b>
-              <p>Gelenkersatz am Knie</p>
-            </Li>
-            <Li>
-              <b>25. April 2017, 18:00 Uhr</b>
-              <p>MAXIMAL 5 ITEMS!</p>
-            </Li>
+            {getItems(
+              items,
+              item => item.art === 'PRESSE',
+              item => moment(item.date).format('DD. MMMM YYYY')
+            )}
           </ul>
         </Column>
       </Grid>
