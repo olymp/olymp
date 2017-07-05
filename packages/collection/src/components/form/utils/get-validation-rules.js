@@ -5,7 +5,7 @@ export default (field) => {
   const required = !!field['@'] && !!field['@'].required;
   const label = (!!field['@'] && field['@'].label) || upperFirst(field.name);
 
-  if (field.name === 'name') {
+  if (field.name === 'name' && required) {
     rules.push({ required, message: `'${label}' muss angegeben werden!` });
   } else if (field.type.name === 'Email') {
     rules.push({
@@ -15,7 +15,7 @@ export default (field) => {
     });
   } else if (field.type.name === 'Website') {
     rules.push({ required, type: 'url', message: 'Keine gültige Website!' });
-  } else if (field.type.name !== 'Boolean') {
+  } else if (field.type.name !== 'Boolean' && required) {
     rules.push({ required, message: `'${label}' muss angegeben werden!` });
   }
 

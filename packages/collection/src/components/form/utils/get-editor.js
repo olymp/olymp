@@ -131,7 +131,11 @@ export default ({
         />
       );
     case 'Boolean':
-      return <Checkbox {...editProps}>{label}</Checkbox>;
+      return (
+        <Checkbox {...editProps}>
+          {label}
+        </Checkbox>
+      );
     case 'Date':
       return <DateEditor {...editProps} format="DD.MM.YYYY" />;
     case 'DateTime':

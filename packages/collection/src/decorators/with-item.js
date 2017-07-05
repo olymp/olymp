@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 const ok = props => () => {
   const { form, item, router, query, pathname, mutate, typeName } = props;
   form.validateFields((err, values) => {
+    console.log('values bei image leer, warum???', values, omit(values));
     if (err) {
       return onError(err);
     }
@@ -17,14 +18,18 @@ const ok = props => () => {
         id: item && item.id,
         input: omit(values),
       },
-      updateQueries: !item || !item.id
-        ? {
-          [`${typeName.toLowerCase()}List`]: (prev, { mutationResult }) => ({
-            ...prev,
-            items: [...prev.items, mutationResult.data.item],
-          }),
-        }
-        : undefined,
+      updateQueries:
+        !item || !item.id
+          ? {
+            [`${typeName.toLowerCase()}List`]: (
+                prev,
+                { mutationResult }
+              ) => ({
+                ...prev,
+                items: [...prev.items, mutationResult.data.item],
+              }),
+          }
+          : undefined,
     })
       .then(({ data: { item } }) => {
         onSuccess('Gespeichert');
