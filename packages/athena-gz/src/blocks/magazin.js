@@ -33,15 +33,21 @@ const loaderSchema = [
   },
 ];
 
-const Column = createComponent(
+export const Column = createComponent(
   ({ theme }) => ({
     textAlign: 'right',
+    '> h2': {
+      marginBottom: theme.space0,
+    },
+    '> h2:not(:first-child)': {
+      marginTop: theme.space4,
+    },
   }),
   p => <Grid.Item {...p} />,
   p => Object.keys(p)
 );
 
-const Content = createComponent(
+export const Content = createComponent(
   ({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -52,19 +58,33 @@ const Content = createComponent(
   p => Object.keys(p)
 );
 
-const Img = createComponent(
+export const Img = createComponent(
   ({ theme }) => ({
     float: 'left',
     marginRight: theme.space3,
+    alignSelf: 'flex-start',
   }),
   p => <Image {...p} />,
   p => Object.keys(p)
 );
 
-const Li = createComponent(
+export const More = createComponent(
   ({ theme }) => ({
-    paddingTop: theme.space2,
-    borderBottom: border(theme),
+    marginTop: theme.space3,
+    marginBottom: `-${theme.space3}`,
+    color: theme.color,
+  }),
+  p => <Link {...p}>Weiterlesen...</Link>,
+  p => Object.keys(p)
+);
+
+export const Li = createComponent(
+  ({ theme }) => ({
+    paddingY: theme.space3,
+    borderBottom: border(theme, theme.dark4),
+    onHover: {
+      // backgroundColor: theme.dark5,
+    },
     ':last-of-type': {
       marginBottom: theme.space3,
     },
@@ -88,8 +108,8 @@ const Tag = createComponent(
     backgroundColor: theme.dark5,
     paddingY: theme.space1,
     paddingX: theme.space2,
-    marginRight: theme.space2,
-    marginBottom: theme.space2,
+    marginLeft: theme.space3,
+    marginBottom: theme.space3,
     fontSize: '90%',
     flex: 1,
     whiteSpace: 'nowrap',
@@ -107,7 +127,7 @@ const Tag = createComponent(
 const component = graphql(
   gql`
     query artikelList {
-      items: artikelList {
+      items: artikelList(sort: { date: DESC }) {
         id
         name
         farbe
@@ -151,18 +171,13 @@ const component = graphql(
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
             {items.map(item =>
-              (<Panel
-                accent={item.farbe}
-                key={item.id}
-                title={item.name}
-                paddingLeft={0}
-              >
+              (<Panel accent={item.farbe} key={item.id} title={item.name}>
                 <Img value={item.bild} width={100} ratio={1} avatar />
                 <Content>
                   <p>
                     {item.extrakt}
                   </p>
-                  {item.slug && <Link to={item.slug}>Weiterlesen...</Link>}
+                  {item.slug && <More to={item.slug} />}
                 </Content>
               </Panel>)
             )}
