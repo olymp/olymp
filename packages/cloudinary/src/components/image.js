@@ -15,6 +15,10 @@ export const cloudinaryUrl = (value, options) => {
     ...options,
   };
 
+  if (!value || !value.url) {
+    return '';
+  }
+
   const newUrl = value.url
     .split('ttp://res.cloudinary.com/')
     .join('ttps://res.cloudinary.com/');

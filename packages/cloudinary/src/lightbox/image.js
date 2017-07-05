@@ -14,7 +14,7 @@ export default class Lightbox extends Component {
   componentWillMount() {
     const { value } = this.props;
 
-    this.add(value);
+    if (value) { this.add(value); }
   }
 
   componentWillReceiveProps({ value }) {
@@ -54,9 +54,10 @@ export default class Lightbox extends Component {
         w: 50,
         h: 50,
       }),
-      caption: value.caption && value.source
-        ? `${value.caption} - ${value.source}`
-        : value.caption || value.source || '',
+      caption:
+        value.caption && value.source
+          ? `${value.caption} - ${value.source}`
+          : value.caption || value.source || '',
     });
   };
 
@@ -80,6 +81,10 @@ export default class Lightbox extends Component {
       location,
       ...rest
     } = this.props;
+
+    if (!value || !value.url) {
+      return <div />;
+    }
 
     return <Image onClick={this.onClick} value={value} {...rest} />;
   }
