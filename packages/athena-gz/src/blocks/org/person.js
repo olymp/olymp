@@ -32,7 +32,8 @@ const H3 = createComponent(
 
 export default createComponent(
   ({ theme }) => ({
-    marginY: theme.space3,
+    marginTop: theme.space3,
+    marginBottom: theme.space4,
     display: 'block',
     clear: 'both',
     hyphens: 'auto',
