@@ -21,6 +21,12 @@ export const App = createComponent(
       fontWeight: 200,
       lineHeight: 1.5,
     },
+    ifMediumUp: {
+      '& a[href^="tel"]:link, a[href^="tel"]:visited, a[href^="tel"]:hover, a[href^="fax"]:link, a[href^="fax"]:visited, a[href^="fax"]:hover': {
+        color: theme.dark2,
+        cursor: 'text',
+      },
+    },
     ifSmallDown: {
       '& h1': {
         fontSize: theme.fontSizeH1,

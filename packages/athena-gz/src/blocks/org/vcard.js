@@ -136,11 +136,15 @@ export default createComponent(
             </List>}
           {telefonPrivat &&
             <List label="Privatpatienten">
-              {telefonPrivat}
+              <a href={`tel:${telefon}`}>
+                {telefonPrivat}
+              </a>
             </List>}
           {fax &&
             <List label="Fax">
-              {fax}
+              <a href={`fax:${telefon}`}>
+                {fax}
+              </a>
             </List>}
           {eMail &&
             <List label="E-Mail">
