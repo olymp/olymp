@@ -35,8 +35,8 @@ const MapContainer = createComponent(
   ({ attributes, className, children }) =>
     (<div className={className} {...attributes}>
       <Maps
-        center={{ lat: 59.724465, lng: 30.080121 }}
-        zoom={1}
+        center={{ lat: 50.13429468, lng: 8.45419139 }}
+        zoom={17}
         options={() => ({
           panControl: false,
           mapTypeControl: false,
@@ -45,7 +45,7 @@ const MapContainer = createComponent(
           gestureHandling: 'none',
         })}
       >
-        <Maps.Marker lat={59.724465} lng={30.080121} />
+        <Maps.Marker lat={50.13476404} lng={8.45419139} />
       </Maps>
       <Label>
         {children}
