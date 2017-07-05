@@ -9,7 +9,6 @@ import gql from 'graphql-tag';
 const ok = props => () => {
   const { form, item, router, query, pathname, mutate, typeName } = props;
   form.validateFields((err, values) => {
-    console.log('values bei image leer, warum???', values, omit(values));
     if (err) {
       return onError(err);
     }
@@ -19,17 +18,17 @@ const ok = props => () => {
         input: omit(values),
       },
       updateQueries:
-        !item || !item.id
-          ? {
-            [`${typeName.toLowerCase()}List`]: (
-                prev,
-                { mutationResult }
-              ) => ({
-                ...prev,
-                items: [...prev.items, mutationResult.data.item],
-              }),
-          }
-          : undefined,
+      !item || !item.id
+        ? {
+          [`${typeName.toLowerCase()}List`]: (
+            prev,
+            { mutationResult }
+          ) => ({
+            ...prev,
+            items: [...prev.items, mutationResult.data.item],
+          }),
+        }
+        : undefined,
     })
       .then(({ data: { item } }) => {
         onSuccess('Gespeichert');
@@ -72,14 +71,14 @@ export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`
-      mutation ${lowerFirst(
+    mutation ${lowerFirst(
         typeName
       )}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
-        item: ${lowerFirst(typeName)}(id: $id, input: $input, type: $type) {
-          ${fieldNames}
-        }
+      item: ${lowerFirst(typeName)}(id: $id, input: $input, type: $type) {
+        ${fieldNames}
       }
-    `);
+    }
+  `);
     const query = graphql(
       gql`
       query ${lowerFirst(typeName)}($id: String!) {
@@ -87,8 +86,7 @@ export default (WrappedComponent) => {
           ${fieldNames}
         }
       }
-    `,
-      {
+    `, {
         /* eslint-disable */
         props: ({ ownProps, data }) => ({
           ...ownProps,
@@ -102,15 +100,14 @@ export default (WrappedComponent) => {
         }),
       }
     );
-    return Form.create({})(
-      query(
-        mutation(props =>
-          <WrappedComponent
-            {...props}
-            onSave={ok(props)}
-            onDelete={del(props)}
-          />
-        )
+    return query(
+      mutation(props =>
+        <WrappedComponent
+          {...props}
+          x={props.form}
+          onSave={ok(props)}
+          onDelete={del(props)}
+        />
       )
     );
   };

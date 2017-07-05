@@ -66,8 +66,8 @@ export default class SubForm extends Component {
               <div className="ant-form">
                 {(collection ? collection.fields : [])
                   .filter(
-                    ({ name }) =>
-                      name !== 'id' && fieldNames.indexOf(name) === -1
+                  ({ name }) =>
+                    name !== 'id' && fieldNames.indexOf(name) === -1
                   )
                   .map(field =>
                     (<Form.Item
@@ -76,7 +76,7 @@ export default class SubForm extends Component {
                       hasFeedback
                       {...(field.type.name === 'Blocks'
                         ? formItemLayout0
-                        : formItemLayout)}
+                        : formItemLayout) }
                     >
                       {form.getFieldDecorator(field.name, {
                         initialValue: getInitialValue(
@@ -88,10 +88,10 @@ export default class SubForm extends Component {
                           ? 'checked'
                           : 'value',
                         disabled:
-                          name === 'createdAt' ||
-                            name === 'createdBy' ||
-                            name === 'updatedAt' ||
-                            name === 'updatedBy',
+                        name === 'createdAt' ||
+                        name === 'createdBy' ||
+                        name === 'updatedAt' ||
+                        name === 'updatedBy',
                       })(
                         getEditor({
                           field,
@@ -102,7 +102,7 @@ export default class SubForm extends Component {
                               [field.name]: v && v.target ? v.target.value : v,
                             }),
                         })
-                      )}
+                        )}
                     </Form.Item>)
                   )}
               </div>

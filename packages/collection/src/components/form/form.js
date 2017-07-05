@@ -23,6 +23,7 @@ export default class FormComponent extends Component {
       style,
       className,
       validateFields,
+      form,
       ...rest
     } = this.props;
 
@@ -72,9 +73,10 @@ export default class FormComponent extends Component {
         layout={(vertical && 'vertical') || (inline && 'inline')}
         style={style}
         className={className}
+        form={form}
       >
         {mappedFields.map(field =>
-          <FormItem {...rest} field={field} item={item} key={field.name} />
+          <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
         )}
         {children}
       </Form>

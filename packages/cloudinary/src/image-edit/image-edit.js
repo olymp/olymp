@@ -1,6 +1,7 @@
 import React from 'react';
-import Edit from './edit';
+import createEdit from './edit';
 import { Image } from '../components';
 
-export default ({ multi, ...rest }) =>
-  <Edit renderFn={v => <Image value={v[0]} />} multi={multi} {...rest} />;
+export default createEdit(
+  v => <Image value={v[0]} />
+);

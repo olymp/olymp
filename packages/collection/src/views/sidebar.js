@@ -118,7 +118,6 @@ export default class CollectionListSidebar extends Component {
       collection,
       onSearch,
       searchText,
-      form,
       onClose,
     } = this.props;
     const items = (this.props.items || []).map((item) => {

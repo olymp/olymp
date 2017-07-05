@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Form } from 'antd';
 import { withRouter, withSearch, Prompt } from 'olymp';
 import { SplitView } from 'olymp-ui';
-import { Form } from 'antd';
 import { withItems, withCollection } from '../decorators';
 import Detail from './detail';
 import Sidebar from './sidebar';
@@ -23,7 +23,7 @@ export default class CollectionView extends Component {
       router,
       performSearch,
       searchText,
-      form,
+      form
     } = this.props;
     const { query, pathname } = location;
     const id = location.query && location.query[`@${typeName.toLowerCase()}`];
@@ -36,7 +36,6 @@ export default class CollectionView extends Component {
         />
         <Sidebar
           id={id}
-          form={form}
           collection={collection}
           typeName={typeName}
           items={items}
@@ -58,9 +57,9 @@ export default class CollectionView extends Component {
         {id !== undefined &&
           <Detail
             id={id === 'new' ? null : id}
-            form={form}
             fieldNames={fieldNames}
             collection={collection}
+            form={form}
             typeName={typeName}
           />}
       </SplitView>

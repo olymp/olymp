@@ -30,9 +30,9 @@ export default (uri) => {
               monk
                 .collection('item')
                 .update(
-                  { id: args.id },
-                  { ...image, _type: 'file', _appId: app.id },
-                  { upsert: true }
+                { id: args.id },
+                { ...image, _type: 'file', _appId: app.id },
+                { upsert: true }
                 )
                 .catch(err => console.error(err));
               return image;
@@ -52,9 +52,9 @@ export default (uri) => {
                 monk
                   .collection('item')
                   .update(
-                    { id: item.id },
-                    { ...item, _type: 'file', _appId: app.id },
-                    { upsert: true }
+                  { id: item.id },
+                  { ...item, _type: 'file', _appId: app.id },
+                  { upsert: true }
                   )
               )
             ).catch(err => console.error(err));
@@ -105,6 +105,7 @@ export default (uri) => {
     },
     schema: `
       type Image {
+        id: String
         url: String
         crop: [Int]
         width: Int
@@ -142,7 +143,7 @@ export default (uri) => {
 export const uploadTest = (config = {}) => (req, res) => {
   res.send(`
     <form action="${config.endpoint ||
-      '/upload'}" method="post" enctype="multipart/form-data">
+    '/upload'}" method="post" enctype="multipart/form-data">
       <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>

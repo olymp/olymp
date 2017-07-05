@@ -1,10 +1,7 @@
-import React from 'react';
-import Edit from './edit';
 import { FaImage, FaImages } from 'olymp-icons';
+import React from 'react';
+import createEdit from './edit';
 
-export default ({ multi, ...rest }) =>
-  (<Edit
-    renderFn={v => (multi ? <FaImages /> : <FaImage />)}
-    multi={multi}
-    {...rest}
-  />);
+export default createEdit(
+  v => (false ? <FaImages /> : <FaImage />)
+);

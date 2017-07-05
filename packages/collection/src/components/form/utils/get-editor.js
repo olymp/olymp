@@ -21,7 +21,7 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 const edits = [
-  type => type.kind === 'OBJECT' && type.name === 'Image' && <ImageEdit />,
+  type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit,
 ];
 
 export default ({
@@ -32,7 +32,6 @@ export default ({
   field,
   label,
   key,
-  onChange,
 }) => {
   const { idField, start, suggest } = field['@'];
   const { type, name } = field;
@@ -42,13 +41,12 @@ export default ({
     style: { ...editorStyle, ...style },
     className: cn(editorClassName, className),
     key,
-    onChange,
   };
 
   for (let i = 0; i < edits.length; i += 1) {
     const Edit = edits[i](type);
     if (Edit) {
-      return React.cloneElement(Edit, editProps);
+      return <Edit {...editProps} />;
     }
   }
   if (idField && idField.type) {
