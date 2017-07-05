@@ -59,9 +59,9 @@ export default class CollectionDetail extends Component {
         <Flex>
           <Gateway into="navigation">
             <Menu.Item key="save">
-              <span onClick={onSave}>
+              <a href="javascript:;" onClick={onSave}>
                 <Icon type="save" /> Speichern
-              </span>
+              </a>
             </Menu.Item>
             {keys.map(tab =>
               (<Menu.Item key={tab}>
