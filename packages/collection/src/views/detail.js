@@ -9,12 +9,14 @@ import { DetailForm } from '../components';
 
 const getFormSchema = ({ fields }) =>
   fields.reduce((result, field) => {
+    const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
+
     if (field.type.name === 'Blocks') {
       // if slate => own group
-      result[upperFirst(field.name)] = [field];
+      result[label || upperFirst(field.name)] = [field];
     } else if (field.type.name === 'Image') {
       // if image => own group
-      result[upperFirst(field.name)] = [field];
+      result[label || upperFirst(field.name)] = [field];
     } else {
       // Group
       const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
@@ -51,6 +53,7 @@ export default class CollectionDetail extends Component {
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = query.tab || Object.keys(schema)[0];
+
     return (
       <ContentLoader isLoading={id && !item}>
         <Flex>
