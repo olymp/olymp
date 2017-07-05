@@ -37,7 +37,15 @@ export const cloudinaryUrl = (value, options) => {
   return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
 };
 
-const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
+const CloudinaryImage = ({
+  options,
+  value,
+  ratio,
+  avatar,
+  alt,
+  maxResolution,
+  ...rest
+}) => {
   if (!value) {
     return <div />;
   }
@@ -48,6 +56,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, ...rest }) => {
   return (
     <Image
       {...rest}
+      maxResolution={maxResolution > 6000000 ? 6000000 : maxResolution}
       src={(w, h) =>
         cloudinaryUrl(value, {
           w,
