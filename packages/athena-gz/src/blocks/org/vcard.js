@@ -15,7 +15,6 @@ const niceTime = (times) => {
 
 const Container = createComponent(
   ({ theme }) => ({
-    paddingX: theme.space3,
     paddingBottom: theme.space1,
   }),
   'div',

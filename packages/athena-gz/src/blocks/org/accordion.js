@@ -16,14 +16,15 @@ const Icon = createComponent(
 
 const Link = createComponent(
   ({ theme, farbe, active }) => ({
-    paddingX: theme.space2,
-    paddingY: theme.space1,
+    paddingTop: theme.space1,
     cursor: 'pointer',
     display: 'block',
-    borderBottom: active && border(theme, farbe),
+    borderBottom: active ? border(theme, farbe) : border(theme, 'transparent'),
     onHover: {
       backgroundColor: theme.dark5,
       borderRadius: theme.borderRadius,
+      paddingX: theme.space2,
+      marginX: `-${theme.space2}`,
     },
   }),
   ({ className, children, farbe, active, onClick }) =>
