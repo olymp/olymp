@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, createComponent, fade } from 'olymp-fela';
-import { H1 } from './heading';
+import { H2 } from './heading';
 
 export const Content = createComponent(
   ({ theme, accent, padding = theme.space3, size = 1 }) => ({
@@ -99,9 +99,9 @@ export default createComponent(
     ...rest
   }) =>
     (<Grid.Item mini={12} {...rest}>
-      <H1 color={accent || background} bordered={bordered} subtitle={subtitle}>
+      <H2 color={accent || background} bordered={bordered} subtitle={subtitle}>
         {title}
-      </H1>
+      </H2>
       <Content padding={padding} accent={accent} color={color}>
         {children}
       </Content>

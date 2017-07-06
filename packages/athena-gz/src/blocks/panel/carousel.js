@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent, Grid, fade } from 'olymp-fela';
-import { Carousel, H1 } from '../../components';
+import { Carousel, H2 } from '../../components';
 
 export default createComponent(
   ({ theme }) => ({
@@ -64,7 +64,9 @@ export default createComponent(
       paddingMini="0.5rem 1rem"
       paddingMedium="0 1rem"
     >
-      <H1>{title}</H1>
+      <H2>
+        {title}
+      </H2>
       <Carousel
         slideInterval={7500}
         ratio={0.33 * size}

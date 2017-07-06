@@ -5,7 +5,7 @@ const Subtitle = createComponent(
   ({ theme }) => ({
     color: theme.dark2,
     marginTop: '-6px',
-    fontSize: '1rem',
+    fontSize: '0.9rem',
   }),
   'div',
   p => Object.keys(p)
@@ -25,9 +25,10 @@ export const H1 = createComponent(
   ({ className, children, color, bordered = true, subtitle }) =>
     (<h1 className={className}>
       {children}
-      <Subtitle>
-        {subtitle}
-      </Subtitle>
+      {subtitle &&
+        <Subtitle>
+          {subtitle}
+        </Subtitle>}
       <Border color={color}>
         {bordered === true ? children : bordered}
       </Border>
@@ -46,9 +47,13 @@ export const H2 = createComponent(
       marginY: theme.space1,
     },
   }),
-  ({ className, children, color, bordered = true, right }) =>
+  ({ className, children, color, bordered = true, subtitle, right }) =>
     (<h2 className={className}>
       {children}
+      {subtitle &&
+        <Subtitle>
+          {subtitle}
+        </Subtitle>}
       <Border color={color} right={right}>
         {bordered === true ? children : bordered}
       </Border>

@@ -10,6 +10,7 @@ import { graphql, gql, Link } from 'olymp';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { orderBy, upperFirst, range } from 'lodash';
+import moment from 'moment';
 import { H2, Panel } from '../components';
 
 const loaderSchema = [
@@ -54,6 +55,9 @@ export const Content = createComponent(
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'space-between',
+    paddingLeft: theme.space2,
+    borderLeft: '1px solid rgba(0, 0, 0, 0.08)',
+    marginBottom: `-${theme.space3}`,
   }),
   'div',
   p => Object.keys(p)
@@ -62,7 +66,7 @@ export const Content = createComponent(
 export const Img = createComponent(
   ({ theme }) => ({
     float: 'left',
-    marginRight: theme.space3,
+    marginRight: theme.space2,
     alignSelf: 'flex-start',
   }),
   p => <Image {...p} />,
@@ -72,7 +76,6 @@ export const Img = createComponent(
 export const More = createComponent(
   ({ theme }) => ({
     marginTop: theme.space3,
-    marginBottom: `-${theme.space3}`,
     color: theme.dark2,
     cursor: 'pointer',
     onHover: {
@@ -116,7 +119,7 @@ class Item extends Component {
   state = { open: false };
 
   render() {
-    const { name, extrakt, slug, org } = this.props;
+    const { name, extrakt, slug, org, date, author } = this.props;
 
     const bild = this.props.bild ||
     org.logo || {
@@ -127,7 +130,12 @@ class Item extends Component {
     };
 
     return (
-      <Panel accent={org.farbe} title={name}>
+      <Panel
+        accent={org.farbe}
+        title={name}
+        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${author.name ||
+          'Redaktion'}`}
+      >
         <Img value={bild} width={160} avatar />
         <Content>
           <p>
@@ -181,6 +189,7 @@ const component = graphql(
         id
         name
         extrakt
+        date
         slug
         tags
         state
@@ -239,7 +248,12 @@ const component = graphql(
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
             {items.map(item =>
-              <Item {...item} org={item.org || {}} key={item.id} />
+              (<Item
+                {...item}
+                org={item.org || {}}
+                author={item.author || {}}
+                key={item.id}
+              />)
             )}
           </Grid.Item>
           <Column

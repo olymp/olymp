@@ -55,7 +55,8 @@ class Item extends Component {
       org,
     } = this.props;
 
-    const bild = this.props.bild || {
+    const bild = this.props.bild ||
+    org.logo || {
       url:
         'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
@@ -64,22 +65,17 @@ class Item extends Component {
 
     return (
       <Panel
-        id={id}
-        color={org.farbe}
+        accent={org.farbe}
+        title={name}
         subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
       >
         <Img value={bild} width={100} avatar />
         <Content>
-          <div>
-            <h2>
-              {name}
-            </h2>
-            {open
-              ? <SlateMate value={text} readOnly />
-              : <p>
-                {extrakt}
-              </p>}
-          </div>
+          {open
+            ? <SlateMate value={text} readOnly />
+            : <p>
+              {extrakt}
+            </p>}
           {!!text && <More open={open} onClick={onClick} />}
         </Content>
       </Panel>
@@ -106,7 +102,7 @@ class Item extends Component {
         }
         org {
           name
-          image {
+          logo {
             width
             height
             url
