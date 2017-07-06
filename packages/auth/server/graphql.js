@@ -1,4 +1,4 @@
-const mails = require('./mails');
+import mails from './mails';
 
 export default ({ attributes = '' } = {}) => ({
   name: 'user',

@@ -65,6 +65,19 @@ export default class AuthInvitations extends Component {
         title="Einladungen"
         subtitle="Einladungen sehen und verschicken"
       >
+        <AuthInviationDetail id={null} />
+      </Modal>
+    );
+
+    return (
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        width="auto"
+        padding={0}
+        title="Einladungen"
+        subtitle="Einladungen sehen und verschicken"
+      >
         <SplitView>
           <List side="left">
             <List.Title
@@ -164,7 +177,7 @@ class AuthInviationDetail extends Component {
               onKeyPress={onEnterFocus(() => this.mail)}
               size="large"
             />
-          )}
+            )}
         </Form.Item>
         <Form.Item key="email" label="E-Mail" {...layout}>
           {getFieldDecorator('email', {
@@ -181,7 +194,7 @@ class AuthInviationDetail extends Component {
               size="large"
               addonAfter={<FaEnvelope size={10} />}
             />
-          )}
+            )}
         </Form.Item>
         <Button onClick={this.ok}>Speichern</Button>
       </Panel>
