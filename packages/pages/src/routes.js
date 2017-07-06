@@ -1,11 +1,31 @@
 import React from 'react';
-import { IFrame, ContentLoader, PageTransition } from 'olymp-fela';
+import {
+  IFrame,
+  ContentLoader,
+  PageTransition,
+  createComponent,
+} from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { Helmet } from 'olymp';
 import { Link } from 'olymp';
-import { Menu, Icon, Button } from 'antd';
+import { Menu, Icon, Button as AntButton } from 'antd';
 import { lowerFirst } from 'lodash';
 import { Gateway } from 'react-gateway';
+
+const Button = createComponent(
+  ({ theme }) => ({
+    borderRadius: theme.borderRadius,
+    opacity: 0.85,
+    margin: '0 -15px',
+    onHover: {
+      opacity: 1,
+      backgroundColor: `${theme.color} !important`,
+      color: `${theme.light} !important`,
+    },
+  }),
+  p => <AntButton {...p} />,
+  p => Object.keys(p)
+);
 
 const getURL = () => {
   if (process.env.URL) {
@@ -82,7 +102,7 @@ const renderGateway = (
     <Gateway into="quick">
       <Menu.SubMenu
         title={
-          <Button type="primary" style={{ margin: '0 -15px' }}>
+          <Button type="primary">
             <Icon type="plus" style={{ marginRight: 0 }} />
           </Button>
         }
@@ -109,7 +129,7 @@ const renderGateway = (
               query: { [`@${lowerFirst(binding.type)}`]: bindingId },
             }}
           >
-            <Button type="primary" style={{ margin: '0 -15px' }}>
+            <Button type="primary">
               {binding.type} bearbeiten{' '}
               <Icon type="arrow-right" style={{ marginRight: 0 }} />
             </Button>
@@ -123,7 +143,7 @@ const renderGateway = (
               query: { '@page': null, '@deviceWidth': deviceWidth },
             }}
           >
-            <Button type="primary" style={{ margin: '0 -15px' }}>
+            <Button type="primary">
               Seite bearbeiten{' '}
               <Icon type="arrow-right" style={{ marginRight: 0 }} />
             </Button>
