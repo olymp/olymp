@@ -122,12 +122,12 @@ class Item extends Component {
     const { name, extrakt, slug, org, date, author } = this.props;
 
     const bild = this.props.bild ||
-    org.logo || {
-      url:
+      org.logo || {
+        url:
         'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-      width: 400,
-      height: 300,
-    };
+        width: 400,
+        height: 300,
+      };
 
     return (
       <Panel
@@ -185,7 +185,7 @@ const Tag = createComponent(
 const component = graphql(
   gql`
     query artikelList {
-      items: artikelList(sort: { date: DESC }) {
+      items: artikelList(sort: { date: DESC }, query:{state:{ne:REMOVED}}) {
         id
         name
         extrakt
@@ -213,7 +213,7 @@ const component = graphql(
           name
         }
       }
-      pdfs: fileList(query: { tags: { in: "GiZ" } }) {
+      pdfs: fileList(query: { tags: { in: "GiZ" }, state:{ne:REMOVED} }) {
         url
         caption
       }
@@ -224,8 +224,8 @@ const component = graphql(
       ...ownProps,
       data,
       isLoading: data.loading,
-      items: (data.items || []).filter(item => item.state !== 'REMOVED'),
-      pdfs: (data.pdfs || []).filter(item => item.state !== 'REMOVED'),
+      items: (data.items || []),
+      pdfs: (data.pdfs || []),
     }),
   }
 )(({ attributes, items, pdfs, isLoading }) => {

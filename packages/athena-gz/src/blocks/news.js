@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
-import { graphql, gql } from 'olymp';
+import { graphql, gql, Link } from 'olymp';
 import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
@@ -53,15 +53,16 @@ class Item extends Component {
       text,
       open,
       org,
+      slug,
     } = this.props;
 
     const bild = this.props.bild ||
-    org.logo || {
-      url:
+      org.logo || {
+        url:
         'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-      width: 400,
-      height: 300,
-    };
+        width: 400,
+        height: 300,
+      };
 
     return (
       <Panel
@@ -71,12 +72,13 @@ class Item extends Component {
       >
         <Img value={bild} width={100} avatar />
         <Content>
-          {open
-            ? <SlateMate value={text} readOnly />
-            : <p>
-              {extrakt}
-            </p>}
-          {!!text && <More open={open} onClick={onClick} />}
+          <p>
+            {extrakt}
+          </p>
+          {slug &&
+            <Link to={{ pathname: `/news${slug}` }}>
+              <More />
+            </Link>}
         </Content>
       </Panel>
     );
@@ -86,7 +88,7 @@ class Item extends Component {
 @graphql(
   gql`
     query terminList {
-      items: terminList(sort: { date: DESC }) {
+      items: terminList(sort: { date: DESC }, query:{state:{ne:REMOVED}}) {
         id
         date
         art
@@ -126,11 +128,9 @@ class Item extends Component {
   }
 )
 class News extends Component {
-  state = { open: undefined };
 
   render() {
     const { attributes, items, isLoading } = this.props;
-    const { open } = this.state;
 
     return (
       <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
@@ -140,7 +140,6 @@ class News extends Component {
               {items.map(item =>
                 (<Item
                   {...item}
-                  open={open === item.id}
                   onClick={() =>
                     this.setState({
                       open: open === item.id ? undefined : item.id,
