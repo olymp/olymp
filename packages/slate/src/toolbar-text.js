@@ -36,11 +36,19 @@ export default class ToolbarText extends Component {
     const icon = label || props.label || <Icon type={props.icon} />;
     if (type && Array.isArray(type)) {
       return (
-        <Menu.SubMenu key={type.join('-')} title={<Button>{icon}</Button>}>
+        <Menu.SubMenu
+          key={type.join('-')}
+          title={
+            <Button>
+              {icon}
+            </Button>
+          }
+        >
           {type.map((subType, index) => {
-            const subLabel = props.description && props.description[index]
-              ? props.description[index]
-              : label || subType;
+            const subLabel =
+              props.description && props.description[index]
+                ? props.description[index]
+                : label || subType;
 
             return this.renderOptionButton(
               { ...props, type: subType },

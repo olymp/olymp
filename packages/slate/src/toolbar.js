@@ -1,30 +1,21 @@
 import React from 'react';
 import Portal from 'react-portal';
-import { Menu, Tooltip } from 'antd';
+import { Gateway } from 'react-gateway';
+import { Menu, Tooltip, Icon } from 'antd';
 import { createComponent } from 'react-fela';
 
-export const Button = createComponent(
-  ({ theme, active }) => ({
-    paddingX: 20,
-    backgroundColor: active && theme.dark2,
-    color: active && theme.light,
-    '> svg': {
-      fill: active ? theme.light : theme.light2,
-      size: 16,
-      marginBottom: -4,
-    },
-    '> div > svg': {
-      fill: active ? theme.light : theme.light2,
-      size: 16,
-      marginBottom: -4,
-    },
+export const Button = ({ onMouseDown, tooltip, children }) =>
+  (<div onMouseDown={onMouseDown}>
+    <Tooltip placement="bottom" title={tooltip || ''}>
+      {children}
+    </Tooltip>
+  </div>);
+
+const Close = createComponent(
+  ({ theme }) => ({
+    float: 'right !important',
   }),
-  ({ className, onMouseDown, children, tooltip }) =>
-    (<Tooltip placement="bottom" title={tooltip || ''}>
-      <div className={className} onMouseDown={onMouseDown}>
-        {children}
-      </div>
-    </Tooltip>),
+  p => <Menu.Item {...p} />,
   p => Object.keys(p)
 );
 
@@ -33,29 +24,31 @@ export default createComponent(
     position: 'fixed',
     top: 0,
     zIndex: 10,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    background: '#3E3E3E',
-    borderBottom: 0,
-    boxShadow: theme.boxShadow,
-    borderTop: 0,
-    '> li': {
-      padding: 0,
-      color: `${theme.light1}!important`,
-      '> .ant-menu-submenu-title': {
-        padding: 0,
-      },
-      onHover: {
-        color: `${theme.light}!important`,
-      },
-    },
+    width: '100%',
+    boxShadow: 'inset 0 -10px 10px -10px #000000',
+    paddingX: theme.space2,
   }),
   (props) => {
     const { isOpened, className, children } = props;
+
+    if (!isOpened) {
+      return <div />;
+    }
+
+    return (
+      <Gateway into="toolbar">
+        {children}
+      </Gateway>
+    );
+
+    // Old one, but pimped!
     return (
       <Portal isOpened={!!isOpened}>
-        <Menu className={className} mode="horizontal">
+        <Menu className={className} mode="horizontal" theme="dark">
           {children}
+          <Close>
+            <Icon type="close" />
+          </Close>
         </Menu>
       </Portal>
     );
