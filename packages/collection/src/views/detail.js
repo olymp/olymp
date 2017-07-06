@@ -83,17 +83,16 @@ export default class CollectionDetail extends Component {
               </Menu.Item>)
             )}
           </Gateway>
-
-          {Object.keys(schema).map(tab => {
+          {Object.keys(schema).map(tab =>
             <HiddenForm
-              key={tab}
-              visible={tab === currentTab}
               {...this.props}
               item={item || {}}
               fields={schema[tab]}
+              key={tab}
+              visible={tab === currentTab}
               onCreate={onSave}
             />
-          })}
+          )}
 
         </Flex>
       </ContentLoader>
