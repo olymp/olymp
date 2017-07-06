@@ -194,14 +194,17 @@ const component = graphql(
         tags
         state
         bild {
+          id
           width
           height
           url
           crop
         }
         org {
+          id
           name
           logo {
+            id
             width
             height
             url
@@ -210,6 +213,7 @@ const component = graphql(
           farbe
         }
         author {
+          id
           name
         }
       }
