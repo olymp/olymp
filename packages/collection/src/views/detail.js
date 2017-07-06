@@ -46,6 +46,14 @@ const Flex = createComponent(
   []
 );
 
+const HiddenForm = createComponent(
+  ({ visible }) => ({
+    display: visible ? 'block' : 'none',
+  }),
+  p => <DetailForm {...p} />,
+  p => Object.keys(p),
+);
+
 @withRouter
 @withItem
 export default class CollectionDetail extends Component {
@@ -76,12 +84,17 @@ export default class CollectionDetail extends Component {
             )}
           </Gateway>
 
-          <DetailForm
-            {...this.props}
-            item={item || {}}
-            fields={schema[currentTab]}
-            onCreate={onSave}
-          />
+          {Object.keys(schema).map(tab => {
+            <HiddenForm
+              key={tab}
+              visible={tab === currentTab}
+              {...this.props}
+              item={item || {}}
+              fields={schema[tab]}
+              onCreate={onSave}
+            />
+          })}
+
         </Flex>
       </ContentLoader>
     );
