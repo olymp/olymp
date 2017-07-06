@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component, createElement } from 'react';
+import PropTypes from 'prop-types';
 import { Link, withLang, Logo } from 'olymp';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent, Modal } from 'olymp-fela';
-import { GatewayDest } from 'react-gateway';
+import { createComponent } from 'olymp-fela';
+import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 
 const getInitials = (name) => {
@@ -65,8 +66,40 @@ const VerticalMenu = createComponent(
 const AntMenu = ({ keys, ...p }) =>
   <Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
-export default withLang(
-  withAuth(({ auth, deviceWidth, query, collectionList }) => {
+const AntSubMenu = ({ keys, children, ...p }) =>
+  (<Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p}>
+    <Menu.SubMenu title={<Icon type="bars" />}>
+      {children}
+    </Menu.SubMenu>
+  </Menu>);
+
+@withLang
+@withAuth
+class Navigation extends Component {
+  static contextTypes = {
+    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
+  };
+
+  constructor(props, context) {
+    super(props, context);
+    this.gatewayRegistry = context.gatewayRegistry;
+  }
+
+  state = {
+    children: null,
+  };
+
+  componentWillMount() {
+    this.gatewayRegistry.addContainer('toolbar', this);
+  }
+
+  componentWillUnmount() {
+    this.gatewayRegistry.removeContainer('toolbar', this);
+  }
+
+  render() {
+    const { auth, deviceWidth, query, collectionList } = this.props;
+    const { children } = this.state;
     const keys = Object.keys(query);
     if (!keys.filter(x => x[0] === '@').length) {
       keys.push('@home');
@@ -173,11 +206,16 @@ export default withLang(
             </Menu.Item>}
         </AntMenu>
 
-        <GatewayDest name="navigation" component={AntMenu} />
+        {createElement(AntMenu, {}, children)}
+        <GatewayDest
+          name="navigation"
+          component={children && children.length ? AntSubMenu : AntMenu}
+        />
       </VerticalMenu>
     );
-  })
-);
+  }
+}
+export default Navigation;
 
 /*
 <Menu.Item key="@template">

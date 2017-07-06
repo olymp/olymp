@@ -16,7 +16,9 @@ export default (props) => {
     type: key,
   }));
   sortBy(types, ['category', 'label']).forEach((action) => {
-    if (!action.label) { return; }
+    if (!action.label) {
+      return;
+    }
     const onMouseDown = (e) => {
       e.preventDefault();
       onChange(addBlock(state, action, { defaultNode }));
@@ -52,7 +54,6 @@ export default (props) => {
           {categories[key]}
         </Menu.SubMenu>)
       )}
-      <Menu.Divider />
       {menuItems}
     </Toolbar>
   );
