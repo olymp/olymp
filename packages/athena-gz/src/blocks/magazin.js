@@ -202,9 +202,10 @@ const component = graphql(
       data,
       isLoading: data.loading,
       items: data.items || [],
+      pdfs: data.pdfs || [],
     }),
   }
-)(({ attributes, items, isLoading }) => {
+)(({ attributes, items, pdfs, isLoading }) => {
   const tags = items.reduce((tags, item) => {
     (item.tags || []).forEach((tag) => {
       const index = tags.findIndex(item => item.tag === tag);
@@ -235,15 +236,13 @@ const component = graphql(
           >
             <H2 right>Ausgaben als PDFs</H2>
             <ul>
-              <Li>
-                Gesund im Zentrum - <b>Sport</b>
-              </Li>
-              <Li>
-                Gesund im Zentrum - <b>Gesundheit</b>
-              </Li>
-              <Li>
-                Gesund im Zentrum - <b>Fitness</b>
-              </Li>
+              {pdfs.map((pdf, i) =>
+                (<Li key={i}>
+                  <a rel="noopener noreferrer" href={pdf.url} target="_blank">
+                    Gesund im Zentrum - <b>{pdf.caption}</b>
+                  </a>
+                </Li>)
+              )}
             </ul>
 
             <H2 right>Schlagworte</H2>
