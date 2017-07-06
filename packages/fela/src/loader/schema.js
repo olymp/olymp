@@ -4,7 +4,8 @@ import ContentLoader from './content';
 import Container from '../container';
 import Grid from '../grid';
 
-// const loaderSchema2 = `450f,[c[m5[100,200,400]]g]`
+
+// const loaderSchema2 = `450,[c[m5[100,200,400]]g]`
 const Panel = createComponent(
   ({ height, width, pad, theme }) => ({
     height,
@@ -16,7 +17,7 @@ const Panel = createComponent(
   []
 );
 
-const SchemaLoaderItem = ({ height, width, grid }) => {
+const SchemaLoaderItem = ({ height, width = '100%', grid, children, size }) => {
   let inner;
   if (grid) {
     inner = (
@@ -29,12 +30,18 @@ const SchemaLoaderItem = ({ height, width, grid }) => {
                   (<Panel key={i}>
                     <ContentLoader isLoading {...child} />
                   </Panel>)
-                  )
+                )
                 : <ContentLoader isLoading />}
             </Panel>
           </Grid.Item>)
         )}
       </Grid>
+    );
+  } else if (children) {
+    inner = children.map((child, i) =>
+      (<Panel key={i}>
+        <ContentLoader isLoading {...child} />
+      </Panel>)
     );
   } else {
     inner = <ContentLoader isLoading />;
@@ -42,7 +49,7 @@ const SchemaLoaderItem = ({ height, width, grid }) => {
 
   if (width === 'container') {
     return (
-      <Container height={height}>
+      <Container height={height} size={size}>
         <Panel height="100%" width="100%">
           {inner}
         </Panel>
@@ -56,6 +63,7 @@ const SchemaLoaderItem = ({ height, width, grid }) => {
   );
 };
 
+const cache = {};
 export default ({ schema, isLoading, children }) => {
   if (isLoading) {
     const components = schema.map((item, i) =>

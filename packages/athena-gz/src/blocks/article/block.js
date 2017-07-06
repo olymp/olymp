@@ -42,6 +42,7 @@ const renderHelmet = ({ slogan, bild } = {}) => {
   return <Helmet meta={meta} />;
 };
 
+
 const loaderSchema = [
   {
     height: 450,
@@ -49,23 +50,14 @@ const loaderSchema = [
   },
   {
     width: 'container',
-    grid: [
+    size: 'small',
+    children: [
       {
-        medium: 5,
-        children: [
-          {
-            height: 100,
-          },
-          {
-            height: 200,
-          },
-          {
-            height: 400,
-          },
-        ],
+        width: '100%',
+        height: 50,
       },
       {
-        medium: 7,
+        width: '100%',
         height: 800,
       },
     ],
@@ -158,7 +150,7 @@ const component = withColor(
       </Container>
     </div>
   </SchemaLoader>)
-);
+  );
 
 const componentWithData = graphql(
   gql`
