@@ -1,12 +1,12 @@
 import React from 'react';
-import { graphql, gql, Helmet } from 'olymp';
-import { createComponent, Grid, withColor, SchemaLoader } from 'olymp-fela';
+import { graphql, gql, Helmet, Link } from 'olymp';
+import { createComponent, withColor, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import { ImageStyles } from '../image/block';
 import HeaderBlock from '../header';
-import ContainerBlock from '../container';
+import ContainerBlock from '../container-text';
 
 const renderHelmet = ({ slogan, bild } = {}) => {
   const meta = [];
@@ -80,21 +80,6 @@ const Container = createComponent(
 );
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 
-const Content = createComponent(
-  ({ theme }) => ({
-    width: '100%',
-    paddingX: theme.space5,
-    '& img': {
-      borderRadius: theme.borderRadius,
-    },
-    ifSmallDown: {
-      paddingX: theme.space3,
-    },
-  }),
-  p => <Grid.Item medium={7} {...p} />,
-  p => Object.keys(p)
-);
-
 const Peak = createComponent(
   props => ({
     ...ImageStyles(props),
@@ -122,6 +107,34 @@ const Peak = createComponent(
   p => Object.keys(p)
 );
 
+const WhiteLink = createComponent(
+  ({ theme }) => ({
+    color: theme.light,
+    onHover: {
+      color: theme.light2,
+    },
+  }),
+  p => <Link {...p} />,
+  p => Object.keys(p)
+);
+
+const getSubheader = (item) => {
+  const author = item.author && `von ${item.author.name}`;
+  const org =
+    item.org &&
+    <WhiteLink to={item.org.slug}>
+      {item.org.name}
+    </WhiteLink>;
+
+  return (
+    author &&
+    org &&
+    <span>
+      {author}, {org}
+    </span>
+  );
+};
+
 const component = withColor(
   ({ item }) => item.farbe
 )(({ className, attributes, item }) =>
@@ -130,28 +143,22 @@ const component = withColor(
       {renderHelmet(item)}
       {item.bild
         ? <Peak
-          title={item.name || item.titel}
+          title={item.name}
           value={item.bild}
-          header={item.slogan}
-          subheader={item.willkommen}
+          header={item.name}
+          subheader={getSubheader(item)}
           color={item.farbe}
         />
-        : <Header subheader={item.willkommen} color={item.farbe}>
-          {item.slogan}
+        : <Header subheader={getSubheader(item)} color={item.farbe}>
+          {item.name}
         </Header>}
       <Container className={className} color={item.farbe} {...attributes}>
-        <Grid>
-          <Grid.Item medium={5}>
-          </Grid.Item>
-          <Content>
-            <Slate readOnly value={item.text} />
-            {/* children*/}
-          </Content>
-        </Grid>
+        <Slate readOnly value={item.text} />
+        <Link to="/magazin">Zurück zur Übersicht</Link>
       </Container>
     </div>
   </SchemaLoader>)
-  );
+);
 
 const componentWithData = graphql(
   gql`
@@ -180,6 +187,7 @@ const componentWithData = graphql(
         org {
           id
           name
+          slug
         }
       }
     }

@@ -1,12 +1,19 @@
 import React from 'react';
+import tinycolor from 'tinycolor2';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ size = 100, padding, margin }) => ({
+  ({ theme, size = 100, padding, margin }) => ({
     width: size,
     height: Math.round(size / 100 * 79),
     padding,
     margin,
+    '& stop:first-child': {
+      stopColor: tinycolor(theme.color).lighten(8).spin(6).toRgbString(),
+    },
+    '& stop:last-child': {
+      stopColor: tinycolor(theme.color).darken(4).spin(-3).toRgbString(),
+    },
   }),
   ({ className }) =>
     (<svg className={className} viewBox="0 0 1000 790" version="1.1">
