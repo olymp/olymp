@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Button } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
 import { Gateway } from 'react-gateway';
@@ -61,7 +61,9 @@ export default class CollectionDetail extends Component {
           <Gateway into="navigation">
             <Menu.Item key="save">
               <a href="javascript:;" onClick={onSave}>
-                <Icon type="save" /> Speichern
+                <Button type="primary" style={{ margin: '0 -15px' }}>
+                  <Icon type="save" /> Speichern
+                </Button>
               </a>
             </Menu.Item>
             {keys.map(tab =>
