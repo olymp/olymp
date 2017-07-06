@@ -5,17 +5,21 @@ import { H2 } from '../components';
 
 const Item = createComponent(
   ({ theme, farbe, hovered }) => ({
-    clearfix: true,
-    color: hovered ? farbe || theme.color : theme.dark2,
-    onHover: {
-      color: farbe || theme.color,
-    },
-    '> span': {
-      float: 'left',
-    },
-    '> span:last-child': {
-      float: 'right',
-      marginRight: theme.space4,
+    position: 'relative',
+    paddingX: theme.space1,
+    '> a': {
+      clearfix: true,
+      color: hovered ? farbe || theme.color : theme.dark2,
+      onHover: {
+        color: farbe || theme.color,
+      },
+      '> span': {
+        float: 'left',
+      },
+      '> span:last-child': {
+        float: 'right',
+        marginRight: theme.space4,
+      },
     },
   }),
   ({
@@ -28,9 +32,8 @@ const Item = createComponent(
     onMouseEnter,
     onMouseLeave,
   }) =>
-    (<li>
+    (<li className={className}>
       <Link
-        className={className}
         to={slug || '/'}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
