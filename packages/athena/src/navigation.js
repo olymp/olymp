@@ -21,7 +21,6 @@ const getInitials = (name) => {
         );
     }
   }
-
   return false;
 };
 
@@ -68,6 +67,14 @@ const LeftMenu = createComponent(
     float: 'left',
   }),
   p => <Menu {...p} />,
+  p => Object.keys(p)
+);
+
+const Filler = createComponent(
+  ({ theme }) => ({
+    flex: 1,
+  }),
+  p => <div {...p} />,
   p => Object.keys(p)
 );
 
@@ -188,6 +195,7 @@ class Navigation extends Component {
             </Menu.Item>}
         </AntMenu>
 
+        <Filler />
         {createElement(AntMenu, {}, children)}
 
         <GatewayDest name="quick" component={AntMenu} />

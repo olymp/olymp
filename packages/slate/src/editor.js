@@ -286,14 +286,14 @@ const getTopMost = (blockTypes, state, prev) => {
 @withSlateState({ terse: true })
 @useBlocks(options)
 export default // @withToolbar(options)
-// @withSidebar(options)
-class SlateEditor extends Component {
+  // @withSidebar(options)
+  class SlateEditor extends Component {
   plugins = [
     withAutoMarkdown(options),
     TrailingBlock({ type: 'line' }),
     InsertBlockOnEnter({ type: 'line' }),
   ];
-  state = {};
+  state = { focus: false };
   static propTypes = {
     readOnly: PropTypes.bool,
     showUndo: PropTypes.bool,
@@ -358,6 +358,9 @@ class SlateEditor extends Component {
       blockTypes,
       ...rest
     } = this.props;
+    const {
+      focus
+    } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
     const undo =
@@ -381,19 +384,19 @@ class SlateEditor extends Component {
             : null}
         </Gateway>
         {children}
-        {readOnly !== true &&
+        {readOnly !== true && focus &&
           <ToolbarBlock
             state={value}
             blockTypes={blockTypes}
             onChange={onChange}
           />}
-        {readOnly !== true &&
+        {readOnly !== true && focus &&
           <ToolbarVoid
             state={value}
             blockTypes={blockTypes}
             onChange={onChange}
           />}
-        {readOnly !== true &&
+        {readOnly !== true && focus &&
           <ToolbarText state={value} onChange={onChange} {...options} />}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
@@ -405,6 +408,8 @@ class SlateEditor extends Component {
             plugins={this.plugins}
             schema={{ marks, nodes }}
             onChange={onChange}
+            onFocus={() => this.setState({ focus: true })}
+            onBlur={() => this.setState({ focus: false })}
             onPaste={this.onPaste}
             onKeyDown={this.onKeyDown}
             placeholder={!readOnly && 'Hier Text eingeben...'}

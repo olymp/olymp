@@ -60,7 +60,7 @@ export default (props) => {
   const actions = get(block, 'slate.actions', []);
 
   return (
-    <Toolbar isOpened={!!block}>
+    <Toolbar isOpened={!!block && actions && actions.length}>
       {actions.map(Action({ ...props, node }))}
     </Toolbar>
   );
