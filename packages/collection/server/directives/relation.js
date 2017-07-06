@@ -43,10 +43,12 @@ export default {
       // one-to-one / one-to-many
       // Only add xxxId field to store/access the id
       if (relationType === '1-1') {
+        console.log(relationType, `${leftType}.${leftField}`);
         addFields(ast, leftNode, `${leftField}Id: String`);
         set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-          monk.collection(rightTable).findOne({
+          monk.collection('item').findOne({
             id: source[`${leftField}Id`],
+            _type: rightTable,
           })
         );
       } else if (relationType === '1-n') {
