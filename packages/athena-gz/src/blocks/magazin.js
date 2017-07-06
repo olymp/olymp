@@ -8,7 +8,7 @@ import {
 } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
 import { Image } from 'olymp-cloudinary';
-import { SlateMate } from 'olymp-slate';
+import { FaDownload } from 'olymp-icons';
 import { orderBy, upperFirst, range } from 'lodash';
 import { H2, Panel } from '../components';
 
@@ -101,15 +101,26 @@ export const Li = createComponent(
   p => Object.keys(p)
 );
 
+const DownloadLink = createComponent(
+  ({ theme }) => ({
+    color: theme.dark,
+    '> svg': {
+      marginLeft: theme.space2,
+    },
+  }),
+  'a',
+  p => Object.keys(p)
+);
+
 class Item extends Component {
   state = { open: false };
 
   render() {
-    const { farbe, id, name, extrakt, slug, text } = this.props;
+    const { farbe, name, extrakt, slug } = this.props;
 
     const bild = this.props.bild || {
       url:
-      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
       height: 300,
     };
@@ -121,9 +132,10 @@ class Item extends Component {
           <p>
             {extrakt}
           </p>
-          <Link to={{ pathname: slug }}>
-            <More />
-          </Link>
+          {slug &&
+            <Link to={{ pathname: `/magazin${slug}` }}>
+              <More />
+            </Link>}
         </Content>
       </Panel>
     );
@@ -191,6 +203,10 @@ const component = graphql(
           name
         }
       }
+      pdfs: fileList(query: { tags: { in: "GiZ" } }) {
+        url
+        caption
+      }
     }
   `,
   {
@@ -235,9 +251,14 @@ const component = graphql(
             <ul>
               {pdfs.map((pdf, i) =>
                 (<Li key={i}>
-                  <a rel="noopener noreferrer" href={pdf.url} target="_blank">
+                  <DownloadLink
+                    rel="noopener noreferrer"
+                    href={pdf.url}
+                    target="_blank"
+                  >
                     Gesund im Zentrum - <b>{pdf.caption}</b>
-                  </a>
+                    <FaDownload size={15} />
+                  </DownloadLink>
                 </Li>)
               )}
             </ul>
