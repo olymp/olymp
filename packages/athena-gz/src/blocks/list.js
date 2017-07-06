@@ -8,6 +8,9 @@ const Item = createComponent(
     position: 'relative',
     paddingX: theme.space1,
     fontSize: '94%',
+    onBefore: {
+      color: `${farbe || theme.color} !important`,
+    },
     '> a': {
       clearfix: true,
       color: hovered ? farbe || theme.color : theme.dark2,
