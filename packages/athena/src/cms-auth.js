@@ -96,10 +96,10 @@ export default (props) => {
             match={query['@users'] !== undefined}
             render={() => <AuthUsers {...props} />}
           />
-          <SimpleRoute
+          {/*<SimpleRoute
             match={query['@user'] !== undefined}
             render={() => <AuthUser {...props} />}
-          />
+          />*/}
           <SimpleRoute
             render={rest =>
               (<PageRoute

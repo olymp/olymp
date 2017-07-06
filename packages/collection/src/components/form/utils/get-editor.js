@@ -4,13 +4,12 @@ import {
   ColorEditor,
   DateEditor,
   DateRangeEditor,
-  DetailEditor,
   TimeRangeEditor,
   TimeRangesEditor,
   TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
-import { FormEdit } from '../../../edits';
+import { FormEdit, DetailEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
 import { cn } from 'olymp';
 import { ImageEdit } from 'olymp-cloudinary';
@@ -49,13 +48,14 @@ export default ({
       return <Edit {...editProps} />;
     }
   }
+
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
       return (
-        <DetailEditor {...editProps} tags typeName={idField.type.ofType.name} />
+        <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />
       );
     }
-    return <DetailEditor {...editProps} typeName={idField.type.name} />;
+    return <DetailEdit {...editProps} typeName={idField.type.name} />;
   }
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'TimeRange') {

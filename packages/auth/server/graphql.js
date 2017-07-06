@@ -152,7 +152,7 @@ export default ({ attributes = '' } = {}) => ({
       expiry: DateTime
       name: String
     }
-    type User @input {
+    type User @input @collection {
       isAdmin: Boolean
       id: String
       email: Email
