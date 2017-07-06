@@ -43,14 +43,21 @@ export default {
       // one-to-one / one-to-many
       // Only add xxxId field to store/access the id
       if (relationType === '1-1') {
-        console.log(relationType, `${leftType}.${leftField}`);
         addFields(ast, leftNode, `${leftField}Id: String`);
-        set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-          monk.collection('item').findOne({
-            id: source[`${leftField}Id`],
-            _type: rightTable,
-          })
-        );
+        if (rightType === 'User') {
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+            monk.collection(rightTable).findOne({
+              id: source[`${leftField}Id`],
+            })
+          );
+        } else {
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+            monk.collection('item').findOne({
+              id: source[`${leftField}Id`],
+              _type: rightTable,
+            })
+          );
+        }
       } else if (relationType === '1-n') {
         // Add list accessor and xxxIds field since dealing with many
         // addInputTypes(rightTable, ast);
@@ -60,12 +67,20 @@ export default {
           `query: ${rightType}Query, sort: ${rightType}Sort, limit: Int, skip: Int`
         );*/
         addFields(ast, leftNode, `${leftField}Id: String`);
-        set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-          monk.collection('item').findOne({
-            id: source[`${leftField}Id`],
-            _type: rightTable,
-          })
-        );
+        if (rightType === 'User') {
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+            monk.collection(rightTable).findOne({
+              id: source[`${leftField}Id`],
+            })
+          );
+        } else {
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+            monk.collection('item').findOne({
+              id: source[`${leftField}Id`],
+              _type: rightTable,
+            })
+          );
+        }
         addFields(ast, leftNode, `${rightField}: [${leftType}]`);
         set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
           monk.collection(leftTable).find({ [`${leftField}Id`]: source.id })
