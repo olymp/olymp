@@ -8,6 +8,19 @@ const fetch = createTypeFetcher(
 
 export default (ast, node) => {
   const getArgument = (field) => {
+    if (field.type.kind === 'ListType' && field.type.type && field.type.type.name.value === 'String') {
+      addDefinition(
+        ast,
+        parse(`
+        input ${field.type.type.name.value}Query {
+          in: [${field.type.type.name.value}],
+          nin: [${field.type.type.name.value}],
+          null: Boolean
+        }
+      `).definitions[0]
+      );
+      return `${field.name.value}: ${field.type.type.name.value}Query`;
+    }
     if (!field.type.name) {
       return null;
     }

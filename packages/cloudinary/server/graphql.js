@@ -38,8 +38,9 @@ export default (uri) => {
               return image;
             });
           }),
-        fileList: (source, { tags, query }, { monk, app }) => {
+        fileList: (source, { query }, { monk, app }) => {
           const mongoQuery = adaptQuery(query);
+          const tags = mongoQuery.tags && mongoQuery.tags.$in;
           const getFiltered = items =>
             tags // eslint-disable-line
               ? items.filter(item => intersection(tags, item.tags).length > 0)
@@ -112,6 +113,7 @@ export default (uri) => {
         height: Int
         caption: String
         source: String
+        tags: [String]
       }
       type File @collection {
         id: String
@@ -129,6 +131,7 @@ export default (uri) => {
         removed: Boolean
         pages: Int
         colors: [String]
+        tags: [String]
       }
       type CloudinaryRequest {
         url: String
