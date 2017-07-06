@@ -116,7 +116,7 @@ class Item extends Component {
     };
 
     return (
-      <Panel accent={farbe} key={id} title={name}>
+      <Panel accent={farbe} title={name}>
         <Img value={bild} width={100} ratio={1} avatar />
         <Content>
           {open
@@ -223,7 +223,7 @@ const component = graphql(
       <Container {...attributes}>
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-            {items.map(item => <Item {...item} />)}
+            {items.map(item => <Item {...item} key={item.id} />)}
           </Grid.Item>
           <Column
             medium={4}
