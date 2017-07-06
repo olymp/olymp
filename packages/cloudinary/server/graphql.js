@@ -41,7 +41,6 @@ export default (uri) => {
         fileList: (source, { query }, { monk, app }) => {
           const mongoQuery = adaptQuery(query);
           const tags = mongoQuery.tags && mongoQuery.tags.$in;
-          console.log(mongoQuery);
           const getFiltered = items =>
             tags // eslint-disable-line
               ? items.filter(item => intersection(tags, item.tags).length > 0)
