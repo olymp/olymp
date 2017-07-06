@@ -118,12 +118,9 @@ class Item extends Component {
       <Panel accent={farbe} title={name}>
         <Img value={bild} width={100} ratio={1} avatar />
         <Content>
-          {open
-            ? <SlateMate value={text} readOnly />
-            : <p>
-              {extrakt}
-            </p>}
-
+          <p>
+            {extrakt}
+          </p>
           <Link to={{ pathname: slug }}>
             <More />
           </Link>
@@ -172,7 +169,6 @@ const component = graphql(
         name
         farbe
         extrakt
-        text
         slug
         tags
         bild {
