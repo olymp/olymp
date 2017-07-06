@@ -154,7 +154,7 @@ const component = withColor(
         </Header>}
       <Container className={className} color={item.org.farbe} {...attributes}>
         <Slate readOnly value={item.text} />
-        <Link to="/magazin">Zurück zur Übersicht</Link>
+        <Link to="/news">Zurück zur Übersicht</Link>
       </Container>
     </div>
   </SchemaLoader>)
