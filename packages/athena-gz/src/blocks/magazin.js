@@ -106,11 +106,10 @@ class Item extends Component {
 
   render() {
     const { farbe, id, name, extrakt, slug, text } = this.props;
-    const { open } = this.state;
 
     const bild = this.props.bild || {
       url:
-        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
       height: 300,
     };
@@ -119,13 +118,12 @@ class Item extends Component {
       <Panel accent={farbe} title={name}>
         <Img value={bild} width={100} ratio={1} avatar />
         <Content>
-          {open
-            ? <SlateMate value={text} readOnly />
-            : <p>
-              {extrakt}
-            </p>}
-
-          <More open={open} onClick={() => this.setState({ open: !open })} />
+          <p>
+            {extrakt}
+          </p>
+          <Link to={{ pathname: slug }}>
+            <More />
+          </Link>
         </Content>
       </Panel>
     );
@@ -171,7 +169,6 @@ const component = graphql(
         name
         farbe
         extrakt
-        text
         slug
         tags
         bild {
