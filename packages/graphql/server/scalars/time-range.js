@@ -4,13 +4,21 @@ import { GraphQLScalarType } from 'graphql';
 const timeRange = {
   name: 'TimeRange',
   description: 'TimeRange scalar type',
-  parseValue: value => value,
-  serialize: value => value,
+  serialize: (value) => {
+    if (value && !Array.isArray(value)) {
+      return Object.keys(value).map(x => value[x]);
+    }
+    return value;
+  },
+  parseValue: (value) => {
+    if (value && !Array.isArray(value)) {
+      return Object.keys(value).map(x => value[x]);
+    }
+    return value;
+  },
   parseLiteral: (ast) => {
     switch (ast.kind) {
       case Kind.INT:
-        return ast.value;
-      case Kind.STRING:
         return ast.value;
       case Kind.LIST:
         return ast.values.map(timeRange.parseLiteral);
@@ -19,6 +27,7 @@ const timeRange = {
     }
   },
 };
+
 
 export default {
   schema: `

@@ -10,7 +10,7 @@ const niceTime = (times) => {
   if (times.length === 0 || !Array.isArray(times)) {
     return 'Geschlossen';
   }
-  return times.map(time => time.join('-')).join(', ');
+  return times.map(time => time.map(t => moment().startOf('day').add(t, 'minutes').format('HH:mm')).join('-')).join(', ');
 };
 
 const Container = createComponent(
