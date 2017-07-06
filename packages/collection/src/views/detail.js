@@ -49,11 +49,12 @@ const Flex = createComponent(
 @withRouter
 @withItem
 export default class CollectionDetail extends Component {
+  state = { tab: null };
   render() {
     const { id, item, collection, onSave, pathname, query } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
-    const currentTab = query.tab || Object.keys(schema)[0];
+    const currentTab = this.state.tab || Object.keys(schema)[0];
 
     return (
       <ContentLoader isLoading={id && !item}>
@@ -68,9 +69,9 @@ export default class CollectionDetail extends Component {
             </Menu.Item>
             {keys.map(tab =>
               (<Menu.Item key={tab}>
-                <Link to={{ pathname, query: { ...query, tab } }}>
+                <a onClick={() => this.setState({ tab })}>
                   {tab}
-                </Link>
+                </a>
               </Menu.Item>)
             )}
           </Gateway>
