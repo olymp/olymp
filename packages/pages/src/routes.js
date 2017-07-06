@@ -72,7 +72,9 @@ const renderGateway = (
   { auth, pathname, collectionList, query } = {},
   { binding, bindingId } = {}
 ) => {
-  if (!auth.user) { return null; }
+  if (!auth.user) {
+    return null;
+  }
   const deviceWidth = query['@deviceWidth'];
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
@@ -179,8 +181,8 @@ export const EditablePageRoute = (props) => {
 };
 
 export const PageRoute = (props) => {
-  const { Wrapped, flatNavigation, pathname, loading, ...rest } = props;
-  const match = flatNavigation.find(({ slug }) => pathname === slug);
+  const { Wrapped, flatNavigation, pathname, loading } = props;
+  const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
     <Wrapped {...props} match={match}>
