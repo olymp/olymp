@@ -43,7 +43,17 @@ const getItems = (items, filter, title) =>
 
 class Item extends Component {
   render() {
-    const { art, date, id, name, extrakt, onClick, text, open } = this.props;
+    const {
+      art,
+      date,
+      id,
+      name,
+      extrakt,
+      onClick,
+      text,
+      open,
+      org,
+    } = this.props;
 
     const bild = this.props.bild || {
       url:
@@ -55,7 +65,7 @@ class Item extends Component {
     return (
       <Panel
         id={id}
-        // color={item.org.farbe}
+        color={org.farbe}
         subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
       >
         <Img value={bild} width={100} avatar />

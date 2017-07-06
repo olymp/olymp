@@ -116,9 +116,10 @@ class Item extends Component {
   state = { open: false };
 
   render() {
-    const { farbe, name, extrakt, slug } = this.props;
+    const { name, extrakt, slug, org } = this.props;
 
-    const bild = this.props.bild || {
+    const bild = this.props.bild ||
+    org.logo || {
       url:
         'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
@@ -126,8 +127,8 @@ class Item extends Component {
     };
 
     return (
-      <Panel accent={farbe} title={name}>
-        <Img value={bild} width={100} ratio={1} avatar />
+      <Panel accent={org.farbe} title={name}>
+        <Img value={bild} width={160} avatar />
         <Content>
           <p>
             {extrakt}
@@ -179,10 +180,10 @@ const component = graphql(
       items: artikelList(sort: { date: DESC }) {
         id
         name
-        farbe
         extrakt
         slug
         tags
+        state
         bild {
           width
           height
@@ -191,7 +192,7 @@ const component = graphql(
         }
         org {
           name
-          image {
+          logo {
             width
             height
             url
@@ -214,8 +215,8 @@ const component = graphql(
       ...ownProps,
       data,
       isLoading: data.loading,
-      items: data.items || [],
-      pdfs: data.pdfs || [],
+      items: (data.items || []).filter(item => item.state !== 'REMOVED'),
+      pdfs: (data.pdfs || []).filter(item => item.state !== 'REMOVED'),
     }),
   }
 )(({ attributes, items, pdfs, isLoading }) => {
@@ -237,7 +238,9 @@ const component = graphql(
       <Container {...attributes}>
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-            {items.map(item => <Item {...item} key={item.id} />)}
+            {items.map(item =>
+              <Item {...item} org={item.org || {}} key={item.id} />
+            )}
           </Grid.Item>
           <Column
             medium={4}
