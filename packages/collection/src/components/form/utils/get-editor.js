@@ -9,7 +9,7 @@ import {
   TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
-import { FormEdit, DetailEdit } from '../../../edits';
+import { FormEdit, FormListEdit, DetailEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
 import { cn } from 'olymp';
 import { ImageEdit } from 'olymp-cloudinary';
@@ -71,7 +71,7 @@ export default ({
     }
     if (type.ofType.name.indexOf('Nested') === 0) {
       return (
-        <FormEdit {...editProps} typeName={type.ofType.name} type={type} />
+        <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
       );
     }
     return null;
