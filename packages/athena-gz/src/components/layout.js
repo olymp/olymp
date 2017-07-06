@@ -96,14 +96,17 @@ export default class GzLayout extends Component {
       router,
       query,
       pathname,
+      auth,
       ...rest
     } = this.props;
     const nav = (pages.map(x => x.children)[0] || [])
       .filter(x => x.slug !== '/');
     const footer = [
       ...(pages.map(x => x.children)[1] || []),
-      { name: 'Einloggen', pathname: `${location.pathname}?login` },
     ];
+    if (!auth.user) {
+      footer.push({ name: 'Einloggen', pathname: `${location.pathname}?login` });
+    }
     const open = query.nav === null;
 
     return (
