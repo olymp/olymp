@@ -149,6 +149,7 @@ class News extends Component {
                     this.setState({
                       open: open === item.id ? undefined : item.id,
                     })}
+                  org={item.org || {}}
                   key={item.id}
                 />)
               )}

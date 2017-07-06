@@ -136,7 +136,7 @@ const getSubheader = (item) => {
 };
 
 const component = withColor(
-  ({ item }) => item.farbe
+  ({ item }) => item.org.farbe
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
@@ -147,12 +147,12 @@ const component = withColor(
           value={item.bild}
           header={item.name}
           subheader={getSubheader(item)}
-          color={item.farbe}
+          color={item.org.farbe}
         />
-        : <Header subheader={getSubheader(item)} color={item.farbe}>
+        : <Header subheader={getSubheader(item)} color={item.org.farbe}>
           {item.name}
         </Header>}
-      <Container className={className} color={item.farbe} {...attributes}>
+      <Container className={className} color={item.org.farbe} {...attributes}>
         <Slate readOnly value={item.text} />
         <Link to="/magazin">Zurück zur Übersicht</Link>
       </Container>
@@ -166,7 +166,6 @@ const componentWithData = graphql(
       item: artikel(id: $id) {
         id
         date
-        farbe
         name
         slug
         bild {
@@ -188,6 +187,7 @@ const componentWithData = graphql(
           id
           name
           slug
+          farbe
         }
       }
     }
@@ -198,11 +198,18 @@ const componentWithData = graphql(
         id: editor.props.bindingId || 'BJuOod57-',
       },
     }),
-    props: ({ ownProps, data }) => ({
-      ...ownProps,
-      data,
-      item: data.item || {},
-    }),
+    props: ({ ownProps, data }) => {
+      const item = data.item || {};
+
+      return {
+        ...ownProps,
+        data,
+        item: {
+          ...item,
+          org: item.org || {},
+        },
+      };
+    },
   }
 )(component);
 
