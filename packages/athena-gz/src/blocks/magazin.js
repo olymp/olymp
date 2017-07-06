@@ -106,11 +106,10 @@ class Item extends Component {
 
   render() {
     const { farbe, id, name, extrakt, slug, text } = this.props;
-    const { open } = this.state;
 
     const bild = this.props.bild || {
       url:
-        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
       height: 300,
     };
@@ -125,7 +124,9 @@ class Item extends Component {
               {extrakt}
             </p>}
 
-          <More open={open} onClick={() => this.setState({ open: !open })} />
+          <Link to={{ pathname: slug }}>
+            <More />
+          </Link>
         </Content>
       </Panel>
     );
