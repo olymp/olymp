@@ -26,7 +26,8 @@ export const Content = createComponent(
       right: -size,
       top: -size,
       width: size,
-      backgroundImage: 'linear-gradient(to bottom, #FFF 33%, transparent)',
+      background:
+        'linear-gradient(to bottom, #FFF 33%, rgba(255, 255, 255, 0.0001) 100%)',
     },
     onAfter: {
       content: '""',
@@ -35,7 +36,8 @@ export const Content = createComponent(
       left: -size,
       right: -size,
       height: size,
-      backgroundImage: 'linear-gradient(to right, #FFF 33%, transparent)',
+      background:
+        'linear-gradient(to right, #FFF 33%, rgba(255, 255, 255, 0.0001) 100%)',
     },
   }),
   'div',
