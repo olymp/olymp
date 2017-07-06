@@ -7,6 +7,7 @@ const Item = createComponent(
   ({ theme, farbe, hovered }) => ({
     position: 'relative',
     paddingX: theme.space1,
+    fontSize: '94%',
     '> a': {
       clearfix: true,
       color: hovered ? farbe || theme.color : theme.dark2,
@@ -15,10 +16,20 @@ const Item = createComponent(
       },
       '> span': {
         float: 'left',
+        whiteSpace: 'nowrap',
+        overflowX: 'hidden',
+        textOverflow: 'ellipsis',
+        maxWidth: '50%',
       },
       '> span:last-child': {
+        opacity: 0.85,
+        fontSize: '90%',
         float: 'right',
         marginRight: theme.space4,
+        whiteSpace: 'nowrap',
+        overflowX: 'hidden',
+        textOverflow: 'ellipsis',
+        maxWidth: '38%',
       },
     },
   }),
