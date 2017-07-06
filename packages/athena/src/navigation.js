@@ -63,15 +63,41 @@ const VerticalMenu = createComponent(
   p => Object.keys(p)
 );
 
-const AntMenu = ({ keys, ...p }) =>
-  <Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
+const LeftMenu = createComponent(
+  ({ theme }) => ({
+    float: 'left',
+  }),
+  p => <Menu {...p} />,
+  p => Object.keys(p)
+);
 
-const AntSubMenu = ({ keys, children, ...p }) =>
-  (<Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p}>
-    <Menu.SubMenu title={<Icon type="bars" />}>
+const RightMenu = createComponent(
+  ({ theme }) => ({
+    float: 'right !important',
+    '> ul': {
+      right: 0,
+      left: 'auto !important',
+      '> li > ul': {
+        left: 'auto !important',
+        marginLeft: '0 !important',
+        right: '100%',
+        marginRight: 4,
+      },
+    },
+  }),
+  p => <Menu.SubMenu {...p} />,
+  p => Object.keys(p)
+);
+
+const AntMenu = ({ keys, ...p }) =>
+  <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
+
+const AntSubMenu = ({ keys, title, children, ...p }) =>
+  (<AntMenu {...p}>
+    <RightMenu title={title || <Icon type="bars" />}>
       {children}
-    </Menu.SubMenu>
-  </Menu>);
+    </RightMenu>
+  </AntMenu>);
 
 @withLang
 @withAuth
@@ -112,50 +138,6 @@ class Navigation extends Component {
               <Logo size={33} margin="0 0 -7px 0" />
             </Link>
           </Menu.Item>
-
-          <Menu.SubMenu
-            title={
-              <UserIcon
-                email={auth.user.email}
-                name={auth.user.name}
-                default="blank"
-              />
-            }
-          >
-            <Menu.Item key="@user">
-              <Link to={{ query: { '@user': null } }}>
-                <Icon type="user" /> Profil
-              </Link>
-            </Menu.Item>
-            <Menu.SubMenu
-              title={
-                <span>
-                  <Icon type="laptop" /> Ansicht
-                </span>
-              }
-            >
-              <Menu.Item key="@device-no">
-                <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
-                  <Icon type="laptop" /> Normal
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="@deviceWidth700">
-                <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
-                  <Icon type="tablet" /> Tablet
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="@deviceWidth400">
-                <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
-                  <Icon type="phone" /> Mobil
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.Item key="logout">
-              <a onClick={auth.logout} href="javascript:;">
-                <Icon type="poweroff" /> Abmelden
-              </a>
-            </Menu.Item>
-          </Menu.SubMenu>
 
           <Menu.Item key="@page">
             <Link
@@ -207,10 +189,59 @@ class Navigation extends Component {
         </AntMenu>
 
         {createElement(AntMenu, {}, children)}
-        <GatewayDest
-          name="navigation"
-          component={children && children.length ? AntSubMenu : AntMenu}
-        />
+
+        <GatewayDest name="quick" component={AntMenu} />
+
+        <div>
+          <GatewayDest
+            name="navigation"
+            component={children && children.length ? AntSubMenu : AntMenu}
+          />
+
+          <AntSubMenu
+            title={
+              <UserIcon
+                email={auth.user.email}
+                name={auth.user.name}
+                default="blank"
+              />
+            }
+          >
+            <Menu.Item key="@user">
+              <Link to={{ query: { '@user': null } }}>
+                <Icon type="user" /> Profil
+              </Link>
+            </Menu.Item>
+            <Menu.SubMenu
+              title={
+                <span>
+                  <Icon type="laptop" /> Ansicht
+                </span>
+              }
+            >
+              <Menu.Item key="@device-no">
+                <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
+                  <Icon type="laptop" /> Normal
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="@deviceWidth700">
+                <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
+                  <Icon type="tablet" /> Tablet
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="@deviceWidth400">
+                <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
+                  <Icon type="phone" /> Mobil
+                </Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+            <Menu.Item key="logout">
+              <a onClick={auth.logout} href="javascript:;">
+                <Icon type="poweroff" /> Abmelden
+              </a>
+            </Menu.Item>
+          </AntSubMenu>
+        </div>
       </VerticalMenu>
     );
   }

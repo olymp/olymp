@@ -68,13 +68,16 @@ const renderHelmet = (pathname, { name, description, tags } = {}) => {
 
   return <Helmet title={name} meta={meta} link={link} />;
 };
-const renderGateway = ({ auth, pathname, collectionList, query } = {}, { binding, bindingId } = {}) => {
-  if (!auth.user) return null;
+const renderGateway = (
+  { auth, pathname, collectionList, query } = {},
+  { binding, bindingId } = {}
+) => {
+  if (!auth.user) { return null; }
   const deviceWidth = query['@deviceWidth'];
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
   return (
-    <Gateway into="navigation">
+    <Gateway into="quick">
       <Menu.SubMenu
         title={
           <Button type="primary" style={{ margin: '0 -15px' }}>
@@ -96,24 +99,34 @@ const renderGateway = ({ auth, pathname, collectionList, query } = {}, { binding
           </Menu.Item>)
         )}
       </Menu.SubMenu>
-      {hasBinding && <Menu.Item key="save">
-        <Link to={{ pathname, query: { [`@${lowerFirst(binding.type)}`]: bindingId } }}>
-          <Button type="primary" style={{ margin: '0 -15px' }}>
-            {binding.type} bearbeiten <Icon type="arrow-right" style={{ marginRight: 0 }} />
-          </Button>
-        </Link>
-      </Menu.Item>}
-      {!isEditPage && !hasBinding && <Menu.Item key="@page">
-        <Link
-          to={{
-            query: { '@page': null, '@deviceWidth': deviceWidth },
-          }}
-        >
-          <Button type="primary" style={{ margin: '0 -15px' }}>
-            Seite bearbeiten <Icon type="arrow-right" style={{ marginRight: 0 }} />
-          </Button>
-        </Link>
-      </Menu.Item>}
+      {hasBinding &&
+        <Menu.Item key="save">
+          <Link
+            to={{
+              pathname,
+              query: { [`@${lowerFirst(binding.type)}`]: bindingId },
+            }}
+          >
+            <Button type="primary" style={{ margin: '0 -15px' }}>
+              {binding.type} bearbeiten{' '}
+              <Icon type="arrow-right" style={{ marginRight: 0 }} />
+            </Button>
+          </Link>
+        </Menu.Item>}
+      {!isEditPage &&
+        !hasBinding &&
+        <Menu.Item key="@page">
+          <Link
+            to={{
+              query: { '@page': null, '@deviceWidth': deviceWidth },
+            }}
+          >
+            <Button type="primary" style={{ margin: '0 -15px' }}>
+              Seite bearbeiten{' '}
+              <Icon type="arrow-right" style={{ marginRight: 0 }} />
+            </Button>
+          </Link>
+        </Menu.Item>}
     </Gateway>
   );
 };
