@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
 import { graphql, gql } from 'olymp';
+import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel } from '../components';
@@ -40,6 +41,46 @@ const getItems = (items, filter, title) =>
     </Li>)
   );
 
+class Item extends Component {
+  state = { open: false };
+
+  render() {
+    const { art, date, id, name, extrakt, slug, text } = this.props;
+    const { open } = this.state;
+
+    const bild = this.props.bild || {
+      url:
+        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      width: 400,
+      height: 300,
+    };
+
+    return (
+      <Panel
+        id={id}
+        // color={item.org.farbe}
+        subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
+        key={id}
+      >
+        <Img value={bild} width={100} avatar />
+        <Content>
+          <div>
+            <h2>
+              {name}
+            </h2>
+            {open
+              ? <SlateMate value={text} readOnly />
+              : <p>
+                {extrakt}
+              </p>}
+          </div>
+          <More open={open} onClick={() => this.setState({ open: !open })} />
+        </Content>
+      </Panel>
+    );
+  }
+}
+
 const component = graphql(
   gql`
     query terminList {
@@ -49,12 +90,26 @@ const component = graphql(
         art
         name
         extrakt
+        text
         slug
         bild {
           width
           height
           url
           crop
+        }
+        org {
+          name
+          image {
+            width
+            height
+            url
+            crop
+          }
+          farbe
+        }
+        author {
+          name
         }
       }
     }
@@ -72,24 +127,7 @@ const component = graphql(
     <Container {...attributes}>
       <Grid>
         <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-          {items.map(item =>
-            (<Panel
-              id={item.id}
-              title={item.name}
-              subtitle={`${item.art} vom ${moment(item.date).format(
-                'DD.MM.YYYY'
-              )}`}
-              key={item.id}
-            >
-              <Img value={item.bild} width={100} ratio={1} avatar />
-              <Content>
-                <p>
-                  {item.extrakt}
-                </p>
-                {item.slug && <More to={item.slug} />}
-              </Content>
-            </Panel>)
-          )}
+          {items.map(item => <Item {...item} />)}
         </Grid.Item>
         <Column
           medium={4}

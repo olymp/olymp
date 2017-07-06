@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   createComponent,
   Container,
@@ -6,10 +6,11 @@ import {
   border,
   SchemaLoader,
 } from 'olymp-fela';
-import { H2, Panel } from '../components';
 import { graphql, gql, Link } from 'olymp';
 import { Image } from 'olymp-cloudinary';
+import { SlateMate } from 'olymp-slate';
 import { orderBy, upperFirst, range } from 'lodash';
+import { H2, Panel } from '../components';
 
 const loaderSchema = [
   {
@@ -72,9 +73,16 @@ export const More = createComponent(
   ({ theme }) => ({
     marginTop: theme.space3,
     marginBottom: `-${theme.space3}`,
-    color: theme.color,
+    color: theme.dark2,
+    cursor: 'pointer',
+    onHover: {
+      color: theme.color,
+    },
   }),
-  p => <Link {...p}>Weiterlesen...</Link>,
+  ({ open, ...p }) =>
+    (<div {...p}>
+      {open ? 'Weniger...' : 'Weiterlesen...'}
+    </div>),
   p => Object.keys(p)
 );
 
@@ -93,6 +101,37 @@ export const Li = createComponent(
   p => Object.keys(p)
 );
 
+class Item extends Component {
+  state = { open: false };
+
+  render() {
+    const { farbe, id, name, extrakt, slug, text } = this.props;
+    const { open } = this.state;
+
+    const bild = this.props.bild || {
+      url:
+        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      width: 400,
+      height: 300,
+    };
+
+    return (
+      <Panel accent={farbe} key={id} title={name}>
+        <Img value={bild} width={100} ratio={1} avatar />
+        <Content>
+          {open
+            ? <SlateMate value={text} readOnly />
+            : <p>
+              {extrakt}
+            </p>}
+
+          <More open={open} onClick={() => this.setState({ open: !open })} />
+        </Content>
+      </Panel>
+    );
+  }
+}
+
 const TagContainer = createComponent(
   ({ theme }) => ({
     display: 'flex',
@@ -109,7 +148,7 @@ const Tag = createComponent(
     paddingY: theme.space1,
     paddingX: theme.space2,
     marginLeft: theme.space3,
-    marginBottom: theme.space3,
+    marginY: theme.space1,
     fontSize: '90%',
     flex: 1,
     whiteSpace: 'nowrap',
@@ -132,6 +171,7 @@ const component = graphql(
         name
         farbe
         extrakt
+        text
         slug
         tags
         bild {
@@ -139,6 +179,19 @@ const component = graphql(
           height
           url
           crop
+        }
+        org {
+          name
+          image {
+            width
+            height
+            url
+            crop
+          }
+          farbe
+        }
+        author {
+          name
         }
       }
     }
@@ -170,17 +223,7 @@ const component = graphql(
       <Container {...attributes}>
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-            {items.map(item =>
-              (<Panel accent={item.farbe} key={item.id} title={item.name}>
-                <Img value={item.bild} width={100} ratio={1} avatar />
-                <Content>
-                  <p>
-                    {item.extrakt}
-                  </p>
-                  {item.slug && <More to={item.slug} />}
-                </Content>
-              </Panel>)
-            )}
+            {items.map(item => <Item {...item} />)}
           </Grid.Item>
           <Column
             medium={4}
