@@ -14,7 +14,7 @@ export const Content = createComponent(
     hyphens: 'auto',
     flex: '1 1',
     position: 'relative',
-    minHeight: 180,
+    minHeight: 120,
     display: 'flex',
     '> iframe': {
       borderBottomRightRadius: 100,
