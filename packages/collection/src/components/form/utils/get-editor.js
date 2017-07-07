@@ -33,7 +33,8 @@ export default ({
   key,
 }) => {
   const { idField, start, suggest } = field['@'];
-  const { type, name } = field;
+  const { name } = field;
+  const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
 
   const editProps = {
     placeholder: label || null,

@@ -111,6 +111,7 @@ export default (WrappedComponent) => {
         null;
       return `${collection.fields
         .map(field => {
+          if (field.type.kind === 'NON_NULL') field = { ...field, type: field.type.ofType };
           if (field.type.kind === 'ENUM' || field.type.kind === 'SCALAR')
             return field.name;
           else if (
