@@ -56,7 +56,6 @@ export const Content = createComponent(
     flex: 1,
     justifyContent: 'space-between',
     paddingLeft: theme.space2,
-    borderLeft: '1px solid rgba(0, 0, 0, 0.08)',
     marginBottom: `-${theme.space3}`,
     '> a': {
       marginTop: theme.space3,
@@ -203,6 +202,7 @@ const component = graphql(
         }
       }
       pdfs: fileList(query: { tags: { in: "GiZ" }, state: { ne: REMOVED } }) {
+        id
         url
         caption
       }

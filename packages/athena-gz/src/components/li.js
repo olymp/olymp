@@ -1,11 +1,11 @@
 import { createComponent } from 'olymp-fela';
 
 export default createComponent(
-  ({ theme }) => ({
-    paddingBottom: theme.space2,
+  ({ theme, color = theme.color }) => ({
+    marginBottom: '1.5rem',
     clearfix: true,
     '& a': {
-      color: theme.color,
+      color,
       onHover: {
         textDecoration: 'underline',
       },

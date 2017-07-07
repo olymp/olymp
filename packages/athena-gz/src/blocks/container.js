@@ -22,9 +22,6 @@ export default {
         width: '100%',
         background: `linear-gradient(to right, ${color || theme.color}, #FFF)`,
       },
-      ifSmallDown: {
-        // marginY: theme.space1,
-      },
     },
     '& h2': {
       textAlign: 'left',
@@ -42,9 +39,6 @@ export default {
         minWidth: 75,
         width: '100%',
         background: `linear-gradient(to right, ${color || theme.color}, #FFF)`,
-      },
-      ifSmallDown: {
-        // marginY: theme.space1,
       },
     },
     '& a': {

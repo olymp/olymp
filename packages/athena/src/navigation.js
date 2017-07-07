@@ -57,6 +57,9 @@ const VerticalMenu = createComponent(
       zIndex: 3,
       boxShadow: 'inset 0 -10px 10px -10px #000000',
     },
+    ifSmallDown: {
+      display: 'none',
+    },
   }),
   'div',
   p => Object.keys(p)

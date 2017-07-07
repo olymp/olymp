@@ -62,6 +62,7 @@ const loaderSchema = [
 ];
 
 const Header = HeaderBlock.component;
+
 const Container = createComponent(
   ({ theme }) => ({
     ...ContainerBlock.styles({ theme }),
@@ -70,12 +71,14 @@ const Container = createComponent(
   ContainerBlock.component,
   p => Object.keys(p)
 );
+
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
-const Img = createComponent(
+
+const Content = createComponent(
   ({ theme }) => ({
-    paddingX: theme.space3,
+    paddingLeft: theme.space3,
   }),
-  p => <Image {...p} />,
+  p => <Grid.Item {...p} />,
   p => Object.keys(p)
 );
 
@@ -117,15 +120,16 @@ const component = withColor(
         {item.name}
       </Header>
       <Container className={className} color={item.org.farbe} {...attributes}>
-        <Grid size={5}>
-          <Grid.Item medium={2}>
+        <Grid size={3}>
+          <Grid.Item medium={1}>
             {item.bild &&
-              <Img value={item.bild} alt={item.bild.caption} width="100%" />}
-          </Grid.Item>
-          <Grid.Item medium={3}>
-            <Slate readOnly value={item.text} />
+              <Image value={item.bild} alt={item.bild.caption} width="100%" />}
             <Link to="/news">Zurück zur Übersicht</Link>
           </Grid.Item>
+          <Content medium={2}>
+            <Slate readOnly value={item.text} />
+            <Link to="/news">Zurück zur Übersicht</Link>
+          </Content>
         </Grid>
       </Container>
     </div>

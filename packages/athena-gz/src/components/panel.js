@@ -16,6 +16,9 @@ export const Content = createComponent(
     position: 'relative',
     minHeight: 120,
     display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignContent: 'space-around',
     '> iframe': {
       borderBottomRightRadius: 100,
     },

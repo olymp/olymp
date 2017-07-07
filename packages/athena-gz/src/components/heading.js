@@ -18,9 +18,6 @@ export const H1 = createComponent(
     // borderBottom: border(theme),
     marginTop: theme.space3,
     marginBottom: theme.space3,
-    ifSmallDown: {
-      marginY: theme.space1,
-    },
   }),
   ({ className, children, color, bordered = true, subtitle }) =>
     (<h1 className={className}>
@@ -43,9 +40,6 @@ export const H2 = createComponent(
     // borderBottom: border(theme),
     marginTop: theme.space3,
     marginBottom: theme.space3,
-    ifSmallDown: {
-      marginY: theme.space1,
-    },
   }),
   ({ className, children, color, bordered = true, subtitle, right }) =>
     (<h2 className={className}>

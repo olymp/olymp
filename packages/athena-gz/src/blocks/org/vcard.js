@@ -99,8 +99,10 @@ const Logo = createComponent(
     />),
   p => Object.keys(p)
 );
+
 const weekdays = moment.weekdays();
 weekdays.push(weekdays.splice(0, 1)[0]);
+
 export default createComponent(
   ({ theme }) => ({
     width: '100%',
