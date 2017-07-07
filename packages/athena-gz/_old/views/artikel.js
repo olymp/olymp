@@ -25,7 +25,7 @@ const fieldNames =
 export default class Artikel extends Component {
   render() {
     const { item, auth, location, save, patch } = this.props;
-    const readOnly = !auth.user || auth.user.einrichtung;
+    const readOnly = !auth.user || auth.user.org;
     if (!item) { return <Spin size="large" />; }
 
     const meta = [

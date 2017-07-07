@@ -41,7 +41,7 @@ const Item = createComponent(
     slug,
     name,
     kurz,
-    einrichtung,
+    org,
     telefon,
     onMouseEnter,
     onMouseLeave,
@@ -56,7 +56,7 @@ const Item = createComponent(
           {kurz || name}
         </span>
         <span>
-          {einrichtung || telefon}
+          {org || telefon}
         </span>
       </Link>
     </li>),
@@ -98,7 +98,7 @@ class VerzeichnisBlock extends Component {
   };
 
   onMouseOver = item => () => {
-    this.setState({ hover: item.einrichtungId || item.id });
+    this.setState({ hover: item.orgId || item.id });
   };
 
   renderSection = (title, items = []) =>
@@ -113,7 +113,7 @@ class VerzeichnisBlock extends Component {
             {...item}
             onMouseEnter={this.onMouseOver(item)}
             onMouseLeave={this.onMouseLeave}
-            hovered={this.state.hover === (item.einrichtungId || item.id)}
+            hovered={this.state.hover === (item.orgId || item.id)}
           />)
         )}
       </ul>
@@ -133,9 +133,9 @@ class VerzeichnisBlock extends Component {
         item.personen.forEach(person =>
           personen.push({
             ...person,
-            einrichtungId: item.id,
+            orgId: item.id,
             farbe: item.farbe,
-            einrichtung: item.kurz || item.name,
+            org: item.kurz || item.name,
             slug: item.slug,
           })
         );
@@ -145,9 +145,9 @@ class VerzeichnisBlock extends Component {
           spezial.push({
             id: leistung,
             name: leistung,
-            einrichtungId: item.id,
+            orgId: item.id,
             farbe: item.farbe,
-            einrichtung: item.kurz || item.name,
+            org: item.kurz || item.name,
             slug: item.slug,
           })
         );

@@ -1,7 +1,9 @@
 import moment from 'moment';
+import { get } from 'lodash';
 
-export default ({ item = {}, form }, field) => {
+export default ({ item = {}, form, auth }, field) => {
   const { name } = field;
+  const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
 
   if (item[name]) {
     // Wenn Item schon existiert, den vorhandenen Wert nehmen
@@ -12,6 +14,10 @@ export default ({ item = {}, form }, field) => {
   } else if (name === 'state') {
     // Bei State
     return 'DRAFT';
+  } else if (name === 'authorId' || name === 'userId') {
+    return get(auth, 'user.id');
+  } else if (name === 'orgId') {
+    return get(auth, 'user.org.id');
   } else if (name === 'slug' && form && form.getFieldValue('name')) {
     // Bei Slug
     let url = `/${encodeURIComponent(
