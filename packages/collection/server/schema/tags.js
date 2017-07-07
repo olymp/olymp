@@ -1,4 +1,4 @@
-import { orderBy, groupBy } from 'lodash';
+import { orderBy, groupBy, lowerFirst } from 'lodash';
 
 export default {
   name: 'tag',
@@ -30,7 +30,7 @@ export default {
       suggestions: (source, { collection, field = 'tags' }, { monk }) =>
         monk
           .collection('item')
-          .find(collection ? { _type: collection } : {}, { [field]: 1 })
+          .find(collection ? { _type: lowerFirst(collection) } : {}, { [field]: 1 })
           .then((array) => {
             const grouped = groupBy(array, field);
             const result = Object.keys(grouped).reduce((result, item) => {
