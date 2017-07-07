@@ -58,10 +58,10 @@ export const App = createComponent(
 export const Header = withScroll(
   createComponent(
     ({ theme, scrollTop }) => ({
-      /* paddingY: theme.space3,
+      // paddingY: theme.space3,
       ifSmallDown: {
-        paddingY: theme.space0,
-      }, */
+        paddingY: theme.space2,
+      },
       boxShadow: scrollTop && theme.boxShadow,
       transition: 'box-shadow 0.3s ease-in-out',
     }),
@@ -101,11 +101,12 @@ export default class GzLayout extends Component {
     } = this.props;
     const nav = (pages.map(x => x.children)[0] || [])
       .filter(x => x.slug !== '/');
-    const footer = [
-      ...(pages.map(x => x.children)[1] || []),
-    ];
+    const footer = [...(pages.map(x => x.children)[1] || [])];
     if (!auth.user) {
-      footer.push({ name: 'Einloggen', pathname: `${location.pathname}?login` });
+      footer.push({
+        name: 'Einloggen',
+        pathname: `${location.pathname}?login`,
+      });
     }
     const open = query.nav === null;
 
