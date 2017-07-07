@@ -10,12 +10,15 @@ export default {
     queries: {
       tags: (source, args, { monk }) =>
         monk
-          .collection('items')
+          .collection('item')
           .find({}, { tags: 1 })
           .then(array => array.map(({ tags }) => tags))
           .then((array) => {
             const grouped = groupBy(array);
             const result = Object.keys(grouped).reduce((result, item) => {
+              if (item === 'undefined' || !item || item === 'null') {
+                return result;
+              }
               result.push({
                 id: item,
                 count: grouped[item].length,
@@ -24,20 +27,20 @@ export default {
             }, []);
             return orderBy(result, ['count', 'id'], ['desc', 'asc']);
           }),
-      suggestions: (source, args, { monk }) =>
+      suggestions: (source, { collection, field = 'tags' }, { monk }) =>
         monk
-          .collection(args.collection.toLowerCase())
-          .find({}, { [args.field]: 1 })
+          .collection('item')
+          .find(collection ? { _type: collection } : {}, { [field]: 1 })
           .then((array) => {
-            const grouped = groupBy(array, args.field);
+            const grouped = groupBy(array, field);
             const result = Object.keys(grouped).reduce((result, item) => {
-              if (item === 'undefined') {
+              if (item === 'undefined' || !item || item === 'null') {
                 return result;
               }
               result.push({ id: item, count: grouped[item].length });
               return result;
             }, []);
-            return orderBy(result, ['count', args.field], ['desc', 'asc']);
+            return orderBy(result, ['count', field], ['desc', 'asc']);
           }),
     },
   },
