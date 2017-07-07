@@ -23,19 +23,28 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
       color: theme.light,
     },
   },
-  onAfter: {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 100,
-    height: 100,
-    backgroundColor: 'white',
-    zIndex: 5,
-    background: 'radial-gradient(circle 10000px at -0% 0%,transparent,transparent 100px,white 100px)',
-    backgroundSize: '100px 200px, 100px 200px',
-    backgroundPosition: '0 0,100% 0',
-    backgroundRepeat: 'no-repeat',
+  '> div:nth-child(1)': {
+    onAfter: {
+      content: '""',
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      width: 100,
+      height: 100,
+      backgroundColor: 'white',
+      zIndex: 5,
+      background:
+        'radial-gradient(circle 10000px at -0% 0%,transparent,transparent 100px,white 100px)',
+      backgroundSize: '100px 200px, 100px 200px',
+      backgroundPosition: '0 0, 100% 0',
+      backgroundRepeat: 'no-repeat',
+      ifSmallDown: {
+        width: 50,
+        height: 50,
+        background:
+          'radial-gradient(circle 10000px at -0% 0%,transparent,transparent 50px,white 50px)',
+      },
+    },
   },
   ifMediumUp: {
     '> div:nth-child(1) > div > div > img': {
@@ -53,13 +62,15 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
     },
   },
   ifSmallDown: {
+    paddingX: theme.space2,
+    paddingY: theme.space1,
     '> div:nth-child(1) > div > div > img': {
       borderBottomRightRadius: 50,
     },
     '> div:nth-child(2)': {
-      width: 'calc(100% - 2rem)',
+      width: 'calc(100% - 1rem)',
       borderRadius: theme.borderRadius,
-      margin: theme.space3,
+      margin: theme.space2,
       marginBottom: 0,
       padding: theme.space2,
       textAlign: 'center',
