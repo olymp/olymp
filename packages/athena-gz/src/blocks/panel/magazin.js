@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql, Link } from 'olymp';
+import { createComponent } from 'olymp-fela';
 import moment from 'moment';
 import Container from './container';
-import { Panel, Li, H2 } from '../../components';
+import { Panel, Li } from '../../components';
 import Carousel from './carousel';
 
 @graphql(
   gql`
     query terminList {
       items: terminList(
-        sort: { date: ASC }
-        query: { state: { ne: REMOVED }, date: { gt: ${moment().valueOf()} } }
+        sort: { date: DESC }
+        query: { state: { ne: REMOVED } }
       ) {
         id
         date
@@ -49,6 +50,10 @@ class News extends Component {
               <p>
                 {item.name}
               </p>
+              {item.slug &&
+                <Link to={{ pathname: `/news${item.slug}` }}>
+                  Nähere Informationen >
+                </Link>}
             </Li>)
           )}
         </ul>
