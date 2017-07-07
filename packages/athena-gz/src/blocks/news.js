@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
-import { SlateMate } from 'olymp-slate';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel } from '../components';
-import { Column, Content, Li, Img, More } from './magazin';
+import { Column, Content, Li, Img } from './magazin';
 
 const loaderSchema = [
   {
@@ -38,52 +37,51 @@ const getItems = (items, filter, title) =>
       <p>
         {item.name}
       </p>
+      {item.slug &&
+        <Link to={{ pathname: `/news${item.slug}` }}>
+          Nähere Informationen
+        </Link>}
     </Li>)
   );
 
-class Item extends Component {
-  render() {
-    const {
-      art,
-      date,
-      id,
-      name,
-      extrakt,
-      onClick,
-      text,
-      open,
-      org,
-      slug,
-    } = this.props;
+const Item = (props) => {
+  const {
+    art,
+    date,
+    id,
+    name,
+    extrakt,
+    onClick,
+    text,
+    open,
+    org,
+    slug,
+  } = props;
 
-    const bild = this.props.bild ||
-    org.logo || {
-      url:
-        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-      width: 400,
-      height: 300,
-    };
+  const bild = props.bild ||
+  org.logo || {
+    url:
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    width: 400,
+    height: 300,
+  };
 
-    return (
-      <Panel
-        accent={org.farbe}
-        title={name}
-        subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
-      >
-        <Img value={bild} width={100} avatar />
-        <Content>
-          <p>
-            {extrakt}
-          </p>
-          {slug &&
-            <Link to={{ pathname: `/news${slug}` }}>
-              <More />
-            </Link>}
-        </Content>
-      </Panel>
-    );
-  }
-}
+  return (
+    <Panel
+      accent={org.farbe}
+      title={name}
+      subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
+    >
+      <Img value={bild} width={100} avatar />
+      <Content>
+        <p>
+          {extrakt}
+        </p>
+        {slug && <Link to={{ pathname: `/news${slug}` }}>Weiterlesen...</Link>}
+      </Content>
+    </Panel>
+  );
+};
 
 @graphql(
   gql`

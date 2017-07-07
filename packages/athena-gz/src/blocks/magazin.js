@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   createComponent,
   Container,
@@ -58,6 +58,10 @@ export const Content = createComponent(
     paddingLeft: theme.space2,
     borderLeft: '1px solid rgba(0, 0, 0, 0.08)',
     marginBottom: `-${theme.space3}`,
+    '> a': {
+      marginTop: theme.space3,
+      color: theme.color,
+    },
   }),
   'div',
   p => Object.keys(p)
@@ -70,22 +74,6 @@ export const Img = createComponent(
     alignSelf: 'flex-start',
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
-);
-
-export const More = createComponent(
-  ({ theme }) => ({
-    marginTop: theme.space3,
-    color: theme.dark2,
-    cursor: 'pointer',
-    onHover: {
-      color: theme.color,
-    },
-  }),
-  ({ open, ...p }) =>
-    (<div {...p}>
-      {open ? 'Weniger...' : 'Weiterlesen...'}
-    </div>),
   p => Object.keys(p)
 );
 
@@ -115,41 +103,35 @@ const DownloadLink = createComponent(
   p => Object.keys(p)
 );
 
-class Item extends Component {
-  state = { open: false };
+const Item = (props) => {
+  const { name, extrakt, slug, org, date, author } = props;
 
-  render() {
-    const { name, extrakt, slug, org, date, author } = this.props;
+  const bild = props.bild ||
+  org.logo || {
+    url:
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    width: 400,
+    height: 300,
+  };
 
-    const bild = this.props.bild ||
-      org.logo || {
-        url:
-        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-        width: 400,
-        height: 300,
-      };
-
-    return (
-      <Panel
-        accent={org.farbe}
-        title={name}
-        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${author.name ||
-          'Redaktion'}`}
-      >
-        <Img value={bild} width={160} avatar />
-        <Content>
-          <p>
-            {extrakt}
-          </p>
-          {slug &&
-            <Link to={{ pathname: `/magazin${slug}` }}>
-              <More />
-            </Link>}
-        </Content>
-      </Panel>
-    );
-  }
-}
+  return (
+    <Panel
+      accent={org.farbe}
+      title={name}
+      subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${author.name ||
+        'Redaktion'}`}
+    >
+      <Img value={bild} width={160} avatar />
+      <Content>
+        <p>
+          {extrakt}
+        </p>
+        {slug &&
+          <Link to={{ pathname: `/magazin${slug}` }}>Weiterlesen...</Link>}
+      </Content>
+    </Panel>
+  );
+};
 
 const TagContainer = createComponent(
   ({ theme }) => ({
@@ -185,7 +167,10 @@ const Tag = createComponent(
 const component = graphql(
   gql`
     query artikelList {
-      items: artikelList(sort: { date: DESC }, query:{state:{ne:REMOVED}}) {
+      items: artikelList(
+        sort: { date: DESC }
+        query: { state: { ne: REMOVED } }
+      ) {
         id
         name
         extrakt
@@ -217,7 +202,7 @@ const component = graphql(
           name
         }
       }
-      pdfs: fileList(query: { tags: { in: "GiZ" }, state:{ne:REMOVED} }) {
+      pdfs: fileList(query: { tags: { in: "GiZ" }, state: { ne: REMOVED } }) {
         url
         caption
       }
@@ -228,8 +213,8 @@ const component = graphql(
       ...ownProps,
       data,
       isLoading: data.loading,
-      items: (data.items || []),
-      pdfs: (data.pdfs || []),
+      items: data.items || [],
+      pdfs: data.pdfs || [],
     }),
   }
 )(({ attributes, items, pdfs, isLoading }) => {

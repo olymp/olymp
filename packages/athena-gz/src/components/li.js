@@ -3,7 +3,8 @@ import { createComponent } from 'olymp-fela';
 export default createComponent(
   ({ theme }) => ({
     paddingBottom: theme.space2,
-    '> a': {
+    clearfix: true,
+    '& a': {
       color: theme.color,
       onHover: {
         textDecoration: 'underline',

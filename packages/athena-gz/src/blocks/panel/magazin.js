@@ -1,10 +1,29 @@
 import React, { Component } from 'react';
 import { graphql, gql, Link } from 'olymp';
 import { createComponent } from 'olymp-fela';
+import { Image } from 'olymp-cloudinary';
 import moment from 'moment';
 import Container from './container';
 import { Panel, Li } from '../../components';
 import Carousel from './carousel';
+
+const Img = createComponent(
+  ({ theme }) => ({
+    float: 'right',
+    marginRight: theme.space3,
+    marginBottom: theme.space2,
+  }),
+  p => <Image {...p} />,
+  p => Object.keys(p)
+);
+
+const Ul = createComponent(
+  ({ theme }) => ({
+    width: '100%',
+  }),
+  'ul',
+  p => Object.keys(p)
+);
 
 @graphql(
   gql`
@@ -18,8 +37,22 @@ import Carousel from './carousel';
         art
         name
         slug
+        bild {
+          id
+          url
+          caption
+          width
+          height
+        }
         org {
           farbe
+          image {
+            id
+            url
+            caption
+            width
+            height
+          }
         }
       }
     }
@@ -38,25 +71,29 @@ class News extends Component {
     const { items } = this.props;
     return (
       <Panel medium={7} title="Veranstaltungen" accent="rgb(73, 146, 195)">
-        <ul>
-          {items.slice(0, 5).map(item =>
-            (<Li key={item.id}>
+        <Ul>
+          {items.slice(0, 5).map(({ id, bild, org, art, name, slug, date }) =>
+            (<Li key={id}>
+              <Img
+                value={bild || (org || {}).image}
+                width={75}
+                ratio={1}
+                rounded
+                avatar
+              />
               <b>
-                {item.art} am {moment(item.date).format(
-                  'DD. MMMM YYYY, HH:mm'
-                )}{' '}
-                Uhr
+                {art} am {moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr
               </b>
               <p>
-                {item.name}
+                {name}
               </p>
-              {item.slug &&
-                <Link to={{ pathname: `/news${item.slug}` }}>
+              {slug &&
+                <Link to={{ pathname: `/news${slug}` }}>
                   Nähere Informationen >
                 </Link>}
             </Li>)
           )}
-        </ul>
+        </Ul>
       </Panel>
     );
   }
