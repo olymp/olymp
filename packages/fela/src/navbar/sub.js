@@ -5,10 +5,12 @@ import { border } from 'olymp-fela';
 export default createComponent(
   ({ theme, fill, vertically, right }) => ({
     /* flex start */
-    display: 'flex',
-    flex: fill && '1 1',
-    alignItems: 'stretch',
-    flexDirection: vertically ? 'column' : 'row',
+    ifMediumUp: {
+      display: 'flex',
+      flex: fill && '1 1',
+      alignItems: 'stretch',
+      flexDirection: vertically ? 'column' : 'row',
+    },
     /* flex end */
     float: right ? 'right' : 'left',
     width: fill && '100%',

@@ -64,6 +64,9 @@ const MegaNav = createComponent(
     width: 700,
     paddingX: theme.space3,
     paddingY: theme.space1,
+    ifMini: {
+      padding: 0,
+    },
   }),
   ({ className, pages, inverse }) =>
     (<div className={className}>
