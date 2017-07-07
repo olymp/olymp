@@ -113,7 +113,7 @@ const WhiteLink = createComponent(
 const getSubheader = (item) => {
   const author = item.author && `von ${item.author.name}`;
   const org =
-    item.org &&
+    item.org && item.org.slug &&
     <WhiteLink to={item.org.slug}>
       {item.org.name}
     </WhiteLink>;
