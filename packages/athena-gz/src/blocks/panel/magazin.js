@@ -30,7 +30,10 @@ const Ul = createComponent(
     query terminList {
       items: terminList(
         sort: { date: DESC }
-        query: { state: { ne: REMOVED } }
+        query: {
+          state: { ne: REMOVED }
+          art: { or: [{ eq: VORTRAG }, { eq: VERANSTALTUNG }] }
+        }
       ) {
         id
         date
@@ -72,7 +75,7 @@ class News extends Component {
     return (
       <Panel medium={7} title="Veranstaltungen" accent="rgb(73, 146, 195)">
         <Ul>
-          {items.slice(0, 5).map(({ id, bild, org, art, name, slug, date }) =>
+          {items.slice(0, 3).map(({ id, bild, org, art, name, slug, date }) =>
             (<Li key={id}>
               <Img
                 value={bild || (org || {}).image}
@@ -89,7 +92,7 @@ class News extends Component {
               </p>
               {slug &&
                 <Link to={{ pathname: `/news${slug}` }}>
-                  Nähere Informationen >
+                  Nähere Informationen
                 </Link>}
             </Li>)
           )}
