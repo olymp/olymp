@@ -21,6 +21,9 @@ const Inner = createComponent(
     alignItems: vertically ? 'flex-start' : 'stretch',
     /* flex end */
     clearfix: true,
+    ifMini: {
+      flexDirection: 'column',
+    },
   }),
   'div',
   ['className']

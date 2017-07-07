@@ -57,12 +57,12 @@ class Item extends Component {
     } = this.props;
 
     const bild = this.props.bild ||
-      org.logo || {
-        url:
+    org.logo || {
+      url:
         'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-        width: 400,
-        height: 300,
-      };
+      width: 400,
+      height: 300,
+    };
 
     return (
       <Panel
@@ -88,7 +88,10 @@ class Item extends Component {
 @graphql(
   gql`
     query terminList {
-      items: terminList(sort: { date: DESC }, query:{state:{ne:REMOVED}}) {
+      items: terminList(
+        sort: { date: DESC }
+        query: { state: { ne: REMOVED } }
+      ) {
         id
         date
         art
@@ -132,7 +135,6 @@ class Item extends Component {
   }
 )
 class News extends Component {
-
   render() {
     const { attributes, items, isLoading } = this.props;
 

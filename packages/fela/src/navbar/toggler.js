@@ -2,32 +2,16 @@ import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
-const Container = createComponent(
-  ({ open }) => ({
-    width: '100%',
-    ifMini: {
-      '> div:nth-child(2)': {
-        clear: 'both',
-        transform: open ? 'scaleY(1)' : 'scaleY(0)',
-        maxHeight: open ? 500 : 0,
-        overflow: 'auto',
-        transformOrigin: 'top',
-        transition: 'all 0.25s ease-in-out',
-      },
-    },
-  }),
-  'div',
-  p => Object.keys(p)
-);
-
 const Button = createComponent(
   ({ theme, open, inverse, size = 20 }) => ({
-    float: 'right',
-    padding: theme.space2,
-    margin: theme.space3,
+    position: 'absolute',
+    top: 10,
+    right: theme.space3,
+    // float: 'right',
+    // padding: theme.space2,
+    // margin: theme.space3,
     width: Math.round(size * 1.3),
     height: size,
-    position: 'relative',
     cursor: 'pointer',
     ifSmallUp: {
       display: 'none',
@@ -69,6 +53,24 @@ const Button = createComponent(
       <span />
       <span />
     </div>),
+  p => Object.keys(p)
+);
+
+const Container = createComponent(
+  ({ open }) => ({
+    width: '100%',
+    ifMini: {
+      '> div:nth-child(2)': {
+        clear: 'both',
+        transform: open ? 'scaleY(1)' : 'scaleY(0)',
+        maxHeight: open ? 500 : 0,
+        overflow: 'auto',
+        transformOrigin: 'top',
+        transition: 'all 0.25s ease-in-out',
+      },
+    },
+  }),
+  'div',
   p => Object.keys(p)
 );
 

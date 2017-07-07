@@ -13,7 +13,7 @@ const Layout = createComponent(
   }),
   ({ children, affix, ...rest }) =>
     (<div {...rest}>
-      {Children.map(children, child => cloneElement(child, { affix }))}
+      {Children.map(children, child => child && cloneElement(child, { affix }))}
     </div>),
   ({ fullHeight, ...p }) => Object.keys(p)
 );

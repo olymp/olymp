@@ -1,6 +1,6 @@
 import React from 'react';
 import { SimpleSwitch, SimpleRoute } from 'olymp';
-import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
+import { AuthModals, AuthUsers } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
@@ -96,7 +96,7 @@ export default (props) => {
             match={query['@users'] !== undefined}
             render={() => <AuthUsers {...props} />}
           />
-          {/*<SimpleRoute
+          {/* <SimpleRoute
             match={query['@user'] !== undefined}
             render={() => <AuthUser {...props} />}
           />*/}

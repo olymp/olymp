@@ -1,7 +1,61 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { graphql, gql } from 'olymp';
+import moment from 'moment';
 import Container from './container';
-import { Panel, Li } from '../../components';
+import { Panel, Li, H2 } from '../../components';
 import Carousel from './carousel';
+
+@graphql(
+  gql`
+    query terminList {
+      items: terminList(
+        sort: { date: ASC }
+        query: { state: { ne: REMOVED }, date: { gt: ${moment().valueOf()} } }
+      ) {
+        id
+        date
+        art
+        name
+        slug
+        org {
+          farbe
+        }
+      }
+    }
+  `,
+  {
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      data,
+      isLoading: data.loading,
+      items: data.items || [],
+    }),
+  }
+)
+class News extends Component {
+  render() {
+    const { items } = this.props;
+    return (
+      <Panel medium={7} title="Veranstaltungen" accent="rgb(73, 146, 195)">
+        <ul>
+          {items.slice(0, 5).map(item =>
+            (<Li key={item.id}>
+              <b>
+                {item.art} am {moment(item.date).format(
+                  'DD. MMMM YYYY, HH:mm'
+                )}{' '}
+                Uhr
+              </b>
+              <p>
+                {item.name}
+              </p>
+            </Li>)
+          )}
+        </ul>
+      </Panel>
+    );
+  }
+}
 
 export default {
   key: 'GZK.Panel.Magazin',
@@ -28,35 +82,6 @@ export default {
           },
         ]}
       />
-      <Panel medium={7} title="Veranstaltungen" accent="rgb(73, 146, 195)">
-        <ul>
-          <Li>
-            <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
-            <p>
-              Ursachen und aktuelle Behandlungsmöglichkeiten von
-              Schulterschmerzen
-            </p>
-          </Li>
-          <Li>
-            <b>Vortrag am 21. März 2017, 18:00 Uhr</b>
-            <p>Gelenkersatz am Knie</p>
-          </Li>
-          <Li>
-            <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
-            <p>
-              Ursachen und aktuelle Behandlungsmöglichkeiten von
-              Schulterschmerzen
-            </p>
-          </Li>
-          <Li>
-            <b>Vortrag am 21. März 2017, 18:00 Uhr</b>
-            <p>Gelenkersatz am Knie</p>
-          </Li>
-          <Li>
-            <b>Vortrag am 25. April 2017, 18:00 Uhr</b>
-            <p>MAXIMAL 5 ITEMS!</p>
-          </Li>
-        </ul>
-      </Panel>
+      <News />
     </Container>),
 };
