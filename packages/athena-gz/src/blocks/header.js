@@ -6,22 +6,14 @@ import capitalize from 'lodash/upperFirst';
 @withRouter
 class Content extends Component {
   render() {
-    const {
-      pathname,
-      children,
-      subheader,
-      query,
-      search,
-      dispatch,
-      location,
-      router,
-      editor,
-    } = this.props;
+    const { pathname, children, subheader, editor } = this.props;
     const path = pathname.split('/').filter(p => p);
 
     return (
       <Container>
-        <h1>{children}</h1>
+        <h1>
+          {children}
+        </h1>
         <p
           contentEditable={!editor || editor.props.readOnly ? undefined : false}
         >
@@ -45,6 +37,7 @@ export default {
       borderBottomRightRadius: 60,
       paddingX: theme.space3,
       paddingY: '1.33rem',
+      marginBottom: theme.space3,
       '> div': {
         '> h1': {
           color: theme.light,
@@ -53,6 +46,8 @@ export default {
       },
       ifSmallDown: {
         borderBottomRightRadius: 50,
+        marginX: theme.space2,
+        width: 'calc(100% - 1rem)',
       },
     }),
     ({ className, attributes, ...rest }) =>

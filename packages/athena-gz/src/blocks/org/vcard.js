@@ -10,7 +10,13 @@ const niceTime = (times) => {
   if (times.length === 0 || !Array.isArray(times)) {
     return 'Geschlossen';
   }
-  return times.map(time => time.map(t => moment().startOf('day').add(t, 'minutes').format('HH:mm')).join('-')).join(', ');
+  return times
+    .map(time =>
+      time
+        .map(t => moment().startOf('day').add(t, 'minutes').format('HH:mm'))
+        .join('-')
+    )
+    .join(', ');
 };
 
 const Container = createComponent(
@@ -76,6 +82,11 @@ const Logo = createComponent(
   ({ theme }) => ({
     marginTop: theme.space2,
     marginX: 'auto',
+    ifSmallDown: {
+      marginX: theme.space2,
+      marginY: 0,
+      width: 'calc(100% - 1rem)',
+    },
   }),
   ({ value, className, title }) =>
     (<Image

@@ -2,7 +2,6 @@ import React from 'react';
 import { graphql, gql, Helmet, Link } from 'olymp';
 import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container-text';
