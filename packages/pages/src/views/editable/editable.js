@@ -58,10 +58,10 @@ export default class PageSidebar extends Component {
       : (<Button.Group>
         <Sidebar.Button
           onClick={() =>
-              router.push({
-                pathname,
-                query: { ...query, '@page': 'new', parent: item.id },
-              })}
+            router.push({
+              pathname,
+              query: { ...query, '@page': 'new', parent: item.id },
+            })}
           shape="circle"
           icon="plus"
         />
@@ -80,7 +80,7 @@ export default class PageSidebar extends Component {
         bindingId={bindingId}
         bindingObj={bindingObj}
       />
-    );
+      );
 
     return (
       <SplitView deviceWidth={deviceWidth} center>
@@ -99,7 +99,7 @@ export default class PageSidebar extends Component {
           <PageForm
             form={form}
             item={item}
-            navigation={orderBy(navigation, ['type', 'name'], ['desc', 'desc'])}
+            navigation={navigation}
             items={flatNavigation}
             tab={`${tab}`}
             onTabClick={key => this.setState({ tab: key })}

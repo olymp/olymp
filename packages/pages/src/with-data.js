@@ -82,7 +82,7 @@ export const withNavigation = (Wrapped) => {
       const navigation = unflatten(items, {
         pathProp: 'pathname',
         sort: (children, parent) => {
-          children = children.reduce((state, child) => {
+          const newChildren = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
               loading = loading && data.loading;
@@ -106,26 +106,18 @@ export const withNavigation = (Wrapped) => {
             return state;
           }, []);
           if (!parent || !parent.sorting) {
-            const fields = [];
-            const directions = [];
-            ['+order'].forEach((sorter) => {
-              fields.push(sorter.substr(1));
-              directions.push(sorter[0] === '-' ? 'desc' : 'asc');
-            });
-            children = orderBy(children, fields, directions);
-          } else {
-            const sortIndex = parent.sorting;
-            children = sortBy(children, [
-              (o) => {
-                const index = sortIndex.indexOf(o.id);
-                if (index === -1) {
-                  return 99;
-                }
-                return index;
-              },
-            ]);
+            return orderBy(newChildren, ['order'], ['asc']);
           }
-          return children;
+          const sortIndex = parent.sorting;
+          return sortBy(newChildren, [
+            (o) => {
+              const index = sortIndex.indexOf(o.id);
+              if (index === -1) {
+                return 99;
+              }
+              return index;
+            },
+          ]);
         },
         setPath: (current, { slug, ...rest }) => {
           const pathname = `${current || ''}${slug || ''}`.replace('//', '/');
