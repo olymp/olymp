@@ -4,7 +4,6 @@ import { get } from 'lodash';
 export default ({ item = {}, form, auth }, field) => {
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
-
   if (item[name]) {
     // Wenn Item schon existiert, den vorhandenen Wert nehmen
     return item[name];
@@ -17,7 +16,7 @@ export default ({ item = {}, form, auth }, field) => {
   } else if (name === 'authorId' || name === 'userId') {
     return get(auth, 'user.id');
   } else if (name === 'orgId') {
-    return get(auth, 'user.org.id');
+    return get(auth, 'user.orgId');
   } else if (name === 'slug' && form && form.getFieldValue('name')) {
     // Bei Slug
     let url = `/${encodeURIComponent(
