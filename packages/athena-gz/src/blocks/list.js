@@ -71,6 +71,7 @@ const Item = createComponent(
         id
         slug
         image {
+          id
           url
         }
         telefon
