@@ -100,14 +100,17 @@ class Item extends Component {
         text
         slug
         bild {
+          id
           width
           height
           url
           crop
         }
         org {
+          id
           name
           logo {
+            id
             width
             height
             url
@@ -116,6 +119,7 @@ class Item extends Component {
           farbe
         }
         author {
+          id
           name
         }
       }
