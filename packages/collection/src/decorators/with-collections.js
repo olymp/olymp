@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
-import { withAuth } from 'olymp-auth';
 
 export default (WrappedComponent) => {
   @graphql(
@@ -25,13 +24,7 @@ export default (WrappedComponent) => {
         }
       }
     }
-  `,
-    {
-      options: ({ auth }) => ({
-        skip: !auth || !auth.user,
-      }),
-    }
-  )
+  `)
   class WithCollectionsComponent extends Component {
     list() {
       const { data = {} } = this.props;
@@ -39,14 +32,14 @@ export default (WrappedComponent) => {
 
       return schema && schema.types
         ? schema.types.filter(
-            x =>
-              (x.interfaces || [])
-                .filter(
-                  y =>
-                    y.name === 'CollectionType' ||
-                    y.name === 'CollectionInterface'
-                ).length
-          )
+          x =>
+            (x.interfaces || [])
+              .filter(
+              y =>
+                y.name === 'CollectionType' ||
+                y.name === 'CollectionInterface'
+              ).length
+        )
         : [];
     }
 
@@ -120,5 +113,5 @@ export default (WrappedComponent) => {
     }
   }
 
-  return withAuth(WithCollectionsComponent);
+  return WithCollectionsComponent;
 };
