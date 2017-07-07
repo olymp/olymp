@@ -76,7 +76,7 @@ export default class CollectionDetail extends Component {
               </a>
             </Menu.Item>
             {keys.map(tab =>
-              (<Menu.Item key={tab}>
+              (<Menu.Item key={tab} className={tab === currentTab && 'ant-menu-item-selected'}>
                 <a onClick={() => this.setState({ tab })}>
                   {tab}
                 </a>

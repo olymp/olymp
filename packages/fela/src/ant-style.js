@@ -154,6 +154,10 @@ export default ({ theme }) => {
       borderBottom: `2px solid ${transparent}`,
       color: `${transparent}`,
     },
+    '& .ant-menu-horizontal.ant-menu-dark > .ant-menu-submenu-selected': {
+      color: `${transparent}`,
+      backgroundColor: `${transparent2}`,
+    },
     '& .ant-menu-horizontal.ant-menu-light > .ant-menu-item-active': {
       borderBottom: `2px solid ${transparent}`,
       color: `${transparent}`,
