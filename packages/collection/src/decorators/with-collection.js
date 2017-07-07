@@ -5,6 +5,7 @@ import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
 
 const imageFields = `
+  id
   url
   crop
   width
@@ -166,7 +167,7 @@ export default (WrappedComponent) => {
               values.substr(0, values.length - 1).split(',').forEach((x, i) => {
                 specialValues[`arg${i}`] = JSON.parse(x);
               });
-            } catch (err) {}
+            } catch (err) { }
             field['@'][name] = specialValues;
             const specialField = {
               ...specialValues,
