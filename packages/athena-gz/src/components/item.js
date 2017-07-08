@@ -2,6 +2,7 @@ import { createComponent } from 'olymp-fela';
 
 export default createComponent(
   ({ theme, color = theme.color }) => ({
+    width: '100%',
     marginBottom: '1.5rem',
     clearfix: true,
     '& a': {
@@ -11,9 +12,9 @@ export default createComponent(
       },
     },
     ':last-of-type': {
-      paddingBottom: 0,
+      marginBottom: 0,
     },
   }),
-  'li',
+  'div',
   p => Object.keys(p)
 );

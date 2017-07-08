@@ -36,16 +36,7 @@ const Item = createComponent(
       },
     },
   }),
-  ({
-    className,
-    slug,
-    name,
-    kurz,
-    org,
-    telefon,
-    onMouseEnter,
-    onMouseLeave,
-  }) =>
+  ({ className, slug, name, kurz, org, telefon, onMouseEnter, onMouseLeave }) =>
     (<li className={className}>
       <Link
         to={slug || '/'}

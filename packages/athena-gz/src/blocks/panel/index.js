@@ -1,3 +1,3 @@
-export { default as GZKVorsorgeBlock } from './vorsorge';
-export { default as GZKVeranstaltungenBlock } from './magazin';
-export { default as GZKNeuigkeitenBlock } from './neuigkeiten';
+export { default as GZKVorsorgePanelBlock } from './vorsorge';
+export { default as GZKMagazinPanelBlock } from './magazin';
+export { default as GZKNeuesPanelBlock } from './neues';

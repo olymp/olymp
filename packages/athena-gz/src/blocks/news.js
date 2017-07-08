@@ -4,7 +4,7 @@ import { graphql, gql, Link } from 'olymp';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel } from '../components';
-import { Column, Content, Li, Img } from './magazin';
+import { Column, Content, Item, Img } from './magazin';
 
 const loaderSchema = [
   {
@@ -30,7 +30,7 @@ const loaderSchema = [
 
 const getItems = (items, filter, title) =>
   sortBy(items.filter(filter), ['date']).reverse().slice(0, 5).map(item =>
-    (<Li key={item.id}>
+    (<Item key={item.id}>
       <b>
         {title(item)}
       </b>
@@ -41,22 +41,11 @@ const getItems = (items, filter, title) =>
         <Link to={{ pathname: `/news${item.slug}` }}>
           Nähere Informationen
         </Link>}
-    </Li>)
+    </Item>)
   );
 
-const Item = (props) => {
-  const {
-    art,
-    date,
-    id,
-    name,
-    extrakt,
-    onClick,
-    text,
-    open,
-    org,
-    slug,
-  } = props;
+const NewsItem = (props) => {
+  const { art, date, name, extrakt, org, slug } = props;
 
   const bild = props.bild ||
   org.logo || {
@@ -142,7 +131,7 @@ class News extends Component {
           <Grid>
             <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
               {items.map(item =>
-                (<Item
+                (<NewsItem
                   {...item}
                   onClick={() =>
                     this.setState({
@@ -162,33 +151,26 @@ class News extends Component {
               paddingMedium="0 1rem"
             >
               <H2 right>Vorträge & Veranstaltungen</H2>
-              <ul>
-                {getItems(
-                  items,
-                  item =>
-                    item.art === 'VORTRAG' || item.art === 'VERANSTALTUNG',
-                  item =>
-                    `${moment(item.date).format('DD. MMMM YYYY, HH:mm')} Uhr`
-                )}
-              </ul>
+              {getItems(
+                items,
+                item => item.art === 'VORTRAG' || item.art === 'VERANSTALTUNG',
+                item =>
+                  `${moment(item.date).format('DD. MMMM YYYY, HH:mm')} Uhr`
+              )}
 
               <H2 right>Publikationen</H2>
-              <ul>
-                {getItems(
-                  items,
-                  item => item.art === 'PUBLIKATION',
-                  item => moment(item.date).format('DD. MMMM YYYY')
-                )}
-              </ul>
+              {getItems(
+                items,
+                item => item.art === 'PUBLIKATION',
+                item => moment(item.date).format('DD. MMMM YYYY')
+              )}
 
               <H2 right>Presse</H2>
-              <ul>
-                {getItems(
-                  items,
-                  item => item.art === 'PRESSE',
-                  item => moment(item.date).format('DD. MMMM YYYY')
-                )}
-              </ul>
+              {getItems(
+                items,
+                item => item.art === 'PRESSE',
+                item => moment(item.date).format('DD. MMMM YYYY')
+              )}
             </Column>
           </Grid>
         </Container>

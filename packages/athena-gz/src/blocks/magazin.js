@@ -254,20 +254,18 @@ const component = graphql(
             paddingMedium="0 0.5rem 0 0"
           >
             <H2 right>Ausgaben als PDFs</H2>
-            <ul>
-              {pdfs.map((pdf, i) =>
-                (<Li key={i}>
-                  <DownloadLink
-                    rel="noopener noreferrer"
-                    href={pdf.url}
-                    target="_blank"
-                  >
-                    Gesund im Zentrum - <b>{pdf.caption}</b>
-                    <FaDownload size={15} />
-                  </DownloadLink>
-                </Li>)
-              )}
-            </ul>
+            {pdfs.map((pdf, i) =>
+              (<Item key={i}>
+                <DownloadLink
+                  rel="noopener noreferrer"
+                  href={pdf.url}
+                  target="_blank"
+                >
+                  Gesund im Zentrum - <b>{pdf.caption}</b>
+                  <FaDownload size={15} />
+                </DownloadLink>
+              </Item>)
+            )}
 
             <H2 right>Schlagworte</H2>
             <TagContainer>

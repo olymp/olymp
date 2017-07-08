@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import { graphql, gql, Link } from 'olymp';
 import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import moment from 'moment';
 import Container from './container';
-import { Panel, Li } from '../../components';
+import { Panel } from '../../components';
+import List from './list';
 
-const Magazin = createComponent(
-  ({ theme }) => ({
+const MagazinItem = createComponent(
+  ({ theme, color = theme.color }) => ({
     float: 'left',
-    marginRight: theme.space2,
+    marginRight: theme.space3,
+    marginBottom: theme.space3,
     textAlign: 'center',
     '> div': {
       display: 'block',
       border: border(theme),
     },
     onHover: {
-      color: theme.color,
+      color,
       '> div': {
-        border: border(theme, theme.color),
+        border: border(theme, color),
       },
     },
   }),
@@ -26,54 +27,15 @@ const Magazin = createComponent(
   p => Object.keys(p)
 );
 
-const Img = createComponent(
-  ({ theme }) => ({
-    float: 'right',
-    marginLeft: theme.space3,
-    marginBottom: theme.space2,
-  }),
-  p => <Image {...p} />,
-  p => Object.keys(p)
-);
-
-const Ul = createComponent(
-  ({ theme }) => ({
-    width: '100%',
-  }),
-  'ul',
-  p => Object.keys(p)
-);
-
-const Text = createComponent(
-  ({ theme }) => ({
-    display: '-webkit-box',
-    marginY: theme.space2,
-    lineHeight: 1.4,
-    fontSize: 16,
-    WebkitLineClamp: 3,
-    height: 1.4 * 16 * 3,
-    WebkitBoxOrient: 'vertical',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  }),
-  'div',
-  p => Object.keys(p)
-);
-
 @graphql(
   gql`
-    query terminList {
-      items: terminList(
+    query artikelList {
+      items: artikelList(
         sort: { date: DESC }
-        query: {
-          state: { ne: REMOVED }
-          or: [{ art: { eq: VORTRAG } }, { art: { eq: VERANSTALTUNG } }]
-          date: { gt: ${moment().subtract(6, 'months').valueOf()}}
-        }
+        query: { state: { ne: REMOVED } }
       ) {
         id
         date
-        art
         name
         extrakt
         slug
@@ -86,7 +48,9 @@ const Text = createComponent(
         }
         org {
           id
+          name
           farbe
+          slug
           image {
             id
             url
@@ -95,13 +59,20 @@ const Text = createComponent(
             height
           }
         }
+        author {
+          name
+        }
       }
-      pdfs: fileList(query: { tags: { in: "GiZ" }, state: { ne: REMOVED } }) {
+      pdfs: fileList(
+        sort: { createdAt: DESC }
+        query: { tags: { in: "GiZ" }, state: { ne: REMOVED } }
+      ) {
         id
         url
         caption
         width
         height
+        createdAt
       }
     }
   `,
@@ -115,63 +86,37 @@ const Text = createComponent(
     }),
   }
 )
-class Block extends Component {
+class Magazin extends Component {
   render() {
-    const { items, pdfs, attributes, className } = this.props;
+    const { items, pdfs, attributes, className, isLoading } = this.props;
 
     return (
       <Container {...attributes} className={className}>
-        <Panel medium={5} title="Magazin">
-          {pdfs.map(pdf =>
-            (<Magazin
+        <List
+          size={7}
+          title="Unser Magazin"
+          accent="#8e44ad"
+          items={items}
+          path="magazin"
+          isLoading={isLoading}
+        />
+        <Panel
+          medium={5}
+          title={<Link to={{ pathname: '/magazin/' }}>Magazine als PDF</Link>}
+          accent="#8e44ad"
+        >
+          {pdfs.slice(0, 9).map(pdf =>
+            (<MagazinItem
               rel="noopener noreferrer"
               href={pdf.url}
               target="_blank"
+              color="#8e44ad"
               key={pdf.id}
             >
               <Image value={pdf} width={100} />
               {pdf.caption}
-            </Magazin>)
+            </MagazinItem>)
           )}
-        </Panel>
-        <Panel medium={7} title="Veranstaltungen" accent="rgb(73, 146, 195)">
-          <Ul>
-            {items
-              .slice(0, 3)
-              .map(({ id, bild, org, art, name, slug, extrakt, date }) =>
-                (<Li color="rgb(73, 146, 195)" key={id}>
-                  <h3>
-                    <Link to={{ pathname: `/news${slug || '/'}` }}>
-                      {name}
-                    </Link>
-                  </h3>
-                  <h5>
-                    {art} am {moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr
-                  </h5>
-                  {extrakt &&
-                    <div>
-                      <Img
-                        value={bild || (org || {}).image}
-                        width={75}
-                        ratio={1}
-                        avatar
-                      />
-                      <Text>
-                        {extrakt}
-                      </Text>
-                      {slug &&
-                        <Link to={{ pathname: `/news${slug}` }}>
-                          Weiterlesen...
-                        </Link>}
-                    </div>}
-                </Li>)
-              )}
-            <Li>
-              <Link to={{ pathname: '/news/' }}>
-                Zeige alle Veranstaltungen...
-              </Link>
-            </Li>
-          </Ul>
         </Panel>
       </Container>
     );
@@ -180,8 +125,8 @@ class Block extends Component {
 
 export default {
   key: 'GZK.Panel.Magazin',
-  label: 'Magazin, Veranstaltungen',
+  label: 'Magazin',
   category: 'Panel',
   editable: false,
-  component: Block,
+  component: Magazin,
 };

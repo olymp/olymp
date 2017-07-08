@@ -4,8 +4,8 @@ import { H2 } from './heading';
 
 export const Content = createComponent(
   ({ theme, accent, padding = theme.space3, size = 1 }) => ({
-    borderRight: `${size}px solid ${!accent ? theme.dark4 : fade(accent)}`,
-    borderBottom: `${size}px solid ${!accent ? theme.dark4 : fade(accent)}`,
+    borderRight: `${size}px solid ${!accent ? theme.color : fade(accent)}`,
+    borderBottom: `${size}px solid ${!accent ? theme.color : fade(accent)}`,
     borderBottomRightRadius: 100,
     paddingTop: 0,
     paddingBottom: padding,
@@ -17,8 +17,8 @@ export const Content = createComponent(
     minHeight: 120,
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignContent: 'space-around',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
     '> iframe': {
       borderBottomRightRadius: 100,
     },

@@ -10,12 +10,58 @@ const Img = createComponent(
     filter: 'grayscale(100%)',
     opacity: 0.3,
     transition: 'opacity .4s ease,filter .4s ease',
-    onHover: {
-      filter: 'none',
-      opacity: 1,
-    },
   }),
   p => <Image {...p} />,
+  p => Object.keys(p)
+);
+
+const Link = createComponent(
+  ({ theme }) => ({
+    onHover: {
+      '> div': {
+        filter: 'none',
+        opacity: 1,
+      },
+    },
+    ifSmallDown: {
+      color: theme.dark3,
+    },
+  }),
+  'a',
+  p => Object.keys(p)
+);
+
+const Content = createComponent(
+  ({ theme }) => ({
+    ifMediumUp: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      left: 0,
+      centerY: true,
+      backgroundColor: 'rgba(0, 0, 0, 0.67)',
+      borderRadius: theme.borderRadius,
+      opacity: 0,
+    },
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
+const Inner = createComponent(
+  ({ theme }) => ({
+    ifMediumUp: {
+      position: 'absolute',
+      width: '100%',
+      left: 0,
+      centerY: true,
+      padding: theme.space2,
+      '> h3': {
+        color: theme.light,
+      },
+    },
+  }),
+  'div',
   p => Object.keys(p)
 );
 
@@ -24,10 +70,11 @@ const Item = createComponent(
     padding: theme.space2,
     marginY: theme.space2,
     textAlign: 'center',
+    position: 'relative',
   }),
   ({ className, website, name, tags, bild }) =>
     (<Grid.Item className={className} mini={5} medium={2} gridSize={10}>
-      <a href={website} rel="noopener noreferrer">
+      <Link href={website} rel="noopener noreferrer">
         <Img
           value={bild}
           maxResolution={40000}
@@ -35,13 +82,17 @@ const Item = createComponent(
           ratio={1}
           mode="padded"
         />
-        <h3>
-          {name}
-        </h3>
-        <p>
-          {tags.join(', ')}
-        </p>
-      </a>
+        <Content>
+          <Inner>
+            <h3>
+              {name}
+            </h3>
+            <span>
+              {tags.join(', ')}
+            </span>
+          </Inner>
+        </Content>
+      </Link>
     </Grid.Item>),
   p => Object.keys(p)
 );
