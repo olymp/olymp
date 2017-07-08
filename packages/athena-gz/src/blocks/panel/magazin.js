@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { graphql, gql, Link } from 'olymp';
-import { createComponent, border } from 'olymp-fela';
+import { border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
+import map, {
+  createSkeletorComponent,
+  withSkeletor,
+  image,
+} from 'olymp-skeletor';
 import Container from './container';
 import { Panel } from '../../components';
 import List from './list';
 
-const MagazinItem = createComponent(
-  ({ theme, color = theme.color }) => ({
+const MagazinItem = createSkeletorComponent(
+  ({ theme, color = theme.color }, { filled, bordered }) => ({
     float: 'left',
     marginRight: theme.space3,
     marginBottom: theme.space3,
@@ -21,6 +26,9 @@ const MagazinItem = createComponent(
       '> div': {
         border: border(theme, color),
       },
+    },
+    '> span': {
+      ...filled(),
     },
   }),
   'a',
@@ -60,6 +68,7 @@ const MagazinItem = createComponent(
           }
         }
         author {
+          id
           name
         }
       }
@@ -86,6 +95,7 @@ const MagazinItem = createComponent(
     }),
   }
 )
+@withSkeletor
 class Magazin extends Component {
   render() {
     const { items, pdfs, attributes, className, isLoading } = this.props;
@@ -105,17 +115,23 @@ class Magazin extends Component {
           title={<Link to={{ pathname: '/magazin/' }}>Magazine als PDF</Link>}
           accent="#8e44ad"
         >
-          {pdfs.slice(0, 9).map(pdf =>
-            (<MagazinItem
-              rel="noopener noreferrer"
-              href={pdf.url}
-              target="_blank"
-              color="#8e44ad"
-              key={pdf.id}
-            >
-              <Image value={pdf} width={100} />
-              {pdf.caption}
-            </MagazinItem>)
+          {map(
+            item =>
+              (<MagazinItem
+                rel="noopener noreferrer"
+                href={item.url}
+                target="_blank"
+                color="#8e44ad"
+                key={item.id}
+              >
+                <Image value={item} width={100} />
+                <span>
+                  {item.caption}
+                </span>
+              </MagazinItem>),
+            pdfs.slice(0, 9),
+            () => image(300, 400),
+            9
           )}
         </Panel>
       </Container>

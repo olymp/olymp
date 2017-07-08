@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "name": "react-skeletor",
+  "description": "",
+  "main": "./src",
+  "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "@trainline/react-skeletor": "^0.1.7",
+    "olymp": "^15.1.14",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {}
+}
