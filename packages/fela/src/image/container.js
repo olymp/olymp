@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LazyLoad from 'react-lazy-load';
+import LazyLoad from './lazy';
 import { createComponent } from 'react-fela';
 import { createSkeletorComponent } from 'olymp-skeletor';
 import { ContentLoaderStyles } from '../loader';

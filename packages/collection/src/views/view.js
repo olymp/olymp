@@ -6,10 +6,10 @@ import { withItems, withCollection } from '../decorators';
 import Detail from './detail';
 import Sidebar from './sidebar';
 
+@withRouter
 @withSearch('search')
 @withCollection
 @withItems
-@withRouter
 @Form.create()
 export default class CollectionView extends Component {
   render() {

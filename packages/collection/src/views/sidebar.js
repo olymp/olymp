@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'olymp';
-import { Dropdown, Menu, Icon, Button } from 'antd';
+import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
-import { FieldValue, collectionToCsvDownload } from '../components';
+import { FieldValue } from '../components';
 import { Sidebar, List } from 'olymp-ui';
 
 const states = {
-  ALL: 'Alle',
   PUBLISHED: 'Öffentlich',
   DRAFT: 'Ablage',
   REMOVED: 'Papierkorb',
@@ -115,6 +114,8 @@ export default class CollectionListSidebar extends Component {
     const {
       router,
       id,
+      pathname,
+      query,
       collection,
       onSearch,
       searchText,
@@ -150,6 +151,18 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
+    const childs = items.map(item =>
+      (<List.Item
+        image={
+          (item.image || item.bild) &&
+          <Image value={item.image || item.bild} width={37} height={37} />
+        }
+        active={item.id === id}
+        label={item.name}
+        onClick={item.onClick}
+        key={item.id}
+      />)
+    );
     return (
       <Sidebar
         header={
@@ -177,18 +190,14 @@ export default class CollectionListSidebar extends Component {
         title={collection.name}
         subtitle={`${collection.name} sichten und verwalten`}
       >
-        {items.map(item =>
-          (<List.Item
-            image={
-              (item.image || item.bild) &&
-              <Image value={item.image || item.bild} width={37} height={37} />
-            }
-            active={item.id === id}
-            label={item.name}
-            onClick={item.onClick}
-            key={item.id}
-          />)
-        )}
+        {!searchText ? <Tabs size="small" defaultActiveKey={query.state || 'PUBLISHED'} onChange={state => router.push({ pathname, query: { ...query, state } })}>
+          {Object.keys(states).map(key => (
+            <Tabs.TabPane tab={states[key]} key={key}>
+              {childs}
+            </Tabs.TabPane>
+          ))}
+        </Tabs> : childs
+        }
       </Sidebar>
     );
   }

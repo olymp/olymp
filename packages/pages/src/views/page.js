@@ -7,7 +7,9 @@ import { ContentLoader } from 'olymp-fela';
 
 const Page = withBlockTypes(props =>
   (<ContentLoader isLoading={props.isLoading}>
-    <SlateMate {...props} showUndo key={props.id + (props.bindingId || '')} />
+    <SlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
+      {props.children}
+    </SlateMate>
   </ContentLoader>)
 );
 Page.propTypes = {
@@ -23,6 +25,7 @@ Page.WithData = queryPage(
   mapProps(({ item, data, ...rest }) => ({
     value: item && item.blocks,
     isLoading: data.loading,
+    item,
     ...rest,
   }))(Page)
 );

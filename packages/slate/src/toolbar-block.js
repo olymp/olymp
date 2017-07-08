@@ -21,16 +21,17 @@ const Action = ({ node, state, onChange }) => (
   const tooltip =
     typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
 
+  const onClick = e => {
+    e.preventDefault();
+    if (toggle) toggle({ setData, getData, state, onChange });
+  };
+
   if (component) {
     const Com = component;
     return (
       <Menu.Item key={i}>
         <Button
-          onMouseDown={
-            toggle
-              ? () => toggle({ setData, getData, state, onChange })
-              : undefined
-          }
+          onMouseDown={onClick}
           tooltip={tooltip}
         >
           <Com setData={setData} getData={getData} />
@@ -42,7 +43,7 @@ const Action = ({ node, state, onChange }) => (
     <Menu.Item key={i}>
       <Button
         active={!!active && active({ getData, state })}
-        onMouseDown={() => toggle({ setData, getData, state, onChange })}
+        onMouseDown={onClick}
         tooltip={tooltip}
       >
         {label}

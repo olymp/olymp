@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, gql, Helmet, Link } from 'olymp';
+import { graphql, gql, Link, renderHelmet } from 'olymp';
 import { createComponent, withColor, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
@@ -7,41 +7,6 @@ import { SlateMate, withBlockTypes } from 'olymp-slate';
 import { ImageStyles } from '../image/block';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container-text';
-
-const renderHelmet = ({ slogan, bild } = {}) => {
-  const meta = [];
-  if (slogan) {
-    meta.push({
-      name: 'description',
-      content: slogan,
-    });
-    meta.push({
-      property: 'og:description',
-      content: slogan,
-    });
-    meta.push({
-      property: 'twitter:description',
-      content: slogan,
-    });
-  }
-  if (bild) {
-    meta.push({
-      property: 'og:image',
-      content: bild.url,
-    });
-    meta.push({
-      property: 'twitter:image',
-      content: bild.url,
-    });
-    meta.push({
-      property: 'twitter:card',
-      content: bild.url,
-    });
-  }
-
-  return <Helmet meta={meta} />;
-};
-
 
 const loaderSchema = [
   {
@@ -132,7 +97,7 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
-      {renderHelmet(item)}
+      {renderHelmet({ description: item.extrakt, image: item.bild })}
       {item.bild
         ? <Peak
           title={item.name}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { lowerFirst } from 'lodash';
+import { lowerFirst, get } from 'lodash';
 
 export default (WrappedComponent) => {
   const cache = {};
@@ -16,16 +16,20 @@ export default (WrappedComponent) => {
       `,
       {
         /* eslint-disable */
-        options: ({ id, searchTerm }) => ({
-          variables: {
-            query: searchTerm
-              ? {
-                  name: {
-                    contains: searchTerm,
-                  },
-                }
-              : null,
-          },
+        options: ({ id, searchTerm, query, ...rest }) => ({
+          variables: searchTerm ? {
+            query: {
+              name: {
+                contains: searchTerm,
+              },
+            }
+          } : {
+              query: {
+                state: {
+                  eq: get(query, 'state', 'PUBLISHED'),
+                },
+              }
+            },
         }),
       }
     )(props => <WrappedComponent {...props} items={props.data.items} />);
