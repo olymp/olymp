@@ -2,7 +2,6 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
 import { omit } from 'olymp';
-import { Form } from 'antd';
 import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 
@@ -14,7 +13,7 @@ const ok = props => () => {
     }
     mutate({
       variables: {
-        id: item && item.id,
+        id: !clone && item && item.id,
         input: omit(values),
       },
       updateQueries:
@@ -25,7 +24,7 @@ const ok = props => () => {
             { mutationResult }
           ) => ({
             ...prev,
-            items: [...prev.items, mutationResult.data.item],
+            items: [mutationResult.data.item, ...prev.items],
           }),
         }
         : undefined,
@@ -40,6 +39,35 @@ const ok = props => () => {
       })
       .catch(onError);
   });
+};
+
+const clone = props => () => {
+  const { form, item, router, query, pathname, mutate, typeName } = props;
+  const cloneItem = omit(item);
+  delete cloneItem.id;
+  mutate({
+    variables: {
+      input: cloneItem,
+    },
+    updateQueries: {
+      [`${typeName.toLowerCase()}List`]: (
+        prev,
+        { mutationResult }
+      ) => ({
+        ...prev,
+        items: [mutationResult.data.item, ...prev.items],
+      }),
+    }
+  })
+    .then(({ data: { item } }) => {
+      onSuccess('Kopiert');
+      form.resetFields();
+      router.push({
+        pathname,
+        query: { ...query, [`@${lowerFirst(typeName)}`]: item.id },
+      });
+    })
+    .catch(onError);
 };
 
 const del = props => () => {
@@ -106,6 +134,7 @@ export default (WrappedComponent) => {
           {...props}
           x={props.form}
           onSave={ok(props)}
+          onClone={clone(props)}
           onDelete={del(props)}
         />
       )
