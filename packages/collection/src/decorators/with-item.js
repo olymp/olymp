@@ -13,7 +13,7 @@ const ok = props => () => {
     }
     mutate({
       variables: {
-        id: !clone && item && item.id,
+        id: item && item.id,
         input: omit(values),
       },
       updateQueries:
