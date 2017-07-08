@@ -35,7 +35,7 @@ export default ({ item = {}, form, auth }, field) => {
       .split('%C3%BC')
       .join('Ü')}`;
     if (form.getFieldValue('date')) {
-      url = `${moment(form.getFieldValue('date')).format('DD-MM-YYYY')}-${url}`;
+      url = `/${moment(form.getFieldValue('date')).format('DD-MM-YYYY')}-${url.substr(1)}`;
     }
     return url;
   }
