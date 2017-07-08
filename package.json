@@ -91,6 +91,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "lodash": "4.17.4",
+    "lorem-ipsum": "^1.0.4",
     "moment": "^2.18.1",
     "mongo-cursor-pagination": "^5.0.0",
     "mongodb": "^2.2.29",

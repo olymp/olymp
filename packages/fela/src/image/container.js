@@ -2,47 +2,50 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
 import { createComponent } from 'react-fela';
+import { createSkeletorComponent } from 'olymp-skeletor';
 import { ContentLoaderStyles } from '../loader';
 
-const containerStyle = ({
-  ratio,
-  width,
-  minWidth,
-  maxWidth,
-  minHeight,
-  maxHeight,
-  rounded,
-}) => ({
-  position: 'relative',
-  overflow: 'hidden',
-  width,
-  minWidth,
-  maxWidth,
-  minHeight,
-  maxHeight,
-  borderRadius: rounded && '50%',
-  onBefore: {
-    display: 'block',
-    content: '""',
-    width: '100%',
-    paddingTop: `${ratio * 100}%`,
-  },
-  '> img': {
-    center: true,
+const containerStyle = isLoading => ({
+    ratio,
+    width,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
+    rounded,
+  }) => ({
+    position: 'relative',
+    overflow: 'hidden',
+    width,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
     borderRadius: rounded && '50%',
-  },
-});
+    onBefore: {
+      display: 'block',
+      content: '""',
+      width: '100%',
+      paddingTop: `${ratio * 100}%`,
+    },
+    '> img': {
+      center: true,
+      borderRadius: rounded && '50%',
+      display: isLoading && 'none',
+    },
+  });
 
 const Container = createComponent(
-  containerStyle,
+  containerStyle(),
   'div',
   ({ ratio, rounded, width, ...p }) => Object.keys(p)
 );
 
-const LazyContainer = createComponent(
-  ({ visible, ...rest }) => ({
-    ...containerStyle(rest),
+const LazyContainer = createSkeletorComponent(
+  ({ visible, ...rest }, { filled, isLoading }) => ({
+    ...containerStyle(isLoading)(rest),
     ...(!visible ? ContentLoaderStyles : {}),
+    ...filled(),
   }),
   ({ onVisible, children, ...p }) =>
     (<LazyLoad {...p} onContentVisible={onVisible}>
