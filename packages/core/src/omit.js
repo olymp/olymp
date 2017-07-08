@@ -6,7 +6,7 @@ const omit = (obj, keyToOmit = '__typename') => {
   }
   const newObj = Object.keys(obj).reduce((store, key) => {
     if (isArray(obj[key])) {
-      store[key] = obj[key].map(omit, keyToOmit);
+      store[key] = obj[key].map(x => omit(x, keyToOmit));
     } else if (isObject(obj[key])) {
       store[key] = omit(obj[key], keyToOmit);
     } else if (key !== keyToOmit) {
