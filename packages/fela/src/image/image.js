@@ -115,6 +115,7 @@ class Image extends Component {
       src,
       alt,
       onClick,
+      children,
       ...containerProps
     } = this.props;
     const { width, ratio, isPercentage } = this.initVals();
@@ -143,6 +144,7 @@ class Image extends Component {
             {image}
           </Amp>
           : image}
+        {children}
       </Container>
     );
   }
@@ -184,6 +186,6 @@ Image.defaultProps = {
 
   lazy: true,
   alt: '',
-  onClick: () => {},
+  onClick: () => { },
 };
 export default Image;

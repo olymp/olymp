@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderHelmet } from 'olymp';
 import { Image, SimpleImageEdit } from 'olymp-cloudinary';
 
 export default {
@@ -14,7 +15,10 @@ export default {
         width: 1000,
         height: 300,
       })}
-    />),
+    >
+      {console.log(getData('value'))}
+      {renderHelmet({ image: getData('value') })}
+    </Image>),
   actions: [
     {
       component: ({ setData, getData, ...p }) =>
@@ -24,7 +28,7 @@ export default {
           value={getData('value', {})}
           multi={false}
         />),
-      toggle: () => {},
+      toggle: () => { },
     },
   ],
 };

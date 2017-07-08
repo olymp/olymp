@@ -1,44 +1,10 @@
 import React from 'react';
-import { graphql, gql, Helmet, Link } from 'olymp';
+import { graphql, gql, renderHelmet, Link } from 'olymp';
 import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container-text';
-
-const renderHelmet = ({ slogan, bild } = {}) => {
-  const meta = [];
-  if (slogan) {
-    meta.push({
-      name: 'description',
-      content: slogan,
-    });
-    meta.push({
-      property: 'og:description',
-      content: slogan,
-    });
-    meta.push({
-      property: 'twitter:description',
-      content: slogan,
-    });
-  }
-  if (bild) {
-    meta.push({
-      property: 'og:image',
-      content: bild.url,
-    });
-    meta.push({
-      property: 'twitter:image',
-      content: bild.url,
-    });
-    meta.push({
-      property: 'twitter:card',
-      content: bild.url,
-    });
-  }
-
-  return <Helmet meta={meta} />;
-};
 
 const loaderSchema = [
   {
@@ -115,7 +81,7 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
-      {renderHelmet(item)}
+      {renderHelmet({ description: item.extrakt, image: item.bild })}
       <Header subheader={getSubheader(item)} color={item.org.farbe}>
         {item.name}
       </Header>
@@ -134,7 +100,7 @@ const component = withColor(
       </Container>
     </div>
   </SchemaLoader>)
-);
+  );
 
 const componentWithData = graphql(
   gql`

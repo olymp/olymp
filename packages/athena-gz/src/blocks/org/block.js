@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, gql, Helmet } from 'olymp';
+import { graphql, gql, renderHelmet } from 'olymp';
 import { createComponent, Grid, withColor, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
@@ -8,41 +8,6 @@ import VCard from './vcard';
 import { ImageStyles } from '../image/block';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container';
-
-const renderHelmet = ({ slogan, image, logo } = {}) => {
-  const meta = [];
-  if (slogan) {
-    meta.push({
-      name: 'description',
-      content: slogan,
-    });
-    meta.push({
-      property: 'og:description',
-      content: slogan,
-    });
-    meta.push({
-      property: 'twitter:description',
-      content: slogan,
-    });
-  }
-  const img = logo || image;
-  if (img) {
-    meta.push({
-      property: 'og:image',
-      content: img.url,
-    });
-    meta.push({
-      property: 'twitter:image',
-      content: img.url,
-    });
-    meta.push({
-      property: 'twitter:card',
-      content: img.url,
-    });
-  }
-
-  return <Helmet meta={meta} />;
-};
 
 const loaderSchema = [
   {
@@ -129,7 +94,7 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
-      {renderHelmet(item)}
+      {renderHelmet({ description: item.slogan, image: item.logo || item.image })}
       {item.image
         ? <Peak
           title={item.name || item.titel}
