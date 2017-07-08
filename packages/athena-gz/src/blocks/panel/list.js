@@ -47,7 +47,7 @@ class ListItem extends Component {
       path,
     } = this.props;
     return (
-      <Item color={color} key={id}>
+      <Item color={color} top={0} bottom="1.5rem" key={id}>
         <h3>
           <Link to={{ pathname: `/${path}${slug || '/'}` }}>
             {name}

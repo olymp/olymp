@@ -3,8 +3,8 @@ import { Container, Grid, SchemaLoader } from 'olymp-fela';
 import { graphql, gql, Link } from 'olymp';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
-import { H2, Panel } from '../components';
-import { Column, Content, Item, Img } from './magazin';
+import { H2, Panel, Item } from '../components';
+import { Column, Content, Img } from './magazin';
 
 const loaderSchema = [
   {

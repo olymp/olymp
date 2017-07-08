@@ -1,9 +1,15 @@
 import { createComponent } from 'olymp-fela';
 
 export default createComponent(
-  ({ theme, color = theme.color }) => ({
+  ({
+    theme,
+    color = theme.color,
+    top = theme.space3,
+    bottom = theme.space3,
+  }) => ({
     width: '100%',
-    marginBottom: '1.5rem',
+    marginTop: top,
+    marginBottom: bottom,
     clearfix: true,
     '& a': {
       color,
@@ -16,5 +22,5 @@ export default createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  ({ top, bottom, ...p }) => Object.keys(p)
 );

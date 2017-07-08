@@ -11,7 +11,7 @@ import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { orderBy, upperFirst, range } from 'lodash';
 import moment from 'moment';
-import { H2, Panel } from '../components';
+import { H2, Panel, Item as ListItem } from '../components';
 
 const loaderSchema = [
   {
@@ -255,7 +255,7 @@ const component = graphql(
           >
             <H2 right>Ausgaben als PDFs</H2>
             {pdfs.map((pdf, i) =>
-              (<Item key={i}>
+              (<ListItem key={i}>
                 <DownloadLink
                   rel="noopener noreferrer"
                   href={pdf.url}
@@ -264,7 +264,7 @@ const component = graphql(
                   Gesund im Zentrum - <b>{pdf.caption}</b>
                   <FaDownload size={15} />
                 </DownloadLink>
-              </Item>)
+              </ListItem>)
             )}
 
             <H2 right>Schlagworte</H2>
