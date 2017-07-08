@@ -111,6 +111,15 @@ export default (server, options) => {
     schema.apply(modules);
   });
 
+  /*monk.collection('item').find({ _type: 'artikel' }).then((items) => {
+    items.forEach((item) => {
+      if (!item.extrakt) item.extrakt = 'Extrakt';
+      if (!item.date) item.date = +new Date();
+      if (!item.slug) item.slug = '/' + item.date;
+      if (!item.name) item.name = item.date;
+      monk.collection('item').update({ id: item.id, _type: item._type }, { ...item });
+    });
+  });*/
   /* monk.collection('page').find({}).then((items) => {
     items.forEach((item) => {
       monk.collection('item').insert({ ...item, _type: 'page', _appId: 'gzk' });
