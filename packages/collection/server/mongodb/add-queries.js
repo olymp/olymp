@@ -3,9 +3,9 @@ import { addFields } from 'olymp-graphql/server';
 import adaptQuery from './adapt-query';
 import shortId from 'shortid';
 
-export default (ast, node, resolvers) => {
+export default (ast, node, resolvers, typeName) => {
   const name = node.name.value;
-  const table = lowerFirst(name);
+  const table = lowerFirst(typeName || name);
 
   const Query = ast.definitions.find(x => get(x, 'name.value') === 'RootQuery');
 
@@ -40,8 +40,8 @@ export default (ast, node, resolvers) => {
           monk
             .collection('item')
             .find(
-              { ...adaptQuery(query), _type: table, _appId: app.id },
-              { rawCursor: true }
+            typeName ? { ...adaptQuery(query), _type: table, _appId: app.id } : { ...adaptQuery(query), _appId: app.id },
+            { rawCursor: true }
             )
             .then((cursor) => {
               const obj = sort || { name: 'ASC' };

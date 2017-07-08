@@ -27,21 +27,23 @@ export default {
           updatedBy: User @relation
         `
       );
-      if (getDirectiveValue(node, 'collection', 'name')) {
+      const name = getDirectiveValue(node, 'collection', 'name');
+      if (name) {
         addInterfaces(ast, node, 'CollectionInterface');
       }
       addQueryInput(ast, node);
       addSortInput(ast, node);
-      addQueries(ast, node, resolvers);
+      addQueries(ast, node, resolvers, name);
     },
     enter2(node, d, { ast, resolvers }) {
       addInput(ast, node);
-      if (getDirectiveValue(node, 'collection', 'name')) {
+      const name = getDirectiveValue(node, 'collection', 'name');
+      if (name) {
         addInterfaces(ast, node, 'CollectionInterface');
       }
       addQueryInput(ast, node);
       addSortInput(ast, node);
-      addQueries(ast, node, resolvers);
+      addQueries(ast, node, resolvers, name);
     },
   },
 };
