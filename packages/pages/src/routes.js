@@ -190,7 +190,6 @@ export const EditablePageRoute = (props) => {
         render={children =>
           (<IFrame disabled={!deviceWidth}>
             <Wrapped {...props} match={match}>
-              {renderHelmet(pathname, match)}
               {renderGateway(props, match)}
               {children}
             </Wrapped>
@@ -206,7 +205,6 @@ export const PageRoute = (props) => {
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
     <Wrapped {...props} match={match}>
-      {renderHelmet(pathname, match || {})}
       {renderGateway(props, match)}
       <ContentLoader height={600} isLoading={loading}>
         <PageTransition>
