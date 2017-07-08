@@ -33,6 +33,9 @@ const StyledInner = createComponent(
         display: 'none',
       },
       '> .ant-modal-body': {
+        '> .ant-tabs > .ant-tabs-bar': {
+          marginBottom: 0,
+        },
         flex: 1,
         overflowY: 'auto',
         paddingLeft: paddingX,
