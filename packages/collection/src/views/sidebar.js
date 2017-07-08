@@ -151,6 +151,18 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
+    const childs = items.map(item =>
+      (<List.Item
+        image={
+          (item.image || item.bild) &&
+          <Image value={item.image || item.bild} width={37} height={37} />
+        }
+        active={item.id === id}
+        label={item.name}
+        onClick={item.onClick}
+        key={item.id}
+      />)
+    );
     return (
       <Sidebar
         header={
@@ -178,24 +190,14 @@ export default class CollectionListSidebar extends Component {
         title={collection.name}
         subtitle={`${collection.name} sichten und verwalten`}
       >
-        <Tabs size="small" defaultActiveKey={query.state || 'PUBLISHED'} onChange={state => router.push({ pathname, query: { ...query, state } })}>
+        {!searchText ? <Tabs size="small" defaultActiveKey={query.state || 'PUBLISHED'} onChange={state => router.push({ pathname, query: { ...query, state } })}>
           {Object.keys(states).map(key => (
             <Tabs.TabPane tab={states[key]} key={key}>
-              {items.map(item =>
-                (<List.Item
-                  image={
-                    (item.image || item.bild) &&
-                    <Image value={item.image || item.bild} width={37} height={37} />
-                  }
-                  active={item.id === id}
-                  label={item.name}
-                  onClick={item.onClick}
-                  key={item.id}
-                />)
-              )}
+              {childs}
             </Tabs.TabPane>
           ))}
-        </Tabs>
+        </Tabs> : childs
+        }
       </Sidebar>
     );
   }
