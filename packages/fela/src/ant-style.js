@@ -28,6 +28,12 @@ export default ({ theme }) => {
     '& h6': {
       color: theme.dark,
     },
+    '& .ant-menu-item .anticon': {
+      marginRight: 0,
+    },
+    '& .ant-menu-submenu-title .anticon': {
+      marginRight: 0,
+    },
     '& .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected': {
       backgroundColor: transparent3,
     },
