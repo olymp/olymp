@@ -9,7 +9,7 @@ import { ImageStyles } from '../image/block';
 import HeaderBlock from '../header';
 import ContainerBlock from '../container';
 
-const renderHelmet = ({ slogan, image } = {}) => {
+const renderHelmet = ({ slogan, image, logo } = {}) => {
   const meta = [];
   if (slogan) {
     meta.push({
@@ -25,18 +25,19 @@ const renderHelmet = ({ slogan, image } = {}) => {
       content: slogan,
     });
   }
-  if (image) {
+  const img = logo || image;
+  if (img) {
     meta.push({
       property: 'og:image',
-      content: image.url,
+      content: img.url,
     });
     meta.push({
       property: 'twitter:image',
-      content: image.url,
+      content: img.url,
     });
     meta.push({
       property: 'twitter:card',
-      content: image.url,
+      content: img.url,
     });
   }
 
@@ -153,7 +154,7 @@ const component = withColor(
       </Container>
     </div>
   </SchemaLoader>)
-);
+  );
 
 const componentWithData = graphql(
   gql`
