@@ -1,8 +1,9 @@
-import { createComponent } from 'olymp-fela';
+import { createSkeletorComponent } from 'olymp-skeletor';
 
-export default createComponent(
+export default createSkeletorComponent(
   ({
     theme,
+    skeletor,
     color = theme.color,
     top = theme.space3,
     bottom = theme.space3,
@@ -20,6 +21,7 @@ export default createComponent(
     ':last-of-type': {
       marginBottom: 0,
     },
+    ...skeletor.text(),
   }),
   'div',
   ({ top, bottom, ...p }) => Object.keys(p)

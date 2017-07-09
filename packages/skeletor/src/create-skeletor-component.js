@@ -24,34 +24,95 @@ const animation = {
   },
 };
 
+const fill = color => ({
+  color: `${color} !important`,
+  backgroundColor: `${color} !important`,
+  background: `${color} !important`,
+});
+
 const getColor = color => tinycolor(color).setAlpha(1).toRgbString();
 
-const filled = (color = 'gray') => ({
-  color: `${getColor(color)} !important`,
-  backgroundColor: `${getColor(color)} !important`,
-  background: `${getColor(color)} !important`,
-  ...animation,
-});
-
-const bordered = (color = 'gray') => ({
-  border: `1px solid ${getColor(color)} !important`,
-  ...animation,
-});
-
 const createSkeletorComponent = (styles, component, propKeys) => {
-  const SkeletorComponent = (props, { skeletorLoading, theme, renderer }) =>
-    createComponent(
-      p =>
-        styles(p, {
-          filled: skeletorLoading ? c => filled(c || theme.dark) : () => ({}),
-          bordered: skeletorLoading
-            ? c => bordered(c || theme.dark)
-            : () => ({}),
-          isLoading: skeletorLoading,
-        }),
-      component,
-      propKeys
-    )(props, { theme, renderer });
+  class SkeletorComponent extends Component {
+    background = (c = 'gray') => {
+      const color = getColor(c || this.context.theme.color);
+
+      return {
+        ...fill(color),
+        ...animation,
+      };
+    };
+
+    border = (c = 'gray') => {
+      const color = getColor(c || this.context.theme.color);
+
+      return {
+        border: `1px solid ${color} !important`,
+        ...animation,
+      };
+    };
+
+    text = (c = 'gray') => {
+      const color = getColor(c || this.context.theme.color);
+
+      return {
+        '& h1': {
+          ...fill(color),
+        },
+        '& h2': {
+          ...fill(color),
+        },
+        '& h3': {
+          ...fill(color),
+        },
+        '& h4': {
+          ...fill(color),
+        },
+        '& h5': {
+          ...fill(color),
+        },
+        '& h6': {
+          ...fill(color),
+        },
+        '& p': {
+          ...fill(color),
+        },
+        '& span': {
+          ...fill(color),
+        },
+        '& a': {
+          ...fill(color),
+        },
+        ...animation,
+      };
+    };
+
+    render() {
+      const { skeletorLoading, theme, renderer } = this.context;
+
+      return createComponent(
+        p =>
+          styles({
+            ...p,
+            skeletor: skeletorLoading
+              ? {
+                background: this.background,
+                border: this.border,
+                text: this.text,
+                isLoading: true,
+              }
+              : {
+                background: () => ({}),
+                border: () => ({}),
+                text: () => ({}),
+                isLoading: false,
+              },
+          }),
+        component,
+        propKeys
+      )(this.props, { theme, renderer });
+    }
+  }
   SkeletorComponent.contextTypes = {
     renderer: PropTypes.object,
     theme: PropTypes.object,
