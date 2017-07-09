@@ -151,7 +151,7 @@ class Pages extends Component {
         selectedKeys={selected}
         draggable
         className="draggable-tree"
-        defaultExpandedKeys={items.map(item => item.id || item.pathname)}
+        defaultExpandedKeys={items.filter((x, i) => i === 0).map(item => item.id || item.pathname)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
