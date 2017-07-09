@@ -7,6 +7,7 @@ export const Content = createComponent(
     borderRight: `${size}px solid ${!accent ? theme.color : fade(accent)}`,
     borderBottom: `${size}px solid ${!accent ? theme.color : fade(accent)}`,
     borderBottomRightRadius: 100,
+    overflow: 'auto',
     paddingTop: 0,
     paddingBottom: padding,
     paddingLeft: 0,

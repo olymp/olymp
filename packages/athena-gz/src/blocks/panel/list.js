@@ -14,30 +14,6 @@ import map, {
 import moment from 'moment';
 import { Panel, Item } from '../../components';
 
-const H3 = createSkeletorComponent(
-  ({ theme }, { filled, isLoading }) => ({
-    ...filled(),
-  }),
-  'h3',
-  p => Object.keys(p)
-);
-
-const H5 = createSkeletorComponent(
-  ({ theme }, { filled, isLoading }) => ({
-    ...filled(),
-  }),
-  'h5',
-  p => Object.keys(p)
-);
-
-const StyledLink = createSkeletorComponent(
-  ({ theme }, { filled, isLoading }) => ({
-    ...filled(),
-  }),
-  p => <Link {...p} />,
-  p => Object.keys(p)
-);
-
 const Img = createComponent(
   ({ theme }) => ({
     float: 'right',
@@ -49,8 +25,8 @@ const Img = createComponent(
 );
 
 const Text = createSkeletorComponent(
-  ({ theme }, { filled, isLoading }) => ({
-    ...filled(),
+  ({ theme, skeletor }) => ({
+    ...skeletor.background(),
     display: '-webkit-box',
     marginY: theme.space2,
     lineHeight: 1.4,
@@ -59,7 +35,7 @@ const Text = createSkeletorComponent(
     height: 1.4 * 16 * 3,
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
-    textOverflow: !isLoading && 'ellipsis',
+    textOverflow: !skeletor.isLoading && 'ellipsis',
   }),
   'div',
   p => Object.keys(p)
@@ -82,19 +58,19 @@ class ListItem extends Component {
     } = this.props;
     return (
       <Item color={color} top={0} bottom="1.5rem" key={id}>
-        <H3>
-          <StyledLink to={{ pathname: `/${path}${slug || '/'}` }}>
+        <h3>
+          <Link to={{ pathname: `/${path}${slug || '/'}` }}>
             {name}
-          </StyledLink>
-        </H3>
-        <H5>
+          </Link>
+        </h3>
+        <h5>
           {art || 'ARTIKEL'}, {moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr,{' '}
-          {(author || {}).name || 'Redaktion'}/<StyledLink
+          {(author || {}).name || 'Redaktion'}/<Link
             to={(org || {}).slug || '/'}
           >
             {(org || {}).name || 'GZK'}
-          </StyledLink>
-        </H5>
+          </Link>
+        </h5>
         {extrakt &&
           <div>
             <Img
@@ -107,9 +83,7 @@ class ListItem extends Component {
               {extrakt}
             </Text>
             {slug &&
-              <StyledLink to={{ pathname: `/${path}${slug}` }}>
-                Weiterlesen...
-              </StyledLink>}
+              <Link to={{ pathname: `/${path}${slug}` }}>Weiterlesen...</Link>}
           </div>}
       </Item>
     );

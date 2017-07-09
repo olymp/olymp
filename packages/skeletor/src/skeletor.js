@@ -27,5 +27,10 @@ class Skeletor extends Component {
   }
 }
 
-export default (component, data, dummy, count = 1) =>
-  <Skeletor component={component} data={data} dummy={dummy} count={count} />;
+export default (component, data, dummy, count) =>
+  (<Skeletor
+    component={component}
+    data={data}
+    dummy={dummy}
+    count={count || 1}
+  />);

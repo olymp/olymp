@@ -6,34 +6,34 @@ import { createSkeletorComponent } from 'olymp-skeletor';
 import { ContentLoaderStyles } from '../loader';
 
 const containerStyle = isLoading => ({
-    ratio,
-    width,
-    minWidth,
-    maxWidth,
-    minHeight,
-    maxHeight,
-    rounded,
-  }) => ({
-    position: 'relative',
-    overflow: 'hidden',
-    width,
-    minWidth,
-    maxWidth,
-    minHeight,
-    maxHeight,
+  ratio,
+  width,
+  minWidth,
+  maxWidth,
+  minHeight,
+  maxHeight,
+  rounded,
+}) => ({
+  position: 'relative',
+  overflow: 'hidden',
+  width,
+  minWidth,
+  maxWidth,
+  minHeight,
+  maxHeight,
+  borderRadius: rounded && '50%',
+  onBefore: {
+    display: 'block',
+    content: '""',
+    width: '100%',
+    paddingTop: `${ratio * 100}%`,
+  },
+  '> img': {
+    center: true,
     borderRadius: rounded && '50%',
-    onBefore: {
-      display: 'block',
-      content: '""',
-      width: '100%',
-      paddingTop: `${ratio * 100}%`,
-    },
-    '> img': {
-      center: true,
-      borderRadius: rounded && '50%',
-      display: isLoading && 'none',
-    },
-  });
+    display: isLoading && 'none',
+  },
+});
 
 const Container = createComponent(
   containerStyle(),
@@ -42,10 +42,10 @@ const Container = createComponent(
 );
 
 const LazyContainer = createSkeletorComponent(
-  ({ visible, ...rest }, { filled, isLoading }) => ({
-    ...containerStyle(isLoading)(rest),
+  ({ visible, skeletor, ...rest }) => ({
+    ...containerStyle(skeletor.isLoading)(rest),
     ...(!visible ? ContentLoaderStyles : {}),
-    ...filled(),
+    ...skeletor.background(),
   }),
   ({ onVisible, children, ...p }) =>
     (<LazyLoad {...p} onContentVisible={onVisible}>

@@ -12,7 +12,7 @@ import { Panel } from '../../components';
 import List from './list';
 
 const MagazinItem = createSkeletorComponent(
-  ({ theme, color = theme.color }, { filled, bordered }) => ({
+  ({ theme, color = theme.color, skeletor }) => ({
     float: 'left',
     marginRight: theme.space3,
     marginBottom: theme.space3,
@@ -28,7 +28,7 @@ const MagazinItem = createSkeletorComponent(
       },
     },
     '> span': {
-      ...filled(),
+      ...skeletor.background(),
     },
   }),
   'a',
