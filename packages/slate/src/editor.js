@@ -384,19 +384,19 @@ export default // @withToolbar(options)
             : null}
         </Gateway>
         {children}
-        {readOnly !== true && focus &&
+        {readOnly !== true &&
           <ToolbarBlock
             state={value}
             blockTypes={blockTypes}
             onChange={onChange}
           />}
-        {readOnly !== true && focus &&
+        {readOnly !== true &&
           <ToolbarVoid
             state={value}
             blockTypes={blockTypes}
             onChange={onChange}
           />}
-        {readOnly !== true && focus &&
+        {readOnly !== true &&
           <ToolbarText state={value} onChange={onChange} {...options} />}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
