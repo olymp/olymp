@@ -95,13 +95,13 @@ NavItem.propTypes = {
   /** path for react-router or undefined for placeholder */
   to: PropTypes.string,
   /** submenu is mega dropdown menu */
-  mega: PropTypes.bool,
+  mega: PropTypes.func,
   /**  */
   onClick: PropTypes.func,
 };
 NavItem.defaultProps = {
   to: undefined,
-  mega: false,
+  mega: null,
   onClick: undefined,
 };
 export default NavItem;

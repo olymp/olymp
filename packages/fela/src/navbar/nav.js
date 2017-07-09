@@ -30,7 +30,7 @@ const Nav = createComponent(
       },
     },
   ({ mega, sub, vertically, children, ...props }) =>
-    mega
+    mega && mega({ mega, sub, vertically, children, ...props })
       ? <Mega {...props} />
       : <Sub {...props} vertically={sub || vertically}>
         {children}
