@@ -7,18 +7,10 @@ export default WrappedComponent =>
       skeletorLoading: PropTypes.bool,
     };
 
-    state = { isLoading: this.props.isLoading };
-
     getChildContext() {
-      const { isLoading } = this.state;
+      const { isLoading } = this.props;
 
       return { skeletorLoading: isLoading };
-    }
-
-    componentWillReceiveProps({ isLoading }) {
-      if (this.props.isLoading !== isLoading) {
-        this.setState({ isLoading });
-      }
     }
 
     render() {
