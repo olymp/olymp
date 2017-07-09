@@ -2,15 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'olymp';
 import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import map, {
-  createSkeletorComponent,
-  id,
-  color,
-  string,
-  text,
-  date,
-  image,
-} from 'olymp-skeletor';
 import moment from 'moment';
 import { Panel, Item } from '../../components';
 
@@ -24,9 +15,8 @@ const Img = createComponent(
   p => Object.keys(p)
 );
 
-const Text = createSkeletorComponent(
-  ({ theme, skeletor }) => ({
-    ...skeletor.background(),
+const Text = createComponent(
+  ({ theme }) => ({
     display: '-webkit-box',
     marginY: theme.space2,
     lineHeight: 1.4,
@@ -35,7 +25,7 @@ const Text = createSkeletorComponent(
     height: 1.4 * 16 * 3,
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
-    textOverflow: !skeletor.isLoading && 'ellipsis',
+    textOverflow: 'ellipsis',
   }),
   'div',
   p => Object.keys(p)
@@ -100,37 +90,15 @@ export default ({ items, title, accent, size = 6, path, isLoading }) =>
     }
     accent={accent}
   >
-    {map(
-      item =>
+    {items
+      .slice(0, 3)
+      .map(item =>
         (<ListItem
           {...item}
           color={accent}
           path={path}
           key={item.id}
           isLoading={isLoading}
-        />),
-      items.slice(0, 3),
-      () => ({
-        id: id(),
-        bild: image(100, 100),
-        org: {
-          id: id(),
-          name: string(),
-          slug: '/',
-          image: image(100, 100),
-        },
-        author: {
-          id: id(),
-          name: string(),
-        },
-        art: 'VORTRAG',
-        name: string(),
-        slug: '/',
-        extrakt: text(),
-        date: date(),
-        color: color(),
-        path: '',
-      }),
-      3
-    )}
+        />)
+      )}
   </Panel>);

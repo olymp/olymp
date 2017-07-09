@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { graphql, gql, Link } from 'olymp';
-import { border } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import map, {
-  createSkeletorComponent,
-  withSkeletor,
-  image,
-} from 'olymp-skeletor';
 import Container from './container';
 import { Panel } from '../../components';
 import List from './list';
 
-const MagazinItem = createSkeletorComponent(
-  ({ theme, color = theme.color, skeletor }) => ({
+const MagazinItem = createComponent(
+  ({ theme, color = theme.color }) => ({
     float: 'left',
     marginRight: theme.space3,
     marginBottom: theme.space3,
@@ -26,9 +21,6 @@ const MagazinItem = createSkeletorComponent(
       '> div': {
         border: border(theme, color),
       },
-    },
-    '> span': {
-      ...skeletor.background(),
     },
   }),
   'a',
@@ -95,7 +87,6 @@ const MagazinItem = createSkeletorComponent(
     }),
   }
 )
-@withSkeletor
 class Magazin extends Component {
   render() {
     const { items, pdfs, attributes, className, isLoading } = this.props;
@@ -115,23 +106,19 @@ class Magazin extends Component {
           title={<Link to={{ pathname: '/magazin/' }}>Magazine als PDF</Link>}
           accent="#8e44ad"
         >
-          {map(
-            item =>
-              (<MagazinItem
-                rel="noopener noreferrer"
-                href={item.url}
-                target="_blank"
-                color="#8e44ad"
-                key={item.id}
-              >
-                <Image value={item} width={100} />
-                <span>
-                  {item.caption}
-                </span>
-              </MagazinItem>),
-            pdfs.slice(0, 9),
-            () => image(300, 400),
-            9
+          {pdfs.slice(0, 9).map(item =>
+            (<MagazinItem
+              rel="noopener noreferrer"
+              href={item.url}
+              target="_blank"
+              color="#8e44ad"
+              key={item.id}
+            >
+              <Image value={item} width={100} />
+              <span>
+                {item.caption}
+              </span>
+            </MagazinItem>)
           )}
         </Panel>
       </Container>

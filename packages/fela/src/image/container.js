@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LazyLoad from './lazy';
 import { createComponent } from 'react-fela';
-import { createSkeletorComponent } from 'olymp-skeletor';
 import { ContentLoaderStyles } from '../loader';
 
-const containerStyle = isLoading => ({
+const containerStyle = ({
   ratio,
   width,
   minWidth,
@@ -31,21 +30,19 @@ const containerStyle = isLoading => ({
   '> img': {
     center: true,
     borderRadius: rounded && '50%',
-    display: isLoading && 'none',
   },
 });
 
 const Container = createComponent(
-  containerStyle(),
+  containerStyle,
   'div',
   ({ ratio, rounded, width, ...p }) => Object.keys(p)
 );
 
-const LazyContainer = createSkeletorComponent(
-  ({ visible, skeletor, ...rest }) => ({
-    ...containerStyle(skeletor.isLoading)(rest),
+const LazyContainer = createComponent(
+  ({ visible, ...rest }) => ({
+    ...containerStyle(rest),
     ...(!visible ? ContentLoaderStyles : {}),
-    ...skeletor.background(),
   }),
   ({ onVisible, children, ...p }) =>
     (<LazyLoad {...p} onContentVisible={onVisible}>

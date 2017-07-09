@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp';
 import Container from './container';
-import { withSkeletor } from 'olymp-skeletor';
 import List from './list';
 
 // date: { gt: ${moment().subtract(6, 'months').valueOf()}}
@@ -53,7 +52,6 @@ import List from './list';
     }),
   }
 )
-@withSkeletor
 class Neues extends Component {
   render() {
     const { items, attributes, className, isLoading } = this.props;
