@@ -1,11 +1,11 @@
 import { traverse } from '../utils';
 
 const defaultRenderer = (name, { value, children, href }) => {
-  if (name === 'line' && value === '') {
+  if (name === 'paragraph' && value === '') {
     return '';
-  } else if (name === 'line' && !value) {
+  } else if (name === 'paragraph' && !value) {
     return '\n';
-  } else if (name === 'line') {
+  } else if (name === 'paragraph') {
     return `${value}`;
   } else if (name === 'h1') {
     return `${value}\n`;

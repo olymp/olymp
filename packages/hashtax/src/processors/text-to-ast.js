@@ -48,7 +48,7 @@ export const processLines = (lines, result = []) => {
   } else {
     // no # or more than one # => assume text
     if (result.length) {
-      result.push({ type: 'line' });
+      result.push({ type: 'paragraph' });
     } // previous lines in result => add line-break
     split.forEach((frag, i) => {
       //
@@ -59,7 +59,7 @@ export const processLines = (lines, result = []) => {
       if (isEven) {
         result.push({ ...parseComponent(frag), inline: true, children: [] });
       } else {
-        result.push({ value: frag, type: 'line' });
+        result.push({ value: frag, type: 'paragraph' });
       }
     });
   }

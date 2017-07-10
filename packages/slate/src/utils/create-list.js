@@ -3,7 +3,7 @@ import { Block, Raw } from 'slate';
 const empty = () =>
   Raw.deserializeNode({
     kind: 'block',
-    type: 'line',
+    type: 'paragraph',
     nodes: [{ kind: 'text', text: '', ranges: [] }],
   });
 export default items =>

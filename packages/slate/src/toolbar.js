@@ -47,7 +47,7 @@ export default createComponent(
     },
   }),
   (props) => {
-    const { isOpened, className, children } = props;
+    const { isOpened, className, children, show } = props;
 
     if (!isOpened) {
       return <div />;
@@ -60,7 +60,7 @@ export default createComponent(
     );*/
     return (
       <Portal isOpened={!!isOpened}>
-        <Menu selectedKeys={[]} className={className} mode="horizontal" theme="dark">
+        <Menu style={!show ? { display: 'none' } : null} selectedKeys={[]} className={className} mode="horizontal" theme="dark">
           {children}
           <Close>
             <Icon type="close" />

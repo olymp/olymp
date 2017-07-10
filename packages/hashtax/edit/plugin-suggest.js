@@ -8,7 +8,7 @@ import typeOf from 'type-of';
 import GroupBy from 'lodash/groupBy';
 import shortID from 'shortid';
 
-const createP = () => Raw.deserializeNode({ kind: 'block', type: 'line', nodes: [{ kind: 'text', text: '', ranges: [] }] });
+const createP = () => Raw.deserializeNode({ kind: 'block', type: 'paragraph', nodes: [{ kind: 'text', text: '', ranges: [] }] });
 export default ({ fetch, trigger, onInsert, renderItems, renderItem, groupBy }) => {
   if (!trigger) trigger = '@';
   if (!fetch) fetch = value => [];
@@ -50,7 +50,7 @@ export default ({ fetch, trigger, onInsert, renderItems, renderItem, groupBy }) 
         const transform = state.transform().removeNodeByKey(node.key);
         if (item.isVoid) {
           transform
-            [fn]({ isVoid: true, type: item.type, data: { key, id: shortID.generate() } })
+          [fn]({ isVoid: true, type: item.type, data: { key, id: shortID.generate() } })
             .collapseToStartOfNextText();
         } else if (item.kind === 'inline') {
           transform
@@ -62,7 +62,7 @@ export default ({ fetch, trigger, onInsert, renderItems, renderItem, groupBy }) 
           transform
             .insertText('\n')
             .move(-1)
-            [fn]({ isVoid: false, type: item.type, nodes: [createP()], data: { key, id: shortID.generate() } });
+          [fn]({ isVoid: false, type: item.type, nodes: [createP()], data: { key, id: shortID.generate() } });
         }
         editor.props.onChange(transform.focus().apply());
       } else if (item) {
@@ -87,7 +87,7 @@ export default ({ fetch, trigger, onInsert, renderItems, renderItem, groupBy }) 
         });
       }
     }
-    componentDidMount(){
+    componentDidMount() {
       const input = ReactDOM.findDOMNode(this.refs.select).getElementsByTagName('input')[0];
       input.focus();
       input.addEventListener('keydown', this.handleKeyDown, false);
