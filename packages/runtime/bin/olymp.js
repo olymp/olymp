@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
+const { URL } = require('url');
 require('dotenv').config();
 
 const createConfig = require(path.resolve(
@@ -48,12 +49,16 @@ if (command === 'dev') {
   const port = parseInt(process.env.PORT, 10);
   const devPort = port + 2;
 
+  const devUrl = new URL(process.env.url || `http://localhost:${devPort}`);
+  devUrl.port = devPort;
+
   const compiler = webpack([
     createConfig({
       target: 'node',
       mode: 'development',
       port,
       devPort,
+      devUrl,
       ssr: process.env.SSR != 'false',
     }),
     createConfig({ target: 'web', mode: 'development', port, devPort }),
@@ -78,8 +83,8 @@ if (command === 'dev') {
       'Access-Control-Allow-Origin': '*',
     },
     watchOptions: watch,
-    host: 'localhost',
-    port: devPort,
+    host: devUrl.hostname,
+    port: devUrl.port,
     historyApiFallback: true,
     hot: true,
     stats: {

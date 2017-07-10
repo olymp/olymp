@@ -19,7 +19,7 @@ const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 
-module.exports = ({ mode, target, port, devPort, ssr }) => {
+module.exports = ({ mode, target, devUrl, devPort, ssr }) => {
   const isSSR = ssr !== false;
   if (!isSSR) {
     console.log('SSR OFF');
@@ -81,18 +81,18 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           !isNode
             ? {
               'process.env.AMP': process.env.AMP
-                  ? JSON.stringify(process.env.AMP)
-                  : undefined,
+                ? JSON.stringify(process.env.AMP)
+                : undefined,
               'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
               'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
-                  ? JSON.stringify(process.env.GRAPHQL_URL)
-                  : undefined,
+                ? JSON.stringify(process.env.GRAPHQL_URL)
+                : undefined,
               'process.env.URL': process.env.URL
-                  ? JSON.stringify(process.env.URL)
-                  : undefined,
+                ? JSON.stringify(process.env.URL)
+                : undefined,
               'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-                  ? JSON.stringify(process.env.FILESTACK_KEY)
-                  : undefined,
+                ? JSON.stringify(process.env.FILESTACK_KEY)
+                : undefined,
             }
             : {}
         )
@@ -200,7 +200,7 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
   }
 
   if (isDev && isWeb) {
-    config.output.publicPath = `http://localhost:${devPort}/`;
+    config.output.publicPath = devUrl.href;
   } else {
     config.output.publicPath = '/';
   }
@@ -227,6 +227,11 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
         lodash: {
           transform: 'lodash/${member}',
           preventFullImport: true,
+        },
+        'date-fns': {
+          transform: 'date-fns/${member}',
+          preventFullImport: true,
+          snakeCase: true,
         },
         'olymp-icons': {
           transform: 'olymp-icons/fa5/lib/${member}',
@@ -403,13 +408,13 @@ module.exports = ({ mode, target, port, devPort, ssr }) => {
           /\.(css|scss|sass|sss|less)$/,
         ],
       })
-    );
+      );
   }
 
   if (isWeb && isDev) {
     config.entry.main = [
       'react-hot-loader/patch',
-      `webpack-dev-server/client?http://localhost:${devPort}`,
+      `webpack-dev-server/client?${config.output.publicPath}`,
       'webpack/hot/only-dev-server',
       require.resolve(path.resolve(__dirname, target)),
     ];
