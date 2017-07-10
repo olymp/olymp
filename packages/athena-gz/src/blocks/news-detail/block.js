@@ -111,6 +111,7 @@ const componentWithData = graphql(
         name
         slug
         image {
+          id
           url
           crop
           width
