@@ -49,8 +49,8 @@ if (command === 'dev') {
   const port = parseInt(process.env.PORT, 10);
   const devPort = port + 2;
 
-  const devUrl = new URL(process.env.url || `http://localhost:${devPort}`);
-  devUrl.port = devPort;
+  const url = new URL(process.env.URL || `http://localhost:${port}`);
+  const devUrl = new URL(`${url.protocol}://${url.hostname}:${devPort}`);
 
   const compiler = webpack([
     createConfig({
