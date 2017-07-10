@@ -7,9 +7,9 @@ import List from './list';
 @graphql(
   gql`
     query eventList {
-      items: eventList(
+      events: eventList(
         sort: { date: DESC }
-        query: { state: { ne: REMOVED } }
+        query: { state: { eq: PUBLISHED } }
       ) {
         id
         date
@@ -48,22 +48,68 @@ import List from './list';
       ...ownProps,
       data,
       isLoading: data.loading,
-      items: data.items || [],
+      events: data.events || [],
+    }),
+  }
+)
+@graphql(
+  gql`
+    query newsList {
+      news: newsList(
+        sort: { date: DESC }
+        query: { state: { eq: PUBLISHED } }
+      ) {
+        id
+        date
+        art
+        name
+        description
+        slug
+        image {
+          id
+          url
+          caption
+          width
+          height
+        }
+        org {
+          id
+          name
+          farbe
+          slug
+          image {
+            id
+            url
+            caption
+            width
+            height
+          }
+        }
+        author {
+          name
+        }
+      }
+    }
+  `,
+  {
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      data,
+      isLoading: data.loading || ownProps.isLoading,
+      news: data.news || [],
     }),
   }
 )
 class Neues extends Component {
   render() {
-    const { items, attributes, className, isLoading } = this.props;
+    const { events, news, attributes, className, isLoading } = this.props;
 
     return (
       <Container {...attributes} className={className}>
         <List
           title="Neuigkeiten"
           accent="rgb(62, 167, 62)"
-          items={items.filter(
-            item => item.art === 'PUBLIKATION' || item.art === 'PRESSE'
-          )}
+          items={news}
           size={6}
           path="news"
           isLoading={isLoading}
@@ -71,7 +117,7 @@ class Neues extends Component {
         <List
           title="Veranstaltungen"
           accent="rgb(73, 146, 195)"
-          items={items.filter(
+          items={events.filter(
             item => item.art === 'VERANSTALTUNG' || item.art === 'VORTRAG'
           )}
           size={6}
