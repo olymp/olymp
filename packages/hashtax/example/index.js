@@ -75,13 +75,13 @@ export default class HashtaxExample extends Component {
     return (
       <div style={{ display: 'flex' }}>
         <textarea
-          style={{ flex: 1, padding: 20 }}
+          style={{ flex: '1 1 0%', padding: 20 }}
           value={value}
           onChange={this.onChange}
         />
         <Hashtax
           throttle={500}
-          style={{ flex: 1, padding: 20 }}
+          style={{ flex: '1 1 0%', padding: 20 }}
           value={value}
           name="Hallo"
           link="Tadas"
