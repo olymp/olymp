@@ -38,6 +38,7 @@ import List from './list';
           }
         }
         author {
+          id
           name
         }
       }
@@ -86,6 +87,7 @@ import List from './list';
           }
         }
         author {
+          id
           name
         }
       }
