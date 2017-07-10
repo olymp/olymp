@@ -29,17 +29,17 @@ const MagazinItem = createComponent(
 
 @graphql(
   gql`
-    query artikelList {
-      items: artikelList(
+    query articleList {
+      items: articleList(
         sort: { date: DESC }
         query: { state: { ne: REMOVED } }
       ) {
         id
         date
         name
-        extrakt
+        description
         slug
-        bild {
+        image {
           id
           url
           caption

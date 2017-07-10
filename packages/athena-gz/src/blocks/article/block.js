@@ -97,11 +97,11 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
-      {renderHelmet({ description: item.extrakt, image: item.bild })}
-      {item.bild
+      {renderHelmet({ description: item.description, image: item.image })}
+      {item.image
         ? <Peak
           title={item.name}
-          value={item.bild}
+          value={item.image}
           header={item.name}
           subheader={getSubheader(item)}
           color={item.org.farbe}
@@ -119,13 +119,13 @@ const component = withColor(
 
 const componentWithData = graphql(
   gql`
-    query artikel($id: String) {
-      item: artikel(id: $id) {
+    query article($id: String) {
+      item: article(id: $id) {
         id
         date
         name
         slug
-        bild {
+        image {
           url
           crop
           width
@@ -133,7 +133,7 @@ const componentWithData = graphql(
           caption
           source
         }
-        extrakt
+        description
         tags
         text
         author {

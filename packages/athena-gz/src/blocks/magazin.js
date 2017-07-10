@@ -103,12 +103,11 @@ const DownloadLink = createComponent(
 );
 
 const Item = (props) => {
-  const { name, extrakt, slug, org, date, author } = props;
+  const { name, description, slug, org, date, author } = props;
 
-  const bild = props.bild ||
-  org.logo || {
+  const image = props.image || org.logo || {
     url:
-      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
@@ -120,10 +119,10 @@ const Item = (props) => {
       subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${author.name ||
         'Redaktion'}`}
     >
-      <Img value={bild} width={160} avatar />
+      <Img value={image} width={160} avatar />
       <Content>
         <p>
-          {extrakt}
+          {description}
         </p>
         {slug &&
           <Link to={{ pathname: `/magazin${slug}` }}>Weiterlesen...</Link>}
@@ -165,19 +164,19 @@ const Tag = createComponent(
 
 const component = graphql(
   gql`
-    query artikelList {
-      items: artikelList(
+    query articleList {
+      items: articleList(
         sort: { date: DESC }
         query: { state: { ne: REMOVED } }
       ) {
         id
         name
-        extrakt
+        description
         date
         slug
         tags
         state
-        bild {
+        image {
           id
           width
           height
