@@ -26,6 +26,7 @@ export default createComponent(
   }),
   ({ children, className }) =>
     (<CSSTransitionGroup
+      component="div"
       transitionName={{
         enter: 'page-transition-enter',
         enterActive: 'page-transition-enter-active',
