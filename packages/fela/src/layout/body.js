@@ -1,4 +1,6 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+import { ScrollToTop } from 'olymp';
 import { createComponent } from 'react-fela';
 import WithContainer from './with-container';
 
@@ -18,7 +20,7 @@ const Body = createComponent(
         },
       }),
   }),
-  WithContainer,
+  props => <ScrollToTop><WithContainer {...props} /></ScrollToTop>,
   ({ affix, ...p }) => Object.keys(p)
 );
 Body.displayName = 'Layout.Body';
