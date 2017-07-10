@@ -21,7 +21,6 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
             set(resolvers, `RootQuery.${table}`, (source, { id, query }, { monk, app }) => {
                 const x = id ? { id } : adaptQuery(query);
                 const q = isGeneric ? { ...x, _appId: app.id } : { ...x, _type: table, _appId: app.id };
-                console.log(q);
                 // monk.collection(table).findOne(id ? { id } : adaptQuery(query))
                 return monk.collection('item').findOne(q);
             });

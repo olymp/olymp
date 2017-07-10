@@ -45,12 +45,11 @@ const getItems = (items, filter, title) =>
   );
 
 const NewsItem = (props) => {
-  const { art, date, name, extrakt, org, slug } = props;
+  const { art, date, name, description, org, slug } = props;
 
-  const bild = props.bild ||
-  org.logo || {
+  const image = props.image || org.logo || {
     url:
-      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
@@ -61,10 +60,10 @@ const NewsItem = (props) => {
       title={name}
       subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
     >
-      <Img value={bild} width={100} avatar />
+      <Img value={image} width={100} avatar />
       <Content>
         <p>
-          {extrakt}
+          {description}
         </p>
         {slug && <Link to={{ pathname: `/news${slug}` }}>Weiterlesen...</Link>}
       </Content>
@@ -74,19 +73,19 @@ const NewsItem = (props) => {
 
 @graphql(
   gql`
-    query terminList {
-      items: terminList(
+    query newsList {
+      items: newsList(
         sort: { date: DESC }
-        query: { state: { ne: REMOVED } }
+        query: { state: { eq: PUBLISHED } }
       ) {
         id
         date
         art
         name
-        extrakt
+        description
         text
         slug
-        bild {
+        image {
           id
           width
           height

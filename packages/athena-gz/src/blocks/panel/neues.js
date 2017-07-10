@@ -6,8 +6,8 @@ import List from './list';
 // date: { gt: ${moment().subtract(6, 'months').valueOf()}}
 @graphql(
   gql`
-    query terminList {
-      items: terminList(
+    query eventList {
+      items: eventList(
         sort: { date: DESC }
         query: { state: { ne: REMOVED } }
       ) {
@@ -15,9 +15,9 @@ import List from './list';
         date
         art
         name
-        extrakt
+        description
         slug
-        bild {
+        image {
           id
           url
           caption

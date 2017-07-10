@@ -81,15 +81,15 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
-      {renderHelmet({ description: item.extrakt, image: item.bild })}
+      {renderHelmet({ description: item.description, image: item.image })}
       <Header subheader={getSubheader(item)} color={item.org.farbe}>
         {item.name}
       </Header>
       <Container className={className} color={item.org.farbe} {...attributes}>
         <Grid size={3}>
           <Grid.Item medium={1}>
-            {item.bild &&
-              <Image value={item.bild} alt={item.bild.caption} width="100%" />}
+            {item.image &&
+              <Image value={item.image} alt={item.image.caption} width="100%" />}
             <Link to="/news">Zurück zur Übersicht</Link>
           </Grid.Item>
           <Content medium={2}>
@@ -104,15 +104,15 @@ const component = withColor(
 
 const componentWithData = graphql(
   gql`
-    query termin($id: String) {
-      item: termin(id: $id) {
+    query event($id: String) {
+      item: event(id: $id) {
         id
         art
         ort
         date
         name
         slug
-        bild {
+        image {
           url
           crop
           width
@@ -120,7 +120,7 @@ const componentWithData = graphql(
           caption
           source
         }
-        extrakt
+        description
         tags
         text
         author {
