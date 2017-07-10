@@ -36,7 +36,7 @@ const StyledInner = createComponent(
         '> .ant-tabs > .ant-tabs-bar': {
           marginBottom: 0,
         },
-        flex: 1,
+        flexGrow: 1,
         overflowY: 'auto',
         paddingLeft: paddingX,
         paddingRight: paddingX,

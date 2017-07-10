@@ -3,16 +3,16 @@ import { createComponent, border } from 'olymp-fela';
 export const SplitView = createComponent(
   ({ theme, deviceWidth, center, background }) => ({
     display: 'flex',
-    flex: 1,
+    flexGrow: 1,
     background:
       background === true &&
       'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
     '> :first-child': {
-      flex: 0,
+      flexGrow: 0,
       overflowY: 'auto',
     },
     '> :nth-child(2)': {
-      flex: 1,
+      flexGrow: 1,
       overflowY: 'auto',
       margin: center && '0 auto',
       borderX: center && border(theme),

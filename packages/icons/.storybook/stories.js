@@ -44,7 +44,7 @@ const Container = createComponent(
 
 const IconContainer = createComponent(
   ({ theme }) => ({
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#ffffff',
     border: '1px solid #dddddd',
     padding: theme.space3,
@@ -60,7 +60,9 @@ const IconContainer = createComponent(
   ({ name, size, className, children }) =>
     (<div className={className} onClick={() => copyTextToClipboard(name, size)}>
       {children}
-      <p>{name}</p>
+      <p>
+        {name}
+      </p>
     </div>),
   p => Object.keys(p)
 );
