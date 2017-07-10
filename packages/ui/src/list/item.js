@@ -42,7 +42,7 @@ const Content = createComponent(
     '> div': {
       display: 'flex',
       flexDirection: 'column',
-      flex: 1,
+      flexGrow: 1,
     },
     onHover: !active &&
     !disabled && {
@@ -68,7 +68,9 @@ const Content = createComponent(
           {image && typeof image !== 'string' && image}
         </ImgContainer>}
       <div>
-        <strong>{label}</strong>
+        <strong>
+          {label}
+        </strong>
         {description}
       </div>
 

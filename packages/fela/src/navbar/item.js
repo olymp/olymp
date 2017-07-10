@@ -23,7 +23,7 @@ const Icon = createComponent(
 const NavItem = createComponent(
   ({ theme, fill, inverse, vertically, right, pages }) => ({
     /* flex start */
-    flex: fill && '1 1',
+    flex: fill && '1 1 auto',
     display: 'flex',
     alignItems: 'center',
     flexDirection: fill ? 'column' : right && vertically && 'row-reverse',

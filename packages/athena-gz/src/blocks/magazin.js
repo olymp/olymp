@@ -53,7 +53,7 @@ export const Content = createComponent(
   ({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'space-between',
     paddingLeft: theme.space2,
     marginBottom: `-${theme.space3}`,
@@ -105,9 +105,10 @@ const DownloadLink = createComponent(
 const Item = (props) => {
   const { name, description, slug, org, date, author } = props;
 
-  const image = props.image || org.logo || {
+  const image = props.image ||
+  org.logo || {
     url:
-    'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
@@ -149,7 +150,7 @@ const Tag = createComponent(
     marginLeft: theme.space3,
     marginY: theme.space1,
     fontSize: '90%',
-    flex: 1,
+    flexGrow: 1,
     whiteSpace: 'nowrap',
     textAlign: 'center',
     display: 'inline-block',

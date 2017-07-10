@@ -7,7 +7,7 @@ export default createComponent(
     /* flex start */
     ifMediumUp: {
       display: vertically ? 'none' : 'flex',
-      flex: fill && '1 1',
+      flex: fill && '1 1 auto',
       alignItems: 'stretch',
       flexDirection: vertically ? 'column' : 'row',
     },

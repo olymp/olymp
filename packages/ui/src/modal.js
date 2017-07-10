@@ -8,6 +8,7 @@ import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
 import { Transition } from './transitions';
+
 ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
@@ -64,7 +65,9 @@ export const Modal = (
             theme.logo &&
             <div className="logo">
               <img src={theme.logo} />
-              <h3>{theme.logoTitle}</h3>
+              <h3>
+                {theme.logoTitle}
+              </h3>
             </div>}
           <Spin
             spinning={!!loading}
@@ -72,12 +75,21 @@ export const Modal = (
           >
             <div className="ant-modal-content">
               <div className="ant-modal-header">
-                {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+                {leftButtons &&
+                  <TitleButtons left>
+                    {leftButtons}
+                  </TitleButtons>}
                 {rightButtons &&
-                  <TitleButtons right>{rightButtons}</TitleButtons>}
-                <div className="ant-modal-title">{title}</div>
+                  <TitleButtons right>
+                    {rightButtons}
+                  </TitleButtons>}
+                <div className="ant-modal-title">
+                  {title}
+                </div>
                 {subtitle &&
-                  <div className="ant-modal-subtitle">{subtitle}</div>}
+                  <div className="ant-modal-subtitle">
+                    {subtitle}
+                  </div>}
               </div>
               {Children.toArray(children).length > 0 &&
                 <div className="ant-modal-body">
@@ -86,8 +98,14 @@ export const Modal = (
               {footer}
             </div>
           </Spin>
-          {links && <component.Links>{links}</component.Links>}
-          {copyright && <component.Copyright>{copyright}</component.Copyright>}
+          {links &&
+            <component.Links>
+              {links}
+            </component.Links>}
+          {copyright &&
+            <component.Copyright>
+              {copyright}
+            </component.Copyright>}
         </ReactModal>
       </Transition>
     </Gateway>
@@ -162,7 +180,7 @@ const component = createComponent(
             display: 'flex',
             padding: theme.space1,
             '> .ant-btn': {
-              flex: '1 1',
+              flex: '1 1 auto',
               margin: theme.space1,
             },
           },

@@ -76,7 +76,7 @@ const LeftMenu = createComponent(
 
 const Filler = createComponent(
   ({ theme }) => ({
-    flex: 1,
+    flexGrow: 1,
   }),
   p => <div {...p} />,
   p => Object.keys(p)
@@ -171,17 +171,19 @@ class Navigation extends Component {
               </span>
             }
           >
-            {collectionList.map((collection) => (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-              <Link
-                to={{
-                  query: {
-                    [`@${collection.name.toLowerCase()}`]: null,
-                  },
-                }}
-              >
-                <Icon type="api" /> {get(collection, 'decorators.label.value', collection.name)}
-              </Link>
-            </Menu.Item>)
+            {collectionList.map(collection =>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                <Link
+                  to={{
+                    query: {
+                      [`@${collection.name.toLowerCase()}`]: null,
+                    },
+                  }}
+                >
+                  <Icon type="api" />{' '}
+                  {get(collection, 'decorators.label.value', collection.name)}
+                </Link>
+              </Menu.Item>)
             )}
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
