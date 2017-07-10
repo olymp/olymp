@@ -5,9 +5,9 @@ import { sortBy } from 'lodash';
 import addBlock from './utils/add-block';
 
 export default (props) => {
-  const { state, blockTypes, onChange, defaultNode } = props;
+  const { state, blockTypes, onChange, defaultNode, show } = props;
   const node = state.blocks.get(0);
-  const show = !state.isBlurred && state.isCollapsed && node.isEmpty;
+  const display = !state.isBlurred && state.isCollapsed && node.isEmpty;
 
   const categories = {};
   const menuItems = [];
@@ -41,7 +41,7 @@ export default (props) => {
   });
 
   return (
-    <Toolbar isOpened={!!show}>
+    <Toolbar isOpened={!!display} show={show}>
       {Object.keys(categories).map(key =>
         (<Menu.SubMenu
           title={

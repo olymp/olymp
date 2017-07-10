@@ -72,12 +72,12 @@ export default (options = {}) => {
       }
       const { startBlock } = state;
 
-      if (startBlock.type === 'line') {
+      if (startBlock.type === 'paragraph') {
         return undefined;
       }
       e.preventDefault();
 
-      let transform = state.transform().setBlock('line');
+      let transform = state.transform().setBlock('paragraph');
 
       if (startBlock.type === 'list-item') {
         transform = transform.unwrapBlock('bulleted-list');
@@ -109,7 +109,7 @@ export default (options = {}) => {
       }
 
       e.preventDefault();
-      return state.transform().splitBlock().setBlock('line').apply();
+      return state.transform().splitBlock().setBlock('paragraph').apply();
     },
   };
   return self;

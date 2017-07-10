@@ -11,7 +11,7 @@ function deserialize(string, options = {}) {
   })
   const getTextNode = text => ({
     kind: 'block',
-    type: 'line',
+    type: 'paragraph',
     nodes: text !== undefined ? [getInnerTextNode(text)] : [],
   });
   const nodes = [];

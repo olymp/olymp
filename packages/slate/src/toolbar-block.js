@@ -52,7 +52,7 @@ const Action = ({ node, state, onChange }) => (
   );
 };
 export default (props) => {
-  const { state, blockTypes, onChange } = props;
+  const { state, blockTypes, onChange, show } = props;
   const block =
     state.blocks.size === 1 &&
     state.blocks.get(0).kind === 'block' &&
@@ -61,7 +61,7 @@ export default (props) => {
   const actions = get(block, 'slate.actions', []);
 
   return (
-    <Toolbar isOpened={!!block && actions && actions.length}>
+    <Toolbar show={show} isOpened={!!block && actions && actions.length}>
       {actions.map(Action({ ...props, node }))}
     </Toolbar>
   );

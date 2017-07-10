@@ -36,7 +36,7 @@ const getIdByTag = (children) => {
 };
 
 const options = {
-  defaultNode: 'line',
+  defaultNode: 'paragraph',
   toolbarMarks: [
     { type: 'bold', label: <I icon={FaBold} /> },
     { type: 'italic', label: <I icon={FaItalic} /> },
@@ -73,31 +73,29 @@ const options = {
       type: 'link', // ['link', 'link-page', 'link-media'],
       label: <I icon={FaLink} />,
       description: 'Link', // ['Extern', 'Intern', 'Datei'],
-      onClick: ({ value, onChange }, isActive) => {
-        let newVal = value;
-
+      onClick: ({ state, onChange }, isActive) => {
         if (isActive) {
-          newVal = value.transform().unwrapInline('link').apply();
+          onChange(state.transform().unwrapInline('link').apply());
         } else {
           let href = window.prompt('URL');
           if (href) {
             if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) {
               href = `http://${href}`;
             }
-            newVal = newVal
+            onChange(state
               .transform()
               .wrapInline({
                 type: 'link',
                 data: { href, target: '_blank' },
               })
               .collapseToEnd()
-              .apply();
+              .apply()
+            );
           }
         }
-        onChange(newVal);
       },
-      isActive: ({ value }) =>
-        value && value.inlines.some(inline => inline.type === 'link'),
+      isActive: ({ state }) =>
+        state && state.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
@@ -177,7 +175,7 @@ const serializer = new Html({
     {
       deserialize(el, next) {
         const types = {
-          p: 'line',
+          p: 'paragraph',
           li: 'list-item',
           ul: 'bulleted-list',
           ol: 'numbered-list',
@@ -282,6 +280,39 @@ const getTopMost = (blockTypes, state, prev) => {
   }
   return getTopMost(blockTypes, state, next);
 };
+
+function CleanWordHTML(str) {
+  // 1. remove line breaks / Mso classes
+  var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
+  var output = str.replace(stringStripper, ' ');
+  // 2. strip Word generated HTML comments
+  var commentSripper = new RegExp('<!--(.*?)-->', 'g');
+  var output = output.replace(commentSripper, '');
+  var tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+  // 3. remove tags leave content if any
+  output = output.replace(tagStripper, '');
+  // 4. Remove everything in between and including tags '<style(.)style(.)>'
+  var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+
+  for (var i = 0; i < badTags.length; i++) {
+    tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+    output = output.replace(tagStripper, '');
+  }
+  // 5. remove attributes ' style="..."'
+  var badAttributes = ['style', 'start'];
+  for (var i = 0; i < badAttributes.length; i++) {
+    var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+    output = output.replace(attributeStripper, '');
+  }
+
+  while (output.indexOf('  ') !== -1) {
+    output = output.replace('  ', ' ');
+  }
+  while (output.indexOf('\n ') !== -1) {
+    output = output.replace('\n ', '\n');
+  }
+  return output;
+}
 @withBlockTypes
 @withSlateState({ terse: true })
 @useBlocks(options)
@@ -290,8 +321,8 @@ export default // @withToolbar(options)
   class SlateEditor extends Component {
   plugins = [
     withAutoMarkdown(options),
-    TrailingBlock({ type: 'line' }),
-    InsertBlockOnEnter({ type: 'line' }),
+    TrailingBlock({ type: 'paragraph' }),
+    InsertBlockOnEnter({ type: 'paragraph' }),
   ];
   state = { focus: false };
   static propTypes = {
@@ -311,7 +342,7 @@ export default // @withToolbar(options)
     if (data.type !== 'html') {
       return undefined;
     }
-    const { document } = serializer.deserialize(data.html);
+    const { document } = serializer.deserialize(CleanWordHTML(data.html));
     return state.transform().insertFragment(document).apply();
   };
 
@@ -386,18 +417,20 @@ export default // @withToolbar(options)
         {children}
         {readOnly !== true &&
           <ToolbarBlock
+            show={focus}
             state={value}
             blockTypes={blockTypes}
             onChange={onChange}
           />}
         {readOnly !== true &&
           <ToolbarVoid
+            show={focus}
             state={value}
             blockTypes={blockTypes}
             onChange={onChange}
           />}
         {readOnly !== true &&
-          <ToolbarText state={value} onChange={onChange} {...options} />}
+          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
           <Editor

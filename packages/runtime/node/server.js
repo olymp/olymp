@@ -253,8 +253,8 @@ app.get('*', (req, res) => {
         ? []
         : [
           isProd
-              ? `${clientAssets.main.js}`
-              : `${process.env.DEV_URL}/main.js`,
+            ? `${clientAssets.main.js}`
+            : `${process.env.DEV_URL}/main.js`,
         ];
       const styles = req.isAmp
         ? []

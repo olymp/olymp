@@ -61,9 +61,9 @@ export default class SlateTree extends Component {
       : 0;
     const ranges = node.ranges
       ? node.ranges.reduce(
-          (length, node) => this.getTextLength(node, length),
-          0
-        )
+        (length, node) => this.getTextLength(node, length),
+        0
+      )
       : 0;
     return length + text + children + ranges;
   };
@@ -78,14 +78,14 @@ export default class SlateTree extends Component {
           ? this.loop(node.nodes, path)
           : undefined;
         const length = this.getTextLength(node);
-        if (lastNode && lastNode.type === 'line' && node.type === 'line') {
+        if (lastNode && lastNode.type === 'paragraph' && node.type === 'paragraph') {
           lastNode.length += length;
         } else {
           items.push({
             path,
             length,
             kind: node.kind,
-            text: node.type === 'line' ? 'Text' : null,
+            text: node.type === 'paragraph' ? 'Text' : null,
             type: node.type,
             children: children && children.length ? children : undefined,
           });
@@ -104,7 +104,7 @@ export default class SlateTree extends Component {
             >
               {text || type || kind} {length ? `(${length})` : ''}
             </a>
-            {type !== 'line' &&
+            {type !== paragraph &&
               <a href="javascript:;"><Icon type="appstore-o" /></a>}
           </Tree.Title>
         }

@@ -3,7 +3,7 @@ import { Raw, Block } from 'slate';
 const createP = () =>
   Raw.deserializeNode({
     kind: 'block',
-    type: 'line',
+    type: 'paragraph',
     nodes: [{ kind: 'text', text: '', ranges: [] }],
   });
 
@@ -13,7 +13,7 @@ export default (
   { defaultNode }
 ) => {
   if (!defaultNode) {
-    defaultNode = 'line';
+    defaultNode = 'paragraph';
   }
   if (defaultNodes && typeof defaultNodes === 'function') {
     defaultNodes = defaultNodes();
@@ -61,13 +61,13 @@ export default (
     } else if (isList) {
       transform = transform
         .unwrapBlock(
-          type === 'bulleted-list' ? 'bulleted-list' : 'numbered-list'
+        type === 'bulleted-list' ? 'bulleted-list' : 'numbered-list'
         )
         .wrapBlock(type);
     } else {
       transform = transform
         .setBlock(
-          type === 'bulleted-list' ? 'bulleted-list-item' : 'numbered-list-item'
+        type === 'bulleted-list' ? 'bulleted-list-item' : 'numbered-list-item'
         )
         .wrapBlock(type);
     }

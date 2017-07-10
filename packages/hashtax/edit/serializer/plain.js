@@ -17,7 +17,7 @@ function deserialize(string, options = {}) {
       nodes: string.split('\n').map((line) => {
         return {
           kind: 'block',
-          type: 'line',
+          type: 'paragraph',
           nodes: [
             {
               kind: 'text',
