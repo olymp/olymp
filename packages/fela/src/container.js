@@ -33,30 +33,32 @@ export default createComponent(
       width: 1140,
       maxWidth: '100%',
     },
-    extend: [{
-      condition: size === 'small',
-      style: {
-        onAfter: {
-          content: '""',
-          clear: 'both',
-          display: 'block',
-          visibility: 'hidden',
-          height: 0,
+    extend: [
+      {
+        condition: size === 'small',
+        style: {
+          onAfter: {
+            content: '""',
+            clear: 'both',
+            display: 'block',
+            visibility: 'hidden',
+            height: 0,
+          },
+          ifMediumUp: {
+            width: 400,
+            maxWidth: '100%',
+          },
+          ifLargeUp: {
+            width: 520,
+            maxWidth: '100%',
+          },
+          ifHugeUp: {
+            width: 640,
+            maxWidth: '100%',
+          },
         },
-        ifMediumUp: {
-          width: 400,
-          maxWidth: '100%',
-        },
-        ifLargeUp: {
-          width: 520,
-          maxWidth: '100%',
-        },
-        ifHugeUp: {
-          width: 640,
-          maxWidth: '100%',
-        },
-      }
-    }]
+      },
+    ],
   }),
   'div',
   ({ height, ...p }) => Object.keys(p)

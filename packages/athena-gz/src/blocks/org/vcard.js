@@ -92,9 +92,10 @@ const Logo = createComponent(
     (<Image
       className={className}
       value={value}
-      width={400}
+      width="100%"
       maxWidth={value && value.width}
       maxHeight={160}
+      maxResolution={64000}
       alt={title}
     />),
   p => Object.keys(p)

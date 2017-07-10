@@ -15,10 +15,10 @@ export const Content = createComponent(
     flex: '1 1 auto',
     position: 'relative',
     minHeight: 120,
-    display: 'flex',
+    /* display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    alignContent: 'flex-start',
+    alignContent: 'flex-start', */
     '> iframe': {
       borderBottomRightRadius: 100,
     },

@@ -2,6 +2,9 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 import ReactMap from 'google-map-react';
 
+const defaultCenter = { lat: 59.938043, lng: 30.337157 };
+const defaultZoom = 9;
+
 const StyledMap = createComponent(
   ({}) => ({
     height: '100%',
@@ -16,6 +19,7 @@ const StyledMap = createComponent(
     </div>),
   p => Object.keys(p)
 );
+
 const Marker = createComponent(
   ({ theme }) => ({
     display: 'block',
@@ -27,8 +31,6 @@ const Marker = createComponent(
     </svg>),
   p => Object.keys(p)
 );
-const defaultCenter = { lat: 59.938043, lng: 30.337157 };
-const defaultZoom = 9;
 
 const GoogleMap = ({ children, center, zoom, key, ...rest }) =>
   (<StyledMap
@@ -37,7 +39,6 @@ const GoogleMap = ({ children, center, zoom, key, ...rest }) =>
     defaultZoom={defaultZoom}
     zoom={zoom}
     bootstrapURLKeys={{ key }}
-    yesIWantToUseGoogleMapApiInternals
     {...rest}
   >
     {children}
