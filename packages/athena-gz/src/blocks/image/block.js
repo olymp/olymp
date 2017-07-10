@@ -31,18 +31,12 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
       right: 0,
       width: 100,
       height: 100,
-      backgroundColor: 'white',
       zIndex: 5,
-      background:
-        'radial-gradient(circle 10000px at -0% 0%,transparent,transparent 100px,white 100px)',
-      backgroundSize: '100px 200px, 100px 200px',
-      backgroundPosition: '0 0, 100% 0',
-      backgroundRepeat: 'no-repeat',
+      backgroundImage: 'url(/img/edge.png)',
+      backgroundSize: 'cover',
       ifSmallDown: {
         width: 50,
         height: 50,
-        background:
-          'radial-gradient(circle 10000px at -0% 0%,transparent,transparent 50px,white 50px)',
       },
     },
   },
