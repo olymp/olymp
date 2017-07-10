@@ -76,7 +76,7 @@ const LeftMenu = createComponent(
 
 const Filler = createComponent(
   ({ theme }) => ({
-    flexGrow: 1,
+    flex: 1,
   }),
   p => <div {...p} />,
   p => Object.keys(p)

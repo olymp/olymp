@@ -4,7 +4,7 @@ import WithContainer from './with-container';
 
 const Body = createComponent(
   ({ affix }) => ({
-    flexGrow: 1,
+    flex: 1,
     display: affix && 'flex',
     overflowY: affix && 'auto',
     flexDirection: affix && 'column',

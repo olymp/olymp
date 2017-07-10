@@ -35,7 +35,7 @@ Tree.Title = createComponent(
   ({ theme, disabled }) => ({
     display: 'flex',
     '> a:first-child': {
-      flexGrow: 1,
+      flex: 1,
     },
     '> a': {
       color: disabled ? theme.dark3 : theme.dark1,

@@ -44,7 +44,7 @@ const Container = createComponent(
 
 const IconContainer = createComponent(
   ({ theme }) => ({
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: '#ffffff',
     border: '1px solid #dddddd',
     padding: theme.space3,

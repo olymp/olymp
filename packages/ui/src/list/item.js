@@ -42,7 +42,7 @@ const Content = createComponent(
     '> div': {
       display: 'flex',
       flexDirection: 'column',
-      flexGrow: 1,
+      flex: 1,
     },
     onHover: !active &&
     !disabled && {
