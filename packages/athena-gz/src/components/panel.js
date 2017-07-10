@@ -85,7 +85,6 @@ export default createComponent(
       },
     },
     ifSmallDown: {
-      float: 'none',
       paddingX: theme.space3,
       paddingY: theme.space2,
     },

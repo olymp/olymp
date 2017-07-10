@@ -118,7 +118,11 @@ export default class GzLayout extends Component {
             brand={<Logo color={color} title={title} text={text} />}
             full
             right
-            mega={({ mega, pages }) => pages && pages.length && pages[0].children && pages[0].children.length}
+            mega={({ mega, pages }) =>
+              pages &&
+              pages.length &&
+              pages[0].children &&
+              pages[0].children.length}
             onItemMouseEnter={this.prefetch}
             toggleMenu={() =>
               router.push({
