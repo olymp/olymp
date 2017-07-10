@@ -61,7 +61,7 @@ if (command === 'dev') {
       devUrl,
       ssr: process.env.SSR != 'false',
     }),
-    createConfig({ target: 'web', mode: 'development', port, devPort }),
+    createConfig({ target: 'web', mode: 'development', port, devPort, devUrl }),
   ]);
   const watch = {
     aggregateTimeout: 300,
