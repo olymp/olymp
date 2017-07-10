@@ -90,7 +90,6 @@ const component = withColor(
           <Grid.Item medium={1}>
             {item.image &&
               <Image value={item.image} alt={item.image.caption} width="100%" />}
-            <Link to="/news">Zurück zur Übersicht</Link>
           </Grid.Item>
           <Content medium={2}>
             <Slate readOnly value={item.text} />
