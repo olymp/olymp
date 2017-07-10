@@ -36,7 +36,18 @@ const containerStyle = ({
 const Container = createComponent(
   containerStyle,
   'div',
-  ({ ratio, rounded, width, ...p }) => Object.keys(p)
+  ({
+    ratio,
+    rounded,
+    width,
+    maxResolution,
+    srcRatio,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    ...p
+  }) => Object.keys(p)
 );
 
 const LazyContainer = createComponent(
@@ -45,7 +56,19 @@ const LazyContainer = createComponent(
     ...(!visible ? ContentLoaderStyles : {}),
   }),
   p => <LazyLoad {...p} />,
-  ({ ratio, rounded, visible, width, ...p }) => Object.keys(p)
+  ({
+    ratio,
+    rounded,
+    visible,
+    width,
+    maxResolution,
+    srcRatio,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    ...p
+  }) => Object.keys(p)
 );
 
 class ImageContainer extends Component {
