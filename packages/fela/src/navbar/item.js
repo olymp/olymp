@@ -7,7 +7,7 @@ import { FaAngleDown, FaAngleLeft, FaAngleRight } from 'olymp-icons';
 
 const Icon = createComponent(
   ({ theme, inverse }) => ({
-    fill: `${inverse ? theme.light2 : theme.color} !important`,
+    fill: `${inverse ? theme.light2 : theme.color}`,
     centerY: true,
     right: theme.space3,
   }),
