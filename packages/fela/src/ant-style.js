@@ -31,8 +31,14 @@ export default ({ theme }) => {
     '& .ant-menu-item .anticon': {
       marginRight: 0,
     },
+    '& .ant-menu-item > a > .anticon': {
+      marginTop: -2,
+    },
     '& .ant-menu-submenu-title .anticon': {
       marginRight: 0,
+    },
+    '& .ant-menu-submenu-title > span > .anticon': {
+      marginTop: -2,
     },
     '& .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected': {
       backgroundColor: transparent3,
