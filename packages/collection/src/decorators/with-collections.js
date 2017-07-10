@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
+import getDecorators from './get-decorators';
 
 export default (WrappedComponent) => {
   @graphql(
@@ -106,7 +107,7 @@ export default (WrappedComponent) => {
       return (
         <WrappedComponent
           {...rest}
-          collectionList={list}
+          collectionList={list.map(x => ({ ...x, decorators: getDecorators(x.description) }))}
           collectionTree={group}
         />
       );

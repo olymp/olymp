@@ -3,7 +3,7 @@ import { addFields } from 'olymp-graphql/server';
 import adaptQuery from './adapt-query';
 import shortId from 'shortid';
 
-export default (ast, node, resolvers, typeName) => {
+export default (ast, node, resolvers, typeName, isGeneric) => {
   const name = node.name.value;
   const table = lowerFirst(typeName || name);
 
@@ -40,7 +40,7 @@ export default (ast, node, resolvers, typeName) => {
           monk
             .collection('item')
             .find(
-            typeName ? { ...adaptQuery(query), _type: table, _appId: app.id } : { ...adaptQuery(query), _appId: app.id },
+            isGeneric ? { ...adaptQuery(query), _appId: app.id } : { ...adaptQuery(query), _type: table, _appId: app.id },
             { rawCursor: true }
             )
             .then((cursor) => {

@@ -45,7 +45,7 @@ export default () => ({
       fields: [String]
       query: Json
     }
-    type Page @collection(name: "Page") {
+    type Page @collection {
       id: String
       type: PAGE_TYPE
       menu: String
@@ -64,7 +64,7 @@ export default () => ({
       blocks: Blocks
       text: String
     }
-    type Settings @collection(name: "Settings") {
+    type Settings @collection {
       id: String
       # @label("Titel")
       title: String

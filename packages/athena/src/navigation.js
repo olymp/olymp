@@ -6,6 +6,7 @@ import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
 import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
+import { get } from 'lodash';
 
 const getInitials = (name) => {
   if (name) {
@@ -170,18 +171,17 @@ class Navigation extends Component {
               </span>
             }
           >
-            {collectionList.map(collection =>
-              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <Link
-                  to={{
-                    query: {
-                      [`@${collection.name.toLowerCase()}`]: null,
-                    },
-                  }}
-                >
-                  <Icon type="api" /> {collection.name}
-                </Link>
-              </Menu.Item>)
+            {collectionList.map((collection) => (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+              <Link
+                to={{
+                  query: {
+                    [`@${collection.name.toLowerCase()}`]: null,
+                  },
+                }}
+              >
+                <Icon type="api" /> {get(collection, 'decorators.label.value', collection.name)}
+              </Link>
+            </Menu.Item>)
             )}
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
