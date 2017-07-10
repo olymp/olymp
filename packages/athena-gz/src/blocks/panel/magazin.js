@@ -32,7 +32,7 @@ const MagazinItem = createComponent(
     query articleList {
       items: articleList(
         sort: { date: DESC }
-        query: { state: { ne: REMOVED } }
+        query: { state: { eq: PUBLISHED } }
       ) {
         id
         date
@@ -66,7 +66,7 @@ const MagazinItem = createComponent(
       }
       pdfs: fileList(
         sort: { createdAt: DESC }
-        query: { tags: { in: "GiZ" }, state: { ne: REMOVED } }
+        query: { tags: { in: "GiZ" }, state: { eq: PUBLISHED } }
       ) {
         id
         url

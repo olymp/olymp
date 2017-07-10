@@ -36,7 +36,7 @@ export const withNavigation = (Wrapped) => {
           NavCache[key] = items
             .filter(item => item.binding && item.binding.type)
             .reduce((store, value) => {
-              const { type, fields, query } = value.binding;
+              const { type, fields, query = {} } = value.binding;
               const sort = value.sorting
                 ? value.sorting.reduce((store, item) => {
                   const [c, ...rest] = item.split('');
@@ -57,7 +57,7 @@ export const withNavigation = (Wrapped) => {
                 `,
                 {
                   name: `nav_${value.id}`,
-                  options: () => ({ variables: { query, sort } }),
+                  options: () => ({ variables: { query: { ...query, ...{ state: { eq: 'PUBLISHED' } } }, sort } }),
                 }
               )(store);
             }, Wrapped);

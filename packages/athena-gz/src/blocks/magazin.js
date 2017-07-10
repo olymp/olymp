@@ -106,12 +106,12 @@ const Item = (props) => {
   const { name, description, slug, org, date, author } = props;
 
   const image = props.image ||
-  org.logo || {
-    url:
+    org.logo || {
+      url:
       'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-    width: 400,
-    height: 300,
-  };
+      width: 400,
+      height: 300,
+    };
 
   return (
     <Panel
@@ -168,7 +168,7 @@ const component = graphql(
     query articleList {
       items: articleList(
         sort: { date: DESC }
-        query: { state: { ne: REMOVED } }
+        query: { state: { eq: PUBLISHED } }
       ) {
         id
         name
@@ -201,7 +201,7 @@ const component = graphql(
           name
         }
       }
-      pdfs: fileList(query: { tags: { in: "GiZ" }, state: { ne: REMOVED } }) {
+      pdfs: fileList(query: { tags: { in: "GiZ" }, state: { eq: PUBLISHED } }) {
         id
         url
         caption
