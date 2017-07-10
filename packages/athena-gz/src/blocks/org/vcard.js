@@ -94,14 +94,21 @@ const Logo = createComponent(
       value={value}
       width="100%"
       maxWidth={value && value.width}
-      maxHeight={160}
       maxResolution={64000}
       alt={title}
     />),
   p => Object.keys(p)
 );
 
-const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+const weekdays = [
+  'Montag',
+  'Dienstag',
+  'Mittwoch',
+  'Donnerstag',
+  'Freitag',
+  'Samstag',
+  'Sonntag',
+];
 
 export default createComponent(
   ({ theme }) => ({
