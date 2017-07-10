@@ -8,7 +8,7 @@ import {
 import { Error404, Page, EditablePage } from './views';
 import { Link, renderHelmet } from 'olymp';
 import { Menu, Icon, Button as AntButton } from 'antd';
-import { lowerFirst } from 'lodash';
+import { lowerFirst, get } from 'lodash';
 import { Gateway } from 'react-gateway';
 
 const Button = createComponent(
@@ -44,6 +44,16 @@ const renderGateway = (
           </Button>
         }
       >
+        <Menu.Item key="page-plus">
+          <Link
+            to={{
+              pathname,
+              query: { ...query, '@page': 'new' },
+            }}
+          >
+            <Icon type="plus" style={{ marginRight: 0 }} /> Seite
+          </Link>
+        </Menu.Item>
         {collectionList.map(collection =>
           (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
             <Link
@@ -53,7 +63,7 @@ const renderGateway = (
                 },
               }}
             >
-              <Icon type="plus" style={{ marginRight: 0 }} /> {collection.name}
+              <Icon type="plus" style={{ marginRight: 0 }} /> {get(collection, 'decorators.label.value', collection.name)}
             </Link>
           </Menu.Item>)
         )}

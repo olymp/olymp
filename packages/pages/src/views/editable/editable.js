@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Prompt, withRouter } from 'olymp';
 import { Sidebar, SplitView } from 'olymp-ui';
-import { Button, Form } from 'antd';
-import { orderBy } from 'lodash';
+import { Menu, Button, Form, Icon } from 'antd';
+import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
 import Page from '../page';
@@ -51,21 +51,6 @@ export default class PageSidebar extends Component {
       item = { parentId: query.parent, type: 'PAGE' };
     }
 
-    const rightButtons = form.isFieldsTouched()
-      ? (<Button.Group>
-        <Sidebar.Button onClick={save} shape="circle" icon="save" />
-      </Button.Group>)
-      : (<Button.Group>
-        <Sidebar.Button
-          onClick={() =>
-            router.push({
-              pathname,
-              query: { ...query, '@page': 'new', parent: item.id },
-            })}
-          shape="circle"
-          icon="plus"
-        />
-      </Button.Group>);
     const title = value === 'new' ? 'Neue Seite' : item.name;
     const description =
       value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
@@ -84,12 +69,20 @@ export default class PageSidebar extends Component {
 
     return (
       <SplitView deviceWidth={deviceWidth} center>
+        <Gateway into="navigation">
+          {form.isFieldsTouched() && <Menu.Item key="save">
+            <a href="javascript:;" onClick={save}>
+              <Button type="primary" style={{ margin: '0 -15px' }}>
+                <Icon type="save" /> Speichern
+              </Button>
+            </a>
+          </Menu.Item>}
+        </Gateway>
         <Prompt
           when={form.isFieldsTouched()}
           message={() => 'Änderungen verwerfen?'}
         />
         <Sidebar
-          rightButtons={rightButtons}
           isOpen
           onClose={() => router.push(pathname)}
           padding={0}
