@@ -19,7 +19,7 @@ const Container = createComponent(
     height: '100%',
     backgroundColor: '#f5f5f5',
     '> :last-child': {
-      flex: 1,
+      flex: '1 1 0%',
       height: '100%',
       overflowY: 'auto',
     },
