@@ -8,9 +8,9 @@ const { URL } = require('url');
 require('dotenv').config();
 
 const createConfig = require(path.resolve(
-  __dirname,
-  '..',
-  'webpack-config.js'
+    __dirname,
+    '..',
+    'webpack-config.js'
 ));
 
 const command = process.argv[process.argv.length - 1];
@@ -40,107 +40,108 @@ require('babel-register')({
 });*/
 
 if (['start', 'build'].includes(command)) {
-  process.env.NODE_ENV = 'production';
+    process.env.NODE_ENV = 'production';
 }
 
 if (command === 'dev') {
-  const notifier = require('node-notifier');
+    const notifier = require('node-notifier');
 
-  const port = parseInt(process.env.PORT, 10);
-  const devPort = port + 2;
+    const port = parseInt(process.env.PORT, 10);
+    const devPort = port + 2;
 
-  const url = new URL(process.env.URL || `http://localhost:${port}`);
-  const devUrl = new URL(`${url.protocol}//${url.hostname}:${devPort}`);
+    const url = new URL(process.env.URL || `http://localhost:${port}`);
+    const devUrl = new URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
-  const compiler = webpack([
-    createConfig({
-      target: 'node',
-      mode: 'development',
-      port,
-      devPort,
-      devUrl,
-      ssr: process.env.SSR != 'false',
-    }),
-    createConfig({ target: 'web', mode: 'development', port, devPort, devUrl }),
-  ]);
-  const watch = {
-    aggregateTimeout: 300,
-    poll: false,
-    ignored: /node_modules/,
-  };
-  compiler.compilers[0].watch(watch, (err, compilation) => {
-    if (err) {
-      return console.log('[webpack] error:', err);
-    }
-    const stats = compilation.stats || [compilation];
-    console.log('[webpack] the following asset bundles were built:');
-    stats.forEach(c => console.log(c.toString()));
-    notifier.notify('Ready');
-  });
-  const webpackDevServer = require('webpack-dev-server');
-  const server = new webpackDevServer(compiler.compilers[1], {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-    watchOptions: watch,
-    host: devUrl.hostname,
-    port: devUrl.port,
-    historyApiFallback: true,
-    hot: true,
-    stats: {
-      colors: true,
-      hash: false,
-      version: false,
-      timings: false,
-      assets: false,
-      chunks: false,
-      modules: false,
-      reasons: false,
-      children: false,
-      source: false,
-      errors: true,
-      errorDetails: true,
-      warnings: false,
-      publicPath: false,
-    },
-  });
-  server.listen(devPort);
+    const compiler = webpack([
+        createConfig({
+            target: 'node',
+            mode: 'development',
+            port,
+            devPort,
+            devUrl,
+            ssr: process.env.SSR != 'false',
+        }),
+        createConfig({ target: 'web', mode: 'development', port, devPort, devUrl }),
+    ]);
+    const watch = {
+        aggregateTimeout: 300,
+        poll: false,
+        ignored: /node_modules/,
+    };
+    compiler.compilers[0].watch(watch, (err, compilation) => {
+        if (err) {
+            return console.log('[webpack] error:', err);
+        }
+        const stats = compilation.stats || [compilation];
+        console.log('[webpack] the following asset bundles were built:');
+        stats.forEach(c => console.log(c.toString()));
+        notifier.notify('Ready');
+    });
+    const webpackDevServer = require('webpack-dev-server');
+    const server = new webpackDevServer(compiler.compilers[1], {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        watchOptions: watch,
+        host: devUrl.hostname,
+        port: devUrl.port,
+        disableHostCheck: true,
+        historyApiFallback: true,
+        hot: true,
+        stats: {
+            colors: true,
+            hash: false,
+            version: false,
+            timings: false,
+            assets: false,
+            chunks: false,
+            modules: false,
+            reasons: false,
+            children: false,
+            source: false,
+            errors: true,
+            errorDetails: true,
+            warnings: false,
+            publicPath: false,
+        },
+    });
+    server.listen(devPort);
 } else if (command === 'build') {
-  rimraf.sync(path.resolve(process.cwd(), 'build'));
-  process.env.NODE_ENV = 'production';
-  const compiler = webpack([
-    createConfig({ target: 'node', mode: 'production' }),
-    createConfig({ target: 'web', mode: 'production' }),
-  ]);
-  compiler.run((err, compilation) => {
-    if (err) {
-      console.error(err);
-      return process.exit(1);
-    }
-    const stats = compilation.stats || [compilation];
-    console.log('[webpack] the following asset bundles were built:');
-    /* stats.forEach(c =>
-      fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
-    ); */
-    stats.forEach(c => console.log(c.toString()));
-  });
+    rimraf.sync(path.resolve(process.cwd(), 'build'));
+    process.env.NODE_ENV = 'production';
+    const compiler = webpack([
+        createConfig({ target: 'node', mode: 'production' }),
+        createConfig({ target: 'web', mode: 'production' }),
+    ]);
+    compiler.run((err, compilation) => {
+        if (err) {
+            console.error(err);
+            return process.exit(1);
+        }
+        const stats = compilation.stats || [compilation];
+        console.log('[webpack] the following asset bundles were built:');
+        /* stats.forEach(c =>
+          fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
+        ); */
+        stats.forEach(c => console.log(c.toString()));
+    });
 } else if (command.indexOf('build:') === 0) {
-  const target = command.split(':')[1];
-  rimraf.sync(path.resolve(process.cwd(), 'build', target));
-  process.env.NODE_ENV = 'production';
-  const compiler = webpack([createConfig({ target, mode: 'production' })]);
-  compiler.run((err, compilation) => {
-    if (err) {
-      console.error(err);
-      return process.exit(1);
-    }
-    const stats = compilation.stats || [compilation];
-    console.log('[webpack] the following asset bundles were built:');
-    stats.forEach(c => console.log(c.toString()));
-    stats.forEach(c =>
-      fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
-    );
-  });
+    const target = command.split(':')[1];
+    rimraf.sync(path.resolve(process.cwd(), 'build', target));
+    process.env.NODE_ENV = 'production';
+    const compiler = webpack([createConfig({ target, mode: 'production' })]);
+    compiler.run((err, compilation) => {
+        if (err) {
+            console.error(err);
+            return process.exit(1);
+        }
+        const stats = compilation.stats || [compilation];
+        console.log('[webpack] the following asset bundles were built:');
+        stats.forEach(c => console.log(c.toString()));
+        stats.forEach(c =>
+            fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
+        );
+    });
 } else if (command === 'start') {
-  require(path.resolve(process.cwd(), 'build', 'node', 'main'));
+    require(path.resolve(process.cwd(), 'build', 'node', 'main'));
 }
