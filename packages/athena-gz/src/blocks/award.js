@@ -72,11 +72,11 @@ const Item = createComponent(
     textAlign: 'center',
     position: 'relative',
   }),
-  ({ className, website, name, tags, bild }) =>
+  ({ className, website, name, tags, image }) =>
     (<Grid.Item className={className} mini={5} medium={2} gridSize={10}>
       <Link href={website} rel="noopener noreferrer">
         <Img
-          value={bild}
+          value={image}
           maxResolution={40000}
           width="70%"
           ratio={1}
@@ -99,12 +99,12 @@ const Item = createComponent(
 
 const component = graphql(
   gql`
-    query netzwerkList {
-      items: netzwerkList {
+    query awardList {
+      items: awardList {
         id
         name
-        beschreibung
-        bild {
+        description
+        image {
           url
           crop
           width
@@ -113,7 +113,7 @@ const component = graphql(
           source
         }
         website
-        farbe
+        color
         tags
       }
     }
@@ -142,7 +142,7 @@ const component = graphql(
       </div>),
     p => Object.keys(p)
   )
-);
+  );
 
 export default {
   key: 'GZK.Panel.Network',

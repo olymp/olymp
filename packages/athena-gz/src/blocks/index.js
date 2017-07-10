@@ -10,5 +10,5 @@ export { default as GZKHeaderBlock } from './header';
 export { default as GZKMagazinBlock } from './magazin';
 export { default as GZKNewsBlock } from './news';
 export { default as GZKNumbersBlock } from './phone';
-export { default as GZKNetworkBlock } from './network';
+export { default as GZKNetworkBlock } from './award';
 export { default as GZKVerzeichnisBlock } from './list';
