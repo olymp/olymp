@@ -112,6 +112,7 @@ export default (server, options) => {
   });
 
   const shortId = require('shortid');
+
   /*monk.collection('item').find({ _type: 'einrichtung' }).then((items) => {
     // monk.collection('item').find({ _type: 'termin' }).then((items) => {
     items.forEach((item) => {
