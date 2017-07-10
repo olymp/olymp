@@ -74,7 +74,7 @@ const NewsItem = (props) => {
 @graphql(
   gql`
     query newsList {
-      items: newsList(
+      news: newsList(
         sort: { date: DESC }
         query: { state: { eq: PUBLISHED } }
       ) {
@@ -116,14 +116,64 @@ const NewsItem = (props) => {
       ...ownProps,
       data,
       isLoading: data.loading,
-      items: data.items || [],
+      news: data.news || [],
+    }),
+  }
+)
+@graphql(
+  gql`
+    query eventList {
+      events: eventList(
+        sort: { date: DESC }
+        query: { state: { eq: PUBLISHED } }
+      ) {
+        id
+        date
+        art
+        name
+        ort
+        description
+        text
+        slug
+        image {
+          id
+          width
+          height
+          url
+          crop
+        }
+        org {
+          id
+          name
+          logo {
+            id
+            width
+            height
+            url
+            crop
+          }
+          color
+        }
+        author {
+          id
+          name
+        }
+      }
+    }
+  `,
+  {
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      data,
+      isLoading: data.loading,
+      events: data.events || [],
     }),
   }
 )
 class News extends Component {
   render() {
-    const { attributes, items, isLoading } = this.props;
-
+    const { attributes, isLoading, events, news } = this.props;
+    const items = sortBy([...events, ...news], 'date').reverse();
     return (
       <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
         <Container {...attributes}>
@@ -151,23 +201,16 @@ class News extends Component {
             >
               <H2 right>Vorträge & Veranstaltungen</H2>
               {getItems(
-                items,
-                item => item.art === 'VORTRAG' || item.art === 'VERANSTALTUNG',
+                events,
+                item => true,
                 item =>
                   `${moment(item.date).format('DD. MMMM YYYY, HH:mm')} Uhr`
               )}
 
-              <H2 right>Publikationen</H2>
+              <H2 right>Publikationen & Presse</H2>
               {getItems(
-                items,
-                item => item.art === 'PUBLIKATION',
-                item => moment(item.date).format('DD. MMMM YYYY')
-              )}
-
-              <H2 right>Presse</H2>
-              {getItems(
-                items,
-                item => item.art === 'PRESSE',
+                news,
+                item => true,
                 item => moment(item.date).format('DD. MMMM YYYY')
               )}
             </Column>
