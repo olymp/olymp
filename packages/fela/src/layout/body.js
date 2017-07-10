@@ -4,14 +4,19 @@ import WithContainer from './with-container';
 
 const Body = createComponent(
   ({ affix }) => ({
-    flex: '1 1 0%',
-    display: affix && 'flex',
-    overflowY: affix && 'auto',
-    flexDirection: affix && 'column',
-    ifSmallDown: {
-      '-webkit-overflow-scrolling': 'touch',
-      overflowY: affix && 'scroll',
-    },
+    flex: 'none',
+    ...(!affix
+      ? {}
+      : {
+        flex: '1 1 auto',
+        display: 'flex',
+        overflowY: 'auto',
+        flexDirection: 'column',
+        ifSmallDown: {
+          '-webkit-overflow-scrolling': 'touch',
+          overflowY: 'scroll',
+        },
+      }),
   }),
   WithContainer,
   ({ affix, ...p }) => Object.keys(p)

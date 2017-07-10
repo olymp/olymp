@@ -4,7 +4,7 @@ import WithContainer from './with-container';
 
 const Footer = createComponent(
   () => ({
-    flexShrink: 0,
+    flex: 'none',
   }),
   WithContainer,
   ({ affix, ...p }) => Object.keys(p)
