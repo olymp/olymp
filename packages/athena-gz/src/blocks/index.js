@@ -1,8 +1,8 @@
 export * from './panel';
 export * from './org';
 export * from './article';
-export * from './event';
-export * from './news';
+export * from './event-detail';
+export * from './news-detail';
 export * from './image';
 export { default as GZKMapsBlock } from './maps';
 export { default as GZKContainerBlock } from './container';

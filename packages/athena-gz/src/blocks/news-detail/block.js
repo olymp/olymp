@@ -104,11 +104,10 @@ const component = withColor(
 
 const componentWithData = graphql(
   gql`
-    query event($id: String) {
-      item: event(id: $id) {
+    query news($id: String) {
+      item: news(id: $id) {
         id
         art
-        ort
         date
         name
         slug
@@ -158,8 +157,8 @@ const componentWithData = graphql(
 )(component);
 
 export default {
-  key: 'GZK.Collections.TerminBlock',
-  label: 'Termin',
+  key: 'GZK.Collections.NewsDetailBlock',
+  label: 'Neuigkeit-Detail',
   category: 'Collections',
   editable: false,
   component: componentWithData,
