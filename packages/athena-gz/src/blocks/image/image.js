@@ -16,7 +16,6 @@ export default {
         height: 300,
       })}
     >
-      {console.log(getData('value'))}
       {renderHelmet({ image: getData('value') })}
     </Image>),
   actions: [
@@ -28,7 +27,7 @@ export default {
           value={getData('value', {})}
           multi={false}
         />),
-      toggle: () => { },
+      toggle: () => {},
     },
   ],
 };
