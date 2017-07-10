@@ -101,8 +101,7 @@ const Logo = createComponent(
   p => Object.keys(p)
 );
 
-const weekdays = moment.weekdays();
-weekdays.push(weekdays.splice(0, 1)[0]);
+const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
 
 export default createComponent(
   ({ theme }) => ({
