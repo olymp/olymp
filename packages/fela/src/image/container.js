@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LazyLoad from './lazy';
 import { createComponent } from 'react-fela';
+import LazyLoad from './lazy';
 import { ContentLoaderStyles } from '../loader';
 
 const containerStyle = ({
@@ -44,15 +44,16 @@ const LazyContainer = createComponent(
     ...containerStyle(rest),
     ...(!visible ? ContentLoaderStyles : {}),
   }),
-  ({ onVisible, children, ...p }) =>
-    (<LazyLoad {...p} onContentVisible={onVisible}>
-      {children}
-    </LazyLoad>),
+  p => <LazyLoad {...p} />,
   ({ ratio, rounded, visible, width, ...p }) => Object.keys(p)
 );
 
 class ImageContainer extends Component {
-  state = { visible: false };
+  state = { visible: false, canHandleState: false };
+
+  componentDidMount() {
+    this.setState({ canHandleState: true });
+  }
 
   render() {
     const {
@@ -64,9 +65,9 @@ class ImageContainer extends Component {
       lazy,
       ...containerProps
     } = this.props;
-    const { visible } = this.state;
+    const { visible, canHandleState } = this.state;
 
-    if (!lazy) {
+    if (!canHandleState || !lazy) {
       return (
         <Container
           {...containerProps}
@@ -88,7 +89,7 @@ class ImageContainer extends Component {
         ratio={ratio}
         rounded={rounded}
         visible={visible}
-        onVisible={() => this.setState({ visible: true })}
+        onContentVisible={() => this.setState({ visible: true })}
       >
         {children}
       </LazyContainer>
