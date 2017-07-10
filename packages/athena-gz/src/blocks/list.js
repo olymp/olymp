@@ -4,18 +4,18 @@ import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';
 
 const Item = createComponent(
-  ({ theme, farbe, hovered }) => ({
+  ({ theme, color, hovered }) => ({
     position: 'relative',
     paddingX: theme.space1,
     fontSize: '94%',
     onBefore: {
-      color: `${farbe || theme.color} !important`,
+      color: `${color || theme.color} !important`,
     },
     '> a': {
       clearfix: true,
-      color: hovered ? farbe || theme.color : theme.dark2,
+      color: hovered ? color || theme.color : theme.dark2,
       onHover: {
-        color: farbe || theme.color,
+        color: color || theme.color,
       },
       '> span': {
         float: 'left',
@@ -57,8 +57,8 @@ const Item = createComponent(
 @withRouter
 @graphql(
   gql`
-    query einrichtungList {
-      items: einrichtungList(query: { state: { eq: PUBLISHED } }) {
+    query orgList {
+      items: orgList(query: { state: { eq: PUBLISHED } }) {
         id
         slug
         image {
@@ -66,7 +66,7 @@ const Item = createComponent(
           url
         }
         telefon
-        farbe
+        color
         name
         title
         fachrichtungen
@@ -125,7 +125,7 @@ class VerzeichnisBlock extends Component {
           personen.push({
             ...person,
             orgId: item.id,
-            farbe: item.farbe,
+            color: item.color,
             org: item.kurz || item.name,
             slug: item.slug,
           })
@@ -137,7 +137,7 @@ class VerzeichnisBlock extends Component {
             id: leistung,
             name: leistung,
             orgId: item.id,
-            farbe: item.farbe,
+            color: item.color,
             org: item.kurz || item.name,
             slug: item.slug,
           })

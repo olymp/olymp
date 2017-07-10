@@ -49,7 +49,7 @@ const MagazinItem = createComponent(
         org {
           id
           name
-          farbe
+          color
           slug
           image {
             id

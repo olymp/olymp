@@ -115,7 +115,7 @@ const Item = (props) => {
 
   return (
     <Panel
-      accent={org.farbe}
+      accent={org.color}
       title={name}
       subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${author.name ||
         'Redaktion'}`}
@@ -194,7 +194,7 @@ const component = graphql(
             url
             crop
           }
-          farbe
+          color
         }
         author {
           id

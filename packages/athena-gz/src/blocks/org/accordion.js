@@ -15,11 +15,11 @@ const Icon = createComponent(
 );
 
 const Link = createComponent(
-  ({ theme, farbe, active }) => ({
+  ({ theme, color, active }) => ({
     paddingTop: theme.space1,
     cursor: 'pointer',
     display: 'block',
-    borderBottom: active ? border(theme, farbe) : border(theme, 'transparent'),
+    borderBottom: active ? border(theme, color) : border(theme, 'transparent'),
     onHover: {
       backgroundColor: theme.dark5,
       borderRadius: theme.borderRadius,
@@ -27,14 +27,14 @@ const Link = createComponent(
       marginX: `-${theme.space2}`,
     },
   }),
-  ({ className, children, farbe, active, onClick }) =>
+  ({ className, children, color, active, onClick }) =>
     (<div className={className} onClick={onClick}>
       {children}
 
       <Icon>
         {!active
-          ? <FaAngleRight size={14} color={farbe} />
-          : <FaAngleLeft size={14} color={farbe} />}
+          ? <FaAngleRight size={14} color={color} />
+          : <FaAngleLeft size={14} color={color} />}
       </Icon>
     </div>),
   p => Object.keys(p)
@@ -58,9 +58,9 @@ const Container = createComponent(
   ({ theme }) => ({
     marginY: 0,
   }),
-  ({ className, name, farbe, text, active, onClick }) =>
+  ({ className, name, color, text, active, onClick }) =>
     (<div className={className}>
-      <Link onClick={onClick} farbe={farbe} active={active}>
+      <Link onClick={onClick} color={color} active={active}>
         {name}
       </Link>
       {active &&

@@ -1,8 +1,8 @@
 module.exports = `
 #header @deco
 #container
-#bild {item.slug} color={item.farbe}#
-qkwodqpowkd #bold asdiojqwdijqiowdj qiowdjoiqwd oiqwjd oiqwd j color={item.farbe}# qwdjoiqwio
+#bild {item.slug} color={item.color}#
+qkwodqpowkd #bold asdiojqwdijqiowdj qiowdjoiqwd oiqwjd oiqwd j color={item.color}# qwdjoiqwio
 Das ist ein Testqmwkd...
 ##
 Test

@@ -112,7 +112,7 @@ export default createComponent(
   ({
     className,
     org: {
-      farbe,
+      color,
       name,
       titel,
       etage,
@@ -133,7 +133,7 @@ export default createComponent(
     (<div>
       <Logo value={logo} title={name || titel} />
       <div className={className}>
-        <H2 color={farbe}>
+        <H2 color={color}>
           {name}
         </H2>
         <Container>
@@ -175,7 +175,7 @@ export default createComponent(
 
         {openings &&
           <div>
-            <H2 color={farbe}>Öffnungszeiten</H2>
+            <H2 color={color}>Öffnungszeiten</H2>
             <Container>
               {openings.map((value, index) =>
                 (<List key={index} label={weekdays[index]}>
@@ -190,39 +190,39 @@ export default createComponent(
 
         {leistungen &&
           !!leistungen.length &&
-          <H2 color={farbe}>Leistungsangebot</H2>}
+          <H2 color={color}>Leistungsangebot</H2>}
         {leistungen &&
           !!leistungen.length &&
           <Container>
             {leistungen.map((item, i) =>
-              <Accordion {...item} farbe={farbe} key={item.id || i} />
+              <Accordion {...item} color={color} key={item.id || i} />
             )}
           </Container>}
 
-        {vorsorgen && !!vorsorgen.length && <H2 color={farbe}>Vorsorge</H2>}
+        {vorsorgen && !!vorsorgen.length && <H2 color={color}>Vorsorge</H2>}
         {vorsorgen &&
           !!vorsorgen.length &&
           <Container>
             {vorsorgen.map((item, i) =>
-              <Accordion {...item} farbe={farbe} key={item.id || i} />
+              <Accordion {...item} color={color} key={item.id || i} />
             )}
           </Container>}
 
-        {aesthetik && !!aesthetik.length && <H2 color={farbe}>Ästethik</H2>}
+        {aesthetik && !!aesthetik.length && <H2 color={color}>Ästethik</H2>}
         {aesthetik &&
           !!aesthetik.length &&
           <Container>
             {aesthetik.map((item, i) =>
-              <Accordion {...item} farbe={farbe} key={item.id || i} />
+              <Accordion {...item} color={color} key={item.id || i} />
             )}
           </Container>}
 
-        {personen && !!personen.length && <H2 color={farbe}>Personen</H2>}
+        {personen && !!personen.length && <H2 color={color}>Personen</H2>}
         {personen &&
           !!personen.length &&
           <Container>
             {personen.map((item, i) =>
-              <Person {...item} farbe={farbe} key={item.id || i} />
+              <Person {...item} color={color} key={item.id || i} />
             )}
           </Container>}
       </div>

@@ -77,15 +77,15 @@ const getSubheader = (item) => {
 };
 
 const component = withColor(
-  ({ item }) => item.org.farbe
+  ({ item }) => item.org.color
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
-      <Header subheader={getSubheader(item)} color={item.org.farbe}>
+      <Header subheader={getSubheader(item)} color={item.org.color}>
         {item.name}
       </Header>
-      <Container className={className} color={item.org.farbe} {...attributes}>
+      <Container className={className} color={item.org.color} {...attributes}>
         <Grid size={3}>
           <Grid.Item medium={1}>
             {item.image &&
@@ -130,7 +130,7 @@ const componentWithData = graphql(
           id
           name
           slug
-          farbe
+          color
         }
       }
     }

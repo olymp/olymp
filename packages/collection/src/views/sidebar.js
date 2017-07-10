@@ -133,7 +133,7 @@ export default class CollectionListSidebar extends Component {
           collection.specialFields.color &&
           !!item[collection.specialFields.color.field] &&
           collection.specialFields.color.arg0) ||
-        item[this.resolveFieldName(item, 'color', 'farbe')];
+        item[this.resolveFieldName(item, 'color', 'color')];
 
       return {
         id: item.id,

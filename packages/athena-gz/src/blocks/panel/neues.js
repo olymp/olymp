@@ -27,7 +27,7 @@ import List from './list';
         org {
           id
           name
-          farbe
+          color
           slug
           image {
             id
@@ -75,7 +75,7 @@ import List from './list';
         org {
           id
           name
-          farbe
+          color
           slug
           image {
             id

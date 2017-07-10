@@ -56,7 +56,7 @@ const NewsItem = (props) => {
 
   return (
     <Panel
-      accent={org.farbe}
+      accent={org.color}
       title={name}
       subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
     >
@@ -102,7 +102,7 @@ const NewsItem = (props) => {
             url
             crop
           }
-          farbe
+          color
         }
         author {
           id

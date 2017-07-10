@@ -46,7 +46,7 @@ const Hashtax = hashtax(
         query einrichtungList {
           items: einrichtungList {
             id
-            farbe
+            color
             name
             slug
             kurz

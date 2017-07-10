@@ -5,7 +5,7 @@ export default `
     # @index(2)
     date: Date
     # ji
-    farbe: Color
+    color: Color
     # @index(0)
     # @name
     name: String

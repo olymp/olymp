@@ -21,13 +21,13 @@ const Avatar = createComponent(
 );
 
 const H3 = createComponent(
-  ({ theme, farbe }) => ({
-    borderBottom: border(theme, farbe),
+  ({ theme, color }) => ({
+    borderBottom: border(theme, color),
     display: 'inline',
     paddingRight: theme.space1,
   }),
   'h3',
-  ({ farbe, ...p }) => Object.keys(p)
+  ({ color, ...p }) => Object.keys(p)
 );
 
 export default createComponent(
@@ -41,10 +41,10 @@ export default createComponent(
       textAlign: 'justify',
     },
   }),
-  ({ className, name, bild, beschreibung, farbe }) =>
+  ({ className, name, bild, beschreibung, color }) =>
     (<div className={className}>
       <Avatar value={bild} />
-      <H3 farbe={farbe}>
+      <H3 color={color}>
         {name}
       </H3>
       <p>

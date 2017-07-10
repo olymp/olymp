@@ -86,11 +86,11 @@ const Info = createComponent(
 
 const component = graphql(
   gql`
-  query einrichtungList {
-    items: einrichtungList {
+  query orgList {
+    items: orgList {
       id
       name
-      farbe
+      color
       title
       telefon
       slug
@@ -112,8 +112,8 @@ const component = graphql(
     <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
       <div>
         {items.map(item =>
-          (<Item number={item.telefon} key={item.id} color={item.farbe}>
-            <Logo color={item.farbe} icon={16} />
+          (<Item number={item.telefon} key={item.id} color={item.color}>
+            <Logo color={item.color} icon={16} />
             <StyledLink to={item.slug}>
               {item.title || item.name}
             </StyledLink>
@@ -122,7 +122,7 @@ const component = graphql(
       </div>
     </SchemaLoader>
   </MarginContainer>)
-);
+  );
 
 export default {
   key: 'GZK.Collections.PhoneBlock',

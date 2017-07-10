@@ -90,7 +90,7 @@ const Peak = createComponent(
 );
 
 const component = withColor(
-  ({ item }) => item.farbe
+  ({ item }) => item.color
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
@@ -103,13 +103,13 @@ const component = withColor(
           title={item.name || item.titel}
           value={item.image}
           header={item.slogan}
-          subheader={item.willkommen}
-          color={item.farbe}
+          subheader={item.description}
+          color={item.color}
         />
-        : <Header subheader={item.willkommen} color={item.farbe}>
+        : <Header subheader={item.description} color={item.color}>
           {item.slogan}
         </Header>}
-      <Container className={className} color={item.farbe} {...attributes}>
+      <Container className={className} color={item.color} {...attributes}>
         <Grid>
           <Grid.Item medium={5}>
             <VCard org={item} />
@@ -122,20 +122,20 @@ const component = withColor(
       </Container>
     </div>
   </SchemaLoader>)
-);
+  );
 
 const componentWithData = graphql(
   gql`
-    query einrichtung($id: String) {
-      item: einrichtung(id: $id) {
+    query org($id: String) {
+      item: org(id: $id) {
         id
         name
         title
         art
-        farbe
+        color
         slug
         slogan
-        willkommen
+        description
         etage
         freifeld
         openings
