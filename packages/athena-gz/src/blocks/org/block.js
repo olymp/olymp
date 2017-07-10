@@ -94,7 +94,10 @@ const component = withColor(
 )(({ className, attributes, item }) =>
   (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
-      {renderHelmet({ description: item.slogan, image: item.logo || item.image })}
+      {renderHelmet({
+        description: item.slogan,
+        image: item.logo || item.image,
+      })}
       {item.image
         ? <Peak
           title={item.name || item.titel}
@@ -119,7 +122,7 @@ const component = withColor(
       </Container>
     </div>
   </SchemaLoader>)
-  );
+);
 
 const componentWithData = graphql(
   gql`
@@ -141,7 +144,11 @@ const componentWithData = graphql(
         telefon
         telefonPrivat
         website
+        fachrichtungen
+        tags
+        text
         image {
+          id
           url
           crop
           width
@@ -150,6 +157,7 @@ const componentWithData = graphql(
           source
         }
         logo {
+          id
           url
           crop
           width
@@ -157,8 +165,6 @@ const componentWithData = graphql(
           caption
           source
         }
-        fachrichtungen
-        tags
         aesthetik {
           id
           link
@@ -187,7 +193,12 @@ const componentWithData = graphql(
           id
           name
           beschreibung
+          telefon
+          fax
+          eMail
+          text
           bild {
+            id
             url
             crop
             width
@@ -195,12 +206,7 @@ const componentWithData = graphql(
             caption
             source
           }
-          telefon
-          fax
-          eMail
-          text
         }
-        text
       }
     }
   `,
