@@ -74,7 +74,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr }) => {
             'process.env.SSR': JSON.stringify(isSSR),
             'process.env.NODE_ENV': JSON.stringify(mode),
             'process.env.DEV_PORT': JSON.stringify(devPort),
-            'process.env.DEV_URL': JSON.stringify(devUrl.origin),
+            'process.env.DEV_URL': devUrl ? JSON.stringify(devUrl.origin) : undefined,
             'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
             'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
             'process.env.IS_ELECTRON': isElectron ? JSON.stringify(true) : undefined,
