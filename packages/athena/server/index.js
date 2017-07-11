@@ -112,6 +112,15 @@ export default (server, options) => {
       throw new Error('App not found');
     }
     cachedApp = app;
+    const index = algolia.initIndex(app.id);
+    monk.collection('item').find({ _appId: app.id, state: 'PUBLISHED' }).then((items) => {
+      items.forEach((item) => {
+        item.objectID = item.id;
+      });
+      index.addObjects(items, (err) => {
+        console.log('OK', err);
+      });
+    });
     schema.apply(modules);
   });
 

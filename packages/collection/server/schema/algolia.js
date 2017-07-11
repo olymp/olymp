@@ -15,7 +15,10 @@ export default {
       if (type && directive) {
         const index = context.algolia.initIndex(context.app.id);
         const asArray = isArray(value) ? value : [value];
-        index.addObjects(asArray.map(x => ({ ...x, objectID: x.id })), (err) => {
+        index.deleteObjects(asArray.filter(x => x.state !== 'PUBLISHED').map(x => x.id), (err) => {
+          console.log('OK', err);
+        });
+        index.addObjects(asArray.filter(x => x.state === 'PUBLISHED').map(x => ({ ...x, objectID: x.id })), (err) => {
           console.log('OK', err);
         });
       }
