@@ -25,6 +25,7 @@ const containerStyle = ({
     display: 'block',
     content: '""',
     width: '100%',
+    height: 0,
     paddingTop: `${ratio * 100}%`,
   },
   '> img': {
