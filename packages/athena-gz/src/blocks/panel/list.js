@@ -22,7 +22,7 @@ const Text = createComponent(
     lineHeight: 1.4,
     fontSize: 16,
     WebkitLineClamp: 3,
-    height: 1.4 * 16 * 3,
+    // : 1.4 * 16 * 3,
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -63,12 +63,12 @@ class ListItem extends Component {
         </h5>
         {description &&
           <div>
-            <Img
+            {/*<Img
               value={bild || (org || {}).image}
               width={100}
               maxHeight={120}
               avatar
-            />
+            />*/}
             <Text>
               {description}
             </Text>
