@@ -59,7 +59,7 @@ const MagazinItem = createComponent(
             height
           }
         }
-        author {
+        person {
           id
           name
         }

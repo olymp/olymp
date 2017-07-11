@@ -13,8 +13,6 @@ export default ({ item = {}, form, auth }, field) => {
   } else if (name === 'state') {
     // Bei State
     return 'DRAFT';
-  } else if (name === 'authorId' || name === 'userId') {
-    return get(auth, 'user.id');
   } else if (name === 'orgId') {
     return get(auth, 'user.orgId');
   } else if (name === 'slug' && form && form.getFieldValue('name')) {

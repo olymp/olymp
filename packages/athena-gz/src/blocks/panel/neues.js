@@ -37,7 +37,7 @@ import List from './list';
             height
           }
         }
-        author {
+        person {
           id
           name
         }
@@ -86,7 +86,7 @@ import List from './list';
             height
           }
         }
-        author {
+        person {
           id
           name
         }

@@ -103,7 +103,7 @@ const DownloadLink = createComponent(
 );
 
 const Item = (props) => {
-  const { name, description, slug, org, date, author } = props;
+  const { name, description, slug, org, date, person } = props;
 
   const image = props.image ||
     org.logo || {
@@ -117,7 +117,7 @@ const Item = (props) => {
     <Panel
       accent={org.color}
       title={name}
-      subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${author.name ||
+      subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name ||
         'Redaktion'}`}
     >
       <Img value={image} width={160} avatar />
@@ -196,7 +196,7 @@ const component = graphql(
           }
           color
         }
-        author {
+        person {
           id
           name
         }
@@ -240,7 +240,7 @@ const component = graphql(
               (<Item
                 {...item}
                 org={item.org || {}}
-                author={item.author || {}}
+                person={item.person || {}}
                 key={item.id}
               />)
             )}

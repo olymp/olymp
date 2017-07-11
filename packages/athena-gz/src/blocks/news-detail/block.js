@@ -60,7 +60,7 @@ const WhiteLink = createComponent(
 );
 
 const getSubheader = (item) => {
-  const author = item.author && `von ${item.author.name}`;
+  const person = item.person && `von ${item.person.name}`;
   const org =
     item.org &&
     <WhiteLink to={item.org.slug}>
@@ -68,10 +68,10 @@ const getSubheader = (item) => {
     </WhiteLink>;
 
   return (
-    author &&
+    person &&
     org &&
     <span>
-      {author}, {org}
+      {person}, {org}
     </span>
   );
 };
@@ -122,7 +122,7 @@ const componentWithData = graphql(
         description
         tags
         text
-        author {
+        person {
           id
           name
         }

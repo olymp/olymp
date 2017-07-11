@@ -104,7 +104,7 @@ const NewsItem = (props) => {
           }
           color
         }
-        author {
+        person {
           id
           name
         }
@@ -154,7 +154,7 @@ const NewsItem = (props) => {
           }
           color
         }
-        author {
+        person {
           id
           name
         }

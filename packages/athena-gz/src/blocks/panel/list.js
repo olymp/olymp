@@ -37,7 +37,7 @@ class ListItem extends Component {
       id,
       bild,
       org,
-      author,
+      person,
       art,
       name,
       slug,
@@ -55,7 +55,7 @@ class ListItem extends Component {
         </h3>
         <h5>
           {art || 'ARTIKEL'}, {moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr,{' '}
-          {(author || {}).name || 'Redaktion'}/<Link
+          {(person || {}).name || 'Redaktion'}/<Link
             to={(org || {}).slug || '/'}
           >
             {(org || {}).name || 'GZK'}
