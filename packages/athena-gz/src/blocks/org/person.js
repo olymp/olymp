@@ -41,14 +41,14 @@ export default createComponent(
       textAlign: 'justify',
     },
   }),
-  ({ className, name, bild, beschreibung, color }) =>
+  ({ className, name, image, description, color }) =>
     (<div className={className}>
-      <Avatar value={bild} />
+      <Avatar value={image} />
       <H3 color={color}>
         {name}
       </H3>
       <p>
-        {beschreibung}
+        {description}
       </p>
     </div>),
   p => Object.keys(p)

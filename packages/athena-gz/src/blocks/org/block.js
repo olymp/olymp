@@ -189,15 +189,15 @@ const componentWithData = graphql(
           name
           text
         }
-        personen {
+        persons {
           id
           name
-          beschreibung
+          description
           telefon
           fax
           eMail
           text
-          bild {
+          image {
             id
             url
             crop

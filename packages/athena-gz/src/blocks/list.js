@@ -70,7 +70,7 @@ const Item = createComponent(
         name
         title
         fachrichtungen
-        personen {
+        persons {
           id
           name
         }
@@ -112,7 +112,7 @@ class VerzeichnisBlock extends Component {
 
   render() {
     const { attributes, children, data } = this.props;
-    const personen = [];
+    const persons = [];
     const spezial = [];
 
     if (!data.items || !data.items.length) {
@@ -120,9 +120,9 @@ class VerzeichnisBlock extends Component {
     }
 
     data.items.forEach((item) => {
-      if (item.personen) {
-        item.personen.forEach(person =>
-          personen.push({
+      if (item.persons) {
+        item.persons.forEach(person =>
+          persons.push({
             ...person,
             orgId: item.id,
             color: item.color,
@@ -152,7 +152,7 @@ class VerzeichnisBlock extends Component {
           sortBy(data.items, x => x.name || x.title)
         )}
         {this.renderSection('Spezialitäten', sortBy(spezial, 'name'))}
-        {this.renderSection('Ärzte & Dienstleister', sortBy(personen, 'name'))}
+        {this.renderSection('Ärzte & Dienstleister', sortBy(persons, 'name'))}
         {children}
       </Grid>
     );

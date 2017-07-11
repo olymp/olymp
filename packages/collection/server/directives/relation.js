@@ -37,7 +37,7 @@ export default {
       const rightField =
         get(argProperty, 'value.value') || lowerFirst(leftTable);
       const rightNode = createTypeFetcher(
-        node => get(node, 'type.name.value') === rightType
+        node => get(node, 'name.value') === rightType && get(node, 'kind') === 'ObjectTypeDefinition'
       )(ast);
 
       // one-to-one / one-to-many
@@ -81,9 +81,12 @@ export default {
             })
           );
         }
-        addFields(ast, leftNode, `${rightField}: [${leftType}]`);
+        addFields(ast, rightNode, `${rightField}: [${leftType}]`);
         set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
-          monk.collection(leftTable).find({ [`${leftField}Id`]: source.id })
+          monk.collection('item').find({
+            [`${leftField}Id`]: source.id,
+            _type: leftTable,
+          })
         );
       }
 

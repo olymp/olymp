@@ -134,7 +134,7 @@ export default createComponent(
       vorsorgen,
       aesthetik,
       leistungen,
-      personen,
+      persons,
     },
   }) =>
     (<div>
@@ -224,11 +224,11 @@ export default createComponent(
             )}
           </Container>}
 
-        {personen && !!personen.length && <H2 color={color}>Personen</H2>}
-        {personen &&
-          !!personen.length &&
+        {persons && !!persons.length && <H2 color={color}>Personen</H2>}
+        {persons &&
+          !!persons.length &&
           <Container>
-            {personen.map((item, i) =>
+            {persons.map((item, i) =>
               <Person {...item} color={color} key={item.id || i} />
             )}
           </Container>}

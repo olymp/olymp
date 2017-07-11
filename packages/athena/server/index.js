@@ -115,10 +115,8 @@ export default (server, options) => {
     schema.apply(modules);
   });
 
-  const shortId = require('shortid');
-
   /*
-
+  const shortId = require('shortid');
   const index = algolia.initIndex(app.id);
   monk.collection('item').find({ _appId: app.id, state: 'PUBLISHED' }).then((items) => {
     items.forEach((item) => {
