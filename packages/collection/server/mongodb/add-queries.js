@@ -102,7 +102,7 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
               .collection('item')
               .update({ _type: table, id }, { $set: { ...input } });
           }
-          return promise.then(() => monk.collection('item').findOne({ id }));
+          return promise.then(() => monk.collection('item').findOne({ id, _type: table }));
         }
       );
     }

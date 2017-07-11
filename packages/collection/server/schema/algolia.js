@@ -1,12 +1,13 @@
 import { get, isArray } from 'lodash';
 import { createTypeFetcher } from 'olymp-graphql/server';
 const fetchType = createTypeFetcher((node, name) => get(node, 'kind') === 'ObjectTypeDefinition' && get(node, 'name.value') === name);
+
 export default {
   name: 'algolia',
   queries: `
     algolia(text: String!): Algolia
   `,
-  onAfter: ({ keys, value, source, input, context, resolverAST, ast }) => {
+  onAfter: ({ keys, value, context, resolverAST, ast }) => {
     if (!context || !context.algolia) return;
     if (keys[0] === 'RootMutation' && value) {
       const typeName = get(resolverAST, 'returnType.name');

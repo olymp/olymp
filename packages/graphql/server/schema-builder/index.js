@@ -15,31 +15,32 @@ export default ({ typeDefs, resolvers, directives, onBefore, onAfter }) => {
   const recurse = (obj, currentKeys = []) => {
     return Object.keys(obj).reduce((store, key) => {
       const keys = [...currentKeys, key];
-      if (isPlainObject(obj[key])) {
+      if (isPlainObject(obj[key]) && typeof obj[key].name === 'string') {
+        store[key] = obj[key];
+      } else if (isPlainObject(obj[key])) {
         store[key] = recurse(obj[key], keys);
       } else if (isFunction(obj[key])) {
         const fn = obj[key];
-        store[key] = (source, input, context, resolverAST) => {
+        store[key] = (source, variables, context, resolverAST) => {
+          let promise = Promise.resolve(variables);
           onBefore.forEach((hook) => {
-            const newArg = hook({ keys, source, input, context, resolverAST, ast });
-            if (newArg) input = newArg;
+            promise = promise.then((newVariables) => {
+              variables = newVariables || variables;
+              return hook({ keys, source, variables, context, resolverAST, ast });
+            });
           });
-          let result = fn(source, input, context);
-          if (result && result.then) {
-            return result.then((value) => {
-              onAfter.forEach((hook) => {
-                const newResult = hook({ keys, value, source, input, context, resolverAST, ast });
-                if (newResult) value = newResult;
-              });
-              return value;
+          promise = promise.then((newVariables) => {
+            variables = newVariables || variables;
+            return fn(source, variables, context, resolverAST);
+          });
+          let value;
+          onAfter.forEach((hook) => {
+            promise = promise.then((newValue) => {
+              value = newValue || value;
+              return hook({ keys, source, value, variables, context, resolverAST, ast });
             });
-          } else {
-            onAfter.forEach((hook) => {
-              const newResult = hook({ keys, result, source, input, context, resolverAST, ast });
-              if (newResult) result = newResult;
-            });
-            return result;
-          }
+          });
+          return promise.then(newValue => newValue || value);
         };
       } else {
         store[key] = obj[key];

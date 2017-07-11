@@ -12,19 +12,15 @@ export default {
       description:
         'The Markdown scalar type represents text in markdown language.',
       parseValue(value) {
-        return value;
+        return value ? `${value}` : null;
       },
       serialize(value) {
-        return value;
+        return value ? `${value}` : null;
       },
       parseLiteral(ast) {
-        if (ast.kind !== Kind.STRING) {
-          throw new GraphQLError(
-            `Query error: Can only parse STRING got a: ${ast.kind}.`,
-            [ast]
-          );
-        }
-        return ast.value;
+        if (ast.kind === Kind.STRING) {
+          return ast.value ? `${ast.value}` : null;
+        } return null;
       },
     }),
   },
