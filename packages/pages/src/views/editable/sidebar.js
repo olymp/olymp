@@ -12,6 +12,7 @@ import {
   TagSelect,
   JsonInput,
   InputNumber,
+  TextArea,
 } from '../../edits';
 import Tree from './tree';
 
@@ -70,6 +71,14 @@ class PageForm extends Component {
               item={item}
               field="slug"
               label="Slug"
+              type="text"
+              size="large"
+            />
+            <TextArea
+              form={form}
+              item={item}
+              field="description"
+              label="Beschreibung"
               type="text"
               size="large"
             />

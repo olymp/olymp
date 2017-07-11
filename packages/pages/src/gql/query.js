@@ -9,6 +9,7 @@ const queryOne = gql`
     item: page(id: $id) {
       id
       slug
+      description
       order
       type
       name
