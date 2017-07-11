@@ -25,6 +25,7 @@ export default {
           updatedAt: DateTime
           createdBy: User @relation
           updatedBy: User @relation
+          changelog: [Changelog]
         `
       );
       const name = getDirectiveValue(node, 'collection', 'name');

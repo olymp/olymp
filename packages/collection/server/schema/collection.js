@@ -1,5 +1,6 @@
 import { get, isArray } from 'lodash';
 import { createTypeFetcher } from 'olymp-graphql/server';
+import shortId from 'shortid';
 import diff from 'deep-diff';
 const fetchType = createTypeFetcher((node, name) => get(node, 'kind') === 'ObjectTypeDefinition' && get(node, 'name.value') === name);
 
@@ -20,7 +21,7 @@ export default {
         if (!user.isAdmin && user.orgId !== input.orgId && user.orgId !== input.id) throw new Error('Not authorized');
 
         if (id) {
-          return monk.collection('item').findOne({ id }).then(old => ({ ...variables, old }));
+          return monk.collection('item').findOne({ id }).then(old => ({ ...variables, old: old || null }));
         }
         // if (!user.isAdmin && ) throw new Error('Not authorized');
       }
@@ -32,17 +33,19 @@ export default {
       const typeName = get(resolverAST, 'returnType.name');
       const type = fetchType(ast, typeName);
       const directive = get(type, 'directives', []).find(d => get(d, 'name.value') === 'collection');
-      if (type && directive) {
+      if (type && directive && old !== undefined && !isArray(value)) {
+        if (!old && !value) return;
         const appId = context && context.app && context.app.id;
         const userId = context && context.user && context.user.id;
-        const asArray = isArray(value) ? value : [value];
-        context.monk.collection('changelog').insert(asArray.map(item => ({
-          type: item._type,
+        context.monk.collection('changelog').insert({
+          id: shortId.generate(),
+          type: value._type,
+          targetId: value.id,
           appId: appId,
           userId: userId,
           date: +new Date(),
           diff: diff(old || {}, value),
-        })));
+        });
         // if (!user.isAdmin && ) throw new Error('Not authorized');
       }
     }
@@ -72,6 +75,21 @@ export default {
       createdBy: User
       updatedAt: DateTime
       updatedBy: User
+    }
+    type Changelog {
+      id: String
+      targetId: String
+      type: String
+      appId: String
+      userId: String
+      date: DateTime
+      diff: [ChangelogDiff]
+    }
+    type ChangelogDiff {
+      kind: String
+      path: [String]
+      lhs: Json
+      rhs: Json
     }
   `,
 };
