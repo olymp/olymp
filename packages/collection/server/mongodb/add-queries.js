@@ -9,9 +9,6 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
 
   const Query = ast.definitions.find(x => get(x, 'name.value') === 'RootQuery');
 
-  set(resolvers, `${name}.changelog`, ({ id }, args, { monk, app }) => {
-    return monk.collection('changelog').find({ targetId: id });
-  });
   if (Query) {
     // Add one query
     addFields(

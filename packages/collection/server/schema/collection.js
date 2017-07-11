@@ -37,17 +37,32 @@ export default {
         if (!old && !value) return;
         const appId = context && context.app && context.app.id;
         const userId = context && context.user && context.user.id;
+        const id = shortId.generate();
         context.monk.collection('changelog').insert({
-          id: shortId.generate(),
+          id,
           type: value._type,
           targetId: value.id,
           appId: appId,
           userId: userId,
           date: +new Date(),
-          diff: diff(old || {}, value),
+          diff: diff(old || {}, value).map((x, i) => ({
+            ...x,
+            id: `${id}${i}`,
+          })),
         });
         // if (!user.isAdmin && ) throw new Error('Not authorized');
       }
+    }
+  },
+  queries: `
+    changelog(id: String!): [Changelog]
+  `,
+  resolvers: {
+    queries: {
+      changelog: (source, { id }, { monk, app, user }) => {
+        if (!user) return;
+        return monk.collection('changelog').find({ targetId: id, appId: app.id });
+      },
     }
   },
   schema: `
@@ -80,12 +95,12 @@ export default {
       id: String
       targetId: String
       type: String
-      appId: String
-      userId: String
+      user: User @relation
       date: DateTime
       diff: [ChangelogDiff]
     }
     type ChangelogDiff {
+      id: String
       kind: String
       path: [String]
       lhs: Json
