@@ -22,7 +22,7 @@ const Text = createComponent(
     lineHeight: 1.4,
     fontSize: 16,
     WebkitLineClamp: 3,
-    // : 1.4 * 16 * 3,
+    maxHeight: 1.4 * 16 * 3,
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
