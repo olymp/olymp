@@ -1,5 +1,6 @@
 const { get, castArray } = require('lodash');
-require('babel-register');
+// require('babel-register');
+
 module.exports = templateParams => `
   <!DOCTYPE html>
   <html lang="de">

@@ -19,11 +19,9 @@ const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 
-module.exports = ({ mode, target, devUrl, devPort, ssr }) => {
-  const isSSR = ssr !== false;
-  if (!isSSR) {
-    console.log('SSR OFF');
-  }
+module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
+  const isServerless = serverless === true;
+  const isSSR = ssr !== false && !serverless;
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
@@ -39,6 +37,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr }) => {
       ],
       alias: Object.assign(
         {
+          'history/createFlexHistory': isServerless ? 'history/createHashHistory' : 'history/createBrowserHistory',
           react: path.resolve(appRoot, 'node_modules', 'react'),
           // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
           'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
@@ -307,11 +306,11 @@ module.exports = ({ mode, target, devUrl, devPort, ssr }) => {
         path: path.resolve(process.cwd(), 'build', target),
       })
     );
-    if (isProd && !isElectron) {
+    if (isProd && !isServerless) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'offline.html',
-          template: path.resolve(__dirname, target, 'template.js'),
+          template: path.resolve(__dirname, 'templates', 'default.js'),
           inject: false,
           /* minify: {
           removeComments: true,
@@ -348,11 +347,11 @@ module.exports = ({ mode, target, devUrl, devPort, ssr }) => {
         })
       );
     }
-    if (isProd && isElectron) {
+    if (isServerless) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'index.html',
-          template: path.resolve(__dirname, target, 'template.js'),
+          template: path.resolve(__dirname, 'templates', 'serverless.js'),
           inject: false,
           /* minify: {
           removeComments: true,

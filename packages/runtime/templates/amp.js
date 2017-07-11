@@ -1,10 +1,17 @@
-const { get, castArray } = require('lodash');
-require('babel-register');
-module.exports = templateParams => `
+const replaceInline = str =>
+  str
+    .replace(/style="([^"]*)"/g, '')
+    .replace(/autocorrect="([^"]*)"/g, '')
+    .replace(/contenteditable="([^"]*)"/g, '')
+    .replace(/spellcheck="([^"]*)"/g, '');
+export default ({ helmet, cssMarkup, root }) => `
   <!DOCTYPE html>
-  <html lang="de">
+  <html amp lang="de">
     <head>
       <meta charset="utf-8">
+      <script async src="https://cdn.ampproject.org/v0.js"></script>
+      <script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
+      <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Language" content="de" />
@@ -26,25 +33,13 @@ module.exports = templateParams => `
       <meta name="msapplication-TileColor" content="#FBA139">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#FBA139">
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])).map(
-    style => `<link rel="stylesheet" type="text/css" href="${style}">`
-  )}
-      <style id="css-markup"></style>
-      <style>
-        body {
-          -webkit-app-region: drag;
-          -webkit-user-select: none;
-        }
-        p, h1, h2, h3, h4, h5, h6, span, strong {
-          cursor: default;
-        }
-      </style>
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
+      ${helmet.link.toString()}
+      <style amp-custom id="css-markup">${cssMarkup || ''}</style>
     </head>
     <body>
-      <div id="app"></div>
-      <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
-      <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])).map(script => `<script src="${script}"></script>`)}
+      <div id="app"><div>${root ? replaceInline(root) : ''}</div></div>
     </body>
   </html>
 `;

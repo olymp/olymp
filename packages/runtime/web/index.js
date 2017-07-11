@@ -19,7 +19,7 @@ import { UserAgentProvider } from '@quentin-sommer/react-useragent';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createFlexHistory';
 import {
   ConnectedRouter,
   routerReducer,
@@ -66,9 +66,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const networkInterface = createBatchingNetworkInterface({
   uri:
-    process.env.GRAPHQL_URL ||
-      (process.env.URL && `${process.env.URL}/graphql`) ||
-      '/graphql',
+  process.env.GRAPHQL_URL ||
+  (process.env.URL && `${process.env.URL}/graphql`) ||
+  '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
