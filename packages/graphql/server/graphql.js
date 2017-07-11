@@ -8,9 +8,18 @@ import * as defaultDirectives from './directives';
 export default ({ modules, directives = {} }) => {
   let schema = null;
   const apply = (modules) => {
+    const raw = values({ ...scalarModules, ...modules });
+    const { onBefore, onAfter } = raw.reduce((store, value) => {
+      if (value.onBefore) store.onBefore.push(value.onBefore);
+      if (value.onAfter) store.onAfter.push(value.onAfter);
+      return store;
+    }, { onBefore: [], onAfter: [] });
+    const bundled = bundle(raw);
     schema = buildSchema({
-      ...bundle(values({ ...scalarModules, ...modules })),
+      ...bundled,
       directives: { ...defaultDirectives, ...directives },
+      onBefore,
+      onAfter,
     });
   };
   if (modules) {

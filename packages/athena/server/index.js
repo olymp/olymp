@@ -8,6 +8,7 @@ import { googleGraphQL } from 'olymp-google/server';
 import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
 import { get } from 'lodash';
+import algoliasearch from 'algoliasearch';
 
 const {
   APP,
@@ -50,6 +51,8 @@ export default (server, options) => {
   const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET });
   server.use(authCache(authEngine));
 
+  const algolia = process.env.ALGOLIA ? algoliasearch(process.env.ALGOLIA.split('@')[1], process.env.ALGOLIA.split('@')[0]) : null;
+
   let cachedApp = null;
   server.use((req, res, next) => {
     req.mail = mail;
@@ -57,6 +60,7 @@ export default (server, options) => {
     req.schema = schema;
     req.authEngine = authEngine;
     req.app = cachedApp;
+    req.algolia = algolia;
     next();
   });
 
