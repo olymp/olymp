@@ -41,7 +41,7 @@ class ListItem extends Component {
       art,
       name,
       slug,
-      extrakt,
+      description,
       date,
       color,
       path,
@@ -61,7 +61,7 @@ class ListItem extends Component {
             {(org || {}).name || 'GZK'}
           </Link>
         </h5>
-        {extrakt &&
+        {description &&
           <div>
             <Img
               value={bild || (org || {}).image}
@@ -70,7 +70,7 @@ class ListItem extends Component {
               avatar
             />
             <Text>
-              {extrakt}
+              {description}
             </Text>
             {slug &&
               <Link to={{ pathname: `/${path}${slug}` }}>Weiterlesen...</Link>}
