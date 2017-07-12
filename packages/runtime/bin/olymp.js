@@ -52,9 +52,12 @@ const {
 } = process.env;
 
 
+const ssr = SSR != 'false';
+const serverless = SERVERLESS == 'true';
+console.log('Is Serverless', serverless);
+console.log('Is SSR', ssr);
+
 if (command === 'dev') {
-  const ssr = SSR != 'false';
-  const serverless = SERVERLESS == 'true';
   const port = parseInt(PORT, 10);
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
   const devPort = serverless ? port : port + 2;
@@ -68,8 +71,6 @@ if (command === 'dev') {
     poll: false,
     ignored: /node_modules/,
   };
-  console.log('Is Serverless', serverless);
-  console.log('Is SSR', ssr);
   if (serverless) {
     compiler = webpack([
       createConfig({ target: 'web', mode: 'development', devPort, devUrl, ssr, serverless }),
@@ -126,12 +127,15 @@ if (command === 'dev') {
   });
   server.listen(devPort);
 } else if (command === 'build') {
-  rimraf.sync(path.resolve(process.cwd(), 'build'));
+  rimraf.sync(path.resolve(process.cwd(), 'dist'));
   process.env.NODE_ENV = 'production';
-  const compiler = webpack([
-    createConfig({ target: 'node', mode: 'production' }),
-    createConfig({ target: 'web', mode: 'production' }),
-  ]);
+  const configs = [
+    createConfig({ target: 'web', mode: 'production', ssr, serverless }),
+  ];
+  if (!serverless) {
+    configs.push(createConfig({ target: 'node', mode: 'production', ssr, serverless }));
+  }
+  const compiler = webpack(configs);
   compiler.run((err, compilation) => {
     if (err) {
       console.error(err);
@@ -146,9 +150,9 @@ if (command === 'dev') {
   });
 } else if (command.indexOf('build:') === 0) {
   const target = command.split(':')[1];
-  rimraf.sync(path.resolve(process.cwd(), 'build', target));
+  rimraf.sync(path.resolve(process.cwd(), 'dist', target));
   process.env.NODE_ENV = 'production';
-  const compiler = webpack([createConfig({ target, mode: 'production' })]);
+  const compiler = webpack([createConfig({ target, mode: 'production', ssr, serverless })]);
   compiler.run((err, compilation) => {
     if (err) {
       console.error(err);
@@ -162,5 +166,5 @@ if (command === 'dev') {
     );
   });
 } else if (command === 'start') {
-  require(path.resolve(process.cwd(), 'build', 'node', 'main'));
+  require(path.resolve(process.cwd(), 'dist', 'node', 'main'));
 }

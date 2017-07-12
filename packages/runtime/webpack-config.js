@@ -12,6 +12,7 @@ const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 const HappyPack = require('happypack');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 
 HappyPack.ThreadPool({ size: 5 });
 
@@ -20,13 +21,14 @@ const olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
-  const isServerless = serverless === true;
-  const isSSR = ssr !== false && !serverless;
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
   const isElectron = target === 'electron';
   const isNode = target === 'node';
+  const isServerless = serverless === true || isElectron;
+  const isSSR = ssr !== false && !serverless;
+  const folder = isDev ? 'dev' : 'dist';
   const config = {
     resolve: {
       extensions: ['.js', '.json'],
@@ -87,6 +89,9 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
               'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
                 ? JSON.stringify(process.env.GRAPHQL_URL)
                 : undefined,
+              /*'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
+                ? JSON.stringify(process.env.GRAPHQL_SUB)
+                : undefined,*/
               'process.env.URL': process.env.URL
                 ? JSON.stringify(process.env.URL)
                 : undefined,
@@ -132,7 +137,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       ],
     },
     output: {
-      path: path.resolve(appRoot, 'build', target),
+      path: path.resolve(appRoot, folder, target),
     },
     entry: {
       main: [],
@@ -175,7 +180,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   }
 
   // inline-source-map for web-dev
-  if (isProd && isWeb) {
+  if (isProd && isWeb && !isElectron) {
     config.output.filename = '[name].[contenthash].js';
   } else {
     config.output.filename = '[name].js';
@@ -185,6 +190,13 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   if (isNode) {
     config.target = 'node';
     config.watch = isDev;
+    config.node = {
+      __dirname: false,
+      __filename: false,
+    };
+    config.output.libraryTarget = 'commonjs2';
+  } else if (isElectron) {
+    config.target = 'electron-main';
     config.node = {
       __dirname: false,
       __filename: false,
@@ -249,10 +261,13 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     // config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(
       new ExtractTextPlugin({
-        filename: '[name].[contenthash].css',
+        filename: isElectron ? '[name].css' : '[name].[contenthash].css',
         allChunks: true,
       })
     );
+    if (isElectron) {
+      config.plugins.push(new GenerateJsonPlugin('package.json', {}));
+    }
     config.plugins.push(
       new webpack.LoaderOptionsPlugin({
         minimize: true,
@@ -303,7 +318,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
-        path: path.resolve(process.cwd(), 'build', target),
+        path: path.resolve(process.cwd(), folder, target),
       })
     );
     if (isProd && !isServerless) {
@@ -346,12 +361,11 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
           filename: './visualizer.html',
         })
       );
-    }
-    if (isServerless) {
+    } else if (isServerless) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'index.html',
-          template: path.resolve(__dirname, 'templates', 'serverless.js'),
+          template: path.resolve(__dirname, 'templates', isElectron ? 'electron.js' : 'serverless.js'),
           inject: false,
           /* minify: {
           removeComments: true,
@@ -376,7 +390,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   }
 
   // LimitChunkCount on all but production-web
-  if (isDev || isNode) {
+  if (isDev || isNode || isElectron) {
     config.plugins.push(
       new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
     );
@@ -423,8 +437,11 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       'webpack/hot/poll?1000',
       require.resolve(path.resolve(__dirname, target)),
     ];
+  } else if (isElectron) {
+    config.entry.main = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
+    config.entry.app = [require.resolve(path.resolve(__dirname, 'electron', 'main.js'))];
   } else {
-    config.entry.main = [require.resolve(path.resolve(__dirname, target))];
+    config.entry.main = [require.resolve(path.resolve(__dirname, target, 'index.js'))];
   }
 
   // Less loader

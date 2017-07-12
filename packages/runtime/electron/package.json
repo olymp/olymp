@@ -1,0 +1,11 @@
+{
+  "name": "kasse",
+  "version": "0.1.0",
+  "main": "main.js",
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type"
+    }
+  }
+}
