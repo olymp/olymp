@@ -20,7 +20,7 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import template from '../templates/default';
 import amp from '../templates/amp';
-import { parseQuery, AmpProvider, routerQueryMiddleware, UAProvider } from 'olymp';
+import { AmpProvider, UAProvider } from 'olymp';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
@@ -40,11 +40,6 @@ console.log('VERSION', version);
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import {
-  ConnectedRouter,
-  routerReducer,
-  routerMiddleware,
-} from 'react-router-redux';
 // End Redux stuff
 
 const RedisStore = createRedisStore(session);
@@ -195,26 +190,13 @@ app.get('*', (req, res) => {
     ssrMode: true,
   });
   const renderer = createFela();
-  const context = {};
 
-  const [pathname, search] = decodeURI(req.url).split('?');
-  const staticRouter = new StaticRouter();
-  staticRouter.props = {
-    location: { pathname, search },
-    context,
-    basename: '',
-  };
-  const history = staticRouter.render().props.history;
-  history.location.query = parseQuery(history.location.search);
   const store = createStore(
     combineReducers({
       apollo: client.reducer(),
-      router: routerReducer,
     }),
     {},
     compose(
-      applyMiddleware(routerQueryMiddleware),
-      applyMiddleware(routerMiddleware(history)),
       applyMiddleware(client.middleware())
     )
   );
@@ -225,10 +207,12 @@ app.get('*', (req, res) => {
   if (typeof init !== undefined && init) {
     init({ renderer, client, store });
   }
+
+  const context = {};
   const reactApp = (
     <AsyncComponentProvider asyncContext={asyncContext}>
       <ApolloProvider store={store} client={client}>
-        <ConnectedRouter history={history}>
+        <StaticRouter location={req.url} context={context}>
           <Provider renderer={renderer}>
             <GatewayProvider>
               <UAProvider ua={req.headers['user-agent']}>
@@ -238,7 +222,7 @@ app.get('*', (req, res) => {
               </UAProvider>
             </GatewayProvider>
           </Provider>
-        </ConnectedRouter>
+        </StaticRouter>
       </ApolloProvider>
     </AsyncComponentProvider>
   );
