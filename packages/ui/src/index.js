@@ -12,3 +12,11 @@ export { default as Tree } from './tree';
 export { default as getRules } from './rules';
 export { default as Countdown } from './countdown';
 export { default as Navigation } from './navigation';
+
+// todo: MONKEY PATCH GATEWAY
+import { Gateway } from 'react-gateway';
+import { node } from 'prop-types';
+Gateway.propTypes = {
+  ...Gateway.propTypes,
+  children: node,
+};
