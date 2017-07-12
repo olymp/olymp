@@ -28,6 +28,12 @@ export default ({ theme }) => {
     '& h6': {
       color: theme.dark,
     },
+    '& a': {
+      color: theme.color,
+    },
+    '& .ant-pagination-item > a': {
+      color: theme.light,
+    },
     '& .ant-menu-item .anticon': {
       marginRight: 0,
     },
