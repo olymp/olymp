@@ -33,7 +33,6 @@
   "dependencies": {
     "@google/maps": "^0.4.2",
     "@mapbox/react-colorpickr": "^5.0.0",
-    "@quentin-sommer/react-useragent": "^1.1.7",
     "algoliasearch": "^3.24.0",
     "analytics-node": "^2.4.1",
     "antd": "^2.12.0",
@@ -58,6 +57,7 @@
     "cloudinary-react": "^1.0.4",
     "connect-redis": "^3.3.0",
     "css-loader": "^0.28.4",
+    "date-fns": "^1.28.5",
     "deep-diff": "^0.3.8",
     "dotenv": "^4.0.0",
     "eventlistener": "^0.0.1",
@@ -160,6 +160,7 @@
     "style-loader": "^0.18.1",
     "tinycolor2": "1.4.1",
     "type-of": "^2.0.1",
+    "ua-parser-js": "^0.7.13",
     "unified": "^6.1.5",
     "url-loader": "^0.5.9",
     "webpack": "^3.2.0",

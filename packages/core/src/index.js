@@ -16,6 +16,7 @@ export { default as toLabel } from './to-label';
 export { default as omit } from './omit';
 export { default as Logo } from './logo';
 export { default as renderHelmet } from './helmet';
+export { default as asEuro } from './as-euro';
 
 // DECORATORS
 export * from './decorators';

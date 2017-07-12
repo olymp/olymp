@@ -20,7 +20,7 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import template from '../templates/default';
 import amp from '../templates/amp';
-import { parseQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
+import { parseQuery, AmpProvider, routerQueryMiddleware, UAProvider } from 'olymp';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
@@ -31,7 +31,6 @@ import bodyparser from 'body-parser';
 import { Server as WebSocketServer } from 'ws';
 import { createFela } from 'olymp-fela';
 import { EventEmitter } from 'events';
-import { UserAgentProvider } from '@quentin-sommer/react-useragent';
 import App from '@app';
 
 const init = require('@app').init;
@@ -232,11 +231,11 @@ app.get('*', (req, res) => {
         <ConnectedRouter history={history}>
           <Provider renderer={renderer}>
             <GatewayProvider>
-              <UserAgentProvider ua={req.headers['user-agent']}>
+              <UAProvider ua={req.headers['user-agent']}>
                 <AmpProvider amp={req.isAmp}>
                   <App />
                 </AmpProvider>
-              </UserAgentProvider>
+              </UAProvider>
             </GatewayProvider>
           </Provider>
         </ConnectedRouter>

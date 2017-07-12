@@ -1,19 +1,16 @@
 import React from 'react';
 import enUS from 'antd/lib/locale-provider/de_DE';
-import LocaleProvider from 'antd/lib/locale-provider';
-import momentLegacy from 'moment';
-import 'moment/locale/de';
+import AntLocaleProvider from 'antd/lib/locale-provider';
+import { withLocale as withLocale2, LocaleProvider } from 'olymp';
+import dateLocale from 'date-fns/locale/de';
 
-export const withLocale = WrappedComponent => props =>
-  (<LocaleProvider locale={enUS}>
-    <WrappedComponent {...props} />
-  </LocaleProvider>);
-
-export const moment = function () {
-  return momentLegacy.utc.apply(this, arguments);
-};
-
-export default props =>
-  (<LocaleProvider locale={enUS}>
-    {props.children}
-  </LocaleProvider>);
+export default (LANG = {}) => WrappedComponent => props =>
+  (<AntLocaleProvider locale={enUS}>
+    <LocaleProvider locale={{ ...LANG, ...dateLocale }}>
+      <WrappedComponent {...props} />
+    </LocaleProvider>
+  </AntLocaleProvider>);
+export const withLocale = withLocale2;
+/*export const moment = function () {
+   return momentLegacy.utc.apply(this, arguments);
++};*/

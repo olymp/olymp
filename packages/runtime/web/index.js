@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { AmpProvider, routerQueryMiddleware } from 'olymp';
+import { AmpProvider, routerQueryMiddleware, UAProvider } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import {
@@ -15,7 +15,7 @@ import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
-import { UserAgentProvider } from '@quentin-sommer/react-useragent';
+// import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -75,6 +75,16 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
+/*if (process.env.GRAPHQL_SUB) {
+  const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
+    reconnect: true
+  });
+  networkInterface = addGraphQLSubscriptions(
+    networkInterface,
+    wsClient
+  );
+}*/
+
 let client,
   mountNode,
   container,
@@ -94,11 +104,11 @@ function renderApp() {
           <ConnectedRouter history={history}>
             <FelaProvider renderer={renderer} mountNode={mountNode}>
               <GatewayProvider>
-                <UserAgentProvider ua={window.navigator.userAgent}>
+                <UAProvider ua={window.navigator.userAgent}>
                   <AmpProvider amp={false}>
                     <App />
                   </AmpProvider>
-                </UserAgentProvider>
+                </UAProvider>
               </GatewayProvider>
             </FelaProvider>
           </ConnectedRouter>
