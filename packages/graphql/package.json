@@ -5,10 +5,13 @@
   "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
+    "graphql": "^0.10.3",
+    "graphql-modules": "^0.2.2",
+    "graphql-server-express": "^1.0.0",
+    "graphql-tools": "^1.1.0",
+    "lodash": "^4.17.4"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
