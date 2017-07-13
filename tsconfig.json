@@ -6,7 +6,6 @@
     "target": "es5",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "allowJs": true,
     "jsx": "react",
     "sourceMap": true,
     "noLib": true,

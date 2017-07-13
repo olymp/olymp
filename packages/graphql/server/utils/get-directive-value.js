@@ -1,14 +1,16 @@
 import { get } from 'lodash';
-
-export default (node, directiveName, argumentName) => {
-  const directive = node.directives.find(
-    ({ name }) => name && name.value === directiveName
-  );
-  if (directive && directive.arguments) {
-    const argument = directive.arguments.find(
-      ({ name }) => name && name.value === argumentName
-    );
-    return get(argument, 'value.value');
-  }
-  return undefined;
+export default function (node, directiveName, argumentName) {
+    var directive = node.directives.find(function (_a) {
+        var name = _a.name;
+        return name && name.value === directiveName;
+    });
+    if (directive && directive.arguments) {
+        var argument = directive.arguments.find(function (_a) {
+            var name = _a.name;
+            return name && name.value === argumentName;
+        });
+        return get(argument, 'value.value');
+    }
+    return undefined;
 };
+//# sourceMappingURL=get-directive-value.js.map
