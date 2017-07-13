@@ -13,7 +13,7 @@
   "engines": {
     "node": ">=6.1.0"
   },
-  "bin": "./packages/app/bin/olymp.js",
+  "bin": "./packages/app/bin/olymp-app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"

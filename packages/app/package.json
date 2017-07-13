@@ -5,6 +5,6 @@
   "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "bin": "./bin/olymp.js",
+  "bin": "./bin/olymp-app.js",
   "scripts": {}
 }
