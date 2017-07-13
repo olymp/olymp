@@ -80,8 +80,8 @@ export var SimpleSwitch = function (_a) {
     var children = _a.children, rest = __rest(_a, ["children"]);
     var notFound, match;
     var routes = Children.toArray(children);
-    for (var index = 0; index < routes.length; index++) {
-        var route = routes[index];
+    for (var index_1 = 0; index_1 < routes.length; index_1++) {
+        var route = routes[index_1];
         if (route.props.match) {
             match = route;
         }

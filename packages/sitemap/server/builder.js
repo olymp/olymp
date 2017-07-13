@@ -129,9 +129,9 @@ SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
             return queueItem.protocol + ":" + href;
         }
         if (!/^https?:\/\//.test(href)) {
-            var base = $('base').first();
-            if (base.length) {
-                href = url.resolve(base.attr('href'), href);
+            var base_1 = $('base').first();
+            if (base_1.length) {
+                href = url.resolve(base_1.attr('href'), href);
             }
             if (/^\.\.?\/.*/.test(href) || /^\/[^\/].*/.test(href)) {
                 href = url.resolve(queueItem.url, href);
