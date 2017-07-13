@@ -40,7 +40,7 @@ const def = (
     </Modal.Footer>
     <Modal.Copyright>
       <Link to={{ pathname, query: { register: null, login: undefined } }}>
-        {theme.copyright || 'made with ❤️ by olymp'}
+        {theme.copyright || 'made with ❤ by olymp'}
       </Link>
     </Modal.Copyright>
   </Modal>);

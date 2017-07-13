@@ -13,7 +13,7 @@ var def = function (_a, _b) {
             onOk &&
                 React.createElement(Modal.Button, { type: "primary", onClick: onOk, loading: saving }, okText || title)),
         React.createElement(Modal.Copyright, null,
-            React.createElement(Link, { to: { pathname: pathname, query: { register: null, login: undefined } } }, theme.copyright || 'made with ❤️ by olymp'))));
+            React.createElement(Link, { to: { pathname: pathname, query: { register: null, login: undefined } } }, theme.copyright || 'made with ❤ by olymp'))));
 };
 def.contextTypes = {
     theme: PropTypes.object,
