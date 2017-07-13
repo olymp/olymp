@@ -1,5 +1,5 @@
 {
-  "version": "0.1.9",
+  "version": "0.1.10",
   "name": "olymp-cloudinary",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,6 +8,6 @@
     "tsc": "../../node_modules/typescript/bin/tsc -w"
   },
   "dependencies": {
-    "olymp-collection": "^0.1.9"
+    "olymp-collection": "^0.1.10"
   }
 }
