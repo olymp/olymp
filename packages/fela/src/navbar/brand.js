@@ -8,6 +8,7 @@ const Brand = createComponent(
     color: inverse ? theme.light : theme.dark,
     centerY: true,
     paddingX: theme.space3,
+    paddingY: theme.space2,
     '> *': {
       marginX: `-${theme.space3}`,
     },
