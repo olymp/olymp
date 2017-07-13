@@ -8,15 +8,15 @@ server.listen(
   port,
   process.env.NODE_ENV !== 'production' ? '0.0.0.0' : undefined
 );
-let ws = app.listenWS({ server });
+// let ws = app.listenWS({ server });
 
 if (module.hot) {
   module.hot.accept('./server', () => {
     server.removeListener('request', currentApp);
-    ws.close();
+    // ws.close();
     server.on('request', app);
     currentApp = app;
-    ws = app.listenWS({ server });
+    // ws = app.listenWS({ server });
   });
 }
 

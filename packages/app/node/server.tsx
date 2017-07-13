@@ -58,7 +58,7 @@ const clientAssets = fs.existsSync(clientAssetsPath)
   ? JSON.parse(fs.readFileSync(clientAssetsPath))
   : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
-app.emitter = new EventEmitter();
+/*app.emitter = new EventEmitter();
 
 // Websocket Server
 app.listenWS = (options) => {
@@ -92,7 +92,7 @@ app.listenWS = (options) => {
 };
 
 // app.wss.close();
-// ---
+// ---*/
 
 app.use(helmet());
 if (process.env.NODE_ENV === 'production' && process.env.URL) {

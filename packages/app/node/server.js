@@ -24,9 +24,7 @@ import fs from 'fs';
 import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
-import { Server as WebSocketServer } from 'ws';
 import { createFela } from 'olymp-fela';
-import { EventEmitter } from 'events';
 import App from '@app';
 var init = require('@app').init;
 var version = +fs.statSync(__filename).mtime;
@@ -42,36 +40,6 @@ var clientAssets = fs.existsSync(clientAssetsPath)
     ? JSON.parse(fs.readFileSync(clientAssetsPath))
     : null;
 var app = express();
-app.emitter = new EventEmitter();
-app.listenWS = function (options) {
-    var wss = new WebSocketServer(options);
-    wss.on('connection', function (socket) {
-        var onPing = function (message) {
-            socket.send(JSON.stringify({ type: 'pong', version: version }));
-        };
-        var onMessage = function (raw) {
-            if (!raw) {
-                return;
-            }
-            if (raw === 'ping') {
-                return onPing(raw);
-            }
-            console.log('WS', raw);
-            var json = {};
-            try {
-                json = JSON.parse(raw);
-                if (json) {
-                    app.emitter.emit('ws', { json: json, raw: raw, socket: socket });
-                }
-            }
-            catch (err) {
-                console.error('Websocket error', err);
-            }
-        };
-        socket.on('message', onMessage);
-    });
-    return wss;
-};
 app.use(helmet());
 if (process.env.NODE_ENV === 'production' && process.env.URL) {
     app.use(sslRedirect());
