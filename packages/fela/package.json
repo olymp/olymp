@@ -2,7 +2,6 @@
   "version": "0.1.7",
   "name": "olymp-fela",
   "description": "",
-  "main": "./src",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
   "scripts": {
