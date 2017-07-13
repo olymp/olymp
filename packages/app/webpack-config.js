@@ -18,8 +18,6 @@ var olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 var allPackages = fs
     .readdirSync(path.resolve(olympRoot, 'packages'));
-var packagesToIgnore = ['graphql', 'collection', 'app', 'utils', 'ui', 'storybook'];
-var packagesToTranspile = allPackages.filter(function (x) { return packagesToIgnore.indexOf(x) === -1; });
 module.exports = function (_a) {
     var mode = _a.mode, target = _a.target, devUrl = _a.devUrl, devPort = _a.devPort, ssr = _a.ssr, serverless = _a.serverless;
     var isDev = mode !== 'production';
@@ -126,14 +124,13 @@ module.exports = function (_a) {
             main: [],
         },
     };
-    var include = packagesToTranspile.map(function (item) { return path.resolve(olympRoot, 'packages', item); }).concat([
-        path.resolve(appRoot, 'app'),
-        path.resolve(appRoot, 'server'),
-    ]);
     var babel = {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        include: include,
+        include: [
+            path.resolve(appRoot, 'app'),
+            path.resolve(appRoot, 'server'),
+        ],
         options: {
             cacheDirectory: false,
             presets: ['react'],
@@ -324,7 +321,6 @@ module.exports = function (_a) {
                 whitelist: [
                     function (v) { return v.indexOf('webpack/hot/poll') === 0; },
                     'source-map-support/register',
-                    function (v) { return v.indexOf('olymp-') === 0 && packagesToTranspile.indexOf(v.split('/')[0].split('olymp-')[1]) !== -1; },
                     function (v) { return v === 'antd' || v.indexOf('antd/') === 0; },
                     /\.(eot|woff|woff2|ttf|otf)$/,
                     /\.(svg|png|jpg|jpeg|gif|ico)$/,

@@ -4,7 +4,9 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "tsc": "../../node_modules/typescript/bin/tsc -w"
+  },
   "dependencies": {
     "graphql": "^0.10.3",
     "graphql-modules": "^0.2.2",

@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "tsc": "../../node_modules/typescript/bin/tsc -w"
   },
   "dependencies": {
     "olymp": "^15.1.14",

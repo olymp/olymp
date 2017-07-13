@@ -6,7 +6,9 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bin": "./bin/olymp-app.js",
-  "scripts": {},
+  "scripts": {
+    "tsc": "../../node_modules/typescript/bin/tsc -w"
+  },
   "dependencies": {
     "apollo-client": "^1.8.0",
     "assets-webpack-plugin": "^3.5.1",

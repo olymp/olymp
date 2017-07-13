@@ -4,5 +4,7 @@
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
-  "scripts": {}
+  "scripts": {
+    "tsc": "../../node_modules/typescript/bin/tsc -w"
+  }
 }

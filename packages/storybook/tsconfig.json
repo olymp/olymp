@@ -1,0 +1,28 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    // "module": "es2015",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "sourceMap": true,
+    "noLib": true,
+    "removeComments": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true
+  }
+  /*"filesxx": [
+    "node_modules/typescript/lib/lib.es2015.d.ts",
+    "node_modules/typescript/lib/lib.dom.d.ts",
+    "typings.d.ts",
+    "fetch-mock.typings.d.ts",
+    "src/index.ts",
+    "test/tests.ts",
+    "benchmark/index.ts"
+  ]*/
+}

@@ -4,7 +4,9 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "tsc": "../../node_modules/typescript/bin/tsc -w"
+  },
   "dependencies": {
     "olymp-collection": "^0.1.8",
     "olymp-graphql": "^0.1.7"
