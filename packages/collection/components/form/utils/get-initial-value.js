@@ -17,7 +17,7 @@ export default function (_a, field) {
         return get(auth, 'user.orgId');
     }
     else if (name === 'slug' && form && form.getFieldValue('name')) {
-        var url = "/" + encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
+        var url_1 = "/" + encodeURIComponent(form.getFieldValue('name').split(' ').join('-').toLowerCase())
             .split('%C3%A4')
             .join('ä')
             .split('%C3%B6')
@@ -31,9 +31,9 @@ export default function (_a, field) {
             .split('%C3%BC')
             .join('Ü');
         if (form.getFieldValue('date')) {
-            url = "/" + moment(form.getFieldValue('date')).format('DD-MM-YYYY') + "-" + url.substr(1);
+            url_1 = "/" + moment(form.getFieldValue('date')).format('DD-MM-YYYY') + "-" + url_1.substr(1);
         }
-        return url;
+        return url_1;
     }
     return undefined;
 };

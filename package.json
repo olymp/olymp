@@ -4,7 +4,7 @@
   "description": "",
   "main": "./packages/core",
   "scripts": {
-    "rename-ts": "renamer --find '.js' --replace '.ts' '**/*.js'",
+    "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
