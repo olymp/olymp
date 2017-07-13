@@ -2,7 +2,12 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { AmpProvider, routerQueryMiddleware, UAProvider, UAParser } from 'olymp';
+import {
+  AmpProvider,
+  routerQueryMiddleware,
+  UAProvider,
+  UAParser,
+} from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import {
@@ -66,9 +71,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const networkInterface = createBatchingNetworkInterface({
   uri:
-  process.env.GRAPHQL_URL ||
-  (process.env.URL && `${process.env.URL}/graphql`) ||
-  '/graphql',
+    process.env.GRAPHQL_URL ||
+    (process.env.URL && `${process.env.URL}/graphql`) ||
+    '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
@@ -155,6 +160,13 @@ function load() {
     init({ renderer, client, store });
   }
 
+  const browser = ua.getBrowser();
+  if (browser.name === 'IE' && parseInt(browser.major, 10) < 11) {
+    console.log('dsad');
+    return;
+  }
+
+  console.log('test2');
   return renderApp();
 }
 
