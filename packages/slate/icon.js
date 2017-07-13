@@ -1,3 +1,4 @@
+import React from 'react';
 import { createComponent } from 'react-fela';
 export default createComponent(function (_a) {
     var theme = _a.theme;
@@ -16,8 +17,7 @@ export default createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, Icon = _a.icon;
-    return className = { className: className } >
-        size;
-}, { 14:  }, color = "" /  >
-    /span>),, function (p) { return Object.keys(p); });
+    return (React.createElement("span", { className: className },
+        React.createElement(Icon, { size: 14, color: "" })));
+}, function (p) { return Object.keys(p); });
 //# sourceMappingURL=icon.js.map

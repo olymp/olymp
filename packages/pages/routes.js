@@ -6,9 +6,13 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { createComponent, } from 'olymp-fela';
-import { Error404 } from './views';
-import { lowerFirst } from 'lodash';
+import React from 'react';
+import { IFrame, ContentLoader, PageTransition, createComponent, } from 'olymp-fela';
+import { Error404, Page, EditablePage } from './views';
+import { Link, renderHelmet } from 'olymp-utils';
+import { Menu, Icon, Button as AntButton } from 'antd';
+import { lowerFirst, get } from 'lodash';
+import { Gateway } from 'react-gateway';
 var Button = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
@@ -21,7 +25,7 @@ var Button = createComponent(function (_a) {
             color: theme.light + " !important",
         },
     });
-}, function (p) { return (__assign({}, p) /  > ); }, function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement(AntButton, __assign({}, p)); }, function (p) { return Object.keys(p); });
 var renderGateway = function (_a, _b) {
     var _c = _a === void 0 ? {} : _a, auth = _c.auth, pathname = _c.pathname, collectionList = _c.collectionList, query = _c.query;
     var _d = _b === void 0 ? {} : _b, binding = _d.binding, bindingId = _d.bindingId;
@@ -31,219 +35,88 @@ var renderGateway = function (_a, _b) {
     var deviceWidth = query['@deviceWidth'];
     var isEditPage = query['@page'] !== undefined;
     var hasBinding = binding && binding.type;
-    return into = "quick" >
-        title;
-    {
-        type;
-        "primary" >
-            type;
-        "plus";
-        style = {};
-        {
-            marginRight: 0;
-        }
-    }
-    />
-        < /Button>;
+    return (React.createElement(Gateway, { into: "quick" },
+        React.createElement(Menu.SubMenu, { title: React.createElement(Button, { type: "primary" },
+                React.createElement(Icon, { type: "plus", style: { marginRight: 0 } })) },
+            React.createElement(Menu.Item, { key: "page-plus" },
+                React.createElement(Link, { to: {
+                        pathname: pathname,
+                        query: __assign({}, query, { '@page': 'new' }),
+                    } },
+                    React.createElement(Icon, { type: "plus", style: { marginRight: 0 } }),
+                    " Seite")),
+            collectionList.map(function (collection) {
+                return (React.createElement(Menu.Item, { key: "@" + collection.name.toLowerCase() },
+                    React.createElement(Link, { to: {
+                            query: (_a = {},
+                                _a["@" + collection.name.toLowerCase()] = null,
+                                _a),
+                        } },
+                        React.createElement(Icon, { type: "plus", style: { marginRight: 0 } }),
+                        " ",
+                        get(collection, 'decorators.label.value', collection.name))));
+                var _a;
+            })),
+        hasBinding &&
+            React.createElement(Menu.Item, { key: "save" },
+                React.createElement(Link, { to: {
+                        pathname: pathname,
+                        query: (_e = {}, _e["@" + lowerFirst(binding.type)] = bindingId, _e),
+                    } },
+                    React.createElement(Button, { type: "primary" },
+                        binding.type,
+                        " bearbeiten",
+                        ' ',
+                        React.createElement(Icon, { type: "arrow-right", style: { marginRight: 0 } })))),
+        !isEditPage &&
+            !hasBinding &&
+            React.createElement(Menu.Item, { key: "@page" },
+                React.createElement(Link, { to: {
+                        query: { '@page': null, '@deviceWidth': deviceWidth },
+                    } },
+                    React.createElement(Button, { type: "primary" },
+                        "Seite bearbeiten",
+                        ' ',
+                        React.createElement(Icon, { type: "arrow-right", style: { marginRight: 0 } }))))));
+    var _e;
 };
-    >
-        key;
-"page-plus" >
-    to;
-{
-    {
-        pathname,
-            query;
-        {
-            query, '@page';
-            'new';
-        }
-    }
-}
-    >
-        type;
-"plus";
-style = {};
-{
-    marginRight: 0;
-}
-/> Seite
-    < /Link>
-    < /Menu.Item>;
-{
-    collectionList.map(function (collection) {
-        return key = (_a = ["@", ""], _a.raw = ["@", ""], {}(_a, collection.name.toLowerCase()));
-        var _a;
-    });
-}
- >
-    to;
-{
-    {
-        query: {
-            ["@" + collection.name.toLowerCase()];
-            null,
-            ;
-        }
-    }
-}
-    >
-        type;
-"plus";
-style = {};
-{
-    marginRight: 0;
-}
-/> {get(collection, 'decorators.label.value', collection.name)}
-    < /Link>
-    < /Menu.Item>);
-/Menu.SubMenu>;
-{
-    hasBinding &&
-        key;
-    "save" >
-        to;
-    {
-        {
-            pathname,
-                query;
-            {
-                ["@" + lowerFirst(binding.type)];
-                bindingId;
-            }
-        }
-    }
-        >
-            type;
-    "primary" >
-        { binding: .type };
-    bearbeiten;
-    {
-        ' ';
-    }
-    type;
-    "arrow-right";
-    style = {};
-    {
-        marginRight: 0;
-    }
-}
-/>
-    < /Button>
-    < /Link>
-    < /Menu.Item>};
-{
-    !isEditPage &&
-        !hasBinding &&
-        key;
-    "@page" >
-        to;
-    {
-        {
-            query: {
-                '@page';
-                null, '@deviceWidth';
-                deviceWidth;
-            }
-        }
-    }
-        >
-            type;
-    "primary" >
-        Seite;
-    bearbeiten;
-    {
-        ' ';
-    }
-    type;
-    "arrow-right";
-    style = {};
-    {
-        marginRight: 0;
-    }
-}
-/>
-    < /Button>
-    < /Link>
-    < /Menu.Item>}
-    < /Gateway>;
-;
-;
 export var EditablePageRoute = function (props) {
     var Wrapped = props.Wrapped, flatNavigation = props.flatNavigation, query = props.query, pathname = props.pathname, loading = props.loading;
     var match = flatNavigation.find(function (item) { return pathname === item.pathname; });
     var _a = match || {}, id = _a.id, binding = _a.binding, pageId = _a.pageId, aliasId = _a.aliasId, bindingId = _a.bindingId;
     var deviceWidth = query['@deviceWidth'];
     if (!match) {
-        return height = { 600:  };
-        isLoading = { loading: loading } >
-            __assign({}, props);
-        deviceWidth = { deviceWidth: deviceWidth };
-        render = { match: function () {
-                return disabled = {};
-            }, deviceWidth: deviceWidth } >
-            __assign({}, props) >
-            {}
-            < Error404 /  >
-            /Wrapped>
-            < /IFrame>)}
-                /  >
-            /ContentLoader>;
+        return (React.createElement(ContentLoader, { height: 600, isLoading: loading },
+            React.createElement(EditablePage, __assign({}, props, { deviceWidth: deviceWidth, render: function (match) {
+                    return (React.createElement(IFrame, { disabled: !deviceWidth },
+                        React.createElement(Wrapped, __assign({}, props),
+                            renderHelmet({
+                                name: '404',
+                                description: 'Seite wurde nicht gefunden',
+                                pathname: pathname,
+                            }),
+                            React.createElement(Error404, null))));
+                } }))));
     }
+    return (React.createElement(ContentLoader, { height: 600, isLoading: loading },
+        React.createElement(EditablePage, __assign({}, props, { deviceWidth: deviceWidth, id: pageId || aliasId || id, bindingId: bindingId, binding: binding, render: function (children) {
+                return (React.createElement(IFrame, { disabled: !deviceWidth },
+                    React.createElement(Wrapped, __assign({}, props, { match: match }),
+                        renderHelmet(match, pathname),
+                        renderGateway(props, match),
+                        children)));
+            } }))));
 };
-;
-return height = { 600:  };
-isLoading = { loading: loading } >
-    __assign({}, props);
-deviceWidth = { deviceWidth: deviceWidth };
-id = { pageId:  || aliasId || id };
-bindingId = { bindingId: bindingId };
-binding = { binding: binding };
-render = { children: function () {
-        return disabled = {};
-    }, deviceWidth: deviceWidth } >
-    __assign({}, props);
-match = { match: match } >
-    {};
-{
-    renderGateway(props, match);
-}
-{
-    children;
-}
-/Wrapped>
-    < /IFrame>)}
-        /  >
-    /ContentLoader>;
-;
-;
 export var PageRoute = function (props) {
     var Wrapped = props.Wrapped, flatNavigation = props.flatNavigation, pathname = props.pathname, loading = props.loading;
     var match = flatNavigation.find(function (item) { return pathname === item.pathname; });
     var _a = match || {}, id = _a.id, binding = _a.binding, pageId = _a.pageId, aliasId = _a.aliasId, bindingId = _a.bindingId;
-    return __assign({}, props);
-    match = { match: match } >
-        {};
-    {
-        renderGateway(props, match);
-    }
-    height;
-    {
-        600;
-    }
-    isLoading = { loading: loading } >
-        __assign({ match: function () { } }, props);
-    key = { id: id };
-    id = { pageId:  || aliasId || id };
-    bindingId = { bindingId: bindingId };
-    binding = { binding: binding }
-        /  >
-    ;
+    return (React.createElement(Wrapped, __assign({}, props, { match: match }),
+        renderHelmet(match || {}, pathname),
+        renderGateway(props, match),
+        React.createElement(ContentLoader, { height: 600, isLoading: loading },
+            React.createElement(PageTransition, null, match
+                ? React.createElement(Page.WithData, __assign({}, props, { key: id, id: pageId || aliasId || id, bindingId: bindingId, binding: binding }))
+                : React.createElement(Error404, null)))));
 };
-/>}
-    < /PageTransition>
-    < /ContentLoader>
-    < /Wrapped>;
-;
-;
 //# sourceMappingURL=routes.js.map

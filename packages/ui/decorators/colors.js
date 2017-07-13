@@ -25,7 +25,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 export var withColors = function (WrappedComponent) { return _a = (function (_super) {
         __extends(WithColors, _super);
@@ -33,11 +33,7 @@ export var withColors = function (WrappedComponent) { return _a = (function (_su
             return _super !== null && _super.apply(this, arguments) || this;
         }
         WithColors.prototype.render = function () {
-            return colors = { this: .context.defaultColors };
-            {
-                this.props;
-            }
-            />;
+            return (React.createElement(WrappedComponent, __assign({ colors: this.context.defaultColors }, this.props)));
         };
         return WithColors;
     }(Component)),
@@ -45,8 +41,6 @@ export var withColors = function (WrappedComponent) { return _a = (function (_su
         defaultColors: PropTypes.array,
     },
     _a; var _a; };
-;
-;
 export var useColors = function (defaultColors) {
     if (defaultColors === void 0) { defaultColors = []; }
     return function (WrappedComponent) { return _a = (function (_super) {
@@ -65,7 +59,7 @@ export var useColors = function (defaultColors) {
             };
             UseColors.prototype.render = function () {
                 var _a = this.props, defaultColors = _a.defaultColors, rest = __rest(_a, ["defaultColors"]);
-                return __assign({}, rest) /  > ;
+                return React.createElement(WrappedComponent, __assign({}, rest));
             };
             return UseColors;
         }(Component)),

@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 var getStyle = function (align) {
     if (align === 'left') {
@@ -62,7 +62,7 @@ export default function (options) {
                 AlignmentDecorator.prototype.render = function () {
                     var _this = this;
                     if (enable === false) {
-                        return __assign({}, this.props) /  > ;
+                        return React.createElement(Block, __assign({}, this.props));
                     }
                     var getData = this.props.getData;
                     var alignment = getData('align');
@@ -92,14 +92,7 @@ export default function (options) {
                                 active: alignment === 'right',
                             },
                         ];
-                    return __assign({}, this.props);
-                    actions = { alignActions: alignActions };
-                    style = { style: style };
-                    alignment = { alignment: alignment };
-                    setAlignment = { this: .setAlignment }
-                        /  >
-                    ;
-                    ;
+                    return (React.createElement(Block, __assign({}, this.props, { actions: alignActions, style: style, alignment: alignment, setAlignment: this.setAlignment })));
                 };
                 return AlignmentDecorator;
             }(Component)),

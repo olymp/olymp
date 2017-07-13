@@ -1,3 +1,4 @@
+import React from 'react';
 import { createComponent } from 'olymp-fela';
 var component = createComponent(function (_a) {
     var theme = _a.theme;
@@ -21,9 +22,7 @@ var component = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, children = _a.children;
-    return className = { className: className } >
-        { children: children }
-        < /div>),;
+    return (React.createElement("div", { className: className }, children));
 }, function (p) { return Object.keys(p); });
 export default {
     key: 'Pages.Media.ImageBlock.Label',

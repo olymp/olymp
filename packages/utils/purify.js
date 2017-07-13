@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 export var purify = function (Wrapped, types) {
@@ -42,7 +42,7 @@ export var purify = function (Wrapped, types) {
             return true;
         };
         FinalComponent.prototype.render = function () {
-            return __assign({}, this.filteredProps) /  > ;
+            return React.createElement(Wrapped, __assign({}, this.filteredProps));
         };
         FinalComponent.contextTypes = __assign({}, Wrapped.contextTypes, { theme: PropTypes.object });
         FinalComponent.propTypes = types;
@@ -83,7 +83,7 @@ export var pureStyled = function (styles, Wrapped, types) {
             return true;
         };
         FinalComponent.prototype.render = function () {
-            return __assign({}, this.filteredProps) /  > ;
+            return React.createElement(Styled, __assign({}, this.filteredProps));
         };
         FinalComponent.contextTypes = __assign({}, Wrapped.contextTypes, { theme: PropTypes.object });
         FinalComponent.propTypes = types;

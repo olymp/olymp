@@ -31,9 +31,10 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Children, Component, createElement, cloneElement } from 'react';
+import React, { Children, Component, createElement, cloneElement } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
+import { withRouter as withRouter2 } from 'react-router-dom';
 import { get } from 'lodash';
 export { Link, Route, Switch, Redirect } from 'react-router-dom';
 export var withRouter = function (WrappedComponent) {
@@ -41,32 +42,19 @@ export var withRouter = function (WrappedComponent) {
         var location = props.location;
         var router = context.router;
         var query = parseQuery(location.search);
-        return __assign({}, props);
-        {
-            location;
-        }
-        router = { router: .history };
-        query = { query: query };
-        location = {};
-        {
-            location, query;
-        }
+        return (React.createElement(WrappedComponent, __assign({}, props, location, { router: router.history, query: query, location: __assign({}, location, { query: query }) })));
     };
-    />;
-};
-;
-;
-inner.contextTypes = {
-    router: PropTypes.shape({
-        history: PropTypes.shape({
-            push: PropTypes.func.isRequired,
-            replace: PropTypes.func.isRequired,
-            createHref: PropTypes.func.isRequired,
+    inner.contextTypes = {
+        router: PropTypes.shape({
+            history: PropTypes.shape({
+                push: PropTypes.func.isRequired,
+                replace: PropTypes.func.isRequired,
+                createHref: PropTypes.func.isRequired,
+            }).isRequired,
         }).isRequired,
-    }).isRequired,
+    };
+    return withRouter2(inner);
 };
-return withRouter2(inner);
-;
 var ScrollToTop = (function (_super) {
     __extends(ScrollToTop, _super);
     function ScrollToTop() {

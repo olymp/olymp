@@ -15,6 +15,8 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import React from 'react';
+import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
 import { withColors } from '../decorators';
 var ColorPicker = null;
@@ -52,68 +54,30 @@ var ColorEditor = function (_a) {
     }
     var select;
     if (colors.length) {
-        select = showSearch;
-        value = { value:  && tinycolor(value).toRgbString() };
-        {
-            rest;
-        }
-        filterOption = {}(input, option);
+        select = (React.createElement(Select, __assign({ showSearch: true, value: value && tinycolor(value).toRgbString() }, rest, { filterOption: function (input, option) {
+                return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+            } }),
+            newColors.map(function (color, i) {
+                return (React.createElement(Select.Option, { value: tinycolor(color.color).toRgbString(), key: i },
+                    React.createElement("i", { className: "fa fa-square", style: { color: tinycolor(color.color).toRgbString() } }),
+                    ' ',
+                    color.name));
+            }),
+            React.createElement(Select.Option, { value: 'other', key: 'other' },
+                React.createElement("span", { className: "react-custom-trigger" }, "Eigene Farbe"))));
     }
+    var picker;
+    if (!colors.length || value === 'other' || isOwnColor) {
+        if (hasNativePicker()) {
+            picker = (React.createElement(Input, { type: "color", style: { width: 100 }, value: tinycolor(value).toHexString(), defaultValue: tinycolor(value).toHexString(), onChange: onChange }));
+        }
+        else {
+            picker = React.createElement(ColorPicker, __assign({}, rest, { value: value }));
+        }
+    }
+    return (React.createElement("div", null,
+        React.createElement("div", null, select),
+        React.createElement("div", { style: { marginTop: 2 } }, picker)));
 };
-option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    >
-        { newColors: .map(function (color, i) {
-                return value = { tinycolor: function (color, color) { } };
-            }, key = { i: i } >
-                className, "fa fa-square", style = {}, { color: tinycolor(color.color).toRgbString() }) }
-            /  > { ' ':  };
-{
-    color.name;
-}
-/Select.Option>);
-value;
-{
-    'other';
-}
-key = { 'other':  } >
-    className;
-"react-custom-trigger" > Eigene;
-Farbe < /span>
-    < /Select.Option>
-    < /Select>;
-;
-var picker;
-if (!colors.length || value === 'other' || isOwnColor) {
-    if (hasNativePicker()) {
-        picker = type = "color";
-        style = {};
-        {
-            width: 100;
-        }
-    }
-    value = { tinycolor: function (value) { } };
-    defaultValue = { tinycolor: function (value) { } };
-    onChange = { onChange: onChange }
-        /  >
-    ;
-    ;
-}
-else {
-    picker = __assign({}, rest);
-    value = { value: value } /  > ;
-}
-return ({ select: select }
-    < /div>
-    < div);
-style = {};
-{
-    marginTop: 2;
-}
- >
-    { picker: picker }
-    < /div>
-    < /div>;
-;
-;
 export default withColors(ColorEditor);
 //# sourceMappingURL=color.js.map

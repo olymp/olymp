@@ -15,6 +15,9 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import React from 'react';
+import Toolbar, { Button } from './toolbar';
+import { Menu } from 'antd';
 import { get } from 'lodash';
 var Action = function (_a) {
     var node = _a.node, state = _a.state, onChange = _a.onChange;
@@ -37,37 +40,14 @@ var Action = function (_a) {
         };
         if (component) {
             var Com = component;
-            return key = { i: i } >
-                onMouseDown;
-            {
-                onClick;
-            }
-            tooltip = { tooltip: tooltip }
-                >
-                    setData;
-            {
-                setData;
-            }
-            getData = { getData: getData } /  >
-                /Button>
-                < /Menu.Item>;
+            return (React.createElement(Menu.Item, { key: i },
+                React.createElement(Button, { onMouseDown: onClick, tooltip: tooltip },
+                    React.createElement(Com, { setData: setData, getData: getData }))));
         }
+        return (React.createElement(Menu.Item, { key: i },
+            React.createElement(Button, { active: !!active && active({ getData: getData, state: state }), onMouseDown: onClick, tooltip: tooltip }, label)));
     };
 };
-;
-return key = { i: i } >
-    active;
-{
-    !!active && active({ getData: getData, state: state });
-}
-onMouseDown = { onClick: onClick };
-tooltip = { tooltip: tooltip }
-    >
-        { label: label }
-    < /Button>
-    < /Menu.Item>;
-;
-;
 export default function (props) {
     var state = props.state, blockTypes = props.blockTypes, onChange = props.onChange, show = props.show;
     var block = state.blocks.size === 1 &&
@@ -75,13 +55,6 @@ export default function (props) {
         blockTypes[state.blocks.get(0).type];
     var node = state.blocks.get(0);
     var actions = get(block, 'slate.actions', []);
-    return show = { show: show };
-    isOpened = {};
-    block && actions && actions.length;
+    return (React.createElement(Toolbar, { show: show, isOpened: !!block && actions && actions.length }, actions.map(Action(__assign({}, props, { node: node })))));
 };
- >
-    { actions: .map(Action(__assign({}, props, { node: node }))) }
-    < /Toolbar>;
-;
-;
 //# sourceMappingURL=toolbar-block.js.map

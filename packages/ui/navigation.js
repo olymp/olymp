@@ -31,13 +31,15 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withLang } from 'olymp-utils';
+import { Link, withLang, Logo } from 'olymp-utils';
 import { withAuth } from 'olymp-auth';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
-import { GatewayRegistry } from 'react-gateway';
+import { GatewayDest, GatewayRegistry } from 'react-gateway';
+import Gravatar from 'react-gravatar';
+import { get } from 'lodash';
 var getInitials = function (name) {
     if (name) {
         var array = name.split(' ');
@@ -62,7 +64,7 @@ var UserIcon = createComponent(function (_a) {
             opacity: 0.85,
         },
     });
-}, function (p) { return (__assign({}, p)); }, size = { 30:  } /  > , function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement(Gravatar, __assign({}, p, { size: 30 })); }, function (p) { return Object.keys(p); });
 var VerticalMenu = createComponent(function (_a) {
     var theme = _a.theme, padding = _a.padding;
     return ({
@@ -97,13 +99,13 @@ var LeftMenu = createComponent(function (_a) {
     return ({
         float: 'left',
     });
-}, function (p) { return (__assign({}, p) /  > ); }, function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement(Menu, __assign({}, p)); }, function (p) { return Object.keys(p); });
 var Filler = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
         flex: '1 1 0%',
     });
-}, function (p) { return (__assign({}, p) /  > ); }, function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement("div", __assign({}, p)); }, function (p) { return Object.keys(p); });
 var RightMenu = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
@@ -119,34 +121,20 @@ var RightMenu = createComponent(function (_a) {
             },
         },
     });
-}, function (p) { return (__assign({}, p) /  > ); }, function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement(Menu.SubMenu, __assign({}, p)); }, function (p) { return Object.keys(p); });
 var AntMenu = function (_a) {
     var keys = _a.keys, p = __rest(_a, ["keys"]);
-    return theme;
+    return React.createElement(LeftMenu, __assign({ theme: "dark", selectedKeys: keys, mode: "horizontal" }, p));
 };
-"dark";
-selectedKeys = { keys: keys };
-mode = "horizontal";
-{
-    p;
-}
-/>;;
 var AntSubMenu = function (_a) {
     var keys = _a.keys, title = _a.title, children = _a.children, p = __rest(_a, ["keys", "title", "children"]);
-    return (__assign({}, p) >
-        title) = { title:  || type, "bars": />}> };
+    return (React.createElement(AntMenu, __assign({}, p),
+        React.createElement(RightMenu, { title: title || React.createElement(Icon, { type: "bars" }) }, children)));
 };
-{
-    children;
-}
-/RightMenu>
-    < /AntMenu>);;
 var Navigation = (function (_super) {
     __extends(Navigation, _super);
     function Navigation(props, context) {
         var _this = _super.call(this, props, context) || this;
-        _this.default = "blank" /  >
-        ;
         _this.gatewayRegistry = context.gatewayRegistry;
         return _this;
     }
@@ -158,45 +146,21 @@ var Navigation = (function (_super) {
     };
     Navigation.prototype.render = function () {
         var _a = this.props, auth = _a.auth, padding = _a.padding, _b = _a.query, query = _b === void 0 ? {} : _b, pathname = _a.pathname, children = _a.children, _c = _a.keys, keys = _c === void 0 ? [pathname] : _c;
-        return padding = { padding: padding } >
-            keys;
-        {
-            keys;
-        }
-         >
-            to;
-        {
-            {
-                pathname;
-            }
-        }
-         >
-            size;
-        {
-            33;
-        }
-        margin = "0 0 -7px 0" /  >
-            /Link>
-            < /Menu.Item>;
-        {
-            children;
-        }
-        /AntMenu>
-            < Filler /  >
-            name;
-        "quick";
-        component = { AntMenu: AntMenu } /  >
-            name;
-        "navigation";
-        component = { AntMenu: AntMenu } /  >
-            { get: function (auth) { }, 'user':  } && title;
-        {
-            email;
-            {
-                auth.user.email;
-            }
-            name = { auth: .user.name };
-        }
+        return (React.createElement(VerticalMenu, { padding: padding },
+            React.createElement(AntMenu, { keys: keys },
+                React.createElement(Menu.Item, null,
+                    React.createElement(Link, { to: { pathname: pathname } },
+                        React.createElement(Logo, { size: 33, margin: "0 0 -7px 0" }))),
+                children),
+            React.createElement(Filler, null),
+            React.createElement(GatewayDest, { name: "quick", component: AntMenu }),
+            React.createElement("div", null,
+                React.createElement(GatewayDest, { name: "navigation", component: AntMenu }),
+                get(auth, 'user') && React.createElement(AntSubMenu, { title: React.createElement(UserIcon, { email: auth.user.email, name: auth.user.name, default: "blank" }) },
+                    React.createElement(Menu.Item, { key: "logout" },
+                        React.createElement("a", { onClick: auth.logout, href: "javascript:;" },
+                            React.createElement(Icon, { type: "poweroff" }),
+                            " Abmelden"))))));
     };
     Navigation.contextTypes = {
         gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
@@ -207,22 +171,6 @@ var Navigation = (function (_super) {
     ], Navigation);
     return Navigation;
 }(Component));
- >
-    key;
-"logout" >
-    onClick;
-{
-    auth.logout;
-}
-href = "javascript:;" >
-    type;
-"poweroff" /  > Abmelden
-    < /a>
-    < /Menu.Item>
-    < /AntSubMenu>}
-    < /div>
-    < /VerticalMenu>;
-;
 Navigation.Item = Menu.Item;
 export default Navigation;
 //# sourceMappingURL=navigation.js.map

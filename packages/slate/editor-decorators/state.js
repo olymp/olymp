@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Raw, Plain, resetKeyGenerator } from 'slate';
 import { batch } from '../utils/batch';
 import { getHeaders } from '../utils/get-text';
@@ -119,12 +119,7 @@ export default function (_a) {
                 return false;
             };
             SlateStateDecorator.prototype.render = function () {
-                return __assign({}, this.props);
-                value = { this: .value };
-                onChange = { this: .changeValue }
-                    /  >
-                ;
-                ;
+                return (React.createElement(Editor, __assign({}, this.props, { value: this.value, onChange: this.changeValue })));
             };
             return SlateStateDecorator;
         }(Component)),

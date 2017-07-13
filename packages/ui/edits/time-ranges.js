@@ -8,7 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Component } from 'react';
+import React, { Component } from 'react';
+import TimeRange from './time-range';
 import { Grid } from 'olymp-fela';
 import moment from 'moment';
 var TimeRanges = (function (_super) {
@@ -27,6 +28,7 @@ var TimeRanges = (function (_super) {
         return _this;
     }
     TimeRanges.prototype.render = function () {
+        var _this = this;
         var value = this.props.value || [];
         var newValue = value.slice();
         while (newValue.length < 7) {
@@ -34,34 +36,17 @@ var TimeRanges = (function (_super) {
         }
         var days = moment.weekdaysMin();
         days.push(days.splice(0, 1)[0]);
-        return { newValue: .map(function (v, i) {
-                return style = {};
-            }, { marginBottom: '10px' }) };
-        key = { i: i } >
-            medium;
-        {
-            1;
-        }
-         >
-            & nbsp;
-         & nbsp;
-        {
-            days[i];
-        }
-        /Grid.Item>
-            < Grid.Item;
-        medium = { 11:  } >
-            value;
-        {
-            v;
-        }
-        onChange = { this: .onChange(i) } /  >
-            /Grid.Item>
-            < /Grid>);
+        return (React.createElement("div", null, newValue.map(function (v, i) {
+            return (React.createElement(Grid, { style: { marginBottom: '10px' }, key: i },
+                React.createElement(Grid.Item, { medium: 1 },
+                    "\u00A0\u00A0",
+                    days[i],
+                    "."),
+                React.createElement(Grid.Item, { medium: 11 },
+                    React.createElement(TimeRange, { value: v, onChange: _this.onChange(i) }))));
+        })));
     };
     return TimeRanges;
 }(Component));
 export default TimeRanges;
-/div>;
-;
 //# sourceMappingURL=time-ranges.js.map

@@ -22,7 +22,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
+import { Select } from 'antd';
 import { graphql, gql } from 'olymp-utils';
 var TagsEditor = (function (_super) {
     __extends(TagsEditor, _super);
@@ -31,11 +32,7 @@ var TagsEditor = (function (_super) {
     }
     TagsEditor.prototype.render = function () {
         var tags = this.props.data.tags || [];
-        return __assign({}, this.props);
-        mode = "tags" >
-            { tags: .map(function (tag) { return key; }, { tag: .id } > { tag: .id } < /Select.Option>)}
-                    < /Select>)
-            };
+        return (React.createElement(Select, __assign({}, this.props, { mode: "tags" }), tags.map(function (tag) { return React.createElement(Select.Option, { key: tag.id }, tag.id); })));
     };
     TagsEditor = __decorate([
         graphql((_a = ["\n  query tags {\n    tags {\n      id\n    }\n  }\n"], _a.raw = ["\n  query tags {\n    tags {\n      id\n    }\n  }\n"], gql(_a)))

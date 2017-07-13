@@ -15,17 +15,16 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import React from 'react';
 import { object, func, bool } from 'prop-types';
-import { withBlockTypes } from 'olymp-slate';
+import { SlateMate, withBlockTypes } from 'olymp-slate';
 import { queryPage } from '../gql';
 import { mapProps } from 'recompose';
+import { ContentLoader } from 'olymp-fela';
 var Page = withBlockTypes(function (props) {
-    return isLoading = { props: .isLoading } >
-        __assign({}, props);
-}, showUndo, key = { props: .id + (props.bindingId || '') } >
-    { props: .children }
-    < /SlateMate>
-    < /ContentLoader>));
+    return (React.createElement(ContentLoader, { isLoading: props.isLoading },
+        React.createElement(SlateMate, __assign({}, props, { showUndo: true, key: props.id + (props.bindingId || '') }), props.children)));
+});
 Page.propTypes = {
     item: object,
     onChange: func,

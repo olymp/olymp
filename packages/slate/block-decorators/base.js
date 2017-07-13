@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
 export default function (options) {
     if (options === void 0) { options = {}; }
@@ -27,7 +27,7 @@ export default function (options) {
             return ({
                 outline: active && '2px solid rgba(48, 48, 48, 0.67)',
             });
-        }, function (p) { return (__assign({}, p) /  > ); }, function (p) { return Object.keys(p); });
+        }, function (p) { return React.createElement(Block, __assign({}, p)); }, function (p) { return Object.keys(p); });
         return _a = (function (_super) {
                 __extends(BaseDecorator, _super);
                 function BaseDecorator() {
@@ -70,19 +70,7 @@ export default function (options) {
                         children.findIndex(function (child) {
                             return parseInt(child.key, 10) === parseInt(state.selection.startKey, 10);
                         }) >= 0;
-                    return __assign({}, this.props);
-                    active = { active: active };
-                    getData = { this: .getData };
-                    setData = { this: .setData };
-                    setActive = { this: .setActive };
-                    readOnly = { editor: .props.readOnly };
-                    {
-                        blockProps;
-                    }
-                        >
-                            { isVoid:  === false ? [children] : [] }
-                        < /StyledBlock>;
-                    ;
+                    return (React.createElement(StyledBlock, __assign({}, this.props, { active: active, getData: this.getData, setData: this.setData, setActive: this.setActive, readOnly: editor.props.readOnly }, blockProps), isVoid === false ? [children] : []));
                 };
                 return BaseDecorator;
             }(Component)),

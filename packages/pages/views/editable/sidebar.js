@@ -8,12 +8,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import { slugify, unflatten } from 'olymp-utils';
+import { Panel, SectionH } from 'olymp-ui';
 import { createComponent, border } from 'olymp-fela';
-import { Parent, } from '../../edits';
+import { Input, PageType, State, Parent, TagSelect, JsonInput, InputNumber, TextArea, } from '../../edits';
+import Tree from './tree';
 var PageForm = (function (_super) {
     __extends(PageForm, _super);
     function PageForm() {
@@ -42,203 +44,34 @@ var PageForm = (function (_super) {
                 children: [],
             });
         }), { id: 'value', parentId: 'parent' });
-        return activeKey = { tab: tab };
-        onTabClick = { onTabClick: onTabClick };
-        size = "small";
-        tabBarStyle = {};
-        {
-            marginBottom: 0;
-        }
+        return (React.createElement(Tabs, { activeKey: tab, onTabClick: onTabClick, size: "small", tabBarStyle: { marginBottom: 0 } },
+            React.createElement(TabPane, { tab: "Navigation", key: "0" },
+                React.createElement(Panel, null,
+                    React.createElement(Tree, { items: navigation, selected: [item.id || item.pathname] }))),
+            React.createElement(TabPane, { tab: "Seite", key: "1" },
+                React.createElement(Panel, { padding: 16, alignLabel: "left" },
+                    React.createElement(Input, { form: form, item: item, field: "name", label: "Name", onChange: this.handleNameChange, rules: ['required'], type: "text", size: "large" }),
+                    React.createElement(Input, { form: form, item: item, field: "slug", label: "Slug", type: "text", size: "large" }),
+                    React.createElement(TextArea, { form: form, item: item, field: "description", label: "Beschreibung", type: "text", size: "large" }),
+                    React.createElement(State, { form: form, item: item, field: "state", label: "Status", rules: ['required'] }),
+                    React.createElement(PageType, { form: form, item: item, field: "type", label: "Art", size: "large", onChange: this.handleTypeChange }),
+                    (form.getFieldValue('type') || item.type) !== 'MENU' &&
+                        React.createElement(Parent, { form: form, treeData: tree, item: item, field: "parentId", label: "Menü", placeholder: "Übergeordnetes Menü", size: "large" }),
+                    (form.getFieldValue('type') || item.type) === 'LINK' &&
+                        React.createElement(Input, { form: form, item: item, field: "href", label: "Ext. Link", type: "text", size: "large" }),
+                    (form.getFieldValue('type') || item.type) === 'ALIAS' &&
+                        React.createElement(Parent, { form: form, treeData: tree, item: item, field: "aliasId", label: "Alias", placeholder: "Alias zu..", size: "large" }),
+                    React.createElement(SectionH, { title: "Erweitert", description: "Datenanbindung, Sortierung Unterseiten" }),
+                    React.createElement(Input, { form: form, item: item, field: "binding.type", placeholder: "typ", label: "Bindungstyp", type: "text", size: "large" }),
+                    React.createElement(TagSelect, { form: form, item: item, options: ['id', 'name', 'slug'], field: "binding.fields", placeholder: "+name, -id", label: "Felder", size: "large" }),
+                    React.createElement(JsonInput, { form: form, item: item, field: "binding.query", label: "Filter", size: "large" }),
+                    React.createElement(TagSelect, { form: form, item: item, options: ['+name', '-name'], field: "sorting", placeholder: "+name, -id", label: "Sortieren", size: "large" }),
+                    React.createElement(InputNumber, { form: form, item: item, field: "order", label: "Reihenfolge", size: "large" }))),
+            React.createElement(TabPane, { tab: "Collection", key: "2" },
+                React.createElement(Panel, { paddingX: 16 }, "Hier kommt bei Bindings quasi der Parent rein"))));
     };
     return PageForm;
 }(Component));
-    >
-        tab;
-"Navigation";
-key = "0" >
-    items;
-{
-    navigation;
-}
-selected = (_a = {}, _a[item.id || item.pathname] = , _a) /  >
-    /Panel>
-    < /TabPane>
-    < TabPane;
-tab = "Seite";
-key = "1" >
-    padding;
-{
-    16;
-}
-alignLabel = "left" >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "name";
-label = "Name";
-onChange = { this: .handleNameChange };
-rules = (_b = {}, _b['required'] = , _b);
-type = "text";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "slug";
-label = "Slug";
-type = "text";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "description";
-label = "Beschreibung";
-type = "text";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "state";
-label = "Status";
-rules = (_c = {}, _c['required'] = , _c) /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "type";
-label = "Art";
-size = "large";
-onChange = { this: .handleTypeChange }
-    /  >
-    {}(form.getFieldValue('type') || item.type) !== 'MENU' &&
-    form;
-{
-    form;
-}
-treeData = { tree: tree };
-item = { item: item };
-field = "parentId";
-label = "Menü";
-placeholder = "Übergeordnetes Menü";
-size = "large"
-    /  > ;
-{
-    (form.getFieldValue('type') || item.type) === 'LINK' &&
-        form;
-    {
-        form;
-    }
-    item = { item: item };
-    field = "href";
-    label = "Ext. Link";
-    type = "text";
-    size = "large"
-        /  > ;
-}
-{
-    (form.getFieldValue('type') || item.type) === 'ALIAS' &&
-        form;
-    {
-        form;
-    }
-    treeData = { tree: tree };
-    item = { item: item };
-    field = "aliasId";
-    label = "Alias";
-    placeholder = "Alias zu..";
-    size = "large"
-        /  > ;
-}
-title;
-"Erweitert";
-description = "Datenanbindung, Sortierung Unterseiten"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "binding.type";
-placeholder = "typ";
-label = "Bindungstyp";
-type = "text";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-options = (_d = {}, _d['id', 'name', 'slug'] = , _d);
-field = "binding.fields";
-placeholder = "+name, -id";
-label = "Felder";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "binding.query";
-label = "Filter";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-options = (_e = {}, _e['+name', '-name'] = , _e);
-field = "sorting";
-placeholder = "+name, -id";
-label = "Sortieren";
-size = "large"
-    /  >
-    form;
-{
-    form;
-}
-item = { item: item };
-field = "order";
-label = "Reihenfolge";
-size = "large"
-    /  >
-    /Panel>
-    < /TabPane>
-    < TabPane;
-tab = "Collection";
-key = "2" >
-    paddingX;
-{
-    16;
-}
- >
-    Hier;
-kommt;
-bei;
-Bindings;
-quasi;
-der;
-Parent;
-rein
-    < /Panel>
-    < /TabPane>;
-{
-}
-/Tabs>;
-;
 PageForm.propTypes = {
     item: PropTypes.object,
     form: PropTypes.object,
@@ -262,5 +95,4 @@ var TabPane = createComponent(function (_a) {
         borderBottom: border(theme),
     });
 }, Tabs.TabPane, function (p) { return Object.keys(p); });
-var _a, _b, _c, _d, _e;
 //# sourceMappingURL=sidebar.js.map

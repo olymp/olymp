@@ -1,4 +1,7 @@
-import { createFela } from 'olymp-fela';
+import React from 'react';
+import { ThemeProvider, createFela } from 'olymp-fela';
+import { Provider as FelaProvider } from 'react-fela';
+import { MemoryRouter } from 'react-router';
 var ss = document.getElementById('fela') || document.createElement('style');
 if (!ss.id) {
     ss.id = 'fela';
@@ -7,11 +10,10 @@ if (!ss.id) {
 }
 var renderer = createFela();
 export var FelaDecorator = function (story) {
-    return renderer = { renderer: renderer };
-}, mountNode = { ss: ss } >
-    {} < /ThemeProvider>
-    < /FelaProvider>);;
+    return (React.createElement(FelaProvider, { renderer: renderer, mountNode: ss },
+        React.createElement(ThemeProvider, null, story())));
+};
 export var RouterDecorator = function (story) {
-    return initialEntries;
-},  = ( > {} < /MemoryRouter>;)["/"];
+    return React.createElement(MemoryRouter, { initialEntries: ['/'] }, story());
+};
 //# sourceMappingURL=storybook.js.map

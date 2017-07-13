@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { throttle } from 'lodash';
 import cn from 'classnames';
 export default function (WrappedComponent) {
@@ -43,8 +43,7 @@ export default function (WrappedComponent) {
             if (top && false) {
                 className = cn(className, top && 'is-scrolled');
             }
-            return __assign({}, this.props);
-            scrollTop = { top: top } /  > ;
+            return React.createElement(WrappedComponent, __assign({}, this.props, { scrollTop: top }));
         };
         return WithScroll;
     }(Component));

@@ -1,4 +1,7 @@
+import React from 'react';
+import { Link } from 'olymp-utils';
 import { createComponent } from 'olymp-fela';
+import { Icon } from 'antd';
 var ImgContainer = createComponent(function (_a) {
     var disabled = _a.disabled;
     return ({
@@ -52,66 +55,24 @@ var Content = createComponent(function (_a) {
     });
 }, function (_a) {
     var image = _a.image, label = _a.label, description = _a.description, className = _a.className, disabled = _a.disabled, icon = _a.icon;
-    return className = { className: className } >
-        { image:  &&
-                { image:  &&
-                        typeof image === 'string' &&
-                        src } };
-}, { image: image }, width = { 37:  }, height = { 37:  } /  > );
-{
-    image && typeof image !== 'string' && image;
-}
-/ImgContainer>}
-    < div >
-    { label: label }
-    < /strong>;
-{
-    description;
-}
-/div>;
-{
-    !disabled ? type :  = { icon:  || 'right' } /  > ;
-    null;
-}
-/div>),;
-(function (p) { return Object.keys(p); });
-;
+    return (React.createElement("div", { className: className },
+        image &&
+            React.createElement(ImgContainer, null,
+                image &&
+                    typeof image === 'string' &&
+                    React.createElement("img", { src: image, width: 37, height: 37 }),
+                image && typeof image !== 'string' && image),
+        React.createElement("div", null,
+            React.createElement("strong", null, label),
+            description),
+        !disabled ? React.createElement(Icon, { type: icon || 'right' }) : null));
+}, function (p) { return Object.keys(p); });
 export default function (_a) {
     var className = _a.className, image = _a.image, label = _a.label, description = _a.description, to = _a.to, onClick = _a.onClick, active = _a.active, disabled = _a.disabled, icon = _a.icon;
     return onClick || disabled
-        ? className :  = { className: className };
+        ? React.createElement("a", { className: className, href: "javascript:;", onClick: disabled ? function () { } : onClick },
+            React.createElement(Content, { image: image, label: label, description: description, active: active, disabled: disabled, icon: icon }))
+        : React.createElement(Link, { className: className, to: to, disabled: disabled },
+            React.createElement(Content, { image: image, label: label, description: description, active: active, disabled: disabled, icon: icon }));
 };
-href = "javascript:;";
-onClick = { disabled: function () { } };
-{ }
-onClick;
-    >
-        image;
-{
-    image;
-}
-label = { label: label };
-description = { description: description };
-active = { active: active };
-disabled = { disabled: disabled };
-icon = { icon: icon }
-    /  >
-    /a>;
-className;
-{
-    className;
-}
-to = { to: to };
-disabled = { disabled: disabled } >
-    image;
-{
-    image;
-}
-label = { label: label };
-description = { description: description };
-active = { active: active };
-disabled = { disabled: disabled };
-icon = { icon: icon }
-    /  >
-    /Link>;;
 //# sourceMappingURL=item.js.map

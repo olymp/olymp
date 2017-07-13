@@ -15,7 +15,9 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { LightboxImage, Image } from 'olymp-cloudinary';
+import React from 'react';
+import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
+import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 export default {
     key: 'Pages.Media.ImageBlock.Image',
     label: 'Bild',
@@ -23,133 +25,115 @@ export default {
     component: function (_a) {
         var getData = _a.getData, setActive = _a.setActive, className = _a.className, editor = _a.editor;
         var Img = editor.props.readOnly === true ? LightboxImage : Image;
-        return className = { className: className };
-        onClick = { setActive: setActive };
-        width = (_b = ["", "%"], _b.raw = ["", "%"], {}(_b, 100 / getData('size', 4)));
-        var _b;
+        return (React.createElement(Img, { className: className, onClick: setActive, width: 100 / getData('size', 4) + "%", value: getData('value', {
+                url: 'https://lorempixel.com/400/300/cats/',
+                width: 400,
+                height: 300,
+            }) }));
     },
-    value: value
+    styles: function (_a) {
+        var theme = _a.theme, getData = _a.getData;
+        var alignment = getData('float', 'none');
+        var normalized = alignment.replace('+', '');
+        return {
+            float: normalized,
+            margin: alignment === 'none' && '0 auto',
+            marginTop: alignment === 'none' && theme.space3,
+            marginBottom: theme.space3,
+            zIndex: 1,
+            extend: [
+                {
+                    condition: normalized === 'left',
+                    style: { marginRight: theme.space3 },
+                },
+                {
+                    condition: alignment === 'left+',
+                    style: { marginLeft: -75 },
+                },
+                {
+                    condition: normalized === 'right',
+                    style: { marginLeft: theme.space3 },
+                },
+                {
+                    condition: alignment === 'right+',
+                    style: { marginRight: -75 },
+                },
+            ],
+        };
+    },
+    actions: [
+        {
+            tooltip: function (getData) { return "Bild " + (getData('value') ? 'wechseln' : 'wählen'); },
+            component: function (_a) {
+                var setData = _a.setData, getData = _a.getData, p = __rest(_a, ["setData", "getData"]);
+                return (React.createElement(SimpleImageEdit, __assign({}, p, { onChange: function (value) { return setData({ value: value }); }, value: getData('value', {}), multi: false })));
+            },
+            toggle: function () { },
+        },
+        {
+            label: React.createElement(FaAlignLeft, null),
+            tooltip: 'Links anordnen',
+            active: function (_a) {
+                var getData = _a.getData;
+                return getData('float', 'none').indexOf('left') === 0;
+            },
+            toggle: function (_a) {
+                var setData = _a.setData, getData = _a.getData;
+                var alignment = getData('float', 'none');
+                if (alignment === 'none') {
+                    setData({ float: 'left' });
+                }
+                else if (alignment === 'left') {
+                    setData({ float: 'left+' });
+                }
+                else {
+                    setData({ float: null });
+                }
+            },
+        },
+        {
+            label: React.createElement(FaAlignRight, null),
+            tooltip: 'Rechts anordner',
+            active: function (_a) {
+                var getData = _a.getData;
+                return getData('float', 'none').indexOf('right') === 0;
+            },
+            toggle: function (_a) {
+                var setData = _a.setData, getData = _a.getData;
+                var alignment = getData('float', 'none');
+                if (alignment === 'none') {
+                    setData({ float: 'right' });
+                }
+                else if (alignment === 'right') {
+                    setData({ float: 'right+' });
+                }
+                else {
+                    setData({ float: null });
+                }
+            },
+        },
+        {
+            label: React.createElement(FaPlus, null),
+            tooltip: 'Größer',
+            toggle: function (_a) {
+                var setData = _a.setData, getData = _a.getData;
+                var size = getData('size', 4);
+                setData({
+                    size: size > 1 ? size - 1 : 1,
+                });
+            },
+        },
+        {
+            label: React.createElement(FaMinus, null),
+            tooltip: 'Kleiner',
+            toggle: function (_a) {
+                var setData = _a.setData, getData = _a.getData;
+                var size = getData('size', 4);
+                setData({
+                    size: size < 8 ? size + 1 : 8,
+                });
+            },
+        },
+    ],
 };
-{
-    url: 'https://lorempixel.com/400/300/cats/',
-        width;
-    400,
-        height;
-    300,
-    ;
-}
-/>;
-;
-styles: (function (_a) {
-    var theme = _a.theme, getData = _a.getData;
-    var alignment = getData('float', 'none');
-    var normalized = alignment.replace('+', '');
-    return {
-        float: normalized,
-        margin: alignment === 'none' && '0 auto',
-        marginTop: alignment === 'none' && theme.space3,
-        marginBottom: theme.space3,
-        zIndex: 1,
-        extend: [
-            {
-                condition: normalized === 'left',
-                style: { marginRight: theme.space3 },
-            },
-            {
-                condition: alignment === 'left+',
-                style: { marginLeft: -75 },
-            },
-            {
-                condition: normalized === 'right',
-                style: { marginLeft: theme.space3 },
-            },
-            {
-                condition: alignment === 'right+',
-                style: { marginRight: -75 },
-            },
-        ],
-    };
-},
-    actions);
-[
-    {
-        tooltip: function (getData) { return "Bild " + (getData('value') ? 'wechseln' : 'wählen'); },
-        component: function (_a) {
-            var setData = _a.setData, getData = _a.getData, p = __rest(_a, ["setData", "getData"]);
-            return (__assign({}, p));
-        },
-        onChange: onChange,
-        value: value
-    }, {},
-    multi = { false:  }
-        /  > , ,
-    toggle, function () { },
-    ,
-    {
-        label: />,,
-        tooltip: 'Links anordnen',
-        active: function (_a) {
-            var getData = _a.getData;
-            return getData('float', 'none').indexOf('left') === 0;
-        },
-        toggle: function (_a) {
-            var setData = _a.setData, getData = _a.getData;
-            var alignment = getData('float', 'none');
-            if (alignment === 'none') {
-                setData({ float: 'left' });
-            }
-            else if (alignment === 'left') {
-                setData({ float: 'left+' });
-            }
-            else {
-                setData({ float: null });
-            }
-        },
-    },
-    {
-        label: />,,
-        tooltip: 'Rechts anordner',
-        active: function (_a) {
-            var getData = _a.getData;
-            return getData('float', 'none').indexOf('right') === 0;
-        },
-        toggle: function (_a) {
-            var setData = _a.setData, getData = _a.getData;
-            var alignment = getData('float', 'none');
-            if (alignment === 'none') {
-                setData({ float: 'right' });
-            }
-            else if (alignment === 'right') {
-                setData({ float: 'right+' });
-            }
-            else {
-                setData({ float: null });
-            }
-        },
-    },
-    {
-        label: />,,
-        tooltip: 'Größer',
-        toggle: function (_a) {
-            var setData = _a.setData, getData = _a.getData;
-            var size = getData('size', 4);
-            setData({
-                size: size > 1 ? size - 1 : 1,
-            });
-        },
-    },
-    {
-        label: />,,
-        tooltip: 'Kleiner',
-        toggle: function (_a) {
-            var setData = _a.setData, getData = _a.getData;
-            var size = getData('size', 4);
-            setData({
-                size: size < 8 ? size + 1 : 8,
-            });
-        },
-    },
-],
-;
-;
 //# sourceMappingURL=image.js.map

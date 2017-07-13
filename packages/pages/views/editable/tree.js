@@ -8,17 +8,26 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp-utils';
+import { withRouter, Link } from 'olymp-utils';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
+import { Icon, Tooltip } from 'antd';
 import { lowerCase } from 'lodash';
 import { reorderPage, movePage } from '../../gql';
 var Pages = (function (_super) {
@@ -74,73 +83,59 @@ var Pages = (function (_super) {
         };
         _this.getNodeIcon = function (item) {
             if (item.sorting && item.sorting[0] === '+') {
-                return type;
-                "arrow-up";
-                tooltip = "Austeigend sortiert" /  > ;
+                return React.createElement(Badge, { type: "arrow-up", tooltip: "Austeigend sortiert" });
             }
             else if (item.sorting && item.sorting[0] === '-') {
-                return type;
-                "arrow-down";
-                tooltip = "Absteigend sortiert" /  > ;
+                return React.createElement(Badge, { type: "arrow-down", tooltip: "Absteigend sortiert" });
             }
             else if (item.slug === '/') {
-                return type;
-                "home";
-                tooltip = "Startseite" /  > ;
+                return React.createElement(Badge, { type: "home", tooltip: "Startseite" });
             }
             else if (item.type === 'ALIAS') {
-                return type;
-                "fork";
-                tooltip = "Alias" /  > ;
+                return React.createElement(Badge, { type: "fork", tooltip: "Alias" });
             }
             else if (item.type === 'LINK') {
-                return type;
-                "link";
-                tooltip = "Link" /  > ;
+                return React.createElement(Badge, { type: "link", tooltip: "Link" });
             }
             else if (item.type === 'PLACEHOLDER') {
-                return type;
-                "file";
-                tooltip = "Platzhalter" /  > ;
+                return React.createElement(Badge, { type: "file", tooltip: "Platzhalter" });
             }
             else if (item.type === 'PAGE') {
-                return type;
-                "file-text";
-                tooltip = "Seite" /  > ;
+                return React.createElement(Badge, { type: "file-text", tooltip: "Seite" });
             }
             else if (item.type === 'MENU') {
-                return type;
-                "bars";
-                tooltip = "Menü" /  > ;
+                return React.createElement(Badge, { type: "bars", tooltip: "Menü" });
             }
             return null;
         };
         _this.loop = function (data, parent) {
-            return data.map.apply(data, [function (item) {
-                    var query = _this.props.query;
-                    var children = item.children && item.children.length
-                        ? _this.loop(item.children, item)
-                        : undefined;
-                    return key = { item: .id || item.pathname };
-                    item = { item: item };
-                    parent = { parent: parent };
-                    title = {}
-                        < Title;
-                    disabled = { item: .state === 'DRAFT' } >
-                        to;
-                    {
-                        {
-                            pathname: item.pathname,
-                                query;
-                            {
-                            }
-                        }
-                    }
-                }].concat(query, ['@page', item.pageId || item.id,
-                parent, undefined]));
+            return data.map(function (item) {
+                var query = _this.props.query;
+                var children = item.children && item.children.length
+                    ? _this.loop(item.children, item)
+                    : undefined;
+                return (React.createElement(Tree.Node, { key: item.id || item.pathname, item: item, parent: parent, title: React.createElement(Title, { disabled: item.state === 'DRAFT' },
+                        React.createElement(Link, { to: {
+                                pathname: item.pathname,
+                                query: __assign({}, query, { '@page': item.pageId || item.id, parent: undefined }),
+                            } }, item.name || 'Kein Name'),
+                        React.createElement(Button, { to: { query: __assign({}, query, { '@page': 'new', parent: item.id }) }, type: "plus", showOnHover: true }),
+                        item.bindingId &&
+                            item.binding &&
+                            item.binding.type &&
+                            React.createElement(Button, { to: {
+                                    query: __assign({}, query, (_a = { '@page': undefined, parent: undefined }, _a["@" + lowerCase(item.binding.type)] = item.bindingId, _a)),
+                                }, type: "api" }),
+                        _this.getNodeIcon(item)) }, children));
+                var _a;
+            });
         };
         return _this;
     }
+    Pages.prototype.render = function () {
+        var _a = this.props, items = _a.items, selected = _a.selected, pathname = _a.pathname, query = _a.query;
+        return (React.createElement(Tree, { selectedKeys: selected, draggable: true, className: "draggable-tree", defaultExpandedKeys: items.filter(function (x, i) { return i === 0; }).map(function (item) { return item.id || item.pathname; }), onDragEnter: this.onDragEnter, onDrop: this.onDrop }, this.loop(items)));
+    };
     Pages = __decorate([
         withRouter,
         reorderPage,
@@ -148,64 +143,6 @@ var Pages = (function (_super) {
     ], Pages);
     return Pages;
 }(Component));
-    >
-        { item: .name || 'Kein Name' }
-    < /Link>
-    < Button;
-to = {};
-{
-    query: {
-        query, '@page';
-        'new', parent;
-        item.id;
-    }
-}
-type = "plus";
-showOnHover
-    /  >
-    { item: .bindingId &&
-            item.binding &&
-            item.binding.type &&
-            to };
-{
-    {
-        query: {
-            query,
-                '@page';
-            undefined,
-                parent;
-            undefined,
-                ["@" + lowerCase(item.binding.type)];
-            item.bindingId,
-            ;
-        }
-    }
-}
-type = "api"
-    /  > ;
-{
-    this.getNodeIcon(item);
-}
-/Title>;
-    >
-        { children: children }
-    < /Tree.Node>;
-;
-;
-render();
-{
-    var _a = this.props, items = _a.items, selected = _a.selected, pathname = _a.pathname, query = _a.query;
-    return selectedKeys = { selected: selected };
-    draggable;
-    className = "draggable-tree";
-    defaultExpandedKeys = { items: .filter(function (x, i) { return i === 0; }).map(function (item) { return item.id || item.pathname; }) };
-    onDragEnter = { this: .onDragEnter };
-    onDrop = { this: .onDrop }
-        >
-            { this: .loop(items) }
-        < /Tree>;
-    ;
-}
 Pages.propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
     selected: PropTypes.arrayOf(PropTypes.string),
@@ -246,10 +183,9 @@ var Button = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, to = _a.to, type = _a.type;
-    return to = { to: to };
-}, className = { className: className } >
-    type, { type: type } /  >
-    /Link>),, function (p) { return Object.keys(p); });
+    return (React.createElement(Link, { to: to, className: className },
+        React.createElement(Icon, { type: type })));
+}, function (p) { return Object.keys(p); });
 var Badge = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
@@ -264,10 +200,8 @@ var Badge = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, type = _a.type, tooltip = _a.tooltip;
-    return title = { tooltip: tooltip } >
-        href;
-}, "javascript:;", className = { className: className } >
-    type, { type: type } /  >
-    /a>
-    < /Tooltip>),, function (p) { return Object.keys(p); });
+    return (React.createElement(Tooltip, { title: tooltip },
+        React.createElement("a", { href: "javascript:;", className: className },
+            React.createElement(Icon, { type: type }))));
+}, function (p) { return Object.keys(p); });
 //# sourceMappingURL=tree.js.map

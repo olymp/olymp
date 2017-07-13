@@ -38,23 +38,9 @@ export var H = createComponent(function (_a) {
 }, ['level', 'itemProp']);
 export var SectionH = function (_a) {
     var title = _a.title, description = _a.description;
-    return key = { 0:  } >
-        marginBottom;
-},  = (textAlign = "center")[0], level = { 3:  }, light = color >
-    { title: title }
-    < /H>;
-{
-    description &&
-        marginTop;
-    {
-        0;
-    }
-    textAlign = "center";
-    level = { 5:  };
-    fontSize = { 12:  };
-    light >
-        { description: description }
-        < /H>}
-        < /div>);;
-}
+    return (React.createElement("div", { key: 0 },
+        React.createElement(H, { marginBottom: 0, textAlign: "center", level: 3, light: true, color: true }, title),
+        description &&
+            React.createElement(H, { marginTop: 0, textAlign: "center", level: 5, fontSize: 12, light: true }, description)));
+};
 //# sourceMappingURL=h.js.map

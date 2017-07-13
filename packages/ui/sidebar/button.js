@@ -6,7 +6,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+import React from 'react';
 import { createComponent } from 'olymp-fela';
+import { Button as AntButton } from 'antd';
 var Button = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
@@ -15,6 +17,6 @@ var Button = createComponent(function (_a) {
         backgroundColor: theme.light,
         color: theme.dark2,
     });
-}, function (p) { return size; }, "large", __assign({}, p) /  > , function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement(AntButton, __assign({ size: "large" }, p)); }, function (p) { return Object.keys(p); });
 export default Button;
 //# sourceMappingURL=button.js.map

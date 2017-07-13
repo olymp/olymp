@@ -15,6 +15,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { FelaDecorator, RouterDecorator } from './decorator';
@@ -36,9 +37,7 @@ export default function (title, customStyle) { return function (subtitle, compFn
     return storiesOf(title, module)
         .addDecorator(withKnobs)
         .addDecorator(function (storyFn) {
-        return customStyle = { customStyle:  || {} } >
-            {}
-            < /Container>);
+        return (React.createElement(Container, { customStyle: customStyle || {} }, storyFn()));
     })
         .addDecorator(RouterDecorator)
         .addDecorator(FelaDecorator)

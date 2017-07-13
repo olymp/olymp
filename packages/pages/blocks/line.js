@@ -6,7 +6,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Menu } from 'antd';
+import React from 'react';
+import { Dropdown, Menu } from 'antd';
 import { createComponent } from 'olymp-fela';
 var styles = function (theme) { return ({
     style1: {
@@ -138,8 +139,8 @@ var component = createComponent(function (_a) {
     return styles(theme)[getData('type', 'style1')];
 }, function (_a) {
     var attributes = _a.attributes, className = _a.className;
-    return (__assign({}, attributes));
-}, className = { className: className } /  > , function (p) { return Object.keys(p); });
+    return React.createElement("hr", __assign({}, attributes, { className: className }));
+}, function (p) { return Object.keys(p); });
 export default {
     key: 'Pages.Template.LineBlock',
     label: 'Linie',
@@ -152,36 +153,23 @@ export default {
             label: 'Stil 1',
             component: function (_a) {
                 var setData = _a.setData;
-                return overlay = {}
-                    < Menu;
+                return (React.createElement(Dropdown, { overlay: React.createElement(Menu, { onClick: function (_a) {
+                            var key = _a.key;
+                            return setData({ type: key });
+                        }, style: { minWidth: 200 } }, Object.keys(styles({})).map(function (key) {
+                        return (React.createElement(Menu.Item, { key: key }, key));
+                    })) },
+                    React.createElement("a", { href: "javascript:;" }, "Stil")));
             },
-            onClick: onClick
+            toggle: function (_a) {
+                var setData = _a.setData;
+                return setData({ type: 'style2' });
+            },
+            active: function (_a) {
+                var type = _a.type;
+                return false;
+            },
         },
-        style = {}, { minWidth: 200 }
-    ]
-}
-    >
-        { Object: .keys(styles({})).map(function (key) {
-                return key = { key: key } >
-                    { key: key }
-                    < /Menu.Item>);
-            }) }
-    < /Menu>;
-    >
-        href;
-"javascript:;" >
-    Stil
-    < /a>
-    < /Dropdown>),;
-toggle: (function (_a) {
-    var setData = _a.setData;
-    return setData({ type: 'style2' });
-},
-    active);
-(function (_a) {
-    var type = _a.type;
-    return false;
-},
-);
-;
+    ],
+};
 //# sourceMappingURL=line.js.map

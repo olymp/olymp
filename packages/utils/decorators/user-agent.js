@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component, Children } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import UAParser2 from 'ua-parser-js';
 export var UAParser = UAParser2;
@@ -42,8 +42,8 @@ var UAProvider = (function (_super) {
 export { UAProvider };
 export default function (WrappedComponent) {
     var withUA = function (props, context) {
-        return ua;
-    }, _a = __assign({}, props) /  > , context = _a.context, ua = _a.ua;
+        return React.createElement(WrappedComponent, __assign({ ua: context.ua }, props));
+    };
     withUA.contextTypes = {
         ua: PropTypes.object,
     };

@@ -6,6 +6,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+import React from 'react';
+import { Container } from 'olymp-fela';
 export default {
     key: 'Pages.Template.ContainerBlock',
     label: 'Container',
@@ -13,8 +15,8 @@ export default {
     editable: true,
     component: function (_a) {
         var attributes = _a.attributes, className = _a.className, children = _a.children;
-        return (__assign({}, attributes));
-    }, className: className,
+        return (React.createElement(Container, __assign({}, attributes, { className: className }), children));
+    },
     actions: [
         {
             type: 'small',

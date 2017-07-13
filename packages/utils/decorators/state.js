@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import capitalize from 'lodash/upperFirst';
 export default function (propertyName, defaultValue) { return function (WrappedComponent) {
     var properties = typeof propertyName !== 'object'
@@ -38,11 +38,7 @@ export default function (propertyName, defaultValue) { return function (WrappedC
                 };
                 return state;
             }, {});
-            return __assign({}, this.props);
-            {
-                more;
-            }
-            />;;
+            return React.createElement(WrappedComponent, __assign({}, this.props, more));
         };
         return WithStateComponent;
     }(Component));

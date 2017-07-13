@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tree as AntTree } from 'antd';
 import { createComponent } from 'olymp-fela';
 var Tree = createComponent(function () { return ({
@@ -37,9 +38,7 @@ Tree.Title = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, children = _a.children;
-    return className = { className: className } >
-        { children: children }
-        < /span>),;
+    return (React.createElement("span", { className: className }, children));
 }, function (p) { return Object.keys(p); });
 Tree.Node = AntTree.TreeNode;
 export default Tree;

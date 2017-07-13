@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import Slider from 'multirangeslider';
@@ -78,11 +78,7 @@ var Elessar = (function (_super) {
     Elessar.prototype.render = function () {
         var _this = this;
         var className = this.props.className;
-        return className;
-        {
-            className;
-        }
-        ref = { x: function () { return (_this.dev = x); } } /  > ;
+        return React.createElement("div", { className: className, ref: function (x) { return (_this.dev = x); } });
     };
     return Elessar;
 }(Component));
@@ -192,5 +188,5 @@ export default createComponent(function (_a) {
             },
         },
     };
-}, function (x) { return (__assign({}, x) /  > ); }, function (x) { return Object.keys(x); });
+}, function (x) { return React.createElement(Elessar, __assign({}, x)); }, function (x) { return Object.keys(x); });
 //# sourceMappingURL=time-range.js.map

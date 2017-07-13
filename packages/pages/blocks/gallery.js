@@ -15,7 +15,10 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import React from 'react';
+import { Image, SimpleImageEdit } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
+import { FaPlus, FaMinus } from 'olymp-icons';
 var Container = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
@@ -47,69 +50,54 @@ export default {
     category: 'Medien',
     component: function (_a) {
         var getData = _a.getData, setActive = _a.setActive, className = _a.className, attributes = _a.attributes;
-        return (__assign({}, attributes) >
-            (_b = { getData: function () { }, 'value':  }, _b[{
+        return (React.createElement(Container, __assign({}, attributes), getData('value', [
+            {
                 url: 'https://lorempixel.com/400/300/cats/',
                 width: 400,
                 height: 300,
             },
-            ] = , _b.map = function () { }, _b)(image, i));
-        var _b;
-    }
-}(size, { getData: function () { }, 'size': , 4:  });
-key = { image: .id || i } >
-    className;
-{
-    className;
-}
-onClick = { setActive: setActive };
-width = "100%";
-value = { image: image }
-    /  >
-    /ImageContainer>);
-/Container>),;
-styles: (function (_a) {
-    var getData = _a.getData;
-    return ({
-        float: getData('float', 'none'),
-    });
-},
-    actions);
-[
-    {
-        tooltip: function (getData) { return "Bilder " + (getData('value') ? 'wechseln' : 'wählen'); },
-        component: function (_a) {
-            var setData = _a.setData, getData = _a.getData, p = __rest(_a, ["setData", "getData"]);
-            return (__assign({}, p));
-        },
-        onChange: onChange,
-        value: value,
-        multi: />),,
-        toggle: function () { },
+        ]).map(function (image, i) {
+            return (React.createElement(ImageContainer, { size: getData('size', 4), key: image.id || i },
+                React.createElement(Image, { className: className, onClick: setActive, width: "100%", value: image })));
+        })));
     },
-    {
-        label: />,,
-        tooltip: 'Spalte hinzufügen',
-        toggle: function (_a) {
-            var setData = _a.setData, getData = _a.getData;
-            var size = getData('size', 4);
-            setData({
-                size: size < 8 ? size + 1 : 8,
-            });
-        },
+    styles: function (_a) {
+        var getData = _a.getData;
+        return ({
+            float: getData('float', 'none'),
+        });
     },
-    {
-        label: />,,
-        tooltip: 'Spalte entfernen',
-        toggle: function (_a) {
-            var setData = _a.setData, getData = _a.getData;
-            var size = getData('size', 4);
-            setData({
-                size: size > 1 ? size - 1 : 1,
-            });
+    actions: [
+        {
+            tooltip: function (getData) { return "Bilder " + (getData('value') ? 'wechseln' : 'wählen'); },
+            component: function (_a) {
+                var setData = _a.setData, getData = _a.getData, p = __rest(_a, ["setData", "getData"]);
+                return (React.createElement(SimpleImageEdit, __assign({}, p, { onChange: function (value) { return setData({ value: value }); }, value: getData('value', []), multi: true })));
+            },
+            toggle: function () { },
         },
-    },
-],
-;
-;
+        {
+            label: React.createElement(FaPlus, null),
+            tooltip: 'Spalte hinzufügen',
+            toggle: function (_a) {
+                var setData = _a.setData, getData = _a.getData;
+                var size = getData('size', 4);
+                setData({
+                    size: size < 8 ? size + 1 : 8,
+                });
+            },
+        },
+        {
+            label: React.createElement(FaMinus, null),
+            tooltip: 'Spalte entfernen',
+            toggle: function (_a) {
+                var setData = _a.setData, getData = _a.getData;
+                var size = getData('size', 4);
+                setData({
+                    size: size > 1 ? size - 1 : 1,
+                });
+            },
+        },
+    ],
+};
 //# sourceMappingURL=gallery.js.map

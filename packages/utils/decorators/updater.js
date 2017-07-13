@@ -16,19 +16,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
-    return t;
-};
-var _this = this;
-import { Component } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { notification } from 'antd';
+import { Button, notification } from 'antd';
 import shortid from 'shortid';
 var WebsocketProvider = (function (_super) {
     __extends(WebsocketProvider, _super);
@@ -93,10 +83,40 @@ var WebsocketProvider = (function (_super) {
                 var version = _a.version, xyz = _a.xyz;
                 hasPong = true;
                 if (_this.lastVersion && _this.lastVersion !== version) {
-                    _this.showNotification('Neues Update verfügbar', 'Möchten Sie die neue Version sofort benutzen?', size, "small", onClick = {}());
+                    _this.showNotification('Neues Update verfügbar', 'Möchten Sie die neue Version sofort benutzen?', React.createElement(Button, { size: "small", onClick: function () { return location.reload(); } }, "Ja, Seite neu laden"));
+                }
+                _this.lastVersion = version;
+            };
+            _this.ws.onmessage = function (event) {
+                var data = JSON.parse(event.data);
+                if (data.type === 'pong') {
+                    return onPong(data);
+                }
+                if (_this.listeners[data.type]) {
+                    _this.listeners[data.type].forEach(function (fc) { return fc(data); });
                 }
             };
-            location.reload();
+            _this.ws.onopen = function (event) {
+                _this.connected(true);
+                interval = setInterval(function () {
+                    if (!hasPong) {
+                        _this.connected(null);
+                    }
+                    hasPong = false;
+                    _this.ws.send('ping');
+                }, 3000);
+            };
+            _this.ws.onerror = function (error) {
+                console.error('ws error', error);
+            };
+            _this.ws.onclose = function () {
+                _this.connected(false);
+                if (interval) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+                setTimeout(_this.connect, 5000);
+            };
         };
         return _this;
     }
@@ -111,63 +131,22 @@ var WebsocketProvider = (function (_super) {
             },
         };
     };
+    WebsocketProvider.prototype.componentDidMount = function () {
+        this.connect();
+    };
+    WebsocketProvider.prototype.render = function () {
+        return Children.only(this.props.children);
+    };
     WebsocketProvider.childContextTypes = {
         socket: PropTypes.object,
     };
     return WebsocketProvider;
 }(Component));
 export { WebsocketProvider };
- >
-    Ja, Seite;
-neu;
-laden
-    < /Button>;
-;
-this.lastVersion = version;
-;
-this.ws.onmessage = function (event) {
-    var data = JSON.parse(event.data);
-    if (data.type === 'pong') {
-        return onPong(data);
-    }
-    if (_this.listeners[data.type]) {
-        _this.listeners[data.type].forEach(function (fc) { return fc(data); });
-    }
-};
-this.ws.onopen = function (event) {
-    _this.connected(true);
-    interval = setInterval(function () {
-        if (!hasPong) {
-            _this.connected(null);
-        }
-        hasPong = false;
-        _this.ws.send('ping');
-    }, 3000);
-};
-this.ws.onerror = function (error) {
-    console.error('ws error', error);
-};
-this.ws.onclose = function () {
-    _this.connected(false);
-    if (interval) {
-        clearInterval(interval);
-        interval = null;
-    }
-    setTimeout(_this.connect, 5000);
-};
-;
-componentDidMount();
-{
-    this.connect();
-}
-render();
-{
-    return Children.only(this.props.children);
-}
 export default function (WrappedComponent) {
     var withWebsocket = function (props, context) {
-        return (__assign({}, context));
-    }, props = __rest(/>;, []);
+        return React.createElement(WrappedComponent, __assign({}, context, props));
+    };
     withWebsocket.contextTypes = {
         socket: PropTypes.object,
     };

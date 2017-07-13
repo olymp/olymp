@@ -25,7 +25,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import useBlockBase from '../block-decorators/base';
 import { createComponent } from 'olymp-fela';
@@ -54,7 +54,7 @@ export default function (types) {
                 };
             };
             UseBlockTypes.prototype.render = function () {
-                return __assign({}, this.props) /  > ;
+                return React.createElement(WrappedComponent, __assign({}, this.props));
             };
             return UseBlockTypes;
         }(Component)),

@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import capitalize from 'lodash/upperFirst';
 export default function (_a) {
     var prop = _a.prop, onThrottle = _a.onThrottle, throttleProp = _a.throttleProp, getInitialValue = _a.getInitialValue, initialValue = _a.initialValue, cooldown = _a.cooldown, handleUpdate = _a.handleUpdate;
@@ -83,11 +83,7 @@ export default function (_a) {
             };
             WithStateComponent.prototype.render = function () {
                 var state = __assign({}, this.state, (_a = {}, _a["set" + capitalize(prop)] = this.set, _a));
-                return __assign({}, this.props);
-                {
-                    state;
-                }
-                />;;
+                return React.createElement(WrappedComponent, __assign({}, this.props, state));
                 var _a;
             };
             return WithStateComponent;

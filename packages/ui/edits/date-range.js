@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { DatePicker } from 'antd';
 import moment from 'moment';
 var RangePicker = DatePicker.RangePicker;
@@ -44,14 +44,7 @@ var DatePickerInt = (function (_super) {
         return _this;
     }
     DatePickerInt.prototype.render = function () {
-        return __assign({}, this.props);
-        value = { this: .getValue() };
-        placeholder = (_a = {}, _a['Start', 'Ende'] = , _a);
-        onChange = { this: .onChange }
-            /  >
-        ;
-        ;
-        var _a;
+        return (React.createElement(RangePicker, __assign({}, this.props, { value: this.getValue(), placeholder: ['Start', 'Ende'], onChange: this.onChange })));
     };
     return DatePickerInt;
 }(Component));

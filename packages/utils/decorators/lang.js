@@ -25,7 +25,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Component, Children } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 var LangProvider = (function (_super) {
     __extends(LangProvider, _super);
@@ -51,19 +51,16 @@ export var withLangProvider = function (langOption) {
     return function (WrappedComponent) {
         var withLangProvider = function (_a) {
             var lang = _a.lang, props = __rest(_a, ["lang"]);
-            return lang = {};
-        }, _a = void 0, _b = __rest(_a, ["langOption"]),  = _b === void 0 ? ({} || lang) : _b;
+            return (React.createElement(LangProvider, { lang: __assign({}, langOption, ({} || lang)) },
+                React.createElement(WrappedComponent, __assign({}, props))));
+        };
+        return withLangProvider;
     };
 };
- >
-    __assign({}, props) /  >
-    /LangProvider>);;
-return withLangProvider;
-;
 export default function (WrappedComponent) {
     var withLang = function (props, context) {
-        return lang;
-    }, _a = __assign({}, props) /  > , context = _a.context, lang = _a.lang;
+        return React.createElement(WrappedComponent, __assign({ lang: context.lang }, props));
+    };
     withLang.contextTypes = {
         lang: PropTypes.object,
     };

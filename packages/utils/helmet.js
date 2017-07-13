@@ -1,3 +1,5 @@
+import React from 'react';
+import { Helmet } from 'olymp-utils';
 var getURL = function () {
     if (process.env.URL) {
         return process.env.URL;
@@ -78,11 +80,6 @@ export default function (_a, pth) {
             content: url + pathname,
         });
     }
-    return title;
-    {
-        name;
-    }
-    meta = { meta: meta };
-    link = { link: link } /  > ;
+    return React.createElement(Helmet, { title: name, meta: meta, link: link });
 };
 //# sourceMappingURL=helmet.js.map

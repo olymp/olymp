@@ -8,7 +8,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Component } from 'react';
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 export default function (WrappedComponent) { return _a = (function (_super) {
         __extends(WithBlockTypes, _super);
@@ -16,12 +24,7 @@ export default function (WrappedComponent) { return _a = (function (_super) {
             return _super !== null && _super.apply(this, arguments) || this;
         }
         WithBlockTypes.prototype.render = function () {
-            return blockTypes = { this: .context.blockTypes };
-            {
-                this.props;
-            }
-            />;
-            ;
+            return (React.createElement(WrappedComponent, __assign({ blockTypes: this.context.blockTypes }, this.props)));
         };
         return WithBlockTypes;
     }(Component)),

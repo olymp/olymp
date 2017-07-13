@@ -16,16 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
-    return t;
-};
-import { Component, Children } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 var AmpProvider = (function (_super) {
     __extends(AmpProvider, _super);
@@ -48,8 +39,8 @@ var AmpProvider = (function (_super) {
 export { AmpProvider };
 export default function (WrappedComponent) {
     var withAmp = function (props, context) {
-        return (__assign({}, context));
-    }, props = __rest(/>;, []);
+        return React.createElement(WrappedComponent, __assign({}, context, props));
+    };
     withAmp.contextTypes = {
         amp: PropTypes.bool,
     };

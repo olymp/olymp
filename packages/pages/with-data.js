@@ -31,7 +31,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Component, createElement } from 'react';
+import React, { Component, createElement } from 'react';
 import { gql, graphql, SimpleRoute, unflatten } from 'olymp-utils';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
@@ -81,7 +81,7 @@ export var withNavigation = function (Wrapped) {
                     }, Wrapped);
                 }
                 var Comp = NavCache[key];
-                return Comp ? __assign({}, this.props) /  >  : __assign({}, this.props) /  > ;
+                return Comp ? React.createElement(Comp, __assign({}, this.props)) : React.createElement(Wrapped, __assign({}, this.props));
             };
             WithNavPrepareInner = __decorate([
                 queryPages
@@ -93,10 +93,7 @@ export var withNavigation = function (Wrapped) {
     var WithNavInner = (function (_super) {
         __extends(WithNavInner, _super);
         function WithNavInner() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.flatNavigation = {};
-            _this.loading = flatNavigation;
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         WithNavInner.prototype.render = function () {
             var _this = this;
@@ -144,21 +141,15 @@ export var withNavigation = function (Wrapped) {
                     return pathname;
                 },
             });
-            return __assign({}, this.props);
-            loading = { loading: loading };
-            navigation = {};
-            loading ? navigation : [];
+            return (React.createElement(Wrapped, __assign({}, this.props, { loading: loading, navigation: !loading ? navigation : [], flatNavigation: !loading ? flatNavigation : [] })));
         };
         WithNavInner = __decorate([
             withNavigationPrepare
         ], WithNavInner);
         return WithNavInner;
     }(Component));
-    />;
+    return WithNavInner;
 };
-;
-return WithNavInner;
-;
 var cache = {};
 var lastType;
 export var DataRoute = function (_a) {
@@ -191,8 +182,8 @@ export var withData = function (Wrapped, _a) {
         name: 'nav_data',
     })(function (_a) {
         var nav_data = _a.nav_data, rest = __rest(_a, ["nav_data"]);
-        return (__assign({}, rest));
-    }, binding = { nav_data: .item } /  > );
+        return React.createElement(Wrapped, __assign({}, rest, { binding: nav_data.item }));
+    });
     var _b;
 };
 //# sourceMappingURL=with-data.js.map

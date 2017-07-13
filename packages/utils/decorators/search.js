@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import throttleInput from '../throttle-input';
 export default function (name) { return function (WrappedComponent) {
     return (function (_super) {
@@ -46,13 +46,7 @@ export default function (name) { return function (WrappedComponent) {
         }
         WithSearchComponent.prototype.render = function () {
             var location = this.props.location;
-            return __assign({}, this.props);
-            performSearch = { this: .search };
-            searchText = { this: .state[name] };
-            searchTerm = { location: .query && location.query[name] }
-                /  >
-            ;
-            ;
+            return (React.createElement(WrappedComponent, __assign({}, this.props, { performSearch: this.search, searchText: this.state[name], searchTerm: location.query && location.query[name] })));
         };
         return WithSearchComponent;
     }(Component));

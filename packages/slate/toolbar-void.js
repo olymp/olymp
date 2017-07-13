@@ -6,7 +6,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Button } from './toolbar';
+import React from 'react';
+import Toolbar, { Button } from './toolbar';
+import { Menu } from 'antd';
 import { sortBy } from 'lodash';
 import addBlock from './utils/add-block';
 export default function (props) {
@@ -24,41 +26,22 @@ export default function (props) {
             e.preventDefault();
             onChange(addBlock(state, action, { defaultNode: defaultNode }));
         };
-        var item = key = { action: .type } >
-            onMouseDown, onMouseDown = ( >
-            { action: .label || action.type }
-            < /Button>
-            < /Menu.Item>).onMouseDown;
-    });
-    if (action.category) {
-        if (!categories[action.category]) {
-            categories[action.category] = [];
+        var item = (React.createElement(Menu.Item, { key: action.type },
+            React.createElement(Button, { onMouseDown: onMouseDown }, action.label || action.type)));
+        if (action.category) {
+            if (!categories[action.category]) {
+                categories[action.category] = [];
+            }
+            categories[action.category].push(item);
         }
-        categories[action.category].push(item);
-    }
-    else {
-        menuItems.push(item);
-    }
+        else {
+            menuItems.push(item);
+        }
+    });
+    return (React.createElement(Toolbar, { isOpened: !!display, show: show },
+        Object.keys(categories).map(function (key) {
+            return (React.createElement(Menu.SubMenu, { title: React.createElement(Button, null, key), key: key }, categories[key]));
+        }),
+        menuItems));
 };
-;
-return isOpened = {};
-display;
-show = { show: show } >
-    { Object: .keys(categories).map(function (key) {
-            return title = {}
-                < Button >
-                { key: key }
-                < /Button>;
-        })
-    };
-key = { key: key }
-    >
-        { categories: [key] }
-    < /Menu.SubMenu>);
-{
-    menuItems;
-}
-/Toolbar>;
-;
-;
 //# sourceMappingURL=toolbar-void.js.map

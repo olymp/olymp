@@ -16,11 +16,12 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component, Children, cloneElement } from 'react';
+import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { cn } from 'olymp-utils';
 import { GatewayRegistry } from 'react-gateway';
+import { TransitionGroup } from 'react-transition-group';
 var delay = function (t) { return new Promise(function (yay) { return setTimeout(yay, t); }); };
 var state = function (t, args) { return new Promise(function (yay) { return t.setState(args, yay); }); };
 var FirstChild = function (props) { return Children.toArray(props.children)[0] || null; };
@@ -85,13 +86,7 @@ var withTransition = function (Transition, _a) {
             var speed = this.props.speed;
             var _a = this.state, animation = _a.animation, active = _a.active, delay = _a.delay;
             var type = "" + animation + (active ? '-active' : '');
-            return __assign({}, this.props);
-            type = { type: type };
-            phase = { animation: animation };
-            state = { active: active };
-            delay = { this: .props.delay === false ? 0 : (delay || speed) - speed }
-                /  >
-            ;
+            return (React.createElement(Transition, __assign({}, this.props, { type: type, phase: animation, state: active, delay: this.props.delay === false ? 0 : (delay || speed) - speed })));
         };
         TransitionManager.contextTypes = {
             gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
@@ -104,19 +99,12 @@ var withTransition = function (Transition, _a) {
         };
         return TransitionManager;
     }(Component));
+    return function (props) {
+        var isOpen = props.isOpen;
+        var opened = isOpen === undefined ? true : !!isOpen;
+        return (React.createElement(TransitionGroup, { component: FirstChild }, opened ? React.createElement(TransitionManager, __assign({}, props)) : null));
+    };
 };
-;
-return function (props) {
-    var isOpen = props.isOpen;
-    var opened = isOpen === undefined ? true : !!isOpen;
-    return component = { FirstChild: FirstChild } >
-        __assign({ opened: function () { } }, props) /  > ;
-    null;
-};
-/TransitionGroup>;
-;
-;
-;
 export var createTransition = function (fn, options) {
     var Inner = withTransition(createComponent(fn, function (_a) {
         var className = _a.className, children = _a.children;
@@ -132,7 +120,7 @@ export var createTransition = function (fn, options) {
             var opened = isOpen === undefined ? true : !!isOpen;
             return opened ? Children.only(props.children) : null;
         }
-        return __assign({}, props) /  > ;
+        return React.createElement(Inner, __assign({}, props));
     };
     component.contextTypes = { theme: PropTypes.object };
     return component;
@@ -214,12 +202,10 @@ export var Transition = function (props, _a) {
         theme.transition = 'fade';
     }
     if (theme.transition === 'fade') {
-        return __assign({}, props);
-        speed = { theme: .transitionSpeed || 250 } /  > ;
+        return React.createElement(TransitionFade, __assign({}, props, { speed: theme.transitionSpeed || 250 }));
     }
     if (theme.transition === 'slide') {
-        return __assign({}, props);
-        speed = { theme: .transitionSpeed || 500 } /  > ;
+        return React.createElement(TransitionSlide, __assign({}, props, { speed: theme.transitionSpeed || 500 }));
     }
     var isOpen = props.isOpen;
     var opened = isOpen === undefined ? true : !!isOpen;

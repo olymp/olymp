@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { number, func } from 'prop-types';
 var CountdownTimer = (function (_super) {
     __extends(CountdownTimer, _super);
@@ -87,10 +87,7 @@ var CountdownTimer = (function (_super) {
     };
     CountdownTimer.prototype.render = function () {
         var timeRemaining = this.state.timeRemaining;
-        return className = "timer" >
-            { this: .getFormattedTime(timeRemaining) }
-            < /div>;
-        ;
+        return (React.createElement("div", { className: "timer" }, this.getFormattedTime(timeRemaining)));
     };
     CountdownTimer.propTypes = {
         initialTimeRemaining: number.isRequired,

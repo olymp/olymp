@@ -6,6 +6,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+import React from 'react';
+import Portal from 'react-portal';
+import { Menu, Tooltip, Icon } from 'antd';
 import { createComponent } from 'react-fela';
 export var Button = createComponent(function (_a) {
     var theme = _a.theme, active = _a.active;
@@ -24,19 +27,16 @@ export var Button = createComponent(function (_a) {
     });
 }, function (_a) {
     var onMouseDown = _a.onMouseDown, tooltip = _a.tooltip, children = _a.children, className = _a.className;
-    return onMouseDown = { onMouseDown: onMouseDown };
-}, className = { className: className } >
-    placement, "bottom", title = { tooltip:  || '' } >
-    { children: children }
-    < /Tooltip>
-    < /div>), p => Object.keys(p)););
+    return (React.createElement("div", { onMouseDown: onMouseDown, className: className },
+        React.createElement(Tooltip, { placement: "bottom", title: tooltip || '' }, children)));
+}, function (p) { return Object.keys(p); });
 var Close = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
         position: 'absolute!important',
         right: 0,
     });
-}, function (p) { return (__assign({}, p) /  > ); }, function (p) { return Object.keys(p); });
+}, function (p) { return React.createElement(Menu.Item, __assign({}, p)); }, function (p) { return Object.keys(p); });
 export default createComponent(function (_a) {
     var theme = _a.theme;
     return ({
@@ -55,19 +55,12 @@ export default createComponent(function (_a) {
 }, function (props) {
     var isOpened = props.isOpened, className = props.className, children = props.children, show = props.show;
     if (!isOpened) {
-        return />;;
+        return React.createElement("div", null);
     }
-    return isOpened = {};
-    isOpened;
-},  >
-    style, {}, show ? { display: 'none' } : null, selectedKeys = (_a = {}, _a[] = , _a), className = { className: className }, mode = "horizontal", theme = "dark" >
-    { children: children }
-    < Close >
-    type, "close" /  >
-    /Close>
-    < /Menu>
-    < /Portal>);
-(function (p) { return Object.keys(p); });
-;
-var _a;
+    return (React.createElement(Portal, { isOpened: !!isOpened },
+        React.createElement(Menu, { style: !show ? { display: 'none' } : null, selectedKeys: [], className: className, mode: "horizontal", theme: "dark" },
+            children,
+            React.createElement(Close, null,
+                React.createElement(Icon, { type: "close" })))));
+}, function (p) { return Object.keys(p); });
 //# sourceMappingURL=toolbar.js.map

@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 var getSidebarTypes = function (blockTypes) {
     return Object.keys(blockTypes)
@@ -43,13 +43,7 @@ export default function (options) {
                 var newNodes = __assign({}, (nodes || {}), (this.props.nodes || {}), this.props.blockTypes, blockTypes);
                 var newMarks = __assign({}, (marks || {}), (this.props.marks || {}));
                 var newSidebarTypes = (sidebarTypes || []).concat(getSidebarTypes(blockTypes), getSidebarTypes(this.props.blockTypes));
-                return __assign({}, this.props);
-                nodes = { newNodes: newNodes };
-                marks = { newMarks: newMarks };
-                sidebarTypes = { newSidebarTypes: newSidebarTypes }
-                    /  >
-                ;
-                ;
+                return (React.createElement(Editor, __assign({}, this.props, { nodes: newNodes, marks: newMarks, sidebarTypes: newSidebarTypes })));
             };
             return SlateBlocksDecorator;
         }(Component)),

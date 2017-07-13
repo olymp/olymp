@@ -25,7 +25,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 export var withEdits = function (WrappedComponent) { return _a = (function (_super) {
         __extends(WithEdits, _super);
@@ -33,14 +33,7 @@ export var withEdits = function (WrappedComponent) { return _a = (function (_sup
             return _super !== null && _super.apply(this, arguments) || this;
         }
         WithEdits.prototype.render = function () {
-            return edits;
-            {
-                this.context.edits;
-            }
-            {
-                this.props;
-            }
-            />;;
+            return React.createElement(WrappedComponent, __assign({ edits: this.context.edits }, this.props));
         };
         return WithEdits;
     }(Component)),
@@ -62,7 +55,7 @@ export var useEdits = function (edits) {
             };
             UseEdits.prototype.render = function () {
                 var _a = this.props, edits = _a.edits, rest = __rest(_a, ["edits"]);
-                return __assign({}, rest) /  > ;
+                return React.createElement(WrappedComponent, __assign({}, rest));
             };
             return UseEdits;
         }(Component)),

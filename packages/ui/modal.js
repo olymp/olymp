@@ -15,17 +15,21 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import { Children } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
+import { Button as AntButton, Modal as AntModal } from 'antd';
+import { Gateway } from 'react-gateway';
+import cn from 'classnames';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
+import { Transition } from './transitions';
 ReactModal2.getApplicationElement = function () { return document.getElementById('app'); };
 var ReactModal = function (_a) {
     var className = _a.className, props = __rest(_a, ["className"]);
-    return backdropClassName;
-}, className = (__assign({}, props) /  > ).className;
+    return React.createElement(ReactModal2, __assign({ backdropClassName: className }, props));
+};
 export var Modal = function (_a, _b) {
     var theme = _b.theme;
     var isOpen = _a.isOpen, showLogo = _a.showLogo, leftButtons = _a.leftButtons, rightButtons = _a.rightButtons, className = _a.className, subtitle = _a.subtitle, onClose = _a.onClose, onCancel = _a.onCancel, okText = _a.okText, cancelText = _a.cancelText, onOk = _a.onOk, title = _a.title, loading = _a.loading, props = __rest(_a, ["isOpen", "showLogo", "leftButtons", "rightButtons", "className", "subtitle", "onClose", "onCancel", "okText", "cancelText", "onOk", "title", "loading"]);
@@ -47,100 +51,33 @@ export var Modal = function (_a, _b) {
         }
         return true;
     });
-    return into = "modal" >
-        isOpen;
-    {
-        isOpen;
-    }
-     >
-        onClose;
-    {
-        onCancel || onClose;
-    }
-    closeOnEsc;
-    closeOnBackdropClick;
-    className = { cn: function () { }, 'ant-modal-wrap': , className:  };
-    modalClassName = "ant-modal"
-        >
-            visible;
-    {
-        false;
-    }
-    />;
-    {
-        showLogo &&
-            theme.logo &&
-            className;
-        "logo" >
-            src;
-        {
-            theme.logo;
-        }
-        />
-            < h3 >
-            { theme: .logoTitle }
-            < /h3>
-            < /div>}
-            < Spin;
-        spinning = {};
-        loading;
-    }
-    tip = { typeof: loading === 'string' ? loading : 'Lädt ...' }
-        >
-            className;
-    "ant-modal-content" >
-        className;
-    "ant-modal-header" >
-        { leftButtons:  &&
-                left >
-                    { leftButtons: leftButtons }
-                    < /TitleButtons>} };
-    {
-        rightButtons &&
-            right >
-                { rightButtons: rightButtons }
-                < /TitleButtons>}
-                < div;
-        className = "ant-modal-title" >
-            { title: title }
-            < /div>;
-        {
-            subtitle &&
-                className;
-            "ant-modal-subtitle" >
-                { subtitle: subtitle }
-                < /div>}
-                < /div>;
-            {
-                Children.toArray(children).length > 0 &&
-                    className;
-                "ant-modal-body" >
-                    { children: children }
-                    < /div>};
-                {
-                    footer;
-                }
-                /div>
-                    < /Spin>;
-                {
-                    links &&
-                        { links: links }
-                            < /component.Links>};
-                    {
-                        copyright &&
-                            { copyright: copyright }
-                                < /component.Copyright>}
-                                < /ReactModal>
-                                < /Transition>
-                                < /Gateway>;
-                    }
-                }
-            }
-        }
-    }
+    return (React.createElement(Gateway, { into: "modal" },
+        React.createElement(Transition, { isOpen: isOpen },
+            React.createElement(ReactModal, { onClose: onCancel || onClose, closeOnEsc: true, closeOnBackdropClick: true, className: cn('ant-modal-wrap', className), modalClassName: "ant-modal" },
+                React.createElement(AntModal, { visible: false }),
+                showLogo &&
+                    theme.logo &&
+                    React.createElement("div", { className: "logo" },
+                        React.createElement("img", { src: theme.logo }),
+                        React.createElement("h3", null, theme.logoTitle)),
+                React.createElement(Spin, { spinning: !!loading, tip: typeof loading === 'string' ? loading : 'Lädt ...' },
+                    React.createElement("div", { className: "ant-modal-content" },
+                        React.createElement("div", { className: "ant-modal-header" },
+                            leftButtons &&
+                                React.createElement(TitleButtons, { left: true }, leftButtons),
+                            rightButtons &&
+                                React.createElement(TitleButtons, { right: true }, rightButtons),
+                            React.createElement("div", { className: "ant-modal-title" }, title),
+                            subtitle &&
+                                React.createElement("div", { className: "ant-modal-subtitle" }, subtitle)),
+                        Children.toArray(children).length > 0 &&
+                            React.createElement("div", { className: "ant-modal-body" }, children),
+                        footer)),
+                links &&
+                    React.createElement(component.Links, null, links),
+                copyright &&
+                    React.createElement(component.Copyright, null, copyright)))));
 };
-;
-;
 Modal.contextTypes = { theme: PropTypes.object };
 var component = createComponent(function (_a) {
     var theme = _a.theme, padding = _a.padding, width = _a.width, bottomTransparency = _a.bottomTransparency, topTransparency = _a.topTransparency;
@@ -238,11 +175,9 @@ component.Copyright = createComponent(function (_a) {
 }, 'div');
 component.Footer = function (_a) {
     var children = _a.children, className = _a.className;
-    return className = { cn: function () { }, 'ant-modal-footer': , className:  } >
-        { children: children }
-        < /div>);;
+    return (React.createElement("div", { className: cn('ant-modal-footer', className) }, children));
 };
-component.Button = function (props) { return (__assign({}, props) /  > ); };
+component.Button = function (props) { return React.createElement(AntButton, __assign({}, props)); };
 component.Links = createComponent(function (_a) {
     var theme = _a.theme;
     return ({

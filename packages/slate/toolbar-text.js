@@ -16,9 +16,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-var _this = this;
-import { Component } from 'react';
-import { Button } from './toolbar';
+import React, { Component } from 'react';
+import Toolbar, { Button } from './toolbar';
+import { Icon, Menu } from 'antd';
 import { hasMark, hasBlock } from './utils/has';
 import addBlock from './utils/add-block';
 var ToolbarText = (function (_super) {
@@ -53,65 +53,35 @@ var ToolbarText = (function (_super) {
             var type = props.type;
             var isActive = isActiveFn(state, type);
             var onMouseDown = function (e) { return onMouseDownFn(e, props); };
-            var icon = label || props.label || type, _a = />;, props = _a.props, icon = _a.icon;
+            var icon = label || props.label || React.createElement(Icon, { type: props.icon });
             if (type && Array.isArray(type)) {
-                return key = { type: .join('-') };
-                title = {}
-                    < Button >
-                    { icon: icon }
-                    < /Button>;
+                return (React.createElement(Menu.SubMenu, { key: type.join('-'), title: React.createElement(Button, null, icon) }, type.map(function (subType, index) {
+                    var subLabel = props.description && props.description[index]
+                        ? props.description[index]
+                        : label || subType;
+                    return _this.renderOptionButton(__assign({}, props, { type: subType }), isActiveFn, Array.isArray(onMouseDownFn)
+                        ? onMouseDownFn[index]
+                        : onMouseDownFn, subLabel);
+                })));
             }
-                >
-                    { type: .map(function (subType, index) {
-                            var subLabel = props.description && props.description[index]
-                                ? props.description[index]
-                                : label || subType;
-                            return _this.renderOptionButton(__assign({}, props, { type: subType }), isActiveFn, Array.isArray(onMouseDownFn)
-                                ? onMouseDownFn[index]
-                                : onMouseDownFn, subLabel);
-                        }) }
-                < /Menu.SubMenu>;
-            ;
+            return (React.createElement(Menu.Item, { key: type, className: isActive && 'ant-menu-item-selected' },
+                React.createElement(Button, { onMouseDown: onMouseDown }, icon)));
+        };
+        _this.onOpen = function (_a) {
+            var menu = _a.firstChild;
+            _this.setState({ menu: menu });
         };
         return _this;
     }
+    ToolbarText.prototype.render = function () {
+        var _a = this.props, state = _a.state, toolbarMarks = _a.toolbarMarks, toolbarTypes = _a.toolbarTypes, toolbarActions = _a.toolbarActions, show = _a.show;
+        var display = !state.isBlurred && !state.isCollapsed;
+        return (React.createElement(Toolbar, { isOpened: !!display, show: show },
+            toolbarMarks.map(this.renderMarkButton),
+            toolbarTypes.map(this.renderBlockButton),
+            toolbarActions.map(this.renderActionButton)));
+    };
     return ToolbarText;
 }(Component));
 export default ToolbarText;
-key;
-{
-    type;
-}
-className = { isActive:  && 'ant-menu-item-selected' } >
-    onMouseDown;
-{
-    onMouseDown;
-}
- >
-    { icon: icon }
-    < /Button>
-    < /Menu.Item>;
-;
-;
-onOpen = function (_a) {
-    var menu = _a.firstChild;
-    _this.setState({ menu: menu });
-};
-render();
-{
-    var _a = this.props, state = _a.state, toolbarMarks = _a.toolbarMarks, toolbarTypes = _a.toolbarTypes, toolbarActions = _a.toolbarActions, show = _a.show;
-    var display = !state.isBlurred && !state.isCollapsed;
-    return isOpened = {};
-    display;
-}
-show = { show: show } >
-    { toolbarMarks: .map(this.renderMarkButton) };
-{
-    toolbarTypes.map(this.renderBlockButton);
-}
-{
-    toolbarActions.map(this.renderActionButton);
-}
-/Toolbar>;
-;
 //# sourceMappingURL=toolbar-text.js.map

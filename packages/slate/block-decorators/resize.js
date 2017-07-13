@@ -16,23 +16,29 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-var _this = this;
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { throttleInput } from 'olymp-utils';
 import { findDOMNode } from 'react-dom';
+import { DraggableCore } from 'react-draggable';
+import cn from 'classnames';
 var Cover = function (_a) {
     var children = _a.children, style = _a.style;
-    return style = {};
-}, _a = void 0, _b = _a.backgroundColor,  = _b === void 0 ? 'black' : _b, _c = _a.position,  = _c === void 0 ? 'absolute' : _c, _d = _a.top,  = _d === void 0 ? 0 : _d, _e = _a.left,  = _e === void 0 ? 0 : _e, _f = _a.width,  = _f === void 0 ? '100%' : _f, _g = _a.height,  = _g === void 0 ? '100%' : _g, _h = _a.zIndex,  = _h === void 0 ? 3 : _h;
-    >
-        { children: children }
-    < /div>);;
+    return (React.createElement("div", { style: {
+            backgroundColor: 'black',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 3,
+        } }, children));
+};
 export default function (options) {
     if (options === void 0) { options = {}; }
     return function (Block) {
         var coverOnResize = options.coverOnResize, enable = options.enable, resizeX = options.resizeX, resizeY = options.resizeY, initialWidth = options.width, initialHeight = options.height;
-        return (_a = (function (_super) {
+        return _a = (function (_super) {
                 __extends(ResizeableDecorator, _super);
                 function ResizeableDecorator(props) {
                     var _this = _super.call(this, props) || this;
@@ -90,24 +96,24 @@ export default function (options) {
                     this.element = findDOMNode(this.block);
                 };
                 ResizeableDecorator.prototype.render = function () {
+                    var _this = this;
                     if (enable === false) {
-                        return __assign({}, this.props) /  > ;
+                        return React.createElement(Block, __assign({}, this.props));
                     }
                     var _a = this.props, editor = _a.editor, alignment = _a.alignment, style = _a.style, className = _a.className;
                     var _b = this.state, resize = _b.resize, height = _b.height, width = _b.width;
                     var children = editor.props.readOnly
                         ? this.props.children
                         : this.props.children.concat([
-                            resize && coverOnResize ? key :  = "resizableCover" /  > , null,
-                            key, "resizableHandle",
-                            onStop = { this: .onResizeStop },
-                            onStart = { this: .onResizeStart },
-                            onDrag = { this: .onResize }
-                                >
-                                    className, {
-                                'react-resizable-handle': ,
-                                alignment:  === 'right' ? 'handle-left' : 'handle-right' }
+                            resize && coverOnResize ? React.createElement(Cover, { key: "resizableCover" }) : null,
+                            React.createElement(DraggableCore, { key: "resizableHandle", onStop: this.onResizeStop, onStart: this.onResizeStart, onDrag: this.onResize },
+                                React.createElement("span", { className: cn('react-resizable-handle', alignment === 'right' ? 'handle-left' : 'handle-right') })),
                         ]);
+                    var blockStyle = __assign({}, style);
+                    if (height) {
+                        blockStyle.height = height + "px";
+                    }
+                    return (React.createElement(Block, __assign({}, this.props, { style: blockStyle, className: cn(width && "p-0 col-sm-" + width, className), ref: function (e) { return (_this.block = e); } }), children));
                 };
                 return ResizeableDecorator;
             }(Component)),
@@ -121,24 +127,8 @@ export default function (options) {
             _a.defaultProps = {
                 style: {},
             },
-            _a) /  >
-            /DraggableCore>,;
-        ;
-        var blockStyle = __assign({}, style);
-        if (height) {
-            blockStyle.height = height + "px";
-        }
-        return __assign({}, _this.props);
-        style = { blockStyle: blockStyle };
-        className = {};
-        ref = { e: function () { return (_this.block = e); } }
-            >
-                { children: children }
-            < /Block>;
-        ;
+            _a;
         var _a;
     };
 };
-;
-;
 //# sourceMappingURL=resize.js.map

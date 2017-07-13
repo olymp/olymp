@@ -16,7 +16,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-import { Component, Children } from 'react';
+import React, { Component, Children } from 'react';
 import { func } from 'prop-types';
 import { get } from 'lodash';
 var LocaleProvider = (function (_super) {
@@ -56,8 +56,8 @@ var LocaleProvider = (function (_super) {
 export { LocaleProvider };
 export default function (WrappedComponent) {
     var withLocale = function (props, context) {
-        return locale;
-    }, _a = __assign({}, props) /  > , context = _a.context, locale = _a.locale;
+        return React.createElement(WrappedComponent, __assign({ locale: context.locale }, props));
+    };
     withLocale.contextTypes = {
         locale: func,
     };
