@@ -22,7 +22,7 @@ process.noDeprecation = true;
 
 const allPackages = fs
   .readdirSync(path.resolve(olympRoot, 'packages'));
-const packagesToTranspile = allPackages.filter(x => x !== 'graphql' && x !== 'collection' && x !== 'app' && x !== 'utils');
+const packagesToTranspile = allPackages.filter(x => x !== 'graphql' && x !== 'collection' && x !== 'app' && x !== 'utils' && x !== 'ui');
 
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isDev = mode !== 'production';
