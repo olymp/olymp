@@ -123,7 +123,7 @@ function load() {
   // Get the DOM Element that will host our React application.
   container = document.getElementById('app');
   mountNode = document.getElementById('css-markup');
-  ua = UAParser(window.navigator.userAgent);
+  ua = new UAParser(window.navigator.userAgent);
   renderer = createFela(ua);
   client = new ApolloClient({
     networkInterface,
