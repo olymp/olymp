@@ -15,7 +15,16 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true
-  }
+  },
+  "include": [
+    "bin/**/*",
+    "electron/**/*",
+    "noed/**/*",
+    "templates/**/*",
+    "web/**/*",
+    "noop.ts",
+    "webpack-config.ts"
+  ]
   /*"filesxx": [
     "node_modules/typescript/lib/lib.es2015.d.ts",
     "node_modules/typescript/lib/lib.dom.d.ts",

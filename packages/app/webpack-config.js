@@ -12,6 +12,7 @@ var OfflinePlugin = require('offline-plugin');
 var VisualizerPlugin = require('webpack-visualizer-plugin');
 var HappyPack = require('happypack');
 var GenerateJsonPlugin = require('generate-json-webpack-plugin');
+var CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 HappyPack.ThreadPool({ size: 5 });
 var appRoot = process.cwd();
 var olympRoot = path.resolve(__dirname, '..', '..');
@@ -30,8 +31,9 @@ module.exports = function (_a) {
     var folder = isDev ? 'dev' : 'dist';
     var config = {
         resolve: {
-            extensions: ['.js', '.json'],
+            extensions: ['.js', '.json', '.ts', '.tsx'],
             modules: [
+                path.resolve(__dirname, 'node_modules'),
                 path.resolve(olympRoot, 'node_modules'),
                 path.resolve(appRoot, 'node_modules'),
                 path.resolve(appRoot, 'app'),
@@ -54,6 +56,7 @@ module.exports = function (_a) {
         },
         resolveLoader: {
             modules: [
+                path.resolve(__dirname, 'node_modules'),
                 path.resolve(olympRoot, 'node_modules'),
                 path.resolve(appRoot, 'node_modules'),
             ],
@@ -124,31 +127,7 @@ module.exports = function (_a) {
             main: [],
         },
     };
-    var babel = {
-        test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
-        include: [
-            path.resolve(appRoot, 'app'),
-            path.resolve(appRoot, 'server'),
-        ],
-        options: {
-            cacheDirectory: false,
-            presets: ['react'],
-            plugins: [
-                'syntax-dynamic-import',
-                'transform-object-rest-spread',
-                'transform-decorators-legacy',
-                'transform-class-properties',
-                ['import', { libraryName: 'antd', style: true }],
-            ],
-        },
-    };
-    if (isDev && isWeb) {
-        config.devtool = 'inline-source-map';
-    }
-    else {
-        config.devtool = 'source-map';
-    }
+    config.devtool = 'source-map';
     if (isProd && isWeb && !isElectron) {
         config.output.filename = '[name].[contenthash].js';
     }
@@ -187,41 +166,10 @@ module.exports = function (_a) {
         config.output.publicPath = '/';
     }
     if (isNode) {
-        babel.options.presets.push([
-            'env',
-            { modules: false, loose: true, targets: { node: 'current' } },
-        ]);
     }
     else if (isDev) {
-        babel.options.presets.push(['latest', { modules: false, loose: true }]);
-        babel.options.plugins.push('react-hot-loader/babel');
     }
     else {
-        babel.options.presets.push(['latest', { modules: false, loose: true }]);
-        babel.options.plugins.push([
-            'transform-imports',
-            {
-                antd: {
-                    transform: 'antd/lib/${member}',
-                    kebabCase: true,
-                    preventFullImport: true,
-                },
-                lodash: {
-                    transform: 'lodash/${member}',
-                    preventFullImport: true,
-                },
-                'date-fns': {
-                    transform: 'date-fns/${member}',
-                    preventFullImport: true,
-                    snakeCase: true,
-                },
-                'olymp-icons': {
-                    transform: 'olymp-icons/fa5/lib/${member}',
-                    kebabCase: true,
-                    preventFullImport: true,
-                },
-            },
-        ]);
     }
     if (isWeb && isProd) {
         config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
@@ -321,6 +269,7 @@ module.exports = function (_a) {
                 whitelist: [
                     function (v) { return v.indexOf('webpack/hot/poll') === 0; },
                     'source-map-support/register',
+                    function (v) { return v.indexOf('olymp-') === 0; },
                     /\.(eot|woff|woff2|ttf|otf)$/,
                     /\.(svg|png|jpg|jpeg|gif|ico)$/,
                     /\.(mp4|mp3|ogg|swf|webp)$/,
@@ -360,6 +309,11 @@ module.exports = function (_a) {
     }
     if (isWeb && isProd) {
         config.module.rules.push({
+            test: /\.tsx?$/,
+            exclude: /node_modules/,
+            loaders: ['awesome-typescript-loader'],
+        });
+        config.module.rules.push({
             test: /\.less$/,
             loader: ExtractTextPlugin.extract({
                 use: [
@@ -377,7 +331,6 @@ module.exports = function (_a) {
                 fallback: 'style-loader',
             }),
         });
-        config.module.rules.push(babel);
         config.module.rules.push({
             test: /\.css$/,
             loader: ExtractTextPlugin.extract({
@@ -390,9 +343,13 @@ module.exports = function (_a) {
                 fallback: 'style-loader',
             }),
         });
-        config.module.rules.push(babel);
     }
     else if (isWeb && isDev) {
+        config.module.rules.push({
+            test: /\.tsx?$/,
+            exclude: /node_modules/,
+            loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+        });
         config.plugins.push(new HappyPack({
             id: 'less',
             threads: 4,
@@ -433,26 +390,6 @@ module.exports = function (_a) {
             test: /\.css$/,
             loaders: ['happypack/loader?id=css'],
         });
-    }
-    if (isDev) {
-        config.plugins.push(new HappyPack({
-            id: 'babel',
-            threads: 4,
-            loaders: [
-                {
-                    path: babel.loader,
-                    query: JSON.stringify(babel.options),
-                },
-            ],
-        }));
-        config.module.rules.push({
-            test: babel.test,
-            include: babel.include,
-            loaders: ['happypack/loader?id=babel'],
-        });
-    }
-    else {
-        config.module.rules.push(babel);
     }
     return config;
 };

@@ -13,6 +13,7 @@ const VisualizerPlugin = require('webpack-visualizer-plugin');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 const HappyPack = require('happypack');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const { CheckerPlugin } = require('awesome-typescript-loader')
 
 HappyPack.ThreadPool({ size: 5 });
 
@@ -34,8 +35,9 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const folder = isDev ? 'dev' : 'dist';
   const config = {
     resolve: {
-      extensions: ['.js', '.json'],
+      extensions: ['.js', '.json', '.ts', '.tsx'],
       modules: [
+        path.resolve(__dirname, 'node_modules'),
         path.resolve(olympRoot, 'node_modules'),
         path.resolve(appRoot, 'node_modules'),
         path.resolve(appRoot, 'app'),
@@ -63,6 +65,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     },
     resolveLoader: {
       modules: [
+        path.resolve(__dirname, 'node_modules'),
         path.resolve(olympRoot, 'node_modules'),
         path.resolve(appRoot, 'node_modules'),
       ],
@@ -107,6 +110,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
+      // new CheckerPlugin(),
     ],
     module: {
       rules: [
@@ -144,35 +148,8 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     },
   };
 
-  const babel = {
-    test: /\.(js|jsx)$/,
-    loader: 'babel-loader',
-    include: [
-      // path.resolve(appRoot, 'server'),
-      // path.resolve(olympRoot, 'graphql'),
-      path.resolve(appRoot, 'app'),
-      path.resolve(appRoot, 'server'),
-    ],
-    options: {
-      cacheDirectory: false,
-      presets: ['react'],
-      plugins: [
-        'syntax-dynamic-import',
-        'transform-object-rest-spread',
-        // 'transform-es2015-destructuring',
-        'transform-decorators-legacy',
-        'transform-class-properties',
-        ['import', { libraryName: 'antd', style: true }],
-      ],
-    },
-  };
-
   // inline-source-map for web-dev
-  if (isDev && isWeb) {
-    config.devtool = 'inline-source-map';
-  } else {
-    config.devtool = 'source-map';
-  }
+  config.devtool = 'source-map';
 
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {
@@ -214,16 +191,9 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
 
   // babel-preset-env on node
   if (isNode) {
-    babel.options.presets.push([
-      'env',
-      { modules: false, loose: true, targets: { node: 'current' } },
-    ]);
   } else if (isDev) {
-    babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    babel.options.plugins.push('react-hot-loader/babel');
   } else {
-    babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    babel.options.plugins.push([
+    /*babel.options.plugins.push([
       'transform-imports',
       {
         antd: {
@@ -240,14 +210,8 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
           preventFullImport: true,
           snakeCase: true,
         },
-        'olymp-icons': {
-          transform: 'olymp-icons/fa5/lib/${member}',
-          kebabCase: true,
-          preventFullImport: true,
-        },
       },
-    ]);
-    // babel.options.presets.push(['react-optimize']);
+    ]);*/
   }
 
   // webpack plugins
@@ -406,7 +370,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         whitelist: [
           v => v.indexOf('webpack/hot/poll') === 0,
           'source-map-support/register',
-          // v => v.indexOf('olymp-') === 0 && packagesToTranspile.indexOf(v.split('/')[0].split('olymp-')[1]) !== -1,
+          v => v.indexOf('olymp-') === 0,
           // v => v === 'antd' || v.indexOf('antd/') === 0,
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
@@ -451,6 +415,11 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   }
   if (isWeb && isProd) {
     config.module.rules.push({
+      test: /\.tsx?$/,
+      exclude: /node_modules/,
+      loaders: ['awesome-typescript-loader'],
+    });
+    config.module.rules.push({
       test: /\.less$/,
       loader: ExtractTextPlugin.extract({
         use: [
@@ -468,7 +437,6 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         fallback: 'style-loader',
       }),
     });
-    config.module.rules.push(babel);
     config.module.rules.push({
       test: /\.css$/,
       loader: ExtractTextPlugin.extract({
@@ -481,8 +449,12 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         fallback: 'style-loader',
       }),
     });
-    config.module.rules.push(babel);
   } else if (isWeb && isDev) {
+    config.module.rules.push({
+      test: /\.tsx?$/,
+      exclude: /node_modules/,
+      loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+    });
     config.plugins.push(
       new HappyPack({
         id: 'less',
@@ -527,50 +499,6 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       test: /\.css$/,
       loaders: ['happypack/loader?id=css'],
     });
-  }
-
-  if (isDev) {
-    config.plugins.push(
-      new HappyPack({
-        id: 'babel',
-        threads: 4,
-        loaders: [
-          {
-            path: babel.loader,
-            query: JSON.stringify(babel.options),
-          },
-        ],
-      })
-    );
-    config.module.rules.push({
-      test: babel.test,
-      include: babel.include,
-      loaders: ['happypack/loader?id=babel'],
-    });
-    /* config.module.rules.push({
-      test: /\.svg$/,
-      loaders: [
-        'happypack/loader?id=babel', {
-        loader: 'react-svg-loader',
-        query: {
-          jsx: true
-        },
-      }]
-    });*/
-  } else {
-    config.module.rules.push(babel);
-    /* config.module.rules.push({
-      test: /\.svg$/,
-      loaders: [{
-        loader: babel.loader,
-        query: babel.options,
-      }, {
-        loader: 'react-svg-loader',
-        query: {
-          jsx: true
-        },
-      }]
-    });*/
   }
 
   return config;
