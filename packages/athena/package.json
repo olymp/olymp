@@ -8,7 +8,20 @@
     "tsc": "../../node_modules/typescript/bin/tsc -w"
   },
   "dependencies": {
+    "antd": "^2.12.0",
+    "lodash": "^4.17.4",
+    "olymp-auth": "^0.1.7",
+    "olymp-cloudinary": "^0.1.8",
     "olymp-collection": "^0.1.8",
-    "olymp-graphql": "^0.1.7"
+    "olymp-fela": "^0.1.7",
+    "olymp-google": "^0.1.7",
+    "olymp-graphql": "^0.1.7",
+    "olymp-pages": "^0.1.7",
+    "olymp-ui": "^0.1.7",
+    "olymp-utils": "^0.1.7",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-gateway": "^2.7.0",
+    "react-gravatar": "^2.6.3"
   }
 }
