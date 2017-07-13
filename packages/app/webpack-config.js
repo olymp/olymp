@@ -321,7 +321,6 @@ module.exports = function (_a) {
                 whitelist: [
                     function (v) { return v.indexOf('webpack/hot/poll') === 0; },
                     'source-map-support/register',
-                    function (v) { return v === 'antd' || v.indexOf('antd/') === 0; },
                     /\.(eot|woff|woff2|ttf|otf)$/,
                     /\.(svg|png|jpg|jpeg|gif|ico)$/,
                     /\.(mp4|mp3|ogg|swf|webp)$/,

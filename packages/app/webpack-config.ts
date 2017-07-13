@@ -407,7 +407,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
           v => v.indexOf('webpack/hot/poll') === 0,
           'source-map-support/register',
           // v => v.indexOf('olymp-') === 0 && packagesToTranspile.indexOf(v.split('/')[0].split('olymp-')[1]) !== -1,
-          v => v === 'antd' || v.indexOf('antd/') === 0,
+          // v => v === 'antd' || v.indexOf('antd/') === 0,
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
           /\.(mp4|mp3|ogg|swf|webp)$/,
