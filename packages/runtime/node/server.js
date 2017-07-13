@@ -20,7 +20,12 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import template from '../templates/default';
 import amp from '../templates/amp';
-import { parseQuery, AmpProvider, routerQueryMiddleware, UAProvider } from 'olymp';
+import {
+  parseQuery,
+  AmpProvider,
+  routerQueryMiddleware,
+  UAProvider,
+} from 'olymp';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
@@ -194,7 +199,7 @@ app.get('*', (req, res) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const renderer = createFela();
+  const renderer = createFela(req.headers['user-agent']);
   const context = {};
 
   const [pathname, search] = decodeURI(req.url).split('?');
@@ -253,8 +258,8 @@ app.get('*', (req, res) => {
         ? []
         : [
           isProd
-            ? `${clientAssets.main.js}`
-            : `${process.env.DEV_URL}/main.js`,
+              ? `${clientAssets.main.js}`
+              : `${process.env.DEV_URL}/main.js`,
         ];
       const styles = req.isAmp
         ? []

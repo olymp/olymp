@@ -66,16 +66,16 @@ if (process.env.NODE_ENV === 'production') {
 
 const networkInterface = createBatchingNetworkInterface({
   uri:
-  process.env.GRAPHQL_URL ||
-  (process.env.URL && `${process.env.URL}/graphql`) ||
-  '/graphql',
+    process.env.GRAPHQL_URL ||
+    (process.env.URL && `${process.env.URL}/graphql`) ||
+    '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
   },
 });
 
-/*if (process.env.GRAPHQL_SUB) {
+/* if (process.env.GRAPHQL_SUB) {
   const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
     reconnect: true
   });
@@ -122,7 +122,7 @@ function load() {
   // Get the DOM Element that will host our React application.
   container = document.getElementById('app');
   mountNode = document.getElementById('css-markup');
-  renderer = createFela();
+  renderer = createFela(window.navigator.userAgent);
   client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,

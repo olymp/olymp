@@ -2,13 +2,15 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import UAParser from 'ua-parser-js';
 
+export const getUA = ua => new UAParser(ua);
+
 export class UAProvider extends Component {
   static childContextTypes = {
     ua: PropTypes.object,
   };
   getChildContext() {
     return {
-      ua: new UAParser(this.props.ua),
+      ua: getUA(this.props.ua),
     };
   }
   render() {

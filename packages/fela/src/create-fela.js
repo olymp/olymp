@@ -8,9 +8,23 @@ import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
 import embedded from 'fela-plugin-embedded';
+import { getUA } from 'olymp';
 import normalize from './normalize';
 
-export default () => {
+export default (ua) => {
+  const browser = getUA(ua).getBrowser();
+  const isBrowser = (type, maxVersion, minVersion) => {
+    if (minVersion) {
+      return (
+        browser.name === type &&
+        parseInt(browser.major, 10) < maxVersion &&
+        parseInt(browser.major, 10) > minVersion
+      );
+    }
+
+    return browser.name === type && parseInt(browser.major, 10) < maxVersion;
+  };
+
   const renderer = createRenderer({
     selectorPrefix: 'o',
     plugins: [
@@ -90,25 +104,48 @@ export default () => {
           center === true
             ? {
               position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              ...(isBrowser('IE', 10)
+                  ? {
+                    right: 0,
+                    bottom: 0,
+                    marginLeft: '-50%',
+                    marginTop: '-50%',
+                  }
+                  : {
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }),
             }
             : {},
         centerX: center =>
           center === true
             ? {
               position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
+              ...(isBrowser('IE', 10)
+                  ? {
+                    right: 0,
+                    marginLeft: '-50%',
+                  }
+                  : {
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                  }),
             }
             : {},
         centerY: center =>
           center === true
             ? {
               position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
+              ...(isBrowser('IE', 10)
+                  ? {
+                    bottom: 0,
+                    marginTop: '-50%',
+                  }
+                  : {
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                  }),
             }
             : {},
       }),
