@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { cloudinaryUrl, cn } from 'olymp-utils';
 import ImageGallery from 'react-image-gallery';
-import './carousel.less';
+import 'react-image-gallery/styles/css/image-gallery-no-icon.css';
+import './carousel.css';
 
 export default class Carousel extends Component {
   renderLeftNav = (onClick, disabled) =>

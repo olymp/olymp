@@ -39,7 +39,7 @@ import { Editor, Html, Plain } from 'slate';
 import { withSlateState, withAutoMarkdown, useBlocks, } from './editor-decorators';
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
-import './style.less';
+import './style.css';
 import TrailingBlock from 'slate-trailing-block';
 import InsertBlockOnEnter from 'slate-insert-block-on-enter';
 import ToolbarBlock from './toolbar-block';

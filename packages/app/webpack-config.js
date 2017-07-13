@@ -10,10 +10,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var OfflinePlugin = require('offline-plugin');
 var VisualizerPlugin = require('webpack-visualizer-plugin');
-var HappyPack = require('happypack');
 var GenerateJsonPlugin = require('generate-json-webpack-plugin');
 var CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-HappyPack.ThreadPool({ size: 5 });
 var appRoot = process.cwd();
 var olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
@@ -299,37 +297,11 @@ module.exports = function (_a) {
     else {
         config.entry.main = [require.resolve(path.resolve(__dirname, target, 'index.js'))];
     }
-    var theme = {
-        'font-size-base': '15px',
-        'primary-color': '#FBA139',
-        'cms-color': '#FFFFFF',
-    };
-    if (fs.existsSync(path.resolve(process.cwd(), 'theme.js'))) {
-        theme = Object.assign({}, theme, require(path.resolve(process.cwd(), 'theme.js'))());
-    }
     if (isWeb && isProd) {
         config.module.rules.push({
             test: /\.tsx?$/,
             exclude: /node_modules/,
             loaders: ['awesome-typescript-loader'],
-        });
-        config.module.rules.push({
-            test: /\.less$/,
-            loader: ExtractTextPlugin.extract({
-                use: [
-                    {
-                        loader: 'css-loader',
-                        options: { modules: false },
-                    },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            modifyVars: theme,
-                        },
-                    },
-                ],
-                fallback: 'style-loader',
-            }),
         });
         config.module.rules.push({
             test: /\.css$/,
@@ -350,45 +322,18 @@ module.exports = function (_a) {
             exclude: /node_modules/,
             loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
         });
-        config.plugins.push(new HappyPack({
-            id: 'less',
-            threads: 4,
-            loaders: [
-                {
-                    path: 'style-loader',
-                    query: JSON.stringify({ insertAt: 'top' }),
-                },
-                {
-                    path: 'css-loader',
-                    query: JSON.stringify({ modules: false, sourceMap: true }),
-                },
-                {
-                    loader: 'less-loader',
-                    query: JSON.stringify({ modifyVars: theme, sourceMap: true }),
-                },
-            ],
-        }));
-        config.module.rules.push({
-            test: /\.less$/,
-            loaders: ['happypack/loader?id=less'],
-        });
-        config.plugins.push(new HappyPack({
-            id: 'css',
-            threads: 4,
-            loaders: [
-                {
-                    path: 'style-loader',
-                    query: JSON.stringify({ insertAt: 'top' }),
-                },
-                {
-                    path: 'css-loader',
-                    query: JSON.stringify({ modules: false, sourceMap: true }),
-                },
-            ],
-        }));
         config.module.rules.push({
             test: /\.css$/,
-            loaders: ['happypack/loader?id=css'],
+            use: [
+                {
+                    loader: 'style-loader',
+                    options: { insertAt: 'top' },
+                },
+                {
+                    loader: 'css-loader',
+                    options: { modules: false, sourceMap: true },
+                },
+            ],
         });
     }
     return config;

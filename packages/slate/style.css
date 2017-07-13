@@ -6,21 +6,18 @@ blockquote {
   color: #aaa;
   font-style: italic;
 }
-
 blockquote[dir="rtl"] {
   border-left: none;
   padding-left: 0;
   padding-right: 10px;
   border-right: 2px solid #ddd;
 }
-
 /* .slate-toolbar-menu {
   padding: 1px 0 17px 18px;
   margin: 0 -20px;
   border-bottom: 2px solid #eee;
   margin-bottom: 20px;
 } */
-
 /* Sidebar */
 /* .slate-sidebar {
   left: 0;
@@ -34,7 +31,6 @@ blockquote[dir="rtl"] {
     color: #222;
   }
 } */
-
 /* Toolbar */
 /* .slate-fix-toolbar {
   color: #444;
@@ -89,7 +85,6 @@ blockquote[dir="rtl"] {
     border-left: 1px solid rgba(0, 0, 0, .1);
   }
 } */
-
 /* Toolbar */
 /* .slate-toolbar {
   position: absolute;
@@ -135,7 +130,6 @@ blockquote[dir="rtl"] {
   margin: 3px 2px;
   outline: 1px solid#bbb;
 } */
-
 /* Resize */
 .react-resizable-handle {
   z-index: 2000;
@@ -143,7 +137,6 @@ blockquote[dir="rtl"] {
   width: 10px;
   height: 10px;
   bottom: 0;
-  // background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/…yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=');
   background-color: black;
   background-position: bottom right;
   padding: 0 3px 3px 0;
@@ -151,20 +144,18 @@ blockquote[dir="rtl"] {
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
-  &.handle-left {
-    left: 0;
-  }
-  &.handle-right {
-    right: 0;
-  }
 }
-
+.react-resizable-handle.handle-left {
+  left: 0;
+}
+.react-resizable-handle.handle-right {
+  right: 0;
+}
 /* Tooltip */
 [data-tooltip] {
   position: relative;
   text-decoration: none;
 }
-
 [data-tooltip]:after {
   content: attr(data-tooltip);
   position: absolute;
@@ -183,82 +174,70 @@ blockquote[dir="rtl"] {
   transition: all 0.4s ease;
   pointer-events: none;
 }
-
 [data-tooltip]:hover:after {
   bottom: 110%;
 }
-
-[data-tooltip]:hover:after, a:hover:before {
+[data-tooltip]:hover:after,
+a:hover:before {
   opacity: 1;
 }
-
 /* MODAL */
 .ant-modal-body .ReactCrop {
   left: 50%;
   transform: translateX(-50%);
 }
-
 /* ITEM-DECORATORS */
 .block-item {
   position: relative;
-
-  .block-item-edit, .block-item-order, .block-item-hide, .block-actions {
-    position: absolute;
-    z-index: 3;
-    display: none;
-  }
-
-  &:hover {
-    // transform: scale(1.01);
-    // opacity: 0.8;
-
-    .block-item-edit, .block-item-order, .block-item-hide, .block-actions {
-      display: inherit;
-    }
-  }
-
-  &.hidden {
-    display: none;
-  }
-
-  .block-item-edit {
-    top: 50%;
-    right: 0;
-    transform: translate(50%, -50%);
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
-  }
-
-  .block-actions {
-    width: 50px;
-    top: 50%;
-    right: 0;
-    transform: translate(50%, -50%);
-    > * {
-      box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
-      margin: 2px;
-    }
-  }
-
-  .block-item-order {
-    top: 50%;
-    right: 0;
-
-    &:first-of-type {
-      transform: translate(50%, -160%);
-    }
-
-    &:last-of-type {
-      transform: translate(50%, 60%);
-    }
-  }
-
-  .block-item-hide {
-    top: 50%;
-    left: 0;
-    transform: translate(-50%, -50%);
-  }
 }
-
+.block-item .block-item-edit,
+.block-item .block-item-order,
+.block-item .block-item-hide,
+.block-item .block-actions {
+  position: absolute;
+  z-index: 3;
+  display: none;
+}
+.block-item:hover .block-item-edit,
+.block-item:hover .block-item-order,
+.block-item:hover .block-item-hide,
+.block-item:hover .block-actions {
+  display: inherit;
+}
+.block-item.hidden {
+  display: none;
+}
+.block-item .block-item-edit {
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+}
+.block-item .block-actions {
+  width: 50px;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.block-item .block-actions > * {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  margin: 2px;
+}
+.block-item .block-item-order {
+  top: 50%;
+  right: 0;
+}
+.block-item .block-item-order:first-of-type {
+  transform: translate(50%, -160%);
+}
+.block-item .block-item-order:last-of-type {
+  transform: translate(50%, 60%);
+}
+.block-item .block-item-hide {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
 .suggestion-portal {
   display: none;
   position: absolute;
@@ -266,7 +245,6 @@ blockquote[dir="rtl"] {
   margin-top: 30px;
   width: 200px;
 }
-
 .suggestion-portal ul {
   list-style-type: none;
   margin-top: 0;
@@ -275,11 +253,9 @@ blockquote[dir="rtl"] {
   margin-left: -8px;
   background-color: #fff;
 }
-
 .suggestion-portal li {
   padding: 5px 10px;
 }
-
 .suggestion-portal li.selected {
   background-color: #eee;
 }

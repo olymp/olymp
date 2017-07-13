@@ -28,7 +28,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 import React, { Component } from 'react';
 import { cloudinaryUrl, cn } from 'olymp-utils';
 import ImageGallery from 'react-image-gallery';
-import './carousel.less';
+import 'react-image-gallery/styles/css/image-gallery-no-icon.css';
+import './carousel.css';
 var Carousel = (function (_super) {
     __extends(Carousel, _super);
     function Carousel() {
