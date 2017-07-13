@@ -125,9 +125,9 @@ export default function (WrappedComponent) {
     };
     return function (props) {
         if (props.typeName && props.fieldNames && props.collection) {
-            var name_1 = props.typeName + "|" + props.fieldNames;
-            var Bound = cache[name_1] || bound(props);
-            cache[name_1] = Bound;
+            var name = props.typeName + "|" + props.fieldNames;
+            var Bound = cache[name] || bound(props);
+            cache[name] = Bound;
             return React.createElement(Bound, __assign({}, props));
         }
         return null;

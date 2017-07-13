@@ -35,11 +35,11 @@ var ok = function (props, mutate) { return function () {
             var slug = item.slug;
             var parentId = item.parentId;
             while (parentId) {
-                var parent_1 = flatNavigation.find(function (x) { return x.id === parentId; }) || {};
-                if (parent_1.slug) {
-                    slug = ("" + parent_1.slug + slug).replace('//', '/');
+                var parent = flatNavigation.find(function (x) { return x.id === parentId; }) || {};
+                if (parent.slug) {
+                    slug = ("" + parent.slug + slug).replace('//', '/');
                 }
-                parentId = parent_1.parentId;
+                parentId = parent.parentId;
             }
             router.push({ pathname: slug, query: __assign({}, query, { '@page': item.id }) });
         })

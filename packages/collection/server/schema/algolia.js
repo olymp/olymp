@@ -21,12 +21,12 @@ export default {
             var type = fetchType(ast, typeName);
             var directive = get(type, 'directives', []).find(function (d) { return get(d, 'name.value') === 'collection'; });
             if (type && directive) {
-                var index_1 = context.algolia.initIndex(context.app.id);
+                var index = context.algolia.initIndex(context.app.id);
                 var asArray = isArray(value) ? value : [value];
-                index_1.deleteObjects(asArray.filter(function (x) { return x.state !== 'PUBLISHED'; }).map(function (x) { return x.id; }), function (err) {
+                index.deleteObjects(asArray.filter(function (x) { return x.state !== 'PUBLISHED'; }).map(function (x) { return x.id; }), function (err) {
                     console.log('OK', err);
                 });
-                index_1.addObjects(asArray.filter(function (x) { return x.state === 'PUBLISHED'; }).map(function (x) { return (__assign({}, x, { objectID: x.id })); }), function (err) {
+                index.addObjects(asArray.filter(function (x) { return x.state === 'PUBLISHED'; }).map(function (x) { return (__assign({}, x, { objectID: x.id })); }), function (err) {
                     console.log('OK', err);
                 });
             }
