@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp';
+import { withRouter } from 'olymp-utils';
 
 @withRouter
 export default class LightboxProvider extends Component {

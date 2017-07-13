@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'olymp';
+import { Link, withRouter } from 'olymp-utils';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';

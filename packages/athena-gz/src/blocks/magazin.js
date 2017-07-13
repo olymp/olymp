@@ -6,7 +6,7 @@ import {
   border,
   SchemaLoader,
 } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp';
+import { graphql, gql, Link } from 'olymp-utils';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { orderBy, upperFirst, range } from 'lodash';

@@ -20,6 +20,10 @@ const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 
+const allPackages = fs
+  .readdirSync(path.resolve(olympRoot, 'packages'));
+const packagesToTranspile = allPackages.filter(x => x !== 'graphql' && x !== 'collection');
+
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
@@ -46,19 +50,16 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
           'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
           moment: path.resolve(appRoot, 'node_modules', 'moment'),
           lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
-          olymp: olympRoot,
           '@root': appRoot,
           '@app': isNode && !isSSR
             ? path.resolve(__dirname, 'noop')
             : path.resolve(appRoot, 'app'),
         },
-        fs
-          .readdirSync(path.resolve(olympRoot, 'packages'))
-          .reduce((obj, item) => {
-            // get all folders in src and create 'olymp-xxx' alias
-            obj[`olymp-${item}`] = path.resolve(olympRoot, 'packages', item);
-            return obj;
-          }, {})
+        allPackages.reduce((obj, item) => {
+          // get all folders in src and create 'olymp-xxx' alias
+          obj[`olymp-${item}`] = path.resolve(olympRoot, 'packages', item);
+          return obj;
+        }, {})
       ),
     },
     resolveLoader: {
@@ -144,20 +145,17 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     },
   };
 
+  const include = packagesToTranspile.map(item => path.resolve(olympRoot, 'packages', item)).concat([
+    // path.resolve(appRoot, 'server'),
+    // path.resolve(olympRoot, 'graphql'),
+    path.resolve(appRoot, 'app'),
+    path.resolve(appRoot, 'server'),
+  ]);
+
   const babel = {
     test: /\.(js|jsx)$/,
     loader: 'babel-loader',
-    include: [
-      // path.resolve(appRoot, 'server'),
-      // path.resolve(olympRoot, 'graphql'),
-      path.resolve(appRoot, 'app'),
-      path.resolve(appRoot, 'server'),
-      path.resolve(olympRoot, 'icons'),
-      path.resolve(olympRoot, 'packages'),
-      path.resolve(olympRoot, 'src'),
-      path.resolve(olympRoot, 'graphql'),
-      path.resolve(__dirname),
-    ],
+    include,
     options: {
       cacheDirectory: false,
       presets: ['react'],
@@ -411,10 +409,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         whitelist: [
           v => v.indexOf('webpack/hot/poll') === 0,
           'source-map-support/register',
-          v =>
-            v === 'olymp' ||
-            v.indexOf('olymp-') === 0 ||
-            v.indexOf('olymp-') === 0,
+          v => v.indexOf('olymp-') === 0 && packagesToTranspile.indexOf(v.split('/')[0].split('olymp-')[1]) !== -1,
           v => v === 'antd' || v.indexOf('antd/') === 0,
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,

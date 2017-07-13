@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'olymp';
+import { Helmet } from 'olymp-utils';
 
 const getURL = () => {
   if (process.env.URL) {

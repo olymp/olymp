@@ -2,7 +2,6 @@
   "version": "0.1.6",
   "name": "olymp-graphql",
   "description": "",
-  "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {},

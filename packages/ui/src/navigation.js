@@ -1,6 +1,6 @@
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withLang, Logo } from 'olymp';
+import { Link, withLang, Logo } from 'olymp-utils';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';

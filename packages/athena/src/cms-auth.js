@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimpleSwitch, SimpleRoute } from 'olymp';
+import { SimpleSwitch, SimpleRoute } from 'olymp-utils';
 import { AuthModals, AuthUsers } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';

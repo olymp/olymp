@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql } from 'olymp-utils';
 import { createComponent, Container, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 

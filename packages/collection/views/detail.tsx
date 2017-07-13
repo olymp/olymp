@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp';
+import { withRouter, Link } from 'olymp-utils';
 import { Menu, Icon, Button } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';

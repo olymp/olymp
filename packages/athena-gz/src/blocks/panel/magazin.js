@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql, Link } from 'olymp';
+import { graphql, gql, Link } from 'olymp-utils';
 import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import Container from './container';

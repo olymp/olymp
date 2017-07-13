@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withAmp } from 'olymp';
+import { withAmp } from 'olymp-utils';
 import Container from './container';
 import Img from './img';
 import Amp from './amp';

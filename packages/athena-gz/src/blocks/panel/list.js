@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp';
+import { Link } from 'olymp-utils';
 import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import moment from 'moment';

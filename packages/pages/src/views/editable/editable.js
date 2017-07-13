@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Prompt, withRouter } from 'olymp';
+import { Prompt, withRouter } from 'olymp-utils';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { Menu, Button, Form, Icon } from 'antd';
 import { Gateway } from 'react-gateway';

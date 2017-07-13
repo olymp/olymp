@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter, graphql, gql, sortBy } from 'olymp';
+import { Link, withRouter, graphql, gql, sortBy } from 'olymp-utils';
 import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';
 

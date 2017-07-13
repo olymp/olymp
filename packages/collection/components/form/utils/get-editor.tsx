@@ -11,7 +11,7 @@ import {
 } from 'olymp-ui';
 import { FormEdit, FormListEdit, DetailEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
-import { cn } from 'olymp';
+import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
 
 const states = {

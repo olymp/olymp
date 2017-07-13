@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp';
+import { Link, graphql, gql } from 'olymp-utils';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';

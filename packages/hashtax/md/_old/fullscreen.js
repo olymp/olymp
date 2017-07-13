@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import text from './example.md';
 import Portal from 'react-portal';
-import { styled } from 'olymp';
+import { styled } from 'olymp-utils';
 import md from './index';
 import CodeMirror from 'react-codemirror';
 import './fullscreen.less';

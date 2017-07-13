@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withState, graphql, gql } from 'olymp';
+import { withState, graphql, gql } from 'olymp-utils';
 import { Container } from 'olymp-ui';
 import { createComponent } from 'react-fela';
 import moment from 'moment';

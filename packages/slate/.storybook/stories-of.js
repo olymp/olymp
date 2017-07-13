@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 // import { action } from '@storybook/addon-actions';
 import { withKnobs } from '@storybook/addon-knobs';
 import { FelaDecorator } from 'olymp-fela/storybook';
-import { styled } from 'olymp';
+import { styled } from 'olymp-utils';
 
 export default (title, centered, customStyle) => (subtitle, compFn, text) => storiesOf(title, module)
   .addDecorator(withKnobs)

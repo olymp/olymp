@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import moment from 'moment';
 import { get } from 'lodash';
-import { colors } from 'olymp';
+import { colors } from 'olymp-utils';
 
 export default (options = {}) => {
   const g = prop => state => get(state, prop);

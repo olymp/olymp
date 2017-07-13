@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp';
+import { Link } from 'olymp-utils';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';

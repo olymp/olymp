@@ -24,7 +24,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import { withRouter, withSearch, Prompt } from 'olymp';
+import { withRouter, withSearch, Prompt } from 'olymp-utils';
 import { SplitView } from 'olymp-ui';
 import { withItems, withCollection } from '../decorators';
 import Detail from './detail';

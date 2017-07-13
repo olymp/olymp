@@ -5,5 +5,8 @@
   "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "olymp-collection": "^0.1.6"
+  }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollToTop } from 'olymp';
+import { ScrollToTop } from 'olymp-utils';
 import { createComponent } from 'react-fela';
 import WithContainer from './with-container';
 

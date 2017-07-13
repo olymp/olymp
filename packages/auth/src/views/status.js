@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp';
+import { Link } from 'olymp-utils';
 import { Modal } from 'olymp-ui';
 import withAuth from '../with-auth';
 import Base from './base';

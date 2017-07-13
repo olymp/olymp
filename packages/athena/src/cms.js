@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withCollections } from 'olymp-collection';
-import { withRouter, withLangProvider } from 'olymp';
+import { withRouter, withLangProvider } from 'olymp-utils';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
 import { auth as withAuth } from 'olymp-auth';

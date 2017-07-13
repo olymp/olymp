@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withScroll, withApollo, withRouter, ScrollToTop } from 'olymp';
+import { withScroll, withApollo, withRouter, ScrollToTop } from 'olymp-utils';
 import {
   Navbar,
   Layout,

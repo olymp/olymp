@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import remark from 'remark';
 import reactRenderer from './compiler';
 import plugin from './container';
-import { Link } from 'olymp';
+import { Link } from 'olymp-utils';
 
 const defaultComponents = {
   text: ({ value, ...props }) => <span {...props}>{value}</span>,

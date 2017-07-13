@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withState } from 'olymp';
+import { withState } from 'olymp-utils';
 import { Container, Placeholder, SplitView } from 'olymp-ui';
 import { queryTemplate } from '../gql';
 import ListSidebar from './list';

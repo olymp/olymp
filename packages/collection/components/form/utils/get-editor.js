@@ -11,7 +11,7 @@ import { Input, Select, Checkbox, InputNumber } from 'antd';
 import { ColorEditor, DateEditor, DateRangeEditor, TimeRangeEditor, TimeRangesEditor, TagsEditor, SuggestEditor, } from 'olymp-ui';
 import { FormListEdit, DetailEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
-import { cn } from 'olymp';
+import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
 var states = {
     PUBLISHED: 'Öffentlich',

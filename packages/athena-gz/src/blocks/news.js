@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp';
+import { graphql, gql, Link } from 'olymp-utils';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel, Item } from '../components';

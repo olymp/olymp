@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp';
+import { withRouter, Link } from 'olymp-utils';
 import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { FieldValue } from '../components';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql } from 'olymp-utils';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
 import { onEnterFocus, onError, onSuccess } from '../views/base';

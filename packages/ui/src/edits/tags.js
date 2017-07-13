@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
-import { graphql, gql } from 'olymp-core';
+import { graphql, gql } from 'olymp-utils';
 
 @graphql(gql`
   query tags {

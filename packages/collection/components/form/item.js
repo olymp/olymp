@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 import React from 'react';
 import { Form } from 'antd';
 import { withAuth } from 'olymp-auth';
-import { toLabel } from 'olymp';
+import { toLabel } from 'olymp-utils';
 import { getEditor, getValidationRules, getInitialValue } from './utils';
 var formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } };
 var formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { throttleInput } from 'olymp';
+import { throttleInput } from 'olymp-utils';
 import { findDOMNode } from 'react-dom';
 import { DraggableCore } from 'react-draggable';
 import cn from 'classnames';

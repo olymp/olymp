@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'antd';
 import { withAuth } from 'olymp-auth';
-import { toLabel } from 'olymp';
+import { toLabel } from 'olymp-utils';
 import { getEditor, getValidationRules, getInitialValue } from './utils';
 
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } };

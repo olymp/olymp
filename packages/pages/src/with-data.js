@@ -1,5 +1,5 @@
 import React, { Component, createElement } from 'react';
-import { gql, graphql, SimpleRoute, unflatten } from 'olymp';
+import { gql, graphql, SimpleRoute, unflatten } from 'olymp-utils';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
 import { get, upperFirst, lowerFirst } from 'lodash';

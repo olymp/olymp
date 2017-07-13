@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'olymp';
+import { withRouter, Link } from 'olymp-utils';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Tooltip } from 'antd';

@@ -178,6 +178,7 @@
     "@types/isomorphic-fetch": "^0.0.34",
     "@types/lodash": "^4.14.68",
     "@types/node": "^8.0.11",
+    "@types/prop-types": "^15.5.1",
     "@types/react": "^15.0.38",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
@@ -194,6 +195,7 @@
     "lerna": "^2.0.0",
     "prettier": "^1.5.2",
     "prettier-eslint-cli": "^4.1.1",
+    "typescript": "^2.4.1",
     "watchman": "^0.1.8"
   },
   "jest": {

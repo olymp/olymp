@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'olymp';
+import { Link } from 'olymp-utils';
 import { createComponent } from 'olymp-fela';
 import { Icon } from 'antd';
 // import Image from '../../cms/cloudinary/image';

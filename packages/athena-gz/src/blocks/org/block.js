@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, gql, renderHelmet } from 'olymp';
+import { graphql, gql, renderHelmet } from 'olymp-utils';
 import { createComponent, Grid, withColor, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';

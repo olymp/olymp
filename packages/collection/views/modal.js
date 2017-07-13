@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp';
+import { withRouter, Link } from 'olymp-utils';
 import { Menu, Icon } from 'antd';
 import { Modal, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';

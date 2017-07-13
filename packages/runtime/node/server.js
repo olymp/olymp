@@ -20,7 +20,7 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import template from '../templates/default';
 import amp from '../templates/amp';
-import { AmpProvider, UAProvider, UAParser } from 'olymp';
+import { AmpProvider, UAProvider, UAParser } from 'olymp-utils';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';

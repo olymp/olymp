@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'olymp';
+import { withRouter } from 'olymp-utils';
 import { createComponent, Container } from 'olymp-fela';
 import capitalize from 'lodash/upperFirst';
 

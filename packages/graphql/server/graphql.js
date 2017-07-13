@@ -13,7 +13,7 @@ import { values } from 'lodash';
 import * as scalarModules from './scalars';
 import * as defaultDirectives from './directives';
 export default function (_a) {
-    var modules = _a.modules, _b = _a.directives, directives = _b === void 0 ? {} : _b;
+    var _b = _a.modules, modules = _b === void 0 ? null : _b, _c = _a.directives, directives = _c === void 0 ? {} : _c;
     var schema = null;
     var apply = function (modules) {
         var raw = values(__assign({}, scalarModules, modules));

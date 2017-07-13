@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'olymp';
+import { withRouter } from 'olymp-utils';
 import {
   AuthRegister,
   AuthLogin,

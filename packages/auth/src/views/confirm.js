@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp';
+import { Link, graphql, gql } from 'olymp-utils';
 import { Countdown, Modal } from 'olymp-ui';
 import { Form } from 'antd';
 import withAuth from '../with-auth';

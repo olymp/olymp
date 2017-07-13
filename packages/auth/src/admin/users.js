@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp';
+import { graphql, gql } from 'olymp-utils';
 import { SplitView, Sidebar, List } from 'olymp-ui';
 import AuthProfile from './profile';
 

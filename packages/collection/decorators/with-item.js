@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
-import { omit } from 'olymp';
+import { omit } from 'olymp-utils';
 import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 var ok = function (props) { return function () {

@@ -1,4 +1,4 @@
-import { gql, graphql } from 'olymp';
+import { gql, graphql } from 'olymp-utils';
 
 const isNew = props => props.query['@page'] === 'new';
 const getId = (id, query) =>

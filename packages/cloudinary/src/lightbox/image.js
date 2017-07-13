@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp';
+import { withRouter } from 'olymp-utils';
 import { createComponent } from 'olymp-fela';
 import Image, { cloudinaryUrl } from '../components/image';
 

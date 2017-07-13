@@ -1,4 +1,4 @@
-import { gql, graphql } from 'olymp';
+import { gql, graphql } from 'olymp-utils';
 
 export default graphql(
   gql`

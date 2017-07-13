@@ -1,4 +1,4 @@
-import { graphql, gql } from 'olymp';
+import { graphql, gql } from 'olymp-utils';
 
 export const queryTemplate = graphql(
   gql`

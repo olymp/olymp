@@ -7,7 +7,7 @@ import {
   routerQueryMiddleware,
   UAProvider,
   UAParser,
-} from 'olymp';
+} from 'olymp-utils';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import {

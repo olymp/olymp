@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
-import { slugify, unflatten } from 'olymp';
+import { slugify, unflatten } from 'olymp-utils';
 import { Panel, SectionH } from 'olymp-ui';
 import { createComponent, border } from 'olymp-fela';
 import {

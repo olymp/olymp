@@ -4,7 +4,7 @@ import Mark from 'slate/lib/models/mark';
 import Raw from './serializer/raw';
 import { Popover, Tag } from 'antd';
 import { parseComponent } from '../processors';
-import { styled } from 'olymp';
+import { styled } from 'olymp-utils';
 
 const deserialize = (value) => {
   console.log('DESERIALIZE', value);

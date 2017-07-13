@@ -6,7 +6,7 @@ import {
   createComponent,
 } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
-import { Link, renderHelmet } from 'olymp';
+import { Link, renderHelmet } from 'olymp-utils';
 import { Menu, Icon, Button as AntButton } from 'antd';
 import { lowerFirst, get } from 'lodash';
 import { Gateway } from 'react-gateway';

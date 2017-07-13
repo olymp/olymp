@@ -1,7 +1,7 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import { cn } from 'olymp';
+import { cn } from 'olymp-utils';
 import { GatewayRegistry } from 'react-gateway';
 import { TransitionGroup } from 'react-transition-group';
 
