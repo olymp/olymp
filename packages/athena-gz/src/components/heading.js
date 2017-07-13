@@ -65,6 +65,7 @@ export const Border = createComponent(
     position: 'absolute',
     minWidth: 75,
     width: '100%', // macht bordered-prop eigentlich überflüssig
+    backgroundColor: color || theme.color,
     background: `linear-gradient(to ${right ? 'left' : 'right'}, ${color ||
       theme.color}, #FFF)`,
   }),

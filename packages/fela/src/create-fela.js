@@ -106,10 +106,11 @@ export default (ua) => {
               position: 'absolute',
               ...(isBrowser('IE', 10)
                   ? {
+                    margin: 'auto',
+                    top: 0,
                     right: 0,
                     bottom: 0,
-                    marginLeft: '-50%',
-                    marginTop: '-50%',
+                    left: 0,
                   }
                   : {
                     top: '50%',
@@ -124,8 +125,10 @@ export default (ua) => {
               position: 'absolute',
               ...(isBrowser('IE', 10)
                   ? {
+                    marginLeft: 'auto',
+                    left: 0,
+                    marginRight: 'auto',
                     right: 0,
-                    marginLeft: '-50%',
                   }
                   : {
                     left: '50%',
@@ -139,8 +142,10 @@ export default (ua) => {
               position: 'absolute',
               ...(isBrowser('IE', 10)
                   ? {
+                    marginTop: 'auto',
+                    top: 0,
+                    marginBottom: 'auto',
                     bottom: 0,
-                    marginTop: '-50%',
                   }
                   : {
                     top: '50%',
