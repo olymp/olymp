@@ -2,7 +2,6 @@
   "version": "0.1.7",
   "name": "olymp-ui",
   "description": "",
-  "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {}

@@ -28,7 +28,7 @@ import fs from 'fs';
 import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
-import { Server as WebSocketServer } from 'ws';
+// import { Server as WebSocketServer } from 'ws';
 import { createFela } from 'olymp-fela';
 import { EventEmitter } from 'events';
 import App from '@app';
