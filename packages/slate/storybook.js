@@ -1,21 +1,17 @@
-import React from 'react';
-import { ThemeProvider, createFela } from 'olymp-fela';
-import { Provider as FelaProvider } from 'react-fela';
-import { MemoryRouter } from 'react-router';
-
-const ss = document.getElementById('fela') || document.createElement('style');
+import { createFela } from 'olymp-fela';
+var ss = document.getElementById('fela') || document.createElement('style');
 if (!ss.id) {
-  ss.id = 'fela';
-  ss.type = 'text/css';
-  document.getElementsByTagName('head')[0].appendChild(ss);
+    ss.id = 'fela';
+    ss.type = 'text/css';
+    document.getElementsByTagName('head')[0].appendChild(ss);
 }
-
-const renderer = createFela();
-
-export const FelaDecorator = story =>
-  (<FelaProvider renderer={renderer} mountNode={ss}>
-    <ThemeProvider>{story()}</ThemeProvider>
-  </FelaProvider>);
-
-export const RouterDecorator = story =>
-  <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>;
+var renderer = createFela();
+export var FelaDecorator = function (story) {
+    return renderer = { renderer: renderer };
+}, mountNode = { ss: ss } >
+    {} < /ThemeProvider>
+    < /FelaProvider>);;
+export var RouterDecorator = function (story) {
+    return initialEntries;
+},  = ( > {} < /MemoryRouter>;)["/"];
+//# sourceMappingURL=storybook.js.map

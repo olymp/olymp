@@ -18,7 +18,8 @@ var olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 var allPackages = fs
     .readdirSync(path.resolve(olympRoot, 'packages'));
-var packagesToTranspile = allPackages.filter(function (x) { return x !== 'graphql' && x !== 'collection' && x !== 'app' && x !== 'utils' && x !== 'ui'; });
+var packagesToIgnore = ['graphql', 'collection', 'app', 'utils', 'ui', 'storybook'];
+var packagesToTranspile = allPackages.filter(function (x) { return packagesToIgnore.indexOf(x) === -1; });
 module.exports = function (_a) {
     var mode = _a.mode, target = _a.target, devUrl = _a.devUrl, devPort = _a.devPort, ssr = _a.ssr, serverless = _a.serverless;
     var isDev = mode !== 'production';
