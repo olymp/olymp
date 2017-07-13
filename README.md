@@ -16,6 +16,51 @@
   </a>
 </p>
 
-# Olymp
 
+# Olymp
 This is the olymp mono-repo
+
+## Packages
+Olympus modular design ensures minimum size with maximum functionality. Here is an overview of each package.
+
+### auth
+### [olymp-cloudinary][oCloudinary]
+An image component for easy use of Cloudinary. In addition, a complete media library including processing tools (e.g., cropping) and an adapter for the use of [react-images][rImages] lightboxes.
+### collection
+### crypt ???
+### [olymp-fela][oFela]
+Simple collection of Fela components. See fela storybook for examples.
+### filestack
+> Work paused - use cloudinary instead
+### google
+### graphql
+### hashtax
+### icons
+### locale ???
+### mail
+### pages
+### runtime ???
+### sitemape ???
+### slate
+### ui
+
+## Projects
+Awesome projects realized with Olymp!
+
+### Athena
+A olymp-based content-management-system. Some say it's the best in the world! 😉
+
+## Usage
+Using OLYMP is very easy.
+### Installation
+```sh
+$ yarn add olymp
+$ yarn run dev
+```
+
+## License
+MIT
+
+[oCloudinary]: <https://github.com/olymp/olymp/tree/master/packages/cloudinary>
+[oFela]: <https://github.com/olymp/olymp/tree/master/packages/fela>
+[rImages]: https://github.com/jossmac/react-images
