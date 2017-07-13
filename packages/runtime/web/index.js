@@ -24,17 +24,13 @@ import { AppContainer } from 'react-hot-loader';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { BrowserRouter } from 'react-router-dom';
 import createHistory from 'history/createFlexHistory';
-import {
-  ConnectedRouter,
-  routerReducer,
-  routerMiddleware,
-} from 'react-router-redux';
 // End Redux stuff
 
 const init = require('@app').init;
 // window.Perf = require('react-addons-perf');
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON) {
   const offline = require('offline-plugin/runtime');
   offline.install({
     onUpdating: () => {
@@ -107,7 +103,7 @@ function renderApp() {
     >
       <AppContainer>
         <ApolloProvider store={store} client={client}>
-          <ConnectedRouter history={history}>
+          <BrowserRouter history={history}>
             <FelaProvider renderer={renderer} mountNode={mountNode}>
               <GatewayProvider>
                 <UAProvider ua={ua}>
@@ -117,7 +113,7 @@ function renderApp() {
                 </UAProvider>
               </GatewayProvider>
             </FelaProvider>
-          </ConnectedRouter>
+          </BrowserRouter>
         </ApolloProvider>
       </AppContainer>
     </AsyncComponentProvider>
@@ -143,14 +139,9 @@ function load() {
   store = createStore(
     combineReducers({
       apollo: client.reducer(),
-      router: routerReducer,
     }),
     window.INITIAL_DATA || {},
-    composeEnhancers(
-      applyMiddleware(routerQueryMiddleware),
-      applyMiddleware(routerMiddleware(history)),
-      applyMiddleware(client.middleware())
-    )
+    composeEnhancers(applyMiddleware(client.middleware()))
   );
   // End Redux stuff
   rehydrateState = window.ASYNC_STATE;

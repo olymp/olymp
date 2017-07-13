@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import { NavLink } from 'olymp';
+import NavLink from 'react-router-dom/NavLink';
 
 const Brand = createComponent(
   ({ theme, inverse }) => ({
