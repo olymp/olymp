@@ -22,8 +22,6 @@ process.noDeprecation = true;
 
 const allPackages = fs
   .readdirSync(path.resolve(olympRoot, 'packages'));
-const packagesToIgnore = ['graphql', 'collection', 'app', 'utils', 'ui', 'storybook'];
-const packagesToTranspile = allPackages.filter(x => packagesToIgnore.indexOf(x) === -1);
 
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isDev = mode !== 'production';
@@ -146,17 +144,15 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     },
   };
 
-  const include = packagesToTranspile.map(item => path.resolve(olympRoot, 'packages', item)).concat([
-    // path.resolve(appRoot, 'server'),
-    // path.resolve(olympRoot, 'graphql'),
-    path.resolve(appRoot, 'app'),
-    path.resolve(appRoot, 'server'),
-  ]);
-
   const babel = {
     test: /\.(js|jsx)$/,
     loader: 'babel-loader',
-    include,
+    include: [
+      // path.resolve(appRoot, 'server'),
+      // path.resolve(olympRoot, 'graphql'),
+      path.resolve(appRoot, 'app'),
+      path.resolve(appRoot, 'server'),
+    ],
     options: {
       cacheDirectory: false,
       presets: ['react'],
@@ -410,7 +406,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         whitelist: [
           v => v.indexOf('webpack/hot/poll') === 0,
           'source-map-support/register',
-          v => v.indexOf('olymp-') === 0 && packagesToTranspile.indexOf(v.split('/')[0].split('olymp-')[1]) !== -1,
+          // v => v.indexOf('olymp-') === 0 && packagesToTranspile.indexOf(v.split('/')[0].split('olymp-')[1]) !== -1,
           v => v === 'antd' || v.indexOf('antd/') === 0,
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
