@@ -1,5 +1,5 @@
 {
-  "version": "0.1.8",
+  "version": "0.1.9",
   "name": "olymp-app",
   "description": "",
   "main": "./src",
@@ -12,6 +12,7 @@
   "dependencies": {
     "apollo-client": "^1.8.0",
     "assets-webpack-plugin": "^3.5.1",
+    "awesome-typescript-loader": "^3.2.1",
     "compression": "^1.7.0",
     "connect-redis": "^3.3.0",
     "dotenv": "^4.0.0",
@@ -25,8 +26,8 @@
     "html-webpack-plugin": "^2.29.0",
     "isomorphic-fetch": "^2.2.1",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^0.1.7",
-    "olymp-utils": "^0.1.7",
+    "olymp-fela": "^0.1.9",
+    "olymp-utils": "^0.1.9",
     "progress-bar-webpack-plugin": "^1.10.0",
     "react": "^15.6.1",
     "react-apollo": "^1.4.3",
