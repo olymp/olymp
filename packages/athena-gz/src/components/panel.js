@@ -2,6 +2,14 @@ import React from 'react';
 import { Grid, createComponent, fade } from 'olymp-fela';
 import { H2 } from './heading';
 
+const Clearfix = createComponent(
+  ({ theme, color = theme.color }) => ({
+    clear: 'both',
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 export const Content = createComponent(
   ({ theme, accent, padding = theme.space3, size = 1 }) => ({
     borderRight: `${size}px solid ${!accent ? theme.color : fade(accent)}`,
@@ -15,12 +23,9 @@ export const Content = createComponent(
     flex: '1 1 auto',
     position: 'relative',
     minHeight: 120,
-    /* display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    alignContent: 'flex-start', */
     '> iframe': {
       borderBottomRightRadius: 100,
+      display: 'block',
     },
     onBefore: {
       content: '""',
@@ -108,6 +113,8 @@ export default createComponent(
       </H2>
       <Content padding={padding} accent={accent} color={color}>
         {children}
+
+        <Clearfix />
       </Content>
     </Grid.Item>),
   p => Object.keys(p)

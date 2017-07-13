@@ -20,7 +20,7 @@ import Helmet from 'react-helmet';
 import helmet from 'helmet';
 import template from '../templates/default';
 import amp from '../templates/amp';
-import { AmpProvider, UAProvider } from 'olymp';
+import { AmpProvider, UAProvider, UAParser } from 'olymp';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
 import createRedisStore from 'connect-redis';
@@ -189,7 +189,8 @@ app.get('*', (req, res) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const renderer = createFela();
+  const ua = new UAParser(req.headers['user-agent']);
+  const renderer = createFela(ua);
 
   const store = createStore(
     combineReducers({
@@ -215,7 +216,7 @@ app.get('*', (req, res) => {
         <StaticRouter location={req.url} context={context}>
           <Provider renderer={renderer}>
             <GatewayProvider>
-              <UAProvider ua={req.headers['user-agent']}>
+              <UAProvider ua={ua}>
                 <AmpProvider amp={req.isAmp}>
                   <App />
                 </AmpProvider>

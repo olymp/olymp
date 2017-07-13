@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { AmpProvider, UAProvider } from 'olymp';
+import { AmpProvider, UAProvider, UAParser } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import {
@@ -71,7 +71,7 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
-/*if (process.env.GRAPHQL_SUB) {
+/* if (process.env.GRAPHQL_SUB) {
   const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
     reconnect: true
   });
@@ -87,6 +87,7 @@ let client,
   renderer,
   store,
   history,
+  ua,
   rehydrateState,
   asyncContext;
 function renderApp() {
@@ -100,7 +101,7 @@ function renderApp() {
           <BrowserRouter history={history}>
             <FelaProvider renderer={renderer} mountNode={mountNode}>
               <GatewayProvider>
-                <UAProvider ua={window.navigator.userAgent}>
+                <UAProvider ua={ua}>
                   <AmpProvider amp={false}>
                     <App />
                   </AmpProvider>
@@ -118,7 +119,8 @@ function load() {
   // Get the DOM Element that will host our React application.
   container = document.getElementById('app');
   mountNode = document.getElementById('css-markup');
-  renderer = createFela();
+  ua = UAParser(window.navigator.userAgent);
+  renderer = createFela(ua);
   client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,

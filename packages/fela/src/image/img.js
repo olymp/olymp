@@ -1,8 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { createComponent } from 'react-fela';
 
-const ImageImg = ({ width, height, src, alt, onClick }) =>
-  <img src={src} alt={alt} width={width} height={height} onClick={onClick} />;
+const ImageImg = createComponent(
+  ({ theme, width, height }) => ({
+    width,
+    height,
+  }),
+  ({ width, height, src, alt, onClick, className }) =>
+    (<img
+      src={src}
+      alt={alt}
+      className={className}
+      width={width}
+      height={height}
+      onClick={onClick}
+    />),
+  p => Object.keys(p)
+);
+
 ImageImg.displayName = 'Image.Img';
 ImageImg.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,

@@ -31,6 +31,14 @@ const Link = createComponent(
   p => Object.keys(p)
 );
 
+const Span = createComponent(
+  ({ theme }) => ({
+    color: theme.color,
+  }),
+  'span',
+  p => Object.keys(p)
+);
+
 const Content = createComponent(
   ({ theme }) => ({
     ifMediumUp: {
@@ -87,9 +95,9 @@ const Item = createComponent(
             <h3>
               {name}
             </h3>
-            <span>
+            <Span>
               {tags.join(', ')}
-            </span>
+            </Span>
           </Inner>
         </Content>
       </Link>
@@ -142,7 +150,7 @@ const component = graphql(
       </div>),
     p => Object.keys(p)
   )
-  );
+);
 
 export default {
   key: 'GZK.Panel.Network',

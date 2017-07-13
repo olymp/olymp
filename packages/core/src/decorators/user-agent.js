@@ -1,14 +1,16 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import UAParser from 'ua-parser-js';
+import UAParser2 from 'ua-parser-js';
 
+export const UAParser = UAParser2;
 export class UAProvider extends Component {
   static childContextTypes = {
     ua: PropTypes.object,
   };
   getChildContext() {
+    const { ua } = this.props;
     return {
-      ua: new UAParser(this.props.ua),
+      ua: ua && typeof ua === 'string' ? new UAParser2(ua) : ua,
     };
   }
   render() {

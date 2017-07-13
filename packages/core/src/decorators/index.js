@@ -7,4 +7,4 @@ export { default as withSearch } from './search';
 export { default as withLang, withLangProvider, LangProvider } from './lang';
 export { default as withLocale, LocaleProvider } from './locale';
 export { default as withScroll } from './scroll';
-export { default as withUA, UAProvider } from './user-agent';
+export { default as withUA, UAProvider, UAParser } from './user-agent';
