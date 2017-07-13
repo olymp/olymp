@@ -2,7 +2,6 @@
   "version": "0.0.2",
   "name": "olymp-collection",
   "description": "",
-  "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {},
