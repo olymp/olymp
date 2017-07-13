@@ -1,5 +1,5 @@
 {
-  "version": "0.1.6",
+  "version": "0.1.7",
   "name": "olymp-athena",
   "description": "",
   "main": "./src",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "olymp-collection": "^0.1.6",
-    "olymp-graphql": "^0.1.6"
+    "olymp-collection": "^0.1.7",
+    "olymp-graphql": "^0.1.7"
   }
 }
