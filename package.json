@@ -186,6 +186,7 @@
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
     "jest": "^20.0.4",
+    "lerna": "^2.0.0",
     "prettier": "^1.5.2",
     "prettier-eslint-cli": "^4.1.1",
     "watchman": "^0.1.8"
