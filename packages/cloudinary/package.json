@@ -1,5 +1,5 @@
 {
-  "version": "0.1.7",
+  "version": "0.1.8",
   "name": "olymp-cloudinary",
   "description": "",
   "main": "./src",
@@ -7,6 +7,6 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "olymp-collection": "^0.1.7"
+    "olymp-collection": "^0.1.8"
   }
 }
