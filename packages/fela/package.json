@@ -10,6 +10,17 @@
     "tsc": "../../node_modules/typescript/bin/tsc -w"
   },
   "dependencies": {
+    "fela": "^5.0.2",
+    "fela-monolithic": "^5.0.2",
+    "fela-plugin-custom-property": "^5.0.2",
+    "fela-plugin-embedded": "^5.0.4",
+    "fela-plugin-extend": "^5.0.2",
+    "fela-plugin-fallback-value": "^5.0.3",
+    "fela-plugin-friendly-pseudo-class": "^5.0.2",
+    "fela-plugin-named-media-query": "^5.0.2",
+    "fela-plugin-prefixer": "^5.0.3",
+    "fela-plugin-remove-undefined": "^5.0.2",
+    "fela-plugin-unit": "^5.0.2",
     "olymp": "^15.1.14",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"

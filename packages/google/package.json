@@ -6,5 +6,15 @@
   "license": "MIT",
   "scripts": {
     "tsc": "../../node_modules/typescript/bin/tsc -w"
+  },
+  "dependencies": {
+    "@google/maps": "^0.4.2",
+    "bluebird": "^3.5.0",
+    "googleapis": "^20.1.0",
+    "moment": "^2.18.1",
+    "olymp-ui": "^0.1.7",
+    "olymp-utils": "^0.1.7",
+    "react-fela": "^5.0.4",
+    "shortid": "^2.2.8"
   }
 }
