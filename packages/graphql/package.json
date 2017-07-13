@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.1.6",
   "name": "olymp-graphql",
   "description": "",
   "main": "./src",
@@ -12,6 +12,5 @@
     "graphql-server-express": "^1.0.0",
     "graphql-tools": "^1.1.0",
     "lodash": "^4.17.4"
-  },
-  "devDependencies": {}
+  }
 }
