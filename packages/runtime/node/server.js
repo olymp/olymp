@@ -25,6 +25,7 @@ import {
   AmpProvider,
   routerQueryMiddleware,
   UAProvider,
+  UAParser,
 } from 'olymp';
 import { GatewayProvider } from 'react-gateway';
 import 'source-map-support/register';
@@ -199,7 +200,8 @@ app.get('*', (req, res) => {
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
-  const renderer = createFela(req.headers['user-agent']);
+  const ua = new UAParser(req.headers['user-agent']);
+  const renderer = createFela(ua);
   const context = {};
 
   const [pathname, search] = decodeURI(req.url).split('?');
@@ -236,7 +238,7 @@ app.get('*', (req, res) => {
         <ConnectedRouter history={history}>
           <Provider renderer={renderer}>
             <GatewayProvider>
-              <UAProvider ua={req.headers['user-agent']}>
+              <UAProvider ua={ua}>
                 <AmpProvider amp={req.isAmp}>
                   <App />
                 </AmpProvider>
@@ -258,8 +260,8 @@ app.get('*', (req, res) => {
         ? []
         : [
           isProd
-              ? `${clientAssets.main.js}`
-              : `${process.env.DEV_URL}/main.js`,
+            ? `${clientAssets.main.js}`
+            : `${process.env.DEV_URL}/main.js`,
         ];
       const styles = req.isAmp
         ? []

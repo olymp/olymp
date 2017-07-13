@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { AmpProvider, routerQueryMiddleware, UAProvider } from 'olymp';
+import { AmpProvider, routerQueryMiddleware, UAProvider, UAParser } from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import {
@@ -66,9 +66,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const networkInterface = createBatchingNetworkInterface({
   uri:
-    process.env.GRAPHQL_URL ||
-    (process.env.URL && `${process.env.URL}/graphql`) ||
-    '/graphql',
+  process.env.GRAPHQL_URL ||
+  (process.env.URL && `${process.env.URL}/graphql`) ||
+  '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
@@ -91,6 +91,7 @@ let client,
   renderer,
   store,
   history,
+  ua,
   rehydrateState,
   asyncContext;
 function renderApp() {
@@ -104,7 +105,7 @@ function renderApp() {
           <ConnectedRouter history={history}>
             <FelaProvider renderer={renderer} mountNode={mountNode}>
               <GatewayProvider>
-                <UAProvider ua={window.navigator.userAgent}>
+                <UAProvider ua={ua}>
                   <AmpProvider amp={false}>
                     <App />
                   </AmpProvider>
@@ -122,7 +123,8 @@ function load() {
   // Get the DOM Element that will host our React application.
   container = document.getElementById('app');
   mountNode = document.getElementById('css-markup');
-  renderer = createFela(window.navigator.userAgent);
+  ua = UAParser(window.navigator.userAgent);
+  renderer = createFela(ua);
   client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,

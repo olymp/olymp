@@ -8,12 +8,12 @@ import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
 import embedded from 'fela-plugin-embedded';
-import { getUA } from 'olymp';
 import normalize from './normalize';
 
 export default (ua) => {
-  const browser = getUA(ua).getBrowser();
+  const browser = ua && ua.getBrowser && ua.getBrowser();
   const isBrowser = (type, maxVersion, minVersion) => {
+    if (!browser) return false;
     if (minVersion) {
       return (
         browser.name === type &&
@@ -105,18 +105,18 @@ export default (ua) => {
             ? {
               position: 'absolute',
               ...(isBrowser('IE', 10)
-                  ? {
-                    margin: 'auto',
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                  }
-                  : {
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                  }),
+                ? {
+                  margin: 'auto',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                }
+                : {
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }),
             }
             : {},
         centerX: center =>
@@ -124,16 +124,16 @@ export default (ua) => {
             ? {
               position: 'absolute',
               ...(isBrowser('IE', 10)
-                  ? {
-                    marginLeft: 'auto',
-                    left: 0,
-                    marginRight: 'auto',
-                    right: 0,
-                  }
-                  : {
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                  }),
+                ? {
+                  marginLeft: 'auto',
+                  left: 0,
+                  marginRight: 'auto',
+                  right: 0,
+                }
+                : {
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                }),
             }
             : {},
         centerY: center =>
@@ -141,16 +141,16 @@ export default (ua) => {
             ? {
               position: 'absolute',
               ...(isBrowser('IE', 10)
-                  ? {
-                    marginTop: 'auto',
-                    top: 0,
-                    marginBottom: 'auto',
-                    bottom: 0,
-                  }
-                  : {
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                  }),
+                ? {
+                  marginTop: 'auto',
+                  top: 0,
+                  marginBottom: 'auto',
+                  bottom: 0,
+                }
+                : {
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }),
             }
             : {},
       }),
