@@ -5,6 +5,7 @@
   "main": "./packages/core",
   "scripts": {
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
+    "tsc": "tsc -w",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
