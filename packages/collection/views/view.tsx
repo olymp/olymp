@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import { withRouter, withSearch, Prompt } from 'olymp-utils';
+import { withRouter, withSearch } from 'olymp-utils';
+import { Prompt } from 'react-router-dom/Prompt';
 import { SplitView } from 'olymp-ui';
 import { withItems, withCollection } from '../decorators';
 import Detail from './detail';

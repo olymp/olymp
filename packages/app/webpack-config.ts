@@ -29,7 +29,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isNode = target === 'node';
   const isServerless = serverless === true || isElectron;
   const isSSR = ssr !== false && !serverless;
-  const folder = isDev ? 'dev' : 'dist';
+  const folder = isDev ? '.dev' : '.dist';
   const config = {
     resolve: {
       extensions: ['.js', '.json', '.ts', '.tsx'],
@@ -397,11 +397,19 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     config.entry.main = [require.resolve(path.resolve(__dirname, target, 'index.js'))];
   }
 
-  if (isWeb && isProd) {
+  if (isProd) {
     config.module.rules.push({
       test: /\.tsx?$/,
-      exclude: /node_modules/,
-      loaders: ['awesome-typescript-loader'],
+      include: [
+        path.resolve(appRoot, 'app'),
+        path.resolve(appRoot, 'server'),
+      ],
+      use: [
+        {
+          loader: 'awesome-typescript-loader',
+          options: { silent: true, transpileOnly: true, configFileName: path.resolve(__dirname, 'tsconfig.json') },
+        },
+      ],
     });
     config.module.rules.push({
       test: /\.css$/,
@@ -415,11 +423,22 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         fallback: 'style-loader',
       }),
     });
-  } else if (isWeb && isDev) {
+  } else {
     config.module.rules.push({
       test: /\.tsx?$/,
-      exclude: /node_modules/,
-      loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+      include: [
+        path.resolve(appRoot, 'app'),
+        path.resolve(appRoot, 'server'),
+      ],
+      use: [
+        {
+          loader: 'react-hot-loader/webpack',
+        },
+        {
+          loader: 'awesome-typescript-loader',
+          options: { silent: true, transpileOnly: true, configFileName: path.resolve(__dirname, 'tsconfig.json') },
+        },
+      ],
     });
     config.module.rules.push({
       test: /\.css$/,

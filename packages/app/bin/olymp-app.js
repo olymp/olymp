@@ -13,8 +13,6 @@ if (['start', 'build'].includes(command)) {
 var _a = process.env, SSR = _a.SSR, SERVERLESS = _a.SERVERLESS, NODE_ENV = _a.NODE_ENV, PORT = _a.PORT, URL = _a.URL;
 var ssr = SSR != 'false';
 var serverless = SERVERLESS == 'true';
-console.log('Is Serverless', serverless);
-console.log('Is SSR', ssr);
 if (command === 'dev') {
     var port = parseInt(PORT, 10);
     var url_1 = new urlUtil.URL(URL || "http://localhost:" + port);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Form, Button } from 'antd';
-import { Prompt } from 'olymp-utils';
+import Prompt from 'react-router-dom/Prompt';
 import { Sidebar, Panel, onError, onSuccess } from 'olymp-ui';
 import { InputEdit } from 'olymp-collection';
 import { mutateTemplate } from '../gql';

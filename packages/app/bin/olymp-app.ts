@@ -54,8 +54,6 @@ const {
 
 const ssr = SSR != 'false';
 const serverless = SERVERLESS == 'true';
-console.log('Is Serverless', serverless);
-console.log('Is SSR', ssr);
 
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
