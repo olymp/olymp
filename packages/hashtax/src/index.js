@@ -5,3 +5,4 @@ export { default as Hashtax } from './hashtax-provided';
 export { parseComponent } from './processors';
 export { default as HashtaxProvider } from './hashtax-provider';
 export * from './utils';
+//# sourceMappingURL=index.js.map

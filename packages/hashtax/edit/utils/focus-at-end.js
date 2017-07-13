@@ -1,13 +1,7 @@
-
-/**
- * Focus at the end of the document
- * @param  {Slate.Transform} transform
- * @return {Slate.Transform}
- */
 function focusAtEnd(transform) {
-    const { state } = transform;
-    const { document } = state;
+    var state = transform.state;
+    var document = state.document;
     return transform.collapseToEndOf(document);
 }
-
 module.exports = focusAtEnd;
+//# sourceMappingURL=focus-at-end.js.map
