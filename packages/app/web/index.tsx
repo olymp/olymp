@@ -143,13 +143,6 @@ function load() {
     init({ renderer, client, store });
   }
 
-  const browser = ua.getBrowser();
-  if (browser.name === 'IE' && parseInt(browser.major, 10) < 11) {
-    console.log('dsad');
-    return;
-  }
-
-  console.log('test2');
   return renderApp();
 }
 

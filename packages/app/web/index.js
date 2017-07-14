@@ -76,12 +76,6 @@ function load() {
     if (typeof init !== undefined && init) {
         init({ renderer: renderer, client: client, store: store });
     }
-    var browser = ua.getBrowser();
-    if (browser.name === 'IE' && parseInt(browser.major, 10) < 11) {
-        console.log('dsad');
-        return;
-    }
-    console.log('test2');
     return renderApp();
 }
 if (window.POLYFILLED) {
