@@ -15,8 +15,7 @@ var CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 var appRoot = process.cwd();
 var olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
-var allPackages = fs
-    .readdirSync(path.resolve(olympRoot, 'packages'));
+var allPackages = fs.readdirSync(path.resolve(olympRoot, 'packages'));
 module.exports = function (_a) {
     var mode = _a.mode, target = _a.target, devUrl = _a.devUrl, devPort = _a.devPort, ssr = _a.ssr, serverless = _a.serverless;
     var isDev = mode !== 'production';
@@ -37,7 +36,9 @@ module.exports = function (_a) {
                 path.resolve(appRoot, 'app'),
             ],
             alias: Object.assign({
-                'history/createFlexHistory': isServerless ? 'history/createHashHistory' : 'history/createBrowserHistory',
+                'history/createFlexHistory': isServerless
+                    ? 'history/createHashHistory'
+                    : 'history/createBrowserHistory',
                 react: path.resolve(appRoot, 'node_modules', 'react'),
                 'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
                 'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
@@ -64,10 +65,14 @@ module.exports = function (_a) {
                 'process.env.SSR': JSON.stringify(isSSR),
                 'process.env.NODE_ENV': JSON.stringify(mode),
                 'process.env.DEV_PORT': JSON.stringify(devPort),
-                'process.env.DEV_URL': devUrl ? JSON.stringify(devUrl.origin) : undefined,
+                'process.env.DEV_URL': devUrl
+                    ? JSON.stringify(devUrl.origin)
+                    : undefined,
                 'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
                 'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
-                'process.env.IS_ELECTRON': isElectron ? JSON.stringify(true) : undefined,
+                'process.env.IS_ELECTRON': isElectron
+                    ? JSON.stringify(true)
+                    : undefined,
             }, !isNode
                 ? {
                     'process.env.AMP': process.env.AMP
@@ -200,9 +205,6 @@ module.exports = function (_a) {
     if (isNode) {
         if (isDev) {
             config.plugins.push(new StartServerPlugin('main.js'));
-            config.plugins.push(new ReloadServerPlugin({
-                script: path.resolve(__dirname, 'node', 'index.js'),
-            }));
         }
         config.plugins.push(new webpack.BannerPlugin({
             banner: 'require("source-map-support").install();',
@@ -291,23 +293,30 @@ module.exports = function (_a) {
         ];
     }
     else if (isElectron) {
-        config.entry.main = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
-        config.entry.app = [require.resolve(path.resolve(__dirname, 'electron', 'main.js'))];
+        config.entry.main = [
+            require.resolve(path.resolve(__dirname, 'web', 'index.js')),
+        ];
+        config.entry.app = [
+            require.resolve(path.resolve(__dirname, 'electron', 'main.js')),
+        ];
     }
     else {
-        config.entry.main = [require.resolve(path.resolve(__dirname, target, 'index.js'))];
+        config.entry.main = [
+            require.resolve(path.resolve(__dirname, target, 'index.js')),
+        ];
     }
     if (isProd) {
         config.module.rules.push({
             test: /\.tsx?$/,
-            include: [
-                path.resolve(appRoot, 'app'),
-                path.resolve(appRoot, 'server'),
-            ],
+            include: [path.resolve(appRoot, 'app'), path.resolve(appRoot, 'server')],
             use: [
                 {
                     loader: 'awesome-typescript-loader',
-                    options: { silent: true, transpileOnly: true, configFileName: path.resolve(__dirname, 'tsconfig.json') },
+                    options: {
+                        silent: true,
+                        transpileOnly: true,
+                        configFileName: path.resolve(__dirname, 'tsconfig.json'),
+                    },
                 },
             ],
         });
@@ -327,17 +336,18 @@ module.exports = function (_a) {
     else {
         config.module.rules.push({
             test: /\.tsx?$/,
-            include: [
-                path.resolve(appRoot, 'app'),
-                path.resolve(appRoot, 'server'),
-            ],
+            include: [path.resolve(appRoot, 'app'), path.resolve(appRoot, 'server')],
             use: [
                 {
                     loader: 'react-hot-loader/webpack',
                 },
                 {
                     loader: 'awesome-typescript-loader',
-                    options: { silent: true, transpileOnly: true, configFileName: path.resolve(__dirname, 'tsconfig.json') },
+                    options: {
+                        silent: true,
+                        transpileOnly: true,
+                        configFileName: path.resolve(__dirname, 'tsconfig.json'),
+                    },
                 },
             ],
         });

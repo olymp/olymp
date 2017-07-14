@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { createComponent, Container } from 'olymp-fela';
 import capitalize from 'lodash/upperFirst';
 
@@ -51,9 +51,9 @@ export default {
       },
     }),
     ({ className, attributes, ...rest }) =>
-      (<div className={className} {...attributes}>
+      <div className={className} {...attributes}>
         <Content {...rest} />
-      </div>),
+      </div>,
     p => Object.keys(p)
   ),
 };

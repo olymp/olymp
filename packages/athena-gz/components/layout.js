@@ -32,7 +32,8 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React, { Component } from 'react';
-import { withScroll, withApollo, withRouter } from 'olymp-utils';
+import { withScroll, withApollo } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { Navbar, Layout, Container, createComponent, WithColorProvider, } from 'olymp-fela';
 import { prefetchPage } from 'olymp-pages';
 import Logo from './logo';
@@ -76,8 +77,8 @@ export var App = createComponent(function (_a) {
         },
     });
 }, function (p) {
-    return (React.createElement(WithColorProvider, null,
-        React.createElement(Layout, __assign({ fullHeight: true }, p))));
+    return React.createElement(WithColorProvider, null,
+        React.createElement(Layout, __assign({ fullHeight: true }, p)));
 }, function (p) { return Object.keys(p); });
 export var Header = withScroll(createComponent(function (_a) {
     var theme = _a.theme, scrollTop = _a.scrollTop;
@@ -90,8 +91,8 @@ export var Header = withScroll(createComponent(function (_a) {
     });
 }, function (_a) {
     var children = _a.children, className = _a.className;
-    return (React.createElement(Layout.Header, { className: className },
-        React.createElement(Container, null, children)));
+    return React.createElement(Layout.Header, { className: className },
+        React.createElement(Container, null, children));
 }, function (p) { return Object.keys(p); }));
 var GzLayout = (function (_super) {
     __extends(GzLayout, _super);

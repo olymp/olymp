@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { Menu, Icon, Button } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
@@ -97,8 +97,8 @@ var CollectionDetail = (function (_super) {
                             React.createElement(Button, { type: "primary", style: { margin: '0 -15px' } },
                                 React.createElement(Icon, { type: "copy" })))),
                     keys.map(function (tab) {
-                        return (React.createElement(Menu.Item, { key: tab, className: tab === currentTab && 'ant-menu-item-selected' },
-                            React.createElement("a", { onClick: function () { return _this.setState({ tab: tab }); } }, tab)));
+                        return React.createElement(Menu.Item, { key: tab, className: tab === currentTab && 'ant-menu-item-selected' },
+                            React.createElement("a", { onClick: function () { return _this.setState({ tab: tab }); } }, tab));
                     })),
                 Object.keys(schema).map(function (tab) {
                     return React.createElement(HiddenForm, __assign({}, _this.props, { item: item || {}, fields: schema[tab], key: tab, visible: tab === currentTab, onCreate: onSave }));

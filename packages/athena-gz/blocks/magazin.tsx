@@ -6,7 +6,8 @@ import {
   border,
   SchemaLoader,
 } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { orderBy, upperFirst, range } from 'lodash';
@@ -102,16 +103,16 @@ const DownloadLink = createComponent(
   p => Object.keys(p)
 );
 
-const Item = (props) => {
+const Item = props => {
   const { name, description, slug, org, date, person } = props;
 
   const image = props.image ||
-    org.logo || {
-      url:
+  org.logo || {
+    url:
       'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-      width: 400,
-      height: 300,
-    };
+    width: 400,
+    height: 300,
+  };
 
   return (
     <Panel
@@ -219,7 +220,7 @@ const component = graphql(
   }
 )(({ attributes, items, pdfs, isLoading }) => {
   const tags = items.reduce((tags, item) => {
-    (item.tags || []).forEach((tag) => {
+    (item.tags || []).forEach(tag => {
       const index = tags.findIndex(item => item.tag === tag);
 
       if (index === -1) {
@@ -237,12 +238,12 @@ const component = graphql(
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
             {items.map(item =>
-              (<Item
+              <Item
                 {...item}
                 org={item.org || {}}
                 person={item.person || {}}
                 key={item.id}
-              />)
+              />
             )}
           </Grid.Item>
           <Column
@@ -255,7 +256,7 @@ const component = graphql(
           >
             <H2 right>Ausgaben als PDFs</H2>
             {pdfs.map((pdf, i) =>
-              (<ListItem key={i}>
+              <ListItem key={i}>
                 <DownloadLink
                   rel="noopener noreferrer"
                   href={pdf.url}
@@ -264,15 +265,15 @@ const component = graphql(
                   Gesund im Zentrum - <b>{pdf.caption}</b>
                   <FaDownload size={15} />
                 </DownloadLink>
-              </ListItem>)
+              </ListItem>
             )}
 
             <H2 right>Schlagworte</H2>
             <TagContainer>
               {orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(tag =>
-                (<Tag key={tag.tag}>
+                <Tag key={tag.tag}>
                   {upperFirst(tag.tag)} <small>({tag.count})</small>
-                </Tag>)
+                </Tag>
               )}
             </TagContainer>
           </Column>

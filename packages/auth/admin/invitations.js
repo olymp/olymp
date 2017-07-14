@@ -23,7 +23,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import withAuth from '../with-auth';
 import { Button, Form, Input, Icon } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
@@ -73,7 +74,7 @@ var AuthInvitations = (function (_super) {
                                 React.createElement(Icon, { type: "plus" }))) }, "Einladungen"),
                     React.createElement(List.Filter, { placeholder: "Filter ...", onChange: function (search) { return _this.setState({ search: search }); }, value: search }),
                     items.map(function (item) {
-                        return (React.createElement(List.Item, { to: { pathname: pathname, query: { '@invitations': item.id } }, key: item.id, label: item.name, description: "Benutzer" }));
+                        return React.createElement(List.Item, { to: { pathname: pathname, query: { '@invitations': item.id } }, key: item.id, label: item.name, description: "Benutzer" });
                     })),
                 id && id === 'new' && React.createElement(AuthInviationDetail, { id: null }),
                 id && id !== 'new' && React.createElement(AuthInviationDetail, { key: id, id: id })),
@@ -85,7 +86,7 @@ var AuthInvitations = (function (_super) {
     };
     AuthInvitations.defaultProps = { data: {} };
     AuthInvitations = __decorate([
-        graphql((_a = ["\n  query invitationList {\n    items: invitationList { id, name, email }\n  }\n"], _a.raw = ["\n  query invitationList {\n    items: invitationList { id, name, email }\n  }\n"], gql(_a)), {
+        graphql((_a = ["\n    query invitationList {\n      items: invitationList {\n        id\n        name\n        email\n      }\n    }\n  "], _a.raw = ["\n    query invitationList {\n      items: invitationList {\n        id\n        name\n        email\n      }\n    }\n  "], gql(_a)), {
             options: function (_a) {
                 var isOpen = _a.isOpen;
                 return ({ skip: !isOpen });
@@ -141,7 +142,7 @@ var AuthInviationDetail = (function (_super) {
     };
     AuthInviationDetail = __decorate([
         withAuth,
-        graphql((_a = ["\n  query invitation($id: String) {\n    item: invitation(id: $id) { id, name, email }\n  }\n"], _a.raw = ["\n  query invitation($id: String) {\n    item: invitation(id: $id) { id, name, email }\n  }\n"], gql(_a)), {
+        graphql((_a = ["\n    query invitation($id: String) {\n      item: invitation(id: $id) {\n        id\n        name\n        email\n      }\n    }\n  "], _a.raw = ["\n    query invitation($id: String) {\n      item: invitation(id: $id) {\n        id\n        name\n        email\n      }\n    }\n  "], gql(_a)), {
             options: function (_a) {
                 var id = _a.id;
                 return ({

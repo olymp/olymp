@@ -1,5 +1,6 @@
 import React, { Component, createElement } from 'react';
-import { gql, graphql, SimpleRoute, unflatten } from 'olymp-utils';
+import { gql, graphql, unflatten } from 'olymp-utils';
+import { AltRoute } from 'olymp-router';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
 import { get, upperFirst, lowerFirst } from 'lodash';
@@ -22,9 +23,9 @@ const interpolate = (value, propsOrFunc) => {
 };
 
 const NavCache = {};
-export const withNavigation = (Wrapped) => {
+export const withNavigation = Wrapped => {
   // Prepare Data, gather bound navigation items
-  const withNavigationPrepare = (Wrapped) => {
+  const withNavigationPrepare = Wrapped => {
     // get PageList
     @queryPages
     class WithNavPrepareInner extends Component {
@@ -39,10 +40,10 @@ export const withNavigation = (Wrapped) => {
               const { type, fields, query = {} } = value.binding;
               const sort = value.sorting
                 ? value.sorting.reduce((store, item) => {
-                  const [c, ...rest] = item.split('');
-                  store[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
-                  return store;
-                }, {})
+                    const [c, ...rest] = item.split('');
+                    store[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
+                    return store;
+                  }, {})
                 : {};
               return graphql(
                 gql`
@@ -57,7 +58,12 @@ export const withNavigation = (Wrapped) => {
                 `,
                 {
                   name: `nav_${value.id}`,
-                  options: () => ({ variables: { query: { ...query, ...{ state: { eq: 'PUBLISHED' } } }, sort } }),
+                  options: () => ({
+                    variables: {
+                      query: { ...query, ...{ state: { eq: 'PUBLISHED' } } },
+                      sort,
+                    },
+                  }),
                 }
               )(store);
             }, Wrapped);
@@ -86,7 +92,7 @@ export const withNavigation = (Wrapped) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
               loading = loading && data.loading;
-              (data.items || []).forEach((item) => {
+              (data.items || []).forEach(item => {
                 const slug = child.slug
                   ? interpolate(child.slug, item)
                   : item.slug;
@@ -110,7 +116,7 @@ export const withNavigation = (Wrapped) => {
           }
           const sortIndex = parent.sorting;
           return sortBy(newChildren, [
-            (o) => {
+            o => {
               const index = sortIndex.indexOf(o.id);
               if (index === -1) {
                 return 99;
@@ -145,17 +151,17 @@ let cache = {};
 let lastType;
 export const DataRoute = ({ binding, component, ...rest }) => {
   if (!binding || !binding.type) {
-    return createElement(component || SimpleRoute, rest);
+    return createElement(component || AltRoute, rest);
   }
   const { type, fields, query } = binding;
   const key = `route-${type}-${fields || 'id name slug'}`;
-  if (lastType !== (component || SimpleRoute)) {
+  if (lastType !== (component || AltRoute)) {
     // TODO better way to wipe cache
     cache = {};
-    lastType = component || SimpleRoute;
+    lastType = component || AltRoute;
   }
   if (!cache[key]) {
-    cache[key] = withData(component || SimpleRoute, { fields, type });
+    cache[key] = withData(component || AltRoute, { fields, type });
   }
   return createElement(cache[key], rest);
 };

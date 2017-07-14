@@ -1,6 +1,7 @@
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withLang, Logo } from 'olymp-utils';
+import { withLang, Logo } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
@@ -8,7 +9,7 @@ import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
-const getInitials = (name) => {
+const getInitials = name => {
   if (name) {
     const array = name.split(' ');
 
@@ -111,11 +112,11 @@ const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
-  (<AntMenu {...p}>
+  <AntMenu {...p}>
     <RightMenu title={title || <Icon type="bars" />}>
       {children}
     </RightMenu>
-  </AntMenu>);
+  </AntMenu>;
 
 @withLang
 @withAuth
@@ -138,7 +139,14 @@ class Navigation extends Component {
   }
 
   render() {
-    const { auth, padding, query = {}, pathname, children, keys = [pathname] } = this.props;
+    const {
+      auth,
+      padding,
+      query = {},
+      pathname,
+      children,
+      keys = [pathname],
+    } = this.props;
     return (
       <VerticalMenu padding={padding}>
         <AntMenu keys={keys}>
@@ -153,15 +161,22 @@ class Navigation extends Component {
         <GatewayDest name="quick" component={AntMenu} />
         <div>
           <GatewayDest name="navigation" component={AntMenu} />
-          {get(auth, 'user') && <AntSubMenu title={
-            <UserIcon email={auth.user.email} name={auth.user.name} default="blank" />
-          }>
-            <Menu.Item key="logout">
-              <a onClick={auth.logout} href="javascript:;">
-                <Icon type="poweroff" /> Abmelden
-              </a>
-            </Menu.Item>
-          </AntSubMenu>}
+          {get(auth, 'user') &&
+            <AntSubMenu
+              title={
+                <UserIcon
+                  email={auth.user.email}
+                  name={auth.user.name}
+                  default="blank"
+                />
+              }
+            >
+              <Menu.Item key="logout">
+                <a onClick={auth.logout} href="javascript:;">
+                  <Icon type="poweroff" /> Abmelden
+                </a>
+              </Menu.Item>
+            </AntSubMenu>}
         </div>
       </VerticalMenu>
     );

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { AmpProvider, UAProvider, UAParser, } from 'olymp-utils';
+import { AmpProvider, UAProvider, UAParser } from 'olymp-utils';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import { AsyncComponentProvider, createAsyncContext, } from 'react-async-component';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
@@ -11,7 +11,7 @@ import { GatewayProvider } from 'react-gateway';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'olymp-router';
 import createHistory from 'history/createFlexHistory';
 var init = require('@app').init;
 if (process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON) {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { withScroll, withApollo, withRouter, ScrollToTop } from 'olymp-utils';
+import { withScroll, withApollo } from 'olymp-utils';
+import { withRouter, ScrollToTop } from 'olymp-router';
 import {
   Navbar,
   Layout,
@@ -49,9 +50,9 @@ export const App = createComponent(
     },
   }),
   p =>
-    (<WithColorProvider>
+    <WithColorProvider>
       <Layout fullHeight {...p} />
-    </WithColorProvider>),
+    </WithColorProvider>,
   p => Object.keys(p)
 );
 
@@ -66,11 +67,11 @@ export const Header = withScroll(
       transition: 'box-shadow 0.3s ease-in-out',
     }),
     ({ children, className }) =>
-      (<Layout.Header className={className}>
+      <Layout.Header className={className}>
         <Container>
           {children}
         </Container>
-      </Layout.Header>),
+      </Layout.Header>,
     p => Object.keys(p)
   )
 );
@@ -97,7 +98,7 @@ export default class GzLayout extends Component {
       query,
       pathname,
       auth,
-      ...rest
+      ...rest,
     } = this.props;
     const nav = (pages.map(x => x.children)[0] || [])
       .filter(x => x.slug !== '/');

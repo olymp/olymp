@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'olymp-utils';
-import { Prompt } from 'react-router-dom/Prompt';
+import { withRouter, Prompt } from 'olymp-router';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { Menu, Button, Form, Icon } from 'antd';
 import { Gateway } from 'react-gateway';
@@ -15,7 +14,7 @@ import Page from '../page';
 export default class PageSidebar extends Component {
   state = { tab: 0 };
 
-  componentWillReceiveProps = (props) => {
+  componentWillReceiveProps = props => {
     if (
       (props.query['@page'] !== this.props.query['@page'] ||
         props.query.parent !== this.props.query.parent) &&
@@ -66,18 +65,19 @@ export default class PageSidebar extends Component {
         bindingId={bindingId}
         bindingObj={bindingObj}
       />
-      );
+    );
 
     return (
       <SplitView deviceWidth={deviceWidth} center>
         <Gateway into="navigation">
-          {form.isFieldsTouched() && <Menu.Item key="save">
-            <a href="javascript:;" onClick={save}>
-              <Button type="primary" style={{ margin: '0 -15px' }}>
-                <Icon type="save" /> Speichern
-              </Button>
-            </a>
-          </Menu.Item>}
+          {form.isFieldsTouched() &&
+            <Menu.Item key="save">
+              <a href="javascript:;" onClick={save}>
+                <Button type="primary" style={{ margin: '0 -15px' }}>
+                  <Icon type="save" /> Speichern
+                </Button>
+              </a>
+            </Menu.Item>}
         </Gateway>
         <Prompt
           when={form.isFieldsTouched()}

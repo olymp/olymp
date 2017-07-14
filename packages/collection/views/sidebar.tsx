@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { FieldValue } from '../components';
@@ -92,7 +92,7 @@ export default class CollectionListSidebar extends Component {
     );
   };
 
-  resolveField = (fieldName) => {
+  resolveField = fieldName => {
     const { collection } = this.props;
     const { fields } = collection;
 
@@ -100,7 +100,7 @@ export default class CollectionListSidebar extends Component {
   };
 
   renderMenu = ({ id, state }) =>
-    (<Menu>
+    <Menu>
       <Menu.Item>
         <Link to={this.getLink({ id })}>Bearbeiten</Link>
       </Menu.Item>
@@ -108,7 +108,7 @@ export default class CollectionListSidebar extends Component {
       <Menu.Item disabled>
         {state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen'}
       </Menu.Item>
-    </Menu>);
+    </Menu>;
 
   render() {
     const {
@@ -121,7 +121,7 @@ export default class CollectionListSidebar extends Component {
       searchText,
       onClose,
     } = this.props;
-    const items = (this.props.items || []).map((item) => {
+    const items = (this.props.items || []).map(item => {
       const name = this.resolveFieldValue(item, 'name', {
         defaultFieldName: 'name',
         defaultValue: item.kurz || item.name || 'Kein Titel',
@@ -152,7 +152,7 @@ export default class CollectionListSidebar extends Component {
     });
 
     const childs = items.map(item =>
-      (<List.Item
+      <List.Item
         image={
           (item.image || item.bild) &&
           <Image value={item.image || item.bild} width={37} height={37} />
@@ -161,7 +161,7 @@ export default class CollectionListSidebar extends Component {
         label={item.name}
         onClick={item.onClick}
         key={item.id}
-      />)
+      />
     );
     return (
       <Sidebar
@@ -190,14 +190,20 @@ export default class CollectionListSidebar extends Component {
         title={collection.name}
         subtitle={`${collection.name} sichten und verwalten`}
       >
-        {!searchText ? <Tabs size="small" defaultActiveKey={query.state || 'PUBLISHED'} onChange={state => router.push({ pathname, query: { ...query, state } })}>
-          {Object.keys(states).map(key => (
-            <Tabs.TabPane tab={states[key]} key={key}>
-              {childs}
-            </Tabs.TabPane>
-          ))}
-        </Tabs> : childs
-        }
+        {!searchText
+          ? <Tabs
+              size="small"
+              defaultActiveKey={query.state || 'PUBLISHED'}
+              onChange={state =>
+                router.push({ pathname, query: { ...query, state } })}
+            >
+              {Object.keys(states).map(key =>
+                <Tabs.TabPane tab={states[key]} key={key}>
+                  {childs}
+                </Tabs.TabPane>
+              )}
+            </Tabs>
+          : childs}
       </Sidebar>
     );
   }

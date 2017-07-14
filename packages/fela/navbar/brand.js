@@ -18,7 +18,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import NavLink from 'react-router-dom/NavLink';
+import { NavLink } from 'olymp-router';
 var Brand = createComponent(function (_a) {
     var theme = _a.theme, inverse = _a.inverse;
     return ({
@@ -35,7 +35,7 @@ var Brand = createComponent(function (_a) {
     });
 }, function (_a) {
     var children = _a.children, p = __rest(_a, ["children"]);
-    return (React.createElement(NavLink, __assign({ to: "/" }, p), children));
+    return React.createElement(NavLink, __assign({ to: "/" }, p), children);
 }, function (_a) {
     var inverse = _a.inverse, vertically = _a.vertically, p = __rest(_a, ["inverse", "vertically"]);
     return Object.keys(p);
@@ -60,9 +60,9 @@ var NavbarBrand = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, children = _a.children, props = __rest(_a, ["className", "children"]);
-    return (React.createElement("div", { className: className },
+    return React.createElement("div", { className: className },
         React.createElement(Brand, __assign({}, props), children),
-        React.createElement(Inner, null, children)));
+        React.createElement(Inner, null, children));
 }, function (p) { return Object.keys(p); });
 NavbarBrand.displayName = 'Navbar.Brand';
 NavbarBrand.propTypes = {

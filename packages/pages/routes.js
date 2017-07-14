@@ -9,7 +9,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 import React from 'react';
 import { IFrame, ContentLoader, PageTransition, createComponent, } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
-import { Link, renderHelmet } from 'olymp-utils';
+import { renderHelmet } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Menu, Icon, Button as AntButton } from 'antd';
 import { lowerFirst, get } from 'lodash';
 import { Gateway } from 'react-gateway';
@@ -46,15 +47,15 @@ var renderGateway = function (_a, _b) {
                     React.createElement(Icon, { type: "plus", style: { marginRight: 0 } }),
                     " Seite")),
             collectionList.map(function (collection) {
-                return (React.createElement(Menu.Item, { key: "@" + collection.name.toLowerCase() },
+                return React.createElement(Menu.Item, { key: "@" + collection.name.toLowerCase() },
                     React.createElement(Link, { to: {
                             query: (_a = {},
                                 _a["@" + collection.name.toLowerCase()] = null,
                                 _a),
                         } },
                         React.createElement(Icon, { type: "plus", style: { marginRight: 0 } }),
-                        " ",
-                        get(collection, 'decorators.label.value', collection.name))));
+                        ' ',
+                        get(collection, 'decorators.label.value', collection.name)));
                 var _a;
             })),
         hasBinding &&
@@ -88,23 +89,23 @@ export var EditablePageRoute = function (props) {
     if (!match) {
         return (React.createElement(ContentLoader, { height: 600, isLoading: loading },
             React.createElement(EditablePage, __assign({}, props, { deviceWidth: deviceWidth, render: function (match) {
-                    return (React.createElement(IFrame, { disabled: !deviceWidth },
+                    return React.createElement(IFrame, { disabled: !deviceWidth },
                         React.createElement(Wrapped, __assign({}, props),
                             renderHelmet({
                                 name: '404',
                                 description: 'Seite wurde nicht gefunden',
                                 pathname: pathname,
                             }),
-                            React.createElement(Error404, null))));
+                            React.createElement(Error404, null)));
                 } }))));
     }
     return (React.createElement(ContentLoader, { height: 600, isLoading: loading },
         React.createElement(EditablePage, __assign({}, props, { deviceWidth: deviceWidth, id: pageId || aliasId || id, bindingId: bindingId, binding: binding, render: function (children) {
-                return (React.createElement(IFrame, { disabled: !deviceWidth },
+                return React.createElement(IFrame, { disabled: !deviceWidth },
                     React.createElement(Wrapped, __assign({}, props, { match: match }),
                         renderHelmet(match, pathname),
                         renderGateway(props, match),
-                        children)));
+                        children));
             } }))));
 };
 export var PageRoute = function (props) {

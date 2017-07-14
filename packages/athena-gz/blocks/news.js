@@ -24,7 +24,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel, Item } from '../components';
@@ -52,16 +53,17 @@ var loaderSchema = [
 ];
 var getItems = function (items, filter, title) {
     return sortBy(items.filter(filter), ['date']).reverse().slice(0, 5).map(function (item) {
-        return (React.createElement(Item, { key: item.id },
+        return React.createElement(Item, { key: item.id },
             React.createElement("b", null, title(item)),
             React.createElement("p", null, item.name),
             item.slug &&
-                React.createElement(Link, { to: { pathname: "/news" + item.slug } }, "N\u00E4here Informationen")));
+                React.createElement(Link, { to: { pathname: "/news" + item.slug } }, "N\u00E4here Informationen"));
     });
 };
 var NewsItem = function (props) {
     var art = props.art, date = props.date, name = props.name, description = props.description, org = props.org, slug = props.slug;
-    var image = props.image || org.logo || {
+    var image = props.image ||
+        org.logo || {
         url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
         width: 400,
         height: 300,
@@ -85,11 +87,11 @@ var News = (function (_super) {
             React.createElement(Container, __assign({}, attributes),
                 React.createElement(Grid, null,
                     React.createElement(Grid.Item, { medium: 7, paddingMedium: "0 0 0 0.5rem" }, items.map(function (item) {
-                        return (React.createElement(NewsItem, __assign({}, item, { onClick: function () {
+                        return React.createElement(NewsItem, __assign({}, item, { onClick: function () {
                                 return _this.setState({
                                     open: open === item.id ? undefined : item.id,
                                 });
-                            }, org: item.org || {}, key: item.id })));
+                            }, org: item.org || {}, key: item.id }));
                     })),
                     React.createElement(Column, { medium: 4, offsetMedium: 1, offsetLarge: 1, offsetHuge: 1, paddingMini: "1rem 1rem 0 1rem", paddingMedium: "0 1rem" },
                         React.createElement(H2, { right: true }, "Vortr\u00E4ge & Veranstaltungen"),

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import { withRouter, withSearch } from 'olymp-utils';
+import { withSearch } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { Prompt } from 'react-router-dom/Prompt';
 import { SplitView } from 'olymp-ui';
 import { withItems, withCollection } from '../decorators';
@@ -24,7 +25,7 @@ export default class CollectionView extends Component {
       router,
       performSearch,
       searchText,
-      form
+      form,
     } = this.props;
     const { query, pathname } = location;
     const id = location.query && location.query[`@${typeName.toLowerCase()}`];

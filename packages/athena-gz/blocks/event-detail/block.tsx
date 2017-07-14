@@ -1,5 +1,6 @@
 import React from 'react';
-import { graphql, gql, renderHelmet, Link } from 'olymp-utils';
+import { graphql, gql, renderHelmet } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -59,7 +60,7 @@ const WhiteLink = createComponent(
   p => Object.keys(p)
 );
 
-const getSubheader = (item) => {
+const getSubheader = item => {
   const person = item.person && `von ${item.person.name}`;
   const org =
     item.org &&
@@ -79,7 +80,7 @@ const getSubheader = (item) => {
 const component = withColor(
   ({ item }) => item.org.color
 )(({ className, attributes, item }) =>
-  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
       <Header subheader={getSubheader(item)} color={item.org.color}>
@@ -89,7 +90,11 @@ const component = withColor(
         <Grid size={3}>
           <Grid.Item medium={1}>
             {item.image &&
-              <Image value={item.image} alt={item.image.caption} width="100%" />}
+              <Image
+                value={item.image}
+                alt={item.image.caption}
+                width="100%"
+              />}
           </Grid.Item>
           <Content medium={2}>
             <Slate readOnly value={item.text} />
@@ -98,8 +103,8 @@ const component = withColor(
         </Grid>
       </Container>
     </div>
-  </SchemaLoader>)
-  );
+  </SchemaLoader>
+);
 
 const componentWithData = graphql(
   gql`

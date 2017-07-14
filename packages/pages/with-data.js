@@ -32,7 +32,8 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React, { Component, createElement } from 'react';
-import { gql, graphql, SimpleRoute, unflatten } from 'olymp-utils';
+import { gql, graphql, unflatten } from 'olymp-utils';
+import { AltRoute } from 'olymp-router';
 import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
 import { get, upperFirst, lowerFirst } from 'lodash';
@@ -75,7 +76,12 @@ export var withNavigation = function (Wrapped) {
                             : {};
                         return graphql((_c = ["\n                  query ", "List(\n                    $query: ", "Query,\n                    $sort: ", "Sort\n                  ) {\n                    items: ", "List(query: $query, sort: $sort) {\n                      ", "\n                    }\n                  }\n                "], _c.raw = ["\n                  query ", "List(\n                    $query: ", "Query,\n                    $sort: ", "Sort\n                  ) {\n                    items: ", "List(query: $query, sort: $sort) {\n                      ", "\n                    }\n                  }\n                "], gql(_c, lowerFirst(type), upperFirst(type), upperFirst(type), lowerFirst(type), fields || 'id name slug')), {
                             name: "nav_" + value.id,
-                            options: function () { return ({ variables: { query: __assign({}, query, { state: { eq: 'PUBLISHED' } }), sort: sort } }); },
+                            options: function () { return ({
+                                variables: {
+                                    query: __assign({}, query, { state: { eq: 'PUBLISHED' } }),
+                                    sort: sort,
+                                },
+                            }); },
                         })(store);
                         var _c;
                     }, Wrapped);
@@ -155,16 +161,16 @@ var lastType;
 export var DataRoute = function (_a) {
     var binding = _a.binding, component = _a.component, rest = __rest(_a, ["binding", "component"]);
     if (!binding || !binding.type) {
-        return createElement(component || SimpleRoute, rest);
+        return createElement(component || AltRoute, rest);
     }
     var type = binding.type, fields = binding.fields, query = binding.query;
     var key = "route-" + type + "-" + (fields || 'id name slug');
-    if (lastType !== (component || SimpleRoute)) {
+    if (lastType !== (component || AltRoute)) {
         cache = {};
-        lastType = component || SimpleRoute;
+        lastType = component || AltRoute;
     }
     if (!cache[key]) {
-        cache[key] = withData(component || SimpleRoute, { fields: fields, type: type });
+        cache[key] = withData(component || AltRoute, { fields: fields, type: type });
     }
     return createElement(cache[key], rest);
 };

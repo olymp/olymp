@@ -6,7 +6,7 @@ import session from 'express-session';
 import path from 'path';
 import React from 'react';
 import fetch from 'isomorphic-fetch';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'olymp-router';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
@@ -197,9 +197,7 @@ app.get('*', (req, res) => {
       apollo: client.reducer(),
     }),
     {},
-    compose(
-      applyMiddleware(client.middleware())
-    )
+    compose(applyMiddleware(client.middleware()))
   );
 
   const asyncContext = createAsyncContext();
@@ -237,10 +235,10 @@ app.get('*', (req, res) => {
       const scripts = req.isAmp
         ? []
         : [
-          isProd
-            ? `${clientAssets.main.js}`
-            : `${process.env.DEV_URL}/main.js`,
-        ];
+            isProd
+              ? `${clientAssets.main.js}`
+              : `${process.env.DEV_URL}/main.js`,
+          ];
       const styles = req.isAmp
         ? []
         : isProd ? [`${clientAssets.main.css}`] : [];
@@ -271,7 +269,7 @@ app.get('*', (req, res) => {
       res.send(html);
       // responseRenderer.toStream().pipe(response);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       res.status(500).send(err);
     });

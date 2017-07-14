@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
@@ -16,10 +17,10 @@ import Base, {
 @Form.create()
 @graphql(
   gql`
-  query checkToken($token: String) {
-    valid: checkToken(token: $token)
-  }
-`,
+    query checkToken($token: String) {
+      valid: checkToken(token: $token)
+    }
+  `,
   {
     options: ({ token }) => ({
       fetchPolicy: !token ? 'cache-only' : 'network-only',

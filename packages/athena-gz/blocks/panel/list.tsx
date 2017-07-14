@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import moment from 'moment';
@@ -81,7 +81,7 @@ class ListItem extends Component {
 }
 
 export default ({ items, title, accent, size = 6, path, isLoading }) =>
-  (<Panel
+  <Panel
     medium={size}
     title={
       <Link to={{ pathname: `/${path}/` }}>
@@ -93,12 +93,12 @@ export default ({ items, title, accent, size = 6, path, isLoading }) =>
     {items
       .slice(0, 3)
       .map(item =>
-        (<ListItem
+        <ListItem
           {...item}
           color={accent}
           path={path}
           key={item.id}
           isLoading={isLoading}
-        />)
+        />
       )}
-  </Panel>);
+  </Panel>;

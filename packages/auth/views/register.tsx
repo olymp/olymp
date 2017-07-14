@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
@@ -16,11 +17,11 @@ import Base, {
 @Form.create()
 @graphql(
   gql`
-  query checkTokenMail($token: String) {
-    valid: checkToken(token: $token)
-    email: checkTokenMail(token: $token)
-  }
-`,
+    query checkTokenMail($token: String) {
+      valid: checkToken(token: $token)
+      email: checkTokenMail(token: $token)
+    }
+  `,
   {
     options: ({ token }) => ({
       fetchPolicy: !token ? 'cache-only' : 'network-only',
@@ -173,11 +174,11 @@ export default class AuthRegister extends Component {
           </Form.Item>}
         {valid && extraFields
           ? extraFields({
-            layout,
-            getFieldDecorator,
-            state: this.state,
-            setState: this.setState,
-          })
+              layout,
+              getFieldDecorator,
+              state: this.state,
+              setState: this.setState,
+            })
           : null}
         <Modal.Links>
           <Link to={{ pathname, query: { login: null, register: undefined } }}>

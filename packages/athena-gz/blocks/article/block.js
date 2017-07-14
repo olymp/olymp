@@ -7,7 +7,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 import React from 'react';
-import { graphql, gql, Link, renderHelmet } from 'olymp-utils';
+import { graphql, gql, renderHelmet } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent, withColor, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
@@ -41,12 +42,12 @@ var Container = createComponent(ContainerBlock.styles, ContainerBlock.component,
 var Slate = withBlockTypes(function (props) { return React.createElement(SlateMate, __assign({}, props)); });
 var Peak = createComponent(function (props) { return (__assign({}, ImageStyles(props), { marginBottom: props.theme.space3 })); }, function (_a) {
     var className = _a.className, header = _a.header, subheader = _a.subheader, value = _a.value, title = _a.title;
-    return (React.createElement("div", { className: className },
+    return React.createElement("div", { className: className },
         React.createElement(Image, { value: value, alt: title, width: "100%", maxHeight: 450, maxResolution: 750000 }),
         (header || subheader) &&
             React.createElement(Label, null,
                 React.createElement("h1", null, header),
-                React.createElement("p", null, subheader))));
+                React.createElement("p", null, subheader)));
 }, function (p) { return Object.keys(p); });
 var WhiteLink = createComponent(function (_a) {
     var theme = _a.theme;
@@ -59,7 +60,8 @@ var WhiteLink = createComponent(function (_a) {
 }, function (p) { return React.createElement(Link, __assign({}, p)); }, function (p) { return Object.keys(p); });
 var getSubheader = function (item) {
     var person = item.person && "von " + item.person.name;
-    var org = item.org && item.org.slug &&
+    var org = item.org &&
+        item.org.slug &&
         React.createElement(WhiteLink, { to: item.org.slug }, item.org.name);
     return (person &&
         org &&
@@ -73,7 +75,7 @@ var component = withColor(function (_a) {
     return item.org.color;
 })(function (_a) {
     var className = _a.className, attributes = _a.attributes, item = _a.item;
-    return (React.createElement(SchemaLoader, { isLoading: !item.name, schema: loaderSchema },
+    return React.createElement(SchemaLoader, { isLoading: !item.name, schema: loaderSchema },
         React.createElement("div", null,
             renderHelmet({ description: item.description, image: item.image }),
             item.image
@@ -81,7 +83,7 @@ var component = withColor(function (_a) {
                 : React.createElement(Header, { subheader: getSubheader(item), color: item.org.color }, item.name),
             React.createElement(Container, __assign({ className: className, color: item.org.color }, attributes),
                 React.createElement(Slate, { readOnly: true, value: item.text }),
-                React.createElement(Link, { to: "/magazin" }, "Zur\u00FCck zur \u00DCbersicht")))));
+                React.createElement(Link, { to: "/magazin" }, "Zur\u00FCck zur \u00DCbersicht"))));
 });
 var componentWithData = graphql((_a = ["\n    query article($id: String) {\n      item: article(id: $id) {\n        id\n        date\n        name\n        slug\n        image {\n          url\n          crop\n          width\n          height\n          caption\n          source\n        }\n        description\n        tags\n        text\n        person {\n          id\n          name\n        }\n        org {\n          id\n          name\n          slug\n          color\n        }\n      }\n    }\n  "], _a.raw = ["\n    query article($id: String) {\n      item: article(id: $id) {\n        id\n        date\n        name\n        slug\n        image {\n          url\n          crop\n          width\n          height\n          caption\n          source\n        }\n        description\n        tags\n        text\n        person {\n          id\n          name\n        }\n        org {\n          id\n          name\n          slug\n          color\n        }\n      }\n    }\n  "], gql(_a)), {
     options: function (_a) {

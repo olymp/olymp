@@ -1,6 +1,7 @@
 import React from 'react';
 import { createComponent, SchemaLoader } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { H1, Logo } from '../components';
 import { range } from 'lodash';
 
@@ -59,10 +60,12 @@ const Item = createComponent(
     },
   }),
   ({ className, children, number }) =>
-    (<p className={className}>
+    <p className={className}>
       {children}
-      <Phone href={`tel:${number}`}>{number}</Phone>
-    </p>),
+      <Phone href={`tel:${number}`}>
+        {number}
+      </Phone>
+    </p>,
   p => Object.keys(p)
 );
 
@@ -86,17 +89,17 @@ const Info = createComponent(
 
 const component = graphql(
   gql`
-  query orgList {
-    items: orgList {
-      id
-      name
-      color
-      title
-      telefon
-      slug
+    query orgList {
+      items: orgList {
+        id
+        name
+        color
+        title
+        telefon
+        slug
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
@@ -106,23 +109,23 @@ const component = graphql(
     }),
   }
 )(({ attributes, items, isLoading }) =>
-  (<MarginContainer {...attributes}>
+  <MarginContainer {...attributes}>
     <H1>Telefonnummern</H1>
     <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
     <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
       <div>
         {items.map(item =>
-          (<Item number={item.telefon} key={item.id} color={item.color}>
+          <Item number={item.telefon} key={item.id} color={item.color}>
             <Logo color={item.color} icon={16} />
             <StyledLink to={item.slug}>
               {item.title || item.name}
             </StyledLink>
-          </Item>)
+          </Item>
         )}
       </div>
     </SchemaLoader>
-  </MarginContainer>)
-  );
+  </MarginContainer>
+);
 
 export default {
   key: 'GZK.Collections.PhoneBlock',

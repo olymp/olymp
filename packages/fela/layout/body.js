@@ -17,12 +17,12 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollToTop } from 'olymp-utils';
+import { ScrollToTop } from 'olymp-router';
 import { createComponent } from 'react-fela';
 import WithContainer from './with-container';
 var Body = createComponent(function (_a) {
     var affix = _a.affix;
-    return (__assign({ flex: 'none' }, (!affix
+    return (__assign({ flex: 'none' }, !affix
         ? {}
         : {
             flex: '1 1 auto',
@@ -33,9 +33,11 @@ var Body = createComponent(function (_a) {
                 '-webkit-overflow-scrolling': 'touch',
                 overflowY: 'scroll',
             },
-        })));
-}, function (props) { return React.createElement(ScrollToTop, null,
-    React.createElement(WithContainer, __assign({}, props))); }, function (_a) {
+        }));
+}, function (props) {
+    return React.createElement(ScrollToTop, null,
+        React.createElement(WithContainer, __assign({}, props)));
+}, function (_a) {
     var affix = _a.affix, p = __rest(_a, ["affix"]);
     return Object.keys(p);
 });

@@ -23,7 +23,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
@@ -92,7 +93,7 @@ var AuthReset = (function (_super) {
     AuthReset = __decorate([
         withAuth,
         Form.create(),
-        graphql((_a = ["\n  query checkToken($token: String) {\n    valid: checkToken(token: $token)\n  }\n"], _a.raw = ["\n  query checkToken($token: String) {\n    valid: checkToken(token: $token)\n  }\n"], gql(_a)), {
+        graphql((_a = ["\n    query checkToken($token: String) {\n      valid: checkToken(token: $token)\n    }\n  "], _a.raw = ["\n    query checkToken($token: String) {\n      valid: checkToken(token: $token)\n    }\n  "], gql(_a)), {
             options: function (_a) {
                 var token = _a.token;
                 return ({

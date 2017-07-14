@@ -7,9 +7,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 import React from 'react';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus, } from './views';
-import { AuthInvitations, } from './admin';
+import { AuthInvitations } from './admin';
 export default withRouter(function (props) {
     var query = props.query, router = props.router, pathname = props.pathname, register = props.register;
     var texts = {

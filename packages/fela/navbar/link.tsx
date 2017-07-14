@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavLink from 'react-router-dom/NavLink';
+import { NavLink } from 'olymp-router';
 import { createComponent } from 'react-fela';
 
 const Link = createComponent(

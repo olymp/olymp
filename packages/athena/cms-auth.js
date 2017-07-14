@@ -16,7 +16,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React from 'react';
-import { SimpleSwitch, SimpleRoute } from 'olymp-utils';
+import { AltSwitch, AltRoute } from 'olymp-router';
 import { AuthModals, AuthUsers } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
@@ -38,7 +38,7 @@ var Container = createComponent(function (_a) {
     var deviceWidth = _a.deviceWidth, p = __rest(_a, ["deviceWidth"]);
     return Object.keys(p);
 });
-var SimpleSwitchContainer = createComponent(function (_a) {
+var SwitchContainer = createComponent(function (_a) {
     var theme = _a.theme;
     return ({
         display: 'flex',
@@ -56,19 +56,19 @@ export default function (props) {
         React.createElement(GatewayDest, { name: "modal" }),
         React.createElement(AuthModals, null),
         React.createElement(NavigationVertical, __assign({ collectionList: collectionList, deviceWidth: query['@deviceWidth'] }, location, { location: location })),
-        React.createElement(SimpleSwitchContainer, null,
-            React.createElement(SimpleSwitch, null,
-                React.createElement(SimpleRoute, { match: query['@template'] !== undefined, render: function () { return React.createElement(TemplateRoute, __assign({}, props)); } }),
-                React.createElement(SimpleRoute, { match: !!collection, render: function () {
-                        return (React.createElement(CollectionRoute, __assign({}, props, { typeName: collection && collection.name, Wrapped: Wrapped })));
+        React.createElement(SwitchContainer, null,
+            React.createElement(AltSwitch, null,
+                React.createElement(AltRoute, { match: query['@template'] !== undefined, render: function () { return React.createElement(TemplateRoute, __assign({}, props)); } }),
+                React.createElement(AltRoute, { match: !!collection, render: function () {
+                        return React.createElement(CollectionRoute, __assign({}, props, { typeName: collection && collection.name, Wrapped: Wrapped }));
                     } }),
-                React.createElement(SimpleRoute, { match: query['@page'] !== undefined, render: function () { return React.createElement(EditablePageRoute, __assign({}, props, { Wrapped: Wrapped })); } }),
-                React.createElement(SimpleRoute, { match: query['@media'] !== undefined, render: function () { return React.createElement(CloudinaryRoute, __assign({}, props)); } }),
-                React.createElement(SimpleRoute, { match: query['@settings'] !== undefined, render: function () { return React.createElement(SettingsRoute, __assign({}, props)); } }),
+                React.createElement(AltRoute, { match: query['@page'] !== undefined, render: function () { return React.createElement(EditablePageRoute, __assign({}, props, { Wrapped: Wrapped })); } }),
+                React.createElement(AltRoute, { match: query['@media'] !== undefined, render: function () { return React.createElement(CloudinaryRoute, __assign({}, props)); } }),
+                React.createElement(AltRoute, { match: query['@settings'] !== undefined, render: function () { return React.createElement(SettingsRoute, __assign({}, props)); } }),
                 React.createElement(AnalyticsRoutes, { match: query['@analytics'] !== undefined, render: function () { return React.createElement(AuthUsers, __assign({}, props)); } }),
-                React.createElement(SimpleRoute, { match: query['@users'] !== undefined, render: function () { return React.createElement(AuthUsers, __assign({}, props)); } }),
-                React.createElement(SimpleRoute, { render: function (rest) {
-                        return (React.createElement(PageRoute, __assign({}, rest, props, { key: location.key, navigation: navigation, Wrapped: Wrapped })));
+                React.createElement(AltRoute, { match: query['@users'] !== undefined, render: function () { return React.createElement(AuthUsers, __assign({}, props)); } }),
+                React.createElement(AltRoute, { render: function (rest) {
+                        return React.createElement(PageRoute, __assign({}, rest, props, { key: location.key, navigation: navigation, Wrapped: Wrapped }));
                     } })))));
 };
 //# sourceMappingURL=cms-auth.js.map

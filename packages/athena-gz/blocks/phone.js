@@ -8,7 +8,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 import React from 'react';
 import { createComponent, SchemaLoader } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { H1, Logo } from '../components';
 import { range } from 'lodash';
 var loaderSchema = [
@@ -62,9 +63,9 @@ var Item = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, children = _a.children, number = _a.number;
-    return (React.createElement("p", { className: className },
+    return React.createElement("p", { className: className },
         children,
-        React.createElement(Phone, { href: "tel:" + number }, number)));
+        React.createElement(Phone, { href: "tel:" + number }, number));
 }, function (p) { return Object.keys(p); });
 var Phone = createComponent(function (_a) {
     var theme = _a.theme;
@@ -80,22 +81,22 @@ var Info = createComponent(function (_a) {
         paddingBottom: theme.space3,
     });
 }, 'div', function (p) { return Object.keys(p); });
-var component = graphql((_a = ["\n  query orgList {\n    items: orgList {\n      id\n      name\n      color\n      title\n      telefon\n      slug\n    }\n  }\n"], _a.raw = ["\n  query orgList {\n    items: orgList {\n      id\n      name\n      color\n      title\n      telefon\n      slug\n    }\n  }\n"], gql(_a)), {
+var component = graphql((_a = ["\n    query orgList {\n      items: orgList {\n        id\n        name\n        color\n        title\n        telefon\n        slug\n      }\n    }\n  "], _a.raw = ["\n    query orgList {\n      items: orgList {\n        id\n        name\n        color\n        title\n        telefon\n        slug\n      }\n    }\n  "], gql(_a)), {
     props: function (_a) {
         var ownProps = _a.ownProps, data = _a.data;
         return (__assign({}, ownProps, { data: data, isLoading: data.loading, items: data.items || [] }));
     },
 })(function (_a) {
     var attributes = _a.attributes, items = _a.items, isLoading = _a.isLoading;
-    return (React.createElement(MarginContainer, __assign({}, attributes),
+    return React.createElement(MarginContainer, __assign({}, attributes),
         React.createElement(H1, null, "Telefonnummern"),
         React.createElement(Info, null, "Sie erreichen uns unter folgenden Telefonnummern:"),
         React.createElement(SchemaLoader, { isLoading: isLoading, schema: loaderSchema },
             React.createElement("div", null, items.map(function (item) {
-                return (React.createElement(Item, { number: item.telefon, key: item.id, color: item.color },
+                return React.createElement(Item, { number: item.telefon, key: item.id, color: item.color },
                     React.createElement(Logo, { color: item.color, icon: 16 }),
-                    React.createElement(StyledLink, { to: item.slug }, item.title || item.name)));
-            })))));
+                    React.createElement(StyledLink, { to: item.slug }, item.title || item.name));
+            }))));
 });
 export default {
     key: 'GZK.Collections.PhoneBlock',

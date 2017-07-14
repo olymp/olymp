@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { FieldValue } from '../components';
@@ -90,11 +90,11 @@ var CollectionListSidebar = (function (_super) {
         };
         _this.renderMenu = function (_a) {
             var id = _a.id, state = _a.state;
-            return (React.createElement(Menu, null,
+            return React.createElement(Menu, null,
                 React.createElement(Menu.Item, null,
                     React.createElement(Link, { to: _this.getLink({ id: id }) }, "Bearbeiten")),
                 React.createElement(Menu.Item, { disabled: true }, "Kopieren"),
-                React.createElement(Menu.Item, { disabled: true }, state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen')));
+                React.createElement(Menu.Item, { disabled: true }, state !== 'REMOVED' ? 'Löschen' : 'Wiederherstellen'));
         };
         return _this;
     }
@@ -126,12 +126,18 @@ var CollectionListSidebar = (function (_super) {
             };
         });
         var childs = items.map(function (item) {
-            return (React.createElement(List.Item, { image: (item.image || item.bild) &&
-                    React.createElement(Image, { value: item.image || item.bild, width: 37, height: 37 }), active: item.id === id, label: item.name, onClick: item.onClick, key: item.id }));
+            return React.createElement(List.Item, { image: (item.image || item.bild) &&
+                    React.createElement(Image, { value: item.image || item.bild, width: 37, height: 37 }), active: item.id === id, label: item.name, onClick: item.onClick, key: item.id });
         });
         return (React.createElement(Sidebar, { header: React.createElement(List.Filter, { placeholder: "Filter ...", onChange: onSearch, value: searchText }), leftButtons: onClose &&
                 React.createElement(Button.Group, null,
-                    React.createElement(Sidebar.Button, { onClick: onClose, shape: "circle", icon: "close" })), rightButtons: React.createElement(Sidebar.Button, { onClick: function () { return router.push(_this.getLink({ id: null })); }, shape: "circle", icon: "plus" }), isOpen: true, padding: 0, title: collection.name, subtitle: collection.name + " sichten und verwalten" }, !searchText ? React.createElement(Tabs, { size: "small", defaultActiveKey: query.state || 'PUBLISHED', onChange: function (state) { return router.push({ pathname: pathname, query: __assign({}, query, { state: state }) }); } }, Object.keys(states).map(function (key) { return (React.createElement(Tabs.TabPane, { tab: states[key], key: key }, childs)); })) : childs));
+                    React.createElement(Sidebar.Button, { onClick: onClose, shape: "circle", icon: "close" })), rightButtons: React.createElement(Sidebar.Button, { onClick: function () { return router.push(_this.getLink({ id: null })); }, shape: "circle", icon: "plus" }), isOpen: true, padding: 0, title: collection.name, subtitle: collection.name + " sichten und verwalten" }, !searchText
+            ? React.createElement(Tabs, { size: "small", defaultActiveKey: query.state || 'PUBLISHED', onChange: function (state) {
+                    return router.push({ pathname: pathname, query: __assign({}, query, { state: state }) });
+                } }, Object.keys(states).map(function (key) {
+                return React.createElement(Tabs.TabPane, { tab: states[key], key: key }, childs);
+            }))
+            : childs));
     };
     CollectionListSidebar = __decorate([
         withRouter

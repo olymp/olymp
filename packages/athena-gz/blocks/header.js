@@ -32,7 +32,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React, { Component } from 'react';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { createComponent, Container } from 'olymp-fela';
 import capitalize from 'lodash/upperFirst';
 var Content = (function (_super) {
@@ -81,8 +81,8 @@ export default {
         });
     }, function (_a) {
         var className = _a.className, attributes = _a.attributes, rest = __rest(_a, ["className", "attributes"]);
-        return (React.createElement("div", __assign({ className: className }, attributes),
-            React.createElement(Content, __assign({}, rest))));
+        return React.createElement("div", __assign({ className: className }, attributes),
+            React.createElement(Content, __assign({}, rest)));
     }, function (p) { return Object.keys(p); }),
 };
 //# sourceMappingURL=header.js.map

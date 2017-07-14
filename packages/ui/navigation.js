@@ -33,7 +33,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withLang, Logo } from 'olymp-utils';
+import { withLang, Logo } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
@@ -128,8 +129,8 @@ var AntMenu = function (_a) {
 };
 var AntSubMenu = function (_a) {
     var keys = _a.keys, title = _a.title, children = _a.children, p = __rest(_a, ["keys", "title", "children"]);
-    return (React.createElement(AntMenu, __assign({}, p),
-        React.createElement(RightMenu, { title: title || React.createElement(Icon, { type: "bars" }) }, children)));
+    return React.createElement(AntMenu, __assign({}, p),
+        React.createElement(RightMenu, { title: title || React.createElement(Icon, { type: "bars" }) }, children));
 };
 var Navigation = (function (_super) {
     __extends(Navigation, _super);
@@ -156,11 +157,12 @@ var Navigation = (function (_super) {
             React.createElement(GatewayDest, { name: "quick", component: AntMenu }),
             React.createElement("div", null,
                 React.createElement(GatewayDest, { name: "navigation", component: AntMenu }),
-                get(auth, 'user') && React.createElement(AntSubMenu, { title: React.createElement(UserIcon, { email: auth.user.email, name: auth.user.name, default: "blank" }) },
-                    React.createElement(Menu.Item, { key: "logout" },
-                        React.createElement("a", { onClick: auth.logout, href: "javascript:;" },
-                            React.createElement(Icon, { type: "poweroff" }),
-                            " Abmelden"))))));
+                get(auth, 'user') &&
+                    React.createElement(AntSubMenu, { title: React.createElement(UserIcon, { email: auth.user.email, name: auth.user.name, default: "blank" }) },
+                        React.createElement(Menu.Item, { key: "logout" },
+                            React.createElement("a", { onClick: auth.logout, href: "javascript:;" },
+                                React.createElement(Icon, { type: "poweroff" }),
+                                " Abmelden"))))));
     };
     Navigation.contextTypes = {
         gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,

@@ -17,7 +17,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavLink from 'react-router-dom/NavLink';
+import { NavLink } from 'olymp-router';
 import { createComponent } from 'react-fela';
 var Link = createComponent(function (_a) {
     var theme = _a.theme, inverse = _a.inverse;

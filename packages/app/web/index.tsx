@@ -2,18 +2,10 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import {
-  AmpProvider,
-  routerQueryMiddleware,
-  UAProvider,
-  UAParser,
-} from 'olymp-utils';
+import { AmpProvider, UAProvider, UAParser } from 'olymp-utils';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import {
-  AsyncComponentProvider,
-  createAsyncContext,
-} from 'react-async-component';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
@@ -24,7 +16,7 @@ import { AppContainer } from 'react-hot-loader';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'olymp-router';
 import createHistory from 'history/createFlexHistory';
 // End Redux stuff
 
@@ -67,9 +59,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const networkInterface = createBatchingNetworkInterface({
   uri:
-    process.env.GRAPHQL_URL ||
-    (process.env.URL && `${process.env.URL}/graphql`) ||
-    '/graphql',
+  process.env.GRAPHQL_URL ||
+  (process.env.URL && `${process.env.URL}/graphql`) ||
+  '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',

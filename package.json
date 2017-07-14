@@ -6,6 +6,7 @@
   "scripts": {
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "tsc": "lerna run tsc --parallel",
+    "bootstrap": "lerna bootstrap",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
@@ -19,13 +20,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
@@ -196,6 +191,10 @@
     "lerna": "^2.0.0",
     "prettier": "^1.5.2",
     "prettier-eslint-cli": "^4.1.1",
+    "tslint": "^5.5.0",
+    "tslint-config-prettier": "^1.1.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "tslint-react": "^3.0.0",
     "typescript": "^2.4.1",
     "watchman": "^0.1.8"
   },

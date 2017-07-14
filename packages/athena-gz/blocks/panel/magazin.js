@@ -23,7 +23,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import Container from './container';
@@ -58,9 +59,9 @@ var Magazin = (function (_super) {
         return (React.createElement(Container, __assign({}, attributes, { className: className }),
             React.createElement(List, { size: 7, title: "Unser Magazin", accent: "#8e44ad", items: items, path: "magazin", isLoading: isLoading }),
             React.createElement(Panel, { medium: 5, title: React.createElement(Link, { to: { pathname: '/magazin/' } }, "Magazine als PDF"), accent: "#8e44ad" }, pdfs.slice(0, 9).map(function (item) {
-                return (React.createElement(MagazinItem, { rel: "noopener noreferrer", href: item.url, target: "_blank", color: "#8e44ad", key: item.id },
+                return React.createElement(MagazinItem, { rel: "noopener noreferrer", href: item.url, target: "_blank", color: "#8e44ad", key: item.id },
                     React.createElement(Image, { value: item, width: 100 }),
-                    React.createElement("span", null, item.caption)));
+                    React.createElement("span", null, item.caption));
             }))));
     };
     Magazin = __decorate([

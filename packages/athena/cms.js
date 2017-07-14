@@ -33,7 +33,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React, { Component } from 'react';
 import { withCollections } from 'olymp-collection';
-import { withRouter, withLangProvider } from 'olymp-utils';
+import { withLangProvider } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { withLocale } from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
 import { auth as withAuth } from 'olymp-auth';

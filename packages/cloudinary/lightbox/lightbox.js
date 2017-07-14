@@ -34,7 +34,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LightBox from 'react-images';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 var Lightbox = (function (_super) {
     __extends(Lightbox, _super);
     function Lightbox() {

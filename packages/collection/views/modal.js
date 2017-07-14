@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { Menu, Icon } from 'antd';
 import { Modal, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
@@ -80,8 +80,8 @@ var CollectionDetail = (function (_super) {
                         React.createElement(Icon, { type: "save" }),
                         " Speichern")),
                 keys.map(function (tab) {
-                    return (React.createElement(Menu.Item, { key: tab },
-                        React.createElement(Link, { to: { pathname: pathname, query: __assign({}, query, { tab: tab }) } }, tab)));
+                    return React.createElement(Menu.Item, { key: tab },
+                        React.createElement(Link, { to: { pathname: pathname, query: __assign({}, query, { tab: tab }) } }, tab));
                 })),
             React.createElement(DetailForm, __assign({}, this.props, { item: item || {}, fields: schema[currentTab], onCreate: onSave }))));
     };

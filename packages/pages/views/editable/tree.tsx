@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Tooltip } from 'antd';
@@ -11,7 +11,7 @@ import { reorderPage, movePage } from '../../gql';
 @reorderPage
 @movePage
 class Pages extends Component {
-  onDrop = (info) => {
+  onDrop = info => {
     const { reorder, move } = this.props;
     const parent =
       info.dropToGap && info.node.props.parent
@@ -67,7 +67,7 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
-  getNodeIcon = (item) => {
+  getNodeIcon = item => {
     if (item.sorting && item.sorting[0] === '+') {
       return <Badge type="arrow-up" tooltip="Austeigend sortiert" />;
     } else if (item.sorting && item.sorting[0] === '-') {
@@ -89,7 +89,7 @@ class Pages extends Component {
   };
 
   loop = (data, parent) =>
-    data.map((item) => {
+    data.map(item => {
       const { query } = this.props;
       const children =
         item.children && item.children.length
@@ -151,7 +151,9 @@ class Pages extends Component {
         selectedKeys={selected}
         draggable
         className="draggable-tree"
-        defaultExpandedKeys={items.filter((x, i) => i === 0).map(item => item.id || item.pathname)}
+        defaultExpandedKeys={items
+          .filter((x, i) => i === 0)
+          .map(item => item.id || item.pathname)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
@@ -201,9 +203,9 @@ const Button = createComponent(
     },
   }),
   ({ className, to, type }) =>
-    (<Link to={to} className={className}>
+    <Link to={to} className={className}>
       <Icon type={type} />
-    </Link>),
+    </Link>,
   p => Object.keys(p)
 );
 
@@ -219,10 +221,10 @@ const Badge = createComponent(
     },
   }),
   ({ className, type, tooltip }) =>
-    (<Tooltip title={tooltip}>
+    <Tooltip title={tooltip}>
       <a href="javascript:;" className={className}>
         <Icon type={type} />
       </a>
-    </Tooltip>),
+    </Tooltip>,
   p => Object.keys(p)
 );

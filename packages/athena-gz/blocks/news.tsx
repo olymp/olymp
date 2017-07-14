@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel, Item } from '../components';
@@ -30,7 +31,7 @@ const loaderSchema = [
 
 const getItems = (items, filter, title) =>
   sortBy(items.filter(filter), ['date']).reverse().slice(0, 5).map(item =>
-    (<Item key={item.id}>
+    <Item key={item.id}>
       <b>
         {title(item)}
       </b>
@@ -41,15 +42,16 @@ const getItems = (items, filter, title) =>
         <Link to={{ pathname: `/news${item.slug}` }}>
           Nähere Informationen
         </Link>}
-    </Item>)
+    </Item>
   );
 
-const NewsItem = (props) => {
+const NewsItem = props => {
   const { art, date, name, description, org, slug } = props;
 
-  const image = props.image || org.logo || {
+  const image = props.image ||
+  org.logo || {
     url:
-    'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
@@ -180,7 +182,7 @@ class News extends Component {
           <Grid>
             <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
               {items.map(item =>
-                (<NewsItem
+                <NewsItem
                   {...item}
                   onClick={() =>
                     this.setState({
@@ -188,7 +190,7 @@ class News extends Component {
                     })}
                   org={item.org || {}}
                   key={item.id}
-                />)
+                />
               )}
             </Grid.Item>
             <Column

@@ -8,7 +8,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 import React from 'react';
 import { createComponent, Container, Grid, border, SchemaLoader, } from 'olymp-fela';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { orderBy, upperFirst, range } from 'lodash';
@@ -156,26 +157,26 @@ var component = graphql((_a = ["\n    query articleList {\n      items: articleL
         React.createElement(Container, __assign({}, attributes),
             React.createElement(Grid, null,
                 React.createElement(Grid.Item, { medium: 7, paddingMedium: "0 0 0 0.5rem" }, items.map(function (item) {
-                    return (React.createElement(Item, __assign({}, item, { org: item.org || {}, person: item.person || {}, key: item.id })));
+                    return React.createElement(Item, __assign({}, item, { org: item.org || {}, person: item.person || {}, key: item.id }));
                 })),
                 React.createElement(Column, { medium: 4, offsetMedium: 1, offsetLarge: 1, offsetHuge: 1, paddingMini: "0.5rem 1rem 0 1rem", paddingMedium: "0 0.5rem 0 0" },
                     React.createElement(H2, { right: true }, "Ausgaben als PDFs"),
                     pdfs.map(function (pdf, i) {
-                        return (React.createElement(ListItem, { key: i },
+                        return React.createElement(ListItem, { key: i },
                             React.createElement(DownloadLink, { rel: "noopener noreferrer", href: pdf.url, target: "_blank" },
                                 "Gesund im Zentrum - ",
                                 React.createElement("b", null, pdf.caption),
-                                React.createElement(FaDownload, { size: 15 }))));
+                                React.createElement(FaDownload, { size: 15 })));
                     }),
                     React.createElement(H2, { right: true }, "Schlagworte"),
                     React.createElement(TagContainer, null, orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(function (tag) {
-                        return (React.createElement(Tag, { key: tag.tag },
+                        return React.createElement(Tag, { key: tag.tag },
                             upperFirst(tag.tag),
                             " ",
                             React.createElement("small", null,
                                 "(",
                                 tag.count,
-                                ")")));
+                                ")"));
                     })))))));
 });
 export default {

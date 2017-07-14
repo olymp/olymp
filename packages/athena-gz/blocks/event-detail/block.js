@@ -7,7 +7,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 import React from 'react';
-import { graphql, gql, renderHelmet, Link } from 'olymp-utils';
+import { graphql, gql, renderHelmet } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -70,7 +71,7 @@ var component = withColor(function (_a) {
     return item.org.color;
 })(function (_a) {
     var className = _a.className, attributes = _a.attributes, item = _a.item;
-    return (React.createElement(SchemaLoader, { isLoading: !item.name, schema: loaderSchema },
+    return React.createElement(SchemaLoader, { isLoading: !item.name, schema: loaderSchema },
         React.createElement("div", null,
             renderHelmet({ description: item.description, image: item.image }),
             React.createElement(Header, { subheader: getSubheader(item), color: item.org.color }, item.name),
@@ -80,7 +81,7 @@ var component = withColor(function (_a) {
                         React.createElement(Image, { value: item.image, alt: item.image.caption, width: "100%" })),
                     React.createElement(Content, { medium: 2 },
                         React.createElement(Slate, { readOnly: true, value: item.text }),
-                        React.createElement(Link, { to: "/news" }, "Zur\u00FCck zur \u00DCbersicht")))))));
+                        React.createElement(Link, { to: "/news" }, "Zur\u00FCck zur \u00DCbersicht"))))));
 });
 var componentWithData = graphql((_a = ["\n    query event($id: String) {\n      item: event(id: $id) {\n        id\n        art\n        ort\n        date\n        name\n        slug\n        image {\n          id\n          url\n          crop\n          width\n          height\n          caption\n          source\n        }\n        description\n        tags\n        text\n        person {\n          id\n          name\n        }\n        org {\n          id\n          name\n          slug\n          color\n        }\n      }\n    }\n  "], _a.raw = ["\n    query event($id: String) {\n      item: event(id: $id) {\n        id\n        art\n        ort\n        date\n        name\n        slug\n        image {\n          id\n          url\n          crop\n          width\n          height\n          caption\n          source\n        }\n        description\n        tags\n        text\n        person {\n          id\n          name\n        }\n        org {\n          id\n          name\n          slug\n          color\n        }\n      }\n    }\n  "], gql(_a)), {
     options: function (_a) {

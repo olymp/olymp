@@ -1,4 +1,5 @@
 export * from './toolbelt';
+export { default as memoize } from './memoize';
 export { default as colors } from './colors';
 export * from './purify';
 export { default as cloudinaryUrl } from './cloudinary-url';
@@ -16,6 +17,5 @@ export { default as Logo } from './logo';
 export { default as renderHelmet } from './helmet';
 export { default as asEuro } from './as-euro';
 export * from './decorators';
-export * from './router';
 export * from './extern';
 //# sourceMappingURL=index.js.map

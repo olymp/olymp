@@ -24,7 +24,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Tooltip } from 'antd';
@@ -134,7 +134,9 @@ var Pages = (function (_super) {
     }
     Pages.prototype.render = function () {
         var _a = this.props, items = _a.items, selected = _a.selected, pathname = _a.pathname, query = _a.query;
-        return (React.createElement(Tree, { selectedKeys: selected, draggable: true, className: "draggable-tree", defaultExpandedKeys: items.filter(function (x, i) { return i === 0; }).map(function (item) { return item.id || item.pathname; }), onDragEnter: this.onDragEnter, onDrop: this.onDrop }, this.loop(items)));
+        return (React.createElement(Tree, { selectedKeys: selected, draggable: true, className: "draggable-tree", defaultExpandedKeys: items
+                .filter(function (x, i) { return i === 0; })
+                .map(function (item) { return item.id || item.pathname; }), onDragEnter: this.onDragEnter, onDrop: this.onDrop }, this.loop(items)));
     };
     Pages = __decorate([
         withRouter,
@@ -183,8 +185,8 @@ var Button = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, to = _a.to, type = _a.type;
-    return (React.createElement(Link, { to: to, className: className },
-        React.createElement(Icon, { type: type })));
+    return React.createElement(Link, { to: to, className: className },
+        React.createElement(Icon, { type: type }));
 }, function (p) { return Object.keys(p); });
 var Badge = createComponent(function (_a) {
     var theme = _a.theme;
@@ -200,8 +202,8 @@ var Badge = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, type = _a.type, tooltip = _a.tooltip;
-    return (React.createElement(Tooltip, { title: tooltip },
+    return React.createElement(Tooltip, { title: tooltip },
         React.createElement("a", { href: "javascript:;", className: className },
-            React.createElement(Icon, { type: type }))));
+            React.createElement(Icon, { type: type })));
 }, function (p) { return Object.keys(p); });
 //# sourceMappingURL=tree.js.map

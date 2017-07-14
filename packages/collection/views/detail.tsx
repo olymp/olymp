@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { Menu, Icon, Button } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
@@ -51,7 +51,7 @@ const HiddenForm = createComponent(
     display: visible ? 'block' : 'none',
   }),
   p => <DetailForm {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 @withRouter
@@ -59,7 +59,15 @@ const HiddenForm = createComponent(
 export default class CollectionDetail extends Component {
   state = { tab: null };
   render() {
-    const { id, item, collection, onSave, onClone, pathname, query } = this.props;
+    const {
+      id,
+      item,
+      collection,
+      onSave,
+      onClone,
+      pathname,
+      query,
+    } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = this.state.tab || Object.keys(schema)[0];
@@ -83,11 +91,14 @@ export default class CollectionDetail extends Component {
               </a>
             </Menu.Item>
             {keys.map(tab =>
-              (<Menu.Item key={tab} className={tab === currentTab && 'ant-menu-item-selected'}>
+              <Menu.Item
+                key={tab}
+                className={tab === currentTab && 'ant-menu-item-selected'}
+              >
                 <a onClick={() => this.setState({ tab })}>
                   {tab}
                 </a>
-              </Menu.Item>)
+              </Menu.Item>
             )}
           </Gateway>
           {Object.keys(schema).map(tab =>
@@ -100,7 +111,6 @@ export default class CollectionDetail extends Component {
               onCreate={onSave}
             />
           )}
-
         </Flex>
       </ContentLoader>
     );

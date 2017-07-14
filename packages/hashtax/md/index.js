@@ -19,7 +19,7 @@ import React from 'react';
 import remark from 'remark';
 import reactRenderer from './compiler';
 import plugin from './container';
-import { Link } from 'olymp-utils';
+import { Link } from 'olymp-router';
 var defaultComponents = {
     text: function (_a) {
         var value = _a.value, props = __rest(_a, ["value"]);
@@ -36,7 +36,9 @@ var defaultComponents = {
     ul: function (props) { return React.createElement("ul", __assign({}, props)); },
     ol: function (props) { return React.createElement("ol", __assign({}, props)); },
     li: function (props) { return React.createElement("li", __assign({}, props)); },
-    heading1: function (props) { return React.createElement("h1", __assign({ style: { marginBottom: 5, marginTop: 5 } }, props)); },
+    heading1: function (props) {
+        return React.createElement("h1", __assign({ style: { marginBottom: 5, marginTop: 5 } }, props));
+    },
     heading2: function (props) { return React.createElement("h2", __assign({}, props)); },
     heading3: function (props) { return React.createElement("h3", __assign({}, props)); },
     heading4: function (props) { return React.createElement("h4", __assign({}, props)); },
@@ -53,7 +55,9 @@ export default function (components) {
     var remarkReactComponents = __assign({}, defaultComponents, components);
     return function (_a) {
         var value = _a.value, props = __rest(_a, ["value"]);
-        var instance = remark().use(plugin, { components: remarkReactComponents, props: props }).use(reactRenderer, {
+        var instance = remark()
+            .use(plugin, { components: remarkReactComponents, props: props })
+            .use(reactRenderer, {
             remarkReactComponents: remarkReactComponents,
         });
         return instance.processSync(value).contents;

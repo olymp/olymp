@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql, Link } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import Container from './container';
@@ -107,7 +108,7 @@ class Magazin extends Component {
           accent="#8e44ad"
         >
           {pdfs.slice(0, 9).map(item =>
-            (<MagazinItem
+            <MagazinItem
               rel="noopener noreferrer"
               href={item.url}
               target="_blank"
@@ -118,7 +119,7 @@ class Magazin extends Component {
               <span>
                 {item.caption}
               </span>
-            </MagazinItem>)
+            </MagazinItem>
           )}
         </Panel>
       </Container>

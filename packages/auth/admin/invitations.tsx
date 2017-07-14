@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import withAuth from '../with-auth';
 import { Button, Form, Input, Icon } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
@@ -16,10 +17,14 @@ import {
 
 @graphql(
   gql`
-  query invitationList {
-    items: invitationList { id, name, email }
-  }
-`,
+    query invitationList {
+      items: invitationList {
+        id
+        name
+        email
+      }
+    }
+  `,
   {
     options: ({ isOpen }) => ({ skip: !isOpen }),
   }
@@ -97,12 +102,12 @@ export default class AuthInvitations extends Component {
               value={search}
             />
             {items.map(item =>
-              (<List.Item
+              <List.Item
                 to={{ pathname, query: { '@invitations': item.id } }}
                 key={item.id}
                 label={item.name}
                 description="Benutzer"
-              />)
+              />
             )}
           </List>
           {id && id === 'new' && <AuthInviationDetail id={null} />}
@@ -126,10 +131,14 @@ export default class AuthInvitations extends Component {
 @withAuth
 @graphql(
   gql`
-  query invitation($id: String) {
-    item: invitation(id: $id) { id, name, email }
-  }
-`,
+    query invitation($id: String) {
+      item: invitation(id: $id) {
+        id
+        name
+        email
+      }
+    }
+  `,
   {
     options: ({ id }) => ({
       fetchPolicy: !id ? 'cache-only' : undefined,
@@ -177,7 +186,7 @@ class AuthInviationDetail extends Component {
               onKeyPress={onEnterFocus(() => this.mail)}
               size="large"
             />
-            )}
+          )}
         </Form.Item>
         <Form.Item key="email" label="E-Mail" {...layout}>
           {getFieldDecorator('email', {
@@ -194,7 +203,7 @@ class AuthInviationDetail extends Component {
               size="large"
               addonAfter={<FaEnvelope size={10} />}
             />
-            )}
+          )}
         </Form.Item>
         <Button onClick={this.ok}>Speichern</Button>
       </Panel>

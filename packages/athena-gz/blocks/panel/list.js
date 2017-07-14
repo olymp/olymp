@@ -17,7 +17,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 import React, { Component } from 'react';
-import { Link } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import moment from 'moment';
@@ -73,10 +73,10 @@ var ListItem = (function (_super) {
 }(Component));
 export default function (_a) {
     var items = _a.items, title = _a.title, accent = _a.accent, _b = _a.size, size = _b === void 0 ? 6 : _b, path = _a.path, isLoading = _a.isLoading;
-    return (React.createElement(Panel, { medium: size, title: React.createElement(Link, { to: { pathname: "/" + path + "/" } }, title), accent: accent }, items
+    return React.createElement(Panel, { medium: size, title: React.createElement(Link, { to: { pathname: "/" + path + "/" } }, title), accent: accent }, items
         .slice(0, 3)
         .map(function (item) {
-        return (React.createElement(ListItem, __assign({}, item, { color: accent, path: path, key: item.id, isLoading: isLoading })));
-    })));
+        return React.createElement(ListItem, __assign({}, item, { color: accent, path: path, key: item.id, isLoading: isLoading }));
+    }));
 };
 //# sourceMappingURL=list.js.map

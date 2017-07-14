@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Icon } from 'antd';
 // import Image from '../../cms/cloudinary/image';
@@ -59,7 +59,7 @@ const Content = createComponent(
     },
   }),
   ({ image, label, description, className, disabled, icon }) =>
-    (<div className={className}>
+    <div className={className}>
       {image &&
         <ImgContainer>
           {image &&
@@ -75,7 +75,7 @@ const Content = createComponent(
       </div>
 
       {!disabled ? <Icon type={icon || 'right'} /> : null}
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 
@@ -92,26 +92,26 @@ export default ({
 }) =>
   onClick || disabled
     ? <a
-      className={className}
-      href="javascript:;"
-      onClick={disabled ? () => {} : onClick}
-    >
-      <Content
-        image={image}
-        label={label}
-        description={description}
-        active={active}
-        disabled={disabled}
-        icon={icon}
-      />
-    </a>
+        className={className}
+        href="javascript:;"
+        onClick={disabled ? () => {} : onClick}
+      >
+        <Content
+          image={image}
+          label={label}
+          description={description}
+          active={active}
+          disabled={disabled}
+          icon={icon}
+        />
+      </a>
     : <Link className={className} to={to} disabled={disabled}>
-      <Content
-        image={image}
-        label={label}
-        description={description}
-        active={active}
-        disabled={disabled}
-        icon={icon}
-      />
-    </Link>;
+        <Content
+          image={image}
+          label={label}
+          description={description}
+          active={active}
+          disabled={disabled}
+          icon={icon}
+        />
+      </Link>;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import {
   AuthRegister,
   AuthLogin,
@@ -8,18 +8,16 @@ import {
   AuthForgot,
   AuthStatus,
 } from './views';
-import {
-  AuthInvitations,
-} from './admin';
+import { AuthInvitations } from './admin';
 
-export default withRouter((props) => {
+export default withRouter(props => {
   const { query, router, pathname, register } = props;
   const texts = {
     forgot: `Wir haben eine E-Mail an ${query[
-    'status-forgot'
+      'status-forgot'
     ]} geschickt. Bitte befolgen Sie den Anweisungen darin um ein neues Passwort zu erhalten.`,
     register: `Wir haben eine E-Mail an ${query[
-    'status-register'
+      'status-register'
     ]} geschickt. Bitte befolgen Sie den Anweisungen darin um die Registrierung abzuschließen.`,
   };
   const redirect = newQuery =>
@@ -29,10 +27,7 @@ export default withRouter((props) => {
 
   return (
     <div>
-      <AuthInvitations
-        {...p}
-        isOpen={inQuery('invitations')}
-      />
+      <AuthInvitations {...p} isOpen={inQuery('invitations')} />
       <AuthLogin
         {...p}
         isOpen={inQuery('login')}

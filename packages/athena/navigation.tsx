@@ -1,6 +1,7 @@
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withLang, Logo } from 'olymp-utils';
+import { withLang, Logo } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
@@ -8,7 +9,7 @@ import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
-const getInitials = (name) => {
+const getInitials = name => {
   if (name) {
     const array = name.split(' ');
 
@@ -104,11 +105,11 @@ const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
-  (<AntMenu {...p}>
+  <AntMenu {...p}>
     <RightMenu title={title || <Icon type="bars" />}>
       {children}
     </RightMenu>
-  </AntMenu>);
+  </AntMenu>;
 
 @withLang
 @withAuth
@@ -172,7 +173,7 @@ class Navigation extends Component {
             }
           >
             {collectionList.map(collection =>
-              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
                 <Link
                   to={{
                     query: {
@@ -183,7 +184,7 @@ class Navigation extends Component {
                   <Icon type="api" />{' '}
                   {get(collection, 'decorators.label.value', collection.name)}
                 </Link>
-              </Menu.Item>)
+              </Menu.Item>
             )}
           </Menu.SubMenu>
           <Menu.Item key="@analytics">

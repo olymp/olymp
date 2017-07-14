@@ -23,9 +23,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { Link, withRouter, graphql, gql, sortBy } from 'olymp-utils';
+import { graphql, gql, sortBy } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';
+import { Link } from 'olymp-router';
 var Item = createComponent(function (_a) {
     var theme = _a.theme, color = _a.color, hovered = _a.hovered;
     return ({
@@ -62,10 +64,10 @@ var Item = createComponent(function (_a) {
     });
 }, function (_a) {
     var className = _a.className, slug = _a.slug, name = _a.name, kurz = _a.kurz, org = _a.org, telefon = _a.telefon, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
-    return (React.createElement("li", { className: className },
+    return React.createElement("li", { className: className },
         React.createElement(Link, { to: slug || '/', onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
             React.createElement("span", null, kurz || name),
-            React.createElement("span", null, org || telefon))));
+            React.createElement("span", null, org || telefon)));
 }, function (p) { return Object.keys(p); });
 var VerzeichnisBlock = (function (_super) {
     __extends(VerzeichnisBlock, _super);
@@ -80,11 +82,11 @@ var VerzeichnisBlock = (function (_super) {
         }; };
         _this.renderSection = function (title, items) {
             if (items === void 0) { items = []; }
-            return (React.createElement(Grid.Item, { medium: 1 },
+            return React.createElement(Grid.Item, { medium: 1 },
                 React.createElement(H2, null, title),
                 React.createElement("ul", null, items.map(function (item) {
-                    return (React.createElement(Item, __assign({}, item, { onMouseEnter: _this.onMouseOver(item), onMouseLeave: _this.onMouseLeave, hovered: _this.state.hover === (item.orgId || item.id) })));
-                }))));
+                    return React.createElement(Item, __assign({}, item, { onMouseEnter: _this.onMouseOver(item), onMouseLeave: _this.onMouseLeave, hovered: _this.state.hover === (item.orgId || item.id) }));
+                })));
         };
         return _this;
     }

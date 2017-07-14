@@ -17,7 +17,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 import React, { Component } from 'react';
-import { Image } from 'olymp-utils';
+import { Image } from 'olymp-fela';
 import { Checkbox } from 'antd';
 import { Plain, Raw } from 'slate';
 import moment from 'moment';

@@ -16,7 +16,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 var LightboxProvider = (function (_super) {
     __extends(LightboxProvider, _super);
     function LightboxProvider() {

@@ -12,14 +12,13 @@ const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-const { CheckerPlugin } = require('awesome-typescript-loader')
+const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const appRoot = process.cwd();
 const olympRoot = path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 
-const allPackages = fs
-  .readdirSync(path.resolve(olympRoot, 'packages'));
+const allPackages = fs.readdirSync(path.resolve(olympRoot, 'packages'));
 
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isDev = mode !== 'production';
@@ -30,6 +29,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isServerless = serverless === true || isElectron;
   const isSSR = ssr !== false && !serverless;
   const folder = isDev ? '.dev' : '.dist';
+
   const config = {
     resolve: {
       extensions: ['.js', '.json', '.ts', '.tsx'],
@@ -41,7 +41,9 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       ],
       alias: Object.assign(
         {
-          'history/createFlexHistory': isServerless ? 'history/createHashHistory' : 'history/createBrowserHistory',
+          'history/createFlexHistory': isServerless
+            ? 'history/createHashHistory'
+            : 'history/createBrowserHistory',
           react: path.resolve(appRoot, 'node_modules', 'react'),
           // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
           'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
@@ -49,9 +51,10 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
           moment: path.resolve(appRoot, 'node_modules', 'moment'),
           lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
           '@root': appRoot,
-          '@app': isNode && !isSSR
-            ? path.resolve(__dirname, 'noop')
-            : path.resolve(appRoot, 'app'),
+          '@app':
+            isNode && !isSSR
+              ? path.resolve(__dirname, 'noop')
+              : path.resolve(appRoot, 'app'),
         },
         allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
@@ -75,30 +78,34 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
             'process.env.SSR': JSON.stringify(isSSR),
             'process.env.NODE_ENV': JSON.stringify(mode),
             'process.env.DEV_PORT': JSON.stringify(devPort),
-            'process.env.DEV_URL': devUrl ? JSON.stringify(devUrl.origin) : undefined,
+            'process.env.DEV_URL': devUrl
+              ? JSON.stringify(devUrl.origin)
+              : undefined,
             'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
             'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
-            'process.env.IS_ELECTRON': isElectron ? JSON.stringify(true) : undefined,
+            'process.env.IS_ELECTRON': isElectron
+              ? JSON.stringify(true)
+              : undefined,
           },
           !isNode
             ? {
-              'process.env.AMP': process.env.AMP
-                ? JSON.stringify(process.env.AMP)
-                : undefined,
-              'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
-              'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
-                ? JSON.stringify(process.env.GRAPHQL_URL)
-                : undefined,
-              /*'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
+                'process.env.AMP': process.env.AMP
+                  ? JSON.stringify(process.env.AMP)
+                  : undefined,
+                'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
+                'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
+                  ? JSON.stringify(process.env.GRAPHQL_URL)
+                  : undefined,
+                /*'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
                 ? JSON.stringify(process.env.GRAPHQL_SUB)
                 : undefined,*/
-              'process.env.URL': process.env.URL
-                ? JSON.stringify(process.env.URL)
-                : undefined,
-              'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-                ? JSON.stringify(process.env.FILESTACK_KEY)
-                : undefined,
-            }
+                'process.env.URL': process.env.URL
+                  ? JSON.stringify(process.env.URL)
+                  : undefined,
+                'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
+                  ? JSON.stringify(process.env.FILESTACK_KEY)
+                  : undefined,
+              }
             : {}
         )
       ),
@@ -321,7 +328,11 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'index.html',
-          template: path.resolve(__dirname, 'templates', isElectron ? 'electron.js' : 'serverless.js'),
+          template: path.resolve(
+            __dirname,
+            'templates',
+            isElectron ? 'electron.js' : 'serverless.js'
+          ),
           inject: false,
           /* minify: {
           removeComments: true,
@@ -375,7 +386,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
           /\.(css|scss|sass|sss|less)$/,
         ],
       })
-      );
+    );
   }
 
   if (isWeb && isDev) {
@@ -391,23 +402,30 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
       require.resolve(path.resolve(__dirname, target)),
     ];
   } else if (isElectron) {
-    config.entry.main = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
-    config.entry.app = [require.resolve(path.resolve(__dirname, 'electron', 'main.js'))];
+    config.entry.main = [
+      require.resolve(path.resolve(__dirname, 'web', 'index.js')),
+    ];
+    config.entry.app = [
+      require.resolve(path.resolve(__dirname, 'electron', 'main.js')),
+    ];
   } else {
-    config.entry.main = [require.resolve(path.resolve(__dirname, target, 'index.js'))];
+    config.entry.main = [
+      require.resolve(path.resolve(__dirname, target, 'index.js')),
+    ];
   }
 
   if (isProd) {
     config.module.rules.push({
       test: /\.tsx?$/,
-      include: [
-        path.resolve(appRoot, 'app'),
-        path.resolve(appRoot, 'server'),
-      ],
+      include: [path.resolve(appRoot, 'app'), path.resolve(appRoot, 'server')],
       use: [
         {
           loader: 'awesome-typescript-loader',
-          options: { silent: true, transpileOnly: true, configFileName: path.resolve(__dirname, 'tsconfig.json') },
+          options: {
+            silent: true,
+            transpileOnly: true,
+            configFileName: path.resolve(__dirname, 'tsconfig.json'),
+          },
         },
       ],
     });
@@ -426,17 +444,18 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   } else {
     config.module.rules.push({
       test: /\.tsx?$/,
-      include: [
-        path.resolve(appRoot, 'app'),
-        path.resolve(appRoot, 'server'),
-      ],
+      include: [path.resolve(appRoot, 'app'), path.resolve(appRoot, 'server')],
       use: [
         {
           loader: 'react-hot-loader/webpack',
         },
         {
           loader: 'awesome-typescript-loader',
-          options: { silent: true, transpileOnly: true, configFileName: path.resolve(__dirname, 'tsconfig.json') },
+          options: {
+            silent: true,
+            transpileOnly: true,
+            configFileName: path.resolve(__dirname, 'tsconfig.json'),
+          },
         },
       ],
     });

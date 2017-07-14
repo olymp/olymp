@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
+import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
@@ -28,7 +29,7 @@ export default class AuthLogin extends Component {
           onSuccess('Anmeldung erfolgreich', `Wilkommen, ${name}`);
           onClose();
         })
-        .catch((err) => {
+        .catch(err => {
           if (err.message.indexOf('Please provide a totp token') !== -1) {
             onTotp();
           } else {

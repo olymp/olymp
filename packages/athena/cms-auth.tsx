@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimpleSwitch, SimpleRoute } from 'olymp-utils';
+import { AltSwitch, AltRoute } from 'olymp-router';
 import { AuthModals, AuthUsers } from 'olymp-auth';
 import { GatewayDest } from 'react-gateway';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
@@ -28,7 +28,7 @@ const Container = createComponent(
   ({ deviceWidth, ...p }) => Object.keys(p)
 );
 
-const SimpleSwitchContainer = createComponent(
+const SwitchContainer = createComponent(
   ({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -37,7 +37,7 @@ const SimpleSwitchContainer = createComponent(
   p => Object.keys(p)
 );
 
-export default (props) => {
+export default props => {
   const {
     query,
     collectionList,
@@ -60,31 +60,31 @@ export default (props) => {
         {...location}
         location={location}
       />
-      <SimpleSwitchContainer>
-        <SimpleSwitch>
-          <SimpleRoute
+      <SwitchContainer>
+        <AltSwitch>
+          <AltRoute
             match={query['@template'] !== undefined}
             render={() => <TemplateRoute {...props} />}
           />
-          <SimpleRoute
+          <AltRoute
             match={!!collection}
             render={() =>
-              (<CollectionRoute
+              <CollectionRoute
                 {...props}
                 typeName={collection && collection.name}
                 Wrapped={Wrapped}
-              />)}
+              />}
           />
-          <SimpleRoute
+          <AltRoute
             match={query['@page'] !== undefined}
             render={() => <EditablePageRoute {...props} Wrapped={Wrapped} />}
           />
-          <SimpleRoute
+          <AltRoute
             match={query['@media'] !== undefined}
             render={() => <CloudinaryRoute {...props} />}
           />
-          {/* <SimpleRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
-          <SimpleRoute
+          {/* <AltRoute match={query[`@stats`] !== undefined} render={() => <AnalyticsRoute {...props} />} />*/}
+          <AltRoute
             match={query['@settings'] !== undefined}
             render={() => <SettingsRoute {...props} />}
           />
@@ -92,26 +92,26 @@ export default (props) => {
             match={query['@analytics'] !== undefined}
             render={() => <AuthUsers {...props} />}
           />
-          <SimpleRoute
+          <AltRoute
             match={query['@users'] !== undefined}
             render={() => <AuthUsers {...props} />}
           />
-          {/* <SimpleRoute
+          {/* <AltRoute
             match={query['@user'] !== undefined}
             render={() => <AuthUser {...props} />}
           />*/}
-          <SimpleRoute
+          <AltRoute
             render={rest =>
-              (<PageRoute
+              <PageRoute
                 {...rest}
                 {...props}
                 key={location.key}
                 navigation={navigation}
                 Wrapped={Wrapped}
-              />)}
+              />}
           />
-        </SimpleSwitch>
-      </SimpleSwitchContainer>
+        </AltSwitch>
+      </SwitchContainer>
     </Container>
   );
 };

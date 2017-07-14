@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'olymp-utils';
+import { Link, withRouter } from 'olymp-router';
 import { Menu, Icon } from 'antd';
 import { Modal, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
@@ -60,11 +60,11 @@ export default class CollectionDetail extends Component {
             </a>
           </Menu.Item>
           {keys.map(tab =>
-            (<Menu.Item key={tab}>
+            <Menu.Item key={tab}>
               <Link to={{ pathname, query: { ...query, tab } }}>
                 {tab}
               </Link>
-            </Menu.Item>)
+            </Menu.Item>
           )}
         </Gateway>
 

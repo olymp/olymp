@@ -15,8 +15,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { withRouter } from 'olymp-utils';
-import { Prompt } from 'react-router-dom/Prompt';
+import { withRouter, Prompt } from 'olymp-router';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { Menu, Button, Form, Icon } from 'antd';
 import { Gateway } from 'react-gateway';
@@ -56,11 +55,12 @@ var PageSidebar = (function (_super) {
             initialValue: item.blocks,
         })(React.createElement(Page, { readOnly: !isPage, binding: binding, bindingId: bindingId, bindingObj: bindingObj }));
         return (React.createElement(SplitView, { deviceWidth: deviceWidth, center: true },
-            React.createElement(Gateway, { into: "navigation" }, form.isFieldsTouched() && React.createElement(Menu.Item, { key: "save" },
-                React.createElement("a", { href: "javascript:;", onClick: save },
-                    React.createElement(Button, { type: "primary", style: { margin: '0 -15px' } },
-                        React.createElement(Icon, { type: "save" }),
-                        " Speichern")))),
+            React.createElement(Gateway, { into: "navigation" }, form.isFieldsTouched() &&
+                React.createElement(Menu.Item, { key: "save" },
+                    React.createElement("a", { href: "javascript:;", onClick: save },
+                        React.createElement(Button, { type: "primary", style: { margin: '0 -15px' } },
+                            React.createElement(Icon, { type: "save" }),
+                            " Speichern")))),
             React.createElement(Prompt, { when: form.isFieldsTouched(), message: function () { return 'Änderungen verwerfen?'; } }),
             React.createElement(Sidebar, { isOpen: true, onClose: function () { return router.push(pathname); }, padding: 0, title: title, subtitle: description },
                 React.createElement(PageForm, { form: form, item: item, navigation: navigation, items: flatNavigation, tab: "" + tab, onTabClick: function (key) { return _this.setState({ tab: key }); } })),

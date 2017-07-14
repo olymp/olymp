@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Link, withRouter, graphql, gql, sortBy } from 'olymp-utils';
+import { graphql, gql, sortBy } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';
+import { Link } from 'olymp-router';
 
 const Item = createComponent(
   ({ theme, color, hovered }) => ({
@@ -37,7 +39,7 @@ const Item = createComponent(
     },
   }),
   ({ className, slug, name, kurz, org, telefon, onMouseEnter, onMouseLeave }) =>
-    (<li className={className}>
+    <li className={className}>
       <Link
         to={slug || '/'}
         onMouseEnter={onMouseEnter}
@@ -50,7 +52,7 @@ const Item = createComponent(
           {org || telefon}
         </span>
       </Link>
-    </li>),
+    </li>,
   p => Object.keys(p)
 );
 
@@ -93,22 +95,22 @@ class VerzeichnisBlock extends Component {
   };
 
   renderSection = (title, items = []) =>
-    (<Grid.Item medium={1}>
+    <Grid.Item medium={1}>
       <H2>
         {title}
       </H2>
 
       <ul>
         {items.map(item =>
-          (<Item
+          <Item
             {...item}
             onMouseEnter={this.onMouseOver(item)}
             onMouseLeave={this.onMouseLeave}
             hovered={this.state.hover === (item.orgId || item.id)}
-          />)
+          />
         )}
       </ul>
-    </Grid.Item>);
+    </Grid.Item>;
 
   render() {
     const { attributes, children, data } = this.props;
@@ -119,7 +121,7 @@ class VerzeichnisBlock extends Component {
       return <div />;
     }
 
-    data.items.forEach((item) => {
+    data.items.forEach(item => {
       if (item.persons) {
         item.persons.forEach(person =>
           persons.push({

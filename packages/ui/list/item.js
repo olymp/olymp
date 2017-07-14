@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Icon } from 'antd';
 var ImgContainer = createComponent(function (_a) {
@@ -55,7 +55,7 @@ var Content = createComponent(function (_a) {
     });
 }, function (_a) {
     var image = _a.image, label = _a.label, description = _a.description, className = _a.className, disabled = _a.disabled, icon = _a.icon;
-    return (React.createElement("div", { className: className },
+    return React.createElement("div", { className: className },
         image &&
             React.createElement(ImgContainer, null,
                 image &&
@@ -65,7 +65,7 @@ var Content = createComponent(function (_a) {
         React.createElement("div", null,
             React.createElement("strong", null, label),
             description),
-        !disabled ? React.createElement(Icon, { type: icon || 'right' }) : null));
+        !disabled ? React.createElement(Icon, { type: icon || 'right' }) : null);
 }, function (p) { return Object.keys(p); });
 export default function (_a) {
     var className = _a.className, image = _a.image, label = _a.label, description = _a.description, to = _a.to, onClick = _a.onClick, active = _a.active, disabled = _a.disabled, icon = _a.icon;

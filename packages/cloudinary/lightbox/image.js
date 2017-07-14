@@ -33,7 +33,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp-utils';
+import { withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import Image, { cloudinaryUrl } from '../components/image';
 var Img = createComponent(function (_a) {

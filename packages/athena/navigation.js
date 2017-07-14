@@ -33,7 +33,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withLang, Logo } from 'olymp-utils';
+import { withLang, Logo } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
@@ -118,8 +119,8 @@ var AntMenu = function (_a) {
 };
 var AntSubMenu = function (_a) {
     var keys = _a.keys, title = _a.title, children = _a.children, p = __rest(_a, ["keys", "title", "children"]);
-    return (React.createElement(AntMenu, __assign({}, p),
-        React.createElement(RightMenu, { title: title || React.createElement(Icon, { type: "bars" }) }, children)));
+    return React.createElement(AntMenu, __assign({}, p),
+        React.createElement(RightMenu, { title: title || React.createElement(Icon, { type: "bars" }) }, children));
 };
 var Navigation = (function (_super) {
     __extends(Navigation, _super);
@@ -162,7 +163,7 @@ var Navigation = (function (_super) {
                 React.createElement(Menu.SubMenu, { title: React.createElement("span", null,
                         React.createElement(Icon, { type: "database" }),
                         " Sammlungen") }, collectionList.map(function (collection) {
-                    return (React.createElement(Menu.Item, { key: "@" + collection.name.toLowerCase() },
+                    return React.createElement(Menu.Item, { key: "@" + collection.name.toLowerCase() },
                         React.createElement(Link, { to: {
                                 query: (_a = {},
                                     _a["@" + collection.name.toLowerCase()] = null,
@@ -170,7 +171,7 @@ var Navigation = (function (_super) {
                             } },
                             React.createElement(Icon, { type: "api" }),
                             ' ',
-                            get(collection, 'decorators.label.value', collection.name))));
+                            get(collection, 'decorators.label.value', collection.name)));
                     var _a;
                 })),
                 React.createElement(Menu.Item, { key: "@analytics" },

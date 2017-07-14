@@ -23,7 +23,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import React, { Component } from 'react';
-import { Link, graphql, gql } from 'olymp-utils';
+import { graphql, gql } from 'olymp-utils';
+import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
@@ -119,7 +120,7 @@ var AuthRegister = (function (_super) {
     AuthRegister = __decorate([
         withAuth,
         Form.create(),
-        graphql((_a = ["\n  query checkTokenMail($token: String) {\n    valid: checkToken(token: $token)\n    email: checkTokenMail(token: $token)\n  }\n"], _a.raw = ["\n  query checkTokenMail($token: String) {\n    valid: checkToken(token: $token)\n    email: checkTokenMail(token: $token)\n  }\n"], gql(_a)), {
+        graphql((_a = ["\n    query checkTokenMail($token: String) {\n      valid: checkToken(token: $token)\n      email: checkTokenMail(token: $token)\n    }\n  "], _a.raw = ["\n    query checkTokenMail($token: String) {\n      valid: checkToken(token: $token)\n      email: checkTokenMail(token: $token)\n    }\n  "], gql(_a)), {
             options: function (_a) {
                 var token = _a.token;
                 return ({
