@@ -1,10 +1,10 @@
 {
-  "version": "0.9.4",
+  "version": "0.9.5",
   "name": "olymp-cloudinary",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "olymp-collection": "^0.9.4"
+    "olymp-collection": "^0.9.5"
   }
 }

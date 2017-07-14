@@ -1,5 +1,5 @@
 {
-  "version": "0.9.4",
+  "version": "0.9.5",
   "name": "olymp-locale",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -7,7 +7,7 @@
   "dependencies": {
     "antd": "^2.12.0",
     "date-fns": "^1.28.5",
-    "olymp-utils": "^0.9.4",
+    "olymp-utils": "^0.9.5",
     "react": "^15.6.1"
   }
 }
