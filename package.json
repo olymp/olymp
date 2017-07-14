@@ -9,7 +9,7 @@
     "tsc": "gulp tsc",
     "watch": "gulp watch",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish --registry=https://registry.npmjs.org/",
+    "publish": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
@@ -23,13 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
