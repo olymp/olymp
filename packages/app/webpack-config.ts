@@ -15,10 +15,19 @@ const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const appRoot = process.cwd();
-const olympRoot = path.resolve(__dirname, '..', '..');
-process.noDeprecation = true;
+console.log(
+  'app root',
+  path.resolve(appRoot, 'app'),
+  path.resolve(appRoot, 'server')
+);
 
-const allPackages = fs.readdirSync(path.resolve(olympRoot, 'packages'));
+const topFolder = path.resolve(__dirname, '..');
+const isLinked = path.basename(topFolder) === 'packages';
+const nodeModules = isLinked
+  ? path.resolve(__dirname, 'node_modules')
+  : path.resolve(__dirname, '..');
+process.noDeprecation = true;
+const allPackages = !isLinked ? [] : fs.readdirSync(topFolder);
 
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isDev = mode !== 'production';
@@ -33,12 +42,12 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const config = {
     resolve: {
       extensions: ['.js', '.json', '.ts', '.tsx'],
-      modules: [
-        path.resolve(__dirname, 'node_modules'),
-        path.resolve(olympRoot, 'node_modules'),
-        path.resolve(appRoot, 'node_modules'),
-        path.resolve(appRoot, 'app'),
-      ],
+      modules: allPackages
+        .map(x => path.resolve(topFolder, x, 'node_modules'))
+        .concat([
+          path.resolve(appRoot, 'node_modules'),
+          path.resolve(appRoot, 'app'),
+        ]),
       alias: Object.assign(
         {
           'history/createFlexHistory': isServerless
@@ -58,15 +67,14 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         },
         allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
-          obj[`olymp-${item}`] = path.resolve(olympRoot, 'packages', item);
+          obj[`olymp-${item}`] = path.resolve(topFolder, item);
           return obj;
         }, {})
       ),
     },
     resolveLoader: {
       modules: [
-        path.resolve(__dirname, 'node_modules'),
-        path.resolve(olympRoot, 'node_modules'),
+        path.resolve(nodeModules),
         path.resolve(appRoot, 'node_modules'),
       ],
     },
@@ -369,24 +377,24 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
 
   // externals
   if (isNode) {
-    config.externals = [
-      path.resolve(olympRoot, 'node_modules'),
-      path.resolve(appRoot, 'node_modules'),
-    ].map(modulesDir =>
-      nodeExternals({
-        modulesDir,
-        whitelist: [
-          v => v.indexOf('webpack/hot/poll') === 0,
-          'source-map-support/register',
-          v => v.indexOf('olymp-') === 0,
-          // v => v === 'antd' || v.indexOf('antd/') === 0,
-          /\.(eot|woff|woff2|ttf|otf)$/,
-          /\.(svg|png|jpg|jpeg|gif|ico)$/,
-          /\.(mp4|mp3|ogg|swf|webp)$/,
-          /\.(css|scss|sass|sss|less)$/,
-        ],
-      })
-    );
+    config.externals = allPackages
+      .map(x => path.resolve(topFolder, x, 'node_modules'))
+      .concat([path.resolve(appRoot, 'node_modules')])
+      .map(modulesDir =>
+        nodeExternals({
+          modulesDir,
+          whitelist: [
+            v => v.indexOf('webpack/hot/poll') === 0,
+            'source-map-support/register',
+            v => v.indexOf('olymp-') === 0,
+            // v => v === 'antd' || v.indexOf('antd/') === 0,
+            /\.(eot|woff|woff2|ttf|otf)$/,
+            /\.(svg|png|jpg|jpeg|gif|ico)$/,
+            /\.(mp4|mp3|ogg|swf|webp)$/,
+            /\.(css|scss|sass|sss|less)$/,
+          ],
+        })
+      );
   }
 
   if (isWeb && isDev) {

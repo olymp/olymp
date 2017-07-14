@@ -3,5 +3,9 @@
   "name": "olymp-ui",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "antd": "^2.12.0",
+    "moment": "^2.18.1"
+  }
 }

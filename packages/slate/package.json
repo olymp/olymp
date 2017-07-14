@@ -9,7 +9,6 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "olymp": "^14.2.27",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },

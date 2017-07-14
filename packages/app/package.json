@@ -21,6 +21,7 @@
     "history": "^4.6.3",
     "html-webpack-plugin": "^2.29.0",
     "isomorphic-fetch": "^2.2.1",
+    "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
     "olymp-fela": "^0.9.3",
     "olymp-utils": "^0.9.3",
@@ -40,6 +41,7 @@
     "source-map-support": "^0.4.15",
     "start-server-webpack-plugin": "^2.2.0",
     "webpack": "^3.2.0",
+    "webpack-dev-server": "^2.5.1",
     "webpack-node-externals": "^1.6.0",
     "webpack-visualizer-plugin": "^0.1.11"
   },
