@@ -5077,9 +5077,9 @@ olymp-collection@^0.1.11:
     prop-types "^15.5.10"
     shortid "^2.2.8"
 
-olymp-fela@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-0.1.11.tgz#d681a510209ca6b04af3d257b2e2e93316b42406"
+olymp-fela@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-0.1.12.tgz#2a2cd81d3402edb98950c23f6b171e2dee6518f1"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
