@@ -2224,10 +2224,6 @@ dashify@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/dashify/-/dashify-0.2.2.tgz#6a07415a01c91faf4a32e38d9dfba71f61cb20fe"
 
-date-fns@^1.28.5:
-  version "1.28.5"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.28.5.tgz#257cfc45d322df45ef5658665967ee841cd73faf"
-
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -3266,7 +3262,7 @@ google-p12-pem@^0.1.0:
   dependencies:
     node-forge "^0.7.1"
 
-googleapis@^20.0.1, googleapis@^20.1.0:
+googleapis@^20.0.1:
   version "20.1.0"
   resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-20.1.0.tgz#efb2541f0cab123492bc8ccfe09fa6baaf2b84ca"
   dependencies:
@@ -3286,7 +3282,7 @@ graphql-anywhere@^3.0.0, graphql-anywhere@^3.0.1:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-3.1.0.tgz#3ea0d8e8646b5cee68035016a9a7557c15c21e96"
 
-graphql-modules@^0.2.1, graphql-modules@^0.2.2:
+graphql-modules@^0.2.1:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/graphql-modules/-/graphql-modules-0.2.2.tgz#0efda02ed4e67049d0363af287d134eeb1a6475f"
   dependencies:
@@ -5063,24 +5059,6 @@ offline-plugin@^4.8.1:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-auth@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-0.9.3.tgz#5c381310d41906f8d70503080b1631de487cad23"
-
-olymp-cloudinary@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-0.9.3.tgz#9de82834fb77d67db6b642c2b529dcf5c24858d0"
-  dependencies:
-    olymp-collection "^0.9.3"
-
-olymp-collection@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-0.9.3.tgz#67585448065b5efbd463420e626f7849521f89b2"
-  dependencies:
-    deep-diff "^0.3.8"
-    prop-types "^15.5.10"
-    shortid "^2.2.8"
-
 olymp-fela@^0.1.12:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-0.1.12.tgz#2a2cd81d3402edb98950c23f6b171e2dee6518f1"
@@ -5099,58 +5077,6 @@ olymp-fela@^0.1.12:
     olymp "^15.1.14"
     react "^15.6.1"
     react-dom "^15.6.1"
-
-olymp-google@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-0.9.3.tgz#4c49ae945d8d5bbe1b19a2fdb5d38850454d139f"
-  dependencies:
-    "@google/maps" "^0.4.2"
-    bluebird "^3.5.0"
-    googleapis "^20.1.0"
-    moment "^2.18.1"
-    olymp-ui "^0.9.3"
-    olymp-utils "^0.9.3"
-    react-fela "^5.0.4"
-    shortid "^2.2.8"
-
-olymp-graphql@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-graphql/-/olymp-graphql-0.9.3.tgz#4eb077bc7328bd7619879c051e834d77ad1803d9"
-  dependencies:
-    graphql "^0.10.3"
-    graphql-modules "^0.2.2"
-    graphql-server-express "^1.0.0"
-    graphql-tools "^1.1.0"
-    lodash "^4.17.4"
-
-olymp-locale@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-0.9.3.tgz#d00559e605f2da94ce6c3661fff7b5f036c360b9"
-  dependencies:
-    antd "^2.12.0"
-    date-fns "^1.28.5"
-    olymp-utils "^0.9.3"
-    react "^15.6.1"
-
-olymp-pages@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-0.9.3.tgz#886fb61db1a62f9e8b67be995c2854a458b8e2bc"
-
-olymp-ui@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-0.9.3.tgz#53c9107e5aa639bbfcebc98445c6887751582e21"
-
-olymp-utils@^0.1.9:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.1.11.tgz#c13a53e55d5f6b7a3e1574225f3369b00fd8a4de"
-  dependencies:
-    olymp-utils "^0.1.9"
-
-olymp-utils@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.9.3.tgz#12318c257d5d02cf88ae57db48687f7387c9ff31"
-  dependencies:
-    olymp-utils "^0.1.9"
 
 olymp@^15.1.14:
   version "15.2.8"
@@ -6660,7 +6586,7 @@ readable-stream@1.0:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-readable-stream@2.2.7, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.2.6:
+readable-stream@2.2.7, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.7.tgz#07057acbe2467b22042d36f98c5ad507054e95b1"
   dependencies:
@@ -6672,7 +6598,7 @@ readable-stream@2.2.7, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-
     string_decoder "~1.0.0"
     util-deprecate "~1.0.1"
 
-readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.9:
+readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.6, readable-stream@^2.2.9:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.3.tgz#368f2512d79f9d46fdfc71349ae7878bbc1eb95c"
   dependencies:
