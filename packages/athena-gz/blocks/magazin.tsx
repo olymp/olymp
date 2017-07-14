@@ -58,6 +58,7 @@ export const Content = createComponent(
       flexGrow: 1,
       justifyContent: 'space-between',
     },
+    maxWidth: '100%',
     paddingLeft: theme.space2,
     marginBottom: `-${theme.space3}`,
     '> a': {

@@ -160,7 +160,7 @@ export default ua => {
             return styles;
           }
 
-          return {};
+          return { display: 'block' };
         },
       }),
       removeUndefined(),

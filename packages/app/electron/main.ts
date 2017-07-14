@@ -14,7 +14,12 @@ let mainWindow;
 function createWindow() {
   // Create the browser window.
   // mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden' });
-  mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden-inset' });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    frame: true,
+    titleBarStyle: 'hidden-inset',
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(
@@ -26,7 +31,7 @@ function createWindow() {
   );
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
