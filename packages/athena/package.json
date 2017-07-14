@@ -17,7 +17,7 @@
     "olymp-locale": "^0.1.12",
     "olymp-pages": "^0.1.12",
     "olymp-ui": "^0.1.12",
-    "olymp-utils": "^0.1.12",
+    "olymp-utils": "^0.6.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-gateway": "^2.7.0",
