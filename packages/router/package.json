@@ -4,9 +4,6 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {
-    "tsc": "../../node_modules/typescript/bin/tsc -w"
-  },
   "dependencies": {
     "olymp-utils": "^0.1.9"
   }

@@ -4,9 +4,6 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {
-    "tsc": "../../node_modules/typescript/bin/tsc -w"
-  },
   "dependencies": {
     "algoliasearch": "^3.24.0",
     "antd": "^2.12.0",

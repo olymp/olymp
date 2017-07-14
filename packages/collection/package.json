@@ -5,9 +5,6 @@
   "main": "index.js",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "scripts": {
-    "tsc": "../../node_modules/typescript/bin/tsc -w"
-  },
   "dependencies": {
     "deep-diff": "^0.3.8",
     "prop-types": "^15.5.10",

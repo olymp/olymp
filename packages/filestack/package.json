@@ -3,8 +3,5 @@
   "name": "olymp-filestack",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
-  "license": "MIT",
-  "scripts": {
-    "tsc": "../../node_modules/typescript/bin/tsc -w"
-  }
+  "license": "MIT"
 }

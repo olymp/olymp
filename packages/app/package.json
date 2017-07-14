@@ -6,9 +6,6 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bin": "./bin/olymp-app.js",
-  "scripts": {
-    "tsc": "../../node_modules/typescript/bin/tsc -w"
-  },
   "dependencies": {
     "apollo-client": "^1.8.0",
     "assets-webpack-plugin": "^3.5.1",
@@ -25,7 +22,7 @@
     "html-webpack-plugin": "^2.29.0",
     "isomorphic-fetch": "^2.2.1",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^0.1.14",
+    "olymp-fela": "^0.5.7",
     "olymp-utils": "^0.1.11",
     "progress-bar-webpack-plugin": "^1.10.0",
     "react": "^15.6.1",

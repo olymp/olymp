@@ -1,13 +1,12 @@
 {
-  "version": "0.1.14",
+  "version": "0.5.7",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "tsc": "../../node_modules/typescript/bin/tsc -w"
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "fela": "^5.0.2",
