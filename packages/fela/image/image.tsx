@@ -116,20 +116,20 @@ class Image extends Component {
       alt,
       onClick,
       children,
-      ...containerProps
+      ...containerProps,
     } = this.props;
     const { width, ratio, isPercentage } = this.initVals();
     const { layout, w, h } = this.getMode(width, ratio, isPercentage);
     const url = typeof src === 'function' ? src(w, h) : src;
-    const image = (
+    const image =
+      !!url &&
       <Img
         src={url}
         alt={alt}
         width={w >= h ? '100%' : 'auto'}
         height={w < h ? '100%' : 'auto'}
         onClick={onClick}
-      />
-    );
+      />;
 
     return (
       <Container
@@ -139,10 +139,10 @@ class Image extends Component {
         ratio={ratio}
         lazy={!amp && lazy}
       >
-        {amp
+        {amp && image
           ? <Amp layout={layout} src={url} alt={alt} width={w} height={h}>
-            {image}
-          </Amp>
+              {image}
+            </Amp>
           : image}
         {children}
       </Container>
@@ -186,6 +186,6 @@ Image.defaultProps = {
 
   lazy: true,
   alt: '',
-  onClick: () => { },
+  onClick: () => {},
 };
 export default Image;
