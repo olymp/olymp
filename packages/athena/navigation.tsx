@@ -53,8 +53,10 @@ const VerticalMenu = createComponent(
     backgroundColor: '#404040',
     boxShadow: 'inset 0 -10px 10px -10px #000000',
     paddingX: theme.space2,
-    display: 'flex',
-    justifyContent: 'space-between',
+    hasFlex: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
     '> ul': {
       zIndex: 3,
       boxShadow: 'inset 0 -10px 10px -10px #000000',

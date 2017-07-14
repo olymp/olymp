@@ -64,8 +64,10 @@ export default createComponent(
     paddingLeft,
     paddingRight,
     position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
+    hasFlex: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
     '& a': {
       color: theme.dark2,
       onHover: {
@@ -105,9 +107,9 @@ export default createComponent(
     bordered,
     paddingLeft,
     paddingRight,
-    ...rest
+    ...rest,
   }) =>
-    (<Grid.Item mini={12} {...rest}>
+    <Grid.Item mini={12} {...rest}>
       <H2 color={accent || background} bordered={bordered} subtitle={subtitle}>
         {title}
       </H2>
@@ -116,6 +118,6 @@ export default createComponent(
 
         <Clearfix />
       </Content>
-    </Grid.Item>),
+    </Grid.Item>,
   p => Object.keys(p)
 );

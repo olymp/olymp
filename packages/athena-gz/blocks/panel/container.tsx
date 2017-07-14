@@ -3,14 +3,16 @@ import { createComponent, Container, Grid } from 'olymp-fela';
 
 export default createComponent(
   () => ({
-    display: 'flex',
-    ifSmallDown: {
-      flexDirection: 'column',
+    hasFlex: {
+      display: 'flex',
+      ifSmallDown: {
+        flexDirection: 'column',
+      },
     },
   }),
   p =>
-    (<Container>
+    <Container>
       <Grid size={12} {...p} />
-    </Container>),
+    </Container>,
   p => Object.keys(p)
 );

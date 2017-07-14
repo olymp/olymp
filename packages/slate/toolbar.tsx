@@ -4,24 +4,28 @@ import Portal from 'react-portal';
 import { Menu, Tooltip, Icon } from 'antd';
 import { createComponent } from 'react-fela';
 
-export const Button = createComponent(({ theme, active }) => ({
-  paddingX: 20,
-  '> svg': {
-    fill: active ? theme.light : theme.light2,
-    size: 16,
-    marginBottom: -4,
-  },
-  '> div > svg': {
-    fill: active ? theme.light : theme.light2,
-    size: 16,
-    marginBottom: -4,
-  }
-}), ({ onMouseDown, tooltip, children, className }) =>
-    (<div onMouseDown={onMouseDown} className={className}>
+export const Button = createComponent(
+  ({ theme, active }) => ({
+    paddingX: 20,
+    '> svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
+    '> div > svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
+  }),
+  ({ onMouseDown, tooltip, children, className }) =>
+    <div onMouseDown={onMouseDown} className={className}>
       <Tooltip placement="bottom" title={tooltip || ''}>
         {children}
       </Tooltip>
-    </div>), p => Object.keys(p));
+    </div>,
+  p => Object.keys(p)
+);
 
 const Close = createComponent(
   ({ theme }) => ({
@@ -40,13 +44,15 @@ export default createComponent(
     width: '100%',
     boxShadow: 'inset 0 -10px 10px -10px #000000',
     paddingX: theme.space2,
-    justifyContent: 'center',
-    display: 'flex',
+    hasFlex: {
+      justifyContent: 'center',
+      display: 'flex',
+    },
     '> li': {
       padding: 0,
     },
   }),
-  (props) => {
+  props => {
     const { isOpened, className, children, show } = props;
 
     if (!isOpened) {
@@ -60,7 +66,13 @@ export default createComponent(
     );*/
     return (
       <Portal isOpened={!!isOpened}>
-        <Menu style={!show ? { display: 'none' } : null} selectedKeys={[]} className={className} mode="horizontal" theme="dark">
+        <Menu
+          style={!show ? { display: 'none' } : null}
+          selectedKeys={[]}
+          className={className}
+          mode="horizontal"
+          theme="dark"
+        >
           {children}
           <Close>
             <Icon type="close" />

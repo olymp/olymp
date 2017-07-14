@@ -6,8 +6,10 @@ import { FaPlus, FaMinus } from 'olymp-icons';
 const Container = createComponent(
   ({ theme }) => ({
     paddingY: theme.space3,
-    display: 'flex',
-    flexWrap: 'wrap',
+    hasFlex: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
     clearfix: true,
   }),
   'div',
@@ -22,7 +24,9 @@ const ImageContainer = createComponent(
       float: 'left',
       width: `${100 / size}%`,
       minWidth: `${100 / size}%`,
-      display: 'flex',
+      hasFlex: {
+        display: 'flex',
+      },
     };
     style[`:nth-child(${size}n)`] = { paddingRight: 0 };
 
@@ -37,7 +41,7 @@ export default {
   label: 'Galerie',
   category: 'Medien',
   component: ({ getData, setActive, className, attributes }) =>
-    (<Container {...attributes}>
+    <Container {...attributes}>
       {getData('value', [
         {
           url: 'https://lorempixel.com/400/300/cats/',
@@ -45,16 +49,16 @@ export default {
           height: 300,
         },
       ]).map((image, i) =>
-        (<ImageContainer size={getData('size', 4)} key={image.id || i}>
+        <ImageContainer size={getData('size', 4)} key={image.id || i}>
           <Image
             className={className}
             onClick={setActive}
             width="100%"
             value={image}
           />
-        </ImageContainer>)
+        </ImageContainer>
       )}
-    </Container>),
+    </Container>,
   styles: ({ getData }) => ({
     float: getData('float', 'none'),
   }),
@@ -62,12 +66,12 @@ export default {
     {
       tooltip: getData => `Bilder ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) =>
-        (<SimpleImageEdit
+        <SimpleImageEdit
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', [])}
           multi
-        />),
+        />,
       toggle: () => {},
     },
     {

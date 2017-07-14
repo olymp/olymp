@@ -22,7 +22,9 @@ const Modal = createComponent(
     width: width || '100%',
     top: theme.space4,
     bottom: theme.space4,
-    display: 'flex',
+    hasFlex: {
+      display: 'flex',
+    },
     '> div': {
       marginX: !width && theme.space4,
     },
@@ -39,15 +41,17 @@ const Inner = createComponent(
     boxShadow: theme.boxShadow,
     border: `1px solid ${theme.dark1}`,
     overflowY: 'auto',
-    display: 'flex',
     borderRadius: theme.borderRadius,
+    hasFlex: {
+      display: 'flex',
+    },
   }),
   'div',
   []
 );
 
 export default ({ children, open, onClose, width }) =>
-  (<Portal isOpened={open} onClose={onClose} closeOnEsc closeOnOutsideClick>
+  <Portal isOpened={open} onClose={onClose} closeOnEsc closeOnOutsideClick>
     <ModalBackground>
       <Modal width={width}>
         <Inner>
@@ -55,4 +59,4 @@ export default ({ children, open, onClose, width }) =>
         </Inner>
       </Modal>
     </ModalBackground>
-  </Portal>);
+  </Portal>;

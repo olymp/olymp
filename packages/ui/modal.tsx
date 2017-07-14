@@ -30,14 +30,14 @@ export const Modal = (
     onOk,
     title,
     loading,
-    ...props
+    ...props,
   },
   { theme }
 ) => {
   let copyright = null;
   let links = null;
   let footer = null;
-  const children = Children.toArray(props.children).filter((child) => {
+  const children = Children.toArray(props.children).filter(child => {
     if (child.type && child.type === component.Copyright) {
       copyright = child;
       return false;
@@ -127,7 +127,9 @@ const component = createComponent(
         .spin(12)
         .setAlpha(topTransparency || 1)
         .toRgbString()})`,
-    display: 'flex',
+    hasFlex: {
+      display: 'flex',
+    },
     height: '100%',
     '> .ant-modal': {
       top: 0,
@@ -177,7 +179,9 @@ const component = createComponent(
             textAlign: 'center',
           },
           '> .ant-modal-footer': {
-            display: 'flex',
+            hasFlex: {
+              display: 'flex',
+            },
             padding: theme.space1,
             '> .ant-btn': {
               flex: '1 1 auto',
@@ -212,9 +216,9 @@ component.Copyright = createComponent(
 );
 
 component.Footer = ({ children, className }) =>
-  (<div className={cn('ant-modal-footer', className)}>
+  <div className={cn('ant-modal-footer', className)}>
     {children}
-  </div>);
+  </div>;
 component.Button = props => <AntButton {...props} />;
 
 component.Links = createComponent(

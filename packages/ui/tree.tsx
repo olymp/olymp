@@ -33,18 +33,20 @@ const Tree = createComponent(
 
 Tree.Title = createComponent(
   ({ theme, disabled }) => ({
-    display: 'flex',
-    '> a:first-child': {
-      flex: '1 1 0%',
+    hasFlex: {
+      display: 'flex',
+      '> a:first-child': {
+        flex: '1 1 0%',
+      },
     },
     '> a': {
       color: disabled ? theme.dark3 : theme.dark1,
     },
   }),
   ({ className, children }) =>
-    (<span className={className}>
+    <span className={className}>
       {children}
-    </span>),
+    </span>,
   p => Object.keys(p)
 );
 

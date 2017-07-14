@@ -31,10 +31,12 @@ const getFormSchema = ({ fields }) =>
 
 const Flex = createComponent(
   ({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
     paddingTop: theme.space3,
     paddingX: theme.space3,
+    hasFlex: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
     '> ul': {
       zIndex: 1,
     },

@@ -52,10 +52,12 @@ export const Column = createComponent(
 
 export const Content = createComponent(
   ({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    justifyContent: 'space-between',
+    hasFlex: {
+      display: 'flex',
+      flexDirection: 'column',
+      flexGrow: 1,
+      justifyContent: 'space-between',
+    },
     paddingLeft: theme.space2,
     marginBottom: `-${theme.space3}`,
     '> a': {
@@ -135,9 +137,11 @@ const Item = props => {
 
 const TagContainer = createComponent(
   ({ theme }) => ({
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    hasFlex: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
   }),
   'div',
   p => Object.keys(p)

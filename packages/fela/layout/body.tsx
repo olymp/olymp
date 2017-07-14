@@ -10,10 +10,12 @@ const Body = createComponent(
     ...!affix
       ? {}
       : {
-          flex: '1 1 auto',
-          display: 'flex',
+          hasFlex: {
+            flex: '1 1 auto',
+            display: 'flex',
+            flexDirection: 'column',
+          },
           overflowY: 'auto',
-          flexDirection: 'column',
           ifSmallDown: {
             '-webkit-overflow-scrolling': 'touch',
             overflowY: 'scroll',

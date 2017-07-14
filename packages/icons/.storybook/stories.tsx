@@ -34,8 +34,10 @@ const copyTextToClipboard = (name, size) => {
 
 const Container = createComponent(
   ({ theme }) => ({
-    display: 'flex',
-    flexWrap: 'wrap',
+    hasFlex: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
     padding: theme.space3,
   }),
   'div',
@@ -58,20 +60,20 @@ const IconContainer = createComponent(
     },
   }),
   ({ name, size, className, children }) =>
-    (<div className={className} onClick={() => copyTextToClipboard(name, size)}>
+    <div className={className} onClick={() => copyTextToClipboard(name, size)}>
       {children}
       <p>
         {name}
       </p>
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 
 const storiefy = storiesOf('Icons');
 
 storiefy('FontAwesome 4', () =>
-  (<Container>
-    {Object.keys(FA4).map((icon) => {
+  <Container>
+    {Object.keys(FA4).map(icon => {
       const Icon = FA4[icon];
 
       return (
@@ -80,12 +82,12 @@ storiefy('FontAwesome 4', () =>
         </IconContainer>
       );
     })}
-  </Container>)
+  </Container>
 );
 
 storiefy('FontAwesome 5', () =>
-  (<Container>
-    {Object.keys(FA5).map((icon) => {
+  <Container>
+    {Object.keys(FA5).map(icon => {
       const Icon = FA5[icon];
 
       return (
@@ -94,5 +96,5 @@ storiefy('FontAwesome 5', () =>
         </IconContainer>
       );
     })}
-  </Container>)
+  </Container>
 );

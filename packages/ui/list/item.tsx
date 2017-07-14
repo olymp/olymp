@@ -21,8 +21,10 @@ const ImgContainer = createComponent(
 
 const Content = createComponent(
   ({ active, disabled, theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
+    hasFlex: {
+      display: 'flex',
+      alignItems: 'center',
+    },
     padding: '5px 6px',
     width: '100%',
     minHeight: 51,
@@ -40,9 +42,11 @@ const Content = createComponent(
       opacity: disabled ? 0.667 : 1,
     },
     '> div': {
-      display: 'flex',
-      flexDirection: 'column',
-      flex: '1 1 0%',
+      hasFlex: {
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '1 1 0%',
+      },
     },
     onHover: !active &&
     !disabled && {

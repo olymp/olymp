@@ -22,12 +22,12 @@ const Icon = createComponent(
 
 const NavItem = createComponent(
   ({ theme, fill, inverse, vertically, right, pages }) => ({
-    /* flex start */
-    flex: fill && '1 1 auto',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: fill ? 'column' : right && vertically && 'row-reverse',
-    /* flex end */
+    hasFlex: {
+      flex: fill && '1 1 auto',
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: fill ? 'column' : right && vertically && 'row-reverse',
+    },
     width: vertically && '100%',
     float: !vertically && 'left',
     position: 'relative',
@@ -57,9 +57,9 @@ const NavItem = createComponent(
     pages,
     onClick,
     onItemMouseEnter,
-    ...props
+    ...props,
   }) =>
-    (<div
+    <div
       className={className}
       onMouseEnter={
         onItemMouseEnter ? () => onItemMouseEnter(props) : undefined
@@ -85,7 +85,7 @@ const NavItem = createComponent(
       {Children.map(children, child =>
         cloneElement(child, { ...props, inverse, vertically, right, sub: true })
       )}
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 NavItem.displayName = 'Navbar.Item';

@@ -15,12 +15,12 @@ const WithContainer = ({ container, ...rest }) =>
 
 const Inner = createComponent(
   ({ vertically }) => ({
-    /* flex start */
-    display: 'flex',
-    flexDirection: vertically ? 'column' : 'row',
-    alignItems: vertically ? 'flex-start' : 'stretch',
-    /* flex end */
     clearfix: true,
+    hasFlex: {
+      display: 'flex',
+      flexDirection: vertically ? 'column' : 'row',
+      alignItems: vertically ? 'flex-start' : 'stretch',
+    },
     ifMini: {
       flexDirection: 'column',
     },
@@ -49,9 +49,9 @@ const Navbar = createComponent(
     container,
     inverse,
     vertically,
-    ...props
+    ...props,
   }) =>
-    (<nav className={className}>
+    <nav className={className}>
       <WithContainer container={container}>
         <Inner vertically={vertically}>
           {brand &&
@@ -83,7 +83,7 @@ const Navbar = createComponent(
           )}
         </Inner>
       </WithContainer>
-    </nav>),
+    </nav>,
   p => Object.keys(p)
 );
 Navbar.displayName = 'Navbar';

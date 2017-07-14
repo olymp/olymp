@@ -14,12 +14,16 @@ import { TemplateRoute } from './templates';
 const Container = createComponent(
   ({ theme }) => ({
     ...getAntStyle({ theme }),
-    display: 'flex',
-    flexDirection: 'column',
+    hasFlex: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
     height: '100%',
     backgroundColor: '#f5f5f5',
     '> :last-child': {
-      flex: '1 1 0%',
+      hasFlex: {
+        flex: '1 1 0%',
+      },
       height: '100%',
       overflowY: 'auto',
     },
@@ -30,8 +34,10 @@ const Container = createComponent(
 
 const SwitchContainer = createComponent(
   ({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
+    hasFlex: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
   }),
   'div',
   p => Object.keys(p)

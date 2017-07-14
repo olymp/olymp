@@ -4,17 +4,19 @@ import { createComponent } from 'react-fela';
 
 const Layout = createComponent(
   ({ fullHeight, affix }) => ({
-    display: 'flex',
-    alignItems: 'stretch',
+    hasFlex: {
+      display: 'flex',
+      alignItems: 'stretch',
+      flexDirection: 'column',
+    },
     height: fullHeight || affix ? '100vh' : '100%',
     minHeight: '100%',
     maxHeight: affix && '100vh',
-    flexDirection: 'column',
   }),
   ({ children, affix, ...rest }) =>
-    (<div {...rest}>
+    <div {...rest}>
       {Children.map(children, child => child && cloneElement(child, { affix }))}
-    </div>),
+    </div>,
   ({ fullHeight, ...p }) => Object.keys(p)
 );
 Layout.displayName = 'Layout';

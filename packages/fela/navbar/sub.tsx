@@ -4,14 +4,6 @@ import { border } from 'olymp-fela';
 
 export default createComponent(
   ({ theme, fill, vertically, right }) => ({
-    /* flex start */
-    ifMediumUp: {
-      display: vertically ? 'none' : 'flex',
-      flex: fill && '1 1 auto',
-      alignItems: 'stretch',
-      flexDirection: vertically ? 'column' : 'row',
-    },
-    /* flex end */
     float: right ? 'right' : 'left',
     width: fill && '100%',
     height: !vertically && '100%',
@@ -25,9 +17,18 @@ export default createComponent(
       borderTop: border(theme, theme.dark4),
       clear: 'both',
     },
+    ifMediumUp: {
+      display: vertically ? 'none' : 'block',
+      hasFlex: {
+        display: vertically ? 'none' : 'flex',
+        flex: fill && '1 1 auto',
+        alignItems: 'stretch',
+        flexDirection: vertically ? 'column' : 'row',
+      },
+    },
   }),
   ({ className, pages, children, ...props }) =>
-    (<div className={className}>
+    <div className={className}>
       {pages.map(({ children: childPages, ...page }, i) =>
         props.renderItem({
           ...page,
@@ -39,6 +40,6 @@ export default createComponent(
       )}
 
       {Children.map(children, child => cloneElement(child, props))}
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
