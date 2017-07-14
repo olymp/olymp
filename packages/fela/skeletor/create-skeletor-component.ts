@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import tinycolor from 'tinycolor2';
 
 const animation = {
   userSelect: 'none',
@@ -30,61 +29,57 @@ const fill = color => ({
   background: `${color} !important`,
 });
 
-const getColor = color => tinycolor(color).setAlpha(1).toRgbString();
-
 const createSkeletorComponent = (styles, component, propKeys) => {
   class SkeletorComponent extends Component {
-    background = (c = 'gray') => {
-      const color = getColor(c || this.context.theme.color);
+    color = this.context.skeletorColor || this.context.theme.dark;
 
-      return {
-        ...fill(color),
-        ...animation,
-      };
+    background = {
+      ...fill(this.color),
+      ...animation,
     };
 
-    border = (c = 'gray') => {
-      const color = getColor(c || this.context.theme.color);
-
-      return {
-        border: `1px solid ${color} !important`,
+    overlay = {
+      position: 'relative',
+      onBefore: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        ...fill(this.color),
         ...animation,
-      };
+      },
     };
 
-    text = (c = 'gray') => {
-      const color = getColor(c || this.context.theme.color);
-
-      return {
-        '& h1': {
-          ...fill(color),
-        },
-        '& h2': {
-          ...fill(color),
-        },
-        '& h3': {
-          ...fill(color),
-        },
-        '& h4': {
-          ...fill(color),
-        },
-        '& h5': {
-          ...fill(color),
-        },
-        '& h6': {
-          ...fill(color),
-        },
-        '& p': {
-          ...fill(color),
-        },
-        '& span': {
-          ...fill(color),
-        },
-        '& a': {
-          ...fill(color),
-        },
-        ...animation,
-      };
+    text = {
+      '& h1': {
+        ...fill(this.color),
+      },
+      '& h2': {
+        ...fill(this.color),
+      },
+      '& h3': {
+        ...fill(this.color),
+      },
+      '& h4': {
+        ...fill(this.color),
+      },
+      '& h5': {
+        ...fill(this.color),
+      },
+      '& h6': {
+        ...fill(this.color),
+      },
+      '& p': {
+        ...fill(this.color),
+      },
+      '& span': {
+        ...fill(this.color),
+      },
+      '& a': {
+        ...fill(this.color),
+      },
+      ...animation,
     };
 
     render() {
@@ -96,17 +91,17 @@ const createSkeletorComponent = (styles, component, propKeys) => {
             ...p,
             skeletor: skeletorLoading
               ? {
-                background: this.background,
-                border: this.border,
-                text: this.text,
-                isLoading: true,
-              }
+                  background: this.background,
+                  overlay: this.overlay,
+                  text: this.text,
+                  isLoading: true,
+                }
               : {
-                background: () => ({}),
-                border: () => ({}),
-                text: () => ({}),
-                isLoading: false,
-              },
+                  background: () => ({}),
+                  overlay: () => ({}),
+                  text: () => ({}),
+                  isLoading: false,
+                },
           }),
         component,
         propKeys
