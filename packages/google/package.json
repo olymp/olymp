@@ -1,5 +1,5 @@
 {
-  "version": "0.1.11",
+  "version": "0.1.12",
   "name": "olymp-google",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,8 +9,8 @@
     "bluebird": "^3.5.0",
     "googleapis": "^20.1.0",
     "moment": "^2.18.1",
-    "olymp-ui": "^0.1.11",
-    "olymp-utils": "^0.1.11",
+    "olymp-ui": "^0.1.12",
+    "olymp-utils": "^0.1.12",
     "react-fela": "^5.0.4",
     "shortid": "^2.2.8"
   }
