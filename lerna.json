@@ -3,5 +3,6 @@
     "packages/*"
   ],
   "npmClient": "yarn",
-  "lerna": "2.0.0"
+  "lerna": "2.0.0",
+  "version": "0.9.1"
 }
