@@ -1,5 +1,5 @@
 {
-  "version": "0.9.5",
+  "version": "0.9.6",
   "name": "olymp-app",
   "description": "",
   "main": "./src",
@@ -23,7 +23,7 @@
     "isomorphic-fetch": "^2.2.1",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^0.9.5",
+    "olymp-fela": "^0.9.6",
     "olymp-utils": "^0.9.5",
     "progress-bar-webpack-plugin": "^1.10.0",
     "react": "^15.6.1",
