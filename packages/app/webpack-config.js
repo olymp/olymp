@@ -205,6 +205,9 @@ module.exports = function (_a) {
     if (isNode) {
         if (isDev) {
             config.plugins.push(new StartServerPlugin('main.js'));
+            config.plugins.push(new ReloadServerPlugin({
+                script: path.resolve(__dirname, 'node', 'index.js'),
+            }));
         }
         config.plugins.push(new webpack.BannerPlugin({
             banner: 'require("source-map-support").install();',
