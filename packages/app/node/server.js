@@ -5,7 +5,7 @@ import session from 'express-session';
 import path from 'path';
 import React from 'react';
 import fetch from 'isomorphic-fetch';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'olymp-router';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
@@ -169,4 +169,3 @@ app.get('*', function (req, res) {
     });
 });
 export default app;
-//# sourceMappingURL=server.js.map

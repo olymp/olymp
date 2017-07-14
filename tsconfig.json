@@ -8,11 +8,8 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "sourceMap": true,
+    "isolatedModules": true,
     "noLib": true,
-    "removeComments": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "strictNullChecks": true
+    "removeComments": true
   }
 }
