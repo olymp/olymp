@@ -1,5 +1,5 @@
 {
-  "version": "0.1.11",
+  "version": "0.1.12",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,12 +8,13 @@
     "tsc": "../../node_modules/typescript/bin/tsc -w"
   },
   "dependencies": {
+    "algoliasearch": "^3.24.0",
     "antd": "^2.12.0",
     "lodash": "^4.17.4",
     "olymp-auth": "^0.1.11",
     "olymp-cloudinary": "^0.1.11",
     "olymp-collection": "^0.1.11",
-    "olymp-fela": "^0.1.11",
+    "olymp-fela": "^0.1.12",
     "olymp-google": "^0.1.11",
     "olymp-graphql": "^0.1.9",
     "olymp-locale": "^0.1.11",
