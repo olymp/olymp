@@ -2224,6 +2224,10 @@ dashify@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/dashify/-/dashify-0.2.2.tgz#6a07415a01c91faf4a32e38d9dfba71f61cb20fe"
 
+date-fns@^1.28.5:
+  version "1.28.5"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.28.5.tgz#257cfc45d322df45ef5658665967ee841cd73faf"
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -3052,15 +3056,7 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
 
-form-data@^2.1.1:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.2.0.tgz#9a5e3b9295f980b2623cf64fa238b14cebca707b"
-  dependencies:
-    asynckit "^0.4.0"
-    combined-stream "^1.0.5"
-    mime-types "^2.1.12"
-
-form-data@~2.1.1:
+form-data@^2.1.1, form-data@~2.1.1:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.1.4.tgz#33c183acf193276ecaa98143a69e94bfee1750d1"
   dependencies:
@@ -5063,27 +5059,27 @@ offline-plugin@^4.8.1:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-auth@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-0.1.9.tgz#ac219999a9353e2a5f59a93659cf0259c5524aaf"
+olymp-auth@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-0.1.11.tgz#45c75fb8291b57c10643b8336c13c45ac24a663c"
 
-olymp-cloudinary@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-0.1.9.tgz#e01b352eea706a47d9dd1e7de8221a3c24782023"
+olymp-cloudinary@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-0.1.11.tgz#c2c428a82b7986b4c98a43d28a5b318158511dcd"
   dependencies:
-    olymp-collection "^0.1.9"
+    olymp-collection "^0.1.11"
 
-olymp-collection@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-0.1.9.tgz#bf0b988da76cbedb0186722da5bbd012ec283afe"
+olymp-collection@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-0.1.11.tgz#9daf2b39e7621a6f86cba66ce61104bf8ee9d7b6"
   dependencies:
     deep-diff "^0.3.8"
     prop-types "^15.5.10"
     shortid "^2.2.8"
 
-olymp-fela@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-0.1.9.tgz#0a287f1f886dd18b29d5d5e87b88ff4382875472"
+olymp-fela@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-0.1.11.tgz#d681a510209ca6b04af3d257b2e2e93316b42406"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
@@ -5100,16 +5096,16 @@ olymp-fela@^0.1.9:
     react "^15.6.1"
     react-dom "^15.6.1"
 
-olymp-google@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-0.1.9.tgz#669e685f9e75948d33866cc30399936136ab6363"
+olymp-google@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-0.1.11.tgz#024e15b9fc1b789739718c3ec0780501f9609247"
   dependencies:
     "@google/maps" "^0.4.2"
     bluebird "^3.5.0"
     googleapis "^20.1.0"
     moment "^2.18.1"
-    olymp-ui "^0.1.9"
-    olymp-utils "^0.1.9"
+    olymp-ui "^0.1.11"
+    olymp-utils "^0.1.11"
     react-fela "^5.0.4"
     shortid "^2.2.8"
 
@@ -5123,21 +5119,28 @@ olymp-graphql@^0.1.9:
     graphql-tools "^1.1.0"
     lodash "^4.17.4"
 
-olymp-locale@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-0.1.9.tgz#4c5afc886d94d2f2c61755d380f4a850927f9d7d"
+olymp-locale@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-0.1.11.tgz#e5f14aeee9fb71b85900e46ff02f8c4faa20e96b"
+  dependencies:
+    antd "^2.12.0"
+    date-fns "^1.28.5"
+    olymp-utils "^0.1.11"
+    react "^15.6.1"
 
-olymp-pages@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-0.1.9.tgz#408939edae51da043b971218b46ec632d3d06e99"
+olymp-pages@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-0.1.11.tgz#24907dd9ed7ef81de6d863a40cf9a679a6340a0a"
 
-olymp-ui@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-0.1.9.tgz#1d696a50dbf716551375175b95f6584b0c9b9d54"
+olymp-ui@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-0.1.11.tgz#c3f892e5ba93a097fe05636883dede52a147a339"
 
-olymp-utils@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.1.9.tgz#fedcece075c97bac886caeec182746651467884c"
+olymp-utils@^0.1.11, olymp-utils@^0.1.9:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.1.11.tgz#c13a53e55d5f6b7a3e1574225f3369b00fd8a4de"
+  dependencies:
+    olymp-utils "^0.1.9"
 
 olymp@^15.1.14:
   version "15.2.8"
