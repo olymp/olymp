@@ -3,5 +3,12 @@
   "name": "olymp-sitemap",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "simplecrawler": "^1.1.3",
+    "xmlbuilder": "^9.0.1"
+  }
 }

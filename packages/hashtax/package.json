@@ -4,5 +4,8 @@
   "description": "",
   "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
 }

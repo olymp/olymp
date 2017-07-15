@@ -3,5 +3,8 @@
   "name": "olymp-auth",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "olymp-fela": "^0.9.7"
+  }
 }

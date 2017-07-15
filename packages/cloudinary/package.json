@@ -5,6 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "olymp-collection": "^0.9.7"
+    "olymp-collection": "^0.9.7",
+    "react-image-crop": "^2.0.5"
   }
 }

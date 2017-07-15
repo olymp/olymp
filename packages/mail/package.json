@@ -4,5 +4,9 @@
   "description": "",
   "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "olymp-hashtax": "^0.9.7"
+  }
 }

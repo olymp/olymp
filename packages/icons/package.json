@@ -4,5 +4,8 @@
   "description": "",
   "main": "./fa5",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-fela": "^5.1.0"
+  }
 }

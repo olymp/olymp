@@ -3,5 +3,10 @@
   "name": "olymp-filestack",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "olymp-utils": "^0.9.7",
+    "shortid": "^2.2.8"
+  }
 }

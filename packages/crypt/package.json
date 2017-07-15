@@ -4,5 +4,9 @@
   "description": "",
   "main": "./index.js",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "json-stringify-safe": "^5.0.1"
+  }
 }

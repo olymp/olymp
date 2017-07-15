@@ -22,7 +22,9 @@ const nodeModules = isLinked
   ? path.resolve(__dirname, 'node_modules')
   : path.resolve(__dirname, '..');
 process.noDeprecation = true;
-const allPackages = !isLinked ? [] : fs.readdirSync(topFolder);
+const allPackages = !isLinked
+  ? []
+  : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
 
 module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   const isDev = mode !== 'production';
