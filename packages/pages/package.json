@@ -7,6 +7,7 @@
   "dependencies": {
     "olymp-fela": "^0.9.7",
     "olymp-router": "^0.9.7",
-    "olymp-utils": "^0.9.7"
+    "olymp-utils": "^0.9.7",
+    "recompose": "^0.24.0"
   }
 }

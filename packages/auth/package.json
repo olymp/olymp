@@ -5,6 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
+    "jsonwebtoken": "^7.4.1",
     "olymp-fela": "^0.9.7"
   }
 }
