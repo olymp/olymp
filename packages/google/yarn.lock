@@ -390,13 +390,17 @@ object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-olymp-ui@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-0.1.7.tgz#01c4a9b996fb97432ac36ce5c94685aae8a22a0b"
+olymp-utils@^0.1.9:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.1.11.tgz#c13a53e55d5f6b7a3e1574225f3369b00fd8a4de"
+  dependencies:
+    olymp-utils "^0.1.9"
 
-olymp-utils@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.1.7.tgz#8534137772e2c1d82869748bca80a34d86bb491b"
+olymp-utils@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.9.5.tgz#99f617d0992d8686f6b582aeb686572f3b9a5295"
+  dependencies:
+    olymp-utils "^0.1.9"
 
 performance-now@^0.2.0:
   version "0.2.0"

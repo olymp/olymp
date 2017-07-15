@@ -277,6 +277,12 @@ olymp-utils@^0.1.9:
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.1.9.tgz#fedcece075c97bac886caeec182746651467884c"
 
+olymp-utils@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-0.9.5.tgz#99f617d0992d8686f6b582aeb686572f3b9a5295"
+  dependencies:
+    olymp-utils "^0.1.9"
+
 omit.js@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/omit.js/-/omit.js-1.0.0.tgz#e013cb86a7517b9cf6f7cfb0ddb4297256a99288"

@@ -8,6 +8,7 @@
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "tsc": "gulp tsc",
     "watch": "gulp watch",
+    "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "test": "jest && codecov",
