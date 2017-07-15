@@ -3,7 +3,7 @@ appId: com.electron.awesome-app
 productName: Awesome App
 directories:
   app: .dist/electron
-  output: .dist/electron
+  output: .dist
   buildResources: public
 extraMetadata:
   name: Awesome App
