@@ -15,10 +15,13 @@ function createWindow() {
   // Create the browser window.
   // mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden' });
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    frame: true,
-    titleBarStyle: 'hidden-inset',
+    width: 1000,
+    height: 750,
+    minWidth: 600,
+    minHeight: 450,
+    center: true,
+    frame: false,
+    titleBarStyle: 'hiddenInset',
   });
 
   // and load the index.html of the app.

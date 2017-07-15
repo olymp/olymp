@@ -27,14 +27,16 @@ module.exports = templateParams => `
       <meta name="msapplication-TileColor" content="#FBA139">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#FBA139">
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])).map(
-    style => `<link rel="stylesheet" type="text/css" href=".${style}">`
-  )}
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
+      ).map(
+        style => `<link rel="stylesheet" type="text/css" href=".${style}">`
+      )}
       <style id="css-markup"></style>
       <style>
         body {
-          -webkit-app-region: drag;
           -webkit-user-select: none;
+          user-select: none;
         }
         p, h1, h2, h3, h4, h5, h6, span, strong {
           cursor: default;
@@ -43,7 +45,9 @@ module.exports = templateParams => `
     </head>
     <body>
       <div id="app"></div>
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])).map(script => `<script src=".${script}"></script>`)}
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])
+      ).map(script => `<script src=".${script}"></script>`)}
       <script type='text/javascript'>window.GO()</script>
     </body>
   </html>
