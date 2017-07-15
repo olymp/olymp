@@ -58,7 +58,7 @@ const Content = createComponent(
       paddingX: theme.space3,
     },
   }),
-  p => <Grid.Item medium={7} {...p} />,
+  p => <Grid.Item {...p} />,
   p => Object.keys(p)
 );
 
@@ -68,7 +68,7 @@ const Peak = createComponent(
     marginBottom: props.theme.space3,
   }),
   ({ className, header, subheader, value, title }) =>
-    (<div className={className}>
+    <div className={className}>
       <Image
         value={value}
         alt={title}
@@ -85,14 +85,14 @@ const Peak = createComponent(
             {subheader}
           </p>
         </Label>}
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 
 const component = withColor(
   ({ item }) => item.color
 )(({ className, attributes, item }) =>
-  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({
         description: item.slogan,
@@ -100,29 +100,29 @@ const component = withColor(
       })}
       {item.image
         ? <Peak
-          title={item.name || item.titel}
-          value={item.image}
-          header={item.slogan}
-          subheader={item.description}
-          color={item.color}
-        />
+            title={item.name || item.titel}
+            value={item.image}
+            header={item.slogan}
+            subheader={item.description}
+            color={item.color}
+          />
         : <Header subheader={item.description} color={item.color}>
-          {item.slogan}
-        </Header>}
+            {item.slogan}
+          </Header>}
       <Container className={className} color={item.color} {...attributes}>
         <Grid>
-          <Grid.Item medium={5}>
+          <Grid.Item large={5}>
             <VCard org={item} />
           </Grid.Item>
-          <Content>
+          <Content large={7}>
             <Slate readOnly value={item.text} />
             {/* children*/}
           </Content>
         </Grid>
       </Container>
     </div>
-  </SchemaLoader>)
-  );
+  </SchemaLoader>
+);
 
 const componentWithData = graphql(
   gql`
