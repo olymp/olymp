@@ -5,6 +5,10 @@ const path = require('path');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
 const urlUtil = require('url');
+const notifier = require('node-notifier');
+const jsonfile = require('jsonfile');
+const merge = require('deepmerge');
+const argv = require('minimist')(process.argv.slice(1));
 require('dotenv').config();
 
 const createConfig = require(path.resolve(
@@ -13,31 +17,38 @@ const createConfig = require(path.resolve(
   'webpack-config.js'
 ));
 
-const command = process.argv[process.argv.length - 1];
+const root = process.cwd();
+let olymprc = jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
+  throws: false,
+});
 
-/* const exists = (p, throwError) => {
-  const doesExist = fs.existsSync(path.resolve(appRootDir.get(), `${p}.js`)) || fs.existsSync(path.resolve(appRootDir.get(), p, 'index.js'));
-  if (!doesExist && throwError) throw new Error(`${p} not found in your root dir!`);
-  else if (!doesExist) console.log(`${p} not found in your root dir!`);
-  return doesExist;
-};
+if (olymprc.extends) {
+  const topFolder = path.resolve(__dirname, '..', '..');
+  const concatMerge = (destinationArray, sourceArray, options) => {
+    return destinationArray.concat(sourceArray);
+  };
+  const requireFirst = name => {
+    return (
+      jsonfile.readFileSync(
+        path.resolve(topFolder, name, '.olymprc'),
+        { throws: false }
+      ) ||
+      jsonfile.readFileSync(
+        path.resolve(topFolder, `olymp-${name}, '.olymprc'`),
+        {
+          throws: false,
+        }
+      ) ||
+      {}
+    );
+  };
+  olymprc = olymprc.extends.reduce(
+    (rc, item) => merge(requireFirst(item), rc, { arrayMerge: concatMerge }),
+    olymprc
+  );
+}
 
-exists('server');
-exists('app', true);
-
-require('babel-register')({
-  presets: [
-    [require.resolve('babel-preset-env'), { targets: { node: true } }],
-    require.resolve('babel-preset-stage-3'),
-    require.resolve('babel-preset-react'),
-  ],
-  only: [
-    path.resolve(__dirname, '..', 'tools'),
-    path.resolve(__dirname, '..', 'src'),
-    path.resolve(__dirname, '..', 'config'),
-    path.resolve(appRootDir.get(), 'universally.config.js')
-  ],
-});*/
+const command = argv._[1];
 
 if (['start', 'build'].includes(command)) {
   process.env.NODE_ENV = 'production';
@@ -56,8 +67,6 @@ if (command === 'dev') {
     ? url
     : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
-  const notifier = require('node-notifier');
-
   let compiler;
   const watch = {
     aggregateTimeout: 300,
@@ -73,6 +82,7 @@ if (command === 'dev') {
         devUrl,
         ssr,
         serverless,
+        ...olymprc,
       }),
     ]);
   } else {
@@ -84,6 +94,7 @@ if (command === 'dev') {
         devUrl,
         ssr,
         serverless,
+        ...olymprc,
       }),
       createConfig({
         target: 'node',
@@ -92,6 +103,7 @@ if (command === 'dev') {
         devUrl,
         ssr,
         serverless,
+        ...olymprc,
       }),
     ]);
     compiler.compilers[1].watch(watch, (err, compilation) => {
@@ -134,14 +146,26 @@ if (command === 'dev') {
   });
   server.listen(devPort);
 } else if (command === 'build') {
-  rimraf.sync(path.resolve(process.cwd(), '.dist'));
+  rimraf.sync(path.resolve(root, '.dist'));
   process.env.NODE_ENV = 'production';
   const configs = [
-    createConfig({ target: 'web', mode: 'production', ssr, serverless }),
+    createConfig({
+      target: 'web',
+      mode: 'production',
+      ssr,
+      serverless,
+      ...olymprc,
+    }),
   ];
   if (!serverless) {
     configs.push(
-      createConfig({ target: 'node', mode: 'production', ssr, serverless })
+      createConfig({
+        target: 'node',
+        mode: 'production',
+        ssr,
+        serverless,
+        ...olymprc,
+      })
     );
   }
   const compiler = webpack(configs);
@@ -162,7 +186,7 @@ if (command === 'dev') {
   rimraf.sync(path.resolve(process.cwd(), '.dist', target));
   process.env.NODE_ENV = 'production';
   const compiler = webpack([
-    createConfig({ target, mode: 'production', ssr, serverless }),
+    createConfig({ target, mode: 'production', ssr, serverless, plugins }),
   ]);
   compiler.run((err, compilation) => {
     if (err) {

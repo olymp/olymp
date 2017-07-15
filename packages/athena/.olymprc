@@ -1,0 +1,11 @@
+{
+  "app": "./app",
+  "server": "./server",
+  "plugins": [
+    "less"
+  ],
+  "modifyVars": {
+    "font-size-base": "15px",
+    "primary-color": "#FBA139"
+  }
+}

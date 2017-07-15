@@ -12,7 +12,8 @@ export { default as getRules } from './rules';
 export { default as Countdown } from './countdown';
 export { default as Navigation } from './navigation';
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
+
 // todo: MONKEY PATCH GATEWAY
 import { Gateway } from 'react-gateway';
 import { node } from 'prop-types';

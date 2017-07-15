@@ -6,11 +6,9 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const ReloadServerPlugin = require('reload-server-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
-// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 
@@ -25,8 +23,18 @@ process.noDeprecation = true;
 const allPackages = !isLinked
   ? []
   : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
+const pluginsFolder = !isLinked ? nodeModules : topFolder;
 
-module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
+module.exports = ({
+  mode,
+  target,
+  devUrl,
+  devPort,
+  ssr,
+  serverless,
+  plugins = [],
+  ...rest,
+}) => {
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isWeb = target !== 'node';
@@ -38,37 +46,38 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
 
   const config = {
     resolve: {
-      extensions: ['.js', '.json', '.ts', '.tsx'],
+      extensions: ['.js', '.ts', '.tsx'],
       modules: allPackages
         .map(x => path.resolve(topFolder, x, 'node_modules'))
         .concat([
           path.resolve(appRoot, 'node_modules'),
           path.resolve(appRoot, 'app'),
         ]),
-      alias: Object.assign(
-        {
-          'history/createFlexHistory': isServerless
-            ? 'history/createHashHistory'
-            : 'history/createBrowserHistory',
-          react: path.resolve(appRoot, 'node_modules', 'react'),
-          // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
-          'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
-          'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
-          moment: path.resolve(appRoot, 'node_modules', 'moment'),
-          lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
-          '@root': appRoot,
-          '@app':
-            isNode && !isSSR
-              ? path.resolve(__dirname, 'noop')
-              : path.resolve(appRoot, 'app'),
-        },
-        allPackages.reduce((obj, item) => {
+      alias: {
+        'history/createFlexHistory': isServerless
+          ? 'history/createHashHistory'
+          : 'history/createBrowserHistory',
+        react: path.resolve(appRoot, 'node_modules', 'react'),
+        // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
+        'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
+        'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
+        moment: path.resolve(appRoot, 'node_modules', 'moment'),
+        lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
+        '@root': appRoot,
+        '@app':
+          isNode && !isSSR
+            ? path.resolve(__dirname, 'noop')
+            : path.resolve(appRoot, 'app'),
+        ...allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
-          if (item === 'core') obj.olymp = path.resolve(topFolder, item);
-          else obj[`olymp-${item}`] = path.resolve(topFolder, item);
+          if (item === 'core') {
+            obj.olymp = path.resolve(topFolder, item);
+          } else {
+            obj[`olymp-${item}`] = path.resolve(topFolder, item);
+          }
           return obj;
-        }, {})
-      ),
+        }, {}),
+      },
     },
     resolveLoader: {
       modules: [
@@ -78,43 +87,19 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     },
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.DefinePlugin(
-        Object.assign(
-          {
-            'process.env.SSR': JSON.stringify(isSSR),
-            'process.env.NODE_ENV': JSON.stringify(mode),
-            'process.env.DEV_PORT': JSON.stringify(devPort),
-            'process.env.DEV_URL': devUrl
-              ? JSON.stringify(devUrl.origin)
-              : undefined,
-            'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
-            'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
-            'process.env.IS_ELECTRON': isElectron
-              ? JSON.stringify(true)
-              : undefined,
-          },
-          !isNode
-            ? {
-                'process.env.AMP': process.env.AMP
-                  ? JSON.stringify(process.env.AMP)
-                  : undefined,
-                'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
-                'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
-                  ? JSON.stringify(process.env.GRAPHQL_URL)
-                  : undefined,
-                /*'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
-                ? JSON.stringify(process.env.GRAPHQL_SUB)
-                : undefined,*/
-                'process.env.URL': process.env.URL
-                  ? JSON.stringify(process.env.URL)
-                  : undefined,
-                'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-                  ? JSON.stringify(process.env.FILESTACK_KEY)
-                  : undefined,
-              }
-            : {}
-        )
-      ),
+      new webpack.DefinePlugin({
+        'process.env.SSR': JSON.stringify(isSSR),
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.DEV_PORT': JSON.stringify(devPort),
+        'process.env.DEV_URL': devUrl
+          ? JSON.stringify(devUrl.origin)
+          : undefined,
+        'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
+        'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
+        'process.env.IS_ELECTRON': isElectron
+          ? JSON.stringify(true)
+          : undefined,
+      }),
       // new PrepackWebpackPlugin({ }),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
@@ -158,6 +143,29 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
     },
   };
 
+  if (!isNode) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.AMP': process.env.AMP
+          ? JSON.stringify(process.env.AMP)
+          : undefined,
+        'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
+        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
+          ? JSON.stringify(process.env.GRAPHQL_URL)
+          : undefined,
+        /*'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
+      ? JSON.stringify(process.env.GRAPHQL_SUB)
+      : undefined,*/
+        'process.env.URL': process.env.URL
+          ? JSON.stringify(process.env.URL)
+          : undefined,
+        'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
+          ? JSON.stringify(process.env.FILESTACK_KEY)
+          : undefined,
+      })
+    );
+  }
+
   // inline-source-map for web-dev
   config.devtool = 'source-map';
 
@@ -200,9 +208,7 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   }
 
   // babel-preset-env on node
-  if (isNode) {
-  } else if (isDev) {
-  } else {
+  if (isProd && isWeb) {
     /*babel.options.plugins.push([
       'transform-imports',
       {
@@ -228,12 +234,6 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
-    config.plugins.push(
-      new ExtractTextPlugin({
-        filename: isElectron ? '[name].css' : '[name].[contenthash].css',
-        allChunks: true,
-      })
-    );
     if (isElectron) {
       config.plugins.push(new GenerateJsonPlugin('package.json', {}));
     }
@@ -276,12 +276,6 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         raw: true,
         entryOnly: true,
       })
-    );
-    config.plugins.push(
-      new webpack.NormalModuleReplacementPlugin(
-        /\.(less|css|scss)$/,
-        'node-noop'
-      )
     );
   } else {
     config.plugins.push(
@@ -435,18 +429,6 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         },
       ],
     });
-    config.module.rules.push({
-      test: /\.css$/,
-      loader: ExtractTextPlugin.extract({
-        use: [
-          {
-            loader: 'css-loader',
-            options: { modules: false },
-          },
-        ],
-        fallback: 'style-loader',
-      }),
-    });
   } else {
     config.module.rules.push({
       test: /\.tsx?$/,
@@ -465,20 +447,24 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         },
       ],
     });
-    config.module.rules.push({
-      test: /\.css$/,
-      use: [
-        {
-          loader: 'style-loader',
-          options: { insertAt: 'top' },
-        },
-        {
-          loader: 'css-loader',
-          options: { modules: false, sourceMap: true },
-        },
-      ],
-    });
   }
-
-  return config;
+  return plugins.reduce((store, plugin) => {
+    const req = require(path.resolve(
+      pluginsFolder,
+      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`
+    ));
+    const options = {
+      isProd,
+      isWeb,
+      isElectron,
+      isNode,
+      isServerless,
+      isSSR,
+      appRoot,
+      nodeModules,
+      isLinked,
+      ...rest,
+    };
+    return req(config, options) || config;
+  }, config);
 };
