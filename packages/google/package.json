@@ -12,6 +12,7 @@
     "olymp-ui": "^0.9.7",
     "olymp-utils": "^0.9.5",
     "react-fela": "^5.0.4",
+    "recharts": "^1.0.0-alpha.2",
     "shortid": "^2.2.8"
   }
 }
