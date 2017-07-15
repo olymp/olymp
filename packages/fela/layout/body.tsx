@@ -6,7 +6,7 @@ import WithContainer from './with-container';
 
 const Body = createComponent(
   ({ affix }) => ({
-    flex: 'none',
+    // flex: 'none',
     ...!affix
       ? {}
       : {
