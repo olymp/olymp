@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+a11y-focus-scope@^1.1.0:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/a11y-focus-scope/-/a11y-focus-scope-1.1.3.tgz#f795384d4dd40ccec1c4a160ef4d13371d015ae8"
+  dependencies:
+    focusin "^2.0.0"
+    tabbable "^1.0.0"
+
+a11y-focus-store@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/a11y-focus-store/-/a11y-focus-store-1.0.0.tgz#ae52561cb86ae6c2904c1a4abf2e5820bf5305b0"
+
 add-dom-event-listener@1.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/add-dom-event-listener/-/add-dom-event-listener-1.0.2.tgz#8faed2c41008721cf111da1d30d995b85be42bed"
@@ -79,6 +90,10 @@ can-use-dom@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/can-use-dom/-/can-use-dom-0.1.0.tgz#22cc4a34a0abc43950f42c6411024a3f6366b45a"
 
+chain-function@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/chain-function/-/chain-function-1.0.0.tgz#0d4ab37e7e18ead0bdc47b920764118ce58733dc"
+
 classnames@2.x, classnames@^2.2.0, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@~2.2.0:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
@@ -125,6 +140,10 @@ dom-closest@^0.2.0:
   dependencies:
     dom-matches ">=1.0.1"
 
+dom-helpers@^3.2.0:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
+
 dom-matches@>=1.0.1:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/dom-matches/-/dom-matches-2.0.0.tgz#d2728b416a87533980eb089b848d253cf23a758c"
@@ -155,6 +174,10 @@ eventlistener@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/eventlistener/-/eventlistener-0.0.1.tgz#ed2baabb852227af2bcf889152c72c63ca532eb8"
 
+exenv@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+
 fbjs@^0.8.7, fbjs@^0.8.9:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
@@ -166,6 +189,10 @@ fbjs@^0.8.7, fbjs@^0.8.9:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
+
+focusin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/focusin/-/focusin-2.0.0.tgz#58c01180dfb1949f03e3ddeee063739fc33b6ffc"
 
 hammerjs@^2.0.8:
   version "2.0.8"
@@ -257,6 +284,10 @@ loose-envify@^1.0.0, loose-envify@^1.3.1:
 moment@2.x, moment@^2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+
+multirangeslider@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/multirangeslider/-/multirangeslider-0.5.2.tgz#c666dfa81215b83d5bca0fbea615b0fe7e24b871"
 
 node-fetch@^1.0.1:
   version "1.7.1"
@@ -608,6 +639,15 @@ react-lazy-load@^3.0.10:
     lodash.throttle "^4.0.0"
     prop-types "^15.5.8"
 
+react-modal2@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-modal2/-/react-modal2-3.2.0.tgz#34f372861b36fc83845e15a1bfc58d8e1a4dd394"
+  dependencies:
+    a11y-focus-scope "^1.1.0"
+    a11y-focus-store "^1.0.0"
+    exenv "^1.2.0"
+    prop-types "^15.5.8"
+
 react-slick@~0.14.2:
   version "0.14.11"
   resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.14.11.tgz#c2cbdbe3728c66a2ff4929be96d457e3ea0d80f3"
@@ -619,6 +659,17 @@ react-slick@~0.14.2:
     json2mq "^0.2.0"
     object-assign "^4.1.0"
     slick-carousel "^1.6.0"
+
+react-transition-group@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.1.0.tgz#3a4d115e1b515da3dd0280597b3b00cbbbee996b"
+  dependencies:
+    chain-function "^1.0.0"
+    classnames "^2.2.5"
+    dom-helpers "^3.2.0"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.8"
+    warning "^3.0.0"
 
 regenerator-runtime@^0.10.0:
   version "0.10.5"
@@ -651,6 +702,10 @@ slick-carousel@^1.6.0:
 string-convert@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/string-convert/-/string-convert-0.2.1.tgz#6982cc3049fbb4cd85f8b24568b9d9bf39eeff97"
+
+tabbable@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.0.6.tgz#7c26a87ea6f4a25edf5edb619745a0ae740724fc"
 
 ua-parser-js@^0.7.9:
   version "0.7.13"
