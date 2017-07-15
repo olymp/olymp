@@ -14,7 +14,7 @@ class Elessar extends Component {
     } else if (!Array.isArray(value)) {
       value = [];
     }
-    value.filter(item => Array.isArray(item)).forEach((item) => {
+    value.filter(item => Array.isArray(item)).forEach(item => {
       this.slider.add(item);
     });
     this.dontChange = false;
@@ -23,10 +23,10 @@ class Elessar extends Component {
   componentDidMount() {
     this.slider = new Slider({
       min: 7 * 60,
-      max: 19 * 60,
+      max: 21 * 60,
       minWidth: 60,
       step: 30,
-      label: (value) => {
+      label: value => {
         const start = moment().startOf('day').add(value[0], 'minutes');
         const end = moment().startOf('day').add(value[1], 'minutes');
         return `${start.format('HH:mm')}-${end.format('HH:mm')}`;
@@ -44,7 +44,7 @@ class Elessar extends Component {
     this.resetValues(newProps);
   }
 
-  onChange = (e) => {
+  onChange = e => {
     if (this.dontChange) {
       return;
     }
