@@ -1,12 +1,13 @@
 import React from 'react';
 import { AltSwitch, AltRoute } from 'olymp-router';
 import { AuthModals, AuthUsers } from 'olymp-auth';
-import { GatewayDest } from 'react-gateway';
+import { withUA } from 'olymp-utils';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute } from 'olymp-collection';
 import { AnalyticsRoutes } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
+import { GatewayDest } from 'react-gateway';
 import NavigationVertical from './navigation';
 import { SettingsRoute } from './settings';
 import { TemplateRoute } from './templates';
@@ -20,13 +21,6 @@ const Container = createComponent(
     },
     height: '100%',
     backgroundColor: '#f5f5f5',
-    '> :last-child': {
-      hasFlex: {
-        flex: '1 1 0%',
-      },
-      height: '100%',
-      overflowY: 'auto',
-    },
   }),
   'div',
   ({ deviceWidth, ...p }) => Object.keys(p)
@@ -37,13 +31,35 @@ const SwitchContainer = createComponent(
     hasFlex: {
       display: 'flex',
       flexDirection: 'column',
+      flex: '1 1 0%',
+      height: '100%',
+      overflowY: 'auto',
     },
   }),
   'div',
   p => Object.keys(p)
 );
 
-export default props => {
+const Footer = createComponent(
+  ({ theme }) => ({
+    padding: theme.space2,
+    backgroundColor: theme.dark,
+    color: theme.light,
+    textAlign: 'center',
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
+const Warning = createComponent(
+  ({ theme }) => ({
+    color: theme.colorDanger,
+  }),
+  'p',
+  p => Object.keys(p)
+);
+
+export default withUA(props => {
   const {
     query,
     collectionList,
@@ -118,6 +134,20 @@ export default props => {
           />
         </AltSwitch>
       </SwitchContainer>
+      {props.ua.getBrowser().name !== 'Chrome' &&
+        <Footer>
+          <p>
+            Wir empfehlen für die Verwendung von Olymp (und darüber hinaus) die
+            Verwendung des Browsers{' '}
+            <a href="https://www.google.de/chrome" rel="noopener noreferrer">
+              Chrome
+            </a>.
+          </p>
+          {props.ua.getBrowser().name === 'IE' &&
+            <Warning>
+              Der Internet Explorer ist ausdrücklich nicht unterstützt!
+            </Warning>}
+        </Footer>}
     </Container>
   );
-};
+});
