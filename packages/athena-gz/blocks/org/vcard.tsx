@@ -6,7 +6,7 @@ import Accordion from './accordion';
 import Person from './person';
 import moment from 'moment';
 
-const niceTime = (times) => {
+const niceTime = times => {
   if (times.length === 0 || !Array.isArray(times)) {
     return 'Geschlossen';
   }
@@ -33,14 +33,14 @@ const List = createComponent(
     display: 'block',
   }),
   ({ className, label, children }) =>
-    (<Grid size={3} className={className}>
+    <Grid size={3} className={className}>
       <ListLabel>
         {label}
       </ListLabel>
       <ListContent>
         {children}
       </ListContent>
-    </Grid>),
+    </Grid>,
   p => Object.keys(p)
 );
 
@@ -51,9 +51,9 @@ const ListLabel = createComponent(
     fontWeight: 'bold',
   }),
   ({ children, ...rest }) =>
-    (<Grid.Item {...rest} medium={1}>
+    <Grid.Item {...rest} medium={1}>
       {children}:
-    </Grid.Item>),
+    </Grid.Item>,
   p => Object.keys(p)
 );
 
@@ -89,14 +89,14 @@ const Logo = createComponent(
     },
   }),
   ({ value, className, title }) =>
-    (<Image
+    <Image
       className={className}
       value={value}
       width="100%"
       maxWidth={value && value.width}
       maxResolution={64000}
       alt={title}
-    />),
+    />,
   p => Object.keys(p)
 );
 
@@ -137,7 +137,7 @@ export default createComponent(
       persons,
     },
   }) =>
-    (<div>
+    <div>
       <Logo value={logo} title={name || titel} />
       <div className={className}>
         <H2 color={color}>
@@ -180,14 +180,14 @@ export default createComponent(
             </List>}
         </Container>
 
-        {openings &&
+        {(openings || freifeld) &&
           <div>
             <H2 color={color}>Öffnungszeiten</H2>
             <Container>
-              {openings.map((value, index) =>
-                (<List key={index} label={weekdays[index]}>
+              {(openings || []).map((value, index) =>
+                <List key={index} label={weekdays[index]}>
                   {niceTime(value)}
-                </List>)
+                </List>
               )}
               <Text>
                 {freifeld}
@@ -233,6 +233,6 @@ export default createComponent(
             )}
           </Container>}
       </div>
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
