@@ -196,10 +196,10 @@ const Button = createComponent(
       margin: '0 !important',
     },
     onHover: {
-      backgroundColor: theme.color,
+      /* backgroundColor: `${theme.color} !important`,
       '> i': {
         color: theme.light,
-      },
+      }, */
     },
   }),
   ({ className, to, type }) =>
