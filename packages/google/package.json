@@ -7,6 +7,7 @@
   "dependencies": {
     "@google/maps": "^0.4.2",
     "bluebird": "^3.5.0",
+    "google-map-react": "^0.24.0",
     "googleapis": "^20.1.0",
     "moment": "^2.18.1",
     "olymp-ui": "^0.9.7",

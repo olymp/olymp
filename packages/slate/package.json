@@ -12,7 +12,9 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-portal": "^3.1.0",
-    "slate": "^0.20.6"
+    "slate": "^0.20.6",
+    "slate-insert-block-on-enter": "^0.0.3",
+    "slate-trailing-block": "^0.2.4"
   },
   "devDependencies": {
     "@storybook/addon-info": "^3.0.0-rc.2",

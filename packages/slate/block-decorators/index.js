@@ -1,4 +1,2 @@
 export { default as useBlockBase } from './base';
-export { default as useBlockResize } from './resize';
-export { default as useBlockAlign } from './align';
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3NsYXRlL2Jsb2NrLWRlY29yYXRvcnMvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxPQUFPLElBQUksWUFBWSxFQUFFLE1BQU0sUUFBUSxDQUFDIiwiZmlsZSI6InBhY2thZ2VzL3NsYXRlL2Jsb2NrLWRlY29yYXRvcnMvaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgeyBkZWZhdWx0IGFzIHVzZUJsb2NrQmFzZSB9IGZyb20gJy4vYmFzZSc7XG4iXX0=
