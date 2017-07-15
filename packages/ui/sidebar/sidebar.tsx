@@ -57,7 +57,9 @@ const StyledInner = createComponent(
         border: 0,
         borderBottom: '1px solid #eee',
         '& .ant-modal-title': {
+          overflowY: 'visible',
           paddingX: '2.5rem',
+          paddingBottom: theme.space3,
           ellipsis: true,
         },
       },
