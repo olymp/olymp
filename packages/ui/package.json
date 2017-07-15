@@ -8,7 +8,6 @@
     "antd": "^2.12.0",
     "moment": "^2.18.1",
     "multirangeslider": "^0.5.2",
-    "react-modal2": "^3.2.0",
-    "react-transition-group": "^2.1.0"
+    "react-modal2": "^3.2.0"
   }
 }

@@ -3,7 +3,6 @@ export * from './containers';
 export * from './modal-utils';
 export * from './badge';
 export { default as Modal } from './modal';
-export { default as Transitions } from './transitions';
 export { default as Sidebar } from './sidebar';
 export { default as Dropdown } from './dropdown';
 export * from './h';

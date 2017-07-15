@@ -1,4 +1,8 @@
 import React from 'react';
+
+export default ({ children }) => children;
+
+/*import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { createComponent } from 'react-fela';
 
@@ -49,3 +53,4 @@ const PageTransition = createComponent(
 );
 PageTransition.displayName = 'PageTransition';
 export default PageTransition;
+*/

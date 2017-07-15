@@ -7,7 +7,6 @@ import cn from 'classnames';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
-import { Transition } from './transitions';
 
 ReactModal2.getApplicationElement = () => document.getElementById('app');
 
@@ -50,64 +49,63 @@ export const Modal = (
     }
     return true;
   });
+  if (!isOpen) return null;
   return (
     <Gateway into="modal">
-      <Transition isOpen={isOpen}>
-        <ReactModal
-          onClose={onCancel || onClose}
-          closeOnEsc
-          closeOnBackdropClick
-          className={cn('ant-modal-wrap', className)}
-          modalClassName="ant-modal"
+      <ReactModal
+        onClose={onCancel || onClose}
+        closeOnEsc
+        closeOnBackdropClick
+        className={cn('ant-modal-wrap', className)}
+        modalClassName="ant-modal"
+      >
+        <AntModal visible={false} />
+        {showLogo &&
+          theme.logo &&
+          <div className="logo">
+            <img src={theme.logo} />
+            <h3>
+              {theme.logoTitle}
+            </h3>
+          </div>}
+        <Spin
+          spinning={!!loading}
+          tip={typeof loading === 'string' ? loading : 'Lädt ...'}
         >
-          <AntModal visible={false} />
-          {showLogo &&
-            theme.logo &&
-            <div className="logo">
-              <img src={theme.logo} />
-              <h3>
-                {theme.logoTitle}
-              </h3>
-            </div>}
-          <Spin
-            spinning={!!loading}
-            tip={typeof loading === 'string' ? loading : 'Lädt ...'}
-          >
-            <div className="ant-modal-content">
-              <div className="ant-modal-header">
-                {leftButtons &&
-                  <TitleButtons left>
-                    {leftButtons}
-                  </TitleButtons>}
-                {rightButtons &&
-                  <TitleButtons right>
-                    {rightButtons}
-                  </TitleButtons>}
-                <div className="ant-modal-title">
-                  {title}
-                </div>
-                {subtitle &&
-                  <div className="ant-modal-subtitle">
-                    {subtitle}
-                  </div>}
+          <div className="ant-modal-content">
+            <div className="ant-modal-header">
+              {leftButtons &&
+                <TitleButtons left>
+                  {leftButtons}
+                </TitleButtons>}
+              {rightButtons &&
+                <TitleButtons right>
+                  {rightButtons}
+                </TitleButtons>}
+              <div className="ant-modal-title">
+                {title}
               </div>
-              {Children.toArray(children).length > 0 &&
-                <div className="ant-modal-body">
-                  {children}
+              {subtitle &&
+                <div className="ant-modal-subtitle">
+                  {subtitle}
                 </div>}
-              {footer}
             </div>
-          </Spin>
-          {links &&
-            <component.Links>
-              {links}
-            </component.Links>}
-          {copyright &&
-            <component.Copyright>
-              {copyright}
-            </component.Copyright>}
-        </ReactModal>
-      </Transition>
+            {Children.toArray(children).length > 0 &&
+              <div className="ant-modal-body">
+                {children}
+              </div>}
+            {footer}
+          </div>
+        </Spin>
+        {links &&
+          <component.Links>
+            {links}
+          </component.Links>}
+        {copyright &&
+          <component.Copyright>
+            {copyright}
+          </component.Copyright>}
+      </ReactModal>
     </Gateway>
   );
 };
