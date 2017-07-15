@@ -15,11 +15,6 @@ const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const appRoot = process.cwd();
-console.log(
-  'app root',
-  path.resolve(appRoot, 'app'),
-  path.resolve(appRoot, 'server')
-);
 
 const topFolder = path.resolve(__dirname, '..');
 const isLinked = path.basename(topFolder) === 'packages';
