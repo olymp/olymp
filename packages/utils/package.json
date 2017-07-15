@@ -1,10 +1,7 @@
 {
-  "version": "0.9.3",
+  "version": "0.9.7",
   "name": "olymp-utils",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT",
-  "dependencies": {
-    "olymp-utils": "^0.1.9"
-  }
+  "license": "MIT"
 }
