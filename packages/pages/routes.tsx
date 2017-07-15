@@ -159,7 +159,7 @@ export const PageRoute = props => {
       {renderHelmet(match || {}, pathname)}
       {renderGateway(props, match)}
       <ContentLoader height={600} isLoading={loading}>
-        <PageTransition>
+        <PageTransition innerKey={id}>
           {match
             ? <Page.WithData
                 {...props}

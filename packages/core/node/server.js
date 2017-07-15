@@ -52,9 +52,7 @@ app.use(useragent.express());
 app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), 'build', 'web')));
 app.use(
-  express.static(
-    path.resolve(process.cwd(), 'node_modules', 'olymp-app', 'public')
-  )
+  express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public'))
 );
 app.use(bodyparser.json());
 app.use(function(req, res, next) {
