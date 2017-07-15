@@ -64,7 +64,8 @@ module.exports = ({ mode, target, devUrl, devPort, ssr, serverless }) => {
         },
         allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
-          obj[`olymp-${item}`] = path.resolve(topFolder, item);
+          if (item === 'core') obj.olymp = path.resolve(topFolder, item);
+          else obj[`olymp-${item}`] = path.resolve(topFolder, item);
           return obj;
         }, {})
       ),
