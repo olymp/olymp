@@ -1,12 +1,12 @@
 {
-  "version": "0.9.7",
+  "version": "0.9.8",
   "name": "olymp-auth",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "jsonwebtoken": "^7.4.1",
-    "olymp-fela": "^0.9.7",
+    "olymp-fela": "^0.9.8",
     "qrcode": "^0.8.2",
     "speakeasy": "^2.0.0",
     "stale-lru-cache": "^5.1.1"
