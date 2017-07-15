@@ -24,23 +24,6 @@ export default createComponent(
       transition: 'opacity 600ms ease-out, transform 100ms ease-out',
     },
   }),
-  ({ children, className }) =>
-    (<CSSTransitionGroup
-      component="div"
-      transitionName={{
-        enter: 'page-transition-enter',
-        enterActive: 'page-transition-enter-active',
-        appear: 'page-transition-appear',
-        appearActive: 'page-transition-appear-active',
-      }}
-      className={className}
-      transitionEnter
-      transitionAppear
-      transitionLeave={false}
-      transitionAppearTimeout={600}
-      transitionEnterTimeout={600}
-    >
-      {children}
-    </CSSTransitionGroup>),
+  ({ children, className }) => children,
   []
 );
