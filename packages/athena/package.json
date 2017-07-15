@@ -8,6 +8,7 @@
     "algoliasearch": "^3.24.0",
     "antd": "^2.12.0",
     "lodash": "^4.17.4",
+    "monk": "^6.0.1",
     "olymp-auth": "^0.9.7",
     "olymp-cloudinary": "^0.9.7",
     "olymp-collection": "^0.9.7",

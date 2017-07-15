@@ -8,6 +8,7 @@
     "cloudinary": "^1.9.0",
     "olymp-collection": "^0.9.7",
     "react-image-crop": "^2.0.5",
+    "react-images": "^0.5.4",
     "recompose": "^0.24.0"
   }
 }
