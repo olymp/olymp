@@ -8,9 +8,9 @@ const Icon = createComponent(
     float: 'right',
   }),
   ({ className, children }) =>
-    (<span className={className}>
+    <span className={className}>
       {children}
-    </span>),
+    </span>,
   p => Object.keys(p)
 );
 
@@ -28,7 +28,7 @@ const Link = createComponent(
     },
   }),
   ({ className, children, color, active, onClick }) =>
-    (<div className={className} onClick={onClick}>
+    <div className={className} onClick={onClick}>
       {children}
 
       <Icon>
@@ -36,21 +36,22 @@ const Link = createComponent(
           ? <FaAngleRight size={14} color={color} />
           : <FaAngleLeft size={14} color={color} />}
       </Icon>
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 
 const Text = createComponent(
-  ({ theme }) => ({
+  ({ theme, active }) => ({
+    display: active ? 'block' : 'none',
     padding: theme.space2,
     color: theme.dark2,
     hyphens: 'auto',
     textAlign: 'justify',
   }),
   ({ className, children }) =>
-    (<div className={className}>
+    <div className={className}>
       <SlateMate value={children} readOnly />
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 
@@ -59,15 +60,14 @@ const Container = createComponent(
     marginY: 0,
   }),
   ({ className, name, color, text, active, onClick }) =>
-    (<div className={className}>
+    <div className={className}>
       <Link onClick={onClick} color={color} active={active}>
         {name}
       </Link>
-      {active &&
-        <Text>
-          {text}
-        </Text>}
-    </div>),
+      <Text active={active}>
+        {text}
+      </Text>
+    </div>,
   p => Object.keys(p)
 );
 
