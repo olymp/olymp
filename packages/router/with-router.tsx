@@ -26,7 +26,10 @@ export default WrappedComponent => {
   };
   return connect(
     ({ location }) => ({
-      ...location,
+      pathname: location.pathname,
+      query: location.query,
+      search: location.search,
+      url: location.url,
     }),
     dispatch => ({
       push: createPush(dispatch),

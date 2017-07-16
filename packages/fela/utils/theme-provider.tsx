@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { ThemeProvider as FelaThemeProvider } from 'react-fela';
 
-const getTheme = theme => ({
+const getTheme = (theme = {}) => ({
   // Colors
   color: '#8e44ad',
   colorSecondary: '#e67e22',
@@ -56,7 +56,7 @@ const getTheme = theme => ({
   ...theme,
 });
 
-export default ({ children, theme }) =>
-  (<FelaThemeProvider theme={getTheme(theme)}>
+export default ({ theme, children }) =>
+  <FelaThemeProvider theme={getTheme(theme)}>
     {children}
-  </FelaThemeProvider>);
+  </FelaThemeProvider>;

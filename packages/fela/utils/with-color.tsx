@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import { func } from 'prop-types';
-import shortId from 'shortid';
+import { setTheme } from './redux';
 
-export default getColorFromProps => WrappedComponent =>
+export default getColorFromProps => WrappedComponent => {
+  @setTheme
   class WithColorComponent extends Component {
-    static contextTypes = {
-      setColor: func,
-    };
-    id = shortId.generate();
     color = null;
     setColor = (props = this.props) => {
-      const { setColor } = this.context;
+      const { setTheme } = this.props;
       const newColor = getColorFromProps(props) || null;
       if (newColor !== this.color) {
-        setColor(this.id, newColor);
+        setTheme({ color: newColor });
         this.color = newColor;
       }
     };
@@ -21,8 +17,8 @@ export default getColorFromProps => WrappedComponent =>
       this.setColor(this.props);
     }
     componentWillUnmount() {
-      const { setColor } = this.context;
-      setColor(this.id, null);
+      const { setTheme } = this.props;
+      setTheme({});
     }
     componentWillReceiveProps(newProps) {
       this.setColor(newProps);
@@ -30,4 +26,6 @@ export default getColorFromProps => WrappedComponent =>
     render() {
       return <WrappedComponent {...this.props} />;
     }
-  };
+  }
+  return WithColorComponent;
+};

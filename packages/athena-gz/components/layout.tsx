@@ -6,7 +6,6 @@ import {
   Layout,
   Container,
   createComponent,
-  WithColorProvider,
 } from 'olymp-fela';
 import { prefetchPage } from 'olymp-pages';
 import Logo from './logo';
@@ -49,10 +48,7 @@ export const App = createComponent(
       },
     },
   }),
-  p =>
-    <WithColorProvider>
-      <Layout fullHeight {...p} />
-    </WithColorProvider>,
+  p => <Layout fullHeight {...p} />
   p => Object.keys(p)
 );
 
