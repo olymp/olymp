@@ -19,9 +19,9 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@types/graphql@^0.9.4":
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.9.4.tgz#cdeb6bcbef9b6c584374b81aa7f48ecf3da404fa"
+"@types/graphql@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.10.0.tgz#85c6cddd0de9449af009af9ff61aa5870c59fee3"
 
 "@types/isomorphic-fetch@^0.0.34":
   version "0.0.34"
@@ -1840,9 +1840,9 @@ gulp-sourcemaps@^2.6.0:
     through2 "2.X"
     vinyl "1.X"
 
-gulp-typescript@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/gulp-typescript/-/gulp-typescript-3.2.0.tgz#8ddf7be658d130188381f65a6e580c552b64c196"
+gulp-typescript@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/gulp-typescript/-/gulp-typescript-3.2.1.tgz#52cd77e9c6844e3b9a8bddd88e884ceb46a5db79"
   dependencies:
     gulp-util "~3.0.7"
     source-map "~0.5.3"
