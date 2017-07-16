@@ -6,7 +6,6 @@
   "license": "MIT",
   "dependencies": {
     "algoliasearch": "^3.24.0",
-    "antd": "^2.12.0",
     "lodash": "^4.17.4",
     "monk": "^6.0.1",
     "olymp-auth": "^16.0.6",
@@ -19,6 +18,7 @@
     "olymp-locale": "^16.0.6",
     "olymp-mail": "^16.0.6",
     "olymp-pages": "^16.0.8",
+    "olymp-slate": "^16.0.5",
     "olymp-ui": "^16.0.8",
     "olymp-utils": "^16.0.6",
     "olymp-webpack-less": "^16.0.5",
