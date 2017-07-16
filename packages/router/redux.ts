@@ -20,6 +20,13 @@ export const routerMiddleware = history => store => nextDispatch => action => {
   }
 
   action.payload = urlToLocation(action.payload);
-  history.push(action.payload.url);
+  if (!action.compensate) {
+    const oldKey = history.location.key;
+    history.push(action.payload);
+    if (oldKey === history.location.key) {
+      return;
+    }
+    action.payload.key = history.location.key;
+  }
   return nextDispatch(action);
 };

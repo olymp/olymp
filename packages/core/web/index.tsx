@@ -18,11 +18,15 @@ import { AppContainer } from 'react-hot-loader';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { routerMiddleware, routerReducer } from 'olymp-router';
 // End Redux stuff
 
 // React router
-import { BrowserRouter, createHistory } from 'olymp-router';
+import {
+  createHistory,
+  attachHistory,
+  routerMiddleware,
+  routerReducer,
+} from 'olymp-router';
 //
 
 const init = require('@app').init;
@@ -102,13 +106,11 @@ function renderApp() {
         <ApolloProvider store={store} client={client}>
           <FelaProvider renderer={renderer} mountNode={mountNode}>
             <GatewayProvider>
-              <BrowserRouter history={history}>
-                <UAProvider ua={ua}>
-                  <AmpProvider amp={false}>
-                    <App />
-                  </AmpProvider>
-                </UAProvider>
-              </BrowserRouter>
+              <UAProvider ua={ua}>
+                <AmpProvider amp={false}>
+                  <App />
+                </AmpProvider>
+              </UAProvider>
             </GatewayProvider>
           </FelaProvider>
         </ApolloProvider>
@@ -144,6 +146,7 @@ function load() {
       applyMiddleware(routerMiddleware(history))
     )
   );
+  attachHistory(history, store);
   // End Redux stuff
   rehydrateState = window.ASYNC_STATE;
   asyncContext = createAsyncContext();

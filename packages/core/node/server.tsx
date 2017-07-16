@@ -6,7 +6,6 @@ import session from 'express-session';
 import path from 'path';
 import React from 'react';
 import fetch from 'isomorphic-fetch';
-import { StaticRouter } from 'olymp-router';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
@@ -29,8 +28,14 @@ import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
-import { createFela } from 'olymp-fela';
+import { createFela, felaReducer } from 'olymp-fela';
 import { EventEmitter } from 'events';
+import {
+  createHistory,
+  attachHistory,
+  routerMiddleware,
+  routerReducer,
+} from 'olymp-router';
 import App from '@app';
 
 const init = require('@app').init;
@@ -191,14 +196,21 @@ app.get('*', (req, res) => {
   });
   const ua = new UAParser(req.headers['user-agent']);
   const renderer = createFela(ua);
+  const history = createHistory(req.url);
 
   const store = createStore(
     combineReducers({
       apollo: client.reducer(),
+      location: routerReducer(history),
+      fela: felaReducer,
     }),
     {},
-    compose(applyMiddleware(client.middleware()))
+    compose(
+      applyMiddleware(client.middleware()),
+      applyMiddleware(routerMiddleware(history))
+    )
   );
+  attachHistory(history, store);
 
   const asyncContext = createAsyncContext();
 
@@ -211,17 +223,15 @@ app.get('*', (req, res) => {
   const reactApp = (
     <AsyncComponentProvider asyncContext={asyncContext}>
       <ApolloProvider store={store} client={client}>
-        <StaticRouter location={req.url} context={context}>
-          <Provider renderer={renderer}>
-            <GatewayProvider>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={req.isAmp}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </GatewayProvider>
-          </Provider>
-        </StaticRouter>
+        <Provider renderer={renderer}>
+          <GatewayProvider>
+            <UAProvider ua={ua}>
+              <AmpProvider amp={req.isAmp}>
+                <App />
+              </AmpProvider>
+            </UAProvider>
+          </GatewayProvider>
+        </Provider>
       </ApolloProvider>
     </AsyncComponentProvider>
   );
