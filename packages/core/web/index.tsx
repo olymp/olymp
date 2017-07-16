@@ -13,13 +13,18 @@ import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import App from '@app';
 import { AppContainer } from 'react-hot-loader';
+
 // import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { routerMiddleware, routerReducer } from 'olymp-router';
+// End Redux stuff
+
+// React router
 import { BrowserRouter } from 'olymp-router';
 import createHistory from 'history/createFlexHistory';
-// End Redux stuff
+//
 
 const init = require('@app').init;
 // window.Perf = require('react-addons-perf');
@@ -84,9 +89,9 @@ let client,
   container,
   renderer,
   store,
-  history,
   ua,
   rehydrateState,
+  history,
   asyncContext;
 function renderApp() {
   const app = (
@@ -96,17 +101,17 @@ function renderApp() {
     >
       <AppContainer>
         <ApolloProvider store={store} client={client}>
-          <BrowserRouter history={history}>
-            <FelaProvider renderer={renderer} mountNode={mountNode}>
-              <GatewayProvider>
+          <FelaProvider renderer={renderer} mountNode={mountNode}>
+            <GatewayProvider>
+              <BrowserRouter history={history}>
                 <UAProvider ua={ua}>
                   <AmpProvider amp={false}>
                     <App />
                   </AmpProvider>
                 </UAProvider>
-              </GatewayProvider>
-            </FelaProvider>
-          </BrowserRouter>
+              </BrowserRouter>
+            </GatewayProvider>
+          </FelaProvider>
         </ApolloProvider>
       </AppContainer>
     </AsyncComponentProvider>
@@ -119,6 +124,7 @@ function load() {
   mountNode = document.getElementById('css-markup');
   ua = new UAParser(window.navigator.userAgent);
   renderer = createFela(ua);
+  history = createHistory();
   client = new ApolloClient({
     networkInterface,
     dataIdFromObject: o => o.id,
@@ -126,15 +132,17 @@ function load() {
     // initialState: window.INITIAL_DATA,
   });
   // Redux stuff
-  history = createHistory();
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   store = createStore(
     combineReducers({
       apollo: client.reducer(),
+      location: routerReducer(history),
     }),
     window.INITIAL_DATA || {},
-    composeEnhancers(applyMiddleware(client.middleware()))
+    compose(
+      applyMiddleware(client.middleware()),
+      applyMiddleware(routerMiddleware(history))
+    )
   );
   // End Redux stuff
   rehydrateState = window.ASYNC_STATE;

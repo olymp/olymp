@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { Button as AntButton, Modal as AntModal } from 'antd';
-import { Gateway } from 'react-gateway';
+import Portal from 'react-portal';
 import cn from 'classnames';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
@@ -49,9 +49,8 @@ export const Modal = (
     }
     return true;
   });
-  if (!isOpen) return null;
   return (
-    <Gateway into="modal">
+    <Portal isOpen={isOpen}>
       <ReactModal
         onClose={onCancel || onClose}
         closeOnEsc
@@ -106,7 +105,7 @@ export const Modal = (
             {copyright}
           </component.Copyright>}
       </ReactModal>
-    </Gateway>
+    </Portal>
   );
 };
 Modal.contextTypes = { theme: PropTypes.object };

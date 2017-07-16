@@ -1,7 +1,7 @@
 import { memoize } from 'olymp-utils';
 
 export default memoize(str => {
-  const ret = Object.create(null);
+  const ret = {};
   if (typeof str !== 'string') {
     return ret;
   }
