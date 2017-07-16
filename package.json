@@ -4,7 +4,7 @@
   "description": "",
   "main": "./packages/core",
   "scripts": {
-    "init": "lerna init",
+    "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "tsc": "gulp tsc",
     "watch": "gulp watch",
@@ -24,13 +24,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
