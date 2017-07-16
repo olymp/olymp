@@ -34,7 +34,7 @@ if (olymprc.extends) {
         { throws: false }
       ) ||
       jsonfile.readFileSync(
-        path.resolve(topFolder, `olymp-${name}, '.olymprc'`),
+        path.resolve(topFolder, `olymp-${name}`, '.olymprc'),
         {
           throws: false,
         }
@@ -185,8 +185,15 @@ if (command === 'dev') {
   const target = command.split(':')[1];
   rimraf.sync(path.resolve(process.cwd(), '.dist', target));
   process.env.NODE_ENV = 'production';
+
   const compiler = webpack([
-    createConfig({ target, mode: 'production', ssr, serverless, plugins }),
+    createConfig({
+      target,
+      mode: 'production',
+      ssr,
+      serverless,
+      ...olymprc,
+    }),
   ]);
   compiler.run((err, compilation) => {
     if (err) {

@@ -10,6 +10,7 @@
     "happypack": "^4.0.0-beta.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
+    "node-noop": "^1.0.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0"
   }
