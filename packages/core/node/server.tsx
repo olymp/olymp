@@ -32,9 +32,9 @@ import { createFela, felaReducer } from 'olymp-fela';
 import { EventEmitter } from 'events';
 import {
   createHistory,
-  attachHistory,
   routerMiddleware,
   routerReducer,
+  Router,
 } from 'olymp-router';
 import App from '@app';
 
@@ -196,7 +196,7 @@ app.get('*', (req, res) => {
   });
   const ua = new UAParser(req.headers['user-agent']);
   const renderer = createFela(ua);
-  const history = createHistory(req.url);
+  const history = createHistory({ initialEntries: [req.url] });
 
   const store = createStore(
     combineReducers({
@@ -210,7 +210,6 @@ app.get('*', (req, res) => {
       applyMiddleware(routerMiddleware(history))
     )
   );
-  attachHistory(history, store);
 
   const asyncContext = createAsyncContext();
 
@@ -223,15 +222,17 @@ app.get('*', (req, res) => {
   const reactApp = (
     <AsyncComponentProvider asyncContext={asyncContext}>
       <ApolloProvider store={store} client={client}>
-        <Provider renderer={renderer}>
-          <GatewayProvider>
-            <UAProvider ua={ua}>
-              <AmpProvider amp={req.isAmp}>
-                <App />
-              </AmpProvider>
-            </UAProvider>
-          </GatewayProvider>
-        </Provider>
+        <Router store={store} history={history}>
+          <Provider renderer={renderer}>
+            <GatewayProvider>
+              <UAProvider ua={ua}>
+                <AmpProvider amp={req.isAmp}>
+                  <App />
+                </AmpProvider>
+              </UAProvider>
+            </GatewayProvider>
+          </Provider>
+        </Router>
       </ApolloProvider>
     </AsyncComponentProvider>
   );

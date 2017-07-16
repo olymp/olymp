@@ -3,12 +3,9 @@ import { connect } from 'react-redux';
 import { urlToLocation } from './utils';
 import { createPush } from './actions';
 
-@connect(
-  ({ location }) => location,
-  dispatch => ({
-    push: createPush(dispatch),
-  })
-)
+@connect(null, dispatch => ({
+  push: createPush(dispatch),
+}))
 export default class Link extends Component {
   constructor(props) {
     super(props);

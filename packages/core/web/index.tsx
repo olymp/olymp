@@ -23,9 +23,9 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // React router
 import {
   createHistory,
-  attachHistory,
   routerMiddleware,
   routerReducer,
+  Router,
 } from 'olymp-router';
 //
 
@@ -104,15 +104,17 @@ function renderApp() {
     >
       <AppContainer>
         <ApolloProvider store={store} client={client}>
-          <FelaProvider renderer={renderer} mountNode={mountNode}>
-            <GatewayProvider>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={false}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </GatewayProvider>
-          </FelaProvider>
+          <Router store={store} history={history}>
+            <FelaProvider renderer={renderer} mountNode={mountNode}>
+              <GatewayProvider>
+                <UAProvider ua={ua}>
+                  <AmpProvider amp={false}>
+                    <App />
+                  </AmpProvider>
+                </UAProvider>
+              </GatewayProvider>
+            </FelaProvider>
+          </Router>
         </ApolloProvider>
       </AppContainer>
     </AsyncComponentProvider>
@@ -146,7 +148,6 @@ function load() {
       applyMiddleware(routerMiddleware(history))
     )
   );
-  attachHistory(history, store);
   // End Redux stuff
   rehydrateState = window.ASYNC_STATE;
   asyncContext = createAsyncContext();
