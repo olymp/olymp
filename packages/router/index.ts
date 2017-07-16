@@ -15,5 +15,6 @@ export { default as withRouter } from './with-router';
 export { default as ScrollToTop } from './scroll-to-top';
 export { default as AltSwitch } from './alt-switch';
 export { default as AltRoute } from './alt-route';
+export { default as createHistory } from './history';
 export * from './utils';
 export * from './redux';

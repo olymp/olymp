@@ -22,8 +22,7 @@ import { routerMiddleware, routerReducer } from 'olymp-router';
 // End Redux stuff
 
 // React router
-import { BrowserRouter } from 'olymp-router';
-import createHistory from 'history/createFlexHistory';
+import { BrowserRouter, createHistory } from 'olymp-router';
 //
 
 const init = require('@app').init;

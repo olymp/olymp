@@ -54,9 +54,11 @@ module.exports = ({
           path.resolve(appRoot, 'app'),
         ]),
       alias: {
-        'history/createFlexHistory': isServerless
+        '@history': isServerless
           ? 'history/createHashHistory'
-          : 'history/createBrowserHistory',
+          : isNode
+            ? 'history/createMemoryHistory'
+            : 'history/createBrowserHistory',
         react: path.resolve(appRoot, 'node_modules', 'react'),
         // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
         'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
@@ -89,6 +91,7 @@ module.exports = ({
       // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
         'process.env.SSR': JSON.stringify(isSSR),
+        'process.env.SERVERLESS': JSON.stringify(isServerless),
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
         'process.env.DEV_URL': devUrl

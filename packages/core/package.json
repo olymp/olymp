@@ -20,7 +20,6 @@
     "generate-json-webpack-plugin": "^0.2.1",
     "helmet": "^3.6.1",
     "heroku-ssl-redirect": "^0.0.4",
-    "history": "^4.6.3",
     "html-webpack-plugin": "^2.29.0",
     "isomorphic-fetch": "^2.2.1",
     "jsonfile": "^3.0.1",
