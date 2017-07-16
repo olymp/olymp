@@ -1,5 +1,6 @@
-import React from 'react';
-import { Helmet } from 'olymp-utils';
+import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
 const getURL = () => {
   if (process.env.URL) {
@@ -9,7 +10,10 @@ const getURL = () => {
   }
   return null;
 };
-export default ({ name, title, description, image, tags, keywords, pathname } = {}, pth) => {
+export default (
+  { name, title, description, image, tags, keywords, pathname } = {},
+  pth
+) => {
   if (pth && !pathname) pathname = pth;
   const meta = [];
   const link = [];
@@ -82,3 +86,32 @@ export default ({ name, title, description, image, tags, keywords, pathname } = 
   return <Helmet title={name} meta={meta} link={link} />;
 };
 
+export class OlympHelmet extends Component {
+  static contextTypes = {
+    theme: PropTypes.object,
+  };
+
+  render() {
+    const { meta, link ...rest } = this.props;
+    const { theme } = this.context;
+
+    return (
+      <Helmet
+        meta={[
+          { name: 'theme-color', content: theme.color || '#8e44ad' },
+          { name: 'msapplication-TileColor', content: theme.color || '#8e44ad' },
+          ...(meta || []),
+        ]}
+        link={[
+          {
+            rel: 'mask-icon',
+            href: '/safari-pinned-tab.svg',
+            color: theme.color || '#8e44ad',
+          },
+          ...(link || []),
+        ]}
+        {...rest}
+      />
+    );
+  }
+}

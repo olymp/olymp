@@ -14,7 +14,7 @@ export { default as traverse } from './traverse';
 export { default as toLabel } from './to-label';
 export { default as omit } from './omit';
 export { default as Logo } from './logo';
-export { default as renderHelmet } from './helmet';
+export { default as renderHelmet, OlympHelmet as Helmet } from './helmet';
 export { default as asEuro } from './as-euro';
 export * from './decorators';
 export * from './extern';
