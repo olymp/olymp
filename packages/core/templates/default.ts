@@ -10,6 +10,7 @@ export default ({
   initialState,
   asyncState,
   gaTrackingId,
+  hotjarId,
 }) => `
 <!DOCTYPE html>
 <html lang="de">
@@ -18,7 +19,7 @@ export default ({
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FBA139">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8e44ad">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -36,22 +37,22 @@ export default ({
     <link rel="apple-touch-startup-image" href="/launch.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="msapplication-TileColor" content="#FBA139">
+    <meta name="msapplication-TileColor" content="#8e44ad">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#FBA139">
+    <meta name="theme-color" content="#8e44ad">
     ${helmet.title.toString()}
     ${helmet.meta.toString()}
     ${helmet.link.toString()}
     ${styles.map(
-    style =>
-      `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
-  )}
+      style =>
+        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
+    )}
     ${styles.map(
-    style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
-  )}
+      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
+    )}
     <style id="css-markup">${cssMarkup || ''}</style>
     ${gaTrackingId
-    ? `<script type="text/javascript">
+      ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -71,16 +72,29 @@ export default ({
       ga('create', '${gaTrackingId}', 'auto');
       ga('send', 'pageview');
     </script>`
-    : ''}
+      : ''}
+    ${hotjarId
+      ? `
+      <script>
+        (function(h,o,t,j,a,r){
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid:${hotjarId},hjsv:5};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+      </script>`
+      : ''}
   </head>
   <body>
     <div id="app"><div>${root}</div></div>
     <script type='text/javascript'>window.INITIAL_DATA=${serialize(
-    initialState
-  )}</script>
+      initialState
+    )}</script>
     <script type='text/javascript'>window.ASYNC_STATE=${serialize(
-    asyncState
-  )}</script>
+      asyncState
+    )}</script>
     <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
     <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
     ${scripts.map(script => `<script async src="${script}"></script>`)}
