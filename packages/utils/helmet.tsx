@@ -92,14 +92,17 @@ export class OlympHelmet extends Component {
   };
 
   render() {
-    const { meta, link ...rest } = this.props;
+    const { meta, link, children, ...rest } = this.props;
     const { theme } = this.context;
 
     return (
       <Helmet
         meta={[
           { name: 'theme-color', content: theme.color || '#8e44ad' },
-          { name: 'msapplication-TileColor', content: theme.color || '#8e44ad' },
+          {
+            name: 'msapplication-TileColor',
+            content: theme.color || '#8e44ad',
+          },
           ...(meta || []),
         ]}
         link={[
@@ -111,7 +114,17 @@ export class OlympHelmet extends Component {
           ...(link || []),
         ]}
         {...rest}
-      />
+      >
+        <style type="text/css">{`
+          #_hj_feedback_container .path1:before {
+              color: ${theme.color || '#8e44ad'};
+            }
+            #_hj_feedback_container > div > a {
+              background-color: ${theme.color || '#8e44ad'} !important;
+            }
+        `}</style>
+        {children}
+      </Helmet>
     );
   }
 }
