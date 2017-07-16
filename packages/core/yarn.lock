@@ -1879,7 +1879,7 @@ hide-powered-by@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/hide-powered-by/-/hide-powered-by-1.0.0.tgz#4a85ad65881f62857fc70af7174a1184dccce32b"
 
-history@^4.6.3:
+history@^4.5.1, history@^4.6.3:
   version "4.6.3"
   resolved "https://registry.yarnpkg.com/history/-/history-4.6.3.tgz#6d723a8712c581d6bef37e8c26f4aedc6eb86967"
   dependencies:
@@ -2072,7 +2072,7 @@ interpret@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.3.tgz#cbc35c62eeee73f19ab7b10a801511401afc0f90"
 
-invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.1:
+invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -2081,6 +2081,14 @@ invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.1:
 invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
+
+ion-router@^0.11.3:
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/ion-router/-/ion-router-0.11.3.tgz#3c16b50da275718c5bfa3d5be833955fea31976c"
+  dependencies:
+    history "^4.5.1"
+    invariant "^2.2.2"
+    route-parser "0.0.5"
 
 ip@^1.1.0:
   version "1.1.5"
@@ -2946,9 +2954,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^16.0.5:
-  version "16.0.5"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.5.tgz#5bcd3e2b4fb430c1365e68dbafe81b0f3fae038c"
+olymp-fela@^16.0.6:
+  version "16.0.6"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.6.tgz#1d0c995f4c2f7792bc47a4314c40950581295c1e"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
@@ -2965,9 +2973,16 @@ olymp-fela@^16.0.5:
     react-portal "^3.1.0"
     tinycolor2 "^1.4.1"
 
-olymp-utils@^16.0.5:
-  version "16.0.5"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.5.tgz#5ff7d3dc04b25dde097a3dc1b09c5731438a4c13"
+olymp-router@^16.0.6:
+  version "16.0.6"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-16.0.6.tgz#98942441a9cd93aaa08d5a87e736ead035cebc61"
+  dependencies:
+    ion-router "^0.11.3"
+    olymp-utils "^16.0.6"
+
+olymp-utils@^16.0.6:
+  version "16.0.6"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.6.tgz#c166ee336dc473a98789d65ef897df99f4b3d345"
   dependencies:
     lodash "^4.17.4"
 
@@ -3657,6 +3672,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^2.0.0"
     inherits "^2.0.1"
+
+route-parser@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/route-parser/-/route-parser-0.0.5.tgz#7d1d09d335e49094031ea16991a4a79b01bbe1f4"
 
 safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
