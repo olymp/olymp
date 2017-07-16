@@ -2,7 +2,8 @@
   "app": "./app",
   "server": "./server",
   "plugins": [
-    "less"
+    "less",
+    "babel"
   ],
   "modifyVars": {
     "font-size-base": "15px",

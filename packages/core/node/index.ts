@@ -6,7 +6,10 @@ let currentApp = app;
 const port = parseInt(process.env.PORT || 3000, 10);
 server.listen(
   port,
-  process.env.NODE_ENV !== 'production' ? '0.0.0.0' : undefined
+  process.env.NODE_ENV !== 'production' ? '0.0.0.0' : undefined,
+  err => {
+    console.log('Listening', err);
+  }
 );
 // let ws = app.listenWS({ server });
 
@@ -20,7 +23,7 @@ if (module.hot) {
   });
 }
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.error(
     `${new Date().toUTCString()} uncaughtException: ${err.message}`
   );

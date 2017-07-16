@@ -10,7 +10,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const appRoot = process.cwd();
 
@@ -45,14 +44,13 @@ module.exports = ({
   const folder = isDev ? '.dev' : '.dist';
 
   const config = {
+    cache: true,
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
       modules: [
         path.resolve(appRoot, 'node_modules'),
         path.resolve(appRoot, 'app'),
-      ].concat(
-        allPackages.map(x => path.resolve(topFolder, x, 'node_modules'))
-      ),
+      ],
       alias: {
         '@history': isServerless
           ? 'history/createHashHistory'
@@ -103,6 +101,12 @@ module.exports = ({
           ? JSON.stringify(true)
           : undefined,
       }),
+      /*new webpack.DllPlugin({
+        path: path.resolve(appRoot, folder, target, `[name]-manifest.json`),
+        library: '[name]',
+        filename: '[name].js',
+        name: '[name]_lib',
+      }),*/
       // new PrepackWebpackPlugin({ }),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
@@ -210,29 +214,6 @@ module.exports = ({
     config.output.publicPath = '/';
   }
 
-  // babel-preset-env on node
-  if (isProd && isWeb) {
-    /*babel.options.plugins.push([
-      'transform-imports',
-      {
-        antd: {
-          transform: 'antd/lib/${member}',
-          kebabCase: true,
-          preventFullImport: true,
-        },
-        lodash: {
-          transform: 'lodash/${member}',
-          preventFullImport: true,
-        },
-        'date-fns': {
-          transform: 'date-fns/${member}',
-          preventFullImport: true,
-          snakeCase: true,
-        },
-      },
-    ]);*/
-  }
-
   // webpack plugins
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
@@ -266,12 +247,12 @@ module.exports = ({
   if (isNode) {
     if (isDev) {
       config.plugins.push(new StartServerPlugin('main.js'));
-      config.plugins.push(
+      /*config.plugins.push(
         new ReloadServerPlugin({
           // Defaults to process.cwd() + "/server.js"
           script: path.resolve(__dirname, 'node', 'index.js'),
         })
-      );
+      );*/
     }
     config.plugins.push(
       new webpack.BannerPlugin({
@@ -417,57 +398,25 @@ module.exports = ({
     ];
   }
 
-  if (isProd) {
-    config.module.rules.push({
-      test: /\.tsx?$/,
-      include: [path.resolve(appRoot, 'app'), path.resolve(appRoot, 'server')],
-      use: [
-        {
-          loader: 'awesome-typescript-loader',
-          options: {
-            silent: true,
-            transpileOnly: true,
-            configFileName: path.resolve(__dirname, 'tsconfig.json'),
-          },
-        },
-      ],
-    });
-  } else {
-    config.module.rules.push({
-      test: /\.tsx?$/,
-      include: [path.resolve(appRoot, 'app'), path.resolve(appRoot, 'server')],
-      use: [
-        {
-          loader: 'react-hot-loader/webpack',
-        },
-        {
-          loader: 'awesome-typescript-loader',
-          options: {
-            silent: true,
-            transpileOnly: true,
-            configFileName: path.resolve(__dirname, 'tsconfig.json'),
-          },
-        },
-      ],
-    });
-  }
+  const options = {
+    target,
+    folder,
+    isProd,
+    isWeb,
+    isElectron,
+    isNode,
+    isServerless,
+    isSSR,
+    appRoot,
+    nodeModules,
+    isLinked,
+    ...rest,
+  };
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
       isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`
     ));
-    const options = {
-      isProd,
-      isWeb,
-      isElectron,
-      isNode,
-      isServerless,
-      isSSR,
-      appRoot,
-      nodeModules,
-      isLinked,
-      ...rest,
-    };
     return req(config, options) || config;
   }, config);
 };

@@ -6,10 +6,19 @@ const { stringify } = JSON;
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
-module.exports = (
-  config,
-  { isProd, isWeb, isElectron, isNode, appRoot, isLinked, modifyVars }
-) => {
+module.exports = (config, options) => {
+  const {
+    isProd,
+    isWeb,
+    isElectron,
+    isNode,
+    appRoot,
+    isLinked,
+    modifyVars,
+    folder,
+    target,
+  } = options;
+
   if (isWeb && isProd) {
     config.plugins.push(new optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
@@ -31,6 +40,17 @@ module.exports = (
       loader: ExtractTextPlugin.extract({
         use: [
           {
+            loader: 'cache-loader',
+            options: {
+              cacheDirectory: path.resolve(
+                appRoot,
+                folder,
+                target,
+                'cache-babel'
+              ),
+            },
+          },
+          {
             loader: 'css-loader',
             options: { modules: false },
           },
@@ -43,32 +63,28 @@ module.exports = (
       }),
     });
   } else {
-    const HappyPack = require('happypack');
-    HappyPack.ThreadPool({ size: 5 });
-
-    config.plugins.push(
-      new HappyPack({
-        id: 'less',
-        threads: 4,
-        loaders: [
-          {
-            path: 'style-loader',
-            query: stringify({ insertAt: 'top' }),
-          },
-          {
-            path: 'css-loader',
-            query: stringify({ modules: false, sourceMap: true }),
-          },
-          {
-            loader: 'less-loader',
-            query: stringify({ modifyVars, sourceMap: true }),
-          },
-        ],
-      })
-    );
     config.module.rules.push({
       test: /\.(less|css)$/,
-      loaders: ['happypack/loader?id=less'],
+      use: [
+        {
+          loader: 'cache-loader',
+          options: {
+            cacheDirectory: resolve(appRoot, folder, target, 'cache-less'),
+          },
+        },
+        {
+          loader: 'style-loader',
+          options: { insertAt: 'top' },
+        },
+        {
+          loader: 'css-loader',
+          options: { modules: false, sourceMap: true },
+        },
+        {
+          loader: 'less-loader',
+          options: { modifyVars, sourceMap: true },
+        },
+      ],
     });
   }
 

@@ -4,44 +4,57 @@ const { stringify } = JSON;
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
-module.exports = (
-  config,
-  { isProd, isWeb, isElectron, isDev, isNode, appRoot, isLinked, modifyVars }
-) => {
-  const babel = {
-    test: /\.(js|jsx)$/,
-    loader: 'babel-loader',
-    include: [
-      // path.resolve(appRoot, 'server'),
-      // path.resolve(olympRoot, 'graphql'),
-      path.resolve(appRoot, 'app'),
-      path.resolve(appRoot, 'server'),
-    ],
-    options: {
-      cacheDirectory: false,
-      presets: ['react'],
-      plugins: [
-        'syntax-dynamic-import',
-        'transform-object-rest-spread',
-        // 'transform-es2015-destructuring',
-        'transform-decorators-legacy',
-        'transform-class-properties',
-        ['import', { libraryName: 'antd', style: true }],
+module.exports = (config, options) => {
+  const {
+    isProd,
+    isWeb,
+    isElectron,
+    isDev,
+    isNode,
+    appRoot,
+    isLinked,
+    modifyVars,
+    target,
+    folder,
+  } = options;
+  const resolvePlugin = (name, prefix = '') => {
+    if (isLinked) return resolve(__dirname, 'node_modules', `${prefix}${name}`);
+    else return name;
+  };
+
+  const babelOptions = {
+    cacheDirectory: false,
+    presets: [resolvePlugin('react', 'babel-preset-')],
+    plugins: [
+      resolvePlugin('syntax-dynamic-import', 'babel-plugin-'),
+      resolvePlugin('transform-object-rest-spread', 'babel-plugin-'),
+      // 'transform-es2015-destructuring',
+      resolvePlugin('transform-decorators-legacy', 'babel-plugin-'),
+      resolvePlugin('transform-class-properties', 'babel-plugin-'),
+      [
+        resolvePlugin('import', 'babel-plugin-'),
+        { libraryName: 'antd', style: true },
       ],
-    },
+    ],
   };
   if (isNode) {
-    babel.options.presets.push([
-      'env',
+    babelOptions.presets.push([
+      resolvePlugin('env', 'babel-preset-'),
       { modules: false, loose: true, targets: { node: 'current' } },
     ]);
   } else if (isDev) {
-    babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    babel.options.plugins.push('react-hot-loader/babel');
+    babelOptions.presets.push([
+      resolvePlugin('latest', 'babel-preset-'),
+      { modules: false, loose: true },
+    ]);
+    babelOptions.plugins.push(resolvePlugin('react-hot-loader/babel'));
   } else {
-    babel.options.presets.push(['latest', { modules: false, loose: true }]);
-    babel.options.plugins.push([
-      'transform-imports',
+    babelOptions.presets.push([
+      resolvePlugin('latest', 'babel-preset-'),
+      { modules: false, loose: true },
+    ]);
+    babelOptions.plugins.push([
+      resolvePlugin('transform-imports', 'babel-plugin-'),
       {
         antd: {
           transform: 'antd/lib/${member}',
@@ -67,28 +80,27 @@ module.exports = (
     // babel.options.presets.push(['react-optimize']);
   }
 
-  if (isDev) {
-    const HappyPack = require('happypack');
-    config.plugins.push(
-      new HappyPack({
-        id: 'babel',
-        threads: 4,
-        loaders: [
-          {
-            path: babel.loader,
-            query: JSON.stringify(babel.options),
-          },
-        ],
-      })
-    );
-    config.module.rules.push({
-      test: babel.test,
-      include: babel.include,
-      loaders: ['happypack/loader?id=babel'],
-    });
-  } else {
-    config.module.rules.push(babel);
-  }
+  config.module.rules.push({
+    test: /\.(js|jsx|ts|tsx)$/,
+    use: [
+      {
+        loader: 'cache-loader',
+        options: {
+          cacheDirectory: resolve(appRoot, folder, target, 'cache-babel'),
+        },
+      },
+      {
+        loader: 'babel-loader',
+        options: babelOptions,
+      },
+    ],
+    include: [
+      // path.resolve(appRoot, 'server'),
+      // path.resolve(olympRoot, 'graphql'),
+      resolve(appRoot, 'app'),
+      resolve(appRoot, 'server'),
+    ],
+  });
 
   if (isLinked) {
     config.resolveLoader.modules.push(nodeModules);
