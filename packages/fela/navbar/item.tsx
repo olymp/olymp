@@ -92,7 +92,7 @@ NavItem.displayName = 'Navbar.Item';
 NavItem.propTypes = {
   /** title/label */
   title: PropTypes.node.isRequired,
-  /** path for react-router or undefined for placeholder */
+  /** path for router or undefined for placeholder */
   to: PropTypes.string,
   /** submenu is mega dropdown menu */
   mega: PropTypes.func,

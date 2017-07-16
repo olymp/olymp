@@ -5,6 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
+    "ion-router": "^0.11.3",
     "olymp-utils": "^16.0.5"
   }
 }

@@ -1,11 +1,12 @@
-import React, { Component, PropTypes, Children } from 'react';
+import React, { Component, Children } from 'react';
 import hashtax from './hashtax';
+import PropTypes from 'prop-types';
 
 // HashtaxProvider
 class HashtaxProvider extends Component {
   static childContextTypes = {
     Hashtax: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);

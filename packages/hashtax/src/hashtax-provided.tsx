@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // connect: Decorator to get props from context and interpolate props
 export default class HashtaxProvided extends Component {

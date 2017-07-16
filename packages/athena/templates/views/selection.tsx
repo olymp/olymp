@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Form, Button } from 'antd';
-import Prompt from 'react-router-dom/Prompt';
+import { Prompt } from 'olymp-router';
 import { Sidebar, Panel, onError, onSuccess } from 'olymp-ui';
 import { InputEdit } from 'olymp-collection';
 import { mutateTemplate } from '../gql';
@@ -24,14 +24,14 @@ class SelectionSidebar extends Component {
         },
         updateQueries: !id
           ? {
-            templateList: (prev, { mutationResult }) => ({
-              ...prev,
-              items: [
-                ...prev.items.filter(item => item.id !== id),
-                mutationResult.data.item,
-              ],
-            }),
-          }
+              templateList: (prev, { mutationResult }) => ({
+                ...prev,
+                items: [
+                  ...prev.items.filter(item => item.id !== id),
+                  mutationResult.data.item,
+                ],
+              }),
+            }
           : undefined,
       })
         .then(({ data: { item } }) => {
@@ -51,8 +51,12 @@ class SelectionSidebar extends Component {
         subtitle={item.id ? 'Template bearbeiten' : 'Template erstellen'}
         footer={
           <div>
-            <Button onClick={this.ok} type="primary">Speichern</Button>
-            <Button onClick={onCancel} disabled={!item.id}>Abbrechen</Button>
+            <Button onClick={this.ok} type="primary">
+              Speichern
+            </Button>
+            <Button onClick={onCancel} disabled={!item.id}>
+              Abbrechen
+            </Button>
           </div>
         }
         right
