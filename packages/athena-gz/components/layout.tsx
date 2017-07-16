@@ -79,7 +79,6 @@ export default class GzLayout extends Component {
     pages: [],
   };
   prefetch = ({ id }) => {
-    console.log('PREFETCH', id);
     prefetchPage(this.props.client, id);
   };
   render() {
