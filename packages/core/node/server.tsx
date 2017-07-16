@@ -258,11 +258,11 @@ app.get('*', (req, res) => {
 
       // Generate the html res.
       const html = (req.isAmp ? amp : template)({
+        ...Helmet.rewind(),
         root: reactAppString,
         scripts,
         styles,
         cssMarkup,
-        helmet: Helmet.rewind(),
         initialState: { apollo: client.getInitialState() },
         asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
