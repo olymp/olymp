@@ -117,11 +117,11 @@ export class OlympHelmet extends Component {
       >
         <style type="text/css">{`
           #_hj_feedback_container .path1:before {
-              color: ${theme.color || '#8e44ad'};
-            }
-            #_hj_feedback_container > div > a {
-              background-color: ${theme.color || '#8e44ad'} !important;
-            }
+            color: ${theme.color || '#8e44ad'};
+          }
+          #_hj_feedback_container > div > a {
+            background-color: ${theme.color || '#8e44ad'} !important;
+          }
         `}</style>
         {children}
       </Helmet>
