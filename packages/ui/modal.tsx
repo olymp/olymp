@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { Button as AntButton, Modal as AntModal } from 'antd';
-import Portal from 'react-portal';
+import Portal from 'react-portal-minimal';
 import cn from 'classnames';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
@@ -49,64 +49,64 @@ export const Modal = (
     }
     return true;
   });
-  return (
-    <Portal isOpen={isOpen}>
-      <ReactModal
-        onClose={onCancel || onClose}
-        closeOnEsc
-        closeOnBackdropClick
-        className={cn('ant-modal-wrap', className)}
-        modalClassName="ant-modal"
-      >
-        <AntModal visible={false} />
-        {showLogo &&
-          theme.logo &&
-          <div className="logo">
-            <img src={theme.logo} />
-            <h3>
-              {theme.logoTitle}
-            </h3>
-          </div>}
-        <Spin
-          spinning={!!loading}
-          tip={typeof loading === 'string' ? loading : 'Lädt ...'}
+  return !isOpen
+    ? null
+    : <Portal>
+        <ReactModal
+          onClose={onCancel || onClose}
+          closeOnEsc
+          closeOnBackdropClick
+          className={cn('ant-modal-wrap', className)}
+          modalClassName="ant-modal"
         >
-          <div className="ant-modal-content">
-            <div className="ant-modal-header">
-              {leftButtons &&
-                <TitleButtons left>
-                  {leftButtons}
-                </TitleButtons>}
-              {rightButtons &&
-                <TitleButtons right>
-                  {rightButtons}
-                </TitleButtons>}
-              <div className="ant-modal-title">
-                {title}
+          <AntModal visible={false} />
+          {showLogo &&
+            theme.logo &&
+            <div className="logo">
+              <img src={theme.logo} />
+              <h3>
+                {theme.logoTitle}
+              </h3>
+            </div>}
+          <Spin
+            spinning={!!loading}
+            tip={typeof loading === 'string' ? loading : 'Lädt ...'}
+          >
+            <div className="ant-modal-content">
+              <div className="ant-modal-header">
+                {leftButtons &&
+                  <TitleButtons left>
+                    {leftButtons}
+                  </TitleButtons>}
+                {rightButtons &&
+                  <TitleButtons right>
+                    {rightButtons}
+                  </TitleButtons>}
+                <div className="ant-modal-title">
+                  {title}
+                </div>
+                {subtitle &&
+                  <div className="ant-modal-subtitle">
+                    {subtitle}
+                  </div>}
               </div>
-              {subtitle &&
-                <div className="ant-modal-subtitle">
-                  {subtitle}
+              {Children.toArray(children).length > 0 &&
+                <div className="ant-modal-body">
+                  {children}
                 </div>}
+              {footer}
             </div>
-            {Children.toArray(children).length > 0 &&
-              <div className="ant-modal-body">
-                {children}
-              </div>}
-            {footer}
-          </div>
-        </Spin>
-        {links &&
-          <component.Links>
-            {links}
-          </component.Links>}
-        {copyright &&
-          <component.Copyright>
-            {copyright}
-          </component.Copyright>}
-      </ReactModal>
-    </Portal>
-  );
+          </Spin>
+          {links &&
+            <component.Links>
+              {links}
+            </component.Links>}
+          {copyright &&
+            <component.Copyright>
+              {copyright}
+            </component.Copyright>}
+        </ReactModal>
+      </Portal>;
 };
 Modal.contextTypes = { theme: PropTypes.object };
 

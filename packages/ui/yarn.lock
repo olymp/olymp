@@ -640,6 +640,12 @@ react-modal2@^3.2.0:
     exenv "^1.2.0"
     prop-types "^15.5.8"
 
+react-portal-minimal@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/react-portal-minimal/-/react-portal-minimal-4.0.2.tgz#8e2742807dbf61773037e93c02b7d08ddc420305"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-slick@~0.14.2:
   version "0.14.11"
   resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.14.11.tgz#c2cbdbe3728c66a2ff4929be96d457e3ea0d80f3"
