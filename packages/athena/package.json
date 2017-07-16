@@ -22,8 +22,6 @@
     "olymp-ui": "^16.0.3",
     "olymp-utils": "^16.0.2",
     "olymp-webpack-less": "^16.0.3",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
     "react-gateway": "^2.7.0",
     "react-gravatar": "^2.6.3"
   }

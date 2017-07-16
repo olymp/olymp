@@ -9,8 +9,6 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
     "react-portal": "^3.1.0",
     "slate": "^0.20.6",
     "slate-insert-block-on-enter": "^0.0.3",

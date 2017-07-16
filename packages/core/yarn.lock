@@ -2946,9 +2946,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^16.0.2:
-  version "16.0.2"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.2.tgz#6ed93d5005dce158405ce9ea87112322dce23c83"
+olymp-fela@^16.0.3:
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.3.tgz#9a0afd4a07cdc93af1d9dc8c2d663868908e39c6"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
@@ -3203,7 +3203,7 @@ promise@^7.0.3, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
+prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -3342,6 +3342,15 @@ react-deep-force-update@^2.0.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
+react-dom@16.0.0-alpha.13:
+  version "16.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0-alpha.13.tgz#c2b39aaf8645f1d664619fb49a1fbb9f60719c23"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.6"
+
 react-dom@^0.14.0:
   version "0.14.9"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.14.9.tgz#05064a3dcf0fb1880a3b2bfc9d58c55d8d9f6293"
@@ -3435,6 +3444,15 @@ react-side-effect@^1.1.0:
 react-tree-walker@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/react-tree-walker/-/react-tree-walker-2.1.2.tgz#005a5d1415952349003b72c63f87ac2630e1c45a"
+
+react@16.0.0-alpha.13:
+  version "16.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0-alpha.13.tgz#de37e035b06283a15cfb916c6943b9b066b25de0"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.6"
 
 react@^0.14.0:
   version "0.14.9"
