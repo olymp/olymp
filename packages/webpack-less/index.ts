@@ -42,12 +42,7 @@ module.exports = (config, options) => {
           {
             loader: 'cache-loader',
             options: {
-              cacheDirectory: path.resolve(
-                appRoot,
-                folder,
-                target,
-                'cache-babel'
-              ),
+              cacheDirectory: resolve(appRoot, folder, target, 'cache-babel'),
             },
           },
           {
