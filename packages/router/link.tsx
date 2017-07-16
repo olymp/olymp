@@ -18,12 +18,24 @@ export default class Link extends Component {
     this.location = urlToLocation(props.to);
   }
   onClick = e => {
-    const { to, push } = this.props;
+    const { to, push, onClick } = this.props;
     e.preventDefault();
-    push(this.location);
+    if (onClick) {
+      onClick(e);
+    } else {
+      push(this.location);
+    }
   };
   render() {
-    const { to, push, ...rest } = this.props;
-    return <a {...rest} href={this.location.url} onClick={this.onClick} />;
+    const { to, push, className, style, children } = this.props;
+    return (
+      <a
+        className={className}
+        style={style}
+        href={this.location.url}
+        onClick={this.onClick}
+        children={children}
+      />
+    );
   }
 }

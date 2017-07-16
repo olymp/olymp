@@ -19,6 +19,7 @@ export const routerMiddleware = history => store => nextDispatch => action => {
     return nextDispatch(action);
   }
 
-  history.push(action.payload);
+  action.payload = urlToLocation(action.payload);
+  history.push(action.payload.url);
   return nextDispatch(action);
 };

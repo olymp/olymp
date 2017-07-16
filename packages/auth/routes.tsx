@@ -25,10 +25,8 @@ export default withRouter(props => {
   const inQuery = key => query[key] !== undefined;
   const p = { pathname, onClose: () => router.push(pathname) };
 
-  console.log(inQuery('login'), query);
   return (
     <div>
-      IS OPEN? {inQuery('login') ? 'JA' : 'NEIN'}
       <AuthInvitations {...p} isOpen={inQuery('invitations')} />
       <AuthLogin
         {...p}
