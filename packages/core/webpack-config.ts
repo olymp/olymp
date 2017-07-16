@@ -47,12 +47,12 @@ module.exports = ({
   const config = {
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
-      modules: allPackages
-        .map(x => path.resolve(topFolder, x, 'node_modules'))
-        .concat([
-          path.resolve(appRoot, 'node_modules'),
-          path.resolve(appRoot, 'app'),
-        ]),
+      modules: [
+        path.resolve(appRoot, 'node_modules'),
+        path.resolve(appRoot, 'app'),
+      ].concat(
+        allPackages.map(x => path.resolve(topFolder, x, 'node_modules'))
+      ),
       alias: {
         '@history': isServerless
           ? 'history/createHashHistory'
