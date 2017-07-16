@@ -4,5 +4,5 @@
   ],
   "npmClient": "yarn",
   "lerna": "2.0.0",
-  "version": "16.0.10"
+  "version": "16.0.11"
 }
