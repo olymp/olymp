@@ -9,7 +9,7 @@ module.exports = templateParams => `
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Language" content="de" />
-      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FBA139">
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8e44ad">
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
       <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
       <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -24,12 +24,12 @@ module.exports = templateParams => `
       <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
       <link rel="manifest" href="/manifest.json">
-      <meta name="msapplication-TileColor" content="#FBA139">
+      <meta name="msapplication-TileColor" content="#8e44ad">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-      <meta name="theme-color" content="#FBA139">
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])).map(
-    style => `<link rel="stylesheet" type="text/css" href="${style}">`
-  )}
+      <meta name="theme-color" content="#8e44ad">
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
+      ).map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
       <style id="css-markup"></style>
       <style>
         body {
@@ -45,7 +45,9 @@ module.exports = templateParams => `
       <div id="app"></div>
       <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
       <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])).map(script => `<script src="${script}"></script>`)}
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])
+      ).map(script => `<script src="${script}"></script>`)}
     </body>
   </html>
 `;
