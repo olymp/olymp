@@ -79,6 +79,7 @@ export default class GzLayout extends Component {
     pages: [],
   };
   prefetch = ({ id }) => {
+    console.log('PREFETCH', id);
     prefetchPage(this.props.client, id);
   };
   render() {
@@ -136,7 +137,7 @@ export default class GzLayout extends Component {
             </Layout.Body>
 
             <Layout.Footer container>
-              <Navbar full>
+              <Navbar full onItemMouseEnter={this.prefetch}>
                 <Navbar.Nav
                   pages={[
                     {
