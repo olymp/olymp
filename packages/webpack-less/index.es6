@@ -59,7 +59,6 @@ module.exports = (config, options) => {
       }),
     });
   } else {
-    console.log(modifyVars);
     config.module.rules.push({
       test: /\.(less|css)$/,
       use: [

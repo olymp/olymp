@@ -73,7 +73,7 @@ const compile = x =>
     .pipe(gulp.dest(dest));
 
 gulp.task('watch', () => {
-  compile(watch(src, { ignoreInitial: true, base: dest }));
+  compile(watch(src, { ignoreInitial: false, base: dest }));
 });
 
 gulp.task('default', ['es6', 'watch']);
