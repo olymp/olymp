@@ -113,7 +113,7 @@ module.exports = ({
           )
           : undefined,*/
         ...Object.keys(sharedEnv).reduce((store, key) => {
-          if (sharedEnv[key] === true) {
+          if (sharedEnv[key] === true || process.env[key]) {
             store[`process.env.${key}`] = JSON.stringify(process.env[key]);
           } else {
             store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);

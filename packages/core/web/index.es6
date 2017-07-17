@@ -169,7 +169,7 @@ if (window.POLYFILLED) {
 
 if (module.hot) {
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept(['@app'], () => {
+  module.hot.accept('@app', () => {
     renderApp(require('@app').default);
   });
 }
