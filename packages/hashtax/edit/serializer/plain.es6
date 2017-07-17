@@ -1,4 +1,4 @@
-import Raw from './raw'
+import Raw from './raw';
 
 /**
  * Deserialize a plain text `string` to a state.
@@ -14,7 +14,7 @@ function deserialize(string, options = {}) {
     kind: 'state',
     document: {
       kind: 'document',
-      nodes: string.split('\n').map((line) => {
+      nodes: string.split('\n').map(line => {
         return {
           kind: 'block',
           type: 'paragraph',
@@ -25,16 +25,16 @@ function deserialize(string, options = {}) {
                 {
                   text: line,
                   marks: [],
-                }
-              ]
-            }
-          ]
-        },
+                },
+              ],
+            },
+          ],
+        };
       }),
-    }
-  }
+    },
+  };
 
-  return options.toRaw ? raw : Raw.deserialize(raw)
+  return options.toRaw ? raw : Raw.deserialize(raw);
 }
 
 /**
@@ -45,9 +45,7 @@ function deserialize(string, options = {}) {
  */
 
 function serialize(state) {
-  return state.document.nodes
-    .map(block => block.text)
-    .join('\n')
+  return state.document.nodes.map(block => block.text).join('\n');
 }
 
 /**
@@ -58,5 +56,5 @@ function serialize(state) {
 
 export default {
   deserialize,
-  serialize
-}
+  serialize,
+};

@@ -18,14 +18,24 @@ const src = [
 const dest = '.';
 
 const babelOptions = {
-  presets: ['react', ['latest', { modules: false, loose: true }]],
+  presets: [
+    'react',
+    [
+      'latest',
+      {
+        es2015: {
+          modules: false,
+        },
+      },
+    ],
+  ],
   plugins: [
     'syntax-dynamic-import',
     'transform-object-rest-spread',
     // 'transform-es2015-destructuring',
     'transform-decorators-legacy',
     'transform-class-properties',
-    ['import', { libraryName: 'antd', style: false }],
+    ['import', { libraryName: 'antd', style: true }],
     [
       'transform-imports',
       {

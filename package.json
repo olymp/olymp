@@ -6,7 +6,7 @@
   "scripts": {
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
-    "del-ts": "del 'packages/athena/**/*.js' 'packages/athena/**/*.js.map' '!packages/athena/node_modules/**'",
+    "del-ts": "del 'packages/**/*.js' '!packages/**/node_modules/**'",
     "tsc": "gulp tsc",
     "watch": "gulp watch",
     "lib": "gulp lib-build",
@@ -26,13 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
