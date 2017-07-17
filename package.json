@@ -4,6 +4,7 @@
   "description": "",
   "main": "./packages/core",
   "scripts": {
+    "outdated": "lerna exec yarn outdated",
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "del-ts": "del 'packages/**/*.js' '!packages/**/node_modules/**'",
