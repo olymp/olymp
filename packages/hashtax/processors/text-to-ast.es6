@@ -66,7 +66,7 @@ export const processLines = (lines, result = []) => {
   return processLines(rest, result);
 };
 export default (text) => {
-  if (!text) {
+  if (!text || typeof text !== 'string') {
     return [];
   }
   return processLines(text.split('\n')).result;

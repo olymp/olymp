@@ -4,6 +4,7 @@ import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { FieldValue } from '../components';
 import { Sidebar, List } from 'olymp-ui';
+import { get } from 'lodash';
 
 const states = {
   PUBLISHED: 'Öffentlich',
@@ -136,6 +137,7 @@ export default class CollectionListSidebar extends Component {
         item[this.resolveFieldName(item, 'color', 'color')];
 
       return {
+        item,
         id: item.id,
         name,
         description,
@@ -150,12 +152,14 @@ export default class CollectionListSidebar extends Component {
         onClick: () => router.push(this.getLink(item)),
       };
     });
-
     const childs = items.map(item =>
       <List.Item
         image={
           (item.image || item.bild) &&
           <Image value={item.image || item.bild} width={37} height={37} />
+        }
+        description={
+          item.item[get(collection, 'specialFields.description.field', '')]
         }
         active={item.id === id}
         label={item.name}
