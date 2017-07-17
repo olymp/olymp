@@ -270,7 +270,6 @@ app.get('*', (req, res) => {
         initialState: { apollo: client.getInitialState() },
         asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
-        hotjarId: process.env.HOTJAR_ID,
       });
 
       // Check if the render result contains a redirect, if so we need to set
