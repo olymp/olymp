@@ -8,6 +8,7 @@
     "antd": "^2.12.0",
     "moment": "^2.18.1",
     "multirangeslider": "^0.5.2",
+    "react-gravatar": "^2.6.3",
     "react-modal2": "^3.2.0",
     "react-portal-minimal": "^4.0.2"
   }

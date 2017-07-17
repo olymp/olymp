@@ -1,4 +1,4 @@
-import React, { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withLang, Logo } from 'olymp-utils';
 import { Link } from 'olymp-router';
