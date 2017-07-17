@@ -48,7 +48,7 @@ export const App = createComponent(
       },
     },
   }),
-  p => <Layout fullHeight {...p} />
+  p => <Layout fullHeight {...p} />,
   p => Object.keys(p)
 );
 

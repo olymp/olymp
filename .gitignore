@@ -38,5 +38,4 @@ flow-typed/
 # Flow Coverage Report
 flow-coverage/
 
-# Happypack
-.happypack
+packages/**/*.js
