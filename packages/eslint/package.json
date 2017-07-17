@@ -1,6 +1,6 @@
 {
-  "version": "16.0.17",
-  "name": "olymp-eslint",
+  "version": "16.0.18",
+  "name": "eslint-config-olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
