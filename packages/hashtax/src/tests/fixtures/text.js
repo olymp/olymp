@@ -1,2 +1,19 @@
-module.exports = "\n#header @deco\n#container\n#bild {item.slug} color={item.color}#\nqkwodqpowkd #bold asdiojqwdijqiowdj qiowdjoiqwd oiqwjd oiqwd j color={item.color}# qwdjoiqwio\nDas ist ein Testqmwkd...\n##\nTest\n\n#container\n#content#\n#\n\n#footer\n[Impressum](/impressum)\nGesundheitsZentrum Kelkheim. #copyright 2017#.\n#\n#\n";
-//# sourceMappingURL=text.js.map
+module.exports = `
+#header @deco
+#container
+#bild {item.slug} color={item.color}#
+qkwodqpowkd #bold asdiojqwdijqiowdj qiowdjoiqwd oiqwjd oiqwd j color={item.color}# qwdjoiqwio
+Das ist ein Testqmwkd...
+##
+Test
+
+#container
+#content#
+#
+
+#footer
+[Impressum](/impressum)
+GesundheitsZentrum Kelkheim. #copyright 2017#.
+#
+#
+`;

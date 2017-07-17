@@ -13,4 +13,3 @@ export { default as GZKNewsBlock } from './news';
 export { default as GZKNumbersBlock } from './phone';
 export { default as GZKNetworkBlock } from './award';
 export { default as GZKVerzeichnisBlock } from './list';
-//# sourceMappingURL=index.js.map

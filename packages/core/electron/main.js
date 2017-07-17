@@ -1,37 +1,71 @@
-var electron = require('electron');
-var app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
-var path = require('path');
-var url = require('url');
-var mainWindow;
+const electron = require('electron');
+// Module to control application life.
+const app = electron.app;
+// Module to create native browser window.
+const BrowserWindow = electron.BrowserWindow;
+
+const path = require('path');
+const url = require('url');
+
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow;
+
 function createWindow() {
-    mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 750,
-        minWidth: 600,
-        minHeight: 450,
-        center: true,
-        frame: false,
-        titleBarStyle: 'hiddenInset',
-    });
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true,
-    }));
-    mainWindow.on('closed', function () {
-        mainWindow = null;
-    });
+  // Create the browser window.
+  // mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden' });
+  mainWindow = new BrowserWindow({
+    width: 1000,
+    height: 750,
+    minWidth: 600,
+    minHeight: 450,
+    center: true,
+    frame: false,
+    titleBarStyle: 'hiddenInset',
+  });
+
+  // and load the index.html of the app.
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file:',
+      slashes: true,
+    })
+  );
+
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools();
+
+  // Emitted when the window is closed.
+  mainWindow.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null;
+  });
 }
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
-app.on('activate', function () {
-    if (mainWindow === null) {
-        createWindow();
-    }
+
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    createWindow();
+  }
 });
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2FwcC9lbGVjdHJvbi9tYWluLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLElBQU0sUUFBUSxHQUFHLE9BQU8sQ0FBQyxVQUFVLENBQUMsQ0FBQztBQUVyQyxJQUFNLEdBQUcsR0FBRyxRQUFRLENBQUMsR0FBRyxDQUFDO0FBRXpCLElBQU0sYUFBYSxHQUFHLFFBQVEsQ0FBQyxhQUFhLENBQUM7QUFFN0MsSUFBTSxJQUFJLEdBQUcsT0FBTyxDQUFDLE1BQU0sQ0FBQyxDQUFDO0FBQzdCLElBQU0sR0FBRyxHQUFHLE9BQU8sQ0FBQyxLQUFLLENBQUMsQ0FBQztBQUkzQixJQUFJLFVBQVUsQ0FBQztBQUVmO0lBR0UsVUFBVSxHQUFHLElBQUksYUFBYSxDQUFDO1FBQzdCLEtBQUssRUFBRSxJQUFJO1FBQ1gsTUFBTSxFQUFFLEdBQUc7UUFDWCxRQUFRLEVBQUUsR0FBRztRQUNiLFNBQVMsRUFBRSxHQUFHO1FBQ2QsTUFBTSxFQUFFLElBQUk7UUFDWixLQUFLLEVBQUUsS0FBSztRQUNaLGFBQWEsRUFBRSxhQUFhO0tBQzdCLENBQUMsQ0FBQztJQUdILFVBQVUsQ0FBQyxPQUFPLENBQ2hCLEdBQUcsQ0FBQyxNQUFNLENBQUM7UUFDVCxRQUFRLEVBQUUsSUFBSSxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUUsWUFBWSxDQUFDO1FBQzVDLFFBQVEsRUFBRSxPQUFPO1FBQ2pCLE9BQU8sRUFBRSxJQUFJO0tBQ2QsQ0FBQyxDQUNILENBQUM7SUFNRixVQUFVLENBQUMsRUFBRSxDQUFDLFFBQVEsRUFBRTtRQUl0QixVQUFVLEdBQUcsSUFBSSxDQUFDO0lBQ3BCLENBQUMsQ0FBQyxDQUFDO0FBQ0wsQ0FBQztBQUtELEdBQUcsQ0FBQyxFQUFFLENBQUMsT0FBTyxFQUFFLFlBQVksQ0FBQyxDQUFDO0FBRzlCLEdBQUcsQ0FBQyxFQUFFLENBQUMsbUJBQW1CLEVBQUU7SUFHMUIsRUFBRSxDQUFDLENBQUMsT0FBTyxDQUFDLFFBQVEsS0FBSyxRQUFRLENBQUMsQ0FBQyxDQUFDO1FBQ2xDLEdBQUcsQ0FBQyxJQUFJLEVBQUUsQ0FBQztJQUNiLENBQUM7QUFDSCxDQUFDLENBQUMsQ0FBQztBQUVILEdBQUcsQ0FBQyxFQUFFLENBQUMsVUFBVSxFQUFFO0lBR2pCLEVBQUUsQ0FBQyxDQUFDLFVBQVUsS0FBSyxJQUFJLENBQUMsQ0FBQyxDQUFDO1FBQ3hCLFlBQVksRUFBRSxDQUFDO0lBQ2pCLENBQUM7QUFDSCxDQUFDLENBQUMsQ0FBQyIsImZpbGUiOiJwYWNrYWdlcy9hcHAvZWxlY3Ryb24vbWFpbi5qcyIsInNvdXJjZXNDb250ZW50IjpbImNvbnN0IGVsZWN0cm9uID0gcmVxdWlyZSgnZWxlY3Ryb24nKTtcbi8vIE1vZHVsZSB0byBjb250cm9sIGFwcGxpY2F0aW9uIGxpZmUuXG5jb25zdCBhcHAgPSBlbGVjdHJvbi5hcHA7XG4vLyBNb2R1bGUgdG8gY3JlYXRlIG5hdGl2ZSBicm93c2VyIHdpbmRvdy5cbmNvbnN0IEJyb3dzZXJXaW5kb3cgPSBlbGVjdHJvbi5Ccm93c2VyV2luZG93O1xuXG5jb25zdCBwYXRoID0gcmVxdWlyZSgncGF0aCcpO1xuY29uc3QgdXJsID0gcmVxdWlyZSgndXJsJyk7XG5cbi8vIEtlZXAgYSBnbG9iYWwgcmVmZXJlbmNlIG9mIHRoZSB3aW5kb3cgb2JqZWN0LCBpZiB5b3UgZG9uJ3QsIHRoZSB3aW5kb3cgd2lsbFxuLy8gYmUgY2xvc2VkIGF1dG9tYXRpY2FsbHkgd2hlbiB0aGUgSmF2YVNjcmlwdCBvYmplY3QgaXMgZ2FyYmFnZSBjb2xsZWN0ZWQuXG5sZXQgbWFpbldpbmRvdztcblxuZnVuY3Rpb24gY3JlYXRlV2luZG93KCkge1xuICAvLyBDcmVhdGUgdGhlIGJyb3dzZXIgd2luZG93LlxuICAvLyBtYWluV2luZG93ID0gbmV3IEJyb3dzZXJXaW5kb3coeyB3aWR0aDogODAwLCBoZWlnaHQ6IDYwMCwgZnJhbWU6IHRydWUsIHRpdGxlQmFyU3R5bGU6ICdoaWRkZW4nIH0pO1xuICBtYWluV2luZG93ID0gbmV3IEJyb3dzZXJXaW5kb3coe1xuICAgIHdpZHRoOiAxMDAwLFxuICAgIGhlaWdodDogNzUwLFxuICAgIG1pbldpZHRoOiA2MDAsXG4gICAgbWluSGVpZ2h0OiA0NTAsXG4gICAgY2VudGVyOiB0cnVlLFxuICAgIGZyYW1lOiBmYWxzZSxcbiAgICB0aXRsZUJhclN0eWxlOiAnaGlkZGVuSW5zZXQnLFxuICB9KTtcblxuICAvLyBhbmQgbG9hZCB0aGUgaW5kZXguaHRtbCBvZiB0aGUgYXBwLlxuICBtYWluV2luZG93LmxvYWRVUkwoXG4gICAgdXJsLmZvcm1hdCh7XG4gICAgICBwYXRobmFtZTogcGF0aC5qb2luKF9fZGlybmFtZSwgJ2luZGV4Lmh0bWwnKSxcbiAgICAgIHByb3RvY29sOiAnZmlsZTonLFxuICAgICAgc2xhc2hlczogdHJ1ZSxcbiAgICB9KVxuICApO1xuXG4gIC8vIE9wZW4gdGhlIERldlRvb2xzLlxuICAvLyBtYWluV2luZG93LndlYkNvbnRlbnRzLm9wZW5EZXZUb29scygpO1xuXG4gIC8vIEVtaXR0ZWQgd2hlbiB0aGUgd2luZG93IGlzIGNsb3NlZC5cbiAgbWFpbldpbmRvdy5vbignY2xvc2VkJywgKCkgPT4ge1xuICAgIC8vIERlcmVmZXJlbmNlIHRoZSB3aW5kb3cgb2JqZWN0LCB1c3VhbGx5IHlvdSB3b3VsZCBzdG9yZSB3aW5kb3dzXG4gICAgLy8gaW4gYW4gYXJyYXkgaWYgeW91ciBhcHAgc3VwcG9ydHMgbXVsdGkgd2luZG93cywgdGhpcyBpcyB0aGUgdGltZVxuICAgIC8vIHdoZW4geW91IHNob3VsZCBkZWxldGUgdGhlIGNvcnJlc3BvbmRpbmcgZWxlbWVudC5cbiAgICBtYWluV2luZG93ID0gbnVsbDtcbiAgfSk7XG59XG5cbi8vIFRoaXMgbWV0aG9kIHdpbGwgYmUgY2FsbGVkIHdoZW4gRWxlY3Ryb24gaGFzIGZpbmlzaGVkXG4vLyBpbml0aWFsaXphdGlvbiBhbmQgaXMgcmVhZHkgdG8gY3JlYXRlIGJyb3dzZXIgd2luZG93cy5cbi8vIFNvbWUgQVBJcyBjYW4gb25seSBiZSB1c2VkIGFmdGVyIHRoaXMgZXZlbnQgb2NjdXJzLlxuYXBwLm9uKCdyZWFkeScsIGNyZWF0ZVdpbmRvdyk7XG5cbi8vIFF1aXQgd2hlbiBhbGwgd2luZG93cyBhcmUgY2xvc2VkLlxuYXBwLm9uKCd3aW5kb3ctYWxsLWNsb3NlZCcsICgpID0+IHtcbiAgLy8gT24gT1MgWCBpdCBpcyBjb21tb24gZm9yIGFwcGxpY2F0aW9ucyBhbmQgdGhlaXIgbWVudSBiYXJcbiAgLy8gdG8gc3RheSBhY3RpdmUgdW50aWwgdGhlIHVzZXIgcXVpdHMgZXhwbGljaXRseSB3aXRoIENtZCArIFFcbiAgaWYgKHByb2Nlc3MucGxhdGZvcm0gIT09ICdkYXJ3aW4nKSB7XG4gICAgYXBwLnF1aXQoKTtcbiAgfVxufSk7XG5cbmFwcC5vbignYWN0aXZhdGUnLCAoKSA9PiB7XG4gIC8vIE9uIE9TIFggaXQncyBjb21tb24gdG8gcmUtY3JlYXRlIGEgd2luZG93IGluIHRoZSBhcHAgd2hlbiB0aGVcbiAgLy8gZG9jayBpY29uIGlzIGNsaWNrZWQgYW5kIHRoZXJlIGFyZSBubyBvdGhlciB3aW5kb3dzIG9wZW4uXG4gIGlmIChtYWluV2luZG93ID09PSBudWxsKSB7XG4gICAgY3JlYXRlV2luZG93KCk7XG4gIH1cbn0pO1xuXG4vLyBJbiB0aGlzIGZpbGUgeW91IGNhbiBpbmNsdWRlIHRoZSByZXN0IG9mIHlvdXIgYXBwJ3Mgc3BlY2lmaWMgbWFpbiBwcm9jZXNzXG4vLyBjb2RlLiBZb3UgY2FuIGFsc28gcHV0IHRoZW0gaW4gc2VwYXJhdGUgZmlsZXMgYW5kIHJlcXVpcmUgdGhlbSBoZXJlLlxuIl19
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.

@@ -9,24 +9,21 @@ import lgroupBy from 'lodash/groupBy';
 import ltake from 'lodash/take';
 import lisEqual from 'lodash/isEqual';
 import lintersection from 'lodash/intersection';
-export var toString = function (arg) {
-    if (arg && typeof arg === 'object') {
-        return arg.name || arg.id;
-    }
-    return ltoString(arg);
+
+export const toString = (arg) => {
+  if (arg && typeof arg === 'object') { return arg.name || arg.id; }
+  return ltoString(arg);
 };
-export var toObject = function (arg) { return ltoObject(arg); };
-export var toArray = function (arg) { return ltoArray(arg); };
-export var intersection = lintersection;
-export var get = lget;
-export var set = lset;
-export var upperFirst = lupperFirst;
-export var lowerCase = llowerCase;
-export var groupBy = lgroupBy;
-export var isEqual = lisEqual;
-export var take = ltake;
-export var addOrRemove = function (arr, item, shouldAdd) {
-    if (arr === void 0) { arr = []; }
-    return shouldAdd ? arr.concat([item]) : arr.filter(function (x) { return x !== item; });
-};
-//# sourceMappingURL=toolbelt.js.map
+export const toObject = arg => ltoObject(arg);
+export const toArray = arg => ltoArray(arg);
+
+export const intersection = lintersection;
+export const get = lget;
+export const set = lset;
+export const upperFirst = lupperFirst;
+export const lowerCase = llowerCase;
+export const groupBy = lgroupBy;
+export const isEqual = lisEqual;
+export const take = ltake;
+export const addOrRemove = (arr = [], item, shouldAdd) =>
+  shouldAdd ? [...arr, item] : arr.filter(x => x !== item);

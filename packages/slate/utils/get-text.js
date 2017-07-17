@@ -1,70 +1,68 @@
 import shortId from 'shortid';
-var map = {
-    one: 1,
-    two: 2,
-    three: 3,
-    four: 4,
-    five: 5,
-    six: 6,
+const map = {
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
 };
-export var getHeaders = function (nodes) {
-    var headers = [];
-    var getHeadersNested = function (_a) {
-        var kind = _a.kind, type = _a.type, nodes = _a.nodes;
-        if (type && type.indexOf('heading-') === 0) {
-            var size = map[type.split('-')[1]];
-            var text = getText(nodes);
-            var slug = text
-                .toLowerCase()
-                .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
-            headers.push({ id: shortId.generate(), text: text, slug: slug, children: [] });
-        }
-        (nodes || []).map(getHeadersNested);
-    };
+
+export const getHeaders = (nodes) => {
+  const headers = [];
+  const getHeadersNested = ({ kind, type, nodes }) => {
+    if (type && type.indexOf('heading-') === 0) {
+      const size = map[type.split('-')[1]];
+      const text = getText(nodes);
+      const slug = text
+        .toLowerCase()
+        .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
+      headers.push({ id: shortId.generate(), text, slug, children: [] });
+    }
     (nodes || []).map(getHeadersNested);
-    var newHeaders = [];
-    var currentPath = [];
-    headers.forEach(function (header) {
-        var lastItem = currentPath.length && currentPath[currentPath.length - 1];
-        var mod = (lastItem && header.size - lastItem.size) || 0;
-        if (mod > 0) {
-            currentPath = currentPath.concat([header]);
-        }
-        else {
-            currentPath = currentPath.slice(0, currentPath.length - 1 + mod).concat([
-                header,
-            ]);
-        }
-        var parent = currentPath.length > 1 && currentPath[currentPath.length - 2];
-        if (parent && parent !== header) {
-            parent.children.push(header);
-        }
-        else {
-            newHeaders.push(header);
-        }
-    });
-    return newHeaders;
+  };
+  (nodes || []).map(getHeadersNested);
+
+  const newHeaders = [];
+  let currentPath = [];
+  headers.forEach((header) => {
+    const lastItem = currentPath.length && currentPath[currentPath.length - 1];
+    const mod = (lastItem && header.size - lastItem.size) || 0;
+    if (mod > 0) {
+      // is deeper into tree
+      currentPath = [...currentPath, header];
+    } else {
+      currentPath = [
+        ...currentPath.slice(0, currentPath.length - 1 + mod),
+        header,
+      ];
+    }
+    const parent =
+      currentPath.length > 1 && currentPath[currentPath.length - 2];
+    if (parent && parent !== header) {
+      parent.children.push(header);
+    } else {
+      newHeaders.push(header);
+    }
+  });
+  return newHeaders;
 };
-export var getText = function (children) {
-    var res = '';
-    if (!children) {
-        return '';
+export const getText = (children) => {
+  let res = '';
+  if (!children) { return ''; }
+  if (Array.isArray(children)) {
+    return children.map(x => getText(x)).join();
+  }
+  if (typeof children === 'object') {
+    if (children.nodes) {
+      res += getText(children.nodes);
+    } else if (children.text) {
+      res += children.text;
     }
-    if (Array.isArray(children)) {
-        return children.map(function (x) { return getText(x); }).join();
-    }
-    if (typeof children === 'object') {
-        if (children.nodes) {
-            res += getText(children.nodes);
-        }
-        else if (children.text) {
-            res += children.text;
-        }
-    }
-    return res;
+  }
+  return res;
 };
-export var getId = function (x) { return getText(x)
+export const getId = x => getText(x)
     .toLowerCase()
-    .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-'); };
+    .replace(/[\s!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
 export default getText;
-//# sourceMappingURL=get-text.js.map

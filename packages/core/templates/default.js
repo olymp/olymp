@@ -1,12 +1,105 @@
+/* eslint-disable prefer-template, max-len */
 import serialize from 'serialize-javascript';
-export default function (_a) {
-    var title = _a.title, meta = _a.meta, link = _a.link, cssMarkup = _a.cssMarkup, _b = _a.styles, styles = _b === void 0 ? [] : _b, _c = _a.scripts, scripts = _c === void 0 ? [] : _c, root = _a.root, initialState = _a.initialState, asyncState = _a.asyncState, gaTrackingId = _a.gaTrackingId, hotjarId = _a.hotjarId;
-    return "\n<!DOCTYPE html>\n<html lang=\"de\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\">\n    <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n    <meta http-equiv=\"Content-Language\" content=\"de\" />\n    <link rel=\"mask-icon\" href=\"/safari-pinned-tab.svg\" color=\"#8e44ad\">\n    <link rel=\"apple-touch-icon\" sizes=\"57x57\" href=\"/apple-icon-57x57.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"60x60\" href=\"/apple-icon-60x60.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"72x72\" href=\"/apple-icon-72x72.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/apple-icon-76x76.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"/apple-icon-114x114.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/apple-icon-120x120.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"144x144\" href=\"/apple-icon-144x144.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/apple-icon-152x152.png\">\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-icon-180x180.png\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"192x192\" href=\"/android-icon-192x192.png\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicon-32x32.png\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"96x96\" href=\"/favicon-96x96.png\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/favicon-16x16.png\">\n    <link rel=\"manifest\" href=\"/manifest.json\">\n    <link rel=\"apple-touch-startup-image\" href=\"/launch.png\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\">\n    <meta name=\"msapplication-TileColor\" content=\"#8e44ad\">\n    <meta name=\"msapplication-TileImage\" content=\"/ms-icon-144x144.png\">\n    <meta name=\"theme-color\" content=\"#8e44ad\">\n    " + (title ? title.toString() : '') + "\n    " + (meta ? meta.toString() : '') + "\n    " + (link ? link.toString() : '') + "\n    " + styles.map(function (style) {
-        return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + style + "\" media=\"none\" onload=\"if(media!='all')media='all'\">";
-    }) + "\n    " + styles.map(function (style) { return "<noscript><link rel=\"stylesheet\" href=\"" + style + "\"></noscript>"; }) + "\n    <style id=\"css-markup\">" + (cssMarkup || '') + "</style>\n    " + (gaTrackingId
-        ? "<script type=\"text/javascript\">\n      var gaProperty = '" + gaTrackingId + "';\n      var disableStr = 'ga-disable-' + gaProperty;\n      if (document.cookie.indexOf(disableStr + '=true') > -1) {\n      window[disableStr] = true;\n      }\n      function gaOptout() {\n        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';\n        window[disableStr] = true;\n      }\n    </script>\n    <script>\n      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n\n      ga('create', '" + gaTrackingId + "', 'auto');\n      ga('send', 'pageview');\n    </script>"
-        : '') + "\n    " + (hotjarId
-        ? "\n      <script>\n        (function(h,o,t,j,a,r){\n          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};\n          h._hjSettings={hjid:" + hotjarId + ",hjsv:5};\n          a=o.getElementsByTagName('head')[0];\n          r=o.createElement('script');r.async=1;\n          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;\n          a.appendChild(r);\n        })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');\n      </script>"
-        : '') + "\n  </head>\n  <body>\n    <div id=\"app\"><div>" + root + "</div></div>\n    <script type='text/javascript'>window.INITIAL_DATA=" + serialize(initialState) + "</script>\n    <script type='text/javascript'>window.ASYNC_STATE=" + serialize(asyncState) + "</script>\n    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>\n    <script async src=\"https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY\"></script>\n    " + scripts.map(function (script) { return "<script async src=\"" + script + "\"></script>"; }) + "\n  </body>\n</html>\n";
-};
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvcmUvdGVtcGxhdGVzL2RlZmF1bHQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0EsT0FBTyxTQUFTLE1BQU0sc0JBQXNCLENBQUM7QUFFN0MsZUFBZSxVQUFDLEVBWWY7UUFYQyxnQkFBSyxFQUNMLGNBQUksRUFDSixjQUFJLEVBQ0osd0JBQVMsRUFDVCxjQUFXLEVBQVgsZ0NBQVcsRUFDWCxlQUFZLEVBQVosaUNBQVksRUFDWixjQUFJLEVBQ0osOEJBQVksRUFDWiwwQkFBVSxFQUNWLDhCQUFZLEVBQ1osc0JBQVE7SUFDSixPQUFBLDg3REE2QkEsS0FBSyxHQUFHLEtBQUssQ0FBQyxRQUFRLEVBQUUsR0FBRyxFQUFFLGdCQUM3QixJQUFJLEdBQUcsSUFBSSxDQUFDLFFBQVEsRUFBRSxHQUFHLEVBQUUsZ0JBQzNCLElBQUksR0FBRyxJQUFJLENBQUMsUUFBUSxFQUFFLEdBQUcsRUFBRSxlQUMzQixNQUFNLENBQUMsR0FBRyxDQUNWLFVBQUEsS0FBSztRQUNILE9BQUEsdURBQWdELEtBQUssOERBQXNEO0lBQTNHLENBQTJHLENBQzlHLGNBQ0MsTUFBTSxDQUFDLEdBQUcsQ0FDVixVQUFBLEtBQUssSUFBSSxPQUFBLCtDQUEwQyxLQUFLLG1CQUFlLEVBQTlELENBQThELENBQ3hFLHdDQUN3QixTQUFTLElBQUksRUFBRSx3QkFDdEMsWUFBWTtVQUNWLGdFQUNrQixZQUFZLG91QkFnQmhCLFlBQVksOERBRXBCO1VBQ04sRUFBRSxnQkFDSixRQUFRO1VBQ04sNkpBSXdCLFFBQVEsa1NBTXhCO1VBQ1IsRUFBRSx5REFHZSxJQUFJLDZFQUM0QixTQUFTLENBQzVELFlBQVksQ0FDYix5RUFDbUQsU0FBUyxDQUMzRCxVQUFVLENBQ1gsNE9BR0MsT0FBTyxDQUFDLEdBQUcsQ0FBQyxVQUFBLE1BQU0sSUFBSSxPQUFBLHlCQUFzQixNQUFNLGlCQUFhLEVBQXpDLENBQXlDLENBQUMsMkJBR3JFO0FBekZLLENBeUZMLENBQUMiLCJmaWxlIjoicGFja2FnZXMvY29yZS90ZW1wbGF0ZXMvZGVmYXVsdC5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIHByZWZlci10ZW1wbGF0ZSwgbWF4LWxlbiAqL1xuaW1wb3J0IHNlcmlhbGl6ZSBmcm9tICdzZXJpYWxpemUtamF2YXNjcmlwdCc7XG5cbmV4cG9ydCBkZWZhdWx0ICh7XG4gIHRpdGxlLFxuICBtZXRhLFxuICBsaW5rLFxuICBjc3NNYXJrdXAsXG4gIHN0eWxlcyA9IFtdLFxuICBzY3JpcHRzID0gW10sXG4gIHJvb3QsXG4gIGluaXRpYWxTdGF0ZSxcbiAgYXN5bmNTdGF0ZSxcbiAgZ2FUcmFja2luZ0lkLFxuICBob3RqYXJJZCxcbn0pID0+IGBcbjwhRE9DVFlQRSBodG1sPlxuPGh0bWwgbGFuZz1cImRlXCI+XG4gIDxoZWFkPlxuICAgIDxtZXRhIGNoYXJzZXQ9XCJ1dGYtOFwiPlxuICAgIDxtZXRhIG5hbWU9XCJ2aWV3cG9ydFwiIGNvbnRlbnQ9XCJ3aWR0aD1kZXZpY2Utd2lkdGgsbWluaW11bS1zY2FsZT0xLGluaXRpYWwtc2NhbGU9MVwiPlxuICAgIDxtZXRhIGh0dHAtZXF1aXY9XCJ4LXVhLWNvbXBhdGlibGVcIiBjb250ZW50PVwiaWU9ZWRnZVwiPlxuICAgIDxtZXRhIGh0dHAtZXF1aXY9XCJDb250ZW50LUxhbmd1YWdlXCIgY29udGVudD1cImRlXCIgLz5cbiAgICA8bGluayByZWw9XCJtYXNrLWljb25cIiBocmVmPVwiL3NhZmFyaS1waW5uZWQtdGFiLnN2Z1wiIGNvbG9yPVwiIzhlNDRhZFwiPlxuICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjU3eDU3XCIgaHJlZj1cIi9hcHBsZS1pY29uLTU3eDU3LnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjYweDYwXCIgaHJlZj1cIi9hcHBsZS1pY29uLTYweDYwLnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjcyeDcyXCIgaHJlZj1cIi9hcHBsZS1pY29uLTcyeDcyLnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjc2eDc2XCIgaHJlZj1cIi9hcHBsZS1pY29uLTc2eDc2LnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjExNHgxMTRcIiBocmVmPVwiL2FwcGxlLWljb24tMTE0eDExNC5wbmdcIj5cbiAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxMjB4MTIwXCIgaHJlZj1cIi9hcHBsZS1pY29uLTEyMHgxMjAucG5nXCI+XG4gICAgPGxpbmsgcmVsPVwiYXBwbGUtdG91Y2gtaWNvblwiIHNpemVzPVwiMTQ0eDE0NFwiIGhyZWY9XCIvYXBwbGUtaWNvbi0xNDR4MTQ0LnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjE1MngxNTJcIiBocmVmPVwiL2FwcGxlLWljb24tMTUyeDE1Mi5wbmdcIj5cbiAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxODB4MTgwXCIgaHJlZj1cIi9hcHBsZS1pY29uLTE4MHgxODAucG5nXCI+XG4gICAgPGxpbmsgcmVsPVwiaWNvblwiIHR5cGU9XCJpbWFnZS9wbmdcIiBzaXplcz1cIjE5MngxOTJcIiBocmVmPVwiL2FuZHJvaWQtaWNvbi0xOTJ4MTkyLnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cImljb25cIiB0eXBlPVwiaW1hZ2UvcG5nXCIgc2l6ZXM9XCIzMngzMlwiIGhyZWY9XCIvZmF2aWNvbi0zMngzMi5wbmdcIj5cbiAgICA8bGluayByZWw9XCJpY29uXCIgdHlwZT1cImltYWdlL3BuZ1wiIHNpemVzPVwiOTZ4OTZcIiBocmVmPVwiL2Zhdmljb24tOTZ4OTYucG5nXCI+XG4gICAgPGxpbmsgcmVsPVwiaWNvblwiIHR5cGU9XCJpbWFnZS9wbmdcIiBzaXplcz1cIjE2eDE2XCIgaHJlZj1cIi9mYXZpY29uLTE2eDE2LnBuZ1wiPlxuICAgIDxsaW5rIHJlbD1cIm1hbmlmZXN0XCIgaHJlZj1cIi9tYW5pZmVzdC5qc29uXCI+XG4gICAgPGxpbmsgcmVsPVwiYXBwbGUtdG91Y2gtc3RhcnR1cC1pbWFnZVwiIGhyZWY9XCIvbGF1bmNoLnBuZ1wiPlxuICAgIDxtZXRhIG5hbWU9XCJhcHBsZS1tb2JpbGUtd2ViLWFwcC1jYXBhYmxlXCIgY29udGVudD1cInllc1wiPlxuICAgIDxtZXRhIG5hbWU9XCJhcHBsZS1tb2JpbGUtd2ViLWFwcC1zdGF0dXMtYmFyLXN0eWxlXCIgY29udGVudD1cImJsYWNrXCI+XG4gICAgPG1ldGEgbmFtZT1cIm1zYXBwbGljYXRpb24tVGlsZUNvbG9yXCIgY29udGVudD1cIiM4ZTQ0YWRcIj5cbiAgICA8bWV0YSBuYW1lPVwibXNhcHBsaWNhdGlvbi1UaWxlSW1hZ2VcIiBjb250ZW50PVwiL21zLWljb24tMTQ0eDE0NC5wbmdcIj5cbiAgICA8bWV0YSBuYW1lPVwidGhlbWUtY29sb3JcIiBjb250ZW50PVwiIzhlNDRhZFwiPlxuICAgICR7dGl0bGUgPyB0aXRsZS50b1N0cmluZygpIDogJyd9XG4gICAgJHttZXRhID8gbWV0YS50b1N0cmluZygpIDogJyd9XG4gICAgJHtsaW5rID8gbGluay50b1N0cmluZygpIDogJyd9XG4gICAgJHtzdHlsZXMubWFwKFxuICAgICAgc3R5bGUgPT5cbiAgICAgICAgYDxsaW5rIHJlbD1cInN0eWxlc2hlZXRcIiB0eXBlPVwidGV4dC9jc3NcIiBocmVmPVwiJHtzdHlsZX1cIiBtZWRpYT1cIm5vbmVcIiBvbmxvYWQ9XCJpZihtZWRpYSE9J2FsbCcpbWVkaWE9J2FsbCdcIj5gXG4gICAgKX1cbiAgICAke3N0eWxlcy5tYXAoXG4gICAgICBzdHlsZSA9PiBgPG5vc2NyaXB0PjxsaW5rIHJlbD1cInN0eWxlc2hlZXRcIiBocmVmPVwiJHtzdHlsZX1cIj48L25vc2NyaXB0PmBcbiAgICApfVxuICAgIDxzdHlsZSBpZD1cImNzcy1tYXJrdXBcIj4ke2Nzc01hcmt1cCB8fCAnJ308L3N0eWxlPlxuICAgICR7Z2FUcmFja2luZ0lkXG4gICAgICA/IGA8c2NyaXB0IHR5cGU9XCJ0ZXh0L2phdmFzY3JpcHRcIj5cbiAgICAgIHZhciBnYVByb3BlcnR5ID0gJyR7Z2FUcmFja2luZ0lkfSc7XG4gICAgICB2YXIgZGlzYWJsZVN0ciA9ICdnYS1kaXNhYmxlLScgKyBnYVByb3BlcnR5O1xuICAgICAgaWYgKGRvY3VtZW50LmNvb2tpZS5pbmRleE9mKGRpc2FibGVTdHIgKyAnPXRydWUnKSA+IC0xKSB7XG4gICAgICB3aW5kb3dbZGlzYWJsZVN0cl0gPSB0cnVlO1xuICAgICAgfVxuICAgICAgZnVuY3Rpb24gZ2FPcHRvdXQoKSB7XG4gICAgICAgIGRvY3VtZW50LmNvb2tpZSA9IGRpc2FibGVTdHIgKyAnPXRydWU7IGV4cGlyZXM9VGh1LCAzMSBEZWMgMjA5OSAyMzo1OTo1OSBVVEM7IHBhdGg9Lyc7XG4gICAgICAgIHdpbmRvd1tkaXNhYmxlU3RyXSA9IHRydWU7XG4gICAgICB9XG4gICAgPC9zY3JpcHQ+XG4gICAgPHNjcmlwdD5cbiAgICAgIChmdW5jdGlvbihpLHMsbyxnLHIsYSxtKXtpWydHb29nbGVBbmFseXRpY3NPYmplY3QnXT1yO2lbcl09aVtyXXx8ZnVuY3Rpb24oKXtcbiAgICAgIChpW3JdLnE9aVtyXS5xfHxbXSkucHVzaChhcmd1bWVudHMpfSxpW3JdLmw9MSpuZXcgRGF0ZSgpO2E9cy5jcmVhdGVFbGVtZW50KG8pLFxuICAgICAgbT1zLmdldEVsZW1lbnRzQnlUYWdOYW1lKG8pWzBdO2EuYXN5bmM9MTthLnNyYz1nO20ucGFyZW50Tm9kZS5pbnNlcnRCZWZvcmUoYSxtKVxuICAgICAgfSkod2luZG93LGRvY3VtZW50LCdzY3JpcHQnLCdodHRwczovL3d3dy5nb29nbGUtYW5hbHl0aWNzLmNvbS9hbmFseXRpY3MuanMnLCdnYScpO1xuXG4gICAgICBnYSgnY3JlYXRlJywgJyR7Z2FUcmFja2luZ0lkfScsICdhdXRvJyk7XG4gICAgICBnYSgnc2VuZCcsICdwYWdldmlldycpO1xuICAgIDwvc2NyaXB0PmBcbiAgICAgIDogJyd9XG4gICAgJHtob3RqYXJJZFxuICAgICAgPyBgXG4gICAgICA8c2NyaXB0PlxuICAgICAgICAoZnVuY3Rpb24oaCxvLHQsaixhLHIpe1xuICAgICAgICAgIGguaGo9aC5oanx8ZnVuY3Rpb24oKXsoaC5oai5xPWguaGoucXx8W10pLnB1c2goYXJndW1lbnRzKX07XG4gICAgICAgICAgaC5faGpTZXR0aW5ncz17aGppZDoke2hvdGphcklkfSxoanN2OjV9O1xuICAgICAgICAgIGE9by5nZXRFbGVtZW50c0J5VGFnTmFtZSgnaGVhZCcpWzBdO1xuICAgICAgICAgIHI9by5jcmVhdGVFbGVtZW50KCdzY3JpcHQnKTtyLmFzeW5jPTE7XG4gICAgICAgICAgci5zcmM9dCtoLl9oalNldHRpbmdzLmhqaWQraitoLl9oalNldHRpbmdzLmhqc3Y7XG4gICAgICAgICAgYS5hcHBlbmRDaGlsZChyKTtcbiAgICAgICAgfSkod2luZG93LGRvY3VtZW50LCcvL3N0YXRpYy5ob3RqYXIuY29tL2MvaG90amFyLScsJy5qcz9zdj0nKTtcbiAgICAgIDwvc2NyaXB0PmBcbiAgICAgIDogJyd9XG4gIDwvaGVhZD5cbiAgPGJvZHk+XG4gICAgPGRpdiBpZD1cImFwcFwiPjxkaXY+JHtyb290fTwvZGl2PjwvZGl2PlxuICAgIDxzY3JpcHQgdHlwZT0ndGV4dC9qYXZhc2NyaXB0Jz53aW5kb3cuSU5JVElBTF9EQVRBPSR7c2VyaWFsaXplKFxuICAgICAgaW5pdGlhbFN0YXRlXG4gICAgKX08L3NjcmlwdD5cbiAgICA8c2NyaXB0IHR5cGU9J3RleHQvamF2YXNjcmlwdCc+d2luZG93LkFTWU5DX1NUQVRFPSR7c2VyaWFsaXplKFxuICAgICAgYXN5bmNTdGF0ZVxuICAgICl9PC9zY3JpcHQ+XG4gICAgPHNjcmlwdCB0eXBlPSd0ZXh0L2phdmFzY3JpcHQnPmZ1bmN0aW9uIFBPTFkoKSB7IHdpbmRvdy5QT0xZRklMTEVEID0gdHJ1ZTsgaWYgKHdpbmRvdy5HTykgd2luZG93LkdPKCk7IH08L3NjcmlwdD5cbiAgICA8c2NyaXB0IGFzeW5jIHNyYz1cImh0dHBzOi8vY2RuLnBvbHlmaWxsLmlvL3YyL3BvbHlmaWxsLm1pbi5qcz9jYWxsYmFjaz1QT0xZXCI+PC9zY3JpcHQ+XG4gICAgJHtzY3JpcHRzLm1hcChzY3JpcHQgPT4gYDxzY3JpcHQgYXN5bmMgc3JjPVwiJHtzY3JpcHR9XCI+PC9zY3JpcHQ+YCl9XG4gIDwvYm9keT5cbjwvaHRtbD5cbmA7XG4iXX0=
+
+export default ({
+  title,
+  meta,
+  link,
+  cssMarkup,
+  styles = [],
+  scripts = [],
+  root,
+  initialState,
+  asyncState,
+  gaTrackingId,
+  hotjarId,
+}) => `
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="de" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8e44ad">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-startup-image" href="/launch.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-TileColor" content="#8e44ad">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#8e44ad">
+    ${title ? title.toString() : ''}
+    ${meta ? meta.toString() : ''}
+    ${link ? link.toString() : ''}
+    ${styles.map(
+      style =>
+        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
+    )}
+    ${styles.map(
+      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
+    )}
+    <style id="css-markup">${cssMarkup || ''}</style>
+    ${gaTrackingId
+      ? `<script type="text/javascript">
+      var gaProperty = '${gaTrackingId}';
+      var disableStr = 'ga-disable-' + gaProperty;
+      if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+      }
+      function gaOptout() {
+        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+        window[disableStr] = true;
+      }
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', '${gaTrackingId}', 'auto');
+      ga('send', 'pageview');
+    </script>`
+      : ''}
+    ${hotjarId
+      ? `
+      <script>
+        (function(h,o,t,j,a,r){
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid:${hotjarId},hjsv:5};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+      </script>`
+      : ''}
+  </head>
+  <body>
+    <div id="app"><div>${root}</div></div>
+    <script type='text/javascript'>window.INITIAL_DATA=${serialize(
+      initialState
+    )}</script>
+    <script type='text/javascript'>window.ASYNC_STATE=${serialize(
+      asyncState
+    )}</script>
+    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
+    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
+    ${scripts.map(script => `<script async src="${script}"></script>`)}
+  </body>
+</html>
+`;

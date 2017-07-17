@@ -1,3 +1,54 @@
-var _a = require('lodash'), get = _a.get, castArray = _a.castArray;
-module.exports = function (templateParams) { return "\n  <!DOCTYPE html>\n  <html lang=\"de\">\n    <head>\n      <meta charset=\"utf-8\">\n      <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\">\n      <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n      <meta http-equiv=\"Content-Language\" content=\"de\" />\n      <link rel=\"mask-icon\" href=\"/safari-pinned-tab.svg\" color=\"#8e44ad\">\n      <link rel=\"apple-touch-icon\" sizes=\"57x57\" href=\"/apple-icon-57x57.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"60x60\" href=\"/apple-icon-60x60.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"72x72\" href=\"/apple-icon-72x72.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/apple-icon-76x76.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"/apple-icon-114x114.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/apple-icon-120x120.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"144x144\" href=\"/apple-icon-144x144.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/apple-icon-152x152.png\">\n      <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-icon-180x180.png\">\n      <link rel=\"icon\" type=\"image/png\" sizes=\"192x192\" href=\"/android-icon-192x192.png\">\n      <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicon-32x32.png\">\n      <link rel=\"icon\" type=\"image/png\" sizes=\"96x96\" href=\"/favicon-96x96.png\">\n      <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/favicon-16x16.png\">\n      <link rel=\"manifest\" href=\"/manifest.json\">\n      <meta name=\"msapplication-TileColor\" content=\"#8e44ad\">\n      <meta name=\"msapplication-TileImage\" content=\"/ms-icon-144x144.png\">\n      <meta name=\"theme-color\" content=\"#8e44ad\">\n      " + castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])).map(function (style) { return "<link rel=\"stylesheet\" type=\"text/css\" href=\"." + style + "\">"; }) + "\n      <style id=\"css-markup\"></style>\n      <style>\n        body {\n          -webkit-user-select: none;\n          user-select: none;\n        }\n        p, h1, h2, h3, h4, h5, h6, span, strong {\n          cursor: default;\n        }\n      </style>\n    </head>\n    <body>\n      <div id=\"app\"></div>\n      " + castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])).map(function (script) { return "<script src=\"." + script + "\"></script>"; }) + "\n      <script type='text/javascript'>window.GO()</script>\n    </body>\n  </html>\n"; };
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvcmUvdGVtcGxhdGVzL2VsZWN0cm9uLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFNLElBQUEsc0JBQXNDLEVBQXBDLFlBQUcsRUFBRSx3QkFBUyxDQUF1QjtBQUc3QyxNQUFNLENBQUMsT0FBTyxHQUFHLFVBQUEsY0FBYyxJQUFJLE9BQUEsK3hEQTBCM0IsU0FBUyxDQUNULEdBQUcsQ0FBQyxjQUFjLEVBQUUseUNBQXlDLEVBQUUsRUFBRSxDQUFDLENBQ25FLENBQUMsR0FBRyxDQUNILFVBQUEsS0FBSyxJQUFJLE9BQUEsd0RBQWlELEtBQUssUUFBSSxFQUExRCxDQUEwRCxDQUNwRSx3VUFjQyxTQUFTLENBQ1QsR0FBRyxDQUFDLGNBQWMsRUFBRSwyQ0FBMkMsRUFBRSxFQUFFLENBQUMsQ0FDckUsQ0FBQyxHQUFHLENBQUMsVUFBQSxNQUFNLElBQUksT0FBQSxvQkFBaUIsTUFBTSxpQkFBYSxFQUFwQyxDQUFvQyxDQUFDLDBGQUkxRCxFQWxEa0MsQ0FrRGxDLENBQUMiLCJmaWxlIjoicGFja2FnZXMvY29yZS90ZW1wbGF0ZXMvZWxlY3Ryb24uanMiLCJzb3VyY2VzQ29udGVudCI6WyJjb25zdCB7IGdldCwgY2FzdEFycmF5IH0gPSByZXF1aXJlKCdsb2Rhc2gnKTtcbi8vIHJlcXVpcmUoJ2JhYmVsLXJlZ2lzdGVyJyk7XG5cbm1vZHVsZS5leHBvcnRzID0gdGVtcGxhdGVQYXJhbXMgPT4gYFxuICA8IURPQ1RZUEUgaHRtbD5cbiAgPGh0bWwgbGFuZz1cImRlXCI+XG4gICAgPGhlYWQ+XG4gICAgICA8bWV0YSBjaGFyc2V0PVwidXRmLThcIj5cbiAgICAgIDxtZXRhIG5hbWU9XCJ2aWV3cG9ydFwiIGNvbnRlbnQ9XCJ3aWR0aD1kZXZpY2Utd2lkdGgsbWluaW11bS1zY2FsZT0xLGluaXRpYWwtc2NhbGU9MVwiPlxuICAgICAgPG1ldGEgaHR0cC1lcXVpdj1cIngtdWEtY29tcGF0aWJsZVwiIGNvbnRlbnQ9XCJpZT1lZGdlXCI+XG4gICAgICA8bWV0YSBodHRwLWVxdWl2PVwiQ29udGVudC1MYW5ndWFnZVwiIGNvbnRlbnQ9XCJkZVwiIC8+XG4gICAgICA8bGluayByZWw9XCJtYXNrLWljb25cIiBocmVmPVwiL3NhZmFyaS1waW5uZWQtdGFiLnN2Z1wiIGNvbG9yPVwiIzhlNDRhZFwiPlxuICAgICAgPGxpbmsgcmVsPVwiYXBwbGUtdG91Y2gtaWNvblwiIHNpemVzPVwiNTd4NTdcIiBocmVmPVwiL2FwcGxlLWljb24tNTd4NTcucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCI2MHg2MFwiIGhyZWY9XCIvYXBwbGUtaWNvbi02MHg2MC5wbmdcIj5cbiAgICAgIDxsaW5rIHJlbD1cImFwcGxlLXRvdWNoLWljb25cIiBzaXplcz1cIjcyeDcyXCIgaHJlZj1cIi9hcHBsZS1pY29uLTcyeDcyLnBuZ1wiPlxuICAgICAgPGxpbmsgcmVsPVwiYXBwbGUtdG91Y2gtaWNvblwiIHNpemVzPVwiNzZ4NzZcIiBocmVmPVwiL2FwcGxlLWljb24tNzZ4NzYucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxMTR4MTE0XCIgaHJlZj1cIi9hcHBsZS1pY29uLTExNHgxMTQucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxMjB4MTIwXCIgaHJlZj1cIi9hcHBsZS1pY29uLTEyMHgxMjAucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxNDR4MTQ0XCIgaHJlZj1cIi9hcHBsZS1pY29uLTE0NHgxNDQucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxNTJ4MTUyXCIgaHJlZj1cIi9hcHBsZS1pY29uLTE1MngxNTIucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJhcHBsZS10b3VjaC1pY29uXCIgc2l6ZXM9XCIxODB4MTgwXCIgaHJlZj1cIi9hcHBsZS1pY29uLTE4MHgxODAucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJpY29uXCIgdHlwZT1cImltYWdlL3BuZ1wiIHNpemVzPVwiMTkyeDE5MlwiIGhyZWY9XCIvYW5kcm9pZC1pY29uLTE5MngxOTIucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJpY29uXCIgdHlwZT1cImltYWdlL3BuZ1wiIHNpemVzPVwiMzJ4MzJcIiBocmVmPVwiL2Zhdmljb24tMzJ4MzIucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJpY29uXCIgdHlwZT1cImltYWdlL3BuZ1wiIHNpemVzPVwiOTZ4OTZcIiBocmVmPVwiL2Zhdmljb24tOTZ4OTYucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJpY29uXCIgdHlwZT1cImltYWdlL3BuZ1wiIHNpemVzPVwiMTZ4MTZcIiBocmVmPVwiL2Zhdmljb24tMTZ4MTYucG5nXCI+XG4gICAgICA8bGluayByZWw9XCJtYW5pZmVzdFwiIGhyZWY9XCIvbWFuaWZlc3QuanNvblwiPlxuICAgICAgPG1ldGEgbmFtZT1cIm1zYXBwbGljYXRpb24tVGlsZUNvbG9yXCIgY29udGVudD1cIiM4ZTQ0YWRcIj5cbiAgICAgIDxtZXRhIG5hbWU9XCJtc2FwcGxpY2F0aW9uLVRpbGVJbWFnZVwiIGNvbnRlbnQ9XCIvbXMtaWNvbi0xNDR4MTQ0LnBuZ1wiPlxuICAgICAgPG1ldGEgbmFtZT1cInRoZW1lLWNvbG9yXCIgY29udGVudD1cIiM4ZTQ0YWRcIj5cbiAgICAgICR7Y2FzdEFycmF5KFxuICAgICAgICBnZXQodGVtcGxhdGVQYXJhbXMsICdodG1sV2VicGFja1BsdWdpbi5maWxlcy5jaHVua3MubWFpbi5jc3MnLCBbXSlcbiAgICAgICkubWFwKFxuICAgICAgICBzdHlsZSA9PiBgPGxpbmsgcmVsPVwic3R5bGVzaGVldFwiIHR5cGU9XCJ0ZXh0L2Nzc1wiIGhyZWY9XCIuJHtzdHlsZX1cIj5gXG4gICAgICApfVxuICAgICAgPHN0eWxlIGlkPVwiY3NzLW1hcmt1cFwiPjwvc3R5bGU+XG4gICAgICA8c3R5bGU+XG4gICAgICAgIGJvZHkge1xuICAgICAgICAgIC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7XG4gICAgICAgICAgdXNlci1zZWxlY3Q6IG5vbmU7XG4gICAgICAgIH1cbiAgICAgICAgcCwgaDEsIGgyLCBoMywgaDQsIGg1LCBoNiwgc3Bhbiwgc3Ryb25nIHtcbiAgICAgICAgICBjdXJzb3I6IGRlZmF1bHQ7XG4gICAgICAgIH1cbiAgICAgIDwvc3R5bGU+XG4gICAgPC9oZWFkPlxuICAgIDxib2R5PlxuICAgICAgPGRpdiBpZD1cImFwcFwiPjwvZGl2PlxuICAgICAgJHtjYXN0QXJyYXkoXG4gICAgICAgIGdldCh0ZW1wbGF0ZVBhcmFtcywgJ2h0bWxXZWJwYWNrUGx1Z2luLmZpbGVzLmNodW5rcy5tYWluLmVudHJ5JywgW10pXG4gICAgICApLm1hcChzY3JpcHQgPT4gYDxzY3JpcHQgc3JjPVwiLiR7c2NyaXB0fVwiPjwvc2NyaXB0PmApfVxuICAgICAgPHNjcmlwdCB0eXBlPSd0ZXh0L2phdmFzY3JpcHQnPndpbmRvdy5HTygpPC9zY3JpcHQ+XG4gICAgPC9ib2R5PlxuICA8L2h0bWw+XG5gO1xuIl19
+const { get, castArray } = require('lodash');
+// require('babel-register');
+
+module.exports = templateParams => `
+  <!DOCTYPE html>
+  <html lang="de">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <meta http-equiv="Content-Language" content="de" />
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8e44ad">
+      <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+      <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+      <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+      <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+      <link rel="manifest" href="/manifest.json">
+      <meta name="msapplication-TileColor" content="#8e44ad">
+      <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+      <meta name="theme-color" content="#8e44ad">
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
+      ).map(
+        style => `<link rel="stylesheet" type="text/css" href=".${style}">`
+      )}
+      <style id="css-markup"></style>
+      <style>
+        body {
+          -webkit-user-select: none;
+          user-select: none;
+        }
+        p, h1, h2, h3, h4, h5, h6, span, strong {
+          cursor: default;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="app"></div>
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])
+      ).map(script => `<script src=".${script}"></script>`)}
+      <script type='text/javascript'>window.GO()</script>
+    </body>
+  </html>
+`;

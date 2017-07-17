@@ -9,4 +9,3 @@ export { default as PhoneNumber } from './phone-number';
 export { default as Slug } from './slug';
 export { default as TimeRange } from './time-range';
 export { default as Url } from './url';
-//# sourceMappingURL=index.js.map

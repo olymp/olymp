@@ -1,13 +1,10 @@
-export var hasMark = function (editorState, type) {
-    if (!editorState) {
-        return null;
-    }
-    return editorState.marks.some(function (mark) { return mark.type === type; });
+export const hasMark = (editorState, type) => {
+  if (!editorState) { return null; }
+  return editorState.marks.some(mark => mark.type === type);
 };
-export var hasBlock = function (editorState, type) {
-    if (!editorState) {
-        return null;
-    }
-    return editorState.blocks.some(function (node) { return node.type === type || node.type.indexOf(type + "-") === 0; });
+export const hasBlock = (editorState, type) => {
+  if (!editorState) { return null; }
+  return editorState.blocks.some(
+    node => node.type === type || node.type.indexOf(`${type}-`) === 0
+  );
 };
-//# sourceMappingURL=has.js.map

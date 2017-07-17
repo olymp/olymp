@@ -4,4 +4,3 @@ export { default as Layout } from './layout';
 export { default as Logo } from './logo';
 export { default as Item } from './item';
 export * from './heading';
-//# sourceMappingURL=index.js.map

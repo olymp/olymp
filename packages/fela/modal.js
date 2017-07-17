@@ -1,53 +1,62 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
 import Portal from 'react-portal';
-var ModalBackground = createComponent(function (_a) {
-    var theme = _a.theme;
-    return ({
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        zIndex: 1000,
-        backgroundColor: theme.dark2,
-    });
-}, 'div', []);
-var Modal = createComponent(function (_a) {
-    var theme = _a.theme, width = _a.width;
-    return ({
-        centerX: true,
-        width: width || '100%',
-        top: theme.space4,
-        bottom: theme.space4,
-        hasFlex: {
-            display: 'flex',
-        },
-        '> div': {
-            marginX: !width && theme.space4,
-        },
-    });
-}, 'div', []);
-var Inner = createComponent(function (_a) {
-    var theme = _a.theme;
-    return ({
-        width: '100%',
-        height: '100%',
-        backgroundColor: theme.light,
-        boxShadow: theme.boxShadow,
-        border: "1px solid " + theme.dark1,
-        overflowY: 'auto',
-        borderRadius: theme.borderRadius,
-        hasFlex: {
-            display: 'flex',
-        },
-    });
-}, 'div', []);
-export default function (_a) {
-    var children = _a.children, open = _a.open, onClose = _a.onClose, width = _a.width;
-    return React.createElement(Portal, { isOpened: open, onClose: onClose, closeOnEsc: true, closeOnOutsideClick: true },
-        React.createElement(ModalBackground, null,
-            React.createElement(Modal, { width: width },
-                React.createElement(Inner, null, children))));
-};
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvbW9kYWwudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sS0FBSyxNQUFNLE9BQU8sQ0FBQztBQUMxQixPQUFPLEVBQUUsZUFBZSxFQUFFLE1BQU0sWUFBWSxDQUFDO0FBQzdDLE9BQU8sTUFBTSxNQUFNLGNBQWMsQ0FBQztBQUVsQyxJQUFNLGVBQWUsR0FBRyxlQUFlLENBQ3JDLFVBQUMsRUFBUztRQUFQLGdCQUFLO0lBQU8sT0FBQSxDQUFDO1FBQ2QsUUFBUSxFQUFFLE9BQU87UUFDakIsR0FBRyxFQUFFLENBQUM7UUFDTixJQUFJLEVBQUUsQ0FBQztRQUNQLE1BQU0sRUFBRSxDQUFDO1FBQ1QsS0FBSyxFQUFFLENBQUM7UUFDUixNQUFNLEVBQUUsSUFBSTtRQUNaLGVBQWUsRUFBRSxLQUFLLENBQUMsS0FBSztLQUM3QixDQUFDO0FBUmEsQ0FRYixFQUNGLEtBQUssRUFDTCxFQUFFLENBQ0gsQ0FBQztBQUVGLElBQU0sS0FBSyxHQUFHLGVBQWUsQ0FDM0IsVUFBQyxFQUFnQjtRQUFkLGdCQUFLLEVBQUUsZ0JBQUs7SUFBTyxPQUFBLENBQUM7UUFDckIsT0FBTyxFQUFFLElBQUk7UUFDYixLQUFLLEVBQUUsS0FBSyxJQUFJLE1BQU07UUFDdEIsR0FBRyxFQUFFLEtBQUssQ0FBQyxNQUFNO1FBQ2pCLE1BQU0sRUFBRSxLQUFLLENBQUMsTUFBTTtRQUNwQixPQUFPLEVBQUU7WUFDUCxPQUFPLEVBQUUsTUFBTTtTQUNoQjtRQUNELE9BQU8sRUFBRTtZQUNQLE9BQU8sRUFBRSxDQUFDLEtBQUssSUFBSSxLQUFLLENBQUMsTUFBTTtTQUNoQztLQUNGLENBQUM7QUFYb0IsQ0FXcEIsRUFDRixLQUFLLEVBQ0wsRUFBRSxDQUNILENBQUM7QUFFRixJQUFNLEtBQUssR0FBRyxlQUFlLENBQzNCLFVBQUMsRUFBUztRQUFQLGdCQUFLO0lBQU8sT0FBQSxDQUFDO1FBQ2QsS0FBSyxFQUFFLE1BQU07UUFDYixNQUFNLEVBQUUsTUFBTTtRQUNkLGVBQWUsRUFBRSxLQUFLLENBQUMsS0FBSztRQUM1QixTQUFTLEVBQUUsS0FBSyxDQUFDLFNBQVM7UUFDMUIsTUFBTSxFQUFFLGVBQWEsS0FBSyxDQUFDLEtBQU87UUFDbEMsU0FBUyxFQUFFLE1BQU07UUFDakIsWUFBWSxFQUFFLEtBQUssQ0FBQyxZQUFZO1FBQ2hDLE9BQU8sRUFBRTtZQUNQLE9BQU8sRUFBRSxNQUFNO1NBQ2hCO0tBQ0YsQ0FBQztBQVhhLENBV2IsRUFDRixLQUFLLEVBQ0wsRUFBRSxDQUNILENBQUM7QUFFRixlQUFlLFVBQUMsRUFBa0M7UUFBaEMsc0JBQVEsRUFBRSxjQUFJLEVBQUUsb0JBQU8sRUFBRSxnQkFBSztJQUM5QyxPQUFBLG9CQUFDLE1BQU0sSUFBQyxRQUFRLEVBQUUsSUFBSSxFQUFFLE9BQU8sRUFBRSxPQUFPLEVBQUUsVUFBVSxRQUFDLG1CQUFtQjtRQUN0RSxvQkFBQyxlQUFlO1lBQ2Qsb0JBQUMsS0FBSyxJQUFDLEtBQUssRUFBRSxLQUFLO2dCQUNqQixvQkFBQyxLQUFLLFFBQ0gsUUFBUSxDQUNILENBQ0YsQ0FDUSxDQUNYO0FBUlQsQ0FRUyxDQUFDIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvbW9kYWwuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgY3JlYXRlQ29tcG9uZW50IH0gZnJvbSAncmVhY3QtZmVsYSc7XG5pbXBvcnQgUG9ydGFsIGZyb20gJ3JlYWN0LXBvcnRhbCc7XG5cbmNvbnN0IE1vZGFsQmFja2dyb3VuZCA9IGNyZWF0ZUNvbXBvbmVudChcbiAgKHsgdGhlbWUgfSkgPT4gKHtcbiAgICBwb3NpdGlvbjogJ2ZpeGVkJyxcbiAgICB0b3A6IDAsXG4gICAgbGVmdDogMCxcbiAgICBib3R0b206IDAsXG4gICAgcmlnaHQ6IDAsXG4gICAgekluZGV4OiAxMDAwLFxuICAgIGJhY2tncm91bmRDb2xvcjogdGhlbWUuZGFyazIsXG4gIH0pLFxuICAnZGl2JyxcbiAgW11cbik7XG5cbmNvbnN0IE1vZGFsID0gY3JlYXRlQ29tcG9uZW50KFxuICAoeyB0aGVtZSwgd2lkdGggfSkgPT4gKHtcbiAgICBjZW50ZXJYOiB0cnVlLFxuICAgIHdpZHRoOiB3aWR0aCB8fCAnMTAwJScsXG4gICAgdG9wOiB0aGVtZS5zcGFjZTQsXG4gICAgYm90dG9tOiB0aGVtZS5zcGFjZTQsXG4gICAgaGFzRmxleDoge1xuICAgICAgZGlzcGxheTogJ2ZsZXgnLFxuICAgIH0sXG4gICAgJz4gZGl2Jzoge1xuICAgICAgbWFyZ2luWDogIXdpZHRoICYmIHRoZW1lLnNwYWNlNCxcbiAgICB9LFxuICB9KSxcbiAgJ2RpdicsXG4gIFtdXG4pO1xuXG5jb25zdCBJbm5lciA9IGNyZWF0ZUNvbXBvbmVudChcbiAgKHsgdGhlbWUgfSkgPT4gKHtcbiAgICB3aWR0aDogJzEwMCUnLFxuICAgIGhlaWdodDogJzEwMCUnLFxuICAgIGJhY2tncm91bmRDb2xvcjogdGhlbWUubGlnaHQsXG4gICAgYm94U2hhZG93OiB0aGVtZS5ib3hTaGFkb3csXG4gICAgYm9yZGVyOiBgMXB4IHNvbGlkICR7dGhlbWUuZGFyazF9YCxcbiAgICBvdmVyZmxvd1k6ICdhdXRvJyxcbiAgICBib3JkZXJSYWRpdXM6IHRoZW1lLmJvcmRlclJhZGl1cyxcbiAgICBoYXNGbGV4OiB7XG4gICAgICBkaXNwbGF5OiAnZmxleCcsXG4gICAgfSxcbiAgfSksXG4gICdkaXYnLFxuICBbXVxuKTtcblxuZXhwb3J0IGRlZmF1bHQgKHsgY2hpbGRyZW4sIG9wZW4sIG9uQ2xvc2UsIHdpZHRoIH0pID0+XG4gIDxQb3J0YWwgaXNPcGVuZWQ9e29wZW59IG9uQ2xvc2U9e29uQ2xvc2V9IGNsb3NlT25Fc2MgY2xvc2VPbk91dHNpZGVDbGljaz5cbiAgICA8TW9kYWxCYWNrZ3JvdW5kPlxuICAgICAgPE1vZGFsIHdpZHRoPXt3aWR0aH0+XG4gICAgICAgIDxJbm5lcj5cbiAgICAgICAgICB7Y2hpbGRyZW59XG4gICAgICAgIDwvSW5uZXI+XG4gICAgICA8L01vZGFsPlxuICAgIDwvTW9kYWxCYWNrZ3JvdW5kPlxuICA8L1BvcnRhbD47XG4iXX0=
+
+const ModalBackground = createComponent(
+  ({ theme }) => ({
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1000,
+    backgroundColor: theme.dark2,
+  }),
+  'div',
+  []
+);
+
+const Modal = createComponent(
+  ({ theme, width }) => ({
+    centerX: true,
+    width: width || '100%',
+    top: theme.space4,
+    bottom: theme.space4,
+    hasFlex: {
+      display: 'flex',
+    },
+    '> div': {
+      marginX: !width && theme.space4,
+    },
+  }),
+  'div',
+  []
+);
+
+const Inner = createComponent(
+  ({ theme }) => ({
+    width: '100%',
+    height: '100%',
+    backgroundColor: theme.light,
+    boxShadow: theme.boxShadow,
+    border: `1px solid ${theme.dark1}`,
+    overflowY: 'auto',
+    borderRadius: theme.borderRadius,
+    hasFlex: {
+      display: 'flex',
+    },
+  }),
+  'div',
+  []
+);
+
+export default ({ children, open, onClose, width }) =>
+  <Portal isOpened={open} onClose={onClose} closeOnEsc closeOnOutsideClick>
+    <ModalBackground>
+      <Modal width={width}>
+        <Inner>
+          {children}
+        </Inner>
+      </Modal>
+    </ModalBackground>
+  </Portal>;

@@ -1,2 +1,22 @@
-export default "\n  # v1\n  # icon:newspaper-o\n  type Artikel implements CollectionInterface @collection(name: \"Artikel\") @stamp @state {\n    # @index(2)\n    date: Date\n    # ji\n    color: Color\n    # @index(0)\n    # @name\n    name: String\n    slug: Slug\n    # @index(1)\n    # @image\n    bild: Image\n    extrakt: Markdown\n    # list(4)\n    tags: [String]\n    blocks: Blocks\n    text: String\n  }\n";
-//# sourceMappingURL=schema.js.map
+export default `
+  # v1
+  # icon:newspaper-o
+  type Artikel implements CollectionInterface @collection(name: "Artikel") @stamp @state {
+    # @index(2)
+    date: Date
+    # ji
+    color: Color
+    # @index(0)
+    # @name
+    name: String
+    slug: Slug
+    # @index(1)
+    # @image
+    bild: Image
+    extrakt: Markdown
+    # list(4)
+    tags: [String]
+    blocks: Blocks
+    text: String
+  }
+`;

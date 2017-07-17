@@ -1,26 +1,21 @@
 import { lorem } from 'olymp-utils';
 import moment from 'moment';
-export var id = function () { return Math.random().toString(36).substring(7); };
-export var date = function () { return moment(); };
-export var color = function () { return "#" + ((Math.random() * 0xffffff) << 0).toString(16); };
-export var string = function (length) {
-    if (length === void 0) { length = 1; }
-    return lorem(length, 'words');
-};
-export var text = function (length) {
-    if (length === void 0) { length = 1; }
-    return lorem(length);
-};
-export var image = function (width, height) {
-    if (width === void 0) { width = 400; }
-    if (height === void 0) { height = 300; }
-    return ({
-        id: id(),
-        url: "https://lorempixel.com/" + width + "/" + height + "/cats",
-        width: width,
-        height: height,
-        caption: string(),
-        source: string(),
-    });
-};
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvc2tlbGV0b3IvZGF0YS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsS0FBSyxFQUFFLE1BQU0sYUFBYSxDQUFDO0FBQ3BDLE9BQU8sTUFBTSxNQUFNLFFBQVEsQ0FBQztBQUU1QixNQUFNLENBQUMsSUFBTSxFQUFFLEdBQUcsY0FBTSxPQUFBLElBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQyxRQUFRLENBQUMsRUFBRSxDQUFDLENBQUMsU0FBUyxDQUFDLENBQUMsQ0FBQyxFQUF2QyxDQUF1QyxDQUFDO0FBRWhFLE1BQU0sQ0FBQyxJQUFNLElBQUksR0FBRyxjQUFNLE9BQUEsTUFBTSxFQUFFLEVBQVIsQ0FBUSxDQUFDO0FBRW5DLE1BQU0sQ0FBQyxJQUFNLEtBQUssR0FBRyxjQUFNLE9BQUEsTUFBSSxDQUFDLENBQUMsSUFBSSxDQUFDLE1BQU0sRUFBRSxHQUFHLFFBQVEsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLFFBQVEsQ0FBQyxFQUFFLENBQUcsRUFBcEQsQ0FBb0QsQ0FBQztBQUVoRixNQUFNLENBQUMsSUFBTSxNQUFNLEdBQUcsVUFBQyxNQUFVO0lBQVYsdUJBQUEsRUFBQSxVQUFVO0lBQUssT0FBQSxLQUFLLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQztBQUF0QixDQUFzQixDQUFDO0FBRTdELE1BQU0sQ0FBQyxJQUFNLElBQUksR0FBRyxVQUFDLE1BQVU7SUFBVix1QkFBQSxFQUFBLFVBQVU7SUFBSyxPQUFBLEtBQUssQ0FBQyxNQUFNLENBQUM7QUFBYixDQUFhLENBQUM7QUFFbEQsTUFBTSxDQUFDLElBQU0sS0FBSyxHQUFHLFVBQUMsS0FBVyxFQUFFLE1BQVk7SUFBekIsc0JBQUEsRUFBQSxXQUFXO0lBQUUsdUJBQUEsRUFBQSxZQUFZO0lBQUssT0FBQSxDQUFDO1FBQ25ELEVBQUUsRUFBRSxFQUFFLEVBQUU7UUFDUixHQUFHLEVBQUUsNEJBQTBCLEtBQUssU0FBSSxNQUFNLFVBQU87UUFDckQsS0FBSyxPQUFBO1FBQ0wsTUFBTSxRQUFBO1FBQ04sT0FBTyxFQUFFLE1BQU0sRUFBRTtRQUNqQixNQUFNLEVBQUUsTUFBTSxFQUFFO0tBQ2pCLENBQUM7QUFQa0QsQ0FPbEQsQ0FBQyIsImZpbGUiOiJwYWNrYWdlcy9mZWxhL3NrZWxldG9yL2RhdGEuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBsb3JlbSB9IGZyb20gJ29seW1wLXV0aWxzJztcbmltcG9ydCBtb21lbnQgZnJvbSAnbW9tZW50JztcblxuZXhwb3J0IGNvbnN0IGlkID0gKCkgPT4gTWF0aC5yYW5kb20oKS50b1N0cmluZygzNikuc3Vic3RyaW5nKDcpO1xuXG5leHBvcnQgY29uc3QgZGF0ZSA9ICgpID0+IG1vbWVudCgpO1xuXG5leHBvcnQgY29uc3QgY29sb3IgPSAoKSA9PiBgIyR7KChNYXRoLnJhbmRvbSgpICogMHhmZmZmZmYpIDw8IDApLnRvU3RyaW5nKDE2KX1gO1xuXG5leHBvcnQgY29uc3Qgc3RyaW5nID0gKGxlbmd0aCA9IDEpID0+IGxvcmVtKGxlbmd0aCwgJ3dvcmRzJyk7XG5cbmV4cG9ydCBjb25zdCB0ZXh0ID0gKGxlbmd0aCA9IDEpID0+IGxvcmVtKGxlbmd0aCk7XG5cbmV4cG9ydCBjb25zdCBpbWFnZSA9ICh3aWR0aCA9IDQwMCwgaGVpZ2h0ID0gMzAwKSA9PiAoe1xuICBpZDogaWQoKSxcbiAgdXJsOiBgaHR0cHM6Ly9sb3JlbXBpeGVsLmNvbS8ke3dpZHRofS8ke2hlaWdodH0vY2F0c2AsXG4gIHdpZHRoLFxuICBoZWlnaHQsXG4gIGNhcHRpb246IHN0cmluZygpLFxuICBzb3VyY2U6IHN0cmluZygpLFxufSk7XG4iXX0=
+
+export const id = () => Math.random().toString(36).substring(7);
+
+export const date = () => moment();
+
+export const color = () => `#${((Math.random() * 0xffffff) << 0).toString(16)}`;
+
+export const string = (length = 1) => lorem(length, 'words');
+
+export const text = (length = 1) => lorem(length);
+
+export const image = (width = 400, height = 300) => ({
+  id: id(),
+  url: `https://lorempixel.com/${width}/${height}/cats`,
+  width,
+  height,
+  caption: string(),
+  source: string(),
+});

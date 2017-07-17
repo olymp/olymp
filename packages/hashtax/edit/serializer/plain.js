@@ -1,39 +1,62 @@
-import Raw from './raw';
-function deserialize(string, options) {
-    if (options === void 0) { options = {}; }
-    var raw = {
-        kind: 'state',
-        document: {
-            kind: 'document',
-            nodes: string.split('\n').map(function (line) {
-                return {
-                    kind: 'block',
-                    type: 'paragraph',
-                    nodes: [
-                        {
-                            kind: 'text',
-                            ranges: [
-                                {
-                                    text: line,
-                                    marks: [],
-                                }
-                            ]
-                        }
-                    ]
-                },
-                ;
-            }),
-        }
-    };
-    return options.toRaw ? raw : Raw.deserialize(raw);
+import Raw from './raw'
+
+/**
+ * Deserialize a plain text `string` to a state.
+ *
+ * @param {String} string
+ * @param {Object} options
+ *   @property {Boolean} toRaw
+ * @return {State}
+ */
+
+function deserialize(string, options = {}) {
+  const raw = {
+    kind: 'state',
+    document: {
+      kind: 'document',
+      nodes: string.split('\n').map((line) => {
+        return {
+          kind: 'block',
+          type: 'paragraph',
+          nodes: [
+            {
+              kind: 'text',
+              ranges: [
+                {
+                  text: line,
+                  marks: [],
+                }
+              ]
+            }
+          ]
+        },
+      }),
+    }
+  }
+
+  return options.toRaw ? raw : Raw.deserialize(raw)
 }
+
+/**
+ * Serialize a `state` to plain text.
+ *
+ * @param {State} state
+ * @return {String}
+ */
+
 function serialize(state) {
-    return state.document.nodes
-        .map(function (block) { return block.text; })
-        .join('\n');
+  return state.document.nodes
+    .map(block => block.text)
+    .join('\n')
 }
+
+/**
+ * Export.
+ *
+ * @type {Object}
+ */
+
 export default {
-    deserialize: deserialize,
-    serialize: serialize
-};
-//# sourceMappingURL=plain.js.map
+  deserialize,
+  serialize
+}

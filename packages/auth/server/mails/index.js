@@ -1,6 +1,26 @@
 export default {
-    register: "\n    #h1 Registrierung#\n    Ein Benutzerkonto wurde mit dieser E-Mail Adresse auf {url} erstellt.\n\n    Um die Registrierung abzuschlie\u00DFen, m\u00FCssen Sie innerhalb 1 Stunde das Konto mithilfe des Links unten best\u00E4tigen. Sp\u00E4ter ist der Link ung\u00FCltig und die Registrierung muss erneut beantragt werden.\n\n    #link Jetzt best\u00E4tigen href={url}?confirm={token}#\n  ",
-    forgot: "\n    #h1 Passwort\u00E4nderung#\n    Das Zur\u00FCcksetzen Ihres Passworts f\u00FCr {url} wurde beantragt.\n\n    Um das Zur\u00FCcksetzen abzuschlie\u00DFen, m\u00FCssen Sie innerhalb 1 Stunde den Link unterhalb des Textes anklicken. Sp\u00E4ter ist der Link ung\u00FCltig und das Zur\u00FCcksetzen des Passworts muss erneut beantragt werden.\n\n    #link Jetzt best\u00E4tigen href={url}?reset={token}#\n  ",
-    invite: "\n    #h1 Einladung#\n    Sie wurden auf {url} eingeladen.\n\n    Mittels des Links unten k\u00F6nnen Sie innerhalb von 1 Stunde ein Benutzerkonto registrieren. Sp\u00E4ter ist der Link ung\u00FCltig und Sie brauchen erneut eine Einladung.\n\n    #link Jetzt best\u00E4tigen href={url}?register={token}#\n  ",
+  register: `
+    #h1 Registrierung#
+    Ein Benutzerkonto wurde mit dieser E-Mail Adresse auf {url} erstellt.
+
+    Um die Registrierung abzuschließen, müssen Sie innerhalb 1 Stunde das Konto mithilfe des Links unten bestätigen. Später ist der Link ungültig und die Registrierung muss erneut beantragt werden.
+
+    #link Jetzt bestätigen href={url}?confirm={token}#
+  `,
+  forgot: `
+    #h1 Passwortänderung#
+    Das Zurücksetzen Ihres Passworts für {url} wurde beantragt.
+
+    Um das Zurücksetzen abzuschließen, müssen Sie innerhalb 1 Stunde den Link unterhalb des Textes anklicken. Später ist der Link ungültig und das Zurücksetzen des Passworts muss erneut beantragt werden.
+
+    #link Jetzt bestätigen href={url}?reset={token}#
+  `,
+  invite: `
+    #h1 Einladung#
+    Sie wurden auf {url} eingeladen.
+
+    Mittels des Links unten können Sie innerhalb von 1 Stunde ein Benutzerkonto registrieren. Später ist der Link ungültig und Sie brauchen erneut eine Einladung.
+
+    #link Jetzt bestätigen href={url}?register={token}#
+  `,
 };
-//# sourceMappingURL=index.js.map

@@ -38,27 +38,3 @@ gulp.task('tsc', () => {
 gulp.task('watch', () => {
   return compile(watch(src, { ignoreInitial: true, base: dest }));
 });
-
-var rollup = require('gulp-better-rollup');
-var babel = require('rollup-plugin-babel');
-
-gulp.task('lib-build', () => {
-  gulp
-    .src('packages/athena/index.js')
-    .pipe(sourcemaps.init())
-    .pipe(
-      rollup(
-        {
-          // notice there is no `entry` option as rollup integrates into gulp pipeline
-          plugins: [babel()],
-        },
-        {
-          // also rollups `sourceMap` option is replaced by gulp-sourcemaps plugin
-          format: 'iife',
-        }
-      )
-    )
-    // inlining the sourcemap into the exported .js file
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist'));
-});

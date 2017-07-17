@@ -4,4 +4,3 @@ export { default as AuthConfirm } from './confirm';
 export { default as AuthForgot } from './forgot';
 export { default as AuthReset } from './reset';
 export { default as AuthStatus } from './status';
-//# sourceMappingURL=index.js.map

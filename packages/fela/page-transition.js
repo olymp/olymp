@@ -1,5 +1,56 @@
-export default function (_a) {
-    var children = _a.children;
-    return children;
-};
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvcGFnZS10cmFuc2l0aW9uLnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFQSxlQUFlLFVBQUMsRUFBWTtRQUFWLHNCQUFRO0lBQU8sT0FBQSxRQUFRO0FBQVIsQ0FBUSxDQUFDIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvcGFnZS10cmFuc2l0aW9uLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcblxuZXhwb3J0IGRlZmF1bHQgKHsgY2hpbGRyZW4gfSkgPT4gY2hpbGRyZW47XG5cbi8qaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IFRyYW5zaXRpb25Hcm91cCwgQ1NTVHJhbnNpdGlvbiB9IGZyb20gJ3JlYWN0LXRyYW5zaXRpb24tZ3JvdXAnO1xuaW1wb3J0IHsgY3JlYXRlQ29tcG9uZW50IH0gZnJvbSAncmVhY3QtZmVsYSc7XG5cbmNvbnN0IGR1cmF0aW9uID0gNTAwMDtcbmNvbnN0IFBhZ2VUcmFuc2l0aW9uID0gY3JlYXRlQ29tcG9uZW50KFxuICAoKSA9PiAoe1xuICAgIHBvc2l0aW9uOiAncmVsYXRpdmUnLFxuICAgICc+IConOiB7XG4gICAgICBvcGFjaXR5OiAxLFxuICAgICAgLy8gdHJhbnNmb3JtOiAndHJhbnNsYXRlM2QoMHB4LCA0MHB4LCAwcHgpJyxcbiAgICB9LFxuICAgICc+IC5wYWdlLXRyYW5zaXRpb24tZW50ZXInOiB7XG4gICAgICBvcGFjaXR5OiAwLjAxLFxuICAgICAgLy8gdHJhbnNmb3JtOiAndHJhbnNsYXRlM2QoMHB4LCA0MHB4LCAwcHgpJyxcbiAgICB9LFxuICAgICc+IC5wYWdlLXRyYW5zaXRpb24tZW50ZXItYWN0aXZlJzoge1xuICAgICAgb3BhY2l0eTogMSxcbiAgICAgIC8vIHRyYW5zZm9ybTogJ3RyYW5zbGF0ZTNkKDAsMCwwKScsXG4gICAgICB0cmFuc2l0aW9uOiBgb3BhY2l0eSAke2R1cmF0aW9ufW1zIGVhc2Utb3V0LCB0cmFuc2Zvcm0gMTAwbXMgZWFzZS1vdXRgLFxuICAgIH0sXG4gICAgJz4gLnBhZ2UtdHJhbnNpdGlvbi1leGl0Jzoge1xuICAgICAgb3BhY2l0eTogMSxcbiAgICB9LFxuICAgICc+IC5wYWdlLXRyYW5zaXRpb24tZXhpdC1hY3RpdmUnOiB7XG4gICAgICBvcGFjaXR5OiAwLjAxLFxuICAgICAgLy8gdHJhbnNmb3JtOiAndHJhbnNsYXRlM2QoMCwwLDApJyxcbiAgICAgIHRyYW5zaXRpb246IGBvcGFjaXR5IDBtcyBlYXNlLW91dCwgdHJhbnNmb3JtIDEwMG1zIGVhc2Utb3V0YCxcbiAgICB9LFxuICB9KSxcbiAgKHsgY2hpbGRyZW4sIGNsYXNzTmFtZSwgaW5uZXJLZXkgfSkgPT5cbiAgICA8VHJhbnNpdGlvbkdyb3VwIGNsYXNzTmFtZT17Y2xhc3NOYW1lfSBjb21wb25lbnQ9XCJkaXZcIj5cbiAgICAgIDxDU1NUcmFuc2l0aW9uXG4gICAgICAgIGtleT17aW5uZXJLZXl9XG4gICAgICAgIGNsYXNzTmFtZXM9e3tcbiAgICAgICAgICBlbnRlcjogJ3BhZ2UtdHJhbnNpdGlvbi1lbnRlcicsXG4gICAgICAgICAgZW50ZXJBY3RpdmU6ICdwYWdlLXRyYW5zaXRpb24tZW50ZXItYWN0aXZlJyxcbiAgICAgICAgICBleGl0OiAncGFnZS10cmFuc2l0aW9uLWV4aXQnLFxuICAgICAgICAgIGV4aXRBY3RpdmU6ICdwYWdlLXRyYW5zaXRpb24tZXhpdC1hY3RpdmUnLFxuICAgICAgICB9fVxuICAgICAgICBlbnRlclxuICAgICAgICBleGl0XG4gICAgICAgIHRpbWVvdXQ9e3sgZW50ZXI6IGR1cmF0aW9uLCBleGl0OiAwIH19XG4gICAgICA+XG4gICAgICAgIHtjaGlsZHJlbn1cbiAgICAgIDwvQ1NTVHJhbnNpdGlvbj5cbiAgICA8L1RyYW5zaXRpb25Hcm91cD4sXG4gIFtdXG4pO1xuUGFnZVRyYW5zaXRpb24uZGlzcGxheU5hbWUgPSAnUGFnZVRyYW5zaXRpb24nO1xuZXhwb3J0IGRlZmF1bHQgUGFnZVRyYW5zaXRpb247XG4qL1xuIl19
+import React from 'react';
+
+export default ({ children }) => children;
+
+/*import React from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { createComponent } from 'react-fela';
+
+const duration = 5000;
+const PageTransition = createComponent(
+  () => ({
+    position: 'relative',
+    '> *': {
+      opacity: 1,
+      // transform: 'translate3d(0px, 40px, 0px)',
+    },
+    '> .page-transition-enter': {
+      opacity: 0.01,
+      // transform: 'translate3d(0px, 40px, 0px)',
+    },
+    '> .page-transition-enter-active': {
+      opacity: 1,
+      // transform: 'translate3d(0,0,0)',
+      transition: `opacity ${duration}ms ease-out, transform 100ms ease-out`,
+    },
+    '> .page-transition-exit': {
+      opacity: 1,
+    },
+    '> .page-transition-exit-active': {
+      opacity: 0.01,
+      // transform: 'translate3d(0,0,0)',
+      transition: `opacity 0ms ease-out, transform 100ms ease-out`,
+    },
+  }),
+  ({ children, className, innerKey }) =>
+    <TransitionGroup className={className} component="div">
+      <CSSTransition
+        key={innerKey}
+        classNames={{
+          enter: 'page-transition-enter',
+          enterActive: 'page-transition-enter-active',
+          exit: 'page-transition-exit',
+          exitActive: 'page-transition-exit-active',
+        }}
+        enter
+        exit
+        timeout={{ enter: duration, exit: 0 }}
+      >
+        {children}
+      </CSSTransition>
+    </TransitionGroup>,
+  []
+);
+PageTransition.displayName = 'PageTransition';
+export default PageTransition;
+*/

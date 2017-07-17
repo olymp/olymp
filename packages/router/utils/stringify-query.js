@@ -1,35 +1,42 @@
 import { memoize } from 'olymp-utils';
-export default memoize(function (obj) {
-    return obj
-        ? Object.keys(obj)
-            .sort()
-            .map(function (key) {
-            var val = obj[key];
+
+export default memoize(
+  obj =>
+    obj
+      ? Object.keys(obj)
+          .sort()
+          .map(key => {
+            const val = obj[key];
             if (val === undefined) {
-                return '';
+              return '';
             }
             if (val === null) {
-                return key;
+              return key;
+              // return encodeURIComponent(key);
             }
             if (Array.isArray(val)) {
-                var result_1 = [];
-                val.slice().forEach(function (val2) {
-                    if (val2 === undefined) {
-                        return;
-                    }
-                    if (val2 === null) {
-                        result_1.push(key);
-                    }
-                    else {
-                        result_1.push(key + "=" + encodeURIComponent(val2));
-                    }
-                });
-                return result_1.join('&');
+              const result = [];
+
+              val.slice().forEach(val2 => {
+                if (val2 === undefined) {
+                  return;
+                }
+
+                if (val2 === null) {
+                  result.push(key);
+                  // result.push(encodeURIComponent(key));
+                } else {
+                  result.push(`${key}=${encodeURIComponent(val2)}`);
+                  // result.push(encodeURIComponent(key) + '=' + encodeURIComponent(val2));
+                }
+              });
+
+              return result.join('&');
             }
-            return key + "=" + encodeURIComponent(val);
-        })
-            .filter(function (x) { return x.length > 0; })
-            .join('&')
-        : '';
-});
-//# sourceMappingURL=stringify-query.js.map
+            return `${key}=${encodeURIComponent(val)}`;
+            // return encodeURIComponent(key, opts) + '=' + encodeURIComponent(val, opts);
+          })
+          .filter(x => x.length > 0)
+          .join('&')
+      : ''
+);

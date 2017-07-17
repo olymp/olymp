@@ -1,19 +1,62 @@
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-import React from 'react';
+import React, { Component } from 'react';
 import { ThemeProvider as FelaThemeProvider } from 'react-fela';
-var getTheme = function (theme) {
-    if (theme === void 0) { theme = {}; }
-    return (__assign({ color: '#8e44ad', colorSecondary: '#e67e22', colorSuccess: '#2ecc71', colorInfo: '#3498db', colorWarning: '#f39c12', colorDanger: '#e74c3c', colorMuted: '#bdc3c7', light: '#FFFFFF', light1: 'rgba(255, 255, 255, 0.85)', light2: 'rgba(255, 255, 255, 0.7)', light3: 'rgba(255, 255, 255, 0.5)', light4: 'rgba(255, 255, 255, 0.12)', light5: 'rgba(255, 255, 255, 0.05)', dark: 'rgba(0, 0, 0, 0.87)', dark1: 'rgba(0, 0, 0, 0.7)', dark2: 'rgba(0, 0, 0, 0.54)', dark3: 'rgba(0, 0, 0, 0.38)', dark4: 'rgba(0, 0, 0, 0.12)', dark5: 'rgba(0, 0, 0, 0.05)', space0: 0, space1: '0.25rem', space2: '0.5rem', space3: '1rem', space4: '2rem', space5: '4rem', borderWidth: 1, borderStyle: 'solid', borderRadius: '0.25rem', borderColor: 'rgba(0, 0, 0, 0.12)', boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px', innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '1rem', fontSizeSmall: '0.9rem', fontSizeH1: '1.6rem', fontSizeH2: '1.5rem', fontSizeH3: '1.4rem', fontSizeH4: '1.33rem', fontSizeH5: '1.2rem', fontSizeH6: '0.9rem' }, theme));
-};
-export default function (_a) {
-    var theme = _a.theme, children = _a.children;
-    return React.createElement(FelaThemeProvider, { theme: getTheme(theme) }, children);
-};
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvdXRpbHMvdGhlbWUtcHJvdmlkZXIudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7O0FBQUEsT0FBTyxLQUFvQixNQUFNLE9BQU8sQ0FBQztBQUN6QyxPQUFPLEVBQUUsYUFBYSxJQUFJLGlCQUFpQixFQUFFLE1BQU0sWUFBWSxDQUFDO0FBRWhFLElBQU0sUUFBUSxHQUFHLFVBQUMsS0FBVTtJQUFWLHNCQUFBLEVBQUEsVUFBVTtJQUFLLE9BQUEsWUFFL0IsS0FBSyxFQUFFLFNBQVMsRUFDaEIsY0FBYyxFQUFFLFNBQVMsRUFDekIsWUFBWSxFQUFFLFNBQVMsRUFDdkIsU0FBUyxFQUFFLFNBQVMsRUFDcEIsWUFBWSxFQUFFLFNBQVMsRUFDdkIsV0FBVyxFQUFFLFNBQVMsRUFDdEIsVUFBVSxFQUFFLFNBQVMsRUFDckIsS0FBSyxFQUFFLFNBQVMsRUFDaEIsTUFBTSxFQUFFLDJCQUEyQixFQUNuQyxNQUFNLEVBQUUsMEJBQTBCLEVBQ2xDLE1BQU0sRUFBRSwwQkFBMEIsRUFDbEMsTUFBTSxFQUFFLDJCQUEyQixFQUNuQyxNQUFNLEVBQUUsMkJBQTJCLEVBQ25DLElBQUksRUFBRSxxQkFBcUIsRUFDM0IsS0FBSyxFQUFFLG9CQUFvQixFQUMzQixLQUFLLEVBQUUscUJBQXFCLEVBQzVCLEtBQUssRUFBRSxxQkFBcUIsRUFDNUIsS0FBSyxFQUFFLHFCQUFxQixFQUM1QixLQUFLLEVBQUUscUJBQXFCLEVBRzVCLE1BQU0sRUFBRSxDQUFDLEVBQ1QsTUFBTSxFQUFFLFNBQVMsRUFDakIsTUFBTSxFQUFFLFFBQVEsRUFDaEIsTUFBTSxFQUFFLE1BQU0sRUFDZCxNQUFNLEVBQUUsTUFBTSxFQUNkLE1BQU0sRUFBRSxNQUFNLEVBR2QsV0FBVyxFQUFFLENBQUMsRUFDZCxXQUFXLEVBQUUsT0FBTyxFQUNwQixZQUFZLEVBQUUsU0FBUyxFQUN2QixXQUFXLEVBQUUscUJBQXFCLEVBSWxDLFNBQVMsRUFBRSxrRUFBa0UsRUFDN0UsV0FBVyxFQUFFLDRDQUE0QyxFQUd6RCxVQUFVLEVBQ1IsNEZBQTRGLEVBQzlGLFFBQVEsRUFBRSxNQUFNLEVBQ2hCLGFBQWEsRUFBRSxRQUFRLEVBQ3ZCLFVBQVUsRUFBRSxRQUFRLEVBQ3BCLFVBQVUsRUFBRSxRQUFRLEVBQ3BCLFVBQVUsRUFBRSxRQUFRLEVBQ3BCLFVBQVUsRUFBRSxTQUFTLEVBQ3JCLFVBQVUsRUFBRSxRQUFRLEVBQ3BCLFVBQVUsRUFBRSxRQUFRLElBQ2pCLEtBQUssRUFDUjtBQXJEK0IsQ0FxRC9CLENBQUM7QUFFSCxlQUFlLFVBQUMsRUFBbUI7UUFBakIsZ0JBQUssRUFBRSxzQkFBUTtJQUMvQixPQUFBLG9CQUFDLGlCQUFpQixJQUFDLEtBQUssRUFBRSxRQUFRLENBQUMsS0FBSyxDQUFDLElBQ3RDLFFBQVEsQ0FDUztBQUZwQixDQUVvQixDQUFDIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvdXRpbHMvdGhlbWUtcHJvdmlkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgQ29tcG9uZW50IH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgVGhlbWVQcm92aWRlciBhcyBGZWxhVGhlbWVQcm92aWRlciB9IGZyb20gJ3JlYWN0LWZlbGEnO1xuXG5jb25zdCBnZXRUaGVtZSA9ICh0aGVtZSA9IHt9KSA9PiAoe1xuICAvLyBDb2xvcnNcbiAgY29sb3I6ICcjOGU0NGFkJyxcbiAgY29sb3JTZWNvbmRhcnk6ICcjZTY3ZTIyJyxcbiAgY29sb3JTdWNjZXNzOiAnIzJlY2M3MScsXG4gIGNvbG9ySW5mbzogJyMzNDk4ZGInLFxuICBjb2xvcldhcm5pbmc6ICcjZjM5YzEyJyxcbiAgY29sb3JEYW5nZXI6ICcjZTc0YzNjJyxcbiAgY29sb3JNdXRlZDogJyNiZGMzYzcnLFxuICBsaWdodDogJyNGRkZGRkYnLFxuICBsaWdodDE6ICdyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuODUpJyxcbiAgbGlnaHQyOiAncmdiYSgyNTUsIDI1NSwgMjU1LCAwLjcpJyxcbiAgbGlnaHQzOiAncmdiYSgyNTUsIDI1NSwgMjU1LCAwLjUpJyxcbiAgbGlnaHQ0OiAncmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEyKScsXG4gIGxpZ2h0NTogJ3JnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSknLFxuICBkYXJrOiAncmdiYSgwLCAwLCAwLCAwLjg3KScsXG4gIGRhcmsxOiAncmdiYSgwLCAwLCAwLCAwLjcpJyxcbiAgZGFyazI6ICdyZ2JhKDAsIDAsIDAsIDAuNTQpJyxcbiAgZGFyazM6ICdyZ2JhKDAsIDAsIDAsIDAuMzgpJyxcbiAgZGFyazQ6ICdyZ2JhKDAsIDAsIDAsIDAuMTIpJyxcbiAgZGFyazU6ICdyZ2JhKDAsIDAsIDAsIDAuMDUpJyxcblxuICAvLyBTcGFjZXNcbiAgc3BhY2UwOiAwLFxuICBzcGFjZTE6ICcwLjI1cmVtJyxcbiAgc3BhY2UyOiAnMC41cmVtJyxcbiAgc3BhY2UzOiAnMXJlbScsXG4gIHNwYWNlNDogJzJyZW0nLFxuICBzcGFjZTU6ICc0cmVtJyxcblxuICAvLyBCb3JkZXJzXG4gIGJvcmRlcldpZHRoOiAxLFxuICBib3JkZXJTdHlsZTogJ3NvbGlkJyxcbiAgYm9yZGVyUmFkaXVzOiAnMC4yNXJlbScsXG4gIGJvcmRlckNvbG9yOiAncmdiYSgwLCAwLCAwLCAwLjEyKScsXG5cbiAgLy8gU2hhZG93c1xuICAvLyBib3hTaGFkb3c6ICcwcHggMHB4IDEwcHggMHB4IHJnYmEoMCwgMCwgMCwgMC4wOCknLFxuICBib3hTaGFkb3c6ICdyZ2JhKDAsIDAsIDAsIDAuMTIpIDBweCAxcHggNnB4LCByZ2JhKDAsIDAsIDAsIDAuMTIpIDBweCAxcHggNHB4JyxcbiAgaW5uZXJTaGFkb3c6ICdpbnNldCAwcHggMHB4IDEwcHggMHB4IHJnYmEoMCwgMCwgMCwgMC4xNSknLFxuXG4gIC8vIEZvbnRcbiAgZm9udEZhbWlseTpcbiAgICAnLWFwcGxlLXN5c3RlbSwgQmxpbmtNYWNTeXN0ZW1Gb250LCBcIlNlZ29lIFVJXCIsIFJvYm90bywgXCJIZWx2ZXRpY2EgTmV1ZVwiLCBBcmlhbCwgc2Fucy1zZXJpZicsXG4gIGZvbnRTaXplOiAnMXJlbScsXG4gIGZvbnRTaXplU21hbGw6ICcwLjlyZW0nLFxuICBmb250U2l6ZUgxOiAnMS42cmVtJyxcbiAgZm9udFNpemVIMjogJzEuNXJlbScsXG4gIGZvbnRTaXplSDM6ICcxLjRyZW0nLFxuICBmb250U2l6ZUg0OiAnMS4zM3JlbScsXG4gIGZvbnRTaXplSDU6ICcxLjJyZW0nLFxuICBmb250U2l6ZUg2OiAnMC45cmVtJyxcbiAgLi4udGhlbWUsXG59KTtcblxuZXhwb3J0IGRlZmF1bHQgKHsgdGhlbWUsIGNoaWxkcmVuIH0pID0+XG4gIDxGZWxhVGhlbWVQcm92aWRlciB0aGVtZT17Z2V0VGhlbWUodGhlbWUpfT5cbiAgICB7Y2hpbGRyZW59XG4gIDwvRmVsYVRoZW1lUHJvdmlkZXI+O1xuIl19
+
+const getTheme = (theme = {}) => ({
+  // Colors
+  color: '#8e44ad',
+  colorSecondary: '#e67e22',
+  colorSuccess: '#2ecc71',
+  colorInfo: '#3498db',
+  colorWarning: '#f39c12',
+  colorDanger: '#e74c3c',
+  colorMuted: '#bdc3c7',
+  light: '#FFFFFF',
+  light1: 'rgba(255, 255, 255, 0.85)',
+  light2: 'rgba(255, 255, 255, 0.7)',
+  light3: 'rgba(255, 255, 255, 0.5)',
+  light4: 'rgba(255, 255, 255, 0.12)',
+  light5: 'rgba(255, 255, 255, 0.05)',
+  dark: 'rgba(0, 0, 0, 0.87)',
+  dark1: 'rgba(0, 0, 0, 0.7)',
+  dark2: 'rgba(0, 0, 0, 0.54)',
+  dark3: 'rgba(0, 0, 0, 0.38)',
+  dark4: 'rgba(0, 0, 0, 0.12)',
+  dark5: 'rgba(0, 0, 0, 0.05)',
+
+  // Spaces
+  space0: 0,
+  space1: '0.25rem',
+  space2: '0.5rem',
+  space3: '1rem',
+  space4: '2rem',
+  space5: '4rem',
+
+  // Borders
+  borderWidth: 1,
+  borderStyle: 'solid',
+  borderRadius: '0.25rem',
+  borderColor: 'rgba(0, 0, 0, 0.12)',
+
+  // Shadows
+  // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
+  boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px',
+  innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+
+  // Font
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  fontSize: '1rem',
+  fontSizeSmall: '0.9rem',
+  fontSizeH1: '1.6rem',
+  fontSizeH2: '1.5rem',
+  fontSizeH3: '1.4rem',
+  fontSizeH4: '1.33rem',
+  fontSizeH5: '1.2rem',
+  fontSizeH6: '0.9rem',
+  ...theme,
+});
+
+export default ({ theme, children }) =>
+  <FelaThemeProvider theme={getTheme(theme)}>
+    {children}
+  </FelaThemeProvider>;
