@@ -30,6 +30,8 @@
     "no-shadow": 1,
     "no-unused-vars": 1,
     "consistent-return": 1,
-    "no-use-before-define": 1
+    "no-use-before-define": 1,
+    "jsx-a11y/href-no-hash": "off",
+    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }]
   }
 }
