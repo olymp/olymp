@@ -1482,13 +1482,13 @@ debug-fabulous@0.1.X:
     memoizee "^0.4.5"
     object-assign "4.1.0"
 
-debug@2.3.0:
+debug@2.3.0, debug@^2.1.1, debug@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.0.tgz#3912dc55d7167fc3af17d2b85c13f93deaedaa43"
   dependencies:
     ms "0.7.2"
 
-debug@^2.1.1, debug@^2.2.0, debug@^2.6.3, debug@^2.6.8:
+debug@^2.6.3, debug@^2.6.8:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -1760,6 +1760,19 @@ eslint-config-airbnb@^15.0.2:
   resolved "https://registry.yarnpkg.com/eslint-config-airbnb/-/eslint-config-airbnb-15.0.2.tgz#7b99fa421d0c15aee3310d647644315b02ea24da"
   dependencies:
     eslint-config-airbnb-base "^11.2.0"
+
+eslint-config-olymp@^16.0.18:
+  version "16.0.18"
+  resolved "https://registry.yarnpkg.com/eslint-config-olymp/-/eslint-config-olymp-16.0.18.tgz#d807fbc5acccafe6f70382781c2ba7b2ad26992d"
+  dependencies:
+    babel-eslint "^7.2.3"
+    eslint "^4.2.0"
+    eslint-config-airbnb "^15.0.2"
+    eslint-config-prettier "^2.3.0"
+    eslint-plugin-import "^2.7.0"
+    eslint-plugin-jsx-a11y "^6.0.2"
+    eslint-plugin-prettier "^2.1.2"
+    eslint-plugin-react "^7.1.0"
 
 eslint-config-prettier@^2.3.0:
   version "2.3.0"

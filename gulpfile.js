@@ -1,6 +1,5 @@
 const path = require('path');
 const gulp = require('gulp');
-const ts = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
 const newer = require('gulp-changed');
