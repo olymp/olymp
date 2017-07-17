@@ -33,6 +33,7 @@ module.exports = ({
   ssr,
   serverless,
   plugins = [],
+  sharedEnv = {},
   ...rest
 }) => {
   const isDev = mode !== 'production';
@@ -43,7 +44,6 @@ module.exports = ({
   const isServerless = serverless === true || isElectron;
   const isSSR = ssr !== false && !serverless;
   const folder = isDev ? '.dev' : '.dist';
-
   const config = {
     cache: true,
     resolve: {
@@ -60,7 +60,6 @@ module.exports = ({
             : 'history/createBrowserHistory',
         react: path.resolve(appRoot, 'node_modules', 'react'),
         // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
-        './block-elements': './block-elements.json',
         'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
         // 'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
         // moment: path.resolve(appRoot, 'node_modules', 'moment'),
@@ -102,6 +101,25 @@ module.exports = ({
         'process.env.IS_ELECTRON': isElectron
           ? JSON.stringify(true)
           : undefined,
+        /* 'process.env.HOT_MODULES': isDev
+          ? JSON.stringify(
+            ['index.js']
+            / .concat(
+                allPackages.map(item =>
+                  path.resolve(topFolder, item, 'index.js')
+                )
+              )*
+              .join('|')
+          )
+          : undefined,*/
+        ...Object.keys(sharedEnv).reduce((store, key) => {
+          if (sharedEnv[key] === true) {
+            store[`process.env.${key}`] = JSON.stringify(process.env[key]);
+          } else {
+            store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);
+          }
+          return store;
+        }, {}),
       }),
       /* new webpack.DllPlugin({
         path: path.resolve(appRoot, folder, target, `[name]-manifest.json`),

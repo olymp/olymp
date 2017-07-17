@@ -167,9 +167,9 @@ if (window.POLYFILLED) {
   window.GO = load;
 }
 
-if (module.hot && process.env.HOT_MODULES) {
+if (module.hot) {
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept(process.env.HOT_MODULES.split('|'), () => {
+  module.hot.accept(['@app'], () => {
     renderApp(require('@app').default);
   });
 }
