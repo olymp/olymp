@@ -1,11 +1,8 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { parseQuery } from './utils';
 import { createPush, createReplace } from './actions';
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const inner = (props, context) => {
     const { pathname, query, search, url, push, replace } = props;
     const { router } = context;
