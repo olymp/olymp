@@ -6,8 +6,7 @@ import WithContainer from './with-container';
 
 const Body = createComponent(
   ({ affix }) => ({
-    // flex: 'none',
-    ...!affix
+    ...(!affix
       ? {}
       : {
           hasFlex: {
@@ -20,7 +19,7 @@ const Body = createComponent(
             '-webkit-overflow-scrolling': 'touch',
             overflowY: 'scroll',
           },
-        },
+        }),
   }),
   props =>
     <ScrollToTop>
