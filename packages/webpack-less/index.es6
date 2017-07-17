@@ -2,6 +2,7 @@ const { existsSync } = require('fs');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { optimize, NormalModuleReplacementPlugin } = require('webpack');
 const { resolve } = require('path');
+
 const { stringify } = JSON;
 
 const nodeModules = resolve(__dirname, 'node_modules');
@@ -58,6 +59,7 @@ module.exports = (config, options) => {
       }),
     });
   } else {
+    console.log(modifyVars);
     config.module.rules.push({
       test: /\.(less|css)$/,
       use: [

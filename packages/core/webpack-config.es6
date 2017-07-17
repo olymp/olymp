@@ -101,7 +101,7 @@ module.exports = ({
           ? JSON.stringify(true)
           : undefined,
       }),
-      /*new webpack.DllPlugin({
+      /* new webpack.DllPlugin({
         path: path.resolve(appRoot, folder, target, `[name]-manifest.json`),
         library: '[name]',
         filename: '[name].js',
@@ -160,7 +160,7 @@ module.exports = ({
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? JSON.stringify(process.env.GRAPHQL_URL)
           : undefined,
-        /*'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
+        /* 'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
       ? JSON.stringify(process.env.GRAPHQL_SUB)
       : undefined,*/
         'process.env.URL': process.env.URL
@@ -247,7 +247,7 @@ module.exports = ({
   if (isNode) {
     if (isDev) {
       config.plugins.push(new StartServerPlugin('main.js'));
-      /*config.plugins.push(
+      /* config.plugins.push(
         new ReloadServerPlugin({
           // Defaults to process.cwd() + "/server.js"
           script: path.resolve(__dirname, 'node', 'index.js'),
@@ -363,7 +363,7 @@ module.exports = ({
             v => v.indexOf('webpack/hot/poll') === 0,
             'source-map-support/register',
             v => v.indexOf('olymp-') === 0,
-            // v => v === 'antd' || v.indexOf('antd/') === 0,
+            v => v === 'antd' || v.indexOf('antd/') === 0,
             /\.(eot|woff|woff2|ttf|otf)$/,
             /\.(svg|png|jpg|jpeg|gif|ico)$/,
             /\.(mp4|mp3|ogg|swf|webp)$/,
