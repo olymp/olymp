@@ -5,6 +5,7 @@ import { attachHistory } from './history';
 export default class Router extends Component {
   static childContextTypes = {
     history: PropTypes.object,
+    staticContext: PropTypes.object,
   };
   constructor(props) {
     super(props);

@@ -6,9 +6,6 @@
   "license": "MIT",
   "dependencies": {
     "history": "^4.6.3",
-    "ion-router": "^0.11.3",
-    "olymp-utils": "^16.0.17",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "olymp-utils": "^16.0.17"
   }
 }
