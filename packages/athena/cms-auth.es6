@@ -1,6 +1,6 @@
 import React from 'react';
 import { AltSwitch, AltRoute } from 'olymp-router';
-import { AuthModals, AuthUsers } from 'olymp-auth';
+import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
@@ -20,7 +20,7 @@ const Container = createComponent(
       display: 'flex',
       flexDirection: 'column',
     },
-    height: '100%',
+    height: '100vh',
     backgroundColor: '#f5f5f5',
   }),
   'div',
@@ -120,10 +120,10 @@ export default withUA(props => {
               match={query['@users'] !== undefined}
               render={() => <AuthUsers {...props} />}
             />
-            {/* <AltRoute
-            match={query['@user'] !== undefined}
-            render={() => <AuthUser {...props} />}
-          />*/}
+            <AltRoute
+              match={query['@user'] !== undefined}
+              render={() => <AuthUser {...props} />}
+            />
             <AltRoute
               render={rest =>
                 <PageRoute
