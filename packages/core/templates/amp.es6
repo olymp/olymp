@@ -4,7 +4,7 @@ const replaceInline = str =>
     .replace(/autocorrect="([^"]*)"/g, '')
     .replace(/contenteditable="([^"]*)"/g, '')
     .replace(/spellcheck="([^"]*)"/g, '');
-export default ({ helmet, cssMarkup, root }) => `
+export default ({ title, meta, link, cssMarkup, root }) => `
   <!DOCTYPE html>
   <html amp lang="de">
     <head>
@@ -33,9 +33,9 @@ export default ({ helmet, cssMarkup, root }) => `
       <meta name="msapplication-TileColor" content="#8e44ad">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#8e44ad">
-      ${helmet.title.toString()}
-      ${helmet.meta.toString()}
-      ${helmet.link.toString()}
+      ${title ? title.toString() : ''}
+      ${meta ? meta.toString() : ''}
+      ${link ? link.toString() : ''}
       <style amp-custom id="css-markup">${cssMarkup || ''}</style>
     </head>
     <body>
