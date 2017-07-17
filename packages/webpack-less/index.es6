@@ -21,7 +21,6 @@ module.exports = (config, options) => {
   } = options;
 
   if (isWeb && isProd) {
-    config.plugins.push(new optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(
       new ExtractTextPlugin({

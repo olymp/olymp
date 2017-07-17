@@ -174,7 +174,9 @@ module.exports = ({
   }
 
   // inline-source-map for web-dev
-  config.devtool = 'source-map';
+  config.devtool = isProd
+    ? 'cheap-module-source-map'
+    : 'cheap-module-eval-source-map';
 
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {
@@ -217,7 +219,6 @@ module.exports = ({
   // webpack plugins
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-    // config.plugins.push(new webpack.optimize.DedupePlugin());
     if (isElectron) {
       config.plugins.push(new GenerateJsonPlugin('package.json', {}));
     }
@@ -230,8 +231,11 @@ module.exports = ({
     config.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         compress: {
-          screw_ie8: true,
           warnings: false,
+          pure_getters: true,
+          unsafe: true,
+          unsafe_comps: true,
+          screw_ie8: true,
         },
         mangle: {
           screw_ie8: true,

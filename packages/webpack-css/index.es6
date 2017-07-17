@@ -5,7 +5,6 @@ import { resolve } from 'path';
 
 export default (config, { isProd, isWeb, isElectron, isNode, appRoot }) => {
   if (isWeb && isProd) {
-    config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     // config.plugins.push(new webpack.optimize.DedupePlugin());
     config.plugins.push(
       new ExtractTextPlugin({
