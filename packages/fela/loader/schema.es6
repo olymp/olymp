@@ -1,9 +1,8 @@
 import React, { Children } from 'react';
-import { createComponent } from 'react-fela';
+import createComponent from '../create-component';
 import ContentLoader from './content';
 import Container from '../container';
 import Grid from '../grid';
-
 
 // const loaderSchema2 = `450,[c[m5[100,200,400]]g]`
 const Panel = createComponent(
@@ -27,10 +26,10 @@ const SchemaLoaderItem = ({ height, width = '100%', grid, children, size }) => {
             <Panel height="100%" width="100%" pad>
               {children
                 ? children.map((child, i) =>
-                  (<Panel key={i}>
-                    <ContentLoader isLoading {...child} />
-                  </Panel>)
-                )
+                    <Panel key={i}>
+                      <ContentLoader isLoading {...child} />
+                    </Panel>
+                  )
                 : <ContentLoader isLoading />}
             </Panel>
           </Grid.Item>)
@@ -69,7 +68,11 @@ export default ({ schema, isLoading, children }) => {
     const components = schema.map((item, i) =>
       <SchemaLoaderItem key={i} {...item} />
     );
-    return <div>{components}</div>;
+    return (
+      <div>
+        {components}
+      </div>
+    );
   }
   if (children) {
     return Children.only(children);

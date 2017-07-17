@@ -1,7 +1,7 @@
-import { Blocks } from 'olymp-pages';
+import ContainerBlock from 'olymp-pages/blocks/container';
 
 export default {
-  ...Blocks.ContainerBlock,
+  ...ContainerBlock,
   label: 'Container',
   category: 'Template',
   styles: ({ theme, color = theme.color }) => ({

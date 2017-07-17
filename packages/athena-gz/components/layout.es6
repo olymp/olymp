@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { withScroll, withApollo } from 'olymp-utils';
+import { withApollo } from 'react-apollo';
+import withScroll from 'olymp-utils/decorators/scroll';
 import { withRouter } from 'olymp-router';
-import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
-import { prefetchPage } from 'olymp-pages';
+import Navbar from 'olymp-fela/navbar';
+import Layout from 'olymp-fela/layout';
+import Container from 'olymp-fela/container';
+import createComponent from 'olymp-fela/create-component';
+import { prefetchPage } from 'olymp-pages/gql/query';
 import Logo from './logo';
 
 export const App = createComponent(
@@ -58,11 +62,11 @@ export const Header = withScroll(
       transition: 'box-shadow 0.3s ease-in-out',
     }),
     ({ children, className }) =>
-      <Layout.Header className={className}>
+      (<Layout.Header className={className}>
         <Container>
           {children}
         </Container>
-      </Layout.Header>,
+      </Layout.Header>),
     p => Object.keys(p)
   )
 );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withAmp } from 'olymp-utils';
+import withAmp from 'olymp-utils/decorators/amp';
 import Container from './container';
 import Img from './img';
 import Amp from './amp';
@@ -141,8 +141,8 @@ class Image extends Component {
       >
         {amp && image
           ? <Amp layout={layout} src={url} alt={alt} width={w} height={h}>
-              {image}
-            </Amp>
+            {image}
+          </Amp>
           : image}
         {children}
       </Container>

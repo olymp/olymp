@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { withCollections } from 'olymp-collection';
-import { withLangProvider } from 'olymp-utils';
+import withCollections from 'olymp-collection/decorators/with-collections';
+import { withLangProvider } from 'olymp-utils/decorators/lang';
 import { withRouter } from 'olymp-router';
 import { withLocale } from 'olymp-locale/de';
-import { ThemeProvider } from 'olymp-fela';
-import { auth as withAuth } from 'olymp-auth';
-import { withNavigation } from 'olymp-pages';
-import { LightboxProvider } from 'olymp-cloudinary';
+import ThemeProvider from 'olymp-fela/theme-provider';
+import { auth as withAuth } from 'olymp-auth/with-auth';
+import { withNavigation } from 'olymp-pages/with-data';
+import { LightboxProvider } from 'olymp-cloudinary/lightbox';
 import { asyncComponent } from 'react-async-component';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
@@ -21,7 +21,7 @@ const filterPublic = pages =>
       children: filterPublic(children),
     }));
 
-export default ({ auth, theme }) => Wrapped => {
+export default ({ auth, theme }) => (Wrapped) => {
   // Container for authed users
   @withRouter
   @withLocale

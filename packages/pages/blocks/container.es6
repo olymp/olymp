@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'olymp-fela';
+import Container from 'olymp-fela/container';
 
 export default {
   key: 'Pages.Template.ContainerBlock',

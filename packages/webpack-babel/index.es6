@@ -123,15 +123,15 @@ module.exports = (config, options) => {
       },
       isProd
         ? {
-            loader: 'rollup-loader',
-            options: {
-              plugins: [rollupBabel(babelOptions)],
-            },
-          }
-        : {
-            loader: 'babel-loader',
-            options: babelOptions,
+          loader: 'rollup-loader',
+          options: {
+            plugins: [rollupBabel(babelOptions)],
           },
+        }
+        : {
+          loader: 'babel-loader',
+          options: babelOptions,
+        },
     ],
     include: [
       // path.resolve(appRoot, 'server'),

@@ -46,7 +46,7 @@ export default class Lightbox extends Component {
     lightbox.remove(this.ref);
   }
 
-  add = value => {
+  add = (value) => {
     const { lightbox } = this.context;
     const width = 800;
     const getSrcSet = w =>
@@ -75,7 +75,7 @@ export default class Lightbox extends Component {
     });
   };
 
-  onClick = e => {
+  onClick = (e) => {
     const { onClick, router, pathname, query } = this.props;
     router.push({ pathname, query: { ...query, lightbox: this.ref } });
     if (onClick) {

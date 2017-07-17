@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { AltSwitch, AltRoute } from 'olymp-router';
 import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
-import { EditablePageRoute, PageRoute } from 'olymp-pages';
+import { EditablePageRoute } from 'olymp-pages';
+import PageRoute from 'olymp-pages/page-route';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute } from 'olymp-collection';
 import { AnalyticsRoutes } from 'olymp-google';
@@ -99,20 +100,20 @@ export default class CMSAuth extends Component {
               <AltRoute
                 match={!!collection}
                 render={() =>
-                  <CollectionRoute
+                  (<CollectionRoute
                     {...this.props}
                     typeName={collection && collection.name}
                     Wrapped={Wrapped}
-                  />}
+                  />)}
               />
               <AltRoute
                 match={query['@page'] !== undefined}
                 render={() =>
-                  <EditablePageRoute
+                  (<EditablePageRoute
                     {...this.props}
                     deviceWidth={deviceWidth}
                     Wrapped={Wrapped}
-                  />}
+                  />)}
               />
               <AltRoute
                 match={query['@media'] !== undefined}
@@ -136,13 +137,13 @@ export default class CMSAuth extends Component {
               />
               <AltRoute
                 render={rest =>
-                  <PageRoute
+                  (<PageRoute
                     {...rest}
                     {...this.props}
                     key={location.key}
                     navigation={navigation}
                     Wrapped={Wrapped}
-                  />}
+                  />)}
               />
             </AltSwitch>
           </SwitchContainer>

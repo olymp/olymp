@@ -1,4 +1,4 @@
-import { createComponent } from 'react-fela';
+import createComponent from './create-component';
 
 export default createComponent(
   ({ theme, height, size }) => ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createComponent } from 'react-fela';
-import { fade, border } from 'olymp-fela';
+import createComponent from '../create-component';
+import { fade, border } from '../utils/utils';
 import Sub from './sub';
 import Mega from './mega';
 
@@ -30,11 +30,11 @@ const Nav = createComponent(
       },
     },
   ({ mega, sub, vertically, children, ...props }) =>
-    mega && mega({ mega, sub, vertically, children, ...props })
+    (mega && mega({ mega, sub, vertically, children, ...props })
       ? <Mega {...props} />
       : <Sub {...props} vertically={sub || vertically}>
-        {children}
-      </Sub>,
+          {children}
+        </Sub>),
   p => Object.keys(p)
 );
 Nav.displayName = 'Navbar.Nav';

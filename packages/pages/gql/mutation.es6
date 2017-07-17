@@ -1,4 +1,4 @@
-import { gql, graphql } from 'olymp-utils';
+import { gql, graphql } from 'react-apollo';
 import { onError, onSuccess } from 'olymp-ui';
 
 const ok = (props, mutate) => () => {

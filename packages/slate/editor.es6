@@ -1,8 +1,6 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Gateway } from 'react-gateway';
-import { Button } from 'antd';
-import { Editor, Html, Raw, Plain } from 'slate';
+import { Editor, Html, Plain } from 'slate';
 import {
   withSlateState,
   withAutoMarkdown,
@@ -30,7 +28,7 @@ import {
 } from 'olymp-icons';
 import I from './icon';
 
-const getIdByTag = (children) => {
+const getIdByTag = children => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
 };
@@ -82,14 +80,15 @@ const options = {
             if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) {
               href = `http://${href}`;
             }
-            onChange(state
-              .transform()
-              .wrapInline({
-                type: 'link',
-                data: { href, target: '_blank' },
-              })
-              .collapseToEnd()
-              .apply()
+            onChange(
+              state
+                .transform()
+                .wrapInline({
+                  type: 'link',
+                  data: { href, target: '_blank' },
+                })
+                .collapseToEnd()
+                .apply()
             );
           }
         }
@@ -100,49 +99,87 @@ const options = {
   ],
   sidebarTypes: [],
   nodes: {
-    paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
+    paragraph: ({ children, attributes }) =>
+      <p {...attributes}>
+        {children}
+      </p>,
     link: ({ node, attributes, children }) =>
-      (<a
+      <a
         {...attributes}
         href={node.data.get('href')}
         target={node.data.get('target')}
         rel="noopener noreferrer"
       >
         {children}
-      </a>),
+      </a>,
     'block-quote': ({ children, attributes }) =>
-      <blockquote {...attributes}>{children}</blockquote>,
+      <blockquote {...attributes}>
+        {children}
+      </blockquote>,
     'bulleted-list': ({ children, attributes }) =>
-      <ul {...attributes}>{children}</ul>,
+      <ul {...attributes}>
+        {children}
+      </ul>,
     'numbered-list': ({ children, attributes }) =>
-      <ol {...attributes}>{children}</ol>,
+      <ol {...attributes}>
+        {children}
+      </ol>,
     'heading-one': ({ children, attributes }) =>
-      <h1 {...attributes} id={getIdByTag(children)}>{children}</h1>,
+      <h1 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h1>,
     'heading-two': ({ children, attributes }) =>
-      <h2 {...attributes} id={getIdByTag(children)}>{children}</h2>,
+      <h2 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h2>,
     'heading-three': ({ children, attributes }) =>
-      <h3 {...attributes} id={getIdByTag(children)}>{children}</h3>,
+      <h3 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h3>,
     'heading-four': ({ children, attributes }) =>
-      <h4 {...attributes} id={getIdByTag(children)}>{children}</h4>,
+      <h4 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h4>,
     'heading-five': ({ children, attributes }) =>
-      <h5 {...attributes} id={getIdByTag(children)}>{children}</h5>,
+      <h5 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h5>,
     'heading-six': ({ children, attributes }) =>
-      <h6 {...attributes} id={getIdByTag(children)}>{children}</h6>,
+      <h6 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h6>,
     'bulleted-list-item': ({ children, attributes }) =>
-      <li {...attributes}>{children}</li>,
+      <li {...attributes}>
+        {children}
+      </li>,
     'numbered-list-item': ({ children, attributes }) =>
-      <li {...attributes}>{children}</li>,
+      <li {...attributes}>
+        {children}
+      </li>,
   },
   marks: {
     bold: ({ children, attributes }) =>
-      <strong {...attributes}>{children}</strong>,
-    code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
-    italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
-    underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
+      <strong {...attributes}>
+        {children}
+      </strong>,
+    code: ({ children, attributes }) =>
+      <code {...attributes}>
+        {children}
+      </code>,
+    italic: ({ children, attributes }) =>
+      <em {...attributes}>
+        {children}
+      </em>,
+    underlined: ({ children, attributes }) =>
+      <u {...attributes}>
+        {children}
+      </u>,
     center: ({ children, attributes }) =>
-      <center {...attributes}>{children}</center>,
+      <center {...attributes}>
+        {children}
+      </center>,
   },
-  getMarkdownType: (chars) => {
+  getMarkdownType: chars => {
     switch (chars) {
       case '*':
       case '-':
@@ -230,9 +267,8 @@ const serializer = new Html({
           return undefined;
         }
         const code = el.children[0];
-        const children = code && code.tagName === 'code'
-          ? code.children
-          : el.children;
+        const children =
+          code && code.tagName === 'code' ? code.children : el.children;
 
         return {
           kind: 'block',
@@ -288,20 +324,29 @@ function CleanWordHTML(str) {
   // 2. strip Word generated HTML comments
   var commentSripper = new RegExp('<!--(.*?)-->', 'g');
   var output = output.replace(commentSripper, '');
-  var tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+  var tagStripper = new RegExp(
+    '<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>',
+    'gi'
+  );
   // 3. remove tags leave content if any
   output = output.replace(tagStripper, '');
   // 4. Remove everything in between and including tags '<style(.)style(.)>'
   var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
 
   for (var i = 0; i < badTags.length; i++) {
-    tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+    tagStripper = new RegExp(
+      '<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>',
+      'gi'
+    );
     output = output.replace(tagStripper, '');
   }
   // 5. remove attributes ' style="..."'
   var badAttributes = ['style', 'start'];
   for (var i = 0; i < badAttributes.length; i++) {
-    var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+    var attributeStripper = new RegExp(
+      ' ' + badAttributes[i] + '="(.*?)"',
+      'gi'
+    );
     output = output.replace(attributeStripper, '');
   }
 
@@ -317,8 +362,8 @@ function CleanWordHTML(str) {
 @withSlateState({ terse: true })
 @useBlocks(options)
 export default // @withToolbar(options)
-  // @withSidebar(options)
-  class SlateEditor extends Component {
+// @withSidebar(options)
+class SlateEditor extends Component {
   plugins = [
     withAutoMarkdown(options),
     TrailingBlock({ type: 'paragraph' }),
@@ -389,9 +434,7 @@ export default // @withToolbar(options)
       blockTypes,
       ...rest
     } = this.props;
-    const {
-      focus
-    } = this.state;
+    const { focus } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
     const undo =
@@ -403,17 +446,6 @@ export default // @withToolbar(options)
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
-        <Gateway into="undo">
-          {false && undo && undo.length
-            ? <Button
-              shape="circle"
-              size="large"
-              onClick={() => onChange(value.transform().undo().apply())}
-            >
-              <i className="fa fa-undo" aria-hidden="true" />
-            </Button>
-            : null}
-        </Gateway>
         {children}
         {readOnly !== true &&
           <ToolbarBlock
@@ -430,25 +462,27 @@ export default // @withToolbar(options)
             onChange={onChange}
           />}
         {readOnly !== true &&
-          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />}
-        <div className={className} style={{ position: 'relative', ...style }}>
-          {children}
-          <Editor
-            {...rest}
+          <ToolbarText
+            show={focus}
             state={value}
-            spellcheck={spellcheck || false}
-            readOnly={!!readOnly}
-            plugins={this.plugins}
-            schema={{ marks, nodes }}
             onChange={onChange}
-            onFocus={() => this.setState({ focus: true })}
-            onBlur={() => this.setState({ focus: false })}
-            onPaste={this.onPaste}
-            onKeyDown={this.onKeyDown}
-            placeholder={!readOnly && 'Hier Text eingeben...'}
-            placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-          />
-        </div>
+            {...options}
+          />}
+        <Editor
+          {...rest}
+          state={value}
+          spellcheck={spellcheck || false}
+          readOnly={!!readOnly}
+          plugins={this.plugins}
+          schema={{ marks, nodes }}
+          onChange={onChange}
+          onFocus={() => this.setState({ focus: true })}
+          onBlur={() => this.setState({ focus: false })}
+          onPaste={this.onPaste}
+          onKeyDown={this.onKeyDown}
+          placeholder={!readOnly && 'Hier Text eingeben...'}
+          placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
+        />
       </div>
     );
   };

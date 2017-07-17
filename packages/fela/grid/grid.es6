@@ -1,6 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { createComponent } from 'react-fela';
+import createComponent from '../create-component';
 
 const Grid = createComponent(
   ({ height }) => ({
@@ -16,9 +16,9 @@ const Grid = createComponent(
     },
   }),
   ({ children, size, height, ...rest }) =>
-    (<div {...rest}>
+    <div {...rest}>
       {Children.map(children, child => cloneElement(child, { gridSize: size }))}
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 Grid.propTypes = {

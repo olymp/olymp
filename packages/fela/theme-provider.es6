@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ThemeProvider as FelaThemeProvider } from 'react-fela';
 
 const getTheme = (theme = {}) => ({
@@ -57,6 +57,6 @@ const getTheme = (theme = {}) => ({
 });
 
 export default ({ theme, children }) =>
-  <FelaThemeProvider theme={getTheme(theme)}>
+  (<FelaThemeProvider theme={getTheme(theme)}>
     {children}
-  </FelaThemeProvider>;
+  </FelaThemeProvider>);

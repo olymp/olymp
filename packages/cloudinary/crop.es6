@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
-import { cloudinaryUrl } from './image';
+import { cloudinaryUrl } from './components/image';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -29,7 +29,9 @@ class Crop extends Component {
     const x = crop[2] / value.width * 100;
     const y = crop[3] / value.height * 100;
 
-    if (!value) { return <div />; }
+    if (!value) {
+      return <div />;
+    }
 
     return (
       <div
@@ -43,12 +45,12 @@ class Crop extends Component {
           crop={
             crop
               ? {
-                width,
-                height,
-                x,
-                y,
-                aspect,
-              }
+                  width,
+                  height,
+                  x,
+                  y,
+                  aspect,
+                }
               : { aspect }
           }
         />

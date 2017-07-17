@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import sortBy from 'lodash/sortBy';
+import { gql, graphql } from 'react-apollo';
+import { sortBy } from 'lodash';
 import getDecorators from './get-decorators';
 
 export default (WrappedComponent) => {
   @graphql(
     gql`
-    query schema {
-      schema: __schema {
-        types {
-          name
-          description
-          interfaces {
+      query schema {
+        schema: __schema {
+          types {
             name
-          }
-          fields {
-            name
-            type {
-              kind
+            description
+            interfaces {
               name
+            }
+            fields {
+              name
+              type {
+                kind
+                name
+              }
             }
           }
         }
       }
-    }
-  `)
+    `
+  )
   class WithCollectionsComponent extends Component {
     list() {
       const { data = {} } = this.props;
@@ -36,9 +36,9 @@ export default (WrappedComponent) => {
           x =>
             (x.interfaces || [])
               .filter(
-              y =>
-                y.name === 'CollectionType' ||
-                y.name === 'CollectionInterface'
+                y =>
+                  y.name === 'CollectionType' ||
+                    y.name === 'CollectionInterface'
               ).length
         )
         : [];
@@ -107,7 +107,10 @@ export default (WrappedComponent) => {
       return (
         <WrappedComponent
           {...rest}
-          collectionList={list.map(x => ({ ...x, decorators: getDecorators(x.description) }))}
+          collectionList={list.map(x => ({
+            ...x,
+            decorators: getDecorators(x.description),
+          }))}
           collectionTree={group}
         />
       );

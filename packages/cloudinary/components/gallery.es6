@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Thumb from './thumb';
-import { createComponent } from 'olymp-fela';
+import createComponent from 'olymp-fela/create-component';
 
 const Thumbs = createComponent(
   ({ justifyContent }) => ({
@@ -24,7 +24,7 @@ export const MediaList = ({
   selected,
   onClick,
   onRemove,
-  ...rest,
+  ...rest
 }) =>
   <Thumbs {...rest}>
     {(items || [])

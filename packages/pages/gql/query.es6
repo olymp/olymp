@@ -1,8 +1,8 @@
-import { gql, graphql } from 'olymp-utils';
+import { gql, graphql } from 'react-apollo';
 
 const isNew = props => props.query['@page'] === 'new';
 const getId = (id, query) =>
-  query['@page'] && query['@page'] !== 'new' ? query['@page'] : id;
+  (query['@page'] && query['@page'] !== 'new' ? query['@page'] : id);
 
 const queryOne = gql`
   query page($id: String) {

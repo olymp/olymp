@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createComponent } from 'react-fela';
+import createComponent from '../create-component';
 
 const ImageImg = createComponent(
   ({ theme, width, height }) => ({
@@ -8,14 +8,14 @@ const ImageImg = createComponent(
     height,
   }),
   ({ width, height, src, alt, onClick, className }) =>
-    (<img
+    <img
       src={src}
       alt={alt}
       className={className}
       width={width}
       height={height}
       onClick={onClick}
-    />),
+    />,
   p => Object.keys(p)
 );
 

@@ -9,3 +9,5 @@ export { default as Layout } from './layout';
 export { default as Navbar } from './navbar';
 export { default as IFrame } from './iframe';
 export { default as PageTransition } from './page-transition';
+export { default as createComponent } from './create-component';
+export { default as ThemeProvider } from './theme-provider';

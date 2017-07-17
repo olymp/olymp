@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql, withApollo } from 'react-apollo';
-import { createComponent } from 'olymp-fela';
-import { Spin } from 'antd';
-import gql from 'graphql-tag';
+import { graphql, withApollo, gql } from 'react-apollo';
+import createComponent from 'olymp-fela/create-component';
 
 const Spinner = createComponent(
   () => ({
     center: true,
   }),
-  p => <Spin {...p} />,
+  p => <span>Lädt...</span>,
   p => Object.keys(p)
 );
 
@@ -108,12 +106,14 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation invitation($invitation: InvitationInput) {
-          invitation(input: $invitation) {
-            id, name, email
+          mutation invitation($invitation: InvitationInput) {
+            invitation(input: $invitation) {
+              id
+              name
+              email
+            }
           }
-        }
-      `,
+        `,
         variables: { invitation },
       })
       .then(({ data, errors }) => {
@@ -146,10 +146,10 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation logout {
-          logout
-        }
-      `,
+          mutation logout {
+            logout
+          }
+        `,
       })
       .then(({ data, errors }) => {
         if (errors) {
@@ -221,8 +221,8 @@ const authMethods = (client, refetch, user, loading) => ({
         mutation: gql`
         mutation login {
           user: login(email:"${email}", password:"${password}"${totp
-          ? `, totp:"${totp}"`
-          : ''}) {
+  ? `, totp:"${totp}"`
+  : ''}) {
             ${attributes}
           }
         }
@@ -271,10 +271,10 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation totpConfirm($token: String, $totp: String) {
-          totpConfirm(token: $token, totp: $totp)
-        }
-      `,
+          mutation totpConfirm($token: String, $totp: String) {
+            totpConfirm(token: $token, totp: $totp)
+          }
+        `,
         variables: { token, totp },
       })
       .then(({ data, errors }) => {

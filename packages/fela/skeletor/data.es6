@@ -1,4 +1,4 @@
-import { lorem } from 'olymp-utils';
+import lorem from 'olymp-utils/lorem';
 import moment from 'moment';
 
 export const id = () => Math.random().toString(36).substring(7);

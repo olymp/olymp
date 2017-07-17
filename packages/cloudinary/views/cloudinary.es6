@@ -4,7 +4,8 @@ import { message } from 'antd';
 import { isEqual } from 'lodash';
 import { SplitView } from 'olymp-ui';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
-import { Dragzone, Gallery } from '../components';
+import Dragzone from '../dragzone';
+import { Gallery } from '../components';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
 
@@ -21,7 +22,7 @@ class CloudinaryView extends Component {
     filteredItems: null,
   };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     const { selected: stateSelected } = this.state;
     const { selected } = props;
 
@@ -79,7 +80,7 @@ class CloudinaryView extends Component {
 
           if (!uploading.find(file => file.percent < 100)) {
             // Write data in DB
-            uploading.forEach(f => {
+            uploading.forEach((f) => {
               const response = { ...file.response };
               response.id = response.public_id;
               done({ id: response.id, token: signature }).then(({ data }) => {
@@ -138,7 +139,7 @@ class CloudinaryView extends Component {
     }
   };
 
-  onRemove = id => {
+  onRemove = (id) => {
     const { selected, selection } = this.state;
     const index = selected.findIndex(({ id: itemId }) => itemId === id);
 

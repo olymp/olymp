@@ -1,5 +1,5 @@
 import React, { Children } from 'react';
-import { createComponent } from 'react-fela';
+import createComponent from '../create-component';
 
 export const ContentLoaderStyles = {
   animationDuration: '1s',

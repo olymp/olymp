@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'olymp-fela';
+import { Image } from 'olymp-fela/image';
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
@@ -26,7 +26,7 @@ export const cloudinaryUrl = (value, options) => {
   const crop =
     value.crop && value.crop.length
       ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
-          .crop[3]},c_crop/`
+        .crop[3]},c_crop/`
       : '';
 
   let query = '';

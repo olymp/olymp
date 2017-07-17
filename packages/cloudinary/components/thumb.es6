@@ -1,8 +1,8 @@
 import React from 'react';
 import { object, func, number, bool } from 'prop-types';
-import { Icon } from 'antd';
 import Image from './image';
-import { createComponent } from 'olymp-fela';
+import createComponent from 'olymp-fela/create-component';
+import { FaBook } from 'olymp-icons';
 
 const ImageContainer = createComponent(
   ({ theme, isActive }) => ({
@@ -80,25 +80,25 @@ const CloseLabel = createComponent(
 );
 
 const Thumb = ({ item, onClick, onRemove, isActive, height }) =>
-  item
+  (item
     ? <ImageContainer isActive={isActive}>
-      <Image value={item} height={height} onClick={onClick} />
-      {item.format === 'pdf'
+        <Image value={item} height={height} onClick={onClick} />
+        {item.format === 'pdf'
           ? <ImageLabel>
-            <Icon type="file-pdf" />
-          </ImageLabel>
+              <FaBook type="file-pdf" />
+            </ImageLabel>
           : undefined}
-      {isActive
+        {isActive
           ? onRemove
             ? <CloseLabel onClick={onRemove}>
-              <Icon type="close" />
-            </CloseLabel>
+                <FaBook type="close" />
+              </CloseLabel>
             : <CheckLabel>
-              <Icon type="check" />
-            </CheckLabel>
+                <FaBook type="check" />
+              </CheckLabel>
           : undefined}
-    </ImageContainer>
-    : null;
+      </ImageContainer>
+    : null);
 Thumb.propTypes = {
   item: object,
   onClick: func,
