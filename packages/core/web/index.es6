@@ -167,8 +167,9 @@ if (window.POLYFILLED) {
 }
 
 if (module.hot) {
-  // Accept changes to this file for hot reloading.
-  module.hot.accept('@app');
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept('@app', () => renderApp(require('@app').default));
+  module.hot.accept(['@app', '../olymp/packages/core/web/index.js'], () => {
+    // renderApp(require('@app').default)
+    console.log('all the dependencies have been accepted');
+  });
 }

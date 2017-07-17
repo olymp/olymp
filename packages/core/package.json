@@ -31,6 +31,7 @@
     "olymp-utils": "^16.0.17",
     "progress-bar-webpack-plugin": "^1.10.0",
     "prop-types": "^15.5.10",
+    "raw-loader": "^0.5.1",
     "react-apollo": "^1.4.3",
     "react-async-bootstrapper": "^1.1.1",
     "react-async-component": "^1.0.0-beta.3",

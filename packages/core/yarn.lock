@@ -2663,9 +2663,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^16.0.17:
-  version "16.0.17"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.17.tgz#15d20f2902365c0e7dbdf32d1efd0de497479946"
+olymp-fela@^16.0.27:
+  version "16.0.27"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.27.tgz#758a7a81bde81fe91f85f0ed02168565b20739bf"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
@@ -2999,6 +2999,10 @@ raw-body@~2.2.0:
     bytes "2.4.0"
     iconv-lite "0.4.15"
     unpipe "1.0.0"
+
+raw-loader@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
 
 rc@^1.1.7:
   version "1.2.1"
