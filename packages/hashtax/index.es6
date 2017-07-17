@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import remark from 'remark';
 import reactRenderer from './compiler';
 import plugin from './container';
@@ -6,13 +6,13 @@ import { Link } from 'olymp-router';
 
 const defaultComponents = {
   text: ({ value, ...props }) =>
-    <span {...props}>
+    (<span {...props}>
       {value}
-    </span>,
+    </span>),
   code: ({ value, ...props }) =>
-    <pre {...props}>
+    (<pre {...props}>
       {value}
-    </pre>,
+    </pre>),
   blockquote: props => <blockquote {...props} />,
   emphasis: props => <em {...props} />,
   strong: props => <strong {...props} />,
@@ -27,7 +27,7 @@ const defaultComponents = {
   heading4: props => <h4 {...props} />,
   heading5: props => <h5 {...props} />,
   heading6: props => <h6 {...props} />,
-  link: props => {
+  link: (props) => {
     if (props.href.indexOf('/') === 0) {
       return <Link to={props.href} />;
     }
@@ -35,7 +35,7 @@ const defaultComponents = {
   },
 };
 
-export default components => {
+export default (components) => {
   const remarkReactComponents = { ...defaultComponents, ...components };
   return ({ value, ...props }) => {
     const instance = remark()
