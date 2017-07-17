@@ -26,13 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
@@ -40,13 +34,6 @@
   },
   "homepage": "https://github.com/olymp/olymp#readme",
   "devDependencies": {
-    "@types/graphql": "^0.10.0",
-    "@types/isomorphic-fetch": "^0.0.34",
-    "@types/lodash": "^4.14.68",
-    "@types/node": "^8.0.12",
-    "@types/prop-types": "^15.5.1",
-    "@types/react": "^15.0.38",
-    "@types/react-dom": "^15.5.1",
     "codecov": "^2.2.0",
     "enzyme": "^2.9.1",
     "gulp": "^3.9.1",
@@ -54,21 +41,9 @@
     "gulp-debug": "^3.1.0",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-typescript": "^3.2.1",
     "gulp-watch": "^4.3.11",
     "jest": "^20.0.4",
     "lerna": "^2.0.0",
-    "tslint": "^5.5.0",
-    "tslint-config-prettier": "^1.1.0",
-    "tslint-eslint-rules": "^4.1.1",
-    "tslint-react": "^3.0.0",
-    "typescript": "^2.4.1"
-  },
-  "jest": {
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true
-  },
-  "dependencies": {
     "babel-eslint": "^7.2.3",
     "babel-plugin-import": "^1.2.1",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
@@ -86,5 +61,10 @@
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-react": "^7.1.0",
     "gulp-babel": "^6.1.2"
-  }
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  },
+  "dependencies": {}
 }
