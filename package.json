@@ -6,8 +6,10 @@
   "scripts": {
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
+    "del-ts": "del 'packages/athena/**/*.js' 'packages/athena/**/*.js.map' '!packages/athena/node_modules/**'",
     "tsc": "gulp tsc",
     "watch": "gulp watch",
+    "lib": "gulp lib-build",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish --registry=https://registry.npmjs.org/",
@@ -59,5 +61,6 @@
   "jest": {
     "coverageDirectory": "./coverage/",
     "collectCoverage": true
-  }
+  },
+  "dependencies": {}
 }
