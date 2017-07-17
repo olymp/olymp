@@ -9,7 +9,7 @@ import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
-const getInitials = name => {
+const getInitials = (name) => {
   if (name) {
     const array = name.split(' ');
 
@@ -65,7 +65,10 @@ const VerticalMenu = createComponent(
       display: 'none',
     },
   }),
-  'div',
+  ({ children, className }) =>
+    (<div className={className}>
+      {children}
+    </div>),
   p => Object.keys(p)
 );
 
@@ -107,11 +110,11 @@ const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
-  <AntMenu {...p}>
+  (<AntMenu {...p}>
     <RightMenu title={title || <Icon type="bars" />}>
       {children}
     </RightMenu>
-  </AntMenu>;
+  </AntMenu>);
 
 @withLang
 @withAuth
@@ -162,7 +165,7 @@ class Navigation extends Component {
               <Icon type="bars" /> Seiten
             </Link>
           </Menu.Item>
-          <Menu.Item key="@media">
+          <Menu.Item key="@ zzmedia">
             <Link to={{ query: { '@media': null } }}>
               <Icon type="picture" /> Medien
             </Link>
@@ -175,7 +178,7 @@ class Navigation extends Component {
             }
           >
             {collectionList.map(collection =>
-              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
                 <Link
                   to={{
                     query: {
@@ -186,7 +189,7 @@ class Navigation extends Component {
                   <Icon type="api" />{' '}
                   {get(collection, 'decorators.label.value', collection.name)}
                 </Link>
-              </Menu.Item>
+              </Menu.Item>)
             )}
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
@@ -204,7 +207,7 @@ class Navigation extends Component {
         </AntMenu>
 
         <Filler />
-        {createElement(AntMenu, {}, children)}
+        {/* createElement(AntMenu, {}, children)*/}
 
         <GatewayDest name="quick" component={AntMenu} />
 
