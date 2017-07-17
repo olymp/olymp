@@ -1,12 +1,15 @@
 const { resolve } = require('path');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
+const rollupBabel = require('rollup-plugin-babel');
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
 module.exports = (config, options) => {
   const { isProd, isDev, isNode, appRoot, isLinked, target, folder } = options;
   const resolvePlugin = (name, prefix = '') => {
-    if (isLinked) {return resolve(__dirname, 'node_modules', `${prefix}${name}`);}
+    if (isLinked) {
+      return resolve(__dirname, 'node_modules', `${prefix}${name}`);
+    }
     return name;
   };
 
@@ -19,7 +22,6 @@ module.exports = (config, options) => {
   }
 
   const babelOptions = {
-    cacheDirectory: false,
     presets: [resolvePlugin('react', 'babel-preset-')],
     plugins: [
       resolvePlugin('syntax-dynamic-import', 'babel-plugin-'),
@@ -36,19 +38,53 @@ module.exports = (config, options) => {
   if (isNode) {
     babelOptions.presets.push([
       resolvePlugin('env', 'babel-preset-'),
-      { modules: false, loose: true, targets: { node: 'current' } },
+      {
+        modules: false,
+        loose: true,
+        targets: { node: 'current' },
+        es2015: {
+          modules: false,
+          loose: true,
+        },
+      },
     ]);
   } else if (isDev) {
     babelOptions.presets.push([
       resolvePlugin('latest', 'babel-preset-'),
-      { modules: false, loose: true },
+      {
+        modules: false,
+        loose: true,
+        es2015: {
+          modules: false,
+          loose: true,
+        },
+      },
     ]);
     babelOptions.plugins.push(resolvePlugin('react-hot-loader/babel'));
   } else {
     babelOptions.presets.push([
       resolvePlugin('latest', 'babel-preset-'),
-      { modules: false, loose: true },
+      {
+        modules: false,
+        loose: true,
+        es2015: {
+          modules: false,
+          loose: true,
+        },
+      },
     ]);
+    babelOptions.plugins.push(
+      resolvePlugin('transform-react-constant-elements', 'babel-plugin-')
+    );
+    babelOptions.plugins.push(
+      resolvePlugin('transform-react-inline-elements', 'babel-plugin-')
+    );
+    babelOptions.plugins.push(
+      resolvePlugin('transform-react-remove-prop-types', 'babel-plugin-')
+    );
+    babelOptions.plugins.push(
+      resolvePlugin('transform-react-pure-class-to-function', 'babel-plugin-')
+    );
     babelOptions.plugins.push([
       resolvePlugin('transform-imports', 'babel-plugin-'),
       {
@@ -85,10 +121,17 @@ module.exports = (config, options) => {
           cacheDirectory: resolve(appRoot, folder, target, 'cache-babel'),
         },
       },
-      {
-        loader: 'babel-loader',
-        options: babelOptions,
-      },
+      isProd
+        ? {
+            loader: 'rollup-loader',
+            options: {
+              plugins: [rollupBabel(babelOptions)],
+            },
+          }
+        : {
+            loader: 'babel-loader',
+            options: babelOptions,
+          },
     ],
     include: [
       // path.resolve(appRoot, 'server'),

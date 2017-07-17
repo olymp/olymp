@@ -100,7 +100,11 @@ app.listenWS = (options) => {
 // ---*/
 
 app.use(helmet());
-if (process.env.NODE_ENV === 'production' && process.env.URL) {
+if (
+  process.env.NODE_ENV === 'production' &&
+  process.env.URL &&
+  process.env.URL.indexOf('https:') === 0
+) {
   app.use(sslRedirect());
   /* app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', process.env.URL);

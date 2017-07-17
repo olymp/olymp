@@ -219,6 +219,7 @@ module.exports = ({
 
   // webpack plugins
   if (isWeb && isProd) {
+    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     config.plugins.push(new DuplicatePackageCheckerPlugin());
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isElectron) {
