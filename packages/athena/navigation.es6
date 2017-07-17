@@ -9,7 +9,7 @@ import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
-const getInitials = (name) => {
+const getInitials = name => {
   if (name) {
     const array = name.split(' ');
 
@@ -66,9 +66,9 @@ const VerticalMenu = createComponent(
     },
   }),
   ({ children, className }) =>
-    (<div className={className}>
+    <div className={className}>
       {children}
-    </div>),
+    </div>,
   p => Object.keys(p)
 );
 
@@ -110,11 +110,11 @@ const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
-  (<AntMenu {...p}>
+  <AntMenu {...p}>
     <RightMenu title={title || <Icon type="bars" />}>
       {children}
     </RightMenu>
-  </AntMenu>);
+  </AntMenu>;
 
 @withLang
 @withAuth
@@ -141,7 +141,7 @@ class Navigation extends Component {
   }
 
   render() {
-    const { auth, deviceWidth, query, collectionList } = this.props;
+    const { auth, setDeviceWidth, query, collectionList } = this.props;
     const { children } = this.state;
     const keys = Object.keys(query);
     if (!keys.filter(x => x[0] === '@').length) {
@@ -151,7 +151,7 @@ class Navigation extends Component {
       <VerticalMenu>
         <AntMenu keys={keys}>
           <Menu.Item>
-            <Link to={{ query: { '@deviceWidth': deviceWidth } }}>
+            <Link to={{ query: {} }}>
               <Logo size={33} margin="0 0 -7px 0" />
             </Link>
           </Menu.Item>
@@ -159,7 +159,7 @@ class Navigation extends Component {
           <Menu.Item key="@page">
             <Link
               to={{
-                query: { '@page': null, '@deviceWidth': deviceWidth },
+                query: { '@page': null },
               }}
             >
               <Icon type="bars" /> Seiten
@@ -178,7 +178,7 @@ class Navigation extends Component {
             }
           >
             {collectionList.map(collection =>
-              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
                 <Link
                   to={{
                     query: {
@@ -189,7 +189,7 @@ class Navigation extends Component {
                   <Icon type="api" />{' '}
                   {get(collection, 'decorators.label.value', collection.name)}
                 </Link>
-              </Menu.Item>)
+              </Menu.Item>
             )}
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
@@ -239,19 +239,19 @@ class Navigation extends Component {
               }
             >
               <Menu.Item key="@device-no">
-                <Link to={{ query: { ...query, '@deviceWidth': undefined } }}>
+                <a onClick={() => setDeviceWidth()} href="javascript:;">
                   <Icon type="laptop" /> Normal
-                </Link>
+                </a>
               </Menu.Item>
               <Menu.Item key="@deviceWidth700">
-                <Link to={{ query: { ...query, '@deviceWidth': 700 } }}>
+                <a onClick={() => setDeviceWidth(700)} href="javascript:;">
                   <Icon type="tablet" /> Tablet
-                </Link>
+                </a>
               </Menu.Item>
               <Menu.Item key="@deviceWidth400">
-                <Link to={{ query: { ...query, '@deviceWidth': 400 } }}>
+                <a onClick={() => setDeviceWidth(400)} href="javascript:;">
                   <Icon type="phone" /> Mobil
-                </Link>
+                </a>
               </Menu.Item>
             </Menu.SubMenu>
             <Menu.Item key="logout">
@@ -271,7 +271,7 @@ export default Navigation;
 <Menu.Item key="@template">
   <Popover placement="bottom" content="Template-Liste">
     <Link
-      to={{ query: { '@template': null, '@deviceWidth': deviceWidth } }}
+      to={{ query: { '@template': null } }}
     >
       <Icon type="appstore-o" />
     </Link>
@@ -280,7 +280,7 @@ export default Navigation;
 <Menu.Item key="@share">
   <Popover placement="bottom" content="Teilen">
     <Link
-      to={{ query: { '@share': null, '@deviceWidth': deviceWidth } }}
+      to={{ query: { '@share': null } }}
     >
       <Icon type="share-alt" />
     </Link>
@@ -289,7 +289,7 @@ export default Navigation;
 <Menu.Item key="@trash">
   <Popover placement="bottom" content="Papierkorb">
     <Link
-      to={{ query: { '@trash': null, '@deviceWidth': deviceWidth } }}
+      to={{ query: { '@trash': null } }}
     >
       <Icon type="delete" />
     </Link>
@@ -298,7 +298,7 @@ export default Navigation;
 <Menu.Item key="@settings">
   <Popover placement="bottom" content="Einstellungen">
     <Link
-      to={{ query: { '@settings': null, '@deviceWidth': deviceWidth } }}
+      to={{ query: { '@settings': null } }}
     >
       <Icon type="setting" />
     </Link>

@@ -3,10 +3,10 @@ import { Container, Placeholder, Sidebar, SplitView, List } from 'olymp-ui';
 
 class Settings extends Component {
   render() {
-    const { deviceWidth, pathname } = this.props;
+    const { pathname } = this.props;
 
     return (
-      <SplitView deviceWidth={deviceWidth}>
+      <SplitView>
         <Sidebar title="Einstellungen">
           <List.Item
             to={{ pathname, query: { '@totp': null } }}

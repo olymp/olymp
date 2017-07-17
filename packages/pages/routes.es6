@@ -26,6 +26,7 @@ const Button = createComponent(
   p => <AntButton {...p} />,
   p => Object.keys(p)
 );
+
 const renderGateway = (
   { auth, pathname, collectionList, query } = {},
   { binding, bindingId } = {}
@@ -33,7 +34,6 @@ const renderGateway = (
   if (!auth.user) {
     return null;
   }
-  const deviceWidth = query['@deviceWidth'];
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
   return (
@@ -89,7 +89,7 @@ const renderGateway = (
         <Menu.Item key="@page">
           <Link
             to={{
-              query: { '@page': null, '@deviceWidth': deviceWidth },
+              query: { '@page': null },
             }}
           >
             <Button type="primary">
@@ -101,18 +101,25 @@ const renderGateway = (
     </Gateway>
   );
 };
+
 export const EditablePageRoute = props => {
-  const { Wrapped, flatNavigation, query, pathname, loading } = props;
+  const {
+    Wrapped,
+    flatNavigation,
+    query,
+    pathname,
+    loading,
+    deviceWidth,
+  } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
-  const deviceWidth = query['@deviceWidth'];
 
   if (!match) {
     return (
       <ContentLoader height={600} isLoading={loading}>
         <EditablePage
           {...props}
-          deviceWidth={deviceWidth}
+          maxWidth={deviceWidth}
           render={match =>
             <IFrame disabled={!deviceWidth}>
               <Wrapped {...props}>
@@ -133,7 +140,7 @@ export const EditablePageRoute = props => {
     <ContentLoader height={600} isLoading={loading}>
       <EditablePage
         {...props}
-        deviceWidth={deviceWidth}
+        maxWidth={deviceWidth}
         id={pageId || aliasId || id}
         bindingId={bindingId}
         binding={binding}

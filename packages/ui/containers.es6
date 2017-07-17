@@ -1,7 +1,7 @@
 import { createComponent, border } from 'olymp-fela';
 
 export const SplitView = createComponent(
-  ({ theme, deviceWidth, center, background }) => ({
+  ({ theme, maxWidth, center, background }) => ({
     hasFlex: {
       display: 'flex',
       flex: '1 1 0%',
@@ -18,12 +18,12 @@ export const SplitView = createComponent(
       overflowY: 'auto',
       margin: center && '0 auto',
       borderX: center && border(theme),
-      maxWidth: deviceWidth,
+      maxWidth,
       maxHeight: '100%',
     },
   }),
   'div',
-  ({ deviceWidth, center, background, ...p }) => Object.keys(p)
+  ({ maxWidth, center, background, ...p }) => Object.keys(p)
 );
 
 export const Panel = createComponent(

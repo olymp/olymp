@@ -25,7 +25,7 @@ module.exports = {
     'import/extensions': 0,
     'import/no-extraneous-dependencies': 0,
     curly: ['error', 'all'],
-    'react/prop-types': 1,
+    'react/prop-types': 0,
     'no-param-reassign': 1,
     'no-shadow': 1,
     'no-unused-vars': 1,

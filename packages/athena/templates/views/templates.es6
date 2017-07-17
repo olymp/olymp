@@ -13,20 +13,12 @@ class Templates extends Component {
   };
 
   render() {
-    const {
-      id,
-      setText,
-      item,
-      form,
-      deviceWidth,
-      handleListClick,
-      onClose,
-    } = this.props;
+    const { id, setText, item, handleListClick, onClose } = this.props;
     const { search } = this.state;
     const text = this.props.text || item.text;
 
     return (
-      <SplitView deviceWidth={deviceWidth} background>
+      <SplitView background>
         <ListSidebar
           id={id}
           onClick={handleListClick}

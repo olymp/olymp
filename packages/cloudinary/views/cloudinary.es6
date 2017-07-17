@@ -21,7 +21,7 @@ class CloudinaryView extends Component {
     filteredItems: null,
   };
 
-  componentWillReceiveProps = (props) => {
+  componentWillReceiveProps = props => {
     const { selected: stateSelected } = this.state;
     const { selected } = props;
 
@@ -79,7 +79,7 @@ class CloudinaryView extends Component {
 
           if (!uploading.find(file => file.percent < 100)) {
             // Write data in DB
-            uploading.forEach((f) => {
+            uploading.forEach(f => {
               const response = { ...file.response };
               response.id = response.public_id;
               done({ id: response.id, token: signature }).then(({ data }) => {
@@ -138,7 +138,7 @@ class CloudinaryView extends Component {
     }
   };
 
-  onRemove = (id) => {
+  onRemove = id => {
     const { selected, selection } = this.state;
     const index = selected.findIndex(({ id: itemId }) => itemId === id);
 
@@ -153,7 +153,7 @@ class CloudinaryView extends Component {
   };
 
   render() {
-    const { onClose, deviceWidth, format, onSelect } = this.props;
+    const { onClose, format, onSelect } = this.props;
     const { selected, search, filter, uploading } = this.state;
     const selection =
       this.state.selection >= 0 && this.state.selection < selected.length
@@ -166,7 +166,7 @@ class CloudinaryView extends Component {
     const filteredItems = this.state.filteredItems || items;
 
     return (
-      <SplitView deviceWidth={deviceWidth} background>
+      <SplitView background>
         <ListSidebar
           items={items}
           upload={this.getUploadPops()}

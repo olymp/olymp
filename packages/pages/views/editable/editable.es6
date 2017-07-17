@@ -40,7 +40,7 @@ export default class PageSidebar extends Component {
       navigation,
       flatNavigation,
       render,
-      deviceWidth,
+      maxWidth,
     } = this.props;
     const { tab } = this.state;
     let item =
@@ -68,7 +68,7 @@ export default class PageSidebar extends Component {
     );
 
     return (
-      <SplitView deviceWidth={deviceWidth} center>
+      <SplitView maxWidth={maxWidth} center>
         <Gateway into="navigation">
           {form.isFieldsTouched() &&
             <Menu.Item key="save">
