@@ -1,5 +1,5 @@
 {
-  "version": "16.0.10",
+  "version": "16.0.17",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -7,7 +7,7 @@
   "dependencies": {
     "history": "^4.6.3",
     "ion-router": "^0.11.3",
-    "olymp-utils": "^16.0.6",
+    "olymp-utils": "^16.0.17",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1"
   }
