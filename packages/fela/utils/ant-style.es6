@@ -28,7 +28,7 @@ export default ({ theme }) => {
     '& h6': {
       color: theme.dark,
     },
-    '& a': {
+    '& p a': {
       color: theme.color,
     },
     '& .ant-pagination-item > a': {
