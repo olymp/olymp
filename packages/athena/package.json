@@ -1,5 +1,5 @@
 {
-  "version": "16.0.22",
+  "version": "16.0.23",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -17,12 +17,12 @@
     "olymp-icons": "^16.0.17",
     "olymp-locale": "^16.0.17",
     "olymp-mail": "^16.0.17",
-    "olymp-pages": "^16.0.17",
+    "olymp-pages": "^16.0.23",
     "olymp-slate": "^16.0.17",
     "olymp-ui": "^16.0.17",
     "olymp-utils": "^16.0.17",
     "olymp-webpack-babel": "^16.0.20",
-    "olymp-webpack-less": "^16.0.21",
+    "olymp-webpack-less": "^16.0.23",
     "react-gateway": "^2.7.0",
     "react-gravatar": "^2.6.3"
   }
