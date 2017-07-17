@@ -14,7 +14,7 @@ export default class Link extends Component {
   componentWillReceiveProps(props) {
     this.location = urlToLocation(props.to);
   }
-  onClick = e => {
+  onClick = (e) => {
     const { to, push, onClick } = this.props;
     e.preventDefault();
     if (onClick) {

@@ -121,6 +121,7 @@ function renderApp() {
   );
   asyncBootstrapper(app).then(() => render(app, container));
 }
+
 function load() {
   // Get the DOM Element that will host our React application.
   container = document.getElementById('app');
@@ -166,10 +167,9 @@ if (window.POLYFILLED) {
   window.GO = load;
 }
 
-if (module.hot) {
+if (module.hot && process.env.HOT_MODULES) {
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept(['@app', '../olymp/packages/core/web/index.js'], () => {
-    // renderApp(require('@app').default)
-    console.log('all the dependencies have been accepted');
+  module.hot.accept(process.env.HOT_MODULES.split('|'), () => {
+    renderApp(require('@app').default);
   });
 }

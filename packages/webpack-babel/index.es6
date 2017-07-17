@@ -35,7 +35,6 @@ module.exports = (config, options) => {
       ],
     ],
   };
-  console.log(isNode, isDev);
   if (isNode) {
     babelOptions.presets.push([
       resolvePlugin('env', 'babel-preset-'),
@@ -50,7 +49,6 @@ module.exports = (config, options) => {
       },
     ]);
   } else if (isDev) {
-    console.log('IS DEV');
     babelOptions.presets.push([
       resolvePlugin('latest', 'babel-preset-'),
       {
@@ -125,15 +123,15 @@ module.exports = (config, options) => {
       },
       isProd
         ? {
-          loader: 'rollup-loader',
-          options: {
-            plugins: [rollupBabel(babelOptions)],
-          },
-        }
+            loader: 'rollup-loader',
+            options: {
+              plugins: [rollupBabel(babelOptions)],
+            },
+          }
         : {
-          loader: 'babel-loader',
-          options: babelOptions,
-        },
+            loader: 'babel-loader',
+            options: babelOptions,
+          },
     ],
     include: [
       // path.resolve(appRoot, 'server'),
