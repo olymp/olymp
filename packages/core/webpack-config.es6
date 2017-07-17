@@ -32,7 +32,7 @@ module.exports = ({
   ssr,
   serverless,
   plugins = [],
-  ...rest,
+  ...rest
 }) => {
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
@@ -46,7 +46,7 @@ module.exports = ({
   const config = {
     cache: true,
     resolve: {
-      extensions: ['.js', '.ts', '.tsx'],
+      extensions: ['.js'],
       modules: [
         path.resolve(appRoot, 'node_modules'),
         path.resolve(appRoot, 'app'),

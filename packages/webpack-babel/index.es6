@@ -1,28 +1,17 @@
 const { resolve } = require('path');
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
 module.exports = (config, options) => {
-  const {
-    isProd,
-    isWeb,
-    isElectron,
-    isDev,
-    isNode,
-    appRoot,
-    isLinked,
-    modifyVars,
-    target,
-    folder,
-  } = options;
+  const { isProd, isDev, isNode, appRoot, isLinked, target, folder } = options;
   const resolvePlugin = (name, prefix = '') => {
-    if (isLinked) return resolve(__dirname, 'node_modules', `${prefix}${name}`);
-    else return name;
+    if (isLinked) {return resolve(__dirname, 'node_modules', `${prefix}${name}`);}
+    return name;
   };
 
   if (isProd) {
-    /*config.plugins.push(
+    /* config.plugins.push(
       new PrepackWebpackPlugin({
         test: /\.(js|jsx|ts|tsx)$/,
       })
@@ -88,7 +77,7 @@ module.exports = (config, options) => {
   }
 
   config.module.rules.push({
-    test: /\.(js|jsx|ts|tsx)$/,
+    test: /\.js$/,
     use: [
       {
         loader: 'cache-loader',
