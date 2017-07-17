@@ -3,14 +3,14 @@ import { withState, graphql, gql } from 'olymp-utils';
 import { Container } from 'olymp-ui';
 import { createComponent } from 'react-fela';
 import moment from 'moment';
-import ResponsiveContainer from 'recharts/es6/component/ResponsiveContainer';
-import Tooltip from 'recharts/es6/component/Tooltip';
-import Legend from 'recharts/es6/component/Legend';
-import XAxis from 'recharts/es6/cartesian/XAxis';
-import YAxis from 'recharts/es6/cartesian/YAxis';
-import CartesianGrid from 'recharts/es6/cartesian/CartesianGrid';
-import LineChart from 'recharts/es6/chart/LineChart';
-import Line from 'recharts/es6/cartesian/Line';
+import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
+import Tooltip from 'recharts/lib/component/Tooltip';
+import Legend from 'recharts/lib/component/Legend';
+import XAxis from 'recharts/lib/cartesian/XAxis';
+import YAxis from 'recharts/lib/cartesian/YAxis';
+import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
+import LineChart from 'recharts/lib/chart/LineChart';
+import Line from 'recharts/lib/cartesian/Line';
 
 const StyledLineChart = createComponent(
   () => ({
