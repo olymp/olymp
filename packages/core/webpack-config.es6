@@ -5,11 +5,12 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
-const ReloadServerPlugin = require('reload-server-webpack-plugin');
+// const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
 const appRoot = process.cwd();
 
@@ -218,6 +219,7 @@ module.exports = ({
 
   // webpack plugins
   if (isWeb && isProd) {
+    config.plugins.push(new DuplicatePackageCheckerPlugin());
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isElectron) {
       config.plugins.push(new GenerateJsonPlugin('package.json', {}));
