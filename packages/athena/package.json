@@ -23,6 +23,7 @@
     "olymp-utils": "^16.0.17",
     "olymp-webpack-babel": "^16.0.20",
     "olymp-webpack-less": "^16.0.26",
+    "react-gravatar": "^2.6.3",
     "react-gateway": "^2.7.0"
   }
 }

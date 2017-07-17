@@ -10,7 +10,6 @@ export * from './edits';
 export { default as Tree } from './tree';
 export { default as getRules } from './rules';
 export { default as Countdown } from './countdown';
-export { default as Navigation } from './navigation';
 
 // import 'antd/dist/antd.less';
 

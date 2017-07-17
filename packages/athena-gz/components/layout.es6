@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { withScroll, withApollo } from 'olymp-utils';
-import { withRouter, ScrollToTop } from 'olymp-router';
-import {
-  Navbar,
-  Layout,
-  Container,
-  createComponent,
-} from 'olymp-fela';
+import { withRouter } from 'olymp-router';
+import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
 import { prefetchPage } from 'olymp-pages';
 import Logo from './logo';
 
@@ -94,7 +89,7 @@ export default class GzLayout extends Component {
       query,
       pathname,
       auth,
-      ...rest,
+      ...rest
     } = this.props;
     const nav = (pages.map(x => x.children)[0] || [])
       .filter(x => x.slug !== '/');
