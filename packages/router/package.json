@@ -1,12 +1,12 @@
 {
-  "version": "16.0.29",
+  "version": "16.0.30",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "history": "^4.6.3",
-    "olymp-utils": "^16.0.29",
+    "olymp-utils": "^16.0.30",
     "route-parser": "^0.0.5"
   }
 }

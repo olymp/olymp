@@ -1,11 +1,11 @@
 {
-  "version": "16.0.29",
+  "version": "16.0.30",
   "name": "olymp-locale",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "date-fns": "^1.28.5",
-    "olymp-utils": "^16.0.29"
+    "olymp-utils": "^16.0.30"
   }
 }
