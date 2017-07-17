@@ -1,6 +1,5 @@
-const { existsSync } = require('fs');
 const { resolve } = require('path');
-const { stringify } = JSON;
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
@@ -21,6 +20,14 @@ module.exports = (config, options) => {
     if (isLinked) return resolve(__dirname, 'node_modules', `${prefix}${name}`);
     else return name;
   };
+
+  if (isProd) {
+    /*config.plugins.push(
+      new PrepackWebpackPlugin({
+        test: /\.(js|jsx|ts|tsx)$/,
+      })
+    );*/
+  }
 
   const babelOptions = {
     cacheDirectory: false,
