@@ -2,20 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createPush, createReplace } from './actions';
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const inner = (props, context) => {
-    const { pathname, query, search, url, push, replace } = props;
-    const { router } = context;
+    const { pathname, query, search, url, push, replace, ...rest } = props;
     return (
       <WrappedComponent
-        {...props}
+        {...rest}
         location={{ pathname, query, search, url }}
         router={{
           push,
           replace,
         }}
-        url={url}
-        search={search}
         query={query}
         pathname={pathname}
       />

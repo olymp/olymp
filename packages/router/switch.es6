@@ -18,7 +18,12 @@ export default withRouter(({ children, pathname, ...rest }) => {
     } else {
       const params = isMatch(pathname, route.props);
       if (params) {
-        match = cloneElement(route, params);
+        const p =
+          params && params.splat
+            ? pathname.substr(0, pathname.length - params.splat.length)
+            : pathname;
+        match = cloneElement(route, { match: { path: p, ...params } });
+        break;
       } else if (route.props.path === undefined) {
         notFound = route;
       }
@@ -27,7 +32,7 @@ export default withRouter(({ children, pathname, ...rest }) => {
   if (match) {
     return match;
   }
-  if (!match && notFound) {
+  if (notFound) {
     return cloneElement(notFound, { match: true });
   }
   return null;
