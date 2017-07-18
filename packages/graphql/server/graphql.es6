@@ -5,15 +5,22 @@ import { values } from 'lodash';
 import * as scalarModules from './scalars';
 import * as defaultDirectives from './directives';
 
-export default ({ modules = null, directives = {} }: { modules: {}, directives: {} }) => {
-  let schema: any = null;
-  const apply = (modules: {}) => {
-    const raw: any = values({ ...scalarModules, ...modules });
-    const { onBefore, onAfter } = raw.reduce((store: any, value: any) => {
-      if (value.onBefore) store.onBefore.push(value.onBefore);
-      if (value.onAfter) store.onAfter.push(value.onAfter);
-      return store;
-    }, { onBefore: [], onAfter: [] });
+export default ({ modules = null, directives = {} }) => {
+  let schema = null;
+  const apply = modules => {
+    const raw = values({ ...scalarModules, ...modules });
+    const { onBefore, onAfter } = raw.reduce(
+      (store, value) => {
+        if (value && value.onBefore) {
+          store.onBefore.push(value.onBefore);
+        }
+        if (value && value.onAfter) {
+          store.onAfter.push(value.onAfter);
+        }
+        return store;
+      },
+      { onBefore: [], onAfter: [] }
+    );
     const bundled = bundle(raw);
     schema = buildSchema({
       ...bundled,
@@ -28,7 +35,6 @@ export default ({ modules = null, directives = {} }: { modules: {}, directives: 
   return {
     express: graphqlExpress(context => ({ schema, context })),
     graphi: graphiqlExpress({ endpointURL: '/graphql' }),
-    apply: (modules: {}) => apply(modules),
+    apply: modules => apply(modules),
   };
 };
-
