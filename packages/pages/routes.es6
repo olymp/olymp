@@ -1,31 +1,11 @@
 import React from 'react';
-import {
-  IFrame,
-  ContentLoader,
-  PageTransition,
-  createComponent,
-} from 'olymp-fela';
+import { IFrame, ContentLoader, PageTransition } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { renderHelmet } from 'olymp-utils';
 import { Link } from 'olymp-router';
-import { Menu, Icon, Button as AntButton } from 'antd';
+import { Menu } from 'antd';
 import { lowerFirst, get } from 'lodash';
 import { Gateway } from 'react-gateway';
-
-const Button = createComponent(
-  ({ theme }) => ({
-    borderRadius: theme.borderRadius,
-    opacity: 0.85,
-    margin: '0 -15px',
-    onHover: {
-      opacity: 1,
-      backgroundColor: `${theme.color} !important`,
-      color: `${theme.light} !important`,
-    },
-  }),
-  p => <AntButton {...p} />,
-  p => Object.keys(p)
-);
 
 const renderGateway = (
   { auth, pathname, collectionList, query } = {},
@@ -37,14 +17,8 @@ const renderGateway = (
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
   return (
-    <Gateway into="quick">
-      <Menu.SubMenu
-        title={
-          <Button type="primary">
-            <Icon type="plus" style={{ marginRight: 0 }} />
-          </Button>
-        }
-      >
+    <Gateway into="navigation2">
+      <Menu.SubMenu title="Hinzufügen">
         <Menu.Item key="page-plus">
           <Link
             to={{
@@ -52,7 +26,7 @@ const renderGateway = (
               query: { ...query, '@page': 'new' },
             }}
           >
-            <Icon type="plus" style={{ marginRight: 0 }} /> Seite
+            Seite
           </Link>
         </Menu.Item>
         {collectionList.map(collection =>
@@ -66,7 +40,6 @@ const renderGateway = (
                 },
               }}
             >
-              <Icon type="plus" style={{ marginRight: 0 }} />{' '}
               {get(collection, 'decorators.label.value', collection.name)}
             </Link>
           </Menu.Item>
@@ -80,10 +53,7 @@ const renderGateway = (
               query: { [`@${lowerFirst(binding.type)}`]: bindingId },
             }}
           >
-            <Button type="primary">
-              {binding.type} bearbeiten{' '}
-              <Icon type="arrow-right" style={{ marginRight: 0 }} />
-            </Button>
+            Bearbeiten
           </Link>
         </Menu.Item>}
       {!isEditPage &&
@@ -94,10 +64,7 @@ const renderGateway = (
               query: { '@page': null },
             }}
           >
-            <Button type="primary">
-              Seite bearbeiten{' '}
-              <Icon type="arrow-right" style={{ marginRight: 0 }} />
-            </Button>
+            Bearbeiten
           </Link>
         </Menu.Item>}
     </Gateway>

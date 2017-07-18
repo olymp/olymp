@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp-router';
-import { Menu, Icon, Button } from 'antd';
+import { Menu } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
 import { Gateway } from 'react-gateway';
@@ -62,15 +62,7 @@ const HiddenForm = createComponent(
 export default class CollectionDetail extends Component {
   state = { tab: null };
   render() {
-    const {
-      id,
-      item,
-      collection,
-      onSave,
-      onClone,
-      pathname,
-      query,
-    } = this.props;
+    const { id, item, collection, onSave, onClone } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = this.state.tab || keys[0];
@@ -81,16 +73,12 @@ export default class CollectionDetail extends Component {
           <Gateway into="navigation">
             <Menu.Item key="save">
               <a href="javascript:;" onClick={onSave}>
-                <Button type="primary" style={{ margin: '0 -15px' }}>
-                  <Icon type="save" /> Speichern
-                </Button>
+                Speichern
               </a>
             </Menu.Item>
             <Menu.Item key="clone">
               <a href="javascript:;" onClick={onClone}>
-                <Button type="primary" style={{ margin: '0 -15px' }}>
-                  <Icon type="copy" />
-                </Button>
+                Kopieren
               </a>
             </Menu.Item>
             {keys.map(tab =>

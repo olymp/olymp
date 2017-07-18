@@ -1,4 +1,4 @@
-import React, { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withLang, Logo } from 'olymp-utils';
 import { Link } from 'olymp-router';
@@ -144,9 +144,12 @@ class Navigation extends Component {
     const { auth, setDeviceWidth, query, collectionList } = this.props;
     const { children } = this.state;
     const keys = Object.keys(query);
+    const short = false;
+
     if (!keys.filter(x => x[0] === '@').length) {
       keys.push('@home');
     }
+
     return (
       <VerticalMenu>
         <AntMenu keys={keys}>
@@ -162,18 +165,21 @@ class Navigation extends Component {
                 query: { '@page': null },
               }}
             >
-              <Icon type="bars" /> Seiten
+              <Icon type="bars" />
+              {!short && ' Seiten'}
             </Link>
           </Menu.Item>
-          <Menu.Item key="@ zzmedia">
+          <Menu.Item key="@media">
             <Link to={{ query: { '@media': null } }}>
-              <Icon type="picture" /> Medien
+              <Icon type="picture" />
+              {!short && ' Medien'}
             </Link>
           </Menu.Item>
           <Menu.SubMenu
             title={
               <span>
-                <Icon type="database" /> Sammlungen
+                <Icon type="database" />
+                {!short && ' Sammlungen'}
               </span>
             }
           >
@@ -186,7 +192,6 @@ class Navigation extends Component {
                     },
                   }}
                 >
-                  <Icon type="api" />{' '}
                   {get(collection, 'decorators.label.value', collection.name)}
                 </Link>
               </Menu.Item>
@@ -194,73 +199,63 @@ class Navigation extends Component {
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
             <Link to={{ query: { '@analytics': null } }}>
-              <Icon type="line-chart" /> Analytics
+              <Icon type="line-chart" />
+              {!short && ' Analytics'}
             </Link>
           </Menu.Item>
           {!!auth.user &&
             auth.user.isAdmin &&
             <Menu.Item key="@users">
               <Link to={{ query: { '@users': null } }}>
-                <Icon type="team" /> Benutzer
+                <Icon type="team" />
+                {!short && ' Benutzer'}
               </Link>
             </Menu.Item>}
         </AntMenu>
 
         <Filler />
-        {/* createElement(AntMenu, {}, children)*/}
 
-        <GatewayDest name="quick" component={AntMenu} />
+        <GatewayDest
+          name="navigation"
+          component={children && children.length ? AntSubMenu : AntMenu}
+        />
+        <GatewayDest name="navigation2" component={AntMenu} />
 
-        <div>
-          <GatewayDest
-            name="navigation"
-            component={children && children.length ? AntSubMenu : AntMenu}
-          />
-
-          <AntSubMenu
-            title={
-              <UserIcon
-                email={auth.user.email}
-                name={auth.user.name}
-                default="blank"
-              />
-            }
-          >
-            <Menu.Item key="@user">
-              <Link to={{ query: { '@user': null } }}>
-                <Icon type="user" /> Profil
-              </Link>
-            </Menu.Item>
-            <Menu.SubMenu
-              title={
-                <span>
-                  <Icon type="laptop" /> Ansicht
-                </span>
-              }
-            >
-              <Menu.Item key="@device-no">
-                <a onClick={() => setDeviceWidth()} href="javascript:;">
-                  <Icon type="laptop" /> Normal
-                </a>
-              </Menu.Item>
-              <Menu.Item key="@deviceWidth700">
-                <a onClick={() => setDeviceWidth(700)} href="javascript:;">
-                  <Icon type="tablet" /> Tablet
-                </a>
-              </Menu.Item>
-              <Menu.Item key="@deviceWidth400">
-                <a onClick={() => setDeviceWidth(400)} href="javascript:;">
-                  <Icon type="phone" /> Mobil
-                </a>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.Item key="logout">
-              <a onClick={auth.logout} href="javascript:;">
-                <Icon type="poweroff" /> Abmelden
+        <AntSubMenu
+          title={
+            <UserIcon
+              email={auth.user.email}
+              name={auth.user.name}
+              default="blank"
+            />
+          }
+        >
+          <Menu.Item key="@user">
+            <Link to={{ query: { '@user': null } }}>Profil</Link>
+          </Menu.Item>
+          <Menu.SubMenu title="Ansicht">
+            <Menu.Item key="@device-no">
+              <a onClick={() => setDeviceWidth()} href="javascript:;">
+                <Icon type="laptop" /> Normal
               </a>
             </Menu.Item>
-          </AntSubMenu>
-        </div>
+            <Menu.Item key="@deviceWidth700">
+              <a onClick={() => setDeviceWidth(700)} href="javascript:;">
+                <Icon type="tablet" /> Tablet
+              </a>
+            </Menu.Item>
+            <Menu.Item key="@deviceWidth400">
+              <a onClick={() => setDeviceWidth(400)} href="javascript:;">
+                <Icon type="phone" /> Mobil
+              </a>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.Item key="logout">
+            <a onClick={auth.logout} href="javascript:;">
+              Abmelden
+            </a>
+          </Menu.Item>
+        </AntSubMenu>
       </VerticalMenu>
     );
   }

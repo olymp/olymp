@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Prompt } from 'olymp-router';
 import { Sidebar, SplitView } from 'olymp-ui';
-import { Menu, Button, Form, Icon } from 'antd';
+import { Menu, Form } from 'antd';
 import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
@@ -73,9 +73,7 @@ export default class PageSidebar extends Component {
           {form.isFieldsTouched() &&
             <Menu.Item key="save">
               <a href="javascript:;" onClick={save}>
-                <Button type="primary" style={{ margin: '0 -15px' }}>
-                  <Icon type="save" /> Speichern
-                </Button>
+                Speichern
               </a>
             </Menu.Item>}
         </Gateway>
