@@ -37,7 +37,9 @@ export default {
       const rightField =
         get(argProperty, 'value.value') || lowerFirst(leftTable);
       const rightNode = createTypeFetcher(
-        node => get(node, 'name.value') === rightType && get(node, 'kind') === 'ObjectTypeDefinition'
+        node =>
+          get(node, 'name.value') === rightType &&
+          get(node, 'kind') === 'ObjectTypeDefinition'
       )(ast);
 
       // one-to-one / one-to-many
@@ -58,6 +60,14 @@ export default {
             })
           );
         }
+      } else if (relationType === 'embedsMany') {
+        addFields(ast, leftNode, `${leftField}Ids: String`);
+        set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
+          monk.collection('item').find({
+            id: source[`${leftField}Ids`],
+            _type: rightTable,
+          })
+        );
       } else if (relationType === '1-n') {
         // Add list accessor and xxxIds field since dealing with many
         // addInputTypes(rightTable, ast);

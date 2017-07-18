@@ -1,5 +1,5 @@
 {
-  "version": "16.0.30",
+  "version": "16.0.31",
   "name": "olymp-mail",
   "description": "",
   "main": "./src",
@@ -7,6 +7,6 @@
   "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "olymp-hashtax": "^16.0.30"
+    "olymp-hashtax": "^16.0.31"
   }
 }

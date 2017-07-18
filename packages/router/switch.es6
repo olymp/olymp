@@ -1,5 +1,6 @@
 import { Children, cloneElement } from 'react';
 import withRouter from './with-router';
+import { isMatch } from './utils';
 
 export default withRouter(({ children, pathname, ...rest }) => {
   let notFound = null,
@@ -7,16 +8,31 @@ export default withRouter(({ children, pathname, ...rest }) => {
   const routes = Children.toArray(children);
   for (let index = 0; index < routes.length; index++) {
     const route = routes[index];
-    if (route.props.path === pathname) {
+    /* const isMatch =
+      route.props.path === pathname ||
+      (route.props.exact === true &&
+        pathname.indexOf(`${route.props.path}/`) === 0);*/
+    if (route.props.match) {
       match = route;
-    } else if (route.props.path === undefined) {
-      notFound = route;
+      break;
+    } else {
+      const params = isMatch(pathname, route.props);
+      if (params) {
+        const p =
+          params && params.splat
+            ? pathname.substr(0, pathname.length - params.splat.length)
+            : pathname;
+        match = cloneElement(route, { match: { path: p, ...params } });
+        break;
+      } else if (route.props.path === undefined) {
+        notFound = route;
+      }
     }
   }
   if (match) {
     return match;
   }
-  if (!match && notFound) {
+  if (notFound) {
     return cloneElement(notFound, { match: true });
   }
   return null;

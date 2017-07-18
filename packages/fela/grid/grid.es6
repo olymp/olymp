@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
 const Grid = createComponent(
-  ({ height }) => ({
+  ({ height, marginX }) => ({
     height,
     minWidth: '100%',
-    marginX: '-0.5rem',
+    marginX: marginX || '-0.5rem',
     onAfter: {
       content: '""',
       clear: 'both',
@@ -15,7 +15,7 @@ const Grid = createComponent(
       height: 0,
     },
   }),
-  ({ children, size, height, ...rest }) =>
+  ({ children, size, height, marginX, ...rest }) =>
     (<div {...rest}>
       {Children.map(children, child => cloneElement(child, { gridSize: size }))}
     </div>),
