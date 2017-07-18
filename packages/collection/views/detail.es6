@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp-router';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
 import { Gateway } from 'react-gateway';
@@ -70,7 +70,7 @@ export default class CollectionDetail extends Component {
     return (
       <ContentLoader isLoading={id && !item}>
         <Flex>
-          <Gateway into="navigation_middle">
+          <Gateway into="navigation">
             {keys.map(tab =>
               <Menu.Item
                 key={tab}
@@ -82,15 +82,15 @@ export default class CollectionDetail extends Component {
               </Menu.Item>
             )}
           </Gateway>
-          <Gateway into="navigation">
+          <Gateway into="quick">
             <Menu.Item key="save">
               <a href="javascript:;" onClick={onSave}>
-                Speichern
+                <Icon type="save" />
               </a>
             </Menu.Item>
             <Menu.Item key="clone">
               <a href="javascript:;" onClick={onClone}>
-                Kopieren
+                <Icon type="copy" />
               </a>
             </Menu.Item>
           </Gateway>

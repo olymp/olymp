@@ -3,7 +3,7 @@ import { IFrame, ContentLoader, PageTransition } from 'olymp-fela';
 import { Error404, Page, EditablePage } from './views';
 import { renderHelmet } from 'olymp-utils';
 import { Link } from 'olymp-router';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import { lowerFirst, get } from 'lodash';
 import { Gateway } from 'react-gateway';
 
@@ -17,8 +17,8 @@ const renderGateway = (
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
   return (
-    <Gateway into="navigation2">
-      <Menu.SubMenu title="Hinzufügen">
+    <Gateway into="quick2">
+      <Menu.SubMenu title={<Icon type="plus" />}>
         <Menu.Item key="page-plus">
           <Link
             to={{
@@ -53,7 +53,7 @@ const renderGateway = (
               query: { [`@${lowerFirst(binding.type)}`]: bindingId },
             }}
           >
-            Bearbeiten
+            <Icon type="tool" />
           </Link>
         </Menu.Item>}
       {!isEditPage &&
@@ -64,7 +64,7 @@ const renderGateway = (
               query: { '@page': null },
             }}
           >
-            Bearbeiten
+            <Icon type="tool" />
           </Link>
         </Menu.Item>}
     </Gateway>

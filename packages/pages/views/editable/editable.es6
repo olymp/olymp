@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Prompt } from 'olymp-router';
 import { Sidebar, SplitView } from 'olymp-ui';
-import { Menu, Form } from 'antd';
+import { Menu, Form, Icon } from 'antd';
 import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
@@ -69,11 +69,11 @@ export default class PageSidebar extends Component {
 
     return (
       <SplitView maxWidth={maxWidth} center>
-        <Gateway into="navigation">
+        <Gateway into="quick">
           {form.isFieldsTouched() &&
             <Menu.Item key="save">
               <a href="javascript:;" onClick={save}>
-                Speichern
+                <Icon type="save" />
               </a>
             </Menu.Item>}
         </Gateway>

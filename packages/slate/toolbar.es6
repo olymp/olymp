@@ -1,7 +1,6 @@
 import React from 'react';
-import Portal from 'react-portal';
-// import { Gateway } from 'react-gateway';
-import { Menu, Tooltip, Icon } from 'antd';
+import { Gateway } from 'react-gateway';
+import { Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 
 export const Button = createComponent(
@@ -27,15 +26,6 @@ export const Button = createComponent(
   p => Object.keys(p)
 );
 
-const Close = createComponent(
-  ({ theme }) => ({
-    position: 'absolute!important',
-    right: 0,
-  }),
-  p => <Menu.Item {...p} />,
-  p => Object.keys(p)
-);
-
 export default createComponent(
   ({ theme }) => ({
     position: 'fixed',
@@ -53,32 +43,16 @@ export default createComponent(
     },
   }),
   props => {
-    const { isOpened, className, children, show } = props;
+    const { isOpened, children } = props;
 
     if (!isOpened) {
       return <div />;
     }
 
-    /*return (
+    return (
       <Gateway into="toolbar">
         {children}
       </Gateway>
-    );*/
-    return (
-      <Portal isOpened={!!isOpened}>
-        <Menu
-          style={!show ? { display: 'none' } : null}
-          selectedKeys={[]}
-          className={className}
-          mode="horizontal"
-          theme="dark"
-        >
-          {children}
-          <Close>
-            <Icon type="close" />
-          </Close>
-        </Menu>
-      </Portal>
     );
   },
   p => Object.keys(p)

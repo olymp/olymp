@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { withLang, Logo } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 import { GatewayDest, GatewayRegistry } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
@@ -80,14 +80,6 @@ const LeftMenu = createComponent(
   p => Object.keys(p)
 );
 
-const Filler = createComponent(
-  ({ theme }) => ({
-    flex: '1 1 0%',
-  }),
-  p => <div {...p} />,
-  p => Object.keys(p)
-);
-
 const RightMenu = createComponent(
   ({ theme }) => ({
     float: 'right !important',
@@ -106,8 +98,36 @@ const RightMenu = createComponent(
   p => Object.keys(p)
 );
 
+const ToolMenu = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.dark,
+    '> li': {
+      padding: theme.space0,
+      '> div > div': {
+        padding: theme.space0,
+      },
+    },
+  }),
+  p => <LeftMenu {...p} />,
+  p => Object.keys(p)
+);
+
+const Filler = createComponent(
+  ({ theme }) => ({
+    flex: '1 1 0%',
+    borderX: border(theme),
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.2)',
+  }),
+  p => <div {...p} />,
+  []
+);
+
 const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
+
+const AntMenuToolbar = ({ keys, ...p }) =>
+  <ToolMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
   <AntMenu {...p}>
@@ -144,7 +164,7 @@ class Navigation extends Component {
     const { auth, setDeviceWidth, query, collectionList } = this.props;
     const { children } = this.state;
     const keys = Object.keys(query);
-    const short = false;
+    const short = children && children.length;
 
     if (!keys.filter(x => x[0] === '@').length) {
       keys.push('@home');
@@ -215,15 +235,19 @@ class Navigation extends Component {
 
         <Filler />
 
-        <GatewayDest name="navigation_middle" component={AntMenu} />
+        {createElement(AntMenuToolbar, {}, children)}
 
-        <Filler />
+        {children && !!children.length && <Filler />}
 
         <GatewayDest
           name="navigation"
-          component={children && children.length ? AntSubMenu : AntMenu}
+          component={/* children && children.length ? AntSubMenu :*/ AntMenu}
         />
-        <GatewayDest name="navigation2" component={AntMenu} />
+
+        <Filler />
+
+        <GatewayDest name="quick" component={AntMenu} />
+        <GatewayDest name="quick2" component={AntMenu} />
 
         <AntSubMenu
           title={
