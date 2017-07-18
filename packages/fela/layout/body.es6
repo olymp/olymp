@@ -14,6 +14,7 @@ const Body = createComponent(
             display: 'flex',
             flexDirection: 'column',
           },
+          height: '100%',
           overflowY: 'auto',
           ifSmallDown: {
             '-webkit-overflow-scrolling': 'touch',
