@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { AltSwitch, AltRoute } from 'olymp-router';
 import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
-import { CollectionRoute } from 'olymp-collection';
+import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { AnalyticsRoutes } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
@@ -71,12 +70,19 @@ export default class CMSAuth extends Component {
       collectionList,
       location,
       navigation,
+      router,
+      pathname,
+      ua,
       wrapper: Wrapped,
     } = this.props;
     const { deviceWidth } = this.state;
     const collection = collectionList.filter(
       ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
     )[0];
+    const collectionName = collection && collection.name;
+    const collectionId =
+      (collectionName && query && query[`@${collectionName.toLowerCase()}`]) ||
+      'new';
 
     return (
       <Hotjar id={process.env.HOTJAR}>
@@ -84,6 +90,23 @@ export default class CMSAuth extends Component {
           <Lightbox />
           <GatewayDest name="modal" />
           <AuthModals />
+          {!!collection &&
+            query.modal === null &&
+            <CollectionModal
+              {...this.props}
+              open
+              id={collectionId}
+              typeName={collectionName}
+              onClose={() =>
+                router.push({
+                  pathname,
+                  query: {
+                    ...query,
+                    [`@${collectionName.toLowerCase()}`]: undefined,
+                    modal: undefined,
+                  },
+                })}
+            />}
           <NavigationVertical
             collectionList={collectionList}
             setDeviceWidth={deviceWidth => this.setState({ deviceWidth })}
@@ -97,11 +120,12 @@ export default class CMSAuth extends Component {
                 render={() => <TemplateRoute {...this.props} />}
               />
               <AltRoute
-                match={!!collection}
+                match={!!collection && query.modal === undefined}
                 render={() =>
                   <CollectionRoute
                     {...this.props}
-                    typeName={collection && collection.name}
+                    id={collectionId}
+                    typeName={collectionName}
                     Wrapped={Wrapped}
                   />}
               />
@@ -146,7 +170,7 @@ export default class CMSAuth extends Component {
               />
             </AltSwitch>
           </SwitchContainer>
-          {this.props.ua.getBrowser().name !== 'Chrome' &&
+          {ua.getBrowser().name !== 'Chrome' &&
             <Footer>
               <p>
                 Wir empfehlen für die Verwendung von Olymp (und darüber hinaus)
@@ -158,7 +182,7 @@ export default class CMSAuth extends Component {
                   Chrome
                 </a>.
               </p>
-              {this.props.ua.getBrowser().name === 'IE' &&
+              {ua.getBrowser().name === 'IE' &&
                 <Warning>
                   Der Internet Explorer ist ausdrücklich nicht unterstützt!
                 </Warning>}

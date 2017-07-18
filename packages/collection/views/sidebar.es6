@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'olymp-router';
 import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
-import { FieldValue } from '../components';
 import { Sidebar, List } from 'olymp-ui';
+import { FieldValue } from '../components';
 
 const states = {
   PUBLISHED: 'Öffentlich',

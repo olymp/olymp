@@ -1,81 +1,105 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'olymp-router';
-import { Menu, Icon } from 'antd';
+import { withRouter } from 'olymp-router';
+import { Form, Menu, Icon } from 'antd';
 import { Modal, createComponent } from 'olymp-fela';
-import { upperFirst } from 'lodash';
-import { Gateway } from 'react-gateway';
-import { withItem } from '../decorators';
+import { withCollection, withItem } from '../decorators';
+import { getFormSchema } from './detail';
 import { DetailForm } from '../components';
 
-const getFormSchema = ({ fields }) =>
-  fields.reduce((result, field) => {
-    if (field.type.name === 'Blocks') {
-      // if slate => own group
-      result[upperFirst(field.name)] = [field];
-    } else if (field.type.name === 'Image') {
-      // if image => own group
-      result[upperFirst(field.name)] = [field];
-    } else {
-      // Group
-      const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
+const RightMenuItem = createComponent(
+  () => ({
+    float: 'right !important',
+  }),
+  p => <Menu.Item {...p} />,
+  p => Object.keys(p)
+);
 
-      if (!result[group]) {
-        result[group] = [];
-      }
-      result[group].push(field);
-    }
-    return result;
-  }, {});
-
-const Flex = createComponent(
+const Content = createComponent(
   ({ theme }) => ({
-    paddingTop: theme.space3,
-    hasFlex: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    '> ul': {
-      zIndex: 1,
-    },
-    '> form': {
-      overflow: 'auto',
-    },
+    padding: theme.space3,
+    paddingBottom: 0,
   }),
   'div',
-  []
+  p => Object.keys(p)
+);
+
+const HiddenForm = createComponent(
+  ({ visible }) => ({
+    display: visible ? 'block' : 'none',
+  }),
+  p => <DetailForm {...p} />,
+  p => Object.keys(p)
 );
 
 @withRouter
+@withCollection
 @withItem
-export default class CollectionDetail extends Component {
+@Form.create()
+export default class CollectionModal extends Component {
+  state = { tab: undefined };
+
   render() {
-    const { item, collection, onSave, pathname, query } = this.props;
+    const {
+      collection,
+      open,
+      id,
+      typeName,
+      onSave,
+      onClose,
+      item,
+    } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
-    const currentTab = query.tab || Object.keys(schema)[0];
-    return (
-      <Modal>
-        <Gateway into="navigation">
-          <Menu.Item key="save">
-            <a href="javascript:;" onClick={onSave}>
-              <Icon type="save" /> Speichern
+    const currentTab = this.state.tab || keys[0];
+    const header = (
+      <Menu mode="horizontal" theme="dark">
+        <Menu.Item key="brand">
+          {typeName} {id === 'new' ? 'anlegen' : 'bearbeiten'}
+        </Menu.Item>
+        {keys.reverse().map(tab =>
+          <RightMenuItem key={tab}>
+            <a href="javascript:;" onClick={() => this.setState({ tab })}>
+              {tab}
             </a>
-          </Menu.Item>
-          {keys.map(tab =>
-            <Menu.Item key={tab}>
-              <Link to={{ pathname, query: { ...query, tab } }}>
-                {tab}
-              </Link>
-            </Menu.Item>
-          )}
-        </Gateway>
+          </RightMenuItem>
+        )}
+      </Menu>
+    );
+    const footer = (
+      <Menu mode="horizontal" theme="dark">
+        <Menu.Item key="save">
+          <a href="javascript:;" onClick={onSave}>
+            <Icon type="save" /> Speichern
+          </a>
+        </Menu.Item>
+        <Menu.Item key="close">
+          <a href="javascript:;" onClick={onClose}>
+            Abbrechen
+          </a>
+        </Menu.Item>
+      </Menu>
+    );
 
-        <DetailForm
-          {...this.props}
-          item={item || {}}
-          fields={schema[currentTab]}
-          onCreate={onSave}
-        />
+    return (
+      <Modal
+        width={700}
+        open={open}
+        header={header}
+        footer={footer}
+        onClose={onClose}
+      >
+        <Content>
+          {keys.map(tab =>
+            <HiddenForm
+              {...this.props}
+              item={item || {}}
+              fields={schema[tab]}
+              key={tab}
+              visible={currentTab === tab}
+              onCreate={onSave}
+            />
+          )}
+        </Content>
       </Modal>
     );
   }

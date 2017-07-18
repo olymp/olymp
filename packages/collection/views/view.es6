@@ -25,9 +25,9 @@ export default class CollectionView extends Component {
       performSearch,
       searchText,
       form,
+      id,
     } = this.props;
     const { query, pathname } = location;
-    const id = location.query && location.query[`@${typeName.toLowerCase()}`];
 
     return (
       <SplitView>
