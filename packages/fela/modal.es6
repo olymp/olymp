@@ -53,7 +53,6 @@ export default ({ children, open, onClose, width, header, footer }) =>
       <Modal
         width={width}
         onClick={e => {
-          e.cancelBubble = true;
           if (e.stopPropagation) {
             e.stopPropagation();
           }
