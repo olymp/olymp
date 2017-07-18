@@ -14,7 +14,7 @@ const ModalBackground = createComponent(
     backgroundColor: theme.dark2,
   }),
   'div',
-  []
+  ['onClick']
 );
 
 const Modal = createComponent(
@@ -48,8 +48,8 @@ const Inner = createComponent(
 );
 
 export default ({ children, open, onClose, width, header, footer }) =>
-  <Portal isOpened={open} onClose={onClose} closeOnEsc closeOnOutsideClick>
-    <ModalBackground>
+  <Portal isOpened={open} onClose={onClose} closeOnEsc>
+    <ModalBackground onClick={onClose}>
       <Modal width={width}>
         <Inner>
           {header &&
