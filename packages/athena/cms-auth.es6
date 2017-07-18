@@ -94,7 +94,7 @@ export default class CMSAuth extends Component {
             query.modal === null &&
             <CollectionModal
               {...this.props}
-              open
+              open={!!collection && query.modal === null}
               id={collectionId}
               typeName={collectionName}
               onClose={() =>
