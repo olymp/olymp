@@ -1766,7 +1766,7 @@ hoist-non-react-statics@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
-hoist-non-react-statics@^2.0.0:
+hoist-non-react-statics@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.2.0.tgz#b099ca82f3640b1244309c8a526a2bd60ad9d7d9"
 
@@ -2690,9 +2690,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^16.0.29:
-  version "16.0.29"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.29.tgz#838d51647d9e5168a28749b313b9a1386e958c89"
+olymp-fela@^16.0.35:
+  version "16.0.35"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.35.tgz#f25dd64bac29198338d400fa0613138e373014fe"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
@@ -2709,17 +2709,17 @@ olymp-fela@^16.0.29:
     react-portal "^3.1.0"
     tinycolor2 "^1.4.1"
 
-olymp-router@^16.0.29:
-  version "16.0.29"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-16.0.29.tgz#b01875d3a6211fd3c9eb784ce0d5e2d51122145b"
+olymp-router@^16.0.32:
+  version "16.0.32"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-16.0.32.tgz#96f0dd2dd6928f133ad5916877d31807e3a923c3"
   dependencies:
     history "^4.6.3"
-    olymp-utils "^16.0.29"
+    olymp-utils "^16.0.30"
     route-parser "^0.0.5"
 
-olymp-utils@^16.0.29:
-  version "16.0.29"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.29.tgz#76546cc2b97299cdeac6659384e298043405dc3a"
+olymp-utils@^16.0.30:
+  version "16.0.30"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.30.tgz#87f0355da818679fb26a2cc1096f2c74ed5dd17a"
   dependencies:
     lodash "^4.17.4"
 
@@ -2939,7 +2939,7 @@ promise@^7.0.3, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8:
+prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -3041,14 +3041,14 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-apollo@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.3.tgz#be18bfe7f6609263f3ff623308f88108152a7573"
+react-apollo@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.4.tgz#31749237dfa133f47a688e0b7a91a479a7f0d8f3"
   dependencies:
     apollo-client "^1.4.0"
     graphql-anywhere "^3.0.0"
     graphql-tag "^2.0.0"
-    hoist-non-react-statics "^2.0.0"
+    hoist-non-react-statics "^2.2.0"
     invariant "^2.2.1"
     lodash.flatten "^4.2.0"
     lodash.isequal "^4.1.1"
@@ -3056,8 +3056,6 @@ react-apollo@^1.4.3:
     lodash.pick "^4.4.0"
     object-assign "^4.0.1"
     prop-types "^15.5.8"
-  optionalDependencies:
-    react-dom "0.14.x || 15.* || ^15.0.0 || ^16.0.0-alpha"
 
 react-async-bootstrapper@^1.1.1:
   version "1.1.1"
@@ -3072,15 +3070,6 @@ react-async-component@^1.0.0-beta.3:
 react-deep-force-update@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.0.1.tgz#4f7f6c12c3e7de42f345992a3c518236fa1ecad3"
-
-"react-dom@0.14.x || 15.* || ^15.0.0 || ^16.0.0-alpha":
-  version "16.0.0-alpha.13"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0-alpha.13.tgz#c2b39aaf8645f1d664619fb49a1fbb9f60719c23"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.6"
 
 react-dom@^0.14.0:
   version "0.14.9"
