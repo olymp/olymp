@@ -29,7 +29,7 @@ export const Modal = (
     onOk,
     title,
     loading,
-    ...props,
+    ...props
   },
   { theme }
 ) => {
@@ -260,7 +260,7 @@ const TitleButtons = createComponent(
     top: 14,
   }),
   'div',
-  ({ left, right, ...p }) => p
+  ({ left, right, ...p }) => Object.keys(p)
 );
 
 export default component;
