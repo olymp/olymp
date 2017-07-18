@@ -1,7 +1,8 @@
 import React from 'react';
 import enUS from 'antd/lib/locale-provider/de_DE';
+import 'moment/locale/de';
 import AntLocaleProvider from 'antd/lib/locale-provider';
-import { withLocale as withLocale2, LocaleProvider } from 'olymp-utils';
+import { LocaleProvider } from 'olymp-utils';
 import dateLocale from 'date-fns/locale/de';
 
 export default (LANG = {}) => WrappedComponent => props =>
@@ -10,7 +11,6 @@ export default (LANG = {}) => WrappedComponent => props =>
       <WrappedComponent {...props} />
     </LocaleProvider>
   </AntLocaleProvider>);
-export const withLocale = withLocale2;
-/*export const moment = function () {
+/* export const moment = function () {
    return momentLegacy.utc.apply(this, arguments);
 +};*/

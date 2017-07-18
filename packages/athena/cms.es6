@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { withCollections } from 'olymp-collection';
-import { withLangProvider } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
-import { withLocale } from 'olymp-locale/de';
+import withLocale from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
 import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
@@ -21,13 +20,12 @@ const filterPublic = pages =>
       children: filterPublic(children),
     }));
 
-export default ({ auth, theme }) => Wrapped => {
+export default ({ auth, theme }) => (Wrapped) => {
   // Container for authed users
   @withRouter
-  @withLocale
+  @withLocale(LANG)
   @withAuth(auth)
   @withNavigation
-  @withLangProvider(LANG)
   @withCollections
   class CMS extends Component {
     render() {
