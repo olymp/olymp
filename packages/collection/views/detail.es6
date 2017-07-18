@@ -70,17 +70,7 @@ export default class CollectionDetail extends Component {
     return (
       <ContentLoader isLoading={id && !item}>
         <Flex>
-          <Gateway into="navigation">
-            <Menu.Item key="save">
-              <a href="javascript:;" onClick={onSave}>
-                Speichern
-              </a>
-            </Menu.Item>
-            <Menu.Item key="clone">
-              <a href="javascript:;" onClick={onClone}>
-                Kopieren
-              </a>
-            </Menu.Item>
+          <Gateway into="navigation_middle">
             {keys.map(tab =>
               <Menu.Item
                 key={tab}
@@ -92,6 +82,19 @@ export default class CollectionDetail extends Component {
               </Menu.Item>
             )}
           </Gateway>
+          <Gateway into="navigation">
+            <Menu.Item key="save">
+              <a href="javascript:;" onClick={onSave}>
+                Speichern
+              </a>
+            </Menu.Item>
+            <Menu.Item key="clone">
+              <a href="javascript:;" onClick={onClone}>
+                Kopieren
+              </a>
+            </Menu.Item>
+          </Gateway>
+
           {Object.keys(schema).map(tab =>
             <HiddenForm
               {...this.props}

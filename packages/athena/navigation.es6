@@ -215,6 +215,10 @@ class Navigation extends Component {
 
         <Filler />
 
+        <GatewayDest name="navigation_middle" component={AntMenu} />
+
+        <Filler />
+
         <GatewayDest
           name="navigation"
           component={children && children.length ? AntSubMenu : AntMenu}
