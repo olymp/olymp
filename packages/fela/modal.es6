@@ -31,7 +31,7 @@ const Modal = createComponent(
     },
   }),
   'div',
-  []
+  ['onClick']
 );
 
 const Inner = createComponent(
@@ -50,7 +50,15 @@ const Inner = createComponent(
 export default ({ children, open, onClose, width, header, footer }) =>
   <Portal isOpened={open} onClose={onClose} closeOnEsc>
     <ModalBackground onClick={onClose}>
-      <Modal width={width}>
+      <Modal
+        width={width}
+        onClick={e => {
+          e.cancelBubble = true;
+          if (e.stopPropagation) {
+            e.stopPropagation();
+          }
+        }}
+      >
         <Inner>
           {header &&
             <Layout.Header>
