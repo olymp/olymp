@@ -61,12 +61,16 @@ export default {
           );
         }
       } else if (relationType === 'embedsMany') {
-        addFields(ast, leftNode, `${leftField}Ids: String`);
-        set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-          monk.collection('item').find({
-            id: source[`${leftField}Ids`],
-            _type: rightTable,
-          })
+        addFields(ast, leftNode, `${leftField}Ids: [String]`);
+        set(
+          resolvers,
+          `${leftType}.${leftField}`,
+          (source, args, { monk }) =>
+            source[`${leftField}Ids`] &&
+            monk.collection('item').find({
+              id: { $in: source[`${leftField}Ids`] || [] },
+              _type: rightTable,
+            })
         );
       } else if (relationType === '1-n') {
         // Add list accessor and xxxIds field since dealing with many

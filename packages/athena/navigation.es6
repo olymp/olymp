@@ -1,4 +1,4 @@
-import React, { Component, createElement } from 'react';
+import React, { Component, Children, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { withLang, Logo } from 'olymp-utils';
 import { Link } from 'olymp-router';
@@ -117,7 +117,7 @@ const Filler = createComponent(
     flex: '1 1 0%',
     borderX: border(theme),
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.2)',
+    // boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.2)',
   }),
   p => <div {...p} />,
   []
@@ -235,9 +235,11 @@ class Navigation extends Component {
 
         <Filler />
 
-        {createElement(AntMenuToolbar, {}, children)}
-
-        {children && !!children.length && <Filler />}
+        {!!Children.toArray(children).length &&
+          <AntMenuToolbar>
+            {children}
+          </AntMenuToolbar>}
+        {!!Children.toArray(children).length && <Filler />}
 
         <GatewayDest
           name="navigation"
