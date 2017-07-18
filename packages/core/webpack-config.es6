@@ -58,10 +58,11 @@ module.exports = ({
           : isNode
             ? 'history/createMemoryHistory'
             : 'history/createBrowserHistory',
+        antd: path.resolve(appRoot, 'node_modules', 'antd'),
+        moment: path.resolve(appRoot, 'node_modules', 'moment'),
         react: path.resolve(appRoot, 'node_modules', 'react'),
         // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
         'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
-        // 'react-router': path.resolve(appRoot, 'node_modules', 'react-router'),
         // moment: path.resolve(appRoot, 'node_modules', 'moment'),
         // lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         '@root': appRoot,
@@ -128,6 +129,7 @@ module.exports = ({
         name: '[name]_lib',
       }),*/
       // new PrepackWebpackPlugin({ }),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
