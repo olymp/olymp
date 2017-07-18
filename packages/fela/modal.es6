@@ -1,6 +1,7 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
 import Portal from 'react-portal';
+import Layout from './layout';
 
 const ModalBackground = createComponent(
   ({ theme }) => ({
@@ -40,22 +41,28 @@ const Inner = createComponent(
     backgroundColor: theme.light,
     boxShadow: theme.boxShadow,
     border: `1px solid ${theme.dark1}`,
-    overflowY: 'auto',
     borderRadius: theme.borderRadius,
-    hasFlex: {
-      display: 'flex',
-    },
   }),
-  'div',
+  p => <Layout affix {...p} />,
   []
 );
 
-export default ({ children, open, onClose, width }) =>
+export default ({ children, open, onClose, width, header, footer }) =>
   <Portal isOpened={open} onClose={onClose} closeOnEsc closeOnOutsideClick>
     <ModalBackground>
       <Modal width={width}>
         <Inner>
-          {children}
+          {header &&
+            <Layout.Header>
+              {header}
+            </Layout.Header>}
+          <Layout.Body>
+            {children}
+          </Layout.Body>
+          {footer &&
+            <Layout.Footer>
+              {footer}
+            </Layout.Footer>}
         </Inner>
       </Modal>
     </ModalBackground>
