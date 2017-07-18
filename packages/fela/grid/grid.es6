@@ -15,7 +15,7 @@ const Grid = createComponent(
       height: 0,
     },
   }),
-  ({ children, size, height, ...rest }) =>
+  ({ children, size, height, marginX, ...rest }) =>
     (<div {...rest}>
       {Children.map(children, child => cloneElement(child, { gridSize: size }))}
     </div>),

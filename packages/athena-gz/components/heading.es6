@@ -20,7 +20,7 @@ export const H1 = createComponent(
     marginBottom: theme.space3,
   }),
   ({ className, children, color, bordered = true, subtitle }) =>
-    (<h1 className={className}>
+    <h1 className={className}>
       {children}
       {subtitle &&
         <Subtitle>
@@ -29,7 +29,7 @@ export const H1 = createComponent(
       <Border color={color}>
         {bordered === true ? children : bordered}
       </Border>
-    </h1>),
+    </h1>,
   p => Object.keys(p)
 );
 
@@ -42,7 +42,7 @@ export const H2 = createComponent(
     marginBottom: theme.space3,
   }),
   ({ className, children, color, bordered = true, subtitle, right }) =>
-    (<h2 className={className}>
+    <h2 className={className}>
       {children}
       {subtitle &&
         <Subtitle>
@@ -51,7 +51,7 @@ export const H2 = createComponent(
       <Border color={color} right={right}>
         {bordered === true ? children : bordered}
       </Border>
-    </h2>),
+    </h2>,
   p => Object.keys(p)
 );
 

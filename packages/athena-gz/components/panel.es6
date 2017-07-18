@@ -68,6 +68,20 @@ export default createComponent(
       display: 'flex',
       flexDirection: 'column',
     },
+    '> h2': {
+      onAfter: {
+        content: '""',
+        bottom: -1,
+        display: 'block',
+        overflow: 'hidden',
+        height: 1,
+        left: 0,
+        position: 'absolute',
+        minWidth: 75,
+        width: '100%',
+        background: `linear-gradient(to right, ${accent || theme.color}, #FFF)`,
+      },
+    },
     '& a': {
       color: theme.dark2,
       onHover: {
@@ -107,9 +121,9 @@ export default createComponent(
     bordered,
     paddingLeft,
     paddingRight,
-    ...rest,
+    ...rest
   }) =>
-    <Grid.Item mini={12} {...rest}>
+    (<Grid.Item mini={12} {...rest}>
       <H2 color={accent || background} bordered={bordered} subtitle={subtitle}>
         {title}
       </H2>
@@ -118,6 +132,6 @@ export default createComponent(
 
         <Clearfix />
       </Content>
-    </Grid.Item>,
+    </Grid.Item>),
   p => Object.keys(p)
 );
