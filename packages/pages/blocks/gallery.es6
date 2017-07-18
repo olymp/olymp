@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, SimpleImageEdit } from 'olymp-cloudinary';
+import { LightboxImage, SimpleImageEdit } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 import { FaPlus, FaMinus } from 'olymp-icons';
 
@@ -41,7 +41,7 @@ export default {
   label: 'Galerie',
   category: 'Medien',
   component: ({ getData, setActive, className, attributes }) =>
-    <Container {...attributes}>
+    (<Container {...attributes}>
       {getData('value', [
         {
           url: 'https://lorempixel.com/400/300/cats/',
@@ -50,7 +50,7 @@ export default {
         },
       ]).map((image, i) =>
         <ImageContainer size={getData('size', 4)} key={image.id || i}>
-          <Image
+          <LightboxImage
             className={className}
             onClick={setActive}
             width="100%"
@@ -58,7 +58,7 @@ export default {
           />
         </ImageContainer>
       )}
-    </Container>,
+    </Container>),
   styles: ({ getData }) => ({
     float: getData('float', 'none'),
   }),
@@ -66,12 +66,12 @@ export default {
     {
       tooltip: getData => `Bilder ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) =>
-        <SimpleImageEdit
+        (<SimpleImageEdit
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', [])}
           multi
-        />,
+        />),
       toggle: () => {},
     },
     {
