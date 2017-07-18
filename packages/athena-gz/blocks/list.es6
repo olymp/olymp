@@ -107,6 +107,7 @@ class VerzeichnisBlock extends Component {
             onMouseEnter={this.onMouseOver(item)}
             onMouseLeave={this.onMouseLeave}
             hovered={this.state.hover === (item.orgId || item.id)}
+            key={item.id}
           />
         )}
       </ul>
