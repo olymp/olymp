@@ -53,7 +53,7 @@ const renderGateway = (
               query: { [`@${lowerFirst(binding.type)}`]: bindingId },
             }}
           >
-            <Icon type="tool" />
+            <Icon type="edit" />
           </Link>
         </Menu.Item>}
       {!isEditPage &&
@@ -64,7 +64,7 @@ const renderGateway = (
               query: { '@page': null },
             }}
           >
-            <Icon type="tool" />
+            <Icon type="edit" />
           </Link>
         </Menu.Item>}
     </Gateway>
