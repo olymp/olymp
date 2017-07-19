@@ -36,6 +36,9 @@ export default type => WrappedComponent => {
     createComponent(
       ({ theme }) => ({
         position: 'relative',
+        '> a:first-of-type': {
+          display: 'none',
+        },
         '> a:last-of-type': {
           display: 'none',
         },
@@ -59,6 +62,9 @@ export default type => WrappedComponent => {
             content: '""',
             borderTop: `2px solid ${theme.color}`,
             zIndex: 1,
+          },
+          '> a:first-of-type': {
+            display: 'block',
           },
           '> a:last-of-type': {
             display: 'block',
