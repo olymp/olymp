@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader } from 'olymp-fela';
 import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
+import { withEdit, withCreate } from 'olymp-collection';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel, Item } from '../components';
@@ -45,7 +46,7 @@ const getItems = (items, filter, title) =>
     </Item>
   );
 
-const NewsItem = props => {
+const NewsItem = withEdit('news')(props => {
   const { art, date, name, description, org, slug } = props;
 
   const image = props.image ||
@@ -57,21 +58,40 @@ const NewsItem = props => {
   };
 
   return (
-    <Panel
-      accent={org.color}
-      title={name}
-      subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
-    >
-      <Img value={image} width={100} avatar />
-      <Content>
-        <p>
-          {description}
-        </p>
-        {slug && <Link to={{ pathname: `/news${slug}` }}>Weiterlesen...</Link>}
-      </Content>
-    </Panel>
+    <Grid>
+      <Panel
+        accent={org.color}
+        title={name}
+        subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
+      >
+        <Img value={image} width={100} avatar />
+        <Content>
+          <p>
+            {description}
+          </p>
+          {slug &&
+            <Link to={{ pathname: `/news${slug}` }}>Weiterlesen...</Link>}
+        </Content>
+      </Panel>
+    </Grid>
   );
-};
+});
+
+const Listing = withCreate('news')(({ items }) =>
+  <div>
+    {items.map(item =>
+      <NewsItem
+        {...item}
+        onClick={() =>
+          this.setState({
+            open: open === item.id ? undefined : item.id,
+          })}
+        org={item.org || {}}
+        key={item.id}
+      />
+    )}
+  </div>
+);
 
 @graphql(
   gql`
@@ -181,17 +201,7 @@ class News extends Component {
         <Container {...attributes}>
           <Grid>
             <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-              {items.map(item =>
-                <NewsItem
-                  {...item}
-                  onClick={() =>
-                    this.setState({
-                      open: open === item.id ? undefined : item.id,
-                    })}
-                  org={item.org || {}}
-                  key={item.id}
-                />
-              )}
+              <Listing items={items} />
             </Grid.Item>
             <Column
               medium={4}
