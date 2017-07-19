@@ -73,8 +73,14 @@ const VerticalMenu = createComponent(
 );
 
 const LeftMenu = createComponent(
-  ({ theme }) => ({
+  ({ theme, bordered }) => ({
     float: 'left',
+    '> li:first-of-type': {
+      borderLeft: bordered && border(theme),
+    },
+    '> li:last-of-type': {
+      borderRight: bordered && border(theme),
+    },
   }),
   p => <Menu {...p} />,
   p => Object.keys(p)
@@ -113,11 +119,11 @@ const ToolMenu = createComponent(
 );
 
 const Filler = createComponent(
-  ({ theme }) => ({
+  ({ theme, left, right }) => ({
     flex: '1 1 0%',
-    borderX: border(theme),
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    // boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.2)',
+    borderLeft: left && border(theme),
+    borderRight: right && border(theme),
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
   }),
   p => <div {...p} />,
   []
@@ -126,12 +132,20 @@ const Filler = createComponent(
 const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
+const AntMenuBordered = p => <AntMenu bordered {...p} />;
+
 const AntMenuToolbar = ({ keys, ...p }) =>
-  <ToolMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
+  <ToolMenu
+    theme="dark"
+    selectedKeys={keys}
+    mode="horizontal"
+    bordered
+    {...p}
+  />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
-  <AntMenu {...p}>
-    <RightMenu title={title || <Icon type="bars" />}>
+  <AntMenu selectedKeys={keys} {...p}>
+    <RightMenu selectedKeys={keys} title={title || <Icon type="bars" />}>
       {children}
     </RightMenu>
   </AntMenu>;
@@ -233,7 +247,7 @@ class Navigation extends Component {
             </Menu.Item>}
         </AntMenu>
 
-        <Filler />
+        <Filler left />
 
         {!!Children.toArray(children).length &&
           <AntMenuToolbar>
@@ -243,10 +257,12 @@ class Navigation extends Component {
 
         <GatewayDest
           name="navigation"
-          component={/* children && children.length ? AntSubMenu :*/ AntMenu}
+          component={
+            /* children && children.length ? AntSubMenu :*/ AntMenuBordered
+          }
         />
 
-        <Filler />
+        <Filler right />
 
         <GatewayDest name="quick" component={AntMenu} />
         <GatewayDest name="quick2" component={AntMenu} />
