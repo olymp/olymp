@@ -13,8 +13,9 @@ export default type => WrappedComponent => {
       () => ({
         position: 'absolute',
         top: '50%',
-        right: 0,
+        right: 1,
         transform: 'translate(50%, -50%)',
+        zIndex: 2,
       }),
       ({ className, id, pathname, query }) =>
         <Link
@@ -32,12 +33,22 @@ export default type => WrappedComponent => {
 
   const WithEdit = withAuth(
     createComponent(
-      () => ({
+      ({ theme }) => ({
         position: 'relative',
         '> a:last-of-type': {
           display: 'none',
         },
         onHover: {
+          onAfter: {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            height: '100%',
+            width: 2,
+            content: '""',
+            borderRight: `2px solid ${theme.color}`,
+            zIndex: 1,
+          },
           '> a:last-of-type': {
             display: 'block',
           },
