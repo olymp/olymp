@@ -109,7 +109,7 @@ const component = withColor(
 const componentWithData = graphql(
   gql`
     query event($id: String) {
-      item: event(id: $id) {
+      item: event(id: $id, query: { state: { eq: PUBLISHED } }) {
         id
         art
         ort

@@ -81,7 +81,7 @@ const Item = createComponent(
     position: 'relative',
   }),
   ({ className, website, name, tags, image }) =>
-    (<Grid.Item className={className} mini={5} medium={2} gridSize={10}>
+    <Grid.Item className={className} mini={5} medium={2} gridSize={10}>
       <Link href={website} rel="noopener noreferrer">
         <Img
           value={image}
@@ -101,14 +101,14 @@ const Item = createComponent(
           </Inner>
         </Content>
       </Link>
-    </Grid.Item>),
+    </Grid.Item>,
   p => Object.keys(p)
 );
 
 const component = graphql(
   gql`
     query awardList {
-      items: awardList {
+      items: awardList(query: { state: { eq: PUBLISHED } }) {
         id
         name
         description
@@ -141,13 +141,13 @@ const component = graphql(
       paddingY: theme.space2,
     }),
     ({ className, attributes, items }) =>
-      (<div className={className} {...attributes}>
+      <div className={className} {...attributes}>
         <Container>
           <Grid size={10}>
             {items.map(item => <Item {...item} key={item.id} />)}
           </Grid>
         </Container>
-      </div>),
+      </div>,
     p => Object.keys(p)
   )
 );

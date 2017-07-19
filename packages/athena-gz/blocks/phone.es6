@@ -94,7 +94,7 @@ const component = withCreate('org')(
   graphql(
     gql`
       query orgList {
-        items: orgList {
+        items: orgList(query: { state: { eq: PUBLISHED } }) {
           id
           name
           color

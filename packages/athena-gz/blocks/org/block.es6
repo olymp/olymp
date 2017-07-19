@@ -127,7 +127,7 @@ const component = withColor(
 const componentWithData = graphql(
   gql`
     query org($id: String) {
-      item: org(id: $id) {
+      item: org(id: $id, query: { state: { eq: PUBLISHED } }) {
         id
         name
         title
