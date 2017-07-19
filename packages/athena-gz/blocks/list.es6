@@ -1,59 +1,70 @@
 import React, { Component } from 'react';
 import { graphql, gql, sortBy } from 'olymp-utils';
-import { withRouter } from 'olymp-router';
+import { withRouter, Link } from 'olymp-router';
+import { withEdit, withCreate } from 'olymp-collection';
 import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';
-import { Link } from 'olymp-router';
 
-const Item = createComponent(
-  ({ theme, color, hovered }) => ({
-    position: 'relative',
-    paddingX: theme.space1,
-    fontSize: '94%',
-    onBefore: {
-      color: `${color || theme.color} !important`,
-    },
-    '> a': {
-      clearfix: true,
-      color: hovered ? color || theme.color : theme.dark2,
-      onHover: {
-        color: color || theme.color,
+const Item = withEdit('org')(
+  createComponent(
+    ({ theme, color, hovered }) => ({
+      position: 'relative',
+      paddingX: theme.space1,
+      fontSize: '94%',
+      onBefore: {
+        color: `${color || theme.color} !important`,
       },
-      '> span': {
-        float: 'left',
-        whiteSpace: 'nowrap',
-        overflowX: 'hidden',
-        textOverflow: 'ellipsis',
-        maxWidth: '50%',
+      '> a': {
+        clearfix: true,
+        color: hovered ? color || theme.color : theme.dark2,
+        onHover: {
+          color: color || theme.color,
+        },
+        '> span': {
+          float: 'left',
+          whiteSpace: 'nowrap',
+          overflowX: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '50%',
+        },
+        '> span:last-child': {
+          opacity: 0.85,
+          fontSize: '90%',
+          float: 'right',
+          marginRight: theme.space4,
+          whiteSpace: 'nowrap',
+          overflowX: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '38%',
+        },
       },
-      '> span:last-child': {
-        opacity: 0.85,
-        fontSize: '90%',
-        float: 'right',
-        marginRight: theme.space4,
-        whiteSpace: 'nowrap',
-        overflowX: 'hidden',
-        textOverflow: 'ellipsis',
-        maxWidth: '38%',
-      },
-    },
-  }),
-  ({ className, slug, name, kurz, org, telefon, onMouseEnter, onMouseLeave }) =>
-    <li className={className}>
-      <Link
-        to={slug || '/'}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
-        <span>
-          {kurz || name}
-        </span>
-        <span>
-          {org || telefon}
-        </span>
-      </Link>
-    </li>,
-  p => Object.keys(p)
+    }),
+    ({
+      className,
+      slug,
+      name,
+      kurz,
+      org,
+      telefon,
+      onMouseEnter,
+      onMouseLeave,
+    }) =>
+      <li className={className}>
+        <Link
+          to={slug || '/'}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          <span>
+            {kurz || name}
+          </span>
+          <span>
+            {org || telefon}
+          </span>
+        </Link>
+      </li>,
+    p => Object.keys(p)
+  )
 );
 
 @withRouter
@@ -83,6 +94,7 @@ const Item = createComponent(
     options: () => ({}),
   }
 )
+@withCreate('org')
 class VerzeichnisBlock extends Component {
   state = { hover: undefined };
 
