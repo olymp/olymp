@@ -3,10 +3,11 @@ import createPasswordEngine from './utils/password-engine';
 import createTokenEngine from './utils/token-engine';
 import speakeasy from 'speakeasy';
 import shortId from 'shortid';
+import qrcode from 'qrcode';
 
 const qr = (email, x, issuer) =>
   new Promise((yay, nay) => {
-    require('qrcode').toString(
+    qrcode.toString(
       `otpauth://totp/${email}?secret=${x}&issuer=${issuer || 'Olymp'}`,
       { type: 'svg' },
       (err, data) => (err ? nay(err) : yay(data))
@@ -196,7 +197,7 @@ export default ({ monk, secret, mail, issuer }) => {
             secret = null;
           } else {
             secret = untoken.secret;
-            var verified = speakeasy.totp.verify({
+            let verified = speakeasy.totp.verify({
               secret,
               encoding: 'base32',
               token: totp,
