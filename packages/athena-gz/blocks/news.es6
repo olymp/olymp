@@ -30,21 +30,20 @@ const loaderSchema = [
   },
 ];
 
-const getItems = (items, filter, title) =>
-  sortBy(items.filter(filter), ['date']).reverse().slice(0, 5).map(item =>
-    <Item key={item.id}>
-      <b>
-        {title(item)}
-      </b>
-      <p>
-        {item.name}
-      </p>
-      {item.slug &&
-        <Link to={{ pathname: `/news${item.slug}` }}>
-          Nähere Informationen
-        </Link>}
-    </Item>
-  );
+const RightItem = ({ item, title }) =>
+  <Item key={item.id}>
+    <b>
+      {title}
+    </b>
+    <p>
+      {item.name}
+    </p>
+    {item.slug &&
+      <Link to={{ pathname: `/news${item.slug}` }}>Nähere Informationen</Link>}
+  </Item>;
+
+const RightNewsItem = withEdit('news')(RightItem);
+const RightEventsItem = withEdit('events')(RightItem);
 
 const NewsItem = withEdit('news')(props => {
   const { art, date, name, description, org, slug } = props;
@@ -77,19 +76,15 @@ const NewsItem = withEdit('news')(props => {
   );
 });
 
-const Listing = withCreate('news')(({ items }) =>
+const NewsListing = withCreate('news')(({ children }) =>
   <div>
-    {items.map(item =>
-      <NewsItem
-        {...item}
-        onClick={() =>
-          this.setState({
-            open: open === item.id ? undefined : item.id,
-          })}
-        org={item.org || {}}
-        key={item.id}
-      />
-    )}
+    {children}
+  </div>
+);
+
+const EventsListing = withCreate('events')(({ children }) =>
+  <div>
+    {children}
   </div>
 );
 
@@ -201,7 +196,19 @@ class News extends Component {
         <Container {...attributes}>
           <Grid>
             <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-              <Listing items={items} />
+              <NewsListing>
+                {items.map(item =>
+                  <NewsItem
+                    {...item}
+                    onClick={() =>
+                      this.setState({
+                        open: open === item.id ? undefined : item.id,
+                      })}
+                    org={item.org || {}}
+                    key={item.id}
+                  />
+                )}
+              </NewsListing>
             </Grid.Item>
             <Column
               medium={4}
@@ -212,19 +219,36 @@ class News extends Component {
               paddingMedium="0 1rem"
             >
               <H2 right>Vorträge & Veranstaltungen</H2>
-              {getItems(
-                events,
-                item => true,
-                item =>
-                  `${moment(item.date).format('DD. MMMM YYYY, HH:mm')} Uhr`
-              )}
+              <EventsListing>
+                {sortBy(events, ['date'])
+                  .reverse()
+                  .slice(0, 5)
+                  .map(item =>
+                    <RightEventsItem
+                      item={item}
+                      id={item.id}
+                      key={item.id}
+                      title={`${moment(item.date).format(
+                        'DD. MMMM YYYY, HH:mm'
+                      )} Uhr`}
+                    />
+                  )}
+              </EventsListing>
 
               <H2 right>Publikationen & Presse</H2>
-              {getItems(
-                news,
-                item => true,
-                item => moment(item.date).format('DD. MMMM YYYY')
-              )}
+              <NewsListing>
+                {sortBy(news, ['date'])
+                  .reverse()
+                  .slice(0, 5)
+                  .map(item =>
+                    <RightNewsItem
+                      item={item}
+                      id={item.id}
+                      key={item.id}
+                      title={moment(item.date).format('DD. MMMM YYYY')}
+                    />
+                  )}
+              </NewsListing>
             </Column>
           </Grid>
         </Container>
