@@ -107,7 +107,7 @@ const DownloadLink = createComponent(
   p => Object.keys(p)
 );
 
-const Item = withEdit('magazin')(props => {
+const Item = withEdit('article')(props => {
   const { name, description, slug, org, date, person } = props;
 
   const image = props.image ||
@@ -139,7 +139,7 @@ const Item = withEdit('magazin')(props => {
   );
 });
 
-const Listing = withCreate('magazin')(({ items }) =>
+const Listing = withCreate('article')(({ items }) =>
   <div>
     {items.map(item =>
       <Item
