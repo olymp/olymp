@@ -19,21 +19,25 @@ const dimensionObj = {
 };
 
 export default (mapsKey, mail, key) => {
-  const jwtClient = new google.auth.JWT(
-    mail,
-    null,
-    key.split('\\n').join('\n'),
-    ['https://www.googleapis.com/auth/analytics'], // an array of auth scopes
-    null
-  );
+  const jwtClient =
+    key &&
+    new google.auth.JWT(
+      mail,
+      null,
+      key.split('\\n').join('\n'),
+      ['https://www.googleapis.com/auth/analytics'], // an array of auth scopes
+      null
+    );
 
   const maps = createMaps(mapsKey);
-  jwtClient.authorize((err, tokens) => {
-    if (err) {
-      console.log(err);
-    }
-  });
 
+  if (jwtClient) {
+    jwtClient.authorize((err, tokens) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
   return {
     name: 'geocode',
     queries: `
@@ -47,6 +51,7 @@ export default (mapsKey, mail, key) => {
           source,
           { start, end, time, dimensions = [], sort }
         ) => {
+          if (!jwtClient) return null;
           const dimensionArray = dimensions.map(name => dimensionObj[name]);
           let sorts = '';
           if (!sort || sort === 'PAGEVIEWS') {
@@ -92,7 +97,7 @@ export default (mapsKey, mail, key) => {
                   return o;
                 }, {})
               )
-              .map((x) => {
+              .map(x => {
                 const { year, month, week, date, ...rest } = x;
                 rest.id = shortID.generate();
                 if (time === 'MONTH') {
@@ -195,10 +200,10 @@ export default (mapsKey, mail, key) => {
   };
 };
 
-const convertGeocode = (result) => {
+const convertGeocode = result => {
   const newResult = {};
-  (result.address_components || []).forEach((component) => {
-    component.types.forEach((type) => {
+  (result.address_components || []).forEach(component => {
+    component.types.forEach(type => {
       const newType = type
         .split('_')
         .map(

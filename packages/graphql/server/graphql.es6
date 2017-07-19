@@ -7,14 +7,14 @@ import * as defaultDirectives from './directives';
 
 export default ({ modules = null, directives = {} }) => {
   let schema = null;
-  const apply = modules => {
-    const raw = values({ ...scalarModules, ...modules });
+  const apply = (modules) => {
+    const raw = values({ ...scalarModules, ...modules }).filter(x => x);
     const { onBefore, onAfter } = raw.reduce(
       (store, value) => {
-        if (value && value.onBefore) {
+        if (value.onBefore) {
           store.onBefore.push(value.onBefore);
         }
-        if (value && value.onAfter) {
+        if (value.onAfter) {
           store.onAfter.push(value.onAfter);
         }
         return store;
