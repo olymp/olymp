@@ -2,6 +2,7 @@ import React from 'react';
 import { createComponent, SchemaLoader } from 'olymp-fela';
 import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
+import { withEdit, withCreate } from 'olymp-collection';
 import { H1, Logo } from '../components';
 import { range } from 'lodash';
 
@@ -36,37 +37,39 @@ const MarginContainer = createComponent(
   p => Object.keys(p)
 );
 
-const Item = createComponent(
-  ({ theme, color }) => ({
-    position: 'relative',
-    width: '100%',
-    borderRadius: theme.borderRadius,
-    paddingX: theme.space3,
-    paddingY: theme.space2,
-    '> span': {
-      float: 'right',
-    },
-    '> a': {
-      color: theme.dark,
-    },
-    onHover: {
-      backgroundColor: theme.dark5,
-      '> a': {
-        color,
+const Item = withEdit('org')(
+  createComponent(
+    ({ theme, color }) => ({
+      position: 'relative',
+      width: '100%',
+      borderRadius: theme.borderRadius,
+      paddingX: theme.space3,
+      paddingY: theme.space2,
+      '> span': {
+        float: 'right',
       },
-    },
-    ifSmallDown: {
-      paddingY: theme.space3,
-    },
-  }),
-  ({ className, children, number }) =>
-    <p className={className}>
-      {children}
-      <Phone href={`tel:${number}`}>
-        {number}
-      </Phone>
-    </p>,
-  p => Object.keys(p)
+      '> a': {
+        color: theme.dark,
+      },
+      onHover: {
+        backgroundColor: theme.dark5,
+        '> a': {
+          color,
+        },
+      },
+      ifSmallDown: {
+        paddingY: theme.space3,
+      },
+    }),
+    ({ className, children, number }) =>
+      <div className={className}>
+        {children}
+        <Phone href={`tel:${number}`}>
+          {number}
+        </Phone>
+      </div>,
+    p => Object.keys(p)
+  )
 );
 
 const Phone = createComponent(
@@ -87,44 +90,51 @@ const Info = createComponent(
   p => Object.keys(p)
 );
 
-const component = graphql(
-  gql`
-    query orgList {
-      items: orgList {
-        id
-        name
-        color
-        title
-        telefon
-        slug
+const component = withCreate('org')(
+  graphql(
+    gql`
+      query orgList {
+        items: orgList {
+          id
+          name
+          color
+          title
+          telefon
+          slug
+        }
       }
+    `,
+    {
+      props: ({ ownProps, data }) => ({
+        ...ownProps,
+        data,
+        isLoading: data.loading,
+        items: data.items || [],
+      }),
     }
-  `,
-  {
-    props: ({ ownProps, data }) => ({
-      ...ownProps,
-      data,
-      isLoading: data.loading,
-      items: data.items || [],
-    }),
-  }
-)(({ attributes, items, isLoading }) =>
-  <MarginContainer {...attributes}>
-    <H1>Telefonnummern</H1>
-    <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
-    <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
-      <div>
-        {items.map(item =>
-          <Item number={item.telefon} key={item.id} color={item.color}>
-            <Logo color={item.color} icon={16} />
-            <StyledLink to={item.slug}>
-              {item.title || item.name}
-            </StyledLink>
-          </Item>
-        )}
-      </div>
-    </SchemaLoader>
-  </MarginContainer>
+  )(({ attributes, items, isLoading }) =>
+    <MarginContainer {...attributes}>
+      <H1>Telefonnummern</H1>
+      <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
+      <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
+        <div>
+          {items.map(item =>
+            <Item
+              number={item.telefon}
+              key={item.id}
+              id={item.id}
+              color={item.color}
+            >
+              <Logo color={item.color} icon={16} />
+              <StyledLink to={item.slug}>
+                {item.title || item.name}
+              </StyledLink>
+            </Item>
+          )}
+        </div>
+      </SchemaLoader>
+    </MarginContainer>
+  )
 );
 
 export default {
