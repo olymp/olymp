@@ -50,7 +50,10 @@ const renderGateway = (
           <Link
             to={{
               pathname,
-              query: { [`@${lowerFirst(binding.type)}`]: bindingId },
+              query: {
+                [`@${lowerFirst(binding.type)}`]: bindingId,
+                modal: null,
+              },
             }}
           >
             <Icon type="edit" />
