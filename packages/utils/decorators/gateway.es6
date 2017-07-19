@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { GatewayRegistry } from 'react-gateway';
 
-const withToolbar = type => WrappedComponent => {
+const withToolbar = (type = 'toolbar') => WrappedComponent => {
   class WithToolbar extends Component {
     static contextTypes = {
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,

@@ -1,9 +1,8 @@
-import React, { Component, createElement } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, Children } from 'react';
 import { withRouter } from 'olymp-router';
+import { withGateway } from 'olymp-utils';
 import { Form, Menu, Icon } from 'antd';
 import { Modal, createComponent, border } from 'olymp-fela';
-import { GatewayRegistry } from 'react-gateway';
 import { withCollection, withItem } from '../decorators';
 import { getFormSchema } from './detail';
 import { DetailForm } from '../components';
@@ -36,13 +35,28 @@ const HiddenForm = createComponent(
 const AntMenu = createComponent(
   ({ theme }) => ({
     borderY: border(theme, theme.dark3),
-    backgroundColor: theme.dark,
     boxShadow: 'inset 0 0 10px 0 rgba(0, 0, 0, 0.2)',
+    backgroundColor: theme.dark1,
+    hasFlex: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
     '> li': {
-      // backgroundColor: 'rgba(255, 255, 255, 0.03)',
+      hasFlex: {
+        flex: '1 1 auto',
+        textAlign: 'center',
+      },
       padding: theme.space0,
       '> div > div': {
         padding: theme.space0,
+      },
+      '& i': {
+        paddingX: theme.space2,
+      },
+    },
+    '> li:nth-last-of-type(-n+2)': {
+      hasFlex: {
+        flex: 'none',
       },
     },
   }),
@@ -54,29 +68,12 @@ const AntMenu = createComponent(
 @withRouter
 @withCollection
 @withItem
+@withGateway('toolbar')
 @Form.create()
 export default class CollectionModal extends Component {
-  static contextTypes = {
-    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    this.gatewayRegistry = context.gatewayRegistry;
-  }
-
   state = {
-    children: null,
     tab: undefined,
   };
-
-  componentWillMount() {
-    this.gatewayRegistry.addContainer('toolbar', this);
-  }
-
-  componentWillUnmount() {
-    this.gatewayRegistry.removeContainer('toolbar', this);
-  }
 
   render() {
     const {
@@ -87,8 +84,8 @@ export default class CollectionModal extends Component {
       onSave,
       onClose,
       item,
+      toolbar,
     } = this.props;
-    const { children } = this.state;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = this.state.tab || keys[0];
@@ -107,32 +104,26 @@ export default class CollectionModal extends Component {
             </RightMenuItem>
           )}
         </Menu>
-        {children && !!children.length && createElement(AntMenu, {}, children)}
+
+        <AntMenu>
+          {toolbar}
+
+          <Menu.Item key="save">
+            <a href="javascript:;" onClick={onSave}>
+              <Icon type="save" />
+            </a>
+          </Menu.Item>
+          <Menu.Item key="close">
+            <a href="javascript:;" onClick={onClose}>
+              <Icon type="close" />
+            </a>
+          </Menu.Item>
+        </AntMenu>
       </div>
-    );
-    const footer = (
-      <Menu mode="horizontal" theme="dark">
-        <Menu.Item key="save">
-          <a href="javascript:;" onClick={onSave}>
-            <Icon type="save" /> Speichern
-          </a>
-        </Menu.Item>
-        <Menu.Item key="close">
-          <a href="javascript:;" onClick={onClose}>
-            Abbrechen
-          </a>
-        </Menu.Item>
-      </Menu>
     );
 
     return (
-      <Modal
-        width={900}
-        open={open}
-        header={header}
-        footer={footer}
-        onClose={onClose}
-      >
+      <Modal width={900} open={open} header={header} onClose={onClose}>
         <Content>
           {keys.map(tab =>
             <HiddenForm
