@@ -10,6 +10,7 @@ import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
+import { withEdit, withCreate } from 'olymp-collection';
 import { orderBy, upperFirst, range } from 'lodash';
 import moment from 'moment';
 import { H2, Panel, Item as ListItem } from '../components';
@@ -106,7 +107,7 @@ const DownloadLink = createComponent(
   p => Object.keys(p)
 );
 
-const Item = props => {
+const Item = withEdit('magazin')(props => {
   const { name, description, slug, org, date, person } = props;
 
   const image = props.image ||
@@ -118,26 +119,41 @@ const Item = props => {
   };
 
   return (
-    <Panel
-      accent={org.color}
-      title={name}
-      subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name ||
-        'Redaktion'}`}
-    >
-      <Img value={image} width={160} avatar />
-      <Content>
-        <p>
-          {description}
-        </p>
-        {slug &&
-          <Link to={{ pathname: `/magazin${slug}` }}>Weiterlesen...</Link>}
-      </Content>
-    </Panel>
+    <Grid>
+      <Panel
+        accent={org.color}
+        title={name}
+        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name ||
+          'Redaktion'}`}
+      >
+        <Img value={image} width={160} avatar />
+        <Content>
+          <p>
+            {description}
+          </p>
+          {slug &&
+            <Link to={{ pathname: `/magazin${slug}` }}>Weiterlesen...</Link>}
+        </Content>
+      </Panel>
+    </Grid>
   );
-};
+});
+
+const Listing = withCreate('magazin')(({ items }) =>
+  <div>
+    {items.map(item =>
+      <Item
+        {...item}
+        org={item.org || {}}
+        person={item.person || {}}
+        key={item.id}
+      />
+    )}
+  </div>
+);
 
 const TagContainer = createComponent(
-  ({ theme }) => ({
+  () => ({
     hasFlex: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -242,14 +258,7 @@ const component = graphql(
       <Container {...attributes}>
         <Grid>
           <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
-            {items.map(item =>
-              <Item
-                {...item}
-                org={item.org || {}}
-                person={item.person || {}}
-                key={item.id}
-              />
-            )}
+            <Listing items={items} />
           </Grid.Item>
           <Column
             medium={4}
