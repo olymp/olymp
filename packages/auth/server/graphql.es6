@@ -1,4 +1,5 @@
 import mails from './mails';
+import shortID from 'shortid';
 
 export default ({ attributes = '' } = {}) => ({
   name: 'user',
@@ -84,26 +85,24 @@ export default ({ attributes = '' } = {}) => ({
       },
       confirm: (source, args, { authEngine }) =>
         authEngine.confirm(args.token).then(({ user }) => user),
-      user: (source, args, { user, monk }) => {
+      user: (source, { id, input, type }, { user, monk }) => {
         if (user && user.isAdmin) {
-        } else if (user && user.id === args.id) {
+        } else if (user && user.id === id) {
         } else {
           throw new Error('No permission');
         }
         // eslint-disable-line no-shadow
-        if (args.type && args.type === 'REMOVE') {
-          return monk.remove('user', Object.assign({}, args));
-        } else if (args.input) {
-          const id = args.id;
-          args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
-          delete args.input; // eslint-disable-line no-param-reassign
-          args.id = id;
+        if (type && type === 'REMOVE') {
+          return monk.collection('user').remove({ id }).then(x => ({ id }));
         }
-        delete args.type; // eslint-disable-line no-param-reassign
-        delete args.isAdmin;
-        return monk.collection('user').update({ id: user.id }, args);
-        // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
-        // else return collection.insertOne(args);
+        input.id = id || shortID.generate();
+        if (id) {
+          return monk
+            .collection('user')
+            .update({ id }, input, { upsert: true })
+            .then(x => input);
+        }
+        return monk.collection('user').insert(input).then(x => input);
       },
       invitation: (source, args, { user, monk, mail, authEngine }) => {
         if (!user || !user.isAdmin) {
