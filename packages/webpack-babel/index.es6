@@ -76,9 +76,9 @@ module.exports = (config, options) => {
     babelOptions.plugins.push(
       resolvePlugin('transform-react-constant-elements', 'babel-plugin-')
     );
-    babelOptions.plugins.push(
+    /* babelOptions.plugins.push(
       resolvePlugin('transform-react-inline-elements', 'babel-plugin-')
-    );
+    );*/
     babelOptions.plugins.push(
       resolvePlugin('transform-react-remove-prop-types', 'babel-plugin-')
     );
@@ -121,17 +121,17 @@ module.exports = (config, options) => {
           cacheDirectory: resolve(appRoot, folder, target, 'cache-babel'),
         },
       },
-      isProd
+      /* isProd
         ? {
             loader: 'rollup-loader',
             options: {
               plugins: [rollupBabel(babelOptions)],
             },
           }
-        : {
-            loader: 'babel-loader',
-            options: babelOptions,
-          },
+        : */ {
+        loader: 'babel-loader',
+        options: babelOptions,
+      },
     ],
     include: [
       // path.resolve(appRoot, 'server'),
