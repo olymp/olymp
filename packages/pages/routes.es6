@@ -17,7 +17,7 @@ const renderGateway = (
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
   return (
-    <Gateway into="quick2">
+    <Gateway into="quick">
       <Menu.SubMenu title={<Icon type="plus" />}>
         <Menu.Item key="page-plus">
           <Link

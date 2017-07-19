@@ -1,11 +1,10 @@
-import React, { Component, Children, createElement } from 'react';
-import PropTypes from 'prop-types';
-import { withLang, Logo } from 'olymp-utils';
+import React, { Component, Children } from 'react';
+import { withLang, Logo, withGateway } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent, border } from 'olymp-fela';
-import { GatewayDest, GatewayRegistry } from 'react-gateway';
+import { GatewayDest } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
@@ -73,21 +72,15 @@ const VerticalMenu = createComponent(
 );
 
 const LeftMenu = createComponent(
-  ({ theme, bordered }) => ({
+  ({ theme }) => ({
     float: 'left',
-    '> li:first-of-type': {
-      borderLeft: bordered && border(theme),
-    },
-    '> li:last-of-type': {
-      borderRight: bordered && border(theme),
-    },
   }),
   p => <Menu {...p} />,
   p => Object.keys(p)
 );
 
 const RightMenu = createComponent(
-  ({ theme }) => ({
+  () => ({
     float: 'right !important',
     '> ul': {
       right: 0,
@@ -119,10 +112,9 @@ const ToolMenu = createComponent(
 );
 
 const Filler = createComponent(
-  ({ theme, left, right }) => ({
+  ({ theme }) => ({
     flex: '1 1 0%',
-    borderLeft: left && border(theme),
-    borderRight: right && border(theme),
+    borderX: border(theme),
     backgroundColor: 'rgba(255, 255, 255, 0.04)',
   }),
   p => <div {...p} />,
@@ -132,16 +124,8 @@ const Filler = createComponent(
 const AntMenu = ({ keys, ...p }) =>
   <LeftMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
-const AntMenuBordered = p => <AntMenu bordered {...p} />;
-
 const AntMenuToolbar = ({ keys, ...p }) =>
-  <ToolMenu
-    theme="dark"
-    selectedKeys={keys}
-    mode="horizontal"
-    bordered
-    {...p}
-  />;
+  <ToolMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
   <AntMenu selectedKeys={keys} {...p}>
@@ -152,33 +136,21 @@ const AntSubMenu = ({ keys, title, children, ...p }) =>
 
 @withLang
 @withAuth
+@withGateway('toolbar')
+@withGateway('navigation')
 class Navigation extends Component {
-  static contextTypes = {
-    gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    this.gatewayRegistry = context.gatewayRegistry;
-  }
-
-  state = {
-    children: null,
-  };
-
-  componentWillMount() {
-    this.gatewayRegistry.addContainer('toolbar', this);
-  }
-
-  componentWillUnmount() {
-    this.gatewayRegistry.removeContainer('toolbar', this);
-  }
-
   render() {
-    const { auth, setDeviceWidth, query, collectionList } = this.props;
-    const { children } = this.state;
+    const {
+      auth,
+      setDeviceWidth,
+      query,
+      collectionList,
+      toolbar,
+      navigation,
+      quick,
+    } = this.props;
     const keys = Object.keys(query);
-    const short = children && children.length;
+    const short = toolbar && toolbar.length;
 
     if (!keys.filter(x => x[0] === '@').length) {
       keys.push('@home');
@@ -247,25 +219,21 @@ class Navigation extends Component {
             </Menu.Item>}
         </AntMenu>
 
-        <Filler left />
+        <Filler />
 
-        {!!Children.toArray(children).length &&
+        {!!Children.toArray(toolbar).length &&
           <AntMenuToolbar>
-            {children}
+            {toolbar}
           </AntMenuToolbar>}
-        {!!Children.toArray(children).length && <Filler />}
+        {!!Children.toArray(toolbar).length && <Filler />}
 
-        <GatewayDest
-          name="navigation"
-          component={
-            /* children && children.length ? AntSubMenu :*/ AntMenuBordered
-          }
-        />
-
-        <Filler right />
+        {!!Children.toArray(navigation).length &&
+          <AntMenu>
+            {navigation}
+          </AntMenu>}
+        {!!Children.toArray(navigation).length && <Filler />}
 
         <GatewayDest name="quick" component={AntMenu} />
-        <GatewayDest name="quick2" component={AntMenu} />
 
         <AntSubMenu
           title={
