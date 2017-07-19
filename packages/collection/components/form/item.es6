@@ -1,13 +1,12 @@
 import React from 'react';
 import { Form } from 'antd';
-import { withAuth } from 'olymp-auth';
 import { toLabel } from 'olymp-utils';
 import { getEditor, getValidationRules, getInitialValue } from './utils';
 
 const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } };
 const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 
-export default withAuth((props) => {
+export default props => {
   const { field, clean, itemStyle, style, form } = props;
   const { getFieldValue, getFieldError } = form;
 
@@ -46,7 +45,7 @@ export default withAuth((props) => {
       style={{ ...itemStyle, ...style }}
       {...(field.type.name === 'Blocks' || clean
         ? formItemLayout0
-        : formItemLayout) }
+        : formItemLayout)}
     >
       {form.getFieldDecorator(field.name, {
         initialValue: getInitialValue(props, field),
@@ -55,7 +54,7 @@ export default withAuth((props) => {
       })(editor)}
     </Form.Item>
   );
-});
+};
 
 /*
 const isDateRange = !!field['@'].start && !!field['@'].endField;
