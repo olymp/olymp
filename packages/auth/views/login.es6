@@ -26,10 +26,10 @@ export default class AuthLogin extends Component {
       auth
         .login(values.email, values.password, values.totp)
         .then(({ name }) => {
-          onSuccess('Anmeldung erfolgreich', `Wilkommen, ${name}`);
+          onSuccess('Anmeldung erfolgreich', `Willkommen, ${name}`);
           onClose();
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.message.indexOf('Please provide a totp token') !== -1) {
             onTotp();
           } else {
