@@ -39,13 +39,22 @@ export default type => WrappedComponent => {
           display: 'none',
         },
         onHover: {
+          onBefore: {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            backgroundColor: theme.dark5,
+          },
           onAfter: {
+            content: '""',
             position: 'absolute',
             top: 0,
             right: 0,
             height: '100%',
             width: 2,
-            content: '""',
             borderRight: `2px solid ${theme.color}`,
             zIndex: 1,
           },
