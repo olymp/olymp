@@ -53,9 +53,8 @@ module.exports = ({
         path.resolve(appRoot, 'app'),
       ],
       alias: {
-        '@history': isServerless
-          ? 'history/createHashHistory'
-          : isNode
+        '@history':
+          isNode || isServerless
             ? 'history/createMemoryHistory'
             : 'history/createBrowserHistory',
         antd: path.resolve(appRoot, 'node_modules', 'antd'),
