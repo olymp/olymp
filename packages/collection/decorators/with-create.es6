@@ -10,11 +10,12 @@ import { Button } from 'antd';
 export default type => WrappedComponent => {
   const CreateButton = withRouter(
     createComponent(
-      () => ({
+      ({ top }) => ({
         position: 'absolute',
         left: '50%',
-        bottom: 1,
-        transform: 'translate(-50%, 50%)',
+        top: top && 1,
+        bottom: !top && 1,
+        transform: top ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
         zIndex: 2,
       }),
       ({ className, pathname, query }) =>
@@ -39,6 +40,16 @@ export default type => WrappedComponent => {
           display: 'none',
         },
         onHover: {
+          onBefore: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: 2,
+            content: '""',
+            borderTop: `2px solid ${theme.color}`,
+            zIndex: 1,
+          },
           onAfter: {
             position: 'absolute',
             bottom: 0,
@@ -57,6 +68,7 @@ export default type => WrappedComponent => {
       ({ className, auth, ...p }) =>
         auth && auth.user
           ? <div className={className}>
+              <CreateButton top />
               <WrappedComponent {...p} />
               <CreateButton />
             </div>
