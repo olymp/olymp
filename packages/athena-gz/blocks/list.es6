@@ -149,7 +149,7 @@ class VerzeichnisBlock extends Component {
       if (item.fachrichtungen) {
         item.fachrichtungen.forEach(leistung =>
           spezial.push({
-            id: leistung,
+            id: `${item.id}-${leistung}`,
             name: leistung,
             orgId: item.id,
             color: item.color,
