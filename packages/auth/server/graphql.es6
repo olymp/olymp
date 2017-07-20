@@ -1,12 +1,13 @@
 import mails from './mails';
 import shortID from 'shortid';
+import { get } from 'lodash';
 
 export default ({ attributes = '' } = {}) => ({
   name: 'user',
   queries: `
       checkTokenMail(token: String): String
       checkToken(token: String): Boolean
-      verify: User
+      verify(token: String): User
       invitationList: [Invitation]
       invitation(id: String): Invitation
       userList: [User]
@@ -19,7 +20,7 @@ export default ({ attributes = '' } = {}) => ({
       forgot(email: Email): Boolean
       register(input: UserInput, password: String, token: String): User
       reset(token: String, password: String): User
-      login(email: Email, password: String, totp: String): User
+      login(email: Email, password: String, totp: String, useToken: Boolean): User
       logout: Boolean
       user(id: String, input: UserInput, type: USER_MUTATION_TYPE): User
       invitation(id: String, input: InvitationInput, type: USER_MUTATION_TYPE): Invitation
@@ -30,8 +31,12 @@ export default ({ attributes = '' } = {}) => ({
         authEngine.checkTokenValue(args.token, 'email'),
       checkToken: (source, args, { authEngine }) =>
         authEngine.checkToken(args.token),
-      verify: (source, args, { authEngine, session }) =>
-        session && session.userId && authEngine.getUser(session.userId),
+      verify: (source, { token }, { authEngine, session }) =>
+        token
+          ? authEngine.verify(token).then(x => x.user)
+          : get(session, 'userId')
+            ? authEngine.getUser(get(session, 'userId'))
+            : null,
       // verify: (source, args) => auth.verify(args.token),
       invitationList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
@@ -72,13 +77,19 @@ export default ({ attributes = '' } = {}) => ({
         authEngine.reset(args.token, args.password).then(({ user }) => user),
       totpConfirm: (source, args, { authEngine }) =>
         authEngine.totpConfirm(args.token, args.totp).then(x => x),
-      login: (source, args, { session, authEngine }) =>
-        authEngine
-          .login(args.email, args.password, args.totp)
-          .then((userAndToken) => {
-            session.userId = userAndToken.user.id; // eslint-disable-line no-param-reassign
-            return userAndToken.user;
-          }),
+      login: (
+        source,
+        { email, password, totp, useToken },
+        { session, authEngine }
+      ) =>
+        authEngine.login(email, password, totp).then(({ user, token }) => {
+          if (useToken) {
+            user.token = token;
+          } else {
+            session.userId = user.id; // eslint-disable-line no-param-reassign
+          }
+          return user;
+        }),
       logout: (source, args, { session }) => {
         delete session.userId; // eslint-disable-line no-param-reassign
         return true;
@@ -119,7 +130,7 @@ export default ({ attributes = '' } = {}) => ({
         delete args.type; // eslint-disable-line no-param-reassign
         args.expiry = +new Date();
         args.token = authEngine.tokenEngine.create({ email: args.email });
-        return monk.collection('invitation').insert(args).then((u) => {
+        return monk.collection('invitation').insert(args).then(u => {
           console.log('INVITE', u.token, u);
           if (mail) {
             mail(mails.invite, {

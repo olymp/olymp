@@ -64,6 +64,20 @@ const networkInterface = createBatchingNetworkInterface({
   },
 });
 
+networkInterface.use([
+  {
+    applyBatchMiddleware(req, next) {
+      if (!req.options.headers) {
+        req.options.headers = {}; // Create the header object if needed.
+      }
+      // get the authentication token from local storage if it exists
+      const token = localStorage.getItem('token');
+      req.options.headers.authorization = token ? `Bearer ${token}` : null;
+      next();
+    },
+  },
+]);
+
 /* if (process.env.GRAPHQL_SUB) {
   const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
     reconnect: true

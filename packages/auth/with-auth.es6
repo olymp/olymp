@@ -13,12 +13,13 @@ const Spinner = createComponent(
   p => Object.keys(p)
 );
 
-const baseAttributes = 'id, name, email, isAdmin';
+const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
-export const auth = obj => (WrappedComponent) => {
-  if (obj && obj.extraAttributes) {
-    attributes = `${baseAttributes}, ${obj.extraAttributes}`;
+export const auth = (obj = {}) => (WrappedComponent) => {
+  const { extraAttributes, useLocalStorage } = obj;
+  if (extraAttributes) {
+    attributes = `${baseAttributes}, ${extraAttributes}`;
   }
   const inner = (WrappedComponent) => {
     const component = (props) => {
@@ -29,20 +30,36 @@ export const auth = obj => (WrappedComponent) => {
           props.client,
           props.data.refetch,
           props.data.user,
-          props.data.loading
+          props.data.loading,
+          useLocalStorage
         ),
       };
       return <WrappedComponent auth={auth} {...props} />;
     };
     return graphql(
       gql`
-        query verify {
-          user: verify {
+        query verify($token: String) {
+          user: verify(token: $token) {
             ${attributes}
           }
         }
       `,
       {
+        options: {
+          variables: {
+            token: useLocalStorage ? localStorage.getItem('token') : null,
+          },
+        },
+        props: ({ ownProps, data }) => {
+          if (data.error && useLocalStorage) {
+            localStorage.removeItem('token');
+            data.refetch();
+          }
+          return {
+            ...ownProps,
+            data,
+          };
+        },
         // forceFetch: true,
       }
     )(withApollo(component));
@@ -76,7 +93,7 @@ export default (WrappedComponent) => {
 };
 
 // ///////////////
-const authMethods = (client, refetch, user, loading) => ({
+const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
   can: (method) => {
     if (loading) {
       return true;
@@ -108,12 +125,14 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation invitation($invitation: InvitationInput) {
-          invitation(input: $invitation) {
-            id, name, email
+          mutation invitation($invitation: InvitationInput) {
+            invitation(input: $invitation) {
+              id
+              name
+              email
+            }
           }
-        }
-      `,
+        `,
         variables: { invitation },
       })
       .then(({ data, errors }) => {
@@ -146,10 +165,10 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation logout {
-          logout
-        }
-      `,
+          mutation logout {
+            logout
+          }
+        `,
       })
       .then(({ data, errors }) => {
         if (errors) {
@@ -220,9 +239,9 @@ const authMethods = (client, refetch, user, loading) => ({
       .mutate({
         mutation: gql`
         mutation login {
-          user: login(email:"${email}", password:"${password}"${totp
-          ? `, totp:"${totp}"`
-          : ''}) {
+          user: login(email:"${email}", password:"${password}", useToken:${useLocalStorage
+  ? 'true'
+  : 'false'}${totp ? `, totp:"${totp}"` : ''}) {
             ${attributes}
           }
         }
@@ -233,7 +252,12 @@ const authMethods = (client, refetch, user, loading) => ({
           throw errors[0];
         }
         const { user } = data;
-        if (refetch) {
+        if (useLocalStorage) {
+          localStorage.setItem('token', user.token);
+          if (refetch) {
+            refetch({ token: user.token });
+          }
+        } else if (refetch) {
           refetch({});
         }
         return user;
@@ -271,10 +295,10 @@ const authMethods = (client, refetch, user, loading) => ({
     client
       .mutate({
         mutation: gql`
-        mutation totpConfirm($token: String, $totp: String) {
-          totpConfirm(token: $token, totp: $totp)
-        }
-      `,
+          mutation totpConfirm($token: String, $totp: String) {
+            totpConfirm(token: $token, totp: $totp)
+          }
+        `,
         variables: { token, totp },
       })
       .then(({ data, errors }) => {
