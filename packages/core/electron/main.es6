@@ -20,8 +20,8 @@ function createWindow() {
     minWidth: 600,
     minHeight: 450,
     center: true,
-    frame: false,
-    titleBarStyle: 'hiddenInset',
+    // frame: false,
+    // titleBarStyle: 'hidden',
   });
 
   // and load the index.html of the app.
