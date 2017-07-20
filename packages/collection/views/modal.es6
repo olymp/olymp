@@ -105,25 +105,41 @@ export default class CollectionModal extends Component {
           )}
         </Menu>
 
-        <AntMenu>
-          {toolbar}
+        {currentTab === 'Text' &&
+          <AntMenu>
+            {toolbar}
 
-          <Menu.Item key="save">
-            <a href="javascript:;" onClick={onSave}>
-              <Icon type="save" />
-            </a>
-          </Menu.Item>
-          <Menu.Item key="close">
-            <a href="javascript:;" onClick={onClose}>
-              <Icon type="close" />
-            </a>
-          </Menu.Item>
-        </AntMenu>
+            <Menu.Item key="close">
+              <a href="javascript:;" onClick={onClose}>
+                <Icon type="close" />
+              </a>
+            </Menu.Item>
+          </AntMenu>}
       </div>
+    );
+    const footer = (
+      <Menu mode="horizontal" theme="dark">
+        <Menu.Item key="save">
+          <a href="javascript:;" onClick={onSave}>
+            <Icon type="save" /> Speichern
+          </a>
+        </Menu.Item>
+        <Menu.Item key="close">
+          <a href="javascript:;" onClick={onClose}>
+            Abbrechen
+          </a>
+        </Menu.Item>
+      </Menu>
     );
 
     return (
-      <Modal width={900} open={open} header={header} onClose={onClose}>
+      <Modal
+        width={900}
+        open={open}
+        header={header}
+        footer={footer}
+        onClose={onClose}
+      >
         <Content>
           {keys.map(tab =>
             <HiddenForm
