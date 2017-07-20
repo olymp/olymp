@@ -156,7 +156,7 @@ const component = createComponent(
             display: 'none',
           },
           '> .ant-modal-body': {
-            padding: padding || theme.space2,
+            padding: padding === undefined ? theme.space2 : padding,
             '> *': {
               marginY: theme.space3,
             },
@@ -220,7 +220,6 @@ component.Button = props => <AntButton {...props} />;
 
 component.Links = createComponent(
   ({ theme }) => ({
-    marginTop: 20,
     textAlign: 'center',
     '> a': {
       display: 'inline-block',
