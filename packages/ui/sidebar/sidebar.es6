@@ -34,20 +34,6 @@ const StyledInner = createComponent(
       '> .ant-modal-close': {
         display: 'none',
       },
-      '> .ant-modal-body': {
-        '> .ant-tabs > .ant-tabs-bar': {
-          marginBottom: 0,
-        },
-        flex: '1 1 0%',
-        overflowY: 'auto',
-        paddingLeft: paddingX,
-        paddingRight: paddingX,
-        paddingTop: paddingY,
-        paddingBottom: paddingY,
-        padding,
-        position: 'relative',
-        // boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.05)',
-      },
       '> .ant-modal-header': {
         textAlign: 'center',
         position: 'relative',
@@ -62,6 +48,29 @@ const StyledInner = createComponent(
           paddingBottom: theme.space3,
           ellipsis: true,
         },
+      },
+      '> .ant-modal-body': {
+        '> .ant-tabs > .ant-tabs-bar': {
+          marginBottom: 0,
+          hasFlex: {
+            '& .ant-tabs-nav': {
+              display: 'flex',
+              '>  .ant-tabs-tab': {
+                flex: '1 1 0%',
+                textAlign: 'center',
+              },
+            },
+          },
+        },
+        flex: '1 1 0%',
+        overflowY: 'auto',
+        paddingLeft: paddingX,
+        paddingRight: paddingX,
+        paddingTop: paddingY,
+        paddingBottom: paddingY,
+        padding,
+        position: 'relative',
+        // boxShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.05)',
       },
       '> .ant-modal-footer': {
         backgroundColor: 'rgba(0, 0, 0, 0.015)',
@@ -137,7 +146,7 @@ const Sidebar = ({
   loading,
   header,
   footer,
-  ...props,
+  ...props
 }) =>
   isOpen
     ? <StyledInner {...props}>
