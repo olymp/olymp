@@ -137,7 +137,7 @@ setTimeout(() => {
     .then(() => {
       log.info('Promise fulfilled');
     })
-    .catch((reason) => {
+    .catch(reason => {
       log.info(`Handle rejected promise (${reason.stack || reason}) here.`);
     });
 }, 1000);
