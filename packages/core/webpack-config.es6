@@ -142,7 +142,7 @@ module.exports = ({
           loader: 'file-loader?name=[name].[ext]',
         },
         {
-          test: /\.(jpg|jpeg|png|gif|eot|ttf|woff|woff2)$/,
+          test: /\.(jpg|jpeg|png|gif|eot|ttf|woff|woff2|svg)$/,
           loader: 'url-loader',
           options: {
             limit: 20000,
@@ -180,6 +180,9 @@ module.exports = ({
         'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? JSON.stringify(process.env.GRAPHQL_URL)
+          : undefined,
+        'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
+          ? JSON.stringify(process.env.CRASHREPORT_URL)
           : undefined,
         /* 'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
       ? JSON.stringify(process.env.GRAPHQL_SUB)
@@ -239,7 +242,14 @@ module.exports = ({
 
   // webpack plugins
   if (isElectron) {
-    config.plugins.push(new GenerateJsonPlugin('package.json', {}));
+    config.plugins.push(
+      new GenerateJsonPlugin('package.json', {
+        dependencies: {
+          'electron-log': '^2.2.7',
+          'electron-updater': '^2.7.1',
+        },
+      })
+    );
   }
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
@@ -251,7 +261,7 @@ module.exports = ({
         debug: false,
       })
     );
-    /* if (!isElectron) {
+    if (!isElectron) {
       config.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
           compress: {
@@ -271,7 +281,7 @@ module.exports = ({
           sourceMap: false,
         })
       );
-    }*/
+    }
   }
   if (isNode) {
     if (isDev) {

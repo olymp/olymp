@@ -1,7 +1,5 @@
 const { autoUpdater } = require('electron-updater');
 const { Menu, app, BrowserWindow, crashReporter } = require('electron');
-const debug = require('electron-debug')({});
-const log = require('electron-log');
 
 if (process.env.CRASHREPORT_URL) {
   crashReporter.start({
@@ -11,6 +9,7 @@ if (process.env.CRASHREPORT_URL) {
     uploadToServer: true,
   });
 }
+const log = require('electron-log');
 
 log.transports.file.level = 'info';
 

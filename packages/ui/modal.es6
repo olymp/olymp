@@ -63,7 +63,9 @@ export const Modal = (
           {showLogo &&
             theme.logo &&
             <div className="logo">
-              <img src={theme.logo} />
+              {typeof theme.logo === 'string'
+                ? <img src={theme.logo} />
+                : theme.logo}
               <h3>
                 {theme.logoTitle}
               </h3>

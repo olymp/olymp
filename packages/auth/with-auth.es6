@@ -175,8 +175,11 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
         if (errors) {
           throw errors[0];
         }
+        if (useLocalStorage) {
+          localStorage.removeItem('token');
+        }
         if (refetch) {
-          refetch({});
+          refetch({ token: null });
         }
       }),
   forgot: email =>
@@ -232,11 +235,8 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
         }
         return data.confirm;
       }),
-  login: (email, password, totp) => {
-    if (typeof localStorage === 'undefined') {
-      return;
-    }
-    return client
+  login: (email, password, totp) =>
+    client
       .mutate({
         mutation: gql`
         mutation login {
@@ -262,8 +262,7 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
           refetch({});
         }
         return user;
-      });
-  },
+      }),
   register: (user, password, token) =>
     client
       .mutate({
