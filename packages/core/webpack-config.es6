@@ -238,38 +238,40 @@ module.exports = ({
   }
 
   // webpack plugins
+  if (isElectron) {
+    config.plugins.push(new GenerateJsonPlugin('package.json', {}));
+  }
   if (isWeb && isProd) {
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     config.plugins.push(new DuplicatePackageCheckerPlugin());
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-    if (isElectron) {
-      config.plugins.push(new GenerateJsonPlugin('package.json', {}));
-    }
     config.plugins.push(
       new webpack.LoaderOptionsPlugin({
         minimize: true,
         debug: false,
       })
     );
-    config.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-          pure_getters: true,
-          unsafe: true,
-          unsafe_comps: true,
-          screw_ie8: true,
-        },
-        mangle: {
-          screw_ie8: true,
-        },
-        output: {
-          comments: false,
-          screw_ie8: true,
-        },
-        sourceMap: false,
-      })
-    );
+    /* if (!isElectron) {
+      config.plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+          compress: {
+            warnings: false,
+            pure_getters: true,
+            unsafe: true,
+            unsafe_comps: true,
+            screw_ie8: true,
+          },
+          mangle: {
+            screw_ie8: true,
+          },
+          output: {
+            comments: false,
+            screw_ie8: true,
+          },
+          sourceMap: false,
+        })
+      );
+    }*/
   }
   if (isNode) {
     if (isDev) {

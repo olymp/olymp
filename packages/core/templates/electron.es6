@@ -1,4 +1,5 @@
-const { get, castArray } = require('lodash');
+const castArray = require('lodash/castArray');
+const get = require('lodash/get');
 // require('babel-register');
 
 module.exports = templateParams => `

@@ -109,6 +109,7 @@ module.exports = (config, options) => {
         },
       },
     ]);
+    babelOptions.presets.push('babili');
     // babel.options.presets.push(['react-optimize']);
   }
 
