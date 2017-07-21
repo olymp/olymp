@@ -16,13 +16,14 @@ const Spinner = createComponent(
 const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
-export const auth = (obj = {}) => (WrappedComponent) => {
-  const { extraAttributes, useLocalStorage } = obj;
+export const auth = (obj = {}) => WrappedComponent => {
+  const { extraAttributes } = obj;
+  const useLocalStorage = process.env.IS_ELECTRON;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
-  const inner = (WrappedComponent) => {
-    const component = (props) => {
+  const inner = WrappedComponent => {
+    const component = props => {
       const auth = {
         user: props.data.user,
         loading: props.data.loading,
@@ -83,7 +84,7 @@ export const auth = (obj = {}) => (WrappedComponent) => {
   return inner(UserProvider);
 };
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const withUserRenderer = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withUserRenderer.contextTypes = {
@@ -94,7 +95,7 @@ export default (WrappedComponent) => {
 
 // ///////////////
 const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
-  can: (method) => {
+  can: method => {
     if (loading) {
       return true;
     }
@@ -240,8 +241,8 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
         mutation: gql`
         mutation login {
           user: login(email:"${email}", password:"${password}", useToken:${useLocalStorage
-  ? 'true'
-  : 'false'}${totp ? `, totp:"${totp}"` : ''}) {
+          ? 'true'
+          : 'false'}${totp ? `, totp:"${totp}"` : ''}) {
             ${attributes}
           }
         }

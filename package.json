@@ -28,7 +28,13 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": ["react", "universal", "javascript", "express", "webpack"],
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
@@ -61,6 +67,7 @@
     "collectCoverage": true
   },
   "dependencies": {
+    "electron-log": "^2.2.7",
     "eslint-config-olymp": "^16.0.18"
   }
 }
