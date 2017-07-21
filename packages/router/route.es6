@@ -8,7 +8,12 @@ export default withRouter(({ path, exact, render, component, ...rest }) => {
     if (!match) {
       return null;
     }
-    return createElement(component, rest);
+    if (component) {
+      return createElement(component, rest);
+    } else if (render) {
+      return render(rest);
+    }
+    return null;
   }
   const params = isMatch(pathname, { path, exact });
   if (params) {

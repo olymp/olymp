@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
+import withRouter from './with-router';
 
 /**
  * The public API for updating the location programatically
@@ -11,6 +12,7 @@ class Redirect extends React.Component {
     push: PropTypes.bool,
     from: PropTypes.string,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    pathname: PropTypes.string,
   };
 
   static defaultProps = {
@@ -18,10 +20,6 @@ class Redirect extends React.Component {
   };
 
   static contextTypes = {
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
     staticContext: PropTypes.object,
   };
 
@@ -42,13 +40,15 @@ class Redirect extends React.Component {
   }
 
   perform() {
-    const { history } = this.context;
-    const { push, to } = this.props;
+    const { push, to, from, pathname, router } = this.props;
 
+    if (from && from !== pathname) {
+      return;
+    }
     if (push) {
-      history.push(to);
+      router.push(to);
     } else {
-      history.replace(to);
+      router.replace(to);
     }
   }
 
@@ -57,4 +57,4 @@ class Redirect extends React.Component {
   }
 }
 
-export default Redirect;
+export default withRouter(Redirect);
