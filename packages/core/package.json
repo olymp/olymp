@@ -48,5 +48,14 @@
     "webpack-dev-server": "^2.5.1",
     "webpack-node-externals": "^1.6.0",
     "webpack-visualizer-plugin": "^0.1.11"
+  },
+  "optionalDependencies": {
+    "devtron": "^1.4.0",
+    "electron-builder": "^19.16.1",
+    "electron-debug": "^1.2.0",
+    "electron-log": "^2.2.7",
+    "electron-publisher": "^0.1.6",
+    "electron-publisher-s3": "^19.16.0",
+    "electron-updater": "^2.7.1"
   }
 }

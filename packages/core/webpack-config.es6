@@ -243,12 +243,10 @@ module.exports = ({
   // webpack plugins
   if (isElectron) {
     config.plugins.push(
-      new GenerateJsonPlugin('package.json', {
-        dependencies: {
-          'electron-log': '^2.2.7',
-          'electron-updater': '^2.7.1',
-        },
-      })
+      new GenerateJsonPlugin(
+        'package.json',
+        require('./electron/package-json')()
+      )
     );
   }
   if (isWeb && isProd) {
