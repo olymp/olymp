@@ -1,5 +1,5 @@
 {
-  "version": "16.0.43",
+  "version": "16.0.44",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -21,7 +21,7 @@
     "olymp-slate": "^16.0.38",
     "olymp-ui": "^16.0.43",
     "olymp-utils": "^16.0.42",
-    "olymp-webpack-babel": "^16.0.41",
+    "olymp-webpack-babel": "^16.0.44",
     "olymp-webpack-less": "^16.0.30",
     "react-gateway": "^2.7.0",
     "react-gravatar": "^2.6.3"
