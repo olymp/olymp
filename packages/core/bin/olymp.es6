@@ -18,30 +18,31 @@ const createConfig = require(path.resolve(
 ));
 
 const root = process.cwd();
-let olymprc = jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
-  throws: false,
-});
+let olymprc =
+  jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
+    throws: false,
+  }) || {};
+const pckgOlymp =
+  jsonfile.readFileSync(path.resolve(root, 'package.json'), {
+    throws: false,
+  }) || {};
+olymprc = Object.assign({}, pckgOlymp.olymp || {}, olymprc);
 
 if (olymprc.extends) {
   const topFolder = path.resolve(__dirname, '..', '..');
-  const concatMerge = (destinationArray, sourceArray, options) => {
-    return destinationArray.concat(sourceArray);
-  };
-  const requireFirst = name => {
-    return (
-      jsonfile.readFileSync(
-        path.resolve(topFolder, name, '.olymprc'),
-        { throws: false }
-      ) ||
-      jsonfile.readFileSync(
-        path.resolve(topFolder, `olymp-${name}`, '.olymprc'),
-        {
-          throws: false,
-        }
-      ) ||
-      {}
-    );
-  };
+  const concatMerge = (destinationArray, sourceArray, options) =>
+    destinationArray.concat(sourceArray);
+  const requireFirst = name =>
+    jsonfile.readFileSync(path.resolve(topFolder, name, '.olymprc'), {
+      throws: false,
+    }) ||
+    jsonfile.readFileSync(
+      path.resolve(topFolder, `olymp-${name}`, '.olymprc'),
+      {
+        throws: false,
+      }
+    ) ||
+    {};
   olymprc = olymprc.extends.reduce(
     (rc, item) => merge(requireFirst(item), rc, { arrayMerge: concatMerge }),
     olymprc
@@ -203,9 +204,6 @@ if (command === 'dev') {
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
     stats.forEach(c => console.log(c.toString()));
-    stats.forEach(c =>
-      fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
-    );
   });
 } else if (command === 'start') {
   require(path.resolve(process.cwd(), '.dist', 'node', 'main'));
