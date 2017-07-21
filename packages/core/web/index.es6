@@ -77,6 +77,26 @@ networkInterface.use([
     },
   },
 ]);
+networkInterface.useAfter([
+  {
+    applyBatchAfterware(res, next) {
+      // console.log(res.responses);
+      const error =
+        res.responses &&
+        res.responses.filter(
+          x =>
+            x.errors &&
+            x.errors.filter(x => x.message === 'LOGIN_REQUIRED').length
+        ).length;
+      if (error) {
+        return history.push({
+          search: '?login',
+        });
+      }
+      next();
+    },
+  },
+]);
 
 /* if (process.env.GRAPHQL_SUB) {
   const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
