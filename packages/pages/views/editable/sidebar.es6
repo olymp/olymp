@@ -6,6 +6,15 @@ import { createComponent, border } from 'olymp-fela';
 import Tree from './tree';
 import PageForm from './page';
 
+const TabPane = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.light,
+    borderBottom: border(theme),
+  }),
+  Tabs.TabPane,
+  p => Object.keys(p)
+);
+
 const PageTree = ({ form, item, items, navigation, tab, onTabClick }) =>
   <Tabs
     activeKey={tab}
@@ -48,12 +57,3 @@ PageTree.defaultProps = {
   onTabClick: key => console.log(key),
 };
 export default PageTree;
-
-const TabPane = createComponent(
-  ({ theme }) => ({
-    backgroundColor: theme.light,
-    borderBottom: border(theme),
-  }),
-  Tabs.TabPane,
-  p => Object.keys(p)
-);

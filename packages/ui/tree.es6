@@ -43,8 +43,8 @@ Tree.Title = createComponent(
       color: disabled ? theme.dark3 : theme.dark1,
     },
   }),
-  ({ className, children }) =>
-    <span className={className}>
+  ({ className, children, ...p }) =>
+    <span className={className} {...p}>
       {children}
     </span>,
   p => Object.keys(p)

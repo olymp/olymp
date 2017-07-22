@@ -7,6 +7,57 @@ import { Icon, Tooltip } from 'antd';
 import { lowerCase } from 'lodash';
 import { reorderPage, movePage } from '../../gql';
 
+const Title = createComponent(
+  ({ theme }) => ({
+    onHover: {
+      '> a': {
+        display: 'initial',
+      },
+    },
+  }),
+  p => <Tree.Title {...p} />,
+  p => Object.keys(p)
+);
+
+const Button = createComponent(
+  ({ theme, showOnHover }) => ({
+    borderRadius: '50%',
+    size: 23,
+    textAlign: 'center',
+    marginLeft: 3,
+    display: showOnHover && 'none',
+    '> i': {
+      color: theme.color,
+      margin: '0 !important',
+    },
+  }),
+  ({ className, to, type }) =>
+    <Link to={to} className={className}>
+      <Icon type={type} />
+    </Link>,
+  p => Object.keys(p)
+);
+
+const Badge = createComponent(
+  ({ theme }) => ({
+    borderRadius: '50%',
+    size: 23,
+    textAlign: 'center',
+    marginLeft: 3,
+    '> i': {
+      color: theme.dark3,
+      margin: '0 !important',
+    },
+  }),
+  ({ className, type, tooltip }) =>
+    <Tooltip title={tooltip}>
+      <a href="javascript:;" className={className}>
+        <Icon type={type} />
+      </a>
+    </Tooltip>,
+  p => Object.keys(p)
+);
+
 @withRouter
 @reorderPage
 @movePage
@@ -88,12 +139,12 @@ class Pages extends Component {
     return null;
   };
 
-  loop = (data, parent) =>
+  getItems = (data, parent) =>
     data.map(item => {
       const { query } = this.props;
       const children =
         item.children && item.children.length
-          ? this.loop(item.children, item)
+          ? this.getItems(item.children, item)
           : undefined;
 
       return (
@@ -144,7 +195,7 @@ class Pages extends Component {
     });
 
   render() {
-    const { items, selected, pathname, query } = this.props;
+    const { items, selected } = this.props;
 
     return (
       <Tree
@@ -157,7 +208,7 @@ class Pages extends Component {
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
-        {this.loop(items)}
+        {this.getItems(items)}
       </Tree>
     );
   }
@@ -171,60 +222,3 @@ Pages.defaultProps = {
   selected: [],
 };
 export default Pages;
-
-const Title = createComponent(
-  ({ theme }) => ({
-    onHover: {
-      '> a': {
-        display: 'initial',
-      },
-    },
-  }),
-  Tree.Title,
-  p => Object.keys(p)
-);
-
-const Button = createComponent(
-  ({ theme, showOnHover }) => ({
-    borderRadius: '50%',
-    size: 23,
-    textAlign: 'center',
-    marginLeft: 3,
-    display: showOnHover && 'none',
-    '> i': {
-      color: theme.color,
-      margin: '0 !important',
-    },
-    onHover: {
-      /* backgroundColor: `${theme.color} !important`,
-      '> i': {
-        color: theme.light,
-      }, */
-    },
-  }),
-  ({ className, to, type }) =>
-    <Link to={to} className={className}>
-      <Icon type={type} />
-    </Link>,
-  p => Object.keys(p)
-);
-
-const Badge = createComponent(
-  ({ theme }) => ({
-    borderRadius: '50%',
-    size: 23,
-    textAlign: 'center',
-    marginLeft: 3,
-    '> i': {
-      color: theme.dark3,
-      margin: '0 !important',
-    },
-  }),
-  ({ className, type, tooltip }) =>
-    <Tooltip title={tooltip}>
-      <a href="javascript:;" className={className}>
-        <Icon type={type} />
-      </a>
-    </Tooltip>,
-  p => Object.keys(p)
-);

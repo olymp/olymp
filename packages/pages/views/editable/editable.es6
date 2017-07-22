@@ -16,12 +16,13 @@ export default class PageSidebar extends Component {
 
   componentWillReceiveProps = props => {
     if (
-      (props.query['@page'] !== this.props.query['@page'] ||
-        props.query.parent !== this.props.query.parent) &&
-      props.query['@page'] === 'new'
+      props.query['@page'] !== this.props.query['@page'] ||
+      (props.query.parent !== this.props.query.parent &&
+        props.query['@page'] === 'new')
     ) {
       this.setState({ tab: 1 });
     }
+
     if (props.query['@page'] !== this.props.query['@page']) {
       this.props.form.resetFields();
     }
