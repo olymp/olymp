@@ -1,0 +1,16 @@
+{
+  "version": "16.0.0",
+  "name": "olymp-ory",
+  "description": "",
+  "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "license": "MIT",
+  "dependencies": {
+    "ory-editor-core": "^0.2.12",
+    "ory-editor-plugins-divider": "^0.2.12",
+    "ory-editor-plugins-image": "^0.2.12",
+    "ory-editor-plugins-parallax-background": "^0.2.12",
+    "ory-editor-plugins-slate": "^0.2.12",
+    "ory-editor-plugins-spacer": "^0.2.12",
+    "ory-editor-plugins-video": "^0.2.12"
+  }
+}
