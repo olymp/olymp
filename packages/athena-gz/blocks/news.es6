@@ -45,16 +45,16 @@ const RightItem = ({ item, title }) =>
 const RightNewsItem = withEdit('news')(RightItem);
 const RightEventsItem = withEdit('events')(RightItem);
 
-const NewsItem = withEdit('news')(props => {
+const NewsItem = withEdit(({ type }) => type)(props => {
   const { art, date, name, description, org, slug } = props;
 
-  const image = props.image ||
-  org.logo || {
+  const defaultImage = {
     url:
       'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
+  const image = props.image || org.logo || defaultImage;
 
   return (
     <Grid>
@@ -189,8 +189,11 @@ const EventsListing = withCreate('events')(({ children }) =>
 )
 class News extends Component {
   render() {
-    const { attributes, isLoading, events, news } = this.props;
+    const { attributes, isLoading } = this.props;
+    const events = this.props.events.map(item => ({ ...item, type: 'events' }));
+    const news = this.props.news.map(item => ({ ...item, type: 'news' }));
     const items = sortBy([...events, ...news], 'date').reverse();
+
     return (
       <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
         <Container {...attributes}>

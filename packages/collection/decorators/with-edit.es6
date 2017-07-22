@@ -7,7 +7,7 @@ import { Button } from 'antd';
 
 // todo: withAuth auslagern!
 
-export default type => WrappedComponent => {
+export default typeProp => WrappedComponent => {
   const EditButton = withRouter(
     createComponent(
       () => ({
@@ -17,7 +17,7 @@ export default type => WrappedComponent => {
         transform: 'translate(50%, -50%)',
         zIndex: 2,
       }),
-      ({ className, id, pathname, query }) =>
+      ({ className, id, pathname, query, type }) =>
         <Link
           to={{
             pathname,
@@ -63,13 +63,23 @@ export default type => WrappedComponent => {
           },
         },
       }),
-      ({ className, id, auth, ...p }) =>
-        auth && auth.user
-          ? <div className={className}>
-              <WrappedComponent id={id} {...p} />
-              <EditButton id={id} />
-            </div>
-          : <WrappedComponent id={id} {...p} />,
+      ({ className, id, auth, ...p }) => {
+        const type =
+          typeof typeProp === 'function'
+            ? typeProp({ id, auth, ...p })
+            : typeProp;
+
+        if (!auth || !auth.user || !type) {
+          return <WrappedComponent id={id} {...p} />;
+        }
+
+        return (
+          <div className={className}>
+            <WrappedComponent id={id} {...p} />
+            <EditButton id={id} type={type} />
+          </div>
+        );
+      },
       p => Object.keys(p)
     )
   );
