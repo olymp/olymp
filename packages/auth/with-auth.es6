@@ -45,8 +45,9 @@ export const auth = (obj = {}) => (WrappedComponent) => {
       `,
       {
         props: ({ ownProps, data }) => {
-          console.log('VERIFY', data);
-          if (data.error || !data.user) {
+          if (data.error) {
+            localStorage.removeItem('token');
+          } else if (!data.loading && !data.user) {
             localStorage.removeItem('token');
           } else if (data.user && data.user.token) {
             localStorage.setItem('token', data.user.token);
@@ -242,7 +243,6 @@ const authMethods = (client, refetch, user, loading) => ({
           throw errors[0];
         }
         const { user } = data;
-        console.log(user);
         localStorage.setItem('token', user.token);
         if (refetch) {
           refetch();
