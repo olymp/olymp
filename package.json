@@ -15,6 +15,7 @@
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish --registry=https://registry.npmjs.org/",
+    "publish-force": "lerna publish --force-publish=* --registry=https://registry.npmjs.org/",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",

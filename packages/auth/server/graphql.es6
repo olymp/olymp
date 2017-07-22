@@ -7,7 +7,7 @@ export default ({ attributes = '' } = {}) => ({
   queries: `
       checkTokenMail(token: String): String
       checkToken(token: String): Boolean
-      verify(token: String): User
+      verify: User
       invitationList: [Invitation]
       invitation(id: String): Invitation
       userList: [User]
@@ -20,7 +20,7 @@ export default ({ attributes = '' } = {}) => ({
       forgot(email: Email): Boolean
       register(input: UserInput, password: String, token: String): User
       reset(token: String, password: String): User
-      login(email: Email, password: String, totp: String, useToken: Boolean): User
+      login(email: Email, password: String, totp: String): User
       logout: Boolean
       user(id: String, input: UserInput, type: USER_MUTATION_TYPE): User
       invitation(id: String, input: InvitationInput, type: USER_MUTATION_TYPE): Invitation
@@ -31,16 +31,7 @@ export default ({ attributes = '' } = {}) => ({
         authEngine.checkTokenValue(args.token, 'email'),
       checkToken: (source, args, { authEngine }) =>
         authEngine.checkToken(args.token),
-      verify: (source, { token }, { authEngine, session }) => {
-        return token
-          ? authEngine.verify(token).then(({ user, token }) => {
-              user.token = token;
-              return user;
-            })
-          : get(session, 'userId')
-            ? authEngine.getUser(get(session, 'userId'))
-            : null;
-      },
+      verify: (source, {}, { user }) => user,
       // verify: (source, args) => auth.verify(args.token),
       invitationList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
@@ -81,21 +72,18 @@ export default ({ attributes = '' } = {}) => ({
         authEngine.reset(args.token, args.password).then(({ user }) => user),
       totpConfirm: (source, args, { authEngine }) =>
         authEngine.totpConfirm(args.token, args.totp).then(x => x),
-      login: (
-        source,
-        { email, password, totp, useToken },
-        { session, authEngine }
-      ) =>
+      login: (source, { email, password, totp }, { authEngine, session }) =>
         authEngine.login(email, password, totp).then(({ user, token }) => {
-          if (useToken) {
-            user.token = token;
-          } else {
-            session.userId = user.id; // eslint-disable-line no-param-reassign
+          if (session) {
+            session.token = token;
           }
+          user.token = token;
           return user;
         }),
       logout: (source, args, { session }) => {
-        delete session.userId; // eslint-disable-line no-param-reassign
+        if (session) {
+          delete session.token;
+        } // eslint-disable-line no-param-reassign
         return true;
       },
       confirm: (source, args, { authEngine }) =>
@@ -134,7 +122,7 @@ export default ({ attributes = '' } = {}) => ({
         delete args.type; // eslint-disable-line no-param-reassign
         args.expiry = +new Date();
         args.token = authEngine.tokenEngine.create({ email: args.email });
-        return monk.collection('invitation').insert(args).then(u => {
+        return monk.collection('invitation').insert(args).then((u) => {
           console.log('INVITE', u.token, u);
           if (mail) {
             mail(mails.invite, {

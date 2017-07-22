@@ -13,7 +13,7 @@ const qr = (email, x, issuer) =>
       (err, data) => (err ? nay(err) : yay(data))
     );
   });
-const cleanUser = (user) => {
+const cleanUser = user => {
   const cleaned = Object.assign({}, user);
   delete cleaned.hash;
   delete cleanUser.salt;
@@ -35,7 +35,7 @@ export default ({ monk, secret, mail, issuer }) => {
       let user = null;
       return collection
         .findOne({ email })
-        .then((usr) => {
+        .then(usr => {
           user = usr;
           if (!user) {
             throw new Error('No user matched.');
@@ -45,7 +45,7 @@ export default ({ monk, secret, mail, issuer }) => {
           }
           return passwordEngine.match(user, pw);
         })
-        .then((isValid) => {
+        .then(isValid => {
           if (!isValid) {
             throw new Error('Wrong password.');
           }
@@ -69,28 +69,28 @@ export default ({ monk, secret, mail, issuer }) => {
           };
         });
     },
-    verify: (key) => {
+    verify: key => {
       // TODO remove!
       if (!key) {
         throw new Error('No Key');
       }
       return tokenEngine
         .readUser(key)
-        .then((item) => {
+        .then(item => {
           const { id } = item;
           if (!id) {
             throw new Error('Error.');
           }
           return collection.findOne({ id });
         })
-        .then((user) => {
+        .then(user => {
           if (!user) {
             throw new Error('No user matched.');
           }
           if (user.confirmed === false) {
             throw new Error('User not confirmed.');
           }
-          const newToken = tokenEngine.createFromUser(user);
+          const newToken = tokenEngine.createFromUser(user, { days: 7 });
           return { token: newToken, user: cleanUser(user) };
         });
     },
@@ -119,7 +119,7 @@ export default ({ monk, secret, mail, issuer }) => {
           }
           return collection.insert(user);
         })
-        .then((result) => {
+        .then(result => {
           let confirmationToken;
           if (!result.confirmed) {
             confirmationToken = tokenEngine.createFromUser(result);
@@ -154,12 +154,12 @@ export default ({ monk, secret, mail, issuer }) => {
           user: cleanUser(user),
         })),
     //
-    totp: (id) => {
+    totp: id => {
       const secret = speakeasy.generateSecret({ length: 20 }).base32;
       let user = null;
       return monk
         .read('user', { id })
-        .then((currentUser) => {
+        .then(currentUser => {
           if (!currentUser) {
             throw new Error('No user matched.');
           }
@@ -173,7 +173,7 @@ export default ({ monk, secret, mail, issuer }) => {
           user = currentUser;
           return qr(user.email, secret, issuer);
         })
-        .then((qr) => {
+        .then(qr => {
           if (typeof qr === 'object') {
             return qr;
           }
@@ -189,7 +189,7 @@ export default ({ monk, secret, mail, issuer }) => {
       let secret;
       return tokenEngine
         .verify(t)
-        .then((untoken) => {
+        .then(untoken => {
           if (!untoken) {
             throw new Error('TOTP token error');
           }
@@ -209,7 +209,7 @@ export default ({ monk, secret, mail, issuer }) => {
           }
           return monk.read('user', { id });
         })
-        .then((currentUser) => {
+        .then(currentUser => {
           if (!currentUser) {
             throw new Error('No user matched.');
           }
@@ -221,7 +221,7 @@ export default ({ monk, secret, mail, issuer }) => {
         .then(user => true);
     },
     forgot: email =>
-      collection.findOne({ email }).then((user) => {
+      collection.findOne({ email }).then(user => {
         if (!user) {
           throw new Error('No user matched.');
         }
@@ -246,7 +246,7 @@ export default ({ monk, secret, mail, issuer }) => {
           }
           return collection.findOne({ id });
         })
-        .then((user) => {
+        .then(user => {
           if (!user) {
             throw new Error('No user matched.');
           }

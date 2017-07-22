@@ -1,33 +1,46 @@
 import Cache from 'stale-lru-cache';
+import { get } from 'lodash';
 
 const cache = new Cache({ maxSize: 100, maxAge: 20 });
 export default auth => (req, res, next) => {
-  const authorization =
-    req.get('authorization') &&
-    req.get('authorization').indexOf('Bearer ') === 0
-      ? req.get('authorization').split('Bearer ')[1]
-      : null;
-  if (req.session && req.session.userId) {
-    req.user = cache.get(req.session.userId);
-    if (req.user) {
-      return next();
+  const authorization = req.headers.authorization || get(req, 'session.token');
+  if (!authorization) {
+    return next();
+  }
+  auth
+    .verify(authorization)
+    .then(({ user, token }) => {
+      if (req.session) {
+        req.session.token = token;
+      }
+      user.token = token;
+      req.user = user;
+      // cache.set(authorization, req.user);
+      next();
+    })
+    .catch(e => {
+      if (req.session) {
+        delete req.session.token;
+      }
+      delete req.headers.authorization;
+      next();
+    });
+  /* let authorization = req.headers.authorization;
+  if (!authorization && req.session && req.session.token) {
+    authorization = req.headers.authorization = req.session.token;
+  }
+
+  if (authorization) {
+    if (req.session) {
+      req.session.token = req.header.authorization;
     }
-    auth
-      .getUser(req.session.userId)
-      .then((x) => {
-        req.user = x;
-        cache.set(req.session.userId, req.user);
-        next();
-      })
-      .catch(e => next());
-  } else if (authorization) {
     req.user = cache.get(authorization);
     if (req.user) {
       return next();
     }
     auth
       .verify(authorization)
-      .then((x) => {
+      .then(x => {
         req.user = x.user;
         cache.set(authorization, req.user);
         next();
@@ -35,5 +48,5 @@ export default auth => (req, res, next) => {
       .catch(e => next());
   } else {
     next();
-  }
+  }*/
 };

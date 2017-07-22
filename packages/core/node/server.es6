@@ -63,7 +63,7 @@ const clientAssets = fs.existsSync(clientAssetsPath)
   ? JSON.parse(fs.readFileSync(clientAssetsPath))
   : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
-/*app.emitter = new EventEmitter();
+/* app.emitter = new EventEmitter();
 
 // Websocket Server
 app.listenWS = (options) => {
@@ -250,10 +250,10 @@ app.get('*', (req, res) => {
       const scripts = req.isAmp
         ? []
         : [
-            isProd
-              ? `${clientAssets.main.js}`
-              : `${process.env.DEV_URL}/main.js`,
-          ];
+          isProd
+            ? `${clientAssets.main.js}`
+            : `${process.env.DEV_URL}/main.js`,
+        ];
       const styles = req.isAmp
         ? []
         : isProd ? [`${clientAssets.main.css}`] : [];
@@ -284,7 +284,7 @@ app.get('*', (req, res) => {
       res.send(html);
       // responseRenderer.toStream().pipe(response);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).send(err);
     });

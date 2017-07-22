@@ -16,14 +16,13 @@ const Spinner = createComponent(
 const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
-export const auth = (obj = {}) => WrappedComponent => {
+export const auth = (obj = {}) => (WrappedComponent) => {
   const { extraAttributes } = obj;
-  const useLocalStorage = true;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
-  const inner = WrappedComponent => {
-    const component = props => {
+  const inner = (WrappedComponent) => {
+    const component = (props) => {
       const auth = {
         user: props.data.user,
         loading: props.data.loading,
@@ -31,35 +30,26 @@ export const auth = (obj = {}) => WrappedComponent => {
           props.client,
           props.data.refetch,
           props.data.user,
-          props.data.loading,
-          useLocalStorage
+          props.data.loading
         ),
       };
       return <WrappedComponent auth={auth} {...props} />;
     };
     return graphql(
       gql`
-        query verify($token: String) {
-          user: verify(token: $token) {
+        query verify {
+          user: verify {
             ${attributes}
           }
         }
       `,
       {
-        options: {
-          variables: {
-            token: useLocalStorage ? localStorage.getItem('token') : null,
-          },
-        },
         props: ({ ownProps, data }) => {
-          if (useLocalStorage) {
-            if (data.error) {
-              localStorage.removeItem('token');
-              data.refetch();
-            } else if (data.user && data.user.token) {
-              localStorage.setItem('token', data.user.token);
-              data.refetch({ token: data.user.token });
-            }
+          console.log('VERIFY', data);
+          if (data.error || !data.user) {
+            localStorage.removeItem('token');
+          } else if (data.user && data.user.token) {
+            localStorage.setItem('token', data.user.token);
           }
           return {
             ...ownProps,
@@ -89,7 +79,7 @@ export const auth = (obj = {}) => WrappedComponent => {
   return inner(UserProvider);
 };
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const withUserRenderer = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withUserRenderer.contextTypes = {
@@ -99,8 +89,8 @@ export default WrappedComponent => {
 };
 
 // ///////////////
-const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
-  can: method => {
+const authMethods = (client, refetch, user, loading) => ({
+  can: (method) => {
     if (loading) {
       return true;
     }
@@ -180,9 +170,7 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
         if (errors) {
           throw errors[0];
         }
-        if (useLocalStorage) {
-          localStorage.removeItem('token');
-        }
+        localStorage.removeItem('token');
         if (refetch) {
           refetch({ token: null });
         }
@@ -202,11 +190,8 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
         }
         return data.forgot;
       }),
-  reset: (token, password) => {
-    if (typeof localStorage === 'undefined') {
-      return;
-    }
-    return client
+  reset: (token, password) =>
+    client
       .mutate({
         mutation: gql`
         mutation reset {
@@ -221,8 +206,7 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
           throw errors[0];
         }
         return data.reset;
-      });
-  },
+      }),
   confirm: token =>
     client
       .mutate({
@@ -245,9 +229,9 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
       .mutate({
         mutation: gql`
         mutation login {
-          user: login(email:"${email}", password:"${password}", useToken:${useLocalStorage
-          ? 'true'
-          : 'false'}${totp ? `, totp:"${totp}"` : ''}) {
+          user: login(email:"${email}", password:"${password}"${totp
+  ? `, totp:"${totp}"`
+  : ''}) {
             ${attributes}
           }
         }
@@ -258,13 +242,10 @@ const authMethods = (client, refetch, user, loading, useLocalStorage) => ({
           throw errors[0];
         }
         const { user } = data;
-        if (useLocalStorage) {
-          localStorage.setItem('token', user.token);
-          if (refetch) {
-            refetch({ token: user.token });
-          }
-        } else if (refetch) {
-          refetch({});
+        console.log(user);
+        localStorage.setItem('token', user.token);
+        if (refetch) {
+          refetch();
         }
         return user;
       }),
