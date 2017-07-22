@@ -31,12 +31,16 @@ export default ({ attributes = '' } = {}) => ({
         authEngine.checkTokenValue(args.token, 'email'),
       checkToken: (source, args, { authEngine }) =>
         authEngine.checkToken(args.token),
-      verify: (source, { token }, { authEngine, session }) =>
-        token
-          ? authEngine.verify(token).then(x => x.user)
+      verify: (source, { token }, { authEngine, session }) => {
+        return token
+          ? authEngine.verify(token).then(({ user, token }) => {
+              user.token = token;
+              return user;
+            })
           : get(session, 'userId')
             ? authEngine.getUser(get(session, 'userId'))
-            : null,
+            : null;
+      },
       // verify: (source, args) => auth.verify(args.token),
       invitationList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
