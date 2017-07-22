@@ -5,6 +5,7 @@
   "main": "./packages/core",
   "scripts": {
     "outdated": "lerna exec npm outdated",
+    "elev": "lerna exec npm owner add machiaveli88",
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "del-ts": "del 'packages/**/*.js' '!packages/**/node_modules/**'",
@@ -28,13 +29,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {

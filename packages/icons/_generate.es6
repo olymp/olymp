@@ -4,7 +4,7 @@ const { upperFirst, camelCase } = require('lodash');
 
 const base = 'fa5';
 const readFrom = path.resolve(
-  '/Users/bkniffler/Downloads/fontawesome-5.0.0-alpha1-mac/svgs/light'
+  '/Users/bkniffler/Downloads/fontawesome-5.0.0-alpha6-mac/svgs/light'
 );
 
 let index = '';
@@ -19,12 +19,12 @@ fs.readdir(readFrom, (err, files) => {
       return;
     }
     fs.writeFileSync(
-      path.resolve(__dirname, base, 'lib', `${fileName}.js`),
+      path.resolve(__dirname, base, 'lib', `${fileName}.es6`),
       generate2(content).trim()
     );
     index += `\nexport { default as ${name} } from './lib/${fileName}';`;
   });
-  fs.writeFileSync(path.resolve(__dirname, base, 'index.js'), index);
+  fs.writeFileSync(path.resolve(__dirname, base, 'index.es6'), index);
 });
 
 const generate1 = content => `
