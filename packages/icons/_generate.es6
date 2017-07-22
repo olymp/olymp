@@ -9,7 +9,7 @@ const readFrom = path.resolve(
 
 let index = '';
 fs.readdir(readFrom, (err, files) => {
-  files.forEach((file) => {
+  files.forEach(file => {
     const fileName = `fa-${file.split('.')[0]}`;
     const name = `${upperFirst(camelCase(fileName))}`;
     const content = fs.readFileSync(path.resolve(readFrom, file), {
@@ -20,31 +20,14 @@ fs.readdir(readFrom, (err, files) => {
     }
     fs.writeFileSync(
       path.resolve(__dirname, base, 'lib', `${fileName}.es6`),
-      generate2(content).trim()
+      generate(content, name).trim()
     );
     index += `\nexport { default as ${name} } from './lib/${fileName}';`;
   });
   fs.writeFileSync(path.resolve(__dirname, base, 'index.es6'), index);
 });
 
-const generate1 = content => `
-import React from 'react';
-import styled from '../styled';
-const icon = ({ color, width, height, size, ...rest }) => (
-  ${content
-    .split('fill="#fff"')
-    .join('fill={color}')
-    .split('width="1792"')
-    .join('width={size || width}')
-    .split('height="1792"')
-    .join('height={size || height}')
-    .split('xmlns="http://www.w3.org/2000/svg"')
-    .join('{...rest}')}
-);
-icon.defaultProps = { width: 100, height: 100 };
-export default styled(icon);
-`;
-const generate2 = content => `
+const generate = (content, name) => `
 import React from 'react';
 import styled from '../styled';
 const icon = ({ color, width, height, size, ...rest }) => (
@@ -55,5 +38,7 @@ const icon = ({ color, width, height, size, ...rest }) => (
     )}
 );
 icon.defaultProps = { width: 100, height: 100 };
+icon.displayName = '${name}';
 export default styled(icon);
+
 `;
