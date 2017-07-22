@@ -62,6 +62,7 @@ export const queryPages = graphql(
           fields
         }
         parentId
+        aliasId
         sorting
         state
       }
