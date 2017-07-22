@@ -119,7 +119,7 @@ class VerzeichnisBlock extends Component {
             onMouseEnter={this.onMouseOver(item)}
             onMouseLeave={this.onMouseLeave}
             hovered={this.state.hover === (item.orgId || item.id)}
-            key={item.id}
+            key={item.key || item.id}
           />
         )}
       </ul>
@@ -139,6 +139,8 @@ class VerzeichnisBlock extends Component {
         item.persons.forEach(person =>
           persons.push({
             ...person,
+            id: item.id,
+            key: `${item.id}-${person.id}`,
             orgId: item.id,
             color: item.color,
             org: item.kurz || item.name,
@@ -149,7 +151,8 @@ class VerzeichnisBlock extends Component {
       if (item.fachrichtungen) {
         item.fachrichtungen.forEach(leistung =>
           spezial.push({
-            id: `${item.id}-${leistung}`,
+            id: item.id,
+            key: `${item.id}-${leistung}`,
             name: leistung,
             orgId: item.id,
             color: item.color,
