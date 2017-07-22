@@ -16,7 +16,8 @@ export default class PageSidebar extends Component {
 
   componentWillReceiveProps = props => {
     if (
-      props.query['@page'] !== this.props.query['@page'] ||
+      (props.query['@page'] !== this.props.query['@page'] &&
+        props.query.modal !== null) ||
       (props.query.parent !== this.props.query.parent &&
         props.query['@page'] === 'new')
     ) {

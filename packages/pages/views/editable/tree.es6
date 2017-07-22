@@ -146,6 +146,25 @@ class Pages extends Component {
         item.children && item.children.length
           ? this.getItems(item.children, item)
           : undefined;
+      const isBinding = item.bindingId && item.binding && item.binding.type;
+      const route = {
+        pathname: item.pathname,
+        query: {
+          ...query,
+          '@page': item.pageId || item.id,
+          parent: undefined,
+        },
+      };
+      const bindingRoute = {
+        pathname: item.pathname,
+        query: {
+          ...query,
+          '@page': null,
+          parent: undefined,
+          modal: null,
+          [`@${lowerCase(item.binding && item.binding.type)}`]: item.bindingId,
+        },
+      };
 
       return (
         <Tree.Node
@@ -154,37 +173,16 @@ class Pages extends Component {
           parent={parent}
           title={
             <Title disabled={item.state === 'DRAFT'}>
-              <Link
-                to={{
-                  pathname: item.pathname,
-                  query: {
-                    ...query,
-                    '@page': item.pageId || item.id,
-                    parent: undefined,
-                  },
-                }}
-              >
+              <Link to={isBinding ? bindingRoute : route}>
                 {item.name || 'Kein Name'}
               </Link>
+
               <Button
                 to={{ query: { ...query, '@page': 'new', parent: item.id } }}
                 type="plus"
                 showOnHover
               />
-              {item.bindingId &&
-                item.binding &&
-                item.binding.type &&
-                <Button
-                  to={{
-                    query: {
-                      ...query,
-                      '@page': undefined,
-                      parent: undefined,
-                      [`@${lowerCase(item.binding.type)}`]: item.bindingId,
-                    },
-                  }}
-                  type="api"
-                />}
+              {isBinding && <Button to={route} type="api" />}
               {this.getNodeIcon(item)}
             </Title>
           }
