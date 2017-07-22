@@ -36,7 +36,7 @@ export const Modal = (
   let copyright = null;
   let links = null;
   let footer = null;
-  const children = Children.toArray(props.children).filter(child => {
+  const children = Children.toArray(props.children).filter((child) => {
     if (child.type && child.type === component.Copyright) {
       copyright = child;
       return false;
@@ -52,63 +52,63 @@ export const Modal = (
   return !isOpen
     ? null
     : <Portal>
-        <ReactModal
-          onClose={onCancel || onClose}
-          closeOnEsc
-          closeOnBackdropClick
-          className={cn('ant-modal-wrap', className)}
-          modalClassName="ant-modal"
-        >
-          <AntModal visible={false} />
-          {showLogo &&
+      <ReactModal
+        onClose={onCancel || onClose}
+        closeOnEsc
+        closeOnBackdropClick
+        className={cn('ant-modal-wrap', className)}
+        modalClassName="ant-modal"
+      >
+        <AntModal visible={false} />
+        {showLogo &&
             theme.logo &&
             <div className="logo">
               {typeof theme.logo === 'string'
                 ? <img src={theme.logo} />
-                : theme.logo}
+                : typeof theme.logo === 'function' ? theme.logo() : theme.logo}
               <h3>
                 {theme.logoTitle}
               </h3>
             </div>}
-          <Spin
-            spinning={!!loading}
-            tip={typeof loading === 'string' ? loading : 'Lädt ...'}
-          >
-            <div className="ant-modal-content">
-              <div className="ant-modal-header">
-                {leftButtons &&
+        <Spin
+          spinning={!!loading}
+          tip={typeof loading === 'string' ? loading : 'Lädt ...'}
+        >
+          <div className="ant-modal-content">
+            <div className="ant-modal-header">
+              {leftButtons &&
                   <TitleButtons left>
                     {leftButtons}
                   </TitleButtons>}
-                {rightButtons &&
+              {rightButtons &&
                   <TitleButtons right>
                     {rightButtons}
                   </TitleButtons>}
-                <div className="ant-modal-title">
-                  {title}
-                </div>
-                {subtitle &&
+              <div className="ant-modal-title">
+                {title}
+              </div>
+              {subtitle &&
                   <div className="ant-modal-subtitle">
                     {subtitle}
                   </div>}
-              </div>
-              {Children.toArray(children).length > 0 &&
+            </div>
+            {Children.toArray(children).length > 0 &&
                 <div className="ant-modal-body">
                   {children}
                 </div>}
-              {footer}
-            </div>
-          </Spin>
-          {links &&
+            {footer}
+          </div>
+        </Spin>
+        {links &&
             <component.Links>
               {links}
             </component.Links>}
-          {copyright &&
+        {copyright &&
             <component.Copyright>
               {copyright}
             </component.Copyright>}
-        </ReactModal>
-      </Portal>;
+      </ReactModal>
+    </Portal>;
 };
 Modal.contextTypes = { theme: PropTypes.object };
 
@@ -215,9 +215,9 @@ component.Copyright = createComponent(
 );
 
 component.Footer = ({ children, className }) =>
-  <div className={cn('ant-modal-footer', className)}>
+  (<div className={cn('ant-modal-footer', className)}>
     {children}
-  </div>;
+  </div>);
 component.Button = props => <AntButton {...props} />;
 
 component.Links = createComponent(
