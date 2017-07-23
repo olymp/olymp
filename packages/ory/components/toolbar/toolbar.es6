@@ -9,7 +9,7 @@ import {
   LayoutPlugin,
   ContentPlugin,
 } from 'ory-editor-core/lib/service/plugin/classes';
-import Item from './Item';
+import Item from './item';
 import Provider from '../provider';
 
 const Container = createComponent(
@@ -116,8 +116,8 @@ const mapStateToProps = createStructuredSelector({ isInsertMode });
 const Decorated = connect(mapStateToProps)(Raw);
 
 const Toolbar = (props: any) =>
-  <Provider {...props}>
+  (<Provider {...props}>
     <Decorated {...props} />
-  </Provider>;
+  </Provider>);
 
 export default Toolbar;

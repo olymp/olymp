@@ -16,13 +16,13 @@ const Spinner = createComponent(
 const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
-export const auth = (obj = {}) => WrappedComponent => {
+export const auth = (obj = {}) => (WrappedComponent) => {
   const { extraAttributes } = obj;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
-  const inner = WrappedComponent => {
-    const component = props => {
+  const inner = (WrappedComponent) => {
+    const component = (props) => {
       const auth = {
         user: props.data.user,
         loading: props.data.loading,
@@ -46,11 +46,19 @@ export const auth = (obj = {}) => WrappedComponent => {
       `,
       {
         props: ({ ownProps, data }) => {
-          if (data.error) {
+          if (data.error && typeof localStorage !== 'undefined') {
             localStorage.removeItem('token');
-          } else if (!data.loading && !data.user) {
+          } else if (
+            !data.loading &&
+            !data.user &&
+            typeof localStorage !== 'undefined'
+          ) {
             localStorage.removeItem('token');
-          } else if (data.user && data.user.token) {
+          } else if (
+            data.user &&
+            data.user.token &&
+            typeof localStorage !== 'undefined'
+          ) {
             localStorage.setItem('token', data.user.token);
           }
           return {
@@ -82,7 +90,7 @@ export const auth = (obj = {}) => WrappedComponent => {
   return inner(UserProvider);
 };
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const withUserRenderer = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withUserRenderer.contextTypes = {
@@ -93,7 +101,7 @@ export default WrappedComponent => {
 
 // ///////////////
 const authMethods = (client, refetch, user, loading) => ({
-  can: method => {
+  can: (method) => {
     if (loading) {
       return true;
     }
@@ -233,8 +241,8 @@ const authMethods = (client, refetch, user, loading) => ({
         mutation: gql`
         mutation login {
           user: login(email:"${email}", password:"${password}"${totp
-          ? `, totp:"${totp}"`
-          : ''}) {
+  ? `, totp:"${totp}"`
+  : ''}) {
             ${attributes}
           }
         }
