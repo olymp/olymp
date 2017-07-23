@@ -16,13 +16,13 @@ const Spinner = createComponent(
 const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
-export const auth = (obj = {}) => (WrappedComponent) => {
+export const auth = (obj = {}) => WrappedComponent => {
   const { extraAttributes } = obj;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
-  const inner = (WrappedComponent) => {
-    const component = (props) => {
+  const inner = WrappedComponent => {
+    const component = props => {
       const auth = {
         user: props.data.user,
         loading: props.data.loading,
@@ -35,6 +35,7 @@ export const auth = (obj = {}) => (WrappedComponent) => {
       };
       return <WrappedComponent auth={auth} {...props} />;
     };
+
     return graphql(
       gql`
         query verify {
@@ -61,6 +62,7 @@ export const auth = (obj = {}) => (WrappedComponent) => {
       }
     )(withApollo(component));
   };
+
   class UserProvider extends Component {
     static childContextTypes = {
       auth: PropTypes.object,
@@ -80,7 +82,7 @@ export const auth = (obj = {}) => (WrappedComponent) => {
   return inner(UserProvider);
 };
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const withUserRenderer = (props, context) =>
     <WrappedComponent {...context} {...props} />;
   withUserRenderer.contextTypes = {
@@ -91,7 +93,7 @@ export default (WrappedComponent) => {
 
 // ///////////////
 const authMethods = (client, refetch, user, loading) => ({
-  can: (method) => {
+  can: method => {
     if (loading) {
       return true;
     }
@@ -173,7 +175,7 @@ const authMethods = (client, refetch, user, loading) => ({
         }
         localStorage.removeItem('token');
         if (refetch) {
-          refetch({ token: null });
+          refetch();
         }
       }),
   forgot: email =>
@@ -231,8 +233,8 @@ const authMethods = (client, refetch, user, loading) => ({
         mutation: gql`
         mutation login {
           user: login(email:"${email}", password:"${password}"${totp
-  ? `, totp:"${totp}"`
-  : ''}) {
+          ? `, totp:"${totp}"`
+          : ''}) {
             ${attributes}
           }
         }
