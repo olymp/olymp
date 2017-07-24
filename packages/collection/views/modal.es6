@@ -67,9 +67,9 @@ const AntMenu = createComponent(
 
 @withRouter
 @withCollection
+@Form.create()
 @withItem
 @withGateway('toolbar')
-@Form.create()
 export default class CollectionModal extends Component {
   state = {
     tab: undefined,
@@ -97,11 +97,11 @@ export default class CollectionModal extends Component {
           </Menu.Item>
 
           {keys.reverse().map(tab =>
-            <RightMenuItem key={tab}>
+            (<RightMenuItem key={tab}>
               <a href="javascript:;" onClick={() => this.setState({ tab })}>
                 {tab}
               </a>
-            </RightMenuItem>
+            </RightMenuItem>)
           )}
         </Menu>
 
@@ -142,14 +142,14 @@ export default class CollectionModal extends Component {
       >
         <Content>
           {keys.map(tab =>
-            <HiddenForm
+            (<HiddenForm
               {...this.props}
               item={item || {}}
               fields={schema[tab]}
               key={tab}
               visible={currentTab === tab}
               onCreate={onSave}
-            />
+            />)
           )}
         </Content>
       </Modal>

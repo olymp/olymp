@@ -107,16 +107,16 @@ const DownloadLink = createComponent(
   p => Object.keys(p)
 );
 
-const Item = withEdit('article')(props => {
+const Item = withEdit('article')((props) => {
   const { name, description, slug, org, date, person } = props;
 
   const image = props.image ||
   org.logo || {
-    url:
+      url:
       'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
-    width: 400,
-    height: 300,
-  };
+      width: 400,
+      height: 300,
+    };
 
   return (
     <Grid>
@@ -140,7 +140,7 @@ const Item = withEdit('article')(props => {
 });
 
 const Listing = withCreate('article')(({ items }) =>
-  <div>
+  (<div>
     {items.map(item =>
       <Item
         {...item}
@@ -149,7 +149,7 @@ const Listing = withCreate('article')(({ items }) =>
         key={item.id}
       />
     )}
-  </div>
+  </div>)
 );
 
 const TagContainer = createComponent(
@@ -241,7 +241,7 @@ const component = graphql(
   }
 )(({ attributes, items, pdfs, isLoading }) => {
   const tags = items.reduce((tags, item) => {
-    (item.tags || []).forEach(tag => {
+    (item.tags || []).forEach((tag) => {
       const index = tags.findIndex(item => item.tag === tag);
 
       if (index === -1) {
@@ -270,7 +270,7 @@ const component = graphql(
           >
             <H2 right>Ausgaben als PDFs</H2>
             {pdfs.map((pdf, i) =>
-              <ListItem key={i}>
+              (<ListItem key={i}>
                 <DownloadLink
                   rel="noopener noreferrer"
                   href={pdf.url}
@@ -279,15 +279,15 @@ const component = graphql(
                   Gesund im Zentrum - <b>{pdf.caption}</b>
                   <FaDownload size={15} />
                 </DownloadLink>
-              </ListItem>
+              </ListItem>)
             )}
 
             <H2 right>Schlagworte</H2>
             <TagContainer>
               {orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(tag =>
-                <Tag key={tag.tag}>
+                (<Tag key={tag.tag}>
                   {upperFirst(tag.tag)} <small>({tag.count})</small>
-                </Tag>
+                </Tag>)
               )}
             </TagContainer>
           </Column>
