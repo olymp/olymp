@@ -17,7 +17,9 @@ class Content extends Component {
         <p
           contentEditable={!editor || editor.props.readOnly ? undefined : false}
         >
-          {subheader || `Startseite ${path.map(p => `/ ${capitalize(p)}`)}`}
+          {subheader !== undefined
+            ? subheader
+            : `Startseite ${path.map(p => `/ ${capitalize(p)}`)}`}
         </p>
       </Container>
     );

@@ -4,8 +4,8 @@ import { Link } from 'olymp-router';
 import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
-import HeaderBlock from '../header';
-import ContainerBlock from '../container-text';
+import HeaderBlock from './header';
+import ContainerBlock from './container-text';
 
 const loaderSchema = [
   {
@@ -83,7 +83,7 @@ const component = withColor(
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
-      <Header subheader={getSubheader(item)} color={item.org.color}>
+      <Header subheader={getSubheader(item) || ''} color={item.org.color}>
         {item.name}
       </Header>
       <Container className={className} color={item.org.color} {...attributes}>

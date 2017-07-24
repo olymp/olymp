@@ -4,8 +4,9 @@ import { Link } from 'olymp-router';
 import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
-import HeaderBlock from '../header';
-import ContainerBlock from '../container-text';
+import moment from 'moment';
+import HeaderBlock from './header';
+import ContainerBlock from './container-text';
 
 const loaderSchema = [
   {
@@ -60,6 +61,16 @@ const WhiteLink = createComponent(
   p => Object.keys(p)
 );
 
+const Info = createComponent(
+  ({ theme }) => ({
+    fontSize: '80%',
+    color: theme.dark2,
+    marginTop: theme.space3,
+  }),
+  'div',
+  p => Object.keys(p)
+);
+
 const getSubheader = item => {
   const person = item.person && `von ${item.person.name}`;
   const org =
@@ -83,7 +94,7 @@ const component = withColor(
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
-      <Header subheader={getSubheader(item)} color={item.org.color}>
+      <Header subheader={getSubheader(item) || ''} color={item.org.color}>
         {item.name}
       </Header>
       <Container className={className} color={item.org.color} {...attributes}>
@@ -95,6 +106,21 @@ const component = withColor(
                 alt={item.image.caption}
                 width="100%"
               />}
+            <Info>
+              {item.name &&
+                <p>
+                  <b>Thema</b>: {item.name}
+                </p>}
+              {item.date &&
+                <p>
+                  <b>Termin</b>:{' '}
+                  {moment(item.date).format('DD. MMMM YYYY, HH:mm')} Uhr
+                </p>}
+              {item.ort &&
+                <p>
+                  <b>Ort</b>: {item.ort}
+                </p>}
+            </Info>
           </Grid.Item>
           <Content medium={2}>
             <Slate readOnly value={item.text} />

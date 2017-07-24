@@ -1,8 +1,6 @@
 export * from './panel';
 export * from './org';
 export * from './article';
-export * from './event-detail';
-export * from './news-detail';
 export * from './image';
 export { default as GZKMapsBlock } from './maps';
 export { default as GZKContainerBlock } from './container';
@@ -13,3 +11,5 @@ export { default as GZKNewsBlock } from './news';
 export { default as GZKNumbersBlock } from './phone';
 export { default as GZKNetworkBlock } from './award';
 export { default as GZKVerzeichnisBlock } from './list';
+export { default as GZKTerminBlock } from './event';
+export { default as GZKNewsDetailBlock } from './news-detail';
