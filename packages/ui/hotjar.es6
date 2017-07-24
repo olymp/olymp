@@ -2,11 +2,10 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 export default ({ children, id }) =>
-  <div>
-    <Helmet>
-      {id &&
-        <script>
-          {`
+  (<Helmet>
+    {id &&
+      <script>
+        {`
             (function(h,o,t,j,a,r){
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
               h._hjSettings={hjid:${id},hjsv:5};
@@ -16,7 +15,5 @@ export default ({ children, id }) =>
               a.appendChild(r);
             })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
           `}
-        </script>}
-    </Helmet>
-    {children}
-  </div>;
+      </script>}
+  </Helmet>);

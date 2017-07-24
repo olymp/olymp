@@ -86,114 +86,110 @@ export default class CMSAuth extends Component {
       'new';
 
     return (
-      <Hotjar id={process.env.HOTJAR}>
-        <Container>
-          <Lightbox />
-          <GatewayDest name="modal" />
-          <AuthModals />
-          {!!collection &&
-            query.modal === null &&
-            <CollectionModal
-              {...this.props}
-              open={!!collection && query.modal === null}
-              id={collectionId}
-              typeName={collectionName}
-              onClose={() =>
-                router.push({
-                  pathname,
-                  query: {
-                    ...query,
-                    [`@${collectionName.toLowerCase()}`]: undefined,
-                    modal: undefined,
-                  },
-                })}
-            />}
-          <NavigationVertical
-            collectionList={collectionList}
-            setDeviceWidth={deviceWidth => this.setState({ deviceWidth })}
-            {...location}
-            location={location}
-          />
-          <SwitchContainer>
-            <AltSwitch>
-              {/*<AltRoute
+      <Container>
+        <Lightbox />
+        <GatewayDest name="modal" />
+        <Hotjar id={process.env.HOTJAR} />
+        <AuthModals />
+        {!!collection &&
+          query.modal === null &&
+          <CollectionModal
+            {...this.props}
+            open={!!collection && query.modal === null}
+            id={collectionId}
+            typeName={collectionName}
+            onClose={() =>
+              router.push({
+                pathname,
+                query: {
+                  ...query,
+                  [`@${collectionName.toLowerCase()}`]: undefined,
+                  modal: undefined,
+                },
+              })}
+          />}
+        <NavigationVertical
+          collectionList={collectionList}
+          setDeviceWidth={deviceWidth => this.setState({ deviceWidth })}
+          {...location}
+          location={location}
+        />
+        <SwitchContainer>
+          <AltSwitch>
+            {/* <AltRoute
                 match={query['@ory'] !== undefined}
                 render={() => <Ory {...this.props} />}
               />*/}
-              <AltRoute
-                match={query['@template'] !== undefined}
-                render={() => <TemplateRoute {...this.props} />}
-              />
-              <AltRoute
-                match={!!collection && query.modal === undefined}
-                render={() =>
-                  <CollectionRoute
-                    {...this.props}
-                    id={collectionId}
-                    typeName={collectionName}
-                    Wrapped={Wrapped}
-                  />}
-              />
-              <AltRoute
-                match={query['@page'] !== undefined}
-                render={() =>
-                  <EditablePageRoute
-                    {...this.props}
-                    deviceWidth={deviceWidth}
-                    Wrapped={Wrapped}
-                  />}
-              />
-              <AltRoute
-                match={query['@media'] !== undefined}
-                render={() => <CloudinaryRoute {...this.props} />}
-              />
-              <AltRoute
-                match={query['@settings'] !== undefined}
-                render={() => <SettingsRoute {...this.props} />}
-              />
-              <AnalyticsRoutes
-                match={query['@analytics'] !== undefined}
-                render={() => <AuthUsers {...this.props} />}
-              />
-              <AltRoute
-                match={query['@users'] !== undefined}
-                render={() => <AuthUsers {...this.props} />}
-              />
-              <AltRoute
-                match={query['@user'] !== undefined}
-                render={() => <AuthUser {...this.props} />}
-              />
-              <AltRoute
-                render={rest =>
-                  <PageRoute
-                    {...rest}
-                    {...this.props}
-                    key={location.key}
-                    navigation={navigation}
-                    Wrapped={Wrapped}
-                  />}
-              />
-            </AltSwitch>
-          </SwitchContainer>
-          {ua.getBrowser().name !== 'Chrome' &&
-            <Footer>
-              <p>
-                Wir empfehlen für die Verwendung von Olymp (und darüber hinaus)
-                die Verwendung des Browsers{' '}
-                <a
-                  href="https://www.google.de/chrome"
-                  rel="noopener noreferrer"
-                >
-                  Chrome
-                </a>.
-              </p>
-              {ua.getBrowser().name === 'IE' &&
-                <Warning>
-                  Der Internet Explorer ist ausdrücklich nicht unterstützt!
-                </Warning>}
-            </Footer>}
-        </Container>
-      </Hotjar>
+            <AltRoute
+              match={query['@template'] !== undefined}
+              render={() => <TemplateRoute {...this.props} />}
+            />
+            <AltRoute
+              match={!!collection && query.modal === undefined}
+              render={() =>
+                (<CollectionRoute
+                  {...this.props}
+                  id={collectionId}
+                  typeName={collectionName}
+                  Wrapped={Wrapped}
+                />)}
+            />
+            <AltRoute
+              match={query['@page'] !== undefined}
+              render={() =>
+                (<EditablePageRoute
+                  {...this.props}
+                  deviceWidth={deviceWidth}
+                  Wrapped={Wrapped}
+                />)}
+            />
+            <AltRoute
+              match={query['@media'] !== undefined}
+              render={() => <CloudinaryRoute {...this.props} />}
+            />
+            <AltRoute
+              match={query['@settings'] !== undefined}
+              render={() => <SettingsRoute {...this.props} />}
+            />
+            <AnalyticsRoutes
+              match={query['@analytics'] !== undefined}
+              render={() => <AuthUsers {...this.props} />}
+            />
+            <AltRoute
+              match={query['@users'] !== undefined}
+              render={() => <AuthUsers {...this.props} />}
+            />
+            <AltRoute
+              match={query['@user'] !== undefined}
+              render={() => <AuthUser {...this.props} />}
+            />
+            <AltRoute
+              render={rest =>
+                (<PageRoute
+                  {...rest}
+                  {...this.props}
+                  key={location.key}
+                  navigation={navigation}
+                  Wrapped={Wrapped}
+                />)}
+            />
+          </AltSwitch>
+        </SwitchContainer>
+        {ua.getBrowser().name !== 'Chrome' &&
+          <Footer>
+            <p>
+              Wir empfehlen für die Verwendung von Olymp (und darüber hinaus)
+              die Verwendung des Browsers{' '}
+              <a href="https://www.google.de/chrome" rel="noopener noreferrer">
+                Chrome
+              </a>.
+            </p>
+            {ua.getBrowser().name === 'IE' &&
+              <Warning>
+                Der Internet Explorer ist ausdrücklich nicht unterstützt!
+              </Warning>}
+          </Footer>}
+      </Container>
     );
   }
 }

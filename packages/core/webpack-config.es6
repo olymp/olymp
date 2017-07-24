@@ -96,6 +96,9 @@ module.exports = ({
         'process.env.DEV_URL': devUrl
           ? JSON.stringify(devUrl.origin)
           : undefined,
+        'process.env.HOTJAR': process.env.HOTJAR
+          ? JSON.stringify(process.env.HOTJAR)
+          : undefined,
         'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
         'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
         'process.env.IS_ELECTRON': isElectron
