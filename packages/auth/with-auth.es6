@@ -17,7 +17,7 @@ const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
 export const auth = (obj = {}) => (WrappedComponent) => {
-  const { extraAttributes } = obj;
+  const { extraAttributes, waitForUser = true, loader: Loader } = obj;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
@@ -81,8 +81,8 @@ export const auth = (obj = {}) => (WrappedComponent) => {
       };
     }
     render() {
-      if (this.props.auth.loading) {
-        return <Spinner />;
+      if (this.props.auth.loading && waitForUser) {
+        return Loader ? <Loader /> : <Spinner />;
       }
       return <WrappedComponent {...this.props} />;
     }

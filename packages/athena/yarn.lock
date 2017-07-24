@@ -147,9 +147,9 @@ ansi-styles@^3.1.0:
   dependencies:
     color-convert "^1.0.0"
 
-antd@^2.12.0:
-  version "2.12.1"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-2.12.1.tgz#e4240d2a42fdbd12a55a85c0ff9cbbc0e7b94cfa"
+antd@^2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-2.12.2.tgz#bc48771964c4055c00ee371b4482b8b98ad4ac01"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -257,6 +257,10 @@ arr-flatten@^1.0.1:
 array-tree-filter@^1.0.0, array-tree-filter@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/array-tree-filter/-/array-tree-filter-1.0.1.tgz#0a8ad1eefd38ce88858632f9cc0423d7634e4d5d"
+
+array-unique@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.1.1.tgz#b2dc8ec765d306537d7291e0e621e849d2573cf9"
 
 array-unique@^0.2.1:
   version "0.2.1"
@@ -1228,7 +1232,11 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.5.0:
+bluebird@3.4.6:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+
+bluebird@^3.1.1, bluebird@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
@@ -1436,7 +1444,7 @@ charenc@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
 
-cheerio@^0.22.0:
+cheerio@0.22.0, cheerio@^0.22.0:
   version "0.22.0"
   resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-0.22.0.tgz#a9baa860a3f9b595a6b81b1a86873121ed3a269e"
   dependencies:
@@ -2119,7 +2127,7 @@ es6-iterator@2, es6-iterator@^2.0.1, es6-iterator@~2.0.1:
     es5-ext "^0.10.14"
     es6-symbol "^3.1"
 
-es6-map@^0.1.3, es6-map@^0.1.4:
+es6-map@^0.1.1, es6-map@^0.1.3, es6-map@^0.1.4:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/es6-map/-/es6-map-0.1.5.tgz#9136e0503dcc06a301690f0bb14ff4e364e949f0"
   dependencies:
@@ -2248,6 +2256,10 @@ expand-range@^1.8.1:
   resolved "https://registry.yarnpkg.com/expand-range/-/expand-range-1.8.2.tgz#a299effd335fe2721ebae8e257ec79644fc85337"
   dependencies:
     fill-range "^2.1.0"
+
+extend@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/extend/-/extend-2.0.1.tgz#1ee8010689e7395ff9448241c98652bc759a8260"
 
 extend@~3.0.0:
   version "3.0.1"
@@ -2752,7 +2764,16 @@ html-comment-regex@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
 
-htmlparser2@^3.9.1:
+html-metadata@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/html-metadata/-/html-metadata-1.6.3.tgz#a13b957f7e52d7ae74197abe30e2d35648fc0fc9"
+  dependencies:
+    bluebird "3.4.6"
+    cheerio "0.22.0"
+    microdata-node "0.2.1"
+    preq "0.5.2"
+
+htmlparser2@^3.8.2, htmlparser2@^3.9.1:
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.9.2.tgz#1bdf87acca0f3f9e53fa4fcceb0f4b4cbb00b338"
   dependencies:
@@ -2863,6 +2884,10 @@ invariant@^2.0.0, invariant@^2.1.0, invariant@^2.2.0, invariant@^2.2.1, invarian
 invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
+
+is-absolute-url@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-absolute-url/-/is-absolute-url-1.0.0.tgz#2d7ef0fd0bb2a88dac7e92253c6808a0ace24bfb"
 
 is-absolute-url@^2.0.0:
   version "2.1.0"
@@ -3399,6 +3424,17 @@ memory-fs@^0.4.0, memory-fs@~0.4.1:
     errno "^0.1.3"
     readable-stream "^2.0.1"
 
+microdata-node@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/microdata-node/-/microdata-node-0.2.1.tgz#c59f59d2130a328070a1edb31590950cf7dc7b8d"
+  dependencies:
+    array-unique "^0.1.1"
+    domutils "^1.5.1"
+    es6-map "^0.1.1"
+    extend "^2.0.0"
+    htmlparser2 "^3.8.2"
+    is-absolute-url "^1.0.0"
+
 micromatch@^2.1.5:
   version "2.3.11"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-2.3.11.tgz#86677c97d1720b363431d04d0d15293bd38c1565"
@@ -3687,37 +3723,37 @@ object.omit@^2.0.0:
     for-own "^0.1.4"
     is-extendable "^0.1.1"
 
-olymp-auth@^16.0.43:
-  version "16.0.43"
-  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-16.0.43.tgz#02620739509dfc9f639d5d0d5239db4521962fe2"
+olymp-auth@^16.0.53:
+  version "16.0.53"
+  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-16.0.53.tgz#1f1d5b761ea456d7c778cf2c696a178d1033a341"
   dependencies:
     jsonwebtoken "^7.4.1"
-    olymp-fela "^16.0.38"
+    olymp-fela "^16.0.50"
     qrcode "^0.8.2"
     speakeasy "^2.0.0"
     stale-lru-cache "^5.1.1"
 
-olymp-cloudinary@^16.0.42:
-  version "16.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-16.0.42.tgz#f1e01b66717c997dcb24b56c6c4026858bcd0dbc"
+olymp-cloudinary@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-16.0.50.tgz#abeb86d03ffe05973d1626333cf91e094e802126"
   dependencies:
     cloudinary "^1.9.0"
-    olymp-collection "^16.0.42"
+    olymp-collection "^16.0.50"
     react-image-crop "^2.0.5"
     react-images "^0.5.4"
     recompose "^0.24.0"
 
-olymp-collection@^16.0.42:
-  version "16.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-16.0.42.tgz#c0a428cc9dcedba55706fde0ca651e0e8b7dbc2f"
+olymp-collection@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-16.0.50.tgz#134f78abc537c7fcbbf01ad689a2ebee3158ca35"
   dependencies:
     deep-diff "^0.3.8"
     prop-types "^15.5.10"
     shortid "^2.2.8"
 
-olymp-fela@^16.0.38:
-  version "16.0.38"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.38.tgz#34d382ff73afc2d23a13a879893145bbb3497c8c"
+olymp-fela@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.50.tgz#e2dd1dd76f3b42f0d002d9bb446e9ba115640174"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
@@ -3734,24 +3770,24 @@ olymp-fela@^16.0.38:
     react-portal "^3.1.0"
     tinycolor2 "^1.4.1"
 
-olymp-google@^16.0.43:
-  version "16.0.43"
-  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-16.0.43.tgz#4764cd707913206d0e46c349d3d885bffdb3abeb"
+olymp-google@^16.0.51:
+  version "16.0.51"
+  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-16.0.51.tgz#6da164faaebc3b0bb0e575af0411e3c0b187df97"
   dependencies:
     "@google/maps" "^0.4.2"
     bluebird "^3.5.0"
     google-map-react "^0.24.0"
     googleapis "^20.1.0"
     moment "^2.18.1"
-    olymp-ui "^16.0.43"
-    olymp-utils "^16.0.42"
+    olymp-ui "^16.0.51"
+    olymp-utils "^16.0.50"
     react-fela "^5.0.4"
     recharts "^1.0.0-alpha.2"
     shortid "^2.2.8"
 
-olymp-graphql@^16.0.40:
-  version "16.0.40"
-  resolved "https://registry.yarnpkg.com/olymp-graphql/-/olymp-graphql-16.0.40.tgz#2f30d4d0252259cd4c20535817ab77c62a26bb93"
+olymp-graphql@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-graphql/-/olymp-graphql-16.0.50.tgz#6cacdbacc4a7fd39a89a0b877f8b398ca909df1b"
   dependencies:
     graphql "^0.10.3"
     graphql-modules "^0.2.2"
@@ -3759,35 +3795,35 @@ olymp-graphql@^16.0.40:
     graphql-tools "^1.1.0"
     lodash "^4.17.4"
 
-olymp-hashtax@^16.0.31:
-  version "16.0.31"
-  resolved "https://registry.yarnpkg.com/olymp-hashtax/-/olymp-hashtax-16.0.31.tgz#5df510bab4ad0c6762db6cc39a8b1b1f42a26457"
+olymp-hashtax@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-hashtax/-/olymp-hashtax-16.0.50.tgz#dbfac221a51f0f30016fb40baf6bd578187904cf"
   dependencies:
     lodash "^4.17.4"
 
-olymp-icons@^16.0.30:
-  version "16.0.30"
-  resolved "https://registry.yarnpkg.com/olymp-icons/-/olymp-icons-16.0.30.tgz#0daabf1040a94f3dad0969037ba0b9daf97b2123"
+olymp-icons@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-icons/-/olymp-icons-16.0.50.tgz#a52f1279aa8c27cf883ace7e51d9794a02d7b213"
   dependencies:
     react-fela "^5.1.0"
 
-olymp-locale@^16.0.42:
-  version "16.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-16.0.42.tgz#d3261157b9faa50baa84fda04264410f491aa8a6"
+olymp-locale@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-16.0.50.tgz#741850a2221da4ecca45ca029c3f0a2db179cabd"
   dependencies:
     date-fns "^1.28.5"
-    olymp-utils "^16.0.42"
+    olymp-utils "^16.0.50"
 
-olymp-mail@^16.0.31:
-  version "16.0.31"
-  resolved "https://registry.yarnpkg.com/olymp-mail/-/olymp-mail-16.0.31.tgz#59396eefe875deabfe5c6348da41d45fc4541b54"
+olymp-mail@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-mail/-/olymp-mail-16.0.50.tgz#e6727ceaed95525fc642b21dd85fba941e00af74"
   dependencies:
     isomorphic-fetch "^2.2.1"
-    olymp-hashtax "^16.0.31"
+    olymp-hashtax "^16.0.50"
 
-olymp-ory@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/olymp-ory/-/olymp-ory-16.0.0.tgz#29ec40717e3dccfebf1876066c3a49d798454170"
+olymp-ory@^16.0.53:
+  version "16.0.53"
+  resolved "https://registry.yarnpkg.com/olymp-ory/-/olymp-ory-16.0.53.tgz#8a3210b1784e9406874d378967fd90715838ee06"
   dependencies:
     ory-editor-core "^0.2.12"
     ory-editor-plugins-divider "^0.2.12"
@@ -3797,51 +3833,58 @@ olymp-ory@^16.0.0:
     ory-editor-plugins-spacer "^0.2.12"
     ory-editor-plugins-video "^0.2.12"
 
-olymp-pages@^16.0.42:
-  version "16.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-16.0.42.tgz#e8a12e31c22b3458e39607d7dc02bfbb97cb3c42"
+olymp-pages@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-16.0.50.tgz#3225ab5af46954f53696f0db1b522af84ceb4d1f"
   dependencies:
-    olymp-fela "^16.0.38"
-    olymp-router "^16.0.42"
-    olymp-utils "^16.0.42"
+    olymp-fela "^16.0.50"
+    olymp-router "^16.0.50"
+    olymp-utils "^16.0.50"
     recompose "^0.24.0"
 
-olymp-router@^16.0.42:
-  version "16.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-16.0.42.tgz#b4f60f07bfc136084039dd3b3b893c4f51582fdb"
+olymp-router@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-16.0.50.tgz#4bdbf45dcae37ee046dddffe9ae626e1711a49e9"
   dependencies:
     history "^4.6.3"
-    olymp-utils "^16.0.42"
+    olymp-utils "^16.0.50"
     route-parser "^0.0.5"
 
-olymp-slate@^16.0.38:
-  version "16.0.38"
-  resolved "https://registry.yarnpkg.com/olymp-slate/-/olymp-slate-16.0.38.tgz#2f2ff75eb1ed3d01bc8bdab81a9a8511f8c83b92"
+olymp-scrape@^16.0.51:
+  version "16.0.51"
+  resolved "https://registry.yarnpkg.com/olymp-scrape/-/olymp-scrape-16.0.51.tgz#3b41c26b1e1225f2207cefdd2d1bc6a82ff8aafe"
+  dependencies:
+    html-metadata "^1.6.3"
+    shortid "^2.2.8"
+
+olymp-slate@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-slate/-/olymp-slate-16.0.50.tgz#e6f1feec89781ecdaae0e64e99dd8dbfc3f48075"
   dependencies:
     react-portal "^3.1.0"
     slate "^0.20.6"
     slate-insert-block-on-enter "^0.0.3"
     slate-trailing-block "^0.2.4"
 
-olymp-ui@^16.0.43:
-  version "16.0.43"
-  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-16.0.43.tgz#5169e7b03400939e445afe6ba3e30d50f041d764"
+olymp-ui@^16.0.51:
+  version "16.0.51"
+  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-16.0.51.tgz#1f0901cb483f819a935d64184c3c2d37bddb9c47"
   dependencies:
-    antd "^2.12.0"
+    antd "^2.12.2"
     moment "^2.18.1"
     multirangeslider "^0.5.2"
     react-modal2 "^3.2.0"
     react-portal-minimal "^4.0.2"
 
-olymp-utils@^16.0.42:
-  version "16.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.42.tgz#a2324038a0b77412cc1518c2f2a998f24a9c1adf"
+olymp-utils@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.50.tgz#2ad237abb200bfce45fa453817fc5aa4264434d0"
   dependencies:
     lodash "^4.17.4"
 
-olymp-webpack-babel@^16.0.44:
-  version "16.0.44"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-babel/-/olymp-webpack-babel-16.0.44.tgz#bbf66f37955d8cecfa60b01f3c72d3834363cb77"
+olymp-webpack-babel@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-babel/-/olymp-webpack-babel-16.0.50.tgz#38a33a984b9ae25d08827b3d56567875c9af5e5d"
   dependencies:
     babel-core "^6.25.0"
     babel-loader "^7.1.1"
@@ -3865,9 +3908,9 @@ olymp-webpack-babel@^16.0.44:
     rollup-plugin-babel "^2.7.1"
     webpack "^3.3.0"
 
-olymp-webpack-less@^16.0.30:
-  version "16.0.30"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-less/-/olymp-webpack-less-16.0.30.tgz#cabb366a48281ab77bfc3a60d347689d2be8af00"
+olymp-webpack-less@^16.0.50:
+  version "16.0.50"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-less/-/olymp-webpack-less-16.0.50.tgz#7a093d5f0a61fb7591da405c1ecd38af1c5af3b7"
   dependencies:
     css-loader "^0.28.4"
     extract-text-webpack-plugin "^3.0.0"
@@ -4369,6 +4412,14 @@ postcss@^6.0.1:
 prepend-http@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
+
+preq@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/preq/-/preq-0.5.2.tgz#dcd3d645f6ebb48ccdff1dbb5a35dec86b708617"
+  dependencies:
+    bluebird "^3.1.1"
+    request "^2.67.0"
+    semver "^5.3.0"
 
 preserve@^0.2.0:
   version "0.2.0"
@@ -5227,7 +5278,7 @@ repeating@^2.0.0:
   dependencies:
     is-finite "^1.0.0"
 
-request@^2.72.0, request@^2.74.0, request@^2.81.0:
+request@^2.67.0, request@^2.72.0, request@^2.74.0, request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:

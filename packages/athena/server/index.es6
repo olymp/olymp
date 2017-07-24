@@ -4,6 +4,7 @@ import { authGraphQL, authCache, createAuthEngine } from 'olymp-auth/server';
 import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';
+import { scrapeGraphQL } from 'olymp-scrape/server';
 /* import createSitemap from 'olymp-sitemap/server';*/
 import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
@@ -51,7 +52,12 @@ export default (server, options) => {
   const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET });
   server.use(authCache(authEngine));
 
-  const algolia = process.env.ALGOLIA ? algoliasearch(process.env.ALGOLIA.split('@')[1], process.env.ALGOLIA.split('@')[0]) : null;
+  const algolia = process.env.ALGOLIA
+    ? algoliasearch(
+        process.env.ALGOLIA.split('@')[1],
+        process.env.ALGOLIA.split('@')[0]
+      )
+    : null;
 
   let cachedApp = null;
   server.use((req, res, next) => {
@@ -67,6 +73,7 @@ export default (server, options) => {
   modules.auth = authGraphQL(options.auth);
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
+  modules.scrape = scrapeGraphQL();
   modules.google = googleGraphQL(
     GOOGLE_MAPS_KEY,
     GOOGLE_CLIENT_EMAIL,
@@ -107,7 +114,7 @@ export default (server, options) => {
     server.get('/graphql', schema.graphi);
   }
 
-  monk.collection('app').findOne({ id: APP }).then((app) => {
+  monk.collection('app').findOne({ id: APP }).then(app => {
     if (!app) {
       throw new Error('App not found');
     }

@@ -36,15 +36,21 @@ export default ({ theme }) => {
     },
     '& .ant-menu-item .anticon': {
       marginRight: 0,
+      overflow: 'visible',
+      lineHeight: 0.6,
     },
     '& .ant-menu-item > a > .anticon': {
-      marginTop: -2,
+      overflow: 'visible',
+      lineHeight: 0.6,
     },
     '& .ant-menu-submenu-title .anticon': {
       marginRight: 0,
+      overflow: 'visible',
+      lineHeight: 0.6,
     },
     '& .ant-menu-submenu-title > span > .anticon': {
-      marginTop: -2,
+      overflow: 'visible',
+      lineHeight: 0.6,
     },
     '& .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected': {
       backgroundColor: transparent3,
@@ -207,12 +213,6 @@ export default ({ theme }) => {
     },
     '& .ant-table-tbody > tr:hover:not(.ant-table-expanded-row)': {
       background: `${transparent2}`,
-    },
-    '&.ant-menu-item .anticon': {
-      overflow: 'auto',
-    },
-    '.ant-menu-submenu-title .anticon': {
-      overflow: 'auto',
     },
   };
 };
