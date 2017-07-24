@@ -208,5 +208,11 @@ export default ({ theme }) => {
     '& .ant-table-tbody > tr:hover:not(.ant-table-expanded-row)': {
       background: `${transparent2}`,
     },
+    '&.ant-menu-item .anticon': {
+      overflow: 'auto',
+    },
+    '.ant-menu-submenu-title .anticon': {
+      overflow: 'auto',
+    },
   };
 };
