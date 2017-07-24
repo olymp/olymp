@@ -5,11 +5,9 @@ import { Image } from 'olymp-cloudinary';
 
 const styles = props => ({});
 const component = ({ className, title, loading }) =>
-  (<SchemaLoader loading={loading}>
-    <div className={className}>
-      {title}
-    </div>
-  </SchemaLoader>);
+  <div className={className}>
+    {title}
+  </div>;
 
 graphql(
   gql`

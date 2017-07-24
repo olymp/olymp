@@ -5,6 +5,9 @@ import { createComponent } from 'olymp-fela';
 
 export default (types) => {
   const blockTypes = Object.keys(types).reduce((result, key) => {
+    if (!types[key]) {
+      return result;
+    }
     let { component, styles, editable, slate, ...rest } = types[key];
     const newKey = types[key].key || key;
     const isVoid = editable !== true;

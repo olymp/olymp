@@ -58,11 +58,11 @@ export const Header = withScroll(
       transition: 'box-shadow 0.3s ease-in-out',
     }),
     ({ children, className }) =>
-      <Layout.Header className={className}>
+      (<Layout.Header className={className}>
         <Container>
           {children}
         </Container>
-      </Layout.Header>,
+      </Layout.Header>),
     p => Object.keys(p)
   )
 );
