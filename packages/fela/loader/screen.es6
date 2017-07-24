@@ -3,21 +3,29 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import Portal from 'react-portal-minimal';
 import tinycolor from 'tinycolor2';
+import { CSSTransitionGroup } from 'react-transition-group';
 
-const Modal = ({ className, logo }, { theme }) =>
+const Modal = ({ className, logo, show }, { theme }) =>
   <Portal isOpened>
-    <div className={className}>
-      <div>
-        {logo || theme.logo()}
-      </div>
-    </div>
+    <CSSTransitionGroup
+      transitionName="example"
+      transitionEnter={false}
+      transitionLeaveTimeout={3000}
+    >
+      {show &&
+        <div className={className} key="habba">
+          <div>
+            {logo || theme.logo()}
+          </div>
+        </div>}
+    </CSSTransitionGroup>
   </Portal>;
 Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
     backgroundColor: theme.color,
-    zIndex: 10000,
+    zIndex: 1000000,
     background: `linear-gradient(0deg, ${theme.colorStart ||
       tinycolor(theme.color)
         .darken(6)
@@ -29,7 +37,7 @@ const component = createComponent(
         .spin(12)
         .setAlpha(topTransparency || 1)
         .toRgbString()})`,
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
@@ -43,7 +51,7 @@ const component = createComponent(
       position: 'absolute',
       top: '50%',
       left: '50%',
-      transform: 'translateX(-50%) translateY(-50%)',
+      transform: 'translate3d(0,0,0) translateX(-50%) translateY(-50%)',
       animationDuration: '2.5s',
       animationIterationCount: 'infinite',
       animationName: {
