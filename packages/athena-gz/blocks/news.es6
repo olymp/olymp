@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Grid, SchemaLoader } from 'olymp-fela';
+import { Container, Grid, SchemaLoader, createComponent } from 'olymp-fela';
 import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { withEdit, withCreate } from 'olymp-collection';
@@ -7,6 +7,16 @@ import moment from 'moment';
 import { sortBy, range } from 'lodash';
 import { H2, Panel, Item } from '../components';
 import { Column, Content, Img } from './magazin';
+
+const SubHeader = createComponent(
+  () => ({
+    fontSize: '80%',
+    marginTop: -4,
+    marginBottom: 6,
+  }),
+  'p',
+  []
+);
 
 const loaderSchema = [
   {
@@ -35,6 +45,10 @@ const RightItem = ({ item, title }) =>
     <b>
       {title}
     </b>
+    {item.ort &&
+      <SubHeader>
+        {item.ort}
+      </SubHeader>}
     <p>
       {item.name}
     </p>
