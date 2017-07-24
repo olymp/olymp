@@ -39,3 +39,5 @@ flow-typed/
 flow-coverage/
 
 packages/**/*.js
+packages/**/.stories/*.js
+packages/**/.storybook/*.js

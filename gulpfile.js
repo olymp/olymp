@@ -1,4 +1,3 @@
-const path = require('path');
 const gulp = require('gulp');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
@@ -9,6 +8,8 @@ const debug = require('gulp-debug');
 
 const src = [
   'packages/**/*.es6',
+  'packages/**/.storybook/*.es6',
+  'packages/**/.stories/*.es6',
   '!packages/*/node_modules/**/*',
   '!packages/*/node_modules/**/*',
   '!packages/*/node_modules/**',
@@ -73,7 +74,7 @@ const compile = x =>
     .pipe(gulp.dest(dest));
 
 gulp.task('watch', () => {
-  compile(watch(src, { ignoreInitial: false, base: dest }));
+  compile(watch(src, { ignoreInitial: false, base: dest, dot: true }));
 });
 
 gulp.task('default', ['es6', 'watch']);
