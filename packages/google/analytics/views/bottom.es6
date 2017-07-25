@@ -1,16 +1,64 @@
 import React, { Component, Children, cloneElement } from 'react';
+import { graphql, gql } from 'olymp-utils';
 import { Input, Radio, Button } from 'antd';
 import { DateRangeEditor } from 'olymp-ui';
-import moment from 'moment';
 import { FlexContainer, Toolbar, Pagination } from '../components';
 import { TableChart } from '../charts';
+import { fields, rowFields, getItemFields } from './top';
 
+@graphql(
+  gql`
+    query analyticsQuery(
+      $metrics: [ANALYTICS_METRICS]
+      $dimensions: [ANALYTICS_DIMENSIONS]
+      $start: String!
+      $end: String!
+    ) {
+      item: analyticsQuery(
+        start: $start
+        end: $end
+        metrics: $metrics
+        dimensions: $dimensions
+      ) {
+        ${fields}
+        rows {
+          ${rowFields}
+        }
+      }
+    }
+  `,
+  {
+    options: ({ metrics, dimensions, start, end }) => {
+      const variables = {
+        metrics: metrics.map(x => x.input),
+        start,
+        end,
+      };
+
+      if (dimensions && dimensions.length) {
+        variables.dimensions = dimensions.map(x => x.input);
+      }
+
+      return {
+        variables,
+      };
+    },
+    props: ({ ownProps, data }) => {
+      const items = getItemFields(data, ownProps.metrics, ownProps.dimensions);
+
+      return {
+        ...ownProps,
+        loading: data.loading,
+        items,
+      };
+    },
+  }
+)
 export default class BottomView extends Component {
   state = {
     page: 1,
     search: undefined,
     table: false,
-    sortedInfo: {},
   };
 
   render() {
@@ -19,51 +67,22 @@ export default class BottomView extends Component {
       dataKey,
       title,
       metrics,
+      dimensions,
       changeChart,
       changeRange,
       dateRange,
       onChange,
     } = this.props;
     let { items } = this.props;
-    const { page, search, table, sortedInfo } = this.state;
+    const { page, search, table } = this.state;
     const pageSize = table ? items.length : 5;
     const onSearch = search => this.setState({ search });
+    const chart = table ? <TableChart /> : children;
 
     if (search) {
       items = items.filter(item => item[dataKey].includes(search));
     }
     items = items.slice((page - 1) * pageSize, page * pageSize);
-
-    const columns = [];
-    Object.keys((items && !items.lenght && items[0]) || {}).forEach(key => {
-      if (key !== '__typename' && key !== 'id') {
-        const metric = metrics.find(metric => metric.key === key);
-
-        columns.push({
-          title: (metric && metric.name) || key,
-          dataIndex: key,
-          fixed: dataKey === key && 'left',
-          sorter: (a, b) => {
-            switch (typeof a[key]) {
-              case 'number':
-                return a[key] - b[key];
-
-              default:
-                if (a[key].toUpperCase() < b[key].toUpperCase()) {
-                  return -1;
-                }
-                if (a[key].toUpperCase() > b[key].toUpperCase()) {
-                  return 1;
-                }
-                return 0;
-            }
-          },
-          sortOrder: sortedInfo.columnKey === key && sortedInfo.order,
-          render: data =>
-            key !== 'date' ? data : moment(data).format('YYYY-MM'),
-        });
-      }
-    });
 
     return (
       <FlexContainer>
@@ -89,19 +108,9 @@ export default class BottomView extends Component {
           />
         </Toolbar>
 
-        {table
-          ? <TableChart
-              items={items}
-              columns={columns}
-              onRowClick={item => onChange(item[dataKey])}
-              onSort={sorter =>
-                this.setState({
-                  sortedInfo: sorter,
-                })}
-            />
-          : Children.map(children, child =>
-              cloneElement(child, { items, dataKey, metrics, onChange })
-            )}
+        {Children.map(chart, child =>
+          cloneElement(child, { items, dataKey, metrics, dimensions, onChange })
+        )}
 
         <Toolbar>
           <Pagination

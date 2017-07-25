@@ -150,12 +150,14 @@ export default (mapsKey, mail, key) => {
           const dimensionArray = dimensions.map(
             name => dimensionObj[name].name
           );
+
           let sorts = '';
-          if (!sort || sort === 'PAGEVIEWS') {
-            sorts = '-ga:pageviews';
-          } else if (sort === 'SESSIONS') {
-            sorts = '-ga:sessions';
+          if (metricObj[sorts]) {
+            sorts = `-${metricObj[sorts].name}`;
+          } else {
+            sorts = `-${metricObj[metrics[0]].name}`;
           }
+
           if (time === 'MONTH') {
             dimensionArray.push('ga:year,ga:month');
             if (sort === 'DATE') {

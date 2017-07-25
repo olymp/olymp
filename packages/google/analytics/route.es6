@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AltSwitch, AltRoute, withRouter } from 'olymp-router';
 import { SplitView, Sidebar, List } from 'olymp-ui';
-import { PageViews } from './views';
+import { PageViews, Duration } from './views';
 
 @withRouter
 class AnalyticsRoute extends Component {
@@ -69,8 +69,12 @@ class AnalyticsRoute extends Component {
         </Sidebar>
         <AltSwitch>
           <AltRoute
-            match={query['@user'] !== undefined}
+            match={query['@analytics'] === null}
             render={() => <PageViews />}
+          />
+          <AltRoute
+            match={query['@analytics'] === 'duration'}
+            render={() => <Duration />}
           />
           <AltRoute render={() => <PageViews />} />
         </AltSwitch>

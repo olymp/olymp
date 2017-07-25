@@ -8,16 +8,16 @@ import BarChart from 'recharts/lib/chart/BarChart';
 
 const colors = ['#8884d8', '#82ca9d'];
 
-export default ({ onChange, metrics, dataKey, items }) =>
+export default ({ onChange, metrics, dimensions, dataKey, items }) =>
   <ResponsiveContainer>
     <BarChart layout="vertical" data={items}>
       <Tooltip cursor={false} />
       {(metrics || [])
         .map((metric, i) =>
           <Bar
-            name={metric.name}
-            dataKey={metric.key}
-            key={metric.key}
+            name={metric.label}
+            dataKey={metric.output}
+            key={metric.output}
             fill={colors[i] || colors[0]}
             label
             onClick={item => onChange(item[dataKey])}
