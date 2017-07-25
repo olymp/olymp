@@ -20,14 +20,11 @@ const ModalBackground = createComponent(
 const Modal = createComponent(
   ({ theme, width }) => ({
     centerX: true,
-    width: width || '100%',
+    width: width || `calc(100% - ${theme.space5})`,
     top: theme.space4,
     bottom: theme.space4,
     hasFlex: {
       display: 'flex',
-    },
-    '> div': {
-      marginX: !width && theme.space4,
     },
   }),
   'div',
@@ -53,6 +50,7 @@ export default ({ children, open, onClose, width, header, footer }) =>
       <Modal
         width={width}
         onClick={e => {
+          // e.cancelBubble = true;
           if (e.stopPropagation) {
             e.stopPropagation();
           }
