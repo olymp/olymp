@@ -4,18 +4,102 @@ import bluebird from 'bluebird';
 import moment from 'moment';
 import shortID from 'shortid';
 
+// https://ga-dev-tools.appspot.com/query-explorer/
+
 const analytics = bluebird.promisify(google.analytics('v3').data.ga.get);
 const dimensionObj = {
-  PAGE_TITLE: 'ga:pageTitle',
-  CITY: 'ga:city',
-  USER_GENDER: 'ga:userGender',
-  USER_AGE_BRACKET: 'ga:userAgeBracket',
-  DEVICE_CATEGORY: 'ga:deviceCategory',
-  BROWSER: 'ga:browser',
-  USER_TYPE: 'ga:userType',
-  SOURCE: 'ga:source',
-  REGION_ISO_CODE: 'ga:regionIsoCode',
-  SCREEN_RESOLUTION: 'ga:screenResolution',
+  PAGE_TITLE: {
+    name: 'ga:pageTitle',
+    output: 'pageTitle',
+    type: 'String',
+  },
+  PAGE_PATH: {
+    name: 'ga:pagePath',
+    output: 'pagePath',
+    type: 'String',
+  },
+  PAGE_PATH_1: {
+    name: 'ga:pagePathLevel1',
+    output: 'pagePathLevel1',
+    type: 'String',
+  },
+  PAGE_PATH_2: {
+    name: 'ga:pagePathLevel2',
+    output: 'pagePathLevel2',
+    type: 'String',
+  },
+  PAGE_PATH_3: {
+    name: 'ga:pagePathLevel3',
+    output: 'pagePathLevel3',
+    type: 'String',
+  },
+  CITY: {
+    name: 'ga:city',
+    output: 'city',
+    type: 'String',
+  },
+  USER_GENDER: {
+    name: 'ga:userGender',
+    output: 'userGender',
+    type: 'String',
+  },
+  USER_AGE_BRACKET: {
+    name: 'ga:userAgeBracket',
+    output: 'userAgeBracket',
+    type: 'String',
+  },
+  DEVICE_CATEGORY: {
+    name: 'ga:deviceCategory',
+    output: 'deviceCategory',
+    type: 'String',
+  },
+  /* BROWSER: {
+    name: 'ga:browser',
+    output: 'pageviews',
+    type: 'String',
+  },
+  USER_TYPE: {
+    name: 'ga:userType',
+    output: 'pageviews',
+    type: 'String',
+  },
+  SOURCE: {
+    name: 'ga:source',
+    output: 'pageviews',
+    type: 'String',
+  },
+  REGION_ISO_CODE: {
+    name: 'ga:regionIsoCode',
+    output: 'pageviews',
+    type: 'String',
+  },
+  SCREEN_RESOLUTION: {
+    name: 'ga:screenResolution',
+    output: 'pageviews',
+    type: 'String',
+  }, */
+};
+const metricObj = {
+  PAGEVIEWS: {
+    name: 'ga:pageviews',
+    output: 'pageviews',
+    type: 'Int',
+  },
+  SESSIONS: {
+    name: 'ga:sessions',
+    output: 'sessions',
+    type: 'Int',
+  },
+  TIME_ON_PAGE: {
+    name: 'ga:timeOnPage',
+    output: 'timeOnPage',
+    type: 'Float',
+  },
+  AVG_TIME_ON_PAGE: {
+    name: 'ga:avgTimeOnPage',
+    output: 'avgTimeOnPage',
+    type: 'Float',
+  },
 };
 
 export default (mapsKey, mail, key) => {
@@ -43,16 +127,29 @@ export default (mapsKey, mail, key) => {
     queries: `
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
-      analyticsPageviews(start: String!, end: String!, dimensions: [ANALYTICS_PAGEVIEW_DIMENSIONS], time: ANALYTICS_PAGEVIEW_TIMES, sort: ANALYTICS_PAGEVIEW_SORT): AnalyticsPageviews
+      analyticsQuery(start: String!, end: String!, metrics: [ANALYTICS_METRICS], dimensions: [ANALYTICS_DIMENSIONS], time: ANALYTICS_TIMES, sort: ANALYTICS_SORT, filters: [AnalyticsFilter]): AnalyticsQuery
     `,
     resolvers: {
       queries: {
-        analyticsPageviews: (
+        analyticsQuery: (
           source,
-          { start, end, time, dimensions = [], sort }
+          {
+            start,
+            end,
+            time,
+            metrics = [],
+            dimensions = [],
+            sort,
+            filters = [],
+          }
         ) => {
           if (!jwtClient) return null;
-          const dimensionArray = dimensions.map(name => dimensionObj[name]);
+
+          const metricArray = metrics.map(name => metricObj[name].name);
+
+          const dimensionArray = dimensions.map(
+            name => dimensionObj[name].name
+          );
           let sorts = '';
           if (!sort || sort === 'PAGEVIEWS') {
             sorts = '-ga:pageviews';
@@ -80,15 +177,41 @@ export default (mapsKey, mail, key) => {
               sorts = 'ga:year';
             }
           }
-          return analytics({
+
+          const query = {
             auth: jwtClient,
             ids: 'ga:110941031',
             sort: sorts,
             'start-date': start,
             'end-date': end,
-            metrics: 'ga:sessions,ga:pageviews,ga:timeOnPage,ga:avgTimeOnPage',
+            metrics: metricArray.join(','),
             dimensions: dimensionArray.join(','),
-          }).then(({ columnHeaders, rows, totalsForAllResults }) => {
+          };
+          if (filters.length) {
+            filters = filters.map(filter => {
+              const name = (metricObj[filter.metric] ||
+                dimensionObj[filter.dimension]).name;
+
+              if (filter.operator === 'NE') {
+                return `${name}==${filter.expression}`;
+              } else if (filter.operator === 'GT') {
+                return `${name}>${filter.expression}`;
+              } else if (filter.operator === 'GE') {
+                return `${name}>=${filter.expression}`;
+              } else if (filter.operator === 'LT') {
+                return `${name}<${filter.expression}`;
+              } else if (filter.operator === 'lE') {
+                return `${name}<=${filter.expression}`;
+              }
+
+              return `${name}==${filter.expression}`;
+            });
+            query.filters = filters.join(',');
+          }
+
+          return analytics(
+            query
+          ).then(({ columnHeaders, rows, totalsForAllResults }) => {
             const cols = columnHeaders.map(x => x.name.substr(3));
             const resultRows = rows
               .map(values =>
@@ -152,49 +275,64 @@ export default (mapsKey, mail, key) => {
         partialMatch: Boolean
         types: [String]
       }
-      type AnalyticsPageviews {
+      type AnalyticsQuery {
         id: String
-        sessions: Int
-        pageviews: Int
-        timeOnPage: Float
-        avgTimeOnPage: Float
-        rows: [AnalyticsPageviewRows]
+        ${Object.keys(metricObj)
+          .map(key => `${metricObj[key].output}: ${metricObj[key].type}`)
+          .join('\n')}
+        rows: [AnalyticsQueryRows]
       }
-      type AnalyticsPageviewRows {
+      type AnalyticsQueryRows {
         id: String
-        pageviews: Int
-        sessions: Int
-        pageTitle: String
-        city: String
-        deviceCategory: String
-        timeOnPage: Float
-        avgTimeOnPage: Float
-        userGender: String
-        userAgeBracket: String
         date: Date
+        ${Object.keys(metricObj)
+          .map(key => `${metricObj[key].output}: ${metricObj[key].type}`)
+          .join('\n')}
+        ${Object.keys(dimensionObj)
+          .map(key => `${dimensionObj[key].output}: ${dimensionObj[key].type}`)
+          .join('\n')}
       }
-      enum ANALYTICS_PAGEVIEW_TIMES {
+      input AnalyticsFilter {
+        metric: ANALYTICS_METRICS
+        dimension: ANALYTICS_DIMENSIONS
+        operator: ANALYTICS_OPERATOR
+        expression: String
+      }
+      enum ANALYTICS_TIMES {
         YEAR
         MONTH
         WEEK
         DAY
       }
-      enum ANALYTICS_PAGEVIEW_SORT {
+      enum ANALYTICS_SORT {
         PAGEVIEWS
         SESSIONS
         DATE
       }
-      enum ANALYTICS_PAGEVIEW_DIMENSIONS {
+      enum ANALYTICS_METRICS {
+        PAGEVIEWS
+        SESSIONS
+        TIME_ON_PAGE
+        AVG_TIME_ON_PAGE
+      }
+      enum ANALYTICS_DIMENSIONS {
         PAGE_TITLE
+        PAGE_PATH
+        PAGE_PATH_LEVEL_1
+        PAGE_PATH_LEVEL_2
+        PAGE_PATH_LEVEL_3
         CITY
         USER_GENDER
         USER_AGE_BRACKET
         DEVICE_CATEGORY
-        BROWSER
-        USER_TYPE
-        SOURCE
-        REGION_ISO_CODE
-        SCREEN_RESOLUTION
+      }
+      enum ANALYTICS_OPERATOR {
+        EQ
+        NE
+        GT
+        GE
+        LT
+        LE
       }
     `,
   };

@@ -1,89 +1,80 @@
 import React, { Component } from 'react';
-import { withState, graphql, gql } from 'olymp-utils';
-import { Container } from 'olymp-ui';
-import { createComponent } from 'react-fela';
-import moment from 'moment';
-import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
-import Tooltip from 'recharts/lib/component/Tooltip';
-import Legend from 'recharts/lib/component/Legend';
-import XAxis from 'recharts/lib/cartesian/XAxis';
-import YAxis from 'recharts/lib/cartesian/YAxis';
-import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
-import LineChart from 'recharts/lib/chart/LineChart';
-import Line from 'recharts/lib/cartesian/Line';
+import { AltSwitch, AltRoute, withRouter } from 'olymp-router';
+import { SplitView, Sidebar, List } from 'olymp-ui';
+import { PageViews } from './views';
 
-const StyledLineChart = createComponent(
-  () => ({
-    '& svg': {},
-  }),
-  LineChart,
-  p => Object.keys(p)
-);
-
-export const queryTemplate = graphql(
-  gql`
-    query analyticsPageviews {
-      item: analyticsPageviews(
-        start: "180daysAgo"
-        end: "today"
-        time: MONTH
-        sort: DATE
-      ) {
-        id
-        pageviews
-        sessions
-        rows {
-          id
-          pageTitle
-          pageviews
-          sessions
-          date
-        }
-      }
-    }
-  `,
-  {
-    options: ({ id }) => ({ variables: {} }),
-    props: ({ ownProps, data }) => ({
-      ...ownProps,
-      data,
-      item: data.item || {},
-    }),
-  }
-);
-
-@withState('text')
-@queryTemplate
+@withRouter
 class AnalyticsRoute extends Component {
-  state = {
-    search: undefined,
-  };
-
   render() {
-    const { item } = this.props;
-    const { search } = this.state;
-    const text = this.props.text || item.text;
+    const { router, pathname, query } = this.props;
 
     return (
-      <Container height={350}>
-        Pageviews: {item.pageviews}
-        <br />
-        Sessions: {item.sessions}
-        <ResponsiveContainer>
-          <StyledLineChart data={item.rows}>
-            <Line name="Pageviews" dataKey="pageviews" stroke="#8884d8" />
-            <Line name="Sessions" dataKey="sessions" stroke="#82ca9d" />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis
-              dataKey="date"
-              tickFormatter={v => moment(v).format('YYYY-MM')}
-            />
-            <YAxis />
-            <Legend align="center" />
-            <Tooltip labelFormatter={v => moment(v).format('YYYY-MM')} />
-          </StyledLineChart>
-        </ResponsiveContainer>
-      </Container>
+      <SplitView background>
+        <Sidebar
+          isOpen
+          padding={0}
+          title="Statistik"
+          subtitle="Google-Analytics-Daten auswerten"
+        >
+          <List.Item
+            active={!query['@analytics']}
+            label="Seitenaufrufe"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { ...query, ['@analytics']: null },
+              })}
+            key="page-views"
+          />
+          <List.Item
+            active={query['@analytics'] === 'duration'}
+            label="Verweildauer"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { ...query, ['@analytics']: 'duration' },
+              })}
+            key="duration"
+          />
+          <List.Item
+            active={query['@analytics'] === 'visitors'}
+            label="Besucher"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { ...query, ['@analytics']: 'visitors' },
+              })}
+            key="visitors"
+          />
+          <List.Item
+            active={query['@analytics'] === 'location'}
+            label="Herkunft"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { ...query, ['@analytics']: 'location' },
+              })}
+            key="location"
+          />
+          <List.Item
+            active={query['@analytics'] === 'individual'}
+            label="Individuell"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { ...query, ['@analytics']: 'individual' },
+              })}
+            key="individual"
+          />
+        </Sidebar>
+        <AltSwitch>
+          <AltRoute
+            match={query['@user'] !== undefined}
+            render={() => <PageViews />}
+          />
+          <AltRoute render={() => <PageViews />} />
+        </AltSwitch>
+      </SplitView>
     );
   }
 }
