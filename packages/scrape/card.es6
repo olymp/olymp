@@ -3,16 +3,37 @@ import { graphql, gql } from 'olymp-utils';
 import { createComponent, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 
-const styles = props => ({});
-const component = ({ className, title, loading }) =>
-  (<div className={className}>
-    {title}
-  </div>);
+const styles = props => ({
+  '> div': {
+    float: 'left',
+    marginRight: 10,
+  },
+  minHeight: 20,
+  minWidth: 20,
+});
+const component = ({ className, image, title, loading, description, value }) =>
+  <div className={className}>
+    {image &&
+      <Image
+        width={80}
+        height={80}
+        value={{
+          width: 300,
+          height: 300,
+          url: `http://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,f_auto/${image}`,
+        }}
+      />}
+    <h3>
+      {title}
+    </h3>
+    <p>
+      {description} <a href={value}>Mehr erfahren ...</a>
+    </p>
+  </div>;
 
 // externe bilder:
-// http://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,g_face,r_max,f_auto/http://upload.wikimedia.org/wikipedia/commons/0/0c/Scarlett_Johansson_Césars_2014.jpg
-
-graphql(
+//
+const card = graphql(
   gql`
     query scrape($url: String) {
       item: scrape(url: $url) {
@@ -28,18 +49,19 @@ graphql(
     }
   `,
   {
-    options: ({ value }) => ({
+    options: ({ value, url }) => ({
       variables: {
-        url: value,
+        url: value || url,
       },
     }),
     props: ({ ownProps, data }) => ({
       ...ownProps,
       data,
       loading: data.loading,
+      value: ownProps.url || ownProps.value,
       ...(data.item || {}),
     }),
   }
 )(component);
 
-export default createComponent(styles, component, p => Object.keys(p));
+export default createComponent(styles, card, p => Object.keys(p));
