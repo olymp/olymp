@@ -1,6 +1,6 @@
 const { autoUpdater } = require('electron-updater');
-const { Menu, app, BrowserWindow, crashReporter } = require('electron');
-const debug = require('electron-debug')({});
+const { Menu, app, BrowserWindow, crashReporter, dialog } = require('electron');
+require('electron-debug')({ enabled: true });
 const log = require('electron-log');
 
 if (process.env.CRASHREPORT_URL) {
@@ -47,8 +47,15 @@ function createWindow() {
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
   }
+  autoUpdater
+    .checkForUpdates()
+    .then(() => {
+      log.info('Promise fulfilled');
+    })
+    .catch((reason) => {
+      log.info(`Handle rejected promise (${reason.stack || reason}) here.`);
+    });
 
-  autoUpdater.checkForUpdates();
   // Create the browser window.
   // mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden' });
   mainWindow = new BrowserWindow({
@@ -112,6 +119,12 @@ autoUpdater.on('checking-for-update', () => {
 });
 autoUpdater.on('update-available', (ev, info) => {
   log.info('Update available.', ev, info);
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Updater',
+    message:
+      'Ein Update wurde gefunden und wird jetzt heruntergeladen/installiert. Das Programm wird sich anschließend automatisch erneut öffnen.',
+  });
 });
 autoUpdater.on('update-not-available', (ev, info) => {
   log.info('Update not available.', ev, info);
@@ -120,24 +133,9 @@ autoUpdater.on('error', (ev, err) => {
   log.info('Error in auto-updater.', ev, err);
 });
 autoUpdater.on('download-progress', (ev, progressObj) => {
-  log.info('Download progress...');
-  log.info('progressObj', progressObj);
+  log.info('Download progress...', progressObj);
 });
 autoUpdater.on('update-downloaded', (ev, info) => {
-  log.info('Update downloaded.  Will quit and install in 5 seconds.');
-  // Wait 5 seconds, then quit and install
-  setTimeout(() => {
-    autoUpdater.quitAndInstall();
-  }, 5000);
+  log.info('Update downloaded. Will quit and install.');
+  autoUpdater.quitAndInstall();
 });
-// Wait a second for the window to exist before checking for updates.
-setTimeout(() => {
-  autoUpdater
-    .checkForUpdates()
-    .then(() => {
-      log.info('Promise fulfilled');
-    })
-    .catch(reason => {
-      log.info(`Handle rejected promise (${reason.stack || reason}) here.`);
-    });
-}, 1000);
