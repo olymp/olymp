@@ -10,13 +10,14 @@ import {
   Toolbar,
   MetricSelect,
 } from '../components';
-import { LineChart, BarChart, TableChart } from '../charts';
+import { LineChart, BarChart, TableChart, PieChart } from '../charts';
 import { metricsObj, dimensionsObj } from '../../definitions';
 
 const charts = {
   bar: <BarChart />,
   barVertical: <BarChart vertical />,
   line: <LineChart />,
+  pie: <PieChart />,
   table: <TableChart />,
 };
 
@@ -132,6 +133,7 @@ export default class Chart extends Component {
       open,
       setOpen,
       range,
+      fullSize,
     } = this.props;
     const loading =
       this.props.loading ||
@@ -174,6 +176,7 @@ export default class Chart extends Component {
             <Select.Option value="line">Linie</Select.Option>
             <Select.Option value="bar">Balken</Select.Option>
             <Select.Option value="barVertical">Balken vertikal</Select.Option>
+            <Select.Option value="pie">Kuchen</Select.Option>
             <Select.Option value="table">Tabelle</Select.Option>
           </Select>
         </Grid.Item>
@@ -237,12 +240,15 @@ export default class Chart extends Component {
         </Grid.Item>
       </Toolbar>
     );
-    const content = fullSize =>
+    const content = isFullSize =>
       <Container>
         {loading && <Loader loading />}
         {!loading &&
           Children.map(charts[chart], child =>
-            cloneElement(child, { ...childProps, fullSize })
+            cloneElement(child, {
+              ...childProps,
+              fullSize: fullSize || isFullSize,
+            })
           )}
       </Container>;
 

@@ -7,7 +7,7 @@ export default class ChartWrapper extends Component {
     dimensions: undefined,
     chart: undefined,
     sorts: undefined,
-    filters: [],
+    filters: undefined,
     open: false,
   };
 
@@ -37,7 +37,7 @@ export default class ChartWrapper extends Component {
 
   render() {
     const { metrics = [], range = [] } = this.props;
-    const { filters, open } = this.state;
+    const { open } = this.state;
 
     const dimensions = this.state.dimensions || this.props.dimensions || [];
     const changeDimensions =
@@ -45,6 +45,7 @@ export default class ChartWrapper extends Component {
       (dimensions => this.setState({ dimensions }));
     const chart = this.state.chart || this.props.chart || 'line';
     const sorts = this.state.sorts || this.props.sorts || [];
+    const filters = this.state.filters || this.props.filters || [];
     const start = moment(range[0]).format('YYYY-MM-DD');
     const end = moment(range[1]).format('YYYY-MM-DD');
 

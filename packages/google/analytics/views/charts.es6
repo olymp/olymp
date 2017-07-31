@@ -46,24 +46,28 @@ export default class ChartsView extends Component {
 
     return (
       <Container>
-        <Chart
-          {...data}
-          dimensions={[
-            ...dimensions,
-            ...(selected && selected.length ? dimensions2 : []),
-          ]}
-          sorts={sorts}
-          chart={chart}
-        />
+        {chart !== 'none' &&
+          <Chart
+            {...data}
+            dimensions={[
+              ...dimensions,
+              ...(selected && selected.length ? dimensions2 : []),
+            ]}
+            sorts={sorts}
+            chart={chart}
+            fullSize={chart2 === 'none'}
+          />}
 
-        <Chart
-          {...data}
-          dimensions={dimensions2}
-          changeDimensions={dimensions => this.setState({ dimensions })}
-          sorts={sorts2}
-          chart={chart2}
-          onSelect={this.setSelection}
-        />
+        {chart2 !== 'none' &&
+          <Chart
+            {...data}
+            dimensions={dimensions2}
+            changeDimensions={dimensions => this.setState({ dimensions })}
+            sorts={sorts2}
+            chart={chart2}
+            onSelect={this.setSelection}
+            fullSize={chart === 'none'}
+          />}
       </Container>
     );
   }

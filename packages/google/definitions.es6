@@ -158,6 +158,22 @@ export const dimensionsObj = {
     category: 'Seiten',
     renderFn: val => val,
   },
+  COUNTRY: {
+    name: 'ga:country',
+    label: 'Land',
+    output: 'country',
+    type: 'String',
+    category: 'Ort',
+    renderFn: val => val,
+  },
+  REGION: {
+    name: 'ga:region',
+    label: 'Region',
+    output: 'region',
+    type: 'String',
+    category: 'Ort',
+    renderFn: val => val,
+  },
   CITY: {
     name: 'ga:city',
     label: 'Stadt',
@@ -200,11 +216,6 @@ export const dimensionsObj = {
   },
   /* BROWSER: {
     name: 'ga:browser',
-    output: 'pageviews',
-    type: 'String',
-  },
-  USER_TYPE: {
-    name: 'ga:userType',
     output: 'pageviews',
     type: 'String',
   },

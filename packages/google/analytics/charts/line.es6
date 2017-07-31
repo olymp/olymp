@@ -26,7 +26,7 @@ const LineChart2 = (
   }));
   const formatter = val => dimensionsObj[xData].renderFn(val);
 
-  if (selected && selected.length) {
+  if (dimensions.length > 1) {
     const dataObj = {};
     lines = [];
 
@@ -44,7 +44,7 @@ const LineChart2 = (
             lines.push({
               key: `${key}-${metric}`,
               label: `${key} [${metricsObj[metric].label}]`,
-              color: colors[i],
+              color: colors[selected.findIndex(s => s === key)],
               index: j,
             })
           );

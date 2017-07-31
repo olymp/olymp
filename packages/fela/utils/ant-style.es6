@@ -31,19 +31,19 @@ export default ({ theme }) => {
     '& p a': {
       color: theme.color,
     },
-    '& .ant-modal-body': {
-      border: '1px solid red',
+    /* '& .ant-modal-body': {
+      border: `1px solid ${theme.dark3}`,
     },
     '& .ant-form': {
-      border: '1px solid red',
+      border: `1px solid ${theme.dark3}`,
     },
     '& form.ant-form.ant-form-horizontal .ant-row.ant-form-item': {
-      border: '1px solid red',
+      border: `1px solid ${theme.dark3}`,
       marginBottom: 12,
     },
     '& form.ant-form.ant-form-horizontal': {
-      border: '1px solid red',
-    },
+      border: `1px solid ${theme.dark3}`,
+    }, */
     '& .ant-pagination-item > a': {
       // color: theme.light,
     },

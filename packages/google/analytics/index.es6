@@ -15,28 +15,45 @@ const initState = {
   dimensions2: ['PAGE_PATH'],
   sorts2: ['PAGEVIEWS_DESC'],
   chart2: 'barVertical',
-  active: 'pageviews',
 };
 
 @withRouter
 @Form.create()
 export default class Analytics extends Component {
-  state = initState;
-
   ok = () => {
-    const { form } = this.props;
+    const { router, pathname, query, form } = this.props;
 
     form.validateFields((err, values) => {
       if (!err) {
-        this.setState(values);
+        router.push({
+          pathname,
+          query: { ...query, ...values },
+        });
       }
     });
   };
 
   render() {
     const { router, pathname, query, form } = this.props;
-    const { metrics, range, active } = this.state;
     const { getFieldDecorator } = form;
+
+    const data = { ...initState, ...query };
+    if (!Array.isArray(data.metrics)) {
+      data.metrics = [data.metrics];
+    }
+    if (!Array.isArray(data.dimensions)) {
+      data.dimensions = [data.dimensions];
+    }
+    if (!Array.isArray(data.dimensions2)) {
+      data.dimensions2 = [data.dimensions2];
+    }
+    if (!Array.isArray(data.sorts)) {
+      data.sorts = [data.sorts];
+    }
+    if (!Array.isArray(data.sorts2)) {
+      data.sorts2 = [data.sorts2];
+    }
+    data.range = [parseInt(data.range[0], 10), parseInt(data.range[1], 10)];
 
     return (
       <SplitView background>
@@ -47,38 +64,88 @@ export default class Analytics extends Component {
           subtitle="Google-Analytics-Daten auswerten"
         >
           <List.Item
-            active={active === 'pageviews'}
+            active={!query['@analytics']}
             label="Seitenaufrufe"
-            onClick={() => this.setState(initState)}
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { '@analytics': null, ...initState },
+              })}
             key="page-views"
           />
           <List.Item
-            active={active === 'duration'}
+            active={query['@analytics'] === 'duration'}
             label="Verweildauer"
             onClick={() =>
-              this.setState({
-                ...initState,
-                metrics: ['TIME_ON_PAGE', 'AVG_TIME_ON_PAGE'],
-                sorts2: ['TIME_ON_PAGE_DESC'],
-                active: 'duration',
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'duration',
+                  ...initState,
+                  metrics: ['TIME_ON_PAGE', 'AVG_TIME_ON_PAGE'],
+                  sorts2: ['TIME_ON_PAGE_DESC'],
+                },
               })}
             key="duration"
           />
           <List.Item
-            active={active === 'visitors'}
+            active={query['@analytics'] === 'visitors'}
             label="Besucher"
             onClick={() =>
-              this.setState({
-                ...initState,
-                metrics: ['USERS', 'NEW_USERS'],
-                sorts2: ['USERS_DESC'],
-                active: 'visitors',
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'visitors',
+                  ...initState,
+                  metrics: ['USERS', 'NEW_USERS'],
+                  sorts2: ['USERS_DESC'],
+                },
               })}
             key="visitors"
           />
+          <List.Item
+            active={query['@analytics'] === 'location'}
+            label="Herkunft"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'location',
+                  ...initState,
+                  metrics: ['USERS'],
+                  dimensions: ['REGION'],
+                  dimensions2: ['CITY'],
+                  sorts: ['USERS_DESC'],
+                  sorts2: ['USERS_DESC'],
+                  chart: 'pie',
+                  chart2: 'barVertical',
+                },
+              })}
+            key="location"
+          />
+          <List.Item
+            active={query['@analytics'] === 'devices'}
+            label="Geräte"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'devices',
+                  ...initState,
+                  metrics: ['USERS'],
+                  dimensions: ['REGION'],
+                  dimensions2: ['CITY'],
+                  sorts: ['USERS_DESC'],
+                  sorts2: ['USERS_DESC'],
+                  chart: 'pie',
+                  chart2: 'barVertical',
+                },
+              })}
+            key="devices"
+          />
         </Sidebar>
 
-        <Charts {...this.state} />
+        <Charts {...data} />
 
         <Sidebar
           right
@@ -88,7 +155,7 @@ export default class Analytics extends Component {
           <PaddingContainer>
             <Form.Item key="metrics" label="Messwerte">
               {getFieldDecorator('metrics', {
-                initialValue: metrics,
+                initialValue: data.metrics,
                 rules: [
                   {
                     required: true,
@@ -99,7 +166,7 @@ export default class Analytics extends Component {
             </Form.Item>
             <Form.Item key="range" label="Zeitraum">
               {getFieldDecorator('range', {
-                initialValue: range,
+                initialValue: data.range,
                 rules: [
                   {
                     required: true,
