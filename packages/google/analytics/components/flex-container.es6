@@ -1,22 +1,21 @@
+import React from 'react';
+import { Container } from 'olymp-ui';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ theme }) => ({
+  () => ({
     position: 'relative',
     hasFlex: {
       display: 'flex',
+      flex: '1 1 0%',
       flexDirection: 'column',
-      justifyContent: 'space-between',
-      height: '100%',
     },
     '> div': {
       flex: '1 1 0%',
+      height: 'auto !important',
       overflow: 'auto',
     },
-    '> div:not(:first-of-type)': {
-      marginTop: theme.space2,
-    },
   }),
-  'div',
-  []
+  p => <Container {...p} />,
+  p => Object.keys(p)
 );

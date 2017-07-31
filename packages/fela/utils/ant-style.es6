@@ -32,7 +32,7 @@ export default ({ theme }) => {
       color: theme.color,
     },
     '& .ant-pagination-item > a': {
-      color: theme.light,
+      // color: theme.light,
     },
     '& .ant-menu-item .anticon': {
       marginRight: 0,

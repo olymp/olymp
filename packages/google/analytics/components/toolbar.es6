@@ -1,41 +1,33 @@
 import React from 'react';
-import { createComponent, border } from 'olymp-fela';
+import { createComponent, Grid, border } from 'olymp-fela';
 
 export default createComponent(
-  ({ theme }) => ({
-    hasFlex: {
-      display: 'flex',
-      flex: 'none !important',
-      '> ul': {
-        flex: '1 1 75%',
-      },
-      '> .ant-btn': {
-        flexBasis: '50%',
-      },
-      '> .ant-input-search': {
-        flexBasis: '25%',
+  ({ theme, bottom }) => ({
+    flex: 'none !important',
+    paddingBottom: !bottom && theme.space2,
+    marginBottom: !bottom && theme.space2,
+    borderBottom: !bottom && border(theme),
+    paddingTop: bottom && theme.space2,
+    marginTop: bottom && theme.space2,
+    borderTop: bottom && border(theme),
+    '> div': {
+      '> *': {
+        width: '100%',
       },
       '> .ant-radio-group': {
-        flexBasis: '25%',
+        hasFlex: {
+          display: 'flex',
+          '> label': {
+            flexGrow: 1,
+            textAlign: 'center',
+          },
+        },
       },
     },
     '> *:not(:first-child)': {
-      marginLeft: theme.space2,
-    },
-    ':first-of-type': {
-      paddingBottom: theme.space2,
-      marginBottom: theme.space2,
-      borderBottom: border(theme),
-    },
-    ':last-of-type': {
-      paddingTop: theme.space2,
-      marginTop: theme.space2,
-      borderTop: border(theme),
+      paddingLeft: theme.space2,
     },
   }),
-  ({ className, children }) =>
-    <div className={className}>
-      {children}
-    </div>,
+  ({ bottom, ...p }) => <Grid {...p} />,
   p => Object.keys(p)
 );

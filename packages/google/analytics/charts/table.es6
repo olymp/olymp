@@ -1,56 +1,77 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
-import moment from 'moment';
+import { createComponent } from 'olymp-fela';
+import { metricsObj, dimensionsObj } from '../../definitions';
+
+const AntTable = createComponent(
+  ({ theme, rowSelection }) => ({
+    '& .ant-table-row': {
+      cursor: !!rowSelection && 'pointer',
+    },
+  }),
+  p => <Table {...p} />,
+  p => Object.keys(p)
+);
 
 export default class TableChart extends Component {
   state = { sortedInfo: {} };
 
   render() {
-    const { onChange, metrics, dimensions, dataKey, items } = this.props;
+    const {
+      onSelect,
+      metrics,
+      dimensions,
+      items,
+      selected,
+      fullSize,
+    } = this.props;
     const { sortedInfo } = this.state;
-
+    const xData = dimensions[0];
     const columns = [];
     Object.keys((items && !items.lenght && items[0]) || {}).forEach(key => {
-      if (key !== '__typename' && key !== 'id') {
-        let title =
-          ([...metrics, ...dimensions].find(item => item.key === key) || {})
-            .label || key;
-        if (key === 'date') title = 'Datum';
+      const item = { ...metricsObj, ...dimensionsObj }[key];
 
-        columns.push({
-          title,
-          dataIndex: key,
-          // fixed: dataKey === key && 'left',
-          sorter: (a, b) => {
-            switch (typeof a[key]) {
-              case 'number':
-                return a[key] - b[key];
+      columns.push({
+        title: item.label,
+        dataIndex: key,
+        render: item.renderFn,
+        sorter: (a, b) => {
+          switch (typeof a[key]) {
+            case 'number':
+              return a[key] - b[key];
 
-              default:
-                if (a[key].toUpperCase() < b[key].toUpperCase()) {
-                  return -1;
-                }
-                if (a[key].toUpperCase() > b[key].toUpperCase()) {
-                  return 1;
-                }
-                return 0;
-            }
-          },
-          sortOrder: sortedInfo.columnKey === key && sortedInfo.order,
-          render: data =>
-            key !== 'date' ? data : moment(data).format('YYYY-MM'),
-        });
-      }
+            default:
+              if (a[key].toUpperCase() < b[key].toUpperCase()) {
+                return -1;
+              }
+              if (a[key].toUpperCase() > b[key].toUpperCase()) {
+                return 1;
+              }
+              return 0;
+          }
+        },
+        sortOrder: sortedInfo.columnKey === key && sortedInfo.order,
+      });
     });
 
     return (
-      <Table
-        pagination={false}
+      <AntTable
         size="small"
-        rowKey="id"
+        rowKey={`key-${dimensions.join('-')}`}
         columns={columns}
-        dataSource={items}
-        onRowClick={item => onChange(item[dataKey])}
+        dataSource={items.map((item, i) => ({
+          ...item,
+          [`key-${dimensions.join('-')}`]: i,
+        }))}
+        onRowClick={onSelect && (item => onSelect(item[xData]))}
+        rowSelection={
+          onSelect && {
+            selectedRowKeys: selected.map(selection =>
+              items.findIndex(item => item[xData] === selection)
+            ),
+            onSelect: item => onSelect(item[xData]),
+          }
+        }
         onChange={(pagination, filters, sorter) =>
           this.setState({ sortedInfo: sorter })}
       />

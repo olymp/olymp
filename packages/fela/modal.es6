@@ -18,9 +18,9 @@ const ModalBackground = createComponent(
 );
 
 const Modal = createComponent(
-  ({ theme, width }) => ({
+  ({ theme, width, container }) => ({
     centerX: true,
-    width: width || `calc(100% - ${theme.space5})`,
+    width: !container && (width || `calc(100% - ${theme.space5})`),
     top: theme.space4,
     bottom: theme.space4,
     hasFlex: {
@@ -44,11 +44,20 @@ const Inner = createComponent(
   []
 );
 
-export default ({ children, open, onClose, width, header, footer }) =>
+export default ({
+  children,
+  open,
+  onClose,
+  width,
+  header,
+  footer,
+  container,
+}) =>
   <Portal isOpened={open} onClose={onClose} closeOnEsc>
     <ModalBackground onClick={onClose}>
       <Modal
         width={width}
+        container={container}
         onClick={e => {
           // e.cancelBubble = true;
           if (e.stopPropagation) {
@@ -58,14 +67,14 @@ export default ({ children, open, onClose, width, header, footer }) =>
       >
         <Inner>
           {header &&
-            <Layout.Header>
+            <Layout.Header container={container}>
               {header}
             </Layout.Header>}
-          <Layout.Body>
+          <Layout.Body container={container}>
             {children}
           </Layout.Body>
           {footer &&
-            <Layout.Footer>
+            <Layout.Footer container={container}>
               {footer}
             </Layout.Footer>}
         </Inner>

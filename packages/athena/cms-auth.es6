@@ -5,7 +5,7 @@ import { withUA } from 'olymp-utils';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute, CollectionModal } from 'olymp-collection';
-import { AnalyticsRoutes } from 'olymp-google';
+import { Analytics } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 // import { Ory } from 'olymp-ory';
@@ -127,21 +127,21 @@ export default class CMSAuth extends Component {
             <AltRoute
               match={!!collection && query.modal === undefined}
               render={() =>
-                (<CollectionRoute
+                <CollectionRoute
                   {...this.props}
                   id={collectionId}
                   typeName={collectionName}
                   Wrapped={Wrapped}
-                />)}
+                />}
             />
             <AltRoute
               match={query['@page'] !== undefined}
               render={() =>
-                (<EditablePageRoute
+                <EditablePageRoute
                   {...this.props}
                   deviceWidth={deviceWidth}
                   Wrapped={Wrapped}
-                />)}
+                />}
             />
             <AltRoute
               match={query['@media'] !== undefined}
@@ -151,7 +151,7 @@ export default class CMSAuth extends Component {
               match={query['@settings'] !== undefined}
               render={() => <SettingsRoute {...this.props} />}
             />
-            <AnalyticsRoutes
+            <Analytics
               match={query['@analytics'] !== undefined}
               render={() => <AuthUsers {...this.props} />}
             />
@@ -165,13 +165,13 @@ export default class CMSAuth extends Component {
             />
             <AltRoute
               render={rest =>
-                (<PageRoute
+                <PageRoute
                   {...rest}
                   {...this.props}
                   key={location.key}
                   navigation={navigation}
                   Wrapped={Wrapped}
-                />)}
+                />}
             />
           </AltSwitch>
         </SwitchContainer>
