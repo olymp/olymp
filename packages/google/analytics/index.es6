@@ -133,12 +133,10 @@ export default class Analytics extends Component {
                   '@analytics': 'devices',
                   ...initState,
                   metrics: ['USERS'],
-                  dimensions: ['REGION'],
-                  dimensions2: ['CITY'],
+                  dimensions: ['DEVICE_CATEGORY'],
                   sorts: ['USERS_DESC'],
-                  sorts2: ['USERS_DESC'],
                   chart: 'pie',
-                  chart2: 'barVertical',
+                  chart2: 'none',
                 },
               })}
             key="devices"
