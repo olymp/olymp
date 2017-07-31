@@ -28,26 +28,17 @@ module.exports = templateParams => `
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#8e44ad">
       ${castArray(
-        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
-      ).map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
+    get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
+  ).map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
       <style id="css-markup"></style>
-      <style>
-        body {
-          -webkit-app-region: drag;
-          -webkit-user-select: none;
-        }
-        p, h1, h2, h3, h4, h5, h6, span, strong {
-          cursor: default;
-        }
-      </style>
     </head>
     <body>
       <div id="app"></div>
       <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
       <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
       ${castArray(
-        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])
-      ).map(script => `<script src="${script}"></script>`)}
+    get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])
+  ).map(script => `<script src="${script}"></script>`)}
     </body>
   </html>
 `;

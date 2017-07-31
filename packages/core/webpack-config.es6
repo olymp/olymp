@@ -54,7 +54,7 @@ module.exports = ({
       ],
       alias: {
         '@history':
-          isNode || isServerless
+          isNode || isElectron
             ? 'history/createMemoryHistory'
             : 'history/createBrowserHistory',
         antd: path.resolve(appRoot, 'node_modules', 'antd'),
@@ -308,7 +308,7 @@ module.exports = ({
         path: path.resolve(process.cwd(), folder, target),
       })
     );
-    if (isProd && !isServerless) {
+    if (isProd && !isElectron) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'offline.html',
@@ -343,20 +343,37 @@ module.exports = ({
           AppCache: false,
         })
       );
-      config.plugins.push(
+      /* config.plugins.push(
         new VisualizerPlugin({
           filename: './visualizer.html',
         })
-      );
-    } else if (isServerless) {
+      );*/
+      if (isServerless) {
+        config.plugins.push(
+          new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.resolve(__dirname, 'templates', 'serverless.js'),
+            inject: false,
+            /* minify: {
+            removeComments: true,
+            collapseWhitespace: true,
+            removeRedundantAttributes: true,
+            useShortDoctype: true,
+            removeEmptyAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            keepClosingSlash: true,
+            minifyJS: true,
+            minifyCSS: true,
+            minifyURLs: true,
+          },*/
+          })
+        );
+      }
+    } else if (isElectron) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'index.html',
-          template: path.resolve(
-            __dirname,
-            'templates',
-            isElectron ? 'electron.js' : 'serverless.js'
-          ),
+          template: path.resolve(__dirname, 'templates', 'electron.js'),
           inject: false,
           /* minify: {
           removeComments: true,
