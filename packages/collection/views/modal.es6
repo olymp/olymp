@@ -1,6 +1,6 @@
 import React, { Component, Children } from 'react';
 import { withRouter } from 'olymp-router';
-import { withGateway } from 'olymp-utils';
+import { withGateway } from 'olymp-ui';
 import { Form, Menu, Icon } from 'antd';
 import { Modal, createComponent, border } from 'olymp-fela';
 import { withCollection, withItem } from '../decorators';
@@ -12,7 +12,7 @@ const RightMenuItem = createComponent(
     float: 'right !important',
   }),
   p => <Menu.Item {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Content = createComponent(
@@ -21,7 +21,7 @@ const Content = createComponent(
     paddingBottom: 0,
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const HiddenForm = createComponent(
@@ -29,7 +29,7 @@ const HiddenForm = createComponent(
     display: visible ? 'block' : 'none',
   }),
   p => <DetailForm {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const AntMenu = createComponent(
@@ -60,9 +60,8 @@ const AntMenu = createComponent(
       },
     },
   }),
-  ({ keys, ...p }) =>
-    <Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />,
-  p => Object.keys(p)
+  ({ keys, ...p }) => <Menu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />,
+  p => Object.keys(p),
 );
 
 @withRouter
@@ -76,16 +75,7 @@ export default class CollectionModal extends Component {
   };
 
   render() {
-    const {
-      collection,
-      open,
-      id,
-      typeName,
-      onSave,
-      onClose,
-      item,
-      toolbar,
-    } = this.props;
+    const { collection, open, id, typeName, onSave, onClose, item, toolbar } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = this.state.tab || keys[0];
@@ -101,7 +91,7 @@ export default class CollectionModal extends Component {
               <a href="javascript:;" onClick={() => this.setState({ tab })}>
                 {tab}
               </a>
-            </RightMenuItem>)
+            </RightMenuItem>),
           )}
         </Menu>
 
@@ -133,13 +123,7 @@ export default class CollectionModal extends Component {
     );
 
     return (
-      <Modal
-        width={900}
-        open={open}
-        header={header}
-        footer={footer}
-        onClose={onClose}
-      >
+      <Modal width={900} open={open} header={header} footer={footer} onClose={onClose}>
         <Content>
           {keys.map(tab =>
             (<HiddenForm
@@ -149,7 +133,7 @@ export default class CollectionModal extends Component {
               key={tab}
               visible={currentTab === tab}
               onCreate={onSave}
-            />)
+            />),
           )}
         </Content>
       </Modal>
