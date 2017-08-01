@@ -9,6 +9,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "eventlistener": "^0.0.1",
     "fela": "^5.0.2",
     "fela-monolithic": "^5.0.2",
     "fela-plugin-custom-property": "^5.0.2",
@@ -22,6 +23,8 @@
     "fela-plugin-unit": "^5.0.2",
     "react-frame-component": "^1.1.1",
     "react-portal": "^3.1.0",
+    "react-portal-minimal": "^4.0.2",
+    "react-transition-group": "^2.2.0",
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {

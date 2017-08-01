@@ -1141,6 +1141,12 @@ decompress-zip@0.1.0:
     readable-stream "^1.1.8"
     touch "0.0.3"
 
+deep-assign@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/deep-assign/-/deep-assign-2.0.0.tgz#ebe06b1f07f08dae597620e3dd1622f371a1c572"
+  dependencies:
+    is-obj "^1.0.0"
+
 deep-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
@@ -2474,6 +2480,12 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "3.0.x"
 
+html-webpack-harddisk-plugin@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/html-webpack-harddisk-plugin/-/html-webpack-harddisk-plugin-0.1.0.tgz#432024961a21ac668fa2b5dfe24629c60b9c58d7"
+  dependencies:
+    mkdirp "^0.5.1"
+
 html-webpack-plugin@^2.29.0:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.29.0.tgz#e987f421853d3b6938c8c4c8171842e5fd17af23"
@@ -3580,9 +3592,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^16.0.54:
-  version "16.0.54"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.0.54.tgz#192aa958ced3ded7a1c2983cb37d86f92a3a8627"
+olymp-fela@^16.1.1:
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.1.1.tgz#f7129a4621befd75be86b4d9d09106a0167cbab2"
   dependencies:
     fela "^5.0.2"
     fela-monolithic "^5.0.2"
