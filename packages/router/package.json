@@ -7,6 +7,8 @@
   "dependencies": {
     "history": "^4.6.3",
     "olymp-utils": "^16.0.50",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.2",
     "route-parser": "^0.0.5"
   }
 }

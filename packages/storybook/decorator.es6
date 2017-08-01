@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, createFela } from 'olymp-fela';
 import { Provider as FelaProvider } from 'react-fela';
-import { MemoryRouter } from 'react-router';
+import { Router } from 'olymp-router';
 
 const ss = document.getElementById('fela') || document.createElement('style');
 if (!ss.id) {
@@ -14,8 +14,12 @@ const renderer = createFela();
 
 export const FelaDecorator = story =>
   (<FelaProvider renderer={renderer} mountNode={ss}>
-    <ThemeProvider>{story()}</ThemeProvider>
+    <ThemeProvider>
+      {story()}
+    </ThemeProvider>
   </FelaProvider>);
 
 export const RouterDecorator = story =>
-  <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>;
+  (<Router initialEntries={['/']}>
+    {story()}
+  </Router>);

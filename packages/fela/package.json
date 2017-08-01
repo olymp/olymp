@@ -21,9 +21,12 @@
     "fela-plugin-prefixer": "^5.0.3",
     "fela-plugin-remove-undefined": "^5.0.2",
     "fela-plugin-unit": "^5.0.2",
+    "olymp-utils": "^16.0.50",
+    "react-fela": "^5.1.1",
     "react-frame-component": "^1.1.1",
     "react-portal": "^3.1.0",
     "react-portal-minimal": "^4.0.2",
+    "react-redux": "^5.0.5",
     "react-transition-group": "^2.2.0",
     "tinycolor2": "^1.4.1"
   },
@@ -31,6 +34,9 @@
     "@storybook/addon-info": "^3.1.6",
     "@storybook/addon-knobs": "^3.1.6",
     "@storybook/react": "^3.1.6",
-    "raw-loader": "^0.5.1"
+    "olymp-webpack-babel": "^16.0.50",
+    "raw-loader": "^0.5.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   }
 }

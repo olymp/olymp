@@ -11,12 +11,14 @@ export { default as Tree } from './tree';
 export { default as getRules } from './rules';
 export { default as Countdown } from './countdown';
 export { default as Hotjar } from './hotjar';
+export { default as withGateway } from './gateway';
 
 // import 'antd/dist/antd.less';
 
 // todo: MONKEY PATCH GATEWAY
 import { Gateway } from 'react-gateway';
 import { node } from 'prop-types';
+
 Gateway.propTypes = {
   ...Gateway.propTypes,
   children: node,
