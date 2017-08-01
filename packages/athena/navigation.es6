@@ -1,14 +1,15 @@
 import React, { Component, Children } from 'react';
-import { withLang, Logo, withGateway } from 'olymp-utils';
+import { withLang, Logo } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent, border } from 'olymp-fela';
+import { withGateway } from 'olymp-ui';
 import { GatewayDest } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
-const getInitials = name => {
+const getInitials = (name) => {
   if (name) {
     const array = name.split(' ');
 
@@ -16,10 +17,7 @@ const getInitials = name => {
       case 1:
         return array[0].charAt(0).toUpperCase();
       default:
-        return (
-          array[0].charAt(0).toUpperCase() +
-          array[array.length - 1].charAt(0).toUpperCase()
-        );
+        return array[0].charAt(0).toUpperCase() + array[array.length - 1].charAt(0).toUpperCase();
     }
   }
   return false;
@@ -31,18 +29,16 @@ const UserIcon = createComponent(
     borderRadius: '50%',
     marginY: theme.space2,
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name
-    )}.jpg?s=26&bg=${encodeURIComponent(
-      theme.color
-    )}&color=${encodeURIComponent(
-      theme.light
+      name,
+    )}.jpg?s=26&bg=${encodeURIComponent(theme.color)}&color=${encodeURIComponent(
+      theme.light,
     )}) center center no-repeat, ${theme.color}`,
     onHover: {
       opacity: 0.85,
     },
   }),
   p => <Gravatar {...p} size={30} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const VerticalMenu = createComponent(
@@ -65,10 +61,10 @@ const VerticalMenu = createComponent(
     },
   }),
   ({ children, className }) =>
-    <div className={className}>
+    (<div className={className}>
       {children}
-    </div>,
-  p => Object.keys(p)
+    </div>),
+  p => Object.keys(p),
 );
 
 const LeftMenu = createComponent(
@@ -76,7 +72,7 @@ const LeftMenu = createComponent(
     float: 'left',
   }),
   p => <Menu {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const RightMenu = createComponent(
@@ -94,7 +90,7 @@ const RightMenu = createComponent(
     },
   }),
   p => <Menu.SubMenu {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const ToolMenu = createComponent(
@@ -108,7 +104,7 @@ const ToolMenu = createComponent(
     },
   }),
   p => <LeftMenu {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Filler = createComponent(
@@ -118,7 +114,7 @@ const Filler = createComponent(
     backgroundColor: 'rgba(255, 255, 255, 0.04)',
   }),
   p => <div {...p} />,
-  []
+  [],
 );
 
 const AntMenu = ({ keys, ...p }) =>
@@ -128,11 +124,11 @@ const AntMenuToolbar = ({ keys, ...p }) =>
   <ToolMenu theme="dark" selectedKeys={keys} mode="horizontal" {...p} />;
 
 const AntSubMenu = ({ keys, title, children, ...p }) =>
-  <AntMenu selectedKeys={keys} {...p}>
+  (<AntMenu selectedKeys={keys} {...p}>
     <RightMenu selectedKeys={keys} title={title || <Icon type="bars" />}>
       {children}
     </RightMenu>
-  </AntMenu>;
+  </AntMenu>);
 
 @withLang
 @withAuth
@@ -140,15 +136,7 @@ const AntSubMenu = ({ keys, title, children, ...p }) =>
 @withGateway('navigation')
 class Navigation extends Component {
   render() {
-    const {
-      auth,
-      setDeviceWidth,
-      query,
-      collectionList,
-      toolbar,
-      navigation,
-      quick,
-    } = this.props;
+    const { auth, setDeviceWidth, query, collectionList, toolbar, navigation, quick } = this.props;
     const keys = Object.keys(query);
     const short = toolbar && toolbar.length;
 
@@ -190,7 +178,7 @@ class Navigation extends Component {
             }
           >
             {collectionList.map(collection =>
-              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
                 <Link
                   to={{
                     query: {
@@ -200,7 +188,7 @@ class Navigation extends Component {
                 >
                   {get(collection, 'decorators.label.value', collection.name)}
                 </Link>
-              </Menu.Item>
+              </Menu.Item>),
             )}
           </Menu.SubMenu>
           <Menu.Item key="@analytics">
@@ -236,13 +224,7 @@ class Navigation extends Component {
         <GatewayDest name="quick" component={AntMenu} />
 
         <AntSubMenu
-          title={
-            <UserIcon
-              email={auth.user.email}
-              name={auth.user.name}
-              default="blank"
-            />
-          }
+          title={<UserIcon email={auth.user.email} name={auth.user.name} default="blank" />}
         >
           <Menu.Item key="@user">
             <Link to={{ query: { '@user': null } }}>Profil</Link>
