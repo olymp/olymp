@@ -1,106 +1,12 @@
 import createMaps from './maps';
 import google from 'googleapis';
 import bluebird from 'bluebird';
-import moment from 'moment';
 import shortID from 'shortid';
+import { metricsObj, dimensionsObj } from '../definitions';
 
 // https://ga-dev-tools.appspot.com/query-explorer/
 
 const analytics = bluebird.promisify(google.analytics('v3').data.ga.get);
-const dimensionObj = {
-  PAGE_TITLE: {
-    name: 'ga:pageTitle',
-    output: 'pageTitle',
-    type: 'String',
-  },
-  PAGE_PATH: {
-    name: 'ga:pagePath',
-    output: 'pagePath',
-    type: 'String',
-  },
-  PAGE_PATH_1: {
-    name: 'ga:pagePathLevel1',
-    output: 'pagePathLevel1',
-    type: 'String',
-  },
-  PAGE_PATH_2: {
-    name: 'ga:pagePathLevel2',
-    output: 'pagePathLevel2',
-    type: 'String',
-  },
-  PAGE_PATH_3: {
-    name: 'ga:pagePathLevel3',
-    output: 'pagePathLevel3',
-    type: 'String',
-  },
-  CITY: {
-    name: 'ga:city',
-    output: 'city',
-    type: 'String',
-  },
-  USER_GENDER: {
-    name: 'ga:userGender',
-    output: 'userGender',
-    type: 'String',
-  },
-  USER_AGE_BRACKET: {
-    name: 'ga:userAgeBracket',
-    output: 'userAgeBracket',
-    type: 'String',
-  },
-  DEVICE_CATEGORY: {
-    name: 'ga:deviceCategory',
-    output: 'deviceCategory',
-    type: 'String',
-  },
-  /* BROWSER: {
-    name: 'ga:browser',
-    output: 'pageviews',
-    type: 'String',
-  },
-  USER_TYPE: {
-    name: 'ga:userType',
-    output: 'pageviews',
-    type: 'String',
-  },
-  SOURCE: {
-    name: 'ga:source',
-    output: 'pageviews',
-    type: 'String',
-  },
-  REGION_ISO_CODE: {
-    name: 'ga:regionIsoCode',
-    output: 'pageviews',
-    type: 'String',
-  },
-  SCREEN_RESOLUTION: {
-    name: 'ga:screenResolution',
-    output: 'pageviews',
-    type: 'String',
-  }, */
-};
-const metricObj = {
-  PAGEVIEWS: {
-    name: 'ga:pageviews',
-    output: 'pageviews',
-    type: 'Int',
-  },
-  SESSIONS: {
-    name: 'ga:sessions',
-    output: 'sessions',
-    type: 'Int',
-  },
-  TIME_ON_PAGE: {
-    name: 'ga:timeOnPage',
-    output: 'timeOnPage',
-    type: 'Float',
-  },
-  AVG_TIME_ON_PAGE: {
-    name: 'ga:avgTimeOnPage',
-    output: 'avgTimeOnPage',
-    type: 'Float',
-  },
-};
 
 export default (mapsKey, mail, key) => {
   const jwtClient =
@@ -127,7 +33,7 @@ export default (mapsKey, mail, key) => {
     queries: `
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
-      analyticsQuery(start: String!, end: String!, metrics: [ANALYTICS_METRICS], dimensions: [ANALYTICS_DIMENSIONS], time: ANALYTICS_TIMES, sort: ANALYTICS_SORT, filters: [AnalyticsFilter]): AnalyticsQuery
+      analyticsQuery(start: String!, end: String!, metrics: [ANALYTICS_METRICS], dimensions: [ANALYTICS_DIMENSIONS], sorts: [ANALYTICS_SORT], filters: [AnalyticsFilter]): AnalyticsQuery
     `,
     resolvers: {
       queries: {
@@ -136,63 +42,47 @@ export default (mapsKey, mail, key) => {
           {
             start,
             end,
-            time,
             metrics = [],
             dimensions = [],
-            sort,
+            sorts = [],
             filters = [],
           }
         ) => {
           if (!jwtClient) return null;
 
-          const metricArray = metrics.map(name => metricObj[name].name);
+          const metricsArray = metrics.map(name => metricsObj[name].name);
 
-          const dimensionArray = dimensions.map(
-            name => dimensionObj[name].name
+          const dimensionsArray = dimensions.map(
+            name => dimensionsObj[name].name
           );
 
-          let sorts = '';
-          if (metricObj[sorts]) {
-            sorts = `-${metricObj[sorts].name}`;
-          } else {
-            sorts = `-${metricObj[metrics[0]].name}`;
-          }
+          const sortsArray = sorts.map(sort => {
+            // ascending
+            if (sort.indexOf('_ASC') !== -1) {
+              return { ...metricsObj, ...dimensionsObj }[
+                sort.replace('_ASC', '')
+              ].name;
+            }
 
-          if (time === 'MONTH') {
-            dimensionArray.push('ga:year,ga:month');
-            if (sort === 'DATE') {
-              sorts = 'ga:year,ga:month';
-            }
-          } else if (time === 'WEEK') {
-            dimensionArray.push('ga:year,ga:week');
-            if (sort === 'DATE') {
-              sorts = 'ga:year,ga:week';
-            }
-          } else if (time === 'DAY') {
-            dimensionArray.push('ga:date');
-            if (sort === 'DATE') {
-              sorts = 'ga:date';
-            }
-          } else {
-            dimensionArray.push('ga:year');
-            if (sort === 'DATE') {
-              sorts = 'ga:year';
-            }
-          }
+            // descending
+            return `-${{ ...metricsObj, ...dimensionsObj }[
+              sort.replace('_DESC', '')
+            ].name}`;
+          });
 
           const query = {
             auth: jwtClient,
             ids: 'ga:110941031',
-            sort: sorts,
+            sort: sortsArray,
             'start-date': start,
             'end-date': end,
-            metrics: metricArray.join(','),
-            dimensions: dimensionArray.join(','),
+            metrics: metricsArray.join(','),
+            dimensions: dimensionsArray.join(','),
           };
           if (filters.length) {
             filters = filters.map(filter => {
-              const name = (metricObj[filter.metric] ||
-                dimensionObj[filter.dimension]).name;
+              const name = (metricsObj[filter.metric] ||
+                dimensionsObj[filter.dimension]).name;
 
               if (filter.operator === 'NE') {
                 return `${name}==${filter.expression}`;
@@ -208,45 +98,31 @@ export default (mapsKey, mail, key) => {
 
               return `${name}==${filter.expression}`;
             });
-            query.filters = filters.join(',');
+            query.filters = filters.join(','); // => OR, AND is still missing!
           }
 
           return analytics(
             query
           ).then(({ columnHeaders, rows, totalsForAllResults }) => {
             const cols = columnHeaders.map(x => x.name.substr(3));
-            const resultRows = rows
-              .map(values =>
-                cols.reduce((o, k, i) => {
-                  o[k] = values[i];
-                  return o;
-                }, {})
-              )
-              .map(x => {
-                const { year, month, week, date, ...rest } = x;
-                rest.id = shortID.generate();
-                if (time === 'MONTH') {
-                  rest.date = +moment(`${year}${month}01`, 'YYYYMMDD');
-                } else if (time === 'WEEK') {
-                  rest.date = +moment(`${year}0101`, 'YYYYMMDD').add(
-                    'week',
-                    week
-                  );
-                } else if (time === 'DAY') {
-                  rest.date = +moment(date, 'YYYYMMDD');
-                } else {
-                  rest.date = +moment(`${year}0101`, 'YYYYMMDD');
-                }
-                return rest;
-              });
+
+            const resultRows = (rows || []).map(values =>
+              cols.reduce((o, k, i) => {
+                o[k] = values[i];
+                return o;
+              }, {})
+            );
+
             const resultTotals = Object.keys(
               totalsForAllResults
             ).reduce((o, k, i) => {
               o[k.substr(3)] = totalsForAllResults[k];
               return o;
             }, {});
+
             resultTotals.rows = resultRows;
             resultTotals.id = shortID.generate();
+
             return resultTotals;
           });
         },
@@ -279,19 +155,20 @@ export default (mapsKey, mail, key) => {
       }
       type AnalyticsQuery {
         id: String
-        ${Object.keys(metricObj)
-          .map(key => `${metricObj[key].output}: ${metricObj[key].type}`)
+        ${Object.keys(metricsObj)
+          .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
           .join('\n')}
         rows: [AnalyticsQueryRows]
       }
       type AnalyticsQueryRows {
         id: String
-        date: Date
-        ${Object.keys(metricObj)
-          .map(key => `${metricObj[key].output}: ${metricObj[key].type}`)
+        ${Object.keys(metricsObj)
+          .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
           .join('\n')}
-        ${Object.keys(dimensionObj)
-          .map(key => `${dimensionObj[key].output}: ${dimensionObj[key].type}`)
+        ${Object.keys(dimensionsObj)
+          .map(
+            key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`
+          )
           .join('\n')}
       }
       input AnalyticsFilter {
@@ -300,33 +177,17 @@ export default (mapsKey, mail, key) => {
         operator: ANALYTICS_OPERATOR
         expression: String
       }
-      enum ANALYTICS_TIMES {
-        YEAR
-        MONTH
-        WEEK
-        DAY
-      }
       enum ANALYTICS_SORT {
-        PAGEVIEWS
-        SESSIONS
-        DATE
+        ${Object.keys(metricsObj).map(key => `${key}_ASC`)}
+        ${Object.keys(metricsObj).map(key => `${key}_DESC`)}
+        ${Object.keys(dimensionsObj).map(key => `${key}_ASC`)}
+        ${Object.keys(dimensionsObj).map(key => `${key}_DESC`)}
       }
       enum ANALYTICS_METRICS {
-        PAGEVIEWS
-        SESSIONS
-        TIME_ON_PAGE
-        AVG_TIME_ON_PAGE
+        ${Object.keys(metricsObj)}
       }
       enum ANALYTICS_DIMENSIONS {
-        PAGE_TITLE
-        PAGE_PATH
-        PAGE_PATH_LEVEL_1
-        PAGE_PATH_LEVEL_2
-        PAGE_PATH_LEVEL_3
-        CITY
-        USER_GENDER
-        USER_AGE_BRACKET
-        DEVICE_CATEGORY
+        ${Object.keys(dimensionsObj)}
       }
       enum ANALYTICS_OPERATOR {
         EQ

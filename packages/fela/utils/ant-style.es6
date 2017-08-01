@@ -31,17 +31,14 @@ export default ({ theme }) => {
     '& p a': {
       color: theme.color,
     },
-    '& .ant-modal-body': {
-    },
-    '& .ant-form': {
-    },
+    '& .ant-modal-body': {},
+    '& .ant-form': {},
     '& form.ant-form.ant-form-horizontal .ant-row.ant-form-item': {
       marginBottom: 12,
     },
-    '& form.ant-form.ant-form-horizontal': {
-    },
+    '& form.ant-form.ant-form-horizontal': {},
     '& .ant-pagination-item > a': {
-      color: theme.light,
+      // color: theme.light,
     },
     '& .ant-menu-item .anticon': {
       marginRight: 0,

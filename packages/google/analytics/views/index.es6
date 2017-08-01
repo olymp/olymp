@@ -1,2 +1,1 @@
-export { default as PageViews } from './page-views';
-export { default as Duration } from './duration';
+export { default as Charts } from './charts';
