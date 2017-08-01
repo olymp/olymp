@@ -11,11 +11,7 @@ const merge = require('deepmerge');
 const argv = require('minimist')(process.argv.slice(1));
 require('dotenv').config();
 
-const createConfig = require(path.resolve(
-  __dirname,
-  '..',
-  'webpack-config.js'
-));
+const createConfig = require(path.resolve(__dirname, '..', 'webpack-config.js'));
 
 const root = process.cwd();
 let olymprc =
@@ -36,16 +32,13 @@ if (olymprc.extends) {
     jsonfile.readFileSync(path.resolve(topFolder, name, '.olymprc'), {
       throws: false,
     }) ||
-    jsonfile.readFileSync(
-      path.resolve(topFolder, `olymp-${name}`, '.olymprc'),
-      {
-        throws: false,
-      }
-    ) ||
+    jsonfile.readFileSync(path.resolve(topFolder, `olymp-${name}`, '.olymprc'), {
+      throws: false,
+    }) ||
     {};
   olymprc = olymprc.extends.reduce(
     (rc, item) => merge(requireFirst(item), rc, { arrayMerge: concatMerge }),
-    olymprc
+    olymprc,
   );
 }
 
@@ -59,25 +52,31 @@ const { SSR, SERVERLESS, NODE_ENV, PORT, URL } = process.env;
 
 const ssr = SSR != 'false';
 const serverless = SERVERLESS == 'true';
-
+let targets = [];
+if (argv.targets) {
+  targets = argv.targets.split(',');
+} else if (argv.electron) {
+  targets = ['node', 'electron-main', 'electron-renderer'];
+} else {
+  targets = ['node', 'web'];
+}
+console.log('TARG', targets);
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
-  const devPort = serverless ? port : port + 2;
-  const devUrl = serverless
-    ? url
-    : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
-  let compiler;
+  const devPort = port + 1;
+  const devUrl = serverless ? url : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
+
   const watch = {
     aggregateTimeout: 300,
     poll: false,
     ignored: /node_modules/,
   };
-  if (serverless) {
-    compiler = webpack([
+  const compiler = webpack(
+    targets.map((target, i) =>
       createConfig({
-        target: 'web',
+        target,
         mode: 'development',
         devPort,
         devUrl,
@@ -85,67 +84,52 @@ if (command === 'dev') {
         serverless,
         ...olymprc,
       }),
-    ]);
-  } else {
-    compiler = webpack([
-      createConfig({
-        target: 'web',
-        mode: 'development',
-        devPort,
-        devUrl,
-        ssr,
-        serverless,
-        ...olymprc,
-      }),
-      createConfig({
-        target: 'node',
-        mode: 'development',
-        devPort,
-        devUrl,
-        ssr,
-        serverless,
-        ...olymprc,
-      }),
-    ]);
-    compiler.compilers[1].watch(watch, (err, compilation) => {
-      if (err) {
-        return console.log('[webpack] error:', err);
-      }
-      const stats = compilation.stats || [compilation];
-      console.log('[webpack] the following asset bundles were built:');
-      stats.forEach(c => console.log(c.toString()));
-      notifier.notify('Ready');
-    });
-  }
-  const WebpackDevServer = require('webpack-dev-server');
-  const server = new WebpackDevServer(compiler.compilers[0], {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-    watchOptions: watch,
-    host: devUrl.hostname,
-    port: devUrl.port,
-    disableHostCheck: true,
-    historyApiFallback: true,
-    hot: true,
-    stats: {
-      colors: true,
-      hash: false,
-      version: false,
-      timings: false,
-      assets: false,
-      chunks: false,
-      modules: false,
-      reasons: false,
-      children: false,
-      source: false,
-      errors: true,
-      errorDetails: true,
-      warnings: false,
-      publicPath: false,
-    },
+    ),
+  );
+  targets.forEach((target, i) => {
+    const currentCompiler = compiler.compilers[i];
+    if (target === 'node' || target === 'electron-main') {
+      currentCompiler.watch(watch, (err, compilation) => {
+        if (err) {
+          return console.log('[webpack] error:', err);
+        }
+        const stats = compilation.stats || [compilation];
+        console.log('[webpack] the following asset bundles were built:');
+        stats.forEach(c => console.log(c.toString()));
+        notifier.notify('Ready');
+      });
+    } else {
+      const WebpackDevServer = require('webpack-dev-server');
+      const server = new WebpackDevServer(currentCompiler, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+        watchOptions: watch,
+        host: devUrl.hostname,
+        port: devUrl.port,
+        disableHostCheck: true,
+        historyApiFallback: true,
+        hot: true,
+        stats: {
+          colors: true,
+          hash: false,
+          version: false,
+          timings: false,
+          assets: false,
+          chunks: false,
+          modules: false,
+          reasons: false,
+          children: false,
+          source: false,
+          errors: true,
+          errorDetails: true,
+          warnings: false,
+          publicPath: false,
+        },
+      });
+      server.listen(devPort);
+    }
   });
-  server.listen(devPort);
 } else if (command === 'build') {
   rimraf.sync(path.resolve(root, '.dist'));
   process.env.NODE_ENV = 'production';
@@ -166,7 +150,7 @@ if (command === 'dev') {
         ssr,
         serverless,
         ...olymprc,
-      })
+      }),
     );
   }
   const compiler = webpack(configs);

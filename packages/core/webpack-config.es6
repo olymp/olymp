@@ -8,9 +8,9 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 // const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
-const VisualizerPlugin = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 const appRoot = process.cwd();
 
@@ -20,9 +20,7 @@ const nodeModules = isLinked
   ? path.resolve(__dirname, 'node_modules')
   : path.resolve(__dirname, '..');
 process.noDeprecation = true;
-const allPackages = !isLinked
-  ? []
-  : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
+const allPackages = !isLinked ? [] : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
 const pluginsFolder = !isLinked ? nodeModules : topFolder;
 
 module.exports = ({
@@ -38,25 +36,24 @@ module.exports = ({
 }) => {
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
-  const isWeb = target !== 'node';
-  const isElectron = target === 'electron';
-  const isNode = target === 'node';
+  const isWeb = target !== 'node' && target !== 'electron-main';
+  const isElectron = target.indexOf('electron') === 0;
+  const isElectronMain = target === 'electron-main';
+  const isElectronRenderer = target === 'electron-renderer';
+  const isNode = target === 'node' || isElectronMain;
+  const isServer = target === 'node';
   const isServerless = serverless === true || isElectron;
-  const isSSR = ssr !== false && !serverless;
+  const isSSR = !isElectronMain && ssr !== false && !serverless;
   const folder = isDev ? '.dev' : '.dist';
+
   const config = {
     cache: true,
     resolve: {
       extensions: ['.js'],
-      modules: [
-        path.resolve(appRoot, 'node_modules'),
-        path.resolve(appRoot, 'app'),
-      ],
+      modules: [path.resolve(appRoot, 'node_modules'), path.resolve(appRoot, 'app')],
       alias: {
         '@history':
-          isNode || isElectron
-            ? 'history/createMemoryHistory'
-            : 'history/createBrowserHistory',
+          isNode || isElectron ? 'history/createMemoryHistory' : 'history/createBrowserHistory',
         antd: path.resolve(appRoot, 'node_modules', 'antd'),
         moment: path.resolve(appRoot, 'node_modules', 'moment'),
         react: path.resolve(appRoot, 'node_modules', 'react'),
@@ -65,10 +62,11 @@ module.exports = ({
         // moment: path.resolve(appRoot, 'node_modules', 'moment'),
         // lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         '@root': appRoot,
-        '@app':
-          isNode && !isSSR
-            ? path.resolve(__dirname, 'noop')
-            : path.resolve(appRoot, 'app'),
+        '@electron':
+          isElectron && fs.existsSync(path.resolve(appRoot, 'app', 'electron.js'))
+            ? path.resolve(appRoot, 'app', 'electron.js')
+            : path.resolve(__dirname, 'noop'),
+        '@app': isServer && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
         ...allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
           if (item === 'core') {
@@ -81,10 +79,7 @@ module.exports = ({
       },
     },
     resolveLoader: {
-      modules: [
-        path.resolve(nodeModules),
-        path.resolve(appRoot, 'node_modules'),
-      ],
+      modules: [path.resolve(nodeModules), path.resolve(appRoot, 'node_modules')],
     },
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
@@ -93,17 +88,11 @@ module.exports = ({
         'process.env.SERVERLESS': JSON.stringify(isServerless),
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.DEV_PORT': JSON.stringify(devPort),
-        'process.env.DEV_URL': devUrl
-          ? JSON.stringify(devUrl.origin)
-          : undefined,
-        'process.env.HOTJAR': process.env.HOTJAR
-          ? JSON.stringify(process.env.HOTJAR)
-          : undefined,
+        'process.env.DEV_URL': devUrl ? JSON.stringify(devUrl.origin) : undefined,
+        'process.env.HOTJAR': process.env.HOTJAR ? JSON.stringify(process.env.HOTJAR) : undefined,
         'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
         'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
-        'process.env.IS_ELECTRON': isElectron
-          ? JSON.stringify(true)
-          : undefined,
+        'process.env.IS_ELECTRON': isElectron ? JSON.stringify(true) : undefined,
         /* 'process.env.HOT_MODULES': isDev
           ? JSON.stringify(
             ['index.js']
@@ -167,19 +156,17 @@ module.exports = ({
       ],
     },
     output: {
-      path: path.resolve(appRoot, folder, target),
+      path: path.resolve(appRoot, folder, target.split('-')[0]),
     },
     entry: {
       main: [],
     },
   };
 
-  if (!isNode) {
+  if (!isServer) {
     config.plugins.push(
       new webpack.DefinePlugin({
-        'process.env.AMP': process.env.AMP
-          ? JSON.stringify(process.env.AMP)
-          : undefined,
+        'process.env.AMP': process.env.AMP ? JSON.stringify(process.env.AMP) : undefined,
         'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? JSON.stringify(process.env.GRAPHQL_URL)
@@ -190,20 +177,16 @@ module.exports = ({
         /* 'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
       ? JSON.stringify(process.env.GRAPHQL_SUB)
       : undefined,*/
-        'process.env.URL': process.env.URL
-          ? JSON.stringify(process.env.URL)
-          : undefined,
+        'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
         'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
           ? JSON.stringify(process.env.FILESTACK_KEY)
           : undefined,
-      })
+      }),
     );
   }
 
   // inline-source-map for web-dev
-  config.devtool = isProd
-    ? 'cheap-module-source-map'
-    : 'cheap-module-eval-source-map';
+  config.devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
 
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {
@@ -213,7 +196,7 @@ module.exports = ({
   }
 
   // target && node settings
-  if (isNode) {
+  if (isServer) {
     config.target = 'node';
     config.watch = isDev;
     config.node = {
@@ -221,15 +204,16 @@ module.exports = ({
       __filename: false,
     };
     config.output.libraryTarget = 'commonjs2';
-  } else if (isElectron) {
+  } else if (isElectronMain) {
     config.target = 'electron-main';
+    config.watch = isDev;
     config.node = {
       __dirname: false,
       __filename: false,
     };
     config.output.libraryTarget = 'commonjs2';
   } else {
-    config.target = 'web';
+    config.target = isElectron ? 'electron-renderer' : 'web';
     config.node = {
       __dirname: true,
       __filename: true,
@@ -246,10 +230,7 @@ module.exports = ({
   // webpack plugins
   if (isElectron) {
     config.plugins.push(
-      new GenerateJsonPlugin(
-        'package.json',
-        require('./electron/package-json')()
-      )
+      new GenerateJsonPlugin('package.json', require('./electron/package-json')()),
     );
   }
   if (isWeb && isProd) {
@@ -260,7 +241,7 @@ module.exports = ({
       new webpack.LoaderOptionsPlugin({
         minimize: true,
         debug: false,
-      })
+      }),
     );
     if (!isElectron) {
       config.plugins.push(
@@ -280,12 +261,21 @@ module.exports = ({
             screw_ie8: true,
           },
           sourceMap: false,
-        })
+        }),
       );
     }
   }
   if (isNode) {
-    if (isDev) {
+    config.plugins.push(
+      new webpack.BannerPlugin({
+        banner: 'require("source-map-support").install();',
+        raw: true,
+        entryOnly: true,
+      }),
+    );
+  }
+  if (isNode) {
+    if (isDev && isServer) {
       config.plugins.push(new StartServerPlugin('main.js'));
       /* config.plugins.push(
         new ReloadServerPlugin({
@@ -294,21 +284,36 @@ module.exports = ({
         })
       );*/
     }
-    config.plugins.push(
-      new webpack.BannerPlugin({
-        banner: 'require("source-map-support").install();',
-        raw: true,
-        entryOnly: true,
-      })
-    );
   } else {
     config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
-        path: path.resolve(process.cwd(), folder, target),
-      })
+        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
+      }),
     );
-    if (isProd && !isElectron) {
+    if (isElectronRenderer) {
+      config.plugins.push(
+        new HtmlWebpackPlugin({
+          alwaysWriteToDisk: true,
+          filename: 'index.html',
+          template: path.resolve(__dirname, 'templates', 'electron.js'),
+          inject: false,
+          /* minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },*/
+        }),
+      );
+      config.plugins.push(new HtmlWebpackHarddiskPlugin());
+    } else if (isProd && isWeb) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'offline.html',
@@ -326,14 +331,12 @@ module.exports = ({
           minifyCSS: true,
           minifyURLs: true,
         },*/
-        })
+        }),
       );
       config.plugins.push(
         new OfflinePlugin({
           responseStrategy: 'network-first',
-          externals: [
-            'https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY',
-          ],
+          externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
           // autoUpdate: 1000 * 60 * 5,
           caches: 'all',
           ServiceWorker: {
@@ -341,7 +344,7 @@ module.exports = ({
             navigateFallbackURL: '/offline.html',
           },
           AppCache: false,
-        })
+        }),
       );
       /* config.plugins.push(
         new VisualizerPlugin({
@@ -366,29 +369,9 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           },*/
-          })
+          }),
         );
       }
-    } else if (isElectron) {
-      config.plugins.push(
-        new HtmlWebpackPlugin({
-          filename: 'index.html',
-          template: path.resolve(__dirname, 'templates', 'electron.js'),
-          inject: false,
-          /* minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
-        },*/
-        })
-      );
     }
   }
 
@@ -398,10 +381,8 @@ module.exports = ({
   }
 
   // LimitChunkCount on all but production-web
-  if (isDev || isNode || isElectron) {
-    config.plugins.push(
-      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
-    );
+  if (isDev || isNode) {
+    config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else {
     config.output.filename = '[name].[chunkhash].js';
@@ -426,33 +407,39 @@ module.exports = ({
             /\.(mp4|mp3|ogg|swf|webp)$/,
             /\.(css|scss|sass|sss|less)$/,
           ],
-        })
+        }),
       );
   }
 
-  if (isWeb && isDev) {
-    config.entry.main = [
-      'react-hot-loader/patch',
-      `webpack-dev-server/client?${config.output.publicPath}`,
-      'webpack/hot/only-dev-server',
-      require.resolve(path.resolve(__dirname, target)),
-    ];
-  } else if (isNode && isDev) {
-    config.entry.main = [
-      'webpack/hot/poll?1000',
-      require.resolve(path.resolve(__dirname, target)),
-    ];
-  } else if (isElectron) {
-    config.entry.main = [
-      require.resolve(path.resolve(__dirname, 'web', 'index.js')),
-    ];
-    config.entry.app = [
-      require.resolve(path.resolve(__dirname, 'electron', 'main.js')),
-    ];
-  } else {
-    config.entry.main = [
-      require.resolve(path.resolve(__dirname, target, 'index.js')),
-    ];
+  if (isWeb || isElectronRenderer) {
+    if (isDev) {
+      config.entry.main = [
+        'react-hot-loader/patch',
+        `webpack-dev-server/client?${config.output.publicPath}`,
+        'webpack/hot/only-dev-server',
+        require.resolve(path.resolve(__dirname, 'web')),
+      ];
+    } else {
+      config.entry.main = [require.resolve(path.resolve(__dirname, 'web'))];
+    }
+  } else if (isElectronMain) {
+    if (isDev) {
+      config.entry.main = [
+        'webpack/hot/poll?1000',
+        require.resolve(path.resolve(__dirname, 'electron', 'main.js')),
+      ];
+    } else {
+      config.entry.main = [require.resolve(path.resolve(__dirname, 'electron', 'main.js'))];
+    }
+  } else if (isNode) {
+    if (isDev) {
+      config.entry.main = [
+        'webpack/hot/poll?1000',
+        require.resolve(path.resolve(__dirname, 'node', 'index.js')),
+      ];
+    } else {
+      config.entry.main = [require.resolve(path.resolve(__dirname, 'node', 'index.js'))];
+    }
   }
 
   const options = {
@@ -473,7 +460,7 @@ module.exports = ({
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
-      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`
+      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`,
     ));
     return req(config, options) || config;
   }, config);
