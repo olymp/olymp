@@ -4,13 +4,13 @@ import FrameComponent from 'react-frame-component';
 import { createComponent } from 'react-fela';
 
 const StyledFrameComponent = createComponent(
-  () => ({
+  ({ width, height }) => ({
     border: 0,
-    width: '100%',
-    height: '100%',
+    width: width || '100%',
+    height: height || '100%',
   }),
-  FrameComponent,
-  p => Object.keys(p)
+  ({ innerRef, width, height, ...props }) => <FrameComponent ref={innerRef} {...props} />,
+  p => Object.keys(p),
 );
 
 class FrameInner extends Component {
@@ -21,6 +21,7 @@ class FrameInner extends Component {
   componentDidMount() {
     const parent = window;
     const { document } = this.context;
+    const { mounted, css = '' } = this.props;
 
     setTimeout(() => {
       const style = document.createElement('style');
@@ -30,7 +31,8 @@ class FrameInner extends Component {
         document.createTextNode(`
         .frame-root { height: 100%; }
         .frame-content { height: 100%; }
-      `)
+        ${css}
+      `),
       );
       const oHead = document.getElementsByTagName('head')[0];
       const arrStyleSheets = [
@@ -42,6 +44,11 @@ class FrameInner extends Component {
       }
       oHead.appendChild(style);
     }, 0);
+    if (mounted) {
+      setTimeout((x) => {
+        mounted({ document, window: this.context.window });
+      }, 100);
+    }
   }
   render() {
     const { children, className } = this.props;
@@ -49,11 +56,11 @@ class FrameInner extends Component {
   }
 }
 
-export default ({ children, disabled }) =>
-  disabled
+export default ({ children, disabled, css, mounted, ...rest }) =>
+  (disabled
     ? React.Children.only(children)
-    : <StyledFrameComponent>
-      <FrameInner>
+    : <StyledFrameComponent {...rest}>
+      <FrameInner mounted={mounted} css={css}>
         {children}
       </FrameInner>
-    </StyledFrameComponent>;
+    </StyledFrameComponent>);

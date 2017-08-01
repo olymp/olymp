@@ -6,7 +6,7 @@ import tinycolor from 'tinycolor2';
 import { CSSTransitionGroup } from 'react-transition-group';
 
 const Modal = ({ className, logo, show }, { theme }) =>
-  <Portal isOpened>
+  (<Portal isOpened>
     <CSSTransitionGroup
       transitionName="example"
       transitionEnter={false}
@@ -19,7 +19,7 @@ const Modal = ({ className, logo, show }, { theme }) =>
           </div>
         </div>}
     </CSSTransitionGroup>
-  </Portal>;
+  </Portal>);
 Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
@@ -51,7 +51,7 @@ const component = createComponent(
       position: 'absolute',
       top: '50%',
       left: '50%',
-      transform: 'translate3d(0,0,0) translateX(-50%) translateY(-50%)',
+      transform: 'translate3d(-50%,-50%,0)',
       animationDuration: '2.5s',
       animationIterationCount: 'infinite',
       animationName: {

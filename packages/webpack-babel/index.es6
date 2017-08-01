@@ -29,61 +29,31 @@ module.exports = (config, options) => {
       // 'transform-es2015-destructuring',
       resolvePlugin('transform-decorators-legacy', 'babel-plugin-'),
       resolvePlugin('transform-class-properties', 'babel-plugin-'),
-      [
-        resolvePlugin('import', 'babel-plugin-'),
-        { libraryName: 'antd', style: true },
-      ],
+      [resolvePlugin('import', 'babel-plugin-'), { libraryName: 'antd', style: true }],
     ],
   };
-  if (isNode) {
-    babelOptions.presets.push([
-      resolvePlugin('env', 'babel-preset-'),
-      {
+  babelOptions.presets.push([
+    resolvePlugin('env', 'babel-preset-'),
+    {
+      modules: false,
+      loose: true,
+      targets: { node: 'current' },
+      es2015: {
         modules: false,
         loose: true,
-        targets: { node: 'current' },
-        es2015: {
-          modules: false,
-          loose: true,
-        },
       },
-    ]);
-  } else if (isDev) {
-    babelOptions.presets.push([
-      resolvePlugin('latest', 'babel-preset-'),
-      {
-        modules: false,
-        loose: true,
-        es2015: {
-          modules: false,
-          loose: true,
-        },
-      },
-    ]);
+    },
+  ]);
+  if (!isNode && isDev) {
     babelOptions.plugins.push(resolvePlugin('react-hot-loader/babel'));
-  } else {
-    babelOptions.presets.push([
-      resolvePlugin('latest', 'babel-preset-'),
-      {
-        modules: false,
-        loose: true,
-        es2015: {
-          modules: false,
-          loose: true,
-        },
-      },
-    ]);
-    babelOptions.plugins.push(
-      resolvePlugin('transform-react-constant-elements', 'babel-plugin-')
-    );
+  } else if (!isNode && isProd) {
+    babelOptions.plugins.push(resolvePlugin('transform-react-constant-elements', 'babel-plugin-'));
     /* babelOptions.plugins.push(
       resolvePlugin('transform-react-inline-elements', 'babel-plugin-')
     );*/
+    babelOptions.plugins.push(resolvePlugin('transform-react-remove-prop-types', 'babel-plugin-'));
     babelOptions.plugins.push(
-      resolvePlugin('transform-react-remove-prop-types', 'babel-plugin-')
-    );
-    babelOptions.plugins.push(
-      resolvePlugin('transform-react-pure-class-to-function', 'babel-plugin-')
+      resolvePlugin('transform-react-pure-class-to-function', 'babel-plugin-'),
     );
     babelOptions.plugins.push([
       resolvePlugin('transform-imports', 'babel-plugin-'),
@@ -119,7 +89,7 @@ module.exports = (config, options) => {
       {
         loader: 'cache-loader',
         options: {
-          cacheDirectory: resolve(appRoot, folder, target, 'cache-babel'),
+          cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-babel`),
         },
       },
       /* isProd

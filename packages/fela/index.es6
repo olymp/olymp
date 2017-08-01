@@ -5,6 +5,7 @@ export * from './utils';
 export { default as Grid } from './grid';
 export { default as Container } from './container';
 export { default as Modal } from './modal';
+export { default as Print } from './print';
 export { default as Layout } from './layout';
 export { default as Navbar } from './navbar';
 export { default as IFrame } from './iframe';

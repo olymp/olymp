@@ -26,12 +26,10 @@ module.exports = (config, options) => {
       new ExtractTextPlugin({
         filename: isElectron ? '[name].css' : '[name].[contenthash].css',
         allChunks: true,
-      })
+      }),
     );
   } else if (isNode) {
-    config.plugins.push(
-      new NormalModuleReplacementPlugin(/\.(less|css)$/, 'node-noop')
-    );
+    config.plugins.push(new NormalModuleReplacementPlugin(/\.(less|css)$/, 'node-noop'));
   }
 
   if (isProd) {
@@ -42,7 +40,7 @@ module.exports = (config, options) => {
           {
             loader: 'cache-loader',
             options: {
-              cacheDirectory: resolve(appRoot, folder, target, 'cache-babel'),
+              cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
             },
           },
           {
@@ -64,7 +62,7 @@ module.exports = (config, options) => {
         {
           loader: 'cache-loader',
           options: {
-            cacheDirectory: resolve(appRoot, folder, target, 'cache-less'),
+            cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
           },
         },
         {

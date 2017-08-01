@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
@@ -54,10 +55,7 @@ if (process.env.NODE_ENV === 'production') {
 }*/
 
 const networkInterface = createBatchingNetworkInterface({
-  uri:
-    process.env.GRAPHQL_URL ||
-    (process.env.URL && `${process.env.URL}/graphql`) ||
-    '/graphql',
+  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
@@ -86,9 +84,7 @@ networkInterface.useAfter([
       const error =
         res.responses &&
         res.responses.filter(
-          x =>
-            x.errors &&
-            x.errors.filter(x => x.message === 'LOGIN_REQUIRED').length
+          x => x.errors && x.errors.filter(x => x.message === 'LOGIN_REQUIRED').length,
         ).length;
       if (error) {
         return history.push({

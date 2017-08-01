@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { Button as AntButton, Modal as AntModal } from 'antd';
-import Portal from 'react-portal-minimal';
+import Portal from 'react-portal';
 import cn from 'classnames';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
@@ -51,7 +51,7 @@ export const Modal = (
   });
   return !isOpen
     ? null
-    : <Portal>
+    : <Portal isOpened>
       <ReactModal
         onClose={onCancel || onClose}
         closeOnEsc
