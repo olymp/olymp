@@ -40,7 +40,7 @@ export const metricsObj = {
     output: 'timeOnPage',
     type: 'Float',
     category: 'Seiten',
-    renderFn: val => Math.round(val),
+    renderFn: val => trennzeichen(val),
   },
   AVG_TIME_ON_PAGE: {
     name: 'ga:avgTimeOnPage',
