@@ -13,5 +13,5 @@ PropVal.propTypes = {
 };
 
 setAddon(infoAddon);
-configure(() => require('../src/navbar/.stories'), module);
-configure(() => require('../src/.stories'), module);
+configure(() => require('../navbar/.stories'), module);
+configure(() => require('../.stories'), module);
