@@ -1,5 +1,5 @@
 {
-  "version": "16.1.1",
+  "version": "16.1.2",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -21,7 +21,7 @@
     "fela-plugin-prefixer": "^5.0.3",
     "fela-plugin-remove-undefined": "^5.0.2",
     "fela-plugin-unit": "^5.0.2",
-    "olymp-utils": "^16.0.50",
+    "olymp-utils": "^16.1.2",
     "react-fela": "^5.1.1",
     "react-frame-component": "^1.1.1",
     "react-portal": "^3.1.0",
@@ -34,7 +34,7 @@
     "@storybook/addon-info": "^3.1.6",
     "@storybook/addon-knobs": "^3.1.6",
     "@storybook/react": "^3.1.6",
-    "olymp-webpack-babel": "^16.0.50",
+    "olymp-webpack-babel": "^16.1.2",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
