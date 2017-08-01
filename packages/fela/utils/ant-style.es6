@@ -32,17 +32,13 @@ export default ({ theme }) => {
       color: theme.color,
     },
     '& .ant-modal-body': {
-      border: '1px solid red',
     },
     '& .ant-form': {
-      border: '1px solid red',
     },
     '& form.ant-form.ant-form-horizontal .ant-row.ant-form-item': {
-      border: '1px solid red',
       marginBottom: 12,
     },
     '& form.ant-form.ant-form-horizontal': {
-      border: '1px solid red',
     },
     '& .ant-pagination-item > a': {
       color: theme.light,
