@@ -5,10 +5,10 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "antd": "^2.12.2",
+    "antd": "^2.12.3",
     "moment": "^2.18.1",
     "multirangeslider": "^0.5.2",
-    "react-modal2": "^3.2.0",
+    "react-modal2": "^5.0.0",
     "react-portal-minimal": "^4.0.2"
   }
 }
