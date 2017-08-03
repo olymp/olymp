@@ -79,6 +79,7 @@ if (command === 'dev') {
         target,
         mode: 'development',
         devPort,
+        url,
         devUrl,
         ssr,
         serverless,

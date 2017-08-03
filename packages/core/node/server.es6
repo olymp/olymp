@@ -9,10 +9,7 @@ import fetch from 'isomorphic-fetch';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import {
-  AsyncComponentProvider,
-  createAsyncContext,
-} from 'react-async-component';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
@@ -30,12 +27,7 @@ import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
 import { createFela, felaReducer } from 'olymp-fela';
 import { EventEmitter } from 'events';
-import {
-  createHistory,
-  routerMiddleware,
-  routerReducer,
-  Router,
-} from 'olymp-router';
+import { createHistory, routerMiddleware, routerReducer, Router } from 'olymp-router';
 import App from '@app';
 
 const init = require('@app').init;
@@ -122,17 +114,12 @@ app.use(useragent.express());
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), '.dist', 'web')));
-app.use(
-  express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public'))
-);
+app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 app.use((req, res, next) => {
-  if (
-    req.subdomains &&
-    req.subdomains.length === 1 &&
-    req.subdomains[0] === 'amp'
-  ) {
+  if (req.subdomains && req.subdomains.length === 1 && req.subdomains[0] === 'amp') {
     req.isAmp = true;
   } else if (req.query.amp !== undefined) {
     req.isAmp = true;
@@ -140,14 +127,10 @@ app.use((req, res, next) => {
   next();
 });
 
-const trust =
-  process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
+const trust = process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
 const secure =
-  process.env.COOKIE_SECURE !== undefined
-    ? `${process.env.COOKIE_SECURE}` === 'true'
-    : isProd;
-const domain =
-  process.env.URL !== undefined ? process.env.URL.split('/')[2] : undefined;
+  process.env.COOKIE_SECURE !== undefined ? `${process.env.COOKIE_SECURE}` === 'true' : isProd;
+const domain = process.env.URL !== undefined ? process.env.URL.split('/')[2] : undefined;
 
 if (isProd) {
   app.set('trust proxy', trust);
@@ -167,7 +150,7 @@ app.use(
       secure,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },
-  })
+  }),
 );
 
 try {
@@ -178,10 +161,7 @@ try {
     server(app);
   }
 } catch (err) {
-  console.log(
-    'No server.js or server/index.js file found, using default settings',
-    err
-  );
+  console.log('No server.js or server/index.js file found, using default settings', err);
 }
 
 // Setup server side routing.
@@ -209,10 +189,7 @@ app.get('*', (req, res) => {
       fela: felaReducer,
     }),
     {},
-    compose(
-      applyMiddleware(client.middleware()),
-      applyMiddleware(routerMiddleware(history))
-    )
+    compose(applyMiddleware(client.middleware()), applyMiddleware(routerMiddleware(history))),
   );
 
   const asyncContext = createAsyncContext();
@@ -244,19 +221,11 @@ app.get('*', (req, res) => {
   return asyncBootstrapper(reactApp)
     .then(() => getDataFromTree(reactApp))
     .then(() => {
-      const reactAppString = req.isAmp
-        ? renderToStaticMarkup(reactApp)
-        : renderToString(reactApp);
+      const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const scripts = req.isAmp
         ? []
-        : [
-          isProd
-            ? `${clientAssets.main.js}`
-            : `${process.env.DEV_URL}/main.js`,
-        ];
-      const styles = req.isAmp
-        ? []
-        : isProd ? [`${clientAssets.main.css}`] : [];
+        : [isProd ? `${clientAssets.main.js}` : `${process.env.DEV_URL}/main.js`];
+      const styles = req.isAmp ? [] : isProd ? [`${clientAssets.main.css}`] : [];
       const cssMarkup = renderer.renderToString();
       const asyncState = asyncContext.getState();
 

@@ -3,7 +3,8 @@ import { get } from 'lodash';
 
 const cache = new Cache({ maxSize: 100, maxAge: 20 });
 export default auth => (req, res, next) => {
-  const authorization = req.headers.authorization || get(req, 'session.token');
+  const authorization =
+    req.headers.authorization || req.params.authorization || get(req, 'session.token');
   if (!authorization) {
     return next();
   }
@@ -18,7 +19,7 @@ export default auth => (req, res, next) => {
       // cache.set(authorization, req.user);
       next();
     })
-    .catch(e => {
+    .catch((e) => {
       if (req.session) {
         delete req.session.token;
       }

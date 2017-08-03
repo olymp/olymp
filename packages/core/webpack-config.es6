@@ -26,6 +26,7 @@ const pluginsFolder = !isLinked ? nodeModules : topFolder;
 module.exports = ({
   mode,
   target,
+  url,
   devUrl,
   devPort,
   ssr,
@@ -84,6 +85,7 @@ module.exports = ({
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
+        'process.env.URL': JSON.stringify(url),
         'process.env.SSR': JSON.stringify(isSSR),
         'process.env.SERVERLESS': JSON.stringify(isServerless),
         'process.env.NODE_ENV': JSON.stringify(mode),

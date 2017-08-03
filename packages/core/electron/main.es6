@@ -1,3 +1,4 @@
+const elecApp = require('@electron');
 const { autoUpdater } = require('electron-updater');
 const { Menu, app, BrowserWindow, crashReporter, dialog } = require('electron');
 require('electron-debug')({ enabled: true });
@@ -68,17 +69,23 @@ function createWindow() {
     // titleBarStyle: 'hidden',
   });
 
+  if (elecApp && elecApp.default) {
+    elecApp.default(mainWindow);
+  }
+
   // and load the index.html of the app.
   mainWindow.loadURL(
     url.format({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file:',
       slashes: true,
-    })
+    }),
   );
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

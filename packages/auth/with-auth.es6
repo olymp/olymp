@@ -10,31 +10,27 @@ const Spinner = createComponent(
     center: true,
   }),
   p => <Spin {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
 export const auth = (obj = {}) => (WrappedComponent) => {
-  const { extraAttributes, waitForUser = true, loader: Loader } = obj;
+  const { extraAttributes, store, waitForUser = true, loader: Loader } = obj;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
   const inner = (WrappedComponent) => {
-    const component = (props) => {
-      const auth = {
-        user: props.data.user,
-        loading: props.data.loading,
-        ...authMethods(
-          props.client,
-          props.data.refetch,
-          props.data.user,
-          props.data.loading
-        ),
-      };
-      return <WrappedComponent auth={auth} {...props} />;
-    };
+    const InnerComponent = props =>
+      (<WrappedComponent
+        auth={{
+          user: props.data.user,
+          loading: props.data.loading,
+          ...authMethods(props.client, props.data.refetch, props.data.user, props.data.loading),
+        }}
+        {...props}
+      />);
 
     return graphql(
       gql`
@@ -48,17 +44,9 @@ export const auth = (obj = {}) => (WrappedComponent) => {
         props: ({ ownProps, data }) => {
           if (data.error && typeof localStorage !== 'undefined') {
             localStorage.removeItem('token');
-          } else if (
-            !data.loading &&
-            !data.user &&
-            typeof localStorage !== 'undefined'
-          ) {
+          } else if (!data.loading && !data.user && typeof localStorage !== 'undefined') {
             localStorage.removeItem('token');
-          } else if (
-            data.user &&
-            data.user.token &&
-            typeof localStorage !== 'undefined'
-          ) {
+          } else if (data.user && data.user.token && typeof localStorage !== 'undefined') {
             localStorage.setItem('token', data.user.token);
           }
           return {
@@ -67,32 +55,35 @@ export const auth = (obj = {}) => (WrappedComponent) => {
           };
         },
         // forceFetch: true,
-      }
-    )(withApollo(component));
+      },
+    )(withApollo(InnerComponent));
   };
-
   class UserProvider extends Component {
     static childContextTypes = {
       auth: PropTypes.object,
     };
     getChildContext() {
       return {
-        auth: this.props.auth,
+        auth: store || this.props.auth,
       };
     }
     render() {
-      if (this.props.auth.loading && waitForUser) {
+      const auth = store || this.props.auth;
+      if (auth.loading && waitForUser) {
         return Loader ? <Loader /> : <Spinner />;
       }
-      return <WrappedComponent {...this.props} />;
+      return <WrappedComponent auth={store} {...this.props} />;
     }
+  }
+
+  if (store) {
+    return UserProvider;
   }
   return inner(UserProvider);
 };
 
 export default (WrappedComponent) => {
-  const withUserRenderer = (props, context) =>
-    <WrappedComponent {...context} {...props} />;
+  const withUserRenderer = (props, context) => <WrappedComponent {...context} {...props} />;
   withUserRenderer.contextTypes = {
     auth: PropTypes.object,
   };
@@ -240,9 +231,7 @@ const authMethods = (client, refetch, user, loading) => ({
       .mutate({
         mutation: gql`
         mutation login {
-          user: login(email:"${email}", password:"${password}"${totp
-  ? `, totp:"${totp}"`
-  : ''}) {
+          user: login(email:"${email}", password:"${password}"${totp ? `, totp:"${totp}"` : ''}) {
             ${attributes}
           }
         }
