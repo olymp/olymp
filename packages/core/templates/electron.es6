@@ -47,7 +47,6 @@ module.exports = templateParams => `
       ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])).map(
     script => `<script src="${script}"></script>`,
   )}
-      <script type='text/javascript'>window.GO()</script>
     </body>
   </html>
 `;

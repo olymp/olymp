@@ -29,6 +29,7 @@ module.exports = (config, options) => {
       // 'transform-es2015-destructuring',
       resolvePlugin('transform-decorators-legacy', 'babel-plugin-'),
       resolvePlugin('transform-class-properties', 'babel-plugin-'),
+      resolvePlugin('transform-es2015-classes', 'babel-plugin-'),
       [resolvePlugin('import', 'babel-plugin-'), { libraryName: 'antd', style: true }],
     ],
   };
@@ -108,6 +109,7 @@ module.exports = (config, options) => {
       // path.resolve(appRoot, 'server'),
       // path.resolve(olympRoot, 'graphql'),
       resolve(appRoot, 'app'),
+      resolve(appRoot, 'electron'),
       resolve(appRoot, 'server'),
     ],
   });

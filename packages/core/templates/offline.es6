@@ -27,18 +27,14 @@ export default ({ styles, scripts }) => `
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#8e44ad">
     ${styles.map(
-      style =>
-        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
-    )}
-    ${styles.map(
-      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
-    )}
+    style =>
+      `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`,
+  )}
+    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
     <style id="css-markup"></style>
   </head>
   <body>
     <div id="app"></div>
-    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
-    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
     ${scripts.map(script => `<script async src="${script}"></script>`)}
   </body>
 </html>

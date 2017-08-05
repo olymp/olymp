@@ -9,8 +9,8 @@ import fetch from 'isomorphic-fetch';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
-import asyncBootstrapper from 'react-async-bootstrapper';
+// import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+// import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
@@ -26,11 +26,9 @@ import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
 import { createFela, felaReducer } from 'olymp-fela';
-import { EventEmitter } from 'events';
-import { createHistory, routerMiddleware, routerReducer, Router } from 'olymp-router';
+import { Mobx } from 'olymp-utils/mobx';
+import { createHistory, Router } from 'olymp-router';
 import App from '@app';
-
-const init = require('@app').init;
 
 const version = +fs.statSync(__filename).mtime;
 console.log('VERSION', version);
@@ -166,6 +164,21 @@ try {
 
 // Setup server side routing.
 app.get('*', (req, res) => {
+  const scripts = req.isAmp
+    ? []
+    : [isProd ? `${clientAssets.main.js}` : `${process.env.DEV_URL}/main.js`];
+  const styles = req.isAmp ? [] : isProd ? [`${clientAssets.main.css}`] : [];
+
+  if (process.env.SSR === false) {
+    const html = (req.isAmp ? amp : template)({
+      gaTrackingId: process.env.GA_TRACKING_ID,
+      scripts,
+      styles,
+    });
+    res.send(html);
+    return;
+  }
+
   const networkInterface = createNetworkInterface({
     uri: process.env.GRAPHQL_URL || `http://localhost:${port}/graphql`,
     opts: {
@@ -185,24 +198,19 @@ app.get('*', (req, res) => {
   const store = createStore(
     combineReducers({
       apollo: client.reducer(),
-      location: routerReducer(history),
       fela: felaReducer,
     }),
     {},
-    compose(applyMiddleware(client.middleware()), applyMiddleware(routerMiddleware(history))),
+    compose(applyMiddleware(client.middleware())),
   );
 
-  const asyncContext = createAsyncContext();
-
-  // Create our React application and render it into a string.
-  if (typeof init !== undefined && init) {
-    init({ renderer, client, store });
-  }
+  // const asyncContext = createAsyncContext();
 
   const context = {};
   const reactApp = (
-    <AsyncComponentProvider asyncContext={asyncContext}>
-      <ApolloProvider store={store} client={client}>
+    //  {/*<AsyncComponentProvider asyncContext={asyncContext}>*/
+    <ApolloProvider store={store} client={client}>
+      <Mobx>
         <Router store={store} history={history}>
           <Provider renderer={renderer}>
             <GatewayProvider>
@@ -214,20 +222,18 @@ app.get('*', (req, res) => {
             </GatewayProvider>
           </Provider>
         </Router>
-      </ApolloProvider>
-    </AsyncComponentProvider>
+      </Mobx>
+    </ApolloProvider>
+    //   {/*</AsyncComponentProvider>*/}
   );
 
-  return asyncBootstrapper(reactApp)
+  // return asyncBootstrapper(reactApp)
+  return Promise.resolve(reactApp)
     .then(() => getDataFromTree(reactApp))
     .then(() => {
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
-      const scripts = req.isAmp
-        ? []
-        : [isProd ? `${clientAssets.main.js}` : `${process.env.DEV_URL}/main.js`];
-      const styles = req.isAmp ? [] : isProd ? [`${clientAssets.main.css}`] : [];
       const cssMarkup = renderer.renderToString();
-      const asyncState = asyncContext.getState();
+      // const asyncState = asyncContext.getState();
 
       // Generate the html res.
       const html = (req.isAmp ? amp : template)({
@@ -237,7 +243,7 @@ app.get('*', (req, res) => {
         styles,
         cssMarkup,
         initialState: { apollo: client.getInitialState() },
-        asyncState,
+        // asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 

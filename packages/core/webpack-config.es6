@@ -37,10 +37,10 @@ module.exports = ({
 }) => {
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
-  const isWeb = target !== 'node' && target !== 'electron-main';
   const isElectron = target.indexOf('electron') === 0;
   const isElectronMain = target === 'electron-main';
   const isElectronRenderer = target === 'electron-renderer';
+  const isWeb = target !== 'node' && target !== 'electron-main';
   const isNode = target === 'node' || isElectronMain;
   const isServer = target === 'node';
   const isServerless = serverless === true || isElectron;
@@ -53,8 +53,6 @@ module.exports = ({
       extensions: ['.js'],
       modules: [path.resolve(appRoot, 'node_modules'), path.resolve(appRoot, 'app')],
       alias: {
-        '@history':
-          isNode || isElectron ? 'history/createMemoryHistory' : 'history/createBrowserHistory',
         antd: path.resolve(appRoot, 'node_modules', 'antd'),
         moment: path.resolve(appRoot, 'node_modules', 'moment'),
         react: path.resolve(appRoot, 'node_modules', 'react'),
@@ -64,8 +62,8 @@ module.exports = ({
         // lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         '@root': appRoot,
         '@electron':
-          isElectron && fs.existsSync(path.resolve(appRoot, 'app', 'electron.js'))
-            ? path.resolve(appRoot, 'app', 'electron.js')
+          isElectron && fs.existsSync(path.resolve(appRoot, 'electron', 'index.js'))
+            ? path.resolve(appRoot, 'electron', 'index.js')
             : path.resolve(__dirname, 'noop'),
         '@app': isServer && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
         ...allPackages.reduce((obj, item) => {
@@ -85,27 +83,16 @@ module.exports = ({
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
-        'process.env.URL': JSON.stringify(url),
-        'process.env.SSR': JSON.stringify(isSSR),
-        'process.env.SERVERLESS': JSON.stringify(isServerless),
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.env.DEV_PORT': JSON.stringify(devPort),
-        'process.env.DEV_URL': devUrl ? JSON.stringify(devUrl.origin) : undefined,
-        'process.env.HOTJAR': process.env.HOTJAR ? JSON.stringify(process.env.HOTJAR) : undefined,
-        'process.env.IS_WEB': isWeb ? JSON.stringify(true) : undefined,
-        'process.env.IS_NODE': isNode ? JSON.stringify(true) : undefined,
-        'process.env.IS_ELECTRON': isElectron ? JSON.stringify(true) : undefined,
-        /* 'process.env.HOT_MODULES': isDev
-          ? JSON.stringify(
-            ['index.js']
-            / .concat(
-                allPackages.map(item =>
-                  path.resolve(topFolder, item, 'index.js')
-                )
-              )*
-              .join('|')
-          )
-          : undefined,*/
+        'process.env.URL': url ? `"${url}"` : false,
+        'process.env.DEV_PORT': devPort || false,
+        'process.env.DEV_URL': devUrl ? `"${devUrl.origin}"` : false,
+        'process.env.HOTJAR': process.env.HOTJAR ? `"${process.env.HOTJAR}"` : false,
+        'process.env.NODE_ENV': `"${mode}"`,
+        'process.env.SSR': isSSR,
+        'process.env.SERVERLESS': isServerless,
+        'process.env.IS_WEB': isWeb,
+        'process.env.IS_NODE': isNode,
+        'process.env.IS_ELECTRON': isElectron,
         ...Object.keys(sharedEnv).reduce((store, key) => {
           if (sharedEnv[key] === true || process.env[key]) {
             store[`process.env.${key}`] = JSON.stringify(process.env[key]);
@@ -168,21 +155,16 @@ module.exports = ({
   if (!isServer) {
     config.plugins.push(
       new webpack.DefinePlugin({
-        'process.env.AMP': process.env.AMP ? JSON.stringify(process.env.AMP) : undefined,
-        'process.env.GM_KEY': JSON.stringify(process.env.GM_KEY),
-        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
-          ? JSON.stringify(process.env.GRAPHQL_URL)
-          : undefined,
+        'process.env.AMP': !!process.env.AMP,
+        'process.env.GM_KEY': process.env.GM_KEY ? `"${process.env.GM_KEY}"` : false,
+        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? `"${process.env.GRAPHQL_URL}"` : false,
         'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
-          ? JSON.stringify(process.env.CRASHREPORT_URL)
-          : undefined,
-        /* 'process.env.GRAPHQL_SUB': process.env.GRAPHQL_SUB
-      ? JSON.stringify(process.env.GRAPHQL_SUB)
-      : undefined,*/
-        'process.env.URL': process.env.URL ? JSON.stringify(process.env.URL) : undefined,
+          ? `"${process.env.CRASHREPORT_URL}"`
+          : false,
+        'process.env.URL': process.env.URL ? `"${process.env.URL}"` : false,
         'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-          ? JSON.stringify(process.env.FILESTACK_KEY)
-          : undefined,
+          ? `"${process.env.FILESTACK_KEY}"`
+          : false,
       }),
     );
   }
@@ -411,6 +393,9 @@ module.exports = ({
           ],
         }),
       );
+    if (isElectron) {
+      config.externals.push('pg/native');
+    }
   }
 
   if (isWeb || isElectronRenderer) {

@@ -12,4 +12,3 @@ export { default as Redirect } from './redirect';
 export { default as Router } from './router';
 export * from './history';
 export * from './utils';
-export * from './redux';

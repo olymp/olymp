@@ -1,7 +1,8 @@
 export * from './toolbelt';
 export { default as memoize } from './memoize';
 export { default as colors } from './colors';
-export * from './purify';
+export { default as purify } from './purify';
+export { default as shallowEqual } from './shallow-equal';
 export { default as cloudinaryUrl } from './cloudinary-url';
 export { makeTree } from './tree-utils';
 export { default as slugify } from './slugify';

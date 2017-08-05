@@ -1,33 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { createPush, createReplace } from './actions';
+import { connect } from 'olymp-utils/mobx';
+import { observer } from 'mobx-react';
 
-export default WrappedComponent => {
+export default (WrappedComponent) => {
   const inner = (props, context) => {
-    const { pathname, query, search, url, push, replace, ...rest } = props;
+    const { history, ...rest } = props;
     return (
       <WrappedComponent
         {...rest}
-        location={{ pathname, query, search, url }}
-        router={{
-          push,
-          replace,
-        }}
-        query={query}
-        pathname={pathname}
+        history={history}
+        router={history}
+        pathname={history.pathname}
+        location={history.location}
+        query={history.query}
       />
     );
   };
-  return connect(
-    ({ location }) => ({
-      pathname: location.pathname,
-      query: location.query,
-      search: location.search,
-      url: location.url,
-    }),
-    dispatch => ({
-      push: createPush(dispatch),
-      replace: createPush(dispatch),
-    })
-  )(inner);
+  return connect('history')(observer(inner));
 };

@@ -17,7 +17,7 @@ const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
 export const auth = (obj = {}) => (WrappedComponent) => {
-  const { extraAttributes, store, waitForUser = true, loader: Loader } = obj;
+  const { extraAttributes, store, storeKey, waitForUser = true, loader: Loader } = obj;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
@@ -64,19 +64,21 @@ export const auth = (obj = {}) => (WrappedComponent) => {
     };
     getChildContext() {
       return {
-        auth: store || this.props.auth,
+        auth: store || (storeKey && this.props[storeKey]) || this.props.auth,
       };
     }
     render() {
-      const auth = store || this.props.auth;
+      const auth = store || (storeKey && this.props[storeKey]) || this.props.auth;
       if (auth.loading && waitForUser) {
         return Loader ? <Loader /> : <Spinner />;
       }
-      return <WrappedComponent auth={store} {...this.props} />;
+      return <WrappedComponent auth={auth} {...this.props} />;
     }
   }
 
   if (store) {
+    return UserProvider;
+  } else if (storeKey) {
     return UserProvider;
   }
   return inner(UserProvider);

@@ -14,6 +14,7 @@ if (process.env.CRASHREPORT_URL) {
 }
 
 log.transports.file.level = 'info';
+log.info('HIasd');
 
 const path = require('path');
 const url = require('url');
@@ -70,7 +71,15 @@ function createWindow() {
   });
 
   if (elecApp && elecApp.default) {
-    elecApp.default(mainWindow);
+    try {
+      elecApp.default(mainWindow);
+    } catch (err) {
+      dialog.showMessageBox({
+        type: 'error',
+        title: 'Error',
+        message: JSON.stringify(err, null, 2),
+      });
+    }
   }
 
   // and load the index.html of the app.
@@ -82,10 +91,10 @@ function createWindow() {
     }),
   );
 
-  // Open the DevTools.
+  /* // Open the DevTools.
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
-  }
+  }*/
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
