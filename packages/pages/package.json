@@ -1,13 +1,13 @@
 {
-  "version": "16.1.2",
+  "version": "17.0.0",
   "name": "olymp-pages",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "olymp-fela": "^16.1.2",
-    "olymp-router": "^16.1.2",
-    "olymp-utils": "^16.1.2",
+    "olymp-fela": "^17.0.0",
+    "olymp-router": "^17.0.0",
+    "olymp-utils": "^17.0.0",
     "recompose": "^0.24.0"
   }
 }
