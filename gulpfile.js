@@ -24,6 +24,7 @@ const babelOptions = {
       'latest',
       {
         es2015: {
+          // modules: 'commonjs',
           modules: false,
         },
       },
@@ -35,6 +36,9 @@ const babelOptions = {
     // 'transform-es2015-destructuring',
     'transform-decorators-legacy',
     'transform-class-properties',
+    'transform-react-constant-elements',
+    'transform-react-pure-class-to-function',
+    'transform-react-remove-prop-types',
     ['import', { libraryName: 'antd', style: true }],
     [
       'transform-imports',

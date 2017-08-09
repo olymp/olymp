@@ -126,9 +126,8 @@ app.use((req, res, next) => {
 });
 
 const trust = process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
-const secure =
-  process.env.COOKIE_SECURE !== undefined ? `${process.env.COOKIE_SECURE}` === 'true' : isProd;
-const domain = process.env.URL !== undefined ? process.env.URL.split('/')[2] : undefined;
+const secure = process.env.COOKIE_SECURE ? `${process.env.COOKIE_SECURE}` === 'true' : isProd;
+const domain = process.env.URL ? process.env.URL.split('/')[2] : undefined;
 
 if (isProd) {
   app.set('trust proxy', trust);
@@ -207,10 +206,11 @@ app.get('*', (req, res) => {
   // const asyncContext = createAsyncContext();
 
   const context = {};
+  const state = {};
   const reactApp = (
     //  {/*<AsyncComponentProvider asyncContext={asyncContext}>*/
     <ApolloProvider store={store} client={client}>
-      <Mobx>
+      <Mobx store={state}>
         <Router store={store} history={history}>
           <Provider renderer={renderer}>
             <GatewayProvider>

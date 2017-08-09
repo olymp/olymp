@@ -4,7 +4,7 @@
   "description": "",
   "main": "./packages/core",
   "scripts": {
-    "outdated": "lerna exec npm outdated",
+    "outdated": "lerna exec --concurrency 1 -- npm outdated",
     "elev": "lerna exec npm owner add machiaveli88",
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
@@ -14,7 +14,7 @@
     "lib": "gulp lib-build",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish --registry=https://registry.npmjs.org/",
+    "publish": "lerna publish --npm-tag=next --registry=https://registry.npmjs.org/",
     "publish-force": "lerna publish --force-publish=* --registry=https://registry.npmjs.org/",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
@@ -30,7 +30,13 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": ["react", "universal", "javascript", "express", "webpack"],
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {

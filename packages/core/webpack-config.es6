@@ -8,8 +8,9 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 // const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
+// const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 const appRoot = process.cwd();
@@ -47,19 +48,26 @@ module.exports = ({
   const isSSR = !isElectronMain && ssr !== false && !serverless;
   const folder = isDev ? '.dev' : '.dist';
 
+  const isVerbose = true;
   const config = {
-    cache: true,
+    bail: !isDev,
+    cache: isDev,
+    stats: {
+      cached: isVerbose,
+      cachedAssets: isVerbose,
+      chunks: isVerbose,
+      chunkModules: isVerbose,
+      colors: true,
+      hash: isVerbose,
+      modules: isVerbose,
+      reasons: isDev,
+      timings: true,
+      version: isVerbose,
+    },
     resolve: {
       extensions: ['.js'],
       modules: [path.resolve(appRoot, 'node_modules'), path.resolve(appRoot, 'app')],
       alias: {
-        antd: path.resolve(appRoot, 'node_modules', 'antd'),
-        moment: path.resolve(appRoot, 'node_modules', 'moment'),
-        react: path.resolve(appRoot, 'node_modules', 'react'),
-        // 'core-js': path.resolve(appRoot, 'node_modules', 'core-js'),
-        'react-dom': path.resolve(appRoot, 'node_modules', 'react-dom'),
-        // moment: path.resolve(appRoot, 'node_modules', 'moment'),
-        // lodash: path.resolve(appRoot, 'node_modules', 'lodash'),
         '@root': appRoot,
         '@electron':
           isElectron && fs.existsSync(path.resolve(appRoot, 'electron', 'index.js'))
@@ -78,7 +86,7 @@ module.exports = ({
       },
     },
     resolveLoader: {
-      modules: [path.resolve(nodeModules), path.resolve(appRoot, 'node_modules')],
+      modules: [path.resolve(appRoot, 'node_modules')],
     },
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
@@ -102,12 +110,6 @@ module.exports = ({
           return store;
         }, {}),
       }),
-      /* new webpack.DllPlugin({
-        path: path.resolve(appRoot, folder, target, `[name]-manifest.json`),
-        library: '[name]',
-        filename: '[name].js',
-        name: '[name]_lib',
-      }),*/
       // new PrepackWebpackPlugin({ }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
@@ -137,11 +139,6 @@ module.exports = ({
           test: /\.json$/,
           loader: 'json-loader',
         },
-        {
-          test: /\.(graphql|gql)$/,
-          exclude: /node_modules/,
-          loader: 'graphql-tag/loader',
-        },
       ],
     },
     output: {
@@ -170,7 +167,7 @@ module.exports = ({
   }
 
   // inline-source-map for web-dev
-  config.devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
+  config.devtool = isProd ? 'source-map' : 'cheap-module-inline-source-map';
 
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {
@@ -184,14 +181,22 @@ module.exports = ({
     config.target = 'node';
     config.watch = isDev;
     config.node = {
-      __dirname: false,
+      console: false,
+      global: false,
+      process: false,
+      Buffer: false,
       __filename: false,
+      __dirname: false,
     };
     config.output.libraryTarget = 'commonjs2';
   } else if (isElectronMain) {
     config.target = 'electron-main';
     config.watch = isDev;
     config.node = {
+      console: false,
+      global: false,
+      process: false,
+      Buffer: false,
       __dirname: false,
       __filename: false,
     };
@@ -199,10 +204,12 @@ module.exports = ({
   } else {
     config.target = isElectron ? 'electron-renderer' : 'web';
     config.node = {
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty',
       __dirname: true,
       __filename: true,
     };
-    config.output.libraryTarget = 'var';
   }
 
   if (isDev && isWeb) {
@@ -217,48 +224,17 @@ module.exports = ({
       new GenerateJsonPlugin('package.json', require('./electron/package-json')()),
     );
   }
-  if (isWeb && isProd) {
+  if (isProd) {
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-    config.plugins.push(new DuplicatePackageCheckerPlugin());
-    config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-    config.plugins.push(
-      new webpack.LoaderOptionsPlugin({
-        minimize: true,
-        debug: false,
-      }),
-    );
-    if (!isElectron) {
-      config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false,
-            pure_getters: true,
-            unsafe: true,
-            unsafe_comps: true,
-            screw_ie8: true,
-          },
-          mangle: {
-            screw_ie8: true,
-          },
-          output: {
-            comments: false,
-            screw_ie8: true,
-          },
-          sourceMap: false,
-        }),
-      );
-    }
   }
   if (isNode) {
     config.plugins.push(
       new webpack.BannerPlugin({
         banner: 'require("source-map-support").install();',
         raw: true,
-        entryOnly: true,
+        entryOnly: false,
       }),
     );
-  }
-  if (isNode) {
     if (isDev && isServer) {
       config.plugins.push(new StartServerPlugin('main.js'));
       /* config.plugins.push(
@@ -297,44 +273,12 @@ module.exports = ({
         }),
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
-    } else if (isProd && isWeb) {
+    } else if (isWeb) {
       config.plugins.push(
-        new HtmlWebpackPlugin({
-          filename: 'offline.html',
-          template: path.resolve(__dirname, 'templates', 'default.js'),
-          inject: false,
-          /* minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
-        },*/
+        new Visualizer({
+          filename: './_visualizer.html',
         }),
       );
-      config.plugins.push(
-        new OfflinePlugin({
-          responseStrategy: 'network-first',
-          externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
-          // autoUpdate: 1000 * 60 * 5,
-          caches: 'all',
-          ServiceWorker: {
-            events: true,
-            navigateFallbackURL: '/offline.html',
-          },
-          AppCache: false,
-        }),
-      );
-      /* config.plugins.push(
-        new VisualizerPlugin({
-          filename: './visualizer.html',
-        })
-      );*/
       if (isServerless) {
         config.plugins.push(
           new HtmlWebpackPlugin({
@@ -375,39 +319,35 @@ module.exports = ({
 
   // externals
   if (isNode) {
-    config.externals = allPackages
-      .map(x => path.resolve(topFolder, x, 'node_modules'))
-      .concat([path.resolve(appRoot, 'node_modules')])
-      .map(modulesDir =>
-        nodeExternals({
-          modulesDir,
-          whitelist: [
-            v => v.indexOf('webpack/hot/poll') === 0,
-            'source-map-support/register',
-            v => v.indexOf('olymp-') === 0,
-            v => v === 'antd' || v.indexOf('antd/') === 0,
-            /\.(eot|woff|woff2|ttf|otf)$/,
-            /\.(svg|png|jpg|jpeg|gif|ico)$/,
-            /\.(mp4|mp3|ogg|swf|webp)$/,
-            /\.(css|scss|sass|sss|less)$/,
-          ],
-        }),
-      );
+    config.externals = [
+      nodeExternals({
+        modulesDir: path.resolve(appRoot, 'node_modules'),
+        whitelist: [
+          /\.(eot|woff|woff2|ttf|otf)$/,
+          /\.(svg|png|jpg|jpeg|gif|ico)$/,
+          /\.(mp4|mp3|ogg|swf|webp)$/,
+          /\.(css|scss|sass|sss|less)$/,
+          v => v.indexOf('webpack/hot/poll') === 0,
+          'source-map-support/register',
+          v => v.indexOf('olymp-') === 0,
+          v => v === 'antd' || v.indexOf('antd/') === 0,
+        ],
+      }),
+    ];
     if (isElectron) {
       config.externals.push('pg/native');
     }
   }
-
   if (isWeb || isElectronRenderer) {
     if (isDev) {
       config.entry.main = [
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
-        require.resolve(path.resolve(__dirname, 'web')),
+        require.resolve(path.resolve(__dirname, 'web', 'index.js')),
       ];
     } else {
-      config.entry.main = [require.resolve(path.resolve(__dirname, 'web'))];
+      config.entry.main = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
     }
   } else if (isElectronMain) {
     if (isDev) {
@@ -444,11 +384,13 @@ module.exports = ({
     isLinked,
     ...rest,
   };
-  return plugins.reduce((store, plugin) => {
+
+  const final = plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
       isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`,
     ));
     return req(config, options) || config;
   }, config);
+  return isWeb && isProd ? require('./offline')(final) : final;
 };

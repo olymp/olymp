@@ -12,5 +12,8 @@
     "less-loader": "^4.0.5",
     "node-noop": "^1.0.0",
     "style-loader": "^0.18.2"
+  },
+  "devDependencies": {
+    "webpack": "3.5.1"
   }
 }

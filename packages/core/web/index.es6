@@ -13,7 +13,8 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // End Redux stuff
 
 // window.Perf = require('react-addons-perf');
-if (process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON) {
+// TODO
+if (process.env.NODE_ENV === 'production') {
   const offline = require('offline-plugin/runtime');
   offline.install({
     onUpdating: () => {
@@ -31,22 +32,13 @@ if (process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON) {
       console.log('SW Event:', 'onUpdateFailed');
     },
   });
-} else {
-  // const { whyDidYouUpdate } = require('why-did-you-update');
-  // whyDidYouUpdate(React);
+} else if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister();
+    }
+  });
 }
-/* // TODO
-if (process.env.NODE_ENV === 'production') {
-  if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      for (const registration of registrations) {
-        registration.unregister();
-      }
-    });
-  }
-} else {
-  console.warn('web/index.js removes serviceworkers temporarily');
-}*/
 
 const networkInterface = createBatchingNetworkInterface({
   uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',

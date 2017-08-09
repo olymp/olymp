@@ -9,6 +9,10 @@ const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
 const merge = require('deepmerge');
 const argv = require('minimist')(process.argv.slice(1));
+const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
+
+const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
+
 require('dotenv').config();
 
 const createConfig = require(path.resolve(__dirname, '..', 'webpack-config.js'));
@@ -60,7 +64,6 @@ if (argv.targets) {
 } else {
   targets = ['node', 'web'];
 }
-console.log('TARG', targets);
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
@@ -132,29 +135,23 @@ if (command === 'dev') {
     }
   });
 } else if (command === 'build') {
+  const port = parseInt(PORT, 10);
+  const url = new urlUtil.URL(URL || `http://localhost:${port}`);
   rimraf.sync(path.resolve(root, '.dist'));
   process.env.NODE_ENV = 'production';
-  const configs = [
-    createConfig({
-      target: 'web',
-      mode: 'production',
-      ssr,
-      serverless,
-      ...olymprc,
-    }),
-  ];
-  if (!serverless) {
-    configs.push(
+
+  const compiler = webpack(
+    targets.map((target, i) =>
       createConfig({
-        target: 'node',
+        target,
         mode: 'production',
+        url,
         ssr,
         serverless,
         ...olymprc,
       }),
-    );
-  }
-  const compiler = webpack(configs);
+    ),
+  );
   compiler.run((err, compilation) => {
     if (err) {
       console.error(err);
@@ -162,10 +159,9 @@ if (command === 'dev') {
     }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    /* stats.forEach(c =>
-      fs.writeFileSync(path.resolve(__dirname, 'stats.json'), c.toJson())
-    ); */
     stats.forEach(c => console.log(c.toString()));
+    console.log('File sizes after gzip:\n');
+    // printFileSizesAfterBuild(stats, null, null);
   });
 } else if (command.indexOf('build:') === 0) {
   const target = command.split(':')[1];
