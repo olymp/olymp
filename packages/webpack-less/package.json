@@ -1,12 +1,12 @@
 {
-  "version": "17.0.6",
+  "version": "17.0.7",
   "name": "olymp-webpack-less",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "css-loader": "^0.28.4",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "extract-text-webpack-plugin": "3.0.0",
     "ignore-loader": "^0.1.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",

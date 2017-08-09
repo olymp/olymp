@@ -1,11 +1,11 @@
 {
-  "version": "17.0.6",
+  "version": "17.0.7",
   "name": "olymp-athena-gz",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "olymp-fela": "^17.0.6",
+    "olymp-fela": "^17.0.7",
     "olymp-utils": "^17.0.0",
     "react-image-gallery": "^0.8.3"
   }
