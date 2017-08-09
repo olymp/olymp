@@ -5,6 +5,7 @@ import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createFela, felaReducer } from 'olymp-fela';
 import { createHistory } from 'olymp-router';
+import { get } from 'lodash';
 import App from './root';
 // import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
@@ -92,8 +93,9 @@ networkInterface.useAfter([
   );
 }*/
 
+console.log(window.INITIAL_DATA);
 let client,
-  mobx = {},
+  mobx = { $data: get(window, 'INITIAL_DATA.mobx', {}) },
   mountNode,
   container,
   renderer,

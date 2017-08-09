@@ -70,7 +70,7 @@ export const auth = (obj = {}) => (WrappedComponent) => {
     render() {
       const auth = store || (storeKey && this.props[storeKey]) || this.props.auth;
       if (auth.loading && waitForUser) {
-        return Loader ? <Loader /> : <Spinner />;
+        return Loader ? <Loader auth={auth} /> : <Spinner />;
       }
       return <WrappedComponent auth={auth} {...this.props} />;
     }

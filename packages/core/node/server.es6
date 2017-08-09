@@ -26,7 +26,7 @@ import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
 import { createFela, felaReducer } from 'olymp-fela';
-import { Mobx } from 'olymp-utils/mobx';
+import { Mobx, createSnapshot } from 'olymp-utils/mobx';
 import { createHistory, Router } from 'olymp-router';
 import App from '@app';
 
@@ -242,7 +242,7 @@ app.get('*', (req, res) => {
         scripts,
         styles,
         cssMarkup,
-        initialState: { apollo: client.getInitialState() },
+        initialState: { apollo: client.getInitialState(), mobx: { auth: { user: req.user } } },
         // asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
       });

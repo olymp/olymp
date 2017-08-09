@@ -117,3 +117,10 @@ export class Mobx extends Component {
     return Children.only(children);
   }
 }
+export const createSnapshot = context =>
+  Object.keys(context).reduce((store, key) => {
+    if (context[key].snapshot) {
+      store[key] = context[key].snapshot();
+    }
+    return store;
+  }, {});

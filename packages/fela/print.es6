@@ -17,8 +17,10 @@ const Print = createComponent(
     (<Portal
       isOpened
       onOpen={() => {
-        window.print();
-        setTimeout(onClose, 1);
+        setTimeout(() => {
+          window.print();
+          setTimeout(onClose, 1);
+        }, 200);
       }}
     >
       <div className={className}>
