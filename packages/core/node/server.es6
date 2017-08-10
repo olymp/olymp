@@ -206,7 +206,7 @@ app.get('*', (req, res) => {
   // const asyncContext = createAsyncContext();
 
   const context = {};
-  const state = {};
+  const state = { $data: { auth: { user: req.user } } };
   const reactApp = (
     //  {/*<AsyncComponentProvider asyncContext={asyncContext}>*/
     <ApolloProvider store={store} client={client}>
@@ -233,7 +233,6 @@ app.get('*', (req, res) => {
     .then(() => {
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const cssMarkup = renderer.renderToString();
-      // const asyncState = asyncContext.getState();
 
       // Generate the html res.
       const html = (req.isAmp ? amp : template)({

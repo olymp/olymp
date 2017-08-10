@@ -57,7 +57,6 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
             }
           }
           // END TOTP
-          console.log('CLEAN');
           return {
             token: tokenEngine.createFromUser(user, { days: 7 }),
             user: cleanUser(user),
