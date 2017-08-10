@@ -1,12 +1,12 @@
 {
-  "version": "17.0.7",
+  "version": "17.0.8",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "history": "^4.6.3",
-    "olymp-utils": "^17.0.0",
+    "olymp-utils": "^17.0.1",
     "react-redux": "^5.0.5",
     "redux": "^3.7.2",
     "route-parser": "^0.0.5"
