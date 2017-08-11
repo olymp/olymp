@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
 import { urlToLocation } from './utils';
 import { pick } from 'lodash';
-import { observer, connect } from 'olymp-utils/mobx';
 
-@connect('history')
+@inject('$history')
 @observer
 export default class Link extends Component {
   constructor(props) {
@@ -17,16 +17,16 @@ export default class Link extends Component {
     if (props.to) {
       this.location = urlToLocation(props.to);
     } else if (props.pathname || props.query) {
-      const pathname = props.pathname || props.history.pathname;
+      const pathname = props.pathname || props.$history.pathname;
       let query;
       if (props.query === undefined) {
-        query = props.history.query;
+        query = props.$history.query;
       } else if (props.query === null) {
         query = {};
       } else if (typeof props.query === 'function') {
-        query = props.query(props.history.query);
+        query = props.query(props.$history.query);
       } else if (Array.isArray(props.query) || typeof props.query === 'string') {
-        query = pick(props.history.query, props.query);
+        query = pick(props.$history.query, props.query);
       }
       this.location = urlToLocation({
         pathname,
@@ -35,12 +35,12 @@ export default class Link extends Component {
     }
   }
   onClick = (e) => {
-    const { history, onClick } = this.props;
+    const { $history, onClick } = this.props;
     e.preventDefault();
     if (onClick) {
       onClick(e);
     } else {
-      history.push(this.location);
+      $history.push(this.location);
     }
   };
   render() {

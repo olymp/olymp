@@ -225,7 +225,8 @@ module.exports = ({
     );
   }
   if (isProd) {
-    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+    // https://github.com/webpack/webpack/issues/5089
+    // config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
   }
   if (isNode) {
     config.plugins.push(
@@ -392,5 +393,7 @@ module.exports = ({
     ));
     return req(config, options) || config;
   }, config);
-  return isWeb && isProd ? require('./offline')(final) : final;
+
+  return final;
+  // return isWeb && isProd ? require('./offline')(final) : final;
 };

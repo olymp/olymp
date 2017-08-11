@@ -1,10 +1,13 @@
 const { resolve } = require('path');
+const BabiliPlugin = require('babili-webpack-plugin');
+
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
 module.exports = (config, options) => {
-  const { isProd, isDev, isNode, appRoot, isLinked, target, folder } = options;
+  const { isProd, isWeb, isDev, isNode, appRoot, isLinked, target, folder } = options;
 
-  if (isProd) {
+  if (isProd && isWeb) {
+    config.plugins.push(new BabiliPlugin());
     /* config.plugins.push(
       new PrepackWebpackPlugin({
         test: /\.(js|jsx|ts|tsx)$/,
@@ -67,7 +70,6 @@ module.exports = (config, options) => {
     babelOptions.plugins.push('transform-react-pure-class-to-function');
     // babelOptions.plugins.push('transform-react-inline-elements');
     babelOptions.plugins.push('transform-react-remove-prop-types');
-    babelOptions.presets.push('babili');
     // babelOptions.presets.push(['react-optimize']);
   }
 

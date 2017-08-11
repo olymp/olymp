@@ -93,9 +93,7 @@ networkInterface.useAfter([
   );
 }*/
 
-console.log(window.INITIAL_DATA);
 let client,
-  mobx = { $data: get(window, 'INITIAL_DATA.mobx', {}) },
   mountNode,
   container,
   renderer,
@@ -112,7 +110,6 @@ function renderApp(App) {
     renderer,
     store,
     ua,
-    mobx,
     rehydrateState,
     history,
     asyncContext,

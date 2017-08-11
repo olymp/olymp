@@ -26,10 +26,11 @@ import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
 import { createFela, felaReducer } from 'olymp-fela';
-import { Mobx, createSnapshot } from 'olymp-utils/mobx';
-import { createHistory, Router } from 'olymp-router';
+// import { useStaticRendering } from 'mobx';
+import { createHistory } from 'olymp-router';
 import App from '@app';
 
+// useStaticRendering(true);
 const version = +fs.statSync(__filename).mtime;
 console.log('VERSION', version);
 
@@ -206,23 +207,18 @@ app.get('*', (req, res) => {
   // const asyncContext = createAsyncContext();
 
   const context = {};
-  const state = { $data: { auth: { user: req.user } } };
   const reactApp = (
     //  {/*<AsyncComponentProvider asyncContext={asyncContext}>*/
     <ApolloProvider store={store} client={client}>
-      <Mobx store={state}>
-        <Router store={store} history={history}>
-          <Provider renderer={renderer}>
-            <GatewayProvider>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={req.isAmp}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </GatewayProvider>
-          </Provider>
-        </Router>
-      </Mobx>
+      <Provider renderer={renderer}>
+        <GatewayProvider>
+          <UAProvider ua={ua}>
+            <AmpProvider amp={req.isAmp}>
+              <App history={history} />
+            </AmpProvider>
+          </UAProvider>
+        </GatewayProvider>
+      </Provider>
     </ApolloProvider>
     //   {/*</AsyncComponentProvider>*/}
   );
@@ -241,7 +237,7 @@ app.get('*', (req, res) => {
         scripts,
         styles,
         cssMarkup,
-        initialState: { apollo: client.getInitialState(), mobx: { auth: { user: req.user } } },
+        initialState: { apollo: client.getInitialState() },
         // asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
       });

@@ -33,6 +33,9 @@ const babelOptions = {
   plugins: [
     'syntax-dynamic-import',
     'transform-object-rest-spread',
+    'transform-es2015-classes',
+    'syntax-dynamic-import',
+    'transform-object-rest-spread',
     // 'transform-es2015-destructuring',
     'transform-decorators-legacy',
     'transform-class-properties',

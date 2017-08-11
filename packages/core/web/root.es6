@@ -1,11 +1,9 @@
 import React from 'react';
 import { AmpProvider, UAProvider } from 'olymp-utils';
-import { Router } from 'olymp-router';
 import { ApolloProvider } from 'react-apollo';
 import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import { AppContainer } from 'react-hot-loader';
-import { Mobx } from 'olymp-utils/mobx';
 import App from '@app';
 
 function getNextMountNode() {
@@ -20,21 +18,17 @@ function getNextMountNode() {
   return nextNode;
 }
 
-export default ({ client, renderer, store, ua, history, mobx }) =>
+export default ({ client, renderer, store, ua, history }) =>
   (<AppContainer>
     <ApolloProvider store={store} client={client}>
-      <Mobx store={mobx}>
-        <Router history={history}>
-          <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
-            <GatewayProvider>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={false}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </GatewayProvider>
-          </FelaProvider>
-        </Router>
-      </Mobx>
+      <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
+        <GatewayProvider>
+          <UAProvider ua={ua}>
+            <AmpProvider amp={false}>
+              <App history={history} />
+            </AmpProvider>
+          </UAProvider>
+        </GatewayProvider>
+      </FelaProvider>
     </ApolloProvider>
   </AppContainer>);

@@ -13,7 +13,7 @@ export default class History {
     STRING: Symbol('STRING'),
   };
 
-  constructor(stores, { history }) {
+  constructor({ history }) {
     this.history = history;
     let handler = null;
     this.atom = new Atom(
@@ -40,7 +40,7 @@ export default class History {
 
   history;
   @observable _href = '';
-  @observable _pathname = '';
+  @observable _pathname = '/';
   @observable _query = {};
   @observable _location = {};
   @observable _action;
@@ -102,6 +102,7 @@ export default class History {
     }
     return this.query[key];
   };
+  block = message => this.history.block(message);
   set = (key, value, replace) => {
     const method = replace ? 'replace' : 'push';
     this[method]({ pathname: this.pathname, query: { ...this.query, [key]: value } });
