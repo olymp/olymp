@@ -13,7 +13,6 @@ export default getTheme => (WrappedComponent) => {
       const newTheme = typeof getTheme === 'function' ? getTheme(props) : getTheme;
       if (newTheme !== this.oldTheme) {
         this.oldTheme = newTheme;
-        console.log('123');
         this.themeKey = $theme.add(newTheme || {}, this.themeKey);
       }
     };
