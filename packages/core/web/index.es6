@@ -3,9 +3,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import { createFela, felaReducer } from 'olymp-fela';
+import { createFela } from 'olymp-fela';
 import { createHistory } from 'olymp-router';
-import { get } from 'lodash';
 import App from './root';
 // import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
@@ -117,7 +116,6 @@ function renderApp(App) {
   render(<App {...props} />, container);
   // asyncBootstrapper(app).then(() => render(app, container));
 }
-
 // Get the DOM Element that will host our React application.
 container = document.getElementById('app');
 mountNode = document.getElementById('css-markup');
@@ -135,7 +133,6 @@ client = new ApolloClient({
 store = createStore(
   combineReducers({
     apollo: client.reducer(),
-    fela: felaReducer,
   }),
   window.INITIAL_DATA || {},
   compose(applyMiddleware(client.middleware())),

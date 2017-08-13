@@ -30,8 +30,6 @@ export default class AuthStore {
       autorun(() => {
         if (this.user && this.user.token) {
           localStorage.setItem('token', this.user.token);
-        } else {
-          localStorage.removeItem('token');
         }
       });
     }
@@ -49,11 +47,15 @@ export default class AuthStore {
         `,
       })
       .then(({ data, errors }) => {
+        this.verifying = false;
         if (errors) {
           throw errors[0];
         }
-        this.verifying = false;
-        this.user = data.user;
+        if (data.user) {
+          this.user = data.user;
+        } else {
+          this.user = null;
+        }
         return data.user;
       });
   invitation = (invitation, id) =>

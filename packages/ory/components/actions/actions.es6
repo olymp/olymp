@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { createComponent } from 'react-fela';
+import { createComponent } from 'olymp-fela';
 import Provider from '../provider';
 import ToggleEdit from './toggle-edit';
 import ToggleInsert from './toggle-insert';
@@ -13,7 +13,7 @@ const Action = createComponent(
     marginTop: theme.space2,
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default createComponent(
@@ -26,7 +26,7 @@ export default createComponent(
     transition: 'all 200ms ease',
   }),
   ({ className, ...p }) =>
-    <Provider {...p}>
+    (<Provider {...p}>
       <div className={className}>
         <Action>
           <ToggleEdit />
@@ -48,6 +48,6 @@ export default createComponent(
           <TogglePreview />
         </Action>
       </div>
-    </Provider>,
-  p => Object.keys(p)
+    </Provider>),
+  p => Object.keys(p),
 );

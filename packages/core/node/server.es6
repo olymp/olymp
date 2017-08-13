@@ -25,7 +25,7 @@ import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
-import { createFela, felaReducer } from 'olymp-fela';
+import { createFela } from 'olymp-fela';
 // import { useStaticRendering } from 'mobx';
 import { createHistory } from 'olymp-router';
 import App from '@app';
@@ -198,7 +198,6 @@ app.get('*', (req, res) => {
   const store = createStore(
     combineReducers({
       apollo: client.reducer(),
-      fela: felaReducer,
     }),
     {},
     compose(applyMiddleware(client.middleware())),

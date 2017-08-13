@@ -1,9 +1,9 @@
 import React, { Children } from 'react';
-import PropTypes from 'prop-types';
-import { createComponent } from 'react-fela';
+import { createComponent } from 'olymp-fela';
 import { Button as AntButton, Modal as AntModal } from 'antd';
 import Portal from 'react-portal';
 import cn from 'classnames';
+import { inject, observer } from 'mobx-react';
 import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
@@ -14,103 +14,107 @@ ReactModal2.getApplicationElement = () => document.getElementById('app');
 const ReactModal = ({ className, ...props }) =>
   <ReactModal2 backdropClassName={className} {...props} />;
 
-export const Modal = (
-  {
-    isOpen,
-    showLogo,
-    leftButtons,
-    rightButtons,
-    className,
-    subtitle,
-    onClose,
-    onCancel,
-    okText,
-    cancelText,
-    onOk,
-    title,
-    loading,
-    ...props
-  },
-  { theme }
-) => {
-  let copyright = null;
-  let links = null;
-  let footer = null;
-  const children = Children.toArray(props.children).filter((child) => {
-    if (child.type && child.type === component.Copyright) {
-      copyright = child;
-      return false;
-    } else if (child.type && child.type === component.Links) {
-      links = child;
-      return false;
-    } else if (child.type && child.type === component.Footer) {
-      footer = child;
-      return false;
-    }
-    return true;
-  });
-  return !isOpen
-    ? null
-    : <Portal isOpened>
-      <ReactModal
-        onClose={onCancel || onClose}
-        closeOnEsc
-        closeOnBackdropClick
-        className={cn('ant-modal-wrap', className)}
-        modalClassName="ant-modal"
-      >
-        <AntModal visible={false} />
-        {showLogo &&
-            theme.logo &&
-            <div className="logo">
-              {typeof theme.logo === 'string'
-                ? <img src={theme.logo} />
-                : typeof theme.logo === 'function' ? theme.logo() : theme.logo}
-              <h3>
-                {theme.logoTitle}
-              </h3>
-            </div>}
-        <Spin
-          spinning={!!loading}
-          tip={typeof loading === 'string' ? loading : 'Lädt ...'}
-        >
-          <div className="ant-modal-content">
-            <div className="ant-modal-header">
-              {leftButtons &&
+export const Modal = inject('$theme')(
+  observer(
+    ({
+      isOpen,
+      showLogo,
+      leftButtons,
+      rightButtons,
+      className,
+      subtitle,
+      onClose,
+      onCancel,
+      okText,
+      cancelText,
+      onOk,
+      title,
+      loading,
+      $theme,
+      ...props
+    }) => {
+      const theme = $theme.theme;
+      let copyright = null;
+      let links = null;
+      let footer = null;
+      const children = Children.toArray(props.children).filter((child) => {
+        if (child.type && child.type === component.Copyright) {
+          copyright = child;
+          return false;
+        } else if (child.type && child.type === component.Links) {
+          links = child;
+          return false;
+        } else if (child.type && child.type === component.Footer) {
+          footer = child;
+          return false;
+        }
+        return true;
+      });
+
+      let logo;
+      if (showLogo && theme.logo) {
+        logo = (
+          <div className="logo">
+            {typeof theme.logo === 'string'
+              ? <img src={theme.logo} />
+              : typeof theme.logo === 'function' ? theme.logo() : theme.logo}
+            <h3>
+              {theme.logoTitle}
+            </h3>
+          </div>
+        );
+      }
+      return !isOpen
+        ? null
+        : <Portal isOpened>
+          <ReactModal
+            onClose={onCancel || onClose}
+            closeOnEsc
+            closeOnBackdropClick
+            className={cn('ant-modal-wrap', className)}
+            modalClassName="ant-modal"
+          >
+            <AntModal visible={false} />
+            {logo}
+            <Spin spinning={!!loading} tip={typeof loading === 'string' ? loading : 'Lädt ...'}>
+              <div className="ant-modal-content">
+                <div className="ant-modal-header">
+                  {leftButtons &&
                   <TitleButtons left>
                     {leftButtons}
                   </TitleButtons>}
-              {rightButtons &&
+                  {rightButtons &&
                   <TitleButtons right>
                     {rightButtons}
                   </TitleButtons>}
-              <div className="ant-modal-title">
-                {title}
-              </div>
-              {subtitle &&
+                  <div className="ant-modal-title">
+                    {title}
+                  </div>
+                  {subtitle &&
                   <div className="ant-modal-subtitle">
                     {subtitle}
                   </div>}
-            </div>
-            {Children.toArray(children).length > 0 &&
+                </div>
+                {Children.toArray(children).length > 0 &&
                 <div className="ant-modal-body">
                   {children}
                 </div>}
-            {footer}
-          </div>
-        </Spin>
-        {links &&
+                {footer}
+              </div>
+            </Spin>
+            {links &&
             <component.Links>
               {links}
             </component.Links>}
-        {copyright &&
+            {copyright &&
             <component.Copyright>
               {copyright}
             </component.Copyright>}
-      </ReactModal>
-    </Portal>;
-};
-Modal.contextTypes = { theme: PropTypes.object };
+          </ReactModal>
+        </Portal>;
+    },
+  ),
+);
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
@@ -121,11 +125,7 @@ const component = createComponent(
         .spin(-6)
         .setAlpha(bottomTransparency || 1)
         .toRgbString()}, ${theme.colorEnd ||
-      tinycolor(theme.color)
-        .lighten(6)
-        .spin(12)
-        .setAlpha(topTransparency || 1)
-        .toRgbString()})`,
+      tinycolor(theme.color).lighten(6).spin(12).setAlpha(topTransparency || 1).toRgbString()})`,
     hasFlex: {
       display: 'flex',
     },
@@ -192,7 +192,7 @@ const component = createComponent(
     },
   }),
   Modal,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 // Copyright
@@ -211,7 +211,7 @@ component.Copyright = createComponent(
       },
     },
   }),
-  'div'
+  'div',
 );
 
 component.Footer = ({ children, className }) =>
@@ -244,7 +244,7 @@ component.Links = createComponent(
       },
     },
   }),
-  'div'
+  'div',
 );
 
 const TitleButtons = createComponent(
@@ -261,7 +261,7 @@ const TitleButtons = createComponent(
     top: 14,
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p)
+  ({ left, right, ...p }) => Object.keys(p),
 );
 
 export default component;

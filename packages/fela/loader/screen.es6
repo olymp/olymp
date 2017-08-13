@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { createComponent } from 'react-fela';
+import createComponent from '../utils/create-component';
 import Portal from 'react-portal-minimal';
+import { get } from 'lodash';
 import tinycolor from 'tinycolor2';
+import { inject, observer } from 'mobx-react';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-const Modal = ({ className, logo, show }, { theme }) =>
+const Modal = ({ className, logo, show, $theme }) =>
   (<Portal isOpened>
     <CSSTransitionGroup
       transitionName="example"
@@ -15,12 +16,11 @@ const Modal = ({ className, logo, show }, { theme }) =>
       {show &&
         <div className={className} key="habba">
           <div>
-            {logo || theme.logo()}
+            {logo || get($theme, 'theme.logo', () => null)()}
           </div>
         </div>}
     </CSSTransitionGroup>
   </Portal>);
-Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
@@ -32,11 +32,8 @@ const component = createComponent(
         .spin(-6)
         .setAlpha(bottomTransparency || 1)
         .toRgbString()}, ${theme.colorEnd ||
-      tinycolor(theme.color)
-        .lighten(6)
-        .spin(12)
-        .setAlpha(topTransparency || 1)
-        .toRgbString()})`,
+      tinycolor(theme.color).lighten(6).spin(12).setAlpha(topTransparency || 1).toRgbString()})`,
+    transition: 'background-color .4s ease',
     position: 'fixed',
     top: 0,
     left: 0,
@@ -67,8 +64,8 @@ const component = createComponent(
       },
     },
   }),
-  Modal,
-  p => Object.keys(p)
+  inject('$theme')(observer(Modal)),
+  p => Object.keys(p),
 );
 
 export default component;

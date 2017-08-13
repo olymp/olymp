@@ -72,6 +72,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
         .readUser(key)
         .then((item) => {
           const { id } = item;
+          console.log(item);
           if (!id) {
             throw new Error('Error.');
           }
