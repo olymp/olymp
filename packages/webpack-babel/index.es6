@@ -57,7 +57,6 @@ module.exports = (config, options) => {
         'date-fns': {
           transform: 'date-fns/${member}',
           preventFullImport: true,
-          snakeCase: true,
         },
         'olymp-icons': {
           transform: 'olymp-icons/fa5/lib/${member}',
