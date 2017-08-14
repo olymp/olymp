@@ -5,7 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "date-fns": "^1.28.5",
+    "date-fns": "2.0.0-alpha.1",
     "olymp-utils": "^17.0.10"
   }
 }
