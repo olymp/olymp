@@ -1,5 +1,5 @@
 {
-  "version": "17.0.10",
+  "version": "17.0.11",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -16,7 +16,7 @@
     "olymp-google": "^17.0.10",
     "olymp-graphql": "^17.0.10",
     "olymp-icons": "^16.0.50",
-    "olymp-locale": "^17.0.10",
+    "olymp-locale": "^17.0.11",
     "olymp-mail": "^16.0.50",
     "olymp-ory": "^17.0.10",
     "olymp-pages": "^17.0.10",
