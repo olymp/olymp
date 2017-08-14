@@ -1,7 +1,6 @@
 import { action, autorunAsync, observable, Atom } from 'mobx';
 import { stringifyQuery, parseQuery } from '../utils';
 import { toNumber, omit } from 'lodash';
-import { parse } from 'date-fns';
 import shallowEqual from 'olymp-utils/shallow-equal';
 
 const func = (a, b) => `${a}` != `${b}`;
@@ -96,7 +95,11 @@ export default class History {
     if (typeOrDefault === this.types.NUMBER) {
       return this.query[key] ? toNumber(this.query[key]) : defaultValue;
     } else if (typeOrDefault === this.types.DATE) {
-      return this.query[key] ? parse(parseInt(this.query[key], 10)) : defaultValue;
+      const int = parseInt(this.query[key], 10);
+      if (!isNaN(int)) {
+        return this.query[key] ? new Date() : defaultValue;
+      }
+      return defaultValue;
     } else if (typeOrDefault === this.types.STRING) {
       return this.query[key] ? `${this.query[key]}` : defaultValue;
     }
