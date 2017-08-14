@@ -1,13 +1,24 @@
 const { resolve } = require('path');
-const BabiliPlugin = require('babili-webpack-plugin');
+// const BabiliPlugin = require('babili-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
 module.exports = (config, options) => {
-  const { isProd, isWeb, isDev, isNode, appRoot, isLinked, target, folder, minify } = options;
+  const { isProd, isWeb, isDev, isNode, appRoot, target, folder, minify } = options;
 
   if (isProd && isWeb && minify !== false) {
-    config.plugins.push(new BabiliPlugin());
+    // config.plugins.push(new BabiliPlugin());
+    config.plugins.push(
+      new UglifyJSPlugin({
+        // sourceMap: true,
+        parallel: {
+          cache: true,
+          workers: 2,
+        },
+        uglifyOptions: { compress: false, mangle: true },
+      }),
+    );
     /* config.plugins.push(
       new PrepackWebpackPlugin({
         test: /\.(js|jsx|ts|tsx)$/,
