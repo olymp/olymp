@@ -4,9 +4,9 @@ const BabiliPlugin = require('babili-webpack-plugin');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
 module.exports = (config, options) => {
-  const { isProd, isWeb, isDev, isNode, appRoot, isLinked, target, folder } = options;
+  const { isProd, isWeb, isDev, isNode, appRoot, isLinked, target, folder, minify } = options;
 
-  if (isProd && isWeb) {
+  if (isProd && isWeb && minify !== false) {
     config.plugins.push(new BabiliPlugin());
     /* config.plugins.push(
       new PrepackWebpackPlugin({

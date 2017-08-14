@@ -32,6 +32,7 @@ module.exports = ({
   devPort,
   ssr,
   serverless,
+  minify = process.env.MINIFY !== false,
   plugins = [],
   sharedEnv = {},
   ...rest
@@ -381,6 +382,7 @@ module.exports = ({
     isServerless,
     isSSR,
     appRoot,
+    minify,
     nodeModules,
     isLinked,
     ...rest,
