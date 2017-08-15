@@ -1,7 +1,7 @@
-import { action, autorunAsync, observable, Atom } from 'mobx';
-import { stringifyQuery, parseQuery } from '../utils';
+import { action, computed, autorunAsync, observable, Atom } from 'mobx';
 import { toNumber, omit } from 'lodash';
 import shallowEqual from 'olymp-utils/shallow-equal';
+import { stringifyQuery, parseQuery } from '../utils';
 
 const func = (a, b) => `${a}` != `${b}`;
 export default class History {
@@ -11,7 +11,6 @@ export default class History {
     DATE: Symbol('DATE'),
     STRING: Symbol('STRING'),
   };
-
   constructor({ history }) {
     this.history = history;
     let handler = null;
@@ -45,16 +44,19 @@ export default class History {
   @observable _action;
   @observable _length;
 
+  @computed
   get location() {
     this.atom.reportObserved();
     return this._location;
   }
 
+  @computed
   get query() {
     this.atom.reportObserved();
     return this._query;
   }
 
+  @computed
   get pathname() {
     this.atom.reportObserved();
     return this._pathname;
@@ -69,7 +71,6 @@ export default class History {
     this.atom.reportObserved();
     return this._length;
   }*/
-
   toggle = (key, arg) => {
     if (arg === true && this.has(key)) {
       return;
@@ -95,9 +96,9 @@ export default class History {
     if (typeOrDefault === this.types.NUMBER) {
       return this.query[key] ? toNumber(this.query[key]) : defaultValue;
     } else if (typeOrDefault === this.types.DATE) {
-      const int = parseInt(this.query[key], 10);
-      if (!isNaN(int)) {
-        return this.query[key] ? new Date() : defaultValue;
+      const int = this.query[key] ? parseInt(this.query[key], 10) : null;
+      if (int && !isNaN(int)) {
+        return new Date(int);
       }
       return defaultValue;
     } else if (typeOrDefault === this.types.STRING) {
@@ -155,7 +156,6 @@ export default class History {
       search: location.query ? stringifyQuery(location.query) : null,
     });
   };
-
   listener = action((l, a) => {
     const { location } = this.history;
     this._pathname = location.pathname;
@@ -165,7 +165,6 @@ export default class History {
       pathname: this._pathname,
       query: this._query,
     };
-    // extendObservable(this._location, this.history.location);
     // this._action = this.history.action;
     // this._length = this.history.length;
   });

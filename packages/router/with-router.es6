@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 
 export default (WrappedComponent) => {
-  const inner = (props, context) => {
+  const inner = (props) => {
     const { $history, ...rest } = props;
     return (
       <WrappedComponent
@@ -10,8 +10,8 @@ export default (WrappedComponent) => {
         $history={$history}
         history={$history}
         router={$history}
-        pathname={$history.location.pathname}
         location={$history.location}
+        pathname={$history.location.pathname}
         query={$history.location.query}
       />
     );

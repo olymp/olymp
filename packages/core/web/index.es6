@@ -142,7 +142,6 @@ store = createStore(
 // asyncContext = createAsyncContext();
 
 renderApp(App);
-
 if (module.hot && typeof module.hot.accept === 'function') {
   // Any changes to our App will cause a hotload re-render.
   // module.hot.accept('./root', () => {
