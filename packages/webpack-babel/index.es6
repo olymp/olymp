@@ -5,9 +5,9 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
 
 module.exports = (config, options) => {
-  const { isProd, isWeb, isDev, isNode, appRoot, target, folder, minify } = options;
+  const { isProd, isWeb, isDev, isNode, appRoot, target, folder } = options;
 
-  if (isProd && isWeb && minify !== false) {
+  if (isProd && isWeb) {
     // config.plugins.push(new BabiliPlugin());
     config.plugins.push(
       new UglifyJSPlugin({
