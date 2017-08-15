@@ -1,5 +1,5 @@
 {
-  "version": "17.0.16",
+  "version": "17.0.17",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -29,8 +29,8 @@
     "jsonfile": "^3.0.1",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^17.0.16",
-    "olymp-router": "^17.0.12",
+    "olymp-fela": "^17.0.17",
+    "olymp-router": "^17.0.17",
     "olymp-utils": "^17.0.10",
     "progress-bar-webpack-plugin": "^1.10.0",
     "prop-types": "^15.5.10",

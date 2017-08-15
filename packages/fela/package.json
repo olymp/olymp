@@ -1,5 +1,5 @@
 {
-  "version": "17.0.16",
+  "version": "17.0.17",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -34,7 +34,7 @@
     "@storybook/addon-info": "^3.1.6",
     "@storybook/addon-knobs": "^3.1.6",
     "@storybook/react": "^3.1.6",
-    "olymp-webpack-babel": "^17.0.16",
+    "olymp-webpack-babel": "^17.0.17",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
