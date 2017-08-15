@@ -177,6 +177,9 @@ export default ({ theme }) => {
     '& .ant-select-selection__rendered': {
       lineHeight: 'initial',
     },
+    '& .ant-select-auto-complete.ant-select .ant-select-selection__rendered': {
+      lineHeight: 'initial',
+    },
     '& .ant-menu-submenu-active': {
       backgroundColor: `${transparent2}`,
     },
