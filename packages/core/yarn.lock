@@ -22,21 +22,21 @@
     "7zip-bin-mac" "^1.0.1"
     "7zip-bin-win" "^2.1.0"
 
-"@types/async@2.0.40", "@types/async@^2.0.31":
+"@types/async@^2.0.31":
   version "2.0.40"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.40.tgz#ac02de68e66c004a61b7cb16df8b1db3a254cca9"
 
-"@types/graphql@0.9.4", "@types/graphql@^0.9.0", "@types/graphql@~0.9.0":
+"@types/graphql@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.10.2.tgz#d7c79acbaa17453b6681c80c34b38fcb10c4c08c"
+
+"@types/graphql@^0.9.0":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.9.4.tgz#cdeb6bcbef9b6c584374b81aa7f48ecf3da404fa"
 
 "@types/isomorphic-fetch@0.0.34":
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/@types/isomorphic-fetch/-/isomorphic-fetch-0.0.34.tgz#3c3483e606c041378438e951464f00e4e60706d6"
-
-"@types/zen-observable@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.5.1.tgz#c0eab942b4d52934f396de0cd8e2e63fc92a3307"
 
 abbrev@1:
   version "1.1.0"
@@ -161,11 +161,11 @@ apollo-client@^1.4.0:
     "@types/graphql" "^0.9.0"
     "@types/isomorphic-fetch" "0.0.34"
 
-apollo-client@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.9.0.tgz#bbc47c5e2bd7df9e6eff022c7759a83d8e2f2eb2"
+apollo-client@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.9.1.tgz#9e6a383605572c755038cf5d7fdac9382bcdc040"
   dependencies:
-    apollo-link-core "^0.2.0"
+    apollo-link-core "^0.5.0"
     graphql "^0.10.0"
     graphql-anywhere "^3.0.1"
     graphql-tag "^2.0.0"
@@ -173,19 +173,15 @@ apollo-client@^1.9.0:
     symbol-observable "^1.0.2"
     whatwg-fetch "^2.0.0"
   optionalDependencies:
-    "@types/async" "2.0.40"
-    "@types/graphql" "0.9.4"
+    "@types/graphql" "0.10.2"
 
-apollo-link-core@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/apollo-link-core/-/apollo-link-core-0.2.0.tgz#8c937bc05adef4e223b831b6368bc531711fb6cf"
+apollo-link-core@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/apollo-link-core/-/apollo-link-core-0.5.0.tgz#dc87da1aaa63b029321ae70938dc26257f5ab8c6"
   dependencies:
     graphql "^0.10.3"
     graphql-tag "^2.4.2"
-    zen-observable-ts "^0.1.0"
-  optionalDependencies:
-    "@types/graphql" "~0.9.0"
-    "@types/zen-observable" "^0.5.1"
+    zen-observable-ts "^0.4.0"
 
 aproba@^1.0.3:
   version "1.1.2"
@@ -260,12 +256,12 @@ asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
 
-asar-integrity@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/asar-integrity/-/asar-integrity-0.1.1.tgz#1a709dd78443707fc260f7ce363d9569983caf76"
+asar-integrity@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/asar-integrity/-/asar-integrity-0.1.2.tgz#461248c63c24b13d4a11a70c378f8f59dba2b4af"
   dependencies:
     bluebird-lst "^1.0.2"
-    fs-extra-p "^4.3.0"
+    fs-extra-p "^4.4.0"
 
 asar@^0.7.2:
   version "0.7.2"
@@ -353,9 +349,9 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-aws-sdk@^2.94.0:
-  version "2.94.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.94.0.tgz#7043de3ef8c24cb6ab4bf235f08d87d84173e174"
+aws-sdk@^2.96.0:
+  version "2.99.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.99.0.tgz#d49583c2506c202adcf390de067e82337e61364a"
   dependencies:
     buffer "4.9.1"
     crypto-browserify "1.0.9"
@@ -502,6 +498,12 @@ block-stream@*:
 bluebird-lst@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/bluebird-lst/-/bluebird-lst-1.0.2.tgz#c7b26176b6c8fa458be703deb0644a28f64a475b"
+  dependencies:
+    bluebird "^3.5.0"
+
+bluebird-lst@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/bluebird-lst/-/bluebird-lst-1.0.3.tgz#cc56c18660eff0a0b86e2c33d1659618f7005158"
   dependencies:
     bluebird "^3.5.0"
 
@@ -1173,9 +1175,15 @@ debug@2.6.7:
   dependencies:
     ms "2.0.0"
 
-debug@2.6.8, debug@^2.1.3, debug@^2.2.0, debug@^2.6.0, debug@^2.6.1, debug@^2.6.6, debug@^2.6.8:
+debug@2.6.8, debug@^2.1.3, debug@^2.2.0, debug@^2.6.0, debug@^2.6.6, debug@^2.6.8:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+  dependencies:
+    ms "2.0.0"
+
+debug@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.0.tgz#1d2feae53349047b08b264ec41906ba17a8516e4"
   dependencies:
     ms "2.0.0"
 
@@ -1209,9 +1217,9 @@ deep-extend@^0.4.0, deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
 
-deepmerge@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.0.tgz#00bc5b88fd23b8130f9f5049071c3420e07a5465"
+deepmerge@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.1.tgz#c053bf06fd7276f1994f70c09a0760cb61a56237"
 
 define-properties@^1.1.2:
   version "1.1.2"
@@ -1383,6 +1391,10 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
+dotenv-expand@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-4.0.1.tgz#68fddc1561814e0a10964111057ff138ced7d7a8"
+
 dotenv@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
@@ -1421,51 +1433,23 @@ ejs@^2.3.4:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.6.tgz#479636bfa3fe3b1debd52087f0acb204b4f19c88"
 
-electron-builder-http@19.19.0, electron-builder-http@~19.19.0:
-  version "19.19.0"
-  resolved "https://registry.yarnpkg.com/electron-builder-http/-/electron-builder-http-19.19.0.tgz#20f908fcd1bbe202fd44a9623abd9e4d7bc98825"
+electron-builder-http@19.21.0, electron-builder-http@~19.21.0:
+  version "19.21.0"
+  resolved "https://registry.yarnpkg.com/electron-builder-http/-/electron-builder-http-19.21.0.tgz#3e812f030fddb5eaebcc26303f7bca1a34e1da76"
   dependencies:
-    bluebird-lst "^1.0.2"
-    debug "^2.6.8"
+    bluebird-lst "^1.0.3"
+    debug "^3.0.0"
     fs-extra-p "^4.4.0"
 
-electron-builder-http@~19.20.0:
-  version "19.20.0"
-  resolved "https://registry.yarnpkg.com/electron-builder-http/-/electron-builder-http-19.20.0.tgz#e473dd4c16e9cd70653aaa93a23a53179e0dba8c"
-  dependencies:
-    bluebird-lst "^1.0.2"
-    debug "^2.6.8"
-    fs-extra-p "^4.4.0"
-
-electron-builder-util@19.19.0, electron-builder-util@~19.19.0:
-  version "19.19.0"
-  resolved "https://registry.yarnpkg.com/electron-builder-util/-/electron-builder-util-19.19.0.tgz#96082aff13bfda8f40a62739f10718c9c42f6d4c"
+electron-builder-util@19.22.0:
+  version "19.22.0"
+  resolved "https://registry.yarnpkg.com/electron-builder-util/-/electron-builder-util-19.22.0.tgz#1da670a504cfa4e1cbd82b6aa62f9fb20c74820a"
   dependencies:
     "7zip-bin" "^2.1.0"
-    bluebird-lst "^1.0.2"
-    chalk "^2.0.1"
-    debug "^2.6.8"
-    electron-builder-http "~19.19.0"
-    fcopy-pre-bundled "0.3.4"
-    fs-extra-p "^4.4.0"
-    ini "^1.3.4"
-    is-ci "^1.0.10"
-    node-emoji "^1.8.1"
-    semver "^5.4.1"
-    source-map-support "^0.4.15"
-    stat-mode "^0.2.2"
-    tunnel-agent "^0.6.0"
-
-electron-builder-util@~19.20.0:
-  version "19.20.0"
-  resolved "https://registry.yarnpkg.com/electron-builder-util/-/electron-builder-util-19.20.0.tgz#dcda50a2a1bb6632cd52e72b88907ca3a95c5e4a"
-  dependencies:
-    "7zip-bin" "^2.1.0"
-    async-exit-hook "^2.0.1"
-    bluebird-lst "^1.0.2"
+    bluebird-lst "^1.0.3"
     chalk "^2.1.0"
-    debug "^2.6.8"
-    electron-builder-http "~19.20.0"
+    debug "^3.0.0"
+    electron-builder-http "~19.21.0"
     fcopy-pre-bundled "0.3.4"
     fs-extra-p "^4.4.0"
     ini "^1.3.4"
@@ -1475,38 +1459,64 @@ electron-builder-util@~19.20.0:
     semver "^5.4.1"
     source-map-support "^0.4.15"
     stat-mode "^0.2.2"
+    temp-file "^1.0.1"
     tunnel-agent "^0.6.0"
 
-electron-builder@^19.19.1:
-  version "19.19.1"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.19.1.tgz#213ccda0afc1d1c75ba0fc1aa355ea7023d35769"
+electron-builder-util@~19.21.0:
+  version "19.21.0"
+  resolved "https://registry.yarnpkg.com/electron-builder-util/-/electron-builder-util-19.21.0.tgz#d812100cf2df94734231b25d200e133185cee639"
+  dependencies:
+    "7zip-bin" "^2.1.0"
+    bluebird-lst "^1.0.3"
+    chalk "^2.1.0"
+    debug "^3.0.0"
+    electron-builder-http "~19.21.0"
+    fcopy-pre-bundled "0.3.4"
+    fs-extra-p "^4.4.0"
+    ini "^1.3.4"
+    is-ci "^1.0.10"
+    lazy-val "^1.0.2"
+    node-emoji "^1.8.1"
+    semver "^5.4.1"
+    source-map-support "^0.4.15"
+    stat-mode "^0.2.2"
+    temp-file "^1.0.1"
+    tunnel-agent "^0.6.0"
+
+electron-builder@^19.22.1:
+  version "19.22.1"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-19.22.1.tgz#cd5d1fd3216b52e0621c4eddf557d9b7c28060a2"
   dependencies:
     "7zip-bin" "^2.1.0"
     ajv "^5.2.2"
     ajv-keywords "^2.1.0"
-    asar-integrity "0.1.1"
-    bluebird-lst "^1.0.2"
-    chalk "^2.0.1"
+    asar-integrity "0.1.2"
+    bluebird-lst "^1.0.3"
+    chalk "^2.1.0"
     chromium-pickle-js "^0.2.0"
     cuint "^0.2.2"
-    debug "^2.6.8"
-    electron-builder-http "19.19.0"
-    electron-builder-util "19.19.0"
+    debug "^3.0.0"
+    dotenv "^4.0.0"
+    dotenv-expand "^4.0.1"
+    electron-builder-http "19.21.0"
+    electron-builder-util "19.22.0"
     electron-download-tf "4.3.1"
-    electron-osx-sign "0.4.6"
-    electron-publish "19.19.1"
+    electron-osx-sign "0.4.7"
+    electron-publish "19.21.0"
     fs-extra-p "^4.4.0"
     hosted-git-info "^2.5.0"
     is-ci "^1.0.10"
     isbinaryfile "^3.0.2"
     js-yaml "^3.9.1"
+    lazy-val "^1.0.2"
     minimatch "^3.0.4"
     normalize-package-data "^2.4.0"
     parse-color "^1.0.0"
     plist "^2.1.0"
-    read-config-file "^0.1.3"
+    read-config-file "^1.0.5"
     sanitize-filename "^1.6.1"
     semver "^5.4.1"
+    temp-file "^1.0.1"
     update-notifier "^2.2.0"
     uuid-1345 "^0.99.6"
     yargs "^8.0.2"
@@ -1553,48 +1563,36 @@ electron-log@^2.2.7:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-2.2.7.tgz#8da0d2586b53b175392ae6b91dc510a67c195341"
 
-electron-osx-sign@0.4.6:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.6.tgz#2398e2d7cab5c1d8c3eeabb1cd490376528ec39a"
+electron-osx-sign@0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.7.tgz#1d75647a82748eacd48bea70616ec83ffade3ee5"
   dependencies:
-    bluebird "^3.4.7"
+    bluebird "^3.5.0"
     compare-version "^0.1.2"
-    debug "^2.6.1"
+    debug "^2.6.8"
     isbinaryfile "^3.0.2"
     minimist "^1.2.0"
-    plist "^2.0.1"
-    tempfile "^1.1.1"
+    plist "^2.1.0"
 
-electron-publish@19.19.1:
-  version "19.19.1"
-  resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-19.19.1.tgz#ae53ccf9a90f77184c2add3d74b8b60850378b76"
+electron-publish@19.21.0, electron-publish@~19.21.0:
+  version "19.21.0"
+  resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-19.21.0.tgz#1368d01fd325f6e1b4b25e17098e5e77ed4d71ad"
   dependencies:
-    bluebird-lst "^1.0.2"
-    chalk "^2.0.1"
-    electron-builder-http "~19.19.0"
-    electron-builder-util "~19.19.0"
-    fs-extra-p "^4.4.0"
-    mime "^1.3.6"
-
-electron-publish@~19.20.0:
-  version "19.20.0"
-  resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-19.20.0.tgz#9878820dd339e4f2f06ffc12f6df234761671735"
-  dependencies:
-    bluebird-lst "^1.0.2"
+    bluebird-lst "^1.0.3"
     chalk "^2.1.0"
-    electron-builder-http "~19.20.0"
-    electron-builder-util "~19.20.0"
+    electron-builder-http "~19.21.0"
+    electron-builder-util "~19.21.0"
     fs-extra-p "^4.4.0"
     mime "^1.3.6"
 
-electron-publisher-s3@^19.20.0:
-  version "19.20.0"
-  resolved "https://registry.yarnpkg.com/electron-publisher-s3/-/electron-publisher-s3-19.20.0.tgz#8f508864ba9a20e230d04c20c7b051b614fa7ce8"
+electron-publisher-s3@^19.21.0:
+  version "19.21.0"
+  resolved "https://registry.yarnpkg.com/electron-publisher-s3/-/electron-publisher-s3-19.21.0.tgz#5601e10002846cd24cd92fdbe1ee1a701dd910d8"
   dependencies:
-    aws-sdk "^2.94.0"
-    bluebird-lst "^1.0.2"
-    electron-builder-util "~19.20.0"
-    electron-publish "~19.20.0"
+    aws-sdk "^2.96.0"
+    bluebird-lst "^1.0.3"
+    electron-builder-util "~19.21.0"
+    electron-publish "~19.21.0"
     fs-extra-p "^4.4.0"
     mime "^1.3.6"
 
@@ -1607,13 +1605,13 @@ electron-publisher@^0.1.6:
     temp "^0.8.3"
     xmlbuilder "^4.2.0"
 
-electron-updater@^2.8.5:
-  version "2.8.5"
-  resolved "https://registry.yarnpkg.com/electron-updater/-/electron-updater-2.8.5.tgz#daf2f44441ebd423f34dd585f8d628dc6ee70f4e"
+electron-updater@^2.8.7:
+  version "2.8.7"
+  resolved "https://registry.yarnpkg.com/electron-updater/-/electron-updater-2.8.7.tgz#139c34382bea26701c6ef82db457268b08f071a1"
   dependencies:
-    bluebird-lst "^1.0.2"
-    debug "^2.6.8"
-    electron-builder-http "~19.20.0"
+    bluebird-lst "^1.0.3"
+    debug "^3.0.0"
+    electron-builder-http "~19.21.0"
     electron-is-dev "^0.3.0"
     fs-extra-p "^4.4.0"
     js-yaml "^3.9.1"
@@ -2277,7 +2275,7 @@ fresh@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.0.tgz#f474ca5e6a9246d6fd8e0953cfa9b9c805afa78e"
 
-fs-extra-p@^4.3.0, fs-extra-p@^4.4.0:
+fs-extra-p@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/fs-extra-p/-/fs-extra-p-4.4.0.tgz#729c601c4f4c701328921adc7cfe9b236f100660"
   dependencies:
@@ -3153,13 +3151,6 @@ js-tokens@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.9.0.tgz#4ffbbf25c2ac963b8299dc74da7e3740de1c18ce"
-  dependencies:
-    argparse "^1.0.7"
-    esprima "^4.0.0"
-
 js-yaml@^3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.9.1.tgz#08775cebdfdd359209f0d2acd383c8f86a6904a0"
@@ -3928,9 +3919,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.0.6:
-  version "17.0.6"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.6.tgz#08775baa00327b08f4b77eacc0be98820da9a050"
+olymp-fela@^17.0.19:
+  version "17.0.19"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.19.tgz#a327667e21e8ac42380243327b84b2a96b0418e4"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.0.2"
@@ -3944,7 +3935,7 @@ olymp-fela@^17.0.6:
     fela-plugin-prefixer "^5.0.3"
     fela-plugin-remove-undefined "^5.0.2"
     fela-plugin-unit "^5.0.2"
-    olymp-utils "^17.0.0"
+    olymp-utils "^17.0.18"
     react-fela "^5.1.1"
     react-frame-component "^1.1.1"
     react-portal "^3.1.0"
@@ -3953,19 +3944,19 @@ olymp-fela@^17.0.6:
     react-transition-group "^2.2.0"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.0.6:
-  version "17.0.6"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.6.tgz#503634429adc8fc4461b62872f05190d1c8f4a1d"
+olymp-router@^17.0.18:
+  version "17.0.18"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.18.tgz#79ca61d86918e915dbaae559975197c8f6c40712"
   dependencies:
     history "^4.6.3"
-    olymp-utils "^17.0.0"
+    olymp-utils "^17.0.18"
     react-redux "^5.0.5"
     redux "^3.7.2"
     route-parser "^0.0.5"
 
-olymp-utils@^17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.0.tgz#d0bdfafb6192edfa75481e891effa61aea2d9938"
+olymp-utils@^17.0.18:
+  version "17.0.18"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.18.tgz#a3b72afef654ccc794abb53b49480bd5cdc06101"
   dependencies:
     graphql-tag "^2.4.2"
     lodash "^4.17.4"
@@ -4202,7 +4193,7 @@ platform@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/platform/-/platform-1.3.4.tgz#6f0fb17edaaa48f21442b3a975c063130f1c3ebd"
 
-plist@^2.0.1, plist@^2.1.0:
+plist@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/plist/-/plist-2.1.0.tgz#57ccdb7a0821df21831217a3cad54e3e146a1025"
   dependencies:
@@ -4402,18 +4393,14 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7, rc@^1.2.1:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-apollo@^1.4.11:
-  version "1.4.11"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.11.tgz#afa0605ce8d52cf8b04bca416d709ff44ce212fc"
+react-apollo@^1.4.14:
+  version "1.4.14"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.14.tgz#86af913887e447710e4e5d85ca6277b35f1a3b82"
   dependencies:
     apollo-client "^1.4.0"
-    graphql-anywhere "^3.0.0"
     graphql-tag "^2.0.0"
     hoist-non-react-statics "^2.2.0"
     invariant "^2.2.1"
-    lodash.flatten "^4.2.0"
-    lodash.isequal "^4.1.1"
-    lodash.isobject "^3.0.2"
     lodash.pick "^4.4.0"
     object-assign "^4.0.1"
     prop-types "^15.5.8"
@@ -4448,9 +4435,9 @@ react-deep-force-update@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.0.1.tgz#4f7f6c12c3e7de42f345992a3c518236fa1ecad3"
 
-react-dev-utils@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-3.1.0.tgz#445c61e9eb0628532b33b02249d9763546d1acce"
+react-dev-utils@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-3.1.1.tgz#09ae7209a81384248db56547e718e65bd3b20eb5"
   dependencies:
     address "1.0.2"
     anser "1.4.1"
@@ -4618,14 +4605,15 @@ react@^0.14.0:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-read-config-file@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/read-config-file/-/read-config-file-0.1.3.tgz#10f72ad95159864c78def8c749b226f80c998b61"
+read-config-file@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/read-config-file/-/read-config-file-1.0.5.tgz#9992d2a4d24a993518e7eb6f3c30c0562264c367"
   dependencies:
-    bluebird-lst "^1.0.2"
+    bluebird-lst "^1.0.3"
     fs-extra-p "^4.4.0"
-    js-yaml "^3.9.0"
+    js-yaml "^3.9.1"
     json5 "^0.5.1"
+    lazy-val "^1.0.2"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -5378,19 +5366,21 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
+temp-file@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/temp-file/-/temp-file-1.0.2.tgz#790ac9093b9d12a84f277f42f6314e0cf579f1c7"
+  dependencies:
+    async-exit-hook "^2.0.1"
+    bluebird-lst "^1.0.3"
+    fs-extra-p "^4.4.0"
+    lazy-val "^1.0.2"
+
 temp@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/temp/-/temp-0.8.3.tgz#e0c6bc4d26b903124410e4fed81103014dfc1f59"
   dependencies:
     os-tmpdir "^1.0.0"
     rimraf "~2.2.6"
-
-tempfile@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/tempfile/-/tempfile-1.1.1.tgz#5bcc4eaecc4ab2c707d8bc11d99ccc9a2cb287f2"
-  dependencies:
-    os-tmpdir "^1.0.0"
-    uuid "^2.0.1"
 
 term-size@^1.2.0:
   version "1.2.0"
@@ -5651,7 +5641,7 @@ uuid@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
-uuid@^2.0.1, uuid@^2.0.2:
+uuid@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
@@ -5769,9 +5759,9 @@ webpack-visualizer-plugin@^0.1.11:
     react "^0.14.0"
     react-dom "^0.14.0"
 
-webpack@3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.5.1.tgz#b749ee3d2b5a118dad53e8e41585b3f71e75499a"
+webpack@^3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.5.4.tgz#5583eb263ed27b78b5bd17bfdfb0eb1b1cd1bf81"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
@@ -5987,6 +5977,6 @@ yargs@~3.10.0:
     decamelize "^1.0.0"
     window-size "0.1.0"
 
-zen-observable-ts@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.1.0.tgz#3b06d1520daa7f3a02980c5288baa2f052c35a62"
+zen-observable-ts@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.4.0.tgz#a74bc9fe59747948a577bd513d438e70fcfae7e2"

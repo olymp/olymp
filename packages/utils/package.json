@@ -4,7 +4,8 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "graphql-tag": "^2.4.2",
     "lodash": "^4.17.4",
     "react-apollo": "^1.4.9",
