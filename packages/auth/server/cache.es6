@@ -16,7 +16,6 @@ export default auth => (req, res, next) => {
         req.session.token = user.token;
       }
       req.user = user;
-      console.log('ok', user);
       // cache.set(authorization, req.user);
       next();
     })

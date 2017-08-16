@@ -27,6 +27,8 @@ export default class Link extends Component {
         query = props.query(props.$history.query);
       } else if (Array.isArray(props.query) || typeof props.query === 'string') {
         query = pick(props.$history.query, props.query);
+      } else {
+        query = props.query;
       }
       this.location = urlToLocation({
         pathname,

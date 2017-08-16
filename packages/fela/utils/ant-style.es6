@@ -174,11 +174,12 @@ export default ({ theme }) => {
     '& .ant-menu-item-selected > a': {
       color: `${transparent}`,
     },
-    '& .ant-select-selection__rendered': {
-      lineHeight: 'initial',
-    },
-    '& .ant-select-auto-complete.ant-select .ant-select-selection__rendered': {
-      lineHeight: 'initial',
+    '& .ant-select-selection.ant-select-selection--single': {
+      color: 'red',
+      height: 'initial',
+      '> .ant-select-selection__rendered': {
+        lineHeight: 'initial',
+      },
     },
     '& .ant-menu-submenu-active': {
       backgroundColor: `${transparent2}`,
