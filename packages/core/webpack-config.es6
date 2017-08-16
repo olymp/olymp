@@ -394,6 +394,6 @@ module.exports = ({
     return req(config, options) || config;
   }, config);
 
-  // //return final;
-  return isWeb && isProd ? require('./offline')(final) : final;
+  return final;
+  // return isWeb && isProd ? require('./offline')(final) : final;
 };
