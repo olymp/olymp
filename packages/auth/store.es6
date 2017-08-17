@@ -1,5 +1,6 @@
 import { observable, computed, autorun } from 'mobx';
 import { gql } from 'react-apollo';
+import { get } from 'lodash';
 
 const baseAttributes = 'id, name, email, isAdmin, token';
 
@@ -7,6 +8,7 @@ export default class AuthStore {
   @observable verifying = !process.env.SSR;
   @observable error = null;
   @observable user = null;
+  @observable scope = null;
   @computed
   get isAuthenticated() {
     if (!this.user) {
@@ -34,7 +36,6 @@ export default class AuthStore {
       });
     }
   }
-
   verify = () =>
     this.client
       .query({

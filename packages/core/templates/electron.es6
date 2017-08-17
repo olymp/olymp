@@ -28,7 +28,7 @@ module.exports = templateParams => `
       <meta name="msapplication-TileColor" content="#8e44ad">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#8e44ad">
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])).map(
+      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.app.css', [])).map(
     style => `<link rel="stylesheet" type="text/css" href=".${style}">`,
   )}
       <style id="css-markup"></style>
@@ -44,8 +44,8 @@ module.exports = templateParams => `
     </head>
     <body>
       <div id="app"></div>
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.entry', [])).map(
-    script => `<script src="${script}"></script>`,
+      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.app.entry', [])).map(
+    script => `<script src="${script[0] === '/' ? '.' : ''}${script}"></script>`,
   )}
     </body>
   </html>

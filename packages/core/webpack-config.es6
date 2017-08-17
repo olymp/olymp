@@ -144,9 +144,7 @@ module.exports = ({
     output: {
       path: path.resolve(appRoot, folder, target.split('-')[0]),
     },
-    entry: {
-      main: [],
-    },
+    entry: {},
   };
 
   if (!isServer) {
@@ -237,7 +235,7 @@ module.exports = ({
       }),
     );
     if (isDev && isServer) {
-      config.plugins.push(new StartServerPlugin('main.js'));
+      config.plugins.push(new StartServerPlugin('app.js'));
       /* config.plugins.push(
         new ReloadServerPlugin({
           // Defaults to process.cwd() + "/server.js"
@@ -310,7 +308,7 @@ module.exports = ({
   }
 
   // LimitChunkCount on all but production-web
-  if (isDev || isNode) {
+  if (isDev || isNode || isElectron) {
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else {
@@ -341,14 +339,14 @@ module.exports = ({
   }
   if (isWeb || isElectronRenderer) {
     if (isDev) {
-      config.entry.main = [
+      config.entry.app = [
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
         require.resolve(path.resolve(__dirname, 'web', 'index.js')),
       ];
     } else {
-      config.entry.main = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
+      config.entry.app = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
     }
   } else if (isElectronMain) {
     if (isDev) {
@@ -361,12 +359,12 @@ module.exports = ({
     }
   } else if (isNode) {
     if (isDev) {
-      config.entry.main = [
+      config.entry.app = [
         'webpack/hot/poll?1000',
         require.resolve(path.resolve(__dirname, 'node', 'index.js')),
       ];
     } else {
-      config.entry.main = [require.resolve(path.resolve(__dirname, 'node', 'index.js'))];
+      config.entry.app = [require.resolve(path.resolve(__dirname, 'node', 'index.js'))];
     }
   }
 
