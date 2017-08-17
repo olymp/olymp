@@ -109,6 +109,7 @@ if (command === 'dev') {
           'Access-Control-Allow-Origin': '*',
         },
         watchOptions: watch,
+        inline: false,
         host: devUrl.hostname,
         port: devUrl.port,
         disableHostCheck: true,

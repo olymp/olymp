@@ -8,6 +8,7 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 // const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const ElectronPlugin = require('electron-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 // const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
@@ -217,9 +218,15 @@ module.exports = ({
   }
 
   // webpack plugins
-  if (isElectron) {
+  if (isElectronMain) {
     config.plugins.push(
       new GenerateJsonPlugin('package.json', require('./electron/package-json')()),
+    );
+    config.plugins.push(
+      new ElectronPlugin({
+        test: /^.\/electron/,
+        path: path.resolve(appRoot, '.dev', 'electron'),
+      }),
     );
   }
   if (isProd) {
