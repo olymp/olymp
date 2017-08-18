@@ -1,43 +1,40 @@
 import React from 'react';
 import createComponent from './utils/create-component';
-import IFrame from './iframe';
+import Portal from 'react-portal';
 
-export default createComponent(
+const Print = createComponent(
   () => ({
-    position: 'fixed',
-    zIndex: 1000,
-    top: 0,
+    backgroundColor: 'white',
+    minHeight: '100%',
     width: '100%',
-    height: '100%',
-    overflow: 'scroll',
-    display: 'none',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    margin: 0,
+    zIndex: 10000,
   }),
   ({ children, className, onClose }) =>
-    (<div className={className}>
-      <IFrame
-        css={`
-          body {
-            -ms-zoom: 1.665;
-
-            margin: 10px auto;
-            padding: 10mm;
-            page-break-after: always;
-            background: white;
-
-            width: 276mm;
-            height: 190mm;
-            border: none;
-
-            transform: rotate(270deg) translate(-276mm, 0);
-            transform-origin: 0 0;
-          }`}
-        mounted={({ window }) => {
+    (<Portal
+      isOpened
+      onOpen={() => {
+        setTimeout(() => {
           window.print();
-          onClose();
-        }}
-      >
+          setTimeout(onClose, 1);
+        }, 200);
+      }}
+    >
+      <div className={className}>
         {children}
-      </IFrame>
-    </div>),
+      </div>
+    </Portal>),
   p => Object.keys(p),
+);
+export default Print;
+
+Print.Break = createComponent(
+  () => ({
+    pageBreakBefore: 'always',
+  }),
+  ({ tag = 'div', ...rest }) => React.createElement(tag, rest),
+  ['tag'],
 );

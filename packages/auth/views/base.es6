@@ -3,26 +3,26 @@ import PropTypes from 'prop-types';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { notification } from 'antd';
+import { get } from 'lodash';
+import { inject, observer } from 'mobx-react';
 
-const def = (
-  {
-    copyright,
-    showLogo,
-    isOpen,
-    email,
-    children,
-    title,
-    pathname,
-    onCancel,
-    onOk,
-    cancelText,
-    okText,
-    loading,
-    saving,
-  },
-  { theme }
-) =>
-  <Modal
+const def = ({
+  copyright,
+  showLogo,
+  isOpen,
+  email,
+  children,
+  title,
+  pathname,
+  onCancel,
+  onOk,
+  cancelText,
+  okText,
+  loading,
+  saving,
+  $theme,
+}) =>
+  (<Modal
     showLogo={showLogo !== false}
     isOpen={isOpen}
     title={title}
@@ -42,17 +42,14 @@ const def = (
     </Modal.Footer>
     <Modal.Copyright>
       <Link to={{ pathname, query: { register: null, login: undefined } }}>
-        {theme.copyright || 'made with ❤ by olymp'}
+        {get($theme, 'theme.copyright', 'made with ❤ by olymp')}
       </Link>
     </Modal.Copyright>
-  </Modal>;
-def.contextTypes = {
-  theme: PropTypes.object,
-};
+  </Modal>);
 
-export default def;
+export default inject('$theme')(observer(def));
 
-export const onError = err => {
+export const onError = (err) => {
   let description;
   if (err && err.message) {
     description = err.message;
@@ -76,14 +73,14 @@ export const onSuccess = (message, description) => {
 
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
-export const onEnterFocus = ref => e => {
+export const onEnterFocus = ref => (e) => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   }
   return false;
 };
 
-export const onEnterOk = onOk => e => {
+export const onEnterOk = onOk => (e) => {
   if (e.key === 'Enter') {
     onOk();
   }

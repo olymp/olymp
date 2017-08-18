@@ -1,0 +1,21 @@
+{
+  "version": "17.0.23",
+  "name": "olymp-webpack-electron",
+  "description": "",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
+  "dependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^1.7.5",
+    "electron-builder": "^19.22.1",
+    "electron-debug": "^1.4.0",
+    "electron-log": "^2.2.7",
+    "electron-publisher": "^0.1.6",
+    "electron-publisher-s3": "^19.21.0",
+    "electron-updater": "^2.8.7",
+    "electron-webpack-plugin": "^2.0.0"
+  }
+}

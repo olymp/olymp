@@ -1,22 +1,19 @@
 const jwt = require('jsonwebtoken');
 jwt.verify = require('bluebird').promisify(jwt.verify);
 
-const getOneDay = () => Math.floor(Date.now() / 1000) + 60 * 60 * 24;
-export default (config = {}) => {
-  const SECRET = config.secret || process.env.AUTH_SECRET || 'abc';
+const getDays = (days = 1) => Math.floor(Date.now() / 1000) + 60 * 60 * 24 * days;
+export default ({ secret } = {}) => {
+  const SECRET = secret || process.env.AUTH_SECRET || 'abc';
 
-  const createFromUser = (user, { days } = {}) => {
-    const str = user.id;
-    // if (user.roles) str = `${user.roles}/${str}`;
-    // if (user.realm) str = `${user.realm}/${str}`;
-    return jwt.sign({ id: str, exp: getOneDay() * (days || 1) }, SECRET);
-  };
+  const createFromUser = ({ id, orgId, scopes }, { days } = {}) =>
+    jwt.sign({ id, orgId, scopes, exp: getDays(days || 1) }, SECRET);
 
-  const readUser = token => jwt.verify(token, SECRET).then(x => ({ id: x.id }));
+  const readUser = token =>
+    jwt.verify(token, SECRET).then(({ id, orgId, scopes }) => ({ id, orgId, scopes }));
 
   const create = (data, { days }) => {
     if (!data.exp) {
-      data.exp = getOneDay() * (days || 1);
+      data.exp = getDays(days || 1);
     }
     return jwt.sign(data, SECRET);
   };

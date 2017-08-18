@@ -1,10 +1,11 @@
 {
-  "version": "16.0.50",
+  "version": "17.0.10",
   "name": "olymp-graphql",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
+    "assert-err": "^1.1.0",
     "graphql": "^0.10.3",
     "graphql-modules": "^0.2.2",
     "graphql-server-express": "^1.0.0",

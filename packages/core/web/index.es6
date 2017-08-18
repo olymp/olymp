@@ -3,23 +3,18 @@ import React from 'react';
 import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import { createAsyncContext } from 'react-async-component';
-import asyncBootstrapper from 'react-async-bootstrapper';
-import { createFela, felaReducer } from 'olymp-fela';
-import Proxy from './proxy';
-
+import { createFela } from 'olymp-fela';
+import { createHistory } from 'olymp-router';
+import App from './root';
 // import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // End Redux stuff
 
-// React router
-import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
-//
-
 // window.Perf = require('react-addons-perf');
-if (process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON) {
+// TODO
+if (process.env.NODE_ENV === 'production') {
   const offline = require('offline-plugin/runtime');
   offline.install({
     onUpdating: () => {
@@ -37,25 +32,16 @@ if (process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON) {
       console.log('SW Event:', 'onUpdateFailed');
     },
   });
-} else {
-  // const { whyDidYouUpdate } = require('why-did-you-update');
-  // whyDidYouUpdate(React);
+} else if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister();
+    }
+  });
 }
-/* // TODO
-if (process.env.NODE_ENV === 'production') {
-  if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      for (const registration of registrations) {
-        registration.unregister();
-      }
-    });
-  }
-} else {
-  console.warn('web/index.js removes serviceworkers temporarily');
-}*/
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}/graphql`) || '/graphql',
+  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
@@ -127,54 +113,40 @@ function renderApp(App) {
     history,
     asyncContext,
   };
-  const app = <App {...props} />;
-  asyncBootstrapper(app).then(() => render(app, container));
+  render(<App {...props} />, container);
+  // asyncBootstrapper(app).then(() => render(app, container));
 }
+// Get the DOM Element that will host our React application.
+container = document.getElementById('app');
+mountNode = document.getElementById('css-markup');
+ua = new UAParser(window.navigator.userAgent);
+renderer = createFela(ua);
+history = createHistory();
+client = new ApolloClient({
+  networkInterface,
+  dataIdFromObject: o => o.id,
+  ssrForceFetchDelay: 100,
+  // initialState: window.INITIAL_DATA,
+});
+// Redux stuff
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+store = createStore(
+  combineReducers({
+    apollo: client.reducer(),
+  }),
+  window.INITIAL_DATA || {},
+  compose(applyMiddleware(client.middleware())),
+);
+// End Redux stuff
+// rehydrateState = window.ASYNC_STATE;
+// asyncContext = createAsyncContext();
 
-function load() {
-  // Get the DOM Element that will host our React application.
-  container = document.getElementById('app');
-  mountNode = document.getElementById('css-markup');
-  ua = new UAParser(window.navigator.userAgent);
-  renderer = createFela(ua);
-  history = createHistory();
-  client = new ApolloClient({
-    networkInterface,
-    dataIdFromObject: o => o.id,
-    ssrForceFetchDelay: 100,
-    // initialState: window.INITIAL_DATA,
-  });
-  // Redux stuff
-  // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  store = createStore(
-    combineReducers({
-      apollo: client.reducer(),
-      location: routerReducer(history),
-      fela: felaReducer,
-    }),
-    window.INITIAL_DATA || {},
-    compose(
-      applyMiddleware(client.middleware()),
-      applyMiddleware(routerMiddleware(history))
-    )
-  );
-  // End Redux stuff
-  rehydrateState = window.ASYNC_STATE;
-  asyncContext = createAsyncContext();
-
-  return renderApp(Proxy);
-}
-
-// Execute the first render of our app.
-if (window.POLYFILLED) {
-  load();
-} else {
-  window.GO = load;
-}
-
-if (module.hot) {
+renderApp(App);
+if (module.hot && typeof module.hot.accept === 'function') {
   // Any changes to our App will cause a hotload re-render.
+  // module.hot.accept('./root', () => {
   module.hot.accept(() => {
-    renderApp(require('./proxy').default);
+    const NextRoot = require('./root').default;
+    renderApp(NextRoot);
   });
 }

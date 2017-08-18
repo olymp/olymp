@@ -48,7 +48,7 @@ export default (mapsKey, mail, key) => {
             filters = [],
           }
         ) => {
-          if (!jwtClient) return null;
+          if (!jwtClient) {return null;}
 
           const metricsArray = metrics.map(name => metricsObj[name].name);
 
@@ -56,7 +56,7 @@ export default (mapsKey, mail, key) => {
             name => dimensionsObj[name].name
           );
 
-          const sortsArray = sorts.map(sort => {
+          const sortsArray = sorts.map((sort) => {
             // ascending
             if (sort.indexOf('_ASC') !== -1) {
               return { ...metricsObj, ...dimensionsObj }[
@@ -80,7 +80,7 @@ export default (mapsKey, mail, key) => {
             dimensions: dimensionsArray.join(','),
           };
           if (filters.length) {
-            filters = filters.map(filter => {
+            filters = filters.map((filter) => {
               const name = (metricsObj[filter.metric] ||
                 dimensionsObj[filter.dimension]).name;
 
@@ -128,11 +128,11 @@ export default (mapsKey, mail, key) => {
         },
         geocode: (source, args) =>
           maps('geocode', args).then(
-            result => result.json.results.map(convertGeocode)[0]
+            result => result.json.results[0]
           ),
         geocodeList: (source, args) =>
           maps('geocode', args).then(result =>
-            result.json.results.map(convertGeocode)
+            result.json.results
           ),
       },
     },
@@ -156,20 +156,20 @@ export default (mapsKey, mail, key) => {
       type AnalyticsQuery {
         id: String
         ${Object.keys(metricsObj)
-          .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
-          .join('\n')}
+    .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
+    .join('\n')}
         rows: [AnalyticsQueryRows]
       }
       type AnalyticsQueryRows {
         id: String
         ${Object.keys(metricsObj)
-          .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
-          .join('\n')}
+    .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
+    .join('\n')}
         ${Object.keys(dimensionsObj)
-          .map(
-            key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`
-          )
-          .join('\n')}
+    .map(
+      key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`
+    )
+    .join('\n')}
       }
       input AnalyticsFilter {
         metric: ANALYTICS_METRICS
@@ -199,33 +199,4 @@ export default (mapsKey, mail, key) => {
       }
     `,
   };
-};
-
-const convertGeocode = result => {
-  const newResult = {};
-  (result.address_components || []).forEach(component => {
-    component.types.forEach(type => {
-      const newType = type
-        .split('_')
-        .map(
-          (frag, i) =>
-            i > 0 ? `${frag[0].toUpperCase()}${frag.substr(1)}` : frag
-        ) // eslint-disable-line
-        .join('');
-      newResult[newType] = component.long_name;
-      newResult[`${newType}Short`] = component.short_name;
-    });
-  });
-  newResult.formattedAddress = result.formatted_address;
-  if (result.geometry) {
-    if (result.geometry.location) {
-      newResult.lat = result.geometry.location.lat;
-      newResult.lng = result.geometry.location.lng;
-    }
-    newResult.locationType = result.geometry.location_type;
-  }
-  newResult.partialMatch = result.partial_match;
-  newResult.id = result.place_id;
-  newResult.types = result.types;
-  return newResult;
 };

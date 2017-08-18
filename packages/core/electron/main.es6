@@ -14,6 +14,7 @@ if (process.env.CRASHREPORT_URL) {
 }
 
 log.transports.file.level = 'info';
+log.info('Starting');
 
 const path = require('path');
 const url = require('url');
@@ -44,19 +45,25 @@ if (process.platform === 'darwin') {
 }
 
 function createWindow() {
+  log.info('Starting');
   if (template.length) {
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
   }
-  autoUpdater
-    .checkForUpdates()
-    .then(() => {
-      log.info('Promise fulfilled');
-    })
-    .catch((reason) => {
-      log.info(`Handle rejected promise (${reason.stack || reason}) here.`);
-    });
 
+  if (process.env.NODE_ENV === 'production') {
+    log.info('Starting updater..');
+
+    autoUpdater
+      .checkForUpdates()
+      .then(() => {
+        log.info('Promise fulfilled');
+      })
+      .catch((reason) => {
+        log.info(`Handle rejected promise (${reason.stack || reason}) here.`);
+      });
+  }
+  log.info('Creating browser window');
   // Create the browser window.
   // mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden' });
   mainWindow = new BrowserWindow({
@@ -69,10 +76,20 @@ function createWindow() {
     // titleBarStyle: 'hidden',
   });
 
+  log.info('Call app script');
   if (elecApp && elecApp.default) {
-    elecApp.default(mainWindow);
+    try {
+      elecApp.default(mainWindow);
+    } catch (err) {
+      dialog.showMessageBox({
+        type: 'error',
+        title: 'Error',
+        message: JSON.stringify(err, null, 2),
+      });
+    }
   }
 
+  log.info('Loading url');
   // and load the index.html of the app.
   mainWindow.loadURL(
     url.format({
@@ -82,10 +99,10 @@ function createWindow() {
     }),
   );
 
-  // Open the DevTools.
+  /* // Open the DevTools.
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
-  }
+  }*/
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql, gql, renderHelmet } from 'olymp-utils';
 import { Link } from 'olymp-router';
-import { createComponent, withColor, SchemaLoader, Grid } from 'olymp-fela';
+import { createComponent, withTheme, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import HeaderBlock from './header';
@@ -36,7 +36,7 @@ const Container = createComponent(
     paddingTop: theme.space3,
   }),
   ContainerBlock.component,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
@@ -46,7 +46,7 @@ const Content = createComponent(
     paddingLeft: theme.space3,
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const WhiteLink = createComponent(
@@ -57,10 +57,10 @@ const WhiteLink = createComponent(
     },
   }),
   p => <Link {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
-const getSubheader = item => {
+const getSubheader = (item) => {
   const person = item.person && `von ${item.person.name}`;
   const org =
     item.org &&
@@ -77,10 +77,10 @@ const getSubheader = item => {
   );
 };
 
-const component = withColor(
-  ({ item }) => item.org.color
-)(({ className, attributes, item }) =>
-  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+const component = withTheme(({ item }) => ({
+  color: item.org.color,
+}))(({ className, attributes, item }) =>
+  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
       <Header subheader={getSubheader(item) || ''} color={item.org.color}>
@@ -89,12 +89,7 @@ const component = withColor(
       <Container className={className} color={item.org.color} {...attributes}>
         <Grid size={3}>
           <Grid.Item medium={1}>
-            {item.image &&
-              <Image
-                value={item.image}
-                alt={item.image.caption}
-                width="100%"
-              />}
+            {item.image && <Image value={item.image} alt={item.image.caption} width="100%" />}
           </Grid.Item>
           <Content medium={2}>
             <Slate readOnly value={item.text} />
@@ -103,7 +98,7 @@ const component = withColor(
         </Grid>
       </Container>
     </div>
-  </SchemaLoader>
+  </SchemaLoader>),
 );
 
 const componentWithData = graphql(
@@ -158,7 +153,7 @@ const componentWithData = graphql(
         },
       };
     },
-  }
+  },
 )(component);
 
 export default {

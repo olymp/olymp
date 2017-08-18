@@ -8,7 +8,7 @@ export default ({
   cssMarkup,
   styles = [],
   scripts = [],
-  root,
+  root = '',
   initialState,
   asyncState,
   gaTrackingId,
@@ -45,15 +45,13 @@ export default ({
     ${meta ? meta.toString() : ''}
     ${link ? link.toString() : ''}
     ${styles.map(
-      style =>
-        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
-    )}
-    ${styles.map(
-      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
-    )}
+    style =>
+      `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`,
+  )}
+    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
     <style id="css-markup">${cssMarkup || ''}</style>
     ${gaTrackingId
-      ? `<script type="text/javascript">
+    ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -73,19 +71,17 @@ export default ({
       ga('create', '${gaTrackingId}', 'auto');
       ga('send', 'pageview');
     </script>`
-      : ''}
+    : ''}
   </head>
   <body>
     <div id="app"><div>${root}</div></div>
-    <script type='text/javascript'>window.INITIAL_DATA=${serialize(
-      initialState
-    )}</script>
-    <script type='text/javascript'>window.ASYNC_STATE=${serialize(
-      asyncState
-    )}</script>
-    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
-    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
-    ${scripts.map(script => `<script async src="${script}"></script>`)}
+    ${initialState
+    ? `<script type="text/javascript">window.INITIAL_DATA=${serialize(initialState)}</script>`
+    : ''}
+    ${asyncState
+    ? `<script type="text/javascript">window.ASYNC_STATE=${serialize(asyncState)}</script>`
+    : ''}
+    ${scripts.map(script => `<script src="${script}"></script>`)}
   </body>
 </html>
 `;
