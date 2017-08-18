@@ -10,6 +10,6 @@
     "react-redux": "^5.0.5",
     "redux": "^3.7.2",
     "route-parser": "^0.0.5",
-    "shallow-equal": "^1.0.0"
+    "shallowequal": "^1.0.2"
   }
 }

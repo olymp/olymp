@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import shallowEqual from 'shallow-equal';
+import shallowEqual from 'shallowequal';
 
 export default (Wrapped, types) => {
   if (types) {
