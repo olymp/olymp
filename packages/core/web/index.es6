@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
     },
   });
 } else if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
     for (const registration of registrations) {
       registration.unregister();
     }
@@ -41,7 +41,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
+  uri:
+    process.env.GRAPHQL_URL ||
+    (process.env.URL && `${process.env.URL}graphql`) ||
+    '/graphql',
   batchInterval: 5,
   opts: {
     credentials: 'same-origin',
@@ -70,7 +73,9 @@ networkInterface.useAfter([
       const error =
         res.responses &&
         res.responses.filter(
-          x => x.errors && x.errors.filter(x => x.message === 'LOGIN_REQUIRED').length,
+          x =>
+            x.errors &&
+            x.errors.filter(x => x.message === 'LOGIN_REQUIRED').length
         ).length;
       if (error) {
         return history.push({
@@ -135,7 +140,7 @@ store = createStore(
     apollo: client.reducer(),
   }),
   window.INITIAL_DATA || {},
-  compose(applyMiddleware(client.middleware())),
+  compose(applyMiddleware(client.middleware()))
 );
 // End Redux stuff
 // rehydrateState = window.ASYNC_STATE;

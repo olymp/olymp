@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "up": "yarn upgrade-interactive",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
   },
   "dependencies": {
     "eventlistener": "^0.0.1",
@@ -31,12 +31,10 @@
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
-    "@storybook/addon-info": "^3.2.4",
-    "@storybook/addon-knobs": "^3.2.0",
-    "@storybook/react": "^3.2.4",
     "olymp-webpack-babel": "^17.0.24",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-styleguidist": "^6.0.15"
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import enUS from 'antd/lib/locale-provider/en_US';
-import 'moment/locale/en';
+import 'moment/locale/de';
 import AntLocaleProvider from 'antd/lib/locale-provider';
 import { LocaleProvider } from 'olymp-utils';
 import dateLocale from 'date-fns/locale/en';
