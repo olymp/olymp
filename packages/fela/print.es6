@@ -1,32 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 import createComponent from './utils/create-component';
 import Portal from 'react-portal';
 
+let ipc = null;
+if (process.env.IS_ELECTRON) {
+  ipc = require('electron').ipcRenderer;
+}
+
+class PrintWindow extends Component {
+  componentWillUnmount() {
+    document.getElementById('app').style.display = 'initial';
+  }
+  onOpen = (element) => {
+    document.getElementById('app').style.display = 'none';
+    const { onClose, pdf } = this.props;
+    setTimeout(() => {
+      if (ipc && pdf) {
+        ipc.send('print-to-pdf', { name: pdf });
+      } else {
+        window.print();
+      }
+      setTimeout(onClose, 1);
+    }, 200);
+  };
+  render() {
+    const { children, className } = this.props;
+    return (
+      <Portal isOpened onOpen={this.onOpen}>
+        <div className={className}>
+          {children}
+        </div>
+      </Portal>
+    );
+  }
+}
 const Print = createComponent(
   () => ({
     backgroundColor: 'white',
     minHeight: '100%',
     width: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
     margin: 0,
     zIndex: 10000,
   }),
-  ({ children, className, onClose }) =>
-    (<Portal
-      isOpened
-      onOpen={() => {
-        setTimeout(() => {
-          window.print();
-          setTimeout(onClose, 1);
-        }, 200);
-      }}
-    >
-      <div className={className}>
-        {children}
-      </div>
-    </Portal>),
+  p => <PrintWindow {...p} />,
   p => Object.keys(p),
 );
 export default Print;
