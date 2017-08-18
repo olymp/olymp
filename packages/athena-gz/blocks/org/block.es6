@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, gql, renderHelmet } from 'olymp-utils';
-import { createComponent, Grid, withColor, SchemaLoader } from 'olymp-fela';
+import { createComponent, Grid, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -40,10 +40,8 @@ const loaderSchema = [
 ];
 const Label = Blocks.ImageBlockLabel.component;
 const Header = HeaderBlock.component;
-const Container = createComponent(
-  ContainerBlock.styles,
-  ContainerBlock.component,
-  p => Object.keys(p)
+const Container = createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
+  Object.keys(p),
 );
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 
@@ -59,7 +57,7 @@ const Content = createComponent(
     },
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Peak = createComponent(
@@ -68,14 +66,8 @@ const Peak = createComponent(
     marginBottom: props.theme.space3,
   }),
   ({ className, header, subheader, value, title }) =>
-    <div className={className}>
-      <Image
-        value={value}
-        alt={title}
-        width="100%"
-        maxHeight={450}
-        maxResolution={750000}
-      />
+    (<div className={className}>
+      <Image value={value} alt={title} width="100%" maxHeight={450} maxResolution={750000} />
       {(header || subheader) &&
         <Label>
           <h1>
@@ -85,14 +77,14 @@ const Peak = createComponent(
             {subheader}
           </p>
         </Label>}
-    </div>,
-  p => Object.keys(p)
+    </div>),
+  p => Object.keys(p),
 );
 
-const component = withColor(
-  ({ item }) => item.color
-)(({ className, attributes, item }) =>
-  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+const component = withTheme(({ item }) => ({
+  color: item.color,
+}))(({ className, attributes, item }) =>
+  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({
         description: item.slogan,
@@ -100,15 +92,15 @@ const component = withColor(
       })}
       {item.image
         ? <Peak
-            title={item.name || item.titel}
-            value={item.image}
-            header={item.slogan}
-            subheader={item.description}
-            color={item.color}
-          />
+          title={item.name || item.titel}
+          value={item.image}
+          header={item.slogan}
+          subheader={item.description}
+          color={item.color}
+        />
         : <Header subheader={item.description} color={item.color}>
-            {item.slogan}
-          </Header>}
+          {item.slogan}
+        </Header>}
       <Container className={className} color={item.color} {...attributes}>
         <Grid>
           <Grid.Item large={5}>
@@ -121,7 +113,7 @@ const component = withColor(
         </Grid>
       </Container>
     </div>
-  </SchemaLoader>
+  </SchemaLoader>),
 );
 
 const componentWithData = graphql(
@@ -221,7 +213,7 @@ const componentWithData = graphql(
       data,
       item: data.item || {},
     }),
-  }
+  },
 )(component);
 
 export default {

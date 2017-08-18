@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql, gql, renderHelmet } from 'olymp-utils';
 import { Link } from 'olymp-router';
-import { createComponent, withColor, SchemaLoader } from 'olymp-fela';
+import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -31,10 +31,8 @@ const loaderSchema = [
 ];
 const Label = Blocks.ImageBlockLabel.component;
 const Header = HeaderBlock.component;
-const Container = createComponent(
-  ContainerBlock.styles,
-  ContainerBlock.component,
-  p => Object.keys(p)
+const Container = createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
+  Object.keys(p),
 );
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 
@@ -44,14 +42,8 @@ const Peak = createComponent(
     marginBottom: props.theme.space3,
   }),
   ({ className, header, subheader, value, title }) =>
-    <div className={className}>
-      <Image
-        value={value}
-        alt={title}
-        width="100%"
-        maxHeight={450}
-        maxResolution={750000}
-      />
+    (<div className={className}>
+      <Image value={value} alt={title} width="100%" maxHeight={450} maxResolution={750000} />
       {(header || subheader) &&
         <Label>
           <h1>
@@ -61,8 +53,8 @@ const Peak = createComponent(
             {subheader}
           </p>
         </Label>}
-    </div>,
-  p => Object.keys(p)
+    </div>),
+  p => Object.keys(p),
 );
 
 const WhiteLink = createComponent(
@@ -73,10 +65,10 @@ const WhiteLink = createComponent(
     },
   }),
   p => <Link {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
-const getSubheader = item => {
+const getSubheader = (item) => {
   const person = item.person && `von ${item.person.name}`;
   const org =
     item.org &&
@@ -94,29 +86,29 @@ const getSubheader = item => {
   );
 };
 
-const component = withColor(
-  ({ item }) => item.org.color
-)(({ className, attributes, item }) =>
-  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+const component = withTheme(({ item }) => ({
+  color: item.org.color,
+}))(({ className, attributes, item }) =>
+  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
       {item.image
         ? <Peak
-            title={item.name}
-            value={item.image}
-            header={item.name}
-            subheader={getSubheader(item)}
-            color={item.org.color}
-          />
+          title={item.name}
+          value={item.image}
+          header={item.name}
+          subheader={getSubheader(item)}
+          color={item.org.color}
+        />
         : <Header subheader={getSubheader(item)} color={item.org.color}>
-            {item.name}
-          </Header>}
+          {item.name}
+        </Header>}
       <Container className={className} color={item.org.color} {...attributes}>
         <Slate readOnly value={item.text} />
         <Link to="/magazin">Zurück zur Übersicht</Link>
       </Container>
     </div>
-  </SchemaLoader>
+  </SchemaLoader>),
 );
 
 const componentWithData = graphql(
@@ -169,7 +161,7 @@ const componentWithData = graphql(
         },
       };
     },
-  }
+  },
 )(component);
 
 export default {

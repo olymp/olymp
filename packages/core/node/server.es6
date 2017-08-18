@@ -166,8 +166,8 @@ try {
 app.get('*', (req, res) => {
   const scripts = req.isAmp
     ? []
-    : [isProd ? `${clientAssets.main.js}` : `${process.env.DEV_URL}/main.js`];
-  const styles = req.isAmp ? [] : isProd ? [`${clientAssets.main.css}`] : [];
+    : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`];
+  const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
 
   if (process.env.SSR === false) {
     const html = (req.isAmp ? amp : template)({
