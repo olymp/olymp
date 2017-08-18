@@ -14,8 +14,7 @@
     "lib": "gulp lib-build",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish --npm-tag=next --registry=https://registry.npmjs.org/",
-    "publish-force": "lerna publish --force-publish=* --registry=https://registry.npmjs.org/",
+    "publish": "lerna publish --registry=https://registry.npmjs.org/",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
@@ -69,6 +68,7 @@
     "collectCoverage": true
   },
   "dependencies": {
+    "babel-plugin-transform-react-constant-elements": "^6.23.0",
     "electron-log": "^2.2.7",
     "eslint-config-olymp": "^16.0.18"
   }
