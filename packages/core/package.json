@@ -56,5 +56,8 @@
     "webpack-dev-server": "^2.7.1",
     "webpack-node-externals": "^1.6.0",
     "webpack-visualizer-plugin": "^0.1.11"
+  },
+  "devDependencies": {
+    "olymp-webpack-electron": "^17.0.23"
   }
 }
