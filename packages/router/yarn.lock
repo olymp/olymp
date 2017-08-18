@@ -79,7 +79,7 @@ lodash-es@^4.2.0, lodash-es@^4.2.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
 
-lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1:
+lodash@^4.2.0, lodash@^4.2.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -100,11 +100,9 @@ object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-olymp-utils@^16.0.50:
-  version "16.0.50"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.0.50.tgz#2ad237abb200bfce45fa453817fc5aa4264434d0"
-  dependencies:
-    lodash "^4.17.4"
+olymp-utils@^17.0.24:
+  version "17.0.24"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.24.tgz#5298ccf0bf493bba1ccb49a3f45c8e60e251679b"
 
 promise@^7.1.1:
   version "7.3.1"
@@ -151,6 +149,10 @@ route-parser@^0.0.5:
 setimmediate@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
+
+shallow-equal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.0.0.tgz#508d1838b3de590ab8757b011b25e430900945f7"
 
 symbol-observable@^1.0.3:
   version "1.0.4"

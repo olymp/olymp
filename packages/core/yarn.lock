@@ -3828,9 +3828,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.0.23:
-  version "17.0.23"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.23.tgz#9fd65346e50a651d917728d1b2c01e902b5da8cd"
+olymp-fela@^17.0.24:
+  version "17.0.24"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.24.tgz#2da306b1c3f6d8745b8c0531453950c2a75aa150"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.1.0"
@@ -3844,7 +3844,7 @@ olymp-fela@^17.0.23:
     fela-plugin-prefixer "^5.0.6"
     fela-plugin-remove-undefined "^5.0.5"
     fela-plugin-unit "^5.0.5"
-    olymp-utils "^17.0.20"
+    olymp-utils "^17.0.24"
     react-fela "^5.2.0"
     react-frame-component "^1.1.1"
     react-portal "^3.1.0"
@@ -3852,23 +3852,23 @@ olymp-fela@^17.0.23:
     react-transition-group "^2.2.0"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.0.22:
-  version "17.0.22"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.22.tgz#c67c438d4ffe421223b8b51c210fc55ea498b1d2"
+olymp-router@^17.0.24:
+  version "17.0.24"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.24.tgz#99a41760854e1bcb673b7c2a2a9a468bb04a23d0"
   dependencies:
     history "^4.6.3"
-    olymp-utils "^17.0.20"
+    olymp-utils "^17.0.24"
     react-redux "^5.0.5"
     redux "^3.7.2"
     route-parser "^0.0.5"
 
-olymp-utils@^17.0.20:
-  version "17.0.20"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.20.tgz#077908aa434e0f17bd65115417af31c7d368d23f"
+olymp-utils@^17.0.24:
+  version "17.0.24"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.24.tgz#5298ccf0bf493bba1ccb49a3f45c8e60e251679b"
 
-olymp-webpack-electron@^17.0.23:
-  version "17.0.23"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-electron/-/olymp-webpack-electron-17.0.23.tgz#7ce6145ef19d684a308b99c211485a9fbd10d77e"
+olymp-webpack-electron@^17.0.24:
+  version "17.0.24"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-electron/-/olymp-webpack-electron-17.0.24.tgz#f11ca71c956c4b7dfafe9cd5f2d22b3cb2c21211"
   dependencies:
     devtron "^1.4.0"
     electron "^1.7.5"

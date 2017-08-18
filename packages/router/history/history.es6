@@ -1,6 +1,6 @@
 import { action, computed, autorunAsync, observable, Atom } from 'mobx';
 import { toNumber, omit } from 'lodash';
-import shallowEqual from 'olymp-utils/shallow-equal';
+import shallowEqual from 'shallow-equal';
 import { stringifyQuery, parseQuery } from '../utils';
 
 const func = (a, b) => `${a}` != `${b}`;
