@@ -2,17 +2,19 @@ import React, { Component, PropTypes } from 'react';
 import { useGenericBlock, GenericBlock } from 'olymp/slate';
 
 const defaultVideo = 'https://www.youtube.com/embed/zalYJacOhpo';
-const actions = props => [{
-  type: 'youtube.url',
-  icon: 'film',
-  toggle: () => {
-    const { setData, getData } = props;
-    const currentUrl = getData('url') || defaultVideo;
-    const url = window.prompt('URL', currentUrl);
-    if (url) setData({ url });
+const actions = props => [
+  {
+    type: 'youtube.url',
+    icon: 'film',
+    toggle: () => {
+      const { setData, getData } = props;
+      const currentUrl = getData('url') || defaultVideo;
+      const url = window.prompt('URL', currentUrl);
+      if (url) setData({ url });
+    },
+    active: false,
   },
-  active: false,
-}];
+];
 
 @useGenericBlock({
   label: 'Youtube',
@@ -32,7 +34,7 @@ export default class YoutubeBlock extends Component {
     style: PropTypes.object,
     className: PropTypes.string,
     getData: PropTypes.func,
-  }
+  };
 
   render() {
     const { style, getData, children, ...rest } = this.props;
@@ -40,12 +42,19 @@ export default class YoutubeBlock extends Component {
 
     const styles = {
       backgroundColor: 'gray',
+      margin: '0 auto',
       ...style,
     };
 
     return (
       <GenericBlock {...rest} style={{ ...styles, height: 'auto' }}>
-        <iframe width={styles.width} height={styles.height} src={url} frameBorder="0" allowFullScreen />
+        <iframe
+          width="100%"
+          height={styles.height}
+          src={url}
+          frameBorder="0"
+          allowFullScreen
+        />
         {children}
       </GenericBlock>
     );
