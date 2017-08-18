@@ -1,5 +1,5 @@
 {
-  "version": "17.0.26",
+  "version": "17.0.27",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -7,8 +7,6 @@
   "dependencies": {
     "history": "^4.6.3",
     "olymp-utils": "^17.0.26",
-    "react-redux": "^5.0.5",
-    "redux": "^3.7.2",
     "route-parser": "^0.0.5",
     "shallowequal": "^1.0.2"
   }
