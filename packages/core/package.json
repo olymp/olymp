@@ -1,5 +1,5 @@
 {
-  "version": "17.0.23",
+  "version": "17.0.24",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -34,9 +34,9 @@
     "mobx-react": "^4.2.2",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^17.0.23",
-    "olymp-router": "^17.0.22",
-    "olymp-utils": "^17.0.20",
+    "olymp-fela": "^17.0.24",
+    "olymp-router": "^17.0.24",
+    "olymp-utils": "^17.0.24",
     "progress-bar-webpack-plugin": "^1.10.0",
     "prop-types": "^15.5.10",
     "raw-loader": "^0.5.1",
@@ -60,6 +60,6 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^17.0.23"
+    "olymp-webpack-electron": "^17.0.24"
   }
 }
