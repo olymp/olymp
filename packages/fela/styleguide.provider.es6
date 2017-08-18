@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { Provider as FelaProvider } from 'react-fela';
 import { ThemeProvider, ThemeStore, createFela } from './utils';
 import { Provider } from 'mobx-react';
-import { withApollo } from 'react-apollo';
 
 const withStores = WrappedComponent =>
-  @withApollo
   class WithStores extends Component {
     static contextTypes = {
       mobxStores: PropTypes.object,
@@ -18,8 +16,7 @@ const withStores = WrappedComponent =>
       this.stores = {
         $theme: new ThemeStore(args),
       };
-      Object.keys(this.stores).forEach(key => {
-        this.stores[key].client = props.client;
+      Object.keys(this.stores).forEach((key) => {
         this.stores[key].stores = this.stores;
         if (this.stores[key].initialize) {
           this.stores[key].initialize();
@@ -36,9 +33,9 @@ const withStores = WrappedComponent =>
   };
 
 export default withStores(({ children }) =>
-  <FelaProvider renderer={createFela()}>
+  (<FelaProvider renderer={createFela()}>
     <ThemeProvider>
       {children}
     </ThemeProvider>
-  </FelaProvider>
+  </FelaProvider>),
 );
