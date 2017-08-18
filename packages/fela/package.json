@@ -28,6 +28,7 @@
     "react-portal": "^3.1.0",
     "react-portal-minimal": "^4.0.2",
     "react-transition-group": "^2.2.0",
+    "shortid": "^2.2.8",
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-styleguidist": "^6.0.15"
+    "react-styleguidist": "^6.0.15",
+    "webpack": "^3.5.5"
   }
 }

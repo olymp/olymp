@@ -23,7 +23,7 @@ export default class History {
       () => {
         handler && handler();
         handler = null;
-      },
+      }
     );
     if (process.env.IS_ELECTRON) {
       const oldUrl = localStorage.getItem('url');
@@ -109,7 +109,10 @@ export default class History {
   block = message => this.history.block(message);
   set = (key, value, replace) => {
     const method = replace ? 'replace' : 'push';
-    this[method]({ pathname: this.pathname, query: { ...this.query, [key]: value } });
+    this[method]({
+      pathname: this.pathname,
+      query: { ...this.query, [key]: value },
+    });
   };
   remove = (key, replace) => {
     const method = replace ? 'replace' : 'push';
@@ -128,14 +131,20 @@ export default class History {
 
   patchQuery = (query, replace) => {
     const method = replace ? 'replace' : 'push';
-    this[method]({ pathname: this.pathname, query: { ...this.query, ...query } });
+    this[method]({
+      pathname: this.pathname,
+      query: { ...this.query, ...query },
+    });
   };
 
-  push = (location) => {
+  push = location => {
     if (typeof location === 'string') {
       location = { pathname: location, query: {} };
     }
-    if (this.pathname === location.pathname && shallowEqual(this.query, location.query, func)) {
+    if (
+      this.pathname === location.pathname &&
+      shallowEqual(this.query, location.query, func)
+    ) {
       return;
     }
     this.history.push({
@@ -144,11 +153,14 @@ export default class History {
     });
   };
 
-  replace = (location) => {
+  replace = location => {
     if (typeof location === 'string') {
       location = { pathname: location, query: {} };
     }
-    if (this.pathname === location.pathname && shallowEqual(this.query, location.query)) {
+    if (
+      this.pathname === location.pathname &&
+      shallowEqual(this.query, location.query)
+    ) {
       return;
     }
     this.history.push({
