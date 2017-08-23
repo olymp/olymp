@@ -1,7 +1,7 @@
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { bundle } from 'graphql-modules';
-import buildSchema from './schema-builder';
 import { values } from 'lodash';
+import buildSchema from './schema-builder';
 import * as scalarModules from './scalars';
 import * as defaultDirectives from './directives';
 
@@ -19,7 +19,7 @@ export default ({ modules = null, directives = {} }) => {
         }
         return store;
       },
-      { onBefore: [], onAfter: [] }
+      { onBefore: [], onAfter: [] },
     );
     const bundled = bundle(raw);
     schema = buildSchema({
