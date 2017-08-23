@@ -20,8 +20,8 @@ class PrintWindow extends Component {
       } else {
         window.print();
       }
-      setTimeout(onClose, 1);
-    }, 200);
+      setTimeout(onClose, 200);
+    }, 500);
   };
   render() {
     const { children, className } = this.props;
