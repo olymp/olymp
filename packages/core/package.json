@@ -1,5 +1,5 @@
 {
-  "version": "17.0.28",
+  "version": "17.0.29",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -60,6 +60,6 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^17.0.24"
+    "olymp-webpack-electron": "^17.0.29"
   }
 }
