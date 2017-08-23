@@ -187,5 +187,5 @@ if (command === 'dev') {
     stats.forEach(c => console.log(c.toString()));
   });
 } else if (command === 'start') {
-  require(path.resolve(process.cwd(), '.dist', 'node', 'main'));
+  require(path.resolve(process.cwd(), '.dist', 'node', 'app'));
 }
