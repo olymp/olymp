@@ -1,9 +1,8 @@
 {
-  "version": "17.0.24",
+  "version": "17.0.28",
   "name": "olymp-crypt",
   "description": "",
   "main": "./index.js",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT",
-  "dependencies": {}
+  "license": "MIT"
 }
