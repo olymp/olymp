@@ -8,7 +8,6 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 // const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
-const ElectronPlugin = require('electron-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 // const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
@@ -222,18 +221,21 @@ module.exports = ({
     config.plugins.push(
       new GenerateJsonPlugin('package.json', require('./electron/package-json')()),
     );
-    config.plugins.push(
-      new ElectronPlugin({
-        test: /^.\/electron/,
-        path: path.resolve(appRoot, '.dev', 'electron'),
-      }),
-    );
+    if (isDev) {
+      const ElectronPlugin = require('electron-webpack-plugin');
+      config.plugins.push(
+        new ElectronPlugin({
+          test: /^.\/electron/,
+          path: path.resolve(appRoot, '.dev', 'electron'),
+        }),
+      );
+    }
   }
   if (isProd) {
     // https://github.com/webpack/webpack/issues/5089
     // config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
   }
-  if (isNode) {
+  if (isNode && !isElectron) {
     config.plugins.push(
       new webpack.BannerPlugin({
         banner: 'require("source-map-support").install();',
@@ -250,7 +252,7 @@ module.exports = ({
         })
       );*/
     }
-  } else {
+  } else if (!isNode) {
     config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
