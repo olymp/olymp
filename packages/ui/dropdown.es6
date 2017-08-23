@@ -9,23 +9,20 @@ const dropdown = createComponent(
       marginLeft: 3,
     },
   }),
-  ({ onSelect, value, children, content, style, className }) =>
+  ({ onSelect, value, children, content, style, className, hideIcon }) =>
     (<Dropdown
       overlay={
-        <Menu
-          selectedKeys={[value]}
-          onSelect={({ selectedKeys }) => onSelect(selectedKeys[0])}
-        >
+        <Menu selectedKeys={[value]} onSelect={({ selectedKeys }) => onSelect(selectedKeys[0])}>
           {children}
         </Menu>
       }
     >
       <span style={style} className={className}>
         {content}
-        <Icon type="down" />
+        {!hideIcon && <Icon type="down" />}
       </span>
     </Dropdown>),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 dropdown.Item = Menu.Item;
 export default dropdown;

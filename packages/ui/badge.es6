@@ -7,9 +7,12 @@ export const Badge = createComponent(
     '> .ant-badge-status-default': {
       backgroundColor: color || theme.color,
     },
+    '> .ant-badge-status-text': {
+      marginLeft: 4,
+    },
   }),
   AntBadge,
-  ({ color, ...p }) => Object.keys(p)
+  ({ color, ...p }) => Object.keys(p),
 );
 Badge.defaultProps = {
   status: 'default',

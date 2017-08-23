@@ -3677,6 +3677,10 @@ node-libs-browser@^2.0.0:
     util "^0.10.3"
     vm-browserify "0.0.4"
 
+node-machine-id@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/node-machine-id/-/node-machine-id-1.1.9.tgz#811016b02a20c78cc461d37167d5c1deabe6aa05"
+
 node-notifier@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/node-notifier/-/node-notifier-5.1.2.tgz#2fa9e12605fa10009d44549d6fcd8a63dde0e4ff"
@@ -3828,9 +3832,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.0.26:
-  version "17.0.26"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.26.tgz#d10c52128494a79e4b58ac9aa8e72e7675e60997"
+olymp-fela@^17.0.28:
+  version "17.0.28"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.28.tgz#e506701c7397cc41492864efae4da155eb88007f"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.1.0"
@@ -3850,16 +3854,15 @@ olymp-fela@^17.0.26:
     react-portal "^3.1.0"
     react-portal-minimal "^4.0.2"
     react-transition-group "^2.2.0"
+    shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.0.26:
-  version "17.0.26"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.26.tgz#4c79ba86df306372704a886f53ebef8f5d5c3990"
+olymp-router@^17.0.28:
+  version "17.0.28"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.28.tgz#be1c32a4c1fe56a5a11c3e2c06f4be91de9017d4"
   dependencies:
     history "^4.6.3"
     olymp-utils "^17.0.26"
-    react-redux "^5.0.5"
-    redux "^3.7.2"
     route-parser "^0.0.5"
     shallowequal "^1.0.2"
 
@@ -3869,9 +3872,9 @@ olymp-utils@^17.0.26:
   dependencies:
     shallowequal "^1.0.2"
 
-olymp-webpack-electron@^17.0.24:
-  version "17.0.24"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-electron/-/olymp-webpack-electron-17.0.24.tgz#f11ca71c956c4b7dfafe9cd5f2d22b3cb2c21211"
+olymp-webpack-electron@^17.0.29:
+  version "17.0.29"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-electron/-/olymp-webpack-electron-17.0.29.tgz#201524baf2c8f7cfbb330bdb89ff5508f61a6551"
   dependencies:
     devtron "^1.4.0"
     electron "^1.7.5"
@@ -3882,6 +3885,7 @@ olymp-webpack-electron@^17.0.24:
     electron-publisher-s3 "^19.21.0"
     electron-updater "^2.8.7"
     electron-webpack-plugin "^2.0.0"
+    node-machine-id "^1.1.9"
 
 on-finished@~2.3.0:
   version "2.3.0"
@@ -4436,7 +4440,7 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react-redux@^5.0.5, react-redux@^5.0.6:
+react-redux@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
   dependencies:
@@ -4937,6 +4941,10 @@ shell-quote@1.6.1:
 shellwords@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
+
+shortid@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
