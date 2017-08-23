@@ -4,5 +4,9 @@
   "description": "",
   "main": "./index.js",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-webcrypto-ossl": "^1.0.30",
+    "text-encoding": "^0.6.4"
+  }
 }
