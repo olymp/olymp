@@ -1,5 +1,5 @@
 {
-  "version": "17.0.28",
+  "version": "17.0.31",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -14,7 +14,7 @@
     "olymp-collection": "^16.1.2",
     "olymp-fela": "^17.0.28",
     "olymp-google": "^17.0.26",
-    "olymp-graphql": "^17.0.24",
+    "olymp-graphql": "^17.0.31",
     "olymp-icons": "^17.0.28",
     "olymp-locale": "^17.0.28",
     "olymp-mail": "^16.0.50",
