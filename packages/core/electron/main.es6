@@ -3,6 +3,11 @@ const { autoUpdater } = require('electron-updater');
 const { Menu, app, BrowserWindow, crashReporter, dialog } = require('electron');
 require('electron-debug')({ enabled: true });
 const log = require('electron-log');
+const { machineIdSync } = require('node-machine-id');
+
+log.transports.file.level = 'info';
+global.MACHINE_ID_ORIGINAL = machineIdSync({ original: true });
+global.MACHINE_ID = machineIdSync({ original: false });
 
 if (process.env.CRASHREPORT_URL) {
   crashReporter.start({

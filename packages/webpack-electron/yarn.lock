@@ -1466,6 +1466,10 @@ node-emoji@^1.8.1:
   dependencies:
     lodash.toarray "^4.4.0"
 
+node-machine-id@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/node-machine-id/-/node-machine-id-1.1.9.tgz#811016b02a20c78cc461d37167d5c1deabe6aa05"
+
 node-uuid@~1.4.0:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"

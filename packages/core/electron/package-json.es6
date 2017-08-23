@@ -15,6 +15,7 @@ module.exports = () => ({
     {},
     {
       devtron: dependecies.devtron,
+      'node-machine-id': dependecies['node-machine-id'],
       'electron-debug': dependecies['electron-debug'],
       'electron-log': dependecies['electron-log'],
       'electron-updater': dependecies['electron-updater'],
