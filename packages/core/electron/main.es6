@@ -1,6 +1,6 @@
 const elecApp = require('@electron');
 const { autoUpdater } = require('electron-updater');
-const { Menu, app, BrowserWindow, crashReporter, dialog } = require('electron');
+const { Menu, app, BrowserWindow, crashReporter, dialog, shell } = require('electron');
 require('electron-debug')({ enabled: true });
 const log = require('electron-log');
 const { machineIdSync } = require('node-machine-id');
@@ -29,11 +29,12 @@ const url = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+const name = app.getName();
 const template = [
   {
-    label: 'Programm',
+    label: name,
     submenu: [
-      { label: 'About', selector: 'orderFrontStandardAboutPanel:' },
+      { label: `Über ${name}`, selector: 'orderFrontStandardAboutPanel:' },
       { type: 'separator' },
       {
         label: 'Beenden',
@@ -54,6 +55,17 @@ const template = [
       { label: 'Kopieren', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
       { label: 'Einfügen', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
       { label: 'Alles Einfügen', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+    ],
+  },
+  {
+    label: 'Hilfe',
+    submenu: [
+      {
+        label: 'Log-Datei',
+        click() {
+          shell.openItem(log.transports.file.file);
+        },
+      },
     ],
   },
 ];
