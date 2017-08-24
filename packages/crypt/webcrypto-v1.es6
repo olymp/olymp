@@ -86,7 +86,7 @@ export const decrypt = async (ciphertext, password) => {
 };
 
 /**
- * Sometimes an encrypt call produces invalid output that can not be decrypted, this fc will repeat until output is produced that works (max 5x)
+ * Sometimes an encrypt call produces invalid output that can not be decrypted, this fc will repeat until output is produced that works (max 10x)
  *
  * @param   {String} plaintext - Plaintext to be encrypted.
  * @param   {String} password - Password to use to encrypt plaintext.
@@ -96,8 +96,8 @@ export const decrypt = async (ciphertext, password) => {
  *   const ciphertext = await aesGcmEncrypt('my secret text', 'pw');
  */
 export const encryptUntilWorks = async (json, password, pass = 0) => {
-  if (pass === 5) {
-    throw new Error('Could not encrypt after 5 tries');
+  if (pass === 10) {
+    throw new Error('Could not encrypt after 10 tries');
   }
   const str = await encrypt(json, password);
   const check = await decrypt(str, password);
