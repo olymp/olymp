@@ -1,10 +1,9 @@
 import React, { Children } from 'react';
-import { createComponent } from 'olymp-fela';
-import { Button as AntButton, Modal as AntModal } from 'antd';
+import { createComponent, getAntStyle } from 'olymp-fela';
+import { Button as AntButton, Modal as AntModal, Spin } from 'antd';
 import Portal from 'react-portal';
 import cn from 'classnames';
 import { inject, observer } from 'mobx-react';
-import { Spin } from 'antd';
 import ReactModal2 from 'react-modal2';
 import tinycolor from 'tinycolor2';
 
@@ -118,6 +117,7 @@ export const Modal = inject('$theme')(
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
+    ...getAntStyle({ theme }),
     backgroundColor: theme.color,
     background: `linear-gradient(0deg, ${theme.colorStart ||
       tinycolor(theme.color)

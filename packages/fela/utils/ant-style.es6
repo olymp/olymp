@@ -33,8 +33,14 @@ export default ({ theme }) => {
     },
     '& .ant-modal-body': {},
     '& .ant-form': {},
+    '& .ant-select-selection--single': {
+      height: 'initial',
+    },
+    '& .ant-select-auto-complete.ant-select .ant-select-selection__rendered': {
+      lineHeight: '32px',
+    },
     '& form.ant-form.ant-form-horizontal .ant-row.ant-form-item': {
-      marginBottom: 12,
+      marginBottom: 10,
     },
     '& form.ant-form.ant-form-horizontal': {},
     '& .ant-pagination-item > a': {
