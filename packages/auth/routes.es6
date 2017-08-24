@@ -1,19 +1,11 @@
 import React from 'react';
-import { withRouter } from 'olymp-router';
-import {
-  AuthRegister,
-  AuthLogin,
-  AuthConfirm,
-  AuthReset,
-  AuthForgot,
-  AuthStatus,
-} from './views';
+import { AltSwitch, AltRoute, withRouter } from 'olymp-router';
+import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus } from './views';
 import { AuthInvitations } from './admin';
-import { AltSwitch, AltRoute } from 'olymp-router';
 import withAuth from './with-auth';
 
 export default withAuth(
-  withRouter(props => {
+  withRouter((props) => {
     const { query, router, pathname, register, force, auth } = props;
     const texts = {
       forgot: `Wir haben eine E-Mail an ${query[
@@ -23,73 +15,67 @@ export default withAuth(
         'status-register'
       ]} geschickt. Bitte befolgen Sie den Anweisungen darin um die Registrierung abzuschließen.`,
     };
-    const redirect = newQuery =>
-      router.push({ pathname, query: { ...query, ...newQuery } });
+    const redirect = newQuery => router.push({ pathname, query: { ...query, ...newQuery } });
     const inQuery = key => query[key] !== undefined;
     const p = { pathname, onClose: () => router.push(pathname) };
 
     return (
       <AltSwitch>
-        <AltRoute
-          match={inQuery('invitations')}
-          render={() => <AuthInvitations isOpen {...p} />}
-        />
+        <AltRoute match={inQuery('invitations')} render={() => <AuthInvitations isOpen {...p} />} />
         <AltRoute
           match={inQuery('login')}
           render={() =>
-            <AuthLogin
+            (<AuthLogin
               {...p}
               isOpen
               email={query.login}
               totp={inQuery('totp')}
               onTotp={() => redirect({ totp: null })}
-            />}
+            />)}
         />
         <AltRoute
           match={inQuery('register')}
           render={() =>
-            <AuthRegister
+            (<AuthRegister
               {...p}
               isOpen
               token={query.register}
               onOk={({ email, token }) =>
-                token
+                (token
                   ? redirect({ register: undefined, login: email })
-                  : redirect({ register: undefined, 'status-register': email })}
+                  : redirect({ register: undefined, 'status-register': email }))}
               extraFields={register}
-            />}
+            />)}
         />
         <AltRoute
           match={inQuery('forgot')}
           render={() =>
-            <AuthForgot
+            (<AuthForgot
               {...p}
               isOpen
               email={query.forgot}
-              onOk={({ email }) =>
-                redirect({ forgot: undefined, 'status-forgot': email })}
-            />}
+              onOk={({ email }) => redirect({ forgot: undefined, 'status-forgot': email })}
+            />)}
         />
         <AltRoute
           match={inQuery('reset')}
           render={() =>
-            <AuthReset
+            (<AuthReset
               {...p}
               isOpen
               token={query.reset}
               onOk={({ email }) => redirect({ reset: undefined, login: email })}
-            />}
+            />)}
         />
         <AltRoute
           match={inQuery('confirm')}
           render={() =>
-            <AuthConfirm
+            (<AuthConfirm
               {...p}
               isOpen
               token={query.confirm}
-              onOk={({ email }) =>
-                redirect({ confirm: undefined, login: email })}
-            />}
+              onOk={({ email }) => redirect({ confirm: undefined, login: email })}
+            />)}
         />
         <AltRoute
           match={inQuery('status-forgot')}
@@ -103,15 +89,15 @@ export default withAuth(
           !auth.user &&
           <AltRoute
             render={() =>
-              <AuthLogin
+              (<AuthLogin
                 {...p}
                 isOpen
                 email={query.login}
                 totp={inQuery('totp')}
                 onTotp={() => redirect({ totp: null })}
-              />}
+              />)}
           />}
       </AltSwitch>
     );
-  })
+  }),
 );
