@@ -4,10 +4,12 @@ const { Menu, app, BrowserWindow, crashReporter, dialog } = require('electron');
 require('electron-debug')({ enabled: true });
 const log = require('electron-log');
 const { machineIdSync } = require('node-machine-id');
+const os = require('os');
 
 log.transports.file.level = 'info';
 global.MACHINE_ID_ORIGINAL = machineIdSync({ original: true });
 global.MACHINE_ID = machineIdSync({ original: false });
+global.MACHINE_NAME = os.hostname();
 
 if (process.env.CRASHREPORT_URL) {
   crashReporter.start({
@@ -27,27 +29,34 @@ const url = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-const template = [];
-if (process.platform === 'darwin') {
-  // OS X
-  const name = app.getName();
-  template.unshift({
-    label: name,
+const template = [
+  {
+    label: 'Programm',
     submenu: [
+      { label: 'About', selector: 'orderFrontStandardAboutPanel:' },
+      { type: 'separator' },
       {
-        label: `About ${name}`,
-        role: 'about',
-      },
-      {
-        label: 'Quit',
+        label: 'Beenden',
         accelerator: 'Command+Q',
         click() {
           app.quit();
         },
       },
     ],
-  });
-}
+  },
+  {
+    label: 'Bearbeiten',
+    submenu: [
+      { label: 'Rückgängig', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+      { label: 'Wiederholen', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+      { type: 'separator' },
+      { label: 'Ausschneiden', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+      { label: 'Kopieren', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+      { label: 'Einfügen', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+      { label: 'Alles Einfügen', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+    ],
+  },
+];
 
 function createWindow() {
   log.info('Starting');
