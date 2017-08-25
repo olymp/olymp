@@ -59,7 +59,13 @@ let targets = [];
 if (argv.targets) {
   targets = argv.targets.split(',');
 } else if (argv.electron) {
-  targets = ['node', 'electron-main', 'electron-renderer'];
+  if (SERVERLESS) {
+    targets = ['electron-main', 'electron-renderer'];
+  } else {
+    targets = ['node', 'electron-main', 'electron-renderer'];
+  }
+} else if (SERVERLESS) {
+  targets = ['web'];
 } else {
   targets = ['node', 'web'];
 }
@@ -67,7 +73,7 @@ if (command === 'dev') {
   const port = parseInt(PORT, 10);
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
 
-  const devPort = port + 1;
+  const devPort = SERVERLESS ? port : port + 1;
   const devUrl = serverless ? url : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
   const watch = {
