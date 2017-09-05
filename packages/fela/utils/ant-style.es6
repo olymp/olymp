@@ -148,6 +148,9 @@ export default ({ theme }) => {
     '& .ant-input-preSuffix-wrapper:hover .ant-input': {
       borderColor: `${transparent}`,
     },
+    '& .ant-menu-item.right': {
+      float: 'right',
+    },
     '& .ant-menu-item > a:hover': {
       color: `${transparent}`,
       textDecoration: 'none',

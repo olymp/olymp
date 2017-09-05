@@ -165,7 +165,7 @@ module.exports = ({
   }
 
   // inline-source-map for web-dev
-  config.devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
+  config.devtool = isProd ? 'cheap-module-source-map' : 'cheap-module-inline-source-map';
 
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {

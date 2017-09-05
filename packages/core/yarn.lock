@@ -3832,9 +3832,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.0.28:
-  version "17.0.28"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.28.tgz#e506701c7397cc41492864efae4da155eb88007f"
+olymp-fela@^17.0.37:
+  version "17.0.37"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.37.tgz#37d281b36a0a70b6ab8e9008262769d811cf47c3"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.1.0"
@@ -4750,6 +4750,10 @@ require-main-filename@^1.0.1:
 requires-port@1.0.x, requires-port@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+
+reselect@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
 
 resolve-dir@^1.0.0:
   version "1.0.1"

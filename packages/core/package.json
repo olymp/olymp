@@ -51,6 +51,7 @@
     "react-loadable": "^4.0.4",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "reselect": "^3.0.1",
     "serialize-javascript": "^1.3.0",
     "source-map-support": "^0.4.15",
     "start-server-webpack-plugin": "^2.2.0",
