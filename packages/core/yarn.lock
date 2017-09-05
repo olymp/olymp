@@ -138,9 +138,23 @@ anymatch@^1.3.0:
     micromatch "^2.1.5"
     normalize-path "^2.0.0"
 
-apollo-client@^1.4.0, apollo-client@^1.9.1:
+apollo-client@^1.4.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.9.1.tgz#9e6a383605572c755038cf5d7fdac9382bcdc040"
+  dependencies:
+    apollo-link-core "^0.5.0"
+    graphql "^0.10.0"
+    graphql-anywhere "^3.0.1"
+    graphql-tag "^2.0.0"
+    redux "^3.4.0"
+    symbol-observable "^1.0.2"
+    whatwg-fetch "^2.0.0"
+  optionalDependencies:
+    "@types/graphql" "0.10.2"
+
+apollo-client@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.9.2.tgz#a95b38ca846e881bba1b59b0e3fbf82abfd7f23d"
   dependencies:
     apollo-link-core "^0.5.0"
     graphql "^0.10.0"
@@ -379,7 +393,7 @@ babel-polyfill@^6.23.0:
     core-js "^2.5.0"
     regenerator-runtime "^0.10.5"
 
-babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@6.26.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -1069,6 +1083,12 @@ crypto-random-string@^1.0.0:
 css-in-js-utils@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-1.0.3.tgz#9ac7e02f763cf85d94017666565ed68a5b5f3215"
+  dependencies:
+    hyphenate-style-name "^1.0.2"
+
+css-in-js-utils@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-2.0.0.tgz#5af1dd70f4b06b331f48d22a3d86e0786c0b9435"
   dependencies:
     hyphenate-style-name "^1.0.2"
 
@@ -1990,6 +2010,13 @@ fela-dom@^5.0.6:
     fela-tools "^5.0.5"
     fela-utils "^5.0.5"
 
+fela-dom@^5.0.8:
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/fela-dom/-/fela-dom-5.0.8.tgz#e793596b01075aec0b89b67935db70a2d6dc0da8"
+  dependencies:
+    fela-tools "^5.0.7"
+    fela-utils "^6.0.1"
+
 fela-monolithic@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/fela-monolithic/-/fela-monolithic-5.0.5.tgz#d1e8710e94a464418e3fac654ff82d9a3dbcfb68"
@@ -2065,11 +2092,24 @@ fela-tools@^5.0.5:
     css-in-js-utils "^1.0.3"
     fela-utils "^5.0.5"
 
+fela-tools@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/fela-tools/-/fela-tools-5.0.7.tgz#46d3c2f64947dd03e4acaee7d91456ebf943da39"
+  dependencies:
+    css-in-js-utils "^2.0.0"
+    fela-utils "^6.0.1"
+
 fela-utils@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/fela-utils/-/fela-utils-5.0.5.tgz#6a89290c8aa6866d9a0b98f41408485edc454ada"
   dependencies:
     css-in-js-utils "^1.0.3"
+
+fela-utils@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/fela-utils/-/fela-utils-6.0.1.tgz#eb9c50a0fd984a194e2b984d176237ee349dcb7e"
+  dependencies:
+    css-in-js-utils "^2.0.0"
 
 fela@^5.1.0:
   version "5.1.0"
@@ -2078,6 +2118,14 @@ fela@^5.1.0:
     css-in-js-utils "^1.0.3"
     fela-tools "^5.0.5"
     fela-utils "^5.0.5"
+
+fela@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/fela/-/fela-5.2.0.tgz#62a88de0962f0374429f3aed284025cf032b6e36"
+  dependencies:
+    css-in-js-utils "^2.0.0"
+    fela-tools "^5.0.7"
+    fela-utils "^6.0.1"
 
 figures@^2.0.0:
   version "2.0.0"
@@ -2288,9 +2336,9 @@ generate-function@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/generate-function/-/generate-function-2.0.0.tgz#6858fe7c0969b7d4e9093337647ac79f60dfbe74"
 
-generate-json-webpack-plugin@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/generate-json-webpack-plugin/-/generate-json-webpack-plugin-0.2.1.tgz#71618ff3aa915faf4d553f6c0b9c061d138ca91a"
+generate-json-webpack-plugin@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/generate-json-webpack-plugin/-/generate-json-webpack-plugin-0.2.2.tgz#fdb42821044b5b3fc3f0240ac26c25f7b3795db0"
 
 generate-object-property@^1.1.0:
   version "1.2.0"
@@ -4314,9 +4362,9 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7, rc@^1.2.1:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-apollo@^1.4.14:
-  version "1.4.14"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.14.tgz#86af913887e447710e4e5d85ca6277b35f1a3b82"
+react-apollo@^1.4.15:
+  version "1.4.15"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.15.tgz#3a213d11b847da7db03c4619ac640df734f9c4b5"
   dependencies:
     apollo-client "^1.4.0"
     graphql-tag "^2.0.0"
@@ -4340,12 +4388,11 @@ react-deep-force-update@^2.0.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.0.tgz#1c5f36ea96bcbf411605ec063f36c568ea4df86c"
 
-react-dev-utils@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-3.1.1.tgz#09ae7209a81384248db56547e718e65bd3b20eb5"
+react-dev-utils@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-4.0.1.tgz#106ae3d29f811c169d459bb9215a5933b7e11fb6"
   dependencies:
     address "1.0.2"
-    anser "1.4.1"
     babel-code-frame "6.22.0"
     chalk "1.1.3"
     cross-spawn "5.1.0"
@@ -4354,10 +4401,10 @@ react-dev-utils@^3.1.1:
     filesize "3.5.10"
     global-modules "1.0.0"
     gzip-size "3.0.0"
-    html-entities "1.2.1"
     inquirer "3.2.1"
     is-root "1.0.0"
     opn "5.1.0"
+    react-error-overlay "^2.0.1"
     recursive-readdir "2.2.1"
     shell-quote "1.6.1"
     sockjs-client "1.1.4"
@@ -4368,12 +4415,42 @@ react-dom@^0.14.0:
   version "0.14.9"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.14.9.tgz#05064a3dcf0fb1880a3b2bfc9d58c55d8d9f6293"
 
+"react-dom@^15 || ^16":
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.10"
+
+react-error-overlay@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-2.0.1.tgz#622e3cc85cdfb4bcfc8e93f47ddcddd38e1e176e"
+  dependencies:
+    anser "1.4.1"
+    babel-code-frame "6.22.0"
+    babel-runtime "6.26.0"
+    html-entities "1.2.1"
+    react "^15 || ^16"
+    react-dom "^15 || ^16"
+    settle-promise "1.0.0"
+    source-map "0.5.6"
+
 react-fela@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.2.0.tgz#d52d5006f7bae3981300ae7c946d9e9751adf4f8"
   dependencies:
     fela "^5.1.0"
     fela-dom "^5.0.6"
+    prop-types "^15.5.8"
+
+react-fela@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.3.0.tgz#0d90ed97b5d6f74c19c74c68ab193d815c75342b"
+  dependencies:
+    fela "^5.2.0"
+    fela-dom "^5.0.8"
     prop-types "^15.5.8"
 
 react-frame-component@^1.1.1:
@@ -4388,9 +4465,9 @@ react-gateway@^2.7.0:
     react "^0.14.2 || ^15.0.0-0"
     react-prop-types "^0.4.0"
 
-react-helmet@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.1.3.tgz#cd40626593a29eecf684b6d38d711f44c48188af"
+react-helmet@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
   dependencies:
     deep-equal "^1.0.1"
     object-assign "^4.1.1"
@@ -4408,9 +4485,9 @@ react-hot-loader@next:
     redbox-react "^1.3.6"
     source-map "^0.4.4"
 
-react-loadable@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-4.0.4.tgz#ae96837729eeb7fd0d3bb1dc01dc0053ac147874"
+react-loadable@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-4.0.5.tgz#225eba40a0e67cc5698bcb5db6e783f0d3a9e729"
   dependencies:
     import-inspector "^2.0.0"
     is-webpack-bundle "^1.0.0"
@@ -4480,7 +4557,7 @@ react@^0.14.0:
     envify "^3.0.0"
     fbjs "^0.6.1"
 
-"react@^0.14.2 || ^15.0.0-0":
+"react@^0.14.2 || ^15.0.0-0", "react@^15 || ^16":
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:
@@ -4913,6 +4990,10 @@ setprototypeof@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.0.3.tgz#66567e37043eeb4f04d91bd658c0cbefb55b8e04"
 
+settle-promise@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/settle-promise/-/settle-promise-1.0.0.tgz#697adb58b821f387ce2757c06efc9de5f0ee33d8"
+
 sha.js@^2.4.0, sha.js@^2.4.8:
   version "2.4.8"
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.8.tgz#37068c2c476b6baf402d14a49c67f597921f634f"
@@ -4999,6 +5080,12 @@ source-list-map@^2.0.0:
 source-map-support@^0.4.15, source-map-support@^0.4.16:
   version "0.4.16"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.16.tgz#16fecf98212467d017d586a2af68d628b9421cd8"
+  dependencies:
+    source-map "^0.5.6"
+
+source-map-support@^0.4.17:
+  version "0.4.17"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.17.tgz#6f2150553e6375375d0ccb3180502b78c18ba430"
   dependencies:
     source-map "^0.5.6"
 
