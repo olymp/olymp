@@ -1,16 +1,16 @@
 import React from 'react';
 import { object, func, bool } from 'prop-types';
-import { SlateMate, withBlockTypes } from 'olymp-slate';
-import { queryPage } from '../gql';
 import { mapProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
+import Ory from './ory';
+import { queryPage } from '../gql';
 
-const Page = withBlockTypes(props =>
-  (<ContentLoader isLoading={props.isLoading}>
-    <SlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
+const Page = props => (
+  <ContentLoader isLoading={props.isLoading}>
+    <Ory {...props} showUndo key={props.id + (props.bindingId || '')}>
       {props.children}
-    </SlateMate>
-  </ContentLoader>)
+    </Ory>
+  </ContentLoader>
 );
 Page.propTypes = {
   item: object,
@@ -23,10 +23,10 @@ Page.defaultProps = {
 };
 Page.WithData = queryPage(
   mapProps(({ item, data, ...rest }) => ({
-    value: item && item.blocks,
+    value: item && item.ory,
     isLoading: data.loading,
     item,
     ...rest,
-  }))(Page)
+  }))(Page),
 );
 export default Page;

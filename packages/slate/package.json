@@ -1,0 +1,23 @@
+{
+  "version": "16.1.2",
+  "name": "olymp-slate",
+  "description": "",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "react-portal": "^3.1.0",
+    "slate": "^0.20.6",
+    "slate-insert-block-on-enter": "^0.0.3",
+    "slate-trailing-block": "^0.2.4"
+  },
+  "devDependencies": {
+    "@storybook/addon-info": "^3.0.0-rc.2",
+    "@storybook/addon-knobs": "^3.0.0-rc.2",
+    "@storybook/react": "^3.0.0-rc.2",
+    "raw-loader": "^0.5.1"
+  }
+}

@@ -14,12 +14,10 @@ import Page from '../page';
 export default class PageSidebar extends Component {
   state = { tab: 0 };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     if (
-      (props.query['@page'] !== this.props.query['@page'] &&
-        props.query.modal !== null) ||
-      (props.query.parent !== this.props.query.parent &&
-        props.query['@page'] === 'new')
+      (props.query['@page'] !== this.props.query['@page'] && props.query.modal !== null) ||
+      (props.query.parent !== this.props.query.parent && props.query['@page'] === 'new')
     ) {
       this.setState({ tab: 1 });
     }
@@ -29,6 +27,9 @@ export default class PageSidebar extends Component {
     }
   };
 
+  onChange = (ory) => {
+    this.props.form.setFieldsValue({ ory });
+  };
   render() {
     const {
       form,
@@ -45,8 +46,7 @@ export default class PageSidebar extends Component {
       maxWidth,
     } = this.props;
     const { tab } = this.state;
-    let item =
-      this.props.item || flatNavigation.find(page => page.slug === '/');
+    let item = this.props.item || flatNavigation.find(page => page.slug === '/');
 
     const value = query['@page'] || item.id;
     if (value === 'new') {
@@ -54,35 +54,32 @@ export default class PageSidebar extends Component {
     }
 
     const title = value === 'new' ? 'Neue Seite' : item.name;
-    const description =
-      value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
-    const isPage =
-      (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
-    const P = form.getFieldDecorator('blocks', {
-      initialValue: item.blocks,
-    })(
+    const description = value === 'new' ? 'Neue Seite erstellen' : 'Seite bearbeiten';
+    const isPage = (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
+    form.getFieldDecorator('ory', {
+      initialValue: item.ory,
+    });
+    const P = (
       <Page
+        value={form.getFieldValue('ory') || item.ory}
         readOnly={!isPage}
         binding={binding}
         bindingId={bindingId}
         bindingObj={bindingObj}
+        onChange={this.onChange}
       />
     );
 
     return (
       <SplitView maxWidth={maxWidth} center>
         <Gateway into="quick">
-          {form.isFieldsTouched() &&
-            <Menu.Item key="save">
-              <a href="javascript:;" onClick={save}>
-                <Icon type="save" />
-              </a>
-            </Menu.Item>}
+          <Menu.Item key="save">
+            <a href="javascript:;" onClick={save}>
+              <Icon type="save" />
+            </a>
+          </Menu.Item>
         </Gateway>
-        <Prompt
-          when={form.isFieldsTouched()}
-          message={() => 'Änderungen verwerfen?'}
-        />
+        <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
         <Sidebar
           isOpen
           onClose={() => router.push(pathname)}

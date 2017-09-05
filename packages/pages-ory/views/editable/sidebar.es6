@@ -12,16 +12,11 @@ const TabPane = createComponent(
     borderBottom: border(theme),
   }),
   Tabs.TabPane,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
-const PageTree = ({ form, item, items, navigation, tab, onTabClick }) =>
-  <Tabs
-    activeKey={tab}
-    onTabClick={onTabClick}
-    size="small"
-    tabBarStyle={{ marginBottom: 0 }}
-  >
+const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
+  <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
     <TabPane tab="Navigation" key="0">
       <Panel>
         <Tree items={navigation} selected={[item.id || item.pathname]} />
@@ -30,17 +25,8 @@ const PageTree = ({ form, item, items, navigation, tab, onTabClick }) =>
     <TabPane tab="Seite" key="1">
       <PageForm item={item} items={items} form={form} />
     </TabPane>
-    {/* <TabPane tab="Collection" key="2">
-          <Panel paddingX={16}>
-            Hier kommt bei Bindings quasi der Parent rein
-          </Panel>
-        </TabPane>
-        <TabPane tab="Text" key="2">
-          <Panel paddingX={16}>
-            <SlateTree form={form} item={item} field="blocks" label={null} />
-          </Panel>
-        </TabPane> */}
-  </Tabs>;
+  </Tabs>
+);
 PageTree.propTypes = {
   item: PropTypes.object,
   form: PropTypes.object,
