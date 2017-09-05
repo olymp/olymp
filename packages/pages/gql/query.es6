@@ -1,8 +1,7 @@
 import { gql, graphql } from 'olymp-utils';
 
 const isNew = props => props.query['@page'] === 'new';
-const getId = (id, query) =>
-  query['@page'] && query['@page'] !== 'new' ? query['@page'] : id;
+const getId = (id, query) => (query['@page'] && query['@page'] !== 'new' ? query['@page'] : id);
 
 const queryOne = gql`
   query page($id: String) {
@@ -23,8 +22,8 @@ const queryOne = gql`
       sorting
       aliasId
       href
-      blocks
       state
+      ory
     }
   }
 `;
@@ -74,5 +73,5 @@ export const queryPages = graphql(
       items: data.items || [],
       data,
     }),
-  }
+  },
 );

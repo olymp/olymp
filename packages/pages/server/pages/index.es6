@@ -7,9 +7,7 @@ export default () => ({
     mutations: {
       reorderPages: (source, args, { monk }) =>
         Promise.all(
-          args.ids.map((id, order) =>
-            monk.collection('page').update({ id }, { $set: { order } })
-          )
+          args.ids.map((id, order) => monk.collection('page').update({ id }, { $set: { order } })),
         ),
     },
   },
@@ -61,7 +59,7 @@ export default () => ({
       name: String
       description: String
       slug: String
-      blocks: Blocks
+      ory: Blocks
       text: String
     }
     type Settings @collection {

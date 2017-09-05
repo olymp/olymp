@@ -8,7 +8,6 @@ import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { Analytics } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
-import { Ory } from 'olymp-ory';
 import { GatewayDest } from 'react-gateway';
 import NavigationVertical from './navigation';
 import { SettingsRoute } from './settings';
@@ -117,10 +116,6 @@ export default class CMSAuth extends Component {
         />
         <SwitchContainer>
           <AltSwitch>
-            <AltRoute
-              match={query['@ory'] !== undefined}
-              render={() => <Ory {...this.props} />}
-            />
             <AltRoute
               match={query['@template'] !== undefined}
               render={() => <TemplateRoute {...this.props} />}
