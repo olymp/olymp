@@ -21,7 +21,7 @@ const filterPublic = pages =>
 
 export default ({ auth, theme }) => (Wrapped) => {
   // Container for authed users
-  @withStores
+  @withStores({ theme })
   @withRouter
   @withLocale(LANG)
   @withAuth
@@ -35,9 +35,11 @@ export default ({ auth, theme }) => (Wrapped) => {
       return (
         <ThemeProvider theme={theme}>
           <LightboxProvider>
-            {!auth.user
-              ? <NoAuth {...this.props} navigation={nav} wrapper={Wrapped} />
-              : <IfAuth {...this.props} navigation={nav} wrapper={Wrapped} />}
+            {!auth.user ? (
+              <NoAuth {...this.props} navigation={nav} wrapper={Wrapped} />
+            ) : (
+              <IfAuth {...this.props} navigation={nav} wrapper={Wrapped} theme={theme} />
+            )}
           </LightboxProvider>
         </ThemeProvider>
       );

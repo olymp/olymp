@@ -8,7 +8,7 @@ import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { Analytics } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
-// import { Ory } from 'olymp-ory';
+import { Ory } from 'olymp-ory';
 import { GatewayDest } from 'react-gateway';
 import NavigationVertical from './navigation';
 import { SettingsRoute } from './settings';
@@ -25,7 +25,7 @@ const Container = createComponent(
     backgroundColor: '#f5f5f5',
   }),
   'div',
-  p => Object.keys(p)
+  []
 );
 
 const SwitchContainer = createComponent(
@@ -74,6 +74,7 @@ export default class CMSAuth extends Component {
       router,
       pathname,
       ua,
+      theme,
       wrapper: Wrapped,
     } = this.props;
     const { deviceWidth } = this.state;
@@ -86,7 +87,7 @@ export default class CMSAuth extends Component {
       'new';
 
     return (
-      <Container>
+      <Container theme={theme}>
         <Lightbox />
         <GatewayDest name="modal" />
         <Hotjar id={process.env.HOTJAR} />
@@ -116,10 +117,10 @@ export default class CMSAuth extends Component {
         />
         <SwitchContainer>
           <AltSwitch>
-            {/* <AltRoute
-                match={query['@ory'] !== undefined}
-                render={() => <Ory {...this.props} />}
-              />*/}
+            <AltRoute
+              match={query['@ory'] !== undefined}
+              render={() => <Ory {...this.props} />}
+            />
             <AltRoute
               match={query['@template'] !== undefined}
               render={() => <TemplateRoute {...this.props} />}
@@ -127,21 +128,21 @@ export default class CMSAuth extends Component {
             <AltRoute
               match={!!collection && query.modal === undefined}
               render={() =>
-                <CollectionRoute
+                (<CollectionRoute
                   {...this.props}
                   id={collectionId}
                   typeName={collectionName}
                   Wrapped={Wrapped}
-                />}
+                />)}
             />
             <AltRoute
               match={query['@page'] !== undefined}
               render={() =>
-                <EditablePageRoute
+                (<EditablePageRoute
                   {...this.props}
                   deviceWidth={deviceWidth}
                   Wrapped={Wrapped}
-                />}
+                />)}
             />
             <AltRoute
               match={query['@media'] !== undefined}
@@ -165,17 +166,17 @@ export default class CMSAuth extends Component {
             />
             <AltRoute
               render={rest =>
-                <PageRoute
+                (<PageRoute
                   {...rest}
                   {...this.props}
                   key={location.key}
                   navigation={navigation}
                   Wrapped={Wrapped}
-                />}
+                />)}
             />
           </AltSwitch>
         </SwitchContainer>
-        {ua.getBrowser().name !== 'Chrome' &&
+        {ua.getBrowser().name === 'IE' &&
           <Footer>
             <p>
               Wir empfehlen für die Verwendung von Olymp (und darüber hinaus)
@@ -184,10 +185,6 @@ export default class CMSAuth extends Component {
                 Chrome
               </a>.
             </p>
-            {ua.getBrowser().name === 'IE' &&
-              <Warning>
-                Der Internet Explorer ist ausdrücklich nicht unterstützt!
-              </Warning>}
           </Footer>}
       </Container>
     );

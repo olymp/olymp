@@ -6,7 +6,7 @@ import AuthStore from 'olymp-auth/store';
 import { HistoryStore } from 'olymp-router';
 import { ThemeStore } from 'olymp-fela';
 
-export default WrappedComponent =>
+export default ({ theme }) => WrappedComponent =>
   @withApollo
     class WithStores extends Component {
     static contextTypes = {
@@ -21,6 +21,10 @@ export default WrappedComponent =>
         $auth: new AuthStore(args),
         $theme: new ThemeStore(args),
       };
+      console.log(props);
+      if (theme) {
+        this.stores.$theme.add(theme);
+      }
       Object.keys(this.stores).forEach((key) => {
         this.stores[key].client = props.client;
         this.stores[key].stores = this.stores;
