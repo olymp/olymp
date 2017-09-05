@@ -21,7 +21,9 @@ export default withRouter(({ path, exact, render, component, ...rest }) => {
       ...rest,
       match: {
         ...params,
-        path: params.splat ? pathname.substr(0, pathname.length - params.splat.length) : pathname,
+        path: params.splat
+          ? pathname.substr(0, pathname.length - params.splat.length)
+          : pathname,
       },
     };
     if (component) {

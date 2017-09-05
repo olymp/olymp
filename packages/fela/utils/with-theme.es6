@@ -1,31 +1,32 @@
 import React, { Component } from 'react';
-import { inject } from 'mobx-react';
+import { setTheme } from './redux';
 
-export default getTheme => (WrappedComponent) => {
-  @inject('$theme')
-  class WithThemeComponent extends Component {
+export default getColorFromProps => (WrappedComponent) => {
+  @setTheme
+  class WithColorComponent extends Component {
+    color = null;
     constructor(props) {
       super(props);
-      this.setTheme(props);
+      this.setColor(props);
     }
-    setTheme = (props = this.props) => {
-      const { $theme } = this.props;
-      const newTheme = typeof getTheme === 'function' ? getTheme(props) : getTheme;
-      if (newTheme !== this.oldTheme) {
-        this.oldTheme = newTheme;
-        this.themeKey = $theme.add(newTheme || {}, this.themeKey);
+    setColor = (props = this.props) => {
+      const { setTheme } = this.props;
+      const newColor = getColorFromProps(props) || null;
+      if (newColor !== this.color) {
+        setTheme({ color: newColor });
+        this.color = newColor;
       }
     };
     componentWillUnmount() {
-      const { $theme } = this.props;
-      $theme.remove(this.themeKey);
+      const { setTheme } = this.props;
+      setTheme({});
     }
     componentWillReceiveProps(props) {
-      this.setTheme(props);
+      this.setColor(props);
     }
     render() {
       return <WrappedComponent {...this.props} />;
     }
   }
-  return WithThemeComponent;
+  return WithColorComponent;
 };

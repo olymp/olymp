@@ -1,52 +1,30 @@
 import React, { Component } from 'react';
-import { observer, inject } from 'mobx-react';
+import { connect } from 'react-redux';
 import { urlToLocation } from './utils';
-import { pick } from 'lodash';
+import { createPush } from './actions';
 
-@inject('$history')
-@observer
+@connect(null, dispatch => ({
+  push: createPush(dispatch),
+}))
 export default class Link extends Component {
   constructor(props) {
     super(props);
-    this.setLocation(props);
+    this.location = urlToLocation(props.to);
   }
   componentWillReceiveProps(props) {
-    this.setLocation(props);
-  }
-  setLocation(props) {
-    if (props.to) {
-      this.location = urlToLocation(props.to);
-    } else if (props.pathname || props.query) {
-      const pathname = props.pathname || props.$history.pathname;
-      let query;
-      if (props.query === undefined) {
-        query = props.$history.query;
-      } else if (props.query === null) {
-        query = {};
-      } else if (typeof props.query === 'function') {
-        query = props.query(props.$history.query);
-      } else if (Array.isArray(props.query) || typeof props.query === 'string') {
-        query = pick(props.$history.query, props.query);
-      } else {
-        query = props.query;
-      }
-      this.location = urlToLocation({
-        pathname,
-        query,
-      });
-    }
+    this.location = urlToLocation(props.to);
   }
   onClick = (e) => {
-    const { $history, onClick } = this.props;
+    const { to, push, onClick } = this.props;
     e.preventDefault();
     if (onClick) {
       onClick(e);
     } else {
-      $history.push(this.location);
+      push(this.location);
     }
   };
   render() {
-    const { className, style, children } = this.props;
+    const { to, push, className, style, children } = this.props;
     return (
       <a
         className={className}

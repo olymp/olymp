@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import Editor, { Editable, createEmptyState } from 'ory-editor-core';
 import 'ory-editor-core/lib/index.css';
 import { Actions, Trash, Toolbar } from '../ory';
-import { text, parallax, divider, spacer, image, video, container, link } from '../ory/plugins';
+import { parallax, divider, spacer, image, video, container, link } from '../ory/plugins';
+import slate from 'ory-editor-plugins-slate';
+import 'ory-editor-plugins-slate/lib/index.css';
 
 const plugins = {
-  content: [text(), spacer, image, video, link],
-  layout: [parallax({ defaultPlugin: text() }), divider, container({ defaultPlugin: text() })],
+  content: [slate(), spacer, image, video, link],
+  layout: [parallax({ defaultPlugin: slate() }), divider, container({ defaultPlugin: slate() })],
 };
 
 export default class OryEditor extends Component {
@@ -16,7 +18,7 @@ export default class OryEditor extends Component {
     this.editor = new Editor({
       readOnly: props.readOnly,
       plugins,
-      defaultPlugin: text(),
+      defaultPlugin: slate(),
       editables: [this.content],
     });
   }

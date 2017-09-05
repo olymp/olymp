@@ -8,7 +8,10 @@ export default withRouter(({ children, pathname, ...rest }) => {
   const routes = Children.toArray(children);
   for (let index = 0; index < routes.length; index++) {
     const route = routes[index];
-
+    /* const isMatch =
+      route.props.path === pathname ||
+      (route.props.exact === true &&
+        pathname.indexOf(`${route.props.path}/`) === 0);*/
     if (route.props.match) {
       match = route;
       break;

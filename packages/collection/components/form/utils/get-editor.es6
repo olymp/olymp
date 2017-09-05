@@ -9,7 +9,7 @@ import {
   TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
-import { FormEdit, FormListEdit, DetailEdit } from '../../../edits';
+import { FormListEdit, DetailEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
@@ -19,19 +19,9 @@ const states = {
   DRAFT: 'Entwurf',
   REMOVED: 'Papierkorb',
 };
-const edits = [
-  type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit,
-];
+const edits = [type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit];
 
-export default ({
-  className,
-  editorClassName,
-  style,
-  editorStyle,
-  field,
-  label,
-  key,
-}) => {
+export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -52,9 +42,7 @@ export default ({
 
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
-      return (
-        <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />
-      );
+      return <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />;
     }
     return <DetailEdit {...editProps} typeName={idField.type.name} />;
   }
@@ -66,14 +54,10 @@ export default ({
       if (name === 'tags') {
         return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
       }
-      return (
-        <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />
-      );
+      return <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />;
     }
     if (type.ofType.name.indexOf('Nested') === 0) {
-      return (
-        <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
-      );
+      return <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />;
     }
     return null;
   }
@@ -81,13 +65,7 @@ export default ({
     return null;
   }
   if (suggest) {
-    return (
-      <SuggestEditor
-        {...editProps}
-        collection={suggest.arg0}
-        field={suggest.arg1}
-      />
-    );
+    return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
   }
   if (start) {
     if (type.name === 'Date') {
@@ -95,11 +73,7 @@ export default ({
     }
     if (type.name === 'DateTime') {
       return (
-        <DateRangeEditor
-          {...editProps}
-          format="DD.MM.YYYY HH:mm"
-          showTime={{ format: 'HH:mm' }}
-        />
+        <DateRangeEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />
       );
     }
   }
@@ -112,11 +86,11 @@ export default ({
 
     return (
       <Select {...editProps}>
-        {type.enumValues.map(x =>
-          (<Select.Option key={x.name} value={x.name}>
+        {type.enumValues.map(x => (
+          <Select.Option key={x.name} value={x.name}>
             {resolveName(x.name)}
-          </Select.Option>)
-        )}
+          </Select.Option>
+        ))}
       </Select>
     );
   }
@@ -130,21 +104,11 @@ export default ({
         />
       );
     case 'Boolean':
-      return (
-        <Checkbox {...editProps}>
-          {label}
-        </Checkbox>
-      );
+      return <Checkbox {...editProps}>{label}</Checkbox>;
     case 'Date':
       return <DateEditor {...editProps} format="DD.MM.YYYY" />;
     case 'DateTime':
-      return (
-        <DateEditor
-          {...editProps}
-          format="DD.MM.YYYY HH:mm"
-          showTime={{ format: 'HH:mm' }}
-        />
-      );
+      return <DateEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':

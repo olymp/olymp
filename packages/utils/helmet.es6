@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import { inject, observer } from 'mobx-react';
-import { get } from 'lodash';
 
 const getURL = () => {
   if (process.env.URL) {
@@ -13,9 +11,7 @@ const getURL = () => {
   return null;
 };
 export default ({ name, title, description, image, tags, keywords, pathname } = {}, pth) => {
-  if (pth && !pathname) {
-    pathname = pth;
-  }
+  if (pth && !pathname) { pathname = pth; }
   const meta = [];
   const link = [];
   name = name || title;
@@ -87,23 +83,22 @@ export default ({ name, title, description, image, tags, keywords, pathname } = 
   return <Helmet title={name} meta={meta} link={link} />;
 };
 
-@inject('$theme')
-@observer
 export class OlympHelmet extends Component {
   static contextTypes = {
     theme: PropTypes.object,
   };
 
   render() {
-    const { meta, link, $theme, ...rest } = this.props;
+    const { meta, link, ...rest } = this.props;
+    const { theme } = this.context;
 
     return (
       <Helmet
         meta={[
-          { name: 'theme-color', content: get($theme, 'theme.color', '#8e44ad') },
+          { name: 'theme-color', content: theme.color || '#8e44ad' },
           {
             name: 'msapplication-TileColor',
-            content: get($theme, 'theme.color', '#8e44ad'),
+            content: theme.color || '#8e44ad',
           },
           ...(meta || []),
         ]}
@@ -111,7 +106,7 @@ export class OlympHelmet extends Component {
           {
             rel: 'mask-icon',
             href: '/safari-pinned-tab.svg',
-            color: get($theme, 'theme.color', '#8e44ad'),
+            color: theme.color || '#8e44ad',
           },
           ...(link || []),
         ]}

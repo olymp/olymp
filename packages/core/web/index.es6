@@ -3,13 +3,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import { createFela } from 'olymp-fela';
-import { createHistory } from 'olymp-router';
 import App from './root';
+import { createFela, felaReducer } from 'olymp-fela';
 // import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 // End Redux stuff
 
 // window.Perf = require('react-addons-perf');
@@ -133,9 +133,11 @@ client = new ApolloClient({
 store = createStore(
   combineReducers({
     apollo: client.reducer(),
+    location: routerReducer(history),
+    fela: felaReducer,
   }),
   window.INITIAL_DATA || {},
-  compose(applyMiddleware(client.middleware())),
+  compose(applyMiddleware(client.middleware()), applyMiddleware(routerMiddleware(history))),
 );
 // End Redux stuff
 // rehydrateState = window.ASYNC_STATE;

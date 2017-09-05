@@ -3,13 +3,12 @@ import { withCollections } from 'olymp-collection';
 import { withRouter } from 'olymp-router';
 import withLocale from 'olymp-locale/de';
 import { ThemeProvider } from 'olymp-fela';
-import { withAuth } from 'olymp-auth';
+import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
 import { LightboxProvider } from 'olymp-cloudinary';
 import { asyncComponent } from 'react-async-component';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
-import withStores from './stores';
 
 const IfAuth = asyncComponent({ resolve: () => System.import('./cms-auth') });
 
@@ -21,10 +20,9 @@ const filterPublic = pages =>
 
 export default ({ auth, theme }) => (Wrapped) => {
   // Container for authed users
-  @withStores({ theme })
   @withRouter
   @withLocale(LANG)
-  @withAuth
+  @withAuth(auth)
   @withNavigation
   @withCollections
   class CMS extends Component {
@@ -38,7 +36,7 @@ export default ({ auth, theme }) => (Wrapped) => {
             {!auth.user ? (
               <NoAuth {...this.props} navigation={nav} wrapper={Wrapped} />
             ) : (
-              <IfAuth {...this.props} navigation={nav} wrapper={Wrapped} theme={theme} />
+              <IfAuth {...this.props} navigation={nav} wrapper={Wrapped} />
             )}
           </LightboxProvider>
         </ThemeProvider>

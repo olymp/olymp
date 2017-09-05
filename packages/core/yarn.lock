@@ -2626,10 +2626,6 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
-
 hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.2.2.tgz#c0eca5a7d5a28c5ada3107eb763b01da6bfa81fb"
@@ -3619,16 +3615,6 @@ mksnapshot@0.1.0:
     fs-extra "0.18.2"
     request "2.55.0"
 
-mobx-react@^4.2.2:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-4.2.2.tgz#db9cc3cafefbd830d0584c1149af5aae67829201"
-  dependencies:
-    hoist-non-react-statics "^1.2.0"
-
-mobx@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.2.2.tgz#aa671459bededfd9880c948889a3f62bce09279c"
-
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
@@ -3880,9 +3866,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.0.37:
-  version "17.0.37"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.37.tgz#37d281b36a0a70b6ab8e9008262769d811cf47c3"
+olymp-fela@^17.0.39:
+  version "17.0.39"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.39.tgz#6e6cedece96cf67df112a77327324f8b1ef343e3"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.1.0"
@@ -3896,7 +3882,7 @@ olymp-fela@^17.0.37:
     fela-plugin-prefixer "^5.0.6"
     fela-plugin-remove-undefined "^5.0.5"
     fela-plugin-unit "^5.0.5"
-    olymp-utils "^17.0.26"
+    olymp-utils "^17.0.39"
     react-fela "^5.2.0"
     react-frame-component "^1.1.1"
     react-portal "^3.1.0"
@@ -3905,18 +3891,18 @@ olymp-fela@^17.0.37:
     shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.0.28:
-  version "17.0.28"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.28.tgz#be1c32a4c1fe56a5a11c3e2c06f4be91de9017d4"
+olymp-router@^17.0.39:
+  version "17.0.39"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.39.tgz#4818edab545dda7ad7651bb0f80d8ab3d5e32f71"
   dependencies:
     history "^4.6.3"
-    olymp-utils "^17.0.26"
+    olymp-utils "^17.0.39"
     route-parser "^0.0.5"
     shallowequal "^1.0.2"
 
-olymp-utils@^17.0.26:
-  version "17.0.26"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.26.tgz#dc3504dd9bb57d6312b2aa852365e8958cb6e149"
+olymp-utils@^17.0.39:
+  version "17.0.39"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.39.tgz#f0b362c04aee20b1149d202c3ed5b2db1b1cb72d"
   dependencies:
     shallowequal "^1.0.2"
 

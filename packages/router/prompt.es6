@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { inject } from 'mobx-react';
+import invariant from 'invariant';
 
-@inject('$history')
 class Prompt extends React.Component {
   static propTypes = {
-    $history: PropTypes.object.isRequired,
     when: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
   };
@@ -14,12 +12,14 @@ class Prompt extends React.Component {
     when: true,
   };
 
-  enable(message) {
-    if (this.unblock) {
-      this.unblock();
-    }
+  static contextTypes = {
+    history: PropTypes.object,
+  };
 
-    this.unblock = this.props.$history.block(message);
+  enable(message) {
+    if (this.unblock) this.unblock();
+
+    this.unblock = this.context.history.block(message);
   }
 
   disable() {
@@ -30,16 +30,13 @@ class Prompt extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.when) {
-      this.enable(this.props.message);
-    }
+    if (this.props.when) this.enable(this.props.message);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.when) {
-      if (!this.props.when || this.props.message !== nextProps.message) {
+      if (!this.props.when || this.props.message !== nextProps.message)
         this.enable(nextProps.message);
-      }
     } else {
       this.disable();
     }

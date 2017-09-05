@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Provider as FelaProvider } from 'react-fela';
 import { ThemeProvider, ThemeStore, createFela } from './utils';
-import { Provider } from 'mobx-react';
 
 const withStores = WrappedComponent =>
   class WithStores extends Component {
@@ -24,18 +23,12 @@ const withStores = WrappedComponent =>
       });
     }
     render() {
-      return (
-        <Provider {...this.stores}>
-          <WrappedComponent {...this.props} />
-        </Provider>
-      );
+      return <WrappedComponent {...this.props} />;
     }
   };
 
-export default withStores(({ children }) =>
-  (<FelaProvider renderer={createFela()}>
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
-  </FelaProvider>),
-);
+export default withStores(({ children }) => (
+  <FelaProvider renderer={createFela()}>
+    <ThemeProvider>{children}</ThemeProvider>
+  </FelaProvider>
+));
