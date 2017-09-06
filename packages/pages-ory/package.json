@@ -1,13 +1,13 @@
 {
-  "version": "17.0.41",
+  "version": "17.0.42",
   "name": "olymp-pages",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
-    "olymp-fela": "^17.0.39",
+    "olymp-fela": "^17.0.42",
     "olymp-router": "^17.0.39",
-    "olymp-utils": "^17.0.39",
+    "olymp-utils": "^17.0.42",
     "ory-editor-core": "0.2.17",
     "ory-editor-plugins-divider": "0.2.17",
     "ory-editor-plugins-image": "0.2.17",
