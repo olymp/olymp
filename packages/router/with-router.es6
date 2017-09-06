@@ -27,7 +27,7 @@ export default (WrappedComponent) => {
     }),
     dispatch => ({
       push: createPush(dispatch),
-      replace: createPush(dispatch),
+      replace: createReplace(dispatch),
     }),
   )(inner);
 };

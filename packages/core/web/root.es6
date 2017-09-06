@@ -4,7 +4,6 @@ import { ApolloProvider } from 'react-apollo';
 import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import { AppContainer } from 'react-hot-loader';
-import { Router } from 'olymp-router';
 import App from '@app';
 
 function getNextMountNode() {
@@ -22,17 +21,15 @@ function getNextMountNode() {
 export default ({ client, renderer, store, ua, history }) => (
   <AppContainer>
     <ApolloProvider store={store} client={client}>
-      <Router store={store} history={history}>
-        <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
-          <GatewayProvider>
-            <UAProvider ua={ua}>
-              <AmpProvider amp={false}>
-                <App />
-              </AmpProvider>
-            </UAProvider>
-          </GatewayProvider>
-        </FelaProvider>
-      </Router>
+      <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
+        <GatewayProvider>
+          <UAProvider ua={ua}>
+            <AmpProvider amp={false}>
+              <App />
+            </AmpProvider>
+          </UAProvider>
+        </GatewayProvider>
+      </FelaProvider>
     </ApolloProvider>
   </AppContainer>
 );

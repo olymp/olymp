@@ -29,9 +29,11 @@ export default ({ attributes = '' } = {}) => ({
     queries: {
       checkTokenMail: (source, args, { authEngine }) =>
         authEngine.checkTokenValue(args.token, 'email'),
-      checkToken: (source, args, { authEngine }) =>
-        authEngine.checkToken(args.token),
-      verify: (source, {}, { user }) => user,
+      checkToken: (source, args, { authEngine }) => authEngine.checkToken(args.token),
+      verify: (source, {}, { user }) => {
+        console.log('verify', user);
+        return user;
+      },
       // verify: (source, args) => auth.verify(args.token),
       invitationList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
@@ -59,14 +61,11 @@ export default ({ attributes = '' } = {}) => ({
         }
         return monk.collection('user').findOne({ id: args.id });
       },
-      totp: (source, args, { session, authEngine }) =>
-        authEngine.totp(session.userId).then(x => x),
+      totp: (source, args, { session, authEngine }) => authEngine.totp(session.userId).then(x => x),
     },
     mutations: {
       register: (source, args, { authEngine }) =>
-        authEngine
-          .register(args.input, args.password, args.token)
-          .then(x => x.user),
+        authEngine.register(args.input, args.password, args.token).then(x => x.user),
       forgot: (source, args, { authEngine }) => authEngine.forgot(args.email),
       reset: (source, args, { authEngine }) =>
         authEngine.reset(args.token, args.password).then(({ user }) => user),
@@ -96,7 +95,10 @@ export default ({ attributes = '' } = {}) => ({
         }
         // eslint-disable-line no-shadow
         if (type && type === 'REMOVE') {
-          return monk.collection('user').remove({ id }).then(x => ({ id }));
+          return monk
+            .collection('user')
+            .remove({ id })
+            .then(x => ({ id }));
         }
         input.id = id || shortID.generate();
         if (id) {
@@ -105,7 +107,10 @@ export default ({ attributes = '' } = {}) => ({
             .update({ id }, input, { upsert: true })
             .then(x => input);
         }
-        return monk.collection('user').insert(input).then(x => input);
+        return monk
+          .collection('user')
+          .insert(input)
+          .then(x => input);
       },
       invitation: (source, args, { user, monk, mail, authEngine }) => {
         if (!user || !user.isAdmin) {
@@ -122,19 +127,22 @@ export default ({ attributes = '' } = {}) => ({
         delete args.type; // eslint-disable-line no-param-reassign
         args.expiry = +new Date();
         args.token = authEngine.tokenEngine.create({ email: args.email });
-        return monk.collection('invitation').insert(args).then((u) => {
-          console.log('INVITE', u.token, u);
-          if (mail) {
-            mail(mails.invite, {
-              to: u.email,
-              token: u.token,
-              name: u.name,
-            })
-              .then(x => console.log('Mail success', x.ok))
-              .catch(err => console.error(err));
-          }
-          return u;
-        });
+        return monk
+          .collection('invitation')
+          .insert(args)
+          .then((u) => {
+            console.log('INVITE', u.token, u);
+            if (mail) {
+              mail(mails.invite, {
+                to: u.email,
+                token: u.token,
+                name: u.name,
+              })
+                .then(x => console.log('Mail success', x.ok))
+                .catch(err => console.error(err));
+            }
+            return u;
+          });
         // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
         // else return collection.insertOne(args);
       },

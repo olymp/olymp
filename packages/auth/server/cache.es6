@@ -8,6 +8,7 @@ export default auth => (req, res, next) => {
   if (!authorization) {
     return next();
   }
+  console.log(authorization);
   auth
     .verify(authorization)
     .then(({ user, token }) => {

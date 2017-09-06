@@ -9,8 +9,6 @@ import fetch from 'isomorphic-fetch';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-// import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
-// import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
@@ -25,8 +23,6 @@ import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
 // import { Server as WebSocketServer } from 'ws';
-import { createFela } from 'olymp-fela';
-import { createHistory } from 'olymp-router';
 import App from '@app';
 
 // useStaticRendering(true);
@@ -35,6 +31,10 @@ console.log('VERSION', version);
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { appReducer, appMiddleware } from '../redux';
+import { authMiddleware, authReducer } from 'olymp-auth';
+import { createFela, felaReducer } from 'olymp-fela';
+import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 // End Redux stuff
 
 const RedisStore = createRedisStore(session);
@@ -197,34 +197,40 @@ app.get('*', (req, res) => {
   const store = createStore(
     combineReducers({
       apollo: client.reducer(),
+      location: routerReducer(history),
+      auth: authReducer,
+      app: appReducer,
+      fela: felaReducer,
     }),
-    {},
-    compose(applyMiddleware(client.middleware())),
+    compose(
+      applyMiddleware(client.middleware()),
+      applyMiddleware(routerMiddleware(history)),
+      applyMiddleware(authMiddleware(client)),
+      applyMiddleware(appMiddleware),
+    ),
   );
-
-  // const asyncContext = createAsyncContext();
 
   const context = {};
   const reactApp = (
-    //  {/*<AsyncComponentProvider asyncContext={asyncContext}>*/
     <ApolloProvider store={store} client={client}>
       <Provider renderer={renderer}>
         <GatewayProvider>
           <UAProvider ua={ua}>
             <AmpProvider amp={req.isAmp}>
-              <App history={history} />
+              <App />
             </AmpProvider>
           </UAProvider>
         </GatewayProvider>
       </Provider>
     </ApolloProvider>
-    //   {/*</AsyncComponentProvider>*/}
   );
 
-  // return asyncBootstrapper(reactApp)
-  return Promise.resolve(reactApp)
-    .then(() => getDataFromTree(reactApp))
+  console.log(1, process.env.GRAPHQL_URL || `http://localhost:${port}/graphql`);
+
+  // return
+  return getDataFromTree(reactApp)
     .then(() => {
+      console.log(2);
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const cssMarkup = renderer.renderToString();
 
@@ -236,9 +242,9 @@ app.get('*', (req, res) => {
         styles,
         cssMarkup,
         initialState: { apollo: client.getInitialState() },
-        // asyncState,
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
+      console.log(3);
 
       // Check if the render result contains a redirect, if so we need to set
       // the specific status and redirect header and end the res.
@@ -247,6 +253,7 @@ app.get('*', (req, res) => {
         res.end();
         return;
       }
+      console.log(4);
 
       res.status(context.missed ? 404 : 200);
       res.send(html);

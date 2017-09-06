@@ -6,13 +6,17 @@ import { ThemeProvider } from 'olymp-fela';
 import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
 import { LightboxProvider } from 'olymp-cloudinary';
-import { asyncComponent } from 'react-async-component';
 import { DragDropContext } from 'react-dnd';
+import Loadable from 'react-loadable';
 import HTML5Backend from 'react-dnd-html5-backend';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
+import Loading from './loading';
 
-const IfAuth = asyncComponent({ resolve: () => System.import('./cms-auth') });
+const IfAuth = Loadable({
+  loader: () => import('./cms-auth'),
+  loading: Loading,
+});
 
 const filterPublic = pages =>
   pages.filter(page => page.state === 'PUBLISHED').map(({ children, ...rest }) => ({

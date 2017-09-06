@@ -6,7 +6,7 @@ const baseAttributes = 'id, name, email, isAdmin, token';
 let attributes = baseAttributes;
 
 export const auth = (obj = {}) => {
-  const { extraAttributes, store, waitForUser = true, loader: Loader } = obj;
+  const { extraAttributes } = obj;
   if (extraAttributes) {
     attributes = `${baseAttributes}, ${extraAttributes}`;
   }
@@ -18,6 +18,11 @@ export const auth = (obj = {}) => {
         }
       }
     `,
+    {
+      options: props => ({
+        // skip: true,
+      }),
+    },
   );
 };
 
