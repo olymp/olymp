@@ -2,9 +2,15 @@ import tinycolor from 'tinycolor2';
 
 export default ({ theme }) => {
   const color = theme.color;
-  const transparent = tinycolor(theme.color).setAlpha(0.8).toRgbString();
-  const transparent2 = tinycolor(theme.color).setAlpha(0.1).toRgbString();
-  const transparent3 = tinycolor(theme.color).setAlpha(0.05).toRgbString();
+  const transparent = tinycolor(theme.color)
+    .setAlpha(0.8)
+    .toRgbString();
+  const transparent2 = tinycolor(theme.color)
+    .setAlpha(0.1)
+    .toRgbString();
+  const transparent3 = tinycolor(theme.color)
+    .setAlpha(0.05)
+    .toRgbString();
 
   return {
     '& ::selection': {
@@ -46,17 +52,7 @@ export default ({ theme }) => {
     '& .ant-pagination-item > a': {
       // color: theme.light,
     },
-    '& .ant-menu-item .anticon': {
-      marginRight: 0,
-      overflow: 'visible',
-      lineHeight: 0.6,
-    },
     '& .ant-menu-item > a > .anticon': {
-      overflow: 'visible',
-      lineHeight: 0.6,
-    },
-    '& .ant-menu-submenu-title .anticon': {
-      marginRight: 0,
       overflow: 'visible',
       lineHeight: 0.6,
     },

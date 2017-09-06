@@ -3,22 +3,15 @@ import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
 
 const StyledInner = createComponent(
-  ({
-    theme,
-    padding,
-    paddingX,
-    paddingY,
-    width,
-    minWidth,
-    maxWidth,
-    right,
-  }) => ({
+  ({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth, right }) => ({
     width,
     minWidth,
     maxWidth,
     height: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    boxShadow: theme.boxShadow,
+    borderRight: '1px solid #eee',
+    // boxShadow: theme.boxShadow,
+    boxShadow: 'none',
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
@@ -84,12 +77,8 @@ const StyledInner = createComponent(
       },
     },
   }),
-  ({ children, className }) =>
-    <div className={className}>
-      {children}
-    </div>,
-  ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) =>
-    Object.keys(p)
+  ({ children, className }) => <div className={className}>{children}</div>,
+  ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) => Object.keys(p),
 );
 
 const Title = createComponent(
@@ -104,7 +93,7 @@ const Title = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const TitleButtons = createComponent(
@@ -126,7 +115,7 @@ const TitleButtons = createComponent(
     },
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p)
+  ({ left, right, ...p }) => Object.keys(p),
 );
 
 const Sidebar = ({
@@ -148,58 +137,42 @@ const Sidebar = ({
   footer,
   ...props
 }) =>
-  isOpen
-    ? <StyledInner {...props}>
-        <div className="ant-modal-content">
-          {leftButtons || rightButtons || title || subtitle || header
-            ? <div className="ant-modal-header">
-                {leftButtons || rightButtons || title || subtitle
-                  ? <Title>
-                      {leftButtons &&
-                        <TitleButtons left>
-                          {leftButtons}
-                        </TitleButtons>}
-                      {rightButtons &&
-                        <TitleButtons right>
-                          {rightButtons}
-                        </TitleButtons>}
-                      <div className="ant-modal-title">
-                        {title}
-                      </div>
-                      {subtitle &&
-                        <div className="ant-modal-subtitle">
-                          {subtitle}
-                        </div>}
-                    </Title>
-                  : null}
-
-                {header}
-              </div>
-            : null}
-
-          {Children.toArray(children).length > 0 &&
-            <div className="ant-modal-body">
-              {children}
-            </div>}
-
-          {footer
-            ? <div className="ant-modal-footer">
-                {footer}
-              </div>
-            : null}
-        </div>
-      </StyledInner>
-    : <StyledInner {...props} minWidth={80}>
-        <div className="ant-modal-content">
+  (isOpen ? (
+    <StyledInner {...props}>
+      <div className="ant-modal-content">
+        {leftButtons || rightButtons || title || subtitle || header ? (
           <div className="ant-modal-header">
-            <Button.Group>
-              <Button onClick={() => {}}>
-                <Icon type="double-right" />
-              </Button>
-            </Button.Group>
+            {leftButtons || rightButtons || title || subtitle ? (
+              <Title>
+                {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+                {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+                <div className="ant-modal-title">{title}</div>
+                {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+              </Title>
+            ) : null}
+
+            {header}
           </div>
+        ) : null}
+
+        {Children.toArray(children).length > 0 && <div className="ant-modal-body">{children}</div>}
+
+        {footer ? <div className="ant-modal-footer">{footer}</div> : null}
+      </div>
+    </StyledInner>
+  ) : (
+    <StyledInner {...props} minWidth={80}>
+      <div className="ant-modal-content">
+        <div className="ant-modal-header">
+          <Button.Group>
+            <Button onClick={() => {}}>
+              <Icon type="double-right" />
+            </Button>
+          </Button.Group>
         </div>
-      </StyledInner>;
+      </div>
+    </StyledInner>
+  ));
 Sidebar.defaultProps = { width: 350, minWidth: 350, padding: 0, isOpen: true };
 
 export default Sidebar;

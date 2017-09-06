@@ -17,9 +17,9 @@ class Prompt extends React.Component {
   };
 
   enable(message) {
-    if (this.unblock) this.unblock();
+    if (this.unblock) { this.unblock(); }
 
-    this.unblock = this.context.history.block(message);
+    this.unblock = this.context.history && this.context.history.block(message);
   }
 
   disable() {
@@ -30,13 +30,12 @@ class Prompt extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.when) this.enable(this.props.message);
+    if (this.props.when) { this.enable(this.props.message); }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.when) {
-      if (!this.props.when || this.props.message !== nextProps.message)
-        this.enable(nextProps.message);
+      if (!this.props.when || this.props.message !== nextProps.message) { this.enable(nextProps.message); }
     } else {
       this.disable();
     }

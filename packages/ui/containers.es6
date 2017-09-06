@@ -7,8 +7,7 @@ export const SplitView = createComponent(
       flex: '1 1 0%',
     },
     background:
-      background === true &&
-      'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
+      background === true && 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.033))',
     '> :first-child': {
       flexGrow: 0,
       overflowY: 'auto',
@@ -23,7 +22,7 @@ export const SplitView = createComponent(
     },
   }),
   'div',
-  ({ maxWidth, center, background, ...p }) => Object.keys(p)
+  ({ maxWidth, center, background, ...p }) => Object.keys(p),
 );
 
 export const Panel = createComponent(
@@ -46,7 +45,7 @@ export const Panel = createComponent(
     },
   }),
   'div',
-  ['children', 'itemScope', 'itemType']
+  ['children', 'itemScope', 'itemType'],
 );
 
 export const Container = createComponent(
@@ -55,14 +54,14 @@ export const Container = createComponent(
     maxWidth: width || 700,
     height,
     minHeight,
-    boxShadow: theme.boxShadow,
+    // boxShadow: theme.boxShadow,
     marginX: 'auto',
     padding: padding !== undefined ? padding : theme.space3,
     backgroundColor: '#FFFFFF',
     position: 'relative',
   }),
   'div',
-  ({ width, minHeight, padding, ...p }) => Object.keys(p)
+  ({ width, minHeight, padding, ...p }) => Object.keys(p),
 );
 
 export const Placeholder = createComponent(
@@ -77,5 +76,5 @@ export const Placeholder = createComponent(
     transform: 'translate(-50%, -50%)',
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );

@@ -14,7 +14,7 @@ const ModalBackground = createComponent(
     backgroundColor: theme.dark2,
   }),
   'div',
-  ['onClick']
+  ['onClick'],
 );
 
 const Modal = createComponent(
@@ -28,7 +28,7 @@ const Modal = createComponent(
     },
   }),
   'div',
-  ['onClick']
+  ['onClick'],
 );
 
 const Inner = createComponent(
@@ -36,29 +36,21 @@ const Inner = createComponent(
     width: '100%',
     height: '100%',
     backgroundColor: theme.light,
-    boxShadow: theme.boxShadow,
+    // boxShadow: theme.boxShadow,
     border: `1px solid ${theme.dark1}`,
     borderRadius: theme.borderRadius,
   }),
   p => <Layout affix {...p} />,
-  []
+  [],
 );
 
-export default ({
-  children,
-  open,
-  onClose,
-  width,
-  header,
-  footer,
-  container,
-}) =>
+export default ({ children, open, onClose, width, header, footer, container }) => (
   <Portal isOpened={open} onClose={onClose} closeOnEsc>
     <ModalBackground onClick={onClose}>
       <Modal
         width={width}
         container={container}
-        onClick={e => {
+        onClick={(e) => {
           // e.cancelBubble = true;
           if (e.stopPropagation) {
             e.stopPropagation();
@@ -66,18 +58,11 @@ export default ({
         }}
       >
         <Inner>
-          {header &&
-            <Layout.Header container={container}>
-              {header}
-            </Layout.Header>}
-          <Layout.Body container={container}>
-            {children}
-          </Layout.Body>
-          {footer &&
-            <Layout.Footer container={container}>
-              {footer}
-            </Layout.Footer>}
+          {header && <Layout.Header container={container}>{header}</Layout.Header>}
+          <Layout.Body container={container}>{children}</Layout.Body>
+          {footer && <Layout.Footer container={container}>{footer}</Layout.Footer>}
         </Inner>
       </Modal>
     </ModalBackground>
-  </Portal>;
+  </Portal>
+);

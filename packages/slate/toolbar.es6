@@ -1,6 +1,7 @@
 import React from 'react';
-import { Gateway } from 'react-gateway';
-import { Tooltip } from 'antd';
+import Portal from 'react-portal';
+// import { Gateway } from 'react-gateway';
+import { Menu, Tooltip, Icon } from 'antd';
 import { createComponent } from 'react-fela';
 
 export const Button = createComponent(
@@ -17,22 +18,26 @@ export const Button = createComponent(
       marginBottom: -4,
     },
   }),
-  ({ onMouseDown, tooltip, children, className }) =>
+  ({ onMouseDown, tooltip, children, className }) => (
     <div onMouseDown={onMouseDown} className={className}>
-      <Tooltip placement="bottom" title={tooltip || ''}>
+      <Tooltip placement="top" title={tooltip || ''}>
         {children}
       </Tooltip>
-    </div>,
-  p => Object.keys(p)
+    </div>
+  ),
+  p => Object.keys(p),
 );
 
 export default createComponent(
   ({ theme }) => ({
     position: 'fixed',
     top: 0,
-    zIndex: 10,
-    width: '100%',
-    boxShadow: 'inset 0 -10px 10px -10px #000000',
+    zIndex: 1001,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    // width: '100%',
+    // boxShadow: 'inset 0 -10px 10px -10px #000000',
+    backgroundColor: 'black',
     paddingX: theme.space2,
     hasFlex: {
       justifyContent: 'center',
@@ -42,18 +47,31 @@ export default createComponent(
       padding: 0,
     },
   }),
-  props => {
-    const { isOpened, children } = props;
+  (props) => {
+    const { isOpened, className, children, show } = props;
 
     if (!isOpened) {
       return <div />;
     }
 
-    return (
+    /* return (
       <Gateway into="toolbar">
         {children}
       </Gateway>
+    );*/
+    return (
+      <Portal isOpened={!!isOpened}>
+        <Menu
+          style={!show ? { display: 'none' } : null}
+          selectedKeys={[]}
+          className={className}
+          mode="horizontal"
+          theme="dark"
+        >
+          {children}
+        </Menu>
+      </Portal>
     );
   },
-  p => Object.keys(p)
+  p => Object.keys(p),
 );

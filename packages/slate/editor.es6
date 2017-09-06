@@ -1,8 +1,6 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Gateway } from 'react-gateway';
-import { Button } from 'antd';
-import { Editor, Html, Raw, Plain } from 'slate';
+import { Editor, Html, Plain } from 'slate';
 import {
   withSlateState,
   withAutoMarkdown,
@@ -283,25 +281,25 @@ const getTopMost = (blockTypes, state, prev) => {
 
 function CleanWordHTML(str) {
   // 1. remove line breaks / Mso classes
-  var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
+  const stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
   var output = str.replace(stringStripper, ' ');
   // 2. strip Word generated HTML comments
-  var commentSripper = new RegExp('<!--(.*?)-->', 'g');
+  const commentSripper = new RegExp('<!--(.*?)-->', 'g');
   var output = output.replace(commentSripper, '');
-  var tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+  let tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
   // 3. remove tags leave content if any
   output = output.replace(tagStripper, '');
   // 4. Remove everything in between and including tags '<style(.)style(.)>'
-  var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+  const badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
 
   for (var i = 0; i < badTags.length; i++) {
-    tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+    tagStripper = new RegExp(`<${badTags[i]}.*?${badTags[i]}(.*?)>`, 'gi');
     output = output.replace(tagStripper, '');
   }
   // 5. remove attributes ' style="..."'
-  var badAttributes = ['style', 'start'];
+  const badAttributes = ['style', 'start'];
   for (var i = 0; i < badAttributes.length; i++) {
-    var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+    const attributeStripper = new RegExp(` ${badAttributes[i] }="(.*?)"`, 'gi');
     output = output.replace(attributeStripper, '');
   }
 
@@ -317,8 +315,8 @@ function CleanWordHTML(str) {
 @withSlateState({ terse: true })
 @useBlocks(options)
 export default // @withToolbar(options)
-  // @withSidebar(options)
-  class SlateEditor extends Component {
+// @withSidebar(options)
+class SlateEditor extends Component {
   plugins = [
     withAutoMarkdown(options),
     TrailingBlock({ type: 'paragraph' }),
@@ -403,17 +401,6 @@ export default // @withToolbar(options)
 
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
-        <Gateway into="undo">
-          {false && undo && undo.length
-            ? <Button
-              shape="circle"
-              size="large"
-              onClick={() => onChange(value.transform().undo().apply())}
-            >
-              <i className="fa fa-undo" aria-hidden="true" />
-            </Button>
-            : null}
-        </Gateway>
         {children}
         {readOnly !== true &&
           <ToolbarBlock

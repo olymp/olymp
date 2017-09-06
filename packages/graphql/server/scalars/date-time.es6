@@ -13,7 +13,8 @@ export default {
       name: 'DateTime',
       description: 'DateType as Integer',
       serialize(value) {
-        if (typeof value === 'number') {
+        console.log(value);
+        if (typeof value === 'number' || typeof value === 'string') {
           value = new Date(value);
         }
         assertErr(

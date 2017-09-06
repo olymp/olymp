@@ -9,7 +9,7 @@ import { Analytics } from 'olymp-google';
 import { createComponent, getAntStyle } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { GatewayDest } from 'react-gateway';
-import NavigationVertical from './navigation';
+import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
 import { TemplateRoute } from './templates';
 
@@ -18,9 +18,9 @@ const Container = createComponent(
     ...getAntStyle({ theme }),
     hasFlex: {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
     },
-    height: '100vh',
+    height: '100%',
     backgroundColor: '#f5f5f5',
   }),
   'div',
