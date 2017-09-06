@@ -7,6 +7,8 @@ import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
 import { LightboxProvider } from 'olymp-cloudinary';
 import { asyncComponent } from 'react-async-component';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
 
@@ -25,6 +27,7 @@ export default ({ auth, theme }) => (Wrapped) => {
   @withAuth(auth)
   @withNavigation
   @withCollections
+  @DragDropContext(HTML5Backend)
   class CMS extends Component {
     render() {
       const { auth, navigation } = this.props;

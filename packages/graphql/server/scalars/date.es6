@@ -13,7 +13,7 @@ export default {
       name: 'Date',
       description: 'DateType as Integer (without time)',
       serialize(value) {
-        if (typeof value === 'number') {
+        if (typeof value === 'number' || typeof value === 'string') {
           value = new Date(value);
         }
         assertErr(

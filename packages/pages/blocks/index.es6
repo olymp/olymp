@@ -4,6 +4,7 @@ export { default as ContainerBlock } from './container';
 export { default as LineBlock } from './line';
 export { default as MapsBlock } from './maps';
 export { default as GalleryBlock } from './gallery';
+export { default as LinkBlock } from './link';
 
 /*
 export { default as ContainerOld } from './container-old';

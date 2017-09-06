@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
+import dnd from './dnd';
 
 export default (options = {}) => (Block) => {
   const {
@@ -20,10 +21,11 @@ export default (options = {}) => (Block) => {
       outline: active && '2px solid rgba(48, 48, 48, 0.67)',
     }),
     p => <Block {...p} />,
-    p => Object.keys(p)
+    p => Object.keys(p),
   );
 
-  return class BaseDecorator extends Component {
+  // @dnd
+  class BaseDecorator extends Component {
     static slate = {
       key,
       isVoid: isVoid !== false,
@@ -73,8 +75,7 @@ export default (options = {}) => (Block) => {
       const active =
         !editor.props.readOnly &&
         children.findIndex(
-          child =>
-            parseInt(child.key, 10) === parseInt(state.selection.startKey, 10)
+          child => parseInt(child.key, 10) === parseInt(state.selection.startKey, 10),
         ) >= 0;
 
       return (
@@ -91,5 +92,6 @@ export default (options = {}) => (Block) => {
         </StyledBlock>
       );
     }
-  };
+  }
+  return BaseDecorator;
 };

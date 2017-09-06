@@ -13,7 +13,6 @@ export default {
       name: 'DateTime',
       description: 'DateType as Integer',
       serialize(value) {
-        console.log(value);
         if (typeof value === 'number' || typeof value === 'string') {
           value = new Date(value);
         }
