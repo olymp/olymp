@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp-utils';
+import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
-import withAuth from '../with-auth';
 import Base, {
   onEnterFocus,
   onEnterOk,
@@ -12,8 +12,11 @@ import Base, {
   onError,
   onSuccess,
 } from './base';
+import { createRegister } from '../redux';
 
-@withAuth
+@connect(null, dispatch => ({
+  register: createRegister(dispatch),
+}))
 @Form.create()
 @graphql(
   gql`
@@ -33,7 +36,7 @@ import Base, {
 )
 export default class AuthRegister extends Component {
   ok = () => {
-    const { auth, onClose, onOk, form, token } = this.props;
+    const { register, onClose, onOk, form, token } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
@@ -44,8 +47,7 @@ export default class AuthRegister extends Component {
       const user = { ...values };
       delete user.password;
       delete user.password2;
-      auth
-        .register(user, values.password, token)
+      register({ user, password: values.password, token })
         .then(() => {
           onSuccess(
             'Registrierung abgeschickt',
@@ -62,7 +64,6 @@ export default class AuthRegister extends Component {
       isOpen,
       form,
       saving,
-      pathname,
       onClose,
       extraFields,
       data,
@@ -85,9 +86,7 @@ export default class AuthRegister extends Component {
           token &&
           <p style={{ textAlign: 'center' }}>
             Das Token ist ungültig oder abgelaufen. Bitte{' '}
-            <Link
-              to={{ pathname, query: { feedback: null, confirm: undefined } }}
-            >
+            <Link query={({ confirm, ...query }) => ({ ...query, feedback: null })}>
               kontaktieren Sie den Support
             </Link>.
           </p>}
@@ -95,9 +94,7 @@ export default class AuthRegister extends Component {
           !token &&
           <p style={{ textAlign: 'center' }}>
             Sie benötigen eine gültige Einladung um sich zu registrieren.{' '}
-            <Link
-              to={{ pathname, query: { feedback: null, confirm: undefined } }}
-            >
+            <Link query={({ confirm, ...query }) => ({ ...query, feedback: null })}>
               Kontaktieren Sie den Support
             </Link>.
           </p>}
@@ -174,14 +171,14 @@ export default class AuthRegister extends Component {
           </Form.Item>}
         {valid && extraFields
           ? extraFields({
-              layout,
-              getFieldDecorator,
-              state: this.state,
-              setState: this.setState,
-            })
+            layout,
+            getFieldDecorator,
+            state: this.state,
+            setState: this.setState,
+          })
           : null}
         <Modal.Links>
-          <Link to={{ pathname, query: { login: null, register: undefined } }}>
+          <Link query={({ register, ...query }) => ({ ...query, login: null })}>
             Zur Anmeldung
           </Link>
         </Modal.Links>

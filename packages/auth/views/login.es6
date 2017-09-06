@@ -1,30 +1,24 @@
 import React, { Component } from 'react';
-import { withRouter } from 'olymp-router';
+import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
-import withAuth from '../with-auth';
-import Base, {
-  onEnterFocus,
-  onEnterOk,
-  layout,
-  onError,
-  onSuccess,
-} from './base';
+import { createLogin } from '../redux';
+import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
 
-@withRouter
-@withAuth
+@connect(null, dispatch => ({
+  login: createLogin(dispatch),
+}))
 @Form.create()
 export default class AuthLogin extends Component {
   ok = () => {
-    const { auth, onClose, form, onTotp } = this.props;
+    const { login, onClose, form, onTotp } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
       }
-      auth
-        .login(values.email, values.password, values.totp)
+      login(values)
         .then(({ name }) => {
           onSuccess('Anmeldung erfolgreich', `Willkommen, ${name}`);
           onClose();
@@ -40,7 +34,7 @@ export default class AuthLogin extends Component {
   };
 
   render() {
-    const { isOpen, email, form, pathname, onClose, totp } = this.props;
+    const { isOpen, email, form, onClose, totp, loginStatus } = this.props;
     const { getFieldDecorator } = form;
 
     return (
@@ -48,9 +42,7 @@ export default class AuthLogin extends Component {
         <Form.Item key="email" label="E-Mail" {...layout}>
           {getFieldDecorator('email', {
             initialValue: email,
-            rules: [
-              { required: true, message: 'Bitte geben Sie Ihre E-Mail an!' },
-            ],
+            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
           })(
             <Input
               type="email"
@@ -58,7 +50,7 @@ export default class AuthLogin extends Component {
               onKeyPress={onEnterFocus(() => this.input)}
               size="large"
               addonAfter={<FaEnvelope size={10} />}
-            />
+            />,
           )}
         </Form.Item>
         <Form.Item key="password" label="Passwort" {...layout}>
@@ -72,10 +64,10 @@ export default class AuthLogin extends Component {
               ref={x => (this.input = x)}
               size="large"
               addonAfter={<FaStar size={10} />}
-            />
+            />,
           )}
         </Form.Item>
-        {totp &&
+        {totp && (
           <Form.Item key="totp" label="Token" {...layout}>
             {getFieldDecorator('totp')(
               <Input
@@ -85,27 +77,19 @@ export default class AuthLogin extends Component {
                 ref={x => (this.totp = x)}
                 size="large"
                 addonAfter={<FaStar size={10} />}
-              />
+              />,
             )}
-          </Form.Item>}
+          </Form.Item>
+        )}
         <Modal.Links>
-          <Link
-            to={{
-              pathname,
-              query: { register: null, login: undefined, totp: undefined },
-            }}
-          >
+          <Link query={({ login, totp, ...query }) => ({ ...query, register: null })}>
             Zur Registrierung
           </Link>
           <Link
-            to={{
-              pathname,
-              query: {
-                forgot: form.getFieldValue('email') || null,
-                login: undefined,
-                totp: undefined,
-              },
-            }}
+            query={({ login, totp, ...query }) => ({
+              ...query,
+              forgot: form.getFieldValue('email') || null,
+            })}
           >
             Passwort vergessen?
           </Link>

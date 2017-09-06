@@ -5,7 +5,7 @@ import Portal from 'react-portal-minimal';
 import tinycolor from 'tinycolor2';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-const Modal = ({ className, logo, show }, { theme }) => (
+const Modal = ({ className, logo, show }) => (
   <Portal isOpened>
     <CSSTransitionGroup
       transitionName="example"
@@ -14,13 +14,12 @@ const Modal = ({ className, logo, show }, { theme }) => (
     >
       {show && (
         <div className={className} key="habba">
-          <div>{logo || theme.logo()}</div>
+          <div>{logo}</div>
         </div>
       )}
     </CSSTransitionGroup>
   </Portal>
 );
-Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({

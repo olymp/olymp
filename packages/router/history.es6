@@ -12,9 +12,8 @@ export const attachHistory = (history, store) => {
   history.listen((location, action) => {
     if (!location.url) {
       store.dispatch({
-        type: 'LOCATION',
+        type: 'LOCATION_CORRECT',
         payload: location,
-        compensate: true,
       });
     }
   });

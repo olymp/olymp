@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
-import withAuth from '../with-auth';
+import { createForgot } from '../redux';
 import Base, { onEnterOk, layout, onError, onSuccess } from './base';
 
-@withAuth
+@connect(null, dispatch => ({
+  forgot: createForgot(dispatch),
+}))
 @Form.create()
 export default class AuthForgot extends Component {
   ok = () => {
-    const { auth, onClose, onOk, form } = this.props;
+    const { forgot, onClose, onOk, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
       }
-      auth
-        .forgot(values.email)
+      forgot({ email: values.email })
         .then(({ name }) => {
-          onSuccess(
-            'E-Mail abgeschickt',
-            'Bitte bestätigen Sie die Zurücksetzung'
-          );
+          onSuccess('E-Mail abgeschickt', 'Bitte bestätigen Sie die Zurücksetzung');
           onOk({ email: values.email });
         })
         .catch(onError);
@@ -29,22 +28,15 @@ export default class AuthForgot extends Component {
   };
 
   render() {
-    const { isOpen, email, form, saving, pathname, onClose } = this.props;
+    const { isOpen, email, form, saving, onClose } = this.props;
     const { getFieldDecorator } = form;
 
     return (
-      <Base
-        isOpen={isOpen}
-        title="Zurücksetzen"
-        onOk={this.ok}
-        onCancel={onClose}
-      >
+      <Base isOpen={isOpen} title="Zurücksetzen" onOk={this.ok} onCancel={onClose}>
         <Form.Item hasFeedback key="email" label="E-Mail" {...layout}>
           {getFieldDecorator('email', {
             initialValue: email,
-            rules: [
-              { required: true, message: 'Bitte geben Sie Ihre E-Mail an!' },
-            ],
+            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
           })(
             <Input
               type="email"
@@ -52,13 +44,11 @@ export default class AuthForgot extends Component {
               onKeyPress={onEnterOk(this.ok)}
               size="large"
               addonAfter={<FaEnvelope size={10} />}
-            />
+            />,
           )}
         </Form.Item>
         <Modal.Links>
-          <Link to={{ pathname, query: { login: null, forgot: undefined } }}>
-            Zur Anmeldung
-          </Link>
+          <Link updateQuery={{ login: null, forgot: undefined }}>Zur Anmeldung</Link>
         </Modal.Links>
       </Base>
     );

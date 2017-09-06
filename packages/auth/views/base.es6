@@ -4,24 +4,21 @@ import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { notification } from 'antd';
 
-const def = (
-  {
-    copyright,
-    showLogo,
-    isOpen,
-    email,
-    children,
-    title,
-    pathname,
-    onCancel,
-    onOk,
-    cancelText,
-    okText,
-    loading,
-    saving,
-  },
-  { theme }
-) =>
+const def = ({
+  copyright,
+  showLogo,
+  isOpen,
+  email,
+  children,
+  title,
+  pathname,
+  onCancel,
+  onOk,
+  cancelText,
+  okText,
+  loading,
+  saving,
+}) => (
   <Modal
     showLogo={showLogo !== false}
     isOpen={isOpen}
@@ -32,27 +29,24 @@ const def = (
   >
     {children}
     <Modal.Footer>
-      <Modal.Button onClick={onCancel}>
-        {cancelText || 'Abbruch'}
-      </Modal.Button>
-      {onOk &&
+      <Modal.Button onClick={onCancel}>{cancelText || 'Abbruch'}</Modal.Button>
+      {onOk && (
         <Modal.Button type="primary" onClick={onOk} loading={saving}>
           {okText || title}
-        </Modal.Button>}
+        </Modal.Button>
+      )}
     </Modal.Footer>
     <Modal.Copyright>
       <Link to={{ pathname, query: { register: null, login: undefined } }}>
-        {theme.copyright || 'made with ❤ by olymp'}
+        {'made with ❤ by olymp'}
       </Link>
     </Modal.Copyright>
-  </Modal>;
-def.contextTypes = {
-  theme: PropTypes.object,
-};
+  </Modal>
+);
 
 export default def;
 
-export const onError = err => {
+export const onError = (err) => {
   let description;
   if (err && err.message) {
     description = err.message;
@@ -76,14 +70,14 @@ export const onSuccess = (message, description) => {
 
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
-export const onEnterFocus = ref => e => {
+export const onEnterFocus = ref => (e) => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   }
   return false;
 };
 
-export const onEnterOk = onOk => e => {
+export const onEnterOk = onOk => (e) => {
   if (e.key === 'Enter') {
     onOk();
   }

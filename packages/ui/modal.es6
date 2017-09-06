@@ -29,9 +29,10 @@ export const Modal = (
     onOk,
     title,
     loading,
+    logo,
+    logoTitle,
     ...props
   },
-  { theme }
 ) => {
   let copyright = null;
   let links = null;
@@ -61,13 +62,13 @@ export const Modal = (
       >
         <AntModal visible={false} />
         {showLogo &&
-            theme.logo &&
+            logo &&
             <div className="logo">
-              {typeof theme.logo === 'string'
-                ? <img src={theme.logo} />
-                : typeof theme.logo === 'function' ? theme.logo() : theme.logo}
+              {typeof logo === 'string'
+                ? <img src={logo} />
+                : typeof logo === 'function' ? logo() : logo}
               <h3>
-                {theme.logoTitle}
+                {logoTitle}
               </h3>
             </div>}
         <Spin
@@ -78,39 +79,38 @@ export const Modal = (
             <div className="ant-modal-header">
               {leftButtons &&
               <TitleButtons left>
-                    {leftButtons}
-                  </TitleButtons>}
+                {leftButtons}
+              </TitleButtons>}
               {rightButtons &&
               <TitleButtons right>
-                    {rightButtons}
-                  </TitleButtons>}
+                {rightButtons}
+              </TitleButtons>}
               <div className="ant-modal-title">
                 {title}
               </div>
               {subtitle &&
               <div className="ant-modal-subtitle">
-                    {subtitle}
-                  </div>}
+                {subtitle}
+              </div>}
             </div>
             {Children.toArray(children).length > 0 &&
             <div className="ant-modal-body">
-                  {children}
-                </div>}
+              {children}
+            </div>}
             {footer}
           </div>
         </Spin>
         {links &&
         <component.Links>
-              {links}
-            </component.Links>}
+          {links}
+        </component.Links>}
         {copyright &&
         <component.Copyright>
-              {copyright}
-            </component.Copyright>}
+          {copyright}
+        </component.Copyright>}
       </ReactModal>
     </Portal>;
 };
-Modal.contextTypes = { theme: PropTypes.object };
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({

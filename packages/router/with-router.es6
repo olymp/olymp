@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createPush, createReplace } from './actions';
+import { createPush, createReplace } from './redux';
 
 export default (WrappedComponent) => {
   const inner = (props, context) => {

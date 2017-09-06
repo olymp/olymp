@@ -3,10 +3,8 @@ import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { Countdown, Modal } from 'olymp-ui';
 import { Form } from 'antd';
-import withAuth from '../with-auth';
 import Base, { onSuccess, onError } from './base';
 
-@withAuth
 @Form.create()
 @graphql(
   gql`
@@ -21,7 +19,7 @@ import Base, { onSuccess, onError } from './base';
         token,
       },
     }),
-  }
+  },
 )
 export default class AuthConfirm extends Component {
   ok = () => {
@@ -54,35 +52,28 @@ export default class AuthConfirm extends Component {
         loading={loading ? 'Prüfe Token ...' : false}
         okText="Sofort bestätigen"
       >
-        {!valid &&
+        {!valid && (
           <p style={{ textAlign: 'center' }}>
             Das Token ist ungültig oder abgelaufen. Bitte{' '}
-            <Link
-              to={{ pathname, query: { register: null, confirm: undefined } }}
-            >
+            <Link to={{ pathname, query: { register: null, confirm: undefined } }}>
               registrieren Sie sich erneut
             </Link>{' '}
             oder{' '}
-            <Link
-              to={{ pathname, query: { feedback: null, confirm: undefined } }}
-            >
+            <Link to={{ pathname, query: { feedback: null, confirm: undefined } }}>
               kontaktieren Sie den Support
             </Link>.
-          </p>}
-        {valid &&
+          </p>
+        )}
+        {valid && (
           <div style={{ textAlign: 'center' }}>
             Automatische bestätigung in
             <h1>
-              <Countdown
-                initialTimeRemaining={5000}
-                completeCallback={this.ok}
-              />
+              <Countdown initialTimeRemaining={5000} completeCallback={this.ok} />
             </h1>
-          </div>}
+          </div>
+        )}
         <Modal.Links>
-          <Link to={{ pathname, query: { login: null, confirm: undefined } }}>
-            Zur Anmeldung
-          </Link>
+          <Link to={{ pathname, query: { login: null, confirm: undefined } }}>Zur Anmeldung</Link>
         </Modal.Links>
       </Base>
     );

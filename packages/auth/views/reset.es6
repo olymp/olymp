@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
-import withAuth from '../with-auth';
-import Base, {
-  onEnterFocus,
-  onEnterOk,
-  layout,
-  onError,
-  onSuccess,
-} from './base';
+import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
+import { createReset } from '../redux';
 
-@withAuth
+@connect(null, dispatch => ({
+  reset: createReset(dispatch),
+}))
 @Form.create()
 @graphql(
   gql`
@@ -28,11 +25,11 @@ import Base, {
         token,
       },
     }),
-  }
+  },
 )
 export default class AuthReset extends Component {
   ok = () => {
-    const { auth, token, onOk, onClose, form } = this.props;
+    const { reset, token, onOk, onClose, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
@@ -40,13 +37,9 @@ export default class AuthReset extends Component {
       if (values.password2 !== values.password) {
         return onError(new Error('Die Passwörter stimmen nicht überein!'));
       }
-      auth
-        .reset(token, values.password)
+      reset({ token, password: values.password })
         .then(({ email }) => {
-          onSuccess(
-            'Zurücksetzung erfolgreich',
-            'Sie können sich jetzt anmelden'
-          );
+          onSuccess('Zurücksetzung erfolgreich', 'Sie können sich jetzt anmelden');
           onOk({ email });
         })
         .catch(onError);
@@ -67,12 +60,10 @@ export default class AuthReset extends Component {
         onCancel={onClose}
         loading={loading ? 'Prüfe Token ...' : false}
       >
-        {valid &&
+        {valid && (
           <Form.Item key="password" label="Passwort" {...layout}>
             {getFieldDecorator('password', {
-              rules: [
-                { required: true, message: 'Bitte das Passwort angeben!' },
-              ],
+              rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
             })(
               <Input
                 type="password"
@@ -80,10 +71,11 @@ export default class AuthReset extends Component {
                 onKeyPress={onEnterFocus(() => this.input)}
                 size="large"
                 addonAfter={<FaStar size={10} />}
-              />
+              />,
             )}
-          </Form.Item>}
-        {valid &&
+          </Form.Item>
+        )}
+        {valid && (
           <Form.Item key="password2" label="Wiederholen" {...layout}>
             {getFieldDecorator('password2', {
               rules: [
@@ -100,26 +92,24 @@ export default class AuthReset extends Component {
                 ref={x => (this.input = x)}
                 size="large"
                 addonAfter={<FaStar size={10} />}
-              />
+              />,
             )}
-          </Form.Item>}
-        {!valid &&
+          </Form.Item>
+        )}
+        {!valid && (
           <p style={{ textAlign: 'center' }}>
             Das Token ist ungültig oder abgelaufen. Bitte{' '}
-            <Link to={{ pathname, query: { forgot: null, reset: undefined } }}>
+            <Link updateQuery={{ forgot: null, reset: undefined }}>
               beantragen Sie das Zurücksetzen des Passworts erneut
             </Link>{' '}
             oder{' '}
-            <Link
-              to={{ pathname, query: { feedback: null, reset: undefined } }}
-            >
+            <Link updateQuery={{ feedback: null, reset: undefined }}>
               kontaktieren Sie den Support
             </Link>.
-          </p>}
+          </p>
+        )}
         <Modal.Links>
-          <Link to={{ pathname, query: { login: null, reset: undefined } }}>
-            Zur Anmeldung
-          </Link>
+          <Link updateQuery={{ login: null, reset: undefined }}>Zur Anmeldung</Link>
         </Modal.Links>
       </Base>
     );

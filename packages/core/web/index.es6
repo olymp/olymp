@@ -3,14 +3,12 @@ import React from 'react';
 import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-import App from './root';
 import { createFela, felaReducer } from 'olymp-fela';
-// import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
-
-// Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
-// End Redux stuff
+import { authMiddleware, authReducer } from 'olymp-auth';
+import App from './root';
+import { appReducer, appMiddleware } from '../redux';
 
 // window.Perf = require('react-addons-perf');
 // TODO
@@ -129,16 +127,25 @@ client = new ApolloClient({
   // initialState: window.INITIAL_DATA,
 });
 // Redux stuff
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 store = createStore(
   combineReducers({
     apollo: client.reducer(),
     location: routerReducer(history),
+    auth: authReducer,
+    app: appReducer,
     fela: felaReducer,
   }),
   window.INITIAL_DATA || {},
-  compose(applyMiddleware(client.middleware()), applyMiddleware(routerMiddleware(history))),
+  composeEnhancers(
+    applyMiddleware(client.middleware()),
+    applyMiddleware(routerMiddleware(history)),
+    applyMiddleware(authMiddleware(client)),
+    applyMiddleware(appMiddleware),
+  ),
 );
+
 // End Redux stuff
 // rehydrateState = window.ASYNC_STATE;
 // asyncContext = createAsyncContext();
