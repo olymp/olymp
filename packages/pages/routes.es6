@@ -8,12 +8,9 @@ import { lowerFirst, get } from 'lodash';
 import { Gateway } from 'react-gateway';
 
 const renderGateway = (
-  { auth, pathname, collectionList, query } = {},
+  { pathname, collectionList, query } = {},
   { binding, bindingId } = {}
 ) => {
-  if (!auth.user) {
-    return null;
-  }
   const isEditPage = query['@page'] !== undefined;
   const hasBinding = binding && binding.type;
   return (
@@ -30,7 +27,7 @@ const renderGateway = (
           </Link>
         </Menu.Item>
         {collectionList.map(collection =>
-          <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+          (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
             <Link
               to={{
                 query: {
@@ -42,7 +39,7 @@ const renderGateway = (
             >
               {get(collection, 'decorators.label.value', collection.name)}
             </Link>
-          </Menu.Item>
+          </Menu.Item>)
         )}
       </Menu.SubMenu>
       {hasBinding &&
@@ -74,7 +71,7 @@ const renderGateway = (
   );
 };
 
-export const EditablePageRoute = props => {
+export const EditablePageRoute = (props) => {
   const {
     Wrapped,
     flatNavigation,
@@ -93,7 +90,7 @@ export const EditablePageRoute = props => {
           {...props}
           maxWidth={deviceWidth}
           render={match =>
-            <IFrame disabled={!deviceWidth}>
+            (<IFrame disabled={!deviceWidth}>
               <Wrapped {...props}>
                 {renderHelmet({
                   name: '404',
@@ -102,7 +99,7 @@ export const EditablePageRoute = props => {
                 })}
                 <Error404 />
               </Wrapped>
-            </IFrame>}
+            </IFrame>)}
         />
       </ContentLoader>
     );
@@ -117,19 +114,19 @@ export const EditablePageRoute = props => {
         bindingId={bindingId}
         binding={binding}
         render={children =>
-          <IFrame disabled={!deviceWidth}>
+          (<IFrame disabled={!deviceWidth}>
             <Wrapped {...props} match={match}>
               {renderHelmet(match, pathname)}
               {renderGateway(props, match)}
               {children}
             </Wrapped>
-          </IFrame>}
+          </IFrame>)}
       />
     </ContentLoader>
   );
 };
 
-export const PageRoute = props => {
+export const PageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname, loading } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
@@ -141,12 +138,12 @@ export const PageRoute = props => {
         <PageTransition innerKey={id}>
           {match
             ? <Page.WithData
-                {...props}
-                key={id}
-                id={pageId || aliasId || id}
-                bindingId={bindingId}
-                binding={binding}
-              />
+              {...props}
+              key={id}
+              id={pageId || aliasId || id}
+              bindingId={bindingId}
+              binding={binding}
+            />
             : <Error404 />}
         </PageTransition>
       </ContentLoader>

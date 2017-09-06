@@ -3,6 +3,7 @@ import { withScroll, withApollo } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
 import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
 import { prefetchPage } from 'olymp-pages';
+import { connect } from 'react-redux';
 import Logo from './logo';
 
 export const App = createComponent(
@@ -44,7 +45,7 @@ export const App = createComponent(
     },
   }),
   p => <Layout fullHeight {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Header = withScroll(
@@ -57,18 +58,20 @@ export const Header = withScroll(
       boxShadow: scrollTop && theme.boxShadow,
       transition: 'box-shadow 0.3s ease-in-out',
     }),
-    ({ children, className }) =>
+    ({ children, className }) => (
       <Layout.Header className={className}>
-        <Container>
-          {children}
-        </Container>
-      </Layout.Header>,
-    p => Object.keys(p)
-  )
+        <Container>{children}</Container>
+      </Layout.Header>
+    ),
+    p => Object.keys(p),
+  ),
 );
 
 @withApollo
 @withRouter
+@connect(({ auth }) => ({
+  isAuthenticated: !!auth.user,
+}))
 export default class GzLayout extends Component {
   static defaultProps = {
     pages: [],
@@ -88,13 +91,12 @@ export default class GzLayout extends Component {
       router,
       query,
       pathname,
-      auth,
+      isAuthenticated,
       ...rest
     } = this.props;
-    const nav = (pages.map(x => x.children)[0] || [])
-      .filter(x => x.slug !== '/');
+    const nav = (pages.map(x => x.children)[0] || []).filter(x => x.slug !== '/');
     const footer = [...(pages.map(x => x.children)[1] || [])];
-    if (!auth.user) {
+    if (!isAuthenticated) {
       footer.push({
         name: 'Einloggen',
         pathname: `${location.pathname}?login`,
@@ -111,10 +113,7 @@ export default class GzLayout extends Component {
             full
             right
             mega={({ mega, pages }) =>
-              pages &&
-              pages.length &&
-              pages[0].children &&
-              pages[0].children.length}
+              pages && pages.length && pages[0].children && pages[0].children.length}
             onItemMouseEnter={this.prefetch}
             toggleMenu={() =>
               router.push({
@@ -126,9 +125,7 @@ export default class GzLayout extends Component {
         </Header>
         <Layout.Body>
           <Layout>
-            <Layout.Body>
-              {children}
-            </Layout.Body>
+            <Layout.Body>{children}</Layout.Body>
             <Layout.Footer container>
               <Navbar full onItemMouseEnter={this.prefetch}>
                 <Navbar.Nav

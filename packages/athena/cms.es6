@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withCollections } from 'olymp-collection';
 import { withRouter } from 'olymp-router';
 import withLocale from 'olymp-locale/de';
+import { connect } from 'react-redux';
 import { ThemeProvider } from 'olymp-fela';
 import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
@@ -32,15 +33,18 @@ export default ({ auth, theme }) => (Wrapped) => {
   @withNavigation
   @withCollections
   @DragDropContext(HTML5Backend)
+  @connect(({ auth }) => ({
+    isAuthenticated: !!auth.user,
+  }))
   class CMS extends Component {
     render() {
-      const { auth, navigation } = this.props;
+      const { isAuthenticated, navigation } = this.props;
       const nav = filterPublic(navigation);
 
       return (
         <ThemeProvider theme={theme}>
           <LightboxProvider>
-            {!auth.user ? (
+            {!isAuthenticated ? (
               <NoAuth {...this.props} navigation={nav} wrapper={Wrapped} />
             ) : (
               <IfAuth {...this.props} navigation={nav} wrapper={Wrapped} />
