@@ -5,7 +5,7 @@ import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createFela, felaReducer } from 'olymp-fela';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
+import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import App from './root';
 import { appReducer, appMiddleware } from '../redux';
@@ -145,7 +145,7 @@ store = createStore(
     applyMiddleware(appMiddleware),
   ),
 );
-
+attachHistory(history, store);
 // End Redux stuff
 // rehydrateState = window.ASYNC_STATE;
 // asyncContext = createAsyncContext();

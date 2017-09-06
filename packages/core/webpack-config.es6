@@ -331,6 +331,9 @@ module.exports = ({
       nodeExternals({
         modulesDir: path.resolve(appRoot, 'node_modules'),
         whitelist: [
+          'react-loadable',
+          'is-webpack-bundle',
+          'webpack-require-weak',
           /\.(eot|woff|woff2|ttf|otf)$/,
           /\.(svg|png|jpg|jpeg|gif|ico)$/,
           /\.(mp4|mp3|ogg|swf|webp)$/,

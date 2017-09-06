@@ -57,7 +57,6 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
             }
           }
           // END TOTP
-          console.log('CLEAN');
           return {
             token: tokenEngine.createFromUser(user, { days: 7 }),
             user: cleanUser(user),
@@ -85,8 +84,8 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           if (user.confirmed === false) {
             throw new Error('User not confirmed.');
           }
-          const newToken = tokenEngine.createFromUser(user, { days: 7 });
-          return { token: newToken, user: cleanUser(user) };
+          user.token = tokenEngine.createFromUser(user, { days: 7 });
+          return cleanUser(user);
         });
     },
     // Get user by email/realm and post new user

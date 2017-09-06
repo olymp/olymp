@@ -53,7 +53,7 @@ export const authReducer = (state = defaultState, action) => {
       verifyingRequestId: action.requestId,
     };
   }
-  if (action.type === 'APOLLO_QUERY_RESULT' && action.operationName === 'verify') {
+  if (action.type.indexOf('APOLLO_QUERY_RESULT') === 0 && action.operationName === 'verify') {
     return {
       ...state,
       user: action.result.data.user,
@@ -76,10 +76,25 @@ export const authReducer = (state = defaultState, action) => {
   }
 };
 
-export const authMiddleware = client => ({ dispatch }) => nextDispatch => (action) => {
+export const authMiddleware = client => ({ dispatch, getState }) => nextDispatch => (action) => {
   // LocalStorage
-  if (action.type === 'APOLLO_QUERY_RESULT' && action.operationName === 'verify') {
-    localStorage.setItem('token', action.result.data.user.token);
+  if (
+    typeof localStorage !== 'undefined' &&
+    action.type.indexOf('APOLLO_QUERY_RESULT') === 0 &&
+    action.operationName === 'verify'
+  ) {
+    if (action.result.data.user) {
+      localStorage.setItem('token', action.result.data.user.token);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }
+  if (
+    typeof localStorage !== 'undefined' &&
+    action.type === 'APOLLO_QUERY_ERROR' &&
+    getState().auth.verifyingRequestId === action.requestId
+  ) {
+    localStorage.removeItem('token');
   }
   if (typeof localStorage !== 'undefined' && action.type === resolved(AUTH_ACTIONS.LOGIN)) {
     localStorage.setItem('token', action.payload.token);

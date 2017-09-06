@@ -225,16 +225,14 @@ app.get('*', (req, res) => {
     </ApolloProvider>
   );
 
-  console.log(1, process.env.GRAPHQL_URL || `http://localhost:${port}/graphql`);
-
   // return
   return getDataFromTree(reactApp)
     .then(() => {
-      console.log(2);
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const cssMarkup = renderer.renderToString();
 
       // Generate the html res.
+
       const html = (req.isAmp ? amp : template)({
         ...Helmet.rewind(),
         root: reactAppString,
@@ -244,7 +242,6 @@ app.get('*', (req, res) => {
         initialState: { apollo: client.getInitialState() },
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
-      console.log(3);
 
       // Check if the render result contains a redirect, if so we need to set
       // the specific status and redirect header and end the res.
@@ -253,7 +250,6 @@ app.get('*', (req, res) => {
         res.end();
         return;
       }
-      console.log(4);
 
       res.status(context.missed ? 404 : 200);
       res.send(html);

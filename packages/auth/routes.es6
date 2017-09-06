@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus } from './views';
 import { AuthInvitations } from './admin';
 
-export default connect(({ location, auth }) => ({
-  pathname: location.pathname,
-  query: location.query,
-  user: auth.user,
-}), dispatch => ({
-  updateQuery: createUpdateQuery(dispatch),
-}))((props) => {
-  const { query, register, force, user, updateQuery } = props;
+export default connect(
+  ({ location }) => ({
+    pathname: location.pathname,
+    query: location.query,
+  }),
+  dispatch => ({
+    updateQuery: createUpdateQuery(dispatch),
+  }),
+)((props) => {
+  const { query, register, updateQuery } = props;
   const texts = {
     forgot: `Wir haben eine E-Mail an ${query[
       'status-forgot'
@@ -87,25 +89,24 @@ export default connect(({ location, auth }) => ({
       />
       <AltRoute
         match={inQuery('status-forgot')}
-        render={() => <AuthStatus isOpen text={texts.forgot} onClose={() => updateQuery({ 'status-forgot': undefined })} />}
+        render={() => (
+          <AuthStatus
+            isOpen
+            text={texts.forgot}
+            onClose={() => updateQuery({ 'status-forgot': undefined })}
+          />
+        )}
       />
       <AltRoute
         match={inQuery('status-register')}
-        render={() => <AuthStatus isOpen text={texts.register} onClose={() => updateQuery({ 'status-register': undefined })} />}
+        render={() => (
+          <AuthStatus
+            isOpen
+            text={texts.register}
+            onClose={() => updateQuery({ 'status-register': undefined })}
+          />
+        )}
       />
-      {force && !user && (
-        <AltRoute
-          render={() => (
-            <AuthLogin
-              isOpen
-              email={query.login}
-              totp={inQuery('totp')}
-              onClose={() => updateQuery({ totp: undefined, login: undefined })}
-              onTotp={() => updateQuery({ totp: null })}
-            />
-          )}
-        />
-      )}
     </AltSwitch>
   );
 });
