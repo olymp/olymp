@@ -4,11 +4,12 @@ import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createFela, felaReducer } from 'olymp-fela';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { keaSaga, keaReducer } from 'kea';
 import createSagaMiddleware from 'redux-saga';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './root';
 import { appReducer, appMiddleware } from '../redux';
 // window.Perf = require('react-addons-perf');
@@ -128,7 +129,6 @@ client = new ApolloClient({
   // initialState: window.INITIAL_DATA,
 });
 // Redux stuff
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware();
 store = createStore(
   combineReducers({
@@ -140,7 +140,7 @@ store = createStore(
     fela: felaReducer,
   }),
   window.INITIAL_DATA || {},
-  composeEnhancers(
+  composeWithDevTools(
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(sagaMiddleware),

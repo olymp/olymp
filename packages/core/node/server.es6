@@ -26,6 +26,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela, felaReducer } from 'olymp-fela';
 import { keaSaga, keaReducer } from 'kea';
+import createSagaMiddleware from 'redux-saga';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 import { appReducer, appMiddleware } from '../redux';
 import App from '@app';
