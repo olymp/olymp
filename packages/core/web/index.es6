@@ -7,9 +7,10 @@ import { createFela, felaReducer } from 'olymp-fela';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { authMiddleware, authReducer } from 'olymp-auth';
+import { keaSaga, keaReducer } from 'kea';
+import createSagaMiddleware from 'redux-saga';
 import App from './root';
 import { appReducer, appMiddleware } from '../redux';
-
 // window.Perf = require('react-addons-perf');
 // TODO
 if (process.env.NODE_ENV === 'production') {
@@ -128,9 +129,10 @@ client = new ApolloClient({
 });
 // Redux stuff
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+const sagaMiddleware = createSagaMiddleware();
 store = createStore(
   combineReducers({
+    kea: keaReducer('kea'),
     apollo: client.reducer(),
     location: routerReducer(history),
     auth: authReducer,
@@ -141,10 +143,12 @@ store = createStore(
   composeEnhancers(
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
+    applyMiddleware(sagaMiddleware),
     applyMiddleware(authMiddleware(client)),
     applyMiddleware(appMiddleware),
   ),
 );
+sagaMiddleware.run(keaSaga);
 attachHistory(history, store);
 // End Redux stuff
 // rehydrateState = window.ASYNC_STATE;

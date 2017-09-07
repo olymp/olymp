@@ -1,24 +1,16 @@
-import gql from 'graphql-tag';
+import { clientMiddleware, pending, rejected, resolved } from 'olymp-graphql';
 
 export const AUTH_ACTIONS = {
   LOGIN: 'AUTH_LOGIN',
   LOGOUT: 'AUTH_LOGOUT',
 };
-export const AUTH_ACTION_SUFFIX = {
-  PENDING: '_PENDING',
-  REJECTED: '_REJECTED',
-  RESOLVED: '_RESOLVED',
-};
-export const pending = action => `${action}${AUTH_ACTION_SUFFIX.PENDING}`;
-export const rejected = action => `${action}${AUTH_ACTION_SUFFIX.REJECTED}`;
-export const resolved = action => `${action}${AUTH_ACTION_SUFFIX.RESOLVED}`;
 
 let attributes = `
-id
-name
-email
-isAdmin
-token
+  id
+  name
+  email
+  isAdmin
+  token
 `;
 
 export const setAttributes = newAttributes => (attributes = newAttributes);
@@ -47,9 +39,9 @@ export const authReducer = (state = defaultState, action) => {
     return state;
   }
   switch (action.type) {
-    case `${AUTH_ACTIONS.LOGIN}${AUTH_ACTION_SUFFIX.RESOLVED}`:
+    case resolved(AUTH_ACTIONS.LOGIN):
       return { ...state, user: action.payload };
-    case `${AUTH_ACTIONS.LOGOUT}${AUTH_ACTION_SUFFIX.RESOLVED}`:
+    case resolved(AUTH_ACTIONS.LOGOUT):
       return { ...state, user: null };
     default:
       return state;
@@ -91,38 +83,7 @@ export const authMiddleware = client => ({ dispatch, getState }) => nextDispatch
     return nextDispatch(action);
   }
 
-  // Query
-  const payload = client
-    .mutate({
-      mutation: gql(action.mutation),
-      variables: action.payload,
-    })
-    .then(({ data, errors }) => {
-      if (errors) {
-        dispatch({
-          type: `${action.type}${AUTH_ACTION_SUFFIX.REJECTED}`,
-          payload: errors,
-        });
-      } else {
-        dispatch({
-          type: `${action.type}${AUTH_ACTION_SUFFIX.RESOLVED}`,
-          payload: data[Object.keys(data)[0]],
-        });
-      }
-      return data[Object.keys(data)[0]];
-    })
-    .catch((err) => {
-      dispatch({
-        type: `${action.type}${AUTH_ACTION_SUFFIX.REJECTED}`,
-        payload: err,
-      });
-      throw err;
-    });
-  dispatch({
-    type: `${action.type}${AUTH_ACTION_SUFFIX.PENDING}`,
-    payload: action.payload,
-  });
-  return payload;
+  return clientMiddleware(client, dispatch, action);
 };
 
 export const createSave = dispatch => payload =>

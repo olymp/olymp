@@ -22,20 +22,16 @@ import fs from 'fs';
 import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
-// import { Server as WebSocketServer } from 'ws';
-import App from '@app';
-
-// useStaticRendering(true);
-const version = +fs.statSync(__filename).mtime;
-console.log('VERSION', version);
-
-// Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { appReducer, appMiddleware } from '../redux';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela, felaReducer } from 'olymp-fela';
+import { keaSaga, keaReducer } from 'kea';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
-// End Redux stuff
+import { appReducer, appMiddleware } from '../redux';
+import App from '@app';
+
+const version = +fs.statSync(__filename).mtime;
+console.log('VERSION', version);
 
 const RedisStore = createRedisStore(session);
 
@@ -45,7 +41,6 @@ global.fetch = fetch;
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10);
-const devPort = parseInt(process.env.DEV_PORT, 10);
 
 // Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
@@ -193,9 +188,11 @@ app.get('*', (req, res) => {
   const ua = new UAParser(req.headers['user-agent']);
   const renderer = createFela(ua);
   const history = createHistory({ initialEntries: [req.url] });
+  const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     combineReducers({
+      kea: keaReducer('kea'),
       apollo: client.reducer(),
       location: routerReducer(history),
       auth: authReducer,
@@ -205,10 +202,12 @@ app.get('*', (req, res) => {
     compose(
       applyMiddleware(client.middleware()),
       applyMiddleware(routerMiddleware(history)),
+      applyMiddleware(sagaMiddleware),
       applyMiddleware(authMiddleware(client)),
       applyMiddleware(appMiddleware),
     ),
   );
+  sagaMiddleware.run(keaSaga);
 
   const context = {};
   const reactApp = (
