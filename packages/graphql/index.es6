@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import shortId from 'shortid';
 
 export const ACTION_SUFFIX = {
   PENDING: '_PENDING',
@@ -11,6 +12,7 @@ export const rejected = action => `${action}${ACTION_SUFFIX.REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX.RESOLVED}`;
 
 export const clientMiddleware = (client, dispatch, action) => {
+  const requestId = shortId.generate();
   const payload = client
     .mutate({
       mutation: gql(action.mutation),
@@ -20,11 +22,13 @@ export const clientMiddleware = (client, dispatch, action) => {
       if (errors) {
         dispatch({
           type: rejected(action.type),
+          requestId,
           payload: errors,
         });
       } else {
         dispatch({
           type: resolved(action.type),
+          requestId,
           payload: data[Object.keys(data)[0]],
         });
       }
@@ -33,6 +37,7 @@ export const clientMiddleware = (client, dispatch, action) => {
     .catch((err) => {
       dispatch({
         type: rejected(action.type),
+        requestId,
         payload: err,
       });
       throw err;
@@ -40,6 +45,7 @@ export const clientMiddleware = (client, dispatch, action) => {
   dispatch({
     type: pending(action.type),
     payload: action.payload,
+    requestId,
   });
   return payload;
 };

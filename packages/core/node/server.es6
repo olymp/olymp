@@ -25,7 +25,6 @@ import bodyparser from 'body-parser';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela, felaReducer } from 'olymp-fela';
-import { keaSaga, keaReducer } from 'kea';
 import createSagaMiddleware from 'redux-saga';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 import { appReducer, appMiddleware } from '../redux';
@@ -193,11 +192,10 @@ app.get('*', (req, res) => {
 
   const store = createStore(
     combineReducers({
-      kea: keaReducer('kea'),
+      app: appReducer,
       apollo: client.reducer(),
       location: routerReducer(history),
       auth: authReducer,
-      app: appReducer,
       fela: felaReducer,
     }),
     compose(
@@ -208,7 +206,6 @@ app.get('*', (req, res) => {
       applyMiddleware(appMiddleware),
     ),
   );
-  sagaMiddleware.run(keaSaga);
 
   const context = {};
   const reactApp = (

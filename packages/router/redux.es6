@@ -4,7 +4,7 @@ import { urlToLocation } from './utils';
 export const LOCATION_ACTIONS = {
   LOCATION_REPLACE: 'LOCATION_UPDATE',
   LOCATION_PUSH: 'LOCATION_PUSH',
-  LOCATION_PATCH: 'LOCATION_UPDATE',
+  LOCATION_PATCH: 'LOCATION_PATCH',
   LOCATION_CORRECT: 'LOCATION_CORRECT',
 };
 export const routerReducer = (history) => {
@@ -48,7 +48,7 @@ export const routerMiddleware = history => ({ getState }) => {
         nextDispatch({ ...action, payload }),
       );
     }
-    if (action.type === LOCATION_ACTIONS.LOCATION_UPDATE) {
+    if (action.type === LOCATION_ACTIONS.LOCATION_PATCH) {
       return updateHistory(action.payload, true, 'push', payload =>
         nextDispatch({ ...action, payload }),
       );

@@ -18,6 +18,7 @@ export const getAttributes = () => attributes;
 
 const defaultState = { verifying: true };
 export const authReducer = (state = defaultState, action) => {
+  console.log(state);
   if (action.type === 'APOLLO_QUERY_INIT' && action.operationName === 'verify') {
     return {
       ...state,

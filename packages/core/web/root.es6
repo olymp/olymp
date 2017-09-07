@@ -19,7 +19,7 @@ function getNextMountNode() {
 }
 
 export default ({ client, renderer, store, ua, history }) => (
-  <AppContainer>
+  <AppContainer xy={console.log(store.getState())}>
     <ApolloProvider store={store} client={client}>
       <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
         <GatewayProvider>

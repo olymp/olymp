@@ -7,8 +7,6 @@ import { createFela, felaReducer } from 'olymp-fela';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { authMiddleware, authReducer } from 'olymp-auth';
-import { keaSaga, keaReducer } from 'kea';
-import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './root';
 import { appReducer, appMiddleware } from '../redux';
@@ -129,26 +127,23 @@ client = new ApolloClient({
   // initialState: window.INITIAL_DATA,
 });
 // Redux stuff
-const sagaMiddleware = createSagaMiddleware();
 store = createStore(
   combineReducers({
-    kea: keaReducer('kea'),
+    app: appReducer,
     apollo: client.reducer(),
     location: routerReducer(history),
     auth: authReducer,
-    app: appReducer,
     fela: felaReducer,
   }),
   window.INITIAL_DATA || {},
   composeWithDevTools(
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
-    applyMiddleware(sagaMiddleware),
     applyMiddleware(authMiddleware(client)),
     applyMiddleware(appMiddleware),
   ),
 );
-sagaMiddleware.run(keaSaga);
+
 attachHistory(history, store);
 // End Redux stuff
 // rehydrateState = window.ASYNC_STATE;
@@ -158,7 +153,7 @@ renderApp(App);
 if (module.hot && typeof module.hot.accept === 'function') {
   // Any changes to our App will cause a hotload re-render.
   // module.hot.accept('./root', () => {
-  module.hot.accept(() => {
+  module.hot.accept('./root', () => {
     const NextRoot = require('./root').default;
     renderApp(NextRoot);
   });
