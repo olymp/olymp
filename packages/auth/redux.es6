@@ -16,33 +16,10 @@ export const resolved = action => `${action}${AUTH_ACTION_SUFFIX.RESOLVED}`;
 const attributes = `
 id
 name
-name
 email
 isAdmin
 token
-scopes {
-  id
-  orgId
-  org {
-    id
-    name
-    type
-    ref
-  }
-  permission
-}
-org {
-  id
-  name
-  type
-  ref
-  members {
-    id
-    ref
-    name
-    type
-  }
-}`;
+`;
 
 const defaultState = { verifying: true };
 export const authReducer = (state = defaultState, action) => {

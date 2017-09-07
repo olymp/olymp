@@ -26,4 +26,4 @@ export const auth = (obj = {}) => {
   );
 };
 
-export default connect(({ auth }) => ({ user: auth.user }));
+export default connect(({ auth }) => ({ auth }));

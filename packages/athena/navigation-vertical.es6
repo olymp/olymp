@@ -54,6 +54,33 @@ const VerticalMenu = createComponent(
     },
     '> ul': {
       zIndex: 3,
+      '> .ant-menu-item': {
+        paddingLeft: '16px!important',
+      },
+      '> .ant-menu-submenu-inline > .ant-menu-submenu-title': {
+        paddingLeft: '16px!important',
+      },
+      '> .logo': {
+        height: 102,
+        backgroundColor: 'rgba(0, 0, 0, 0.13)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.18)',
+        '> a': {
+          display: 'flex',
+          height: '100%',
+          '> svg': {
+            height: 52,
+            width: 66,
+            margin: 'auto',
+          }
+        }
+      },
+      '> .slim': {
+        height: 38,
+        '> img': {
+          display: 24,
+          height: 24,
+        }
+      }
     },
     ifSmallDown: {
       display: 'none',
