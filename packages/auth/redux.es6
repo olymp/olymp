@@ -13,13 +13,16 @@ export const pending = action => `${action}${AUTH_ACTION_SUFFIX.PENDING}`;
 export const rejected = action => `${action}${AUTH_ACTION_SUFFIX.REJECTED}`;
 export const resolved = action => `${action}${AUTH_ACTION_SUFFIX.RESOLVED}`;
 
-const attributes = `
+let attributes = `
 id
 name
 email
 isAdmin
 token
 `;
+
+export const setAttributes = newAttributes => (attributes = newAttributes);
+export const getAttributes = () => attributes;
 
 const defaultState = { verifying: true };
 export const authReducer = (state = defaultState, action) => {

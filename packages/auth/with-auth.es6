@@ -1,20 +1,18 @@
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-
-const baseAttributes = 'id, name, email, isAdmin, token';
-let attributes = baseAttributes;
+import { setAttributes, getAttributes } from './redux';
 
 export const auth = (obj = {}) => {
-  const { extraAttributes } = obj;
-  if (extraAttributes) {
-    attributes = `${baseAttributes}, ${extraAttributes}`;
+  const { attributes } = obj;
+  if (attributes) {
+    setAttributes(attributes);
   }
   return graphql(
     gql`
       query verify {
         user: verify {
-          ${attributes}
+          ${getAttributes()}
         }
       }
     `,
