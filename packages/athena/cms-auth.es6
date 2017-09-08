@@ -21,7 +21,7 @@ const Container = createComponent(
       flexDirection: 'row',
     },
     height: '100%',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#Cf5f5f5',
   }),
   'div',
   []
@@ -49,14 +49,6 @@ const Footer = createComponent(
     textAlign: 'center',
   }),
   'div',
-  p => Object.keys(p)
-);
-
-const Warning = createComponent(
-  ({ theme }) => ({
-    color: theme.colorDanger,
-  }),
-  'p',
   p => Object.keys(p)
 );
 
