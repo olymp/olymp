@@ -38,7 +38,6 @@ const babelOptions = {
     'transform-object-rest-spread',
     'transform-react-constant-elements',
     'transform-react-pure-class-to-function',
-    'transform-react-remove-prop-types',
     ['import', { libraryName: 'antd', style: true }],
     [
       'transform-imports',
