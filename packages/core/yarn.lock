@@ -3842,9 +3842,9 @@ olymp-fela@^17.0.42:
     shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.1.1:
-  version "17.1.1"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.1.1.tgz#22126a76d0c63d7c0df1319a8cce9c62e8e1c68e"
+olymp-router@^17.1.4:
+  version "17.1.4"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.1.4.tgz#9a2146eda615a1c518f138cb54f61ba4ce9fc9a7"
   dependencies:
     history "^4.6.3"
     olymp-utils "^16.1.2"
