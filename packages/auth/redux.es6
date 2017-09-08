@@ -49,7 +49,6 @@ export const authReducer = (state = defaultState, action) => {
 };
 
 export const authMiddleware = ({ dispatch, getState }) => nextDispatch => (action) => {
-  // LocalStorage
   if (
     typeof localStorage !== 'undefined' &&
     action.type.indexOf('APOLLO_QUERY_RESULT') === 0 &&
@@ -150,7 +149,7 @@ export const createLogout = dispatch => () =>
         logout
       }
     `,
-    payload: null,
+    payload: {},
   });
 
 export const createForgot = dispatch => payload =>

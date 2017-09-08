@@ -143,8 +143,8 @@ store = createStore(
   composeWithDevTools(
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
-    applyMiddleware(authMiddleware),
     applyMiddleware(apolloMiddleware(client)),
+    applyMiddleware(authMiddleware),
     applyMiddleware(appMiddleware),
   ),
 );

@@ -201,7 +201,7 @@ app.get('*', (req, res) => {
       applyMiddleware(client.middleware()),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(apolloMiddleware(client)),
-      applyMiddleware(authMiddleware(client)),
+      applyMiddleware(authMiddleware),
       applyMiddleware(appMiddleware),
     ),
   );

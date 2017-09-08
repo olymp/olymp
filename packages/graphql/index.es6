@@ -22,7 +22,7 @@ export const apolloMiddleware = client => ({ dispatch, getState }) => nextDispat
     action.type.indexOf('APOLLO_QUERY') !== 0 &&
     (action.mutation || action.query)
   ) {
-    if (typeof action.payload === 'function') {
+    if (action.payload && typeof action.payload === 'function') {
       action.payload = action.payload(getState());
       if (!action.payload) {
         return;
