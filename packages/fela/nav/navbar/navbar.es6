@@ -5,9 +5,9 @@ import WithContainer from './with-container';
 import Inner from './inner';
 
 const StyledNavbar = createComponent(
-  ({ theme, inverse, vertically, full }) => ({
-    backgroundColor: inverse && theme.color,
-    background: inverse && theme.color,
+  ({ theme, colored, vertically, full }) => ({
+    background: colored === true ? theme.color : colored,
+    backgroundColor: colored === true ? theme.color : colored,
     borderRadius: !full && theme.borderRadius,
     margin: !full && theme.space2,
     width: full && '100%',
@@ -16,55 +16,41 @@ const StyledNavbar = createComponent(
       margin: theme.space0,
     },
   }),
-  ({ className, children }) =>
-    <nav className={className}>
-      {children}
-    </nav>,
+  'nav',
   p => Object.keys(p)
 );
 
 /**
  * navbar-component
  */
-const Navbar = ({
-  brand,
-  children,
-  container,
-  inverse,
-  vertically,
-  ...props
-}) =>
-  <StyledNavbar>
+const Navbar = ({ children, container, colored, vertically, full, ...props }) =>
+  <StyledNavbar colored={colored} vertically={vertically} full={full}>
     <WithContainer container={container}>
       <Inner vertically={vertically}>
         {Children.map(children, child =>
           cloneElement(child, {
             ...props,
-            inverse,
+            colored,
             vertically,
-            // renderItem,
-            // renderNav,
           })
         )}
       </Inner>
     </WithContainer>
   </StyledNavbar>;
 Navbar.propTypes = {
-  /** node as brand */
-  brand: PropTypes.node,
+  children: PropTypes.node.isRequired,
   /** render nav vertically instead horizontally */
   vertically: PropTypes.bool,
-  /** inverse theme with primary-color background */
-  inverse: PropTypes.bool,
+  /** navbar background-color. primary-color if colored is set true */
+  colored: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   /** full size width without margin */
   full: PropTypes.bool,
   /** if navbar should be containered or not */
   container: PropTypes.bool,
 };
 Navbar.defaultProps = {
-  brand: undefined,
   vertically: false,
-  inverse: false,
+  colored: undefined,
   full: false,
   container: false,
 };

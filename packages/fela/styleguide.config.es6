@@ -5,9 +5,8 @@ const { name, version } = require('./package.json');
 
 module.exports = {
   title: `${name} ${version}`,
+  defaultExample: true,
   showUsage: true,
-  showCode: true,
-  verbose: true,
   webpackConfig: require('./styleguide.webpack.js'),
   styleguideComponents: {
     Wrapper: path.join(__dirname, 'styleguide.provider.js'),
@@ -16,16 +15,27 @@ module.exports = {
     {
       name: 'Nav',
       components: () => [
-        path.resolve(__dirname, 'nav/navbar', 'navbar.js'),
-        path.resolve(__dirname, 'nav/button', 'button.js'),
+        path.resolve(__dirname, 'nav', 'navbar', 'navbar.js'),
+        path.resolve(__dirname, 'nav', 'brand', 'brand.js'),
+        path.resolve(__dirname, 'nav', 'nav', 'nav.js'),
+        path.resolve(__dirname, 'nav', 'item', 'item.js'),
       ],
     },
   ],
   getComponentPathLine: componentPath => {
     const dirname = path.dirname(componentPath, '.js');
-    const filename = dirname.split('/').slice(-1)[0];
-    const componentName = upperFirst(camelCase(filename));
+    const component = dirname.split('/')[0];
+    const componentName = upperFirst(camelCase(component));
+    const subComponent = dirname.split('/').slice(-1)[0];
+    const subComponentName = upperFirst(camelCase(subComponent));
 
-    return `import { ${componentName} } from 'olymp-fela'`;
+    if (subComponentName === componentName) {
+      return `import { ${componentName} } from 'olymp-fela';`;
+    }
+
+    return `
+      import { ${componentName} } from 'olymp-fela';\n
+      const { ${subComponentName} } = ${componentName};
+    `;
   },
 };

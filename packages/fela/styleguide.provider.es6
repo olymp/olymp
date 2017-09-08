@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Provider as FelaProvider } from 'react-fela';
+import { HistoryStore } from 'olymp-router';
 import { ThemeProvider, ThemeStore, createFela } from './utils';
 
 const withStores = WrappedComponent =>
@@ -13,9 +14,10 @@ const withStores = WrappedComponent =>
       super(props, context);
       const args = { ...props, stores: context.mobxStores };
       this.stores = {
+        $history: new HistoryStore(args),
         $theme: new ThemeStore(args),
       };
-      Object.keys(this.stores).forEach((key) => {
+      Object.keys(this.stores).forEach(key => {
         this.stores[key].stores = this.stores;
         if (this.stores[key].initialize) {
           this.stores[key].initialize();
@@ -27,8 +29,10 @@ const withStores = WrappedComponent =>
     }
   };
 
-export default withStores(({ children }) => (
+export default withStores(({ children }) =>
   <FelaProvider renderer={createFela()}>
-    <ThemeProvider>{children}</ThemeProvider>
+    <ThemeProvider>
+      {children}
+    </ThemeProvider>
   </FelaProvider>
-));
+);
