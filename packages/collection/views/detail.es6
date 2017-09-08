@@ -32,21 +32,20 @@ export const getFormSchema = ({ fields }) =>
 const Flex = createComponent(
   ({ theme }) => ({
     width: '100%',
-    paddingTop: theme.space3,
-    paddingX: theme.space3,
     hasFlex: {
       display: 'flex',
       flexDirection: 'column',
     },
     '> ul': {
       zIndex: 1,
+      marginBottom: 20,
     },
     '> form': {
       overflow: 'auto',
     },
   }),
   'div',
-  []
+  [],
 );
 
 const HiddenForm = createComponent(
@@ -54,7 +53,7 @@ const HiddenForm = createComponent(
     display: visible ? 'block' : 'none',
   }),
   p => <DetailForm {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withRouter
@@ -70,32 +69,25 @@ export default class CollectionDetail extends Component {
     return (
       <ContentLoader isLoading={id && !item}>
         <Flex>
-          <Gateway into="navigation">
-            {keys.map(tab =>
-              <Menu.Item
-                key={tab}
-                className={tab === currentTab && 'ant-menu-item-selected'}
-              >
-                <a onClick={() => this.setState({ tab })}>
-                  {tab}
-                </a>
-              </Menu.Item>
-            )}
-          </Gateway>
-          <Gateway into="quick">
+          <Menu mode="horizontal" selectedKeys={[currentTab]}>
             <Menu.Item key="save">
-              <a href="javascript:;" onClick={onSave}>
-                <Icon type="save" />
-              </a>
+              <Icon type="save" onClick={onSave} />
+              <span onClick={onSave}>Speichern</span>
             </Menu.Item>
             <Menu.Item key="clone">
-              <a href="javascript:;" onClick={onClone}>
-                <Icon type="copy" />
-              </a>
+              <Icon type="copy" onClick={onClone} />
+              <span onClick={onSave}>Klonen</span>
             </Menu.Item>
-          </Gateway>
+            {keys
+              .map(tab => (
+                <Menu.Item key={tab} className="right">
+                  <span onClick={() => this.setState({ tab })}>{tab}</span>
+                </Menu.Item>
+              ))
+              .reverse()}
+          </Menu>
 
-          {Object.keys(schema).map(tab =>
+          {Object.keys(schema).map(tab => (
             <HiddenForm
               {...this.props}
               item={item || {}}
@@ -104,7 +96,7 @@ export default class CollectionDetail extends Component {
               visible={tab === currentTab}
               onCreate={onSave}
             />
-          )}
+          ))}
         </Flex>
       </ContentLoader>
     );
