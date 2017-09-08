@@ -6,8 +6,10 @@ import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createFela, felaReducer } from 'olymp-fela';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
+import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { startLoading, stopLoading } from './loader';
 import App from './root';
 import { appReducer, appMiddleware } from '../redux';
 // window.Perf = require('react-addons-perf');
@@ -49,6 +51,7 @@ const networkInterface = createBatchingNetworkInterface({
 networkInterface.use([
   {
     applyBatchMiddleware(req, next) {
+      startLoading();
       if (!req.options.headers) {
         req.options.headers = {}; // Create the header object if needed.
       }
@@ -65,6 +68,7 @@ networkInterface.useAfter([
   {
     applyBatchAfterware(res, next) {
       // console.log(res.responses);
+      stopLoading();
       const error =
         res.responses &&
         res.responses.filter(
@@ -139,7 +143,8 @@ store = createStore(
   composeWithDevTools(
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
-    applyMiddleware(authMiddleware(client)),
+    applyMiddleware(authMiddleware),
+    applyMiddleware(apolloMiddleware(client)),
     applyMiddleware(appMiddleware),
   ),
 );

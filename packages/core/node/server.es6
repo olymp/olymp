@@ -25,7 +25,7 @@ import bodyparser from 'body-parser';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela, felaReducer } from 'olymp-fela';
-import createSagaMiddleware from 'redux-saga';
+import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 import { appReducer, appMiddleware } from '../redux';
 import App from '@app';
@@ -188,7 +188,6 @@ app.get('*', (req, res) => {
   const ua = new UAParser(req.headers['user-agent']);
   const renderer = createFela(ua);
   const history = createHistory({ initialEntries: [req.url] });
-  const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     combineReducers({
@@ -201,7 +200,7 @@ app.get('*', (req, res) => {
     compose(
       applyMiddleware(client.middleware()),
       applyMiddleware(routerMiddleware(history)),
-      applyMiddleware(sagaMiddleware),
+      applyMiddleware(apolloMiddleware(client)),
       applyMiddleware(authMiddleware(client)),
       applyMiddleware(appMiddleware),
     ),

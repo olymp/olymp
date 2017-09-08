@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Notification from 'rc-notification';
+
 export { default as List } from './list';
 export * from './containers';
 export * from './modal-utils';
@@ -22,4 +26,44 @@ import { node } from 'prop-types';
 Gateway.propTypes = {
   ...Gateway.propTypes,
   children: node,
+};
+
+Notification.newInstance = function newNotificationInstance(properties) {
+  const { getContainer, ...props } = properties || {};
+  let div;
+  if (getContainer) {
+    div = getContainer();
+  } else {
+    div = document.createElement('div');
+    document.body.appendChild(div);
+  }
+  let notification;
+  ReactDOM.render(
+    <Notification
+      ref={(x) => {
+        notification = x;
+      }}
+      {...props}
+    />,
+    div,
+  );
+  return {
+    notice(noticeProps) {
+      if (notification) {
+        notification.add(noticeProps);
+      }
+    },
+    removeNotice(key) {
+      if (notification) {
+        notification.remove(key);
+      }
+    },
+    component: notification,
+    destroy() {
+      ReactDOM.unmountComponentAtNode(div);
+      if (!getContainer) {
+        document.body.removeChild(div);
+      }
+    },
+  };
 };

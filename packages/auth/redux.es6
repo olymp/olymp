@@ -1,4 +1,4 @@
-import { clientMiddleware, pending, rejected, resolved } from 'olymp-graphql';
+import { pending, rejected, resolved } from 'olymp-graphql';
 
 export const AUTH_ACTIONS = {
   LOGIN: 'AUTH_LOGIN',
@@ -48,7 +48,7 @@ export const authReducer = (state = defaultState, action) => {
   }
 };
 
-export const authMiddleware = client => ({ dispatch, getState }) => nextDispatch => (action) => {
+export const authMiddleware = ({ dispatch, getState }) => nextDispatch => (action) => {
   // LocalStorage
   if (
     typeof localStorage !== 'undefined' &&
@@ -78,12 +78,7 @@ export const authMiddleware = client => ({ dispatch, getState }) => nextDispatch
     localStorage.removeItem('token');
   }
 
-  // Next dispatch
-  if (action.type.indexOf('AUTH_') === -1 || !action.mutation) {
-    return nextDispatch(action);
-  }
-
-  return clientMiddleware(client, dispatch, action);
+  return nextDispatch(action);
 };
 
 export const createSave = dispatch => payload =>
