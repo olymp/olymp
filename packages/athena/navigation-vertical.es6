@@ -86,8 +86,8 @@ const VerticalMenu = createComponent(
       display: 'none',
     },
   }),
-  ({ children, className }) =>
-    (<div className={className}>
+  ({ children, className, ...rest }) =>
+    (<div className={className} {...rest}>
       {children}
     </div>),
   p => Object.keys(p),
@@ -127,11 +127,18 @@ const AntMenuToolbar = ({ keys, ...p }) =>
 @withGateway('toolbar')
 @withGateway('navigation')
 class Navigation extends Component {
+  state = { collapsed: true };
   handleClick = (e) => {
     const { router, location } = this.props;
     if (e.key && e.key[0] === '@') {
       router.push({ location, query: { [e.key]: null } });
     }
+  }
+  enter = () => {
+    this.setState({ collapsed: false });
+  }
+  leave = () => {
+    this.setState({ collapsed: true });
   }
   render() {
     const { auth, setDeviceWidth, query, collectionList, toolbar, navigation, quick } = this.props;
@@ -142,8 +149,8 @@ class Navigation extends Component {
     }
 
     return (
-      <VerticalMenu>
-        <AntMenu keys={keys} onClick={this.handleClick}>
+      <VerticalMenu onMouseEnter={this.enter} onMouseLeave={this.leave}>
+        <AntMenu keys={keys} onClick={this.handleClick} inlineCollapsed={this.state.collapsed}>
           <Menu.Item className="logo">
             <Link to={{ query: {} }}>
               <Logo size={33} margin="0 0 -7px 0" />

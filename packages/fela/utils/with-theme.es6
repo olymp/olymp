@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import shortId from 'shortid';
+import shallowEqual from 'shallowequal';
 import { setTheme } from './redux';
 
 export default getColorFromProps => (WrappedComponent) => {
   @setTheme
   class WithColorComponent extends Component {
+    id = shortId.generate();
     color = null;
     constructor(props) {
       super(props);
@@ -11,15 +14,15 @@ export default getColorFromProps => (WrappedComponent) => {
     }
     setColor = (props = this.props) => {
       const { setTheme } = this.props;
-      const newColor = getColorFromProps(props) || null;
-      if (newColor !== this.color) {
-        setTheme({ color: newColor });
-        this.color = newColor;
+      const newTheme = getColorFromProps(props) || null;
+      if (!shallowEqual(newTheme, this.theme)) {
+        setTheme(this.id, newTheme);
+        this.theme = newTheme;
       }
     };
     componentWillUnmount() {
-      const { setTheme } = this.props;
-      setTheme({});
+      const { unsetTheme } = this.props;
+      unsetTheme(this.id);
     }
     componentWillReceiveProps(props) {
       this.setColor(props);

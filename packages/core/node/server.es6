@@ -201,7 +201,7 @@ app.get('*', (req, res) => {
       applyMiddleware(client.middleware()),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(apolloMiddleware(client)),
-      applyMiddleware(authMiddleware(client)),
+      applyMiddleware(authMiddleware),
       applyMiddleware(appMiddleware),
     ),
   );
@@ -228,14 +228,14 @@ app.get('*', (req, res) => {
       const cssMarkup = renderer.renderToString();
 
       // Generate the html res.
-
+      const state = store.getState();
       const html = (req.isAmp ? amp : template)({
         ...Helmet.rewind(),
         root: reactAppString,
         scripts,
         styles,
         cssMarkup,
-        initialState: { apollo: client.getInitialState() },
+        initialState: { apollo: client.getInitialState(), fela: state.fela },
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 
