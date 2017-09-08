@@ -15,33 +15,7 @@ const renderGateway = (
   const hasBinding = binding && binding.type;
   return (
     <Gateway into="quick">
-      <Menu.SubMenu title={<Icon type="plus" />}>
-        <Menu.Item key="page-plus">
-          <Link
-            to={{
-              pathname,
-              query: { ...query, '@page': 'new' },
-            }}
-          >
-            Seite
-          </Link>
-        </Menu.Item>
-        {collectionList.map(collection =>
-          (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-            <Link
-              to={{
-                query: {
-                  ...query,
-                  [`@${collection.name.toLowerCase()}`]: null,
-                  modal: null,
-                },
-              }}
-            >
-              {get(collection, 'decorators.label.value', collection.name)}
-            </Link>
-          </Menu.Item>)
-        )}
-      </Menu.SubMenu>
+
       {hasBinding &&
         <Menu.Item key="save">
           <Link

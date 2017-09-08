@@ -1,13 +1,13 @@
-import React, { Component, Children } from 'react';
+import React, { Component } from 'react';
 import { withLang, Logo } from 'olymp-utils';
-import { Link, withRouter } from 'olymp-router';
+import { Link, createReplaceQuery } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
 import { withGateway } from 'olymp-ui';
-import { GatewayDest } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
+import { connect } from 'react-redux';
 
 const getInitials = (name) => {
   if (name) {
@@ -43,24 +43,34 @@ const UserIcon = createComponent(
 
 const VerticalMenu = createComponent(
   ({ theme }) => ({
-    position: 'relative',
     zIndex: 3,
-    backgroundColor: '#404040',
+    width: 64,
     // boxShadow: 'inset -6px 0 5px -5px rgb(0, 0, 0)',
     hasFlex: {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
     },
+    '> ul.ant-menu-inline-collapsed > li.ant-menu-item.logo': {
+      padding: '0 10px',
+    },
     '> ul': {
+      backgroundColor: '#404040',
+      position: 'fixed',
+      top: 0,
+      bottom: 0,
+      maxWidth: 200,
       zIndex: 3,
       '> .ant-menu-item': {
-        paddingLeft: '16px!important',
+        // paddingLeft: '16px!important',
       },
       '> .ant-menu-submenu-inline > .ant-menu-submenu-title': {
-        paddingLeft: '16px!important',
+        // paddingLeft: '16px!important',
       },
-      '> .logo': {
+      '& .react-gravatar': {
+        marginLeft: -6,
+      },
+      '> li.ant-menu-item.logo': {
         height: 102,
         backgroundColor: 'rgba(0, 0, 0, 0.13)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.18)',
@@ -123,15 +133,27 @@ const AntMenuToolbar = ({ keys, ...p }) =>
 
 @withLang
 @withAuth
-@withRouter
 @withGateway('toolbar')
 @withGateway('navigation')
+@connect(({ location }) => ({
+  pathname: location.pathname,
+}), dispatch => ({
+  setQuery: createReplaceQuery(dispatch)
+}))
 class Navigation extends Component {
   state = { collapsed: true };
   handleClick = (e) => {
-    const { router, location } = this.props;
+    const { setQuery } = this.props;
     if (e.key && e.key[0] === '@') {
-      router.push({ location, query: { [e.key]: null } });
+      const v = e.key.split(',').reduce((state, next) => {
+        const key = next.indexOf('=') !== -1 ? next.split('=')[0] : next;
+        const value = next.indexOf('=') !== -1 ? next.split('=')[1] : null;
+        return {
+          ...state,
+          [key]: value
+        };
+      }, {});
+      setQuery(v);
     }
   }
   enter = () => {
@@ -156,7 +178,16 @@ class Navigation extends Component {
               <Logo size={33} margin="0 0 -7px 0" />
             </Link>
           </Menu.Item>
-
+          <Menu.SubMenu title={<Icon type="plus" />}>
+            <Menu.Item key="@page=new">
+              <span>Seite</span>
+            </Menu.Item>
+            {collectionList.map(collection =>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                <span>{get(collection, 'decorators.label.value', collection.name)}</span>
+              </Menu.Item>)
+            )}
+          </Menu.SubMenu>
           <Menu.SubMenu
             title={<UserIcon email={auth.user.email} name={auth.user.name} default="blank" />}
           >
@@ -186,7 +217,6 @@ class Navigation extends Component {
               </a>
             </Menu.Item>
           </Menu.SubMenu>
-
           <Menu.Item key="@page">
             <Icon type="bars" />
             <span>
@@ -211,15 +241,10 @@ class Navigation extends Component {
           >
             {collectionList.map(collection =>
               (<Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <Link
-                  to={{
-                    query: {
-                      [`@${collection.name.toLowerCase()}`]: null,
-                    },
-                  }}
-                >
+                <Icon type="database" />
+                <span>
                   {get(collection, 'decorators.label.value', collection.name)}
-                </Link>
+                </span>
               </Menu.Item>),
             )}
           </Menu.SubMenu>
@@ -238,23 +263,6 @@ class Navigation extends Component {
               </span>
             </Menu.Item>}
         </AntMenu>
-
-        <Filler />
-
-        {!!Children.toArray(toolbar).length &&
-          <AntMenuToolbar>
-            {toolbar}
-          </AntMenuToolbar>}
-        {!!Children.toArray(toolbar).length && <Filler />}
-
-        {!!Children.toArray(navigation).length &&
-          <AntMenu>
-            {navigation}
-          </AntMenu>}
-        {!!Children.toArray(navigation).length && <Filler />}
-
-        <GatewayDest name="quick" component={AntMenu} />
-
       </VerticalMenu>
     );
   }

@@ -16,7 +16,7 @@ export const SplitView = createComponent(
       flexGrow: 1,
       overflowY: 'auto',
       margin: center && '0 auto',
-      borderX: center && border(theme),
+      // borderX: center && border(theme),
       maxWidth,
       maxHeight: '100%',
     },

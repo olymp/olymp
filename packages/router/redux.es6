@@ -53,6 +53,9 @@ export const routerMiddleware = history => ({ getState }) => {
         nextDispatch({ ...action, payload }),
       );
     }
+    if (action.type === LOCATION_ACTIONS.LOCATION_CORRECT) {
+      action.payload = urlToLocation(action.payload);
+    }
     return nextDispatch(action);
   };
 };
