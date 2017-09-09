@@ -11,15 +11,13 @@ class Content extends Component {
 
     return (
       <Container>
-        <h1>
-          {children}
-        </h1>
-        <p
-          contentEditable={!editor || editor.props.readOnly ? undefined : false}
-        >
-          {subheader !== undefined
-            ? subheader
-            : `Startseite ${path.map(p => `/ ${capitalize(p)}`)}`}
+        <h1>{children}</h1>
+        <p contentEditable={!editor || editor.props.readOnly ? undefined : false}>
+          {subheader !== undefined ? (
+            subheader
+          ) : (
+            `Startseite / ${path.map(p => `${capitalize(decodeURI(p))}`).join(' / ')}`
+          )}
         </p>
       </Container>
     );
@@ -52,10 +50,11 @@ export default {
         width: 'calc(100% - 1rem)',
       },
     }),
-    ({ className, attributes, ...rest }) =>
+    ({ className, attributes, ...rest }) => (
       <div className={className} {...attributes}>
         <Content {...rest} />
-      </div>,
-    p => Object.keys(p)
+      </div>
+    ),
+    p => Object.keys(p),
   ),
 };

@@ -7,26 +7,31 @@ import WithContainer from './with-container';
 const Body = createComponent(
   ({ affix }) => ({
     ...(!affix
-      ? {}
+      ? {
+        hasFlex: {
+          flex: '1 1 auto',
+        },
+      }
       : {
-          hasFlex: {
-            flex: '1 1 auto',
-            display: 'flex',
-            flexDirection: 'column',
-          },
-          height: '100%',
-          overflowY: 'auto',
-          ifSmallDown: {
-            '-webkit-overflow-scrolling': 'touch',
-            overflowY: 'scroll',
-          },
-        }),
+        hasFlex: {
+          flex: '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+        },
+        height: '100%',
+        overflowY: 'auto',
+        ifSmallDown: {
+          '-webkit-overflow-scrolling': 'touch',
+          overflowY: 'scroll',
+        },
+      }),
   }),
-  props =>
+  props => (
     <ScrollToTop>
       <WithContainer {...props} />
-    </ScrollToTop>,
-  ({ affix, ...p }) => Object.keys(p)
+    </ScrollToTop>
+  ),
+  ({ affix, ...p }) => Object.keys(p),
 );
 Body.displayName = 'Layout.Body';
 Body.propTypes = {
