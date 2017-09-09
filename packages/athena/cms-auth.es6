@@ -6,9 +6,10 @@ import { EditablePageRoute, PageRoute } from 'olymp-pages';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { Analytics } from 'olymp-google';
-import { createComponent, getAntStyle } from 'olymp-fela';
+import { createComponent, getAntStyle, TopLoader } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { GatewayDest } from 'react-gateway';
+import { connect } from 'react-redux';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
 import { TemplateRoute } from './templates';
@@ -53,6 +54,9 @@ const Footer = createComponent(
 );
 
 @withUA
+@connect(({ app }) => ({
+  _isLoading: app.loading
+}))
 export default class CMSAuth extends Component {
   state = { deviceWidth: undefined };
 
@@ -65,6 +69,7 @@ export default class CMSAuth extends Component {
       router,
       pathname,
       ua,
+      _isLoading,
       theme,
       wrapper: Wrapped,
     } = this.props;
@@ -79,6 +84,7 @@ export default class CMSAuth extends Component {
 
     return (
       <Container theme={theme}>
+        <TopLoader loading={_isLoading} />
         <Lightbox />
         <GatewayDest name="modal" />
         <Hotjar id={process.env.HOTJAR} />

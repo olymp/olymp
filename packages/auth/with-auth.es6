@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { setAttributes, getAttributes } from './redux';
+import { setAttributes, getAttributes, createLogout } from './redux';
 
 export const auth = (obj = {}) => {
   const { attributes } = obj;
@@ -24,4 +24,4 @@ export const auth = (obj = {}) => {
   );
 };
 
-export default connect(({ auth }) => ({ auth }));
+export default connect(({ auth }) => ({ auth }), dispatch => ({ logout: createLogout(dispatch) }));

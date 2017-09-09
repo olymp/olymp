@@ -22,11 +22,12 @@ import fs from 'fs';
 import useragent from 'express-useragent';
 import sslRedirect from 'heroku-ssl-redirect';
 import bodyparser from 'body-parser';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { applyMiddleware, compose } from 'redux';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela, felaReducer } from 'olymp-fela';
 import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
+import { createDynamicStore, dynamicMiddleware } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
 import App from '@app';
 
@@ -189,15 +190,16 @@ app.get('*', (req, res) => {
   const renderer = createFela(ua);
   const history = createHistory({ initialEntries: [req.url] });
 
-  const store = createStore(
-    combineReducers({
+  const store = createDynamicStore(
+    {
       app: appReducer,
       apollo: client.reducer(),
       location: routerReducer(history),
       auth: authReducer,
       fela: felaReducer,
-    }),
+    },
     compose(
+      applyMiddleware(dynamicMiddleware()),
       applyMiddleware(client.middleware()),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(apolloMiddleware(client)),

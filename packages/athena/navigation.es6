@@ -222,6 +222,23 @@ class Navigation extends Component {
         {!!Children.toArray(navigation).length && <Filler />}
 
         <GatewayDest name="quick" component={AntMenu} />
+        <AntMenu>
+
+          <Menu.SubMenu title={<Icon type="plus" />}>
+            <Menu.Item key="@page=new">
+              <Link replaceQuery={{ page: 'new' }}>
+                Seite
+              </Link>
+            </Menu.Item>
+            {collectionList.map(collection =>
+              (<Menu.Item key={`@${collection.name.toLowerCase()}-new`}>
+                <Link replaceQuery={{ [collection.name.toLowerCase()]: null }}>
+                  {get(collection, 'decorators.label.value', collection.name)}
+                </Link>
+              </Menu.Item>)
+            )}
+          </Menu.SubMenu>
+        </AntMenu>
 
         <AntSubMenu
           title={<UserIcon email={auth.user.email} name={auth.user.name} default="blank" />}

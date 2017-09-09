@@ -102,7 +102,7 @@ export const EditablePageRoute = (props) => {
 
 export const PageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname, loading } = props;
-  const match = flatNavigation.find(item => pathname === item.pathname);
+  const match = flatNavigation.find(item => pathname === item.pathname || decodeURI(item.pathname) === pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
     <Wrapped {...props} match={match}>

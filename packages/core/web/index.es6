@@ -4,11 +4,12 @@ import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import { createFela, felaReducer } from 'olymp-fela';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { applyMiddleware } from 'redux';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { dynamicMiddleware, createDynamicStore } from '../redux-dynamic';
 import { startLoading, stopLoading } from './loader';
 import App from './root';
 import { appReducer, appMiddleware } from '../redux';
@@ -51,7 +52,7 @@ const networkInterface = createBatchingNetworkInterface({
 networkInterface.use([
   {
     applyBatchMiddleware(req, next) {
-      startLoading();
+      startLoading(store.dispatch);
       if (!req.options.headers) {
         req.options.headers = {}; // Create the header object if needed.
       }
@@ -68,7 +69,7 @@ networkInterface.useAfter([
   {
     applyBatchAfterware(res, next) {
       // console.log(res.responses);
-      stopLoading();
+      stopLoading(store.dispatch);
       const error =
         res.responses &&
         res.responses.filter(
@@ -131,16 +132,17 @@ client = new ApolloClient({
   // initialState: window.INITIAL_DATA,
 });
 // Redux stuff
-store = createStore(
-  combineReducers({
+store = createDynamicStore(
+  {
     app: appReducer,
     apollo: client.reducer(),
     location: routerReducer(history),
     auth: authReducer,
     fela: felaReducer,
-  }),
+  },
   window.INITIAL_DATA || {},
   composeWithDevTools(
+    applyMiddleware(dynamicMiddleware()),
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(apolloMiddleware(client)),

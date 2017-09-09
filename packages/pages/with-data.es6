@@ -1,9 +1,8 @@
 import React, { Component, createElement } from 'react';
 import { gql, graphql, unflatten } from 'olymp-utils';
 import { AltRoute } from 'olymp-router';
-import { orderBy, sortBy } from 'lodash';
 import { queryPages } from './gql';
-import { get, upperFirst, lowerFirst } from 'lodash';
+import { get, upperFirst, lowerFirst, orderBy, sortBy, groupBy } from 'lodash';
 
 // interpolate a string value using props
 const interpolate = (value, propsOrFunc) => {
@@ -15,17 +14,14 @@ const interpolate = (value, propsOrFunc) => {
   }
   return value.replace(
     /\{\{?\:?(.+?)\}?\}/g,
-    (m, v) =>
-      typeof propsOrFunc === 'function'
-        ? propsOrFunc(v, v)
-        : get(propsOrFunc, v, v)
+    (m, v) => (typeof propsOrFunc === 'function' ? propsOrFunc(v, v) : get(propsOrFunc, v, v)),
   );
 };
 
 const NavCache = {};
-export const withNavigation = Wrapped => {
+export const withNavigation = (Wrapped) => {
   // Prepare Data, gather bound navigation items
-  const withNavigationPrepare = Wrapped => {
+  const withNavigationPrepare = (Wrapped) => {
     // get PageList
     @queryPages
     class WithNavPrepareInner extends Component {
@@ -40,10 +36,10 @@ export const withNavigation = Wrapped => {
               const { type, fields, query = {} } = value.binding;
               const sort = value.sorting
                 ? value.sorting.reduce((store, item) => {
-                    const [c, ...rest] = item.split('');
-                    store[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
-                    return store;
-                  }, {})
+                  const [c, ...rest] = item.split('');
+                  store[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
+                  return store;
+                }, {})
                 : {};
               return graphql(
                 gql`
@@ -64,7 +60,7 @@ export const withNavigation = Wrapped => {
                       sort,
                     },
                   }),
-                }
+                },
               )(store);
             }, Wrapped);
         }
@@ -92,10 +88,8 @@ export const withNavigation = Wrapped => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
               loading = loading && data.loading;
-              (data.items || []).forEach(item => {
-                const slug = child.slug
-                  ? interpolate(child.slug, item)
-                  : item.slug;
+              (data.items || []).forEach((item) => {
+                const slug = child.slug ? interpolate(child.slug, item) : item.slug;
                 state.push({
                   ...child,
                   pageId: child.id,
@@ -116,7 +110,7 @@ export const withNavigation = Wrapped => {
           }
           const sortIndex = parent.sorting;
           return sortBy(newChildren, [
-            o => {
+            (o) => {
               const index = sortIndex.indexOf(o.id);
               if (index === -1) {
                 return 99;
@@ -183,5 +177,5 @@ export const withData = (Wrapped, { type, fields }) =>
         },
       }),
       name: 'nav_data',
-    }
+    },
   )(({ nav_data, ...rest }) => <Wrapped {...rest} binding={nav_data.item} />);

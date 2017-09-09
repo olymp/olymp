@@ -14,14 +14,14 @@ import {
 } from '../../edits';
 
 class PageForm extends Component {
-  handleNameChange = e => {
+  handleNameChange = (e) => {
     // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value, true)}` });
   };
 
-  handleTypeChange = e => {
+  handleTypeChange = (e) => {
     // set slug if unset
     const { form } = this.props;
     if (e === 'MENU') {
@@ -38,7 +38,7 @@ class PageForm extends Component {
         parent: parentId,
         children: [],
       })),
-      { id: 'value', parentId: 'parent' }
+      { id: 'value', parentId: 'parent' },
     );
 
     return (
@@ -53,14 +53,7 @@ class PageForm extends Component {
           type="text"
           size="large"
         />
-        <Input
-          form={form}
-          item={item}
-          field="slug"
-          label="Slug"
-          type="text"
-          size="large"
-        />
+        <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
         <TextArea
           form={form}
           item={item}
@@ -69,13 +62,7 @@ class PageForm extends Component {
           type="text"
           size="large"
         />
-        <State
-          form={form}
-          item={item}
-          field="state"
-          label="Status"
-          rules={['required']}
-        />
+        <State form={form} item={item} field="state" label="Status" rules={['required']} />
         <PageType
           form={form}
           item={item}
@@ -84,7 +71,7 @@ class PageForm extends Component {
           size="large"
           onChange={this.handleTypeChange}
         />
-        {(form.getFieldValue('type') || item.type) !== 'MENU' &&
+        {(form.getFieldValue('type') || item.type) !== 'MENU' && (
           <Parent
             form={form}
             treeData={tree}
@@ -93,17 +80,12 @@ class PageForm extends Component {
             label="Menü"
             placeholder="Übergeordnetes Menü"
             size="large"
-          />}
-        {(form.getFieldValue('type') || item.type) === 'LINK' &&
-          <Input
-            form={form}
-            item={item}
-            field="href"
-            label="Ext. Link"
-            type="text"
-            size="large"
-          />}
-        {(form.getFieldValue('type') || item.type) === 'ALIAS' &&
+          />
+        )}
+        {(form.getFieldValue('type') || item.type) === 'LINK' && (
+          <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />
+        )}
+        {(form.getFieldValue('type') || item.type) === 'ALIAS' && (
           <Parent
             form={form}
             treeData={tree}
@@ -112,17 +94,24 @@ class PageForm extends Component {
             label="Alias"
             placeholder="Alias zu.."
             size="large"
-          />}
-        <SectionH
-          title="Erweitert"
-          description="Datenanbindung, Sortierung Unterseiten"
-        />
+          />
+        )}
+        <SectionH title="Erweitert" description="Datenanbindung, Sortierung Unterseiten" />
         <Input
           form={form}
           item={item}
           field="binding.type"
           placeholder="typ"
           label="Bindungstyp"
+          type="text"
+          size="large"
+        />
+        <Input
+          form={form}
+          item={item}
+          field="binding.groupBy"
+          placeholder="group"
+          label="Gruppieren"
           type="text"
           size="large"
         />
@@ -135,13 +124,7 @@ class PageForm extends Component {
           label="Felder"
           size="large"
         />
-        <JsonInput
-          form={form}
-          item={item}
-          field="binding.query"
-          label="Filter"
-          size="large"
-        />
+        <JsonInput form={form} item={item} field="binding.query" label="Filter" size="large" />
         <TagSelect
           form={form}
           item={item}
@@ -151,13 +134,7 @@ class PageForm extends Component {
           label="Sortieren"
           size="large"
         />
-        <InputNumber
-          form={form}
-          item={item}
-          field="order"
-          label="Reihenfolge"
-          size="large"
-        />
+        <InputNumber form={form} item={item} field="order" label="Reihenfolge" size="large" />
       </Panel>
     );
   }

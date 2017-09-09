@@ -1,15 +1,26 @@
 import { createComponent as createFelaComponent } from 'react-fela';
 import { getTheme } from './redux';
 
-export default (x1, x2, x3) =>
+export default (style, component, passThrough) =>
   getTheme(
     createFelaComponent(
       ({ theme, extraTheme, ...rest }) =>
-        x1({
-          theme: { ...theme, ...extraTheme },
-          ...rest,
-        }),
-      x2,
-      ({ extraTheme, dispatch, ...props }) => (typeof x3 === 'function' ? x3(props) : x3),
+        (typeof style === 'function'
+          ? style({
+            theme: { ...theme, ...extraTheme },
+            ...rest,
+          })
+          : style),
+      component,
+      ({ extraTheme, dispatch, ...props }) => {
+        if (typeof passThrough === 'function') {
+          return passThrough(props);
+        } else if (passThrough === null) {
+          return null;
+        } else if (passThrough) {
+          return passThrough;
+        }
+        return Object.keys(props);
+      },
     ),
   );

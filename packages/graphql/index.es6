@@ -16,18 +16,13 @@ export const pending = action => `${action}${ACTION_SUFFIX.PENDING}`;
 export const rejected = action => `${action}${ACTION_SUFFIX.REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX.RESOLVED}`;
 
-export const apolloMiddleware = client => ({ dispatch, getState }) => nextDispatch => (action) => {
+export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (action) => {
   if (
+    action.type &&
     action.type.indexOf('APOLLO_MUTATION') !== 0 &&
     action.type.indexOf('APOLLO_QUERY') !== 0 &&
     (action.mutation || action.query)
   ) {
-    if (action.payload && typeof action.payload === 'function') {
-      action.payload = action.payload(getState());
-      if (!action.payload) {
-        return;
-      }
-    }
     const requestId = shortId.generate();
     const invoker = action.mutation
       ? () =>

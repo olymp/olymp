@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter, Prompt } from 'olymp-router';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { Menu, Form, Icon } from 'antd';
-import { Gateway } from 'react-gateway';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
 import Page from '../page';
