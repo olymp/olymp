@@ -17,22 +17,41 @@ export default (WrappedComponent) => {
       {
         /* eslint-disable */
         options: ({ id, searchTerm, query, ...rest }) => ({
-          variables: searchTerm ? {
-            query: {
-              name: {
-                contains: searchTerm,
-              },
-            }
-          } : {
-              query: {
-                state: {
-                  eq: get(query, 'state', 'PUBLISHED'),
+          fetchPolicy: 'cache-and-network',
+          variables: searchTerm
+            ? {
+                query: {
+                  name: {
+                    contains: searchTerm,
+                  },
                 },
               }
-            },
+            : {
+                query: {
+                  state: {
+                    eq: get(query, 'state', 'PUBLISHED'),
+                  },
+                },
+              },
         }),
-      }
-    )(props => <WrappedComponent {...props} items={props.data.items} />);
+      },
+    )(props => (
+      <WrappedComponent
+        {...props}
+        items={props.data.items}
+        refetchQuery={() => {
+          return {
+            query: gql`
+              query ${lowerFirst(typeName)}List($query: ${typeName}Query) {
+                items: ${lowerFirst(typeName)}List(query: $query) {
+                  ${fieldNames}
+                }
+              }
+            `,
+          };
+        }}
+      />
+    ));
   return props => {
     if (props.typeName && props.fieldNames && props.collection) {
       const name = `${props.typeName}|${props.fieldNames}`;

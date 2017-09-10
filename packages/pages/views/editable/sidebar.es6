@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tabs } from 'antd';
+import { Tabs, Collapse } from 'antd';
 import { Panel } from 'olymp-ui';
-import { createComponent, border } from 'olymp-fela';
+import { createComponent, border, H3 } from 'olymp-fela';
 import Tree from './tree';
 import PageForm from './page';
 
@@ -12,20 +12,19 @@ const TabPane = createComponent(
     borderBottom: border(theme),
   }),
   Tabs.TabPane,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
-const PageTree = ({ form, item, items, navigation, tab, onTabClick }) =>
-  <Tabs
-    activeKey={tab}
-    onTabClick={onTabClick}
-    size="small"
-    tabBarStyle={{ marginBottom: 0 }}
-  >
-    <TabPane tab="Navigation" key="0">
-      <Panel>
-        <Tree items={navigation} selected={[item.id || item.pathname]} />
-      </Panel>
+const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
+  <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
+    <TabPane tab="Seitenmanager" key="0">
+      <Collapse accordion defaultActiveKey="1">
+        <Collapse.Panel header="Navigation" key="1">
+          <Tree items={navigation} selected={[item.id || item.pathname]} />
+        </Collapse.Panel>
+        <Collapse.Panel header="Ablage" key="2" />
+        <Collapse.Panel header="Papierkorb" key="3" />
+      </Collapse>
     </TabPane>
     <TabPane tab="Seite" key="1">
       <PageForm item={item} items={items} form={form} />
@@ -40,7 +39,8 @@ const PageTree = ({ form, item, items, navigation, tab, onTabClick }) =>
             <SlateTree form={form} item={item} field="blocks" label={null} />
           </Panel>
         </TabPane> */}
-  </Tabs>;
+  </Tabs>
+);
 PageTree.propTypes = {
   item: PropTypes.object,
   form: PropTypes.object,

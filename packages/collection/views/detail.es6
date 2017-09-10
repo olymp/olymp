@@ -3,7 +3,6 @@ import { withRouter } from 'olymp-router';
 import { Menu, Icon } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { upperFirst } from 'lodash';
-import { Gateway } from 'react-gateway';
 import { withItem } from '../decorators';
 import { DetailForm } from '../components';
 

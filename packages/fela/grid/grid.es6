@@ -15,11 +15,12 @@ const Grid = createComponent(
       height: 0,
     },
   }),
-  ({ children, size, height, marginX, ...rest }) =>
-    (<div {...rest}>
-      {Children.map(children, child => cloneElement(child, { gridSize: size }))}
-    </div>),
-  p => Object.keys(p)
+  ({ children, size, height, marginX, ...rest }) => (
+    <div {...rest}>
+      {Children.map(children, child => (child ? cloneElement(child, { gridSize: size }) : child))}
+    </div>
+  ),
+  p => Object.keys(p),
 );
 Grid.propTypes = {
   /** Defines the number of columns of the grid system */

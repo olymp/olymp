@@ -20,8 +20,10 @@ const GridItem = createComponent(
     paddingLarge,
     paddingHuge,
     height,
+    relative
   }) => ({
     float: 'left',
+    position: relative ? 'relative' : undefined,
     height,
     width: `${100 / gridSize * (mini || gridSize)}%`,
     marginLeft: `${100 / gridSize * (offsetMini || 0)}%`,

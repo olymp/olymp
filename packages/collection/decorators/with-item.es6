@@ -16,18 +16,16 @@ const ok = props => () => {
         id: item && item.id,
         input: omit(values),
       },
-      updateQueries:
-      !item || !item.id
-        ? {
-          [`${typeName.toLowerCase()}List`]: (
-            prev,
-            { mutationResult }
-          ) => ({
-            ...prev,
-            items: [mutationResult.data.item, ...prev.items],
-          }),
-        }
-        : undefined,
+      refetchQueries: [`${lowerFirst(typeName)}List`],
+      /* updateQueries:
+        !item || !item.id
+          ? {
+            [`${typeName.toLowerCase()}List`]: (prev, { mutationResult }) => ({
+              ...prev,
+              items: [mutationResult.data.item, ...prev.items],
+            }),
+          }
+          : undefined,*/
     })
       .then(({ data: { item } }) => {
         onSuccess('Gespeichert');
@@ -50,14 +48,11 @@ const clone = props => () => {
       input: cloneItem,
     },
     updateQueries: {
-      [`${typeName.toLowerCase()}List`]: (
-        prev,
-        { mutationResult }
-      ) => ({
+      [`${typeName.toLowerCase()}List`]: (prev, { mutationResult }) => ({
         ...prev,
         items: [mutationResult.data.item, ...prev.items],
       }),
-    }
+    },
   })
     .then(({ data: { item } }) => {
       onSuccess('Kopiert');
@@ -99,9 +94,7 @@ export default (WrappedComponent) => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`
-    mutation ${lowerFirst(
-        typeName
-      )}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
+    mutation ${lowerFirst(typeName)}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
       item: ${lowerFirst(typeName)}(id: $id, input: $input, type: $type) {
         ${fieldNames}
       }
@@ -114,7 +107,8 @@ export default (WrappedComponent) => {
           ${fieldNames}
         }
       }
-    `, {
+    `,
+      {
         /* eslint-disable */
         props: ({ ownProps, data }) => ({
           ...ownProps,
@@ -126,10 +120,10 @@ export default (WrappedComponent) => {
             id,
           },
         }),
-      }
+      },
     );
     return query(
-      mutation(props =>
+      mutation(props => (
         <WrappedComponent
           {...props}
           x={props.form}
@@ -137,7 +131,7 @@ export default (WrappedComponent) => {
           onClone={clone(props)}
           onDelete={del(props)}
         />
-      )
+      )),
     );
   };
 

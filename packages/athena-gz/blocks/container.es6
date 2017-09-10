@@ -53,7 +53,7 @@ export default {
         content: '"■"',
         color,
         position: 'absolute',
-        left: `-${theme.space3}`,
+        left: `-${theme.space1}`,
       },
     },
     '& blockquote': {

@@ -26,15 +26,13 @@ export default class CollectionView extends Component {
       searchText,
       form,
       id,
+      refetchQuery,
     } = this.props;
     const { query, pathname } = location;
 
     return (
       <SplitView>
-        <Prompt
-          when={form.isFieldsTouched()}
-          message={() => 'Änderungen verwerfen?'}
-        />
+        <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
         <Sidebar
           id={id}
           collection={collection}
@@ -42,8 +40,7 @@ export default class CollectionView extends Component {
           items={items}
           onClose={onClose}
           filter={[]}
-          onFilter={(filter, filteredItems) =>
-            this.setState({ filter, filteredItems })}
+          onFilter={(filter, filteredItems) => this.setState({ filter, filteredItems })}
           searchText={searchText}
           onSearch={performSearch}
           onClick={item =>
@@ -55,14 +52,16 @@ export default class CollectionView extends Component {
               },
             })}
         />
-        {id !== undefined &&
+        {id !== undefined && (
           <Detail
             id={id === 'new' ? null : id}
+            refetchQuery={refetchQuery}
             fieldNames={fieldNames}
             collection={collection}
             form={form}
             typeName={typeName}
-          />}
+          />
+        )}
       </SplitView>
     );
   }
