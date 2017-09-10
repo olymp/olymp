@@ -3,7 +3,7 @@ const path = require('path');
 const { upperFirst, camelCase } = require('lodash');
 
 const base = 'fa5';
-const readFrom = path.resolve('/Users/bkniffler/Downloads/fontawesome-5.0.0-beta4-mac/svgs/light');
+const readFrom = path.resolve('/Users/bkniffler/Downloads/fontawesome-5.0.0-beta6-mac/svgs/light');
 
 let index = '';
 fs.readdir(readFrom, (err, files) => {
