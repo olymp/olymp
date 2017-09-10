@@ -1,12 +1,12 @@
 {
-  "version": "17.0.42",
+  "version": "17.1.5",
   "name": "olymp-cloudinary",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "cloudinary": "^1.9.0",
-    "olymp-collection": "^17.0.42",
+    "olymp-collection": "^17.1.5",
     "react-image-crop": "^2.0.5",
     "react-images": "^0.5.4",
     "recompose": "^0.24.0"
