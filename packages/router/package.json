@@ -4,10 +4,13 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
-    "history": "^4.6.3",
+    "history": "^4.7.2",
     "olymp-utils": "^17.1.5",
-    "react-redux": "^5.0.5",
+    "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "route-parser": "^0.0.5"
   }

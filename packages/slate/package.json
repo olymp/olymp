@@ -5,6 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {
+    "up": "yarn upgrade-interactive",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -12,14 +13,14 @@
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
     "react-portal": "^3.1.0",
-    "slate": "^0.20.6",
-    "slate-insert-block-on-enter": "^0.0.3",
+    "slate": "^0.22.14",
+    "slate-insert-block-on-enter": "^0.0.4",
     "slate-trailing-block": "^0.2.4"
   },
   "devDependencies": {
-    "@storybook/addon-info": "^3.0.0-rc.2",
-    "@storybook/addon-knobs": "^3.0.0-rc.2",
-    "@storybook/react": "^3.0.0-rc.2",
+    "@storybook/addon-info": "^3.2.9",
+    "@storybook/addon-knobs": "^3.2.8",
+    "@storybook/react": "^3.2.8",
     "raw-loader": "^0.5.1"
   }
 }

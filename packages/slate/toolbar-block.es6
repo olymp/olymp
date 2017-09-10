@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 const Action = ({ node, state, onChange }) => (
   { toggle, active, label, component, ...rest },
-  i
+  i,
 ) => {
   const setData = (data) => {
     const transform = state
@@ -18,22 +18,18 @@ const Action = ({ node, state, onChange }) => (
 
   const getData = (name, defaultValue) => node.data.get(name) || defaultValue;
 
-  const tooltip =
-    typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
+  const tooltip = typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
 
-  const onClick = e => {
+  const onClick = (e) => {
     e.preventDefault();
-    if (toggle) toggle({ setData, getData, state, onChange });
+    if (toggle) { toggle({ setData, getData, state, onChange }); }
   };
 
   if (component) {
     const Com = component;
     return (
       <Menu.Item key={i}>
-        <Button
-          onMouseDown={onClick}
-          tooltip={tooltip}
-        >
+        <Button onMouseDown={onClick} tooltip={tooltip}>
           <Com setData={setData} getData={getData} />
         </Button>
       </Menu.Item>
@@ -62,7 +58,7 @@ export default (props) => {
 
   return (
     <Toolbar show={show} isOpened={!!block && actions && actions.length}>
-      {actions.map(Action({ ...props, node }))}
+      {/* actions.map(Action({ ...props, node }))*/}
     </Toolbar>
   );
 };
