@@ -27,7 +27,7 @@ import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela, felaReducer } from 'olymp-fela';
 import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
-import { createDynamicStore, dynamicMiddleware } from '../redux-dynamic';
+import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
 import App from '@app';
 
@@ -190,6 +190,8 @@ app.get('*', (req, res) => {
   const renderer = createFela(ua);
   const history = createHistory({ initialEntries: [req.url] });
 
+  const dynamicRedux = createDynamicRedux();
+  const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
   const store = createDynamicStore(
     {
       app: appReducer,
@@ -199,7 +201,7 @@ app.get('*', (req, res) => {
       fela: felaReducer,
     },
     compose(
-      applyMiddleware(dynamicMiddleware()),
+      applyMiddleware(dynamicMiddleware),
       applyMiddleware(client.middleware()),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(apolloMiddleware(client)),
@@ -210,17 +212,19 @@ app.get('*', (req, res) => {
 
   const context = {};
   const reactApp = (
-    <ApolloProvider store={store} client={client}>
-      <Provider renderer={renderer}>
-        <GatewayProvider>
-          <UAProvider ua={ua}>
-            <AmpProvider amp={req.isAmp}>
-              <App />
-            </AmpProvider>
-          </UAProvider>
-        </GatewayProvider>
-      </Provider>
-    </ApolloProvider>
+    <DynamicReduxProvider dynamicRedux={dynamicRedux}>
+      <ApolloProvider store={store} client={client}>
+        <Provider renderer={renderer}>
+          <GatewayProvider>
+            <UAProvider ua={ua}>
+              <AmpProvider amp={req.isAmp}>
+                <App />
+              </AmpProvider>
+            </UAProvider>
+          </GatewayProvider>
+        </Provider>
+      </ApolloProvider>
+    </DynamicReduxProvider>
   );
 
   // return

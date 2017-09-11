@@ -5,6 +5,7 @@ import { Provider as FelaProvider } from 'react-fela';
 import { GatewayProvider } from 'react-gateway';
 import { AppContainer } from 'react-hot-loader';
 import App from '@app';
+import { DynamicReduxProvider } from '../redux-dynamic';
 
 function getNextMountNode() {
   const node = document.getElementById('css-markup');
@@ -18,18 +19,20 @@ function getNextMountNode() {
   return nextNode;
 }
 
-export default ({ client, renderer, store, ua, history }) => (
+export default ({ client, renderer, store, ua, history, dynamicRedux }) => (
   <AppContainer>
-    <ApolloProvider store={store} client={client}>
-      <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
-        <GatewayProvider>
-          <UAProvider ua={ua}>
-            <AmpProvider amp={false}>
-              <App />
-            </AmpProvider>
-          </UAProvider>
-        </GatewayProvider>
-      </FelaProvider>
-    </ApolloProvider>
+    <DynamicReduxProvider dynamicRedux={dynamicRedux}>
+      <ApolloProvider store={store} client={client}>
+        <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
+          <GatewayProvider>
+            <UAProvider ua={ua}>
+              <AmpProvider amp={false}>
+                <App />
+              </AmpProvider>
+            </UAProvider>
+          </GatewayProvider>
+        </FelaProvider>
+      </ApolloProvider>
+    </DynamicReduxProvider>
   </AppContainer>
 );

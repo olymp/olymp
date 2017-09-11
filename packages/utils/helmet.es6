@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
 const getURL = () => {
@@ -10,11 +11,10 @@ const getURL = () => {
   }
   return null;
 };
-export default (
-  { name, title, description, image, tags, keywords, pathname } = {},
-  pth
-) => {
-  if (pth && !pathname) pathname = pth;
+export default ({ name, title, description, image, tags, keywords, pathname } = {}, pth) => {
+  if (pth && !pathname) {
+    pathname = pth;
+  }
   const meta = [];
   const link = [];
   name = name || title;
@@ -98,10 +98,10 @@ export class OlympHelmet extends Component {
     return (
       <Helmet
         meta={[
-          { name: 'theme-color', content: theme.color || '#8e44ad' },
+          { name: 'theme-color', content: get(theme, 'color', '#8e44ad') },
           {
             name: 'msapplication-TileColor',
-            content: theme.color || '#8e44ad',
+            content: get(theme, 'color', '#8e44ad'),
           },
           ...(meta || []),
         ]}
@@ -109,7 +109,7 @@ export class OlympHelmet extends Component {
           {
             rel: 'mask-icon',
             href: '/safari-pinned-tab.svg',
-            color: theme.color || '#8e44ad',
+            color: get(theme, 'color', '#8e44ad'),
           },
           ...(link || []),
         ]}

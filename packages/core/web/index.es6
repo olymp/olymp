@@ -9,10 +9,10 @@ import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'o
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { dynamicMiddleware, createDynamicStore } from '../redux-dynamic';
+import createDynamicRedux from '../redux-dynamic';
 import { startLoading, stopLoading } from './loader';
-import App from './root';
 import { appReducer, appMiddleware } from '../redux';
+import App from './root';
 // window.Perf = require('react-addons-perf');
 // TODO
 if (process.env.NODE_ENV === 'production') {
@@ -103,6 +103,7 @@ let client,
   ua,
   rehydrateState,
   history,
+  dynamicRedux,
   asyncContext;
 function renderApp(App) {
   const props = {
@@ -111,6 +112,7 @@ function renderApp(App) {
     container,
     renderer,
     store,
+    dynamicRedux,
     ua,
     rehydrateState,
     history,
@@ -132,6 +134,8 @@ client = new ApolloClient({
   // initialState: window.INITIAL_DATA,
 });
 // Redux stuff
+dynamicRedux = createDynamicRedux();
+const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
 store = createDynamicStore(
   {
     app: appReducer,
@@ -142,7 +146,7 @@ store = createDynamicStore(
   },
   window.INITIAL_DATA || {},
   composeWithDevTools(
-    applyMiddleware(dynamicMiddleware()),
+    applyMiddleware(dynamicMiddleware),
     applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(apolloMiddleware(client)),
@@ -157,6 +161,7 @@ attachHistory(history, store);
 // asyncContext = createAsyncContext();
 
 renderApp(App);
+
 if (module.hot && typeof module.hot.accept === 'function') {
   // Any changes to our App will cause a hotload re-render.
   // module.hot.accept('./root', () => {

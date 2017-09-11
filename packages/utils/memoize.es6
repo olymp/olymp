@@ -1,9 +1,7 @@
-export default func => {
+export default (func) => {
   const result = {};
   return (...args) => {
-    const key = [...args].reduce((prev, curr) => {
-      return prev + JSON.stringify(curr);
-    }, 'undefined-');
+    const key = [...args].reduce((prev, curr) => prev + JSON.stringify(curr), '');
     if (!result.hasOwnProperty(key)) {
       result[key] = func(...args);
     }

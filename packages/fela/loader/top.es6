@@ -1,6 +1,7 @@
 import createComponent from '../utils/create-component';
 
-export const topLoaderStyles = ({ theme, loading }) => ({
+export const topLoaderStyles = ({ theme, loading, transparent }) => ({
+  zIndex: 7,
   opacity: loading ? 1 : 0,
   transition: 'opacity 500ms ease-out',
   height: 4,
@@ -9,7 +10,7 @@ export const topLoaderStyles = ({ theme, loading }) => ({
   top: 0,
   left: 0,
   overflow: 'hidden',
-  backgroundColor: '#ddd',
+  backgroundColor: transparent ? 'none' : '#ddd',
   onBefore: {
     display: 'block',
     position: 'absolute',
@@ -17,7 +18,8 @@ export const topLoaderStyles = ({ theme, loading }) => ({
     left: -200,
     width: 200,
     height: 4,
-    backgroundColor: theme.color,
+    opacity: transparent ? 0.5 : 1,
+    backgroundColor: transparent ? 'white' : theme.color,
     animationDuration: '2s',
     animationIterationCount: 'infinite',
     animationTimingFunction: 'linear',
@@ -32,4 +34,6 @@ export const topLoaderStyles = ({ theme, loading }) => ({
   },
 });
 
-export default createComponent(topLoaderStyles, 'div', ({ loading, ...p }) => Object.keys(p));
+export default createComponent(topLoaderStyles, 'span', ({ loading, transparent, ...p }) =>
+  Object.keys(p),
+);

@@ -53,10 +53,10 @@ const Footer = createComponent(
   p => Object.keys(p)
 );
 
+const Load = connect(({ app }) => ({
+  loading: app.loading
+}))(TopLoader);
 @withUA
-@connect(({ app }) => ({
-  _isLoading: app.loading
-}))
 export default class CMSAuth extends Component {
   state = { deviceWidth: undefined };
 
@@ -84,7 +84,7 @@ export default class CMSAuth extends Component {
 
     return (
       <Container theme={theme}>
-        <TopLoader loading={_isLoading} />
+        <Load />
         <Lightbox />
         <GatewayDest name="modal" />
         <Hotjar id={process.env.HOTJAR} />
