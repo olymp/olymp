@@ -1,14 +1,14 @@
 import { gql, graphql } from 'olymp-utils';
 
 const isNew = props => props.query['@page'] === 'new';
-const getId = (id, query) =>
-  query['@page'] && query['@page'] !== 'new' ? query['@page'] : id;
+const getId = (id, query) => (query['@page'] && query['@page'] !== 'new' ? query['@page'] : id);
 
 const queryOne = gql`
   query page($id: String) {
     item: page(id: $id) {
       id
       slug
+      isMega
       description
       order
       type
@@ -52,6 +52,7 @@ export const queryPages = graphql(
       items: pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
         id
         slug
+        isMega
         order
         type
         name
@@ -74,5 +75,5 @@ export const queryPages = graphql(
       items: data.items || [],
       data,
     }),
-  }
+  },
 );

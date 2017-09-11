@@ -2,8 +2,24 @@ import { createComponent } from 'react-fela';
 
 export default Wrapped =>
   createComponent(
-    ({ theme, color, width, height, size, onClick, ...rest }) => ({
-      ...rest,
+    ({
+      theme,
+      color,
+      width,
+      height,
+      size,
+      onClick,
+      margin,
+      marginLeft,
+      marginRight,
+      marginTop,
+      marginBottom,
+    }) => ({
+      margin,
+      marginLeft,
+      marginRight,
+      marginTop,
+      marginBottom,
       fill: color === true ? theme.color : typeof color === 'string' ? color : theme.dark,
     }),
     Wrapped,

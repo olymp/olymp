@@ -47,10 +47,7 @@ const target = {
       const parent = state.document.getParent(node.key);
       const index = parent.nodes.indexOf(node);
       // props.move(draggedId, overId, props.parent);
-      const transform = state
-        .transform()
-        .moveNodeByKey(draggedId, parent.key, index || 0)
-        .apply();
+      const transform = state.change().moveNodeByKey(draggedId, parent.key, index || 0);
       editor.onChange(transform);
     }
   },

@@ -46,6 +46,7 @@ export default graphql(
         id
         slug
         order
+        isMega
         name
         type
         binding {
@@ -69,7 +70,7 @@ export default graphql(
       save: ok(ownProps, mutate),
       mutate,
     }),
-  }
+  },
 );
 
 export const reorderPage = graphql(
@@ -86,7 +87,7 @@ export const reorderPage = graphql(
       ...ownProps,
       reorder: mutate,
     }),
-  }
+  },
 );
 
 export const movePage = graphql(
@@ -107,5 +108,5 @@ export const movePage = graphql(
       ...ownProps,
       move: mutate,
     }),
-  }
+  },
 );

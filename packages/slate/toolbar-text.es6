@@ -10,16 +10,14 @@ export default class ToolbarText extends Component {
     e.preventDefault();
     onChange(addBlock(state, props, defaultNode));
   };
-  renderBlockButton = props =>
-    this.renderOptionButton(props, hasBlock, this.onClickBlock);
+  renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
     e.stopPropagation();
     e.preventDefault();
     const { state, onChange } = this.props;
-    onChange(state.transform().toggleMark(type).apply());
+    onChange(state.change().toggleMark(type));
   };
-  renderMarkButton = props =>
-    this.renderOptionButton(props, hasMark, this.onClickMark);
+  renderMarkButton = props => this.renderOptionButton(props, hasMark, this.onClickMark);
   renderActionButton = (props) => {
     const isActive = props.isActive ? props.isActive(this.props) : false;
     const isActiveFn = () => isActive;
@@ -36,14 +34,7 @@ export default class ToolbarText extends Component {
     const icon = label || props.label || <Icon type={props.icon} />;
     if (type && Array.isArray(type)) {
       return (
-        <Menu.SubMenu
-          key={type.join('-')}
-          title={
-            <Button>
-              {icon}
-            </Button>
-          }
-        >
+        <Menu.SubMenu key={type.join('-')} title={<Button>{icon}</Button>}>
           {type.map((subType, index) => {
             const subLabel =
               props.description && props.description[index]
@@ -53,10 +44,8 @@ export default class ToolbarText extends Component {
             return this.renderOptionButton(
               { ...props, type: subType },
               isActiveFn,
-              Array.isArray(onMouseDownFn)
-                ? onMouseDownFn[index]
-                : onMouseDownFn,
-              subLabel
+              Array.isArray(onMouseDownFn) ? onMouseDownFn[index] : onMouseDownFn,
+              subLabel,
             );
           })}
         </Menu.SubMenu>
@@ -65,9 +54,7 @@ export default class ToolbarText extends Component {
 
     return (
       <Menu.Item key={type} className={isActive && 'ant-menu-item-selected'}>
-        <Button onMouseDown={onMouseDown}>
-          {icon}
-        </Button>
+        <Button onMouseDown={onMouseDown}>{icon}</Button>
       </Menu.Item>
     );
   };
@@ -87,4 +74,3 @@ export default class ToolbarText extends Component {
     );
   }
 }
-

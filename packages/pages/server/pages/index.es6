@@ -7,9 +7,7 @@ export default () => ({
     mutations: {
       reorderPages: (source, args, { monk }) =>
         Promise.all(
-          args.ids.map((id, order) =>
-            monk.collection('page').update({ id }, { $set: { order } })
-          )
+          args.ids.map((id, order) => monk.collection('page').update({ id }, { $set: { order } })),
         ),
     },
   },
@@ -49,6 +47,7 @@ export default () => ({
       id: String
       type: PAGE_TYPE
       menu: String
+      isMega: Boolean
       binding: PageBinding
       sorting: [String]
       alias: Page @relation

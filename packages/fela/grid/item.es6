@@ -20,7 +20,7 @@ const GridItem = createComponent(
     paddingLarge,
     paddingHuge,
     height,
-    relative
+    relative,
   }) => ({
     float: 'left',
     position: relative ? 'relative' : undefined,
@@ -63,12 +63,7 @@ const GridItem = createComponent(
       : {},
     ifHuge: {
       display: (huge === 0 || huge === false) && 'none',
-      padding:
-        paddingHuge ||
-          paddingLarge ||
-          paddingMedium ||
-          paddingSmall ||
-          paddingMini,
+      padding: paddingHuge || paddingLarge || paddingMedium || paddingSmall || paddingMini,
     },
     ifHugeUp: huge
       ? {
@@ -96,8 +91,9 @@ const GridItem = createComponent(
     paddingLarge,
     paddingHuge,
     height,
+    relative,
     ...p
-  }) => Object.keys(p)
+  }) => Object.keys(p),
 );
 GridItem.propTypes = {
   /** The size relative to the grid container */

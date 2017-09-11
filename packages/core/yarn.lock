@@ -1987,53 +1987,53 @@ fela-dom@^5.0.8:
     fela-tools "^5.0.7"
     fela-utils "^6.0.1"
 
-fela-monolithic@^5.0.5:
+fela-monolithic@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-monolithic/-/fela-monolithic-5.0.7.tgz#389ac0336abc2c52ea184a956e08cd51225a1c39"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-custom-property@^5.0.5:
+fela-plugin-custom-property@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-custom-property/-/fela-plugin-custom-property-5.0.7.tgz#abd21e6f6f18159ecf260c525a0e78d0e22e5de8"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-embedded@^5.1.0:
+fela-plugin-embedded@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/fela-plugin-embedded/-/fela-plugin-embedded-5.1.2.tgz#2fda0e4aedb21fe2fabce237e9ab0b235a1e3c46"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-extend@^5.0.5:
+fela-plugin-extend@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-extend/-/fela-plugin-extend-5.0.7.tgz#66801c666e75b58c8885475692eb471c1b052cfe"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-fallback-value@^5.0.6, fela-plugin-fallback-value@^5.0.8:
+fela-plugin-fallback-value@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/fela-plugin-fallback-value/-/fela-plugin-fallback-value-5.0.8.tgz#23a43355fedac0da9d918c56459048880d44eba1"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-friendly-pseudo-class@^5.0.5:
+fela-plugin-friendly-pseudo-class@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-friendly-pseudo-class/-/fela-plugin-friendly-pseudo-class-5.0.7.tgz#fbbea1bcd66fe774b55119c18b63b717d3cb04b0"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-named-media-query@^5.0.2:
+fela-plugin-named-media-query@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-named-media-query/-/fela-plugin-named-media-query-5.0.7.tgz#0a81ead1f27a7086585e1e9169ff6310bbe14418"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-prefixer@^5.0.6:
+fela-plugin-prefixer@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/fela-plugin-prefixer/-/fela-plugin-prefixer-5.0.8.tgz#91f469e756f6baa9551a95304f718a746312c6c5"
   dependencies:
@@ -2042,13 +2042,13 @@ fela-plugin-prefixer@^5.0.6:
     fela-utils "^6.0.1"
     inline-style-prefixer "^3.0.0"
 
-fela-plugin-remove-undefined@^5.0.5:
+fela-plugin-remove-undefined@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-remove-undefined/-/fela-plugin-remove-undefined-5.0.7.tgz#13b35a22a0a911760aed2ecc369967ca0eb17c36"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-unit@^5.0.5:
+fela-plugin-unit@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-unit/-/fela-plugin-unit-5.0.7.tgz#0b247fcec0a6bc9c7b3ac9016d5dccec5d7359fc"
   dependencies:
@@ -2068,7 +2068,7 @@ fela-utils@^6.0.1:
   dependencies:
     css-in-js-utils "^2.0.0"
 
-fela@^5.1.0, fela@^5.2.0:
+fela@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/fela/-/fela-5.2.0.tgz#62a88de0962f0374429f3aed284025cf032b6e36"
   dependencies:
@@ -2552,7 +2552,7 @@ highlight.js@^9.3.0:
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
 
-history@^4.6.3:
+history@^4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/history/-/history-4.7.2.tgz#22b5c7f31633c5b8021c7f4a8a954ac139ee8d5b"
   dependencies:
@@ -3817,24 +3817,24 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.0.42:
-  version "17.0.42"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.42.tgz#b22dfa93e0155525bea037f3452a26e06fe36e28"
+olymp-fela@^17.1.5:
+  version "17.1.5"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.1.5.tgz#ea758e64ab095ae43aac5d7c3a243090fb8ace10"
   dependencies:
     eventlistener "^0.0.1"
-    fela "^5.1.0"
-    fela-monolithic "^5.0.5"
-    fela-plugin-custom-property "^5.0.5"
-    fela-plugin-embedded "^5.1.0"
-    fela-plugin-extend "^5.0.5"
-    fela-plugin-fallback-value "^5.0.6"
-    fela-plugin-friendly-pseudo-class "^5.0.5"
-    fela-plugin-named-media-query "^5.0.2"
-    fela-plugin-prefixer "^5.0.6"
-    fela-plugin-remove-undefined "^5.0.5"
-    fela-plugin-unit "^5.0.5"
+    fela "^5.2.0"
+    fela-monolithic "^5.0.7"
+    fela-plugin-custom-property "^5.0.7"
+    fela-plugin-embedded "^5.1.2"
+    fela-plugin-extend "^5.0.7"
+    fela-plugin-fallback-value "^5.0.8"
+    fela-plugin-friendly-pseudo-class "^5.0.7"
+    fela-plugin-named-media-query "^5.0.7"
+    fela-plugin-prefixer "^5.0.8"
+    fela-plugin-remove-undefined "^5.0.7"
+    fela-plugin-unit "^5.0.7"
     olymp-utils "^17.0.42"
-    react-fela "^5.2.0"
+    react-fela "^5.3.0"
     react-frame-component "^1.1.1"
     react-portal "^3.1.0"
     react-portal-minimal "^4.0.2"
@@ -3842,30 +3842,30 @@ olymp-fela@^17.0.42:
     shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.1.4:
-  version "17.1.4"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.1.4.tgz#9a2146eda615a1c518f138cb54f61ba4ce9fc9a7"
+olymp-router@^17.1.6:
+  version "17.1.6"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.1.6.tgz#a1a82144547faf8a9fab190120a5441c740fea23"
   dependencies:
-    history "^4.6.3"
-    olymp-utils "^16.1.2"
-    react-redux "^5.0.5"
+    history "^4.7.2"
+    olymp-utils "^17.1.5"
+    react-redux "^5.0.6"
     redux "^3.7.2"
     route-parser "^0.0.5"
-
-olymp-utils@^16.1.2:
-  version "16.1.2"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.1.2.tgz#17f292c8b2b24ce18f737403de7fd8f277013bdc"
-  dependencies:
-    graphql-tag "^2.4.2"
-    lodash "^4.17.4"
-    react-apollo "^1.4.9"
-    react-helmet "^5.1.3"
 
 olymp-utils@^17.0.42:
   version "17.0.42"
   resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.42.tgz#3dca36f234b466acc9838d1ef7bf72e65ad74234"
   dependencies:
     shallowequal "^1.0.2"
+
+olymp-utils@^17.1.5:
+  version "17.1.5"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.1.5.tgz#10e12c6c5cf3b2e4bd3e03d5af2e9b05496c7782"
+  dependencies:
+    graphql-tag "^2.4.2"
+    lodash "^4.17.4"
+    react-apollo "^1.4.9"
+    react-helmet "^5.1.3"
 
 olymp-webpack-electron@^17.0.29:
   version "17.0.29"
@@ -4309,6 +4309,10 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7, rc@^1.2.1:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+re-reselect@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/re-reselect/-/re-reselect-1.0.1.tgz#6d9ebac488bc4bac07bdcd3483f2d3dc76a437c2"
+
 react-apollo@^1.4.15, react-apollo@^1.4.9:
   version "1.4.15"
   resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.15.tgz#3a213d11b847da7db03c4619ac640df734f9c4b5"
@@ -4374,7 +4378,7 @@ react-error-overlay@^2.0.1:
     settle-promise "1.0.0"
     source-map "0.5.6"
 
-react-fela@^5.2.0, react-fela@^5.3.0:
+react-fela@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.3.0.tgz#0d90ed97b5d6f74c19c74c68ab193d815c75342b"
   dependencies:
@@ -4446,7 +4450,7 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react-redux@^5.0.5, react-redux@^5.0.6:
+react-redux@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
   dependencies:

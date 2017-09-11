@@ -1,11 +1,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Editor, Html, Plain } from 'slate';
-import {
-  withSlateState,
-  withAutoMarkdown,
-  useBlocks,
-} from './editor-decorators';
+import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import './style.css';
@@ -73,72 +69,85 @@ const options = {
       description: 'Link', // ['Extern', 'Intern', 'Datei'],
       onClick: ({ state, onChange }, isActive) => {
         if (isActive) {
-          onChange(state.transform().unwrapInline('link').apply());
+          onChange(state.change().unwrapInline('link'));
         } else {
           let href = window.prompt('URL');
           if (href) {
             if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) {
               href = `http://${href}`;
             }
-            onChange(state
-              .transform()
-              .wrapInline({
-                type: 'link',
-                data: { href, target: '_blank' },
-              })
-              .collapseToEnd()
-              .apply()
+            onChange(
+              state
+                .change()
+                .wrapInline({
+                  type: 'link',
+                  data: { href, target: '_blank' },
+                })
+                .collapseToEnd(),
             );
           }
         }
       },
-      isActive: ({ state }) =>
-        state && state.inlines.some(inline => inline.type === 'link'),
+      isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
   nodes: {
     paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
-    link: ({ node, attributes, children }) =>
-      (<a
+    link: ({ node, attributes, children }) => (
+      <a
         {...attributes}
         href={node.data.get('href')}
         target={node.data.get('target')}
         rel="noopener noreferrer"
       >
         {children}
-      </a>),
-    'block-quote': ({ children, attributes }) =>
-      <blockquote {...attributes}>{children}</blockquote>,
-    'bulleted-list': ({ children, attributes }) =>
-      <ul {...attributes}>{children}</ul>,
-    'numbered-list': ({ children, attributes }) =>
-      <ol {...attributes}>{children}</ol>,
-    'heading-one': ({ children, attributes }) =>
-      <h1 {...attributes} id={getIdByTag(children)}>{children}</h1>,
-    'heading-two': ({ children, attributes }) =>
-      <h2 {...attributes} id={getIdByTag(children)}>{children}</h2>,
-    'heading-three': ({ children, attributes }) =>
-      <h3 {...attributes} id={getIdByTag(children)}>{children}</h3>,
-    'heading-four': ({ children, attributes }) =>
-      <h4 {...attributes} id={getIdByTag(children)}>{children}</h4>,
-    'heading-five': ({ children, attributes }) =>
-      <h5 {...attributes} id={getIdByTag(children)}>{children}</h5>,
-    'heading-six': ({ children, attributes }) =>
-      <h6 {...attributes} id={getIdByTag(children)}>{children}</h6>,
-    'bulleted-list-item': ({ children, attributes }) =>
-      <li {...attributes}>{children}</li>,
-    'numbered-list-item': ({ children, attributes }) =>
-      <li {...attributes}>{children}</li>,
+      </a>
+    ),
+    'block-quote': ({ children, attributes }) => (
+      <blockquote {...attributes}>{children}</blockquote>
+    ),
+    'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
+    'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
+    'heading-one': ({ children, attributes }) => (
+      <h1 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h1>
+    ),
+    'heading-two': ({ children, attributes }) => (
+      <h2 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h2>
+    ),
+    'heading-three': ({ children, attributes }) => (
+      <h3 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h3>
+    ),
+    'heading-four': ({ children, attributes }) => (
+      <h4 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h4>
+    ),
+    'heading-five': ({ children, attributes }) => (
+      <h5 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h5>
+    ),
+    'heading-six': ({ children, attributes }) => (
+      <h6 {...attributes} id={getIdByTag(children)}>
+        {children}
+      </h6>
+    ),
+    'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+    'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
   },
   marks: {
-    bold: ({ children, attributes }) =>
-      <strong {...attributes}>{children}</strong>,
+    bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
     code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
     italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
     underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
-    center: ({ children, attributes }) =>
-      <center {...attributes}>{children}</center>,
+    center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
   },
   getMarkdownType: (chars) => {
     switch (chars) {
@@ -228,9 +237,7 @@ const serializer = new Html({
           return undefined;
         }
         const code = el.children[0];
-        const children = code && code.tagName === 'code'
-          ? code.children
-          : el.children;
+        const children = code && code.tagName === 'code' ? code.children : el.children;
 
         return {
           kind: 'block',
@@ -260,8 +267,8 @@ const serializer = new Html({
 
 export const htmlSerializer = serializer;
 
-const getTopMost = (blockTypes, state, prev) => {
-  const next = prev ? state.document.getParent(prev.key) : state.startBlock;
+const getTopMost = (blockTypes, change, prev) => {
+  const next = prev ? change.state.document.getParent(prev.key) : change.state.startBlock;
   const nextType = next && next.type;
   const prevType = prev && prev.type;
   const isAtomic =
@@ -269,14 +276,10 @@ const getTopMost = (blockTypes, state, prev) => {
     blockTypes[nextType] &&
     blockTypes[nextType].slate &&
     blockTypes[nextType].slate.isAtomic;
-  if (
-    !nextType ||
-    !isAtomic ||
-    (prevType && prevType.indexOf(nextType) !== 0)
-  ) {
+  if (!nextType || !isAtomic || (prevType && prevType.indexOf(nextType) !== 0)) {
     return prev;
   }
-  return getTopMost(blockTypes, state, next);
+  return getTopMost(blockTypes, change, next);
 };
 
 function CleanWordHTML(str) {
@@ -299,7 +302,7 @@ function CleanWordHTML(str) {
   // 5. remove attributes ' style="..."'
   const badAttributes = ['style', 'start'];
   for (var i = 0; i < badAttributes.length; i++) {
-    const attributeStripper = new RegExp(` ${badAttributes[i] }="(.*?)"`, 'gi');
+    const attributeStripper = new RegExp(` ${badAttributes[i]}="(.*?)"`, 'gi');
     output = output.replace(attributeStripper, '');
   }
 
@@ -313,10 +316,9 @@ function CleanWordHTML(str) {
 }
 @withBlockTypes
 @withSlateState({ terse: true })
-@useBlocks(options)
-export default // @withToolbar(options)
+@useBlocks(options) // @withToolbar(options)
 // @withSidebar(options)
-class SlateEditor extends Component {
+export default class SlateEditor extends Component {
   plugins = [
     withAutoMarkdown(options),
     TrailingBlock({ type: 'paragraph' }),
@@ -336,35 +338,22 @@ class SlateEditor extends Component {
     className: PropTypes.string,
   };
 
-  onPaste = (e, data, state) => {
-    if (data.type !== 'html') {
-      return undefined;
-    }
-    const { document } = serializer.deserialize(CleanWordHTML(data.html));
-    return state.transform().insertFragment(document).apply();
-  };
-
-  onKeyDown = (e, data, state) => {
-    const blockType = getTopMost(this.props.blockTypes, state);
+  onKeyDown = (e, data, change) => {
+    const blockType = getTopMost(this.props.blockTypes, change);
     if (e.shiftKey && data.key === 'enter') {
-      return state.transform().insertText('\n').apply();
+      return change.insertText('\n');
     } else if (data.key === 'backspace' && blockType) {
-      const prev =
-        state.document.getPreviousBlock(blockType.key) || state.document;
-      return state
-        .transform()
-        .collapseToEndOf(prev)
-        .removeNodeByKey(blockType.key, { normalize: true })
-        .apply();
+      const prev = change.state.document.getPreviousBlock(blockType.key) || change.state.document;
+      return change.collapseToEndOf(prev).removeNodeByKey(blockType.key, { normalize: true });
     } else if (e.metaKey || e.ctrlKey) {
       // cmd/ctrl + ???
       switch (data.key) {
         case 'b':
-          return state.transform().toggleMark('bold').apply();
+          return change.toggleMark('bold');
         case 'u':
-          return state.transform().toggleMark('underlined').apply();
+          return change.toggleMark('underlined');
         case 'i':
-          return state.transform().toggleMark('italic').apply();
+          return change.toggleMark('italic');
         default:
           return undefined;
       }
@@ -387,9 +376,7 @@ class SlateEditor extends Component {
       blockTypes,
       ...rest
     } = this.props;
-    const {
-      focus
-    } = this.state;
+    const { focus } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
     const undo =
@@ -402,22 +389,15 @@ class SlateEditor extends Component {
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
         {children}
-        {readOnly !== true &&
-          <ToolbarBlock
-            show={focus}
-            state={value}
-            blockTypes={blockTypes}
-            onChange={onChange}
-          />}
-        {readOnly !== true &&
-          <ToolbarVoid
-            show={focus}
-            state={value}
-            blockTypes={blockTypes}
-            onChange={onChange}
-          />}
-        {readOnly !== true &&
-          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />}
+        {readOnly !== true && (
+          <ToolbarBlock show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
+        )}
+        {readOnly !== true && (
+          <ToolbarVoid show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
+        )}
+        {readOnly !== true && (
+          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />
+        )}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
           <Editor

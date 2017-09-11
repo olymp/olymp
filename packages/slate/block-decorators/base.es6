@@ -42,9 +42,8 @@ export default (options = {}) => (Block) => {
       const { node, editor } = this.props;
       const transform = editor
         .getState()
-        .transform()
-        .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } })
-        .apply();
+        .change()
+        .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } });
       editor.onChange(transform);
     };
 
@@ -57,9 +56,8 @@ export default (options = {}) => (Block) => {
       const { node, editor } = this.props;
       const transform = editor
         .getState()
-        .transform()
-        .moveToRangeOf(node)
-        .apply();
+        .change()
+        .moveToRangeOf(node);
       editor.onChange(transform);
     };
 

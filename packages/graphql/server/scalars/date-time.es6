@@ -22,7 +22,7 @@ export default {
           'Field error: value is not an instance of Date',
         );
         assertErr(!isNaN(value.getTime()), TypeError, 'Field error: value is an invalid Date');
-        return value.toJSON();
+        return +value;
       },
       parseValue(value) {
         const date = new Date(value);
@@ -38,6 +38,7 @@ export default {
         assertErr(ast.value === result.toJSON(), GraphQLError, 'Query error: Invalid date format', [
           ast,
         ]);
+        console.log('3', ast.value);
         return ast.value;
       },
     }),

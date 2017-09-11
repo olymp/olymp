@@ -28,22 +28,21 @@ export default (options = {}) => {
           return null;
       }
     },
-    onKeyDown: (e, data, state) => {
+    onKeyDown: (e, data, change) => {
       switch (data.key) {
         case 'space':
-          return self.onSpace(e, state);
+          return self.onSpace(e, change);
         case 'backspace':
-          return self.onBackspace(e, state);
+          return self.onBackspace(e, change);
         case 'enter':
-          return self.onEnter(e, state);
+          return self.onEnter(e, change);
       }
     },
-    onSpace: (e, state) => {
-      if (state.isExpanded) {
+    onSpace: (e, change) => {
+      if (change.state.isExpanded) {
         return undefined;
       }
-      const { selection } = state;
-      const { startText, startBlock, startOffset } = state;
+      const { startText, startBlock, startOffset, selection } = change.state;
       const chars = startBlock.text.slice(0, startOffset).replace(/\s*/g, '');
       const type = self.getType(chars);
 
@@ -55,42 +54,42 @@ export default (options = {}) => {
       }
       e.preventDefault();
 
-      let transform = state.transform().setBlock(type);
+      let transform = change.setBlock(type);
 
       if (type === 'list-item') {
         transform = transform.wrapBlock('bulleted-list');
       }
 
-      return transform.extendToStartOf(startBlock).delete().apply();
+      return transform.extendToStartOf(startBlock).delete();
     },
-    onBackspace: (e, state) => {
-      if (state.isExpanded) {
+    onBackspace: (e, change) => {
+      if (change.state.isExpanded) {
         return undefined;
       }
-      if (state.startOffset !== 0) {
+      if (change.state.startOffset !== 0) {
         return undefined;
       }
-      const { startBlock } = state;
+      const { startBlock } = change.state;
 
       if (startBlock.type === 'paragraph') {
         return undefined;
       }
       e.preventDefault();
 
-      let transform = state.transform().setBlock('paragraph');
+      let transform = change.setBlock('paragraph');
 
       if (startBlock.type === 'list-item') {
         transform = transform.unwrapBlock('bulleted-list');
       }
-      return transform.apply();
+      return transform;
     },
-    onEnter: (e, state) => {
-      if (state.isExpanded) {
+    onEnter: (e, change) => {
+      if (change.state.isExpanded) {
         return undefined;
       }
-      const { startBlock, startOffset, endOffset } = state;
+      const { startBlock, startOffset, endOffset } = change.state;
       if (startOffset === 0 && startBlock.length === 0) {
-        return self.onBackspace(e, state);
+        return self.onBackspace(e, change.state);
       }
       if (endOffset !== startBlock.length) {
         return undefined;
@@ -109,7 +108,7 @@ export default (options = {}) => {
       }
 
       e.preventDefault();
-      return state.transform().splitBlock().setBlock('paragraph').apply();
+      return change.splitBlock().setBlock('paragraph');
     },
   };
   return self;

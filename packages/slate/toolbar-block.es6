@@ -9,9 +9,8 @@ const Action = ({ node, state, onChange }) => (
 ) => {
   const setData = (data) => {
     const transform = state
-      .transform()
-      .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } })
-      .apply();
+      .change()
+      .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } });
     onChange(transform);
     return Promise.resolve();
   };
@@ -22,7 +21,9 @@ const Action = ({ node, state, onChange }) => (
 
   const onClick = (e) => {
     e.preventDefault();
-    if (toggle) { toggle({ setData, getData, state, onChange }); }
+    if (toggle) {
+      toggle({ setData, getData, state, onChange });
+    }
   };
 
   if (component) {
@@ -58,7 +59,7 @@ export default (props) => {
 
   return (
     <Toolbar show={show} isOpened={!!block && actions && actions.length}>
-      {/* actions.map(Action({ ...props, node }))*/}
+      {actions.map(Action({ ...props, node }))}
     </Toolbar>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import Portal from 'react-portal';
 // import { Gateway } from 'react-gateway';
-import { Menu, Tooltip, Icon } from 'antd';
+import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 
 export const Button = createComponent(
@@ -28,7 +28,7 @@ export const Button = createComponent(
   p => Object.keys(p),
 );
 
-export default createComponent(
+const WrappedMenu = createComponent(
   ({ theme }) => ({
     position: 'fixed',
     top: 0,
@@ -47,31 +47,27 @@ export default createComponent(
       padding: 0,
     },
   }),
-  (props) => {
-    const { isOpened, className, children, show } = props;
-
-    if (!isOpened) {
-      return <div />;
-    }
-
-    /* return (
-      <Gateway into="toolbar">
-        {children}
-      </Gateway>
-    );*/
-    return (
-      <Portal isOpened={!!isOpened}>
-        <Menu
-          style={!show ? { display: 'none' } : null}
-          selectedKeys={[]}
-          className={className}
-          mode="horizontal"
-          theme="dark"
-        >
-          {children}
-        </Menu>
-      </Portal>
-    );
-  },
+  props => <Menu {...props} />,
   p => Object.keys(p),
 );
+
+export default (props) => {
+  const { isOpened, children, show } = props;
+
+  if (!isOpened) {
+    return <div />;
+  }
+
+  return (
+    <Portal isOpened={!!isOpened}>
+      <WrappedMenu
+        style={!show ? { display: 'none' } : null}
+        selectedKeys={[]}
+        mode="horizontal"
+        theme="dark"
+      >
+        {children}
+      </WrappedMenu>
+    </Portal>
+  );
+};

@@ -1,30 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Collapse } from 'antd';
-import { Panel } from 'olymp-ui';
-import { createComponent, border, H3 } from 'olymp-fela';
+import { createComponent } from 'olymp-fela';
 import Tree from './tree';
 import PageForm from './page';
 
 const TabPane = createComponent(
   ({ theme }) => ({
     backgroundColor: theme.light,
-    borderBottom: border(theme),
   }),
   Tabs.TabPane,
+  p => Object.keys(p),
+);
+
+const StyledCollapse = createComponent(
+  ({ theme }) => ({
+    border: 0,
+    '> .ant-collapse-item > .ant-collapse-content': {
+      paddingX: 4,
+    },
+    '> .ant-collapse-item  > .ant-collapse-content > .ant-collapse-content-box': {
+      paddingY: 4,
+    },
+  }),
+  Collapse,
   p => Object.keys(p),
 );
 
 const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
   <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
     <TabPane tab="Seitenmanager" key="0">
-      <Collapse accordion defaultActiveKey="1">
+      <StyledCollapse accordion defaultActiveKey="1">
         <Collapse.Panel header="Navigation" key="1">
           <Tree items={navigation} selected={[item.id || item.pathname]} />
         </Collapse.Panel>
         <Collapse.Panel header="Ablage" key="2" />
         <Collapse.Panel header="Papierkorb" key="3" />
-      </Collapse>
+      </StyledCollapse>
     </TabPane>
     <TabPane tab="Seite" key="1">
       <PageForm item={item} items={items} form={form} />

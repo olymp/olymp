@@ -9,6 +9,7 @@ import {
   Parent,
   TagSelect,
   JsonInput,
+  Toggle,
   InputNumber,
   TextArea,
 } from '../../edits';
@@ -96,6 +97,7 @@ class PageForm extends Component {
             size="large"
           />
         )}
+        <Toggle form={form} item={item} field="isMega" label="Mega" size="large" />
         <SectionH title="Erweitert" description="Datenanbindung, Sortierung Unterseiten" />
         <Input
           form={form}
