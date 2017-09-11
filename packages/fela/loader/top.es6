@@ -1,7 +1,7 @@
 import createComponent from '../utils/create-component';
 
 export const topLoaderStyles = ({ theme, loading, transparent }) => ({
-  zIndex: 7,
+  zIndex: 10000,
   opacity: loading ? 1 : 0,
   transition: 'opacity 500ms ease-out',
   height: 4,
