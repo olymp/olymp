@@ -1,12 +1,12 @@
 {
-  "version": "17.1.5",
+  "version": "17.1.7",
   "name": "olymp-scrape",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
     "metascraper": "^1.0.7",
-    "olymp-fela": "^17.1.5",
+    "olymp-fela": "^17.1.7",
     "olymp-utils": "^17.0.42",
     "shortid": "^2.2.8"
   }
