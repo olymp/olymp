@@ -1,20 +1,16 @@
 import gql from 'graphql-tag';
 import shortId from 'shortid';
 
-export const APOLLO_ACTIONS = {
-  MUTATE: 'APOLLO_MUTATE',
-  QUERY: 'APOLLO_QUERY',
-};
+export const APOLLO_MUTATE = 'APOLLO_MUTATE';
+export const APOLLO_QUERY = 'APOLLO_QUERY';
 
-export const ACTION_SUFFIX = {
-  PENDING: '_PENDING',
-  REJECTED: '_REJECTED',
-  RESOLVED: '_RESOLVED',
-};
+export const ACTION_SUFFIX_PENDING = '_PENDING';
+export const ACTION_SUFFIX_RESOLVED = '_RESOLVED';
+export const ACTION_SUFFIX_REJECTED = '_REJECTED';
 
-export const pending = action => `${action}${ACTION_SUFFIX.PENDING}`;
-export const rejected = action => `${action}${ACTION_SUFFIX.REJECTED}`;
-export const resolved = action => `${action}${ACTION_SUFFIX.RESOLVED}`;
+export const pending = action => `${action}${ACTION_SUFFIX_PENDING}`;
+export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
+export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
 export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (action) => {
   if (
@@ -28,14 +24,14 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
       ? () =>
         client.mutate({
           mutation: typeof action.mutation === 'string' ? gql(action.mutation) : action.mutation,
-          variables: action.payload,
+          variables: action.payload || action.variables,
           refetchQueries: action.refetchQueries,
+          update: action.update,
         })
       : () =>
         client.query({
           query: typeof action.query === 'string' ? gql(action.query) : action.query,
-          variables: action.payload,
-          refetchQueries: action.refetchQueries,
+          variables: action.payload || action.variables,
         });
     const payload = invoker()
       .then(({ data, errors }) => {
@@ -72,17 +68,17 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
   nextDispatch(action);
 };
 
-export const createMutation = dispatch => (mutation, payload, refetchQueries) =>
+export const createMutation = dispatch => ({ mutation, variables, refetchQueries, update }) =>
   dispatch({
-    type: APOLLO_ACTIONS.MUTATE,
+    type: APOLLO_MUTATE,
     mutation,
-    payload,
+    variables,
     refetchQueries,
+    update,
   });
-export const createQuery = dispatch => (query, payload, refetchQueries) =>
+export const createQuery = dispatch => ({ query, variables }) =>
   dispatch({
-    type: APOLLO_ACTIONS.MUTATE,
+    type: APOLLO_QUERY,
     query,
-    payload,
-    refetchQueries,
+    variables,
   });
