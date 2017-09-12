@@ -1,12 +1,12 @@
 {
-  "version": "17.0.42",
+  "version": "17.1.8",
   "name": "olymp-filestack",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "olymp-utils": "^17.0.42",
+    "olymp-utils": "^17.1.8",
     "shortid": "^2.2.8"
   }
 }
