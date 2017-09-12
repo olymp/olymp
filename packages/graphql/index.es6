@@ -20,6 +20,11 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
     (action.mutation || action.query)
   ) {
     const requestId = shortId.generate();
+    dispatch({
+      type: pending(action.type),
+      payload: action.payload,
+      requestId,
+    });
     const invoker = action.mutation
       ? () =>
         client.mutate({
@@ -33,7 +38,7 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
           query: typeof action.query === 'string' ? gql(action.query) : action.query,
           variables: action.payload || action.variables,
         });
-    const payload = invoker()
+    return invoker()
       .then(({ data, errors }) => {
         if (errors) {
           dispatch({
@@ -58,12 +63,6 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
         });
         throw err;
       });
-    dispatch({
-      type: pending(action.type),
-      payload: action.payload,
-      requestId,
-    });
-    return payload;
   }
   nextDispatch(action);
 };

@@ -27,7 +27,7 @@ export default {
       parseValue(value) {
         const date = new Date(value);
         assertErr(!isNaN(date.getTime()), TypeError, 'Field error: value is an invalid Date');
-        return +date;
+        return date;
       },
       parseLiteral(ast) {
         if (ast.kind !== Kind.INT) {
@@ -38,7 +38,6 @@ export default {
         assertErr(ast.value === result.toJSON(), GraphQLError, 'Query error: Invalid date format', [
           ast,
         ]);
-        console.log('3', ast.value);
         return ast.value;
       },
     }),
