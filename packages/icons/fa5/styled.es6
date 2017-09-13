@@ -23,5 +23,5 @@ export default Wrapped =>
       fill: color === true ? theme.color : typeof color === 'string' ? color : theme.dark,
     }),
     Wrapped,
-    ['width', 'height', 'size', 'onClick'],
+    ['width', 'height', 'size', 'onClick', 'onMouseEnter', 'onMouseLeave', 'onMouseOver'],
   );

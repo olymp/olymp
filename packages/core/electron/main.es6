@@ -129,6 +129,31 @@ function createWindow() {
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
   }*/
+  const selectionMenu = Menu.buildFromTemplate([
+    { role: 'copy' },
+    { type: 'separator' },
+    { role: 'selectall' },
+  ]);
+
+  const inputMenu = Menu.buildFromTemplate([
+    { role: 'undo' },
+    { role: 'redo' },
+    { type: 'separator' },
+    { role: 'cut' },
+    { role: 'copy' },
+    { role: 'paste' },
+    { type: 'separator' },
+    { role: 'selectall' },
+  ]);
+
+  mainWindow.webContents.on('context-menu', (e, props) => {
+    const { selectionText, isEditable } = props;
+    if (isEditable) {
+      inputMenu.popup(mainWindow);
+    } else if (selectionText && selectionText.trim() !== '') {
+      selectionMenu.popup(mainWindow);
+    }
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
