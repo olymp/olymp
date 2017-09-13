@@ -31,6 +31,7 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
           mutation: typeof action.mutation === 'string' ? gql(action.mutation) : action.mutation,
           variables: action.payload || action.variables,
           refetchQueries: action.refetchQueries,
+          optimisticResponse: action.optimisticResponse,
           update: action.update,
         })
       : () =>

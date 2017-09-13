@@ -1,8 +1,24 @@
-export const encrypt = async (json, password) => {
-  const plaintext = JSON.stringify(json);
-  console.log(plaintext);
+let crypto;
+let TextEncoder;
+let TextDecoder;
+if (process.env.IS_NODE) {
+  TextEncoder = require('text-encoding').TextEncoder;
+  TextDecoder = require('text-encoding').TextDecoder;
+  const WebCrypto = require('node-webcrypto-ossl');
+  crypto = new WebCrypto();
+} else {
+  crypto = window.crypto;
+  TextEncoder = window.TextEncoder;
+  TextDecoder = window.TextDecoder;
+}
+
+export const hashPassword = (password) => {
   const pwUtf8 = new TextEncoder().encode(password); // encode password as UTF-8
-  const pwHash = await crypto.subtle.digest('SHA-256', pwUtf8); // hash the password
+  return crypto.subtle.digest('SHA-256', pwUtf8); // hash the password
+};
+
+const encryptWithHash = async (json, pwHash) => {
+  const plaintext = JSON.stringify(json);
 
   const iv = crypto.getRandomValues(new Uint8Array(12)); // get 96-bit random iv
 
@@ -24,10 +40,7 @@ export const encrypt = async (json, password) => {
   return ivHex + ctBase64; // return iv+ciphertext
 };
 
-export const decrypt = async (ciphertext, password) => {
-  const pwUtf8 = new TextEncoder().encode(password); // encode password as UTF-8
-  const pwHash = await crypto.subtle.digest('SHA-256', pwUtf8); // hash the password
-
+const decryptWithHash = async (ciphertext, pwHash) => {
   const iv = ciphertext
     .slice(0, 24)
     .match(/.{2}/g)
@@ -47,7 +60,7 @@ export const decrypt = async (ciphertext, password) => {
   return JSON.parse(plaintext); // return the plaintext
 };
 
-export const encryptUntilWorks = async (json, password, pass = 0) => {
+/* export const encryptUntilWorks = async (json, password, pass = 0) => {
   if (pass === 10) {
     throw new Error('Could not encrypt after 10 tries');
   }
@@ -57,4 +70,32 @@ export const encryptUntilWorks = async (json, password, pass = 0) => {
     return encryptUntilWorks(json, password, pass + 1);
   }
   return str;
+};*/
+
+export const encrypt = async (json, pw) => {
+  const hash = hashPassword(pw);
+  encryptWithHash(json, hash);
+};
+
+export const decrypt = async (ciphertext, pw) => {
+  const hash = hashPassword(pw);
+  decryptWithHash(ciphertext, hash);
+};
+
+export const cachedEncryptor = () => {
+  const cache = {};
+  return {
+    encrypt: async (json, pw) => {
+      if (!cache[pw]) {
+        cache[pw] = await hashPassword(pw);
+      }
+      return encryptWithHash(json, cache[pw]);
+    },
+    decrypt: async (ciphertext, pw) => {
+      if (!cache[pw]) {
+        cache[pw] = await hashPassword(pw);
+      }
+      return decryptWithHash(ciphertext, cache[pw]);
+    },
+  };
 };
