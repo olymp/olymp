@@ -10,6 +10,7 @@
     "graphql-modules": "^0.2.2",
     "graphql-server-express": "^1.0.0",
     "graphql-tools": "^1.1.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "webworker-promise": "^0.3.1"
   }
 }

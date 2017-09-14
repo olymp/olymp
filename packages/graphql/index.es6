@@ -1,6 +1,18 @@
 import gql from 'graphql-tag';
 import shortId from 'shortid';
+/* import WebworkerPromise from 'webworker-promise';
+import Worker from 'worker-loader?inline!./worker.js';
 
+const worker = new WebworkerPromise(new Worker());
+worker
+  .postMessage('ping')
+  .then((response) => {
+    console.log(response);
+    // handle response
+  })
+  .catch((error) => {
+    // handle error
+  });*/
 export const APOLLO_MUTATE = 'APOLLO_MUTATE';
 export const APOLLO_QUERY = 'APOLLO_QUERY';
 

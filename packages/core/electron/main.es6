@@ -98,6 +98,9 @@ function createWindow() {
     minWidth: 600,
     minHeight: 450,
     center: true,
+    webPreferences: {
+      nodeIntegrationInWorker: true
+    },
     // frame: false,
     // titleBarStyle: 'hidden',
   });
