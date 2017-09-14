@@ -8,10 +8,12 @@ import React from 'react';
 import fetch from 'isomorphic-fetch';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
-import { ApolloClient, createNetworkInterface } from 'apollo-client';
+import { ApolloClient } from 'apollo-client';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
+import { graphql } from 'graphql';
+import { print } from 'graphql/language/printer';
 import template from '../templates/default';
 import amp from '../templates/amp';
 import { AmpProvider, UAProvider, UAParser } from 'olymp-utils';
@@ -174,15 +176,11 @@ app.get('*', (req, res) => {
     return;
   }
 
-  const networkInterface = createNetworkInterface({
-    uri: process.env.GRAPHQL_URL || `http://localhost:${port}/graphql`,
-    opts: {
-      credentials: 'same-origin',
-      headers: req.headers,
-    },
-  });
   const client = new ApolloClient({
-    networkInterface,
+    networkInterface: {
+      query: ({ query, variables, operationName }) =>
+        graphql(req.schema, print(query), {}, req, variables, operationName),
+    },
     dataIdFromObject: o => o.id,
     ssrMode: true,
   });
