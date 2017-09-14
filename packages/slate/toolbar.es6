@@ -1,8 +1,8 @@
 import React from 'react';
-import Portal from 'react-portal';
 // import { Gateway } from 'react-gateway';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
+import Portal from './portal';
 
 export const Button = createComponent(
   ({ theme, active }) => ({
@@ -59,7 +59,7 @@ export default (props) => {
   }
 
   return (
-    <Portal isOpened={!!isOpened}>
+    <Portal>
       <WrappedMenu
         style={!show ? { display: 'none' } : null}
         selectedKeys={[]}

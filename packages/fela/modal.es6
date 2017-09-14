@@ -1,7 +1,7 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
-import Portal from 'react-portal';
 import Layout from './layout';
+import Portal from './portal';
 
 const ModalBackground = createComponent(
   ({ theme }) => ({
@@ -44,25 +44,26 @@ const Inner = createComponent(
   [],
 );
 
-export default ({ children, open, onClose, width, header, footer, container }) => (
-  <Portal isOpened={open} onClose={onClose} closeOnEsc>
-    <ModalBackground onClick={onClose}>
-      <Modal
-        width={width}
-        container={container}
-        onClick={(e) => {
-          // e.cancelBubble = true;
-          if (e.stopPropagation) {
-            e.stopPropagation();
-          }
-        }}
-      >
-        <Inner>
-          {header && <Layout.Header container={container}>{header}</Layout.Header>}
-          <Layout.Body container={container}>{children}</Layout.Body>
-          {footer && <Layout.Footer container={container}>{footer}</Layout.Footer>}
-        </Inner>
-      </Modal>
-    </ModalBackground>
-  </Portal>
-);
+export default ({ children, open, onClose, width, header, footer, container }) =>
+  (open ? (
+    <Portal>
+      <ModalBackground onClick={onClose}>
+        <Modal
+          width={width}
+          container={container}
+          onClick={(e) => {
+            // e.cancelBubble = true;
+            if (e.stopPropagation) {
+              e.stopPropagation();
+            }
+          }}
+        >
+          <Inner>
+            {header && <Layout.Header container={container}>{header}</Layout.Header>}
+            <Layout.Body container={container}>{children}</Layout.Body>
+            {footer && <Layout.Footer container={container}>{footer}</Layout.Footer>}
+          </Inner>
+        </Modal>
+      </ModalBackground>
+    </Portal>
+  ) : null);

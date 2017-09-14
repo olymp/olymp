@@ -1,7 +1,7 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
-import Portal from 'react-portal-minimal';
 import tinycolor from 'tinycolor2';
+import Portal from '../portal';
 
 const Modal = ({ className, logo, show }) =>
   (show ? (

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import createComponent from './utils/create-component';
-import Portal from 'react-portal';
+import Portal from './portal';
 
 let ipc = null;
 if (process.env.IS_ELECTRON) {
@@ -26,10 +26,8 @@ class PrintWindow extends Component {
   render() {
     const { children, className } = this.props;
     return (
-      <Portal isOpened onOpen={this.onOpen}>
-        <div className={className}>
-          {children}
-        </div>
+      <Portal ref={this.onOpen}>
+        <div className={className}>{children}</div>
       </Portal>
     );
   }
