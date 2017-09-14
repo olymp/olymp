@@ -1,16 +1,17 @@
 import { get } from 'lodash';
 import { urlToLocation } from './utils';
 
-export const LOCATION_ACTIONS = {
-  LOCATION_REPLACE: 'LOCATION_UPDATE',
-  LOCATION_PUSH: 'LOCATION_PUSH',
-  LOCATION_PATCH: 'LOCATION_PATCH',
-  LOCATION_CORRECT: 'LOCATION_CORRECT',
-};
+export const LOCATION_REPLACE = 'LOCATION_UPDATE';
+export const LOCATION_PUSH = 'LOCATION_PUSH';
+export const LOCATION_PATCH = 'LOCATION_PATCH';
+export const LOCATION_CORRECT = 'LOCATION_CORRECT';
+
+export const LOCATION_CHANGE = 'LOCATION_CHANGE';
+
 export const routerReducer = (history) => {
   const defaultState = urlToLocation(history.location);
   return (state = defaultState, action) => {
-    if (!action || !action.type || action.type.indexOf('LOCATION_') === -1) {
+    if (!action || !action.type || action.type !== LOCATION_CHANGE) {
       return state;
     }
     return {
@@ -20,7 +21,7 @@ export const routerReducer = (history) => {
   };
 };
 
-export const routerMiddleware = history => ({ getState }) => {
+export const routerMiddleware = history => ({ getState, dispatch }) => {
   const updateHistory = (raw, patch = true, method, cb) => {
     const currentLocation = getState().location;
     const newLocation = !patch
@@ -38,39 +39,40 @@ export const routerMiddleware = history => ({ getState }) => {
     }
   };
   return nextDispatch => (action) => {
-    if (action.type === LOCATION_ACTIONS.LOCATION_REPLACE) {
+    if (action.type === LOCATION_REPLACE) {
       return updateHistory(action.payload, false, 'replace', payload =>
-        nextDispatch({ ...action, payload }),
+        dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
     }
-    if (action.type === LOCATION_ACTIONS.LOCATION_PUSH) {
+    if (action.type === LOCATION_PUSH) {
       return updateHistory(action.payload, false, 'push', payload =>
-        nextDispatch({ ...action, payload }),
+        dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
     }
-    if (action.type === LOCATION_ACTIONS.LOCATION_PATCH) {
+    if (action.type === LOCATION_PATCH) {
       return updateHistory(action.payload, true, 'push', payload =>
-        nextDispatch({ ...action, payload }),
+        dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
     }
-    if (action.type === LOCATION_ACTIONS.LOCATION_CORRECT) {
-      action.payload = urlToLocation(action.payload);
+    if (action.type === LOCATION_CORRECT) {
+      return dispatch({ ...action, type: LOCATION_CHANGE, payload: urlToLocation(action.payload) });
+    }
+    if (action.type === LOCATION_CHANGE && process.env.IS_ELECTRON) {
+      localStorage.setItem('location', JSON.stringify(action.payload));
     }
     return nextDispatch(action);
   };
 };
 
 export const createPushPathname = dispatch => pathname =>
-  dispatch({ type: LOCATION_ACTIONS.LOCATION_PATCH, payload: { pathname } });
+  dispatch({ type: LOCATION_PATCH, payload: { pathname } });
 
 export const createUpdateQuery = dispatch => query =>
-  dispatch({ type: LOCATION_ACTIONS.LOCATION_PATCH, payload: { query } });
+  dispatch({ type: LOCATION_PATCH, payload: { query } });
 
 export const createReplaceQuery = dispatch => query =>
-  dispatch({ type: LOCATION_ACTIONS.LOCATION_PUSH, payload: { query } });
+  dispatch({ type: LOCATION_PUSH, payload: { query } });
 
-export const createPush = dispatch => payload =>
-  dispatch({ type: LOCATION_ACTIONS.LOCATION_PUSH, payload });
+export const createPush = dispatch => payload => dispatch({ type: LOCATION_PUSH, payload });
 
-export const createReplace = dispatch => payload =>
-  dispatch({ type: LOCATION_ACTIONS.LOCATION_REPLACE, payload });
+export const createReplace = dispatch => payload => dispatch({ type: LOCATION_REPLACE, payload });
