@@ -1,5 +1,5 @@
 {
-  "version": "17.1.18",
+  "version": "17.1.19",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,7 +9,7 @@
     "date-fns": "2.0.0-alpha.1",
     "lodash": "^4.17.4",
     "monk": "^6.0.1",
-    "olymp-auth": "^17.1.16",
+    "olymp-auth": "^17.1.19",
     "olymp-cloudinary": "^17.1.16",
     "olymp-collection": "^17.1.16",
     "olymp-fela": "^17.1.18",
