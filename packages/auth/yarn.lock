@@ -2,32 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/graphql@0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.10.2.tgz#d7c79acbaa17453b6681c80c34b38fcb10c4c08c"
-
-apollo-client@^1.4.0:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-1.9.2.tgz#a95b38ca846e881bba1b59b0e3fbf82abfd7f23d"
-  dependencies:
-    apollo-link-core "^0.5.0"
-    graphql "^0.10.0"
-    graphql-anywhere "^3.0.1"
-    graphql-tag "^2.0.0"
-    redux "^3.4.0"
-    symbol-observable "^1.0.2"
-    whatwg-fetch "^2.0.0"
-  optionalDependencies:
-    "@types/graphql" "0.10.2"
-
-apollo-link-core@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/apollo-link-core/-/apollo-link-core-0.5.0.tgz#dc87da1aaa63b029321ae70938dc26257f5ab8c6"
-  dependencies:
-    graphql "^0.10.3"
-    graphql-tag "^2.4.2"
-    zen-observable-ts "^0.4.0"
-
 asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
@@ -47,14 +21,6 @@ bowser@^1.6.0:
 buffer-equal-constant-time@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
-
-chain-function@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/chain-function/-/chain-function-1.0.0.tgz#0d4ab37e7e18ead0bdc47b920764118ce58733dc"
-
-classnames@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
 colors@*:
   version "1.1.2"
@@ -76,17 +42,9 @@ css-in-js-utils@^2.0.0:
   dependencies:
     hyphenate-style-name "^1.0.2"
 
-deep-equal@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
-
 dijkstrajs@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/dijkstrajs/-/dijkstrajs-1.0.1.tgz#d3cd81221e3ea40742cfcde556d4e99e98ddc71b"
-
-dom-helpers@^3.2.0:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
 
 ecdsa-sig-formatter@1.0.9:
   version "1.0.9"
@@ -104,10 +62,6 @@ encoding@^0.1.11:
 eventlistener@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/eventlistener/-/eventlistener-0.0.1.tgz#ed2baabb852227af2bcf889152c72c63ca532eb8"
-
-exenv@^1.2.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
 
 fbjs@^0.8.9:
   version "0.8.14"
@@ -128,53 +82,53 @@ fela-dom@^5.0.8:
     fela-tools "^5.0.7"
     fela-utils "^6.0.1"
 
-fela-monolithic@^5.0.2:
+fela-monolithic@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-monolithic/-/fela-monolithic-5.0.7.tgz#389ac0336abc2c52ea184a956e08cd51225a1c39"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-custom-property@^5.0.2:
+fela-plugin-custom-property@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-custom-property/-/fela-plugin-custom-property-5.0.7.tgz#abd21e6f6f18159ecf260c525a0e78d0e22e5de8"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-embedded@^5.0.4:
+fela-plugin-embedded@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/fela-plugin-embedded/-/fela-plugin-embedded-5.1.2.tgz#2fda0e4aedb21fe2fabce237e9ab0b235a1e3c46"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-extend@^5.0.2:
+fela-plugin-extend@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-extend/-/fela-plugin-extend-5.0.7.tgz#66801c666e75b58c8885475692eb471c1b052cfe"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-fallback-value@^5.0.3, fela-plugin-fallback-value@^5.0.8:
+fela-plugin-fallback-value@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/fela-plugin-fallback-value/-/fela-plugin-fallback-value-5.0.8.tgz#23a43355fedac0da9d918c56459048880d44eba1"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-friendly-pseudo-class@^5.0.2:
+fela-plugin-friendly-pseudo-class@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-friendly-pseudo-class/-/fela-plugin-friendly-pseudo-class-5.0.7.tgz#fbbea1bcd66fe774b55119c18b63b717d3cb04b0"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-named-media-query@^5.0.2:
+fela-plugin-named-media-query@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-named-media-query/-/fela-plugin-named-media-query-5.0.7.tgz#0a81ead1f27a7086585e1e9169ff6310bbe14418"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-prefixer@^5.0.3:
+fela-plugin-prefixer@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/fela-plugin-prefixer/-/fela-plugin-prefixer-5.0.8.tgz#91f469e756f6baa9551a95304f718a746312c6c5"
   dependencies:
@@ -183,13 +137,13 @@ fela-plugin-prefixer@^5.0.3:
     fela-utils "^6.0.1"
     inline-style-prefixer "^3.0.0"
 
-fela-plugin-remove-undefined@^5.0.2:
+fela-plugin-remove-undefined@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-remove-undefined/-/fela-plugin-remove-undefined-5.0.7.tgz#13b35a22a0a911760aed2ecc369967ca0eb17c36"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-unit@^5.0.2:
+fela-plugin-unit@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-unit/-/fela-plugin-unit-5.0.7.tgz#0b247fcec0a6bc9c7b3ac9016d5dccec5d7359fc"
   dependencies:
@@ -209,7 +163,7 @@ fela-utils@^6.0.1:
   dependencies:
     css-in-js-utils "^2.0.0"
 
-fela@^5.0.2, fela@^5.2.0:
+fela@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/fela/-/fela-5.2.0.tgz#62a88de0962f0374429f3aed284025cf032b6e36"
   dependencies:
@@ -217,27 +171,9 @@ fela@^5.0.2, fela@^5.2.0:
     fela-tools "^5.0.7"
     fela-utils "^6.0.1"
 
-graphql-anywhere@^3.0.1:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-3.1.0.tgz#3ea0d8e8646b5cee68035016a9a7557c15c21e96"
-
-graphql-tag@^2.0.0, graphql-tag@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.4.2.tgz#6a63297d8522d03a2b72d26f1b239aab343840cd"
-
-graphql@^0.10.0, graphql@^0.10.3:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.10.5.tgz#c9be17ca2bdfdbd134077ffd9bbaa48b8becd298"
-  dependencies:
-    iterall "^1.1.0"
-
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
-
-hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
 hyphenate-style-name@^1.0.2:
   version "1.0.2"
@@ -253,12 +189,6 @@ inline-style-prefixer@^3.0.0:
   dependencies:
     bowser "^1.6.0"
     css-in-js-utils "^1.0.3"
-
-invariant@^2.0.0, invariant@^2.2.1:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
-  dependencies:
-    loose-envify "^1.0.0"
 
 is-stream@^1.0.1:
   version "1.1.0"
@@ -278,10 +208,6 @@ isomorphic-fetch@^2.1.1:
   dependencies:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
-
-iterall@^1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.1.1.tgz#f7f0af11e9a04ec6426260f5019d9fcca4d50214"
 
 joi@^6.10.1:
   version "6.10.1"
@@ -323,23 +249,11 @@ jws@^3.1.4:
     jwa "^1.1.4"
     safe-buffer "^5.0.1"
 
-lodash-es@^4.2.0, lodash-es@^4.2.1:
-  version "4.17.4"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
-
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
 
-lodash.pick@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
-
-lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1:
-  version "4.17.4"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
-
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1:
+loose-envify@^1.0.0, loose-envify@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
@@ -360,43 +274,37 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-olymp-fela@^16.1.2:
-  version "16.1.2"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-16.1.2.tgz#d0ed459525bff04aaa1f9f94ab6cabb469e6b5e0"
+olymp-fela@^17.1.18:
+  version "17.1.18"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.1.18.tgz#9ade81c384a30c4ca1f3b8a651c1836885df5451"
   dependencies:
     eventlistener "^0.0.1"
-    fela "^5.0.2"
-    fela-monolithic "^5.0.2"
-    fela-plugin-custom-property "^5.0.2"
-    fela-plugin-embedded "^5.0.4"
-    fela-plugin-extend "^5.0.2"
-    fela-plugin-fallback-value "^5.0.3"
-    fela-plugin-friendly-pseudo-class "^5.0.2"
-    fela-plugin-named-media-query "^5.0.2"
-    fela-plugin-prefixer "^5.0.3"
-    fela-plugin-remove-undefined "^5.0.2"
-    fela-plugin-unit "^5.0.2"
-    olymp-utils "^16.1.2"
-    react-fela "^5.1.1"
+    fela "^5.2.0"
+    fela-monolithic "^5.0.7"
+    fela-plugin-custom-property "^5.0.7"
+    fela-plugin-embedded "^5.1.2"
+    fela-plugin-extend "^5.0.7"
+    fela-plugin-fallback-value "^5.0.8"
+    fela-plugin-friendly-pseudo-class "^5.0.7"
+    fela-plugin-named-media-query "^5.0.7"
+    fela-plugin-prefixer "^5.0.8"
+    fela-plugin-remove-undefined "^5.0.7"
+    fela-plugin-unit "^5.0.7"
+    olymp-utils "^17.1.16"
+    react-fela "^5.3.0"
     react-frame-component "^1.1.1"
-    react-portal "^3.1.0"
-    react-portal-minimal "^4.0.2"
-    react-redux "^5.0.5"
-    react-transition-group "^2.2.0"
+    shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-utils@^16.1.2:
-  version "16.1.2"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-16.1.2.tgz#17f292c8b2b24ce18f737403de7fd8f277013bdc"
+olymp-utils@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.1.16.tgz#e403759029f9c4eab50266ae80bae41cf5f9e58c"
   dependencies:
-    graphql-tag "^2.4.2"
-    lodash "^4.17.4"
-    react-apollo "^1.4.9"
-    react-helmet "^5.1.3"
+    shallowequal "^1.0.2"
 
 pngjs@^2.3.1:
   version "2.3.1"
@@ -408,7 +316,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
+prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -424,19 +332,7 @@ qrcode@^0.8.2:
     isarray "^2.0.1"
     pngjs "^2.3.1"
 
-react-apollo@^1.4.9:
-  version "1.4.15"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.15.tgz#3a213d11b847da7db03c4619ac640df734f9c4b5"
-  dependencies:
-    apollo-client "^1.4.0"
-    graphql-tag "^2.0.0"
-    hoist-non-react-statics "^2.2.0"
-    invariant "^2.2.1"
-    lodash.pick "^4.4.0"
-    object-assign "^4.0.1"
-    prop-types "^15.5.8"
-
-react-fela@^5.1.1:
+react-fela@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.3.0.tgz#0d90ed97b5d6f74c19c74c68ab193d815c75342b"
   dependencies:
@@ -448,65 +344,6 @@ react-frame-component@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-frame-component/-/react-frame-component-1.1.1.tgz#05b7f5689a2d373f25baf0c9adb0e59d78103388"
 
-react-helmet@^5.1.3:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
-  dependencies:
-    deep-equal "^1.0.1"
-    object-assign "^4.1.1"
-    prop-types "^15.5.4"
-    react-side-effect "^1.1.0"
-
-react-portal-minimal@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/react-portal-minimal/-/react-portal-minimal-4.0.2.tgz#8e2742807dbf61773037e93c02b7d08ddc420305"
-  dependencies:
-    prop-types "^15.5.8"
-
-react-portal@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.1.0.tgz#865c44fb72a1da106c649206936559ce891ee899"
-  dependencies:
-    prop-types "^15.5.8"
-
-react-redux@^5.0.5:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
-  dependencies:
-    hoist-non-react-statics "^2.2.1"
-    invariant "^2.0.0"
-    lodash "^4.2.0"
-    lodash-es "^4.2.0"
-    loose-envify "^1.1.0"
-    prop-types "^15.5.10"
-
-react-side-effect@^1.1.0:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-1.1.3.tgz#512c25abe0dec172834c4001ec5c51e04d41bc5c"
-  dependencies:
-    exenv "^1.2.1"
-    shallowequal "^1.0.1"
-
-react-transition-group@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.2.0.tgz#793bf8cb15bfe91b3101b24bce1c1d2891659575"
-  dependencies:
-    chain-function "^1.0.0"
-    classnames "^2.2.5"
-    dom-helpers "^3.2.0"
-    loose-envify "^1.3.1"
-    prop-types "^15.5.8"
-    warning "^3.0.0"
-
-redux@^3.4.0:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
-  dependencies:
-    lodash "^4.2.1"
-    lodash-es "^4.2.1"
-    loose-envify "^1.1.0"
-    symbol-observable "^1.0.3"
-
 safe-buffer@^5.0.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
@@ -515,9 +352,13 @@ setimmediate@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
 
-shallowequal@^1.0.1:
+shallowequal@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.0.2.tgz#1561dbdefb8c01408100319085764da3fcf83f8f"
+
+shortid@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
 
 speakeasy@^2.0.0:
   version "2.0.0"
@@ -530,10 +371,6 @@ stale-lru-cache@^5.1.1:
   resolved "https://registry.yarnpkg.com/stale-lru-cache/-/stale-lru-cache-5.1.1.tgz#3282c3a7148c74e3c7858799130af9dd3407c845"
   dependencies:
     yallist "^2.0.0"
-
-symbol-observable@^1.0.2, symbol-observable@^1.0.3:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
 
 tinycolor2@^1.4.1:
   version "1.4.1"
@@ -549,13 +386,7 @@ ua-parser-js@^0.7.9:
   version "0.7.14"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
 
-warning@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
-  dependencies:
-    loose-envify "^1.0.0"
-
-whatwg-fetch@>=0.10.0, whatwg-fetch@^2.0.0:
+whatwg-fetch@>=0.10.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
 
@@ -566,7 +397,3 @@ xtend@^4.0.1:
 yallist@^2.0.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
-
-zen-observable-ts@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.4.0.tgz#a74bc9fe59747948a577bd513d438e70fcfae7e2"
