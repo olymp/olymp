@@ -14,11 +14,12 @@
     "lib": "gulp lib-build",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish --registry=https://registry.npmjs.org/",
+    "publish": "lerna publish --registry=https://registry.npmjs.org/ --force",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
-    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\""
+    "prettier":
+      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\""
   },
   "engines": {
     "node": "8.1.4",
@@ -29,13 +30,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
