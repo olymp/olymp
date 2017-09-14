@@ -1,7 +1,7 @@
 {
   "name": "App",
   "background_color": "white",
-  "short_name": "Olymp App",
+  "short_name": "Olymp",
   "theme_color": "#8e44ad",
   "icons": [
     {
