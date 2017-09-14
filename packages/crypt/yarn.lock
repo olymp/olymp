@@ -6,6 +6,10 @@
   version "6.0.87"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.87.tgz#5ab5774f8351a33a935099fa6be850aa0b0ad564"
 
+fast-sha256@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/fast-sha256/-/fast-sha256-1.0.0.tgz#217edc0ffc36c117a37c55b87e5381d99b44d1dd"
+
 minimist@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"

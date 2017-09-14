@@ -6,6 +6,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "dependencies": {
+    "fast-sha256": "^1.0.0",
     "node-webcrypto-ossl": "^1.0.30",
     "text-encoding": "^0.6.4",
     "tweetnacl": "^1.0.0",
