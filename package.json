@@ -14,7 +14,7 @@
     "lib": "gulp lib-build",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish --registry=https://registry.npmjs.org/ --force",
+    "publish": "lerna publish --registry=https://registry.npmjs.org/",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
