@@ -27,7 +27,6 @@
     "react-frame-component": "^1.1.1",
     "react-portal": "^3.1.0",
     "react-portal-minimal": "^4.0.2",
-    "react-transition-group": "^2.2.0",
     "shortid": "^2.2.8",
     "tinycolor2": "^1.4.1"
   },
