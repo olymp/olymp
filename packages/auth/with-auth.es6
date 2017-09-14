@@ -1,27 +1,30 @@
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import { setAttributes, getAttributes, createLogout } from './redux';
+import { createLogout, createVerify, setAttributes } from './redux';
 
-export const auth = (obj = {}) => {
+export const auth = (obj = {}) => (WrappedComponent) => {
   const { attributes } = obj;
   if (attributes) {
     setAttributes(attributes);
   }
-  return graphql(
-    gql`
-      query verify {
-        user: verify {
-          ${getAttributes()}
-        }
+  @connect(
+    ({ auth }) => ({
+      tryVerify: !auth.user && typeof localStorage !== 'undefined' && localStorage.getItem('token'),
+    }),
+    dispatch => ({ verify: createVerify(dispatch) }),
+  )
+  class WithAuth extends Component {
+    constructor(props) {
+      super(props);
+      if (props.tryVerify) {
+        props.verify();
       }
-    `,
-    {
-      options: props => ({
-        // skip: true,
-      }),
-    },
-  );
+    }
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+  return WithAuth;
 };
 
 export default connect(({ auth }) => ({ auth }), dispatch => ({ logout: createLogout(dispatch) }));

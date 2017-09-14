@@ -1,22 +1,29 @@
 import 'babel-polyfill';
+// React
 import React from 'react';
 import { render } from 'react-dom';
-import { UAParser } from 'olymp-utils';
+// Apollo
 import ApolloClient from 'apollo-client';
-import ApolloLink from 'apollo-link';
-import SetContextLink from 'apollo-link-set-context';
-import Link from 'apollo-link-http';
+import { ApolloLink, Observable } from 'apollo-link';
 import InMemoryCache from 'apollo-cache-inmemory';
-import { createFela, felaReducer } from 'olymp-fela';
+import { createApolloFetch } from 'apollo-fetch';
+import { print } from 'graphql/language/printer';
+// Redux
 import { applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+// Olymp
+import { UAParser } from 'olymp-utils';
+import { createFela, felaReducer } from 'olymp-fela';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
-import { composeWithDevTools } from 'redux-devtools-extension';
+// Local
+import { get } from 'lodash';
 import createDynamicRedux from '../redux-dynamic';
 import { startLoading, stopLoading } from './loader';
 import { appReducer, appMiddleware } from '../redux';
 import App from './root';
+
 // window.Perf = require('react-addons-perf');
 // TODO
 if (process.env.NODE_ENV === 'production') {
@@ -45,69 +52,50 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const setContext = context => ({
-  ...context,
-  headers: {
-    ...context.headers,
-    authorization: localStorage.getItem('token'),
+const apolloFetch = createApolloFetch({
+  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
+  opts: {
+    credentials: 'same-origin',
   },
 });
-
+apolloFetch.use((request, next) => {
+  const token = localStorage.getItem('token');
+  if (token && token !== 'null') {
+    request.options.headers = {
+      ...request.options.headers,
+      authorization: token ? `${token}` : null,
+    };
+  }
+  request.options.credentials = 'same-origin';
+  startLoading(store.dispatch);
+  next();
+});
+apolloFetch.useAfter((response, next) => {
+  stopLoading(store.dispatch);
+  next();
+});
 const link = ApolloLink.from([
-  new SetContextLink(setContext),
-  new Link({
-    uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
-    opts: {
-      credentials: 'same-origin',
-    },
-  }),
-]);
-
-/* networkInterface.use([
-  {
-    applyBatchMiddleware(req, next) {
-      startLoading(store.dispatch);
-      if (!req.options.headers) {
-        req.options.headers = {}; // Create the header object if needed.
-      }
-      // get the authentication token from local storage if it exists
-      const token = localStorage.getItem('token');
-      if (token && token !== 'null') {
-        req.options.headers.authorization = token ? `${token}` : null;
-      }
-      next();
-    },
-  },
-]);
-networkInterface.useAfter([
-  {
-    applyBatchAfterware(res, next) {
-      // console.log(res.responses);
-      stopLoading(store.dispatch);
-      const error =
-        res.responses &&
-        res.responses.filter(
-          x => x.errors && x.errors.filter(x => x.message === 'LOGIN_REQUIRED').length,
-        ).length;
-      if (error) {
-        return history.push({
-          search: '?login',
+  ({ context, ...operation }) => {
+    const request = {
+      ...operation,
+      query: print(operation.query),
+    };
+    return new Observable((observer) => {
+      apolloFetch(request)
+        .then((data) => {
+          if (!observer.closed) {
+            observer.next(data);
+            observer.complete();
+          }
+        })
+        .catch((error) => {
+          if (!observer.closed) {
+            observer.error(error);
+          }
         });
-      }
-      next();
-    },
+    });
   },
-]);*/
-
-/* if (process.env.GRAPHQL_SUB) {
-  const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
-    reconnect: true
-  });
-  networkInterface = addGraphQLSubscriptions(
-    networkInterface,
-    wsClient
-  );
-}*/
+]);
 
 let client,
   mountNode,
@@ -142,7 +130,7 @@ ua = new UAParser(window.navigator.userAgent);
 renderer = createFela(ua);
 history = createHistory();
 const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true }).restore(
-  window.INITIAL_DATA || {},
+  get(window.INITIAL_DATA, 'apollo', {}),
 );
 client = new ApolloClient({ link, cache });
 // Redux stuff
@@ -151,14 +139,16 @@ const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
 store = createDynamicStore(
   {
     app: appReducer,
-    apollo: client.reducer(),
     location: routerReducer(history),
     auth: authReducer,
     fela: felaReducer,
   },
+  {
+    auth: get(window.INITIAL_DATA, 'auth', {}),
+    fela: get(window.INITIAL_DATA, 'fela', {}),
+  },
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
-    applyMiddleware(client.middleware()),
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(apolloMiddleware(client)),
     applyMiddleware(authMiddleware),

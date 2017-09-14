@@ -25,12 +25,7 @@ export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
 export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (action) => {
-  if (
-    action.type &&
-    action.type.indexOf('APOLLO_MUTATION') !== 0 &&
-    action.type.indexOf('APOLLO_QUERY') !== 0 &&
-    (action.mutation || action.query)
-  ) {
+  if (action.type && (action.mutation || action.query)) {
     const requestId = shortId.generate();
     dispatch({
       type: pending(action.type),
@@ -52,7 +47,7 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
           variables: action.payload || action.variables,
         });
     return invoker()
-      .then(({ data, errors }) => {
+      .then(({ data, errors, ...xy }) => {
         if (errors) {
           dispatch({
             type: rejected(action.type),

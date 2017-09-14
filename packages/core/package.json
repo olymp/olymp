@@ -11,8 +11,7 @@
   "dependencies": {
     "apollo-cache-inmemory": "^0.2.0-beta.0",
     "apollo-client": "^2.0.0-beta.0",
-    "apollo-link-http": "^0.6.1-beta.0",
-    "apollo-link-set-context": "^0.6.1-beta.0",
+    "apollo-link": "^0.6.1-beta.0",
     "assets-webpack-plugin": "^3.5.1",
     "babel-polyfill": "^6.23.0",
     "base64-js": "^1.2.1",

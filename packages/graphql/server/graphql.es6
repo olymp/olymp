@@ -36,5 +36,6 @@ export default ({ modules = null, directives = {} }) => {
     express: graphqlExpress(context => ({ schema, context })),
     graphi: graphiqlExpress({ endpointURL: '/graphql' }),
     apply: modules => apply(modules),
+    getSchema: () => schema,
   };
 };

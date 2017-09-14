@@ -208,18 +208,7 @@ apollo-link-dedup@0.4.1-beta.0:
     apollo-fetch "^0.6.0"
     graphql "^0.10.5"
 
-apollo-link-http@^0.6.1-beta.0:
-  version "0.6.1-beta.0"
-  resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-0.6.1-beta.0.tgz#0b5b9c4d00809916734f8237c2595792d21baf0c"
-  dependencies:
-    apollo-fetch "^0.6.0"
-    graphql "^0.10.5"
-
-apollo-link-set-context@^0.6.1-beta.0:
-  version "0.6.1-beta.0"
-  resolved "https://registry.yarnpkg.com/apollo-link-set-context/-/apollo-link-set-context-0.6.1-beta.0.tgz#662752b2ac9e53189a003d674b1b3acc1bfdadc6"
-
-apollo-link@0.6.1-beta.0:
+apollo-link@0.6.1-beta.0, apollo-link@^0.6.1-beta.0:
   version "0.6.1-beta.0"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-0.6.1-beta.0.tgz#80f9e20fea7025e026a819d5ed02921f3f8b3763"
   dependencies:
