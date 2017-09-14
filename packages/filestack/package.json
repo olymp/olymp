@@ -1,5 +1,5 @@
 {
-  "version": "17.1.16",
+  "version": "17.2.0",
   "name": "olymp-filestack",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "olymp-utils": "^17.1.16",
+    "olymp-utils": "^17.2.0",
     "shortid": "^2.2.8"
   }
 }

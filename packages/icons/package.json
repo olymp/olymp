@@ -1,5 +1,5 @@
 {
-  "version": "17.1.16",
+  "version": "17.2.0",
   "name": "olymp-icons",
   "description": "",
   "main": "./fa5",
@@ -7,6 +7,5 @@
   "license": "MIT",
   "scripts": {
     "up": "yarn upgrade-interactive"
-  },
-  "dependencies": {}
+  }
 }
