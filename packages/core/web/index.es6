@@ -2,7 +2,11 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { UAParser } from 'olymp-utils';
-import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
+import ApolloClient from 'apollo-client';
+import ApolloLink from 'apollo-link';
+import SetContextLink from 'apollo-link-set-context';
+import Link from 'apollo-link-http';
+import InMemoryCache from 'apollo-cache-inmemory';
 import { createFela, felaReducer } from 'olymp-fela';
 import { applyMiddleware } from 'redux';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
@@ -41,15 +45,25 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const networkInterface = createBatchingNetworkInterface({
-  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
-  batchInterval: 5,
-  opts: {
-    credentials: 'same-origin',
+const setContext = context => ({
+  ...context,
+  headers: {
+    ...context.headers,
+    authorization: localStorage.getItem('token'),
   },
 });
 
-networkInterface.use([
+const link = ApolloLink.from([
+  new SetContextLink(setContext),
+  new Link({
+    uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
+    opts: {
+      credentials: 'same-origin',
+    },
+  }),
+]);
+
+/* networkInterface.use([
   {
     applyBatchMiddleware(req, next) {
       startLoading(store.dispatch);
@@ -83,7 +97,7 @@ networkInterface.useAfter([
       next();
     },
   },
-]);
+]);*/
 
 /* if (process.env.GRAPHQL_SUB) {
   const wsClient = new SubscriptionClient(process.env.GRAPHQL_SUB, {
@@ -127,12 +141,10 @@ mountNode = document.getElementById('css-markup');
 ua = new UAParser(window.navigator.userAgent);
 renderer = createFela(ua);
 history = createHistory();
-client = new ApolloClient({
-  networkInterface,
-  dataIdFromObject: o => o.id,
-  ssrForceFetchDelay: 100,
-  // initialState: window.INITIAL_DATA,
-});
+const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true }).restore(
+  window.INITIAL_DATA || {},
+);
+client = new ApolloClient({ link, cache });
 // Redux stuff
 dynamicRedux = createDynamicRedux();
 const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
@@ -144,7 +156,6 @@ store = createDynamicStore(
     auth: authReducer,
     fela: felaReducer,
   },
-  window.INITIAL_DATA || {},
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
     applyMiddleware(client.middleware()),
