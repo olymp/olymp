@@ -340,7 +340,7 @@ module.exports = ({
           /\.(css|scss|sass|sss|less)$/,
           v => v.indexOf('webpack/hot/poll') === 0,
           'source-map-support/register',
-          v => v.indexOf('olymp-') === 0,
+          v => v.indexOf('olymp-') === 0 || v.indexOf('olymp/') === 0 || v === 'olymp',
           v => v === 'antd' || v.indexOf('antd/') === 0,
         ],
       }),
