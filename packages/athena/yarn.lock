@@ -90,8 +90,8 @@ ajv@^5.0.0:
     json-stable-stringify "^1.0.1"
 
 algoliasearch@^3.24.0:
-  version "3.24.0"
-  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.24.0.tgz#d0a6ac2963b781d2fb059a3a853fe18765673346"
+  version "3.24.3"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.24.3.tgz#0b5da4242baa2e4bf9359bd20c47266ec0e501f4"
   dependencies:
     agentkeepalive "^2.2.0"
     debug "^2.6.8"
@@ -226,7 +226,7 @@ arrify@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
 
-asap@^2.0.3, asap@~2.0.3:
+asap@^2.0.3, asap@^2.0.6, asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
 
@@ -1158,27 +1158,6 @@ cheerio@^0.20.0:
   optionalDependencies:
     jsdom "^7.0.2"
 
-cheerio@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-0.22.0.tgz#a9baa860a3f9b595a6b81b1a86873121ed3a269e"
-  dependencies:
-    css-select "~1.2.0"
-    dom-serializer "~0.1.0"
-    entities "~1.1.1"
-    htmlparser2 "^3.9.1"
-    lodash.assignin "^4.0.9"
-    lodash.bind "^4.1.4"
-    lodash.defaults "^4.0.1"
-    lodash.filter "^4.4.0"
-    lodash.flatten "^4.2.0"
-    lodash.foreach "^4.3.0"
-    lodash.map "^4.4.0"
-    lodash.merge "^4.4.0"
-    lodash.pick "^4.2.1"
-    lodash.reduce "^4.4.0"
-    lodash.reject "^4.4.0"
-    lodash.some "^4.4.0"
-
 chownr@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
@@ -1589,6 +1568,19 @@ direction@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/direction/-/direction-0.1.5.tgz#ce5d797f97e26f8be7beff53f7dc40e1c1a9ec4c"
 
+disposables@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/disposables/-/disposables-1.0.1.tgz#064727a25b54f502bd82b89aa2dfb8df9f1b39e3"
+
+dnd-core@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-2.5.1.tgz#178f5ad6526ce02dd59508f115535f7bfc0ce94e"
+  dependencies:
+    asap "^2.0.6"
+    invariant "^2.0.0"
+    lodash "^4.2.0"
+    redux "^3.7.1"
+
 dom-align@1.x:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/dom-align/-/dom-align-1.6.2.tgz#b14e64917c25de6b4055227339b4d64f4b7db885"
@@ -1622,7 +1614,7 @@ dom-walk@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
 
-domelementtype@1, domelementtype@^1.3.0:
+domelementtype@1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-1.3.0.tgz#b17aed82e8ab59e52dd9c19b1756e0fc187204c2"
 
@@ -1636,22 +1628,9 @@ domhandler@2.3:
   dependencies:
     domelementtype "1"
 
-domhandler@^2.3.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
-  dependencies:
-    domelementtype "1"
-
 domutils@1.5, domutils@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
-  dependencies:
-    dom-serializer "0"
-    domelementtype "1"
-
-domutils@^1.5.1:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.6.2.tgz#1958cc0b4c9426e9ed367fb1c8e854891b0fa3ff"
   dependencies:
     dom-serializer "0"
     domelementtype "1"
@@ -1714,7 +1693,7 @@ entities@1.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.0.0.tgz#b2987aa3821347fcde642b24fdfc9e4fb712bf26"
 
-entities@^1.1.1, entities@~1.1.1:
+entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
@@ -1905,53 +1884,53 @@ fela-dom@^5.0.8:
     fela-tools "^5.0.7"
     fela-utils "^6.0.1"
 
-fela-monolithic@^5.0.5:
+fela-monolithic@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-monolithic/-/fela-monolithic-5.0.7.tgz#389ac0336abc2c52ea184a956e08cd51225a1c39"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-custom-property@^5.0.5:
+fela-plugin-custom-property@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-custom-property/-/fela-plugin-custom-property-5.0.7.tgz#abd21e6f6f18159ecf260c525a0e78d0e22e5de8"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-embedded@^5.1.0:
+fela-plugin-embedded@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/fela-plugin-embedded/-/fela-plugin-embedded-5.1.2.tgz#2fda0e4aedb21fe2fabce237e9ab0b235a1e3c46"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-extend@^5.0.5:
+fela-plugin-extend@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-extend/-/fela-plugin-extend-5.0.7.tgz#66801c666e75b58c8885475692eb471c1b052cfe"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-fallback-value@^5.0.6, fela-plugin-fallback-value@^5.0.8:
+fela-plugin-fallback-value@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/fela-plugin-fallback-value/-/fela-plugin-fallback-value-5.0.8.tgz#23a43355fedac0da9d918c56459048880d44eba1"
   dependencies:
     css-in-js-utils "^2.0.0"
     fela-utils "^6.0.1"
 
-fela-plugin-friendly-pseudo-class@^5.0.5:
+fela-plugin-friendly-pseudo-class@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-friendly-pseudo-class/-/fela-plugin-friendly-pseudo-class-5.0.7.tgz#fbbea1bcd66fe774b55119c18b63b717d3cb04b0"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-named-media-query@^5.0.2:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/fela-plugin-named-media-query/-/fela-plugin-named-media-query-5.0.4.tgz#77453b417dcb7811af1e4b33112edd87c45e47a2"
+fela-plugin-named-media-query@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/fela-plugin-named-media-query/-/fela-plugin-named-media-query-5.0.7.tgz#0a81ead1f27a7086585e1e9169ff6310bbe14418"
   dependencies:
-    fela-utils "^5.0.4"
+    fela-utils "^6.0.1"
 
-fela-plugin-prefixer@^5.0.6:
+fela-plugin-prefixer@^5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/fela-plugin-prefixer/-/fela-plugin-prefixer-5.0.8.tgz#91f469e756f6baa9551a95304f718a746312c6c5"
   dependencies:
@@ -1960,13 +1939,13 @@ fela-plugin-prefixer@^5.0.6:
     fela-utils "^6.0.1"
     inline-style-prefixer "^3.0.0"
 
-fela-plugin-remove-undefined@^5.0.5:
+fela-plugin-remove-undefined@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-remove-undefined/-/fela-plugin-remove-undefined-5.0.7.tgz#13b35a22a0a911760aed2ecc369967ca0eb17c36"
   dependencies:
     fela-utils "^6.0.1"
 
-fela-plugin-unit@^5.0.5:
+fela-plugin-unit@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-plugin-unit/-/fela-plugin-unit-5.0.7.tgz#0b247fcec0a6bc9c7b3ac9016d5dccec5d7359fc"
   dependencies:
@@ -1980,13 +1959,6 @@ fela-tools@^5.0.4:
     css-in-js-utils "^1.0.3"
     fela-utils "^5.0.4"
 
-fela-tools@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/fela-tools/-/fela-tools-5.0.5.tgz#b6529967a77b9d70b79da0286cad5fc4baeab2f1"
-  dependencies:
-    css-in-js-utils "^1.0.3"
-    fela-utils "^5.0.5"
-
 fela-tools@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/fela-tools/-/fela-tools-5.0.7.tgz#46d3c2f64947dd03e4acaee7d91456ebf943da39"
@@ -1997,12 +1969,6 @@ fela-tools@^5.0.7:
 fela-utils@^5.0.4:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/fela-utils/-/fela-utils-5.0.4.tgz#fc0600c0482414552b4c7868d66435c984726e2f"
-  dependencies:
-    css-in-js-utils "^1.0.3"
-
-fela-utils@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/fela-utils/-/fela-utils-5.0.5.tgz#6a89290c8aa6866d9a0b98f41408485edc454ada"
   dependencies:
     css-in-js-utils "^1.0.3"
 
@@ -2019,14 +1985,6 @@ fela@^5.0.4:
     css-in-js-utils "^1.0.3"
     fela-tools "^5.0.4"
     fela-utils "^5.0.4"
-
-fela@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/fela/-/fela-5.1.0.tgz#fe80321ce5384a9c5a65cd4896481d879332dff3"
-  dependencies:
-    css-in-js-utils "^1.0.3"
-    fela-tools "^5.0.5"
-    fela-utils "^5.0.5"
 
 fela@^5.2.0:
   version "5.2.0"
@@ -2275,14 +2233,14 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
-history@^4.6.3:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/history/-/history-4.6.3.tgz#6d723a8712c581d6bef37e8c26f4aedc6eb86967"
+history@^4.7.2:
+  version "4.7.2"
+  resolved "https://registry.yarnpkg.com/history/-/history-4.7.2.tgz#22b5c7f31633c5b8021c7f4a8a954ac139ee8d5b"
   dependencies:
     invariant "^2.2.1"
     loose-envify "^1.2.0"
-    resolve-pathname "^2.0.0"
-    value-equal "^0.2.0"
+    resolve-pathname "^2.2.0"
+    value-equal "^0.4.0"
     warning "^3.0.0"
 
 hoek@2.x.x:
@@ -2292,6 +2250,10 @@ hoek@2.x.x:
 hoist-non-react-statics@1.x, hoist-non-react-statics@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
+hoist-non-react-statics@^2.1.0, hoist-non-react-statics@^2.2.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -2303,17 +2265,6 @@ home-or-tmp@^2.0.0:
 html-comment-regex@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
-
-htmlparser2@^3.9.1:
-  version "3.9.2"
-  resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.9.2.tgz#1bdf87acca0f3f9e53fa4fcceb0f4b4cbb00b338"
-  dependencies:
-    domelementtype "^1.3.0"
-    domhandler "^2.3.0"
-    domutils "^1.5.1"
-    entities "^1.1.1"
-    inherits "^2.0.1"
-    readable-stream "^2.0.2"
 
 htmlparser2@~3.8.1:
   version "3.8.3"
@@ -2408,7 +2359,7 @@ inline-style-prefixer@^3.0.0:
     bowser "^1.6.0"
     css-in-js-utils "^1.0.3"
 
-invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.1.0, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -2443,6 +2394,12 @@ is-isodate@0.0.1:
 is-plain-obj@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-1.1.0.tgz#71a50c8429dfca773c92a390a4a03b39fcd51d3e"
+
+is-plain-object@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-2.0.4.tgz#2c163b3fafb1b606d9d17928f05c2a1c38e07677"
+  dependencies:
+    isobject "^3.0.1"
 
 is-primitive@^2.0.0:
   version "2.0.0"
@@ -2489,6 +2446,10 @@ isarray@~1.0.0:
 isemail@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/isemail/-/isemail-1.2.0.tgz#be03df8cc3e29de4d2c5df6501263f1fa4595e9a"
+
+isobject@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
 isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
   version "2.2.1"
@@ -2690,17 +2651,13 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
+lodash-es@^4.2.0, lodash-es@^4.2.1:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
+
 lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
-
-lodash.assignin@^4.0.9:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.assignin/-/lodash.assignin-4.2.0.tgz#ba8df5fb841eb0a3e8044232b0e263a8dc6a28a2"
-
-lodash.bind@^4.1.4:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/lodash.bind/-/lodash.bind-4.2.1.tgz#7ae3017e939622ac31b7d7d7dcb1b34db1690d35"
 
 lodash.camelcase@^4.3.0:
   version "4.3.0"
@@ -2709,22 +2666,6 @@ lodash.camelcase@^4.3.0:
 lodash.debounce@^4.0.0, lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
-
-lodash.defaults@^4.0.1:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
-
-lodash.filter@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.filter/-/lodash.filter-4.6.0.tgz#668b1d4981603ae1cc5a6fa760143e480b4c4ace"
-
-lodash.flatten@^4.2.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
-
-lodash.foreach@^4.3.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
 
 lodash.get@^4.4.2:
   version "4.4.2"
@@ -2750,17 +2691,9 @@ lodash.keys@^3.1.2:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
-lodash.map@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
-
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
-
-lodash.merge@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
 
 lodash.noop@^3.0.1:
   version "3.0.1"
@@ -2770,25 +2703,9 @@ lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
 
-lodash.pick@^4.2.1:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
-
-lodash.reduce@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.reduce/-/lodash.reduce-4.6.0.tgz#f1ab6b839299ad48f784abbf476596f03b914d3b"
-
-lodash.reject@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.reject/-/lodash.reject-4.6.0.tgz#80d6492dc1470864bbf583533b651f42a9f52415"
-
 lodash.snakecase@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.snakecase/-/lodash.snakecase-4.1.1.tgz#39d714a35357147837aefd64b5dcbb16becd8f8d"
-
-lodash.some@^4.4.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.some/-/lodash.some-4.6.0.tgz#1bb9f314ef6b8baded13b549169b2a945eb68e4d"
 
 lodash.throttle@^4.0.0:
   version "4.1.1"
@@ -2802,7 +2719,7 @@ lodash@3.10.x:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.1.0, lodash@^4.14.0, lodash@^4.16.4, lodash@^4.16.5, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.4:
+lodash@^4.1.0, lodash@^4.14.0, lodash@^4.16.4, lodash@^4.16.5, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -2967,8 +2884,8 @@ monk-middleware-wait-for-connection@^0.2.0:
   resolved "https://registry.yarnpkg.com/monk-middleware-wait-for-connection/-/monk-middleware-wait-for-connection-0.2.0.tgz#312958d30e588b57d09754dd7c97b4843316835a"
 
 monk@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/monk/-/monk-6.0.1.tgz#f20e6b60d56192d4d1bf82981695e24806e0464c"
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/monk/-/monk-6.0.4.tgz#93d9689210bf3c88438558b6505be105ce582317"
   dependencies:
     debug "*"
     mongodb "^2.1.18"
@@ -3065,78 +2982,75 @@ object-path@^0.11.4:
   version "0.11.4"
   resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.11.4.tgz#370ae752fbf37de3ea70a861c23bba8915691949"
 
-olymp-auth@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-17.0.39.tgz#c453f8c79a940883395d84122eea03d681997fc2"
+olymp-auth@^17.1.22:
+  version "17.1.22"
+  resolved "https://registry.yarnpkg.com/olymp-auth/-/olymp-auth-17.1.22.tgz#228f8c0b4875998c2eda1cf44a6a7581dd3b782a"
   dependencies:
     jsonwebtoken "^7.4.1"
-    olymp-fela "^17.0.39"
+    olymp-fela "^17.1.22"
     qrcode "^0.8.2"
     speakeasy "^2.0.0"
     stale-lru-cache "^5.1.1"
 
-olymp-cloudinary@^16.1.2:
-  version "16.1.2"
-  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-16.1.2.tgz#26068935c789453c9b63276afdd0751f31dfce4d"
+olymp-cloudinary@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-cloudinary/-/olymp-cloudinary-17.1.16.tgz#6d3a1cd93deba62bd6984779291c23c9e447698f"
   dependencies:
     cloudinary "^1.9.0"
-    olymp-collection "^16.1.2"
+    olymp-collection "^17.1.16"
     react-image-crop "^2.0.5"
     react-images "^0.5.4"
     recompose "^0.24.0"
 
-olymp-collection@^16.1.2:
-  version "16.1.2"
-  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-16.1.2.tgz#e695729da5d929d5f989c5bbf346b55e2f7c07a5"
+olymp-collection@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-collection/-/olymp-collection-17.1.16.tgz#85a629f7d7ea49c26f9bb80e10451c9c00a51871"
   dependencies:
     deep-diff "^0.3.8"
     prop-types "^15.5.10"
     shortid "^2.2.8"
 
-olymp-fela@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.0.39.tgz#6e6cedece96cf67df112a77327324f8b1ef343e3"
+olymp-fela@^17.1.22:
+  version "17.1.22"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.1.22.tgz#14fffa5a224178844172d56958197d35a88e18d8"
   dependencies:
     eventlistener "^0.0.1"
-    fela "^5.1.0"
-    fela-monolithic "^5.0.5"
-    fela-plugin-custom-property "^5.0.5"
-    fela-plugin-embedded "^5.1.0"
-    fela-plugin-extend "^5.0.5"
-    fela-plugin-fallback-value "^5.0.6"
-    fela-plugin-friendly-pseudo-class "^5.0.5"
-    fela-plugin-named-media-query "^5.0.2"
-    fela-plugin-prefixer "^5.0.6"
-    fela-plugin-remove-undefined "^5.0.5"
-    fela-plugin-unit "^5.0.5"
-    olymp-utils "^17.0.39"
-    react-fela "^5.2.0"
+    fela "^5.2.0"
+    fela-monolithic "^5.0.7"
+    fela-plugin-custom-property "^5.0.7"
+    fela-plugin-embedded "^5.1.2"
+    fela-plugin-extend "^5.0.7"
+    fela-plugin-fallback-value "^5.0.8"
+    fela-plugin-friendly-pseudo-class "^5.0.7"
+    fela-plugin-named-media-query "^5.0.7"
+    fela-plugin-prefixer "^5.0.8"
+    fela-plugin-remove-undefined "^5.0.7"
+    fela-plugin-unit "^5.0.7"
+    olymp-utils "^17.1.16"
+    react-fela "^5.3.0"
     react-frame-component "^1.1.1"
-    react-portal "^3.1.0"
-    react-portal-minimal "^4.0.2"
-    react-transition-group "^2.2.0"
     shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-google@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-17.0.39.tgz#838b8a887f959b302bb51d3ff1d9ac79ba6f13dc"
+olymp-google@^17.1.18:
+  version "17.1.18"
+  resolved "https://registry.yarnpkg.com/olymp-google/-/olymp-google-17.1.18.tgz#6b984bf4273bd4e958d3b50368c33ad0528753f8"
   dependencies:
     "@google/maps" "^0.4.2"
     bluebird "^3.5.0"
     google-map-react "^0.24.0"
     googleapis "^20.1.0"
     moment "^2.18.1"
-    olymp-ui "^17.0.35"
-    olymp-utils "^17.0.39"
+    olymp-ui "^17.1.18"
+    olymp-utils "^17.1.16"
     react-fela "^5.0.4"
     recharts "^1.0.0-alpha.2"
     shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-graphql@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-graphql/-/olymp-graphql-17.0.39.tgz#cf7068b5d61fb54d79058f0e01389599d82dbaae"
+olymp-graphql@^17.1.22:
+  version "17.1.22"
+  resolved "https://registry.yarnpkg.com/olymp-graphql/-/olymp-graphql-17.1.22.tgz#20d1c0fcdc5fa4115b2be1554607b0531bfaf3e8"
   dependencies:
     assert-err "^1.1.0"
     graphql "^0.10.3"
@@ -3145,87 +3059,88 @@ olymp-graphql@^17.0.39:
     graphql-tools "^1.1.0"
     lodash "^4.17.4"
 
-olymp-hashtax@^16.0.50:
-  version "16.0.50"
-  resolved "https://registry.yarnpkg.com/olymp-hashtax/-/olymp-hashtax-16.0.50.tgz#dbfac221a51f0f30016fb40baf6bd578187904cf"
+olymp-hashtax@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-hashtax/-/olymp-hashtax-17.1.16.tgz#25504bdfe4334ce8f58bafbf443851165dc30f5f"
   dependencies:
     lodash "^4.17.4"
 
-olymp-icons@^17.0.28:
-  version "17.0.28"
-  resolved "https://registry.yarnpkg.com/olymp-icons/-/olymp-icons-17.0.28.tgz#8d03c594a4c7485f668d01e3eb01da98b2fb4de3"
+olymp-icons@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-icons/-/olymp-icons-17.1.16.tgz#80ba5fca2c7ef1fed066527f3719b9765ecf7ab6"
   dependencies:
     react-fela "^5.1.0"
 
-olymp-locale@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-17.0.39.tgz#33720208257fe8b2d087c8ff383c1fae207b1197"
+olymp-locale@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-locale/-/olymp-locale-17.1.16.tgz#ccd49e9fc9b8655bffd884e5ee495aa4c1f80883"
   dependencies:
     date-fns "2.0.0-alpha.1"
-    olymp-utils "^17.0.39"
+    olymp-utils "^17.1.16"
 
-olymp-mail@^16.0.50:
-  version "16.0.50"
-  resolved "https://registry.yarnpkg.com/olymp-mail/-/olymp-mail-16.0.50.tgz#e6727ceaed95525fc642b21dd85fba941e00af74"
+olymp-mail@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-mail/-/olymp-mail-17.1.16.tgz#67824bf4dabbaf1b535089d8cd1b383685515a0e"
   dependencies:
     isomorphic-fetch "^2.2.1"
-    olymp-hashtax "^16.0.50"
+    olymp-hashtax "^17.1.16"
 
-olymp-pages@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-17.0.39.tgz#e6c6f146bc91344647b887cade7cd1d9b6f7999b"
+olymp-pages@^17.1.22:
+  version "17.1.22"
+  resolved "https://registry.yarnpkg.com/olymp-pages/-/olymp-pages-17.1.22.tgz#8629c66eb7197c514e69de30f851f604231172f0"
   dependencies:
-    olymp-fela "^17.0.39"
-    olymp-router "^17.0.39"
-    olymp-utils "^17.0.39"
+    olymp-fela "^17.1.22"
+    olymp-router "^17.1.16"
+    olymp-utils "^17.1.16"
     recompose "^0.24.0"
 
-olymp-router@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.0.39.tgz#4818edab545dda7ad7651bb0f80d8ab3d5e32f71"
+olymp-router@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.1.16.tgz#fbcde96298beafa2aa0b3e3685d0f5c9b24d4a9f"
   dependencies:
-    history "^4.6.3"
-    olymp-utils "^17.0.39"
+    history "^4.7.2"
+    olymp-utils "^17.1.16"
+    react-redux "^5.0.6"
+    redux "^3.7.2"
     route-parser "^0.0.5"
-    shallowequal "^1.0.2"
 
-olymp-scrape@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-scrape/-/olymp-scrape-17.0.39.tgz#af44dadbc338f725bb45267678c2a41489f69d26"
+olymp-scrape@^17.1.22:
+  version "17.1.22"
+  resolved "https://registry.yarnpkg.com/olymp-scrape/-/olymp-scrape-17.1.22.tgz#bc862b39c1c0d366521537fe714741a08f368afa"
   dependencies:
     metascraper "^1.0.7"
-    olymp-fela "^17.0.39"
-    olymp-utils "^17.0.39"
+    olymp-fela "^17.1.22"
+    olymp-utils "^17.1.16"
     shortid "^2.2.8"
 
-olymp-slate@^16.1.2:
-  version "16.1.2"
-  resolved "https://registry.yarnpkg.com/olymp-slate/-/olymp-slate-16.1.2.tgz#94503232ac4fe46c93f45cd892523363e98b8eae"
+olymp-slate@^17.1.18:
+  version "17.1.18"
+  resolved "https://registry.yarnpkg.com/olymp-slate/-/olymp-slate-17.1.18.tgz#3432de0564e781e5e0e6426d0c681145479ea24d"
   dependencies:
-    react-portal "^3.1.0"
-    slate "^0.20.6"
-    slate-insert-block-on-enter "^0.0.3"
+    react-dnd "^2.5.1"
+    react-dnd-html5-backend "^2.5.1"
+    slate "^0.22.14"
+    slate-insert-block-on-enter "^0.0.4"
     slate-trailing-block "^0.2.4"
 
-olymp-ui@^17.0.35:
-  version "17.0.35"
-  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-17.0.35.tgz#26f85ceeef48229847642809587a3dd4451f3b04"
+olymp-ui@^17.1.18:
+  version "17.1.18"
+  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-17.1.18.tgz#f7ec96b953d701f5de85754e6b28c02e4ccfeb5e"
   dependencies:
     antd "^2.12.3"
     moment "^2.18.1"
     multirangeslider "^0.5.2"
     react-modal2 "^5.0.0"
-    react-portal-minimal "^4.0.2"
 
-olymp-utils@^17.0.39:
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.0.39.tgz#f0b362c04aee20b1149d202c3ed5b2db1b1cb72d"
+olymp-utils@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.1.16.tgz#e403759029f9c4eab50266ae80bae41cf5f9e58c"
   dependencies:
     shallowequal "^1.0.2"
 
-olymp-webpack-babel@^17.0.24:
-  version "17.0.24"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-babel/-/olymp-webpack-babel-17.0.24.tgz#4ee8200f3048bce64221b4da625b5d4e3edfdff9"
+olymp-webpack-babel@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-babel/-/olymp-webpack-babel-17.1.16.tgz#a0b5a4c6ce39136b5c46da8e2b9e9fc6d4cffb02"
   dependencies:
     babel-core "^6.25.0"
     babel-loader "^7.1.1"
@@ -3248,9 +3163,9 @@ olymp-webpack-babel@^17.0.24:
     react-hot-loader next
     uglifyjs-webpack-plugin "1.0.0-beta.2"
 
-olymp-webpack-less@^17.0.24:
-  version "17.0.24"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-less/-/olymp-webpack-less-17.0.24.tgz#dbb3e1a4260469efd95a311c61f053facf858925"
+olymp-webpack-less@^17.1.16:
+  version "17.1.16"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-less/-/olymp-webpack-less-17.1.16.tgz#3622898f7c273b475274ce21a5d761d737e0df01"
   dependencies:
     css-loader "^0.28.4"
     extract-text-webpack-plugin "3.0.0"
@@ -4033,6 +3948,23 @@ react-deep-force-update@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.0.1.tgz#4f7f6c12c3e7de42f345992a3c518236fa1ecad3"
 
+react-dnd-html5-backend@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.5.1.tgz#d3656e514b0c469902a485fffa75f8684e21c777"
+  dependencies:
+    lodash "^4.2.0"
+
+react-dnd@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.5.1.tgz#ecef1d9d8478cb76afd5975cd5123ef7c3bebfe5"
+  dependencies:
+    disposables "^1.0.1"
+    dnd-core "^2.5.1"
+    hoist-non-react-statics "^2.1.0"
+    invariant "^2.1.0"
+    lodash "^4.2.0"
+    prop-types "^15.5.10"
+
 react-fela@^5.0.4, react-fela@^5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.1.1.tgz#05d2e0475345103773ccf03582ea23dd49c81752"
@@ -4041,7 +3973,7 @@ react-fela@^5.0.4, react-fela@^5.1.0:
     fela-dom "^5.0.5"
     prop-types "^15.5.8"
 
-react-fela@^5.2.0:
+react-fela@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.3.0.tgz#0d90ed97b5d6f74c19c74c68ab193d815c75342b"
   dependencies:
@@ -4111,12 +4043,6 @@ react-modal2@^5.0.0:
     exenv "^1.2.0"
     prop-types "^15.5.8"
 
-react-portal-minimal@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/react-portal-minimal/-/react-portal-minimal-4.0.2.tgz#8e2742807dbf61773037e93c02b7d08ddc420305"
-  dependencies:
-    prop-types "^15.5.8"
-
 react-portal@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.1.0.tgz#865c44fb72a1da106c649206936559ce891ee899"
@@ -4134,6 +4060,17 @@ react-proxy@^3.0.0-alpha.0:
   resolved "https://registry.yarnpkg.com/react-proxy/-/react-proxy-3.0.0-alpha.1.tgz#4400426bcfa80caa6724c7755695315209fa4b07"
   dependencies:
     lodash "^4.6.1"
+
+react-redux@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.6.tgz#23ed3a4f986359d68b5212eaaa681e60d6574946"
+  dependencies:
+    hoist-non-react-statics "^2.2.1"
+    invariant "^2.0.0"
+    lodash "^4.2.0"
+    lodash-es "^4.2.0"
+    loose-envify "^1.1.0"
+    prop-types "^15.5.10"
 
 react-resize-detector@0.4.1:
   version "0.4.1"
@@ -4179,17 +4116,6 @@ react-transition-group@^1.1.1, react-transition-group@^1.1.3:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react-transition-group@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.2.0.tgz#793bf8cb15bfe91b3101b24bce1c1d2891659575"
-  dependencies:
-    chain-function "^1.0.0"
-    classnames "^2.2.5"
-    dom-helpers "^3.2.0"
-    loose-envify "^1.3.1"
-    prop-types "^15.5.8"
-    warning "^3.0.0"
-
 "react@^0.14.2 || ^15.0.0-0":
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
@@ -4200,7 +4126,7 @@ react-transition-group@^2.2.0:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.1.5, readable-stream@^2.2.2:
+"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.4, readable-stream@^2.1.5, readable-stream@^2.2.2:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.3.tgz#368f2512d79f9d46fdfc71349ae7878bbc1eb95c"
   dependencies:
@@ -4291,6 +4217,15 @@ reduce@^1.0.1:
   dependencies:
     object-keys "~1.0.0"
 
+redux@^3.7.1, redux@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
+  dependencies:
+    lodash "^4.2.1"
+    lodash-es "^4.2.1"
+    loose-envify "^1.1.0"
+    symbol-observable "^1.0.3"
+
 regenerate@^1.2.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
@@ -4377,9 +4312,9 @@ resolve-from@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-2.0.0.tgz#9480ab20e94ffa1d9e80a804c7ea147611966b57"
 
-resolve-pathname@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/resolve-pathname/-/resolve-pathname-2.1.0.tgz#e8358801b86b83b17560d4e3c382d7aef2100944"
+resolve-pathname@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/resolve-pathname/-/resolve-pathname-2.2.0.tgz#7e9ae21ed815fd63ab189adeee64dc831eefa879"
 
 rimraf@^2.5.4, rimraf@^2.6.1:
   version "2.6.1"
@@ -4449,22 +4384,21 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
-slate-insert-block-on-enter@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/slate-insert-block-on-enter/-/slate-insert-block-on-enter-0.0.3.tgz#071395e63952e7cf4d28d7d86123be4fb9ec354a"
+slate-insert-block-on-enter@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/slate-insert-block-on-enter/-/slate-insert-block-on-enter-0.0.4.tgz#60799a0c293dd5432699c7e8ef60a27aa85317e1"
   dependencies:
     debug "^2.2.0"
-    slate "^0.19.3"
+    slate "^0.22.0"
 
 slate-trailing-block@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/slate-trailing-block/-/slate-trailing-block-0.2.4.tgz#6ce9525fa15f9f098d810d9312a4267799cd0e12"
 
-slate@^0.19.3:
-  version "0.19.30"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.19.30.tgz#6c28a7ef53fd48d445c13c6037d39b96efacc22a"
+slate@^0.22.0, slate@^0.22.14:
+  version "0.22.14"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.22.14.tgz#8a077728a95cf9d2fa79c6e5083368e1a260318c"
   dependencies:
-    cheerio "^0.22.0"
     debug "^2.3.2"
     direction "^0.1.5"
     es6-map "^0.1.4"
@@ -4473,28 +4407,10 @@ slate@^0.19.3:
     immutable "^3.8.1"
     is-empty "^1.0.0"
     is-in-browser "^1.1.3"
+    is-plain-object "^2.0.4"
     is-window "^1.0.2"
     keycode "^2.1.2"
-    prop-types "^15.5.8"
-    react-portal "^3.1.0"
-    selection-is-backward "^1.0.0"
-    type-of "^2.0.1"
-
-slate@^0.20.6:
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.20.7.tgz#083ca9074dc7fd3ad8863985e6d92ed76bdc9eff"
-  dependencies:
-    cheerio "^0.22.0"
-    debug "^2.3.2"
-    direction "^0.1.5"
-    es6-map "^0.1.4"
-    esrever "^0.2.0"
-    get-window "^1.1.1"
-    immutable "^3.8.1"
-    is-empty "^1.0.0"
-    is-in-browser "^1.1.3"
-    is-window "^1.0.2"
-    keycode "^2.1.2"
+    lodash "^4.17.4"
     prop-types "^15.5.8"
     react-portal "^3.1.0"
     selection-is-backward "^1.0.0"
@@ -4676,7 +4592,7 @@ svgo@^0.7.0:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
-symbol-observable@^1.0.4:
+symbol-observable@^1.0.3, symbol-observable@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
 
@@ -4849,9 +4765,9 @@ uuid@^3.0.0, uuid@^3.0.1:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
-value-equal@^0.2.0:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-0.2.1.tgz#c220a304361fce6994dbbedaa3c7e1a1b895871d"
+value-equal@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-0.4.0.tgz#c5bdd2f54ee093c04839d71ce2e4758a6890abc7"
 
 vendors@^1.0.0:
   version "1.0.1"

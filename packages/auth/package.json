@@ -4,6 +4,9 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "jsonwebtoken": "^7.4.1",
     "olymp-fela": "^17.1.22",

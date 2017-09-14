@@ -4,6 +4,9 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "olymp-fela": "^17.1.22",
     "olymp-router": "^17.1.16",

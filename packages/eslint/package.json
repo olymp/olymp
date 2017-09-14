@@ -4,6 +4,9 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^4.2.0",

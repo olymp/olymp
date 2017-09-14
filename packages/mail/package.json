@@ -5,6 +5,9 @@
   "main": "./src",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "olymp-hashtax": "^17.1.16"

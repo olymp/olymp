@@ -223,8 +223,8 @@ js-tokens@^3.0.0:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
 jsonwebtoken@^7.4.1:
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-7.4.1.tgz#7ca324f5215f8be039cd35a6c45bb8cb74a448fb"
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-7.4.3.tgz#77f5021de058b605a1783fa1283e99812e645638"
   dependencies:
     joi "^6.10.1"
     jws "^3.1.4"
@@ -278,9 +278,9 @@ object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-olymp-fela@^17.1.18:
-  version "17.1.18"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.1.18.tgz#9ade81c384a30c4ca1f3b8a651c1836885df5451"
+olymp-fela@^17.1.22:
+  version "17.1.22"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.1.22.tgz#14fffa5a224178844172d56958197d35a88e18d8"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.2.0"

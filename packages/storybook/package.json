@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "up": "yarn upgrade-interactive"
   },
   "devDependencies": {
     "@storybook/addon-info": "^3.1.6",

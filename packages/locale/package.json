@@ -4,6 +4,9 @@
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "date-fns": "2.0.0-alpha.1",
     "olymp-utils": "^17.1.16"

@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "deep-diff": "^0.3.8",
     "prop-types": "^15.5.10",

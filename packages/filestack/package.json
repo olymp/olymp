@@ -4,6 +4,9 @@
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
+  "scripts": {
+    "up": "yarn upgrade-interactive"
+  },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "olymp-utils": "^17.1.16",
