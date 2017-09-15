@@ -20,12 +20,18 @@ export default memoize((urlOrString = '') => {
       url.query = parseQuery(url.search);
     }
   }
-  if (url.search) {
+  if (url.search && url.search[0] === '?') {
+    url.url = `${url.pathname}${url.search}`;
+  } else if (url.search) {
     url.url = `${url.pathname}?${url.search}`;
   } else {
     url.url = url.pathname;
   }
-  if (!url.search) url.search = '';
-  if (!url.query) url.query = {};
+  if (!url.search) {
+    url.search = '';
+  }
+  if (!url.query) {
+    url.query = {};
+  }
   return url;
 });

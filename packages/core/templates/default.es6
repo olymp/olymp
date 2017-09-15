@@ -10,7 +10,7 @@ export default ({
   scripts = [],
   root = '',
   initialState,
-  asyncState,
+  getInitialState,
   gaTrackingId,
 }) => `
 <!DOCTYPE html>
@@ -78,8 +78,9 @@ export default ({
     ${initialState
     ? `<script type="text/javascript">window.INITIAL_DATA=${serialize(initialState)}</script>`
     : ''}
-    ${asyncState
-    ? `<script type="text/javascript">window.ASYNC_STATE=${serialize(asyncState)}</script>`
+    ${getInitialState
+    ? `<script type="text/javascript">window.INITIAL_DATA=${() =>
+      serialize(getInitialState())}</script>`
     : ''}
     ${scripts.map(script => `<script src="${script}"></script>`)}
   </body>

@@ -1,6 +1,5 @@
 import React, { Component, Children } from 'react';
 import { withRouter } from 'olymp-router';
-import { withGateway } from 'olymp-ui';
 import { Form, Menu, Icon } from 'antd';
 import { Modal, createComponent, border } from 'olymp-fela';
 import { withCollection, withItem } from '../decorators';
@@ -36,14 +35,13 @@ const HiddenForm = createComponent(
 @withCollection
 @Form.create()
 @withItem
-@withGateway('toolbar')
 export default class CollectionModal extends Component {
   state = {
     tab: undefined,
   };
 
   render() {
-    const { collection, open, id, typeName, onSave, onClose, item, toolbar } = this.props;
+    const { collection, open, id, typeName, onSave, onClose, item } = this.props;
     const schema = getFormSchema(collection);
     const keys = Object.keys(schema);
     const currentTab = this.state.tab || keys[0];

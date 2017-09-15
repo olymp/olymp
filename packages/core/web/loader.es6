@@ -1,4 +1,3 @@
-// import { message } from 'antd';
 import { debounce } from 'lodash';
 import { createLoaderStart, createLoaderEnd } from '../redux';
 
@@ -9,13 +8,10 @@ const updateLoader = debounce(
     const length = pendings.length;
     if (length && !loader) {
       loader = true;
-      // loader = message.loading('Lädt ...', 0);
       createLoaderStart(dispatch)();
     } else if (!length && loader) {
       loader = false;
       createLoaderEnd(dispatch)();
-      // loader();
-      // loader = null;
     }
   },
   300,

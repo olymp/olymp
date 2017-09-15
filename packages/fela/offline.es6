@@ -1,13 +1,19 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
 import tinycolor from 'tinycolor2';
-import Portal from '../portal';
+import Portal from './portal';
 
-const Modal = ({ className, logo, show }) =>
-  (show ? (
+const Modal = ({ className, logo, isOffline, isServerDown }) =>
+  (isOffline ? (
     <Portal>
       <div className={className}>
-        <div>{logo}</div>
+        <div>Offline</div>
+      </div>
+    </Portal>
+  ) : isServerDown ? (
+    <Portal>
+      <div className={className}>
+        <div>Server Offline</div>
       </div>
     </Portal>
   ) : null);
@@ -35,6 +41,13 @@ const component = createComponent(
     width: '100%',
     height: '100%',
     '> div': {
+      color: 'white',
+      fontSize: 30,
+      fontWeight: 200,
+      height: 300,
+      width: 300,
+      lineHeight: '240px',
+      textAlign: 'center',
       backgroundColor: theme.color,
       borderRadius: '100%',
       padding: 30,

@@ -3946,6 +3946,10 @@ obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.1.tgz#104124b6c602c6796881a042541d36db43a5264e"
 
+offline-js@^0.7.19:
+  version "0.7.19"
+  resolved "https://registry.yarnpkg.com/offline-js/-/offline-js-0.7.19.tgz#60b68b6dccf3cd5528b5c8577280dceebdebab99"
+
 offline-plugin@^4.8.3:
   version "4.8.3"
   resolved "https://registry.yarnpkg.com/offline-plugin/-/offline-plugin-4.8.3.tgz#9e95bd342ea2ac836b001b81f204c40638694d6c"
@@ -3956,9 +3960,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.1.22:
-  version "17.1.22"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.1.22.tgz#14fffa5a224178844172d56958197d35a88e18d8"
+olymp-fela@^17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.2.0.tgz#0523fc99205a8aa5e74da626614adbd443f9e2b8"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.2.0"
@@ -3972,31 +3976,31 @@ olymp-fela@^17.1.22:
     fela-plugin-prefixer "^5.0.8"
     fela-plugin-remove-undefined "^5.0.7"
     fela-plugin-unit "^5.0.7"
-    olymp-utils "^17.1.16"
+    olymp-utils "^17.2.0"
     react-fela "^5.3.0"
     react-frame-component "^1.1.1"
     shortid "^2.2.8"
     tinycolor2 "^1.4.1"
 
-olymp-router@^17.1.16:
-  version "17.1.16"
-  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.1.16.tgz#fbcde96298beafa2aa0b3e3685d0f5c9b24d4a9f"
+olymp-router@^17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/olymp-router/-/olymp-router-17.2.0.tgz#5d8856cb0597ad1e45a31980a9d21982d0966803"
   dependencies:
     history "^4.7.2"
-    olymp-utils "^17.1.16"
+    olymp-utils "^17.2.0"
     react-redux "^5.0.6"
     redux "^3.7.2"
     route-parser "^0.0.5"
 
-olymp-utils@^17.1.16:
-  version "17.1.16"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.1.16.tgz#e403759029f9c4eab50266ae80bae41cf5f9e58c"
+olymp-utils@^17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.2.0.tgz#74915845deb2b116a541d489aab92661cef82e58"
   dependencies:
     shallowequal "^1.0.2"
 
-olymp-webpack-electron@^17.1.16:
-  version "17.1.16"
-  resolved "https://registry.yarnpkg.com/olymp-webpack-electron/-/olymp-webpack-electron-17.1.16.tgz#ac6398072d2905d7e20437e95ea3735d4240b396"
+olymp-webpack-electron@^17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/olymp-webpack-electron/-/olymp-webpack-electron-17.2.0.tgz#bc4aaf6829bd20d2f0b36bd24cd97e1f5e275513"
   dependencies:
     devtron "^1.4.0"
     electron "^1.7.5"
@@ -4309,7 +4313,7 @@ promise@^7.0.3, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -4509,14 +4513,6 @@ react-frame-component@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-frame-component/-/react-frame-component-1.1.1.tgz#05b7f5689a2d373f25baf0c9adb0e59d78103388"
 
-react-gateway@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/react-gateway/-/react-gateway-2.7.0.tgz#64bb3e8f8b7c6bf9f26ff3bf08a9946a5af4836e"
-  dependencies:
-    prop-types "^15.5.0"
-    react "^0.14.2 || ^15.0.0-0"
-    react-prop-types "^0.4.0"
-
 react-helmet@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
@@ -4544,12 +4540,6 @@ react-loadable@^4.0.5:
     import-inspector "^2.0.0"
     is-webpack-bundle "^1.0.0"
     webpack-require-weak "^1.0.1"
-
-react-prop-types@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
-  dependencies:
-    warning "^3.0.0"
 
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"
@@ -4582,7 +4572,7 @@ react@^0.14.0:
     envify "^3.0.0"
     fbjs "^0.6.1"
 
-"react@^0.14.2 || ^15.0.0-0", "react@^15 || ^16":
+"react@^15 || ^16":
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:

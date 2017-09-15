@@ -2,7 +2,6 @@ import React from 'react';
 import { AmpProvider, UAProvider } from 'olymp-utils';
 import { ApolloProvider } from 'react-apollo';
 import { Provider as FelaProvider } from 'react-fela';
-import { GatewayProvider } from 'react-gateway';
 import { Provider as ReduxProvider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 import App from '@app';
@@ -20,19 +19,17 @@ function getNextMountNode() {
   return nextNode;
 }
 
-export default ({ client, renderer, store, ua, history, dynamicRedux }) => (
+export default ({ client, renderer, store, ua, dynamicRedux }) => (
   <AppContainer>
     <DynamicReduxProvider dynamicRedux={dynamicRedux}>
       <ReduxProvider store={store}>
         <ApolloProvider client={client}>
           <FelaProvider renderer={renderer} mountNode={getNextMountNode()}>
-            <GatewayProvider>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={false}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </GatewayProvider>
+            <UAProvider ua={ua}>
+              <AmpProvider amp={false}>
+                <App />
+              </AmpProvider>
+            </UAProvider>
           </FelaProvider>
         </ApolloProvider>
       </ReduxProvider>

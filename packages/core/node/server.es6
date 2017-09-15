@@ -20,7 +20,6 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
-import { GatewayProvider } from 'react-gateway';
 // Etc
 import fetch from 'isomorphic-fetch';
 import sslRedirect from 'heroku-ssl-redirect';
@@ -47,18 +46,15 @@ import amp from '../templates/amp';
 import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
 // eslint
+global.fetch = fetch;
 
 const version = +fs.statSync(__filename).mtime;
 console.log('VERSION', version);
 
 const RedisStore = createRedisStore(session);
 
-// import { render, template } from 'rapscallion';
-
-global.fetch = fetch;
-
 const isProd = process.env.NODE_ENV === 'production';
-const port = parseInt(process.env.PORT, 10);
+const isDeployed = `${process.env.YARN_PRODUCTION}` === 'true';
 
 // Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
@@ -66,41 +62,6 @@ const clientAssets = fs.existsSync(clientAssetsPath)
   ? JSON.parse(fs.readFileSync(clientAssetsPath))
   : null; // eslint-disable-line import/no-dynamic-require
 const app = express();
-/* app.emitter = new EventEmitter();
-
-// Websocket Server
-app.listenWS = (options) => {
-  const wss = new WebSocketServer(options);
-  wss.on('connection', (socket) => {
-    const onPing = (message) => {
-      socket.send(JSON.stringify({ type: 'pong', version }));
-    };
-
-    const onMessage = (raw) => {
-      if (!raw) {
-        return;
-      }
-      if (raw === 'ping') {
-        return onPing(raw);
-      }
-      console.log('WS', raw);
-      let json = {};
-      try {
-        json = JSON.parse(raw);
-        if (json) {
-          app.emitter.emit('ws', { json, raw, socket });
-        }
-      } catch (err) {
-        console.error('Websocket error', err);
-      }
-    };
-    socket.on('message', onMessage);
-  });
-  return wss;
-};
-
-// app.wss.close();
-// ---*/
 
 app.use(helmet());
 if (
@@ -118,11 +79,9 @@ if (
   });*/
 }
 
-// Compress (gzip) assets in production.
 app.use(compression());
 app.use(useragent.express());
 
-// Setup the public directory so that we can server static assets.
 app.use(express.static(path.resolve(process.cwd(), 'public')));
 app.use(express.static(path.resolve(process.cwd(), '.dist', 'web')));
 app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
@@ -138,12 +97,11 @@ app.use((req, res, next) => {
   next();
 });
 
-const trust = process.env.TRUST_PROXY !== undefined ? parseInt(process.env.TRUST_PROXY) : 2;
-const secure = process.env.COOKIE_SECURE ? `${process.env.COOKIE_SECURE}` === 'true' : isProd;
+const trust = isDeployed ? 2 : null;
+const secure = isDeployed;
 const domain = process.env.URL ? process.env.URL.split('/')[2] : undefined;
 
-console.log(trust, secure, domain, !!trust);
-if (isProd) {
+if (isDeployed) {
   app.set('trust proxy', trust);
 }
 app.use(
@@ -154,7 +112,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     httpOnly: true,
-    proxy: !!trust,
+    proxy: isDeployed,
     domain,
     secret: process.env.SESSION_SECRET || 'keyboard cat',
     cookie: {
@@ -227,8 +185,7 @@ app.get('*', (req, res) => {
   });
   const ua = new UAParser(req.headers['user-agent']);
   const renderer = createFela(ua);
-  const history = createHistory({ initialEntries: [req.url] });
-
+  const history = createHistory({ initialEntries: [req.originalUrl] });
   const dynamicRedux = createDynamicRedux();
   const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
   const store = createDynamicStore(
@@ -248,27 +205,23 @@ app.get('*', (req, res) => {
     ),
   );
 
-  const context = {};
   const reactApp = (
     <DynamicReduxProvider dynamicRedux={dynamicRedux}>
       <ReduxProvider store={store}>
         <ApolloProvider client={client}>
           <Provider renderer={renderer}>
-            <GatewayProvider>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={req.isAmp}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </GatewayProvider>
+            <UAProvider ua={ua}>
+              <AmpProvider amp={req.isAmp}>
+                <App />
+              </AmpProvider>
+            </UAProvider>
           </Provider>
         </ApolloProvider>
       </ReduxProvider>
     </DynamicReduxProvider>
   );
 
-  // return
-  return getDataFromTree(reactApp)
+  getDataFromTree(reactApp)
     .then(() => {
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const cssMarkup = renderer.renderToString();
@@ -285,15 +238,14 @@ app.get('*', (req, res) => {
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 
-      // Check if the render result contains a redirect, if so we need to set
-      // the specific status and redirect header and end the res.
-      if (context.url) {
-        res.status(301).setHeader('Location', context.url);
+      console.log('MATCH?', state.location.url, req.originalUrl, 'Is miss', state.location.isMiss);
+      if (state.location.url !== req.originalUrl) {
+        res.status(301).setHeader('Location', state.location.url);
         res.end();
         return;
       }
 
-      res.status(context.missed ? 404 : 200);
+      res.status(state.location.isMiss ? 404 : 200);
       res.send(html);
       // responseRenderer.toStream().pipe(response);
     })

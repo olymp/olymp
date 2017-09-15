@@ -1,12 +1,15 @@
+const { resolve } = require('path');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
+
+const OfflinePlugin = require(resolve(process.cwd(), 'node_modules', 'offline-plugin'));
 const path = require('path');
 
 module.exports = (config) => {
   config.plugins.push(
     new HtmlWebpackPlugin({
       filename: 'offline.html',
-      template: path.resolve(__dirname, 'templates', 'default.js'),
+      template: path.resolve(__dirname, 'templates', 'serverless.js'),
       inject: false,
       /* minify: {
       removeComments: true,
@@ -31,6 +34,9 @@ module.exports = (config) => {
       ServiceWorker: {
         events: true,
         navigateFallbackURL: '/offline.html',
+      },
+      __tests: {
+        ignoreRuntime: true,
       },
       AppCache: false,
     }),

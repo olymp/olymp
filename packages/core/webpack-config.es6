@@ -5,12 +5,9 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
-// const ReloadServerPlugin = require('reload-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-// const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 const appRoot = process.cwd();
@@ -404,6 +401,5 @@ module.exports = ({
     return req(config, options) || config;
   }, config);
 
-  return final;
-  // return isWeb && isProd ? require('./offline')(final) : final;
+  return isWeb && isProd ? require('./offline')(final) : final;
 };

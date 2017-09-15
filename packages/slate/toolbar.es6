@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Gateway } from 'react-gateway';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import Portal from './portal';

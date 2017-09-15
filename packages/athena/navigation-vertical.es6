@@ -4,7 +4,6 @@ import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent } from 'olymp-fela';
-import { withGateway } from 'olymp-ui';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -133,8 +132,6 @@ const AntMenuToolbar = ({ keys, ...p }) => (
 );
 
 @withLang
-@withGateway('toolbar')
-@withGateway('navigation')
 @connect(
   ({ location, auth }) => ({
     pathname: location.pathname,
@@ -173,17 +170,7 @@ class Navigation extends Component {
     this.setState({ collapsed: true });
   };
   render() {
-    const {
-      setDeviceWidth,
-      query,
-      collectionList,
-      toolbar,
-      navigation,
-      quick,
-      isAdmin,
-      email,
-      name,
-    } = this.props;
+    const { setDeviceWidth, query, collectionList, isAdmin, email, name } = this.props;
     const keys = Object.keys(query);
 
     if (!keys.filter(x => x[0] === '@').length) {

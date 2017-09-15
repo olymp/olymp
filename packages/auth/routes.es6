@@ -1,5 +1,5 @@
 import React from 'react';
-import { AltSwitch, AltRoute, createUpdateQuery } from 'olymp-router';
+import { Switch, Route, createUpdateQuery } from 'olymp-router';
 import { connect } from 'react-redux';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus } from './views';
 import { AuthInvitations } from './admin';
@@ -25,9 +25,9 @@ export default connect(
   const inQuery = key => query[key] !== undefined;
 
   return (
-    <AltSwitch>
-      <AltRoute match={inQuery('invitations')} render={() => <AuthInvitations isOpen {...p} />} />
-      <AltRoute
+    <Switch>
+      <Route match={inQuery('invitations')} render={() => <AuthInvitations isOpen {...p} />} />
+      <Route
         match={inQuery('login')}
         render={() => (
           <AuthLogin
@@ -39,7 +39,7 @@ export default connect(
           />
         )}
       />
-      <AltRoute
+      <Route
         match={inQuery('register')}
         render={() => (
           <AuthRegister
@@ -54,7 +54,7 @@ export default connect(
           />
         )}
       />
-      <AltRoute
+      <Route
         match={inQuery('forgot')}
         render={() => (
           <AuthForgot
@@ -65,7 +65,7 @@ export default connect(
           />
         )}
       />
-      <AltRoute
+      <Route
         match={inQuery('reset')}
         render={() => (
           <AuthReset
@@ -76,7 +76,7 @@ export default connect(
           />
         )}
       />
-      <AltRoute
+      <Route
         match={inQuery('confirm')}
         render={() => (
           <AuthConfirm
@@ -87,7 +87,7 @@ export default connect(
           />
         )}
       />
-      <AltRoute
+      <Route
         match={inQuery('status-forgot')}
         render={() => (
           <AuthStatus
@@ -97,7 +97,7 @@ export default connect(
           />
         )}
       />
-      <AltRoute
+      <Route
         match={inQuery('status-register')}
         render={() => (
           <AuthStatus
@@ -107,6 +107,6 @@ export default connect(
           />
         )}
       />
-    </AltSwitch>
+    </Switch>
   );
 });

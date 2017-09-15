@@ -1,6 +1,5 @@
 import React from 'react';
 import { AuthModals } from 'olymp-auth';
-import { GatewayDest } from 'react-gateway';
 import { PageRoute } from 'olymp-pages';
 import { Lightbox } from 'olymp-cloudinary';
 import { TopLoader } from 'olymp-fela';
@@ -16,7 +15,6 @@ export default connect(({ app }) => ({
       <TopLoader loading={_isLoading} />
       <Lightbox />
       <AuthModals />
-      <GatewayDest name="modal" />
       <PageRoute {...props} navigation={navigation} Wrapped={Wrapped} />
     </div>
   );

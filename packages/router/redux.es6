@@ -5,19 +5,27 @@ export const LOCATION_REPLACE = 'LOCATION_UPDATE';
 export const LOCATION_PUSH = 'LOCATION_PUSH';
 export const LOCATION_PATCH = 'LOCATION_PATCH';
 export const LOCATION_CORRECT = 'LOCATION_CORRECT';
+export const LOCATION_MISS = 'LOCATION_MISS';
 
 export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 
 export const routerReducer = (history) => {
   const defaultState = urlToLocation(history.location);
   return (state = defaultState, action) => {
-    if (!action || !action.type || action.type !== LOCATION_CHANGE) {
+    if (!action || !action.type) {
       return state;
     }
-    return {
-      ...state,
-      ...action.payload,
-    };
+    switch (action.type) {
+      case LOCATION_CHANGE:
+        return {
+          ...state,
+          ...action.payload,
+        };
+      case LOCATION_MISS:
+        return { ...state, isMiss: true };
+      default:
+        return state;
+    }
   };
 };
 
@@ -74,5 +82,7 @@ export const createReplaceQuery = dispatch => query =>
   dispatch({ type: LOCATION_PUSH, payload: { query } });
 
 export const createPush = dispatch => payload => dispatch({ type: LOCATION_PUSH, payload });
+
+export const createMiss = dispatch => payload => dispatch({ type: LOCATION_MISS, payload });
 
 export const createReplace = dispatch => payload => dispatch({ type: LOCATION_REPLACE, payload });

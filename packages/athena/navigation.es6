@@ -5,7 +5,7 @@ import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent, border } from 'olymp-fela';
 import { withGateway } from 'olymp-ui';
-import { GatewayDest } from 'react-gateway';
+// import { GatewayDest } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 

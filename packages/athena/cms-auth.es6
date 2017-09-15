@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AltSwitch, AltRoute } from 'olymp-router';
+import { Switch, Route } from 'olymp-router';
 import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
 import { EditablePageRoute, PageRoute } from 'olymp-pages';
@@ -8,7 +8,6 @@ import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { Analytics } from 'olymp-google';
 import { createComponent, getAntStyle, TopLoader } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
-import { GatewayDest } from 'react-gateway';
 import { connect } from 'react-redux';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
@@ -86,7 +85,6 @@ export default class CMSAuth extends Component {
       <Container theme={theme}>
         <Load />
         <Lightbox />
-        <GatewayDest name="modal" />
         <Hotjar id={process.env.HOTJAR} />
         <AuthModals />
         {!!collection &&
@@ -113,12 +111,12 @@ export default class CMSAuth extends Component {
           location={location}
         />
         <SwitchContainer>
-          <AltSwitch>
-            <AltRoute
+          <Switch>
+            <Route
               match={query['@template'] !== undefined}
               render={() => <TemplateRoute {...this.props} />}
             />
-            <AltRoute
+            <Route
               match={!!collection && query.modal === undefined}
               render={() =>
                 (<CollectionRoute
@@ -128,7 +126,7 @@ export default class CMSAuth extends Component {
                   Wrapped={Wrapped}
                 />)}
             />
-            <AltRoute
+            <Route
               match={query['@page'] !== undefined}
               render={() =>
                 (<EditablePageRoute
@@ -137,11 +135,11 @@ export default class CMSAuth extends Component {
                   Wrapped={Wrapped}
                 />)}
             />
-            <AltRoute
+            <Route
               match={query['@media'] !== undefined}
               render={() => <CloudinaryRoute {...this.props} />}
             />
-            <AltRoute
+            <Route
               match={query['@settings'] !== undefined}
               render={() => <SettingsRoute {...this.props} />}
             />
@@ -149,15 +147,15 @@ export default class CMSAuth extends Component {
               match={query['@analytics'] !== undefined}
               render={() => <AuthUsers {...this.props} />}
             />
-            <AltRoute
+            <Route
               match={query['@users'] !== undefined}
               render={() => <AuthUsers {...this.props} />}
             />
-            <AltRoute
+            <Route
               match={query['@user'] !== undefined}
               render={() => <AuthUser {...this.props} />}
             />
-            <AltRoute
+            <Route
               render={rest =>
                 (<PageRoute
                   {...rest}
@@ -167,7 +165,7 @@ export default class CMSAuth extends Component {
                   Wrapped={Wrapped}
                 />)}
             />
-          </AltSwitch>
+          </Switch>
         </SwitchContainer>
         {ua.getBrowser().name === 'IE' &&
           <Footer>

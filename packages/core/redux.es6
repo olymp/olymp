@@ -1,10 +1,24 @@
 import immutable from './immutable-helper';
 
+/* let Offline = null;
+if (typeof window !== 'undefined'){
+
+  // Offline
+  import Offline from 'offline-js';
+  import 'offline-js/themes/offline-language-german.css';
+  import 'offline-js/themes/offline-theme-chrome.css';
+}*/
+
 export const MANIPULATE = 'APP_MANIPULATE';
 export const LOADER_START = 'APP_LOADER_START';
 export const LOADER_END = 'APP_LOADER_END';
+export const INTERNET_CONNECTION = 'APP_INTERNET_CONNECTION';
+export const SERVER_CONNECTION = 'APP_SERVER_CONNECTION';
 
-const defaultState = {};
+const defaultState = {
+  serverConnection: true,
+  internetConnection: typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
+};
 export const appReducer = (state = defaultState, action) => {
   if (!action || !action.type) {
     return state;
@@ -19,18 +33,32 @@ export const appReducer = (state = defaultState, action) => {
       return immutable.set(state, 'loading', true);
     case LOADER_END:
       return immutable.set(state, 'loading', false);
+    case INTERNET_CONNECTION:
+      return immutable.set(state, 'internetConnection', action.payload);
+    case SERVER_CONNECTION:
+      return immutable.set(state, 'serverConnection', action.payload);
     default:
       return state;
   }
 };
 
-export const appMiddleware = ({ dispatch, getState }) => nextDispatch => (action) => {
-  if (action.type === MANIPULATE) {
-    if (!Array.isArray(action.payload)) {
-      action.payload = [action.payload];
-    }
+export const appMiddleware = ({ dispatch, getState }) => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('offline', (e) => {
+      dispatch({ type: INTERNET_CONNECTION, payload: false });
+    });
+    window.addEventListener('online', (e) => {
+      dispatch({ type: INTERNET_CONNECTION, payload: true });
+    });
   }
-  nextDispatch(action);
+  return nextDispatch => (action) => {
+    if (action.type === MANIPULATE) {
+      if (!Array.isArray(action.payload)) {
+        action.payload = [action.payload];
+      }
+    }
+    nextDispatch(action);
+  };
 };
 
 export const createManipulation = dispatch => payload =>
@@ -50,3 +78,6 @@ export const createLoaderEnd = dispatch => payload =>
     type: LOADER_END,
     payload,
   });
+
+export const createServerConnection = dispatch => payload =>
+  dispatch({ type: SERVER_CONNECTION, payload });
