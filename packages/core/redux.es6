@@ -1,14 +1,5 @@
 import immutable from './immutable-helper';
 
-/* let Offline = null;
-if (typeof window !== 'undefined'){
-
-  // Offline
-  import Offline from 'offline-js';
-  import 'offline-js/themes/offline-language-german.css';
-  import 'offline-js/themes/offline-theme-chrome.css';
-}*/
-
 export const MANIPULATE = 'APP_MANIPULATE';
 export const LOADER_START = 'APP_LOADER_START';
 export const LOADER_END = 'APP_LOADER_END';

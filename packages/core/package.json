@@ -34,7 +34,6 @@
     "isomorphic-fetch": "^2.2.1",
     "jsonfile": "^3.0.1",
     "node-notifier": "^5.1.2",
-    "offline-js": "^0.7.19",
     "offline-plugin": "^4.8.3",
     "olymp-fela": "^17.2.0",
     "olymp-router": "^17.2.0",
