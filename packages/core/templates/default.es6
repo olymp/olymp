@@ -10,6 +10,7 @@ export default ({
   scripts = [],
   root = '',
   initialState,
+  cssHash,
   getInitialState,
   gaTrackingId,
 }) => `
@@ -44,11 +45,7 @@ export default ({
     ${title ? title.toString() : ''}
     ${meta ? meta.toString() : ''}
     ${link ? link.toString() : ''}
-    ${styles.map(
-    style =>
-      `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`,
-  )}
-    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
+    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`).join('\n')}
     <style id="css-markup">${cssMarkup || ''}</style>
     ${gaTrackingId
     ? `<script type="text/javascript">
@@ -74,15 +71,16 @@ export default ({
     : ''}
   </head>
   <body>
-    <div id="app"><div>${root}</div></div>
+    <div id="app">${root}</div>
     ${initialState
     ? `<script type="text/javascript">window.INITIAL_DATA=${serialize(initialState)}</script>`
     : ''}
+    ${cssHash ? `${cssHash}` : ''}
     ${getInitialState
     ? `<script type="text/javascript">window.INITIAL_DATA=${() =>
       serialize(getInitialState())}</script>`
     : ''}
-    ${scripts.map(script => `<script src="${script}"></script>`)}
+    ${scripts.map(script => `<script src="${script}"></script>`).join('\n')}
   </body>
 </html>
 `;

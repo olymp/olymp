@@ -23,6 +23,8 @@ import helmet from 'helmet';
 // Etc
 import fetch from 'isomorphic-fetch';
 import sslRedirect from 'heroku-ssl-redirect';
+import { flushChunkNames } from 'react-universal-component/server';
+import flushChunks from 'webpack-flush-chunks';
 // Apollo
 import { graphql } from 'graphql';
 import { print } from 'graphql/language/printer';
@@ -57,7 +59,11 @@ const isProd = process.env.NODE_ENV === 'production';
 const isDeployed = `${process.env.YARN_PRODUCTION}` === 'true';
 
 // Client assets
+const clientStatsPath = path.resolve(__dirname, '..', 'web', 'stats.json');
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
+const clientStats = fs.existsSync(clientStatsPath)
+  ? JSON.parse(fs.readFileSync(clientStatsPath))
+  : null; // eslint-disable-line import/no-dynamic-require
 const clientAssets = fs.existsSync(clientAssetsPath)
   ? JSON.parse(fs.readFileSync(clientAssetsPath))
   : null; // eslint-disable-line import/no-dynamic-require
@@ -135,16 +141,12 @@ try {
 
 // Setup server side routing.
 app.get('*', (req, res) => {
-  const scripts = req.isAmp
-    ? []
-    : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`];
-  const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
-
+  const isAmp = req.isAmp;
   if (process.env.SSR === false) {
     const html = (req.isAmp ? amp : template)({
       gaTrackingId: process.env.GA_TRACKING_ID,
-      scripts,
-      styles,
+      scripts: isAmp ? [] : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`],
+      styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
     });
     res.send(html);
     return;
@@ -226,6 +228,26 @@ app.get('*', (req, res) => {
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const cssMarkup = renderer.renderToString();
 
+      let scripts = [];
+      let styles = [];
+      let cssHash = [];
+      if (clientStats) {
+        const chunkNames = flushChunkNames();
+        const r = flushChunks(clientStats, {
+          chunkNames,
+          before: ['bootstrap'],
+          after: ['app'],
+        });
+        scripts = (r.scripts || []).map(x => `${clientStats.publicPath}${x}`);
+        styles = (r.stylesheets || []).map(x => `${clientStats.publicPath}${x}`);
+        cssHash = r.cssHash;
+      } else {
+        scripts = isAmp
+          ? []
+          : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`];
+        styles = isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
+      }
+
       // Generate the html res.
       const state = store.getState();
       const html = (req.isAmp ? amp : template)({
@@ -234,7 +256,13 @@ app.get('*', (req, res) => {
         scripts,
         styles,
         cssMarkup,
-        initialState: { apollo: cache.data, fela: state.fela, auth: state.auth },
+        cssHash,
+        initialState: {
+          apollo: cache.data,
+          fela: state.fela,
+          auth: state.auth,
+          location: state.location,
+        },
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 

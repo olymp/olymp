@@ -25,7 +25,6 @@ import { appReducer, appMiddleware, createServerConnection } from '../redux';
 import App from './root';
 
 // window.Perf = require('react-addons-perf');
-// TODO
 if (process.env.NODE_ENV === 'production') {
   const offline = require('offline-plugin/runtime');
   offline.install({
@@ -166,6 +165,7 @@ store = createDynamicStore(
   },
   {
     auth: get(window.INITIAL_DATA, 'auth', {}),
+    location: get(window.INITIAL_DATA, 'location', {}),
     fela: get(window.INITIAL_DATA, 'fela', {}),
   },
   composeWithDevTools(

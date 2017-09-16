@@ -50,7 +50,6 @@ const card = graphql(
   `,
   {
     options: ({ value, url }) => ({
-      xy: console.log(value),
       variables: {
         url: value || url,
       },

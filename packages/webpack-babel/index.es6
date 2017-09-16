@@ -36,6 +36,7 @@ module.exports = (config, options) => {
       'transform-class-properties',
       'transform-es2015-classes',
       ['import', { libraryName: 'antd', style: true }],
+      resolve(__dirname, 'universal-import'),
     ],
   };
   babelOptions.presets.push([
@@ -50,16 +51,6 @@ module.exports = (config, options) => {
       },
     },
   ]);
-  if (isNode) {
-    // React-loadable
-    babelOptions.plugins.push([
-      'import-inspector',
-      {
-        serverSideRequirePath: true,
-        webpackRequireWeakId: true,
-      },
-    ]);
-  }
   if (!isNode && isDev) {
     babelOptions.plugins.push('react-hot-loader/babel');
   } else if (!isNode && isProd) {

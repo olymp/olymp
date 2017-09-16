@@ -9,6 +9,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 
 const appRoot = process.cwd();
 
@@ -280,6 +282,12 @@ module.exports = ({
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
       config.plugins.push(
+        new StatsWriterPlugin({
+          filename: 'stats.json',
+          fields: ['assetsByChunkName', 'publicPath'],
+        }),
+      );
+      config.plugins.push(
         new Visualizer({
           filename: './_visualizer.html',
         }),
@@ -314,36 +322,63 @@ module.exports = ({
   }
 
   // LimitChunkCount on all but production-web
-  if (isDev || isNode || isElectron) {
+  if (isNode || isElectron) {
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
+  } else if (isDev) {
+    config.plugins.push(new ExtractCssChunks());
+    config.plugins.push(
+      new webpack.optimize.CommonsChunkPlugin({
+        names: ['bootstrap'],
+        filename: '[name].js',
+        minChunks: Infinity,
+      }),
+    );
+    config.output.filename = '[name].js';
+    config.output.chunkFilename = '[name].js';
   } else {
+    config.plugins.push(new ExtractCssChunks());
+    config.plugins.push(
+      new webpack.optimize.CommonsChunkPlugin({
+        names: ['bootstrap'],
+        filename: '[name].[chunkhash].js',
+        minChunks: Infinity,
+      }),
+    );
     config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
   }
 
   // externals
   if (isNode) {
-    config.externals = [
-      nodeExternals({
-        modulesDir: path.resolve(appRoot, 'node_modules'),
-        whitelist: [
-          'react-loadable',
-          'is-webpack-bundle',
-          'webpack-require-weak',
-          /\.(eot|woff|woff2|ttf|otf)$/,
-          /\.(svg|png|jpg|jpeg|gif|ico)$/,
-          /\.(mp4|mp3|ogg|swf|webp)$/,
-          /\.(css|scss|sass|sss|less)$/,
-          v => v.indexOf('webpack/hot/poll') === 0,
-          'source-map-support/register',
-          v => v.indexOf('olymp-') === 0 || v.indexOf('olymp/') === 0 || v === 'olymp',
-          v => v === 'antd' || v.indexOf('antd/') === 0,
-        ],
-      }),
-    ];
+    config.externals = nodeExternals({
+      modulesDir: path.resolve(appRoot, 'node_modules'),
+      whitelist: [
+        '.bin',
+        'is-webpack-bundle',
+        'webpack-require-weak',
+        'webpack-flush-chunks',
+        'babel-plugin-universal-import',
+        'babel-plugin-universal-import/importCss',
+        'babel-plugin-universal-import/universalImport',
+        'react-universal-component',
+        'source-map-support/register',
+        /\.(eot|woff|woff2|ttf|otf)$/,
+        /\.(svg|png|jpg|jpeg|gif|ico)$/,
+        /\.(mp4|mp3|ogg|swf|webp)$/,
+        /\.(css|scss|sass|sss|less)$/,
+        v => v.indexOf('webpack/hot/poll') === 0,
+        v => v === 'antd' || v.indexOf('antd/') === 0,
+        v => v === 'olymp' || v.indexOf('olymp-') === 0 || v.indexOf('olymp/') === 0,
+        v => v === 'react-universal-component' || v.indexOf('react-universal-component/') === 0,
+        v => v === 'webpack-flush-chunks' || v.indexOf('webpack-flush-chunks/') === 0,
+        v =>
+          v === 'babel-plugin-universal-import' ||
+          v.indexOf('babel-plugin-universal-import/') === 0,
+      ],
+    });
     if (isElectron) {
-      config.externals.push('pg/native');
+      // config.externals.push('pg/native');
     }
   }
   if (isWeb || isElectronRenderer) {
@@ -390,6 +425,7 @@ module.exports = ({
     appRoot,
     nodeModules,
     isLinked,
+    ExtractCssChunks,
     ...rest,
   };
 
@@ -398,7 +434,7 @@ module.exports = ({
       pluginsFolder,
       isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`,
     ));
-    return req(config, options) || config;
+    return req(config, options, webpack) || config;
   }, config);
 
   return isWeb && isProd ? require('./offline')(final) : final;

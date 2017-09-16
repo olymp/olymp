@@ -8,9 +8,9 @@ const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
 const merge = require('deepmerge');
 const argv = require('minimist')(process.argv.slice(1));
-const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
+// const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 
-const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
+// const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 
 require('dotenv').config();
 
@@ -165,9 +165,11 @@ if (command === 'dev') {
     }
     const stats = compilation.stats || [compilation];
     console.log('[webpack] the following asset bundles were built:');
-    stats.forEach(c => console.log(c.toString()));
-    console.log('File sizes after gzip:\n');
-    // printFileSizesAfterBuild(stats, null, null);
+    stats.forEach((c, i) => {
+      console.log(c.toString());
+      // console.log('File sizes after gzip:\n');
+      // printFileSizesAfterBuild(c, null, null);
+    });
   });
 } else if (command.indexOf('build:') === 0) {
   const target = command.split(':')[1];
