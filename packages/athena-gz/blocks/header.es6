@@ -16,7 +16,7 @@ class Content extends Component {
           {subheader !== undefined ? (
             subheader
           ) : (
-            `Startseite / ${path.map(p => `${capitalize(decodeURI(p))}`).join(' / ')}`
+            `Startseite / ${path.map(p => `${capitalize(decodeURI(unescape(p)))}`).join(' / ')}`
           )}
         </p>
       </Container>
