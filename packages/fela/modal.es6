@@ -45,7 +45,7 @@ const Inner = createComponent(
 );
 
 export default ({ children, open, onClose, width, header, footer, container }) =>
-  (open ? (
+  (open === undefined || open ? (
     <Portal>
       <ModalBackground onClick={onClose}>
         <Modal

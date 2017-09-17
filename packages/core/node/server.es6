@@ -236,7 +236,7 @@ app.get('*', (req, res) => {
         const chunkNames = flushChunkNames();
         const r = flushChunks(clientStats, {
           chunkNames,
-          before: ['bootstrap'],
+          before: [],
           after: ['app'],
         });
         scripts = (r.scripts || []).map(x => `${clientStats.publicPath}${x}`);

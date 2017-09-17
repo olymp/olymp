@@ -7,6 +7,7 @@ import unit from 'fela-plugin-unit';
 import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
 import namedMediaQuery from 'fela-plugin-named-media-query';
+import monolithic from 'fela-monolithic';
 import embedded from 'fela-plugin-embedded';
 import normalize from './normalize';
 
@@ -165,6 +166,7 @@ export default (ua) => {
       }),
       removeUndefined(),
     ],
+    enhancers: [monolithic()],
     // enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic').default()],
   });
   renderer.renderStatic(normalize);

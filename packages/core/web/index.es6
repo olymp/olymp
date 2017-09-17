@@ -14,6 +14,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
 import { UAParser } from 'olymp-utils';
 import { createFela, felaReducer } from 'olymp-fela';
+import { render } from 'fela-dom';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
@@ -145,7 +146,6 @@ function renderApp(App) {
   } else {
     render(<App {...props} />, container);
   }
-  // asyncBootstrapper(app).then(() => render(app, container));
 }
 // Get the DOM Element that will host our React application.
 container = document.getElementById('app');
@@ -182,15 +182,10 @@ store = createDynamicStore(
 );
 
 attachHistory(history, store);
-// End Redux stuff
-// rehydrateState = window.ASYNC_STATE;
-// asyncContext = createAsyncContext();
 
 renderApp(App);
 
 if (module.hot && typeof module.hot.accept === 'function') {
-  // Any changes to our App will cause a hotload re-render.
-  // module.hot.accept('./root', () => {
   module.hot.accept('./root', () => {
     const NextRoot = require('./root').default;
     renderApp(NextRoot);
