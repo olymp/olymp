@@ -8,6 +8,9 @@ import App from '@app';
 import { DynamicReduxProvider } from '../redux-dynamic';
 
 function getNextMountNode() {
+  if (process.env.NODE_ENV === 'production') {
+    return document.getElementById('css-markup');
+  }
   const node = document.getElementById('css-markup');
   const parent = node.parentNode;
   if (!node || !parent) {

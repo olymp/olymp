@@ -164,9 +164,9 @@ store = createDynamicStore(
     fela: felaReducer,
   },
   {
-    auth: get(window.INITIAL_DATA, 'auth', {}),
-    location: get(window.INITIAL_DATA, 'location', {}),
-    fela: get(window.INITIAL_DATA, 'fela', {}),
+    auth: get(window.INITIAL_DATA, 'auth', undefined),
+    location: get(window.INITIAL_DATA, 'location', undefined),
+    fela: get(window.INITIAL_DATA, 'fela', undefined),
   },
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),

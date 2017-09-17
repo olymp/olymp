@@ -1,6 +1,6 @@
 import React, { Component, createElement } from 'react';
 import { gql, graphql, unflatten } from 'olymp-utils';
-import { AltRoute } from 'olymp-router';
+import { Route } from 'olymp-router';
 import { queryPages } from './gql';
 import { get, upperFirst, lowerFirst, orderBy, sortBy, groupBy } from 'lodash';
 
@@ -145,17 +145,17 @@ let cache = {};
 let lastType;
 export const DataRoute = ({ binding, component, ...rest }) => {
   if (!binding || !binding.type) {
-    return createElement(component || AltRoute, rest);
+    return createElement(component || Route, rest);
   }
   const { type, fields, query } = binding;
   const key = `route-${type}-${fields || 'id name slug'}`;
-  if (lastType !== (component || AltRoute)) {
+  if (lastType !== (component || Route)) {
     // TODO better way to wipe cache
     cache = {};
-    lastType = component || AltRoute;
+    lastType = component || Route;
   }
   if (!cache[key]) {
-    cache[key] = withData(component || AltRoute, { fields, type });
+    cache[key] = withData(component || Route, { fields, type });
   }
   return createElement(cache[key], rest);
 };

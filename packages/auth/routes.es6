@@ -22,7 +22,7 @@ export default connect(
       'status-register'
     ]} geschickt. Bitte befolgen Sie den Anweisungen darin um die Registrierung abzuschließen.`,
   };
-  const inQuery = key => query[key] !== undefined;
+  const inQuery = key => query && query[key] !== undefined;
 
   return (
     <Switch>

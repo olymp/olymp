@@ -253,6 +253,12 @@ module.exports = ({
     }
   } else if (!isNode) {
     config.plugins.push(
+      new StatsWriterPlugin({
+        filename: 'stats.json',
+        fields: ['assetsByChunkName', 'publicPath'],
+      }),
+    );
+    config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
         path: path.resolve(process.cwd(), folder, target.split('-')[0]),
@@ -281,12 +287,6 @@ module.exports = ({
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
-      config.plugins.push(
-        new StatsWriterPlugin({
-          filename: 'stats.json',
-          fields: ['assetsByChunkName', 'publicPath'],
-        }),
-      );
       config.plugins.push(
         new Visualizer({
           filename: './_visualizer.html',
@@ -326,21 +326,16 @@ module.exports = ({
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else if (isDev) {
-    config.plugins.push(new ExtractCssChunks());
-    config.plugins.push(
-      new webpack.optimize.CommonsChunkPlugin({
-        names: ['bootstrap'],
-        filename: '[name].js',
-        minChunks: Infinity,
-      }),
-    );
+    config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
-    config.output.chunkFilename = '[name].js';
   } else {
+    config.plugins.push(
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1, minChunkSize: 10000 }),
+    );
     config.plugins.push(new ExtractCssChunks());
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['bootstrap'],
+        names: ['app'],
         filename: '[name].[chunkhash].js',
         minChunks: Infinity,
       }),

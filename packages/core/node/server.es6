@@ -244,7 +244,7 @@ app.get('*', (req, res) => {
       } else {
         scripts = isAmp
           ? []
-          : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`];
+          : isProd ? [`${clientAssets.app.js}`] : [`${process.env.DEV_URL}/app.js`];
         styles = isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
       }
 
