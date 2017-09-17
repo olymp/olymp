@@ -178,6 +178,7 @@ const options = {
 };
 
 const serializer = new Html({
+  parseHtml: typeof window === 'undefined' ? require('parse5').parseFragment : undefined,
   rules: [
     {
       deserialize(el, next) {
