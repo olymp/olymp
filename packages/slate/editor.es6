@@ -1,6 +1,6 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Editor, Html, Plain } from 'slate';
+import { Editor, Plain } from 'slate';
 import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
@@ -177,7 +177,7 @@ const options = {
   },
 };
 
-const serializer = new Html({
+/* const serializer = new Html({
   parseHtml: typeof window === 'undefined' ? require('parse5').parseFragment : undefined,
   rules: [
     {
@@ -264,9 +264,9 @@ const serializer = new Html({
       },
     },
   ],
-});
+});*/
 
-export const htmlSerializer = serializer;
+// export const htmlSerializer = serializer;
 
 const getTopMost = (blockTypes, change, prev) => {
   const next = prev ? change.state.document.getParent(prev.key) : change.state.startBlock;
