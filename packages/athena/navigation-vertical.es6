@@ -3,12 +3,12 @@ import { withLang, Logo } from 'olymp-utils';
 import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 
-const getInitials = (name) => {
+const getInitials = name => {
   if (name) {
     const array = name.split(' ');
 
@@ -16,7 +16,10 @@ const getInitials = (name) => {
       case 1:
         return array[0].charAt(0).toUpperCase();
       default:
-        return array[0].charAt(0).toUpperCase() + array[array.length - 1].charAt(0).toUpperCase();
+        return (
+          array[0].charAt(0).toUpperCase() +
+          array[array.length - 1].charAt(0).toUpperCase()
+        );
     }
   }
   return false;
@@ -24,20 +27,25 @@ const getInitials = (name) => {
 
 const UserIcon = createComponent(
   ({ theme, name }) => ({
-    float: 'left',
+    position: 'absolute',
+    centerY: true,
+    left: 0,
+    marginX: theme.space3,
     borderRadius: '50%',
-    marginY: theme.space2,
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name,
-    )}.jpg?s=26&bg=${encodeURIComponent(theme.color)}&color=${encodeURIComponent(
-      theme.light,
+      name
+    )}.jpg?s=26&bg=${encodeURIComponent(
+      theme.color
+    )}&color=${encodeURIComponent(
+      theme.light
     )}) center center no-repeat, ${theme.color}`,
-    onHover: {
-      opacity: 0.85,
-    },
   }),
-  p => <Gravatar {...p} size={30} />,
-  p => Object.keys(p),
+  p => (
+    <i className="anticon">
+      <Gravatar {...p} size={30} />
+    </i>
+  ),
+  p => Object.keys(p)
 );
 
 const VerticalMenu = createComponent(
@@ -55,31 +63,48 @@ const VerticalMenu = createComponent(
     },
     '> ul': {
       backgroundColor: '#404040',
+      // backgroundColor: theme.color,
       position: 'fixed',
       top: 0,
       bottom: 0,
       maxWidth: 200,
       zIndex: 3,
       '> .ant-menu-item': {
-        // paddingLeft: '16px!important',
+        textAlign: 'left !important',
+        '&.logo': {
+          height: 102,
+          backgroundColor: theme.dark4,
+          borderBottom: border(theme, theme.dark4),
+          '> a': {
+            display: 'flex',
+            height: '100%',
+            '> svg': {
+              height: 52,
+              width: 66,
+              margin: 'auto',
+            },
+          },
+        },
+        '& .anticon': {
+          fontSize: 16,
+          marginRight: 8,
+          '& + span': {
+            paddingLeft: theme.space2,
+            paddingRight: theme.space3,
+          },
+        },
       },
-      '> .ant-menu-submenu-inline > .ant-menu-submenu-title': {
-        // paddingLeft: '16px!important',
-      },
-      '& .react-gravatar': {
-        marginLeft: -6,
-      },
-      '> li.ant-menu-item.logo': {
-        height: 102,
-        backgroundColor: 'rgba(0, 0, 0, 0.13)',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.18)',
-        '> a': {
-          display: 'flex',
-          height: '100%',
-          '> svg': {
-            height: 52,
-            width: 66,
-            margin: 'auto',
+      '> .ant-menu-submenu': {
+        '> .ant-menu-submenu-title': {
+          paddingRight: theme.space4,
+          textAlign: 'left !important',
+          '& .anticon': {
+            fontSize: 16,
+            marginRight: 8,
+            '& + span': {
+              paddingLeft: theme.space2,
+              paddingRight: theme.space3,
+            },
           },
         },
       },
@@ -100,35 +125,7 @@ const VerticalMenu = createComponent(
       {children}
     </div>
   ),
-  p => Object.keys(p),
-);
-
-const ToolMenu = createComponent(
-  ({ theme }) => ({
-    backgroundColor: theme.dark,
-    '> li': {
-      padding: theme.space0,
-      '> div > div': {
-        padding: theme.space0,
-      },
-    },
-  }),
-  p => <Menu {...p} />,
-  p => Object.keys(p),
-);
-
-const Filler = createComponent(
-  ({ theme }) => ({
-    flex: '1 1 0%',
-  }),
-  p => <div {...p} />,
-  [],
-);
-
-const AntMenu = ({ keys, ...p }) => <Menu theme="dark" selectedKeys={keys} mode="inline" {...p} />;
-
-const AntMenuToolbar = ({ keys, ...p }) => (
-  <ToolMenu theme="dark" selectedKeys={keys} mode="vertical" {...p} />
+  p => Object.keys(p)
 );
 
 @withLang
@@ -142,15 +139,17 @@ const AntMenuToolbar = ({ keys, ...p }) => (
   dispatch => ({
     setQuery: createReplaceQuery(dispatch),
     logout: createLogout(dispatch),
-  }),
+  })
 )
 class Navigation extends Component {
   state = { collapsed: true };
-  handleClick = (e) => {
+
+  handleClick = e => {
     const { setQuery, logout } = this.props;
     if (e.key === 'logout') {
       logout();
     }
+
     if (e.key && e.key[0] === '@') {
       const v = e.key.split(',').reduce((state, next) => {
         const key = next.indexOf('=') !== -1 ? next.split('=')[0] : next;
@@ -160,17 +159,22 @@ class Navigation extends Component {
           [key]: value,
         };
       }, {});
+      this.leave(); // close Menu
+
       setQuery(v);
     }
   };
+
   enter = () => {
     this.setState({ collapsed: false });
   };
+
   leave = () => {
     this.setState({ collapsed: true });
   };
+
   render() {
-    const { setDeviceWidth, query, collectionList, isAdmin, email, name } = this.props;
+    const { auth, setDeviceWidth, query, collectionList, isAdmin } = this.props;
     const keys = Object.keys(query);
 
     if (!keys.filter(x => x[0] === '@').length) {
@@ -179,48 +183,78 @@ class Navigation extends Component {
 
     return (
       <VerticalMenu onMouseEnter={this.enter} onMouseLeave={this.leave}>
-        <AntMenu keys={keys} onClick={this.handleClick} inlineCollapsed={this.state.collapsed}>
+        <Menu
+          theme="dark"
+          selectedKeys={keys}
+          mode="inline"
+          onClick={this.handleClick}
+          inlineCollapsed={this.state.collapsed}
+        >
           <Menu.Item className="logo">
             <Link to={{ query: {} }}>
               <Logo size={33} margin="0 0 -7px 0" />
             </Link>
           </Menu.Item>
-          <Menu.SubMenu title={<Icon type="plus" />}>
+          <Menu.SubMenu
+            title={
+              <span>
+                <Icon type="plus" />
+                <span>Hinzufügen</span>
+              </span>
+            }
+          >
             <Menu.Item key="@page=new">
               <span>Seite</span>
             </Menu.Item>
             {collectionList.map(collection => (
               <Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <span>{get(collection, 'decorators.label.value', collection.name)}</span>
+                <span>
+                  {get(collection, 'decorators.label.value', collection.name)}
+                </span>
               </Menu.Item>
             ))}
           </Menu.SubMenu>
-          <Menu.SubMenu title={<UserIcon email={email} name={name} default="blank" />}>
+          <Menu.SubMenu
+            title={
+              <span>
+                <UserIcon
+                  email={auth.user.email}
+                  name={auth.user.name}
+                  default="blank"
+                />
+                <span>{auth.user.name}</span>
+              </span>
+            }
+          >
             <Menu.Item key="@user">
               <Link to={{ query: { '@user': null } }}>Profil</Link>
             </Menu.Item>
             <Menu.SubMenu title="Ansicht">
               <Menu.Item key="@device-no">
                 <a onClick={() => setDeviceWidth()} href="javascript:;">
-                  <Icon type="laptop" /> Normal
+                  {/*<Icon type="laptop" /> */}Normal
                 </a>
               </Menu.Item>
               <Menu.Item key="@deviceWidth700">
                 <a onClick={() => setDeviceWidth(700)} href="javascript:;">
-                  <Icon type="tablet" /> Tablet
+                  {/*<Icon type="tablet" /> */}Tablet
                 </a>
               </Menu.Item>
               <Menu.Item key="@deviceWidth400">
                 <a onClick={() => setDeviceWidth(400)} href="javascript:;">
-                  <Icon type="phone" /> Mobil
+                  {/*<Icon type="phone" /> */}Mobil
                 </a>
               </Menu.Item>
             </Menu.SubMenu>
-            <Menu.Item key="logout">Abmelden</Menu.Item>
+            <Menu.Item key="logout">
+              <a onClick={auth.logout} href="javascript:;">
+                Abmelden
+              </a>
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.Item key="@page">
             <Icon type="bars" />
-            <span>Seiten</span>
+            <span>Navigation</span>
           </Menu.Item>
           <Menu.Item key="@media">
             <Icon type="picture" />
@@ -236,8 +270,7 @@ class Navigation extends Component {
           >
             {collectionList.map(collection => (
               <Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <Icon type="database" />
-                <span>{get(collection, 'decorators.label.value', collection.name)}</span>
+                {get(collection, 'decorators.label.value', collection.name)}
               </Menu.Item>
             ))}
           </Menu.SubMenu>
@@ -251,7 +284,7 @@ class Navigation extends Component {
               <span>Benutzer</span>
             </Menu.Item>
           )}
-        </AntMenu>
+        </Menu>
       </VerticalMenu>
     );
   }
