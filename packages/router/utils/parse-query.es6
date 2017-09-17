@@ -1,6 +1,6 @@
 import { memoize } from 'olymp-utils';
 
-export default memoize(str => {
+export default memoize((str) => {
   const ret = {};
   if (typeof str !== 'string') {
     return ret;
@@ -9,12 +9,12 @@ export default memoize(str => {
   if (!str) {
     return ret;
   }
-  str.split('&').forEach(param => {
+  str.split('&').forEach((param) => {
     const parts = param.replace(/\+/g, ' ').split('=');
     const key = parts.shift();
     let val = parts.length > 0 ? parts.join('=') : undefined;
     // key = decodeURIComponent(key);
-    val = val === undefined ? null : decodeURIComponent(val);
+    val = val === undefined ? null : decodeURIComponent(unescape(val));
     if (ret[key] === undefined) {
       ret[key] = val;
     } else if (Array.isArray(ret[key])) {

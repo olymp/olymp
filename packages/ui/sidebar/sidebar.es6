@@ -132,7 +132,6 @@ const Sidebar = ({
   cancelText,
   onOk,
   title,
-  loading,
   header,
   footer,
   ...props
