@@ -2,7 +2,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { unstable_createPortal } from 'react-dom';
 
-console.log(unstable_createPortal);
 class Portal extends Component {
   componentWillMount() {
     if (typeof document !== 'undefined' && !this.popup) {

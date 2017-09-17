@@ -17,6 +17,7 @@ import useragent from 'express-useragent';
 import React from 'react';
 import InMemoryCache from 'apollo-cache-inmemory';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
@@ -226,7 +227,7 @@ app.get('*', (req, res) => {
   getDataFromTree(reactApp)
     .then(() => {
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
-      const cssMarkup = renderer.renderToString();
+      const felaMarkup = renderToMarkup(renderer);
 
       let scripts = [];
       let styles = [];
@@ -253,9 +254,9 @@ app.get('*', (req, res) => {
       const html = (req.isAmp ? amp : template)({
         ...Helmet.rewind(),
         root: reactAppString,
+        fela: felaMarkup,
         scripts,
         styles,
-        cssMarkup,
         cssHash,
         initialState: {
           apollo: cache.data,

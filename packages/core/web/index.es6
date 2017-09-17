@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 // React
 import React from 'react';
-import { render } from 'react-dom';
+import { render, hydrate } from 'react-dom';
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -140,7 +140,11 @@ function renderApp(App) {
     history,
     asyncContext,
   };
-  render(<App {...props} />, container);
+  if (window.INITIAL_DATA) {
+    hydrate(<App {...props} />, container);
+  } else {
+    render(<App {...props} />, container);
+  }
   // asyncBootstrapper(app).then(() => render(app, container));
 }
 // Get the DOM Element that will host our React application.
