@@ -15,11 +15,5 @@
     "slate": "^0.22.14",
     "slate-insert-block-on-enter": "^0.0.4",
     "slate-trailing-block": "^0.2.4"
-  },
-  "devDependencies": {
-    "@storybook/addon-info": "^3.2.9",
-    "@storybook/addon-knobs": "^3.2.8",
-    "@storybook/react": "^3.2.8",
-    "raw-loader": "^0.5.1"
   }
 }
