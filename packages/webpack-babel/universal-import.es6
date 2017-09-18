@@ -1,6 +1,7 @@
 'use-strict';
 
 module.exports = function ({ types: t, template }) {
+  console.log('456');
   const visited = Symbol('visited');
   const universalImportId = Symbol('universalImportId');
   const importCssId = Symbol('importCssId');
@@ -173,6 +174,7 @@ module.exports = function ({ types: t, template }) {
           return p.parentPath.replaceWith(func);
         }
 
+        console.log('IS BABEL SERVER', this.opts.babelServer);
         const opts = this.opts.babelServer
           ? [
             idOption(importArgNode),
@@ -184,7 +186,7 @@ module.exports = function ({ types: t, template }) {
           : [
             idOption(importArgNode),
             fileOption(p),
-            loadOption(p, importArgNode), // only when not on a babel-server
+            // loadOption(p, importArgNode), // only when not on a babel-server
             pathOption(p, importArgNode),
             resolveOption(importArgNode),
             chunkNameOption(importArgNode),

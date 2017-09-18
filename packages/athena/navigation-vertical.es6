@@ -8,7 +8,7 @@ import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 
-const getInitials = name => {
+const getInitials = (name) => {
   if (name) {
     const array = name.split(' ');
 
@@ -16,10 +16,7 @@ const getInitials = name => {
       case 1:
         return array[0].charAt(0).toUpperCase();
       default:
-        return (
-          array[0].charAt(0).toUpperCase() +
-          array[array.length - 1].charAt(0).toUpperCase()
-        );
+        return array[0].charAt(0).toUpperCase() + array[array.length - 1].charAt(0).toUpperCase();
     }
   }
   return false;
@@ -33,11 +30,9 @@ const UserIcon = createComponent(
     marginX: theme.space3,
     borderRadius: '50%',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name
-    )}.jpg?s=26&bg=${encodeURIComponent(
-      theme.color
-    )}&color=${encodeURIComponent(
-      theme.light
+      name,
+    )}.jpg?s=26&bg=${encodeURIComponent(theme.color)}&color=${encodeURIComponent(
+      theme.light,
     )}) center center no-repeat, ${theme.color}`,
   }),
   p => (
@@ -45,7 +40,7 @@ const UserIcon = createComponent(
       <Gravatar {...p} size={30} />
     </i>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const VerticalMenu = createComponent(
@@ -125,26 +120,25 @@ const VerticalMenu = createComponent(
       {children}
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withLang
 @connect(
   ({ location, auth }) => ({
     pathname: location.pathname,
-    email: auth.user.email,
-    name: auth.user.name,
-    isAdmin: auth.user.isAdmin,
+    user: auth.user,
+    isAdmin: auth.user && auth.user.isAdmin,
   }),
   dispatch => ({
     setQuery: createReplaceQuery(dispatch),
     logout: createLogout(dispatch),
-  })
+  }),
 )
 class Navigation extends Component {
   state = { collapsed: true };
 
-  handleClick = e => {
+  handleClick = (e) => {
     const { setQuery, logout } = this.props;
     if (e.key === 'logout') {
       logout();
@@ -174,7 +168,7 @@ class Navigation extends Component {
   };
 
   render() {
-    const { auth, setDeviceWidth, query, collectionList, isAdmin } = this.props;
+    const { logout, setDeviceWidth, query, collectionList, isAdmin, user } = this.props;
     const keys = Object.keys(query);
 
     if (!keys.filter(x => x[0] === '@').length) {
@@ -208,21 +202,15 @@ class Navigation extends Component {
             </Menu.Item>
             {collectionList.map(collection => (
               <Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <span>
-                  {get(collection, 'decorators.label.value', collection.name)}
-                </span>
+                <span>{get(collection, 'decorators.label.value', collection.name)}</span>
               </Menu.Item>
             ))}
           </Menu.SubMenu>
           <Menu.SubMenu
             title={
               <span>
-                <UserIcon
-                  email={auth.user.email}
-                  name={auth.user.name}
-                  default="blank"
-                />
-                <span>{auth.user.name}</span>
+                <UserIcon email={user.email} name={user.name} default="blank" />
+                <span>{user.name}</span>
               </span>
             }
           >
@@ -232,22 +220,22 @@ class Navigation extends Component {
             <Menu.SubMenu title="Ansicht">
               <Menu.Item key="@device-no">
                 <a onClick={() => setDeviceWidth()} href="javascript:;">
-                  {/*<Icon type="laptop" /> */}Normal
+                  {/* <Icon type="laptop" /> */}Normal
                 </a>
               </Menu.Item>
               <Menu.Item key="@deviceWidth700">
                 <a onClick={() => setDeviceWidth(700)} href="javascript:;">
-                  {/*<Icon type="tablet" /> */}Tablet
+                  {/* <Icon type="tablet" /> */}Tablet
                 </a>
               </Menu.Item>
               <Menu.Item key="@deviceWidth400">
                 <a onClick={() => setDeviceWidth(400)} href="javascript:;">
-                  {/*<Icon type="phone" /> */}Mobil
+                  {/* <Icon type="phone" /> */}Mobil
                 </a>
               </Menu.Item>
             </Menu.SubMenu>
             <Menu.Item key="logout">
-              <a onClick={auth.logout} href="javascript:;">
+              <a onClick={logout} href="javascript:;">
                 Abmelden
               </a>
             </Menu.Item>

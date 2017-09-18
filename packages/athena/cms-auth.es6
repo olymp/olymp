@@ -68,7 +68,6 @@ export default class CMSAuth extends Component {
       router,
       pathname,
       ua,
-      _isLoading,
       theme,
       wrapper: Wrapped,
     } = this.props;

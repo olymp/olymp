@@ -191,6 +191,7 @@ app.get('*', (req, res) => {
   const history = createHistory({ initialEntries: [req.originalUrl] });
   const dynamicRedux = createDynamicRedux();
   const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
+  console.log('INIT', req.user);
   const store = createDynamicStore(
     {
       app: appReducer,
@@ -267,7 +268,7 @@ app.get('*', (req, res) => {
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 
-      console.log('MATCH?', state.location.url, req.originalUrl, 'Is miss', state.location.isMiss);
+      console.log('MATCHa?', state.location.url, req.originalUrl, 'Is miss', state.location.isMiss);
       if (state.location.url !== req.originalUrl) {
         res.status(301).setHeader('Location', state.location.url);
         res.end();

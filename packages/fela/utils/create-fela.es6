@@ -29,7 +29,7 @@ export default (ua) => {
   };
 
   const renderer = createRenderer({
-    selectorPrefix: 'o',
+    // selectorPrefix: 'o',
     plugins: [
       extend(),
       embedded(),
