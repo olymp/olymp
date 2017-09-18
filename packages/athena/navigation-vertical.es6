@@ -8,7 +8,7 @@ import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 
-const getInitials = (name) => {
+const getInitials = name => {
   if (name) {
     const array = name.split(' ');
 
@@ -16,7 +16,10 @@ const getInitials = (name) => {
       case 1:
         return array[0].charAt(0).toUpperCase();
       default:
-        return array[0].charAt(0).toUpperCase() + array[array.length - 1].charAt(0).toUpperCase();
+        return (
+          array[0].charAt(0).toUpperCase() +
+          array[array.length - 1].charAt(0).toUpperCase()
+        );
     }
   }
   return false;
@@ -30,9 +33,11 @@ const UserIcon = createComponent(
     marginX: theme.space3,
     borderRadius: '50%',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name,
-    )}.jpg?s=26&bg=${encodeURIComponent(theme.color)}&color=${encodeURIComponent(
-      theme.light,
+      name
+    )}.jpg?s=26&bg=${encodeURIComponent(
+      theme.color
+    )}&color=${encodeURIComponent(
+      theme.light
     )}) center center no-repeat, ${theme.color}`,
   }),
   p => (
@@ -40,7 +45,7 @@ const UserIcon = createComponent(
       <Gravatar {...p} size={30} />
     </i>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const VerticalMenu = createComponent(
@@ -55,15 +60,16 @@ const VerticalMenu = createComponent(
     },
     '> ul.ant-menu-inline-collapsed > li.ant-menu-item.logo': {
       padding: '0 10px',
+      marginX: -15,
     },
     '> ul': {
       backgroundColor: '#404040',
-      // backgroundColor: theme.color,
       position: 'fixed',
       top: 0,
       bottom: 0,
       maxWidth: 200,
       zIndex: 3,
+      overflow: 'hidden',
       '> .ant-menu-item': {
         textAlign: 'left !important',
         '&.logo': {
@@ -120,7 +126,7 @@ const VerticalMenu = createComponent(
       {children}
     </div>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 @withLang
@@ -133,12 +139,12 @@ const VerticalMenu = createComponent(
   dispatch => ({
     setQuery: createReplaceQuery(dispatch),
     logout: createLogout(dispatch),
-  }),
+  })
 )
 class Navigation extends Component {
   state = { collapsed: true };
 
-  handleClick = (e) => {
+  handleClick = e => {
     const { setQuery, logout } = this.props;
     if (e.key === 'logout') {
       logout();
@@ -168,7 +174,14 @@ class Navigation extends Component {
   };
 
   render() {
-    const { logout, setDeviceWidth, query, collectionList, isAdmin, user } = this.props;
+    const {
+      logout,
+      setDeviceWidth,
+      query,
+      collectionList,
+      isAdmin,
+      user,
+    } = this.props;
     const keys = Object.keys(query);
 
     if (!keys.filter(x => x[0] === '@').length) {
@@ -202,7 +215,9 @@ class Navigation extends Component {
             </Menu.Item>
             {collectionList.map(collection => (
               <Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <span>{get(collection, 'decorators.label.value', collection.name)}</span>
+                <span>
+                  {get(collection, 'decorators.label.value', collection.name)}
+                </span>
               </Menu.Item>
             ))}
           </Menu.SubMenu>
