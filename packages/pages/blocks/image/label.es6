@@ -20,10 +20,11 @@ const component = createComponent(
       backgroundColor: theme.dark5,
     },
   }),
-  ({ className, children }) =>
-    (<div className={className}>
+  ({ className, children, attributes }) => (
+    <div className={className} {...attributes}>
       {children}
-    </div>),
+    </div>
+  ),
   p => Object.keys(p)
 );
 
