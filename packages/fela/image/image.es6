@@ -115,21 +115,23 @@ class Image extends Component {
       src,
       alt,
       onClick,
+      circle,
       children,
-      ...containerProps,
+      ...containerProps
     } = this.props;
     const { width, ratio, isPercentage } = this.initVals();
     const { layout, w, h } = this.getMode(width, ratio, isPercentage);
     const url = typeof src === 'function' ? src(w, h) : src;
-    const image =
-      !!url &&
+    const image = !!url && (
       <Img
         src={url}
         alt={alt}
         width={w >= h ? '100%' : 'auto'}
         height={w < h ? '100%' : 'auto'}
         onClick={onClick}
-      />;
+        circle={circle}
+      />
+    );
 
     return (
       <Container
@@ -139,11 +141,13 @@ class Image extends Component {
         ratio={ratio}
         lazy={!amp && lazy}
       >
-        {amp && image
-          ? <Amp layout={layout} src={url} alt={alt} width={w} height={h}>
-              {image}
-            </Amp>
-          : image}
+        {amp && image ? (
+          <Amp layout={layout} src={url} alt={alt} width={w} height={h}>
+            {image}
+          </Amp>
+        ) : (
+          image
+        )}
         {children}
       </Container>
     );
@@ -155,6 +159,7 @@ Image.propTypes = {
   ratio: PropTypes.number.isRequired,
   srcRatio: PropTypes.number.isRequired,
   mode: PropTypes.oneOf(['filled', 'padded']).isRequired,
+  circle: PropTypes.bool,
 
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.number,
@@ -174,6 +179,7 @@ Image.defaultProps = {
   ratio: 0.75,
   srcRatio: 0.75,
   mode: 'filled',
+  circle: false,
 
   width: undefined,
   height: undefined,
