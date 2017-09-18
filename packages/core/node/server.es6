@@ -191,7 +191,6 @@ app.get('*', (req, res) => {
   const history = createHistory({ initialEntries: [req.originalUrl] });
   const dynamicRedux = createDynamicRedux();
   const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
-  console.log('INIT', req.user);
   const store = createDynamicStore(
     {
       app: appReducer,

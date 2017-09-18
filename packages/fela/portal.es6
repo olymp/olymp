@@ -6,13 +6,13 @@ class Portal extends Component {
   componentWillMount() {
     if (typeof document !== 'undefined' && !this.popup) {
       this.popup = document.createElement('div');
-      document.body.appendChild(this.popup);
+      document.getElementById('app').appendChild(this.popup);
     }
   }
 
   componentWillUnmount() {
     if (typeof document !== 'undefined' && this.popup) {
-      document.body.removeChild(this.popup);
+      document.getElementById('app').removeChild(this.popup);
     }
   }
 

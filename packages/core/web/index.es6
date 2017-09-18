@@ -14,7 +14,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
 import { UAParser } from 'olymp-utils';
 import { createFela, felaReducer } from 'olymp-fela';
-import { render } from 'fela-dom';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
