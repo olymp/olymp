@@ -1,7 +1,11 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Editor, Plain } from 'slate';
-import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
+import {
+  withSlateState,
+  withAutoMarkdown,
+  useBlocks,
+} from './editor-decorators';
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import './style.css';
@@ -24,7 +28,7 @@ import {
 } from 'olymp-icons';
 import I from './icon';
 
-const getIdByTag = (children) => {
+const getIdByTag = children => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
 };
@@ -59,8 +63,8 @@ const options = {
       ],
     },
     { type: 'block-quote', label: <I icon={FaIndent} /> },
-    { type: 'numbered-list', label: <I icon={FaListUl} /> },
-    { type: 'bulleted-list', label: <I icon={FaListOl} /> },
+    { type: 'numbered-list', label: <I icon={FaListOl} /> },
+    { type: 'bulleted-list', label: <I icon={FaListUl} /> },
   ],
   toolbarActions: [
     {
@@ -83,12 +87,13 @@ const options = {
                   type: 'link',
                   data: { href, target: '_blank' },
                 })
-                .collapseToEnd(),
+                .collapseToEnd()
             );
           }
         }
       },
-      isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
+      isActive: ({ state }) =>
+        state && state.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
@@ -107,8 +112,12 @@ const options = {
     'block-quote': ({ children, attributes }) => (
       <blockquote {...attributes}>{children}</blockquote>
     ),
-    'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
-    'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
+    'bulleted-list': ({ children, attributes }) => (
+      <ul {...attributes}>{children}</ul>
+    ),
+    'numbered-list': ({ children, attributes }) => (
+      <ol {...attributes}>{children}</ol>
+    ),
     'heading-one': ({ children, attributes }) => (
       <h1 {...attributes} id={getIdByTag(children)}>
         {children}
@@ -139,17 +148,25 @@ const options = {
         {children}
       </h6>
     ),
-    'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
-    'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+    'bulleted-list-item': ({ children, attributes }) => (
+      <li {...attributes}>{children}</li>
+    ),
+    'numbered-list-item': ({ children, attributes }) => (
+      <li {...attributes}>{children}</li>
+    ),
   },
   marks: {
-    bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
+    bold: ({ children, attributes }) => (
+      <strong {...attributes}>{children}</strong>
+    ),
     code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
     italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
     underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
-    center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
+    center: ({ children, attributes }) => (
+      <center {...attributes}>{children}</center>
+    ),
   },
-  getMarkdownType: (chars) => {
+  getMarkdownType: chars => {
     switch (chars) {
       case '*':
       case '-':
@@ -269,7 +286,9 @@ const options = {
 // export const htmlSerializer = serializer;
 
 const getTopMost = (blockTypes, change, prev) => {
-  const next = prev ? change.state.document.getParent(prev.key) : change.state.startBlock;
+  const next = prev
+    ? change.state.document.getParent(prev.key)
+    : change.state.startBlock;
   const nextType = next && next.type;
   const prevType = prev && prev.type;
   const isAtomic =
@@ -277,7 +296,11 @@ const getTopMost = (blockTypes, change, prev) => {
     blockTypes[nextType] &&
     blockTypes[nextType].slate &&
     blockTypes[nextType].slate.isAtomic;
-  if (!nextType || !isAtomic || (prevType && prevType.indexOf(nextType) !== 0)) {
+  if (
+    !nextType ||
+    !isAtomic ||
+    (prevType && prevType.indexOf(nextType) !== 0)
+  ) {
     return prev;
   }
   return getTopMost(blockTypes, change, next);
@@ -290,11 +313,21 @@ function CleanWordHTML(str) {
   // 2. strip Word generated HTML comments
   const commentSripper = new RegExp('<!--(.*?)-->', 'g');
   var output = output.replace(commentSripper, '');
-  let tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+  let tagStripper = new RegExp(
+    '<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>',
+    'gi'
+  );
   // 3. remove tags leave content if any
   output = output.replace(tagStripper, '');
   // 4. Remove everything in between and including tags '<style(.)style(.)>'
-  const badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+  const badTags = [
+    'style',
+    'script',
+    'applet',
+    'embed',
+    'noframes',
+    'noscript',
+  ];
 
   for (var i = 0; i < badTags.length; i++) {
     tagStripper = new RegExp(`<${badTags[i]}.*?${badTags[i]}(.*?)>`, 'gi');
@@ -344,8 +377,12 @@ export default class SlateEditor extends Component {
     if (e.shiftKey && data.key === 'enter') {
       return change.insertText('\n');
     } else if (data.key === 'backspace' && blockType) {
-      const prev = change.state.document.getPreviousBlock(blockType.key) || change.state.document;
-      return change.collapseToEndOf(prev).removeNodeByKey(blockType.key, { normalize: true });
+      const prev =
+        change.state.document.getPreviousBlock(blockType.key) ||
+        change.state.document;
+      return change
+        .collapseToEndOf(prev)
+        .removeNodeByKey(blockType.key, { normalize: true });
     } else if (e.metaKey || e.ctrlKey) {
       // cmd/ctrl + ???
       switch (data.key) {
@@ -391,13 +428,28 @@ export default class SlateEditor extends Component {
       <div className={className} style={{ position: 'relative', ...style }}>
         {children}
         {readOnly !== true && (
-          <ToolbarBlock show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
+          <ToolbarBlock
+            show={focus}
+            state={value}
+            blockTypes={blockTypes}
+            onChange={onChange}
+          />
         )}
         {readOnly !== true && (
-          <ToolbarVoid show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
+          <ToolbarVoid
+            show={focus}
+            state={value}
+            blockTypes={blockTypes}
+            onChange={onChange}
+          />
         )}
         {readOnly !== true && (
-          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />
+          <ToolbarText
+            show={focus}
+            state={value}
+            onChange={onChange}
+            {...options}
+          />
         )}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
