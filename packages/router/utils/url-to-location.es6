@@ -1,8 +1,7 @@
-import { memoize } from 'olymp-utils';
 import parseQuery from './parse-query';
 import stringifyQuery from './stringify-query';
 
-export default memoize((urlOrString = '') => {
+export default (urlOrString = '') => {
   let url = {};
   if (typeof urlOrString === 'string') {
     let [pathname, ...search] = urlOrString.split('?');
@@ -34,4 +33,4 @@ export default memoize((urlOrString = '') => {
     url.query = {};
   }
   return url;
-});
+};

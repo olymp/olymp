@@ -1,7 +1,6 @@
-import { memoize } from 'olymp-utils';
 import stringifyQuery from './stringify-query';
 
-export default memoize((locationOrString) => {
+export default (locationOrString) => {
   if (typeof locationOrString === 'string') {
     return locationOrString;
   } else if (typeof urlOrString === 'object') {
@@ -12,4 +11,4 @@ export default memoize((locationOrString) => {
     return url;
   }
   return null;
-});
+};

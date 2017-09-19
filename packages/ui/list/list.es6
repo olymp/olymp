@@ -8,6 +8,9 @@ export default createComponent(
     borderRight: side === 'left' && '1px solid rgb(233, 233, 233)',
     borderLeft: side === 'right' && '1px solid rgb(233, 233, 233)',
     backgroundColor: 'rgba(0, 0, 0, 0.015)',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
     onBefore: {
       content: "'>'",
       position: 'absolute',
@@ -20,5 +23,5 @@ export default createComponent(
     },
   }),
   'div',
-  ({ side, ...p }) => Object.keys(p)
+  ({ side, ...p }) => Object.keys(p),
 );

@@ -4,11 +4,13 @@ import { createComponent } from 'olymp-fela';
 export default createComponent(
   ({ theme, noBorder, color, center, thin = true, bold }) => ({
     padding: '5px 6px',
+    ellipsis: true,
     borderBottom: noBorder || '1px solid #e9e9e9',
     fontSize: '1.17em',
     fontWeight: bold ? 'bold' : thin ? 200 : undefined,
     color: color || theme.color,
     textAlign: center ? 'center' : undefined,
+    flexShrink: 0,
     '> div': {
       float: 'right',
     },
