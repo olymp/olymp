@@ -1,13 +1,13 @@
 // export { Route, Switch, Redirect } from 'react-router-dom';
 export { default as Link } from './link';
 export { default as NavLink } from './link';
-export { default as withRouter } from './with-router';
 export { default as ScrollToTop } from './scroll-to-top';
 export { default as Route } from './route';
 export { default as Switch } from './switch';
 export { default as Prompt } from './prompt';
 export { default as Redirect } from './redirect';
 export { default as Miss } from './miss';
+export * from './decorators';
 export * from './history';
 export * from './utils';
 export * from './redux';
