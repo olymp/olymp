@@ -1,16 +1,11 @@
-import React, { Children, Component, createElement, cloneElement } from 'react';
+import { Children, Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
-import { get } from 'lodash';
-import withRouter from './with-router';
+import { withPathname } from './decorators';
 
-@withRouter
+@withPathname
 export default class ScrollToTop extends Component {
   componentDidUpdate(prevProps: {}) {
-    if (
-      get(this.props.location, 'pathname') !==
-      get(prevProps.location, 'pathname')
-    ) {
+    if (this.props.pathname !== prevProps.pathname) {
       const node = findDOMNode(this);
       if (node) {
         node.scrollTop = 0;

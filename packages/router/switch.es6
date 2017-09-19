@@ -1,8 +1,8 @@
 import { Children, cloneElement } from 'react';
-import withRouter from './with-router';
 import { isMatch } from './utils';
+import { withPathname } from './decorators';
 
-export default withRouter(({ children, pathname, ...rest }) => {
+export default withPathname(({ children, pathname, ...rest }) => {
   let notFound = null,
     match = null;
   const routes = Children.toArray(children);

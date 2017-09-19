@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import invariant from 'invariant';
-import withRouter from './with-router';
+import { withPush, withPathname } from './decorators';
 
 /**
  * The public API for updating the location programatically
@@ -57,4 +57,4 @@ class Redirect extends React.Component {
   }
 }
 
-export default withRouter(Redirect);
+export default withPathname(withPush(Redirect));

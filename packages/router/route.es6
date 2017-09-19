@@ -1,8 +1,8 @@
 import { createElement } from 'react';
-import withRouter from './with-router';
+import { withPathname } from './decorators';
 import { isMatch } from './utils';
 
-export default withRouter(({ path, exact, render, component, ...rest }) => {
+export default withPathname(({ path, exact, render, component, ...rest }) => {
   const { pathname, match } = rest;
   if (match !== undefined) {
     if (!match) {

@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { compose, withPropsOnChange } from 'recompose';
 import { upperFirst } from 'lodash';
 import {
   createPush,
@@ -8,6 +10,18 @@ import {
   createUpdateQuery,
   createReplaceQuery,
 } from './redux';
+
+export const withPush = connect(null, dispatch => ({
+  push: createPush(dispatch),
+}));
+
+export const withReplace = connect(null, dispatch => ({
+  replace: createPush(dispatch),
+}));
+
+export const withPushPathname = connect(null, dispatch => ({
+  pushPathname: createPushPathname(dispatch),
+}));
 
 export const withRouterActions = connect(null, dispatch => ({
   push: createPush(dispatch),
@@ -38,19 +52,6 @@ export const withQueryParam = key =>
   connect(({ location }) => ({
     [key]: location.query[key],
   }));
-
-export const withQueryState = (key) => {
-  const upper = upperFirst(key);
-  return connect(
-    ({ location }) => ({
-      [key]: location.query[key],
-    }),
-    dispatch => ({
-      [`update${upper}`]: value => createUpdateQuery(dispatch)({ [key]: value }),
-      [`replace${upper}`]: value => createReplaceQuery(dispatch)({ [key]: value }),
-    }),
-  );
-};
 
 export const withQueryParams = arrayOfParams =>
   connect(({ location }) => ({
@@ -85,4 +86,51 @@ export const withRouter = (WrappedComponent) => {
       replace: createReplace(dispatch),
     }),
   )(inner);
+};
+
+export const TYPEOF_DATE = Symbol('date');
+export const TYPEOF_NUMBER = Symbol('number');
+export const withQueryState = (key, ofType, defaultValue) => {
+  if (ofType !== TYPEOF_DATE && ofType !== TYPEOF_NUMBER) {
+    defaultValue = ofType;
+    if (defaultValue instanceof Date) {
+      ofType = TYPEOF_DATE;
+    } else if (typeof defaultValue === 'number') {
+      ofType = TYPEOF_NUMBER;
+    } else {
+      ofType = null;
+    }
+  }
+  const upper = upperFirst(key);
+  const getValue = (value) => {
+    if (ofType === TYPEOF_DATE) {
+      return { [key]: value ? +value : value };
+    }
+    return { [key]: value };
+  };
+  const enhancers = [
+    connect(
+      ({ location }) => ({
+        [key]: location.query[key],
+      }),
+      dispatch => ({
+        [`update${upper}`]: value => createUpdateQuery(dispatch)(getValue(value)),
+        [`replace${upper}`]: value => createReplaceQuery(dispatch)(getValue(value)),
+      }),
+    ),
+  ];
+  if (ofType === TYPEOF_DATE) {
+    enhancers.push(
+      withPropsOnChange([key], props => ({
+        [key]: props[key] ? new Date(props[key]) : null,
+      })),
+    );
+  } else if (ofType === TYPEOF_NUMBER) {
+    enhancers.push(
+      withPropsOnChange([key], props => ({
+        [key]: props[key] ? parseInt(props[key]) : null,
+      })),
+    );
+  }
+  return compose(enhancers);
 };
