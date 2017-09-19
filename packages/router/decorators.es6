@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, withPropsOnChange } from 'recompose';
 import { upperFirst } from 'lodash';
@@ -11,6 +10,14 @@ import {
   createReplaceQuery,
 } from './redux';
 
+export const withRouterActions = connect(null, dispatch => ({
+  push: createPush(dispatch),
+  replace: createReplace(dispatch),
+  pushPathname: createPushPathname(dispatch),
+  updateQuery: createUpdateQuery(dispatch),
+  replaceQuery: createReplaceQuery(dispatch),
+}));
+
 export const withPush = connect(null, dispatch => ({
   push: createPush(dispatch),
 }));
@@ -21,14 +28,6 @@ export const withReplace = connect(null, dispatch => ({
 
 export const withPushPathname = connect(null, dispatch => ({
   pushPathname: createPushPathname(dispatch),
-}));
-
-export const withRouterActions = connect(null, dispatch => ({
-  push: createPush(dispatch),
-  replace: createReplace(dispatch),
-  pushPathname: createPushPathname(dispatch),
-  updateQuery: createUpdateQuery(dispatch),
-  replaceQuery: createReplaceQuery(dispatch),
 }));
 
 export const withQueryActions = connect(null, dispatch => ({
@@ -132,5 +131,5 @@ export const withQueryState = (key, ofType, defaultValue) => {
       })),
     );
   }
-  return compose(enhancers);
+  return compose(...enhancers);
 };
