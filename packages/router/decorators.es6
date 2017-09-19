@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { upperFirst } from 'lodash';
 import {
   createPush,
   createReplace,
@@ -37,6 +38,19 @@ export const withQueryParam = key =>
   connect(({ location }) => ({
     [key]: location.query[key],
   }));
+
+export const withQueryState = (key) => {
+  const upper = upperFirst(key);
+  return connect(
+    ({ location }) => ({
+      [key]: location.query[key],
+    }),
+    dispatch => ({
+      [`update${upper}`]: value => createUpdateQuery(dispatch)({ [key]: value }),
+      [`replace${upper}`]: value => createReplaceQuery(dispatch)({ [key]: value }),
+    }),
+  );
+};
 
 export const withQueryParams = arrayOfParams =>
   connect(({ location }) => ({
