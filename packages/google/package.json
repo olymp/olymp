@@ -1,5 +1,5 @@
 {
-  "version": "17.2.13",
+  "version": "17.2.14",
   "name": "olymp-google",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,7 +13,7 @@
     "google-map-react": "^0.24.0",
     "googleapis": "^20.1.0",
     "moment": "^2.18.1",
-    "olymp-ui": "^17.2.13",
+    "olymp-ui": "^17.2.14",
     "olymp-utils": "^17.2.13",
     "react-fela": "^5.0.4",
     "recharts": "^1.0.0-alpha.2",
