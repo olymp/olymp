@@ -16,7 +16,7 @@ export default (mapsKey, mail, key) => {
       null,
       key.split('\\n').join('\n'),
       ['https://www.googleapis.com/auth/analytics'], // an array of auth scopes
-      null
+      null,
     );
 
   const maps = createMaps(mapsKey);
@@ -39,35 +39,24 @@ export default (mapsKey, mail, key) => {
       queries: {
         analyticsQuery: (
           source,
-          {
-            start,
-            end,
-            metrics = [],
-            dimensions = [],
-            sorts = [],
-            filters = [],
-          }
+          { start, end, metrics = [], dimensions = [], sorts = [], filters = [] },
         ) => {
-          if (!jwtClient) {return null;}
+          if (!jwtClient) {
+            return null;
+          }
 
           const metricsArray = metrics.map(name => metricsObj[name].name);
 
-          const dimensionsArray = dimensions.map(
-            name => dimensionsObj[name].name
-          );
+          const dimensionsArray = dimensions.map(name => dimensionsObj[name].name);
 
           const sortsArray = sorts.map((sort) => {
             // ascending
             if (sort.indexOf('_ASC') !== -1) {
-              return { ...metricsObj, ...dimensionsObj }[
-                sort.replace('_ASC', '')
-              ].name;
+              return { ...metricsObj, ...dimensionsObj }[sort.replace('_ASC', '')].name;
             }
 
             // descending
-            return `-${{ ...metricsObj, ...dimensionsObj }[
-              sort.replace('_DESC', '')
-            ].name}`;
+            return `-${{ ...metricsObj, ...dimensionsObj }[sort.replace('_DESC', '')].name}`;
           });
 
           const query = {
@@ -81,8 +70,7 @@ export default (mapsKey, mail, key) => {
           };
           if (filters.length) {
             filters = filters.map((filter) => {
-              const name = (metricsObj[filter.metric] ||
-                dimensionsObj[filter.dimension]).name;
+              const name = (metricsObj[filter.metric] || dimensionsObj[filter.dimension]).name;
 
               if (filter.operator === 'NE') {
                 return `${name}==${filter.expression}`;
@@ -101,21 +89,17 @@ export default (mapsKey, mail, key) => {
             query.filters = filters.join(','); // => OR, AND is still missing!
           }
 
-          return analytics(
-            query
-          ).then(({ columnHeaders, rows, totalsForAllResults }) => {
+          return analytics(query).then(({ columnHeaders, rows, totalsForAllResults }) => {
             const cols = columnHeaders.map(x => x.name.substr(3));
 
             const resultRows = (rows || []).map(values =>
               cols.reduce((o, k, i) => {
                 o[k] = values[i];
                 return o;
-              }, {})
+              }, {}),
             );
 
-            const resultTotals = Object.keys(
-              totalsForAllResults
-            ).reduce((o, k, i) => {
+            const resultTotals = Object.keys(totalsForAllResults).reduce((o, k, i) => {
               o[k.substr(3)] = totalsForAllResults[k];
               return o;
             }, {});
@@ -126,14 +110,8 @@ export default (mapsKey, mail, key) => {
             return resultTotals;
           });
         },
-        geocode: (source, args) =>
-          maps('geocode', args).then(
-            result => result.json.results[0]
-          ),
-        geocodeList: (source, args) =>
-          maps('geocode', args).then(result =>
-            result.json.results
-          ),
+        geocode: (source, args) => maps('geocode', args).then(result => result[0]),
+        geocodeList: (source, args) => maps('geocode', args),
       },
     },
     schema: `
@@ -166,9 +144,7 @@ export default (mapsKey, mail, key) => {
     .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
     .join('\n')}
         ${Object.keys(dimensionsObj)
-    .map(
-      key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`
-    )
+    .map(key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`)
     .join('\n')}
       }
       input AnalyticsFilter {
