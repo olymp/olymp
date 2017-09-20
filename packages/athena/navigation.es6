@@ -5,7 +5,6 @@ import { withAuth } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent, border } from 'olymp-fela';
 import { withGateway } from 'olymp-ui';
-// import { GatewayDest } from 'react-gateway';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 
@@ -225,8 +224,8 @@ class Navigation extends Component {
         <AntMenu>
 
           <Menu.SubMenu title={<Icon type="plus" />}>
-            <Menu.Item key="@page=new">
-              <Link replaceQuery={{ page: 'new' }}>
+            <Menu.Item key="@page-form">
+              <Link replaceQuery={{ '@page-form': null }}>
                 Seite
               </Link>
             </Menu.Item>

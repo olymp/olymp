@@ -13,7 +13,6 @@ import {
   InputNumber,
   TextArea,
 } from '../../edits';
-import SlateNav from './slate-nav';
 
 class PageForm extends Component {
   handleNameChange = (e) => {
@@ -46,9 +45,6 @@ class PageForm extends Component {
 
     return (
       <Panel padding={16} alignLabel="left">
-        {getFieldDecorator('blocks', {
-          initialValue: item.blocks,
-        })(<SlateNav />)}
         <Input
           form={form}
           item={item}

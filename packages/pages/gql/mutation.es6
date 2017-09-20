@@ -33,7 +33,7 @@ const ok = (props, mutate) => () => {
           }
           parentId = parent.parentId;
         }
-        router.push({ pathname: slug, query: { ...query, '@page': item.id } });
+        router.push({ pathname: slug, query: { '@page-form': item.id } });
       })
       .catch(onError);
   });
