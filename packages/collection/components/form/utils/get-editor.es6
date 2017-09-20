@@ -8,6 +8,7 @@ import {
   TimeRangesEditor,
   TagsEditor,
   SuggestEditor,
+  GeocodeEditor,
 } from 'olymp-ui';
 import { FormListEdit, DetailEdit } from '../../../edits';
 import { SlateMate } from 'olymp-slate';
@@ -19,9 +20,19 @@ const states = {
   DRAFT: 'Entwurf',
   REMOVED: 'Papierkorb',
 };
-const edits = [type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit];
+const edits = [
+  type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit,
+];
 
-export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
+export default ({
+  className,
+  editorClassName,
+  style,
+  editorStyle,
+  field,
+  label,
+  key,
+}) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -42,7 +53,9 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
 
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
-      return <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />;
+      return (
+        <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />
+      );
     }
     return <DetailEdit {...editProps} typeName={idField.type.name} />;
   }
@@ -54,18 +67,32 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
       if (name === 'tags') {
         return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
       }
-      return <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />;
+      return (
+        <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />
+      );
     }
     if (type.ofType.name.indexOf('Nested') === 0) {
-      return <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />;
+      return (
+        <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
+      );
     }
     return null;
   }
   if (type.kind === 'OBJECT') {
+    if (type.name === 'Geocode') {
+      return <GeocodeEditor {...editProps} />;
+    }
+
     return null;
   }
   if (suggest) {
-    return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
+    return (
+      <SuggestEditor
+        {...editProps}
+        collection={suggest.arg0}
+        field={suggest.arg1}
+      />
+    );
   }
   if (start) {
     if (type.name === 'Date') {
@@ -73,7 +100,11 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     }
     if (type.name === 'DateTime') {
       return (
-        <DateRangeEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />
+        <DateRangeEditor
+          {...editProps}
+          format="DD.MM.YYYY HH:mm"
+          showTime={{ format: 'HH:mm' }}
+        />
       );
     }
   }
@@ -94,6 +125,7 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
       </Select>
     );
   }
+
   switch (type.name) {
     case 'Blocks':
       return (
@@ -108,7 +140,13 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     case 'Date':
       return <DateEditor {...editProps} format="DD.MM.YYYY" />;
     case 'DateTime':
-      return <DateEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
+      return (
+        <DateEditor
+          {...editProps}
+          format="DD.MM.YYYY HH:mm"
+          showTime={{ format: 'HH:mm' }}
+        />
+      );
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':
