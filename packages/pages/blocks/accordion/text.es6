@@ -15,6 +15,7 @@ const Text = createComponent(
 
 export default {
   key: 'Pages.Template.Accordion.Text',
+  label: 'Text',
   editable: true,
   component: withQueryState(
     'accordion'
