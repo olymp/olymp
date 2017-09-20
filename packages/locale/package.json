@@ -5,7 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {
-    "up": "yarn upgrade-interactive"
+    "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
     "date-fns": "2.0.0-alpha.1",

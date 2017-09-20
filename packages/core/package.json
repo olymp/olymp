@@ -6,7 +6,7 @@
   "license": "MIT",
   "bin": "./bin/olymp.js",
   "scripts": {
-    "up": "yarn upgrade-interactive"
+    "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^0.2.0-beta.0",
@@ -33,7 +33,7 @@
     "html-webpack-harddisk-plugin": "^0.1.0",
     "html-webpack-plugin": "^2.30.1",
     "isomorphic-fetch": "^2.2.1",
-    "jsonfile": "^3.0.1",
+    "jsonfile": "^4.0.0",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
     "olymp-fela": "^17.2.12",
@@ -55,8 +55,8 @@
     "serialize-javascript": "^1.3.0",
     "source-map-support": "^0.4.17",
     "start-server-webpack-plugin": "^2.2.0",
-    "webpack": "^3.5.4",
-    "webpack-dev-server": "^2.7.1",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2",
     "webpack-flush-chunks": "^1.1.23",
     "webpack-node-externals": "^1.6.0",
     "webpack-stats-plugin": "^0.1.5",

@@ -5,7 +5,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {
-    "up": "yarn upgrade-interactive"
+    "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
