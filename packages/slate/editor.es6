@@ -1,11 +1,8 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { Editor, Plain } from 'slate';
-import {
-  withSlateState,
-  withAutoMarkdown,
-  useBlocks,
-} from './editor-decorators';
+import { Editor } from 'slate-react';
+import Plain from 'slate-plain-serializer';
+import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import './style.css';
@@ -28,7 +25,7 @@ import {
 } from 'olymp-icons';
 import I from './icon';
 
-const getIdByTag = children => {
+const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
 };
@@ -87,13 +84,12 @@ const options = {
                   type: 'link',
                   data: { href, target: '_blank' },
                 })
-                .collapseToEnd()
+                .collapseToEnd(),
             );
           }
         }
       },
-      isActive: ({ state }) =>
-        state && state.inlines.some(inline => inline.type === 'link'),
+      isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
     },
   ],
   sidebarTypes: [],
@@ -112,12 +108,8 @@ const options = {
     'block-quote': ({ children, attributes }) => (
       <blockquote {...attributes}>{children}</blockquote>
     ),
-    'bulleted-list': ({ children, attributes }) => (
-      <ul {...attributes}>{children}</ul>
-    ),
-    'numbered-list': ({ children, attributes }) => (
-      <ol {...attributes}>{children}</ol>
-    ),
+    'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
+    'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
     'heading-one': ({ children, attributes }) => (
       <h1 {...attributes} id={getIdByTag(children)}>
         {children}
@@ -148,25 +140,17 @@ const options = {
         {children}
       </h6>
     ),
-    'bulleted-list-item': ({ children, attributes }) => (
-      <li {...attributes}>{children}</li>
-    ),
-    'numbered-list-item': ({ children, attributes }) => (
-      <li {...attributes}>{children}</li>
-    ),
+    'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+    'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
   },
   marks: {
-    bold: ({ children, attributes }) => (
-      <strong {...attributes}>{children}</strong>
-    ),
+    bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
     code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
     italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
     underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
-    center: ({ children, attributes }) => (
-      <center {...attributes}>{children}</center>
-    ),
+    center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
   },
-  getMarkdownType: chars => {
+  getMarkdownType: (chars) => {
     switch (chars) {
       case '*':
       case '-':
@@ -194,101 +178,8 @@ const options = {
   },
 };
 
-/* const serializer = new Html({
-  parseHtml: typeof window === 'undefined' ? require('parse5').parseFragment : undefined,
-  rules: [
-    {
-      deserialize(el, next) {
-        const types = {
-          p: 'paragraph',
-          li: 'list-item',
-          ul: 'bulleted-list',
-          ol: 'numbered-list',
-          blockquote: 'quote',
-          pre: 'code',
-          h1: 'heading-one',
-          h2: 'heading-two',
-          h3: 'heading-three',
-          h4: 'heading-four',
-          h5: 'heading-five',
-          h6: 'heading-six',
-        };
-        const block = types[el.tagName];
-        if (!block) {
-          return undefined;
-        }
-        return {
-          kind: 'block',
-          type: block,
-          nodes: next(el.children),
-        };
-      },
-    },
-    {
-      deserialize(el, next) {
-        const marks = {
-          strong: 'bold',
-          em: 'italic',
-          u: 'underline',
-          s: 'strikethrough',
-          code: 'code',
-          left: 'left',
-          center: 'center',
-          right: 'right',
-          justify: 'justify',
-        };
-        const mark = marks[el.tagName];
-        if (!mark) {
-          return undefined;
-        }
-        return {
-          kind: 'mark',
-          type: mark,
-          nodes: next(el.children),
-        };
-      },
-    },
-    {
-      // Special case for code blocks, which need to grab the nested children.
-      deserialize(el, next) {
-        if (el.tagName !== 'pre') {
-          return undefined;
-        }
-        const code = el.children[0];
-        const children = code && code.tagName === 'code' ? code.children : el.children;
-
-        return {
-          kind: 'block',
-          type: 'code',
-          nodes: next(children),
-        };
-      },
-    },
-    {
-      // Special case for links, to grab their href.
-      deserialize(el, next) {
-        if (el.tagName !== 'a') {
-          return undefined;
-        }
-        return {
-          kind: 'inline',
-          type: 'link',
-          nodes: next(el.children),
-          data: {
-            href: el.attribs.href,
-          },
-        };
-      },
-    },
-  ],
-});*/
-
-// export const htmlSerializer = serializer;
-
 const getTopMost = (blockTypes, change, prev) => {
-  const next = prev
-    ? change.state.document.getParent(prev.key)
-    : change.state.startBlock;
+  const next = prev ? change.state.document.getParent(prev.key) : change.state.startBlock;
   const nextType = next && next.type;
   const prevType = prev && prev.type;
   const isAtomic =
@@ -296,11 +187,7 @@ const getTopMost = (blockTypes, change, prev) => {
     blockTypes[nextType] &&
     blockTypes[nextType].slate &&
     blockTypes[nextType].slate.isAtomic;
-  if (
-    !nextType ||
-    !isAtomic ||
-    (prevType && prevType.indexOf(nextType) !== 0)
-  ) {
+  if (!nextType || !isAtomic || (prevType && prevType.indexOf(nextType) !== 0)) {
     return prev;
   }
   return getTopMost(blockTypes, change, next);
@@ -313,21 +200,11 @@ function CleanWordHTML(str) {
   // 2. strip Word generated HTML comments
   const commentSripper = new RegExp('<!--(.*?)-->', 'g');
   var output = output.replace(commentSripper, '');
-  let tagStripper = new RegExp(
-    '<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>',
-    'gi'
-  );
+  let tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
   // 3. remove tags leave content if any
   output = output.replace(tagStripper, '');
   // 4. Remove everything in between and including tags '<style(.)style(.)>'
-  const badTags = [
-    'style',
-    'script',
-    'applet',
-    'embed',
-    'noframes',
-    'noscript',
-  ];
+  const badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
 
   for (var i = 0; i < badTags.length; i++) {
     tagStripper = new RegExp(`<${badTags[i]}.*?${badTags[i]}(.*?)>`, 'gi');
@@ -349,7 +226,7 @@ function CleanWordHTML(str) {
   return output;
 }
 @withBlockTypes
-@withSlateState({ terse: true })
+@withSlateState()
 @useBlocks(options) // @withToolbar(options)
 // @withSidebar(options)
 export default class SlateEditor extends Component {
@@ -377,12 +254,8 @@ export default class SlateEditor extends Component {
     if (e.shiftKey && data.key === 'enter') {
       return change.insertText('\n');
     } else if (data.key === 'backspace' && blockType) {
-      const prev =
-        change.state.document.getPreviousBlock(blockType.key) ||
-        change.state.document;
-      return change
-        .collapseToEndOf(prev)
-        .removeNodeByKey(blockType.key, { normalize: true });
+      const prev = change.state.document.getPreviousBlock(blockType.key) || change.state.document;
+      return change.collapseToEndOf(prev).removeNodeByKey(blockType.key, { normalize: true });
     } else if (e.metaKey || e.ctrlKey) {
       // cmd/ctrl + ???
       switch (data.key) {
@@ -428,28 +301,13 @@ export default class SlateEditor extends Component {
       <div className={className} style={{ position: 'relative', ...style }}>
         {children}
         {readOnly !== true && (
-          <ToolbarBlock
-            show={focus}
-            state={value}
-            blockTypes={blockTypes}
-            onChange={onChange}
-          />
+          <ToolbarBlock show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
         )}
         {readOnly !== true && (
-          <ToolbarVoid
-            show={focus}
-            state={value}
-            blockTypes={blockTypes}
-            onChange={onChange}
-          />
+          <ToolbarVoid show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
         )}
         {readOnly !== true && (
-          <ToolbarText
-            show={focus}
-            state={value}
-            onChange={onChange}
-            {...options}
-          />
+          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />
         )}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
@@ -463,7 +321,6 @@ export default class SlateEditor extends Component {
             onChange={onChange}
             onFocus={() => this.setState({ focus: true })}
             onBlur={() => this.setState({ focus: false })}
-            onPaste={this.onPaste}
             onKeyDown={this.onKeyDown}
             placeholder={!readOnly && 'Hier Text eingeben...'}
             placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}

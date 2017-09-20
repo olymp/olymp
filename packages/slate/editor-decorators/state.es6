@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
-import { resetKeyGenerator, Model } from 'slate';
+import { resetKeyGenerator, State } from 'slate';
 import Plain from 'slate-plain-serializer';
 import { batch } from '../utils/batch';
 import { getHeaders } from '../utils/get-text';
 
-const parseValue = (v, initialState, terse) => {
+const parseValue = (v, initialState) => {
   resetKeyGenerator();
   if (!v) {
     return Plain.deserialize('');
   }
   const value = JSON.parse(JSON.stringify(v));
   try {
-    return Model.fromJSON(value);
-  } catch (err1) {
-    try {
-      return Model.fromJSON(value, { terse: !terse });
-    } catch (err2) {
-      console.error('Couldnt parse value in slate', err1, err2);
-      return initialState ? parseValue(initialState, undefined, { terse }) : Plain.deserialize('');
-    }
+    return State.fromJSON({ document: value, kind: 'state' });
+  } catch (err) {
+    console.error('Couldnt parse value in slate', err);
+    return initialState ? parseValue(initialState, undefined) : Plain.deserialize('');
   }
 };
 
@@ -26,7 +22,7 @@ const defaultGetValue = ({ value }) => value;
 const defaultChangeValue = ({ onChange }, value, raw) => (onChange ? onChange(value, raw) : null);
 
 export default (
-  { getValue = defaultGetValue, changeValue = defaultChangeValue, initialState, terse } = {},
+  { getValue = defaultGetValue, changeValue = defaultChangeValue, initialState } = {},
 ) => Editor =>
   class SlateStateDecorator extends Component {
     static propTypes = {};
@@ -37,14 +33,14 @@ export default (
     constructor(props) {
       super();
       this.rawValue = getValue(props);
-      this.value = parseValue(this.rawValue, initialState, terse);
+      this.value = parseValue(this.rawValue, initialState);
     }
 
     shouldComponentUpdate(props) {
       const newValue = getValue(props);
       const oldValue = getValue(this.props);
       if (newValue !== oldValue && this.rawValue !== newValue) {
-        this.value = parseValue(newValue, undefined, terse);
+        this.value = parseValue(newValue, undefined);
         this.rawValue = newValue;
         return true;
       } else if (props.readOnly !== this.props.readOnly) {
@@ -59,7 +55,7 @@ export default (
       this.value = value;
       this.forceUpdate();
       if (changeValue) {
-        const rawValue = value.toJSON();
+        const rawValue = value.toJSON().document;
         if (JSON.stringify(this.rawValue) !== JSON.stringify(rawValue)) {
           this.rawValue = rawValue;
           this.batch(() => {
@@ -86,7 +82,7 @@ export default (
                 return newArr;
               }, []);
 
-            if (rawValue && flattenNodes(rawValue.nodes).length) {
+            if (rawValue && rawValue.nodes && flattenNodes(rawValue.nodes).length) {
               if (onChangeHeadings) {
                 onChangeHeadings(getHeaders(rawValue.nodes));
               }
