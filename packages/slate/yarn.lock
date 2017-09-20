@@ -310,6 +310,20 @@ slate-trailing-block@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/slate-trailing-block/-/slate-trailing-block-0.2.4.tgz#6ce9525fa15f9f098d810d9312a4267799cd0e12"
 
+slate@0.24.5:
+  version "0.24.5"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.24.5.tgz#3bfd9827b55aa8152638c102fcde0a285523af7e"
+  dependencies:
+    debug "^2.3.2"
+    direction "^0.1.5"
+    es6-map "^0.1.4"
+    esrever "^0.2.0"
+    is-empty "^1.0.0"
+    is-plain-object "^2.0.4"
+    lodash "^4.17.4"
+    slate-dev-logger "^0.1.6"
+    type-of "^2.0.1"
+
 slate@^0.22.0:
   version "0.22.14"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.22.14.tgz#8a077728a95cf9d2fa79c6e5083368e1a260318c"
@@ -329,20 +343,6 @@ slate@^0.22.0:
     prop-types "^15.5.8"
     react-portal "^3.1.0"
     selection-is-backward "^1.0.0"
-    type-of "^2.0.1"
-
-slate@^0.24.5:
-  version "0.24.5"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.24.5.tgz#3bfd9827b55aa8152638c102fcde0a285523af7e"
-  dependencies:
-    debug "^2.3.2"
-    direction "^0.1.5"
-    es6-map "^0.1.4"
-    esrever "^0.2.0"
-    is-empty "^1.0.0"
-    is-plain-object "^2.0.4"
-    lodash "^4.17.4"
-    slate-dev-logger "^0.1.6"
     type-of "^2.0.1"
 
 symbol-observable@^1.0.3:
