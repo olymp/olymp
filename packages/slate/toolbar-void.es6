@@ -16,7 +16,7 @@ export default (props) => {
     type: key,
   }));
   sortBy(types, ['category', 'label']).forEach((action) => {
-    if (!action.label) {
+    if (!action.category) {
       return;
     }
     const onMouseDown = (e) => {
@@ -25,9 +25,7 @@ export default (props) => {
     };
     const item = (
       <Menu.Item key={action.type}>
-        <Button onMouseDown={onMouseDown}>
-          {action.label || action.type}
-        </Button>
+        <Button onMouseDown={onMouseDown}>{action.label || action.type}</Button>
       </Menu.Item>
     );
     if (action.category) {
@@ -42,18 +40,11 @@ export default (props) => {
 
   return (
     <Toolbar isOpened={!!display} show={show}>
-      {Object.keys(categories).map(key =>
-        (<Menu.SubMenu
-          title={
-            <Button>
-              {key}
-            </Button>
-          }
-          key={key}
-        >
+      {Object.keys(categories).map(key => (
+        <Menu.SubMenu title={<Button>{key}</Button>} key={key}>
           {categories[key]}
-        </Menu.SubMenu>)
-      )}
+        </Menu.SubMenu>
+      ))}
       {menuItems}
     </Toolbar>
   );

@@ -19,26 +19,6 @@ const Title = createComponent(
   p => Object.keys(p),
 );
 
-const Button = createComponent(
-  ({ theme, showOnHover }) => ({
-    borderRadius: '50%',
-    size: 23,
-    textAlign: 'center',
-    marginLeft: 3,
-    display: showOnHover && 'none',
-    '> i': {
-      color: theme.color,
-      margin: '0 !important',
-    },
-  }),
-  ({ className, to, type, onClick }) => (
-    <Link to={to} className={className} onClick={onClick}>
-      <Icon type={type} />
-    </Link>
-  ),
-  p => Object.keys(p),
-);
-
 const Badge = createComponent(
   ({ theme }) => ({
     borderRadius: '50%',
@@ -50,9 +30,9 @@ const Badge = createComponent(
       margin: '0 !important',
     },
   }),
-  ({ className, type, tooltip }) => (
+  ({ className, type, tooltip, onClick }) => (
     <Tooltip title={tooltip}>
-      <a href="javascript:;" className={className}>
+      <a href="javascript:;" className={className} onClick={onClick}>
         <Icon type={type} />
       </a>
     </Tooltip>
@@ -137,16 +117,12 @@ class Pages extends Component {
 
       const newPath = [...path, index];
       let label;
-      let icon;
       if (blockTypes[item.type]) {
         label = (blockTypes[item.type].slate && blockTypes[item.type].slate.label) || item.type;
-        icon = (blockTypes[item.type].slate && blockTypes[item.type].slate.icon) || 'idcard';
       } else if (item.type === 'paragraph') {
         label = 'Paragraph';
-        icon = 'bars';
       } else if (item.kind === 'text') {
         label = 'Text';
-        icon = 'ellipsis';
       } else {
         label = 'Unbekannt';
       }
@@ -159,9 +135,8 @@ class Pages extends Component {
           title={
             <Title disabled={false}>
               <a href="javascript:;">{label}</a>
-              <Button onClick={() => this.addBlock(newPath)} type="plus" showOnHover />
-              <Button onClick={() => this.deleteBlock(newPath)} type="delete" showOnHover />
-              {icon && <Badge type={icon} tooltip="Austeigend sortiert" />}
+              <Badge onClick={() => this.addBlock(newPath)} type="plus" tooltip="Umwandeln" />
+              <Badge onClick={() => this.deleteBlock(newPath)} type="delete" tooltip="Löschen" />
             </Title>
           }
         >
