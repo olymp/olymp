@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Raw, Plain, resetKeyGenerator } from 'slate';
+import { resetKeyGenerator, Model } from 'slate';
+import Plain from 'slate-plain-serializer';
 import { batch } from '../utils/batch';
 import { getHeaders } from '../utils/get-text';
 
@@ -10,10 +11,10 @@ const parseValue = (v, initialState, terse) => {
   }
   const value = JSON.parse(JSON.stringify(v));
   try {
-    return Raw.deserialize(value, { terse });
+    return Model.fromJSON(value);
   } catch (err1) {
     try {
-      return Raw.deserialize(value, { terse: !terse });
+      return Model.fromJSON(value, { terse: !terse });
     } catch (err2) {
       console.error('Couldnt parse value in slate', err1, err2);
       return initialState ? parseValue(initialState, undefined, { terse }) : Plain.deserialize('');
@@ -58,7 +59,7 @@ export default (
       this.value = value;
       this.forceUpdate();
       if (changeValue) {
-        const rawValue = Raw.serialize(value, { terse });
+        const rawValue = value.toJSON();
         if (JSON.stringify(this.rawValue) !== JSON.stringify(rawValue)) {
           this.rawValue = rawValue;
           this.batch(() => {
