@@ -1,5 +1,5 @@
 {
-  "version": "17.2.12",
+  "version": "17.2.13",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -11,7 +11,11 @@
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
-    "unmockedModulePathPatterns": ["react", "enzyme", "jasmine-enzyme"]
+    "unmockedModulePathPatterns": [
+      "react",
+      "enzyme",
+      "jasmine-enzyme"
+    ]
   },
   "scripts": {
     "publish": "git push dev master",
@@ -20,37 +24,35 @@
     "build": "olymp build",
     "start": "olymp start",
     "heroku-postbuild": "olymp build",
-    "prettier":
-      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"app/**/*.js\"",
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"app/**/*.js\"",
     "electron": "GRAPHQL_URL=https://site.com/graphql olymp build --electron",
     "electron:dev": "olymp dev --electron",
     "electron:mac": "electron-builder",
     "electron:win": "electron-builder --win",
     "electron:win32": "electron-builder --win --ia32",
-    "electron:publish":
-      "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
+    "electron:publish": "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
   },
   "dependencies": {
     "mongodb": "^2.2.31",
-    "olymp": "^17.2.12",
-    "olymp-auth": "^17.2.12",
-    "olymp-crypt": "^17.1.10",
-    "olymp-fela": "^17.2.12",
-    "olymp-google": "^17.2.12",
-    "olymp-graphql": "^17.1.11",
-    "olymp-icons": "^17.1.9",
-    "olymp-locale": "^17.1.8",
-    "olymp-mail": "^17.1.7",
-    "olymp-router": "^17.2.12",
-    "olymp-utils": "^17.1.8",
-    "olymp-webpack-babel": "^17.2.9",
-    "olymp-webpack-less": "^17.0.24",
+    "olymp": "^17.2.13",
+    "olymp-auth": "^17.2.13",
+    "olymp-crypt": "^17.2.13",
+    "olymp-fela": "^17.2.13",
+    "olymp-google": "^17.2.13",
+    "olymp-graphql": "^17.2.13",
+    "olymp-icons": "^17.2.13",
+    "olymp-locale": "^17.2.13",
+    "olymp-mail": "^17.2.13",
+    "olymp-router": "^17.2.13",
+    "olymp-utils": "^17.2.13",
+    "olymp-webpack-babel": "^17.2.13",
+    "olymp-webpack-less": "^17.2.13",
     "react": "^16.0.0-rc.3",
     "react-dom": "^16.0.0-rc.3"
   },
   "devDependencies": {
     "eslint-config-olymp": "^16.0.31",
-    "olymp-webpack-electron": "^17.0.29"
+    "olymp-webpack-electron": "^17.2.13"
   },
   "electronDependencies": {},
   "build": {
@@ -62,10 +64,15 @@
       "buildResources": "public"
     },
     "mac": {
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "win": {
-      "target": ["nsis"]
+      "target": [
+        "nsis"
+      ]
     },
     "dmg": {
       "title": "Olymp Example",
@@ -84,7 +91,10 @@
   "olymp": {
     "app": "./app",
     "server": "./server",
-    "plugins": ["less", "babel"],
+    "plugins": [
+      "less",
+      "babel"
+    ],
     "modifyVars": {
       "font-size-base": "15px",
       "primary-color": "#8e44ad"

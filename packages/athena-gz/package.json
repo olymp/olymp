@@ -1,5 +1,5 @@
 {
-  "version": "17.2.12",
+  "version": "17.2.13",
   "name": "olymp-athena-gz",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,8 +8,8 @@
     "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
-    "olymp-fela": "^17.2.12",
-    "olymp-utils": "^17.2.0",
+    "olymp-fela": "^17.2.13",
+    "olymp-utils": "^17.2.13",
     "react-image-gallery": "^0.8.3"
   }
 }
