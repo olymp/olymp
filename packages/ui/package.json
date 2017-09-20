@@ -8,7 +8,7 @@
     "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
-    "antd": "^2.12.3",
+    "antd": "^2.13.2",
     "moment": "^2.18.1",
     "multirangeslider": "^0.5.2",
     "react-modal2": "^5.0.0"

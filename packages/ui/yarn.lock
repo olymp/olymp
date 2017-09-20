@@ -19,9 +19,9 @@ add-dom-event-listener@1.x:
   dependencies:
     object-assign "4.x"
 
-antd@^2.12.3:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.1.tgz#9c09aedf07a2d1bdd31c0d69822f9e32c9f73386"
+antd@^2.13.2:
+  version "2.13.2"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.2.tgz#381f046b13acfc11d45d71c9a0d36da2ebe42a12"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -52,7 +52,7 @@ antd@^2.12.3:
     rc-slider "~8.2.0"
     rc-steps "~2.5.1"
     rc-switch "~1.5.1"
-    rc-table "~5.6.7"
+    rc-table "~5.6.9"
     rc-tabs "~9.1.2"
     rc-time-picker "~2.4.1"
     rc-tooltip "~3.4.6"
@@ -538,9 +538,9 @@ rc-switch@~1.5.1:
     classnames "^2.2.1"
     prop-types "^15.5.6"
 
-rc-table@~5.6.7:
-  version "5.6.9"
-  resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-5.6.9.tgz#53cd87199257d5e38cf8c5bb5252df102bc668f2"
+rc-table@~5.6.9:
+  version "5.6.10"
+  resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-5.6.10.tgz#253fc5ef884c8e59c079de6e9ae476064f482d91"
   dependencies:
     babel-runtime "6.x"
     component-classes "^1.2.6"

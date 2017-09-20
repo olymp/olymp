@@ -10,7 +10,7 @@ const TabPane = createComponent(
     backgroundColor: theme.light,
   }),
   Tabs.TabPane,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const StyledCollapse = createComponent(
@@ -24,18 +24,27 @@ const StyledCollapse = createComponent(
     },
   }),
   Collapse,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
-  <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
+  <Tabs
+    activeKey={tab}
+    onTabClick={onTabClick}
+    size="small"
+    tabBarStyle={{ marginBottom: 0 }}
+  >
     <TabPane tab="Seitenmanager" key="0">
       <StyledCollapse accordion defaultActiveKey="1">
         <Collapse.Panel header="Navigation" key="1">
           <Tree items={navigation} selected={[item.id || item.pathname]} />
         </Collapse.Panel>
-        <Collapse.Panel header="Ablage" key="2" />
-        <Collapse.Panel header="Papierkorb" key="3" />
+        <Collapse.Panel header="Ablage" key="2">
+          Kein Item vorhanden!
+        </Collapse.Panel>
+        <Collapse.Panel header="Papierkorb" key="3">
+          Kein Item vorhanden!
+        </Collapse.Panel>
       </StyledCollapse>
     </TabPane>
     <TabPane tab="Seite" key="1">
