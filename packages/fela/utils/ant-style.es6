@@ -16,24 +16,6 @@ export default ({ theme }) => {
     '& ::selection': {
       background: color,
     },
-    '& h1': {
-      color: theme.dark,
-    },
-    '& h2': {
-      color: theme.dark,
-    },
-    '& h3': {
-      color: theme.dark,
-    },
-    '& h4': {
-      color: theme.dark,
-    },
-    '& h5': {
-      color: theme.dark,
-    },
-    '& h6': {
-      color: theme.dark,
-    },
     '& p a': {
       color: theme.color,
     },
