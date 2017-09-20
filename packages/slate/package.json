@@ -1,5 +1,5 @@
 {
-  "version": "17.2.11",
+  "version": "17.2.12",
   "name": "olymp-slate",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -12,8 +12,8 @@
   "dependencies": {
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
-    "slate": "^0.22.14",
-    "slate-insert-block-on-enter": "^0.0.4",
+    "slate": "^0.24.5",
+    "slate-insert-block-on-enter": "^0.0.5",
     "slate-trailing-block": "^0.2.4"
   }
 }
