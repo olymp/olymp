@@ -14,6 +14,7 @@ const Img = createComponent(
 
 export default {
   key: 'Pages.Template.Columns.Column.Image',
+  label: 'Bild',
   component: ({ getData, setActive }) => (
     <Img
       onClick={setActive}

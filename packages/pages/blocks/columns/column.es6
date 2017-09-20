@@ -23,6 +23,7 @@ const Column = createComponent(
 
 export default {
   key: 'Pages.Template.Columns.Column',
+  label: 'Spalte',
   component: Column,
   editable: true,
   // defaultNodes: () => createBlockList([Image, Text]),

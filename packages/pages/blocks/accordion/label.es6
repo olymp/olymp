@@ -27,6 +27,7 @@ const Label = createComponent(
 
 export default {
   key: 'Pages.Template.Accordion.Label',
+  label: 'Überschrift',
   editable: true,
   component: withQueryState(
     'accordion'

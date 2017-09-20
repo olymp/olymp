@@ -30,6 +30,7 @@ const component = createComponent(
 
 export default {
   key: 'Pages.Media.ImageBlock.Label',
+  label: 'Titel',
   editable: true,
   component,
 };
