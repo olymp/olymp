@@ -13,6 +13,7 @@ import {
   InputNumber,
   TextArea,
 } from '../../edits';
+import SlateNav from './slate-nav';
 
 class PageForm extends Component {
   handleNameChange = (e) => {
@@ -32,6 +33,7 @@ class PageForm extends Component {
 
   render() {
     const { form, item, items } = this.props;
+    const { getFieldDecorator } = form;
     const tree = unflatten(
       items.map(({ id, name, parentId }) => ({
         value: id,
@@ -44,6 +46,9 @@ class PageForm extends Component {
 
     return (
       <Panel padding={16} alignLabel="left">
+        {getFieldDecorator('blocks', {
+          initialValue: item.blocks,
+        })(<SlateNav />)}
         <Input
           form={form}
           item={item}

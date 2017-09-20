@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'olymp-router';
+import { Link } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Tooltip } from 'antd';
-import { lowerCase } from 'lodash';
-import { reorderPage, movePage } from '../../gql';
+import immutable from 'olymp-utils/immutable';
+import { withBlockTypes } from 'olymp-slate';
 
 const Title = createComponent(
   ({ theme }) => ({
@@ -31,8 +31,8 @@ const Button = createComponent(
       margin: '0 !important',
     },
   }),
-  ({ className, to, type }) => (
-    <Link to={to} className={className}>
+  ({ className, to, type, onClick }) => (
+    <Link to={to} className={className} onClick={onClick}>
       <Icon type={type} />
     </Link>
   ),
@@ -60,9 +60,7 @@ const Badge = createComponent(
   p => Object.keys(p),
 );
 
-@withRouter
-@reorderPage
-@movePage
+@withBlockTypes
 class Pages extends Component {
   onDrop = (info) => {
     const { reorder, move } = this.props;
@@ -116,93 +114,76 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
-  getNodeIcon = (item) => {
-    if (item.sorting && item.sorting[0] === '+') {
-      return <Badge type="arrow-up" tooltip="Austeigend sortiert" />;
-    } else if (item.sorting && item.sorting[0] === '-') {
-      return <Badge type="arrow-down" tooltip="Absteigend sortiert" />;
-    } else if (item.slug === '/') {
-      return <Badge type="home" tooltip="Startseite" />;
-    } else if (item.type === 'ALIAS') {
-      return <Badge type="fork" tooltip="Alias" />;
-    } else if (item.type === 'LINK') {
-      return <Badge type="link" tooltip="Link" />;
-    } else if (item.type === 'PLACEHOLDER') {
-      return <Badge type="file" tooltip="Platzhalter" />;
-    } else if (item.type === 'PAGE') {
-      return <Badge type="file-text" tooltip="Seite" />;
-    } else if (item.type === 'MENU') {
-      return <Badge type="bars" tooltip="Menü" />;
-    }
-    return null;
+  addBlock = (path) => {
+    console.log('ADD', path);
   };
 
-  getItems = (data, parent) =>
-    data.map((item) => {
-      const { query } = this.props;
-      const children =
-        item.children && item.children.length ? this.getItems(item.children, item) : undefined;
-      const isBinding = item.bindingId && item.binding && item.binding.type;
-      const route = {
-        pathname: item.pathname,
-        query: {
-          ...query,
-          '@page': item.pageId || item.id,
-          parent: undefined,
-        },
-      };
-      const bindingRoute = {
-        pathname: item.pathname,
-        query: {
-          ...query,
-          '@page': null,
-          parent: undefined,
-          modal: null,
-          [`@${lowerCase(item.binding && item.binding.type)}`]: item.bindingId,
-        },
-      };
+  deleteBlock = (path) => {
+    const { onChange, value } = this.props;
+    onChange(
+      immutable(value)
+        .del(`nodes.${path.join('.nodes.')}`)
+        .value(),
+    );
+  };
 
+  getItems = (block, parent, path = []) => {
+    const blockTypes = this.props.blockTypes;
+    if (!block.nodes || !block.nodes.length) {
+      return undefined;
+    }
+    return block.nodes.map((item, index) => {
+      const { query } = this.props;
+
+      const newPath = [...path, index];
+      let label;
+      let icon;
+      if (blockTypes[item.type]) {
+        label = (blockTypes[item.type].slate && blockTypes[item.type].slate.label) || item.type;
+        icon = (blockTypes[item.type].slate && blockTypes[item.type].slate.icon) || 'idcard';
+      } else if (item.type === 'paragraph') {
+        label = 'Paragraph';
+        icon = 'bars';
+      } else if (item.kind === 'text') {
+        label = 'Text';
+        icon = 'ellipsis';
+      } else {
+        label = 'Unbekannt';
+      }
       return (
         <Tree.Node
-          key={item.id || item.pathname}
+          key={newPath.join('-')}
           item={item}
           parent={parent}
+          path={newPath}
           title={
-            <Title disabled={item.state === 'DRAFT'}>
-              <Link to={isBinding ? bindingRoute : route}>{item.name || 'Kein Name'}</Link>
-
-              <Button
-                to={{ query: { ...query, '@page': 'new', parent: item.id } }}
-                type="plus"
-                showOnHover
-              />
-              {isBinding && <Button to={route} type="api" />}
-              {this.getNodeIcon(item)}
+            <Title disabled={false}>
+              <a href="javascript:;">{label}</a>
+              <Button onClick={() => this.addBlock(newPath)} type="plus" showOnHover />
+              <Button onClick={() => this.deleteBlock(newPath)} type="delete" showOnHover />
+              {icon && <Badge type={icon} tooltip="Austeigend sortiert" />}
             </Title>
           }
         >
-          {children}
+          {this.getItems(item, block, newPath)}
         </Tree.Node>
       );
     });
+  };
 
   render() {
-    const { items, selected } = this.props;
-
-    if (items.length === 0) {
-      return null;
-    }
+    const { value, selected } = this.props;
 
     return (
       <Tree
         selectedKeys={selected}
         draggable
         className="draggable-tree"
-        defaultExpandedKeys={items.filter((x, i) => i === 0).map(item => item.id || item.pathname)}
+        // defaultExpandedKeys={items.filter((x, i) => i === 0).map(item => item.id || item.pathname)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
-        {this.getItems(items)}
+        {this.getItems(value)}
       </Tree>
     );
   }
