@@ -1,12 +1,10 @@
 import { hasBlock } from './has';
-import { Raw, Block } from 'slate';
+import { Text, Block } from 'slate';
 
-const createP = () =>
-  Raw.deserializeNode({
-    kind: 'block',
-    type: 'paragraph',
-    nodes: [{ kind: 'text', text: '', ranges: [] }],
-  });
+const createP = () => Block.create({
+  type: 'paragraph',
+  nodes: [Text.create()],
+});
 
 export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }) => {
   if (!defaultNode) {

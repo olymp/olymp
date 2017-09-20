@@ -1,10 +1,9 @@
-import { Block, Raw } from 'slate';
+import { Block } from 'slate';
 
 const empty = () =>
-  Raw.deserializeNode({
-    kind: 'block',
+  Block.create({
     type: 'paragraph',
-    nodes: [{ kind: 'text', text: '', ranges: [] }],
+    nodes: [Text.create()],
   });
 export default items =>
   Block.createList(
@@ -22,5 +21,5 @@ export default items =>
           return block;
         }
       })
-      .filter(x => x)
+      .filter(x => x),
   );

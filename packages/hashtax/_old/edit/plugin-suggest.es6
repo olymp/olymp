@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { Select } from 'antd';
 import Raw from 'slate/lib/serializers/raw';
 
-import position from './utils/caret-position';
-import typeOf from 'type-of';
 import GroupBy from 'lodash/groupBy';
 import shortID from 'shortid';
 
