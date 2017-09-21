@@ -15,4 +15,7 @@ export default {
     </Container>
   ),
   defaultNodes: () => createBlockList([Label, Text]),
+  styles: ({ theme }) => ({
+    marginBottom: theme.space3,
+  }),
 };

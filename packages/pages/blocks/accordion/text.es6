@@ -4,13 +4,13 @@ import { withQueryState } from 'olymp-router';
 
 const Text = createComponent(
   ({ theme, isOpen }) => ({
-    borderLeft: `3px solid ${theme.color}`,
-    marginY: theme.space2,
-    paddingLeft: theme.space3,
+    borderRight: `1px solid ${theme.color}`,
+    marginY: theme.space3,
+    paddingRight: theme.space3,
     display: !isOpen && 'none',
   }),
   'p',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default {
@@ -18,13 +18,9 @@ export default {
   label: 'Text',
   editable: true,
   component: withQueryState(
-    'accordion'
+    'accordion',
   )(({ className, attributes, children, accordion, parent }) => (
-    <Text
-      className={className}
-      isOpen={accordion === parent.key}
-      {...attributes}
-    >
+    <Text className={className} isOpen={accordion === parent.key} {...attributes}>
       {children}
     </Text>
   )),
