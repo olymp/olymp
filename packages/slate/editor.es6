@@ -236,11 +236,12 @@ class SlateEditor extends Component {
     return undefined;
   };
 
+  onChange = change => this.props.onChange(change.state);
+
   render = () => {
     const {
       children,
       showUndo,
-      onChange,
       readOnly,
       marks,
       nodes,
@@ -265,13 +266,23 @@ class SlateEditor extends Component {
       <div className={className} style={{ position: 'relative', ...style }}>
         {children}
         {readOnly !== true && (
-          <ToolbarBlock show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
+          <ToolbarBlock
+            show={focus}
+            state={value}
+            blockTypes={blockTypes}
+            onChange={this.onChange}
+          />
         )}
         {readOnly !== true && (
-          <ToolbarVoid show={focus} state={value} blockTypes={blockTypes} onChange={onChange} />
+          <ToolbarVoid
+            show={focus}
+            state={value}
+            blockTypes={blockTypes}
+            onChange={this.onChange}
+          />
         )}
         {readOnly !== true && (
-          <ToolbarText show={focus} state={value} onChange={onChange} {...options} />
+          <ToolbarText show={focus} state={value} onChange={this.onChange} {...options} />
         )}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}
@@ -282,7 +293,7 @@ class SlateEditor extends Component {
             readOnly={!!readOnly}
             plugins={this.plugins}
             schema={{ marks, nodes }}
-            onChange={onChange}
+            onChange={this.onChange}
             onFocus={() => this.setState({ focus: true })}
             onBlur={() => this.setState({ focus: false })}
             onKeyDown={this.onKeyDown}

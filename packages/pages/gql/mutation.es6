@@ -7,7 +7,9 @@ const ok = (props, mutate) => () => {
     if (err) {
       return onError(err);
     }
-    console.log(values);
+    if (values.blocks) {
+      values.blocks = values.blocks.toJSON().document;
+    }
     mutate({
       variables: {
         id: item.id,

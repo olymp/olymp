@@ -16,7 +16,7 @@ const Title = createComponent(
     },
   }),
   p => <Tree.Title {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const getMenuItems = (blockTypes, prefix) => {
@@ -27,11 +27,9 @@ const getMenuItems = (blockTypes, prefix) => {
   }));
   const categories = {};
   const menuItems = [];
-  sortBy(types, ['category', 'label']).forEach(action => {
+  sortBy(types, ['category', 'label']).forEach((action) => {
     const item = (
-      <Menu.Item key={`${prefix}${action.type}`}>
-        {action.label || action.type}
-      </Menu.Item>
+      <Menu.Item key={`${prefix}${action.type}`}>{action.label || action.type}</Menu.Item>
     );
     if (action.category) {
       if (!categories[action.category]) {
@@ -87,7 +85,7 @@ const BlockMenu = createComponent(
       </a>
     </Dropdown>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 const ChangeBlock = createComponent(
   ({ theme }) => ({
@@ -104,9 +102,7 @@ const ChangeBlock = createComponent(
     <Dropdown
       overlay={
         <Menu onClick={onClick}>
-          <Menu.SubMenu title="Umwandeln">
-            {getMenuItems(blockTypes, 'transform')}
-          </Menu.SubMenu>
+          <Menu.SubMenu title="Umwandeln">{getMenuItems(blockTypes, 'transform')}</Menu.SubMenu>
           <Menu.Item key="duplicate">
             <span>Duplizieren</span>
           </Menu.Item>
@@ -124,24 +120,20 @@ const ChangeBlock = createComponent(
       </a>
     </Dropdown>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withBlockTypes
 class Pages extends Component {
-  onDrop = info => {
+  onDrop = (info) => {
     const { reorder, move } = this.props;
     const parent =
-      info.dropToGap && info.node.props.parent
-        ? info.node.props.parent
-        : info.node.props.item;
+      info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.item;
     const page = info.dragNode.props.item;
     const pageId = page.pageId || page.id; // get real pageId in case of binding
 
     // Get all IDs of children in order
-    const childIds = (parent.children || [])
-      .map(child => child.id)
-      .filter(x => x !== page.id);
+    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
     childIds.splice(info.dropPosition, 0, page.id);
 
     // Check if new parent is itself??
@@ -185,37 +177,39 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
+  onChange = change => this.props.onChange(change.state);
+
   action = (node, key) => {
-    const { onChange, value } = this.props;
+    const { value } = this.props;
     if (key === 'delete') {
-      onChange(value.change().removeNodeByKey(node.key));
+      this.onChange(value.change().removeNodeByKey(node.key));
     } else if (key.indexOf('transform:') === 0) {
-      onChange(
+      this.onChange(
         immutable(value)
           .set(`nodes.${path.join('.nodes.')}.type`, key.split(':')[1])
-          .value()
+          .value(),
       );
     } else if (key.indexOf('add:') === 0) {
-      onChange(
+      this.onChange(
         immutable(value)
           .push(`nodes.${path.join('.nodes.')}.nodes`, {
             type: key.split(':')[1],
             kind: 'block',
           })
-          .value()
+          .value(),
       );
     } else if (key === 'unwrap') {
-      onChange(value.change().unwrapBlockByKey(node.key));
+      this.onChange(value.change().unwrapBlockByKey(node.key));
     }
   };
 
-  hover = node => {
+  hover = (node) => {
     const { onChange, value } = this.props;
-    onChange(
+    this.onChange(
       value
         .change()
         .moveToRangeOf(node)
-        .focus()
+        .focus(),
     );
     const element = document.querySelector(`[data-key="${node.key}"]`);
     if (element) {
@@ -232,10 +226,7 @@ class Pages extends Component {
       .map((item, index) => {
         let label;
         if (blockTypes[item.type]) {
-          label =
-            (blockTypes[item.type].slate &&
-              blockTypes[item.type].slate.label) ||
-            item.type;
+          label = (blockTypes[item.type].slate && blockTypes[item.type].slate.label) || item.type;
         } else if (item.type === 'paragraph') {
           label = 'Paragraph';
         } else if (item.type === 'line') {
@@ -256,10 +247,7 @@ class Pages extends Component {
           label = 'Liste';
         } else if (item.type === 'numbered-list') {
           label = 'Nummerierte Liste';
-        } else if (
-          item.type === 'bulleted-list-item' ||
-          item.type === 'numbered-list-item'
-        ) {
+        } else if (item.type === 'bulleted-list-item' || item.type === 'numbered-list-item') {
           label = 'Listenelement';
         } else if (item.kind === 'text') {
           label = 'Text';

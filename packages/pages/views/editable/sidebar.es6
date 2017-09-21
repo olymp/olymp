@@ -28,16 +28,7 @@ const StyledCollapse = createComponent(
   p => Object.keys(p),
 );
 
-const PageTree = ({
-  form,
-  item,
-  items,
-  navigation,
-  tab,
-  onTabClick,
-  slateValue,
-  slateOnChange,
-}) => (
+const PageTree = ({ form, item, items, navigation, tab, onTabClick, blocks }) => (
   <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
     <TabPane tab="Seitenmanager" key="">
       <StyledCollapse accordion defaultActiveKey="1">
@@ -56,7 +47,7 @@ const PageTree = ({
       <PageForm item={item} items={items} form={form} />
     </TabPane>
     <TabPane tab="Struktur" key="tree">
-      <SlateNav value={slateValue} onChange={slateOnChange} />
+      {form.getFieldDecorator('blocks', { initialValue: blocks })(<SlateNav />)}
     </TabPane>
     {/* <TabPane tab="Collection" key="2">
           <Panel paddingX={16}>

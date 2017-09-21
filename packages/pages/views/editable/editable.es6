@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Prompt, withQueryActions, withQueryParams } from 'olymp-router';
+import { Prompt, withQueryActions } from 'olymp-router';
+import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { withPropsOnChange } from 'recompose';
 import { Menu, Form, Icon } from 'antd';
-import { StatelessSlateMate, withSlateState } from 'olymp-slate';
+import { StatelessSlateMate } from 'olymp-slate';
+import Plain from 'slate-plain-serializer';
+import { State } from 'slate';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
 
@@ -11,23 +14,18 @@ import PageForm from './sidebar';
 @Form.create()
 @mutatePage
 @withQueryActions
-@withQueryParams(['@page', '@parent'])
+@connect(({ location }) => ({
+  tab: location.query['@page'] || '',
+}))
 @withPropsOnChange(['item', 'flatNavigation'], ({ item, flatNavigation }) => ({
   id: item.id || null,
   item: item || flatNavigation.find(page => page.slug === '/'),
+  description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
+  title: !item.id ? 'Neue Seite' : (item || flatNavigation.find(page => page.slug === '/')).name,
+  blocks: item.blocks
+    ? State.fromJSON({ document: item.blocks, kind: 'state' })
+    : Plain.deserialize(''),
 }))
-@withPropsOnChange(['@page', 'id', 'item'], ({ '@page': page, id, item }) => ({
-  tab: page || '',
-  title: !id ? 'Neue Seite' : item.name,
-  description: !id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
-}))
-@withSlateState({
-  getValue: ({ form, item }) => {
-    form.getFieldDecorator('blocks', { initialValue: item.blocks });
-    return form.getFieldValue('blocks') || item.blocks;
-  },
-  changeValue: ({ form }, blocks) => form.setFieldsValue({ blocks }),
-})
 export default class PageSidebar extends Component {
   render() {
     const {
@@ -42,26 +40,23 @@ export default class PageSidebar extends Component {
       maxWidth,
       item,
       replaceQuery,
-      value: state,
-      onChange,
       title,
       description,
       tab,
+      blocks,
     } = this.props;
 
     form.getFieldDecorator('parent', { initialValue: this.props['@parent'] || item.parent });
     form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
 
     const isPage = (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
-    const P = (
+    const P = form.getFieldDecorator('blocks', { initialValue: blocks })(
       <StatelessSlateMate
         readOnly={!isPage}
         binding={binding}
         bindingId={bindingId}
         bindingObj={bindingObj}
-        value={state}
-        onChange={onChange}
-      />
+      />,
     );
     return (
       <SplitView maxWidth={maxWidth} center>
@@ -73,8 +68,7 @@ export default class PageSidebar extends Component {
             navigation={navigation}
             items={flatNavigation}
             tab={tab}
-            slateValue={state}
-            slateOnChange={onChange}
+            blocks={blocks}
             onTabClick={key => replaceQuery({ '@page': key || null })}
           />
         </Sidebar>
