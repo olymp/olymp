@@ -206,7 +206,10 @@ class Pages extends Component {
         .moveToRangeOf(node)
         .focus(),
     );
-    document.querySelector(`[data-key="${node.key}"]`).scrollIntoView();
+    const element = document.querySelector(`[data-key="${node.key}"]`);
+    if (element) {
+      document.querySelector(`[data-key="${node.key}"]`).scrollIntoView(true);
+    }
   };
 
   getItems = (block, parent) => {

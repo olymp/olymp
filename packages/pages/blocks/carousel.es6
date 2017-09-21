@@ -15,29 +15,29 @@ class CarouselBlock extends Component {
     ])[imageNumber];*/
 
     return (
-      <Carousel
-        {...attributes}
-        className={className}
-        height={300}
-        value={getData('value', [
-          {
-            url: 'https://lorempixel.com/960/300/cats/',
-            width: 960,
-            height: 300,
-          },
-        ])}
-      >
-        {/* <Image
-          className={className}
-          onClick={setActive}
-          width="100%"
-          maxHeight={300}
-          maxResolution={500000}
-          value={image}
+      <div {...attributes} className={className}>
+        <Carousel
+          height={300}
+          value={getData('value', [
+            {
+              url: 'https://lorempixel.com/960/300/cats/',
+              width: 960,
+              height: 300,
+            },
+          ])}
         >
-          {renderHelmet({ image })}
-    </Image>*/}
-      </Carousel>
+          {/* <Image
+        className={className}
+        onClick={setActive}
+        width="100%"
+        maxHeight={300}
+        maxResolution={500000}
+        value={image}
+      >
+        {renderHelmet({ image })}
+  </Image>*/}
+        </Carousel>
+      </div>
     );
   }
 }
