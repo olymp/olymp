@@ -21,16 +21,11 @@ class CloudinaryView extends Component {
     filteredItems: null,
   };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     const { selected: stateSelected } = this.state;
     const { selected } = props;
 
-    if (
-      !isEqual(
-        stateSelected.map(item => item.id).sort(),
-        selected.map(item => item.id).sort()
-      )
-    ) {
+    if (!isEqual(stateSelected.map(item => item.id).sort(), selected.map(item => item.id).sort())) {
       this.setState({ selected });
     }
   };
@@ -56,7 +51,7 @@ class CloudinaryView extends Component {
       return {};
     }
 
-    const { apiKey, signature, timestamp, url } = data.cloudinaryRequest;
+    const { apiKey, signature, timestamp, url, folder } = data.cloudinaryRequest;
     return {
       showUploadList: false,
       multiple: true,
@@ -64,6 +59,7 @@ class CloudinaryView extends Component {
         api_key: apiKey,
         signature,
         timestamp,
+        folder,
       },
       action: url,
       onChange: ({ file, fileList, event }) => {
@@ -79,7 +75,7 @@ class CloudinaryView extends Component {
 
           if (!uploading.find(file => file.percent < 100)) {
             // Write data in DB
-            uploading.forEach(f => {
+            uploading.forEach((f) => {
               const response = { ...file.response };
               response.id = response.public_id;
               done({ id: response.id, token: signature }).then(({ data }) => {
@@ -88,9 +84,7 @@ class CloudinaryView extends Component {
                   uploading: uploading.filter(x => x.name !== file.name),
                 });
                 if (data && data.cloudinaryRequestDone) {
-                  this.onSelect([
-                    { id: data.cloudinaryRequestDone.id, crop: undefined },
-                  ]);
+                  this.onSelect([{ id: data.cloudinaryRequestDone.id, crop: undefined }]);
                   refetchKey();
                 }
               });
@@ -138,14 +132,11 @@ class CloudinaryView extends Component {
     }
   };
 
-  onRemove = id => {
+  onRemove = (id) => {
     const { selected, selection } = this.state;
     const index = selected.findIndex(({ id: itemId }) => itemId === id);
 
-    if (
-      index < selection ||
-      (index === selection && index === selected.length - 1)
-    ) {
+    if (index < selection || (index === selection && index === selected.length - 1)) {
       this.setState({ selection: selection - 1 });
     }
 
@@ -160,9 +151,7 @@ class CloudinaryView extends Component {
         ? this.state.selection
         : 0;
 
-    const items = !format
-      ? this.props.items
-      : this.props.items.filter(x => x.format === format);
+    const items = !format ? this.props.items : this.props.items.filter(x => x.format === format);
     const filteredItems = this.state.filteredItems || items;
 
     return (
@@ -172,16 +161,11 @@ class CloudinaryView extends Component {
           upload={this.getUploadPops()}
           onClose={onClose}
           filter={filter}
-          onFilter={(filter, filteredItems) =>
-            this.setState({ filter, filteredItems })}
+          onFilter={(filter, filteredItems) => this.setState({ filter, filteredItems })}
           search={search}
           onSearch={search => this.setState({ search })}
         />
-        <Dragzone
-          uploading={uploading}
-          clickable={false}
-          {...this.getUploadPops()}
-        >
+        <Dragzone uploading={uploading} clickable={false} {...this.getUploadPops()}>
           <Gallery
             onClick={this.onClick}
             onRemove={this.onRemove}
@@ -190,9 +174,7 @@ class CloudinaryView extends Component {
           />
         </Dragzone>
         <SelectionSidebar
-          items={selected
-            .map(x => items.find(item => item.id === x.id))
-            .filter(x => x)}
+          items={selected.map(x => items.find(item => item.id === x.id)).filter(x => x)}
           activeItem={selected[selection]}
           onClick={index => this.setState({ selection: index })}
           onRemove={this.onRemove}
@@ -211,7 +193,7 @@ CloudinaryView.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       crop: PropTypes.arrayOf(PropTypes.number),
-    })
+    }),
   ),
   format: PropTypes.string,
   multi: PropTypes.bool,

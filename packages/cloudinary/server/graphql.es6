@@ -1,12 +1,6 @@
 import { intersection } from 'lodash';
 import { adaptQuery } from 'olymp-collection/server';
-import {
-  parseURI,
-  getImageById,
-  getImages,
-  getSignedRequest,
-  updateImage,
-} from './cloudinary';
+import { parseURI, getImageById, getImages, getSignedRequest, updateImage } from './cloudinary';
 
 export default (uri) => {
   const config = parseURI(uri);
@@ -22,29 +16,32 @@ export default (uri) => {
     resolvers: {
       queries: {
         file: (source, args, { monk, app }) =>
-          monk.collection('item').findOne({ id: args.id }).then((item) => {
-            if (item) {
-              return item;
-            }
-            return getImageById(config, args.id).then((image) => {
-              monk
-                .collection('item')
-                .update(
-                { id: args.id },
-                { ...image, _type: 'file', _appId: app.id },
-                { upsert: true }
-                )
-                .catch(err => console.error(err));
-              return image;
-            });
-          }),
+          monk
+            .collection('item')
+            .findOne({ id: args.id })
+            .then((item) => {
+              if (item) {
+                return item;
+              }
+              return getImageById(config, args.id).then((image) => {
+                monk
+                  .collection('item')
+                  .update(
+                    { id: args.id },
+                    { ...image, _type: 'file', _appId: app.id },
+                    { upsert: true },
+                  )
+                  .catch(err => console.error(err));
+                return image;
+              });
+            }),
         fileList: (source, { query }, { monk, app }) => {
           const mongoQuery = adaptQuery(query);
           const tags = mongoQuery.tags && mongoQuery.tags.$in;
           const getFiltered = items =>
-            tags // eslint-disable-line
+            (tags // eslint-disable-line
               ? items.filter(item => intersection(tags, item.tags).length > 0)
-              : items;
+              : items);
 
           return getImages(config).then((images) => {
             const filtered = getFiltered(images.filter(x => !x.removed));
@@ -53,20 +50,21 @@ export default (uri) => {
                 monk
                   .collection('item')
                   .update(
-                  { id: item.id },
-                  { ...item, _type: 'file', _appId: app.id },
-                  { upsert: true }
-                  )
-              )
+                    { id: item.id },
+                    { ...item, _type: 'file', _appId: app.id },
+                    { upsert: true },
+                  ),
+              ),
             ).catch(err => console.error(err));
             return filtered;
           });
         },
-        cloudinaryRequest: () =>
-          getSignedRequest(config).then((signed) => {
-            invalidationTokens.push(signed.signature);
-            return signed;
-          }),
+        cloudinaryRequest: () => {
+          const signed = getSignedRequest(config);
+          console.log(signed);
+          invalidationTokens.push(signed.signature);
+          return signed;
+        },
       },
       mutations: {
         file: (source, args) => {
@@ -80,7 +78,7 @@ export default (uri) => {
               args.input.source,
               args.input.caption,
               config,
-              true
+              true,
             );
           }
 
@@ -89,15 +87,12 @@ export default (uri) => {
             args.input.tags,
             args.input.source,
             args.input.caption,
-            config
+            config,
           );
         },
         cloudinaryRequestDone: (source, args) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
-            invalidationTokens.splice(
-              invalidationTokens.indexOf(args.token),
-              1
-            );
+            invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
             return getImageById(config, args.id).then(image => image);
           }
           throw new Error('Invalid');
@@ -136,6 +131,7 @@ export default (uri) => {
       type CloudinaryRequest {
         url: String
         signature: String
+        folder: String
         timestamp: String
         apiKey: String
       }
@@ -145,8 +141,7 @@ export default (uri) => {
 
 export const uploadTest = (config = {}) => (req, res) => {
   res.send(`
-    <form action="${config.endpoint ||
-    '/upload'}" method="post" enctype="multipart/form-data">
+    <form action="${config.endpoint || '/upload'}" method="post" enctype="multipart/form-data">
       <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>

@@ -2,12 +2,22 @@ import { gql, graphql } from 'olymp-utils';
 
 export default graphql(
   gql`
-  query file($id: String) {
-    item: file(id: $id) {
-      id, url, tags, colors, width, height, createdAt, caption, source, format, bytes
+    query file($id: String) {
+      item: file(id: $id) {
+        id
+        url
+        tags
+        colors
+        width
+        height
+        createdAt
+        caption
+        source
+        format
+        bytes
+      }
     }
-  }
-`,
+  `,
   {
     options: ({ id, mediaId, query }) => ({
       variables: { id: mediaId },
@@ -17,34 +27,49 @@ export default graphql(
       item: data.item,
       data,
     }),
-  }
+  },
 );
 
 export const queryMedias = graphql(
   gql`
-  query fileList {
-    items: fileList {
-      id, url, tags, colors, width, height, createdAt, caption, source, format, bytes, removed
+    query fileList {
+      items: fileList {
+        id
+        url
+        tags
+        colors
+        width
+        height
+        createdAt
+        caption
+        source
+        format
+        bytes
+        removed
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
       items: data.items || [],
       data,
     }),
-  }
+  },
 );
 
 export const cloudinaryRequest = graphql(
   gql`
-  query cloudinaryRequest {
-    cloudinaryRequest {
-      apiKey, url, signature, timestamp
+    query cloudinaryRequest {
+      cloudinaryRequest {
+        apiKey
+        url
+        signature
+        timestamp
+        folder
+      }
     }
-  }
-`,
+  `,
   {
     options: () => ({
       fetchPolicy: 'network-only',
@@ -54,5 +79,5 @@ export const cloudinaryRequest = graphql(
       refetchKey: data.refetch,
       data,
     }),
-  }
+  },
 );

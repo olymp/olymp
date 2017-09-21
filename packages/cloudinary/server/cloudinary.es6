@@ -1,6 +1,8 @@
 const cloudinary = require('cloudinary');
 const lodash = require('lodash');
 
+const { APP } = process.env;
+
 export const parseURI = (uri) => {
   const config = {};
   if (uri) {
@@ -46,12 +48,10 @@ export const transform = (image) => {
   return newImage;
 };
 
-export const transformSignature = (
-  { cloud_name },
-  { signature, api_key, timestamp }
-) => ({
+export const transformSignature = ({ cloud_name }, { signature, api_key, timestamp, folder }) => ({
   url: `https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, // eslint-disable-line
   signature,
+  folder,
   timestamp,
   apiKey: api_key,
 });
@@ -65,9 +65,10 @@ export const getImages = (config, images = [], nextCursor) =>
         }
 
         // Aktuelle Bilder an Ausgabe-Array anhängen (max 500)
-        const results = result.resources && result.resources.length
-          ? images.concat(result.resources.map(transform))
-          : [];
+        const results =
+          result.resources && result.resources.length
+            ? images.concat(result.resources.map(transform))
+            : [];
 
         // Falls noch weitere Bilder in Mediathek sind, diese auch laden
         if (result.next_cursor) {
@@ -83,7 +84,8 @@ export const getImages = (config, images = [], nextCursor) =>
         colors: true,
         max_results: 500,
         next_cursor: nextCursor,
-      })
+        prefix: APP ? `${APP}/` : '',
+      }),
     );
   });
 
@@ -100,24 +102,21 @@ export const getImageById = (config, id) =>
         type: 'upload',
         colors: true,
         pages: true,
-        // prefix: ''
-      })
-    )
+        prefix: APP ? `${APP}/` : '',
+      }),
+    ),
   );
 
 export const getSignedRequest = config =>
-  new Promise(yay =>
-    yay(
-      transformSignature(
-        config,
-        cloudinary.utils.sign_request(
-          {
-            timestamp: Math.round(new Date().getTime() / 1000),
-          },
-          config
-        )
-      )
-    )
+  transformSignature(
+    config,
+    cloudinary.utils.sign_request(
+      {
+        timestamp: Math.round(new Date().getTime() / 1000),
+        folder: APP ? `${APP}/` : null,
+      },
+      config,
+    ),
   );
 
 export const updateImage = (id, tags, source, caption, config, removed) => {
@@ -140,9 +139,10 @@ export const updateImage = (id, tags, source, caption, config, removed) => {
       id,
       result => yay(transform(result)),
       Object.assign({}, config, {
+        prefix: APP ? `${APP}/` : '',
         tags: (tags || []).join(','),
         context: context.join('|'),
-      })
+      }),
     );
   });
 };
