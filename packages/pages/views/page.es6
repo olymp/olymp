@@ -1,9 +1,9 @@
 import React from 'react';
 import { object, func, bool } from 'prop-types';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
-import { queryPage } from '../gql';
 import { mapProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
+import { queryPage } from '../gql';
 
 const Page = withBlockTypes(props => (
   <ContentLoader isLoading={props.isLoading}>

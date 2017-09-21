@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Prompt, withQueryActions } from 'olymp-router';
+import { Prompt, withQueryActions, Link } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
+import Actions from 'olymp-ui/actions';
 import { withPropsOnChange } from 'recompose';
-import { Menu, Form, Icon } from 'antd';
+import { Form, Icon, Button } from 'antd';
 import { StatelessSlateMate } from 'olymp-slate';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
@@ -60,6 +61,48 @@ export default class PageSidebar extends Component {
     );
     return (
       <SplitView maxWidth={maxWidth} center>
+        <Actions>
+          <Button
+            type="primary"
+            shape="circle"
+            size="large"
+            icon="save"
+            disabled={!form.isFieldsTouched()}
+            onClick={save}
+          />
+          <Button
+            shape="circle"
+            size="small"
+            icon="rollback"
+            disabled={!form.getFieldValue('blocks').hasUndos}
+            onClick={() =>
+              form.setFieldsValue({
+                blocks: form
+                  .getFieldValue('blocks')
+                  .change()
+                  .undo().state,
+              })}
+          />
+          <Button
+            shape="circle"
+            size="small"
+            icon="enter"
+            disabled={!form.getFieldValue('blocks').hasRedos}
+            onClick={() =>
+              form.setFieldsValue({
+                blocks: form
+                  .getFieldValue('blocks')
+                  .change()
+                  .redo().state,
+              })}
+          />
+          <Link
+            className="ant-btn ant-btn-primary ant-btn-circle ant-btn-sm ant-btn-icon-only"
+            updateQuery={{ '@page': undefined }}
+          >
+            <Icon type="close" />
+          </Link>
+        </Actions>
         <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
         <Sidebar isOpen padding={0} title={title} subtitle={description}>
           <PageForm
@@ -73,15 +116,6 @@ export default class PageSidebar extends Component {
           />
         </Sidebar>
         <div>
-          <Menu mode="horizontal">
-            {form.isFieldsTouched() && (
-              <Menu.Item key="clone">
-                <Icon type="save" onClick={save} />
-                <span>Speichern</span>
-              </Menu.Item>
-            )}
-          </Menu>
-
           {render && render(P)}
           {!render && P}
         </div>
