@@ -5,6 +5,7 @@ import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
 import { Link } from 'olymp-router';
 import { Error404, Page, EditablePage } from './views';
+import { connect } from 'react-redux';
 
 export const EditablePageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname, loading, deviceWidth } = props;
@@ -55,8 +56,10 @@ export const EditablePageRoute = (props) => {
   );
 };
 
-export const PageRoute = (props) => {
-  const { Wrapped, flatNavigation, pathname, loading } = props;
+export const PageRoute = connect(({ auth }) => ({
+  isAuthenticated: !!auth.user,
+}))((props) => {
+  const { Wrapped, flatNavigation, pathname, loading, isAuthenticated } = props;
   const match = flatNavigation.find(
     item => pathname === item.pathname || decodeURI(unescape(item.pathname)) === pathname,
   );
@@ -64,11 +67,16 @@ export const PageRoute = (props) => {
   return (
     <Wrapped {...props} match={match}>
       {renderHelmet(match || {}, pathname)}
-      <Actions>
-        <Link className="ant-btn ant-btn-primary ant-btn-circle ant-btn-lg ant-btn-icon-only" updateQuery={{ '@page': 'tree' }}>
-          <Icon type="edit" />
-        </Link>
-      </Actions>
+      {isAuthenticated && (
+        <Actions>
+          <Link
+            className="ant-btn ant-btn-primary ant-btn-circle ant-btn-lg ant-btn-icon-only"
+            updateQuery={{ '@page': 'tree' }}
+          >
+            <Icon type="edit" />
+          </Link>
+        </Actions>
+      )}
       <ContentLoader height={600} isLoading={loading}>
         <PageTransition innerKey={id}>
           {match ? (
@@ -86,4 +94,4 @@ export const PageRoute = (props) => {
       </ContentLoader>
     </Wrapped>
   );
-};
+});
