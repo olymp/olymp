@@ -13,10 +13,10 @@
     "immutable": "^3.8.1",
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
-    "slate": "0.24.5",
+    "slate": "0.25.1",
     "slate-insert-block-on-enter": "^0.0.5",
-    "slate-plain-serializer": "^0.1.5",
-    "slate-react": "^0.1.5",
+    "slate-plain-serializer": "^0.1.8",
+    "slate-react": "^0.1.8",
     "slate-trailing-block": "^0.2.4"
   }
 }

@@ -262,13 +262,13 @@ setimmediate@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
 
-slate-base64-serializer@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/slate-base64-serializer/-/slate-base64-serializer-0.1.5.tgz#6206f2df41476af44b09c30d5a5b30dd79580363"
+slate-base64-serializer@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/slate-base64-serializer/-/slate-base64-serializer-0.1.8.tgz#846fcee82aa0b7875c75752ec2c0cdca9133acd2"
 
-slate-dev-logger@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/slate-dev-logger/-/slate-dev-logger-0.1.6.tgz#feaa51804933388e64d3803eecc736062a2c7800"
+slate-dev-logger@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/slate-dev-logger/-/slate-dev-logger-0.1.9.tgz#a021a94c23215bfef0fcf4d504553746908103a8"
 
 slate-insert-block-on-enter@^0.0.5:
   version "0.0.5"
@@ -277,21 +277,21 @@ slate-insert-block-on-enter@^0.0.5:
     debug "^2.2.0"
     slate "^0.22.0"
 
-slate-plain-serializer@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/slate-plain-serializer/-/slate-plain-serializer-0.1.5.tgz#58d1cb22e531b08f23ba2e8659bf59baabfa2391"
+slate-plain-serializer@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/slate-plain-serializer/-/slate-plain-serializer-0.1.8.tgz#4e42cc926ade3e0ea66b0f6a695a4edcea07dc45"
   dependencies:
-    slate-dev-logger "^0.1.6"
+    slate-dev-logger "^0.1.9"
 
-slate-prop-types@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/slate-prop-types/-/slate-prop-types-0.1.5.tgz#98ead5741d2cb7ebfe67754c9c7c26798b6de659"
+slate-prop-types@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/slate-prop-types/-/slate-prop-types-0.1.8.tgz#fd6ed21c2631c8d4b901fc28c9be2cb28f949392"
   dependencies:
-    slate-dev-logger "^0.1.6"
+    slate-dev-logger "^0.1.9"
 
-slate-react@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.1.5.tgz#8681c64dd8db6e0323b93156331aa56c3fdf0fe2"
+slate-react@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.1.8.tgz#aac1a49a3ecfeffdfd5e58e73a7fb438d8fc21bb"
   dependencies:
     debug "^2.3.2"
     get-window "^1.1.1"
@@ -301,18 +301,18 @@ slate-react@^0.1.5:
     prop-types "^15.5.8"
     react-portal "^3.1.0"
     selection-is-backward "^1.0.0"
-    slate-base64-serializer "^0.1.5"
-    slate-dev-logger "^0.1.6"
-    slate-plain-serializer "^0.1.5"
-    slate-prop-types "^0.1.5"
+    slate-base64-serializer "^0.1.8"
+    slate-dev-logger "^0.1.9"
+    slate-plain-serializer "^0.1.8"
+    slate-prop-types "^0.1.8"
 
 slate-trailing-block@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/slate-trailing-block/-/slate-trailing-block-0.2.4.tgz#6ce9525fa15f9f098d810d9312a4267799cd0e12"
 
-slate@0.24.5:
-  version "0.24.5"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.24.5.tgz#3bfd9827b55aa8152638c102fcde0a285523af7e"
+slate@0.25.1:
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.25.1.tgz#eb6aa2eae4b53a8aa529aa224c8f529eb4cb7abc"
   dependencies:
     debug "^2.3.2"
     direction "^0.1.5"
@@ -321,7 +321,7 @@ slate@0.24.5:
     is-empty "^1.0.0"
     is-plain-object "^2.0.4"
     lodash "^4.17.4"
-    slate-dev-logger "^0.1.6"
+    slate-dev-logger "^0.1.9"
     type-of "^2.0.1"
 
 slate@^0.22.0:

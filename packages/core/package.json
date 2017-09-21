@@ -20,7 +20,7 @@
     "compression": "^1.7.0",
     "connect-redis": "^3.3.0",
     "deep-assign": "^2.0.0",
-    "deepmerge": "^1.5.1",
+    "deepmerge": "^1.5.2",
     "dotenv": "^4.0.0",
     "duplicate-package-checker-webpack-plugin": "^1.2.5",
     "express": "^4.15.4",

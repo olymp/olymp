@@ -153,7 +153,7 @@ class Pages extends Component {
       console.log('To end of dropKey');
       this.onChange(value.change().moveNodeByKey(dragKey, dropKey, dropObj.nodes.size));
     }
-    return;
+    /* return;
     const { value } = this.props;
     const parent =
       info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.node;
@@ -169,7 +169,7 @@ class Pages extends Component {
     }
     this.onChange(
       value.change().moveNodeByKey(key, parent.key, info.dropPosition < 0 ? 0 : info.dropPosition),
-    );
+    );*/
   };
 
   getParent = (tree, levels) => {

@@ -1271,9 +1271,9 @@ deep-extend@^0.4.0, deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
 
-deepmerge@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.1.tgz#c053bf06fd7276f1994f70c09a0760cb61a56237"
+deepmerge@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.2.tgz#10499d868844cdad4fee0842df8c7f6f0c95a753"
 
 default-gateway@^2.0.2:
   version "2.0.2"
@@ -3856,9 +3856,9 @@ offline-plugin@^4.8.3:
     minimatch "^3.0.3"
     slash "^1.0.0"
 
-olymp-fela@^17.2.21:
-  version "17.2.21"
-  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.2.21.tgz#fab443dfd2c415ff6956eb3b1c2469fd5ddf1fc2"
+olymp-fela@^17.2.23:
+  version "17.2.23"
+  resolved "https://registry.yarnpkg.com/olymp-fela/-/olymp-fela-17.2.23.tgz#e79562fd248205e9a157dae26226a7932242a63a"
   dependencies:
     eventlistener "^0.0.1"
     fela "^5.2.0"
