@@ -688,12 +688,6 @@ rc-util@4.x, rc-util@^4.0.2, rc-util@^4.0.4:
     babel-runtime "6.x"
     shallowequal "^0.2.2"
 
-react-easy-swipe@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/react-easy-swipe/-/react-easy-swipe-0.0.13.tgz#c00e90dabed8d0878e8c8313b867e01435f0f637"
-  dependencies:
-    prop-types "^15.5.8"
-
 react-lazy-load@^3.0.10:
   version "3.0.12"
   resolved "https://registry.yarnpkg.com/react-lazy-load/-/react-lazy-load-3.0.12.tgz#2b841dfc3227e8119d033189d2c960ce384d0cb9"
@@ -711,14 +705,6 @@ react-modal2@^5.0.0:
     a11y-focus-store "^1.0.0"
     exenv "^1.2.0"
     prop-types "^15.5.8"
-
-react-responsive-carousel@^3.1.25:
-  version "3.1.25"
-  resolved "https://registry.yarnpkg.com/react-responsive-carousel/-/react-responsive-carousel-3.1.25.tgz#a724e0a3383e3c500b3eb2f96e64221c6fb8f095"
-  dependencies:
-    classnames "^2.2.5"
-    prop-types "^15.5.8"
-    react-easy-swipe "^0.0.13"
 
 react-slick@~0.15.0:
   version "0.15.4"

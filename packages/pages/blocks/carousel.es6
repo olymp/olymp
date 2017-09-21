@@ -17,12 +17,12 @@ class CarouselBlock extends Component {
     return (
       <div {...attributes} className={className}>
         <Carousel
-          height={300}
+          height={400}
           value={getData('value', [
             {
               url: 'https://lorempixel.com/960/300/cats/',
               width: 960,
-              height: 300,
+              height: 400,
             },
           ])}
         >

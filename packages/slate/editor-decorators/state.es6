@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { resetKeyGenerator, State } from 'slate';
+import { debounce } from 'lodash';
 import Plain from 'slate-plain-serializer';
 import { batch } from '../utils/batch';
 import { getHeaders } from '../utils/get-text';
@@ -33,72 +34,75 @@ export default (
     constructor(props) {
       super();
       this.rawValue = getValue(props);
-      this.value = parseValue(this.rawValue, initialState);
+      this.state = {
+        editorState: parseValue(this.rawValue, initialState),
+      };
     }
 
-    shouldComponentUpdate(props) {
+    componentWillReceiveProps(props) {
       const newValue = getValue(props);
       const oldValue = getValue(this.props);
       if (newValue !== oldValue && this.rawValue !== newValue) {
-        this.value = parseValue(newValue, undefined);
         this.rawValue = newValue;
-        return true;
-      } else if (props.readOnly !== this.props.readOnly) {
-        return true;
+        this.setState({
+          editorState: parseValue(newValue, undefined),
+        });
       }
-      return false;
     }
 
-    changeValue = (change) => {
+    debouncedChange = debounce(() => {
       const { onChangeHeadings } = this.props;
-      const value = change.state;
-      this.value = value;
-      this.forceUpdate();
+      const rawValue = this.rawValue;
+      // Flatten & filter
+      const flattenNodes = (nodes, level = 0) =>
+        nodes.reduce((arr, node) => {
+          const { type, kind, text } = node;
+          let newArr = [...arr];
+          const newNode = { ...node };
+          if (newNode.nodes) {
+            newArr = arr.concat(flattenNodes(newNode.nodes, level + 1));
+            delete newNode.nodes;
+          }
+
+          // Filter empty Blocks
+          if (
+            !(type === 'paragraph') &&
+            !(type === 'paragraph') &&
+            !(kind === 'text' && text === '')
+          ) {
+            newArr.push(newNode);
+          }
+
+          return newArr;
+        }, []);
+
+      if (rawValue && rawValue.nodes && flattenNodes(rawValue.nodes).length) {
+        if (onChangeHeadings) {
+          onChangeHeadings(getHeaders(rawValue.nodes));
+        }
+        changeValue(this.props, rawValue);
+      } else {
+        if (onChangeHeadings) {
+          onChangeHeadings(null);
+        }
+        changeValue(this.props, null);
+      }
+    }, 1000);
+
+    changeValue = (state) => {
+      const value = state;
+      this.setState({ editorState: value });
       if (changeValue) {
         const rawValue = value.toJSON().document;
-        if (JSON.stringify(this.rawValue) !== JSON.stringify(rawValue)) {
-          this.rawValue = rawValue;
-          this.batch(() => {
-            // Flatten & filter
-            const flattenNodes = (nodes, level = 0) =>
-              nodes.reduce((arr, node) => {
-                const { type, kind, text } = node;
-                let newArr = [...arr];
-                const newNode = { ...node };
-                if (newNode.nodes) {
-                  newArr = arr.concat(flattenNodes(newNode.nodes, level + 1));
-                  delete newNode.nodes;
-                }
-
-                // Filter empty Blocks
-                if (
-                  !(type === 'paragraph') &&
-                  !(type === 'paragraph') &&
-                  !(kind === 'text' && text === '')
-                ) {
-                  newArr.push(newNode);
-                }
-
-                return newArr;
-              }, []);
-
-            if (rawValue && rawValue.nodes && flattenNodes(rawValue.nodes).length) {
-              if (onChangeHeadings) {
-                onChangeHeadings(getHeaders(rawValue.nodes));
-              }
-              changeValue(this.props, rawValue, value);
-            } else {
-              if (onChangeHeadings) {
-                onChangeHeadings(null);
-              }
-              changeValue(this.props, null, value);
-            }
-          });
-        }
+        // if (JSON.stringify(this.rawValue) !== JSON.stringify(rawValue)) {
+        this.rawValue = rawValue;
+        this.debouncedChange();
+        // }
       }
     };
 
     render() {
-      return <Editor {...this.props} value={this.value} onChange={this.changeValue} />;
+      const { editorState } = this.state;
+      return <Editor {...this.props} value={editorState} onChange={this.changeValue} />;
     }
   };

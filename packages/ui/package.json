@@ -13,7 +13,6 @@
     "multirangeslider": "^0.5.2",
     "rc-banner-anim": "^0.5.16",
     "rc-tween-one": "^1.4.5",
-    "react-modal2": "^5.0.0",
-    "react-responsive-carousel": "^3.1.25"
+    "react-modal2": "^5.0.0"
   }
 }
