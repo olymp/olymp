@@ -126,42 +126,23 @@ const ChangeBlock = createComponent(
 @withBlockTypes
 class Pages extends Component {
   onDrop = (info) => {
-    const { reorder, move } = this.props;
+    const { value } = this.props;
     const parent =
-      info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.item;
-    const page = info.dragNode.props.item;
-    const pageId = page.pageId || page.id; // get real pageId in case of binding
+      info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.node;
+    const node = info.dragNode.props.node;
+    const key = node.key; // get real pageId in case of binding
 
     // Get all IDs of children in order
-    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
-    childIds.splice(info.dropPosition, 0, page.id);
+    const childKeys = (parent.nodes || []).map(child => child.key).filter(x => x !== node.key);
+    childKeys.splice(info.dropPosition, 0, node.key);
 
     // Check if new parent is itself??
-    if (parent.id === pageId) {
+    if (parent.key === key) {
       return;
     }
-    if (parent.id !== page.parentId) {
-      // parent changed
-      move({
-        variables: {
-          id: pageId,
-          parentId: parent.id,
-          sorting: childIds,
-        },
-      });
-    } else {
-      // just moved inside existing parent
-      // Disallow sort if parent has fixed sorting
-      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) {
-        return;
-      }
-      reorder({
-        variables: {
-          id: parent.id,
-          sorting: childIds,
-        },
-      });
-    }
+    this.onChange(
+      value.change().moveNodeByKey(key, parent.key, info.dropPosition < 0 ? 0 : info.dropPosition),
+    );
   };
 
   getParent = (tree, levels) => {
@@ -184,26 +165,18 @@ class Pages extends Component {
     if (key === 'delete') {
       this.onChange(value.change().removeNodeByKey(node.key));
     } else if (key.indexOf('transform:') === 0) {
-      this.onChange(
+      /* this.onChange(
         immutable(value)
           .set(`nodes.${path.join('.nodes.')}.type`, key.split(':')[1])
           .value(),
-      );
+      );*/
     } else if (key.indexOf('add:') === 0) {
-      this.onChange(
-        immutable(value)
-          .push(`nodes.${path.join('.nodes.')}.nodes`, {
-            type: key.split(':')[1],
-            kind: 'block',
-          })
-          .value(),
-      );
     } else if (key === 'unwrap') {
       this.onChange(value.change().unwrapBlockByKey(node.key));
     }
   };
 
-  hover = (node) => {
+  onClick = (node) => {
     const { onChange, value } = this.props;
     this.onChange(
       value
@@ -261,10 +234,10 @@ class Pages extends Component {
         return (
           <Tree.Node
             key={item.key}
-            item={item}
+            node={item}
             parent={parent}
             title={
-              <Title disabled={false} onMouseEnter={() => this.hover(item)}>
+              <Title disabled={false} onClick={() => this.onClick(item)}>
                 <a href="javascript:;">{label}</a>
                 <ChangeBlock
                   onClick={({ key }) => this.action(item, key)}
