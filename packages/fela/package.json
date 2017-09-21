@@ -1,5 +1,5 @@
 {
-  "version": "17.2.17",
+  "version": "17.2.20",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -22,7 +22,7 @@
     "fela-plugin-prefixer": "^5.0.8",
     "fela-plugin-remove-undefined": "^5.0.7",
     "fela-plugin-unit": "^5.0.7",
-    "olymp-utils": "^17.2.17",
+    "olymp-utils": "^17.2.20",
     "react-fela": "^5.3.0",
     "react-frame-component": "^1.1.1",
     "shortid": "^2.2.8",

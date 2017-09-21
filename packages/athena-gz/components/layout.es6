@@ -63,7 +63,7 @@ export const Header = withScroll(
         <Container>{children}</Container>
       </Layout.Header>
     ),
-    p => Object.keys(p),
+    ({ scrollTop, ...p }) => Object.keys(p),
   ),
 );
 
