@@ -14,9 +14,6 @@ import PageForm from './sidebar';
 @Form.create()
 @mutatePage
 @withQueryActions
-@connect(({ location }) => ({
-  tab: location.query['@page'] || '',
-}))
 @withPropsOnChange(['item', 'flatNavigation'], ({ item, flatNavigation }) => ({
   id: item.id || null,
   item: item || flatNavigation.find(page => page.slug === '/'),
@@ -25,6 +22,9 @@ import PageForm from './sidebar';
   blocks: item.blocks
     ? State.fromJSON({ document: item.blocks, kind: 'state' })
     : Plain.deserialize(''),
+}))
+@connect(({ location }) => ({
+  tab: location.query['@page'] || '',
 }))
 export default class PageSidebar extends Component {
   render() {

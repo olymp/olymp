@@ -1,4 +1,4 @@
-import { Block } from 'slate';
+import { Block, Text } from 'slate';
 
 const empty = () =>
   Block.create({
