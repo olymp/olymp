@@ -109,53 +109,32 @@ export default class AuthProfile extends Component {
               />
             )}
           </FormItem>
-          {auth.user.isAdmin &&
+          {auth.user.isAdmin && (
             <FormItem key="isAdmin" label="Administrator" {...layout}>
               <Checkbox checked={user.isAdmin} disabled>
                 {user.isAdmin ? 'ist Administrator' : 'ist kein Administrator'}
               </Checkbox>
-              {/* form.getFieldDecorator('isAdmin', {
-                initialValue: user.isAdmin,
-                valuePropName: 'checked',
-              })(
-                <Checkbox disabled={auth.user.id === user.id}>
-                  {user.isAdmin
-                    ? 'ist Administrator'
-                    : 'ist kein Administrator'}
-                </Checkbox>
-              ) */}
-            </FormItem>}
-          {/* <Form.Item key="password" label="Passwort" {...layout}>
-            {form.getFieldDecorator('password', {
-              rules: [{ validator: this.checkConfirm }],
-            })(<Input type="password" placeholder="Passwort" />)}
-          </Form.Item>
-            <FormItem key="totp" label="2-Faktor-Authentifizierung" {...layout}>
-              <Checkbox
-                checked={totp}
-                onChange={({ target: { checked } }) =>
-                  this.setState({ totp: checked })}
-                disabled
-              >
-                <Spin size="small" /> {totp ? 'Aktiviert' : 'Deaktiviert'}
-              </Checkbox>
-
-              {totp && <AuthTotp {...this.props} isOpen={totp} />}
-            </FormItem> */}
-          {extraFields
-            ? extraFields({
+            </FormItem>
+          )}
+          {extraFields ? (
+            extraFields({
               layout,
               getFieldDecorator: form.getFieldDecorator,
               state: this.state,
               setState: this.setState,
             })
-            : null}
+          ) : null}
 
           <Grid size={24}>
             <Grid.Item offsetMedium={7} medium={17}>
-              <Button type="primary" onClick={this.ok}>Speichern</Button>&nbsp;
-              {auth.user.id !== user.id &&
-                <Button disabled onClick={this.ok}>Löschen</Button>}
+              <Button type="primary" onClick={this.ok}>
+                Speichern
+              </Button>&nbsp;
+              {auth.user.id !== user.id && (
+                <Button disabled onClick={this.ok}>
+                  Löschen
+                </Button>
+              )}
             </Grid.Item>
           </Grid>
         </Form>

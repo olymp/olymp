@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
-import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
 import { createForgot } from '../redux';
@@ -47,9 +46,9 @@ export default class AuthForgot extends Component {
             />,
           )}
         </Form.Item>
-        <Modal.Links>
+        <Base.Links>
           <Link updateQuery={{ login: null, forgot: undefined }}>Zur Anmeldung</Link>
-        </Modal.Links>
+        </Base.Links>
       </Base>
     );
   }

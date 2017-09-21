@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
-import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
 import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
@@ -108,9 +107,9 @@ export default class AuthReset extends Component {
             </Link>.
           </p>
         )}
-        <Modal.Links>
+        <Base.Links>
           <Link updateQuery={{ login: null, reset: undefined }}>Zur Anmeldung</Link>
-        </Modal.Links>
+        </Base.Links>
       </Base>
     );
   }

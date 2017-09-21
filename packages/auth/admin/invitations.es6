@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp-utils';
-import { Link } from 'olymp-router';
 import withAuth from '../with-auth';
-import { Button, Form, Input, Icon } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
 import {
   Modal,
-  SplitView,
-  List,
   Panel,
   onEnterFocus,
   layout,
@@ -71,58 +68,6 @@ export default class AuthInvitations extends Component {
         subtitle="Einladungen sehen und verschicken"
       >
         <AuthInviationDetail id={null} />
-      </Modal>
-    );
-
-    return (
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        width="auto"
-        padding={0}
-        title="Einladungen"
-        subtitle="Einladungen sehen und verschicken"
-      >
-        <SplitView>
-          <List side="left">
-            <List.Title
-              buttons={
-                <Button size="small" onClick={() => console.log()}>
-                  <Link to={{ pathname, query: { '@invitations': 'new' } }}>
-                    <Icon type="plus" />
-                  </Link>
-                </Button>
-              }
-            >
-              Einladungen
-            </List.Title>
-            <List.Filter
-              placeholder="Filter ..."
-              onChange={search => this.setState({ search })}
-              value={search}
-            />
-            {items.map(item =>
-              <List.Item
-                to={{ pathname, query: { '@invitations': item.id } }}
-                key={item.id}
-                label={item.name}
-                description="Benutzer"
-              />
-            )}
-          </List>
-          {id && id === 'new' && <AuthInviationDetail id={null} />}
-          {id && id !== 'new' && <AuthInviationDetail key={id} id={id} />}
-        </SplitView>
-        <Modal.Links>
-          <Link
-            to={{
-              pathname,
-              query: { '@invitations': undefined, '@users': null },
-            }}
-          >
-            Benutzer verwalten
-          </Link>
-        </Modal.Links>
       </Modal>
     );
   }

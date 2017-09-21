@@ -32,14 +32,10 @@ export const Modal = ({
   ...props
 }) => {
   let copyright = null;
-  let links = null;
   let footer = null;
-  const children = Children.toArray(props.children).filter(child => {
+  const children = Children.toArray(props.children).filter((child) => {
     if (child.type && child.type === component.Copyright) {
       copyright = child;
-      return false;
-    } else if (child.type && child.type === component.Links) {
-      links = child;
       return false;
     } else if (child.type && child.type === component.Footer) {
       footer = child;
@@ -59,17 +55,17 @@ export const Modal = ({
         <AntModal visible={false} />
         {showLogo &&
         logo && (
-          <div className="logo">
-            {typeof logo === 'string' ? (
-              <img src={logo} />
-            ) : typeof logo === 'function' ? (
-              logo()
-            ) : (
-              logo
-            )}
-            <h3>{logoTitle}</h3>
-          </div>
-        )}
+        <div className="logo">
+              {typeof logo === 'string' ? (
+            <img src={logo} />
+              ) : typeof logo === 'function' ? (
+                logo()
+              ) : (
+                logo
+              )}
+              <h3>{logoTitle}</h3>
+            </div>
+          )}
         <Spin
           spinning={!!loading}
           tip={typeof loading === 'string' ? loading : 'Lädt ...'}
@@ -89,7 +85,6 @@ export const Modal = ({
             {footer}
           </div>
         </Spin>
-        {links && <component.Links>{links}</component.Links>}
         {copyright && <component.Copyright>{copyright}</component.Copyright>}
       </ReactModal>
     </Portal>
@@ -204,35 +199,8 @@ component.Footer = ({ children, className }) => (
 );
 component.Button = props => <AntButton {...props} />;
 
-component.Links = createComponent(
-  ({ theme }) => ({
-    textAlign: 'center',
-    '> a': {
-      display: 'inline-block',
-      minWidth: 200,
-      padding: '0 9px',
-      color: 'white',
-      opacity: 0.3,
-      onHover: {
-        opacity: 1,
-      },
-    },
-    '> div > a': {
-      display: 'inline-block',
-      minWidth: 200,
-      padding: '0 9px',
-      color: 'white',
-      opacity: 0.3,
-      onHover: {
-        opacity: 1,
-      },
-    },
-  }),
-  'div'
-);
-
 const TitleButtons = createComponent(
-  ({ theme, left, right, padding, width, showLogo }) => ({
+  ({ theme, left, right }) => ({
     margin: 0,
     lineHeight: '21px',
     position: 'absolute',

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp-utils';
 import { Link } from 'olymp-router';
-import { Countdown, Modal } from 'olymp-ui';
+import { Countdown } from 'olymp-ui';
 import { Form } from 'antd';
 import Base, { onSuccess, onError } from './base';
 
@@ -72,9 +72,9 @@ export default class AuthConfirm extends Component {
             </h1>
           </div>
         )}
-        <Modal.Links>
+        <Base.Links>
           <Link to={{ pathname, query: { login: null, confirm: undefined } }}>Zur Anmeldung</Link>
-        </Modal.Links>
+        </Base.Links>
       </Base>
     );
   }

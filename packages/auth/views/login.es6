@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
-import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
 import { createLogin } from '../redux';
@@ -34,7 +33,7 @@ export default class AuthLogin extends Component {
   };
 
   render() {
-    const { isOpen, email, form, onClose, totp, loginStatus } = this.props;
+    const { isOpen, email, form, onClose, totp } = this.props;
     const { getFieldDecorator } = form;
 
     return (
@@ -81,7 +80,8 @@ export default class AuthLogin extends Component {
             )}
           </Form.Item>
         )}
-        <Modal.Links>
+
+        <Base.Links>
           <Link query={({ login, totp, ...query }) => ({ ...query, register: null })}>
             Zur Registrierung
           </Link>
@@ -93,7 +93,7 @@ export default class AuthLogin extends Component {
           >
             Passwort vergessen?
           </Link>
-        </Modal.Links>
+        </Base.Links>
       </Base>
     );
   }

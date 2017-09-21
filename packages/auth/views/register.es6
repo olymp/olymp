@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { graphql, gql } from 'olymp-utils';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
-import { Modal } from 'olymp-ui';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaStar } from 'olymp-icons';
 import Base, {
@@ -60,15 +59,7 @@ export default class AuthRegister extends Component {
   };
 
   render() {
-    const {
-      isOpen,
-      form,
-      saving,
-      onClose,
-      extraFields,
-      data,
-      token,
-    } = this.props;
+    const { isOpen, form, onClose, extraFields, data, token } = this.props;
     const { getFieldDecorator } = form;
     const loading =
       token && !data.error && data.valid !== true && data.valid !== false;
@@ -83,22 +74,28 @@ export default class AuthRegister extends Component {
         loading={loading ? 'Prüfe Token ...' : false}
       >
         {!valid &&
-          token &&
-          <p style={{ textAlign: 'center' }}>
+        token && (
+        <p style={{ textAlign: 'center' }}>
             Das Token ist ungültig oder abgelaufen. Bitte{' '}
-            <Link query={({ confirm, ...query }) => ({ ...query, feedback: null })}>
+              <Link
+                query={({ confirm, ...query }) => ({ ...query, feedback: null })}
+              >
               kontaktieren Sie den Support
-            </Link>.
-          </p>}
+              </Link>.
+            </p>
+          )}
         {!valid &&
-          !token &&
-          <p style={{ textAlign: 'center' }}>
+        !token && (
+        <p style={{ textAlign: 'center' }}>
             Sie benötigen eine gültige Einladung um sich zu registrieren.{' '}
-            <Link query={({ confirm, ...query }) => ({ ...query, feedback: null })}>
+              <Link
+                query={({ confirm, ...query }) => ({ ...query, feedback: null })}
+              >
               Kontaktieren Sie den Support
-            </Link>.
-          </p>}
-        {valid &&
+              </Link>.
+            </p>
+          )}
+        {valid && (
           <Form.Item key="name" label="Name" {...layout}>
             {getFieldDecorator('name', {
               rules: [
@@ -112,8 +109,9 @@ export default class AuthRegister extends Component {
                 size="large"
               />
             )}
-          </Form.Item>}
-        {valid &&
+          </Form.Item>
+        )}
+        {valid && (
           <Form.Item key="email" label="E-Mail" {...layout}>
             {getFieldDecorator('email', {
               initialValue: data.email,
@@ -131,8 +129,9 @@ export default class AuthRegister extends Component {
                 addonAfter={<FaEnvelope size={10} />}
               />
             )}
-          </Form.Item>}
-        {valid &&
+          </Form.Item>
+        )}
+        {valid && (
           <Form.Item key="password" label="Passwort" {...layout}>
             {getFieldDecorator('password', {
               rules: [
@@ -148,8 +147,9 @@ export default class AuthRegister extends Component {
                 addonAfter={<FaStar size={10} />}
               />
             )}
-          </Form.Item>}
-        {valid &&
+          </Form.Item>
+        )}
+        {valid && (
           <Form.Item key="password2" label="Wiederholen" {...layout}>
             {getFieldDecorator('password2', {
               rules: [
@@ -168,20 +168,21 @@ export default class AuthRegister extends Component {
                 addonAfter={<FaStar size={10} />}
               />
             )}
-          </Form.Item>}
-        {valid && extraFields
-          ? extraFields({
+          </Form.Item>
+        )}
+        {valid && extraFields ? (
+          extraFields({
             layout,
             getFieldDecorator,
             state: this.state,
             setState: this.setState,
           })
-          : null}
-        <Modal.Links>
+        ) : null}
+        <Base.Links>
           <Link query={({ register, ...query }) => ({ ...query, login: null })}>
             Zur Anmeldung
           </Link>
-        </Modal.Links>
+        </Base.Links>
       </Base>
     );
   }
