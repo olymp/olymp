@@ -14,7 +14,7 @@ export default class GeosuggestEdit extends Component {
   };
   throttle = throttleInput(500);
 
-  performSearch = address => {
+  performSearch = (address) => {
     const { client } = this.props;
 
     return client
@@ -49,23 +49,21 @@ export default class GeosuggestEdit extends Component {
       });
   };
 
-  onAdd = code => {
+  onAdd = (code) => {
     const { onChange, value } = this.props;
     const { items } = this.state;
     this.text = null;
     const item = items.find(x => x.id === code);
-    onChange(code, item);
+    onChange(item);
   };
 
   renderOption = ({ id, formattedAddress }) => (
     <AutoComplete.Option key={id} text={formattedAddress}>
-      <div style={{ whiteSpace: 'initial', display: 'flex' }}>
-        {formattedAddress}
-      </div>
+      <div style={{ whiteSpace: 'initial', display: 'flex' }}>{formattedAddress}</div>
     </AutoComplete.Option>
   );
 
-  handleSearch = term => {
+  handleSearch = (term) => {
     const { items, value, onChange, refetch } = this.props;
     this.text = term;
     this.throttle(() => {
@@ -74,13 +72,12 @@ export default class GeosuggestEdit extends Component {
   };
 
   render() {
-    const { size, placeholder } = this.props;
+    const { value, size, placeholder } = this.props;
     const { items } = this.state;
-    console.log(items);
 
     return (
       <AutoComplete
-        value={this.text}
+        value={this.text || (value ? value.formattedAddress : '')}
         style={{ width: '100%' }}
         dataSource={(items || []).map(this.renderOption)}
         onSelect={this.onAdd}
