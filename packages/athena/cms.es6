@@ -3,7 +3,7 @@ import { withCollections } from 'olymp-collection';
 import { withRouter } from 'olymp-router';
 import withLocale from 'olymp-locale/de';
 import { connect } from 'react-redux';
-import { ThemeProvider } from 'olymp-fela';
+import { ThemeProvider, ScreenLoader } from 'olymp-fela';
 import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
 import { LightboxProvider } from 'olymp-cloudinary';
@@ -34,18 +34,20 @@ export default ({ auth, theme }) => (Wrapped) => {
   @withNavigation
   @withCollections
   @DragDropContext(HTML5Backend)
-  @connect(({ auth }) => ({
+  @connect(({ auth }, { isNavigationLoading }) => ({
     isAuthenticated: !!auth.user,
+    isLoading: auth.verifying || isNavigationLoading,
   }))
   class CMS extends Component {
     render() {
-      const { isAuthenticated, navigation } = this.props;
+      const { isAuthenticated, navigation, isLoading } = this.props;
       const nav = filterPublic(navigation);
-
       return (
         <ThemeProvider theme={theme}>
           <LightboxProvider>
-            {!isAuthenticated ? (
+            {isLoading ? (
+              <ScreenLoader show />
+            ) : !isAuthenticated ? (
               <NoAuth {...this.props} navigation={nav} wrapper={Wrapped} />
             ) : (
               <IfAuth {...this.props} navigation={nav} wrapper={Wrapped} />

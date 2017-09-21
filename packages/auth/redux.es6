@@ -1,10 +1,9 @@
 import { pending, rejected, resolved } from 'olymp-graphql';
 
-export const AUTH_ACTIONS = {
-  LOGIN: 'AUTH_LOGIN',
-  LOGOUT: 'AUTH_LOGOUT',
-};
-export const AUTH_VERIFY = 'AUTH_VERIFY';
+export const VERIFY = 'AUTH_VERIFY';
+export const LOGIN = 'AUTH_LOGIN';
+export const LOGOUT = 'AUTH_LOGOUT';
+export const SKIP = 'AUTH_SKIP';
 
 let attributes = `
   id
@@ -23,25 +22,30 @@ export const authReducer = (state = defaultState, action) => {
     return state;
   }
   switch (action.type) {
-    case pending(AUTH_VERIFY):
+    case SKIP:
+      return {
+        ...state,
+        verifying: false,
+      };
+    case pending(VERIFY):
       return {
         ...state,
         verifying: true,
       };
-    case resolved(AUTH_VERIFY):
+    case resolved(VERIFY):
       return {
         ...state,
         user: action.payload,
         verifying: false,
       };
-    case rejected(AUTH_VERIFY):
+    case rejected(VERIFY):
       return {
         ...state,
         verifying: false,
       };
-    case resolved(AUTH_ACTIONS.LOGIN):
+    case resolved(LOGIN):
       return { ...state, user: action.payload };
-    case resolved(AUTH_ACTIONS.LOGOUT):
+    case resolved(LOGOUT):
       return { ...state, user: null };
     default:
       return state;
@@ -49,42 +53,46 @@ export const authReducer = (state = defaultState, action) => {
 };
 
 export const authMiddleware = ({ dispatch, getState }) => nextDispatch => (action) => {
-  if (typeof localStorage !== 'undefined' && action.type === resolved(AUTH_VERIFY)) {
+  if (typeof localStorage !== 'undefined' && action.type === resolved(VERIFY)) {
     if (action.payload) {
       localStorage.setItem('token', action.payload.token);
     } else {
       localStorage.removeItem('token');
     }
   }
-  if (typeof localStorage !== 'undefined' && action.type === rejected(AUTH_VERIFY)) {
+  if (typeof localStorage !== 'undefined' && action.type === rejected(VERIFY)) {
     localStorage.removeItem('token');
   }
-  if (typeof localStorage !== 'undefined' && action.type === resolved(AUTH_ACTIONS.LOGIN)) {
+  if (typeof localStorage !== 'undefined' && action.type === resolved(LOGIN)) {
     localStorage.setItem('token', action.payload.token);
   }
-  if (typeof localStorage !== 'undefined' && action.type === rejected(AUTH_ACTIONS.LOGIN)) {
+  if (typeof localStorage !== 'undefined' && action.type === rejected(LOGIN)) {
     localStorage.removeItem('token');
   }
-  if (typeof localStorage !== 'undefined' && action.type === resolved(AUTH_ACTIONS.LOGOUT)) {
+  if (typeof localStorage !== 'undefined' && action.type === resolved(LOGOUT)) {
     localStorage.removeItem('token');
   }
 
   return nextDispatch(action);
 };
 
-export const createVerify = dispatch => payload =>
-  dispatch({
-    type: AUTH_VERIFY,
-    payload,
-    query: `
-      query verify {
-        user: verify {
-          ${attributes}
+export const createVerify = dispatch => () => {
+  if (typeof localStorage !== 'undefined' && localStorage.getItem('token')) {
+    return dispatch({
+      type: VERIFY,
+      query: `
+        query verify {
+          user: verify {
+            ${attributes}
+          }
         }
-      }
-    `,
+      `,
+    });
+  }
+  return dispatch({
+    type: SKIP,
   });
-
+};
 export const createSave = dispatch => payload =>
   dispatch({
     type: 'AUTH_SAVE',
@@ -135,7 +143,7 @@ export const createRegister = dispatch => payload =>
 
 export const createLogin = dispatch => payload =>
   dispatch({
-    type: AUTH_ACTIONS.LOGIN,
+    type: LOGIN,
     mutation: `
       mutation login($email: Email, $password: String, $totp: String) {
         user: login(email: $email, password: $password, totp: $totp) {
@@ -148,7 +156,7 @@ export const createLogin = dispatch => payload =>
 
 export const createLogout = dispatch => () =>
   dispatch({
-    type: AUTH_ACTIONS.LOGOUT,
+    type: LOGOUT,
     mutation: `
       mutation logout {
         logout

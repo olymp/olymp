@@ -1,10 +1,6 @@
 import { gql, graphql } from 'olymp-utils';
 
-const isNew = props =>
-  props.query['@page-form'] === null ||
-  props.query['@page-tree'] === null ||
-  props.query['@page'] === null;
-const getId = (id, query) => query['@page'] || query['@page-tree'] || query['@page-form'] || id;
+const isNew = props => props.pathname === '__new';
 
 const queryOne = gql`
   query page($id: String) {
@@ -32,13 +28,13 @@ const queryOne = gql`
   }
 `;
 export default graphql(queryOne, {
-  options: ({ id, pageId, query }) => ({
-    variables: { id: pageId || getId(id, query) },
-    fetchPolicy: isNew({ query }) ? 'cache-only' : undefined,
+  options: ({ id, pageId, pathname }) => ({
+    variables: { id: pageId || id },
+    fetchPolicy: pathname === '/__new' ? 'cache-only' : undefined,
   }),
   props: ({ ownProps, data }) => ({
     ...ownProps,
-    item: (isNew(ownProps) ? {} : data.item) || {},
+    item: (ownProps.pathname === '/__new' ? {} : data.item) || {},
     data,
   }),
 });

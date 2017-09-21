@@ -198,7 +198,7 @@ class Navigation extends Component {
               </span>
             }
           >
-            <Menu.Item key="@page-form">
+            <Menu.Item key="@page=form">
               <span>Seite</span>
             </Menu.Item>
             {collectionList.map(collection => (

@@ -54,7 +54,7 @@ export const withQueryParam = key =>
 
 export const withQueryParams = arrayOfParams =>
   connect(({ location }) => ({
-    ...arrayOfParams.reduce((state, key) => ({ ...state, [key]: location[key] }), {}),
+    ...arrayOfParams.reduce((state, key) => ({ ...state, [key]: location.query[key] }), {}),
   }));
 
 export const withRouter = (WrappedComponent) => {

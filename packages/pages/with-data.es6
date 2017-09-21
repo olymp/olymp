@@ -79,7 +79,7 @@ export const withNavigation = (Wrapped) => {
       const { data } = this.props;
       const items = (data && data.items) || [];
       const flatNavigation = [];
-      let loading = false;
+      let loading = data.loading;
 
       const navigation = unflatten(items, {
         pathProp: 'pathname',
@@ -87,7 +87,7 @@ export const withNavigation = (Wrapped) => {
           const newChildren = children.reduce((state, child) => {
             const data = this.props[`nav_${child.id}`];
             if (data) {
-              loading = loading && data.loading;
+              loading = loading || data.loading;
               (data.items || []).forEach((item) => {
                 const slug = child.slug ? interpolate(child.slug, item) : item.slug;
                 state.push({
@@ -130,7 +130,7 @@ export const withNavigation = (Wrapped) => {
       return (
         <Wrapped
           {...this.props}
-          loading={loading}
+          isNavigationLoading={loading}
           navigation={!loading ? navigation : []}
           flatNavigation={!loading ? flatNavigation : []}
         />

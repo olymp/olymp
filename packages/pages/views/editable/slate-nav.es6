@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
-import { Icon, Tooltip, Dropdown, Menu } from 'antd';
+import { Icon, Tooltip, Dropdown, Menu, Button } from 'antd';
 import immutable from 'olymp-utils/immutable';
+import { sortBy } from 'lodash';
 import { withBlockTypes } from 'olymp-slate';
 
 const Title = createComponent(
@@ -17,6 +18,35 @@ const Title = createComponent(
   p => <Tree.Title {...p} />,
   p => Object.keys(p),
 );
+
+const getMenuItems = (blockTypes, prefix) => {
+  prefix = prefix ? `${prefix}:` : '';
+  const types = Object.keys(blockTypes).map(key => ({
+    ...blockTypes[key].slate,
+    type: key,
+  }));
+  const categories = {};
+  const menuItems = [];
+  sortBy(types, ['category', 'label']).forEach((action) => {
+    const item = (
+      <Menu.Item key={`${prefix}${action.type}`}>{action.label || action.type}</Menu.Item>
+    );
+    if (action.category) {
+      if (!categories[action.category]) {
+        categories[action.category] = [];
+      }
+      categories[action.category].push(item);
+    } else {
+      menuItems.push(item);
+    }
+  });
+  return [
+    ...Object.keys(categories).map(key => (
+      <Menu.SubMenu title={key}>{categories[key]}</Menu.SubMenu>
+    )),
+    ...menuItems,
+  ];
+};
 
 const BlockMenu = createComponent(
   ({ theme }) => ({
@@ -32,33 +62,21 @@ const BlockMenu = createComponent(
   ({ className, type, tooltip, onClick, blockTypes }) => (
     <Dropdown
       overlay={
-        <Menu>
-          <Menu.SubMenu title="Davor">
+        <Menu onClick={onClick}>
+          <Menu.SubMenu title="Davor einfügen">
             <Menu.Item key="pre">
               <span>Seite</span>
             </Menu.Item>
-            {Object.keys(blockTypes).map(key => (
-              <Menu.Item key={`pre:${key}`}>
-                <span>{blockTypes[key].slate.label || key}</span>
-              </Menu.Item>
-            ))}
+            {getMenuItems(blockTypes, 'before')}
           </Menu.SubMenu>
-          <Menu.SubMenu title="Danach">
+          <Menu.SubMenu title="Danach einfügen">
             <Menu.Item key="post">
               <span>Seite</span>
             </Menu.Item>
-            {Object.keys(blockTypes).map(key => (
-              <Menu.Item key={`post:${key}`}>
-                <span>{blockTypes[key].slate.label || key}</span>
-              </Menu.Item>
-            ))}
+            {getMenuItems(blockTypes, 'after')}
           </Menu.SubMenu>
           <Menu.Divider />
-          {Object.keys(blockTypes).map(key => (
-            <Menu.Item key={key}>
-              <span>{blockTypes[key].slate.label || key}</span>
-            </Menu.Item>
-          ))}
+          {getMenuItems(blockTypes, 'add')}
         </Menu>
       }
     >
@@ -69,8 +87,7 @@ const BlockMenu = createComponent(
   ),
   p => Object.keys(p),
 );
-
-const Badge = createComponent(
+const ChangeBlock = createComponent(
   ({ theme }) => ({
     borderRadius: '50%',
     size: 23,
@@ -81,12 +98,27 @@ const Badge = createComponent(
       margin: '0 !important',
     },
   }),
-  ({ className, type, tooltip, onClick }) => (
-    <Tooltip title={tooltip}>
+  ({ className, type, tooltip, onClick, blockTypes }) => (
+    <Dropdown
+      overlay={
+        <Menu onClick={onClick}>
+          <Menu.SubMenu title="Umwandeln">{getMenuItems(blockTypes, 'transform')}</Menu.SubMenu>
+          <Menu.Item key="duplicate">
+            <span>Duplizieren</span>
+          </Menu.Item>
+          <Menu.Item key="delete">
+            <span>Löschen</span>
+          </Menu.Item>
+          <Menu.Item key="unwrap">
+            <span>Entpacken</span>
+          </Menu.Item>
+        </Menu>
+      }
+    >
       <a href="javascript:;" className={className} onClick={onClick}>
         <Icon type={type} />
       </a>
-    </Tooltip>
+    </Dropdown>
   ),
   p => Object.keys(p),
 );
@@ -145,35 +177,55 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
-  addBlock = (path) => {
-    console.log('ADD', path);
+  action = (node, key) => {
+    const { onChange, value } = this.props;
+    if (key === 'delete') {
+      onChange(value.change().removeNodeByKey(node.key));
+    } else if (key.indexOf('transform:') === 0) {
+      onChange(
+        immutable(value)
+          .set(`nodes.${path.join('.nodes.')}.type`, key.split(':')[1])
+          .value(),
+      );
+    } else if (key.indexOf('add:') === 0) {
+      onChange(
+        immutable(value)
+          .push(`nodes.${path.join('.nodes.')}.nodes`, { type: key.split(':')[1], kind: 'block' })
+          .value(),
+      );
+    } else if (key === 'unwrap') {
+      onChange(value.change().unwrapBlockByKey(node.key));
+    }
   };
 
-  deleteBlock = (path) => {
+  hover = (node) => {
     const { onChange, value } = this.props;
     onChange(
-      immutable(value)
-        .del(`nodes.${path.join('.nodes.')}`)
-        .value(),
+      value
+        .change()
+        .moveToRangeOf(node)
+        .focus(),
     );
+    document.querySelector(`[data-key="${node.key}"]`).scrollIntoView();
   };
 
-  getItems = (block, parent, path = []) => {
+  getItems = (block, parent) => {
     const blockTypes = this.props.blockTypes;
-    if (!block || !block.nodes || !block.nodes.length) {
+    if (!block || !block.nodes || !block.nodes.size) {
       return undefined;
     }
     const nodes = block.nodes
       .map((item, index) => {
-        const newPath = [...path, index];
         let label;
         if (blockTypes[item.type]) {
           label = (blockTypes[item.type].slate && blockTypes[item.type].slate.label) || item.type;
         } else if (item.type === 'paragraph') {
           label = 'Paragraph';
+        } else if (item.type === 'line') {
+          label = 'Zeile';
         } else if (item.kind === 'text') {
           label = 'Text';
-          if (!item.text) {
+          if (!item.text.trim()) {
             return null;
           }
         } else {
@@ -181,30 +233,32 @@ class Pages extends Component {
         }
         return (
           <Tree.Node
-            key={newPath.join('-')}
+            key={item.key}
             item={item}
             parent={parent}
-            path={newPath}
             title={
-              <Title disabled={false}>
+              <Title disabled={false} onMouseEnter={() => this.hover(item)}>
                 <a href="javascript:;">{label}</a>
-                <BlockMenu
-                  onClick={this.addBlock}
-                  type="plus"
-                  tooltip="Umwandeln"
+                <ChangeBlock
+                  onClick={({ key }) => this.action(item, key)}
+                  type="down"
                   blockTypes={blockTypes}
                 />
-                <Badge onClick={() => this.deleteBlock(newPath)} type="delete" tooltip="Löschen" />
+                <BlockMenu
+                  onClick={({ key }) => this.action(item, key)}
+                  type="plus"
+                  blockTypes={blockTypes}
+                />
               </Title>
             }
           >
-            {this.getItems(item, block, newPath)}
+            {this.getItems(item, block)}
           </Tree.Node>
         );
       })
       .filter(x => x);
 
-    if (!nodes.length) {
+    if (!nodes.size) {
       return undefined;
     }
     return nodes;
@@ -212,7 +266,6 @@ class Pages extends Component {
 
   render() {
     const { value, selected } = this.props;
-
     return (
       <Tree
         selectedKeys={selected}
@@ -222,7 +275,7 @@ class Pages extends Component {
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
-        {this.getItems(value)}
+        {this.getItems(value.document)}
       </Tree>
     );
   }

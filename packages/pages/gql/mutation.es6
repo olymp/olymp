@@ -7,6 +7,7 @@ const ok = (props, mutate) => () => {
     if (err) {
       return onError(err);
     }
+    console.log(values);
     mutate({
       variables: {
         id: item.id,
@@ -33,7 +34,7 @@ const ok = (props, mutate) => () => {
           }
           parentId = parent.parentId;
         }
-        router.push({ pathname: slug, query: { '@page-form': item.id } });
+        router.push({ pathname: slug, query: { ...query, '@parent': undefined } });
       })
       .catch(onError);
   });

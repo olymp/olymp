@@ -4,11 +4,11 @@ import { renderHelmet } from 'olymp-utils';
 import { Error404, Page, EditablePage } from './views';
 
 export const EditablePageRoute = (props) => {
-  const { Wrapped, flatNavigation, query, pathname, loading, deviceWidth } = props;
+  const { Wrapped, flatNavigation, pathname, loading, deviceWidth } = props;
   const match = flatNavigation.find(item => pathname === item.pathname);
   const { id, binding, pageId, aliasId, bindingId } = match || {};
 
-  if (!match) {
+  if (!match && pathname !== '/__new') {
     return (
       <ContentLoader height={600} isLoading={loading}>
         <EditablePage

@@ -147,7 +147,6 @@ class Pages extends Component {
         pathname: item.pathname,
         query: {
           ...query,
-          '@page': item.pageId || item.id,
           parent: undefined,
         },
       };
@@ -155,7 +154,6 @@ class Pages extends Component {
         pathname: item.pathname,
         query: {
           ...query,
-          '@page': null,
           parent: undefined,
           modal: null,
           [`@${lowerCase(item.binding && item.binding.type)}`]: item.bindingId,
@@ -172,7 +170,7 @@ class Pages extends Component {
               <Link to={isBinding ? bindingRoute : route}>{item.name || 'Kein Name'}</Link>
 
               <Button
-                to={{ query: { ...query, '@page': 'new', parent: item.id } }}
+                to={{ pathname: '/__new', query: { '@page': 'form', '@parent': item.id } }}
                 type="plus"
                 showOnHover
               />

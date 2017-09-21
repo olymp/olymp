@@ -126,7 +126,7 @@ export default class CMSAuth extends Component {
                 />)}
             />
             <Route
-              match={query['@page'] !== undefined || query['@page-tree'] !== undefined || query['@page-form'] !== undefined}
+              match={query['@page'] !== undefined}
               render={() =>
                 (<EditablePageRoute
                   {...this.props}

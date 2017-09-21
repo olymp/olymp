@@ -7,18 +7,11 @@ export const auth = (obj = {}) => (WrappedComponent) => {
   if (attributes) {
     setAttributes(attributes);
   }
-  @connect(
-    ({ auth }) => ({
-      tryVerify: !auth.user && typeof localStorage !== 'undefined' && localStorage.getItem('token'),
-    }),
-    dispatch => ({ verify: createVerify(dispatch) }),
-  )
+  @connect(null, dispatch => ({ verify: createVerify(dispatch) }))
   class WithAuth extends Component {
     constructor(props) {
       super(props);
-      if (props.tryVerify) {
-        props.verify();
-      }
+      props.verify();
     }
     render() {
       return <WrappedComponent {...this.props} />;

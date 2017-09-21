@@ -193,11 +193,7 @@ const getTopMost = (blockTypes, change, prev) => {
   return getTopMost(blockTypes, change, next);
 };
 
-@withBlockTypes
-@withSlateState()
-@useBlocks(options) // @withToolbar(options)
-// @withSidebar(options)
-export default class SlateEditor extends Component {
+class SlateEditor extends Component {
   plugins = [
     withAutoMarkdown(options),
     TrailingBlock({ type: 'paragraph' }),
@@ -298,3 +294,6 @@ export default class SlateEditor extends Component {
     );
   };
 }
+
+export const SlateMate = withBlockTypes(withSlateState()(useBlocks(options)(SlateEditor)));
+export const StatelessSlateMate = withBlockTypes(useBlocks(options)(SlateEditor));

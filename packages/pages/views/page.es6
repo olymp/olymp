@@ -5,13 +5,13 @@ import { queryPage } from '../gql';
 import { mapProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 
-const Page = withBlockTypes(props =>
-  (<ContentLoader isLoading={props.isLoading}>
+const Page = withBlockTypes(props => (
+  <ContentLoader isLoading={props.isLoading}>
     <SlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
       {props.children}
     </SlateMate>
-  </ContentLoader>)
-);
+  </ContentLoader>
+));
 Page.propTypes = {
   item: object,
   onChange: func,
@@ -27,6 +27,6 @@ Page.WithData = queryPage(
     isLoading: data.loading,
     item,
     ...rest,
-  }))(Page)
+  }))(Page),
 );
 export default Page;
