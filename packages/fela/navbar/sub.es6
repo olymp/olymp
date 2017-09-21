@@ -27,7 +27,7 @@ export default createComponent(
       },
     },
   }),
-  ({ className, pages, children, ...props }) =>
+  ({ className, pages, children, ...props }) => (
     <div className={className}>
       {pages.map(({ children: childPages, ...page }, i) =>
         props.renderItem({
@@ -36,10 +36,11 @@ export default createComponent(
           pages: childPages,
           key: page.id || i,
           ...props,
-        })
+        }),
       )}
 
       {Children.map(children, child => cloneElement(child, props))}
-    </div>,
-  p => Object.keys(p)
+    </div>
+  ),
+  p => Object.keys(p),
 );

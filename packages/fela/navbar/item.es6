@@ -2,6 +2,7 @@ import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { fade } from 'olymp-fela';
+import cn from 'classnames';
 import Link from './link';
 import { FaAngleDown, FaAngleLeft, FaAngleRight } from 'olymp-icons';
 
@@ -12,12 +13,14 @@ const Icon = createComponent(
     right: theme.space3,
   }),
   ({ className, vertically, right }) =>
-    !vertically
-      ? <FaAngleDown className={className} size={15} />
-      : right
-        ? <FaAngleLeft className={className} size={15} />
-        : <FaAngleRight className={className} size={15} />,
-  p => Object.keys(p)
+    (!vertically ? (
+      <FaAngleDown className={className} size={15} />
+    ) : right ? (
+      <FaAngleLeft className={className} size={15} />
+    ) : (
+      <FaAngleRight className={className} size={15} />
+    )),
+  p => Object.keys(p),
 );
 
 const NavItem = createComponent(
@@ -56,20 +59,18 @@ const NavItem = createComponent(
     right,
     pages,
     onClick,
+    level,
     onItemMouseEnter,
-    ...props,
-  }) =>
+    ...props
+  }) => (
     <div
-      className={className}
-      onMouseEnter={
-        onItemMouseEnter ? () => onItemMouseEnter(props) : undefined
-      }
+      className={cn(className, 'o-nav-item', `o-nav-item-lvl-${level}`)}
+      onMouseEnter={onItemMouseEnter ? () => onItemMouseEnter(props) : undefined}
     >
       <Link to={pathname} onClick={onClick} inverse={inverse}>
         {title}
         {pages &&
-          !!pages.length &&
-          <Icon vertically={vertically} right={right} inverse={inverse} />}
+        !!pages.length && <Icon vertically={vertically} right={right} inverse={inverse} />}
       </Link>
 
       {pages &&
@@ -79,14 +80,16 @@ const NavItem = createComponent(
           inverse,
           vertically,
           right,
+          level: level + 1,
           pages,
           sub: true,
         })}
       {Children.map(children, child =>
-        cloneElement(child, { ...props, inverse, vertically, right, sub: true })
+        cloneElement(child, { ...props, inverse, vertically, right, sub: true, level: level + 1 }),
       )}
-    </div>,
-  p => Object.keys(p)
+    </div>
+  ),
+  p => Object.keys(p),
 );
 NavItem.displayName = 'Navbar.Item';
 NavItem.propTypes = {
@@ -100,6 +103,7 @@ NavItem.propTypes = {
   onClick: PropTypes.func,
 };
 NavItem.defaultProps = {
+  level: 0,
   to: undefined,
   mega: null,
   onClick: undefined,

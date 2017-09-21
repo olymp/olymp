@@ -11,7 +11,7 @@ import Brand from './brand';
 const renderItem = props => <Item {...props} />;
 const renderNav = props => <Nav {...props} sub />;
 const WithContainer = ({ container, ...rest }) =>
-  container ? <Container {...rest} /> : <div {...rest} />;
+  (container ? <Container {...rest} /> : <div {...rest} />);
 
 const Inner = createComponent(
   ({ vertically }) => ({
@@ -51,7 +51,7 @@ const Navbar = createComponent(
     vertically,
     ...props,
   }) =>
-    <nav className={className}>
+    (<nav className={className}>
       <WithContainer container={container}>
         <Inner vertically={vertically}>
           {brand &&
@@ -83,7 +83,7 @@ const Navbar = createComponent(
           )}
         </Inner>
       </WithContainer>
-    </nav>,
+    </nav>),
   p => Object.keys(p)
 );
 Navbar.displayName = 'Navbar';

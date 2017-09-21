@@ -14,6 +14,7 @@ const GridItem = createComponent(
     medium,
     large,
     huge,
+    padding,
     paddingMini,
     paddingSmall,
     paddingMedium,
@@ -23,6 +24,7 @@ const GridItem = createComponent(
     relative,
   }) => ({
     float: 'left',
+    padding,
     position: relative ? 'relative' : undefined,
     height,
     width: `${100 / gridSize * (mini || gridSize)}%`,

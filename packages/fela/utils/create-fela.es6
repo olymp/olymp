@@ -38,6 +38,7 @@ export default (ua) => {
       unit(),
       namedMediaQuery({
         // From
+        ifHugeUp: '@media (min-width: 1200px)',
         ifLargeUp: '@media (min-width: 992px)',
         ifMediumUp: '@media (min-width: 768px)',
         ifSmallUp: '@media (min-width: 480px)',
