@@ -9,33 +9,32 @@ import tinycolor from 'tinycolor2';
 ReactModal2.getApplicationElement = () => document.getElementById('app');
 
 // isOpen={isOpen} transitionSpeed={1000} on={ReactModal}
-const ReactModal = ({ className, ...props }) =>
-  <ReactModal2 backdropClassName={className} {...props} />;
+const ReactModal = ({ className, ...props }) => (
+  <ReactModal2 backdropClassName={className} {...props} />
+);
 
-export const Modal = (
-  {
-    isOpen,
-    showLogo,
-    leftButtons,
-    rightButtons,
-    className,
-    subtitle,
-    onClose,
-    onCancel,
-    okText,
-    cancelText,
-    onOk,
-    title,
-    loading,
-    logo,
-    logoTitle,
-    ...props
-  },
-) => {
+export const Modal = ({
+  isOpen,
+  showLogo,
+  leftButtons,
+  rightButtons,
+  className,
+  subtitle,
+  onClose,
+  onCancel,
+  okText,
+  cancelText,
+  onOk,
+  title,
+  loading,
+  logo,
+  logoTitle,
+  ...props
+}) => {
   let copyright = null;
   let links = null;
   let footer = null;
-  const children = Children.toArray(props.children).filter((child) => {
+  const children = Children.toArray(props.children).filter(child => {
     if (child.type && child.type === component.Copyright) {
       copyright = child;
       return false;
@@ -48,9 +47,8 @@ export const Modal = (
     }
     return true;
   });
-  return !isOpen
-    ? null
-    : <Portal isOpened>
+  return !isOpen ? null : (
+    <Portal isOpened>
       <ReactModal
         onClose={onCancel || onClose}
         closeOnEsc
@@ -60,66 +58,54 @@ export const Modal = (
       >
         <AntModal visible={false} />
         {showLogo &&
-            logo &&
-            <div className="logo">
-              {typeof logo === 'string'
-                ? <img src={logo} />
-                : typeof logo === 'function' ? logo() : logo}
-              <h3>
-                {logoTitle}
-              </h3>
-            </div>}
+        logo && (
+          <div className="logo">
+            {typeof logo === 'string' ? (
+              <img src={logo} />
+            ) : typeof logo === 'function' ? (
+              logo()
+            ) : (
+              logo
+            )}
+            <h3>{logoTitle}</h3>
+          </div>
+        )}
         <Spin
           spinning={!!loading}
           tip={typeof loading === 'string' ? loading : 'Lädt ...'}
         >
           <div className="ant-modal-content">
             <div className="ant-modal-header">
-              {leftButtons &&
-              <TitleButtons left>
-                {leftButtons}
-              </TitleButtons>}
-              {rightButtons &&
-              <TitleButtons right>
-                {rightButtons}
-              </TitleButtons>}
-              <div className="ant-modal-title">
-                {title}
-              </div>
-              {subtitle &&
-              <div className="ant-modal-subtitle">
-                {subtitle}
-              </div>}
+              {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+              {rightButtons && (
+                <TitleButtons right>{rightButtons}</TitleButtons>
+              )}
+              <div className="ant-modal-title">{title}</div>
+              {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
             </div>
-            {Children.toArray(children).length > 0 &&
-            <div className="ant-modal-body">
-              {children}
-            </div>}
+            {Children.toArray(children).length > 0 && (
+              <div className="ant-modal-body">{children}</div>
+            )}
             {footer}
           </div>
         </Spin>
-        {links &&
-        <component.Links>
-          {links}
-        </component.Links>}
-        {copyright &&
-        <component.Copyright>
-          {copyright}
-        </component.Copyright>}
+        {links && <component.Links>{links}</component.Links>}
+        {copyright && <component.Copyright>{copyright}</component.Copyright>}
       </ReactModal>
-    </Portal>;
+    </Portal>
+  );
 };
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
     ...getAntStyle({ theme }),
     backgroundColor: theme.color,
-    background: `linear-gradient(0deg, ${theme.colorStart ||
+    background: `linear-gradient(0deg, ${theme.colorEnd ||
       tinycolor(theme.color)
         .darken(6)
         .spin(-6)
         .setAlpha(bottomTransparency || 1)
-        .toRgbString()}, ${theme.colorEnd ||
+        .toRgbString()}, ${theme.colorStart ||
       tinycolor(theme.color)
         .lighten(6)
         .spin(12)
@@ -213,10 +199,9 @@ component.Copyright = createComponent(
   'div'
 );
 
-component.Footer = ({ children, className }) =>
-  (<div className={cn('ant-modal-footer', className)}>
-    {children}
-  </div>);
+component.Footer = ({ children, className }) => (
+  <div className={cn('ant-modal-footer', className)}>{children}</div>
+);
 component.Button = props => <AntButton {...props} />;
 
 component.Links = createComponent(

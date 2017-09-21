@@ -4,24 +4,24 @@ import tinycolor from 'tinycolor2';
 import Portal from '../portal';
 
 const Modal = ({ className, logo, show }) =>
-  (show ? (
+  show ? (
     <Portal>
       <div className={className}>
         <div>{logo}</div>
       </div>
     </Portal>
-  ) : null);
+  ) : null;
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
     backgroundColor: theme.color,
     zIndex: 1000000,
-    background: `linear-gradient(0deg, ${theme.colorStart ||
+    background: `linear-gradient(0deg, ${theme.colorEnd ||
       tinycolor(theme.color)
         .darken(6)
         .spin(-6)
         .setAlpha(bottomTransparency || 1)
-        .toRgbString()}, ${theme.colorEnd ||
+        .toRgbString()}, ${theme.colorStart ||
       tinycolor(theme.color)
         .lighten(6)
         .spin(12)
@@ -58,7 +58,7 @@ const component = createComponent(
     },
   }),
   Modal,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export default component;
