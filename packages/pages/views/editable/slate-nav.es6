@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
-import { Icon, Tooltip, Dropdown, Menu, Button } from 'antd';
+import { Icon, Dropdown, Menu } from 'antd';
 import immutable from 'olymp-utils/immutable';
 import { sortBy } from 'lodash';
 import { withBlockTypes } from 'olymp-slate';
@@ -16,7 +16,7 @@ const Title = createComponent(
     },
   }),
   p => <Tree.Title {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const getMenuItems = (blockTypes, prefix) => {
@@ -27,9 +27,11 @@ const getMenuItems = (blockTypes, prefix) => {
   }));
   const categories = {};
   const menuItems = [];
-  sortBy(types, ['category', 'label']).forEach((action) => {
+  sortBy(types, ['category', 'label']).forEach(action => {
     const item = (
-      <Menu.Item key={`${prefix}${action.type}`}>{action.label || action.type}</Menu.Item>
+      <Menu.Item key={`${prefix}${action.type}`}>
+        {action.label || action.type}
+      </Menu.Item>
     );
     if (action.category) {
       if (!categories[action.category]) {
@@ -85,7 +87,7 @@ const BlockMenu = createComponent(
       </a>
     </Dropdown>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 const ChangeBlock = createComponent(
   ({ theme }) => ({
@@ -102,7 +104,9 @@ const ChangeBlock = createComponent(
     <Dropdown
       overlay={
         <Menu onClick={onClick}>
-          <Menu.SubMenu title="Umwandeln">{getMenuItems(blockTypes, 'transform')}</Menu.SubMenu>
+          <Menu.SubMenu title="Umwandeln">
+            {getMenuItems(blockTypes, 'transform')}
+          </Menu.SubMenu>
           <Menu.Item key="duplicate">
             <span>Duplizieren</span>
           </Menu.Item>
@@ -120,20 +124,24 @@ const ChangeBlock = createComponent(
       </a>
     </Dropdown>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 @withBlockTypes
 class Pages extends Component {
-  onDrop = (info) => {
+  onDrop = info => {
     const { reorder, move } = this.props;
     const parent =
-      info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.item;
+      info.dropToGap && info.node.props.parent
+        ? info.node.props.parent
+        : info.node.props.item;
     const page = info.dragNode.props.item;
     const pageId = page.pageId || page.id; // get real pageId in case of binding
 
     // Get all IDs of children in order
-    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
+    const childIds = (parent.children || [])
+      .map(child => child.id)
+      .filter(x => x !== page.id);
     childIds.splice(info.dropPosition, 0, page.id);
 
     // Check if new parent is itself??
@@ -185,26 +193,29 @@ class Pages extends Component {
       onChange(
         immutable(value)
           .set(`nodes.${path.join('.nodes.')}.type`, key.split(':')[1])
-          .value(),
+          .value()
       );
     } else if (key.indexOf('add:') === 0) {
       onChange(
         immutable(value)
-          .push(`nodes.${path.join('.nodes.')}.nodes`, { type: key.split(':')[1], kind: 'block' })
-          .value(),
+          .push(`nodes.${path.join('.nodes.')}.nodes`, {
+            type: key.split(':')[1],
+            kind: 'block',
+          })
+          .value()
       );
     } else if (key === 'unwrap') {
       onChange(value.change().unwrapBlockByKey(node.key));
     }
   };
 
-  hover = (node) => {
+  hover = node => {
     const { onChange, value } = this.props;
     onChange(
       value
         .change()
         .moveToRangeOf(node)
-        .focus(),
+        .focus()
     );
     document.querySelector(`[data-key="${node.key}"]`).scrollIntoView();
   };
@@ -218,17 +229,42 @@ class Pages extends Component {
       .map((item, index) => {
         let label;
         if (blockTypes[item.type]) {
-          label = (blockTypes[item.type].slate && blockTypes[item.type].slate.label) || item.type;
+          label =
+            (blockTypes[item.type].slate &&
+              blockTypes[item.type].slate.label) ||
+            item.type;
         } else if (item.type === 'paragraph') {
           label = 'Paragraph';
         } else if (item.type === 'line') {
           label = 'Zeile';
+        } else if (item.type === 'heading-one') {
+          label = 'Überschrift 1';
+        } else if (item.type === 'heading-two') {
+          label = 'Überschrift 2';
+        } else if (item.type === 'heading-three') {
+          label = 'Überschrift 3';
+        } else if (item.type === 'heading-four') {
+          label = 'Überschrift 4';
+        } else if (item.type === 'heading-five') {
+          label = 'Überschrift 5';
+        } else if (item.type === 'heading-six') {
+          label = 'Überschrift 6';
+        } else if (item.type === 'bulleted-list') {
+          label = 'Liste';
+        } else if (item.type === 'numbered-list') {
+          label = 'Nummerierte Liste';
+        } else if (
+          item.type === 'bulleted-list-item' ||
+          item.type === 'numbered-list-item'
+        ) {
+          label = 'Listenelement';
         } else if (item.kind === 'text') {
           label = 'Text';
           if (!item.text.trim()) {
             return null;
           }
         } else {
+          console.log(item.type, item.kind);
           label = 'Unbekannt';
         }
         return (
