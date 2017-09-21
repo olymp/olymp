@@ -32,7 +32,6 @@ if (process.env.IS_WEB) {
   const Element = require('rc-banner-anim').Element;
   const animType = require('rc-banner-anim').animType;
   const TweenOne = require('rc-tween-one');
-  console.log(animType);
   InnerComponent = ({ value, ...atributes }) => (
     <BannerAnim prefixCls="custom-arrow-thumb" autoPlay type={['grid', 'gridBar']} duration={800}>
       {value.map(image => (
@@ -66,9 +65,6 @@ class Carousel extends Component {
     super(props);
     this.state = { mounted: false };
   }
-  componentWillMount() {
-    this.willMount = true;
-  }
   componentDidMount() {
     this.setState({ mounted: true });
   }
@@ -84,7 +80,7 @@ class Carousel extends Component {
             key={1}
             width="100%"
             value={value[0]}
-            height={height || 220}
+            maxHeight={height || 220}
             maxResolution={750000}
           />
         ) : null;

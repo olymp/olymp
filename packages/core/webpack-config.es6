@@ -90,6 +90,9 @@ module.exports = ({
     plugins: [
       // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
+        'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
+          ? `"${process.env.GOOGLE_MAPS_KEY}"`
+          : false,
         'process.env.URL': url ? `"${url}"` : false,
         'process.env.DEV_PORT': devPort || false,
         'process.env.DEV_URL': devUrl ? `"${devUrl.origin}"` : false,
@@ -150,7 +153,6 @@ module.exports = ({
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.AMP': !!process.env.AMP,
-        'process.env.GM_KEY': process.env.GM_KEY ? `"${process.env.GM_KEY}"` : false,
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? `"${process.env.GRAPHQL_URL}"` : false,
         'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
           ? `"${process.env.CRASHREPORT_URL}"`
