@@ -1,16 +1,26 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
+import PropTypes from 'prop-types';
+import { getContext } from 'recompose';
 import tinycolor from 'tinycolor2';
 import Portal from '../portal';
 
-const Modal = ({ className, logo, show }) =>
-  show ? (
-    <Portal>
-      <div className={className}>
-        <div>{logo}</div>
-      </div>
-    </Portal>
-  ) : null;
+const Modal = getContext({
+  theme: PropTypes.object,
+})(
+  ({ className, theme, show }) =>
+    (show ? (
+      <Portal>
+        <div className={className}>
+          {theme.logoWhite && (
+            <div className="logo">
+              <img src={theme.logoWhite} />
+            </div>
+          )}
+        </div>
+      </Portal>
+    ) : null),
+);
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
@@ -35,6 +45,9 @@ const component = createComponent(
     width: '100%',
     height: '100%',
     '> div': {
+      '> img': {
+        height: 100,
+      },
       backgroundColor: theme.color,
       borderRadius: '100%',
       padding: 30,
@@ -58,7 +71,7 @@ const component = createComponent(
     },
   }),
   Modal,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default component;
