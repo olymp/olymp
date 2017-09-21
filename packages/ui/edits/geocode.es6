@@ -14,19 +14,38 @@ export default class GeosuggestEdit extends Component {
   };
   throttle = throttleInput(500);
 
-  performSearch = variables => {
+  performSearch = address => {
     const { client } = this.props;
+
     return client
       .query({
         query: gql(`
-      `),
+          query geocodeList($address: String!, $region: String!) {
+            geocodeList(address: $address, region: $region) {
+              id
+              streetNumber
+              route
+              locality
+              administrativeAreaLevel1
+              administrativeAreaLevel2
+              country
+              postalCode
+              formattedAddress
+              lat
+              lng
+              locationType
+              partialMatch
+              types
+            }
+          }
+        `),
         variables: {
-          ...variables,
+          address,
           region: 'DE',
         },
       })
       .then(({ data }) => {
-        this.setState({ items: data });
+        this.setState({ items: data.geocodeList });
       });
   };
 
@@ -50,13 +69,14 @@ export default class GeosuggestEdit extends Component {
     const { items, value, onChange, refetch } = this.props;
     this.text = term;
     this.throttle(() => {
-      this.performSearch({ address: term });
+      this.performSearch(term);
     });
   };
 
   render() {
     const { size, placeholder } = this.props;
     const { items } = this.state;
+    console.log(items);
 
     return (
       <AutoComplete

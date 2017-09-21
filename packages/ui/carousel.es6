@@ -2,13 +2,19 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 import { Carousel } from 'react-responsive-carousel';
 import { Image } from 'olymp-cloudinary';
-import 'rc-banner-anim/assets/index.css';
+// import 'rc-banner-anim/assets/index.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const component = ({ value, ...atributes }) => (
-  <Carousel {...atributes} infiniteLoop autoPlay>
+  <Carousel {...atributes} infiniteLoop autoPlay showStatus={false}>
     {value.map((image, i) => (
-      <Image key={image.url} width="100%" maxHeight={300} maxResolution={500000} value={image} />
+      <Image
+        key={image.url}
+        width="100%"
+        maxHeight={300}
+        maxResolution={500000}
+        value={image}
+      />
     ))}
   </Carousel>
 );
