@@ -46,13 +46,14 @@ if (process.env.IS_WEB) {
             }}
           />
           <TweenOne className="banner-user-title" animation={{ y: 30, opacity: 0, type: 'from' }}>
-            Ant Motion Banner
+            Qualitätskreis Knorpel-Repair & Gelenkerhalt e.V.
           </TweenOne>
           <TweenOne
             className="banner-user-text"
             animation={{ y: 30, opacity: 0, type: 'from', delay: 100 }}
           >
-            The Fast Way Use Animation In React
+            bestehend aus einer Gruppe von Ärzten und Wissenschaftlern, die sich intensiv mit<br />gelenkerhaltenden
+            konservativen und operativen Behandlungen der Gelenke beschäftigen.
           </TweenOne>
         </Element>
       ))}

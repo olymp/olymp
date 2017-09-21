@@ -3,7 +3,7 @@ import Container from './container';
 export default {
   ...Container,
   key: 'Pages.Template.ContainerTextBlock',
-  label: 'Container schmall',
+  label: 'Container schmal',
   category: 'Template',
   styles: () => ({
     maxWidth: '100%',
