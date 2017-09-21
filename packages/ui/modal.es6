@@ -1,4 +1,6 @@
 import React, { Children } from 'react';
+import PropTypes from 'prop-types';
+import { getContext } from 'recompose';
 import { Button as AntButton, Modal as AntModal, Spin } from 'antd';
 import Portal from 'olymp-fela/portal';
 import cn from 'classnames';
@@ -13,83 +15,74 @@ const ReactModal = ({ className, ...props }) => (
   <ReactModal2 backdropClassName={className} {...props} />
 );
 
-export const Modal = ({
-  isOpen,
-  showLogo,
-  leftButtons,
-  rightButtons,
-  className,
-  subtitle,
-  onClose,
-  onCancel,
-  okText,
-  cancelText,
-  onOk,
-  title,
-  loading,
-  logo,
-  logoTitle,
-  ...props
-}) => {
-  let copyright = null;
-  let footer = null;
-  const children = Children.toArray(props.children).filter((child) => {
-    if (child.type && child.type === component.Copyright) {
-      copyright = child;
-      return false;
-    } else if (child.type && child.type === component.Footer) {
-      footer = child;
-      return false;
-    }
-    return true;
-  });
-  return !isOpen ? null : (
-    <Portal isOpened>
-      <ReactModal
-        onClose={onCancel || onClose}
-        closeOnEsc
-        closeOnBackdropClick
-        className={cn('ant-modal-wrap', className)}
-        modalClassName="ant-modal"
-      >
-        <AntModal visible={false} />
-        {showLogo &&
-        logo && (
-        <div className="logo">
-              {typeof logo === 'string' ? (
-            <img src={logo} />
-              ) : typeof logo === 'function' ? (
-                logo()
-              ) : (
-                logo
-              )}
-              <h3>{logoTitle}</h3>
+export const Modal = getContext({
+  theme: PropTypes.object,
+})(
+  ({
+    isOpen,
+    showLogo,
+    leftButtons,
+    rightButtons,
+    className,
+    subtitle,
+    onClose,
+    onCancel,
+    okText,
+    cancelText,
+    onOk,
+    title,
+    loading,
+    theme,
+    ...props
+  }) => {
+    let copyright = null;
+    let footer = null;
+    const children = Children.toArray(props.children).filter((child) => {
+      if (child.type && child.type === component.Copyright) {
+        copyright = child;
+        return false;
+      } else if (child.type && child.type === component.Footer) {
+        footer = child;
+        return false;
+      }
+      return true;
+    });
+    return !isOpen ? null : (
+      <Portal isOpened>
+        <ReactModal
+          onClose={onCancel || onClose}
+          closeOnEsc
+          closeOnBackdropClick
+          className={cn('ant-modal-wrap', className)}
+          modalClassName="ant-modal"
+        >
+          <AntModal visible={false} />
+          {theme.logoWhite && (
+            <div className="logo">
+              <img src={theme.logoWhite} />
+              {theme.logoTitle && <h3>{theme.logoTitle}</h3>}
             </div>
           )}
-        <Spin
-          spinning={!!loading}
-          tip={typeof loading === 'string' ? loading : 'Lädt ...'}
-        >
-          <div className="ant-modal-content">
-            <div className="ant-modal-header">
-              {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
-              {rightButtons && (
-                <TitleButtons right>{rightButtons}</TitleButtons>
+          <Spin spinning={!!loading} tip={typeof loading === 'string' ? loading : 'Lädt ...'}>
+            <div className="ant-modal-content">
+              <div className="ant-modal-header">
+                {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
+                {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+                <div className="ant-modal-title">{title}</div>
+                {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+              </div>
+              {Children.toArray(children).length > 0 && (
+                <div className="ant-modal-body">{children}</div>
               )}
-              <div className="ant-modal-title">{title}</div>
-              {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+              {footer}
             </div>
-            {Children.toArray(children).length > 0 && (
-              <div className="ant-modal-body">{children}</div>
-            )}
-            {footer}
-          </div>
-        </Spin>
-        {copyright && <component.Copyright>{copyright}</component.Copyright>}
-      </ReactModal>
-    </Portal>
-  );
-};
+          </Spin>
+          {copyright && <component.Copyright>{copyright}</component.Copyright>}
+        </ReactModal>
+      </Portal>
+    );
+  },
+);
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
@@ -123,7 +116,7 @@ const component = createComponent(
         marginTop: -140,
         textAlign: 'center',
         '> img': {
-          height: '75px',
+          height: 100,
         },
         '> h3': {
           color: theme.light1,
@@ -172,7 +165,7 @@ const component = createComponent(
     },
   }),
   Modal,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 // Copyright
@@ -191,7 +184,7 @@ component.Copyright = createComponent(
       },
     },
   }),
-  'div'
+  'div',
 );
 
 component.Footer = ({ children, className }) => (
@@ -213,7 +206,7 @@ const TitleButtons = createComponent(
     top: 14,
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p)
+  ({ left, right, ...p }) => Object.keys(p),
 );
 
 export default component;

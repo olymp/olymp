@@ -27,6 +27,12 @@ const filterPublic = pages =>
   }));
 
 export default ({ auth, theme }) => (Wrapped) => {
+  if (!theme.logoWhite) {
+    theme.logoWhite = '/logo-white.svg';
+  }
+  if (!theme.logoTitle) {
+    theme.logoTitle = 'olymp cms';
+  }
   // Container for authed users
   @withRouter
   @withLocale(LANG)

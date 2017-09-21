@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Dropdown, Menu } from 'antd';
-import immutable from 'olymp-utils/immutable';
 import { sortBy } from 'lodash';
 import { withBlockTypes } from 'olymp-slate';
+import { Node } from 'slate';
 
 const Title = createComponent(
   ({ theme }) => ({
@@ -63,19 +63,19 @@ const BlockMenu = createComponent(
     <Dropdown
       overlay={
         <Menu onClick={onClick}>
-          <Menu.SubMenu title="Davor einfügen">
+          <Menu.SubMenu key="sub1" title="Davor einfügen">
             <Menu.Item key="pre">
               <span>Seite</span>
             </Menu.Item>
             {getMenuItems(blockTypes, 'before')}
           </Menu.SubMenu>
-          <Menu.SubMenu title="Danach einfügen">
+          <Menu.SubMenu key="sub2" title="Danach einfügen">
             <Menu.Item key="post">
               <span>Seite</span>
             </Menu.Item>
             {getMenuItems(blockTypes, 'after')}
           </Menu.SubMenu>
-          <Menu.Divider />
+          <Menu.Divider key="div" />
           {getMenuItems(blockTypes, 'add')}
         </Menu>
       }
@@ -112,6 +112,12 @@ const ChangeBlock = createComponent(
           <Menu.Item key="unwrap">
             <span>Entpacken</span>
           </Menu.Item>
+          <Menu.Item key="cut">
+            <span>Ausschneiden</span>
+          </Menu.Item>
+          <Menu.Item key="copy">
+            <span>Kopieren</span>
+          </Menu.Item>
         </Menu>
       }
     >
@@ -127,6 +133,28 @@ const ChangeBlock = createComponent(
 class Pages extends Component {
   onDrop = (info) => {
     const { value } = this.props;
+    const dropKey = info.node.props.key;
+    const dropObj = info.node.props.node;
+    const dragKey = info.dragNode.props.key;
+    const dropPos = info.node.props.pos.split('-');
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+    // const dragNodesKeys = info.dragNodesKeys;
+    if (info.dropToGap) {
+      const parent = Node.getParent(dropKey);
+      const dropObjIndex = parent.nodes.indexOf(dropObj);
+      if (dropPosition === -1) {
+        console.log('To cur of node');
+        this.onChange(value.change().moveNodeByKey(dragKey, parent.key, dropObjIndex));
+      } else {
+        console.log('To prev of node');
+        this.onChange(value.change().moveNodeByKey(dragKey, parent.key, dropObjIndex - 1));
+      }
+    } else {
+      console.log('To end of dropKey');
+      this.onChange(value.change().moveNodeByKey(dragKey, dropKey, dropObj.nodes.size));
+    }
+    return;
+    const { value } = this.props;
     const parent =
       info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.node;
     const node = info.dragNode.props.node;
@@ -138,7 +166,6 @@ class Pages extends Component {
 
     // Check if new parent is itself??
     if (parent.key === key) {
-      return;
     }
     this.onChange(
       value.change().moveNodeByKey(key, parent.key, info.dropPosition < 0 ? 0 : info.dropPosition),
@@ -164,13 +191,34 @@ class Pages extends Component {
     const { value } = this.props;
     if (key === 'delete') {
       this.onChange(value.change().removeNodeByKey(node.key));
+    } else if (key === 'cut' || key === 'copy') {
+      this.onChange(
+        value
+          .change()
+          .moveToRangeOf(node)
+          .focus(),
+      );
+      setTimeout(() => document.execCommand(key), 1);
     } else if (key.indexOf('transform:') === 0) {
-      /* this.onChange(
-        immutable(value)
-          .set(`nodes.${path.join('.nodes.')}.type`, key.split(':')[1])
-          .value(),
-      );*/
+      this.onChange(value.change().setNodeByKey(node.key, key.split(':')[1]));
+    } else if (key.indexOf('pre:') === 0) {
+      this.onChange(
+        value
+          .change()
+          .insertNodeByKey(node.key, node.nodes.size, { type: key.split(':')[1], kind: 'block' }),
+      );
+    } else if (key.indexOf('post:') === 0) {
+      this.onChange(
+        value
+          .change()
+          .insertNodeByKey(node.key, node.nodes.size, { type: key.split(':')[1], kind: 'block' }),
+      );
     } else if (key.indexOf('add:') === 0) {
+      this.onChange(
+        value
+          .change()
+          .insertNodeByKey(node.key, node.nodes.size, { type: key.split(':')[1], kind: 'block' }),
+      );
     } else if (key === 'unwrap') {
       this.onChange(value.change().unwrapBlockByKey(node.key));
     }
@@ -228,7 +276,6 @@ class Pages extends Component {
             return null;
           }
         } else {
-          console.log(item.type, item.kind);
           label = 'Unbekannt';
         }
         return (

@@ -37,7 +37,6 @@ const def = ({
       loading={loading}
     >
       {children}
-      {links && <def.Links>{links}</def.Links>}
       <Modal.Footer>
         <Modal.Button onClick={onCancel}>{cancelText || 'Abbruch'}</Modal.Button>
         {onOk && (
@@ -47,6 +46,7 @@ const def = ({
         )}
       </Modal.Footer>
       <Modal.Copyright>
+        {links && <def.Links>{links}</def.Links>}
         <Link to={{ pathname, query: { register: null, login: undefined } }}>
           {'made with ❤ by olymp'}
         </Link>
@@ -61,8 +61,8 @@ def.Links = createComponent(
       display: 'inline-block',
       minWidth: 200,
       paddingBottom: theme.space2,
-      color: theme.color,
-      opacity: 0.67,
+      color: 'white',
+      opacity: 0.3,
       onHover: {
         opacity: 1,
       },
