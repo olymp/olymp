@@ -23,7 +23,7 @@ const Modal = getContext({
 );
 
 const component = createComponent(
-  ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
+  ({ theme, bottomTransparency, topTransparency }) => ({
     backgroundColor: theme.color,
     zIndex: 1000000,
     background: `linear-gradient(0deg, ${theme.colorEnd ||
@@ -45,27 +45,40 @@ const component = createComponent(
     width: '100%',
     height: '100%',
     '> div': {
-      '> img': {
-        height: 100,
-      },
       backgroundColor: theme.color,
       borderRadius: '100%',
-      padding: 30,
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate3d(-50%,-50%,0)',
+      // padding: 30,
+      width: 200,
+      height: 200,
+      center: true,
       animationDuration: '2.5s',
       animationIterationCount: 'infinite',
       animationName: {
         '0%': {
-          boxShadow: '0 0 0 0 rgba(255, 255, 255, 0.4)',
+          boxShadow: '0 0 0 0 rgba(255, 255, 255, 0.3)',
         },
         '70%': {
           boxShadow: '0 0 0 20px rgba(255,255,255, 0)',
         },
         '100%': {
           boxShadow: '0 0 0 0 rgba(255,255,255, 0)',
+        },
+      },
+      '> img': {
+        height: 125,
+        center: true,
+        animationDuration: '2.5s',
+        animationIterationCount: 'infinite',
+        animationName: {
+          '0%': {
+            opacity: 0.33,
+          },
+          '70%': {
+            opacity: 0.45,
+          },
+          '100%': {
+            opacity: 0.33,
+          },
         },
       },
     },
