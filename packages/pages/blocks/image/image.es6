@@ -80,7 +80,7 @@ export default {
     },
     {
       label: <FaAlignRight />,
-      tooltip: 'Rechts anordner',
+      tooltip: 'Rechts anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('right') === 0,
       toggle: ({ setData, getData }) => {
         const alignment = getData('float', 'none');

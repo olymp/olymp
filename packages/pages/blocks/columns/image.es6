@@ -5,28 +5,31 @@ import { renderHelmet } from 'olymp-utils';
 
 const Img = createComponent(
   ({ theme }) => ({
-    marginX: 'auto',
-    marginBottom: theme.space3,
+    // marginTop: 0,
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default {
   key: 'Pages.Template.Columns.Column.Image',
   label: 'Bild',
-  component: ({ getData, setActive }) => (
+  component: ({ getData, setActive, image }) => (
     <Img
       onClick={setActive}
-      width={150}
-      ratio={1}
-      maxResolution={22500}
-      value={getData('value', {
-        url: 'https://lorempixel.com/150/150/cats/',
-        width: 150,
-        height: 150,
-      })}
-      circle
+      width="100%"
+      // width={150}
+      ratio={3 / 4}
+      maxResolution={45000}
+      value={
+        image ||
+        getData('value', {
+          url: 'https://lorempixel.com/360/270/cats/',
+          width: 360,
+          height: 270,
+        })
+      }
+      // circle
       contentEditable={false}
     >
       {renderHelmet({ image: getData('value') })}
