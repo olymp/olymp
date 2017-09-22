@@ -9,6 +9,7 @@ const Inner = createComponent(
     backgroundColor: theme.dark5,
     borderRadius: theme.borderRadius,
     overflow: 'hidden',
+    height: '100%',
   }),
   'div',
   p => Object.keys(p),
@@ -20,11 +21,10 @@ export default {
   component: ({ getData, setActive, children, attributes, className, image, ...p }) => (
     <Grid.Item
       medium={1}
-      padding="6"
+      padding="0 16px 24px 16px"
       className={className}
-      gridSize={getData('columns', 3)}
+      gridSize={getData('columns', 4)}
       {...attributes}
-      {...p}
     >
       <Inner>
         <Image.component getData={getData} setActive={setActive} image={image} />
