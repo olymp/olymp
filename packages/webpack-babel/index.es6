@@ -16,7 +16,7 @@ module.exports = (config, options) => {
           cache: true,
           workers: 2,
         },
-        uglifyOptions: { compress: false, mangle: true },
+        uglifyOptions: { compress: true, mangle: true },
       }),
     );
     /* config.plugins.push(
@@ -29,8 +29,8 @@ module.exports = (config, options) => {
   const babelOptions = {
     presets: ['react'],
     plugins: [
-      // [resolve(__dirname, 'universal-import'), { babelServer: isNode }],
-      ['universal-import', { babelServer: isNode }],
+      [resolve(__dirname, 'universal-import'), { babelServer: isNode }],
+      // ['universal-import', { babelServer: isNode }],
       'syntax-dynamic-import',
       'transform-object-rest-spread',
       // 'transform-es2015-destructuring',

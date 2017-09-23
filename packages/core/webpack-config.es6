@@ -331,9 +331,7 @@ module.exports = ({
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else {
-    config.plugins.push(
-      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1, minChunkSize: 10000 }),
-    );
+    config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(new ExtractCssChunks());
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
