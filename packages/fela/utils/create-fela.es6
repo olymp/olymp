@@ -29,7 +29,7 @@ export default (ua) => {
   };
 
   const renderer = createRenderer({
-    selectorPrefix: 'o',
+    // selectorPrefix: 'o',
     plugins: [
       extend(),
       embedded(),
@@ -167,7 +167,7 @@ export default (ua) => {
       }),
       removeUndefined(),
     ],
-    // enhancers: [monolithic()],
+    enhancers: [monolithic()],
     // enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic').default()],
   });
   renderer.renderStatic(normalize);
