@@ -8,17 +8,16 @@ import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { createComponent, getAntStyle, TopLoader } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
-import Analytics from 'olymp-google/analytics';
+import universal from 'react-universal-component';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
 import { TemplateRoute } from './templates';
 
-// import universal from 'react-universal-component';
-/* const Analytics = universal(props => import('olymp-google/analytics'), {
+const Analytics = universal(props => import('olymp-google/analytics'), {
   minDelay: 1200,
   loading: props => 'Loading',
   error: props => 'Error',
-});*/
+});
 
 const Container = createComponent(
   ({ theme }) => ({

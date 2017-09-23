@@ -357,9 +357,9 @@ babel-plugin-fela@^1.0.0:
   dependencies:
     fela-utils "^5.0.3"
 
-babel-plugin-import@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-import/-/babel-plugin-import-1.5.0.tgz#0a388368b0811f27facef80740e1078c5322692a"
+babel-plugin-import@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-import/-/babel-plugin-import-1.4.0.tgz#a9999d9a79fc52a03c17ccfbbeb804038590503f"
 
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"

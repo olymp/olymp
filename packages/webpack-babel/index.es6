@@ -29,8 +29,7 @@ module.exports = (config, options) => {
   const babelOptions = {
     presets: ['react'],
     plugins: [
-      // [resolve(__dirname, 'universal-import'), { babelServer: isNode }],
-      // ['universal-import', { babelServer: isNode }],
+      ['universal-import', { babelServer: isNode }],
       'syntax-dynamic-import',
       'transform-object-rest-spread',
       // 'transform-es2015-destructuring',

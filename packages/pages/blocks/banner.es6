@@ -1,24 +1,12 @@
 import React from 'react';
-import { createComponent, Container } from 'olymp-fela';
-
-const Header = createComponent(
-  ({ theme }) => ({
-    backgroundColor: '#ddd',
-    minHeight: 75,
-    width: '100%',
-    marginBottom: 20,
-    paddingY: theme.space3,
-  }),
-  'div',
-  p => Object.keys(p),
-);
+import { Container } from 'olymp-fela';
 
 const BannerBlock = ({ attributes, className, children }) => (
-  <Header className={className} {...attributes}>
+  <div className={className} {...attributes}>
     <Container>
       <h2>{children}</h2>
     </Container>
-  </Header>
+  </div>
 );
 
 export default {
@@ -26,5 +14,12 @@ export default {
   label: 'Banner',
   category: 'Text',
   editable: true,
+  styles: ({ theme }) => ({
+    backgroundColor: '#ddd',
+    minHeight: 75,
+    width: '100%',
+    marginBottom: 20,
+    paddingY: theme.space3,
+  }),
   component: BannerBlock,
 };
