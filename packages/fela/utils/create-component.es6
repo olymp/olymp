@@ -1,8 +1,7 @@
 import { createComponent as createFelaComponent } from 'react-fela';
 import { getTheme } from './redux';
 
-export default createFelaComponent;
-/* export default (style, component, passThrough) =>
+export default (style, component, passThrough) =>
   getTheme(
     createFelaComponent(
       ({ theme, extraTheme, ...rest }) =>
@@ -25,4 +24,3 @@ export default createFelaComponent;
       },
     ),
   );
-*/
