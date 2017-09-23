@@ -1,5 +1,5 @@
 {
-  "version": "17.2.26",
+  "version": "17.2.27",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -37,7 +37,7 @@
     "minimist": "^1.2.0",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^17.2.26",
+    "olymp-fela": "^17.2.27",
     "olymp-router": "^17.2.20",
     "olymp-utils": "^17.2.20",
     "progress-bar-webpack-plugin": "^1.10.0",
