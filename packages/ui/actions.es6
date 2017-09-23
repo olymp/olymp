@@ -7,6 +7,7 @@ export default createComponent(
     position: 'fixed',
     top: 5,
     right: 5,
+    zIndex: 5,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

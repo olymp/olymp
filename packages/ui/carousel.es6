@@ -30,8 +30,8 @@ let InnerComponent;
 if (process.env.IS_WEB) {
   const BannerAnim = require('rc-banner-anim');
   const Element = require('rc-banner-anim').Element;
-  const animType = require('rc-banner-anim').animType;
-  const TweenOne = require('rc-tween-one');
+  // const animType = require('rc-banner-anim').animType;
+  // const TweenOne = require('rc-tween-one');
   InnerComponent = ({ value, ...atributes }) => (
     <BannerAnim prefixCls="custom-arrow-thumb" autoPlay type={['grid', 'gridBar']} duration={800}>
       {value.map(image => (
@@ -45,7 +45,7 @@ if (process.env.IS_WEB) {
               backgroundPosition: 'center',
             }}
           />
-          <TweenOne className="banner-user-title" animation={{ y: 30, opacity: 0, type: 'from' }}>
+          {/* <TweenOne className="banner-user-title" animation={{ y: 30, opacity: 0, type: 'from' }}>
             Qualitätskreis Knorpel-Repair & Gelenkerhalt e.V.
           </TweenOne>
           <TweenOne
@@ -54,7 +54,7 @@ if (process.env.IS_WEB) {
           >
             bestehend aus einer Gruppe von Ärzten und Wissenschaftlern, die sich intensiv mit<br />gelenkerhaltenden
             konservativen und operativen Behandlungen der Gelenke beschäftigen.
-          </TweenOne>
+          </TweenOne>*/}
         </Element>
       ))}
     </BannerAnim>
