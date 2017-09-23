@@ -30,6 +30,7 @@ module.exports = (config, options) => {
     presets: ['react'],
     plugins: [
       [resolve(__dirname, 'universal-import'), { babelServer: isNode }],
+      'babel-plugin-fela',
       // ['universal-import', { babelServer: isNode }],
       'syntax-dynamic-import',
       'transform-object-rest-spread',
