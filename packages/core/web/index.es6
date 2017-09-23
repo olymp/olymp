@@ -128,6 +128,7 @@ let client,
   dynamicRedux,
   asyncContext;
 function renderApp(App) {
+  console.log('RENDER');
   const props = {
     client,
     mountNode,

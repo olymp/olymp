@@ -30,9 +30,9 @@ ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-antd@^2.12.3:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.1.tgz#9c09aedf07a2d1bdd31c0d69822f9e32c9f73386"
+antd@^2.13.2:
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.3.tgz#e54897e471d64d59c01fea6ea41b3ae0eab0984d"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -60,10 +60,10 @@ antd@^2.12.3:
     rc-progress "~2.2.2"
     rc-rate "~2.1.1"
     rc-select "~6.9.0"
-    rc-slider "~8.2.0"
+    rc-slider "~8.3.0"
     rc-steps "~2.5.1"
     rc-switch "~1.5.1"
-    rc-table "~5.6.7"
+    rc-table "~5.6.9"
     rc-tabs "~9.1.2"
     rc-time-picker "~2.4.1"
     rc-tooltip "~3.4.6"
@@ -223,12 +223,6 @@ css-animation@1.x, css-animation@^1.2.5, css-animation@^1.3.2:
   dependencies:
     component-classes "^1.2.5"
 
-css-in-js-utils@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-2.0.0.tgz#5af1dd70f4b06b331f48d22a3d86e0786c0b9435"
-  dependencies:
-    hyphenate-style-name "^1.0.2"
-
 d3-array@1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.0.tgz#147d269720e174c4057a7f42be8b0f3f2ba53108"
@@ -288,6 +282,12 @@ dashdash@^1.12.0:
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
   dependencies:
     assert-plus "^1.0.0"
+
+deep-eql@~2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-2.0.2.tgz#b1bac06e56f0a76777686d50c9feb75c2ed7679a"
+  dependencies:
+    type-detect "^3.0.0"
 
 delayed-stream@~1.0.0:
   version "1.0.0"
@@ -390,34 +390,6 @@ fbjs@^0.8.7:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
-fela-dom@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/fela-dom/-/fela-dom-5.0.8.tgz#e793596b01075aec0b89b67935db70a2d6dc0da8"
-  dependencies:
-    fela-tools "^5.0.7"
-    fela-utils "^6.0.1"
-
-fela-tools@^5.0.7:
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/fela-tools/-/fela-tools-5.0.7.tgz#46d3c2f64947dd03e4acaee7d91456ebf943da39"
-  dependencies:
-    css-in-js-utils "^2.0.0"
-    fela-utils "^6.0.1"
-
-fela-utils@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/fela-utils/-/fela-utils-6.0.1.tgz#eb9c50a0fd984a194e2b984d176237ee349dcb7e"
-  dependencies:
-    css-in-js-utils "^2.0.0"
-
-fela@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/fela/-/fela-5.2.0.tgz#62a88de0962f0374429f3aed284025cf032b6e36"
-  dependencies:
-    css-in-js-utils "^2.0.0"
-    fela-tools "^5.0.7"
-    fela-utils "^6.0.1"
-
 focusin@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/focusin/-/focusin-2.0.0.tgz#58c01180dfb1949f03e3ddeee063739fc33b6ffc"
@@ -464,9 +436,9 @@ google-p12-pem@^0.1.0:
   dependencies:
     node-forge "^0.7.1"
 
-googleapis@^20.1.0:
-  version "20.2.0"
-  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-20.2.0.tgz#f2aec27a55990959840b5e19eb1ce102793c704f"
+googleapis@^22.1.0:
+  version "22.1.0"
+  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-22.1.0.tgz#c90eb8eec6cc3d67d3848383682cfdbc29f2bddd"
   dependencies:
     async "~2.3.0"
     google-auth-library "~0.10.0"
@@ -520,10 +492,6 @@ http-signature@~1.1.0:
     assert-plus "^0.2.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
-
-hyphenate-style-name@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
 
 iconv-lite@~0.4.13:
   version "0.4.18"
@@ -709,18 +677,20 @@ object-assign@4.x, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-olymp-ui@^17.1.18:
-  version "17.1.18"
-  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-17.1.18.tgz#f7ec96b953d701f5de85754e6b28c02e4ccfeb5e"
+olymp-ui@^17.2.25:
+  version "17.2.25"
+  resolved "https://registry.yarnpkg.com/olymp-ui/-/olymp-ui-17.2.25.tgz#2637f1a60ee5cc60372ab3852aa83371961a80fe"
   dependencies:
-    antd "^2.12.3"
+    antd "^2.13.2"
     moment "^2.18.1"
     multirangeslider "^0.5.2"
+    rc-banner-anim "^0.5.16"
+    rc-tween-one "^1.4.5"
     react-modal2 "^5.0.0"
 
-olymp-utils@^17.1.16:
-  version "17.1.16"
-  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.1.16.tgz#e403759029f9c4eab50266ae80bae41cf5f9e58c"
+olymp-utils@^17.2.20:
+  version "17.2.20"
+  resolved "https://registry.yarnpkg.com/olymp-utils/-/olymp-utils-17.2.20.tgz#451a0eefc4cd2c81a76715350e2a114527081037"
   dependencies:
     shallowequal "^1.0.2"
 
@@ -748,7 +718,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@~15.5.10:
+prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@~15.5.10:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -763,7 +733,7 @@ qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-raf@^3.2.0:
+raf@^3.2.0, raf@~3.3.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.3.2.tgz#0c13be0b5b49b46f76d6669248d527cf2b02fe27"
   dependencies:
@@ -784,6 +754,16 @@ rc-animate@2.x, rc-animate@^2.0.2, rc-animate@^2.3.0, rc-animate@^2.3.6:
     babel-runtime "6.x"
     css-animation "^1.3.2"
     prop-types "15.x"
+
+rc-banner-anim@^0.5.16:
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/rc-banner-anim/-/rc-banner-anim-0.5.16.tgz#de06c76bc4dab0a14585ab2da58f46fe2502996a"
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.5.0"
+    rc-tween-one "~1.4.0"
+    style-utils "~0.1.10"
+    tween-functions "1.x"
 
 rc-calendar@~9.0.0:
   version "9.0.0"
@@ -964,9 +944,9 @@ rc-select@~6.9.0:
     rc-util "^4.0.4"
     warning "2.x"
 
-rc-slider@~8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.2.0.tgz#ae37d17144cad60e1da6eac0ee4ffcfea0b0a6e8"
+rc-slider@~8.3.0:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.3.1.tgz#b64d66ca1d1b755e4b411ca10906767180a7aeff"
   dependencies:
     babel-runtime "6.x"
     classnames "^2.2.5"
@@ -992,9 +972,9 @@ rc-switch@~1.5.1:
     classnames "^2.2.1"
     prop-types "^15.5.6"
 
-rc-table@~5.6.7:
-  version "5.6.9"
-  resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-5.6.9.tgz#53cd87199257d5e38cf8c5bb5252df102bc668f2"
+rc-table@~5.6.9:
+  version "5.6.10"
+  resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-5.6.10.tgz#253fc5ef884c8e59c079de6e9ae476064f482d91"
   dependencies:
     babel-runtime "6.x"
     component-classes "^1.2.6"
@@ -1076,6 +1056,17 @@ rc-trigger@1.x:
     rc-animate "2.x"
     rc-util "4.x"
 
+rc-tween-one@^1.4.5, rc-tween-one@~1.4.0:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/rc-tween-one/-/rc-tween-one-1.4.5.tgz#16599c2602b588379d5cf8852abcd7527540b0e5"
+  dependencies:
+    babel-runtime "6.x"
+    deep-eql "~2.0.1"
+    prop-types "^15.5.0"
+    raf "~3.3.0"
+    style-utils "~0.1.13"
+    tween-functions "~1.2.0"
+
 rc-upload@~2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/rc-upload/-/rc-upload-2.4.1.tgz#09a73da91580b67591b48c3baec1bb878a84b359"
@@ -1093,14 +1084,6 @@ rc-util@4.x, rc-util@^4.0.2, rc-util@^4.0.4:
     add-dom-event-listener "1.x"
     babel-runtime "6.x"
     shallowequal "^0.2.2"
-
-react-fela@^5.0.4:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-5.3.0.tgz#0d90ed97b5d6f74c19c74c68ab193d815c75342b"
-  dependencies:
-    fela "^5.2.0"
-    fela-dom "^5.0.8"
-    prop-types "^15.5.8"
 
 react-lazy-load@^3.0.10:
   version "3.0.12"
@@ -1120,11 +1103,11 @@ react-modal2@^5.0.0:
     exenv "^1.2.0"
     prop-types "^15.5.8"
 
-react-resize-detector@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-0.4.1.tgz#19f8b993e1e869e2879344e20dc23c4fac28b256"
+react-resize-detector@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-0.6.0.tgz#7625d60edf6d89c812d4833d49ef53696dd9bca9"
   dependencies:
-    prop-types "^15.5.8"
+    prop-types "^15.5.10"
 
 react-slick@~0.15.0:
   version "0.15.4"
@@ -1161,9 +1144,9 @@ recharts-scale@0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/recharts-scale/-/recharts-scale-0.3.2.tgz#dac7621714a4765d152cb2adbc30c73b831208c9"
 
-recharts@^1.0.0-alpha.2:
-  version "1.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-1.0.0-alpha.4.tgz#74b05457696987755bc05e8d6232ab5c58648676"
+recharts@^1.0.0-apha.5:
+  version "1.0.0-apha.5"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-1.0.0-apha.5.tgz#5a08e78af11d3fd99bc2883fe5daf759eca00154"
   dependencies:
     classnames "2.2.5"
     core-js "2.4.1"
@@ -1172,7 +1155,7 @@ recharts@^1.0.0-alpha.2:
     d3-shape "1.0.4"
     lodash "~4.17.4"
     prop-types "~15.5.10"
-    react-resize-detector "0.4.1"
+    react-resize-detector "0.6.0"
     react-smooth "0.3.0"
     recharts-scale "0.3.2"
     reduce-css-calc "1.3.0"
@@ -1290,6 +1273,10 @@ stringstream@~0.0.4:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/stringstream/-/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
 
+style-utils@~0.1.10, style-utils@~0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/style-utils/-/style-utils-0.1.13.tgz#9df5c750daa41865f2238fd16f6e12b93a0a26a0"
+
 tabbable@^1.0.0:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-1.0.6.tgz#7c26a87ea6f4a25edf5edb619745a0ae740724fc"
@@ -1310,9 +1297,17 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
+tween-functions@1.x, tween-functions@~1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tween-functions/-/tween-functions-1.2.0.tgz#1ae3a50e7c60bb3def774eac707acbca73bbc3ff"
+
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
+
+type-detect@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-3.0.0.tgz#46d0cc8553abb7b13a352b0d6dea2fd58f2d9b55"
 
 ua-parser-js@^0.7.9:
   version "0.7.13"
