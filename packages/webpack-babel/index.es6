@@ -37,7 +37,7 @@ module.exports = (config, options) => {
       'transform-class-properties',
       'transform-es2015-classes',
       ['import', { libraryName: 'antd', style: true }],
-      'babel-plugin-fela',
+      // 'babel-plugin-fela',
     ],
   };
   babelOptions.presets.push([

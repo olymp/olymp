@@ -3,18 +3,6 @@ import { createComponent, Container } from 'olymp-fela';
 import { withRouter, Link } from 'olymp-router';
 import capitalize from 'lodash/upperFirst';
 
-const Header = createComponent(
-  ({ theme }) => ({
-    backgroundColor: '#ddd',
-    minHeight: 100,
-    width: '100%',
-    marginBottom: 20,
-    paddingY: theme.space3,
-  }),
-  'div',
-  p => Object.keys(p),
-);
-
 const Breadcrumb = createComponent(
   ({ theme }) => ({
     fontSize: 'small',
@@ -28,7 +16,7 @@ const HeaderBlock = ({ attributes, className, children, pathname }) => {
   let slug = '';
 
   return (
-    <Header className={className} {...attributes}>
+    <div className={className} {...attributes}>
       <Container>
         <h1>{children}</h1>
         <Breadcrumb contentEditable={false}>
@@ -44,7 +32,7 @@ const HeaderBlock = ({ attributes, className, children, pathname }) => {
           })}
         </Breadcrumb>
       </Container>
-    </Header>
+    </div>
   );
 };
 
@@ -54,4 +42,11 @@ export default {
   category: 'Text',
   editable: true,
   component: withRouter(HeaderBlock),
+  styles: ({ theme }) => ({
+    backgroundColor: '#ddd',
+    minHeight: 100,
+    width: '100%',
+    marginBottom: 20,
+    paddingY: theme.space3,
+  }),
 };

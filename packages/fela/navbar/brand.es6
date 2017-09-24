@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { NavLink } from 'olymp-router';
+import cn from 'classnames';
 
 const Brand = createComponent(
   ({ theme, inverse }) => ({
@@ -16,10 +17,10 @@ const Brand = createComponent(
       color: inverse ? theme.light2 : theme.dark2,
     },
   }),
-  ({ children, ...p }) =>
-    <NavLink to="/" {...p}>
+  ({ children, className, ...p }) =>
+    (<NavLink to="/" className={cn(className, 'o-nav-item-brand')} {...p}>
       {children}
-    </NavLink>,
+    </NavLink>),
   ({ inverse, vertically, ...p }) => Object.keys(p)
 );
 
@@ -43,14 +44,14 @@ const NavbarBrand = createComponent(
     float: vertically ? 'none' : 'left',
   }),
   ({ className, children, ...props }) =>
-    <div className={className}>
+    (<div className={className}>
       <Brand {...props}>
         {children}
       </Brand>
       <Inner>
         {children}
       </Inner>
-    </div>,
+    </div>),
   p => Object.keys(p)
 );
 NavbarBrand.displayName = 'Navbar.Brand';
