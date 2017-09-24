@@ -20,6 +20,8 @@ import PageForm from './sidebar';
   item: item || flatNavigation.find(page => page.slug === '/'),
   description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
   title: !item.id ? 'Neue Seite' : (item || flatNavigation.find(page => page.slug === '/')).name,
+}))
+@withPropsOnChange(['item'], ({ item }) => ({
   blocks: item.blocks
     ? State.fromJSON({ document: item.blocks, kind: 'state' })
     : Plain.deserialize(''),

@@ -4,20 +4,17 @@ import { createComponent, Grid } from 'olymp-fela';
 import Image from './image';
 import Text from './text';
 
-const Inner = createComponent(
-  ({ theme }) => ({
-    backgroundColor: theme.dark5,
-    borderRadius: theme.borderRadius,
-    overflow: 'hidden',
-    height: '100%',
-  }),
-  'div',
-  p => Object.keys(p),
-);
-
 export default {
   key: 'Pages.Template.Columns.Column',
   label: 'Spalte',
+  styles: ({ theme }) => ({
+    '> div': {
+      backgroundColor: theme.dark5,
+      borderRadius: theme.borderRadius,
+      overflow: 'hidden',
+      height: '100%',
+    },
+  }),
   component: ({ getData, setActive, children, attributes, className, image, ...p }) => (
     <Grid.Item
       medium={1}
@@ -26,10 +23,10 @@ export default {
       gridSize={getData('columns', 4)}
       {...attributes}
     >
-      <Inner>
+      <div>
         <Image.component getData={getData} setActive={setActive} image={image} />
         <Text.component>{children}</Text.component>
-      </Inner>
+      </div>
     </Grid.Item>
   ),
   editable: true,

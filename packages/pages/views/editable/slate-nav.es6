@@ -133,25 +133,24 @@ const ChangeBlock = createComponent(
 class Pages extends Component {
   onDrop = (info) => {
     const { value } = this.props;
-    const dropKey = info.node.props.key;
-    const dropObj = info.node.props.node;
-    const dragKey = info.dragNode.props.key;
+    const dropNode = info.node.props.node;
+    const dragNode = info.dragNode.props.node;
     const dropPos = info.node.props.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
     // const dragNodesKeys = info.dragNodesKeys;
     if (info.dropToGap) {
-      const parent = Node.getParent(dropKey);
-      const dropObjIndex = parent.nodes.indexOf(dropObj);
+      const parent = value.document.getParent(dropNode.key);
+      const dropObjIndex = parent.nodes.indexOf(dropNode);
       if (dropPosition === -1) {
         console.log('To cur of node');
-        this.onChange(value.change().moveNodeByKey(dragKey, parent.key, dropObjIndex));
+        this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex));
       } else {
         console.log('To prev of node');
-        this.onChange(value.change().moveNodeByKey(dragKey, parent.key, dropObjIndex - 1));
+        this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex - 1));
       }
     } else {
       console.log('To end of dropKey');
-      this.onChange(value.change().moveNodeByKey(dragKey, dropKey, dropObj.nodes.size));
+      this.onChange(value.change().moveNodeByKey(dragNode.key, dropNode.key, dropNode.nodes.size));
     }
     /* return;
     const { value } = this.props;
