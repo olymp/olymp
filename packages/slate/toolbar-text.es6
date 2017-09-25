@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import Toolbar, { Button } from './toolbar';
 import { Icon, Menu } from 'antd';
 import { hasMark, hasBlock } from './utils/has';
-import addBlock from './utils/add-block';
 
 export default class ToolbarText extends Component {
   onClickBlock = (e, props) => {
-    const { state, onChange, blockTypes } = this.props;
+    const { state, onChange } = this.props;
     e.preventDefault();
-    onChange(addBlock(state, props, blockTypes));
+    onChange(state.change().setBlock(props.type));
   };
   renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
