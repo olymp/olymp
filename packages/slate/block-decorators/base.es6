@@ -5,8 +5,9 @@ import { createComponent } from 'react-fela';
 export default (options = {}) => (Block) => {
   const {
     key,
+    type,
+    kind,
     isVoid,
-    isAtomic,
     sidebar,
     actions,
     label,
@@ -30,9 +31,10 @@ export default (options = {}) => (Block) => {
   class BaseDecorator extends Component {
     static slate = {
       key,
+      type,
+      kind,
       isVoid: isVoid !== false,
       actions,
-      isAtomic,
       isEditable,
       sidebar,
       label,

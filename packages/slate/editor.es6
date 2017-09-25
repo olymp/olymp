@@ -182,11 +182,7 @@ const getTopMost = (blockTypes, change, prev) => {
   const next = prev ? change.state.document.getParent(prev.key) : change.state.startBlock;
   const nextType = next && next.type;
   const prevType = prev && prev.type;
-  const isAtomic =
-    nextType &&
-    blockTypes[nextType] &&
-    blockTypes[nextType].slate &&
-    blockTypes[nextType].slate.isAtomic;
+  const isAtomic = nextType && blockTypes[nextType] && blockTypes[nextType].slate;
   if (!nextType || !isAtomic || (prevType && prevType.indexOf(nextType) !== 0)) {
     return prev;
   }

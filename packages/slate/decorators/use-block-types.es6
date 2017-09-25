@@ -8,9 +8,9 @@ export default (types) => {
     if (!types[key]) {
       return result;
     }
-    let { component, styles, editable, slate, ...rest } = types[key];
+    let { component, styles, editable, kind, slate, isVoid, ...rest } = types[key];
     const newKey = types[key].key || key;
-    const isVoid = editable !== true;
+    isVoid = isVoid !== undefined ? isVoid : editable !== true;
     if (styles && typeof styles === 'object') {
       component = createComponent(() => styles, component, p => Object.keys(p));
     }
@@ -20,10 +20,10 @@ export default (types) => {
     result[newKey] = useBlockBase({
       ...slate,
       ...rest,
-      // isEditable: editable,
       isVoid,
+      kind,
+      type: key,
       key: newKey,
-      isAtomic: true,
     })(component);
     return result;
   }, {});

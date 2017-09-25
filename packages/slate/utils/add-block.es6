@@ -106,7 +106,7 @@ const createBlock = (block) => {
   if (!type) {
     type = key;
   }
-  if (!kind && isVoid) {
+  if (kind === 'inline' || (!kind && isVoid)) {
     return Inline.create({
       type,
       isVoid,
