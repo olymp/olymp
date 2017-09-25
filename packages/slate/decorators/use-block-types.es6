@@ -5,10 +5,8 @@ import { createComponent } from 'olymp-fela';
 
 export default (types) => {
   const blockTypes = Object.keys(types).reduce((result, key) => {
-    if (!types[key]) {
-      return result;
-    }
     const { type, isVoid = false, styles, kind = 'block', slate, ...rest } = types[key];
+    console.log(type);
     let { component } = types[key];
     if (styles && typeof styles === 'object') {
       component = createComponent(() => styles, component, p => Object.keys(p));

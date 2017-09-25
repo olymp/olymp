@@ -7,7 +7,6 @@ export default {
   kind: 'block',
   label: 'Container',
   category: 'Template',
-  editable: true,
   component: ({ attributes, className, children }) => (
     <Container {...attributes} className={className}>
       {children}

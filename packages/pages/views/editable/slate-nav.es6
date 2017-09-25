@@ -42,7 +42,9 @@ const getMenuItems = (blockTypes, prefix) => {
   });
   return [
     ...Object.keys(categories).map(key => (
-      <Menu.SubMenu key={key} title={key}>{categories[key]}</Menu.SubMenu>
+      <Menu.SubMenu key={key} title={key}>
+        {categories[key]}
+      </Menu.SubMenu>
     )),
     ...menuItems,
   ];
@@ -243,7 +245,7 @@ class Pages extends Component {
       return undefined;
     }
     const nodes = block.nodes
-      .map((item, index) => {
+      .map((item) => {
         let label;
         if (blockTypes[item.type]) {
           label = (blockTypes[item.type].slate && blockTypes[item.type].slate.label) || item.type;

@@ -10,7 +10,7 @@ const BannerBlock = ({ attributes, className, children }) => (
 );
 
 export default {
-  type: 'Pages.Template.Banner',
+  type: 'banner',
   isVoid: false,
   kind: 'block',
   label: 'Banner',

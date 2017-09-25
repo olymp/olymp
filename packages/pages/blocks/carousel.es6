@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Image, SimpleImageEdit } from 'olymp-cloudinary';
-import { renderHelmet } from 'olymp-utils';
+import { SimpleImageEdit } from 'olymp-cloudinary';
 import Carousel from 'olymp-ui/carousel';
 
 class CarouselBlock extends Component {
@@ -43,7 +42,7 @@ class CarouselBlock extends Component {
 }
 
 export default {
-  type: 'Pages.Template.Carousel',
+  type: 'carousel',
   isVoid: true,
   kind: 'block',
   label: 'Bildershow',
