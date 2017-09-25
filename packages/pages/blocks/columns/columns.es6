@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Grid, createComponent } from 'olymp-fela';
-import { createBlock, Block } from 'olymp-slate';
+import { Block, addBlock } from 'olymp-slate';
 import { FaPlus, FaMinus } from 'olymp-icons';
 import Column from './column';
 
@@ -35,21 +35,17 @@ export default {
     {
       label: <FaPlus />,
       tooltip: 'Spalte hinzufügen',
-      toggle: ({ setData, getData }) => {
-        const column = getData('column', 4);
-        setData({
-          column: column < 8 ? column + 1 : 8,
-        });
+      toggle: ({ setData, getData, editor, state, onChange, blockTypes, node }) => {
+        onChange(addBlock(state, Column, blockTypes, node.key, node.size));
       },
     },
     {
       label: <FaMinus />,
       tooltip: 'Spalte entfernen',
-      toggle: ({ setData, getData }) => {
-        const column = getData('column', 4);
-        setData({
-          column: column > 1 ? column - 1 : 1,
-        });
+      toggle: ({ setData, getData, editor, state, onChange, blockTypes, node }) => {
+        if (node.nodes.last()) {
+          onChange(state.change().removeNodeByKey(node.nodes.last().key));
+        }
       },
     },
   ],

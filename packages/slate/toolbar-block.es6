@@ -4,7 +4,7 @@ import { Menu } from 'antd';
 import { get } from 'lodash';
 
 const Action = ({ node, state, onChange }) => (
-  { toggle, active, label, component, ...rest },
+  { toggle, active, label, component, blockTypes, ...rest },
   i,
 ) => {
   const setData = (data) => {
@@ -22,7 +22,7 @@ const Action = ({ node, state, onChange }) => (
   const onClick = (e) => {
     e.preventDefault();
     if (toggle) {
-      toggle({ setData, getData, state, onChange });
+      toggle({ setData, getData, state, onChange, blockTypes, node });
     }
   };
 

@@ -21,7 +21,7 @@ export default (props) => {
     }
     const onMouseDown = (e) => {
       e.preventDefault();
-      onChange(addBlock(state, action, props));
+      onChange(addBlock(state, action, props.blockTypes));
     };
     const item = (
       <Menu.Item key={action.type}>

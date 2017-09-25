@@ -1,17 +1,11 @@
-import { hasBlock } from './has';
 import { Text, Block, Inline } from 'slate';
-import createBlock from './create-block';
+import { hasBlock } from './has';
 
-export default (value, node, props) => {
+const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = value.change()) => {
   let { defaultNodes } = node;
-  const { type, isVoid, isAtomic, onInsert } = node;
+  const { type } = node;
   const defaultNode = 'paragraph';
 
-  if (defaultNodes && typeof defaultNodes === 'function') {
-    defaultNodes = defaultNodes();
-  }
-
-  let transform = value.change();
   const { document, blocks } = value;
 
   // Handle everything but list buttons.
@@ -25,11 +19,59 @@ export default (value, node, props) => {
         .unwrapBlock('bulleted-list')
         .unwrapBlock('numbered-list');
     } else {
-      const block = createBlock(node, props);
-      if (block && Block.isBlock(block)) {
-        transform = transform.insertBlock(node);
-      } else if (block && Inline.isInline(block)) {
-        transform = transform.insertInline(node);
+      const block = createBlock(node);
+
+      if (defaultNodes && typeof defaultNodes === 'function') {
+        defaultNodes = defaultNodes();
+      } else if (!defaultNodes && !block.isVoid) {
+        defaultNodes = [
+          {
+            type: 'paragraph',
+            nodes: [Text.create()],
+          },
+        ];
+      }
+
+      if (block && block.kind === 'block') {
+        transform = parentKey
+          ? transform.insertNodeByKey(parentKey, index, block)
+          : transform.insertBlock(block);
+      } else if (block) {
+        transform = parentKey
+          ? transform.insertNodeByKey(parentKey, index, block)
+          : transform.insertInline(block);
+      }
+
+      if (defaultNodes) {
+        defaultNodes.forEach((item, index) => {
+          if (typeof item === 'string' && blockTypes[item]) {
+            transform = addBlock(
+              value,
+              blockTypes[item].slate,
+              blockTypes,
+              block.key,
+              index,
+              transform,
+            );
+          } else if (item.key && blockTypes[item.key]) {
+            transform = addBlock(
+              value,
+              blockTypes[item.key].slate,
+              blockTypes,
+              block.key,
+              index,
+              transform,
+            );
+          } else if (parentKey) {
+            transform =
+              block.kind === 'block'
+                ? transform.insertNodeByKey(block.key, index, Block.create(item))
+                : transform.insertNodeByKey(block.key, index, Inline.create(item));
+          } else {
+            transform =
+              block.kind === 'block' ? transform.insertBlock(item) : transform.insertInline(item);
+          }
+        });
       }
     }
   } else {
@@ -55,9 +97,28 @@ export default (value, node, props) => {
     }
   }
 
-  const changed = onInsert && onInsert(transform);
-  if (changed) {
-    return changed;
-  }
   return transform;
 };
+
+const createBlock = (block) => {
+  let { type } = block;
+  const { isVoid, key, kind } = block;
+  if (!type) {
+    type = key;
+  }
+  if (!kind && isVoid) {
+    return Inline.create({
+      type,
+      isVoid,
+      kind,
+      data: {},
+    });
+  }
+  return Block.create({
+    type,
+    isVoid,
+    kind,
+    data: {},
+  });
+};
+export default addBlock;

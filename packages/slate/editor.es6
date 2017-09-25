@@ -94,7 +94,7 @@ const options = {
   ],
   sidebarTypes: [],
   nodes: {
-    paragraph: ({ children, attributes }) => <p {...attributes}>{children}</p>,
+    paragraph: ({ children, attributes }) => <div {...attributes}>{children}</div>,
     link: ({ node, attributes, children }) => (
       <a
         {...attributes}
@@ -282,7 +282,13 @@ class SlateEditor extends Component {
           />
         )}
         {readOnly !== true && (
-          <ToolbarText show={focus} state={value} onChange={this.onChange} blockTypes={blockTypes} {...options} />
+          <ToolbarText
+            show={focus}
+            state={value}
+            onChange={this.onChange}
+            blockTypes={blockTypes}
+            {...options}
+          />
         )}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}

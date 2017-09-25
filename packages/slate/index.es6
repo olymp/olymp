@@ -1,6 +1,5 @@
 export { Block, Editor, Raw } from 'slate';
 export { default as addBlock } from './utils/add-block';
-export { default as createBlock } from './utils/create-block';
 export * from './block-decorators';
 export * from './editor-decorators';
 export * from './decorators';

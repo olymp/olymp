@@ -8,7 +8,7 @@ export default class ToolbarText extends Component {
   onClickBlock = (e, props) => {
     const { state, onChange, blockTypes } = this.props;
     e.preventDefault();
-    onChange(addBlock(state, props, this.props));
+    onChange(addBlock(state, props, blockTypes));
   };
   renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
