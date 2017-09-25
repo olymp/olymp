@@ -35,14 +35,14 @@ export default {
     {
       label: <FaPlus />,
       tooltip: 'Spalte hinzufügen',
-      toggle: ({ setData, getData, editor, state, onChange, blockTypes, node }) => {
+      toggle: ({ state, onChange, blockTypes, node }) => {
         onChange(addBlock(state, Column, blockTypes, node.key, node.size));
       },
     },
     {
       label: <FaMinus />,
       tooltip: 'Spalte entfernen',
-      toggle: ({ setData, getData, editor, state, onChange, blockTypes, node }) => {
+      toggle: ({ state, onChange, node }) => {
         if (node.nodes.last()) {
           onChange(state.change().removeNodeByKey(node.nodes.last().key));
         }
