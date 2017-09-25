@@ -48,19 +48,33 @@ const Action = ({ node, state, onChange }) => (
     </Menu.Item>
   );
 };
-export default (props) => {
-  const { state, blockTypes, onChange, show } = props;
-  let sel = state.blocks.size === 1 && blockTypes[state.blocks.get(0).type];
-  let node = state.blocks.get(0);
-  if (!sel) {
-    sel = state.inlines.size === 1 && blockTypes[state.inlines.get(0).type];
-    node = state.inlines.get(0);
+
+const getActionsByBlock = (props, node, actions = []) => {
+  const { blockTypes, state } = props;
+  const type = blockTypes[node.type];
+  if (type && get(type, 'slate.actions', []).length) {
+    actions.push(get(type, 'slate.actions', []).map(Action({ ...props, node })));
   }
-  const actions = get(sel, 'slate.actions', []);
+  const parent = state.document.getParent(node.key);
+  if (parent) {
+    getActionsByBlock(props, parent, actions);
+  }
+  return actions;
+};
+export default (props) => {
+  const { state, blockTypes, show } = props;
+  let actions = [];
+  if (state.blocks.size === 1 && blockTypes[state.blocks.get(0).type]) {
+    actions = getActionsByBlock(props, state.blocks.get(0));
+  } else if (state.inlines.size === 1 && blockTypes[state.inlines.get(0).type]) {
+    actions = getActionsByBlock(props, state.inlines.get(0));
+  } else {
+    actions = getActionsByBlock(props, state.blocks.get(0));
+  }
 
   return (
-    <Toolbar show={show} isOpened={!!sel && actions && actions.length}>
-      {actions.map(Action({ ...props, node }))}
+    <Toolbar show={show} isOpened={actions.length}>
+      {actions}
     </Toolbar>
   );
 };
