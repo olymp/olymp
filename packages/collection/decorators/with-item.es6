@@ -11,6 +11,10 @@ const ok = props => () => {
     if (err) {
       return onError(err);
     }
+    if (values.start && Array.isArray(values.start)) {
+      values.end = values.start[1];
+      values.start = values.start[0];
+    }
     mutate({
       variables: {
         id: item && item.id,
