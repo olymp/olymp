@@ -22,41 +22,29 @@ const Label = createComponent(
     clearfix: true,
   }),
   'h2',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default {
-  key: 'Pages.Template.Accordion.Label',
+  type: 'Pages.Template.Accordion.Label',
+  isVoid: false,
+  kind: 'block',
   label: 'Überschrift',
-  editable: true,
   component: withQueryState(
-    'accordion'
-  )(
-    ({
-      attributes,
-      className,
-      children,
-      accordion,
-      updateAccordion,
-      readOnly,
-      parent,
-    }) => (
-      <Label className={className} readOnly={readOnly} {...attributes}>
-        <span
-          onClick={() =>
-            readOnly &&
-            updateAccordion(accordion !== parent.key ? parent.key : null)}
-        >
-          {children}
-        </span>
-        <span contentEditable={false}>
-          <Icon
-            onClick={() =>
-              updateAccordion(accordion !== parent.key ? parent.key : null)}
-            type={accordion === parent.key ? 'down-square-o' : 'left-square-o'}
-          />
-        </span>
-      </Label>
-    )
-  ),
+    'accordion',
+  )(({ attributes, className, children, accordion, updateAccordion, readOnly, parent }) => (
+    <Label className={className} readOnly={readOnly} {...attributes}>
+      <span
+        onClick={() => readOnly && updateAccordion(accordion !== parent.key ? parent.key : null)}
+      >
+        {children}
+      </span>
+      <span contentEditable={false}>
+        <Icon
+          onClick={() => updateAccordion(accordion !== parent.key ? parent.key : null)}
+          type={accordion === parent.key ? 'down-square-o' : 'left-square-o'}
+        />
+      </span>
+    </Label>
+  )),
 };

@@ -21,10 +21,11 @@ const Ctn = createComponent(
 );
 
 export default {
-  key: 'Pages.Template.Columns',
+  type: 'Pages.Template.Columns',
+  isVoid: false,
+  kind: 'block',
   label: 'Spalten-Layout',
   category: 'Template',
-  editable: true,
   defaultNodes: () => [Column, Column, Column, Column],
   component: ({ className, children, attributes, getData }) => (
     <Ctn {...attributes} className={className}>

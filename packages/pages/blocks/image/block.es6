@@ -4,11 +4,15 @@ import Image from './image';
 import Label from './label';
 
 export default {
-  key: 'Pages.Media.ImageBlock',
+  type: 'Pages.Media.ImageBlock',
+  isVoid: false,
+  kind: 'inline',
   defaultNodes: () => createBlockList([Image, Label]),
   label: 'Bild mit Text',
   category: 'Medien',
-  editable: true,
-  component: ({ className, children, attributes }) =>
-    <div className={className} {...attributes}>{children}</div>,
+  component: ({ className, children, attributes }) => (
+    <div className={className} {...attributes}>
+      {children}
+    </div>
+  ),
 };

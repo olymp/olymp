@@ -2,7 +2,7 @@ import Container from './container';
 
 export default {
   ...Container,
-  key: 'Pages.Template.ContainerTextBlock',
+  type: 'Pages.Template.ContainerTextBlock',
   label: 'Container schmal',
   category: 'Template',
   defaultNodes: () => ['paragraph'],

@@ -13,7 +13,7 @@ const Container = createComponent(
     clearfix: true,
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const ImageContainer = createComponent(
@@ -33,45 +33,44 @@ const ImageContainer = createComponent(
     return style;
   },
   'div',
-  ({ size, ...p }) => Object.keys(p)
+  ({ size, ...p }) => Object.keys(p),
 );
 
 export default {
-  key: 'Pages.Media.Gallery',
+  type: 'Pages.Media.Gallery',
+  isVoid: true,
+  kind: 'block',
   label: 'Galerie',
   category: 'Medien',
-  component: ({ getData, setActive, className, attributes }) =>
-    (<Container {...attributes}>
+  component: ({ getData, setActive, className, attributes }) => (
+    <Container {...attributes}>
       {getData('value', [
         {
           url: 'https://lorempixel.com/400/300/cats/',
           width: 400,
           height: 300,
         },
-      ]).map((image, i) =>
+      ]).map((image, i) => (
         <ImageContainer size={getData('size', 4)} key={image.id || i}>
-          <LightboxImage
-            className={className}
-            onClick={setActive}
-            width="100%"
-            value={image}
-          />
+          <LightboxImage className={className} onClick={setActive} width="100%" value={image} />
         </ImageContainer>
-      )}
-    </Container>),
+      ))}
+    </Container>
+  ),
   styles: ({ getData }) => ({
     float: getData('float', 'none'),
   }),
   actions: [
     {
       tooltip: getData => `Bilder ${getData('value') ? 'wechseln' : 'wählen'}`,
-      component: ({ setData, getData, ...p }) =>
-        (<SimpleImageEdit
+      component: ({ setData, getData, ...p }) => (
+        <SimpleImageEdit
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', [])}
           multi
-        />),
+        />
+      ),
       toggle: () => {},
     },
     {

@@ -15,10 +15,11 @@ const CardContainer = createComponent(
 );
 
 export default {
-  key: 'Pages.Media.LinkBlock',
+  type: 'Pages.Media.LinkBlock',
+  isVoid: true,
+  kind: 'block',
   label: 'Link',
   category: 'Medien',
-  editable: false,
   component: CardContainer,
   actions: [
     {

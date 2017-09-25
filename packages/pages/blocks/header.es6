@@ -37,10 +37,11 @@ const HeaderBlock = ({ attributes, className, children, pathname }) => {
 };
 
 export default {
-  key: 'Pages.Template.Header',
+  type: 'Pages.Template.Header',
+  isVoid: false,
+  kind: 'block',
   label: 'Überschrift',
   category: 'Text',
-  editable: true,
   component: withRouter(HeaderBlock),
   styles: ({ theme }) => ({
     backgroundColor: '#ddd',

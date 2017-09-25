@@ -14,9 +14,10 @@ const Text = createComponent(
 );
 
 export default {
-  key: 'Pages.Template.Accordion.Text',
+  type: 'Pages.Template.Accordion.Text',
+  isVoid: false,
+  kind: 'block',
   label: 'Text',
-  editable: true,
   component: withQueryState(
     'accordion',
   )(({ className, attributes, children, accordion, parent }) => (

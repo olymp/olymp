@@ -10,10 +10,11 @@ const BannerBlock = ({ attributes, className, children }) => (
 );
 
 export default {
-  key: 'Pages.Template.Banner',
+  type: 'Pages.Template.Banner',
+  isVoid: false,
+  kind: 'block',
   label: 'Banner',
   category: 'Text',
-  editable: true,
   styles: ({ theme }) => ({
     backgroundColor: '#ddd',
     minHeight: 75,

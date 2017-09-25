@@ -2,14 +2,17 @@ import React from 'react';
 import { Container } from 'olymp-fela';
 
 export default {
-  key: 'Pages.Template.ContainerBlock',
+  type: 'Pages.Template.ContainerBlock',
+  isVoid: false,
+  kind: 'block',
   label: 'Container',
   category: 'Template',
   editable: true,
-  component: ({ attributes, className, children }) =>
-    (<Container {...attributes} className={className}>
+  component: ({ attributes, className, children }) => (
+    <Container {...attributes} className={className}>
       {children}
-    </Container>),
+    </Container>
+  ),
   actions: [
     {
       type: 'small',

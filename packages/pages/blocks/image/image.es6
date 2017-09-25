@@ -3,7 +3,9 @@ import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 
 export default {
-  key: 'Pages.Media.ImageBlock.Image',
+  type: 'Pages.Media.ImageBlock.Image',
+  isVoid: true,
+  kind: 'inline',
   label: 'Bild',
   category: 'Medien',
   component: ({ getData, className, editor, attributes }) => {

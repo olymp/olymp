@@ -11,10 +11,7 @@ export default (props) => {
 
   const categories = {};
   const menuItems = [];
-  const types = Object.keys(blockTypes).map(key => ({
-    ...blockTypes[key].slate,
-    type: key,
-  }));
+  const types = Object.keys(blockTypes).map(key => blockTypes[key].slate);
   sortBy(types, ['category', 'label']).forEach((action, index) => {
     if (!action.category) {
       return;

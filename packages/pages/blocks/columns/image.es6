@@ -12,7 +12,9 @@ const Img = createComponent(
 );
 
 export default {
-  key: 'Pages.Template.Columns.Column.Image',
+  type: 'Pages.Template.Columns.Column.Image',
+  isVoid: true,
+  kind: 'block',
   label: 'Bild',
   component: ({ getData, setActive, image }) => (
     <Img

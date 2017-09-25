@@ -72,10 +72,11 @@ const onClick = (setData, getData, client) => () => {
   }
 };
 export default {
-  key: 'Pages.Media.MapsBlock',
+  type: 'Pages.Media.MapsBlock',
+  isVoid: true,
+  kind: 'block',
   label: 'Karte',
   category: 'Medien',
-  editable: false,
   component: MapContainer,
   actions: [
     {

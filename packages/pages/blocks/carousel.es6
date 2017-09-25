@@ -43,10 +43,11 @@ class CarouselBlock extends Component {
 }
 
 export default {
-  key: 'Pages.Media.Carousel',
+  type: 'Pages.Template.Carousel',
+  isVoid: true,
+  kind: 'block',
   label: 'Bildershow',
   category: 'Medien',
-  editable: false,
   component: CarouselBlock,
   actions: [
     {

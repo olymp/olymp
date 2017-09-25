@@ -1,11 +1,12 @@
 import React from 'react';
-import { createComponent, Grid } from 'olymp-fela';
-// import { createBlockList } from 'olymp-slate';
+import { Grid } from 'olymp-fela';
 import Image from './image';
 import Text from './text';
 
 export default {
-  key: 'Pages.Template.Columns.Column',
+  type: 'Pages.Template.Columns.Column',
+  isVoid: false,
+  kind: 'block',
   label: 'Spalte',
   styles: ({ theme }) => ({
     '> div': {
@@ -29,6 +30,5 @@ export default {
       </div>
     </Grid.Item>
   ),
-  editable: true,
   // defaultNodes: () => createBlockList([Image, Text]),
 };

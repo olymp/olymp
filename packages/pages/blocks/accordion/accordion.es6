@@ -5,10 +5,11 @@ import Label from './label';
 import Text from './text';
 
 export default {
-  key: 'Pages.Template.Accordion',
+  type: 'Pages.Template.Accordion',
+  isVoid: false,
+  kind: 'block',
   label: 'Akkordeon',
   category: 'Text',
-  editable: true,
   component: ({ className, attributes, children }) => (
     <Container className={className} {...attributes}>
       {children}

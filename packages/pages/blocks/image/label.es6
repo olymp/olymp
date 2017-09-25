@@ -25,12 +25,13 @@ const component = createComponent(
       {children}
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default {
-  key: 'Pages.Media.ImageBlock.Label',
+  type: 'Pages.Media.ImageBlock.Label',
+  isVoid: false,
+  kind: 'inline',
   label: 'Titel',
-  editable: true,
   component,
 };

@@ -10,8 +10,9 @@ const Text = createComponent(
 );
 
 export default {
-  key: 'Pages.Template.Columns.Column.Text',
+  type: 'Pages.Template.Columns.Column.Text',
+  isVoid: false,
+  kind: 'block',
   label: 'Text',
   component: Text,
-  editable: true,
 };
