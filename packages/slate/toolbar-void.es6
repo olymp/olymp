@@ -15,7 +15,7 @@ export default (props) => {
     ...blockTypes[key].slate,
     type: key,
   }));
-  sortBy(types, ['category', 'label']).forEach((action) => {
+  sortBy(types, ['category', 'label']).forEach((action, index) => {
     if (!action.category) {
       return;
     }
@@ -24,7 +24,7 @@ export default (props) => {
       onChange(addBlock(state, action, props.blockTypes));
     };
     const item = (
-      <Menu.Item key={action.type}>
+      <Menu.Item key={action.type || action.tooltip || index}>
         <Button onMouseDown={onMouseDown}>{action.label || action.type}</Button>
       </Menu.Item>
     );

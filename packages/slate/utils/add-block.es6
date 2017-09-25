@@ -62,14 +62,11 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
               index,
               transform,
             );
-          } else if (parentKey) {
+          } else {
             transform =
               block.kind === 'block'
                 ? transform.insertNodeByKey(block.key, index, Block.create(item))
                 : transform.insertNodeByKey(block.key, index, Inline.create(item));
-          } else {
-            transform =
-              block.kind === 'block' ? transform.insertBlock(item) : transform.insertInline(item);
           }
         });
       }

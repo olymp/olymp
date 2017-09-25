@@ -5,6 +5,7 @@ export default {
   key: 'Pages.Template.ContainerTextBlock',
   label: 'Container schmal',
   category: 'Template',
+  defaultNodes: () => ['paragraph'],
   styles: () => ({
     maxWidth: '100%',
     ifMediumUp: {

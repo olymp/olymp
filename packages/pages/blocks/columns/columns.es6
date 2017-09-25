@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Grid, createComponent } from 'olymp-fela';
-import { Block, addBlock } from 'olymp-slate';
+import { addBlock } from 'olymp-slate';
 import { FaPlus, FaMinus } from 'olymp-icons';
 import Column from './column';
 

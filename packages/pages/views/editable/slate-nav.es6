@@ -42,7 +42,7 @@ const getMenuItems = (blockTypes, prefix) => {
   });
   return [
     ...Object.keys(categories).map(key => (
-      <Menu.SubMenu title={key}>{categories[key]}</Menu.SubMenu>
+      <Menu.SubMenu key={key} title={key}>{categories[key]}</Menu.SubMenu>
     )),
     ...menuItems,
   ];
