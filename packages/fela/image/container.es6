@@ -4,15 +4,7 @@ import { createComponent } from 'react-fela';
 import LazyLoad from './lazy';
 import { ContentLoaderStyles } from '../loader';
 
-const containerStyle = ({
-  ratio,
-  width,
-  minWidth,
-  maxWidth,
-  minHeight,
-  maxHeight,
-  rounded,
-}) => ({
+const containerStyle = ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight, rounded }) => ({
   position: 'relative',
   overflow: 'hidden',
   width,
@@ -48,7 +40,7 @@ const Container = createComponent(
     maxWidth,
     maxHeight,
     ...p
-  }) => Object.keys(p)
+  }) => Object.keys(p),
 );
 
 const LazyContainer = createComponent(
@@ -69,11 +61,12 @@ const LazyContainer = createComponent(
     maxWidth,
     maxHeight,
     ...p
-  }) => Object.keys(p)
+  }) => Object.keys(p),
 );
 
 class ImageContainer extends Component {
   state = { visible: false, canHandleState: false };
+  static defaultProps = { attributes: {} };
 
   componentDidMount() {
     this.setState({ canHandleState: true });
@@ -87,6 +80,7 @@ class ImageContainer extends Component {
       ratio,
       rounded,
       lazy,
+      attributes,
       ...containerProps
     } = this.props;
     const { visible, canHandleState } = this.state;
@@ -95,6 +89,7 @@ class ImageContainer extends Component {
       return (
         <Container
           {...containerProps}
+          {...attributes}
           className={className}
           width={width}
           ratio={ratio}
@@ -108,6 +103,7 @@ class ImageContainer extends Component {
     return (
       <LazyContainer
         {...containerProps}
+        attributes={attributes}
         className={className}
         width={width}
         ratio={ratio}

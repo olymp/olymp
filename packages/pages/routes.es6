@@ -9,7 +9,14 @@ import { connect } from 'react-redux';
 
 export const EditablePageRoute = (props) => {
   const { Wrapped, flatNavigation, pathname, loading, deviceWidth } = props;
-  const match = flatNavigation.find(item => pathname === item.pathname);
+  const match =
+    pathname.indexOf('/page_id/') === 0
+      ? flatNavigation.find(
+        item => pathname.substr('/page_id/'.length) === (item.pageId || item.id),
+      )
+      : flatNavigation.find(
+        item => pathname === item.pathname || decodeURI(unescape(item.pathname)) === pathname,
+      );
   const { id, binding, pageId, aliasId, bindingId } = match || {};
 
   if (!match && pathname !== '/__new') {
@@ -40,7 +47,7 @@ export const EditablePageRoute = (props) => {
       <EditablePage
         {...props}
         maxWidth={deviceWidth}
-        id={pageId || aliasId || id}
+        id={pageId || id}
         bindingId={bindingId}
         binding={binding}
         render={children => (
@@ -60,9 +67,12 @@ export const PageRoute = connect(({ auth }) => ({
   isAuthenticated: !!auth.user,
 }))((props) => {
   const { Wrapped, flatNavigation, pathname, loading, isAuthenticated } = props;
-  const match = flatNavigation.find(
-    item => pathname === item.pathname || decodeURI(unescape(item.pathname)) === pathname,
-  );
+  const match =
+    pathname.indexOf('/page_id') === 0
+      ? flatNavigation.find(item => pathname.substr('/page_id'.length) === item.id)
+      : flatNavigation.find(
+        item => pathname === item.pathname || decodeURI(unescape(item.pathname)) === pathname,
+      );
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
     <Wrapped {...props} match={match}>

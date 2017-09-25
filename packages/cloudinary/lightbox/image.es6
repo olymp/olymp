@@ -12,15 +12,20 @@ const Img = createComponent(
     },
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withRouter
 export default class Lightbox extends Component {
-  ref = Math.random().toString(36).substr(2, 9);
+  ref = Math.random()
+    .toString(36)
+    .substr(2, 9);
 
   static contextTypes = {
     lightbox: PropTypes.object,
+  };
+  static defaultProps = {
+    attributes: {},
   };
 
   componentWillMount() {
@@ -46,7 +51,7 @@ export default class Lightbox extends Component {
     lightbox.remove(this.ref);
   }
 
-  add = value => {
+  add = (value) => {
     const { lightbox } = this.context;
     const width = 800;
     const getSrcSet = w =>
@@ -75,7 +80,7 @@ export default class Lightbox extends Component {
     });
   };
 
-  onClick = e => {
+  onClick = (e) => {
     const { onClick, router, pathname, query } = this.props;
     router.push({ pathname, query: { ...query, lightbox: this.ref } });
     if (onClick) {
@@ -93,13 +98,14 @@ export default class Lightbox extends Component {
       search,
       dispatch,
       location,
-      ...rest,
+      attributes,
+      ...rest
     } = this.props;
 
     if (!value || !value.url) {
-      return <div />;
+      return <div {...attributes} />;
     }
 
-    return <Img onClick={this.onClick} value={value} {...rest} />;
+    return <Img attributes={attributes} onClick={this.onClick} value={value} {...rest} />;
   }
 }

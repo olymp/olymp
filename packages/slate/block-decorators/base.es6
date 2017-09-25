@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
-import dnd from './dnd';
+// import dnd from './dnd';
 
 export default (options = {}) => (Block) => {
   const {
@@ -13,12 +13,13 @@ export default (options = {}) => (Block) => {
     category,
     icon,
     defaultNodes,
+    isEditable,
     props,
   } = options;
 
   const StyledBlock = createComponent(
-    ({ active }) => ({
-      outline: active && '2px solid rgba(48, 48, 48, 0.67)',
+    ({ isSelected }) => ({
+      outline: isSelected && '2px solid rgba(48, 48, 48, 0.67)',
     }),
     p => <Block {...p} />,
     p => Object.keys(p),
@@ -31,6 +32,7 @@ export default (options = {}) => (Block) => {
       isVoid: isVoid !== false,
       actions,
       isAtomic,
+      isEditable,
       sidebar,
       label,
       category,
@@ -62,7 +64,7 @@ export default (options = {}) => (Block) => {
     };
 
     render() {
-      const { node, editor, state, children } = this.props;
+      const { node, editor, state, isSelected, children } = this.props;
       const blockProps = (props || []).reduce((state, prop) => {
         const data = this.getData(prop);
         if (data !== undefined) {
@@ -70,16 +72,10 @@ export default (options = {}) => (Block) => {
         }
         return state;
       }, {});
-      const active =
-        !editor.props.readOnly &&
-        children.findIndex(
-          child => parseInt(child.key, 10) === parseInt(state.selection.startKey, 10),
-        ) >= 0;
 
       return (
         <StyledBlock
           {...this.props}
-          active={active}
           getData={this.getData}
           setData={this.setData}
           setActive={this.setActive}

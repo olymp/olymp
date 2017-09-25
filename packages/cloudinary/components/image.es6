@@ -19,33 +19,20 @@ export const cloudinaryUrl = (value, options) => {
     return '';
   }
 
-  const newUrl = value.url
-    .split('ttp://res.cloudinary.com/')
-    .join('ttps://res.cloudinary.com/');
+  const newUrl = value.url.split('ttp://res.cloudinary.com/').join('ttps://res.cloudinary.com/');
 
   const crop =
     value.crop && value.crop.length
-      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
-          .crop[3]},c_crop/`
+      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value.crop[3]},c_crop/`
       : '';
 
   let query = '';
-  Object.keys(newOptions).forEach(
-    key => (query = `${query}${key}_${newOptions[key]},`)
-  );
+  Object.keys(newOptions).forEach(key => (query = `${query}${key}_${newOptions[key]},`));
 
   return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
 };
 
-const CloudinaryImage = ({
-  options,
-  value,
-  ratio,
-  avatar,
-  alt,
-  maxResolution,
-  ...rest
-}) => {
+const CloudinaryImage = ({ options, value, ratio, avatar, alt, maxResolution, ...rest }) => {
   if (!value) {
     return <div />;
   }

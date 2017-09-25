@@ -6,12 +6,12 @@ export default {
   key: 'Pages.Media.ImageBlock.Image',
   label: 'Bild',
   category: 'Medien',
-  component: ({ getData, setActive, className, editor }) => {
+  component: ({ getData, className, editor, attributes }) => {
     const Img = editor.props.readOnly === true ? LightboxImage : Image;
     return (
       <Img
+        attributes={attributes}
         className={className}
-        onClick={setActive}
         width={`${100 / getData('size', 4)}%`}
         value={getData('value', {
           url: 'https://lorempixel.com/400/300/cats/',

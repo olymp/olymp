@@ -50,15 +50,16 @@ const Action = ({ node, state, onChange }) => (
 };
 export default (props) => {
   const { state, blockTypes, onChange, show } = props;
-  const block =
-    state.blocks.size === 1 &&
-    state.blocks.get(0).kind === 'block' &&
-    blockTypes[state.blocks.get(0).type];
-  const node = state.blocks.get(0);
-  const actions = get(block, 'slate.actions', []);
+  let sel = state.blocks.size === 1 && blockTypes[state.blocks.get(0).type];
+  let node = state.blocks.get(0);
+  if (!sel) {
+    sel = state.inlines.size === 1 && blockTypes[state.inlines.get(0).type];
+    node = state.inlines.get(0);
+  }
+  const actions = get(sel, 'slate.actions', []);
 
   return (
-    <Toolbar show={show} isOpened={!!block && actions && actions.length}>
+    <Toolbar show={show} isOpened={!!sel && actions && actions.length}>
       {actions.map(Action({ ...props, node }))}
     </Toolbar>
   );

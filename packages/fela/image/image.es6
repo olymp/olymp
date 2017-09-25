@@ -44,13 +44,7 @@ class Image extends Component {
   };
 
   limitWidth = (w, ratio, isPercentage) => {
-    const {
-      minWidth,
-      minHeight,
-      maxWidth,
-      maxHeight,
-      maxResolution,
-    } = this.props;
+    const { minWidth, minHeight, maxWidth, maxHeight, maxResolution } = this.props;
     let width = w;
 
     // minWidth/minHeight
@@ -117,6 +111,7 @@ class Image extends Component {
       onClick,
       circle,
       children,
+      attributes,
       ...containerProps
     } = this.props;
     const { width, ratio, isPercentage } = this.initVals();
@@ -136,6 +131,7 @@ class Image extends Component {
     return (
       <Container
         {...containerProps}
+        attributes={attributes}
         className={className}
         width={isPercentage ? this.props.width : w}
         ratio={ratio}

@@ -8,8 +8,9 @@ const ImageImg = createComponent(
     height,
     borderRadius: circle ? '50%' : theme.borderRadius,
   }),
-  ({ width, height, src, alt, onClick, className }) => (
+  ({ width, height, src, alt, onClick, className, attributes }) => (
     <img
+      {...attributes}
       src={src}
       alt={alt}
       className={className}
@@ -18,7 +19,7 @@ const ImageImg = createComponent(
       onClick={onClick}
     />
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 ImageImg.displayName = 'Image.Img';
@@ -34,5 +35,6 @@ ImageImg.defaultProps = {
   alt: '',
   onClick: () => {},
   circle: false,
+  attributes: {},
 };
 export default ImageImg;

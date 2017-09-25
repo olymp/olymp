@@ -63,8 +63,14 @@ export default class LazyLoad extends Component {
 
   getOffset() {
     const {
-      offset, offsetVertical, offsetHorizontal,
-      offsetTop, offsetBottom, offsetLeft, offsetRight, threshold,
+      offset,
+      offsetVertical,
+      offsetHorizontal,
+      offsetTop,
+      offsetBottom,
+      offsetLeft,
+      offsetRight,
+      threshold,
     } = this.props;
 
     const _offsetAll = threshold || offset;
@@ -107,20 +113,21 @@ export default class LazyLoad extends Component {
   }
 
   render() {
-    const { children, className, height, width } = this.props;
+    const { children, className, height, width, attributes } = this.props;
     const { visible } = this.state;
 
     const elStyles = { height, width };
-    const elClasses = (
-      'LazyLoad' +
-      (visible ? ' is-visible' : '') +
-      (className ? ` ${className}` : '')
-    );
+    const elClasses = `LazyLoad${visible ? ' is-visible' : ''}${className ? ` ${className}` : ''}`;
 
-    return React.createElement(this.props.elementType, {
-      className: elClasses,
-      style: elStyles,
-    }, visible && children);
+    return React.createElement(
+      this.props.elementType,
+      {
+        className: elClasses,
+        style: elStyles,
+        ...attributes,
+      },
+      visible && children,
+    );
   }
 }
 
@@ -129,10 +136,7 @@ LazyLoad.propTypes = {
   className: PropTypes.string,
   debounce: PropTypes.bool,
   elementType: PropTypes.string,
-  height: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   offset: PropTypes.number,
   offsetBottom: PropTypes.number,
   offsetHorizontal: PropTypes.number,
@@ -142,10 +146,7 @@ LazyLoad.propTypes = {
   offsetVertical: PropTypes.number,
   threshold: PropTypes.number,
   throttle: PropTypes.number,
-  width: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onContentVisible: PropTypes.func,
 };
 
@@ -160,4 +161,5 @@ LazyLoad.defaultProps = {
   offsetTop: 0,
   offsetVertical: 0,
   throttle: 250,
+  attributes: {},
 };

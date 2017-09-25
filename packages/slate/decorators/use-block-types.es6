@@ -20,6 +20,7 @@ export default (types) => {
     result[newKey] = useBlockBase({
       ...slate,
       ...rest,
+      // isEditable: editable,
       isVoid,
       key: newKey,
       isAtomic: true,

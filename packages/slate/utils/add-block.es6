@@ -1,10 +1,11 @@
 import { hasBlock } from './has';
 import { Text, Block } from 'slate';
 
-const createP = () => Block.create({
-  type: 'paragraph',
-  nodes: [Text.create()],
-});
+const createP = () =>
+  Block.create({
+    type: 'paragraph',
+    nodes: [Text.create()],
+  });
 
 export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }) => {
   if (!defaultNode) {
@@ -27,6 +28,13 @@ export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }
         .setBlock(isActive ? defaultNode : type)
         .unwrapBlock('bulleted-list')
         .unwrapBlock('numbered-list');
+    } else if (isAtomic) {
+      transform = transform.insertInline({
+        type,
+        isVoid,
+        data: {},
+        nodes: defaultNodes || Block.createList([createP()]),
+      });
     } else if (isAtomic) {
       transform = transform.insertBlock({
         type,

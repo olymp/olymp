@@ -143,13 +143,22 @@ class Pages extends Component {
       const children =
         item.children && item.children.length ? this.getItems(item.children, item) : undefined;
       const isBinding = item.bindingId && item.binding && item.binding.type;
-      const route = {
-        pathname: item.pathname,
-        query: {
-          ...query,
-          parent: undefined,
-        },
-      };
+      const route =
+        item.pathname && item.type === 'PAGE'
+          ? {
+            pathname: item.pathname,
+            query: {
+              ...query,
+              parent: undefined,
+            },
+          }
+          : {
+            pathname: `/page_id/${item.pageId || item.id}`,
+            query: {
+              ...query,
+              parent: undefined,
+            },
+          };
       const bindingRoute = {
         pathname: item.pathname,
         query: {
