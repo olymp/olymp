@@ -138,6 +138,8 @@ export default (WrappedComponent) => {
             return `${field.name} { ${this.getAttributes({
               fields: field.type.fields,
             })} }`;
+          else if (field.type.kind === 'OBJECT' && field.type.name === 'Geocode')
+            return `${field.name} { id, streetNumber, route, locality, administrativeAreaLevel1, administrativeAreaLevel2, country, postalCode, formattedAddress, lat, lng, locationType, partialMatch, types }`;
           return `${field.name} { id, name }`;
         })
         .filter(x => x)
