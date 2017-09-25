@@ -26,7 +26,7 @@ const Label = createComponent(
 );
 
 export default {
-  type: 'Pages.Template.Accordion.Label',
+  type: 'accordionLabel',
   isVoid: false,
   kind: 'block',
   label: 'Überschrift',

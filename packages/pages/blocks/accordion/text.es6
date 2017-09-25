@@ -9,12 +9,12 @@ const Text = createComponent(
     paddingRight: theme.space3,
     display: !isOpen && 'none',
   }),
-  'p',
-  p => Object.keys(p),
+  'div',
+  ({ isOpen, ...p }) => Object.keys(p),
 );
 
 export default {
-  type: 'Pages.Template.Accordion.Text',
+  type: 'accordionText',
   isVoid: false,
   kind: 'block',
   label: 'Text',

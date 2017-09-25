@@ -3,8 +3,8 @@ import Toolbar, { Button } from './toolbar';
 import { Menu } from 'antd';
 import { get } from 'lodash';
 
-const Action = ({ node, state, onChange }) => (
-  { toggle, active, label, component, blockTypes, ...rest },
+const Action = ({ node, state, onChange, blockTypes }) => (
+  { toggle, active, label, component, ...rest },
   i,
 ) => {
   const setData = (data) => {

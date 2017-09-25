@@ -144,14 +144,11 @@ class Pages extends Component {
       const parent = value.document.getParent(dropNode.key);
       const dropObjIndex = parent.nodes.indexOf(dropNode);
       if (dropPosition === -1) {
-        console.log('To cur of node');
         this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex));
       } else {
-        console.log('To prev of node');
         this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex - 1));
       }
     } else {
-      console.log('To end of dropKey');
       this.onChange(value.change().moveNodeByKey(dragNode.key, dropNode.key, dropNode.nodes.size));
     }
     /* return;

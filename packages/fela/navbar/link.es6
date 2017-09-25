@@ -15,16 +15,16 @@ const Link = createComponent(
     },
   }),
   ({ inverse, onClick, ...rest }) =>
-    onClick ? <span onClick={onClick} {...rest} /> : <NavLink {...rest} />,
-  p => Object.keys(p)
+    (onClick ? <span onClick={onClick} {...rest} /> : <NavLink {...rest} />),
+  p => Object.keys(p),
 );
 
 const Placeholder = createComponent(
   () => ({
     cursor: 'default',
   }),
-  'span',
-  ({ inverse, ...p }) => Object.keys(p)
+  'a',
+  ({ inverse, ...p }) => Object.keys(p),
 );
 
 const NavbarLink = createComponent(
@@ -36,10 +36,12 @@ const NavbarLink = createComponent(
     ellipsis: true,
   }),
   ({ to, onClick, ...rest }) =>
-    to || onClick
-      ? <Link to={to} onClick={onClick} {...rest} />
-      : <Placeholder {...rest} />,
-  p => Object.keys(p)
+    (to || onClick ? (
+      <Link to={to} onClick={onClick} {...rest} />
+    ) : (
+      <Placeholder href="javascript:;" {...rest} />
+    )),
+  p => Object.keys(p),
 );
 NavbarLink.displayName = 'Navbar.Link';
 NavbarLink.propTypes = {
