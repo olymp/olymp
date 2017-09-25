@@ -5,7 +5,7 @@ import { sortBy } from 'lodash';
 import addBlock from './utils/add-block';
 
 export default (props) => {
-  const { state, blockTypes, onChange, defaultNode, show } = props;
+  const { state, blockTypes, onChange, show } = props;
   const node = state.blocks.get(0);
   const display = !state.isBlurred && state.isCollapsed && node.isEmpty;
 
@@ -21,7 +21,7 @@ export default (props) => {
     }
     const onMouseDown = (e) => {
       e.preventDefault();
-      onChange(addBlock(state, action, { defaultNode }));
+      onChange(addBlock(state, action, props));
     };
     const item = (
       <Menu.Item key={action.type}>

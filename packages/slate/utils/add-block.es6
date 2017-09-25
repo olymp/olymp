@@ -1,16 +1,12 @@
 import { hasBlock } from './has';
-import { Text, Block } from 'slate';
+import { Text, Block, Inline } from 'slate';
+import createBlock from './create-block';
 
-const createP = () =>
-  Block.create({
-    type: 'paragraph',
-    nodes: [Text.create()],
-  });
+export default (value, node, props) => {
+  let { defaultNodes } = node;
+  const { type, isVoid, isAtomic, onInsert } = node;
+  const defaultNode = 'paragraph';
 
-export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }) => {
-  if (!defaultNode) {
-    defaultNode = 'paragraph';
-  }
   if (defaultNodes && typeof defaultNodes === 'function') {
     defaultNodes = defaultNodes();
   }
@@ -28,22 +24,13 @@ export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }
         .setBlock(isActive ? defaultNode : type)
         .unwrapBlock('bulleted-list')
         .unwrapBlock('numbered-list');
-    } else if (isAtomic) {
-      transform = transform.insertInline({
-        type,
-        isVoid,
-        data: {},
-        nodes: defaultNodes || Block.createList([createP()]),
-      });
-    } else if (isAtomic) {
-      transform = transform.insertBlock({
-        type,
-        isVoid,
-        data: {},
-        nodes: defaultNodes || Block.createList([createP()]),
-      });
     } else {
-      transform = transform.setBlock(isActive ? defaultNode : type);
+      const block = createBlock(node, props);
+      if (block && Block.isBlock(block)) {
+        transform = transform.insertBlock(node);
+      } else if (block && Inline.isInline(block)) {
+        transform = transform.insertInline(node);
+      }
     }
   } else {
     // Handle the extra wrapping required for list buttons.
@@ -68,5 +55,9 @@ export default (value, { type, isVoid, isAtomic, defaultNodes }, { defaultNode }
     }
   }
 
+  const changed = onInsert && onInsert(transform);
+  if (changed) {
+    return changed;
+  }
   return transform;
 };

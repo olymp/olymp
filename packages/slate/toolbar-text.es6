@@ -6,9 +6,9 @@ import addBlock from './utils/add-block';
 
 export default class ToolbarText extends Component {
   onClickBlock = (e, props) => {
-    const { state, onChange, defaultNode } = this.props;
+    const { state, onChange, blockTypes } = this.props;
     e.preventDefault();
-    onChange(addBlock(state, props, defaultNode));
+    onChange(addBlock(state, props, this.props));
   };
   renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {

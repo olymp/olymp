@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Grid, createComponent } from 'olymp-fela';
-import { createBlockList } from 'olymp-slate';
+import { createBlock, Block } from 'olymp-slate';
 import { FaPlus, FaMinus } from 'olymp-icons';
 import Column from './column';
 
@@ -25,7 +25,7 @@ export default {
   label: 'Spalten-Layout',
   category: 'Template',
   editable: true,
-  defaultNodes: () => createBlockList([Column, Column, Column, Column]),
+  defaultNodes: () => [Column, Column, Column, Column],
   component: ({ className, children, attributes, getData }) => (
     <Ctn {...attributes} className={className}>
       <Grid size={getData('columns', 3)}>{children}</Grid>

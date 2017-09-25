@@ -282,7 +282,7 @@ class SlateEditor extends Component {
           />
         )}
         {readOnly !== true && (
-          <ToolbarText show={focus} state={value} onChange={this.onChange} {...options} />
+          <ToolbarText show={focus} state={value} onChange={this.onChange} blockTypes={blockTypes} {...options} />
         )}
         <div className={className} style={{ position: 'relative', ...style }}>
           {children}

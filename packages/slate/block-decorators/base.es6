@@ -13,6 +13,7 @@ export default (options = {}) => (Block) => {
     category,
     icon,
     defaultNodes,
+    onInit,
     isEditable,
     props,
   } = options;
@@ -37,6 +38,7 @@ export default (options = {}) => (Block) => {
       label,
       category,
       icon,
+      onInit,
       defaultNodes,
     };
 
