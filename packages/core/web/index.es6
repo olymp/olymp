@@ -144,9 +144,9 @@ function renderApp(App) {
   };
   const method = window.INITIAL_DATA ? hydrate : render;
   const app = <App {...props} />;
-  // asyncBootstrapper(app).then(() => {
-  method(app, container);
-  // });
+  asyncBootstrapper(app).then(() => {
+    method(app, container);
+  });
 }
 // Get the DOM Element that will host our React application.
 container = document.getElementById('app');
