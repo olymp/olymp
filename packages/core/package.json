@@ -62,7 +62,7 @@
     "webpack-node-externals": "^1.6.0",
     "webpack-stats-plugin": "^0.1.5",
     "webpack-visualizer-plugin": "^0.1.11",
-    "worker-loader": "^0.8.1"
+    "worker-loader": "^1.0.0"
   },
   "devDependencies": {
     "olymp-webpack-electron": "^17.2.17"
