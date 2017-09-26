@@ -1,5 +1,5 @@
 {
-  "version": "17.2.33",
+  "version": "17.2.34",
   "name": "olymp-pages",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,9 +8,9 @@
     "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
-    "olymp-fela": "^17.2.33",
-    "olymp-router": "^17.2.33",
-    "olymp-utils": "^17.2.20",
+    "olymp-fela": "^17.2.34",
+    "olymp-router": "^17.2.34",
+    "olymp-utils": "^17.2.34",
     "recompose": "^0.24.0"
   }
 }
