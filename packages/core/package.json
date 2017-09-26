@@ -47,7 +47,6 @@
     "re-reselect": "^1.0.1",
     "react-apollo": "^1.4.15",
     "react-async-bootstrapper": "^1.1.1",
-    "react-async-component": "^1.0.1",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "next",
     "react-redux": "^5.0.6",
