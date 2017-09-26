@@ -4,9 +4,8 @@ import { withQueryState } from 'olymp-router';
 
 const Text = createComponent(
   ({ theme, isOpen }) => ({
-    // borderRight: `1px solid ${theme.color}`,
-    marginY: theme.space3,
-    paddingRight: theme.space3,
+    /* marginY: theme.space3,
+    paddingRight: theme.space3, */
     display: !isOpen && 'none',
   }),
   'div',
