@@ -8,15 +8,13 @@ import { CollectionRoute, CollectionModal } from 'olymp-collection';
 import { createComponent, getAntStyle, TopLoader } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
-import universal from 'react-universal-component';
+import { asyncComponent } from 'react-async-component';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
 import { TemplateRoute } from './templates';
 
-const Analytics = universal(props => import('olymp-google/analytics'), {
-  minDelay: 1200,
-  loading: props => 'Loading',
-  error: props => 'Error',
+const Analytics = asyncComponent({
+  resolve: () => System.import('olymp-google/analytics'),
 });
 
 const Container = createComponent(

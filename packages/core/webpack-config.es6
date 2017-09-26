@@ -115,7 +115,6 @@ module.exports = ({
       // new PrepackWebpackPlugin({ }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
-      new webpack.NamedModulesPlugin(),
       new ProgressBarPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       // new CheckerPlugin(),
@@ -149,6 +148,9 @@ module.exports = ({
     entry: {},
   };
 
+  if (isDev) {
+    config.plugins.push(new webpack.NamedModulesPlugin());
+  }
   if (!isServer) {
     config.plugins.push(
       new webpack.DefinePlugin({
@@ -324,7 +326,7 @@ module.exports = ({
   }
 
   // LimitChunkCount on all but production-web
-  if (isNode || isElectron) {
+  if (isNode || isElectron || isDev) {
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else {
@@ -337,7 +339,7 @@ module.exports = ({
         minChunks: Infinity,
       }),
     );
-    config.output.filename = '[name].[hash].js';
+    config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
   }
 
@@ -347,13 +349,8 @@ module.exports = ({
       modulesDir: path.resolve(appRoot, 'node_modules'),
       whitelist: [
         '.bin',
-        'is-webpack-bundle',
-        'webpack-require-weak',
-        'webpack-flush-chunks',
-        'babel-plugin-universal-import',
-        'babel-plugin-universal-import/importCss',
-        'babel-plugin-universal-import/universalImport',
-        'react-universal-component',
+        // 'is-webpack-bundle',
+        // 'webpack-require-weak',
         'source-map-support/register',
         /\.(eot|woff|woff2|ttf|otf)$/,
         /\.(svg|png|jpg|jpeg|gif|ico)$/,
@@ -362,11 +359,6 @@ module.exports = ({
         v => v.indexOf('webpack/hot/poll') === 0,
         v => v === 'antd' || v.indexOf('antd/') === 0,
         v => v === 'olymp' || v.indexOf('olymp-') === 0 || v.indexOf('olymp/') === 0,
-        v => v === 'react-universal-component' || v.indexOf('react-universal-component/') === 0,
-        v => v === 'webpack-flush-chunks' || v.indexOf('webpack-flush-chunks/') === 0,
-        v =>
-          v === 'babel-plugin-universal-import' ||
-          v.indexOf('babel-plugin-universal-import/') === 0,
       ],
     });
     if (isElectron) {

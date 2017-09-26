@@ -13,6 +13,7 @@ export default ({
   cssHash,
   getInitialState,
   gaTrackingId,
+  asyncState,
 }) => `
 <!DOCTYPE html>
 <html lang="de">
@@ -74,6 +75,10 @@ export default ({
     <div id="app">${root}</div>
     ${initialState
     ? `<script type="text/javascript">window.INITIAL_DATA=${serialize(initialState)}</script>`
+    : ''}
+    ${asyncState
+    ? `
+    <script type="text/javascript">window.ASYNC_STATE = ${serialize(asyncState)}</script>`
     : ''}
     ${cssHash ? `${cssHash}` : ''}
     ${getInitialState

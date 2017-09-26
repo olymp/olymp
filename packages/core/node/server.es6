@@ -21,11 +21,11 @@ import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component'; // 👈
+import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
 // Etc
 import fetch from 'isomorphic-fetch';
 import sslRedirect from 'heroku-ssl-redirect';
-import { flushChunkNames } from 'react-universal-component/server';
-import flushChunks from 'webpack-flush-chunks';
 // Apollo
 import { graphql } from 'graphql';
 import { print } from 'graphql/language/printer';
@@ -208,46 +208,36 @@ app.get('*', (req, res) => {
     ),
   );
 
+  const asyncContext = createAsyncContext();
   const reactApp = (
-    <DynamicReduxProvider dynamicRedux={dynamicRedux}>
-      <ReduxProvider store={store}>
-        <ApolloProvider client={client}>
-          <Provider renderer={renderer}>
-            <UAProvider ua={ua}>
-              <AmpProvider amp={req.isAmp}>
-                <App />
-              </AmpProvider>
-            </UAProvider>
-          </Provider>
-        </ApolloProvider>
-      </ReduxProvider>
-    </DynamicReduxProvider>
+    <AsyncComponentProvider asyncContext={asyncContext}>
+      <DynamicReduxProvider dynamicRedux={dynamicRedux}>
+        <ReduxProvider store={store}>
+          <ApolloProvider client={client}>
+            <Provider renderer={renderer}>
+              <UAProvider ua={ua}>
+                <AmpProvider amp={req.isAmp}>
+                  <App />
+                </AmpProvider>
+              </UAProvider>
+            </Provider>
+          </ApolloProvider>
+        </ReduxProvider>
+      </DynamicReduxProvider>
+    </AsyncComponentProvider>
   );
 
-  getDataFromTree(reactApp)
+  Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
     .then(() => {
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const felaMarkup = renderToMarkup(renderer);
+      const asyncState = asyncContext.getState();
 
-      let scripts = [];
-      let styles = [];
-      let cssHash = [];
-      if (clientStats) {
-        const chunkNames = flushChunkNames();
-        const r = flushChunks(clientStats, {
-          chunkNames,
-          before: [],
-          after: ['app'],
-        });
-        scripts = (r.scripts || []).map(x => `${clientStats.publicPath}${x}`);
-        styles = (r.stylesheets || []).map(x => `${clientStats.publicPath}${x}`);
-        cssHash = r.cssHash;
-      } else {
-        scripts = isAmp
-          ? []
-          : isProd ? [`${clientAssets.app.js}`] : [`${process.env.DEV_URL}/app.js`];
-        styles = isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
-      }
+      const scripts = req.isAmp
+        ? []
+        : isProd ? [`${clientAssets.app.js}`] : [`${process.env.DEV_URL}/app.js`];
+      const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
+      const cssHash = [];
 
       // Generate the html res.
       const state = store.getState();
@@ -258,6 +248,7 @@ app.get('*', (req, res) => {
         scripts,
         styles,
         cssHash,
+        asyncState,
         initialState: {
           apollo: cache.data,
           fela: state.fela,
@@ -267,7 +258,6 @@ app.get('*', (req, res) => {
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 
-      console.log('MATCHa?', state.location.url, req.originalUrl, 'Is miss', state.location.isMiss);
       if (state.location.url !== req.originalUrl) {
         res.status(301).setHeader('Location', state.location.url);
         res.end();

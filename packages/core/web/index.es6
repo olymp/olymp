@@ -2,6 +2,8 @@ import 'babel-polyfill';
 // React
 import React from 'react';
 import { render, hydrate } from 'react-dom';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component'; // 👈
+import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -119,14 +121,14 @@ const link = ApolloLink.from([
 
 let client,
   mountNode,
+  asyncState,
   container,
   renderer,
   store,
   ua,
   rehydrateState,
   history,
-  dynamicRedux,
-  asyncContext;
+  dynamicRedux;
 function renderApp(App) {
   const props = {
     client,
@@ -138,13 +140,13 @@ function renderApp(App) {
     ua,
     rehydrateState,
     history,
-    asyncContext,
+    asyncState,
   };
-  if (window.INITIAL_DATA) {
-    hydrate(<App {...props} />, container);
-  } else {
-    render(<App {...props} />, container);
-  }
+  const method = window.INITIAL_DATA ? hydrate : render;
+  const app = <App {...props} />;
+  // asyncBootstrapper(app).then(() => {
+  method(app, container);
+  // });
 }
 // Get the DOM Element that will host our React application.
 container = document.getElementById('app');
@@ -152,6 +154,7 @@ mountNode = document.getElementById('css-markup');
 ua = new UAParser(window.navigator.userAgent);
 renderer = createFela(ua);
 history = createHistory();
+asyncState = window.ASYNC_STATE;
 const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true }).restore(
   get(window.INITIAL_DATA, 'apollo', {}),
 );

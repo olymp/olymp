@@ -29,7 +29,6 @@ module.exports = (config, options) => {
   const babelOptions = {
     presets: ['react'],
     plugins: [
-      ['universal-import', { babelServer: isNode }],
       'syntax-dynamic-import',
       'transform-object-rest-spread',
       // 'transform-es2015-destructuring',
@@ -37,7 +36,7 @@ module.exports = (config, options) => {
       'transform-class-properties',
       'transform-es2015-classes',
       ['import', { libraryName: 'antd', style: true }],
-      // 'babel-plugin-fela',
+      'babel-plugin-fela',
     ],
   };
   babelOptions.presets.push([

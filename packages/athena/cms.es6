@@ -8,16 +8,14 @@ import { auth as withAuth } from 'olymp-auth';
 import { withNavigation } from 'olymp-pages';
 import { LightboxProvider } from 'olymp-cloudinary';
 import { DragDropContext } from 'react-dnd';
-import universal from 'react-universal-component';
+import { asyncComponent } from 'react-async-component';
 import HTML5Backend from 'react-dnd-html5-backend';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
 // / import IfAuth from './cms-auth';
 
-const IfAuth = universal(props => import('./cms-auth'), {
-  minDelay: 1200,
-  loading: ScreenLoader,
-  error: props => 'Error',
+const IfAuth = asyncComponent({
+  resolve: () => System.import('./cms-auth'),
 });
 
 const filterPublic = pages =>
