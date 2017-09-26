@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'olymp-router';
-import withAuth from '../with-auth';
+import { withAuth } from '../with-auth';
 import Base from './base';
 
 @withAuth

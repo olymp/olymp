@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createLogout, createVerify, setAttributes } from './redux';
 
-export const auth = (obj = {}) => (WrappedComponent) => {
+export const auth = (options = {}) => (WrappedComponent) => {
   const { attributes } = obj;
   if (attributes) {
     setAttributes(attributes);
@@ -20,4 +20,24 @@ export const auth = (obj = {}) => (WrappedComponent) => {
   return WithAuth;
 };
 
-export default connect(({ auth }) => ({ auth }), dispatch => ({ logout: createLogout(dispatch) }));
+export const useAuth = (WrappedComponent) => {
+  @connect(null, dispatch => ({ verify: createVerify(dispatch) }))
+  class WithAuth extends Component {
+    constructor(props) {
+      super(props);
+      if (props.auth && props.auth.attributes) {
+        setAttributes(props.auth.attributes);
+      }
+      props.verify();
+    }
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+  return WithAuth;
+};
+
+export const withAuth = connect(
+  ({ auth }) => ({ auth }),
+  dispatch => ({ logout: createLogout(dispatch) }),
+);

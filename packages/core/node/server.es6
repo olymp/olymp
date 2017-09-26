@@ -21,8 +21,8 @@ import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component'; // 👈
-import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
 // Etc
 import fetch from 'isomorphic-fetch';
 import sslRedirect from 'heroku-ssl-redirect';
@@ -60,11 +60,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const isDeployed = `${process.env.YARN_PRODUCTION}` === 'true';
 
 // Client assets
-const clientStatsPath = path.resolve(__dirname, '..', 'web', 'stats.json');
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
-const clientStats = fs.existsSync(clientStatsPath)
-  ? JSON.parse(fs.readFileSync(clientStatsPath))
-  : null; // eslint-disable-line import/no-dynamic-require
 const clientAssets = fs.existsSync(clientAssetsPath)
   ? JSON.parse(fs.readFileSync(clientAssetsPath))
   : null; // eslint-disable-line import/no-dynamic-require
@@ -83,7 +79,7 @@ if (
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
-  });*/
+  }); */
 }
 
 app.use(compression());

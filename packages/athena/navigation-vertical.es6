@@ -4,6 +4,7 @@ import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
 import { createComponent, border } from 'olymp-fela';
+import { withState } from 'recompose';
 import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -128,6 +129,7 @@ const VerticalMenu = createComponent(
 @connect(
   ({ location, auth }) => ({
     pathname: location.pathname,
+    query: location.query,
     user: auth.user,
     isAdmin: auth.user && auth.user.isAdmin,
   }),
@@ -136,9 +138,8 @@ const VerticalMenu = createComponent(
     logout: createLogout(dispatch),
   }),
 )
+@withState('collapsed', 'setCollapsed', true)
 class Navigation extends Component {
-  state = { collapsed: true };
-
   handleClick = (e) => {
     const { setQuery, logout } = this.props;
     if (e.key === 'logout') {
@@ -161,15 +162,25 @@ class Navigation extends Component {
   };
 
   enter = () => {
-    this.setState({ collapsed: false });
+    const { setCollapsed } = this.props;
+    setCollapsed(false);
   };
 
   leave = () => {
-    this.setState({ collapsed: true });
+    const { setCollapsed } = this.props;
+    setCollapsed(true);
   };
 
   render() {
-    const { logout, setDeviceWidth, query, collectionList, isAdmin, user } = this.props;
+    const {
+      logout,
+      setDeviceWidth,
+      query,
+      collectionList,
+      isAdmin,
+      user = {},
+      collapsed,
+    } = this.props;
     const keys = Object.keys(query);
 
     if (!keys.filter(x => x[0] === '@').length) {
@@ -183,7 +194,7 @@ class Navigation extends Component {
           selectedKeys={keys}
           mode="inline"
           onClick={this.handleClick}
-          inlineCollapsed={this.state.collapsed}
+          inlineCollapsed={collapsed}
         >
           <Menu.Item className="logo">
             <Link to={{ query: {} }}>

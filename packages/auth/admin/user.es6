@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import withAuth from '../with-auth';
+import { withAuth } from '../with-auth';
 import AuthProfile from './profile';
 
 @withAuth

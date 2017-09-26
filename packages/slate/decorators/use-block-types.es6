@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import useBlockBase from '../block-decorators/base';
 import { createComponent } from 'olymp-fela';
+import { compose, withPropsOnChange, withContext } from 'recompose';
+import useBlockBase from '../block-decorators/base';
 
-export default (types) => {
-  const blockTypes = Object.keys(types).reduce((result, key) => {
+const convert = types =>
+  Object.keys(types).reduce((result, key) => {
     const { type, isVoid = false, styles, kind = 'block', slate, ...rest } = types[key];
     let { component } = types[key];
     if (styles && typeof styles === 'object') {
@@ -22,18 +23,17 @@ export default (types) => {
     })(component);
     return result;
   }, {});
-  return WrappedComponent =>
-    class UseBlockTypes extends Component {
-      static childContextTypes = {
-        blockTypes: PropTypes.object,
-      };
-      getChildContext() {
-        return {
-          blockTypes: blockTypes || this.props.blockTypes,
-        };
-      }
-      render() {
-        return <WrappedComponent {...this.props} />;
-      }
-    };
-};
+
+export default compose(
+  withPropsOnChange(['blockTypes'], ({ blockTypes }) => ({
+    blockTypes: convert(blockTypes),
+  })),
+  withContext(
+    {
+      blockTypes: PropTypes.object,
+    },
+    ({ blockTypes }) => ({
+      blockTypes,
+    }),
+  ),
+);

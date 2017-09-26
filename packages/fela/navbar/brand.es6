@@ -17,11 +17,12 @@ const Brand = createComponent(
       color: inverse ? theme.light2 : theme.dark2,
     },
   }),
-  ({ children, className, ...p }) =>
-    (<NavLink to="/" className={cn(className, 'o-nav-item-brand')} {...p}>
+  ({ children, className, ...p }) => (
+    <NavLink to="/" className={cn(className, 'o-nav-item-brand')} {...p}>
       {children}
-    </NavLink>),
-  ({ inverse, vertically, ...p }) => Object.keys(p)
+    </NavLink>
+  ),
+  ({ inverse, vertically, ...p }) => Object.keys(p),
 );
 
 const Inner = createComponent(
@@ -33,7 +34,7 @@ const Inner = createComponent(
     },
   }),
   'div',
-  ['className']
+  ['className'],
 );
 
 const NavbarBrand = createComponent(
@@ -43,16 +44,15 @@ const NavbarBrand = createComponent(
     whiteSpace: 'nowrap',
     float: vertically ? 'none' : 'left',
   }),
-  ({ className, children, ...props }) =>
-    (<div className={className}>
-      <Brand {...props}>
+  ({ className, children, ...props }) => (
+    <div className={className}>
+      <Brand {...props}>{children}</Brand>
+      {/* <Inner>
         {children}
-      </Brand>
-      <Inner>
-        {children}
-      </Inner>
-    </div>),
-  p => Object.keys(p)
+    </Inner> */}
+    </div>
+  ),
+  p => Object.keys(p),
 );
 NavbarBrand.displayName = 'Navbar.Brand';
 NavbarBrand.propTypes = {

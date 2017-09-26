@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import withAuth from '../with-auth';
+import { withAuth } from '../with-auth';
 import { createComponent, Grid } from 'olymp-fela';
 import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
@@ -15,7 +15,7 @@ export const H1 = createComponent(
     fontWeight: 200,
   }),
   'h1',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const H3 = createComponent(
@@ -24,7 +24,7 @@ export const H3 = createComponent(
     fontWeight: 200,
   }),
   'h3',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const FormItem = createComponent(
@@ -37,7 +37,7 @@ export const FormItem = createComponent(
     },
   }),
   Form.Item,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withAuth
@@ -78,16 +78,14 @@ export default class AuthProfile extends Component {
           <FormItem key="name" label="Name" {...layout}>
             {form.getFieldDecorator('name', {
               initialValue: user.name,
-              rules: [
-                { required: true, message: 'Bitte geben Sie Ihren Namen an' },
-              ],
+              rules: [{ required: true, message: 'Bitte geben Sie Ihren Namen an' }],
             })(
               <Input
                 type="text"
                 placeholder="Name"
                 onKeyPress={onEnterFocus(() => this.mail)}
                 size="large"
-              />
+              />,
             )}
           </FormItem>
           <FormItem key="email" label="E-Mail" {...layout}>
@@ -106,7 +104,7 @@ export default class AuthProfile extends Component {
                 ref={x => (this.mail = x)}
                 size="large"
                 addonAfter={<FaEnvelope size={10} />}
-              />
+              />,
             )}
           </FormItem>
           {auth.user.isAdmin && (

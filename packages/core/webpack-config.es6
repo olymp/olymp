@@ -253,7 +253,7 @@ module.exports = ({
           // Defaults to process.cwd() + "/server.js"
           script: path.resolve(__dirname, 'node', 'index.js'),
         })
-      );*/
+      ); */
     }
   } else if (!isNode) {
     config.plugins.push(
@@ -286,7 +286,7 @@ module.exports = ({
           minifyJS: true,
           minifyCSS: true,
           minifyURLs: true,
-        },*/
+        }, */
         }),
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
@@ -313,7 +313,7 @@ module.exports = ({
             minifyJS: true,
             minifyCSS: true,
             minifyURLs: true,
-          },*/
+          }, */
           }),
         );
       }
@@ -343,14 +343,11 @@ module.exports = ({
     config.output.chunkFilename = '[name].[chunkhash].js';
   }
 
-  // externals
   if (isNode) {
     config.externals = nodeExternals({
       modulesDir: path.resolve(appRoot, 'node_modules'),
       whitelist: [
         '.bin',
-        // 'is-webpack-bundle',
-        // 'webpack-require-weak',
         'source-map-support/register',
         /\.(eot|woff|woff2|ttf|otf)$/,
         /\.(svg|png|jpg|jpeg|gif|ico)$/,

@@ -2,8 +2,7 @@ import 'babel-polyfill';
 // React
 import React from 'react';
 import { render, hydrate } from 'react-dom';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component'; // 👈
-import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
+import asyncBootstrapper from 'react-async-bootstrapper';
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -144,9 +143,12 @@ function renderApp(App) {
   };
   const method = window.INITIAL_DATA ? hydrate : render;
   const app = <App {...props} />;
-  asyncBootstrapper(app).then(() => {
-    method(app, container);
-  });
+  if (asyncState) {
+    return asyncBootstrapper(app).then(() => {
+      method(app, container);
+    });
+  }
+  return method(app, container);
 }
 // Get the DOM Element that will host our React application.
 container = document.getElementById('app');

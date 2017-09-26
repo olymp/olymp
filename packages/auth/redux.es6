@@ -77,7 +77,7 @@ export const authMiddleware = ({ dispatch, getState }) => nextDispatch => (actio
 };
 
 export const createVerify = dispatch => () => {
-  if (typeof localStorage !== 'undefined' && !localStorage.getItem('token')) {
+  if (typeof window !== 'undefined' && !window.INITIAL_DATA) {
     return dispatch({
       type: VERIFY,
       query: `
