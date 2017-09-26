@@ -327,9 +327,6 @@ module.exports = ({
   if (isNode || isElectron) {
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
-  } else if (isDev) {
-    config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
-    config.output.filename = '[name].js';
   } else {
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(new ExtractCssChunks());
@@ -340,7 +337,7 @@ module.exports = ({
         minChunks: Infinity,
       }),
     );
-    config.output.filename = '[name].[chunkhash].js';
+    config.output.filename = '[name].[hash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
   }
 
