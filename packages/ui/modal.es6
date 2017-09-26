@@ -116,7 +116,7 @@ const component = createComponent(
         marginTop: -140,
         textAlign: 'center',
         '> img': {
-          height: 100,
+          height: 75,
         },
         '> h3': {
           color: theme.light1,

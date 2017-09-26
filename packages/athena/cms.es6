@@ -16,7 +16,7 @@ import NoAuth from './cms-noauth';
 
 const IfAuth = universal(props => import('./cms-auth'), {
   minDelay: 1200,
-  loading: props => 'Loading',
+  loading: ScreenLoader,
   error: props => 'Error',
 });
 
@@ -52,7 +52,7 @@ export default ({ auth, theme }) => (Wrapped) => {
         <ThemeProvider theme={theme}>
           <LightboxProvider>
             {isLoading ? (
-              <ScreenLoader show />
+              <ScreenLoader />
             ) : !isAuthenticated ? (
               <NoAuth {...this.props} navigation={nav} wrapper={Wrapped} />
             ) : (

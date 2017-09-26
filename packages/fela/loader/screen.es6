@@ -8,7 +8,7 @@ import Portal from '../portal';
 const Modal = getContext({
   theme: PropTypes.object,
 })(
-  ({ className, theme, show }) =>
+  ({ className, theme, show = true }) =>
     (show ? (
       <Portal>
         <div className={className}>
@@ -48,8 +48,7 @@ const component = createComponent(
       backgroundColor: theme.color,
       borderRadius: '100%',
       // padding: 30,
-      width: 200,
-      height: 200,
+      size: 125,
       center: true,
       animationDuration: '2.5s',
       animationIterationCount: 'infinite',
@@ -65,7 +64,7 @@ const component = createComponent(
         },
       },
       '> img': {
-        height: 125,
+        height: 75,
         center: true,
         animationDuration: '2.5s',
         animationIterationCount: 'infinite',
