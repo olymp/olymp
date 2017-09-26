@@ -16,11 +16,11 @@ export default withPathname(({ children, pathname, ...rest }) => {
     } else {
       const params = isMatch(pathname, route.props);
       if (params) {
-        const p =
+        const path =
           params && params.splat
             ? pathname.substr(0, pathname.length - params.splat.length)
             : pathname;
-        match = cloneElement(route, { match: { path: p, ...params } });
+        match = cloneElement(route, { match: { path, ...params } });
         break;
       } else if (route.props.path === undefined || route.props.match === undefined) {
         notFound = route;

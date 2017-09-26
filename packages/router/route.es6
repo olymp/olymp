@@ -1,15 +1,15 @@
-import { createElement } from 'react';
+import React from 'react';
 import { withPathname } from './decorators';
 import { isMatch } from './utils';
 
-export default withPathname(({ path, exact, render, component, ...rest }) => {
+export default withPathname(({ path, exact, render, component: Component, ...rest }) => {
   const { pathname, match } = rest;
   if (match !== undefined) {
     if (!match) {
       return null;
     }
-    if (component) {
-      return createElement(component, rest);
+    if (Component) {
+      return <Component {...rest} />;
     } else if (render) {
       return render(rest);
     }
@@ -24,20 +24,11 @@ export default withPathname(({ path, exact, render, component, ...rest }) => {
         path: params.splat ? pathname.substr(0, pathname.length - params.splat.length) : pathname,
       },
     };
-    if (component) {
-      return createElement(component, props);
+    if (Component) {
+      return <Component {...props} />;
     } else if (render) {
       return render(props);
     }
   }
   return null;
 });
-
-/*
-
-pathname
-query
-match { path, splat, ...params }
-router { push, replace }
-
-*/
