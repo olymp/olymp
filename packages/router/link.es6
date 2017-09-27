@@ -59,13 +59,14 @@ export default class Link extends Component {
   }
 
   render() {
-    const { to, push, className, style, children } = this.props;
+    const { to, push, className, style, children, attributes = {} } = this.props;
     return (
       <a
         className={className}
         style={style}
         href={this.location ? this.location.url : 'javascript:;'}
         onClick={this.onClick}
+        {...attributes}
       >
         {children}
       </a>

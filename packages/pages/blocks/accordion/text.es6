@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
-import { withQueryState } from 'olymp-router';
+import { withQueryParam } from 'olymp-router';
 
 const Text = createComponent(
   ({ theme, isOpen }) => ({
@@ -17,7 +17,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Text',
-  component: withQueryState(
+  component: withQueryParam(
     'accordion',
   )(({ className, attributes, children, accordion, parent }) => (
     <Text className={className} isOpen={accordion === parent.key} {...attributes}>
