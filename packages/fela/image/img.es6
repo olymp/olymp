@@ -6,7 +6,7 @@ const ImageImg = createComponent(
   ({ theme, width, height, circle }) => ({
     width,
     height,
-    borderRadius: circle ? '50%' : theme.borderRadius,
+    borderRadius: circle ? '50%' : 0,
   }),
   ({ width, height, src, alt, onClick, className, attributes }) => (
     <img

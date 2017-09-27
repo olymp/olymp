@@ -9,8 +9,10 @@ import { LightboxProvider } from 'olymp-cloudinary';
 import { DragDropContext } from 'react-dnd';
 import { asyncComponent } from 'react-async-component';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { withNavigation } from 'olymp-pages/with-data';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
+
 // import IfAuth from './cms-auth';
 const IfAuth = asyncComponent({
   resolve: () => System.import('./cms-auth'),
@@ -36,12 +38,14 @@ const Auth = connect(({ auth }) => ({
   ({ isAuthenticated, ...rest }) => (isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />),
 );
 
-const Load = connect(({ auth }, { isNavigationLoading }) => ({
-  isLoading: auth.verifying || isNavigationLoading,
-}))(({ isLoading, ...rest }) => (isLoading ? <ScreenLoader /> : <Auth {...rest} />));
+const Load = withNavigation(
+  connect(({ auth }, { isNavigationLoading }) => ({
+    isLoading: auth.verifying || isNavigationLoading,
+  }))(({ isLoading, ...rest }) => (isLoading ? <ScreenLoader /> : <Auth {...rest} />)),
+);
 
 export default Wrapped =>
-  enhance(({ theme, isLoading, ...rest }) => (
+  enhance(({ theme, ...rest }) => (
     <ThemeProvider theme={theme}>
       <LightboxProvider>
         <Load {...rest} Wrapped={Wrapped} />

@@ -4,10 +4,8 @@ import { renderHelmet } from 'olymp-utils';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Error404, EditablePage } from './views';
-import { withNavigation } from './with-data';
 
 const enhance = compose(
-  withNavigation,
   connect(({ auth, location }) => ({
     isAuthenticated: !!auth.user,
     pathname: location.pathname,

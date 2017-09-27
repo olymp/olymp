@@ -7,7 +7,6 @@ import { Icon } from 'antd';
 import { Link } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Error404, Page } from './views';
-import { withNavigation } from './with-data';
 
 const filterPublic = pages =>
   pages.filter(page => page.state === 'PUBLISHED').map(({ children, ...rest }) => ({
@@ -16,10 +15,9 @@ const filterPublic = pages =>
   }));
 
 const enhance = compose(
-  withNavigation,
-  withPropsOnChange(['navigation'], ({ navigation }) => ({
+  /* withPropsOnChange(['navigation'], ({ navigation }) => ({
     navigation: filterPublic(navigation),
-  })),
+  })), */
   connect(({ auth, location }) => ({
     isAuthenticated: !!auth.user,
     pathname: location.pathname,

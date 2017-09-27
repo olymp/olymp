@@ -7,11 +7,13 @@ import cn from 'classnames';
 const Brand = createComponent(
   ({ theme, inverse }) => ({
     color: inverse ? theme.light : theme.dark,
-    centerY: true,
-    paddingX: theme.space3,
+    // centerY: true,
+    paddingRight: theme.space3,
     paddingY: theme.space2,
-    '> *': {
-      marginX: `-${theme.space3}`,
+    display: 'inline-block',
+    '> img': {
+      marginY: 0,
+      marginX: 0,
     },
     onHover: {
       color: inverse ? theme.light2 : theme.dark2,
