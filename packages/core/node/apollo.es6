@@ -34,11 +34,13 @@ export function walkTree(element, context, visitor) {
       var _component = Component;
       child = _component(props, context);
     }
-    if (child) {
+    if (child && Array.isArray(child)) {
+      child.forEach(item => walkTree(item, context, visitor));
+    } else if (child) {
       walkTree(child, childContext, visitor);
     }
   } else if (Array.isArray(element)) {
-    element.forEach(e => walkTree(e, context, visitor));
+    element.forEach(item => walkTree(item, context, visitor));
   } else {
     if (visitor(element, null, context) === false) {
       return;

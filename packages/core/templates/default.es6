@@ -46,7 +46,15 @@ export default ({
     ${title ? title.toString() : ''}
     ${meta ? meta.toString() : ''}
     ${link ? link.toString() : ''}
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`).join('\n')}
+    ${styles
+    .map(
+      style =>
+        `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="${style}">`,
+    )
+    .join('\n')}
+    <noscript>
+      ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`).join('\n')}
+    </noscript>
     ${fela || ''}
     ${gaTrackingId
     ? `<script type="text/javascript">
@@ -85,7 +93,7 @@ export default ({
     ? `<script type="text/javascript">window.INITIAL_DATA=${() =>
       serialize(getInitialState())}</script>`
     : ''}
-    ${scripts.map(script => `<script src="${script}"></script>`).join('\n')}
+    ${scripts.map(script => `<script async src="${script}"></script>`).join('\n')}
   </body>
 </html>
 `;
