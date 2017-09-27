@@ -26,7 +26,7 @@ const ImageContainer = createComponent(
     },
   }),
   'div',
-  ({ height, isActive, ...p }) => Object.keys(p)
+  ({ height, isActive, ...p }) => Object.keys(p),
 );
 
 const ImageLabel = createComponent(
@@ -46,7 +46,7 @@ const ImageLabel = createComponent(
     // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   }),
   'span',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const CheckLabel = createComponent(
@@ -65,7 +65,7 @@ const CheckLabel = createComponent(
     lineHeight: 1,
   }),
   'span',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const CloseLabel = createComponent(
@@ -76,29 +76,33 @@ const CloseLabel = createComponent(
     },
   }),
   CheckLabel,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Thumb = ({ item, onClick, onRemove, isActive, height }) =>
-  item
-    ? <ImageContainer isActive={isActive}>
-      <Image value={item} height={height} onClick={onClick} />
-      {item.format === 'pdf'
-          ? <ImageLabel>
-            <Icon type="file-pdf" />
-          </ImageLabel>
-          : undefined}
-      {isActive
-          ? onRemove
-            ? <CloseLabel onClick={onRemove}>
-              <Icon type="close" />
-            </CloseLabel>
-            : <CheckLabel>
-              <Icon type="check" />
-            </CheckLabel>
-          : undefined}
+  (item ? (
+    <ImageContainer isActive={isActive}>
+      <Image value={item} height={height} maxWidth={300} onClick={onClick} />
+      {item.format === 'pdf' ? (
+        <ImageLabel>
+          <Icon type="file-pdf" />
+        </ImageLabel>
+      ) : (
+        undefined
+      )}
+      {isActive ? onRemove ? (
+        <CloseLabel onClick={onRemove}>
+          <Icon type="close" />
+        </CloseLabel>
+      ) : (
+        <CheckLabel>
+          <Icon type="check" />
+        </CheckLabel>
+      ) : (
+        undefined
+      )}
     </ImageContainer>
-    : null;
+  ) : null);
 Thumb.propTypes = {
   item: object,
   onClick: func,
