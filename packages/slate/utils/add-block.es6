@@ -44,7 +44,6 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
 
       if (defaultNodes) {
         defaultNodes.forEach((item, index) => {
-          console.log(item);
           if (typeof item === 'string' && blockTypes[item]) {
             transform = addBlock(
               value,
