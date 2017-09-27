@@ -1,9 +1,11 @@
-import React, { Children, cloneElement, Component } from 'react';
+import React, { Children, cloneElement } from 'react';
+import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
+const Div = ({ toggled, onToggle, ...props }) => <div {...props} onClick={onToggle} />;
 const Button = createComponent(
-  ({ theme, open, inverse, size = 20 }) => ({
+  ({ theme, toggled, inverse, size = 20 }) => ({
     position: 'absolute',
     top: 10,
     right: theme.space3,
@@ -27,43 +29,44 @@ const Button = createComponent(
       transform: 'rotate(0deg)',
       transition: '.25s ease-in-out',
       ':nth-child(1)': {
-        top: open ? Math.round(size / 3) : 0,
-        width: open && '0%',
-        left: open && '50%',
+        top: toggled ? Math.round(size / 3) : 0,
+        width: toggled && '0%',
+        left: toggled && '50%',
       },
       ':nth-child(2)': {
         top: Math.round(size / 3),
-        transform: open && 'rotate(45deg)',
+        transform: toggled && 'rotate(45deg)',
       },
       ':nth-child(3)': {
         top: Math.round(size / 3),
-        transform: open && 'rotate(-45deg)',
+        transform: toggled && 'rotate(-45deg)',
       },
       ':nth-child(4)': {
-        top: open ? Math.round(size / 3) : Math.round(size / 3) * 2,
-        width: open && '0%',
-        left: open && '50%',
+        top: toggled ? Math.round(size / 3) : Math.round(size / 3) * 2,
+        width: toggled && '0%',
+        left: toggled && '50%',
       },
     },
   }),
-  ({ className, onClick }) =>
-    (<div className={className} onClick={onClick}>
+  ({ className, onToggle, toggled, Comp }) => (
+    <Comp className={className} onToggle={onToggle} toggled={toggled}>
       <span />
       <span />
       <span />
       <span />
-    </div>),
-  p => Object.keys(p)
+    </Comp>
+  ),
+  p => Object.keys(p),
 );
 
 const Container = createComponent(
-  ({ open }) => ({
+  ({ toggled }) => ({
     width: '100%',
     ifMini: {
       '> div:nth-child(2)': {
         clear: 'both',
-        transform: open ? 'scaleY(1)' : 'scaleY(0)',
-        maxHeight: open ? 500 : 0,
+        transform: toggled ? 'scaleY(1)' : 'scaleY(0)',
+        maxHeight: toggled ? 500 : 0,
         overflow: 'auto',
         transformOrigin: 'top',
         transition: 'all 0.25s ease-in-out',
@@ -71,34 +74,23 @@ const Container = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
-class Toggler extends Component {
-  state = { open: false };
-
-  render() {
-    const { className, children, isOpen, ...props } = this.props;
-    const { open } = this.state;
-
-    const toggleState = () => this.setState({ open: !open });
-    const toggleMenu = this.props.toggleMenu || toggleState;
-
-    return (
-      <Container className={className} open={isOpen || open}>
-        <Button {...props} open={isOpen || open} onClick={toggleMenu} />
-
-        {Children.map(children, child => cloneElement(child, props))}
-      </Container>
-    );
-  }
-}
+const Toggler = ({ className, children, toggled, toggleComponent: Comp, onToggle, ...props }) => (
+  <Container className={cn(className, 'o-nav-toggle')} toggled={toggled}>
+    <Button toggled={toggled} Comp={Comp} onToggle={onToggle} />
+    {Children.map(children, child => cloneElement(child, props))}
+  </Container>
+);
 Toggler.PropTypes = {
-  toggleMenu: PropTypes.func,
-  isOpen: PropTypes.bool,
+  toggleComponent: PropTypes.node,
+  onToggle: PropTypes.func,
+  toggled: PropTypes.bool,
 };
 Toggler.defaultProps = {
-  toggleMenu: undefined,
-  isOpen: false,
+  toggleComponent: Div,
+  onToggle: undefined,
+  toggled: false,
 };
 export default Toggler;

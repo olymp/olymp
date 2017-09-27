@@ -26,7 +26,7 @@ const Inner = createComponent(
     },
   }),
   'div',
-  ['className']
+  ['className'],
 );
 
 const Navbar = createComponent(
@@ -49,20 +49,26 @@ const Navbar = createComponent(
     container,
     inverse,
     vertically,
-    ...props,
-  }) =>
-    (<nav className={className}>
+    toggled,
+    onToggle,
+    toggleComponent,
+    ...props
+  }) => (
+    <nav className={className}>
       <WithContainer container={container}>
         <Inner vertically={vertically}>
-          {brand &&
+          {brand && (
             <Brand inverse={inverse} vertically={vertically}>
               {brand}
-            </Brand>}
+            </Brand>
+          )}
 
-          {pages &&
-            !!pages.length &&
+          {pages && !!pages.length ? (
             <Toggler
               {...props}
+              toggled={toggled}
+              onToggle={onToggle}
+              toggleComponent={toggleComponent}
               inverse={inverse}
               vertically={vertically}
               pages={pages}
@@ -70,7 +76,8 @@ const Navbar = createComponent(
               renderNav={renderNav}
             >
               <Sub />
-            </Toggler>}
+            </Toggler>
+          ) : null}
 
           {Children.map(children, child =>
             cloneElement(child, {
@@ -79,12 +86,13 @@ const Navbar = createComponent(
               vertically,
               renderItem,
               renderNav,
-            })
+            }),
           )}
         </Inner>
       </WithContainer>
-    </nav>),
-  p => Object.keys(p)
+    </nav>
+  ),
+  p => Object.keys(p),
 );
 Navbar.displayName = 'Navbar';
 Navbar.propTypes = {

@@ -49,11 +49,11 @@ const NavItem = createComponent(
     },
   }),
   ({
+    id,
     className,
     pathname,
     children,
     title,
-    fill,
     inverse,
     vertically,
     right,
@@ -61,11 +61,12 @@ const NavItem = createComponent(
     onClick,
     level,
     onItemMouseEnter,
-    ...props
+    renderItem,
+    renderNav,
   }) => (
     <div
       className={cn(className, 'o-nav-item', `o-nav-item-lvl-${level}`)}
-      onMouseEnter={onItemMouseEnter ? () => onItemMouseEnter(props) : undefined}
+      onMouseEnter={onItemMouseEnter ? () => onItemMouseEnter(id) : undefined}
     >
       <Link to={pathname} onClick={onClick} inverse={inverse}>
         {title}
@@ -75,17 +76,28 @@ const NavItem = createComponent(
 
       {pages &&
         !!pages.length &&
-        props.renderNav({
-          ...props,
+        renderNav({
           inverse,
           vertically,
           right,
+          onItemMouseEnter,
+          renderItem,
+          renderNav,
           level: level + 1,
           pages,
           sub: true,
         })}
       {Children.map(children, child =>
-        cloneElement(child, { ...props, inverse, vertically, right, sub: true, level: level + 1 }),
+        cloneElement(child, {
+          inverse,
+          vertically,
+          right,
+          sub: true,
+          onItemMouseEnter,
+          renderItem,
+          renderNav,
+          level: level + 1,
+        }),
       )}
     </div>
   ),
