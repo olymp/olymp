@@ -14,8 +14,8 @@ const Link = createComponent(
       textDecoration: `underline solid ${inverse ? theme.light : theme.color}`,
     },
   }),
-  ({ inverse, onClick, ...rest }) =>
-    (onClick ? <span onClick={onClick} {...rest} /> : <NavLink {...rest} />),
+  ({ inverse, onClick, renderItemLink: LinkComponent, ...rest }) =>
+    (onClick ? <span onClick={onClick} {...rest} /> : <LinkComponent {...rest} />),
   p => Object.keys(p),
 );
 
@@ -51,5 +51,6 @@ NavbarLink.propTypes = {
 NavbarLink.defaultProps = {
   to: undefined,
   onClick: undefined,
+  renderItemLink: props => <NavLink {...props} />,
 };
 export default NavbarLink;

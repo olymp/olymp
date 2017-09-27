@@ -12,6 +12,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { withNavigation } from 'olymp-pages/with-data';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
+import { withRedux } from './redux';
 
 // import IfAuth from './cms-auth';
 const IfAuth = asyncComponent({
@@ -21,6 +22,7 @@ const IfAuth = asyncComponent({
 const enhance = compose(
   DragDropContext(HTML5Backend),
   useAuth,
+  withRedux,
   useBlockTypes,
   withPropsOnChange(['theme'], ({ theme }) => ({
     theme: {

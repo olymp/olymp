@@ -1,3 +1,3 @@
-export { default as Prefetcher } from 'olymp-pages/prefetcher';
 export { default as Navbar } from './navbar';
+export { default as PrefetchLink, withPrefetch } from './prefetch-link';
 export { default } from './cms';

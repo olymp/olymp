@@ -2,9 +2,9 @@ import React, { Children } from 'react';
 import { connect } from 'react-redux';
 import { onlyUpdateForKeys, compose } from 'recompose';
 
-const matchPath = (pathname, exact, match) =>
+export const matchPath = (pathname, exact, match) =>
   (!exact && pathname.index(`${match}/`) === 0) || pathname === match;
-const matchPaths = (pathname, exact, match) => {
+export const matchPaths = (pathname, exact, match) => {
   for (const path of match) {
     if (matchPath(pathname, exact, path)) {
       return true;
@@ -12,7 +12,7 @@ const matchPaths = (pathname, exact, match) => {
   }
   return false;
 };
-const getChild = ({ render, component: Component, match, children, ...rest }) => {
+export const getChild = ({ render, component: Component, match, children, ...rest }) => {
   if (Component) {
     return <Component {...rest} />;
   } else if (render) {
@@ -22,7 +22,7 @@ const getChild = ({ render, component: Component, match, children, ...rest }) =>
   }
   return null;
 };
-const matchQuery = (query, match) => {
+export const matchQuery = (query, match) => {
   for (const key in match) {
     if (!(key in query) || query[key] !== match[key]) {
       return false;

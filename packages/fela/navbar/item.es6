@@ -49,7 +49,6 @@ const NavItem = createComponent(
     },
   }),
   ({
-    id,
     className,
     pathname,
     children,
@@ -60,15 +59,13 @@ const NavItem = createComponent(
     pages,
     onClick,
     level,
-    onItemMouseEnter,
     renderItem,
     renderNav,
+    renderItemWrapper: Wrapper,
+    renderItemLink,
   }) => (
-    <div
-      className={cn(className, 'o-nav-item', `o-nav-item-lvl-${level}`)}
-      onMouseEnter={onItemMouseEnter ? () => onItemMouseEnter(id) : undefined}
-    >
-      <Link to={pathname} onClick={onClick} inverse={inverse}>
+    <Wrapper className={cn(className, 'o-nav-item', `o-nav-item-lvl-${level}`)}>
+      <Link to={pathname} onClick={onClick} inverse={inverse} renderItemLink={renderItemLink}>
         {title}
         {pages &&
         !!pages.length && <Icon vertically={vertically} right={right} inverse={inverse} />}
@@ -80,9 +77,10 @@ const NavItem = createComponent(
           inverse,
           vertically,
           right,
-          onItemMouseEnter,
           renderItem,
           renderNav,
+          renderItemLink,
+          renderItemWrapper: Wrapper,
           level: level + 1,
           pages,
           sub: true,
@@ -93,13 +91,14 @@ const NavItem = createComponent(
           vertically,
           right,
           sub: true,
-          onItemMouseEnter,
           renderItem,
+          renderItemWrapper: Wrapper,
+          renderItemLink,
           renderNav,
           level: level + 1,
         }),
       )}
-    </div>
+    </Wrapper>
   ),
   p => Object.keys(p),
 );
@@ -119,5 +118,6 @@ NavItem.defaultProps = {
   to: undefined,
   mega: null,
   onClick: undefined,
+  renderItemWrapper: props => <div {...props} />,
 };
 export default NavItem;
