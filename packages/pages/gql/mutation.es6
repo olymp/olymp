@@ -1,8 +1,10 @@
 import { gql, graphql } from 'olymp-utils';
+import { compose } from 'recompose';
+import { withPushPathname } from 'olymp-router';
 import { onError, onSuccess } from 'olymp-ui';
 
 const ok = (props, mutate) => () => {
-  const { form, item, router, query, flatNavigation } = props;
+  const { form, item, router, query, flatNavigation, pushPathname } = props;
   form.validateFields((err, values) => {
     if (err) {
       return onError(err);
@@ -36,44 +38,47 @@ const ok = (props, mutate) => () => {
           }
           parentId = parent.parentId;
         }
-        router.push({ pathname: slug, query: { ...query, '@parent': undefined } });
+        pushPathname(slug);
       })
       .catch(onError);
   });
 };
 
-export default graphql(
-  gql`
-    mutation page($id: String, $input: PageInput) {
-      item: page(id: $id, input: $input) {
-        id
-        slug
-        order
-        isMega
-        name
-        type
-        binding {
+export default compose(
+  withPushPathname,
+  graphql(
+    gql`
+      mutation page($id: String, $input: PageInput) {
+        item: page(id: $id, input: $input) {
           id
+          slug
+          order
+          isMega
+          name
           type
-          query
-          fields
+          binding {
+            id
+            type
+            query
+            fields
+          }
+          aliasId
+          href
+          sorting
+          parentId
+          blocks
+          state
         }
-        aliasId
-        href
-        sorting
-        parentId
-        blocks
-        state
       }
-    }
-  `,
-  {
-    props: ({ ownProps, mutate }) => ({
-      ...ownProps,
-      save: ok(ownProps, mutate),
-      mutate,
-    }),
-  },
+    `,
+    {
+      props: ({ ownProps, mutate }) => ({
+        ...ownProps,
+        save: ok(ownProps, mutate),
+        mutate,
+      }),
+    },
+  ),
 );
 
 export const reorderPage = graphql(
