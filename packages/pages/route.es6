@@ -3,7 +3,7 @@ import { renderHelmet } from 'olymp-utils';
 import { compose, withPropsOnChange } from 'recompose';
 import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
-import { Link } from 'olymp-router';
+import { Link, MatchSwitch, MatchPaths, Match } from 'olymp-router';
 import { connect } from 'react-redux';
 import Error404 from './views/404';
 import Page from './views/page';
@@ -26,38 +26,41 @@ const enhance = compose(
 
 const PageRoute = enhance((props) => {
   const { Wrapped, flatNavigation, publicNavigation, pathname, isAuthenticated } = props;
-  const match =
-    pathname.indexOf('/page_id') === 0
-      ? flatNavigation.find(item => pathname.substr('/page_id'.length) === item.id)
-      : flatNavigation.find(
-        item => pathname === item.pathname || decodeURI(unescape(item.pathname)) === pathname,
-      );
-  const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
-    <Wrapped {...props} navigation={publicNavigation} match={match}>
-      {renderHelmet(match || {}, pathname)}
-      {isAuthenticated && (
-        <Actions>
-          <Link
-            className="ant-btn ant-btn-primary ant-btn-circle ant-btn-lg ant-btn-icon-only"
-            updateQuery={{ '@page': 'tree' }}
-          >
-            <Icon type="edit" />
-          </Link>
-        </Actions>
-      )}
-      {match ? (
-        <Page.WithData
-          {...props}
-          key={id}
-          id={pageId || aliasId || id}
-          bindingId={bindingId}
-          binding={binding}
-        />
-      ) : (
-        <Error404 />
-      )}
-    </Wrapped>
+    <MatchSwitch>
+      {flatNavigation.map(item => (
+        <MatchPaths
+          exact
+          match={[decodeURI(unescape(item.pathname)), `/page_id/${item.id}`]}
+          key={item.id}
+        >
+          <Wrapped navigation={publicNavigation}>
+            {isAuthenticated && (
+              <Actions>
+                <Link
+                  className="ant-btn ant-btn-primary ant-btn-circle ant-btn-lg ant-btn-icon-only"
+                  updateQuery={{ '@page': 'tree' }}
+                >
+                  <Icon type="edit" />
+                </Link>
+              </Actions>
+            )}
+            {renderHelmet(item, pathname)}
+            <Page.WithData
+              id={item.pageId || item.aliasId || item.id}
+              bindingId={item.bindingId}
+              binding={item.binding}
+            />
+          </Wrapped>
+        </MatchPaths>
+      ))}
+      <Match>
+        <Wrapped navigation={publicNavigation}>
+          {renderHelmet({}, pathname)}
+          <Error404 />
+        </Wrapped>
+      </Match>
+    </MatchSwitch>
   );
 });
 PageRoute.displayName = 'PageRoute';
