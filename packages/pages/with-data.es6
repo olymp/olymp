@@ -26,11 +26,11 @@ export const withNavigation = (Wrapped) => {
     @queryPages
     class WithNavPrepareInner extends Component {
       render() {
-        const { items } = this.props;
-        const deco = items.filter(item => item.binding);
+        const { pageList } = this.props;
+        const deco = pageList.filter(item => item.binding);
         const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
         if (!NavCache[key]) {
-          NavCache[key] = items
+          NavCache[key] = pageList
             .filter(item => item.binding && item.binding.type)
             .reduce((store, value) => {
               const { type, fields, query = {} } = value.binding;
@@ -77,11 +77,11 @@ export const withNavigation = (Wrapped) => {
   class WithNavInner extends Component {
     render() {
       const { data } = this.props;
-      const items = (data && data.items) || [];
+      const pageList = (data && data.pageList) || [];
       const flatNavigation = [];
       let loading = data.loading;
 
-      const navigation = unflatten(items, {
+      const navigation = unflatten(pageList, {
         pathProp: 'pathname',
         sort: (children, parent) => {
           const newChildren = children.reduce((state, child) => {

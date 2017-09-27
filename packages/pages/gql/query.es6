@@ -46,7 +46,7 @@ export const prefetchPage = (client, id) =>
 export const queryPages = graphql(
   gql`
     query pageList {
-      items: pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
+      pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
         id
         slug
         isMega
@@ -69,7 +69,7 @@ export const queryPages = graphql(
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
-      items: data.items || [],
+      pageList: data.pageList || [],
       data,
     }),
   },

@@ -30,7 +30,8 @@ import sslRedirect from 'heroku-ssl-redirect';
 import { graphql } from 'graphql';
 import { print } from 'graphql/language/printer';
 import { ApolloLink, Observable } from 'apollo-link';
-import { ApolloProvider, getDataFromTree } from 'react-apollo';
+import { getDataFromTree } from './apollo';
+import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 // Redux
 import { applyMiddleware, compose } from 'redux';

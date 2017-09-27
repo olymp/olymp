@@ -1,12 +1,12 @@
 import React from 'react';
-import { ContentLoader } from 'olymp-fela';
 import { renderHelmet } from 'olymp-utils';
-import { compose } from 'recompose';
+import { compose, withPropsOnChange } from 'recompose';
 import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
 import { Link } from 'olymp-router';
 import { connect } from 'react-redux';
-import { Error404, Page } from './views';
+import Error404 from './views/404';
+import Page from './views/page';
 
 const filterPublic = pages =>
   pages.filter(page => page.state === 'PUBLISHED').map(({ children, ...rest }) => ({
@@ -15,18 +15,17 @@ const filterPublic = pages =>
   }));
 
 const enhance = compose(
-  /* withPropsOnChange(['navigation'], ({ navigation }) => ({
-    navigation: filterPublic(navigation),
-  })), */
+  withPropsOnChange(['navigation'], ({ navigation }) => ({
+    publicNavigation: filterPublic(navigation),
+  })),
   connect(({ auth, location }) => ({
     isAuthenticated: !!auth.user,
     pathname: location.pathname,
   })),
 );
 
-export default enhance((props) => {
-  const { Wrapped, flatNavigation, pathname, loading, isAuthenticated } = props;
-
+const PageRoute = enhance((props) => {
+  const { Wrapped, flatNavigation, publicNavigation, pathname, isAuthenticated } = props;
   const match =
     pathname.indexOf('/page_id') === 0
       ? flatNavigation.find(item => pathname.substr('/page_id'.length) === item.id)
@@ -35,7 +34,7 @@ export default enhance((props) => {
       );
   const { id, binding, pageId, aliasId, bindingId } = match || {};
   return (
-    <Wrapped {...props} match={match}>
+    <Wrapped {...props} navigation={publicNavigation} match={match}>
       {renderHelmet(match || {}, pathname)}
       {isAuthenticated && (
         <Actions>
@@ -47,19 +46,19 @@ export default enhance((props) => {
           </Link>
         </Actions>
       )}
-      <ContentLoader height={600} isLoading={loading}>
-        {match ? (
-          <Page.WithData
-            {...props}
-            key={id}
-            id={pageId || aliasId || id}
-            bindingId={bindingId}
-            binding={binding}
-          />
-        ) : (
-          <Error404 />
-        )}
-      </ContentLoader>
+      {match ? (
+        <Page.WithData
+          {...props}
+          key={id}
+          id={pageId || aliasId || id}
+          bindingId={bindingId}
+          binding={binding}
+        />
+      ) : (
+        <Error404 />
+      )}
     </Wrapped>
   );
 });
+PageRoute.displayName = 'PageRoute';
+export default PageRoute;

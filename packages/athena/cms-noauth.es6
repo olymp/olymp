@@ -5,7 +5,7 @@ import { Lightbox } from 'olymp-cloudinary';
 import { TopLoader } from 'olymp-fela';
 import { connect } from 'react-redux';
 
-export default connect(({ app }) => ({
+const component = connect(({ app }) => ({
   _isLoading: app.loading,
 }))(({ _isLoading, ...rest }) => [
   <TopLoader loading={_isLoading} key={1} />,
@@ -13,3 +13,6 @@ export default connect(({ app }) => ({
   <AuthModals key={3} />,
   <PageRoute {...rest} key={4} />,
 ]);
+
+component.displayName = 'CmsNoAuth';
+export default component;

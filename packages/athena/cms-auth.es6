@@ -70,7 +70,7 @@ const enhance = compose(
   })),
   withState('deviceWidth', 'setDeviceWidth', undefined)
 );
-export default enhance((props) => {
+const component = enhance((props) => {
   const { query, collectionList, ua, deviceWidth, setDeviceWidth } = props;
   const collection = collectionList.filter(
     ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
@@ -170,3 +170,6 @@ export default enhance((props) => {
     </Container>
   );
 });
+
+component.displayName = 'CmsAuth';
+export default component;

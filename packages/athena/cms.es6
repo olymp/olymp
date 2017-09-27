@@ -37,14 +37,16 @@ const Auth = connect(({ auth }) => ({
 }))(
   ({ isAuthenticated, ...rest }) => (isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />),
 );
+Auth.displayName = 'CmsAuthSwitch';
 
 const Load = withNavigation(
   connect(({ auth }, { isNavigationLoading }) => ({
-    isLoading: auth.verifying || isNavigationLoading,
+    isLoading: isNavigationLoading,
   }))(({ isLoading, ...rest }) => (isLoading ? <ScreenLoader /> : <Auth {...rest} />)),
 );
+Load.displayName = 'CmsLoadSwitch';
 
-export default Wrapped =>
+const component = Wrapped =>
   enhance(({ theme, ...rest }) => (
     <ThemeProvider theme={theme}>
       <LightboxProvider>
@@ -52,3 +54,5 @@ export default Wrapped =>
       </LightboxProvider>
     </ThemeProvider>
   ));
+component.displayName = 'Cms';
+export default component;
