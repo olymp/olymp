@@ -8,6 +8,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Spalte',
+  defaultNodes: () => [Image, Text],
   styles: ({ theme }) => ({
     '> div': {
       backgroundColor: theme.dark5,
@@ -24,10 +25,7 @@ export default {
       gridSize={getData('columns', 4)}
       {...attributes}
     >
-      <div>
-        <Image.component getData={getData} setActive={setActive} image={image} />
-        <Text.component>{children}</Text.component>
-      </div>
+      <div>{children}</div>
     </Grid.Item>
   ),
   // defaultNodes: () => createBlockList([Image, Text]),
