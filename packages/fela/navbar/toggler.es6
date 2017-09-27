@@ -48,7 +48,7 @@ const Button = createComponent(
       },
     },
   }),
-  ({ className, onToggle, toggled, Comp }) => (
+  ({ className, onToggle, toggled, toggleComponent: Comp }) => (
     <Comp className={className} onToggle={onToggle} toggled={toggled}>
       <span />
       <span />
@@ -74,12 +74,11 @@ const Container = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
 );
 
-const Toggler = ({ className, children, toggled, toggleComponent: Comp, onToggle, ...props }) => (
+const Toggler = ({ className, children, toggled, toggleComponent, onToggle, ...props }) => (
   <Container className={cn(className, 'o-nav-toggle')} toggled={toggled}>
-    <Button toggled={toggled} Comp={Comp} onToggle={onToggle} />
+    <Button toggled={toggled} toggleComponent={toggleComponent} onToggle={onToggle} />
     {Children.map(children, child => cloneElement(child, props))}
   </Container>
 );

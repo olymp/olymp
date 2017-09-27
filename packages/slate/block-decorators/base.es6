@@ -62,7 +62,7 @@ export default (options = {}) => (Block) => {
     };
 
     render() {
-      const { node, editor, state, isSelected, children } = this.props;
+      const { editor, children } = this.props;
       const blockProps = (props || []).reduce((state, prop) => {
         const data = this.getData(prop);
         if (data !== undefined) {

@@ -113,5 +113,6 @@ Navbar.defaultProps = {
   inverse: false,
   full: false,
   fill: false,
+  toggled: false,
 };
 export default Navbar;
