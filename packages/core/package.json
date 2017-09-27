@@ -34,7 +34,6 @@
     "html-webpack-plugin": "^2.30.1",
     "isomorphic-fetch": "^2.2.1",
     "jsonfile": "^4.0.0",
-    "loadable-components": "^0.2.1",
     "minimist": "^1.2.0",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",

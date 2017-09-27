@@ -1,6 +1,4 @@
-import { gql, graphql } from 'olymp-utils';
-
-const isNew = props => props.pathname === '__new';
+import { gql, graphql } from 'react-apollo';
 
 const queryOne = gql`
   query page($id: String) {

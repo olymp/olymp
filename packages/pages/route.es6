@@ -1,7 +1,7 @@
 import React from 'react';
 import { ContentLoader } from 'olymp-fela';
 import { renderHelmet } from 'olymp-utils';
-import { compose, withPropsOnChange } from 'recompose';
+import { compose } from 'recompose';
 import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
 import { Link } from 'olymp-router';
