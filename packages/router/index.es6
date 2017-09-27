@@ -2,8 +2,6 @@
 export { default as Link } from './link';
 export { default as NavLink } from './link';
 export { default as ScrollToTop } from './scroll-to-top';
-export { default as Route } from './route';
-export { default as Switch } from './switch';
 export * from './match';
 export { default as Prompt } from './prompt';
 export { default as Redirect } from './redirect';

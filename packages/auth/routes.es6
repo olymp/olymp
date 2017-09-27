@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, createUpdateQuery } from 'olymp-router';
+import { Switch, Match, createUpdateQuery } from 'olymp-router';
 import { connect } from 'react-redux';
 import { AuthRegister, AuthLogin, AuthConfirm, AuthReset, AuthForgot, AuthStatus } from './views';
 import { AuthInvitations } from './admin';
@@ -26,8 +26,8 @@ export default connect(
 
   return (
     <Switch>
-      <Route match={inQuery('invitations')} render={() => <AuthInvitations isOpen {...p} />} />
-      <Route
+      <Match match={inQuery('invitations')} render={() => <AuthInvitations isOpen />} />
+      <Match
         match={inQuery('login')}
         render={() => (
           <AuthLogin
@@ -39,7 +39,7 @@ export default connect(
           />
         )}
       />
-      <Route
+      <Match
         match={inQuery('register')}
         render={() => (
           <AuthRegister
@@ -54,7 +54,7 @@ export default connect(
           />
         )}
       />
-      <Route
+      <Match
         match={inQuery('forgot')}
         render={() => (
           <AuthForgot
@@ -65,7 +65,7 @@ export default connect(
           />
         )}
       />
-      <Route
+      <Match
         match={inQuery('reset')}
         render={() => (
           <AuthReset
@@ -76,7 +76,7 @@ export default connect(
           />
         )}
       />
-      <Route
+      <Match
         match={inQuery('confirm')}
         render={() => (
           <AuthConfirm
@@ -87,7 +87,7 @@ export default connect(
           />
         )}
       />
-      <Route
+      <Match
         match={inQuery('status-forgot')}
         render={() => (
           <AuthStatus
@@ -97,7 +97,7 @@ export default connect(
           />
         )}
       />
-      <Route
+      <Match
         match={inQuery('status-register')}
         render={() => (
           <AuthStatus

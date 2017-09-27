@@ -1,9 +1,8 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import { gql, graphql, unflatten } from 'olymp-utils';
 import { withPropsOnChange, compose } from 'recompose';
-import { Route } from 'olymp-router';
 import { queryPages } from './gql';
-import { get, upperFirst, lowerFirst, orderBy, sortBy, groupBy } from 'lodash';
+import { get, orderBy, sortBy } from 'lodash';
 
 // interpolate a string value using props
 const interpolate = (value, propsOrFunc) => {
@@ -82,26 +81,6 @@ export const withNavigation = compose(
     };
   }),
 );
-
-// DataRoute: Wrap pages with `binding` to their data items
-let cache = {};
-let lastType;
-export const DataRoute = ({ binding, component, ...rest }) => {
-  if (!binding || !binding.type) {
-    return createElement(component || Route, rest);
-  }
-  const { type, fields, query } = binding;
-  const key = `route-${type}-${fields || 'id name slug'}`;
-  if (lastType !== (component || Route)) {
-    // TODO better way to wipe cache
-    cache = {};
-    lastType = component || Route;
-  }
-  if (!cache[key]) {
-    cache[key] = withData(component || Route, { fields, type });
-  }
-  return createElement(cache[key], rest);
-};
 
 // Helper for DataRoute, actual decorator
 export const withData = (Wrapped, { type, fields }) =>

@@ -31,15 +31,34 @@ const matchQuery = (query, match) => {
   return true;
 };
 
-const enhance = compose(
+export const Switch = ({ children, pathname, query }) => {
+  let notFound = null;
+  let matched = null;
+  const routes = Children.toArray(children);
+  for (let index = 0; index < routes.length; index++) {
+    const route = routes[index];
+    const { displayName } = route.type;
+    const { match, exact, ...rest } = route.props;
+    if (displayName === 'Match' && match === true) {
+      matched = getChild(rest);
+    } else if (displayName === 'Match' && match === undefined) {
+      notFound = getChild(rest);
+    }
+    if (matched) {
+      break;
+    }
+  }
+  return matched || notFound || null;
+};
+Switch.displayName = 'SwitchSimple';
+
+export const SwitchLocation = compose(
   connect(({ location }) => ({
     query: location.query,
-    pathname: location.pathname,
+    pathname: location.query,
   })),
   onlyUpdateForKeys(['query', 'pathname']),
-);
-
-export const MatchSwitch = enhance(({ children, pathname, query }) => {
+)(({ children, pathname, query }) => {
   let notFound = null;
   let matched = null;
   const routes = Children.toArray(children);
@@ -64,7 +83,65 @@ export const MatchSwitch = enhance(({ children, pathname, query }) => {
   }
   return matched || notFound || null;
 });
-MatchSwitch.displayName = 'MatchSwitch';
+SwitchLocation.displayName = 'SwitchLocation';
+
+export const SwitchQuery = compose(
+  connect(({ location }) => ({
+    query: location.query,
+  })),
+  onlyUpdateForKeys(['query']),
+)(({ children, query }) => {
+  let notFound = null;
+  let matched = null;
+  const routes = Children.toArray(children);
+  for (let index = 0; index < routes.length; index++) {
+    const route = routes[index];
+    const { displayName } = route.type;
+    const { match, exact, ...rest } = route.props;
+    if (displayName === 'Match' && match === true) {
+      matched = getChild(rest);
+    } else if (displayName === 'Match' && match === undefined) {
+      notFound = getChild(rest);
+    } else if (displayName === 'MatchQuery' && matchQuery(query, match)) {
+      matched = getChild(rest);
+    }
+    if (matched) {
+      break;
+    }
+  }
+  return matched || notFound || null;
+});
+SwitchQuery.displayName = 'SwitchQuery';
+
+export const SwitchPathname = compose(
+  connect(({ location }) => ({
+    pathname: location.pathname,
+  })),
+  onlyUpdateForKeys(['pathname']),
+)(({ children, pathname }) => {
+  let notFound = null;
+  let matched = null;
+  const routes = Children.toArray(children);
+  for (let index = 0; index < routes.length; index++) {
+    const route = routes[index];
+    const { displayName } = route.type;
+    const { match, exact, ...rest } = route.props;
+    if (displayName === 'Match' && match === true) {
+      matched = getChild(rest);
+    } else if (displayName === 'Match' && match === undefined) {
+      notFound = getChild(rest);
+    } else if (displayName === 'MatchPath' && matchPath(pathname, exact, match)) {
+      matched = getChild(rest);
+    } else if (displayName === 'MatchPaths' && matchPaths(pathname, exact, match)) {
+      matched = getChild(rest);
+    }
+    if (matched) {
+      break;
+    }
+  }
+  return matched || notFound || null;
+});
+SwitchPathname.displayName = 'SwitchPathname';
 
 export const Match = ({ match, ...rest }) => {
   if (match === true) {

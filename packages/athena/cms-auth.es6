@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'olymp-router';
+import { Switch, Match } from 'olymp-router';
 import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
 import EditableRoute from 'olymp-pages/editable';
@@ -106,11 +106,11 @@ const component = enhance((props) => {
       <NavigationVertical collectionList={collectionList} setDeviceWidth={setDeviceWidth} />
       <SwitchContainer>
         <Switch>
-          <Route
+          <Match
             match={query['@template'] !== undefined}
             render={() => <TemplateRoute {...props} />}
           />
-          <Route
+          <Match
             match={!!collection && query.modal === undefined}
             render={() =>
               (<CollectionRoute
@@ -119,7 +119,7 @@ const component = enhance((props) => {
                 typeName={collectionName}
               />)}
           />
-          <Route
+          <Match
             match={query['@page'] !== undefined}
             render={() =>
               (<EditableRoute
@@ -127,27 +127,27 @@ const component = enhance((props) => {
                 deviceWidth={deviceWidth}
               />)}
           />
-          <Route
+          <Match
             match={query['@media'] !== undefined}
             render={() => <CloudinaryRoute {...props} />}
           />
-          <Route
+          <Match
             match={query['@settings'] !== undefined}
             render={() => <SettingsRoute {...props} />}
           />
-          <Route
+          <Match
             match={query['@analytics'] !== undefined}
             render={() => <Analytics {...props} />}
           />
-          <Route
+          <Match
             match={query['@users'] !== undefined}
             render={() => <AuthUsers {...props} />}
           />
-          <Route
+          <Match
             match={query['@user'] !== undefined}
             render={() => <AuthUser {...props} />}
           />
-          <Route
+          <Match
             render={rest =>
               (<PageRoute
                 {...rest}

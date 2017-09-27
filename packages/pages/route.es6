@@ -3,7 +3,7 @@ import { renderHelmet } from 'olymp-utils';
 import { compose, withPropsOnChange } from 'recompose';
 import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
-import { Link, MatchSwitch, MatchPaths, Match } from 'olymp-router';
+import { Link, SwitchPathname, MatchPaths, Match } from 'olymp-router';
 import { connect } from 'react-redux';
 import Error404 from './views/404';
 import Page from './views/page';
@@ -27,7 +27,7 @@ const enhance = compose(
 const PageRoute = enhance((props) => {
   const { Wrapped, flatNavigation, publicNavigation, pathname, isAuthenticated } = props;
   return (
-    <MatchSwitch>
+    <SwitchPathname>
       {flatNavigation.map(item => (
         <MatchPaths
           exact
@@ -60,7 +60,7 @@ const PageRoute = enhance((props) => {
           <Error404 />
         </Wrapped>
       </Match>
-    </MatchSwitch>
+    </SwitchPathname>
   );
 });
 PageRoute.displayName = 'PageRoute';
