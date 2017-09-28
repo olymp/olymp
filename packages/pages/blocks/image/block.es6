@@ -4,7 +4,7 @@ import Image from './image';
 import Label from './label';
 
 export default {
-  type: 'Pages.Media.ImageBlock',
+  type: 'imageWithLabel',
   isVoid: false,
   kind: 'inline',
   defaultNodes: () => createBlockList([Image, Label]),

@@ -4,8 +4,8 @@ import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Dropdown, Menu } from 'antd';
 import { sortBy } from 'lodash';
-import { withBlockTypes } from 'olymp-slate';
-import { Node } from 'slate';
+import Plain from 'slate-plain-serializer';
+import withBlockTypes from './decorators/with-block-types';
 
 const Title = createComponent(
   ({ theme }) => ({
@@ -47,6 +47,7 @@ const getMenuItems = (blockTypes, prefix) => {
       </Menu.SubMenu>
     )),
     ...menuItems,
+    <Menu.Item key={`${prefix}paragraph`}>Paragraph</Menu.Item>,
   ];
 };
 
@@ -105,6 +106,7 @@ const ChangeBlock = createComponent(
       overlay={
         <Menu onClick={onClick}>
           <Menu.SubMenu title="Umwandeln">{getMenuItems(blockTypes, 'transform')}</Menu.SubMenu>
+          <Menu.SubMenu title="Einpacken">{getMenuItems(blockTypes, 'wrap')}</Menu.SubMenu>
           <Menu.Item key="duplicate">
             <span>Duplizieren</span>
           </Menu.Item>
@@ -140,16 +142,18 @@ class Pages extends Component {
     const dropPos = info.node.props.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
     // const dragNodesKeys = info.dragNodesKeys;
+    console.log(dropPosition, info.dropToGap, dragNode.key, dropNode.key, dropNode.nodes.size);
     if (info.dropToGap) {
       const parent = value.document.getParent(dropNode.key);
       const dropObjIndex = parent.nodes.indexOf(dropNode);
+      console.log(parent, dropObjIndex);
       if (dropPosition === -1) {
         this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex));
       } else {
         this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex - 1));
       }
     } else {
-      this.onChange(value.change().moveNodeByKey(dragNode.key, dropNode.key, dropNode.nodes.size));
+      this.onChange(value.change().moveNodeByKey(dragNode.key, dropNode.key, 0));
     }
     /* return;
     const { value } = this.props;
@@ -167,7 +171,7 @@ class Pages extends Component {
     }
     this.onChange(
       value.change().moveNodeByKey(key, parent.key, info.dropPosition < 0 ? 0 : info.dropPosition),
-    );*/
+    ); */
   };
 
   getParent = (tree, levels) => {
@@ -185,39 +189,53 @@ class Pages extends Component {
 
   onChange = change => this.props.onChange(change.state);
 
-  action = (node, key) => {
+  action = (node, actionType) => {
     const { value } = this.props;
-    if (key === 'delete') {
+    console.log(actionType);
+    if (!actionType) {
+      return;
+    }
+    if (actionType === 'delete') {
       this.onChange(value.change().removeNodeByKey(node.key));
-    } else if (key === 'cut' || key === 'copy') {
+    } else if (actionType === 'cut' || actionType === 'copy') {
       this.onChange(
         value
           .change()
           .moveToRangeOf(node)
           .focus(),
       );
-      setTimeout(() => document.execCommand(key), 1);
-    } else if (key.indexOf('transform:') === 0) {
-      this.onChange(value.change().setNodeByKey(node.key, key.split(':')[1]));
-    } else if (key.indexOf('pre:') === 0) {
+      setTimeout(() => document.execCommand(actionType), 1);
+    } else if (actionType.indexOf('wrap:') === 0) {
       this.onChange(
         value
           .change()
-          .insertNodeByKey(node.key, node.nodes.size, { type: key.split(':')[1], kind: 'block' }),
+          .moveToRangeOf(node)
+          .wrapBlock(actionType.split(':')[1]),
       );
-    } else if (key.indexOf('post:') === 0) {
+    } else if (actionType.indexOf('transform:') === 0) {
+      this.onChange(value.change().setNodeByKey(node.key, actionType.split(':')[1]));
+    } else if (actionType.indexOf('pre:') === 0) {
       this.onChange(
-        value
-          .change()
-          .insertNodeByKey(node.key, node.nodes.size, { type: key.split(':')[1], kind: 'block' }),
+        value.change().insertNodeByKey(node.key, node.nodes.size, {
+          type: actionType.split(':')[1],
+          kind: 'block',
+        }),
       );
-    } else if (key.indexOf('add:') === 0) {
+    } else if (actionType.indexOf('post:') === 0) {
       this.onChange(
-        value
-          .change()
-          .insertNodeByKey(node.key, node.nodes.size, { type: key.split(':')[1], kind: 'block' }),
+        value.change().insertNodeByKey(node.key, node.nodes.size, {
+          type: actionType.split(':')[1],
+          kind: 'block',
+        }),
       );
-    } else if (key === 'unwrap') {
+    } else if (actionType.indexOf('add:') === 0) {
+      this.onChange(
+        value.change().insertNodeByKey(node.key, node.nodes.size, {
+          type: actionType.split(':')[1],
+          kind: 'block',
+        }),
+      );
+    } else if (actionType === 'unwrap') {
       this.onChange(value.change().unwrapBlockByKey(node.key));
     }
   };
@@ -271,7 +289,7 @@ class Pages extends Component {
         } else if (item.kind === 'text') {
           label = 'Text';
           if (!item.text.trim()) {
-            return null;
+            // return null;
           }
         } else {
           label = 'Unbekannt';
@@ -330,6 +348,7 @@ Pages.propTypes = {
   selected: PropTypes.arrayOf(PropTypes.string),
 };
 Pages.defaultProps = {
+  value: Plain.deserialize(''),
   items: [],
   selected: [],
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
 import {
   ColorEditor,
@@ -10,29 +10,52 @@ import {
   SuggestEditor,
   GeocodeEditor,
 } from 'olymp-ui';
-import { FormListEdit, DetailEdit } from '../../../edits';
-import { SlateMate } from 'olymp-slate';
+import { withPropsOnChange } from 'recompose';
+import { StatelessSlateMate } from 'olymp-slate';
+import Navigator from 'olymp-slate/navigator';
+import JsonEditor from 'olymp-slate/json-editor';
+import Plain from 'slate-plain-serializer';
+import { State } from 'slate';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
+import { FormListEdit, DetailEdit } from '../../../edits';
 
 const states = {
   PUBLISHED: 'Öffentlich',
   DRAFT: 'Entwurf',
   REMOVED: 'Papierkorb',
 };
-const edits = [
-  type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit,
-];
+const edits = [type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit];
 
-export default ({
-  className,
-  editorClassName,
-  style,
-  editorStyle,
-  field,
-  label,
-  key,
-}) => {
+@withPropsOnChange(['value'], ({ value }) => ({
+  value: State.isState(value)
+    ? value
+    : value
+      ? State.fromJSON({ document: value.document || value, kind: 'state' })
+      : Plain.deserialize(''),
+}))
+class Slate extends Component {
+  render() {
+    const { label } = this.props;
+    return (
+      <div style={{ display: 'flex', flexDirection: 'rows' }}>
+        <div>
+          <Navigator {...this.props} />
+        </div>
+        <div>
+          <JsonEditor {...this.props} />
+        </div>
+        <StatelessSlateMate
+          {...this.props}
+          placeholder={label || 'Hier Text eingeben!'}
+          style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+        />
+      </div>
+    );
+  }
+}
+
+export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -53,9 +76,7 @@ export default ({
 
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
-      return (
-        <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />
-      );
+      return <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />;
     }
     return <DetailEdit {...editProps} typeName={idField.type.name} />;
   }
@@ -67,14 +88,10 @@ export default ({
       if (name === 'tags') {
         return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
       }
-      return (
-        <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />
-      );
+      return <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />;
     }
     if (type.ofType.name.indexOf('Nested') === 0) {
-      return (
-        <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
-      );
+      return <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />;
     }
     return null;
   }
@@ -86,13 +103,7 @@ export default ({
     return null;
   }
   if (suggest) {
-    return (
-      <SuggestEditor
-        {...editProps}
-        collection={suggest.arg0}
-        field={suggest.arg1}
-      />
-    );
+    return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
   }
   if (start) {
     if (type.name === 'Date') {
@@ -100,11 +111,7 @@ export default ({
     }
     if (type.name === 'DateTime') {
       return (
-        <DateRangeEditor
-          {...editProps}
-          format="DD.MM.YYYY HH:mm"
-          showTime={{ format: 'HH:mm' }}
-        />
+        <DateRangeEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />
       );
     }
   }
@@ -128,25 +135,13 @@ export default ({
 
   switch (type.name) {
     case 'Blocks':
-      return (
-        <SlateMate
-          {...editProps}
-          placeholder={label || 'Hier Text eingeben!'}
-          style={{ borderBottom: '1px solid #e9e9e9' }}
-        />
-      );
+      return <Slate {...editProps} label={label} />;
     case 'Boolean':
       return <Checkbox {...editProps}>{label}</Checkbox>;
     case 'Date':
       return <DateEditor {...editProps} format="DD.MM.YYYY" />;
     case 'DateTime':
-      return (
-        <DateEditor
-          {...editProps}
-          format="DD.MM.YYYY HH:mm"
-          showTime={{ format: 'HH:mm' }}
-        />
-      );
+      return <DateEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':

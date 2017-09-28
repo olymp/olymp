@@ -5,7 +5,7 @@ import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';
 import { scrapeGraphQL } from 'olymp-scrape/server';
-/* import createSitemap from 'olymp-sitemap/server';*/
+/* import createSitemap from 'olymp-sitemap/server'; */
 import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
 import { get } from 'lodash';
@@ -25,6 +25,25 @@ const {
   GOOGLE_CLIENT_EMAIL,
   GOOGLE_PRIVATE_KEY,
 } = process.env;
+
+const createResponseCache = () => {
+  let cache = {};
+  const getKey = (req) => {
+    if (req.isAmp) {
+      return `${req.originalUrl}|amp`;
+    }
+    return `${req.originalUrl}`;
+  };
+  return {
+    get: req => cache[getKey(req)],
+    set: (req, res) => {
+      cache[getKey(req)] = res;
+    },
+    clear: () => {
+      cache = {};
+    },
+  };
+};
 
 export default (server, options) => {
   const monk = createMonk(MONGODB_URI);
@@ -53,12 +72,10 @@ export default (server, options) => {
   server.use(authCache(authEngine));
 
   const algolia = process.env.ALGOLIA
-    ? algoliasearch(
-        process.env.ALGOLIA.split('@')[1],
-        process.env.ALGOLIA.split('@')[0]
-      )
+    ? algoliasearch(process.env.ALGOLIA.split('@')[1], process.env.ALGOLIA.split('@')[0])
     : null;
 
+  const responseCache = createResponseCache();
   let cachedApp = null;
   server.use((req, res, next) => {
     req.mail = mail;
@@ -67,6 +84,7 @@ export default (server, options) => {
     req.authEngine = authEngine;
     req.app = cachedApp;
     req.algolia = algolia;
+    req.responseCache = responseCache;
     next();
   });
 
@@ -74,11 +92,7 @@ export default (server, options) => {
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
   modules.scrape = scrapeGraphQL();
-  modules.google = googleGraphQL(
-    GOOGLE_MAPS_KEY,
-    GOOGLE_CLIENT_EMAIL,
-    GOOGLE_PRIVATE_KEY
-  );
+  modules.google = googleGraphQL(GOOGLE_MAPS_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY);
   /*
   createSitemap(schema, options.sitemap);
   googleGraphQL(schema, GM_KEY, options.google);
@@ -108,19 +122,22 @@ export default (server, options) => {
         schema.express(req, res, next);
       })
       .catch(err => next(err));
-  });*/
+  }); */
   server.post('/graphql', schema.express);
   if (NODE_ENV !== 'production') {
     server.get('/graphql', schema.graphi);
   }
 
-  monk.collection('app').findOne({ id: APP }).then(app => {
-    if (!app) {
-      throw new Error('App not found');
-    }
-    cachedApp = app;
-    schema.apply(modules);
-  });
+  monk
+    .collection('app')
+    .findOne({ id: APP })
+    .then((app) => {
+      if (!app) {
+        throw new Error('App not found');
+      }
+      cachedApp = app;
+      schema.apply(modules);
+    });
 
   /*
   const shortId = require('shortid');
@@ -144,10 +161,10 @@ export default (server, options) => {
       delete item._id;
       monk.collection('item').insert({ ...item, _type: 'org' });
     });
-  });*/
-  /*// monk.collection('item').remove({ _type: 'article' });
+  }); */
+  /* // monk.collection('item').remove({ _type: 'article' });
   */
-  /*monk.collection('item').find({ _type: 'termin' }).then((items) => {
+  /* monk.collection('item').find({ _type: 'termin' }).then((items) => {
       // monk.collection('item').find({ _type: 'termin' }).then((items) => {
       items.forEach((item) => {
           item.extract = item.extrakt;
@@ -162,8 +179,8 @@ export default (server, options) => {
               monk.collection('item').insert({ ...item, _type: 'news' });
           }
       });
-  });*/
-  /*monk.collection('item').find({ _type: 'termin' }).then((items) => {
+  }); */
+  /* monk.collection('item').find({ _type: 'termin' }).then((items) => {
     items.forEach((item) => {
       item.extract = item.extract;
       delete item.extract;
@@ -187,14 +204,14 @@ export default (server, options) => {
     items.forEach((item) => {
       monk.collection('item').insert({ ...item, _type: 'file', _appId: 'gzk' });
     });
-  });*/
+  }); */
 };
 
 /* if (mail) mail({ to: 'bkniffler@me.com', subject: 'Hello!', markdown: `
 Hallo
 ## kopo [Anmelden](http://google.de)
 [Anmelden](http://google.de)
-` }).then(x => x.json()).then(x => console.log(x)).catch(err => console.error(err));*/
+` }).then(x => x.json()).then(x => console.log(x)).catch(err => console.error(err)); */
 
 /*
 import { filestackGraphQL } from 'olymp-filestack/server';

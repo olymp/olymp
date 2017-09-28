@@ -29,7 +29,7 @@ const component = createComponent(
 );
 
 export default {
-  type: 'Pages.Media.ImageBlock.Label',
+  type: 'imageLabel',
   isVoid: false,
   kind: 'inline',
   label: 'Titel',

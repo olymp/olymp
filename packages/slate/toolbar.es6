@@ -36,7 +36,8 @@ const WrappedMenu = createComponent(
     transform: 'translateX(-50%)',
     // width: '100%',
     // boxShadow: 'inset 0 -10px 10px -10px #000000',
-    backgroundColor: 'black',
+    backgroundColor: theme.dark,
+    color: theme.light,
     paddingX: theme.space2,
     hasFlex: {
       justifyContent: 'center',

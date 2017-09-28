@@ -286,23 +286,20 @@ class SlateEditor extends Component {
             {...options}
           />
         )}
-        <div className={className} style={{ position: 'relative', ...style }}>
-          {children}
-          <Editor
-            {...rest}
-            state={value}
-            spellcheck={spellcheck || false}
-            readOnly={!!readOnly}
-            plugins={this.plugins}
-            schema={{ marks, nodes }}
-            onChange={this.onChange}
-            onFocus={() => this.setState({ focus: true })}
-            onBlur={() => this.setState({ focus: false })}
-            onKeyDown={this.onKeyDown}
-            placeholder={!readOnly && 'Hier Text eingeben...'}
-            placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-          />
-        </div>
+        <Editor
+          {...rest}
+          state={value}
+          spellcheck={spellcheck || false}
+          readOnly={!!readOnly}
+          plugins={this.plugins}
+          schema={{ marks, nodes }}
+          onChange={this.onChange}
+          onFocus={() => this.setState({ focus: true })}
+          onBlur={() => this.setState({ focus: false })}
+          onKeyDown={this.onKeyDown}
+          placeholder={!readOnly && 'Hier Text eingeben...'}
+          placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
+        />
       </div>
     );
   };

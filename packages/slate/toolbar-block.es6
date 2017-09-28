@@ -68,8 +68,6 @@ export default (props) => {
     actions = getActionsByBlock(props, state.blocks.get(0));
   } else if (state.inlines.size === 1 && blockTypes[state.inlines.get(0).type]) {
     actions = getActionsByBlock(props, state.inlines.get(0));
-  } else {
-    actions = getActionsByBlock(props, state.blocks.get(0));
   }
 
   return (

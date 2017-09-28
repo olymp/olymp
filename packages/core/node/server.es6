@@ -139,6 +139,15 @@ try {
 
 // Setup server side routing.
 app.get('*', (req, res) => {
+  if (!req.user && req.responseCache) {
+    const response = req.responseCache.get(req);
+    if (response) {
+      console.log('Serving from cache');
+      res.status(response.status || 200);
+      res.send(response.html);
+      return;
+    }
+  }
   const isAmp = req.isAmp;
   if (process.env.SSR === false) {
     const html = (req.isAmp ? amp : template)({
@@ -263,6 +272,13 @@ app.get('*', (req, res) => {
 
       res.status(state.location.isMiss ? 404 : 200);
       res.send(html);
+      if (req.responseCache && !req.user) {
+        console.log('Caching site');
+        req.responseCache.set(req, {
+          html,
+          status: state.location.isMiss ? 404 : 200,
+        });
+      }
       // responseRenderer.toStream().pipe(response);
     })
     .catch((err) => {

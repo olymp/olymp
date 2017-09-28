@@ -88,6 +88,9 @@ export default (options = {}) => {
         return undefined;
       }
       const { startBlock, startOffset, endOffset } = change.state;
+      if (!startBlock) {
+        return undefined;
+      }
       if (startOffset === 0 && startBlock.size === 0) {
         return self.onBackspace(e, change.state);
       }

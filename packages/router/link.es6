@@ -72,6 +72,8 @@ export default class Link extends Component {
       updateQuery,
       currentQuery,
       push,
+      query,
+      pathname,
       ...rest
     } = this.props;
     return (
@@ -80,6 +82,7 @@ export default class Link extends Component {
         style={style}
         href={location ? location.url : 'javascript:;'}
         onClick={this.onClick}
+        onTouchStart={this.onClick}
         {...rest}
       >
         {children}

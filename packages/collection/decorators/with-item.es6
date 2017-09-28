@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
+import { State } from 'slate';
 import { omit } from 'olymp-utils';
 import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
@@ -10,6 +11,12 @@ const ok = props => () => {
   form.validateFields((err, values) => {
     if (err) {
       return onError(err);
+    }
+    if (values.blocks && State.isState(values.blocks)) {
+      values.blocks = values.blocks.toJSON().document;
+    }
+    if (values.text && State.isState(values.text)) {
+      values.text = values.text.toJSON().document;
     }
     if (values.start && Array.isArray(values.start)) {
       values.end = values.start[1];
@@ -29,7 +36,7 @@ const ok = props => () => {
               items: [mutationResult.data.item, ...prev.items],
             }),
           }
-          : undefined,*/
+          : undefined, */
     })
       .then(({ data: { item } }) => {
         onSuccess('Gespeichert');

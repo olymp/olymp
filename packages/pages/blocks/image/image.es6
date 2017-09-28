@@ -3,10 +3,10 @@ import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 
 export default {
-  type: 'Pages.Media.ImageBlock.Image',
+  type: 'image',
   isVoid: true,
   kind: 'inline',
-  label: 'Bild',
+  label: 'Bild1',
   category: 'Medien',
   component: ({ getData, className, editor, attributes }) => {
     const Img = editor.props.readOnly === true ? LightboxImage : Image;
@@ -69,14 +69,35 @@ export default {
       label: <FaAlignLeft />,
       tooltip: 'Links anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('left') === 0,
-      toggle: ({ setData, getData }) => {
+      toggle: ({ setData, getData, state, onChange, node }) => {
         const alignment = getData('float', 'none');
         if (alignment === 'none') {
-          setData({ float: 'left' });
+          onChange(
+            state
+              .change()
+              .setNodeByKey(node.key, {
+                kind: 'inline',
+                data: { ...node.data.toJS(), float: 'left' },
+              }),
+          );
         } else if (alignment === 'left') {
-          setData({ float: 'left+' });
+          onChange(
+            state
+              .change()
+              .setNodeByKey(node.key, {
+                kind: 'inline',
+                data: { ...node.data.toJS(), float: 'left+' },
+              }),
+          );
         } else {
-          setData({ float: null });
+          onChange(
+            state
+              .change()
+              .setNodeByKey(node.key, {
+                kind: 'block',
+                data: { ...node.data.toJS(), float: null },
+              }),
+          );
         }
       },
     },
