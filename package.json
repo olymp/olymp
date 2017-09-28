@@ -5,7 +5,8 @@
   "main": "./packages/core",
   "scripts": {
     "up": "yarn upgrade-interactive",
-    "outdated": "lerna exec --concurrency 1 -- npm outdated",
+    "outdated": "lerna exec --concurrency 1 --ignore -- npm outdated",
+    "lerna-install": "lerna exec --concurrency 1 -- yarn",
     "elev": "lerna exec npm owner add machiaveli88",
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
@@ -13,7 +14,7 @@
     "tsc": "gulp tsc",
     "watch": "gulp watch",
     "lib": "gulp lib-build",
-    "clean": "lerna clean",
+    "clean": "del 'packages/*/yarn.lock'",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish --registry=https://registry.npmjs.org/",
     "publish-force":
@@ -66,6 +67,7 @@
     "babel-plugin-transform-react-constant-elements": "^6.23.0",
     "babel-plugin-transform-react-pure-class-to-function": "^1.0.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.8",
+    "del-cli": "^1.1.0",
     "electron-log": "^2.2.7",
     "eslint-config-olymp": "^16.0.18"
   }
