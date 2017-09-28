@@ -78,7 +78,7 @@ const NewsItem = withEdit(({ type }) => type)((props) => {
     <Grid>
       <Panel
         accent={org.color}
-        title={name}
+        title={<PrefetchLink to={{ pathname: `/news${slug}` }}>{name}</PrefetchLink>}
         subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
       >
         <Img value={image} width={100} avatar />
