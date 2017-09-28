@@ -21,7 +21,7 @@ export default {
   component: ({ getData, children, attributes, className }) => (
     <Grid.Item
       medium={1}
-      padding={getData('bordered', true) && '0 16px 24px 16px'}
+      padding={getData('bordered', true) ? '0 16px 24px 16px' : 0}
       className={className}
       gridSize={4}
       {...attributes}
@@ -34,7 +34,7 @@ export default {
       label: <FaSquare />,
       tooltip: 'Rahmen/Rahmenlos',
       toggle: ({ setData, getData }) => {
-        setData('bordered', !getData('bordered', true));
+        setData({ bordered: !getData('bordered', true) });
       },
     },
   ],
