@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { graphql, gql } from 'olymp-utils';
-import { withRouter } from 'olymp-router';
 import { createComponent, Grid, Container } from 'olymp-fela';
-import { camelCase } from 'lodash';
+import { camelCase, groupBy } from 'lodash';
+import { withPropsOnChange, withState, compose } from 'recompose';
 import tinycolor from 'tinycolor2';
 
 const Item = createComponent(
@@ -61,7 +61,7 @@ const Map = createComponent(
       '> g': gStyles,
     };
   },
-  ({ className, setActiveItem, ...p }) => (
+  ({ className, setActiveItem, activeItem, ...p }) => (
     <svg
       width="100%"
       viewBox="0 0 2305 1808"
@@ -172,13 +172,15 @@ const Map = createComponent(
           strokeWidth="24"
         />
         <circle id="entryUrologie" fill="#F5A623" cx="1349" cy="772" r="25" />
-        <g id="Group" transform="translate(1265.000000, 953.000000)" fill="#D0021B">
-          <circle id="start" stroke="#D0021B" cx="121" cy="25" r="25" />
-          <text id="Standort" fontFamily="Helvetica" fontSize="64" fontWeight="normal">
-            <tspan x="0" y="112">
-              Standort
-            </tspan>
-          </text>
+        <g id="Group" transform="translate(1265.000000, 953.000000)" fill="#F5A623">
+          <circle id="start" stroke="#F5A623" cx="121" cy="25" r="25" />
+          {!activeItem && (
+            <text id="Standort" fontFamily="Helvetica" fontSize="64" fontWeight="normal">
+              <tspan x="180" y="50">
+                Standort
+              </tspan>
+            </text>
+          )}
         </g>
       </g>
     </svg>
@@ -186,156 +188,79 @@ const Map = createComponent(
   p => Object.keys(p),
 );
 
-@withRouter
-@graphql(
-  gql`
-    query orgList {
-      items: orgList(query: { state: { eq: PUBLISHED } }) {
-        id
-        name
-        logo {
+const enhance = compose(
+  graphql(
+    gql`
+      query orgList {
+        items: orgList(query: { state: { eq: PUBLISHED } }) {
           id
-          url
+          name
+          art
+          logo {
+            id
+            url
+          }
+          color
+          etage
         }
-        color
-        etage
       }
-    }
-  `,
-  {
-    options: () => ({}),
-  },
-)
-class GZKBlock extends Component {
-  state = { activeItem: null };
+    `,
+    {
+      options: () => ({}),
+      props: ({ ownProps, data }) => ({
+        ...ownProps,
+        items: data.items || [],
+      }),
+    },
+  ),
+  withPropsOnChange(['items'], ({ items }) => ({
+    groupedItems: groupBy(items, 'art'),
+    filteredItems: items.filter(({ etage }) => etage.includes('3. Stock')),
+  })),
+  withState('activeItem', 'setActiveItem'),
+);
 
-  render() {
-    const { attributes, className, data } = this.props;
-    const { activeItem } = this.state;
-    const items = data.items || [];
-    const filteredItems = items.filter(({ etage }) => etage.includes('3. Stock'));
-
-    return (
-      <Container>
-        <Grid size={3} className={className} {...attributes}>
-          <Grid.Item medium={1}>
-            <h2>Übersicht</h2>
-            <ul>
-              {items.map(item => (
+const component = enhance(
+  ({ attributes, className, filteredItems, groupedItems, activeItem, setActiveItem }) => (
+    <Container>
+      <Grid size={3} className={className} {...attributes}>
+        <Grid.Item medium={1}>
+          {Object.keys(groupedItems).map(key => [
+            <h2 key={1}>{key}</h2>,
+            <ul key={2}>
+              {groupedItems[key].map(item => (
                 <Item
                   color={item.color}
                   isActive={activeItem === camelCase(item.name)}
-                  onMouseEnter={() => this.setState({ activeItem: camelCase(item.name) })}
-                  onMouseLeave={() => this.setState({ activeItem: null })}
+                  onMouseEnter={() => setActiveItem(camelCase(item.name))}
+                  onMouseLeave={() => setActiveItem(null)}
                   key={item.id}
                 >
                   {item.name}
                 </Item>
               ))}
-            </ul>
-          </Grid.Item>
-          <Grid.Item medium={2}>
-            <Grid size={2} className={className} {...attributes}>
-              <Grid.Item medium={1}>
-                <h2>3. Stock</h2>
-                <ul>
-                  {filteredItems.map(item => (
-                    <Item
-                      color={item.color}
-                      isActive={activeItem === camelCase(item.name)}
-                      onMouseEnter={() => this.setState({ activeItem: camelCase(item.name) })}
-                      onMouseLeave={() => this.setState({ activeItem: null })}
-                      key={item.id}
-                    >
-                      {item.name}
-                    </Item>
-                  ))}
-                  <Item color="#aaaaaa" margin>
-                    Treppenhaus
-                  </Item>
-                  <Item color="#dddddd">Flur</Item>
-                </ul>
-              </Grid.Item>
-              <Grid.Item medium={1}>
-                <Map
-                  activeItem={activeItem}
-                  setActiveItem={id => this.setState({ activeItem: id })}
-                  items={filteredItems}
-                />
-              </Grid.Item>
-            </Grid>
-            <br />
-            <Grid size={2} className={className} {...attributes}>
-              <Grid.Item medium={1}>
-                <h2>2. Stock</h2>
-                <ul>
-                  {filteredItems.map(item => (
-                    <Item
-                      color={item.color}
-                      isActive={activeItem === camelCase(item.name)}
-                      onMouseEnter={() => this.setState({ activeItem: camelCase(item.name) })}
-                      onMouseLeave={() => this.setState({ activeItem: null })}
-                      key={item.id}
-                    >
-                      {item.name}
-                    </Item>
-                  ))}
-                  <Item color="#aaaaaa" margin>
-                    Treppenhaus
-                  </Item>
-                  <Item color="#dddddd">Flur</Item>
-                </ul>
-              </Grid.Item>
-              <Grid.Item medium={1}>
-                <Map
-                  activeItem={activeItem}
-                  setActiveItem={id => this.setState({ activeItem: id })}
-                  items={filteredItems}
-                />
-              </Grid.Item>
-            </Grid>
-            <br />
-            <Grid size={2} className={className} {...attributes}>
-              <Grid.Item medium={1}>
-                <h2>1. Stock</h2>
-                <ul>
-                  {filteredItems.map(item => (
-                    <Item
-                      color={item.color}
-                      isActive={activeItem === camelCase(item.name)}
-                      onMouseEnter={() => this.setState({ activeItem: camelCase(item.name) })}
-                      onMouseLeave={() => this.setState({ activeItem: null })}
-                      key={item.id}
-                    >
-                      {item.name}
-                    </Item>
-                  ))}
-                  <Item color="#aaaaaa" margin>
-                    Treppenhaus
-                  </Item>
-                  <Item color="#dddddd">Flur</Item>
-                </ul>
-              </Grid.Item>
-              <Grid.Item medium={1}>
-                <Map
-                  activeItem={activeItem}
-                  setActiveItem={id => this.setState({ activeItem: id })}
-                  items={filteredItems}
-                />
-              </Grid.Item>
-            </Grid>
-          </Grid.Item>
-        </Grid>
-      </Container>
-    );
-  }
-}
+            </ul>,
+          ])}
+        </Grid.Item>
+        <Grid.Item medium={2}>
+          <h2>ERDGESCHOSS</h2>
+          <Map
+            activeItem={activeItem}
+            setActiveItem={id => setActiveItem(id)}
+            items={filteredItems}
+          />
+        </Grid.Item>
+      </Grid>
+    </Container>
+  ),
+);
+component.displayName = 'GZKBlock';
 
 export default {
-  type: 'GZK.Collections.GZKBlock',
+  type: 'pathfinder',
   label: 'Wegblock',
   category: 'Sammlungen',
   isVoid: true,
   kind: 'block',
-  component: GZKBlock,
+  component,
 };
