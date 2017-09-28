@@ -13,7 +13,7 @@ const niceTime = times => {
   return times
     .map(time =>
       time
-        .map(t => moment().startOf('day').add(t, 'minutes').format('HH:mm'))
+        .map(t => moment().startOf('day').add(t, 'minutes').format('HH:mm').replace('00:00', ''))
         .join('-')
     )
     .join(', ');

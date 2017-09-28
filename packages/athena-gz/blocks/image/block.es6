@@ -82,10 +82,10 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
 });
 
 export default {
-  key: 'GZK.Header.ImageBlock',
+  type: 'GZK.Header.ImageBlock',
   label: 'Bild',
   category: 'Kopfleiste',
-  editable: true,
+  isVoid: false, kind: "block",
   styles: ImageStyles,
   defaultNodes: () => createBlockList([Image, Blocks.ImageBlockLabel]),
   component: ({ className, children, attributes }) =>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, gql, sortBy } from 'olymp-utils';
-import { withRouter, Link } from 'olymp-router';
+import { withRouter } from 'olymp-router';
+import { PrefetchLink as Link } from 'olymp-athena';
 import { withEdit, withCreate } from 'olymp-collection';
 import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';
@@ -39,32 +40,16 @@ const Item = withEdit('org')(
         },
       },
     }),
-    ({
-      className,
-      slug,
-      name,
-      kurz,
-      org,
-      telefon,
-      onMouseEnter,
-      onMouseLeave,
-    }) =>
+    ({ className, slug, name, kurz, org, telefon, onMouseEnter, onMouseLeave }) => (
       <li className={className}>
-        <Link
-          to={slug || '/'}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
-          <span>
-            {kurz || name}
-          </span>
-          <span>
-            {org || telefon}
-          </span>
+        <Link to={slug || '/'} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+          <span>{kurz || name}</span>
+          <span>{org || telefon}</span>
         </Link>
-      </li>,
-    p => Object.keys(p)
-  )
+      </li>
+    ),
+    p => Object.keys(p),
+  ),
 );
 
 @withRouter
@@ -92,7 +77,7 @@ const Item = withEdit('org')(
   `,
   {
     options: () => ({}),
-  }
+  },
 )
 @withCreate('org')
 class VerzeichnisBlock extends Component {
@@ -106,14 +91,12 @@ class VerzeichnisBlock extends Component {
     this.setState({ hover: item.orgId || item.id });
   };
 
-  renderSection = (title, items = []) =>
+  renderSection = (title, items = []) => (
     <Grid.Item medium={1}>
-      <H2>
-        {title}
-      </H2>
+      <H2>{title}</H2>
 
       <ul>
-        {items.map(item =>
+        {items.map(item => (
           <Item
             {...item}
             onMouseEnter={this.onMouseOver(item)}
@@ -121,9 +104,10 @@ class VerzeichnisBlock extends Component {
             hovered={this.state.hover === (item.orgId || item.id)}
             key={item.key || item.id}
           />
-        )}
+        ))}
       </ul>
-    </Grid.Item>;
+    </Grid.Item>
+  );
 
   render() {
     const { attributes, children, data } = this.props;
@@ -134,7 +118,7 @@ class VerzeichnisBlock extends Component {
       return <div />;
     }
 
-    data.items.forEach(item => {
+    data.items.forEach((item) => {
       if (item.persons) {
         item.persons.forEach(person =>
           persons.push({
@@ -145,7 +129,7 @@ class VerzeichnisBlock extends Component {
             color: item.color,
             org: item.kurz || item.name,
             slug: item.slug,
-          })
+          }),
         );
       }
       if (item.fachrichtungen) {
@@ -158,17 +142,14 @@ class VerzeichnisBlock extends Component {
             color: item.color,
             org: item.kurz || item.name,
             slug: item.slug,
-          })
+          }),
         );
       }
     });
 
     return (
       <Grid size={3} {...attributes}>
-        {this.renderSection(
-          'Einrichtungen',
-          sortBy(data.items, x => x.name || x.title)
-        )}
+        {this.renderSection('Einrichtungen', sortBy(data.items, x => x.name || x.title))}
         {this.renderSection('Spezialitäten', sortBy(spezial, 'name'))}
         {this.renderSection('Ärzte & Dienstleister', sortBy(persons, 'name'))}
         {children}
@@ -178,9 +159,10 @@ class VerzeichnisBlock extends Component {
 }
 
 export default {
-  key: 'GZK.Collections.VerzeichnisBlock',
+  type: 'GZK.Collections.VerzeichnisBlock',
   label: 'Verzeichnis',
   category: 'Collections',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component: VerzeichnisBlock,
 };

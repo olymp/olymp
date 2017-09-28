@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, gql, renderHelmet } from 'olymp-utils';
-import { Link } from 'olymp-router';
+import { PrefetchLink as Link } from 'olymp-athena';
 import { createComponent, withTheme, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
@@ -62,25 +62,22 @@ const WhiteLink = createComponent(
 
 const getSubheader = (item) => {
   const person = item.person && `von ${item.person.name}`;
-  const org =
-    item.org &&
-    <WhiteLink to={item.org.slug}>
-      {item.org.name}
-    </WhiteLink>;
+  const org = item.org && <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>;
 
   return (
     person &&
-    org &&
-    <span>
-      {person}, {org}
-    </span>
+    org && (
+      <span>
+        {person}, {org}
+      </span>
+    )
   );
 };
 
 const component = withTheme(({ item }) => ({
   color: item.org.color,
-}))(({ className, attributes, item }) =>
-  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+}))(({ className, attributes, item }) => (
+  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
       <Header subheader={getSubheader(item) || ''} color={item.org.color}>
@@ -98,8 +95,8 @@ const component = withTheme(({ item }) => ({
         </Grid>
       </Container>
     </div>
-  </SchemaLoader>),
-);
+  </SchemaLoader>
+));
 
 const componentWithData = graphql(
   gql`
@@ -157,9 +154,10 @@ const componentWithData = graphql(
 )(component);
 
 export default {
-  key: 'GZK.Collections.NewsDetailBlock',
+  type: 'GZK.Collections.NewsDetailBlock',
   label: 'Neuigkeit-Detail',
   category: 'Collections',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component: componentWithData,
 };

@@ -3,7 +3,7 @@ import { renderHelmet } from 'olymp-utils';
 import { Image, SimpleImageEdit } from 'olymp-cloudinary';
 
 export default {
-  key: 'GZK.Header.ImageBlock.Image',
+  type: 'GZK.Header.ImageBlock.Image',
   component: ({ getData, setActive, className }) =>
     (<Image
       className={className}

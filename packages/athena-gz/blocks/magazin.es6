@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  createComponent,
-  Container,
-  Grid,
-  border,
-  SchemaLoader,
-} from 'olymp-fela';
+import { createComponent, Container, Grid, border, SchemaLoader } from 'olymp-fela';
 import { graphql, gql } from 'olymp-utils';
-import { Link } from 'olymp-router';
+import { PrefetchLink } from 'olymp-athena';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { withEdit, withCreate } from 'olymp-collection';
@@ -48,7 +42,7 @@ export const Column = createComponent(
     },
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Content = createComponent(
@@ -68,7 +62,7 @@ export const Content = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Img = createComponent(
@@ -78,7 +72,7 @@ export const Img = createComponent(
     alignSelf: 'flex-start',
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Li = createComponent(
@@ -93,7 +87,7 @@ export const Li = createComponent(
     },
   }),
   'li',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const DownloadLink = createComponent(
@@ -104,7 +98,7 @@ const DownloadLink = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Item = withEdit('article')((props) => {
@@ -112,8 +106,7 @@ const Item = withEdit('article')((props) => {
 
   const image = props.image ||
   org.logo || {
-      url:
-      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+      url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
       height: 300,
     };
@@ -122,35 +115,25 @@ const Item = withEdit('article')((props) => {
     <Grid>
       <Panel
         accent={org.color}
-        title={name}
-        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name ||
-          'Redaktion'}`}
+        title={<PrefetchLink to={{ pathname: `/magazin${slug}` }}>{name}</PrefetchLink>}
+        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name || 'Redaktion'}`}
       >
         <Img value={image} width={160} avatar />
         <Content>
-          <p>
-            {description}
-          </p>
-          {slug &&
-            <Link to={{ pathname: `/magazin${slug}` }}>Weiterlesen...</Link>}
+          <p>{description}</p>
         </Content>
       </Panel>
     </Grid>
   );
 });
 
-const Listing = withCreate('article')(({ items }) =>
-  (<div>
-    {items.map(item =>
-      <Item
-        {...item}
-        org={item.org || {}}
-        person={item.person || {}}
-        key={item.id}
-      />
-    )}
-  </div>)
-);
+const Listing = withCreate('article')(({ items }) => (
+  <div>
+    {items.map(item => (
+      <Item {...item} org={item.org || {}} person={item.person || {}} key={item.id} />
+    ))}
+  </div>
+));
 
 const TagContainer = createComponent(
   () => ({
@@ -161,7 +144,7 @@ const TagContainer = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Tag = createComponent(
@@ -182,16 +165,13 @@ const Tag = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const component = graphql(
   gql`
     query articleList {
-      items: articleList(
-        sort: { date: DESC }
-        query: { state: { eq: PUBLISHED } }
-      ) {
+      items: articleList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
         id
         name
         description
@@ -238,7 +218,7 @@ const component = graphql(
       items: data.items || [],
       pdfs: data.pdfs || [],
     }),
-  }
+  },
 )(({ attributes, items, pdfs, isLoading }) => {
   const tags = items.reduce((tags, item) => {
     (item.tags || []).forEach((tag) => {
@@ -269,26 +249,22 @@ const component = graphql(
             paddingMedium="0 0.5rem 0 0"
           >
             <H2 right>Ausgaben als PDFs</H2>
-            {pdfs.map((pdf, i) =>
-              (<ListItem key={i}>
-                <DownloadLink
-                  rel="noopener noreferrer"
-                  href={pdf.url}
-                  target="_blank"
-                >
+            {pdfs.map((pdf, i) => (
+              <ListItem key={i}>
+                <DownloadLink rel="noopener noreferrer" href={pdf.url} target="_blank">
                   Gesund im Zentrum - <b>{pdf.caption}</b>
                   <FaDownload size={15} />
                 </DownloadLink>
-              </ListItem>)
-            )}
+              </ListItem>
+            ))}
 
             <H2 right>Schlagworte</H2>
             <TagContainer>
-              {orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(tag =>
-                (<Tag key={tag.tag}>
+              {orderBy(tags, ['count', 'tag'], ['desc', 'asc']).map(tag => (
+                <Tag key={tag.tag}>
                   {upperFirst(tag.tag)} <small>({tag.count})</small>
-                </Tag>)
-              )}
+                </Tag>
+              ))}
             </TagContainer>
           </Column>
         </Grid>
@@ -298,9 +274,10 @@ const component = graphql(
 });
 
 export default {
-  key: 'GZK.Collections.MagazinBlock',
+  type: 'GZK.Collections.MagazinBlock',
   label: 'Magazin',
   category: 'Collections',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component,
 };

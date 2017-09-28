@@ -1,7 +1,7 @@
 import React from 'react';
 import { createComponent, SchemaLoader } from 'olymp-fela';
 import { graphql, gql } from 'olymp-utils';
-import { Link } from 'olymp-router';
+import { PrefetchLink as Link } from 'olymp-athena';
 import { withEdit, withCreate } from 'olymp-collection';
 import { H1, Logo } from '../components';
 import { range } from 'lodash';
@@ -26,7 +26,7 @@ const StyledLink = createComponent(
     },
   }),
   p => <Link {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const MarginContainer = createComponent(
@@ -34,7 +34,7 @@ const MarginContainer = createComponent(
     marginY: theme.space3,
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Item = withEdit('org')(
@@ -61,15 +61,14 @@ const Item = withEdit('org')(
         paddingY: theme.space3,
       },
     }),
-    ({ className, children, number }) =>
+    ({ className, children, number }) => (
       <div className={className}>
         {children}
-        <Phone href={`tel:${number}`}>
-          {number}
-        </Phone>
-      </div>,
-    p => Object.keys(p)
-  )
+        <Phone href={`tel:${number}`}>{number}</Phone>
+      </div>
+    ),
+    p => Object.keys(p),
+  ),
 );
 
 const Phone = createComponent(
@@ -78,7 +77,7 @@ const Phone = createComponent(
     color: theme.dark,
   }),
   'a',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Info = createComponent(
@@ -87,7 +86,7 @@ const Info = createComponent(
     paddingBottom: theme.space3,
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const component = withCreate('org')(
@@ -111,36 +110,30 @@ const component = withCreate('org')(
         isLoading: data.loading,
         items: data.items || [],
       }),
-    }
-  )(({ attributes, items, isLoading }) =>
+    },
+  )(({ attributes, items, isLoading }) => (
     <MarginContainer {...attributes}>
       <H1>Telefonnummern</H1>
       <Info>Sie erreichen uns unter folgenden Telefonnummern:</Info>
       <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
         <div>
-          {items.map(item =>
-            <Item
-              number={item.telefon}
-              key={item.id}
-              id={item.id}
-              color={item.color}
-            >
+          {items.map(item => (
+            <Item number={item.telefon} key={item.id} id={item.id} color={item.color}>
               <Logo color={item.color} icon={16} />
-              <StyledLink to={item.slug}>
-                {item.title || item.name}
-              </StyledLink>
+              <StyledLink to={item.slug}>{item.title || item.name}</StyledLink>
             </Item>
-          )}
+          ))}
         </div>
       </SchemaLoader>
     </MarginContainer>
-  )
+  )),
 );
 
 export default {
-  key: 'GZK.Collections.PhoneBlock',
+  type: 'GZK.Collections.PhoneBlock',
   label: 'Telefon',
   category: 'Collections',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component,
 };

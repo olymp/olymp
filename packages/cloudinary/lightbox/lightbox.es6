@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LightBox from 'react-images';
-import { withRouter } from 'olymp-router';
+import { createUpdateQuery } from 'olymp-router';
 
-@withRouter
+@connect(
+  ({ location }) => ({
+    queryLightbox: location.query.lightbox,
+  }),
+  dispatch => ({
+    updateQuery: createUpdateQuery(dispatch),
+  }),
+)
 export default class Lightbox extends Component {
   static contextTypes = {
     lightbox: PropTypes.object,
   };
 
   render() {
-    const { router, query = {}, pathname, ...rest } = this.props;
+    const { queryLightbox, updateQuery, ...rest } = this.props;
     const { lightbox } = this.context;
-    const { lightbox: queryLightbox, ...queryRest } = query;
 
     const image = lightbox.images.find(img => img.ref === queryLightbox);
     const images = (image && lightbox.images.filter(img => img.gallery === image.gallery)) || [];
@@ -25,22 +32,10 @@ export default class Lightbox extends Component {
         images={images}
         currentImage={currIndex}
         isOpen={currIndex >= 0}
-        onClose={() => router.push({ pathname, query: { ...queryRest } })}
-        onClickPrev={() =>
-          router.push({
-            pathname,
-            query: { ...query, lightbox: images[prevIndex].ref },
-          })}
-        onClickNext={() =>
-          router.push({
-            pathname,
-            query: { ...query, lightbox: images[nextIndex].ref },
-          })}
-        onClickThumbnail={i =>
-          router.push({
-            pathname,
-            query: { ...query, lightbox: images[i].ref },
-          })}
+        onClose={() => updateQuery({ lightbox: undefined })}
+        onClickPrev={() => updateQuery({ lightbox: images[prevIndex].ref })}
+        onClickNext={() => updateQuery({ lightbox: images[nextIndex].ref })}
+        onClickThumbnail={i => updateQuery({ lightbox: images[i].ref })}
         imageCountSeparator=" von "
         backdropClosesModal
         showThumbnails={images.length !== 1}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp-router';
+import { connect } from 'react-redux';
+import { createUpdateQuery } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import Image, { cloudinaryUrl } from '../components/image';
 
@@ -15,7 +16,9 @@ const Img = createComponent(
   p => Object.keys(p),
 );
 
-@withRouter
+@connect(null, dispatch => ({
+  updateQuery: createUpdateQuery(dispatch),
+}))
 export default class Lightbox extends Component {
   ref = Math.random()
     .toString(36)
@@ -81,26 +84,15 @@ export default class Lightbox extends Component {
   };
 
   onClick = (e) => {
-    const { onClick, router, pathname, query } = this.props;
-    router.push({ pathname, query: { ...query, lightbox: this.ref } });
+    const { onClick, updateQuery } = this.props;
+    updateQuery({ lightbox: this.ref });
     if (onClick) {
       onClick(e);
     }
   };
 
   render() {
-    const {
-      value,
-      onClick,
-      router,
-      pathname,
-      query,
-      search,
-      dispatch,
-      location,
-      attributes,
-      ...rest
-    } = this.props;
+    const { value, onClick, search, dispatch, attributes, updateQuery, ...rest } = this.props;
 
     if (!value || !value.url) {
       return <div {...attributes} />;

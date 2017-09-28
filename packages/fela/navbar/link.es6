@@ -35,9 +35,9 @@ const NavbarLink = createComponent(
     textDecoration: 'none',
     ellipsis: true,
   }),
-  ({ to, onClick, ...rest }) =>
+  ({ to, onClick, renderItemLink, ...rest }) =>
     (to || onClick ? (
-      <Link to={to} onClick={onClick} {...rest} />
+      <Link to={to} renderItemLink={renderItemLink} onClick={onClick} {...rest} />
     ) : (
       <Placeholder href="javascript:;" {...rest} />
     )),

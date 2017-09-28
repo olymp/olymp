@@ -1,16 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createUpdateQuery } from 'olymp-router';
 import { Cloudinary } from './views';
 
-export default ({ query, pathname, router }) =>
-  (<Cloudinary
-    selected={(query['@media'] || '')
+const enhance = connect(
+  ({ location }) => ({
+    selected: location.query['@media'] || '',
+  }),
+  dispatch => ({
+    updateQuery: createUpdateQuery(dispatch),
+  }),
+);
+const CloudinaryRoute = enhance(({ selected, updateQuery }) => (
+  <Cloudinary
+    selected={selected
       .split(',')
       .filter(x => x)
       .map(x => ({ id: x, crop: undefined }))}
-    handleSelection={selected =>
-      router.push({
-        pathname,
-        query: { ...query, '@media': selected.map(item => item.id).join(',') },
-      })}
-    // onSelect={items => console.log(items)} // => Selection-Mode
-  />);
+    handleSelection={selected => updateQuery({ '@media': selected.map(item => item.id).join(',') })}
+  />
+));
+CloudinaryRoute.displayName = 'CloudinaryRoute';
+export default CloudinaryRoute;

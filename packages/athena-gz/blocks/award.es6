@@ -153,9 +153,9 @@ const component = graphql(
 );
 
 export default {
-  key: 'GZK.Panel.Network',
+  type: 'GZK.Panel.Network',
   label: 'Netzwerk',
   category: 'Panel',
-  editable: false,
+  isVoid: true, kind: "block",
   component,
 };

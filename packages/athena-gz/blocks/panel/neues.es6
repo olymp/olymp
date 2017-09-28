@@ -7,10 +7,7 @@ import List from './list';
 @graphql(
   gql`
     query eventList {
-      events: eventList(
-        sort: { date: DESC }
-        query: { state: { eq: PUBLISHED } }
-      ) {
+      events: eventList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
         id
         date
         art
@@ -51,15 +48,12 @@ import List from './list';
       isLoading: data.loading,
       events: data.events || [],
     }),
-  }
+  },
 )
 @graphql(
   gql`
     query newsList {
-      news: newsList(
-        sort: { date: DESC }
-        query: { state: { eq: PUBLISHED } }
-      ) {
+      news: newsList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
         id
         date
         art
@@ -100,7 +94,7 @@ import List from './list';
       isLoading: data.loading || ownProps.isLoading,
       news: data.news || [],
     }),
-  }
+  },
 )
 class Neues extends Component {
   render() {
@@ -119,9 +113,7 @@ class Neues extends Component {
         <List
           title="Veranstaltungen"
           accent="rgb(73, 146, 195)"
-          items={events.filter(
-            item => item.art === 'VERANSTALTUNG' || item.art === 'VORTRAG'
-          )}
+          items={events.filter(item => item.art === 'VERANSTALTUNG' || item.art === 'VORTRAG')}
           size={6}
           path="news"
           isLoading={isLoading}
@@ -132,9 +124,10 @@ class Neues extends Component {
 }
 
 export default {
-  key: 'GZK.Panel.Neues',
+  type: 'GZK.Panel.Neues',
   label: 'Neues',
   category: 'Panel',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component: Neues,
 };

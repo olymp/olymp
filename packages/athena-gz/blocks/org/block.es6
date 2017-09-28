@@ -217,9 +217,9 @@ const componentWithData = graphql(
 )(component);
 
 export default {
-  key: 'GZK.Collections.OrgBlock',
+  type: 'GZK.Collections.OrgBlock',
   label: 'Einrichtung',
   category: 'Collections',
-  editable: false,
+  isVoid: true, kind: "block",
   component: componentWithData,
 };

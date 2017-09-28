@@ -32,8 +32,8 @@ const MapContainer = createComponent(
       height: 150,
     },
   }),
-  ({ attributes, className, children }) =>
-    (<div className={className} {...attributes}>
+  ({ attributes, className, children }) => (
+    <div className={className} {...attributes}>
       <Maps
         center={{ lat: 50.13429468, lng: 8.45419139 }}
         zoom={17}
@@ -47,17 +47,17 @@ const MapContainer = createComponent(
       >
         <Maps.Marker lat={50.13476404} lng={8.45419139} />
       </Maps>
-      <Label>
-        {children}
-      </Label>
-    </div>),
-  p => Object.keys(p)
+      <Label>{children}</Label>
+    </div>
+  ),
+  p => Object.keys(p),
 );
 
 export default {
-  key: 'GZK.Header.MapsBlock',
+  type: 'GZK.Header.MapsBlock',
   label: 'Karte',
   category: 'Kopfleiste',
-  editable: true,
+  isVoid: false,
+  kind: 'block',
   component: p => <MapContainer {...p} />,
 };

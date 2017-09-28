@@ -35,6 +35,14 @@ export const withQueryActions = connect(null, dispatch => ({
   replaceQuery: createReplaceQuery(dispatch),
 }));
 
+export const withUpdateQuery = connect(null, dispatch => ({
+  updateQuery: createUpdateQuery(dispatch),
+}));
+
+export const withReplaceQuery = connect(null, dispatch => ({
+  replaceQuery: createReplaceQuery(dispatch),
+}));
+
 export const withPathname = connect(({ location }) => ({
   pathname: location.pathname,
 }));

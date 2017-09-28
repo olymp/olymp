@@ -1,34 +1,31 @@
-import React, { Component } from 'react';
-import { withRouter } from 'olymp-router';
+import React from 'react';
 import { createComponent, Container } from 'olymp-fela';
 import capitalize from 'lodash/upperFirst';
+import { connect } from 'react-redux';
 
-@withRouter
-class Content extends Component {
-  render() {
-    const { pathname, children, subheader, editor } = this.props;
-    const path = pathname.split('/').filter(p => p);
+const enhance = connect(({ location }) => ({
+  path: location.pathname.split('/').filter(p => p),
+}));
 
-    return (
-      <Container>
-        <h1>{children}</h1>
-        <p contentEditable={!editor || editor.props.readOnly ? undefined : false}>
-          {subheader !== undefined ? (
-            subheader
-          ) : (
-            `Startseite / ${path.map(p => `${capitalize(decodeURI(unescape(p)))}`).join(' / ')}`
-          )}
-        </p>
-      </Container>
-    );
-  }
-}
+const Content = enhance(({ path, children, subheader, editor }) => (
+  <Container>
+    <h1>{children}</h1>
+    <p contentEditable={!editor || editor.props.readOnly ? undefined : false}>
+      {subheader !== undefined ? (
+        subheader
+      ) : (
+        `Startseite / ${path.map(p => `${capitalize(decodeURI(unescape(p)))}`).join(' / ')}`
+      )}
+    </p>
+  </Container>
+));
 
 export default {
-  key: 'GZK.Header.Header',
+  type: 'GZK.Header.Header',
   label: 'Überschrift',
   category: 'Kopfleiste',
-  editable: true,
+  isVoid: false,
+  kind: 'block',
   component: createComponent(
     ({ theme, color }) => ({
       width: '100%',

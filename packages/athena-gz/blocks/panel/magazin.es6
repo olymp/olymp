@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, gql } from 'olymp-utils';
-import { Link } from 'olymp-router';
+import { PrefetchLink as Link } from 'olymp-athena';
 import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import Container from './container';
@@ -25,16 +25,13 @@ const MagazinItem = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @graphql(
   gql`
     query articleList {
-      items: articleList(
-        sort: { date: DESC }
-        query: { state: { eq: PUBLISHED } }
-      ) {
+      items: articleList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
         id
         date
         name
@@ -86,7 +83,7 @@ const MagazinItem = createComponent(
       items: data.items || [],
       pdfs: data.pdfs || [],
     }),
-  }
+  },
 )
 class Magazin extends Component {
   render() {
@@ -104,10 +101,10 @@ class Magazin extends Component {
         />
         <Panel
           medium={5}
-          title={<Link to={{ pathname: '/magazin/' }}>Magazine als PDF</Link>}
+          title={<Link to={{ pathname: '/magazin' }}>Magazine als PDF</Link>}
           accent="#8e44ad"
         >
-          {pdfs.slice(0, 9).map(item =>
+          {pdfs.slice(0, 9).map(item => (
             <MagazinItem
               rel="noopener noreferrer"
               href={item.url}
@@ -116,11 +113,9 @@ class Magazin extends Component {
               key={item.id}
             >
               <Image value={item} width={100} />
-              <span>
-                {item.caption}
-              </span>
+              <span>{item.caption}</span>
             </MagazinItem>
-          )}
+          ))}
         </Panel>
       </Container>
     );
@@ -128,9 +123,10 @@ class Magazin extends Component {
 }
 
 export default {
-  key: 'GZK.Panel.Magazin',
+  type: 'GZK.Panel.Magazin',
   label: 'Magazin',
   category: 'Panel',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component: Magazin,
 };

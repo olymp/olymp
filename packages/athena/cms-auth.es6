@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, Match } from 'olymp-router';
+import React from 'react';
+import { Switch, Match, createUpdateQuery } from 'olymp-router';
 import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
 import EditableRoute from 'olymp-pages/editable';
@@ -13,6 +13,7 @@ import { compose, withState } from 'recompose';
 import { asyncComponent } from 'react-async-component';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
+import PrefetchRoutes from './prefetch-routes';
 import { TemplateRoute } from './templates';
 
 const Analytics = asyncComponent({
@@ -67,11 +68,13 @@ const enhance = compose(
   withCollections,
   connect(({ location }) => ({
     query: location.query,
+  }), dispatch => ({
+    updateQuery: createUpdateQuery(dispatch),
   })),
   withState('deviceWidth', 'setDeviceWidth', undefined)
 );
 const component = enhance((props) => {
-  const { query, collectionList, ua, deviceWidth, setDeviceWidth } = props;
+  const { query, collectionList, ua, deviceWidth, setDeviceWidth, updateQuery, flatNavigation } = props;
   const collection = collectionList.filter(
     ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
   )[0];
@@ -82,6 +85,7 @@ const component = enhance((props) => {
 
   return (
     <Container>
+      <PrefetchRoutes flatNavigation={flatNavigation} />
       <Load />
       <Lightbox />
       <Hotjar id={process.env.HOTJAR} />
@@ -93,15 +97,7 @@ const component = enhance((props) => {
           open={!!collection && query.modal === null}
           id={collectionId}
           typeName={collectionName}
-          onClose={() =>
-            router.push({
-              pathname,
-              query: {
-                ...query,
-                [`@${collectionName.toLowerCase()}`]: undefined,
-                modal: undefined,
-              },
-            })}
+          onClose={() => updateQuery({ [`@${collectionName.toLowerCase()}`]: undefined, modal: undefined })}
         />}
       <NavigationVertical collectionList={collectionList} setDeviceWidth={setDeviceWidth} />
       <SwitchContainer>

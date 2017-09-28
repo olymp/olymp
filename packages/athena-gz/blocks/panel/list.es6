@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'olymp-router';
+import { PrefetchLink as Link } from 'olymp-athena';
 import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import moment from 'moment';
@@ -12,7 +12,7 @@ const Img = createComponent(
     marginBottom: theme.space2,
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Text = createComponent(
@@ -28,77 +28,48 @@ const Text = createComponent(
     textOverflow: 'ellipsis',
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 class ListItem extends Component {
   render() {
-    const {
-      id,
-      bild,
-      org,
-      person,
-      art,
-      name,
-      slug,
-      description,
-      date,
-      color,
-      path,
-    } = this.props;
+    const { id, bild, org, person, art, name, slug, description, date, color, path } = this.props;
     return (
       <Item color={color} top={0} bottom="1.5rem" key={id}>
         <h3>
-          <Link to={{ pathname: `/${path}${slug || '/'}` }}>
-            {name}
-          </Link>
+          <Link to={{ pathname: `/${path}${slug || '/'}` }}>{name}</Link>
         </h3>
         <h5>
-          {art || 'ARTIKEL'}, {moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr,{' '}
-          {(person || {}).name || 'Redaktion'}/<Link
-            to={(org || {}).slug || '/'}
-          >
+          {art || 'ARTIKEL'},{' '}
+          {moment(date)
+            .format('DD. MMMM YYYY, HH:mm')
+            .replace(', 00:00', '')}{' '}
+          Uhr, {(person || {}).name || 'Redaktion'}/<Link to={(org || {}).slug || '/'}>
             {(org || {}).name || 'GZK'}
           </Link>
         </h5>
-        {description &&
+        {description && (
           <div>
-            {/*<Img
+            {/* <Img
               value={bild || (org || {}).image}
               width={100}
               maxHeight={120}
               avatar
-            />*/}
-            <Text>
-              {description}
-            </Text>
-            {slug &&
-              <Link to={{ pathname: `/${path}${slug}` }}>Weiterlesen...</Link>}
-          </div>}
+            /> */}
+            <Text>{description}</Text>
+          </div>
+        )}
       </Item>
     );
   }
 }
 
-export default ({ items, title, accent, size = 6, path, isLoading }) =>
-  <Panel
-    medium={size}
-    title={
-      <Link to={{ pathname: `/${path}/` }}>
-        {title}
-      </Link>
-    }
-    accent={accent}
-  >
+export default ({ items, title, accent, size = 6, path, isLoading }) => (
+  <Panel medium={size} title={<Link to={{ pathname: `/${path}/` }}>{title}</Link>} accent={accent}>
     {items
       .slice(0, 3)
-      .map(item =>
-        <ListItem
-          {...item}
-          color={accent}
-          path={path}
-          key={item.id}
-          isLoading={isLoading}
-        />
-      )}
-  </Panel>;
+      .map(item => (
+        <ListItem {...item} color={accent} path={path} key={item.id} isLoading={isLoading} />
+      ))}
+  </Panel>
+);

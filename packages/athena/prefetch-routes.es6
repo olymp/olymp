@@ -26,7 +26,6 @@ const enhance = compose(
 
 const PagePrefetchRoute = enhance((props) => {
   const { flatNavigation, prefetch } = props;
-  console.log(prefetch);
   if (!prefetch) {
     return null;
   }
@@ -46,6 +45,7 @@ const PagePrefetchRoute = enhance((props) => {
                 id={item.pageId || item.aliasId || item.id}
                 bindingId={item.bindingId}
                 binding={item.binding}
+                prefetch
               />
             </Match>
           ))}

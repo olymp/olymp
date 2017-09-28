@@ -1,19 +1,34 @@
-import React, { Component } from 'react';
-import { withScroll, withApollo } from 'olymp-utils';
-import { withRouter } from 'olymp-router';
-import { Navbar, Layout, Container, createComponent } from 'olymp-fela';
-import { prefetchPage } from 'olymp-pages';
+import React from 'react';
+import { withScroll } from 'olymp-utils';
+import { compose, withPropsOnChange } from 'recompose';
+import { Navbar } from 'olymp-athena';
+import { get } from 'lodash';
+import { Layout, Container, createComponent } from 'olymp-fela';
 import { connect } from 'react-redux';
 import Logo from './logo';
 
 export const App = createComponent(
   ({ theme }) => ({
+    fontFace: [
+      {
+        fontFamily: 'Oxygen',
+        fontStyle: 'regular',
+        fontWeight: 'normal',
+        src: [
+          '/fonts/oxygen-v6-latin-regular.svg',
+          '/fonts/oxygen-v6-latin-regular.woff2',
+          '/fonts/oxygen-v6-latin-regular.woff',
+          '/fonts/oxygen-v6-latin-regular.ttf',
+          '/fonts/oxygen-v6-latin-regular.svg',
+        ],
+      },
+    ],
     backgroundColor: '#FFFFFF',
     fontFamily: 'Oxygen, sans-serif',
     fontSize: '105%',
     lineHeight: 1.75,
     '& h1, h2, h3, h4, h5, h6': {
-      fontFamily: 'Raleway, sans-serif',
+      fontFamily: 'Oxygen, sans-serif',
       fontWeight: 200,
       lineHeight: 1.5,
     },
@@ -67,79 +82,53 @@ export const Header = withScroll(
   ),
 );
 
-@withApollo
-@withRouter
-@connect(({ auth }) => ({
-  isAuthenticated: !!auth.user,
-}))
-export default class GzLayout extends Component {
-  static defaultProps = {
-    pages: [],
-  };
-  prefetch = ({ id }) => {
-    prefetchPage(this.props.client, id);
-  };
-  render() {
-    const {
-      pages,
-      color,
-      title,
-      text,
-      location,
-      links,
-      children,
-      router,
-      query,
-      pathname,
-      isAuthenticated,
-      ...rest
-    } = this.props;
-    const nav = (pages.map(x => x.children)[0] || []).filter(x => x.slug !== '/');
-    const footer = [...(pages.map(x => x.children)[1] || [])];
-    if (!isAuthenticated) {
-      footer.push({
-        name: 'Einloggen',
-        pathname: `${location.pathname}?login`,
-      });
-    }
-    const open = query.nav === null;
+const enhance = compose(
+  connect(({ auth }) => ({
+    isAuthenticated: !!auth.user,
+  })),
+  withPropsOnChange(['navigation', 'isAuthenticated'], ({ navigation, isAuthenticated }) => ({
+    nav: get(navigation.filter(x => x.type === 'MENU')[0], 'children', []),
+    footer: !isAuthenticated
+      ? [
+        ...get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
+        {
+          name: 'Einloggen',
+          pathname: `${location.pathname}?login`,
+        },
+      ]
+      : get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
+  })),
+);
 
-    return (
-      <App affix>
-        <Header>
-          <Navbar
-            pages={nav}
-            brand={<Logo color={color} title={title} text={text} />}
-            full
-            right
-            mega={({ isMega }) => isMega}
-            onItemMouseEnter={this.prefetch}
-            toggleMenu={() =>
-              router.push({
-                pathname,
-                query: { ...query, nav: !open ? null : undefined },
-              })}
-            isOpen={open}
-          />
-        </Header>
-        <Layout.Body>
-          <Layout>
-            <Layout.Body>{children}</Layout.Body>
-            <Layout.Footer container>
-              <Navbar full onItemMouseEnter={this.prefetch}>
-                <Navbar.Nav
-                  pages={[
-                    {
-                      name: `GesundheitsZentrum Kelkheim. Copyright ${new Date().getFullYear()}`,
-                    },
-                  ]}
-                />
-                <Navbar.Nav pages={footer} right />
-              </Navbar>
-            </Layout.Footer>
-          </Layout>
-        </Layout.Body>
-      </App>
-    );
-  }
-}
+const GzLayout = enhance(({ nav, footer, color, title, text, children }) => (
+  <App affix>
+    <Header>
+      <Navbar
+        pages={nav}
+        brand={<Logo color={color} title={title} text={text} />}
+        full
+        right
+        mega={({ isMega }) => isMega}
+      />
+    </Header>
+    <Layout.Body>
+      <Layout>
+        <Layout.Body>{children}</Layout.Body>
+        <Layout.Footer container>
+          <Navbar full>
+            <Navbar.Nav
+              pages={[
+                {
+                  name: `GesundheitsZentrum Kelkheim. Copyright ${new Date().getFullYear()}`,
+                },
+              ]}
+            />
+            <Navbar.Nav pages={footer} right />
+          </Navbar>
+        </Layout.Footer>
+      </Layout>
+    </Layout.Body>
+  </App>
+));
+GzLayout.displayName = 'GzLayout';
+export default GzLayout;

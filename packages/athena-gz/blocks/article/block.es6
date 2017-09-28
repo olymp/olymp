@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, gql, renderHelmet } from 'olymp-utils';
-import { Link } from 'olymp-router';
+import { PrefetchLink } from 'olymp-athena';
 import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
@@ -41,19 +41,17 @@ const Peak = createComponent(
     ...ImageStyles(props),
     marginBottom: props.theme.space3,
   }),
-  ({ className, header, subheader, value, title }) =>
-    (<div className={className}>
+  ({ className, header, subheader, value, title }) => (
+    <div className={className}>
       <Image value={value} alt={title} width="100%" maxHeight={450} maxResolution={750000} />
-      {(header || subheader) &&
+      {(header || subheader) && (
         <Label>
-          <h1>
-            {header}
-          </h1>
-          <p>
-            {subheader}
-          </p>
-        </Label>}
-    </div>),
+          <h1>{header}</h1>
+          <p>{subheader}</p>
+        </Label>
+      )}
+    </div>
+  ),
   p => Object.keys(p),
 );
 
@@ -64,52 +62,51 @@ const WhiteLink = createComponent(
       color: theme.light2,
     },
   }),
-  p => <Link {...p} />,
+  p => <PrefetchLink {...p} />,
   p => Object.keys(p),
 );
 
 const getSubheader = (item) => {
   const person = item.person && `von ${item.person.name}`;
-  const org =
-    item.org &&
-    item.org.slug &&
-    <WhiteLink to={item.org.slug}>
-      {item.org.name}
-    </WhiteLink>;
+  const org = item.org &&
+  item.org.slug && <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>;
 
   return (
     person &&
-    org &&
-    <span>
-      {person}, {org}
-    </span>
+    org && (
+      <span>
+        {person}, {org}
+      </span>
+    )
   );
 };
 
 const component = withTheme(({ item }) => ({
   color: item.org.color,
-}))(({ className, attributes, item }) =>
-  (<SchemaLoader isLoading={!item.name} schema={loaderSchema}>
+}))(({ className, attributes, item }) => (
+  <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
-      {item.image
-        ? <Peak
+      {item.image ? (
+        <Peak
           title={item.name}
           value={item.image}
           header={item.name}
           subheader={getSubheader(item)}
           color={item.org.color}
         />
-        : <Header subheader={getSubheader(item)} color={item.org.color}>
+      ) : (
+        <Header subheader={getSubheader(item)} color={item.org.color}>
           {item.name}
-        </Header>}
+        </Header>
+      )}
       <Container className={className} color={item.org.color} {...attributes}>
         <Slate readOnly value={item.text} />
-        <Link to="/magazin">Zurück zur Übersicht</Link>
+        <PrefetchLink to="/magazin">Zurück zur Übersicht</PrefetchLink>
       </Container>
     </div>
-  </SchemaLoader>),
-);
+  </SchemaLoader>
+));
 
 const componentWithData = graphql(
   gql`
@@ -165,9 +162,10 @@ const componentWithData = graphql(
 )(component);
 
 export default {
-  key: 'GZK.Collections.ArticleBlock',
+  type: 'GZK.Collections.ArticleBlock',
   label: 'Artikel',
   category: 'Collections',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component: componentWithData,
 };

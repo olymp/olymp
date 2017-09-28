@@ -84,7 +84,7 @@ export const getImages = (config, images = [], nextCursor) =>
         colors: true,
         max_results: 500,
         next_cursor: nextCursor,
-        prefix: APP ? `${APP}/` : '',
+        prefix: APP && APP !== 'gzk' ? `${APP}/` : '',
       }),
     );
   });
@@ -102,7 +102,7 @@ export const getImageById = (config, id) =>
         type: 'upload',
         colors: true,
         pages: true,
-        prefix: APP ? `${APP}/` : '',
+        prefix: APP && APP !== 'gzk' ? `${APP}/` : '',
       }),
     ),
   );

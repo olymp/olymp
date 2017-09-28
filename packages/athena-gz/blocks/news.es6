@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader, createComponent } from 'olymp-fela';
 import { graphql, gql } from 'olymp-utils';
-import { Link } from 'olymp-router';
+import { PrefetchLink } from 'olymp-athena';
 import { withEdit, withCreate } from 'olymp-collection';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';
@@ -15,7 +15,18 @@ const SubHeader = createComponent(
     marginBottom: 6,
   }),
   'p',
-  []
+  [],
+);
+
+const Link = createComponent(
+  ({ theme }) => ({
+    color: theme.dark,
+    onHover: {
+      color: theme.color,
+    },
+  }),
+  x => <PrefetchLink {...x} />,
+  [],
 );
 
 const loaderSchema = [
@@ -40,31 +51,24 @@ const loaderSchema = [
   },
 ];
 
-const RightItem = ({ item, title }) =>
-  <Item key={item.id}>
-    <b>
-      {title}
-    </b>
-    {item.ort &&
-      <SubHeader>
-        {item.ort}
-      </SubHeader>}
-    <p>
-      {item.name}
-    </p>
-    {item.slug &&
-      <Link to={{ pathname: `/news${item.slug}` }}>Nähere Informationen</Link>}
-  </Item>;
+const RightItem = ({ item, title }) => (
+  <Link key={item.id} to={{ pathname: `/news${item.slug}` }}>
+    <Item key={item.id}>
+      <b>{title}</b>
+      {item.ort && <SubHeader>{item.ort}</SubHeader>}
+      <p>{item.name}</p>
+    </Item>
+  </Link>
+);
 
 const RightNewsItem = withEdit('news')(RightItem);
 const RightEventsItem = withEdit('events')(RightItem);
 
-const NewsItem = withEdit(({ type }) => type)(props => {
+const NewsItem = withEdit(({ type }) => type)((props) => {
   const { art, date, name, description, org, slug } = props;
 
   const defaultImage = {
-    url:
-      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
@@ -79,36 +83,21 @@ const NewsItem = withEdit(({ type }) => type)(props => {
       >
         <Img value={image} width={100} avatar />
         <Content>
-          <p>
-            {description}
-          </p>
-          {slug &&
-            <Link to={{ pathname: `/news${slug}` }}>Weiterlesen...</Link>}
+          <p>{description}</p>
         </Content>
       </Panel>
     </Grid>
   );
 });
 
-const NewsListing = withCreate('news')(({ children }) =>
-  <div>
-    {children}
-  </div>
-);
+const NewsListing = withCreate('news')(({ children }) => <div>{children}</div>);
 
-const EventsListing = withCreate('events')(({ children }) =>
-  <div>
-    {children}
-  </div>
-);
+const EventsListing = withCreate('events')(({ children }) => <div>{children}</div>);
 
 @graphql(
   gql`
     query newsList {
-      news: newsList(
-        sort: { date: DESC }
-        query: { state: { eq: PUBLISHED } }
-      ) {
+      news: newsList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
         id
         date
         art
@@ -149,15 +138,12 @@ const EventsListing = withCreate('events')(({ children }) =>
       isLoading: data.loading,
       news: data.news || [],
     }),
-  }
+  },
 )
 @graphql(
   gql`
     query eventList {
-      events: eventList(
-        sort: { date: DESC }
-        query: { state: { eq: PUBLISHED } }
-      ) {
+      events: eventList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
         id
         date
         art
@@ -199,7 +185,7 @@ const EventsListing = withCreate('events')(({ children }) =>
       isLoading: data.loading,
       events: data.events || [],
     }),
-  }
+  },
 )
 class News extends Component {
   render() {
@@ -214,7 +200,7 @@ class News extends Component {
           <Grid>
             <Grid.Item medium={7} paddingMedium="0 0 0 0.5rem">
               <NewsListing>
-                {items.map(item =>
+                {items.map(item => (
                   <NewsItem
                     {...item}
                     onClick={() =>
@@ -224,7 +210,7 @@ class News extends Component {
                     org={item.org || {}}
                     key={item.id}
                   />
-                )}
+                ))}
               </NewsListing>
             </Grid.Item>
             <Column
@@ -240,16 +226,16 @@ class News extends Component {
                 {sortBy(events, ['date'])
                   .reverse()
                   .slice(0, 5)
-                  .map(item =>
+                  .map(item => (
                     <RightEventsItem
                       item={item}
                       id={item.id}
                       key={item.id}
-                      title={`${moment(item.date).format(
-                        'DD. MMMM YYYY, HH:mm'
-                      )} Uhr`}
+                      title={`${moment(item.date)
+                        .format('DD. MMMM YYYY, HH:mm')
+                        .replace(', 00:00', '')} Uhr`}
                     />
-                  )}
+                  ))}
               </EventsListing>
 
               <H2 right>Publikationen & Presse</H2>
@@ -257,14 +243,14 @@ class News extends Component {
                 {sortBy(news, ['date'])
                   .reverse()
                   .slice(0, 5)
-                  .map(item =>
+                  .map(item => (
                     <RightNewsItem
                       item={item}
                       id={item.id}
                       key={item.id}
                       title={moment(item.date).format('DD. MMMM YYYY')}
                     />
-                  )}
+                  ))}
               </NewsListing>
             </Column>
           </Grid>
@@ -275,9 +261,10 @@ class News extends Component {
 }
 
 export default {
-  key: 'GZK.Collections.NewsBlock',
+  type: 'GZK.Collections.NewsBlock',
   label: 'Neuigkeiten',
   category: 'Collections',
-  editable: false,
+  isVoid: true,
+  kind: 'block',
   component: News,
 };
