@@ -14,7 +14,6 @@ import { asyncComponent } from 'react-async-component';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
 import PrefetchRoutes from './prefetch-routes';
-import { TemplateRoute } from './templates';
 
 const Analytics = asyncComponent({
   resolve: () => System.import('olymp-google/analytics'),
@@ -102,10 +101,6 @@ const component = enhance((props) => {
       <NavigationVertical collectionList={collectionList} setDeviceWidth={setDeviceWidth} />
       <SwitchContainer>
         <Switch>
-          <Match
-            match={query['@template'] !== undefined}
-            render={() => <TemplateRoute {...props} />}
-          />
           <Match
             match={!!collection && query.modal === undefined}
             render={() =>
