@@ -13,3 +13,4 @@ export { default as GZKNetworkBlock } from './award';
 export { default as GZKVerzeichnisBlock } from './list';
 export { default as GZKTerminBlock } from './event';
 export { default as GZKNewsDetailBlock } from './news-detail';
+export { default as GZKBlock } from './gzk';
