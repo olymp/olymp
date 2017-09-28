@@ -83,21 +83,25 @@ export const Header = withScroll(
 );
 
 const enhance = compose(
-  connect(({ auth }) => ({
+  connect(({ auth, location }) => ({
     isAuthenticated: !!auth.user,
+    pathname: location.pathname,
   })),
-  withPropsOnChange(['navigation', 'isAuthenticated'], ({ navigation, isAuthenticated }) => ({
-    nav: get(navigation.filter(x => x.type === 'MENU')[0], 'children', []),
-    footer: !isAuthenticated
-      ? [
-        ...get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
-        {
-          name: 'Einloggen',
-          pathname: `${location.pathname}?login`,
-        },
-      ]
-      : get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
-  })),
+  withPropsOnChange(
+    ['navigation', 'isAuthenticated', 'pathname'],
+    ({ navigation, isAuthenticated, pathname }) => ({
+      nav: get(navigation.filter(x => x.type === 'MENU')[0], 'children', []),
+      footer: !isAuthenticated
+        ? [
+          ...get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
+          {
+            name: 'Einloggen',
+            pathname: `${pathname}?login`,
+          },
+        ]
+        : get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
+    }),
+  ),
 );
 
 const GzLayout = enhance(({ nav, footer, color, title, text, children }) => (
