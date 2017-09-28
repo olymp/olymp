@@ -3,6 +3,7 @@ import { GraphQLError } from 'graphql/error';
 import { GraphQLScalarType } from 'graphql';
 
 const assertErr = require('assert-err');
+const fns = require('date-fns');
 
 export default {
   schema: `
@@ -22,12 +23,12 @@ export default {
           'Field error: value is not an instance of Date',
         );
         assertErr(!isNaN(value.getTime()), TypeError, 'Field error: value is an invalid Date');
-        return +value;
+        return +fns.startOfDay(value);
       },
       parseValue(value) {
         const date = new Date(value);
         assertErr(!isNaN(date.getTime()), TypeError, 'Field error: value is an invalid Date');
-        return +date;
+        return +fns.startOfDay(date);
       },
       parseLiteral(ast) {
         if (ast.kind !== Kind.INT) {
@@ -38,7 +39,7 @@ export default {
         assertErr(ast.value === result.toJSON(), GraphQLError, 'Query error: Invalid date format', [
           ast,
         ]);
-        return ast.value;
+        return fns.startOfDay(ast.value);
       },
     }),
   },

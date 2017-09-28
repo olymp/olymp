@@ -85,11 +85,13 @@ export default {
   type: 'GZK.Header.ImageBlock',
   label: 'Bild',
   category: 'Kopfleiste',
-  isVoid: false, kind: "block",
+  isVoid: false,
+  kind: 'block',
   styles: ImageStyles,
   defaultNodes: () => createBlockList([Image, Blocks.ImageBlockLabel]),
-  component: ({ className, children, attributes }) =>
-    (<div className={className} {...attributes}>
+  component: ({ className, children, attributes }) => (
+    <div className={className} {...attributes}>
       {children}
-    </div>),
+    </div>
+  ),
 };

@@ -2,6 +2,7 @@ import { gql, graphql } from 'olymp-utils';
 import { compose } from 'recompose';
 import { withPushPathname } from 'olymp-router';
 import { onError, onSuccess } from 'olymp-ui';
+import { State } from 'slate';
 
 const ok = (props, mutate) => () => {
   const { form, item, router, query, flatNavigation, pushPathname } = props;
@@ -9,7 +10,7 @@ const ok = (props, mutate) => () => {
     if (err) {
       return onError(err);
     }
-    if (values.blocks) {
+    if (values.blocks && State.isState(values.blocks)) {
       values.blocks = values.blocks.toJSON().document;
     }
     mutate({

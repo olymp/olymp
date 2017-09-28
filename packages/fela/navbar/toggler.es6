@@ -1,7 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
-import { createComponent } from 'react-fela';
+import createComponent from '../utils/create-component';
 
 const Div = ({ toggled, onToggle, ...props }) => <div {...props} onClick={onToggle} />;
 const Button = createComponent(

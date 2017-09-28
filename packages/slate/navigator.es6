@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { onlyUpdateForKeys } from 'recompose';
 import { createComponent } from 'olymp-fela';
 import { Tree } from 'olymp-ui';
 import { Icon, Dropdown, Menu } from 'antd';
@@ -134,6 +135,7 @@ const ChangeBlock = createComponent(
 );
 
 @withBlockTypes
+@onlyUpdateForKeys(['base64'])
 class Pages extends Component {
   onDrop = (info) => {
     const { value } = this.props;
