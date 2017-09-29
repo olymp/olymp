@@ -6,9 +6,9 @@ import { ThemeProvider, ScreenLoader } from 'olymp-fela';
 import { useBlockTypes } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
-import { DragDropContext } from 'react-dnd';
+// import { DragDropContext } from 'react-dnd';
 import { asyncComponent } from 'react-async-component';
-import HTML5Backend from 'react-dnd-html5-backend';
+// import HTML5Backend from 'react-dnd-html5-backend';
 import { withNavigation } from 'olymp-pages/with-data';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
@@ -20,7 +20,7 @@ const IfAuth = asyncComponent({
 });
 
 const enhance = compose(
-  DragDropContext(HTML5Backend),
+  // DragDropContext(HTML5Backend),
   useAuth,
   withRedux,
   useBlockTypes,
