@@ -3,22 +3,29 @@ import { createComponent } from 'olymp-fela';
 import Portal from 'olymp-fela/portal';
 
 export default createComponent(
-  ({ theme, color }) => ({
-    position: 'fixed',
-    top: 5,
-    right: 5,
+  ({ theme, position }) => ({
+    position: 'absolute',
+    top: 0,
+    right: position === 'left' ? undefined : 0,
+    left: position === 'left' ? 0 : undefined,
     zIndex: 5,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    '> *': {
-      margin: 5,
+    '> .ant-btn': {
+      margin: 0,
+      marginY: 2,
+      borderTopLeftRadius: position === 'left' ? 0 : 5,
+      borderBottomLeftRadius: position === 'left' ? 0 : 5,
+      borderTopRightRadius: position === 'left' ? 5 : 0,
+      borderBottomRightRadius: position === 'left' ? 5 : 0,
+      borderLeft: position === 'left' ? 0 : undefined,
+      borderRight: position === 'left' ? undefined : 0,
+      paddingTop: 2,
+      width: 40,
+      height: 40,
     },
   }),
-  ({ className, children, ...props }) => (
-    <Portal>
-      <span className={className}>{children}</span>
-    </Portal>
-  ),
-  ({ color, ...p }) => Object.keys(p),
+  ({ className, children }) => <span className={className}>{children}</span>,
+  [],
 );

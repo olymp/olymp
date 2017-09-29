@@ -1,17 +1,19 @@
 import React from 'react';
 import { object, func, bool } from 'prop-types';
-import { SlateMate, withBlockTypes } from 'olymp-slate';
+import { StatelessSlateMate, withBlockTypes, withJsonState } from 'olymp-slate';
 import { mapProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 import { queryPage } from '../gql';
 
-const Page = withBlockTypes(props => (
-  <ContentLoader isLoading={props.isLoading}>
-    <SlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
-      {props.children}
-    </SlateMate>
-  </ContentLoader>
-));
+const Page = withJsonState()(
+  withBlockTypes(props => (
+    <ContentLoader isLoading={props.isLoading}>
+      <StatelessSlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
+        {props.children}
+      </StatelessSlateMate>
+    </ContentLoader>
+  )),
+);
 Page.propTypes = {
   item: object,
   onChange: func,

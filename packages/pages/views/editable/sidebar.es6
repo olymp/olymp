@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Collapse } from 'antd';
 import { createComponent } from 'olymp-fela';
+import Navigator from 'olymp-slate/navigator';
 import Tree from './tree';
 import PageForm from './page';
 
@@ -27,7 +28,7 @@ const StyledCollapse = createComponent(
   p => Object.keys(p),
 );
 
-const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
+const PageTree = ({ form, item, items, navigation, tab, onTabClick, value, onChange, base64 }) => (
   <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
     <TabPane tab="Seitenmanager" key="">
       <StyledCollapse accordion defaultActiveKey="1">
@@ -45,16 +46,9 @@ const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
     <TabPane tab="Seite" key="form">
       <PageForm item={item} items={items} form={form} />
     </TabPane>
-    {/* <TabPane tab="Collection" key="2">
-          <Panel paddingX={16}>
-            Hier kommt bei Bindings quasi der Parent rein
-          </Panel>
-        </TabPane>
-        <TabPane tab="Text" key="2">
-          <Panel paddingX={16}>
-            <SlateTree form={form} item={item} field="blocks" label={null} />
-          </Panel>
-        </TabPane> */}
+    <TabPane tab="Struktur" key="tree">
+      <Navigator value={value} onChange={onChange} base64={base64} />
+    </TabPane>
   </Tabs>
 );
 PageTree.propTypes = {

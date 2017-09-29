@@ -3,11 +3,11 @@ import { Form } from 'antd';
 import { toLabel } from 'olymp-utils';
 import { getEditor, getValidationRules, getInitialValue } from './utils';
 
-const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } };
+const formItemLayout = { labelCol: { span: 5 }, wrapperCol: { span: 19 } };
 const formItemLayout0 = { labelCol: { span: 0 }, wrapperCol: { span: 24 } };
 
 export default (props) => {
-  const { field, clean, itemStyle, style, form, item } = props;
+  const { field, clean, itemStyle, style, form, item, wrap } = props;
   const { getFieldValue, getFieldError, getFieldDecorator } = form;
 
   const title = field['@'] && field['@'].label ? field['@'].label.arg0 : toLabel(field.name);
@@ -30,6 +30,11 @@ export default (props) => {
     initialValue = [start, end];
   }
 
+  if (wrap=== false) {
+    const editor = getEditor({ field, ...props });
+    return editor;
+  }
+
   const editor = getEditor({ field });
 
   if (!editor) {
@@ -44,7 +49,9 @@ export default (props) => {
       help={errors}
       hasFeedback
       style={{ ...itemStyle, ...style }}
-      {...(field.type.name === 'Blocks' || clean ? formItemLayout0 : formItemLayout)}
+      {...(field.type.name === 'Blocks' || field.type.name === 'Image' || clean
+        ? formItemLayout0
+        : formItemLayout)}
     >
       {getFieldDecorator(field.name, {
         initialValue,

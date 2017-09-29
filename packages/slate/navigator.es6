@@ -2,23 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { onlyUpdateForKeys } from 'recompose';
 import { createComponent } from 'olymp-fela';
-import { Tree } from 'olymp-ui';
-import { Icon, Dropdown, Menu } from 'antd';
+import { Icon, Dropdown, Menu, Tree } from 'antd';
 import { sortBy } from 'lodash';
 import Plain from 'slate-plain-serializer';
 import withBlockTypes from './decorators/with-block-types';
-
-const Title = createComponent(
-  ({ theme }) => ({
-    onHover: {
-      '> a': {
-        display: 'initial',
-      },
-    },
-  }),
-  p => <Tree.Title {...p} />,
-  p => Object.keys(p),
-);
 
 const getMenuItems = (blockTypes, prefix) => {
   prefix = prefix ? `${prefix}:` : '';
@@ -193,7 +180,6 @@ class Pages extends Component {
 
   action = (node, actionType) => {
     const { value } = this.props;
-    console.log(actionType);
     if (!actionType) {
       return;
     }
@@ -243,17 +229,17 @@ class Pages extends Component {
   };
 
   onClick = (node) => {
-    const { onChange, value } = this.props;
+    const element = document.querySelector(`[data-key="${node.key}"]`);
+    if (element) {
+      document.querySelector(`[data-key="${node.key}"]`).scrollIntoView(true);
+    }
+    const { value } = this.props;
     this.onChange(
       value
         .change()
         .moveToRangeOf(node)
         .focus(),
     );
-    const element = document.querySelector(`[data-key="${node.key}"]`);
-    if (element) {
-      document.querySelector(`[data-key="${node.key}"]`).scrollIntoView(true);
-    }
   };
 
   getItems = (block, parent) => {
@@ -297,28 +283,30 @@ class Pages extends Component {
           label = 'Unbekannt';
         }
         return (
-          <Tree.Node
+          <Tree.TreeNode
             key={item.key}
             node={item}
             parent={parent}
-            title={
-              <Title disabled={false} onClick={() => this.onClick(item)}>
-                <a href="javascript:;">{label}</a>
-                <ChangeBlock
-                  onClick={({ key }) => this.action(item, key)}
-                  type="down"
-                  blockTypes={blockTypes}
-                />
-                <BlockMenu
-                  onClick={({ key }) => this.action(item, key)}
-                  type="plus"
-                  blockTypes={blockTypes}
-                />
-              </Title>
-            }
+            title={[
+              <a key="link" href="javascript:;" onClick={() => this.onClick(item)}>
+                {label}
+              </a>,
+              <ChangeBlock
+                key="change1"
+                onClick={({ key }) => this.action(item, key)}
+                type="down"
+                blockTypes={blockTypes}
+              />,
+              <BlockMenu
+                key="change2"
+                onClick={({ key }) => this.action(item, key)}
+                type="plus"
+                blockTypes={blockTypes}
+              />,
+            ]}
           >
             {this.getItems(item, block)}
-          </Tree.Node>
+          </Tree.TreeNode>
         );
       })
       .filter(x => x);

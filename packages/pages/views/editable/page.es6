@@ -32,7 +32,6 @@ class PageForm extends Component {
 
   render() {
     const { form, item, items } = this.props;
-    const { getFieldDecorator } = form;
     const tree = unflatten(
       items.map(({ id, name, parentId }) => ({
         value: id,

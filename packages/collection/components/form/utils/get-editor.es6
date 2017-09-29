@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
 import {
   ColorEditor,
@@ -10,12 +10,8 @@ import {
   SuggestEditor,
   GeocodeEditor,
 } from 'olymp-ui';
-import { withPropsOnChange } from 'recompose';
-import { StatelessSlateMate } from 'olymp-slate';
-import Navigator from 'olymp-slate/navigator';
-import JsonEditor from 'olymp-slate/json-editor';
-import Plain from 'slate-plain-serializer';
-import { State } from 'slate';
+import { StatelessSlateMate, withDebounceState } from 'olymp-slate';
+import { Container } from 'olymp-fela';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
@@ -25,37 +21,29 @@ const states = {
   DRAFT: 'Entwurf',
   REMOVED: 'Papierkorb',
 };
-const edits = [type => type.kind === 'OBJECT' && type.name === 'Image' && ImageEdit];
 
-@withPropsOnChange(['value'], ({ value }) => ({
-  value: State.isState(value)
-    ? value
-    : value
-      ? State.fromJSON({ document: value.document || value, kind: 'state' })
-      : Plain.deserialize(''),
-}))
-class Slate extends Component {
-  render() {
-    const { label } = this.props;
-    return (
-      <div style={{ display: 'flex', flexDirection: 'rows' }}>
-        <div>
-          <Navigator {...this.props} />
-        </div>
-        <div>
-          <JsonEditor {...this.props} />
-        </div>
-        <StatelessSlateMate
-          {...this.props}
-          placeholder={label || 'Hier Text eingeben!'}
-          style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-        />
-      </div>
-    );
-  }
-}
+const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChange }) => (
+  <Container size="small">
+    <StatelessSlateMate
+      onChange={onChange}
+      value={value}
+      placeholder={label || 'Hier Text eingeben!'}
+      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+    />
+  </Container>
+));
 
-export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
+export default ({
+  className,
+  editorClassName,
+  style,
+  editorStyle,
+  field,
+  label,
+  key,
+  value,
+  onChange,
+}) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -66,13 +54,6 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     className: cn(editorClassName, className),
     key,
   };
-
-  for (let i = 0; i < edits.length; i += 1) {
-    const Edit = edits[i](type);
-    if (Edit) {
-      return <Edit {...editProps} />;
-    }
-  }
 
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
@@ -99,15 +80,13 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     if (type.name === 'Geocode') {
       return <GeocodeEditor {...editProps} />;
     }
-
-    return null;
   }
   if (suggest) {
     return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
   }
   if (start) {
     if (type.name === 'Date') {
-      return <DateRangeEditor {...editProps} format="DD.MM.YYYY" />;
+      return <DateRangeEditor {...editProps} format="DD.MM.YYYY" style={{ width: '100%' }} />;
     }
     if (type.name === 'DateTime') {
       return (
@@ -135,7 +114,9 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
 
   switch (type.name) {
     case 'Blocks':
-      return <Slate {...editProps} label={label} />;
+      return <SlateEditor {...editProps} label={label} value={value} onChange={onChange} />;
+    case 'Image':
+      return <ImageEdit {...editProps} style={{ maxWith: '100%' }} width="100%" />;
     case 'Boolean':
       return <Checkbox {...editProps}>{label}</Checkbox>;
     case 'Date':

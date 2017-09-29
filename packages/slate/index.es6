@@ -1,6 +1,7 @@
 export { Block, Editor, Raw } from 'slate';
 export { default as addBlock } from './utils/add-block';
 export { default as withJsonState } from './with-json-state';
+export { default as withDebounceState } from './with-debounce-state';
 export * from './block-decorators';
 export * from './editor-decorators';
 export * from './decorators';

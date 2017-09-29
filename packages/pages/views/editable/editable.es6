@@ -3,32 +3,48 @@ import { Prompt, withQueryActions, Link } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
 import Actions from 'olymp-ui/actions';
-import { withPropsOnChange } from 'recompose';
+import { withPropsOnChange, withProps } from 'recompose';
 import { Form, Icon, Button } from 'antd';
-import { StatelessSlateMate } from 'olymp-slate';
-import Plain from 'slate-plain-serializer';
-import { State } from 'slate';
+import { StatelessSlateMate, withJsonState, withDebounceState } from 'olymp-slate';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
+
+const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChange }) => (
+  <StatelessSlateMate
+    onChange={onChange}
+    value={value}
+    placeholder={label || 'Hier Text eingeben!'}
+    style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+  />
+));
 
 @queryPage
 @Form.create()
 @mutatePage
 @withQueryActions
-@withPropsOnChange(['item', 'flatNavigation'], ({ item, flatNavigation }) => ({
-  id: item.id || null,
-  item: item || flatNavigation.find(page => page.slug === '/'),
-  description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
-  title: !item.id ? 'Neue Seite' : (item || flatNavigation.find(page => page.slug === '/')).name,
-}))
-@withPropsOnChange(['item'], ({ item }) => ({
-  blocks: item.blocks
-    ? State.fromJSON({ document: item.blocks, kind: 'state' })
-    : Plain.deserialize(''),
+@withPropsOnChange(['item', 'flatNavigation'], ({ item, flatNavigation, form, ...rest }) => {
+  item = item || flatNavigation.find(page => page.slug === '/');
+  form.getFieldDecorator('parent', { initialValue: rest['@parent'] || item.parent });
+  form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
+  form.getFieldDecorator('blocks', { initialValue: item.blocks });
+  return {
+    id: item.id || null,
+    item,
+    description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
+    title: !item.id ? 'Neue Seite' : item.name,
+    blocks: item.blocks,
+  };
+})
+@withProps(({ form }) => ({
+  onChange: (blocks) => {
+    form.setFieldsValue({ blocks });
+  },
+  value: form.getFieldValue('blocks'),
 }))
 @connect(({ location }) => ({
   tab: location.query['@page'] || '',
 }))
+@withJsonState({ debounce: false })
 export default class PageSidebar extends Component {
   render() {
     const {
@@ -46,74 +62,44 @@ export default class PageSidebar extends Component {
       title,
       description,
       tab,
-      blocks,
+      value,
+      onChange,
+      base64,
     } = this.props;
 
-    form.getFieldDecorator('parent', { initialValue: this.props['@parent'] || item.parent });
-    form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
-
-    const isPage = (form.getFieldValue('type') || item.type || 'PAGE') === 'PAGE';
-    const P = form.getFieldDecorator('blocks', { initialValue: blocks })(
-      <StatelessSlateMate
-        readOnly={!isPage}
+    const P = (
+      <SlateEditor
+        value={value}
+        onChange={onChange}
+        base64={base64}
+        style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+        readOnly={false}
         binding={binding}
         bindingId={bindingId}
         bindingObj={bindingObj}
-      />,
+      />
     );
     return (
       <SplitView maxWidth={maxWidth} center>
-        <Actions>
-          <Button
-            type="primary"
-            shape="circle"
-            size="large"
-            icon="save"
-            disabled={!form.isFieldsTouched()}
-            onClick={save}
-          />
-          <Button
-            shape="circle"
-            size="small"
-            icon="rollback"
-            disabled={!form.getFieldValue('blocks').hasUndos}
-            onClick={() =>
-              form.setFieldsValue({
-                blocks: form
-                  .getFieldValue('blocks')
-                  .change()
-                  .undo().state,
-              })}
-          />
-          <Button
-            shape="circle"
-            size="small"
-            icon="enter"
-            disabled={!form.getFieldValue('blocks').hasRedos}
-            onClick={() =>
-              form.setFieldsValue({
-                blocks: form
-                  .getFieldValue('blocks')
-                  .change()
-                  .redo().state,
-              })}
-          />
-          <Link
-            className="ant-btn ant-btn-primary ant-btn-circle ant-btn-sm ant-btn-icon-only"
-            updateQuery={{ '@page': undefined }}
-          >
-            <Icon type="close" />
-          </Link>
-        </Actions>
         <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
-        <Sidebar isOpen padding={0} title={title} subtitle={description}>
+
+        <Sidebar isOpen padding={0} title={title} subtitle={description} 
+        rightButtons={
+          <Sidebar.Button
+            onClick={save}
+            shape="circle"
+            icon="save"
+          />
+        }>
           <PageForm
+            value={value}
+            onChange={onChange}
+            base64={base64}
             form={form}
             item={item}
             navigation={navigation}
             items={flatNavigation}
             tab={tab}
-            blocks={blocks}
             onTabClick={key => replaceQuery({ '@page': key || null })}
           />
         </Sidebar>

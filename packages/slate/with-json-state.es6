@@ -1,43 +1,49 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
-import { withPropsOnChange, compose, withProps } from 'recompose';
+import { withPropsOnChange, compose } from 'recompose';
 import Base64 from 'slate-base64-serializer';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
 
-const stateWrapper = WrappedComponent =>
+const stateWrapper = options => WrappedComponent =>
   class Slate extends Component {
     constructor(props) {
       super(props);
       this.base64 = props.base64;
-      this.state = { value: props.state };
+      this.state = { value: props.value };
     }
     componentWillReceiveProps(newProps) {
-      if (newProps.base64 !== this.base64) {
+      if (newProps.base64 !== this.base64 && this.state.value !== newProps.value) {
         this.base64 = newProps.base64;
-        this.setState({ value: newProps.state });
+        this.state.value = newProps.value;
+        // this.setState({ value: newProps.value });
       }
     }
-    propagateChange = debounce(
-      (value) => {
-        this.base64 = Base64.serialize(value);
-        if (this.base64 !== this.props.base64) {
-          this.props.onChange(value.toJSON().document);
-          /* this.props.onChange(
-            JSON.parse(
-              JSON.stringify(value.toJSON().document)
-                .split('"line"')
-                .join('"paragraph"'),
-            ),
-          ); */
+    propagateChange = (value) => {
+      this.base64 = Base64.serialize(value);
+      if (this.base64 !== this.props.base64) {
+        const json = value.toJSON();
+        const str= JSON.stringify(json);
+        if (str.indexOf('"line"') !== -1){
+          const final = JSON.parse(str.split('"line"').join('"paragraph"'))
+          return this.props.onChange(final.document);
         }
-      },
-      1000,
-      { leading: false, trailing: true },
-    );
+        this.props.onChange(json.document);
+      }
+    };
+    debouncedPropagateChange = debounce(this.propagateChange, options.debounce || 1000, {
+      leading: false,
+      trailing: true,
+    });
     onChange = (value) => {
-      this.setState({ value });
-      this.propagateChange(value);
+      if (options.debounce) {
+        this.setState({ value }, () => {
+          this.debouncedPropagateChange(value);
+        });
+      } else {
+        this.state.value = value;
+        this.propagateChange(value);
+      }
     };
     render() {
       const { value } = this.state;
@@ -52,15 +58,16 @@ const stateWrapper = WrappedComponent =>
     }
   };
 
-export default compose(
-  withPropsOnChange(['value'], ({ value }) => {
-    const state = value
-      ? State.fromJSON({ document: value, kind: 'state' })
-      : Plain.deserialize('');
-    return {
-      state,
-      base64: Base64.serialize(state),
-    };
-  }),
-  stateWrapper,
-);
+export default options =>
+  compose(
+    withPropsOnChange(['value'], ({ value }) => {
+      const state = value
+        ? State.fromJSON({ document: value, kind: 'state' })
+        : Plain.deserialize('');
+      return {
+        value: state,
+        base64: Base64.serialize(state),
+      };
+    }),
+    stateWrapper(options || {}),
+  );

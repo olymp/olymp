@@ -1,84 +1,124 @@
-import React, { Component } from 'react';
-import { Form } from 'antd';
+import React from 'react';
+import { Form, Tabs } from 'antd';
+import { SplitView, Sidebar } from 'olymp-ui';
+import { createComponent } from 'react-fela';
+import { withState } from 'recompose';
+import Navigator from 'olymp-slate/navigator';
 import FormItem from './item';
 
-const excludedFields = [
-  'id',
-  'createdBy',
-  'createdAt',
-  'updatedBy',
-  'updatedAt',
-  'updatedById',
-  'createdById',
-];
+const TabPane = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.light,
+    padding: 10,
+  }),
+  Tabs.TabPane,
+  p => Object.keys(p),
+);
 
-export default class FormComponent extends Component {
-  render() {
-    const {
-      fields = [],
-      inline,
-      vertical,
-      children,
-      item,
-      style,
-      className,
-      validateFields,
-      form,
-      ...rest
-    } = this.props;
+const Horizontal = createComponent(
+  () => ({
+    display: 'flex',
+    '> .form-images': {
+      flex: 1,
+      margin: 10,
+      '& .ant-form-item-label': {
+        display: 'none',
+      },
+    },
+    '> .form-rest': {
+      margin: 10,
+      flex: 1,
+    },
+  }),
+  'div',
+);
 
-    const mappedFields = fields.reduce((result, field) => {
-      // EXCLUDING
-      if (excludedFields.includes(field.name)) {
-        return result;
-      }
+const Div = createComponent(
+  () => ({
+    padding: 20,
+  }),
+  'div',
+);
 
-      // DISABLED
-      if (field['@'].disabled) {
-        return result;
-      }
+const Buttons = createComponent(
+  () => ({
+    '> button': {
+      margin: 5
+    }
+  }),
+  'div',
+);
 
-      // RELATION
-      if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
-        if (field.name.endsWith('Id')) {
-          field['@'].idField = fields.find(
-            ({ name }) => `${name}Id` === field.name
-          );
-        } else if (field.name.endsWith('Ids')) {
-          field['@'].idField = fields.find(
-            ({ name }) => `${name}Ids` === field.name
-          );
-        }
-        result.splice(
-          result.findIndex(({ name }) => name === field['@'].idField.name),
-          1
-        );
-      }
-
-      // RANGE
-      if (field['@'].end) {
-        return result;
-      }
-      if (field['@'].start) {
-        const end = fields.find(x => x['@'].end);
-        field['@'].endField = end;
-      }
-
-      result.push(field);
-      return result;
-    }, []);
-
+const FormComponent = withState('tab', 'setTab')(({
+  schema,
+  inline,
+  vertical,
+  children,
+  item,
+  className,
+  validateFields,
+  form,
+  collection,
+  setTab,
+  tab,
+  onChange,
+  value,
+  base64,
+  ...rest
+}) => {
+  if (schema.blocks.length) {
     return (
-      <Form
-        layout={(vertical && 'vertical') || (inline && 'inline')}
-        style={style}
-        className={className}
-      >
-        {mappedFields.map(field =>
-          <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-        )}
-        {children}
-      </Form>
+      <SplitView>
+        <Sidebar isOpen padding={0}>
+          <Tabs
+            activeKey={tab || ''}
+            onTabClick={setTab}
+            size="small"
+            tabBarStyle={{ marginBottom: 0 }}
+          >
+            <TabPane tab="Formular" key="">
+              <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+                {schema.images.map(field => (
+                  <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+                ))}
+                {schema.rest.map(field => (
+                  <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+                ))}
+              </Form>
+            </TabPane>
+            <TabPane tab="Struktur" key="tree">
+              <Navigator value={value} onChange={onChange} base64={base64} />
+            </TabPane>
+          </Tabs>
+          <Buttons>
+            {children}
+          </Buttons>
+        </Sidebar>
+        <Div>
+          {schema.blocks.map(field => (
+            <FormItem {...rest} form={form} field={field} item={item} key={field.name} value={value} onChange={onChange} wrap={false} />
+          ))}
+        </Div>
+      </SplitView>
     );
   }
-}
+  return (
+    <Horizontal className={className}>
+      <Form layout={(vertical && 'vertical') || (inline && 'inline')} className="form-rest">
+        {schema.rest.map(field => (
+          <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+        ))}
+      </Form>
+      <Form className="form-images" layout={(vertical && 'vertical') || (inline && 'inline')}>
+        {schema.images.map(field => (
+          <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+        ))}
+      </Form>
+      <Buttons>
+        {children}
+      </Buttons>
+    </Horizontal>
+  );
+});
+FormComponent.displayName = 'FormComponent';
+export default FormComponent;

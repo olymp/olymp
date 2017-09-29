@@ -1,32 +1,65 @@
-import React, { Component } from 'react';
-import { withRouter } from 'olymp-router';
-import { Menu, Icon } from 'antd';
+import React from 'react';
+import { withPropsOnChange, withProps, compose } from 'recompose';
+import { withJsonState } from 'olymp-slate';
+import { Button } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
-import { upperFirst } from 'lodash';
 import { withItem } from '../decorators';
 import { DetailForm } from '../components';
 
-export const getFormSchema = ({ fields }) =>
-  fields.reduce((result, field) => {
-    const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
+const excludedFields = [
+  'id',
+  'createdBy',
+  'createdAt',
+  'updatedBy',
+  'updatedAt',
+  'updatedById',
+  'createdById',
+];
 
-    if (field.type.name === 'Blocks') {
-      // if slate => own group
-      result[label || upperFirst(field.name)] = [field];
-    } else if (field.type.name === 'Image') {
-      // if image => own group
-      result[label || upperFirst(field.name)] = [field];
-    } else {
-      // Group
-      const group = field['@'].detail ? field['@'].detail.arg0 : 'Allgemein';
-
-      if (!result[group]) {
-        result[group] = [];
+const getFormSchema = (fields) => {
+  const mappedFields = fields.reduce(
+    (result, field) => {
+      const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
+      // EXCLUDING
+      if (excludedFields.includes(field.name) || field['@'].disabled) {
+        return result;
       }
-      result[group].push(field);
-    }
-    return result;
-  }, {});
+
+      // RELATION
+      if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
+        if (field.name.endsWith('Id')) {
+          field['@'].idField = fields.find(({ name }) => `${name}Id` === field.name);
+        } else if (field.name.endsWith('Ids')) {
+          field['@'].idField = fields.find(({ name }) => `${name}Ids` === field.name);
+        }
+        result.rest.splice(
+          result.rest.findIndex(({ name }) => name === field['@'].idField.name),
+          1,
+        );
+      }
+
+      // RANGE
+      if (field['@'].end) {
+        return result;
+      }
+      if (field['@'].start) {
+        const end = fields.find(x => x['@'].end);
+        field['@'].endField = end;
+      }
+
+      if (field.type.name === 'Image') {
+        result.images.push(field);
+      } else if (field.type.name === 'Blocks') {
+        result.blocks.push(field);
+      } else {
+        result.rest.push(field);
+      }
+      return result;
+    },
+    { images: [], rest: [], blocks: [] },
+  );
+  return mappedFields;
+};
 
 const Flex = createComponent(
   ({ theme }) => ({
@@ -47,57 +80,41 @@ const Flex = createComponent(
   [],
 );
 
-const HiddenForm = createComponent(
-  ({ visible }) => ({
-    display: visible ? 'block' : 'none',
+const enhance = compose(
+  withItem,
+  withPropsOnChange(['collection'], ({ collection }) => {
+    const schema = getFormSchema(collection.fields);
+    return {
+      schema,
+    };
   }),
-  p => <DetailForm {...p} />,
-  p => Object.keys(p),
+  withProps(({ form, schema, item }) => {
+    if (schema.blocks.length && item) {
+      form.getFieldDecorator('blocks', { initialValue: item.blocks });
+      return {
+        onChange: (blocks) => {
+          form.setFieldsValue({ blocks });
+        },
+        value: form.getFieldValue('blocks'),
+      };
+    }
+    return {};
+  }),
+  withJsonState(),
 );
 
-@withRouter
-@withItem
-export default class CollectionDetail extends Component {
-  state = { tab: null };
-  render() {
-    const { id, item, collection, onSave, onClone } = this.props;
-    const schema = getFormSchema(collection);
-    const keys = Object.keys(schema);
-    const currentTab = this.state.tab || keys[0];
+const CollectionDetail = enhance(({ id, item, schema, onSave, onClone, form, value, onChange, ...rest }) => (
+  <ContentLoader isLoading={id && !item}>
+    <DetailForm {...rest} id={id} form={form} item={item || {}} schema={schema} onCreate={onSave} value={value} onChange={onChange}>
+        <Button onClick={onSave} icon="save" type="primary">
+          Speichern
+        </Button>
+        <Button onClick={onClone} icon="copy">
+          Klonen
+        </Button>
+    </DetailForm>
+  </ContentLoader>
+));
 
-    return (
-      <ContentLoader isLoading={id && !item}>
-        <Flex>
-          <Menu mode="horizontal" selectedKeys={[currentTab]}>
-            <Menu.Item key="save">
-              <Icon type="save" onClick={onSave} />
-              <span onClick={onSave}>Speichern</span>
-            </Menu.Item>
-            <Menu.Item key="clone">
-              <Icon type="copy" onClick={onClone} />
-              <span onClick={onSave}>Klonen</span>
-            </Menu.Item>
-            {keys
-              .map(tab => (
-                <Menu.Item key={tab} className="right">
-                  <span onClick={() => this.setState({ tab })}>{tab}</span>
-                </Menu.Item>
-              ))
-              .reverse()}
-          </Menu>
-
-          {Object.keys(schema).map(tab => (
-            <HiddenForm
-              {...this.props}
-              item={item || {}}
-              fields={schema[tab]}
-              key={tab}
-              visible={tab === currentTab}
-              onCreate={onSave}
-            />
-          ))}
-        </Flex>
-      </ContentLoader>
-    );
-  }
-}
+CollectionDetail.displayName = 'CollectionDetail';
+export default CollectionDetail;
