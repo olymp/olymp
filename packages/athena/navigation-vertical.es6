@@ -46,7 +46,7 @@ const UserIcon = createComponent(
 
 const VerticalMenu = createComponent(
   ({ theme }) => ({
-    zIndex: 3,
+    zIndex: 11,
     width: 64,
     // boxShadow: 'inset -6px 0 5px -5px rgb(0, 0, 0)',
     hasFlex: {
@@ -64,7 +64,7 @@ const VerticalMenu = createComponent(
       top: 0,
       bottom: 0,
       maxWidth: 200,
-      zIndex: 3,
+      zIndex: 11,
       overflow: 'hidden',
       '> .ant-menu-item': {
         textAlign: 'left !important',
