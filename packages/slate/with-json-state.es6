@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
-import Base64 from 'slate-base64-serializer';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
+import Base64 from './plugins/base64';
 
 const stateWrapper = options => WrappedComponent =>
   class Slate extends Component {
@@ -23,9 +23,9 @@ const stateWrapper = options => WrappedComponent =>
       this.base64 = Base64.serialize(value);
       if (this.base64 !== this.props.base64) {
         const json = value.toJSON();
-        const str= JSON.stringify(json);
-        if (str.indexOf('"line"') !== -1){
-          const final = JSON.parse(str.split('"line"').join('"paragraph"'))
+        const str = JSON.stringify(json);
+        if (str.indexOf('"line"') !== -1) {
+          const final = JSON.parse(str.split('"line"').join('"paragraph"'));
           return this.props.onChange(final.document);
         }
         this.props.onChange(json.document);
