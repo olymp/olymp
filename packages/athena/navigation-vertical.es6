@@ -254,7 +254,7 @@ class Navigation extends Component {
           </Menu.SubMenu>
           <Menu.Item key="@page">
             <Icon type="bars" />
-            <span>Navigation</span>
+            <span>Frontend</span>
           </Menu.Item>
           <Menu.Item key="@media">
             <Icon type="picture" />

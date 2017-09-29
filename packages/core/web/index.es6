@@ -14,7 +14,7 @@ import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
 import { UAParser } from 'olymp-utils';
-import { createFela, felaReducer } from 'olymp-fela';
+import { createFela } from 'olymp-fela';
 import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
@@ -169,12 +169,10 @@ store = createDynamicStore(
     app: appReducer,
     location: routerReducer(history),
     auth: authReducer,
-    fela: felaReducer,
   },
   {
     auth: get(window.INITIAL_DATA, 'auth', undefined),
     location: get(window.INITIAL_DATA, 'location', undefined),
-    fela: get(window.INITIAL_DATA, 'fela', undefined),
   },
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),

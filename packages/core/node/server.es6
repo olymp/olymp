@@ -38,7 +38,7 @@ import { applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 // Olymp
 import { authMiddleware, authReducer } from 'olymp-auth';
-import { createFela, felaReducer } from 'olymp-fela';
+import { createFela } from 'olymp-fela';
 import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 import { AmpProvider, UAProvider, UAParser } from 'olymp-utils';
@@ -202,7 +202,6 @@ app.get('*', (req, res) => {
       app: appReducer,
       location: routerReducer(history),
       auth: authReducer,
-      fela: felaReducer,
     },
     { auth: { user: req.user } },
     compose(

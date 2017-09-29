@@ -1,36 +1,41 @@
 import React, { Component } from 'react';
-import shortId from 'shortid';
+import PropTypes from 'prop-types';
 import shallowEqual from 'shallowequal';
 import { get } from 'lodash';
-import { setTheme } from './redux';
 
 export default getColorFromProps => (WrappedComponent) => {
-  @setTheme
   class WithColorComponent extends Component {
-    id = shortId.generate();
-    color = null;
-    constructor(props) {
+    static contextTypes = {
+      theme: PropTypes.object,
+    };
+    originalTheme = null;
+    constructor(props, context) {
       super(props);
       this.skip = get(props.editor, 'props.prefetch', false);
-      this.setColor(props);
+      this.setTheme(props, context);
     }
-    setColor = (props = this.props) => {
-      if (this.skip) {
+    setTheme = (props = this.props, context = this.context) => {
+      if (this.skip || !context.theme) {
         return;
       }
-      const { setTheme } = this.props;
-      const newTheme = getColorFromProps(props) || null;
+      const { theme } = context;
+      if (!this.originalTheme) {
+        this.originalTheme = theme.get();
+      }
+      const newTheme = { ...this.originalTheme, ...(getColorFromProps(props) || {}) };
       if (!shallowEqual(newTheme, this.theme)) {
-        setTheme(this.id, newTheme);
+        theme.update(newTheme);
         this.theme = newTheme;
       }
     };
     componentWillUnmount() {
-      const { unsetTheme } = this.props;
-      unsetTheme(this.id);
+      const { theme } = this.context;
+      if (this.originalTheme) {
+        theme.update(this.originalTheme);
+      }
     }
     componentWillReceiveProps(props) {
-      this.setColor(props);
+      this.setTheme(props);
     }
     render() {
       return <WrappedComponent {...this.props} />;

@@ -55,6 +55,7 @@ export default class CollectionView extends Component {
         {id !== undefined && (
           <Detail
             id={id === 'new' ? null : id}
+            key={id || 'new'}
             refetchQuery={refetchQuery}
             fieldNames={fieldNames}
             collection={collection}

@@ -11,11 +11,13 @@ export const SplitView = createComponent(
     '> :first-child': {
       flexGrow: 0,
       overflowY: 'auto',
+      position: 'relative',
     },
     '> :nth-child(2)': {
       flexGrow: 1,
       overflowY: 'auto',
       margin: center && '0 auto',
+      position: 'relative',
       // borderX: center && border(theme),
       maxWidth,
       maxHeight: '100%',
