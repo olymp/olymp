@@ -18,10 +18,10 @@ export default {
       height: '100%',
     },
   }),
-  component: ({ getData, children, attributes, className }) => (
+  component: ({ node, children, attributes, className }) => (
     <Grid.Item
       medium={1}
-      padding={getData('bordered', true) ? '0 16px 24px 16px' : 0}
+      padding={node.data.get('bordered') !== false ? '0 16px 24px 16px' : 0}
       className={className}
       gridSize={4}
       {...attributes}
@@ -33,8 +33,12 @@ export default {
     {
       label: <FaSquare />,
       tooltip: 'Rahmen/Rahmenlos',
-      toggle: ({ setData, getData }) => {
-        setData({ bordered: !getData('bordered', true) });
+      toggle: ({ node, onChange, state }) => {
+        onChange(
+          state.change().setNodeByKey(node.key, {
+            data: node.data.set('bordered', node.data.get('bordered') === false),
+          }),
+        );
       },
     },
   ],

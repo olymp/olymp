@@ -22,12 +22,7 @@ const stateWrapper = WrappedComponent =>
       (value) => {
         this.base64 = Base64.serialize(value);
         if (this.base64 !== this.props.base64) {
-          this.props.onChange(
-            value
-              .toJSON()
-              .document.split('"line"')
-              .join('"paragraph"'),
-          );
+          this.props.onChange(value.toJSON().document);
           /* this.props.onChange(
             JSON.parse(
               JSON.stringify(value.toJSON().document)
