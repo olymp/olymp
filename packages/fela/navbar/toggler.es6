@@ -74,6 +74,7 @@ const Container = createComponent(
     },
   }),
   'div',
+  [],
 );
 
 const Toggler = ({ className, children, toggled, toggleComponent, onToggle, ...props }) => (
@@ -92,4 +93,5 @@ Toggler.defaultProps = {
   onToggle: undefined,
   toggled: false,
 };
+Toggler.displayName = 'Toggler';
 export default Toggler;

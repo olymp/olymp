@@ -1,3 +1,4 @@
+import React from 'react';
 import { createComponent } from 'olymp-fela';
 
 const Text = createComponent(
@@ -5,8 +6,12 @@ const Text = createComponent(
     paddingX: theme.space3,
     paddingY: theme.space2,
   }),
-  'div',
-  p => Object.keys(p),
+  ({ attributes, className, children }) => (
+    <div {...attributes} className={className}>
+      {children}
+    </div>
+  ),
+  [],
 );
 
 export default {
