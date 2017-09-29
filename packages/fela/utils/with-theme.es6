@@ -8,7 +8,6 @@ export default getColorFromProps => (WrappedComponent) => {
     static contextTypes = {
       theme: PropTypes.object,
     };
-    originalTheme = null;
     constructor(props, context) {
       super(props);
       this.skip = get(props.editor, 'props.prefetch', false);
@@ -19,10 +18,7 @@ export default getColorFromProps => (WrappedComponent) => {
         return;
       }
       const { theme } = context;
-      if (!this.originalTheme) {
-        this.originalTheme = theme.get();
-      }
-      const newTheme = { ...this.originalTheme, ...(getColorFromProps(props) || {}) };
+      const newTheme = getColorFromProps(props) || {};
       if (!shallowEqual(newTheme, this.theme)) {
         theme.update(newTheme);
         this.theme = newTheme;
@@ -30,9 +26,7 @@ export default getColorFromProps => (WrappedComponent) => {
     };
     componentWillUnmount() {
       const { theme } = this.context;
-      if (this.originalTheme) {
-        theme.update(this.originalTheme);
-      }
+      theme.update({});
     }
     componentWillReceiveProps(props) {
       this.setTheme(props);

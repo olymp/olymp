@@ -68,7 +68,7 @@ const MegaNav = createComponent(
       padding: 0,
     },
   }),
-  ({ className, pages, inverse }) =>
+  ({ className, pages, inverse, renderItemLink }) =>
     (<div className={className}>
       <Grid size={pages.length}>
         {pages.map(({ id, name, children, pathname, onClick }, i) =>
@@ -79,7 +79,7 @@ const MegaNav = createComponent(
               </Title>
               {children.map((child, cI) =>
                 (<Item key={child.id || cI}>
-                  <PaddingLink to={child.pathname} inverse={inverse}>
+                  <PaddingLink to={child.pathname} inverse={inverse} renderItemLink={renderItemLink}>
                     {child.name}
                   </PaddingLink>
                   {child.children &&
@@ -90,6 +90,7 @@ const MegaNav = createComponent(
                           to={c.pathname}
                           inverse={inverse}
                           key={c.id || ccI}
+                          renderItemLink={renderItemLink}
                         >
                           {c.name}
                         </PaddingLink>)
