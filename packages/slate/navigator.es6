@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { onlyUpdateForKeys } from 'recompose';
 import { createComponent } from 'olymp-fela';
 import { Icon, Dropdown, Menu, Tree } from 'antd';
+import { Block, Text } from 'slate';
 import { sortBy } from 'lodash';
 import Plain from 'slate-plain-serializer';
 import withBlockTypes from './decorators/with-block-types';
@@ -178,6 +179,71 @@ class Pages extends Component {
 
   onChange = change => this.props.onChange(change.state);
 
+  applyTemplate = (type) => {
+    const { value } = this.props;
+    if (type === 'image') {
+      this.onChange(
+        value
+          .change()
+          .selectAll()
+          .delete()
+          .insertNodeByKey(value.document.key, 0, {
+            type: 'image',
+            kind: 'block',
+            isVoid: true,
+          })
+          .insertNodeByKey(value.document.key, 1, {
+            type: 'containerText',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Text.create('Text')],
+          })
+          .focus(),
+      );
+    } else if (type === 'banner') {
+      this.onChange(
+        value
+          .change()
+          .selectAll()
+          .delete()
+          .insertNodeByKey(value.document.key, 0, {
+            type: 'banner',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+          })
+          .insertNodeByKey(value.document.key, 1, {
+            type: 'containerText',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Text')] })],
+          })
+          .focus(),
+      );
+    } else if (type === 'carousel') {
+      this.onChange(
+        value
+          .change()
+          .selectAll()
+          .delete()
+          .insertNodeByKey(value.document.key, 0, { type: 'carousel', kind: 'block', isVoid: true })
+          .insertNodeByKey(value.document.key, 1, {
+            type: 'banner',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+          })
+          .insertNodeByKey(value.document.key, 2, Block.create({ type: 'paragraph' }))
+          .insertNodeByKey(value.document.key, 3, {
+            type: 'containerText',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Text.create('Text')],
+          })
+          .focus(),
+      );
+    }
+  };
   action = (node, actionType) => {
     const { value } = this.props;
     if (!actionType) {
@@ -319,6 +385,37 @@ class Pages extends Component {
 
   render() {
     const { value, selected } = this.props;
+    console.log(value.document.text);
+    if (!value.document.text) {
+      return (
+        <Tree>
+          <Tree.TreeNode
+            key="image"
+            title={
+              <a key="link" href="javascript:;" onClick={() => this.applyTemplate('image')}>
+                Bild + Text
+              </a>
+            }
+          />
+          <Tree.TreeNode
+            key="banner"
+            title={
+              <a key="link" href="javascript:;" onClick={() => this.applyTemplate('banner')}>
+                Banner + Text
+              </a>
+            }
+          />
+          <Tree.TreeNode
+            key="carousel"
+            title={
+              <a key="link" href="javascript:;" onClick={() => this.applyTemplate('carousel')}>
+                Bilder-Karusell + Text
+              </a>
+            }
+          />
+        </Tree>
+      );
+    }
     return (
       <Tree
         selectedKeys={selected}

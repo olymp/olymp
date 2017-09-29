@@ -36,9 +36,9 @@ const PageRoute = enhance((props) => {
         >
           <Wrapped navigation={publicNavigation}>
             {isAuthenticated && (
-              <Actions>
+              <Actions position="left">
                 <Link
-                  className="ant-btn ant-btn-primary ant-btn-circle ant-btn-lg ant-btn-icon-only"
+                  className="ant-btn ant-btn-circle ant-btn-lg ant-btn-icon-only"
                   updateQuery={{ '@page': 'tree' }}
                 >
                   <Icon type="edit" />

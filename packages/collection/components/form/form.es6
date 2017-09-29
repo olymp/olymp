@@ -43,82 +43,92 @@ const Div = createComponent(
 const Buttons = createComponent(
   () => ({
     '> button': {
-      margin: 5
-    }
+      margin: 5,
+    },
   }),
   'div',
 );
 
-const FormComponent = withState('tab', 'setTab')(({
-  schema,
-  inline,
-  vertical,
-  children,
-  item,
-  className,
-  validateFields,
-  form,
-  collection,
-  setTab,
-  tab,
-  onChange,
-  value,
-  base64,
-  ...rest
-}) => {
-  if (schema.blocks.length) {
+const FormComponent = withState(
+  'tab',
+  'setTab',
+)(
+  ({
+    schema,
+    inline,
+    vertical,
+    children,
+    item,
+    className,
+    validateFields,
+    form,
+    collection,
+    setTab,
+    tab,
+    onChange,
+    value,
+    base64,
+    ...rest
+  }) => {
+    if (schema.blocks.length) {
+      return (
+        <SplitView>
+          <Sidebar isOpen padding={0}>
+            <Tabs
+              activeKey={tab || ''}
+              onTabClick={setTab}
+              size="small"
+              tabBarStyle={{ marginBottom: 0 }}
+            >
+              <TabPane tab="Formular" key="">
+                <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+                  {schema.images.map(field => (
+                    <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+                  ))}
+                  {schema.rest.map(field => (
+                    <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+                  ))}
+                </Form>
+              </TabPane>
+              <TabPane tab="Editor" key="tree">
+                <Navigator value={value} onChange={onChange} base64={base64} />
+              </TabPane>
+            </Tabs>
+            <Buttons>{children}</Buttons>
+          </Sidebar>
+          <Div>
+            {schema.blocks.map(field => (
+              <FormItem
+                {...rest}
+                form={form}
+                field={field}
+                item={item}
+                key={field.name}
+                value={value}
+                onChange={onChange}
+                wrap={false}
+              />
+            ))}
+          </Div>
+        </SplitView>
+      );
+    }
     return (
-      <SplitView>
-        <Sidebar isOpen padding={0}>
-          <Tabs
-            activeKey={tab || ''}
-            onTabClick={setTab}
-            size="small"
-            tabBarStyle={{ marginBottom: 0 }}
-          >
-            <TabPane tab="Formular" key="">
-              <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-                {schema.images.map(field => (
-                  <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-                ))}
-                {schema.rest.map(field => (
-                  <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-                ))}
-              </Form>
-            </TabPane>
-            <TabPane tab="Struktur" key="tree">
-              <Navigator value={value} onChange={onChange} base64={base64} />
-            </TabPane>
-          </Tabs>
-          <Buttons>
-            {children}
-          </Buttons>
-        </Sidebar>
-        <Div>
-          {schema.blocks.map(field => (
-            <FormItem {...rest} form={form} field={field} item={item} key={field.name} value={value} onChange={onChange} wrap={false} />
+      <Horizontal className={className}>
+        <Form layout={(vertical && 'vertical') || (inline && 'inline')} className="form-rest">
+          {schema.rest.map(field => (
+            <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
           ))}
-        </Div>
-      </SplitView>
+          <Buttons>{children}</Buttons>
+        </Form>
+        <Form className="form-images" layout={(vertical && 'vertical') || (inline && 'inline')}>
+          {schema.images.map(field => (
+            <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+          ))}
+        </Form>
+      </Horizontal>
     );
-  }
-  return (
-    <Horizontal className={className}>
-      <Form layout={(vertical && 'vertical') || (inline && 'inline')} className="form-rest">
-        {schema.rest.map(field => (
-          <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-        ))}
-      </Form>
-      <Form className="form-images" layout={(vertical && 'vertical') || (inline && 'inline')}>
-        {schema.images.map(field => (
-          <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-        ))}
-      </Form>
-      <Buttons>
-        {children}
-      </Buttons>
-    </Horizontal>
-  );
-});
+  },
+);
 FormComponent.displayName = 'FormComponent';
 export default FormComponent;

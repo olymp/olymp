@@ -2,15 +2,8 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Editor } from 'slate-react';
 import Plain from 'slate-plain-serializer';
-import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
-import { withBlockTypes } from './decorators';
-import { getId } from './utils/get-text';
-import './style.css';
 import TrailingBlock from 'slate-trailing-block';
 import InsertBlockOnEnter from 'slate-insert-block-on-enter';
-import ToolbarBlock from './toolbar-block';
-import ToolbarText from './toolbar-text';
-import ToolbarVoid from './toolbar-void';
 import {
   FaAlignCenter,
   FaCode,
@@ -23,6 +16,14 @@ import {
   FaItalic,
   FaUnderline,
 } from 'olymp-icons';
+import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
+import { withBlockTypes } from './decorators';
+import { getId } from './utils/get-text';
+import Paragrapher from './plugins/paragrapher';
+import './style.css';
+import ToolbarBlock from './toolbar-block';
+import ToolbarText from './toolbar-text';
+import ToolbarVoid from './toolbar-void';
 import I from './icon';
 
 const getIdByTag = (children) => {
@@ -194,6 +195,7 @@ class SlateEditor extends Component {
     withAutoMarkdown(options),
     TrailingBlock({ type: 'paragraph' }),
     InsertBlockOnEnter({ type: 'paragraph' }),
+    Paragrapher({ type: 'paragraph' }),
   ];
   state = { focus: false };
   static propTypes = {
@@ -214,8 +216,8 @@ class SlateEditor extends Component {
     if (e.shiftKey && data.key === 'enter') {
       return change.insertText('\n');
     } else if (data.key === 'backspace' && blockType) {
-      const prev = change.state.document.getPreviousBlock(blockType.key) || change.state.document;
-      return change.collapseToEndOf(prev).removeNodeByKey(blockType.key, { normalize: true });
+      // const prev = change.state.document.getPreviousBlock(blockType.key) || change.state.document;
+      // return change.collapseToEndOf(prev).removeNodeByKey(blockType.key, { normalize: true });
     } else if (e.metaKey || e.ctrlKey) {
       // cmd/ctrl + ???
       switch (data.key) {

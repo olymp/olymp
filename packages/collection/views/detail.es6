@@ -106,12 +106,12 @@ const enhance = compose(
 const CollectionDetail = enhance(({ id, item, schema, onSave, onClone, form, value, onChange, ...rest }) => (
   <ContentLoader isLoading={id && !item}>
     <DetailForm {...rest} id={id} form={form} item={item || {}} schema={schema} onCreate={onSave} value={value} onChange={onChange}>
-        <Button onClick={onSave} icon="save" type="primary">
+      <Button onClick={onSave} icon="save" type="primary">
           Speichern
-        </Button>
-        <Button onClick={onClone} icon="copy">
+      </Button>
+      <Button onClick={onClone} icon="copy">
           Klonen
-        </Button>
+      </Button>
     </DetailForm>
   </ContentLoader>
 ));

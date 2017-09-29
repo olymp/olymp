@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'olymp-fela';
 
 export default {
-  type: 'Pages.Template.ContainerBlock',
+  type: 'container',
   isVoid: false,
   kind: 'block',
   label: 'Container',
@@ -12,13 +12,4 @@ export default {
       {children}
     </Container>
   ),
-  actions: [
-    {
-      type: 'small',
-      icon: 'align-left',
-      label: 'Linksbündig',
-      toggle: ({ setData }) => setData({ alignment: 'left' }),
-      active: ({ alignment }) => alignment === 'left',
-    },
-  ],
 };

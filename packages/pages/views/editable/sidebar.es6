@@ -46,7 +46,7 @@ const PageTree = ({ form, item, items, navigation, tab, onTabClick, value, onCha
     <TabPane tab="Seite" key="form">
       <PageForm item={item} items={items} form={form} />
     </TabPane>
-    <TabPane tab="Struktur" key="tree">
+    <TabPane tab="Editor" key="tree">
       <Navigator value={value} onChange={onChange} base64={base64} />
     </TabPane>
   </Tabs>
