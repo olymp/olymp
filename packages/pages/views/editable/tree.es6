@@ -2,22 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
-import { Tree } from 'olymp-ui';
-import { Icon, Tooltip } from 'antd';
+import { Icon, Tooltip, Tree } from 'antd';
 import { lowerCase } from 'lodash';
 import { reorderPage, movePage } from '../../gql';
-
-const Title = createComponent(
-  ({ theme }) => ({
-    onHover: {
-      '> a': {
-        display: 'initial',
-      },
-    },
-  }),
-  p => <Tree.Title {...p} />,
-  p => Object.keys(p),
-);
 
 const Button = createComponent(
   ({ theme, showOnHover }) => ({
@@ -118,21 +105,21 @@ class Pages extends Component {
 
   getNodeIcon = (item) => {
     if (item.sorting && item.sorting[0] === '+') {
-      return <Badge type="arrow-up" tooltip="Austeigend sortiert" />;
+      return <Badge key="badge" type="arrow-up" tooltip="Austeigend sortiert" />;
     } else if (item.sorting && item.sorting[0] === '-') {
-      return <Badge type="arrow-down" tooltip="Absteigend sortiert" />;
+      return <Badge key="badge" type="arrow-down" tooltip="Absteigend sortiert" />;
     } else if (item.slug === '/') {
-      return <Badge type="home" tooltip="Startseite" />;
+      return <Badge key="badge" type="home" tooltip="Startseite" />;
     } else if (item.type === 'ALIAS') {
-      return <Badge type="fork" tooltip="Alias" />;
+      return <Badge key="badge" type="fork" tooltip="Alias" />;
     } else if (item.type === 'LINK') {
-      return <Badge type="link" tooltip="Link" />;
+      return <Badge key="badge" type="link" tooltip="Link" />;
     } else if (item.type === 'PLACEHOLDER') {
-      return <Badge type="file" tooltip="Platzhalter" />;
+      return <Badge key="badge" type="file" tooltip="Platzhalter" />;
     } else if (item.type === 'PAGE') {
-      return <Badge type="file-text" tooltip="Seite" />;
+      return <Badge key="badge" type="file-text" tooltip="Seite" />;
     } else if (item.type === 'MENU') {
-      return <Badge type="bars" tooltip="Menü" />;
+      return <Badge key="badge" type="bars" tooltip="Menü" />;
     }
     return null;
   };
@@ -170,26 +157,26 @@ class Pages extends Component {
       };
 
       return (
-        <Tree.Node
+        <Tree.TreeNode
           key={item.id || item.pathname}
           item={item}
           parent={parent}
-          title={
-            <Title disabled={item.state === 'DRAFT'}>
-              <Link to={isBinding ? bindingRoute : route}>{item.name || 'Kein Name'}</Link>
-
-              <Button
-                to={{ pathname: '/__new', query: { '@page': 'form', '@parent': item.id } }}
-                type="plus"
-                showOnHover
-              />
-              {isBinding && <Button to={route} type="api" />}
-              {this.getNodeIcon(item)}
-            </Title>
-          }
+          title={[
+            <Link key="link" to={isBinding ? bindingRoute : route}>
+              {item.name || 'Kein Name'}
+            </Link>,
+            <Button
+              key="button"
+              to={{ pathname: '/__new', query: { '@page': 'form', '@parent': item.id } }}
+              type="plus"
+              showOnHover
+            />,
+            isBinding && <Button key="button2" to={route} type="api" />,
+            this.getNodeIcon(item),
+          ]}
         >
           {children}
-        </Tree.Node>
+        </Tree.TreeNode>
       );
     });
 

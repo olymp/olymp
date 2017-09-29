@@ -4,7 +4,6 @@ import { Tabs, Collapse } from 'antd';
 import { createComponent } from 'olymp-fela';
 import Tree from './tree';
 import PageForm from './page';
-import Navigator from 'olymp-slate/navigator';
 
 const TabPane = createComponent(
   ({ theme }) => ({
@@ -28,7 +27,7 @@ const StyledCollapse = createComponent(
   p => Object.keys(p),
 );
 
-const PageTree = ({ form, item, items, navigation, tab, onTabClick, blocks }) => (
+const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
   <Tabs activeKey={tab} onTabClick={onTabClick} size="small" tabBarStyle={{ marginBottom: 0 }}>
     <TabPane tab="Seitenmanager" key="">
       <StyledCollapse accordion defaultActiveKey="1">
@@ -45,9 +44,6 @@ const PageTree = ({ form, item, items, navigation, tab, onTabClick, blocks }) =>
     </TabPane>
     <TabPane tab="Seite" key="form">
       <PageForm item={item} items={items} form={form} />
-    </TabPane>
-    <TabPane tab="Struktur" key="tree">
-      {form.getFieldDecorator('blocks', { initialValue: blocks })(<Navigator />)}
     </TabPane>
     {/* <TabPane tab="Collection" key="2">
           <Panel paddingX={16}>
