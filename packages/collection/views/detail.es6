@@ -1,6 +1,5 @@
 import React from 'react';
-import { withPropsOnChange, withProps, compose } from 'recompose';
-import { withJsonState } from 'olymp-slate';
+import { withPropsOnChange, compose } from 'recompose';
 import { Button } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { withItem } from '../decorators';
@@ -88,29 +87,16 @@ const enhance = compose(
       schema,
     };
   }),
-  withProps(({ form, schema, item }) => {
-    if (schema.blocks.length && item) {
-      form.getFieldDecorator('blocks', { initialValue: item.blocks });
-      return {
-        onChange: (blocks) => {
-          form.setFieldsValue({ blocks });
-        },
-        value: form.getFieldValue('blocks'),
-      };
-    }
-    return {};
-  }),
-  withJsonState(),
 );
 
-const CollectionDetail = enhance(({ id, item, schema, onSave, onClone, form, value, onChange, ...rest }) => (
+const CollectionDetail = enhance(({ id, item, schema, onSave, onClone, form, ...rest }) => (
   <ContentLoader isLoading={id && !item}>
-    <DetailForm {...rest} id={id} form={form} item={item || {}} schema={schema} onCreate={onSave} value={value} onChange={onChange}>
+    <DetailForm {...rest} id={id} form={form} item={item || {}} schema={schema} onCreate={onSave}>
       <Button onClick={onSave} icon="save" type="primary">
-          Speichern
+        Speichern
       </Button>
       <Button onClick={onClone} icon="copy">
-          Klonen
+        Klonen
       </Button>
     </DetailForm>
   </ContentLoader>

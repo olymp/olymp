@@ -11,7 +11,6 @@ import {
   GeocodeEditor,
 } from 'olymp-ui';
 import { StatelessSlateMate, withDebounceState } from 'olymp-slate';
-import { Container } from 'olymp-fela';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
@@ -23,14 +22,12 @@ const states = {
 };
 
 const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChange }) => (
-  <Container size="small">
-    <StatelessSlateMate
-      onChange={onChange}
-      value={value}
-      placeholder={label || 'Hier Text eingeben!'}
-      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-    />
-  </Container>
+  <StatelessSlateMate
+    onChange={onChange}
+    value={value}
+    placeholder={label || 'Hier Text eingeben!'}
+    style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+  />
 ));
 
 export default ({
