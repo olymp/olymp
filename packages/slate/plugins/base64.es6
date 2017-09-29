@@ -1,5 +1,19 @@
 import { State } from 'slate';
 
+function atob(str) {
+  return new Buffer(str, 'base64').toString('binary');
+}
+function btoa(str) {
+  let buffer;
+
+  if (str instanceof Buffer) {
+    buffer = str;
+  } else {
+    buffer = new Buffer(str.toString(), 'binary');
+  }
+
+  return buffer.toString('base64');
+}
 /**
  * Encode a JSON `object` as base-64 `string`.
  *
