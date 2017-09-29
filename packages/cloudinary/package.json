@@ -12,6 +12,6 @@
     "olymp-collection": "^17.4.13",
     "react-image-crop": "^2.0.5",
     "react-images": "^0.5.4",
-    "recompose": "^0.24.0"
+    "recompose": "^0.25.1"
   }
 }

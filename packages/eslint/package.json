@@ -8,7 +8,7 @@
     "up": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "eslint": "^4.2.0",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-config-prettier": "^2.3.0",

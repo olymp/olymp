@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "immutable": "^3.8.1",
-    "slate": "0.25.2",
-    "slate-base64-serializer": "^0.1.9",
-    "slate-hyperscript": "^0.1.9",
+    "slate": "0.25.3",
+    "slate-base64-serializer": "^0.1.10",
+    "slate-hyperscript": "^0.1.10",
     "slate-insert-block-on-enter": "^0.0.5",
-    "slate-plain-serializer": "^0.1.10",
-    "slate-react": "^0.1.10",
+    "slate-plain-serializer": "^0.1.11",
+    "slate-react": "^0.2.1",
     "slate-trailing-block": "^0.2.4"
   }
 }

@@ -30,8 +30,8 @@
   "devDependencies": {
     "olymp-webpack-babel": "^17.3.3",
     "raw-loader": "^0.5.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-styleguidist": "^6.0.25",
     "webpack": "^3.5.6"
   }

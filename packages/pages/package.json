@@ -11,6 +11,6 @@
     "olymp-fela": "^17.4.13",
     "olymp-router": "^17.4.13",
     "olymp-utils": "^17.3.0",
-    "recompose": "^0.24.0"
+    "recompose": "^0.25.1"
   }
 }

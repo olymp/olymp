@@ -29,6 +29,7 @@ const {
 const createResponseCache = () => {
   let cache = {};
   const getKey = (req) => {
+    console.log(req.originalUrl);
     if (req.isAmp) {
       return `${req.originalUrl}|amp`;
     }

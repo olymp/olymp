@@ -7,6 +7,7 @@
     "up": "yarn upgrade-interactive",
     "outdated": "lerna exec --concurrency 1 --ignore -- npm outdated",
     "lerna-install": "lerna exec --concurrency 1 -- yarn",
+    "lerna-up": "lerna exec --concurrency 1 -- yarn upgrade-interactive",
     "elev": "lerna exec npm owner add machiaveli88",
     "init": "lerna init --independent",
     "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
@@ -17,13 +18,11 @@
     "clean": "del 'packages/*/yarn.lock'",
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish --registry=https://registry.npmjs.org/",
-    "publish-force":
-      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "publish-force": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "test": "jest && codecov",
     "eslint": "eslint packages/** --quiet",
     "eslint-all": "eslint packages/**",
-    "prettier":
-      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\""
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\""
   },
   "engines": {},
   "bin": "./packages/app/bin/olymp-app.js",
@@ -31,7 +30,13 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": ["react", "universal", "javascript", "express", "webpack"],
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {

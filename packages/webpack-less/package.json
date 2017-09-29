@@ -17,6 +17,6 @@
     "style-loader": "^0.18.2"
   },
   "devDependencies": {
-    "webpack": "3.5.1"
+    "webpack": "3.6.0"
   }
 }
