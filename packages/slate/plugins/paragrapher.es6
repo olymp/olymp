@@ -31,14 +31,15 @@ function Paragrapher(opts) {
             return invalidNodes.size === 0 ? null : invalidNodes;
           },
           normalize(change, node, invalidNodes) {
-            invalidNodes.forEach(x =>
-              change.wrapBlockByKey(
+            invalidNodes.forEach((x) => {
+              console.log(x);
+              return change.wrapBlockByKey(
                 x.key,
                 Slate.Block.create({
                   type: opts.type,
                 }),
-              ),
-            );
+              );
+            });
 
             return change;
           },
