@@ -15,52 +15,53 @@ const filterPublic = pages =>
   }));
 
 const enhance = compose(
-  withPropsOnChange(['navigation'], ({ navigation }) => ({
-    publicNavigation: filterPublic(navigation),
-  })),
   connect(({ auth, location }) => ({
     isAuthenticated: !!auth.user,
     pathname: location.pathname,
   })),
+  withPropsOnChange(['navigation'], ({ navigation }) => ({
+    publicNavigation: filterPublic(navigation),
+  })),
+  withPropsOnChange(['flatNavigation', 'pathname'], ({ flatNavigation, pathname }) => {
+    let item;
+    for (let x = 0; x < flatNavigation.length; x++) {
+      const page = flatNavigation[x];
+      if (decodeURI(unescape(page.pathname)) === pathname || `/page_id/${page.id}` === pathname) {
+        item = page;
+        break;
+      }
+    }
+    return {
+      item,
+    };
+  }),
 );
 
 const PageRoute = enhance((props) => {
-  const { Wrapped, flatNavigation, publicNavigation, pathname, isAuthenticated } = props;
+  const { Wrapped, flatNavigation, publicNavigation, pathname, isAuthenticated, item } = props;
   return (
-    <SwitchPathname>
-      {flatNavigation.map(item => (
-        <MatchPaths
-          exact
-          match={[decodeURI(unescape(item.pathname)), `/page_id/${item.id}`]}
-          key={item.id}
-        >
-          <Wrapped navigation={publicNavigation}>
-            {isAuthenticated && (
-              <Actions position="left">
-                <Link
-                  className="ant-btn ant-btn-circle ant-btn-lg ant-btn-icon-only"
-                  updateQuery={{ '@page': 'tree' }}
-                >
-                  <Icon type="edit" />
-                </Link>
-              </Actions>
-            )}
-            {renderHelmet(item, pathname)}
-            <Page.WithData
-              id={item.pageId || item.aliasId || item.id}
-              bindingId={item.bindingId}
-              binding={item.binding}
-            />
-          </Wrapped>
-        </MatchPaths>
-      ))}
-      <Match>
-        <Wrapped navigation={publicNavigation}>
-          {renderHelmet({}, pathname)}
-          <Error404 />
-        </Wrapped>
-      </Match>
-    </SwitchPathname>
+    <Wrapped navigation={publicNavigation}>
+      {isAuthenticated && (
+        <Actions position="left">
+          <Link
+            className="ant-btn ant-btn-circle ant-btn-lg ant-btn-icon-only"
+            updateQuery={{ '@page': 'tree' }}
+          >
+            <Icon type="edit" />
+          </Link>
+        </Actions>
+      )}
+      {renderHelmet(item || {}, pathname)}
+      {item && (
+        <Page.WithData
+          key={item.pageId || item.aliasId || item.id}
+          id={item.pageId || item.aliasId || item.id}
+          bindingId={item.bindingId}
+          binding={item.binding}
+        />
+      )}
+      {!item && <Error404 />}
+    </Wrapped>
   );
 });
 PageRoute.displayName = 'PageRoute';

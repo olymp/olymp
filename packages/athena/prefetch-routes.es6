@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose } from 'recompose';
+import { compose, withPropsOnChange } from 'recompose';
 import Portal from 'olymp-fela/portal';
 import { createComponent } from 'react-fela';
 import { Switch, Match, matchPaths } from 'olymp-router';
@@ -20,36 +20,40 @@ const Invisible = createComponent(
 
 const enhance = compose(
   connect(({ cms }) => ({
-    prefetch: cms.prefetch,
+    pathname: cms.prefetch && cms.prefetch.pathname,
   })),
+  withPropsOnChange(['flatNavigation', 'pathname'], ({ flatNavigation, pathname }) => {
+    let item;
+    if (pathname) {
+      for (let x = 0; x < flatNavigation.length; x++) {
+        const page = flatNavigation[x];
+        if (decodeURI(unescape(page.pathname)) === pathname || `/page_id/${page.id}` === pathname) {
+          item = page;
+          break;
+        }
+      }
+    }
+    return {
+      item,
+    };
+  }),
 );
 
 const PagePrefetchRoute = enhance((props) => {
-  const { flatNavigation, prefetch } = props;
-  if (!prefetch) {
+  const { item } = props;
+  if (!item) {
     return null;
   }
   return (
     <Portal>
       <Invisible>
-        <Switch>
-          {flatNavigation.map(item => (
-            <Match
-              match={matchPaths(prefetch.pathname, true, [
-                decodeURI(unescape(item.pathname)),
-                `/page_id/${item.id}`,
-              ])}
-              key={item.id}
-            >
-              <Page.WithData
-                id={item.pageId || item.aliasId || item.id}
-                bindingId={item.bindingId}
-                binding={item.binding}
-                prefetch
-              />
-            </Match>
-          ))}
-        </Switch>
+        <Page.WithData
+          key={item.pageId || item.aliasId || item.id}
+          id={item.pageId || item.aliasId || item.id}
+          bindingId={item.bindingId}
+          binding={item.binding}
+          prefetch
+        />
       </Invisible>
     </Portal>
   );

@@ -84,7 +84,7 @@ export default (server, options) => {
     req.authEngine = authEngine;
     req.app = cachedApp;
     req.algolia = algolia;
-    req.responseCache = responseCache;
+    // req.responseCache = responseCache;
     if (
       req.body &&
       req.body.query &&

@@ -65,7 +65,7 @@ const stateWrapper = options => WrappedComponent =>
 
 export default options =>
   compose(
-    withPropsOnChange(['value'], ({ value }) => {
+    withPropsOnChange(['value', 'id'], ({ value }) => {
       console.log('NEW VALUE');
       const state = value
         ? State.fromJSON({ document: value, kind: 'state' })
