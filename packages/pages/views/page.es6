@@ -7,8 +7,8 @@ import { queryPage } from '../gql';
 
 const Page = withJsonState()(
   withBlockTypes(props => (
-    <ContentLoader isLoading={props.isLoading} xy={console.log(props)}>
-      <StatelessSlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
+    <ContentLoader isLoading={props.isLoading}>
+      <StatelessSlateMate {...props} showUndo key={props.id + (props.bindingId || '')} readOnly>
         {props.children}
       </StatelessSlateMate>
     </ContentLoader>

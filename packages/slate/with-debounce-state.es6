@@ -29,6 +29,9 @@ const stateWrapper = options => WrappedComponent =>
       trailing: true,
     });
     onChange = (value) => {
+      if (!this.props.onChange) {
+        return;
+      }
       this.setState({ value }, () => {
         if (options.debounce) {
           this.debouncedPropagateChange(value);
