@@ -10,6 +10,7 @@
     "styleguide:build": "styleguidist build"
   },
   "dependencies": {
+    "aphrodite": "^1.2.4",
     "fela": "6.0.0",
     "fela-monolithic": "5.0.8",
     "fela-plugin-custom-property": "5.0.8",
@@ -24,6 +25,7 @@
     "olymp-utils": "^17.5.0",
     "react-fela": "6.0.0",
     "react-frame-component": "^1.1.1",
+    "react-scrolllock": "^1.0.9",
     "shortid": "^2.2.8",
     "tinycolor2": "^1.4.1"
   },

@@ -6,7 +6,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Visualizer = require('webpack-visualizer-plugin');
+// const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
@@ -291,11 +291,11 @@ module.exports = ({
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
-      config.plugins.push(
+      /*config.plugins.push(
         new Visualizer({
           filename: './_visualizer.html',
         }),
-      );
+      ); */
       if (isServerless) {
         config.plugins.push(
           new HtmlWebpackPlugin({

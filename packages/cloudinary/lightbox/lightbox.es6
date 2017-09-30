@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import LightBox from 'react-images';
+import LightBox from 'olymp-fela/lightbox';
 import { createUpdateQuery } from 'olymp-router';
 
 @connect(
