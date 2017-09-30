@@ -11,12 +11,9 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
 
   if (Query) {
     // Add one query
-    addFields(
-      ast,
-      Query,
-      `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`,
-      { replace: false }
-    );
+    addFields(ast, Query, `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`, {
+      replace: false,
+    });
     if (!get(resolvers, `RootQuery.${table}`)) {
       set(resolvers, `RootQuery.${table}`, (source, { id, query }, { monk, app }) => {
         const x = id ? { id } : adaptQuery(query);
@@ -31,19 +28,21 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
       ast,
       Query,
       `${table}List(query: ${name}Query, sort: ${name}Sort, limit: Int, skip: Int): [${name}]`,
-      { replace: false }
+      { replace: false },
     );
     if (!get(resolvers, `RootQuery.${table}List`)) {
       set(
         resolvers,
         `RootQuery.${table}List`,
-        (source, { query, sort }, { monk, app }) =>
+        (source, { query, sort, limit, skip }, { monk, app }) =>
           // monk.collection(table).find(adaptQuery(query))
           monk
             .collection('item')
             .find(
-            isGeneric ? { ...adaptQuery(query), _appId: app.id } : { ...adaptQuery(query), _type: table, _appId: app.id },
-            { rawCursor: true }
+              isGeneric
+                ? { ...adaptQuery(query), _appId: app.id }
+                : { ...adaptQuery(query), _type: table, _appId: app.id },
+              { rawCursor: true },
             )
             .then((cursor) => {
               const obj = sort || { name: 'ASC' };
@@ -51,15 +50,17 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
                 store[key] = obj[key] === 'DESC' ? -1 : 1;
                 return store;
               }, {});
-              return cursor.sort(sorting).toArray();
-            })
+              return cursor
+                .sort(sorting)
+                .limit(limit || 100)
+                .skip(skip || 0)
+                .toArray();
+            }),
       );
     }
   }
 
-  const Mutation = ast.definitions.find(
-    x => get(x, 'name.value') === 'RootMutation'
-  );
+  const Mutation = ast.definitions.find(x => get(x, 'name.value') === 'RootMutation');
 
   if (Mutation) {
     // Add mutation
@@ -67,7 +68,7 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
       ast,
       Mutation,
       `${table}(id: String, type: MUTATION_TYPE, input: ${name}Input): ${name}`,
-      { replace: false }
+      { replace: false },
     );
     if (!get(resolvers, `RootMutation.${table}`)) {
       set(
@@ -81,7 +82,7 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
           } else {
             monk.collection(table).update({ $set: input });
           }
-        }*/
+        } */
         (source, { id, input, type }, { monk, app }) => {
           let promise;
           if (!id) {
@@ -98,12 +99,10 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
               .collection('item')
               .update({ _type: table, id }, { ...input, _type: table, _appId: app.id, id });
           } else {
-            promise = monk
-              .collection('item')
-              .update({ _type: table, id }, { $set: { ...input } });
+            promise = monk.collection('item').update({ _type: table, id }, { $set: { ...input } });
           }
           return promise.then(() => monk.collection('item').findOne({ id, _type: table }));
-        }
+        },
       );
     }
   }
