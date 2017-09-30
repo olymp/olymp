@@ -6,7 +6,7 @@
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {
-    "up": "yarn upgrade-interactive --latest"
+    "up": "npm-check -u"
   },
   "dependencies": {
     "deep-diff": "^0.3.8",

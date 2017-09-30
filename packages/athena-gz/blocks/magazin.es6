@@ -1,6 +1,7 @@
 import React from 'react';
 import { createComponent, Container, Grid, border, SchemaLoader } from 'olymp-fela';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { PrefetchLink } from 'olymp-athena';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';

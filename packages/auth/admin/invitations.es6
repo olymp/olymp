@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp-utils';
-import { withAuth } from '../with-auth';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Button, Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
 import { Modal, Panel, onEnterFocus, layout, onError, onSuccess } from 'olymp-ui';
+import { withAuth } from '../with-auth';
 
 @graphql(
   gql`

@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
 import { onEnterFocus, onError, onSuccess } from '../views/base';
 
 @graphql(
   gql`
-  query totp {
-    totp { qr, token, enabled }
-  }
-`,
+    query totp {
+      totp {
+        qr
+        token
+        enabled
+      }
+    }
+  `,
   {
     options: ({ isOpen }) => ({
       fetchPolicy: 'network-only',
       skip: !isOpen,
     }),
-  }
+  },
 )
 export default class AuthTotp extends Component {
   static defaultProps = { data: {} };
@@ -65,15 +70,15 @@ export default class AuthTotp extends Component {
           >
             Google Authenticator
           </a>{' '}
-          App. Geben Sie anschließend einen generierten Code unten ein um
-          die Nutzung der 2-Faktor Authentifizierung zu bestätigen.
+          App. Geben Sie anschließend einen generierten Code unten ein um die Nutzung der 2-Faktor
+          Authentifizierung zu bestätigen.
         </p>
         <Form.Item key="token">
           {getFieldDecorator(
             'token',
             {
               // rules: [{ required: true, message: 'Bitte geben Sie ein Token an!' }],
-            }
+            },
           )(
             <Input
               type="text"
@@ -81,7 +86,7 @@ export default class AuthTotp extends Component {
               onKeyPress={onEnterFocus(() => this.ok)}
               size="large"
               addonAfter={<FaStar size={10} />}
-            />
+            />,
           )}
         </Form.Item>
       </div>

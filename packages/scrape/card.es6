@@ -1,6 +1,7 @@
 import React from 'react';
-import { graphql, gql } from 'olymp-utils';
-import { createComponent, SchemaLoader } from 'olymp-fela';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 
 const styles = props => ({

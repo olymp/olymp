@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import Container from './container';
 import List from './list';
 

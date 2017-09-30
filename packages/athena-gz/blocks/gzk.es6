@@ -1,7 +1,8 @@
 import React from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { createComponent, Grid, Container } from 'olymp-fela';
-import { camelCase, groupBy } from 'lodash';
+import { camelCase } from 'lodash';
 import { withPropsOnChange, withState, compose } from 'recompose';
 import tinycolor from 'tinycolor2';
 
@@ -397,7 +398,8 @@ const enhance = compose(
   withState('activeItem', 'setActiveItem'),
 );
 
-const component = enhance(({ attributes, className, items, activeItem, setActiveItem }) => { // groupedItems, // filteredItems,
+const component = enhance(({ attributes, className, items, activeItem, setActiveItem }) => {
+  // groupedItems, // filteredItems,
   const etage = ((items.find(item => camelCase(item.name) === activeItem) || {}).etage ||
     'Erdgeschoss')
     .replace('Nebengebäude ', '');

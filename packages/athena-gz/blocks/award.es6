@@ -1,5 +1,6 @@
 import React from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { createComponent, Container, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 
@@ -12,7 +13,7 @@ const Img = createComponent(
     transition: 'opacity .4s ease,filter .4s ease',
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Link = createComponent(
@@ -28,7 +29,7 @@ const Link = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Span = createComponent(
@@ -36,7 +37,7 @@ const Span = createComponent(
     color: theme.color,
   }),
   'span',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Content = createComponent(
@@ -53,7 +54,7 @@ const Content = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Inner = createComponent(
@@ -70,7 +71,7 @@ const Inner = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Item = createComponent(
@@ -80,29 +81,20 @@ const Item = createComponent(
     textAlign: 'center',
     position: 'relative',
   }),
-  ({ className, website, name, tags, image }) =>
+  ({ className, website, name, tags, image }) => (
     <Grid.Item className={className} mini={5} medium={2} gridSize={10}>
       <Link href={website} rel="noopener noreferrer">
-        <Img
-          value={image}
-          maxResolution={40000}
-          width="70%"
-          ratio={1}
-          mode="padded"
-        />
+        <Img value={image} maxResolution={40000} width="70%" ratio={1} mode="padded" />
         <Content>
           <Inner>
-            <h3>
-              {name}
-            </h3>
-            <Span>
-              {tags.join(', ')}
-            </Span>
+            <h3>{name}</h3>
+            <Span>{tags.join(', ')}</Span>
           </Inner>
         </Content>
       </Link>
-    </Grid.Item>,
-  p => Object.keys(p)
+    </Grid.Item>
+  ),
+  p => Object.keys(p),
 );
 
 const component = graphql(
@@ -132,7 +124,7 @@ const component = graphql(
       data,
       items: data.items || [],
     }),
-  }
+  },
 )(
   createComponent(
     ({ theme }) => ({
@@ -140,22 +132,22 @@ const component = graphql(
       marginY: theme.space3,
       paddingY: theme.space2,
     }),
-    ({ className, attributes, items }) =>
+    ({ className, attributes, items }) => (
       <div className={className} {...attributes}>
         <Container>
-          <Grid size={10}>
-            {items.map(item => <Item {...item} key={item.id} />)}
-          </Grid>
+          <Grid size={10}>{items.map(item => <Item {...item} key={item.id} />)}</Grid>
         </Container>
-      </div>,
-    p => Object.keys(p)
-  )
+      </div>
+    ),
+    p => Object.keys(p),
+  ),
 );
 
 export default {
   type: 'GZK.Panel.Network',
   label: 'Netzwerk',
   category: 'Panel',
-  isVoid: true, kind: "block",
+  isVoid: true,
+  kind: 'block',
   component,
 };

@@ -1,5 +1,7 @@
 import React from 'react';
-import { graphql, gql, renderHelmet } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { renderHelmet } from 'olymp-utils';
 import { PrefetchLink as Link } from 'olymp-athena';
 import { createComponent, withTheme, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';

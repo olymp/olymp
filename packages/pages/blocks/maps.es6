@@ -2,7 +2,8 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 import { Icon } from 'antd';
 import { Maps } from 'olymp-google';
-import { gql, withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
+import { withApollo } from 'react-apollo';
 
 const MapContainer = createComponent(
   ({ theme }) => ({

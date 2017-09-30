@@ -1,4 +1,5 @@
-import { gql, graphql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { onError, onSuccess } from 'olymp-ui';
 
 const ok = (item, mutate) => {
@@ -12,9 +13,7 @@ const ok = (item, mutate) => {
       ? {
         fileList: (prev, { mutationResult }) => ({
           ...prev,
-          items: prev.items.filter(
-              item => item.id !== mutationResult.data.item.id
-            ),
+          items: prev.items.filter(item => item.id !== mutationResult.data.item.id),
         }),
       }
       : undefined,
@@ -31,29 +30,55 @@ const ok = (item, mutate) => {
 
 export default graphql(
   gql`
-  mutation file($id: String, $input: FileInput, $operationType: MUTATION_TYPE) {
-    item: file(id: $id, input: $input, type: $operationType) {
-      id format version resourceType type createdAt height width bytes tags url caption source removed pages colors
+    mutation file($id: String, $input: FileInput, $operationType: MUTATION_TYPE) {
+      item: file(id: $id, input: $input, type: $operationType) {
+        id
+        format
+        version
+        resourceType
+        type
+        createdAt
+        height
+        width
+        bytes
+        tags
+        url
+        caption
+        source
+        removed
+        pages
+        colors
+      }
     }
-  }
-`,
+  `,
   {
     props: ({ ownProps, mutate }) => ({
       ...ownProps,
       save: item => ok(item, mutate),
       mutate,
     }),
-  }
+  },
 );
 
 export const cloudinaryRequestDone = graphql(
   gql`
-  mutation cloudinaryRequestDone($id: String, $token: String) {
-    cloudinaryRequestDone(id: $id, token: $token) {
-      id, url, tags, colors, width, height, createdAt, caption, source, format, bytes, removed
+    mutation cloudinaryRequestDone($id: String, $token: String) {
+      cloudinaryRequestDone(id: $id, token: $token) {
+        id
+        url
+        tags
+        colors
+        width
+        height
+        createdAt
+        caption
+        source
+        format
+        bytes
+        removed
+      }
     }
-  }
-`,
+  `,
   {
     props({ ownProps, mutate }) {
       return {
@@ -73,5 +98,5 @@ export const cloudinaryRequestDone = graphql(
         },
       };
     },
-  }
+  },
 );

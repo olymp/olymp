@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Link } from 'olymp-router';
 import { Countdown } from 'olymp-ui';
 import { Form } from 'antd';

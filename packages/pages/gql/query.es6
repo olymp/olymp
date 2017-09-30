@@ -1,4 +1,5 @@
-import { gql, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 const queryOne = gql`
   query page($id: String) {

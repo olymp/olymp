@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { graphql, gql, sortBy } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { sortBy } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
 import { PrefetchLink as Link } from 'olymp-athena';
 import { withEdit, withCreate } from 'olymp-collection';

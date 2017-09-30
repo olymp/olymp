@@ -5,7 +5,7 @@
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
   "license": "MIT",
   "scripts": {
-    "up": "yarn upgrade-interactive --latest",
+    "up": "npm-check -u",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build"
   },

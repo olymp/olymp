@@ -1,28 +1,31 @@
 {
+  "private": true,
   "version": "15.2.8",
   "name": "olymp",
   "description": "",
   "main": "./packages/core",
   "scripts": {
-    "up": "yarn upgrade-interactive",
-    "outdated": "lerna exec --concurrency 1 --ignore -- npm outdated",
-    "lerna-install": "lerna exec --concurrency 1 -- yarn",
-    "lerna-up": "lerna exec --concurrency 1 -- yarn upgrade-interactive",
-    "elev": "lerna exec npm owner add machiaveli88",
+    "up": "npm-check -u",
     "init": "lerna init --independent",
-    "rename-ts": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
-    "del-ts": "del 'packages/**/*.js' '!packages/**/node_modules/**'",
-    "tsc": "gulp tsc",
     "watch": "gulp watch",
-    "lib": "gulp lib-build",
-    "clean": "del 'packages/*/yarn.lock'",
-    "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish --registry=https://registry.npmjs.org/",
-    "publish-force": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "test": "jest && codecov",
-    "eslint": "eslint packages/** --quiet",
-    "eslint-all": "eslint packages/**",
-    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\""
+    "es": "eslint packages/** --quiet",
+    "esa": "eslint packages/**",
+    "prettier":
+      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
+
+    "lp": "lerna publish --registry=https://registry.npmjs.org/",
+    "lpf":
+      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lb": "lerna bootstrap",
+    "li": "lerna exec --concurrency 1 -- npm i",
+    "lu": "lerna exec --concurrency 1 -- npm-check -u",
+    "lc": "del 'packages/*/package-lock.json",
+
+    "special-elev": "lerna exec npm owner add machiaveli88",
+    "special-rename":
+      "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
+    "special-del": "del 'packages/**/*.js' '!packages/**/node_modules/**'"
   },
   "engines": {},
   "bin": "./packages/app/bin/olymp-app.js",
@@ -30,13 +33,7 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
@@ -53,15 +50,15 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "codecov": "^2.2.0",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
+    "gulp-babel": "^7.0.0",
     "gulp-changed": "^3.1.0",
     "gulp-debug": "^3.1.0",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-watch": "^4.3.11",
-    "jest": "^20.0.4",
+    "jest": "^21.2.1",
     "lerna": "^2.0.0"
   },
   "jest": {
@@ -74,6 +71,6 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.8",
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.7",
-    "eslint-config-olymp": "^16.0.18"
+    "eslint-config-olymp": "^17.5.0"
   }
 }

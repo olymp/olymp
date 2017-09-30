@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Icon, AutoComplete, Input } from 'antd';
 import { throttleInput } from 'olymp-utils';
-import { gql, withApollo } from 'react-apollo';
+import { withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
 
 @withApollo
 export default class GeosuggestEdit extends Component {

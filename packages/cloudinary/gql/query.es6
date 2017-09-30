@@ -1,4 +1,5 @@
-import { gql, graphql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 export default graphql(
   gql`

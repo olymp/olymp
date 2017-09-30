@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ScrollLock from 'react-scrolllock';
-
+import { css, StyleSheet } from 'aphrodite/no-important';
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';

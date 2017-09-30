@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Form, Input } from 'antd';
@@ -75,9 +76,9 @@ export default class AuthRegister extends Component {
       >
         {!valid &&
         token && (
-        <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: 'center' }}>
             Das Token ist ungültig oder abgelaufen. Bitte{' '}
-              <Link
+          <Link
                 query={({ confirm, ...query }) => ({ ...query, feedback: null })}
               >
               kontaktieren Sie den Support
@@ -86,9 +87,9 @@ export default class AuthRegister extends Component {
           )}
         {!valid &&
         !token && (
-        <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: 'center' }}>
             Sie benötigen eine gültige Einladung um sich zu registrieren.{' '}
-              <Link
+          <Link
                 query={({ confirm, ...query }) => ({ ...query, feedback: null })}
               >
               Kontaktieren Sie den Support

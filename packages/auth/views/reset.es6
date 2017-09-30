@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Link } from 'olymp-router';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';

@@ -1,5 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Grid, Modal } from 'olymp-fela';
 import { Button, Select } from 'antd';
 import {
@@ -21,22 +22,14 @@ const charts = {
   table: <TableChart />,
 };
 
-const fields = [
-  'id',
-  ...Object.keys(metricsObj).map(x => metricsObj[x].output),
-];
-const rowFields = [
-  ...fields,
-  ...Object.keys(dimensionsObj).map(x => dimensionsObj[x].output),
-];
+const fields = ['id', ...Object.keys(metricsObj).map(x => metricsObj[x].output)];
+const rowFields = [...fields, ...Object.keys(dimensionsObj).map(x => dimensionsObj[x].output)];
 const getItemFields = (data, metrics, dimensions) =>
-  ((data.item || {}).rows || []).map(item => {
+  ((data.item || {}).rows || []).map((item) => {
     const obj = {};
 
     metrics.forEach(metric => (obj[metric] = item[metricsObj[metric].output]));
-    dimensions.forEach(
-      dimension => (obj[dimension] = item[dimensionsObj[dimension].output])
-    );
+    dimensions.forEach(dimension => (obj[dimension] = item[dimensionsObj[dimension].output]));
 
     return obj;
   });
@@ -67,15 +60,7 @@ const getItemFields = (data, metrics, dimensions) =>
     }
   `,
   {
-    options: ({
-      metrics,
-      dimensions,
-      selected,
-      onSelect,
-      start,
-      end,
-      sorts,
-    }) => {
+    options: ({ metrics, dimensions, selected, onSelect, start, end, sorts }) => {
       const variables = {
         metrics,
         start,
@@ -113,7 +98,7 @@ const getItemFields = (data, metrics, dimensions) =>
         items,
       };
     },
-  }
+  },
 )
 export default class Chart extends Component {
   render() {
@@ -135,18 +120,14 @@ export default class Chart extends Component {
       range,
       fullSize,
     } = this.props;
-    const loading =
-      this.props.loading ||
-      !metrics.length ||
-      !dimensions.length ||
-      !range.length;
+    const loading = this.props.loading || !metrics.length || !dimensions.length || !range.length;
 
     let filteredItems = items;
     if (filters.length) {
       filteredItems = [];
 
-      filters.forEach(filter => {
-        items.forEach(item => {
+      filters.forEach((filter) => {
+        items.forEach((item) => {
           if (item[dimensions[0]] === filter) {
             filteredItems.push(item);
           }
@@ -165,11 +146,7 @@ export default class Chart extends Component {
     const header = (
       <Toolbar size={12}>
         <Grid.Item medium={8}>
-          <MetricSelect
-            value={dimensions}
-            onChange={changeDimensions}
-            isDimension
-          />
+          <MetricSelect value={dimensions} onChange={changeDimensions} isDimension />
         </Grid.Item>
         <Grid.Item medium={3}>
           <Select placeholder="Chart" value={chart} onChange={changeChart}>
@@ -181,28 +158,16 @@ export default class Chart extends Component {
           </Select>
         </Grid.Item>
         <Grid.Item medium={1}>
-          <Button
-            icon={open ? 'shrink' : 'arrows-alt'}
-            onClick={setOpen}
-            disabled={loading}
-          />
+          <Button icon={open ? 'shrink' : 'arrows-alt'} onClick={setOpen} disabled={loading} />
         </Grid.Item>
       </Toolbar>
     );
     const footer = (
       <Toolbar size={6} bottom>
         <Grid.Item medium={3}>
-          <Select
-            mode="multiple"
-            placeholder="Sortierung"
-            onChange={changeSorts}
-            value={sorts}
-          >
-            {[...metrics, ...dimensions].map(x =>
-              <Select.OptGroup
-                label={{ ...metricsObj, ...dimensionsObj }[x].label}
-                key={x}
-              >
+          <Select mode="multiple" placeholder="Sortierung" onChange={changeSorts} value={sorts}>
+            {[...metrics, ...dimensions].map(x => (
+              <Select.OptGroup label={{ ...metricsObj, ...dimensionsObj }[x].label} key={x}>
                 <Select.Option
                   value={`${x}_ASC`}
                   key={`${x}_ASC`}
@@ -218,29 +183,21 @@ export default class Chart extends Component {
                   {{ ...metricsObj, ...dimensionsObj }[x].label} [Absteigend]
                 </Select.Option>
               </Select.OptGroup>
-            )}
+            ))}
           </Select>
         </Grid.Item>
         <Grid.Item medium={3}>
-          <Select
-            mode="multiple"
-            placeholder="Filter"
-            onChange={changeFilters}
-            value={filters}
-          >
-            {items.map(item =>
-              <Select.Option
-                value={`${item[dimensions[0]]}`}
-                key={item[dimensions[0]]}
-              >
+          <Select mode="multiple" placeholder="Filter" onChange={changeFilters} value={filters}>
+            {items.map(item => (
+              <Select.Option value={`${item[dimensions[0]]}`} key={item[dimensions[0]]}>
                 {dimensionsObj[dimensions[0]].renderFn(item[dimensions[0]])}
               </Select.Option>
-            )}
+            ))}
           </Select>
         </Grid.Item>
       </Toolbar>
     );
-    const content = isFullSize =>
+    const content = isFullSize => (
       <Container>
         {loading && <Loader loading />}
         {!loading &&
@@ -248,9 +205,10 @@ export default class Chart extends Component {
             cloneElement(child, {
               ...childProps,
               fullSize: fullSize || isFullSize,
-            })
+            }),
           )}
-      </Container>;
+      </Container>
+    );
 
     return (
       <FlexContainer>
@@ -260,16 +218,8 @@ export default class Chart extends Component {
 
         <Modal
           open={open}
-          header={
-            <PaddingContainer>
-              {header}
-            </PaddingContainer>
-          }
-          footer={
-            <PaddingContainer>
-              {footer}
-            </PaddingContainer>
-          }
+          header={<PaddingContainer>{header}</PaddingContainer>}
+          footer={<PaddingContainer>{footer}</PaddingContainer>}
           onClose={setOpen}
           container
         >

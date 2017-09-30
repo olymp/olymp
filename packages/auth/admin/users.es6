@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { graphql, gql } from 'olymp-utils';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { SplitView, Sidebar, List } from 'olymp-ui';
 import AuthProfile from './profile';
 
@@ -13,7 +14,7 @@ import AuthProfile from './profile';
         isAdmin
       }
     }
-  `
+  `,
 )
 export default class AuthUsers extends Component {
   state = { user: undefined };
@@ -26,14 +27,14 @@ export default class AuthUsers extends Component {
     return (
       <SplitView>
         <Sidebar title="Benutzer" subtitle="Benutzer bearbeiten">
-          {users.map(user =>
+          {users.map(user => (
             <List.Item
               onClick={() => this.setState({ user })}
               label={user.name}
               description={user.isAdmin ? 'Administrator' : 'Benutzer'}
               key={user.id}
             />
-          )}
+          ))}
         </Sidebar>
 
         <AuthProfile user={user} extraFields={extraFields} />
