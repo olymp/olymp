@@ -1,5 +1,5 @@
 {
-  "version": "17.4.17",
+  "version": "17.5.0",
   "name": "olymp-auth",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.0.1",
-    "olymp-fela": "^17.4.17",
+    "olymp-fela": "^17.5.0",
     "qrcode": "^0.9.0",
     "speakeasy": "^2.0.0",
     "stale-lru-cache": "^5.1.1"

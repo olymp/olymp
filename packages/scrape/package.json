@@ -1,5 +1,5 @@
 {
-  "version": "17.4.17",
+  "version": "17.5.0",
   "name": "olymp-scrape",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "metascraper": "^1.0.7",
-    "olymp-fela": "^17.4.17",
-    "olymp-utils": "^17.3.0",
+    "olymp-fela": "^17.5.0",
+    "olymp-utils": "^17.5.0",
     "shortid": "^2.2.8"
   }
 }
