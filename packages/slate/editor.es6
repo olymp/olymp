@@ -19,6 +19,7 @@ import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import Paragrapher from './plugins/paragrapher';
 import TrailingBlock from './plugins/trailing-block';
+import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
 import './style.css';
 import ToolbarBlock from './toolbar-block';
@@ -196,6 +197,7 @@ class SlateEditor extends Component {
     TrailingBlock({ type: 'paragraph' }),
     InsertBlockOnEnter({ type: 'paragraph' }),
     Paragrapher({ type: 'paragraph' }),
+    LineToParagraph({ type: 'paragraph' }),
   ];
   state = { focus: false };
   static propTypes = {

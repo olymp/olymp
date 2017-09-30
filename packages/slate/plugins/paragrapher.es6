@@ -21,7 +21,12 @@ function Paragrapher(opts) {
             return (
               Slate.Block.isBlock(node) &&
               node.type !== 'paragraph' &&
+              node.type !== 'block-quote' &&
+              node.type !== 'link' &&
+              node.type !== 'bulleted-list' &&
               node.type !== 'bulleted-list-item' &&
+              node.type.indexOf('heading') !== 0 &&
+              node.type !== 'numbered-list' &&
               node.type !== 'numbered-list-item' &&
               node.isVoid === false
             );
@@ -31,15 +36,14 @@ function Paragrapher(opts) {
             return invalidNodes.size === 0 ? null : invalidNodes;
           },
           normalize(change, node, invalidNodes) {
-            invalidNodes.forEach((x) => {
-              console.log(x);
-              return change.wrapBlockByKey(
+            invalidNodes.forEach(x =>
+              change.wrapBlockByKey(
                 x.key,
                 Slate.Block.create({
                   type: opts.type,
                 }),
-              );
-            });
+              ),
+            );
 
             return change;
           },
