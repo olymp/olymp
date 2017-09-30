@@ -21,7 +21,7 @@ export default {
   component: ({ node, children, attributes, className }) => (
     <Grid.Item
       medium={1}
-      padding={node.data.get('bordered') !== false ? '0 16px 24px 16px' : 0}
+      padding={node.data.get('bordered', true) ? '0 16px 24px 16px' : 0}
       className={className}
       gridSize={4}
       {...attributes}

@@ -2,9 +2,9 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 
 const Text = createComponent(
-  ({ theme }) => ({
+  ({ theme, parent }) => ({
     paddingX: theme.space3,
-    paddingY: theme.space2,
+    paddingY: parent.data.get('bordered', true) && theme.space2,
   }),
   ({ attributes, className, children }) => (
     <div {...attributes} className={className}>

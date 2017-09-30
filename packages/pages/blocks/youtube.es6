@@ -39,12 +39,10 @@ export default {
     {
       label: <FaFilm />,
       tooltip: 'URL',
-      toggle: ({ setData }) => {
-        const href = window.prompt('Link');
+      toggle: ({ setData, getData }) => {
+        const href = window.prompt('Link', getData('href'));
         if (href) {
           setData({ href });
-        } else {
-          setData({ href: null });
         }
       },
     },
