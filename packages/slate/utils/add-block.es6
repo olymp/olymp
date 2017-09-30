@@ -3,7 +3,7 @@ import { hasBlock } from './has';
 
 const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = value.change()) => {
   let { defaultNodes } = node;
-  const { type } = node;
+  const { type, initNode } = node;
   const defaultNode = 'paragraph';
 
   const { document, blocks } = value;
@@ -19,10 +19,13 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
         .unwrapBlock('bulleted-list')
         .unwrapBlock('numbered-list');
     } else {
+      if (initNode) {
+        node = initNode(node, { value, blockTypes, parentKey, index, transform });
+      }
       const block = createBlock(node);
 
       if (defaultNodes && typeof defaultNodes === 'function') {
-        defaultNodes = defaultNodes();
+        defaultNodes = defaultNodes({ value, node, blockTypes, parentKey, index, transform });
       } else if (!defaultNodes && !block.isVoid) {
         defaultNodes = [
           {
@@ -92,7 +95,7 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
 
 const createBlock = (block) => {
   let { type } = block;
-  const { isVoid, key, kind } = block;
+  const { isVoid, key, kind, data } = block;
   if (!type) {
     type = key;
   }
@@ -101,14 +104,14 @@ const createBlock = (block) => {
       type,
       isVoid,
       kind,
-      data: {},
+      data: data || {},
     });
   }
   return Block.create({
     type,
     isVoid,
     kind,
-    data: {},
+    data: data || {},
   });
 };
 export default addBlock;

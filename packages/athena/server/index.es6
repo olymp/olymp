@@ -29,7 +29,6 @@ const {
 const createResponseCache = () => {
   let cache = {};
   const getKey = (req) => {
-    console.log(req.originalUrl);
     if (req.isAmp) {
       return `${req.originalUrl}|amp`;
     }
@@ -86,6 +85,15 @@ export default (server, options) => {
     req.app = cachedApp;
     req.algolia = algolia;
     req.responseCache = responseCache;
+    if (
+      req.body &&
+      req.body.query &&
+      typeof req.body.query === 'string' &&
+      req.body.query.indexOf('mutation ') === 0
+    ) {
+      console.log('reset cache');
+      responseCache.clear();
+    }
     next();
   });
 

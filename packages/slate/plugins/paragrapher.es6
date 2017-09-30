@@ -48,4 +48,4 @@ function Paragrapher(opts) {
   };
 }
 
-module.exports = Paragrapher;
+export default Paragrapher;

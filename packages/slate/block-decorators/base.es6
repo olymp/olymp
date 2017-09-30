@@ -3,18 +3,7 @@ import { createComponent } from 'react-fela';
 // import dnd from './dnd';
 
 export default (options = {}) => (Block) => {
-  const {
-    type,
-    kind,
-    isVoid,
-    sidebar,
-    actions,
-    label,
-    category,
-    icon,
-    defaultNodes,
-    props,
-  } = options;
+  const { isVoid, props } = options;
 
   const StyledBlock = createComponent(
     ({ isSelected }) => ({
@@ -26,17 +15,7 @@ export default (options = {}) => (Block) => {
 
   // @dnd
   class BaseDecorator extends Component {
-    static slate = {
-      type,
-      kind,
-      isVoid: isVoid !== false,
-      actions,
-      sidebar,
-      label,
-      category,
-      icon,
-      defaultNodes,
-    };
+    static slate = options;
 
     setData = (data) => {
       const { node, editor } = this.props;

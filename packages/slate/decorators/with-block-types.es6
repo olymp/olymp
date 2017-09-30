@@ -7,11 +7,6 @@ export default WrappedComponent =>
       blockTypes: PropTypes.object,
     };
     render() {
-      return (
-        <WrappedComponent
-          blockTypes={this.context.blockTypes}
-          {...this.props}
-        />
-      );
+      return <WrappedComponent blockTypes={this.context.blockTypes} {...this.props} />;
     }
   };

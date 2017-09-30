@@ -20,7 +20,7 @@ export default {
   component: withQueryParam(
     'accordion',
   )(({ className, attributes, children, accordion, parent }) => (
-    <Text className={className} isOpen={accordion === parent.key} {...attributes}>
+    <Text className={className} isOpen={accordion === parent.data.get('id')} {...attributes}>
       {children}
     </Text>
   )),

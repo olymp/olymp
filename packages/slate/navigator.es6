@@ -385,7 +385,6 @@ class Pages extends Component {
 
   render() {
     const { value, selected } = this.props;
-    console.log(value.document.text);
     if (!value.document.text) {
       return (
         <Tree>

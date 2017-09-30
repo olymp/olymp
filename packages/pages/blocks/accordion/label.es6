@@ -43,13 +43,15 @@ export default {
     <Label
       className={className}
       readOnly={readOnly}
-      updateQuery={{ accordion: accordion !== parent.key ? parent.key : null }}
+      updateQuery={{
+        accordion: accordion !== parent.data.get('id') ? parent.data.get('id') : undefined,
+      }}
       {...attributes}
     >
       <span>{children}</span>
       <Icon
         contentEditable={false}
-        type={accordion === parent.key ? 'down-square-o' : 'left-square-o'}
+        type={accordion === parent.data.get('id') ? 'down-square-o' : 'left-square-o'}
       />
     </Label>
   )),

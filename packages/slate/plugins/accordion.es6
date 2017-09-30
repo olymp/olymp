@@ -1,3 +1,5 @@
+import ShortID from 'shortid';
+
 const Slate = require('slate');
 
 /**
@@ -8,7 +10,7 @@ const Slate = require('slate');
  * @return {Object}
  */
 
-function Paragrapher(opts) {
+function Accordion(opts) {
   opts = opts || {};
   opts.type = opts.type || 'paragraph';
   opts.match = opts.match || (node => node.type === opts.type);
@@ -18,22 +20,16 @@ function Paragrapher(opts) {
       rules: [
         {
           match(node) {
-            return Slate.Block.isBlock(node) && node.type !== 'paragraph' && node.isVoid === false;
+            return Slate.Block.isBlock(node) && node.type === 'accordion' && !node.data.get('id');
           },
           validate(node) {
-            const invalidNodes = node.nodes.filter(x => Slate.Text.isText(x) && x.text.length > 0);
-            return invalidNodes.size === 0 ? null : invalidNodes;
+            return [];
           },
           normalize(change, node, invalidNodes) {
-            invalidNodes.forEach(x =>
-              change.wrapBlockByKey(
-                x.key,
-                Slate.Block.create({
-                  type: opts.type,
-                }),
-              ),
-            );
-
+            change.setNodeByKey(node.key, {
+              data: node.data.set('id', ShortID.generate().substr(0, 4)),
+            });
+            console.log('CHANGED', node);
             return change;
           },
         },
@@ -42,4 +38,4 @@ function Paragrapher(opts) {
   };
 }
 
-module.exports = Paragrapher;
+export default Accordion;
