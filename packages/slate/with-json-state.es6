@@ -14,6 +14,7 @@ const stateWrapper = options => WrappedComponent =>
     }
     componentWillReceiveProps(newProps) {
       if (newProps.base64 !== this.base64 && this.state.value !== newProps.value) {
+        console.log('ACCEPT PROPS');
         this.base64 = newProps.base64;
         this.state.value = newProps.value;
         // this.setState({ value: newProps.value });
@@ -47,6 +48,7 @@ const stateWrapper = options => WrappedComponent =>
     };
     render() {
       const { value } = this.state;
+      console.log('RENDER');
       return (
         <WrappedComponent
           {...this.props}
@@ -61,6 +63,7 @@ const stateWrapper = options => WrappedComponent =>
 export default options =>
   compose(
     withPropsOnChange(['value'], ({ value }) => {
+      console.log('NEW VALUE');
       const state = value
         ? State.fromJSON({ document: value, kind: 'state' })
         : Plain.deserialize('');

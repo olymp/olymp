@@ -2,8 +2,6 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Editor } from 'slate-react';
 import Plain from 'slate-plain-serializer';
-import TrailingBlock from 'slate-trailing-block';
-import InsertBlockOnEnter from 'slate-insert-block-on-enter';
 import {
   FaAlignCenter,
   FaCode,
@@ -20,6 +18,8 @@ import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import Paragrapher from './plugins/paragrapher';
+import TrailingBlock from './plugins/trailing-block';
+import InsertBlockOnEnter from './plugins/insert-block-on-enter';
 import './style.css';
 import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';

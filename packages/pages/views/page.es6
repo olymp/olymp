@@ -1,13 +1,13 @@
 import React from 'react';
 import { object, func, bool } from 'prop-types';
 import { StatelessSlateMate, withBlockTypes, withJsonState } from 'olymp-slate';
-import { mapProps } from 'recompose';
+import { withProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 import { queryPage } from '../gql';
 
 const Page = withJsonState()(
   withBlockTypes(props => (
-    <ContentLoader isLoading={props.isLoading}>
+    <ContentLoader isLoading={props.isLoading} xy={console.log(props)}>
       <StatelessSlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
         {props.children}
       </StatelessSlateMate>
@@ -24,11 +24,10 @@ Page.defaultProps = {
   readOnly: true,
 };
 Page.WithData = queryPage(
-  mapProps(({ item, data, ...rest }) => ({
+  withProps(({ item, data }) => ({
     value: item && item.blocks,
     isLoading: data.loading,
     item,
-    ...rest,
   }))(Page),
 );
 export default Page;
