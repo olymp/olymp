@@ -24,10 +24,7 @@ function Paragrapher(opts) {
             return [];
           },
           normalize(change, node, invalidNodes) {
-            change.setNodeByKey(
-              x.key,
-              'paragraph',
-            ),
+            change.setNodeByKey(x.key, 'paragraph');
             return change;
           },
         },

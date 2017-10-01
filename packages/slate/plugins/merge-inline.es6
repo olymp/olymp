@@ -18,16 +18,15 @@ function Paragrapher(opts) {
       rules: [
         {
           match(node) {
-            return Slate.Inline.isInline(node) && (!node.parent || node.parent.type!=='paragraph');
+            return (
+              Slate.Inline.isInline(node) && (!node.parent || node.parent.type !== 'paragraph')
+            );
           },
           validate(node) {
             return [];
           },
           normalize(change, node, invalidNodes) {
-            change.setNodeByKey(
-              x.key,
-              'paragraph',
-            ),
+            change.setNodeByKey(x.key, 'paragraph');
             return change;
           },
         },
