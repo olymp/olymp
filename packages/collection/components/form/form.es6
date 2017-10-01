@@ -3,7 +3,7 @@ import { Form, Tabs } from 'antd';
 import { SplitView, Sidebar } from 'olymp-ui';
 import { withState, withProps, compose } from 'recompose';
 import { withJsonState } from 'olymp-slate';
-import { createComponent } from 'react-fela';
+import { createComponent, Container, Grid } from 'olymp-fela';
 import Navigator from 'olymp-slate/navigator';
 import FormItem from './item';
 
@@ -14,24 +14,6 @@ const TabPane = createComponent(
   }),
   Tabs.TabPane,
   p => Object.keys(p),
-);
-
-const Horizontal = createComponent(
-  () => ({
-    display: 'flex',
-    '> .form-images': {
-      flex: 1,
-      margin: 10,
-      '& .ant-form-item-label': {
-        display: 'none',
-      },
-    },
-    '> .form-rest': {
-      margin: 10,
-      flex: 1,
-    },
-  }),
-  'div',
 );
 
 const Div = createComponent(
@@ -135,19 +117,25 @@ const FormComponent = enhance(
         );
       }
       return (
-        <Horizontal className={className}>
-          <Form layout={(vertical && 'vertical') || (inline && 'inline')} className="form-rest">
-            {schema.rest.map(field => (
-              <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-            ))}
-            <Buttons>{children}</Buttons>
-          </Form>
-          <Form className="form-images" layout={(vertical && 'vertical') || (inline && 'inline')}>
-            {schema.images.map(field => (
-              <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
-            ))}
-          </Form>
-        </Horizontal>
+        <Container>
+          <Grid size={9} className={className}>
+            <Grid.Item large={7} padding={16}>
+              <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+                {schema.rest.map(field => (
+                  <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+                ))}
+              </Form>
+            </Grid.Item>
+            <Grid.Item large={2} padding={16}>
+              <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+                {schema.images.map(field => (
+                  <FormItem {...rest} form={form} field={field} item={item} key={field.name} />
+                ))}
+              </Form>
+            </Grid.Item>
+          </Grid>
+          <Buttons>{children}</Buttons>
+        </Container>
       );
     },
   ),
