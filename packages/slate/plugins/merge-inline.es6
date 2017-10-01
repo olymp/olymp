@@ -18,7 +18,7 @@ function Paragrapher(opts) {
       rules: [
         {
           match(node) {
-            return Slate.Block.isBlock(node) && node.type === 'line' && node.isVoid === false;
+            return Slate.Inline.isInline(node) && (!node.parent || node.parent.type!=='paragraph');
           },
           validate(node) {
             return [];

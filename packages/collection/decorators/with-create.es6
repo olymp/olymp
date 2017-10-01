@@ -7,7 +7,7 @@ import { Button } from 'antd';
 
 // todo: withAuth auslagern!
 
-export default type => WrappedComponent => {
+export default type => (WrappedComponent) => {
   const CreateButton = withRouter(
     createComponent(
       ({ top }) => ({
@@ -18,7 +18,7 @@ export default type => WrappedComponent => {
         transform: top ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
         zIndex: 2,
       }),
-      ({ className, pathname, query }) =>
+      ({ className, pathname, query }) => (
         <Link
           to={{
             pathname,
@@ -27,9 +27,10 @@ export default type => WrappedComponent => {
           className={className}
         >
           <Button type="primary" shape="circle" icon="plus" />
-        </Link>,
-      p => Object.keys(p)
-    )
+        </Link>
+      ),
+      p => Object.keys(p),
+    ),
   );
 
   return withAuth(
@@ -71,15 +72,17 @@ export default type => WrappedComponent => {
           },
         },
       }),
-      ({ className, auth, ...p }) =>
-        auth && auth.user
-          ? <div className={className}>
-              <CreateButton top />
-              <WrappedComponent {...p} />
-              <CreateButton />
-            </div>
-          : <WrappedComponent {...p} />,
-      p => Object.keys(p)
-    )
+      ({ className, auth, logout, ...p }) =>
+        (auth && auth.user ? (
+          <div className={className}>
+            <CreateButton top />
+            <WrappedComponent {...p} />
+            <CreateButton />
+          </div>
+        ) : (
+          <WrappedComponent {...p} />
+        )),
+      p => Object.keys(p),
+    ),
   );
 };

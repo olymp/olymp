@@ -7,7 +7,7 @@ import { Button } from 'antd';
 
 // todo: withAuth auslagern!
 
-export default typeProp => WrappedComponent => {
+export default typeProp => (WrappedComponent) => {
   const EditButton = withRouter(
     createComponent(
       () => ({
@@ -17,7 +17,7 @@ export default typeProp => WrappedComponent => {
         transform: 'translate(50%, -50%)',
         zIndex: 2,
       }),
-      ({ className, id, pathname, query, type }) =>
+      ({ className, id, pathname, query, type }) => (
         <Link
           to={{
             pathname,
@@ -26,9 +26,10 @@ export default typeProp => WrappedComponent => {
           className={className}
         >
           <Button type="primary" shape="circle" icon="edit" />
-        </Link>,
-      p => Object.keys(p)
-    )
+        </Link>
+      ),
+      p => Object.keys(p),
+    ),
   );
 
   const WithEdit = withAuth(
@@ -63,11 +64,8 @@ export default typeProp => WrappedComponent => {
           },
         },
       }),
-      ({ className, id, auth, ...p }) => {
-        const type =
-          typeof typeProp === 'function'
-            ? typeProp({ id, auth, ...p })
-            : typeProp;
+      ({ className, id, auth, logout, ...p }) => {
+        const type = typeof typeProp === 'function' ? typeProp({ id, auth, ...p }) : typeProp;
 
         if (!auth || !auth.user || !type) {
           return <WrappedComponent id={id} {...p} />;
@@ -80,8 +78,8 @@ export default typeProp => WrappedComponent => {
           </div>
         );
       },
-      p => Object.keys(p)
-    )
+      p => Object.keys(p),
+    ),
   );
   WithEdit.propTypes = {
     id: PropTypes.string.isRequired,
