@@ -12,9 +12,9 @@ const Modal = getContext({
     (show ? (
       <Portal>
         <div className={className}>
-          {theme.logoWhite && (
+          {theme.get().logoWhite && (
             <div className="logo">
-              <img src={theme.logoWhite} />
+              <img src={theme.get().logoWhite} />
             </div>
           )}
         </div>

@@ -47,6 +47,7 @@ export const Modal = getContext({
       }
       return true;
     });
+    theme = theme.get();
     return !isOpen ? null : (
       <Portal isOpened>
         <ReactModal
