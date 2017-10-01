@@ -11,20 +11,15 @@
     "test": "jest && codecov",
     "es": "eslint packages/** --quiet",
     "esa": "eslint packages/**",
-    "prettier":
-      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
-
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
-    "lpf":
-      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
     "lc": "del 'packages/*/package-lock.json",
-
     "special-elev": "lerna exec npm owner add machiaveli88",
-    "special-rename":
-      "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
+    "special-rename": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "special-del": "del 'packages/**/*.js' '!packages/**/node_modules/**'"
   },
   "engines": {},
@@ -33,7 +28,13 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": ["react", "universal", "javascript", "express", "webpack"],
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {
@@ -68,9 +69,9 @@
   "dependencies": {
     "babel-plugin-transform-react-constant-elements": "^6.23.0",
     "babel-plugin-transform-react-pure-class-to-function": "^1.0.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.8",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.9",
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.7",
-    "eslint-config-olymp": "^17.5.0"
+    "eslint-config-olymp": "^17.5.7"
   }
 }
