@@ -1,5 +1,5 @@
 {
-  "version": "17.6.7",
+  "version": "17.6.8",
   "name": "olymp-pages",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "olymp-fela": "^17.6.6",
-    "olymp-router": "^17.6.6",
+    "olymp-router": "^17.6.8",
     "olymp-utils": "^17.5.7",
     "recompose": "^0.25.1"
   }
