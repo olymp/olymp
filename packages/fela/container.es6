@@ -6,6 +6,7 @@ export default createComponent(
     height,
     position: 'relative',
     marginX: 'auto',
+    paddingX: theme.space2,
     onAfter: {
       content: '""',
       clear: 'both',
@@ -15,7 +16,6 @@ export default createComponent(
     },
     ifMini: {
       width: '100%',
-      paddingX: theme.space3,
     },
     ifSmallUp: {
       width: 540,
@@ -61,5 +61,5 @@ export default createComponent(
     ],
   }),
   'div',
-  ({ height, ...p }) => Object.keys(p)
+  ({ height, ...p }) => Object.keys(p),
 );

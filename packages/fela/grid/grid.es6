@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 
 const Grid = createComponent(
-  ({ height, marginX }) => ({
+  ({ theme, height, marginX }) => ({
     height,
     minWidth: '100%',
-    marginX: marginX || '-0.5rem',
+    marginX: marginX || `-${theme.space2}`,
     onAfter: {
       content: '""',
       clear: 'both',
