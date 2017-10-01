@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createUpdateQuery } from 'olymp-router';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
 import { State } from 'slate';
@@ -7,7 +9,7 @@ import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 
 const ok = props => () => {
-  const { form, item, router, query, pathname, mutate, typeName } = props;
+  const { form, item, updateQuery, mutate, typeName } = props;
   form.validateFields((err, values) => {
     if (err) {
       return onError(err);
@@ -41,17 +43,14 @@ const ok = props => () => {
       .then(({ data: { item } }) => {
         onSuccess('Gespeichert');
         form.resetFields();
-        router.push({
-          pathname,
-          query: { ...query, [`@${lowerFirst(typeName)}`]: item.id },
-        });
+        updateQuery({ [`@${lowerFirst(typeName)}`]: item.id });
       })
       .catch(onError);
   });
 };
 
 const clone = props => () => {
-  const { form, item, router, query, pathname, mutate, typeName } = props;
+  const { form, item, router, updateQuery, mutate, typeName } = props;
   const cloneItem = omit(item);
   delete cloneItem.id;
   mutate({
@@ -68,16 +67,13 @@ const clone = props => () => {
     .then(({ data: { item } }) => {
       onSuccess('Kopiert');
       form.resetFields();
-      router.push({
-        pathname,
-        query: { ...query, [`@${lowerFirst(typeName)}`]: item.id },
-      });
+      updateQuery({ [`@${lowerFirst(typeName)}`]: item.id });
     })
     .catch(onError);
 };
 
 const del = props => () => {
-  const { form, item, router, query, pathname, mutate, typeName } = props;
+  const { form, item, router, updateQuery, mutate, typeName } = props;
   return mutate({
     variables: {
       id: item && item.id,
@@ -93,10 +89,7 @@ const del = props => () => {
     .then(({ data }) => {
       onSuccess('Gelöscht');
       form.resetFields();
-      router.push({
-        pathname,
-        query: { ...query, [`@${lowerFirst(typeName)}`]: null },
-      });
+      updateQuery({ [`@${lowerFirst(typeName)}`]: null });
     })
     .catch(onError);
 };
@@ -146,7 +139,9 @@ export default (WrappedComponent) => {
     );
   };
 
-  return props => {
+  return connect(null, dispatcher => ({
+    updateQuery: createUpdateQuery(dispatcher),
+  }))(props => {
     if (props.typeName && props.fieldNames && props.collection) {
       const name = `${props.typeName}|${props.fieldNames}`;
       const Bound = cache[name] || bound(props);
@@ -154,5 +149,5 @@ export default (WrappedComponent) => {
       return <Bound {...props} />;
     }
     return null;
-  };
+  });
 };

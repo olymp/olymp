@@ -21,7 +21,7 @@ const component = ({ className, image, title, loading, description, value }) => 
         value={{
           width: 300,
           height: 300,
-          url: `http://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,f_auto/${image}`,
+          url: `https://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,f_auto/${image}`,
         }}
       />
     )}

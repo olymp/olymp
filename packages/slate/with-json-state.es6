@@ -3,6 +3,8 @@ import { debounce } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
+import { get } from 'lodash';
+import shortID from 'shortid';
 import Base64 from './plugins/base64';
 
 const stateWrapper = options => WrappedComponent =>
@@ -14,23 +16,55 @@ const stateWrapper = options => WrappedComponent =>
     }
     componentWillReceiveProps(newProps) {
       if (newProps.base64 !== this.base64 && this.state.value !== newProps.value) {
-        console.log('ACCEPT PROPS');
         this.base64 = newProps.base64;
         this.state.value = newProps.value;
-        // this.setState({ value: newProps.value });
       }
     }
+    getAllBlocks = (nodes, mapper, parent, arr = []) =>
+      nodes.reduce((state, node) => {
+        arr.push(node);
+        mapper(node, parent);
+        if (node.nodes) {
+          arr = this.getAllBlocks(node.nodes, mapper, node, arr);
+        }
+        return arr;
+      }, arr);
     propagateChange = (value) => {
       this.base64 = Base64.serialize(value);
-      if (this.base64 !== this.props.base64) {
+      if (this.base64 !== this.props.base64 && this.first) {
         const json = value.toJSON();
-        const str = JSON.stringify(json);
-        if (str.indexOf('"line"') !== -1) {
-          const final = JSON.parse(str.split('"line"').join('"paragraph"'));
-          return this.props.onChange(final.document);
-        }
-        this.props.onChange(json.document);
+        const nodes = json.document.nodes;
+        let text = '';
+        let title = null;
+        let image = null;
+        const chapters = [];
+        const all = this.getAllBlocks(value.document.nodes, (node, parent) => {
+          if (
+            node.type === 'paragraph' &&
+            (!parent || (parent.type && parent.type.indexOf('heading') === -1))
+          ) {
+            text += `${node.text}\n`;
+          }
+          if (!title && node.type && node.type.indexOf('heading-') === 0) {
+            title = node.text;
+          }
+          if (node.type && node.type.indexOf('heading-one') === 0) {
+            chapters.push(node.text);
+          }
+          if (!image && node.data && node.data.get('value')) {
+            const url =
+              get(node.data.get('value'), '[0].url') || get(node.data.get('value'), 'url');
+            if (url && url.indexOf('cloudinary') !== -1) {
+              image = url;
+            }
+          }
+        });
+        const count = 355;
+        const extract = text.slice(0, count) + (text.length > count ? '...' : '');
+        // image, title, chapters
+        return this.props.onChange({ nodes, text, extract, title, image, chapters });
       }
+      this.first = true;
     };
     debouncedPropagateChange = debounce(this.propagateChange, options.debounce || 1000, {
       leading: false,
@@ -51,7 +85,6 @@ const stateWrapper = options => WrappedComponent =>
     };
     render() {
       const { value } = this.state;
-      console.log('RENDER');
       return (
         <WrappedComponent
           {...this.props}
@@ -66,9 +99,14 @@ const stateWrapper = options => WrappedComponent =>
 export default options =>
   compose(
     withPropsOnChange(['value', 'id'], ({ value }) => {
-      console.log('NEW VALUE');
       const state = value
-        ? State.fromJSON({ document: value, kind: 'state' })
+        ? State.fromJSON({
+          document: {
+            nodes: value.nodes,
+            kind: 'document',
+          },
+          kind: 'state',
+        })
         : Plain.deserialize('');
       return {
         value: state,

@@ -21,7 +21,13 @@ const queryOne = gql`
       sorting
       aliasId
       href
-      blocks
+      blocks {
+        id
+        nodes
+        extract
+        image
+        title
+      }
       state
     }
   }

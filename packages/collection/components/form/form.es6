@@ -52,7 +52,7 @@ const Buttons = createComponent(
 
 const enhance = compose(
   withProps(({ form, schema, item }) => {
-    if (item) {
+    if (item && item.blocks) {
       form.getFieldDecorator('blocks', { initialValue: item.blocks });
       return {
         onChange: (blocks) => {

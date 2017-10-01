@@ -19,6 +19,15 @@ export default () => ({
       LINK
       PLACEHOLDER
     }
+    type Blocks {
+      id: String
+      nodes: Json
+      extract: String
+      text: String
+      title: String
+      image: String
+      chapters: [String]
+    }
     type Template @collection {
       id: String
       name: String
