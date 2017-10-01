@@ -32,6 +32,7 @@ const getIdByTag = (children) => {
   return `${id}`;
 };
 
+const emptyArray = [];
 const options = {
   defaultNode: 'paragraph',
   toolbarMarks: [
@@ -295,7 +296,7 @@ class SlateEditor extends Component {
           state={value}
           spellcheck={spellcheck || false}
           readOnly={!!readOnly}
-          plugins={this.plugins}
+          plugins={!!readOnly ? this.plugins : emptyArray}
           schema={{ marks, nodes }}
           onChange={this.onChange}
           onFocus={() => this.setState({ focus: true })}
