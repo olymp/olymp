@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { withPushPathname } from 'olymp-router';
 import { onError, onSuccess } from 'olymp-ui';
 import { State } from 'slate';
+import { omit } from 'lodash';
 
 const ok = (props, mutate) => () => {
   const { form, item, router, query, flatNavigation, pushPathname } = props;
@@ -13,6 +14,9 @@ const ok = (props, mutate) => () => {
     }
     if (values.blocks && State.isState(values.blocks)) {
       values.blocks = values.blocks.toJSON().document;
+    }
+    if (values.blocks) {
+      values.blocks = omit(values.blocks, '__typename');
     }
     mutate({
       variables: {

@@ -104,7 +104,10 @@ const EventsListing = withCreate('events')(({ children }) => <div>{children}</di
         art
         name
         description
-        text
+        text {
+          id
+          nodes
+        }
         slug
         image {
           id
@@ -151,7 +154,10 @@ const EventsListing = withCreate('events')(({ children }) => <div>{children}</di
         name
         ort
         description
-        text
+        text {
+          id
+          nodes
+        }
         slug
         image {
           id

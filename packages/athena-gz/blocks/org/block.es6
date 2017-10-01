@@ -140,7 +140,10 @@ const componentWithData = graphql(
         website
         fachrichtungen
         tags
-        text
+        text {
+          id
+          nodes
+        }
         image {
           id
           url
@@ -163,25 +166,37 @@ const componentWithData = graphql(
           id
           link
           name
-          text
+          text {
+            id
+            nodes
+          }
         }
         vorsorgen {
           id
           link
           name
-          text
+          text {
+            id
+            nodes
+          }
         }
         leistungen {
           id
           link
           name
-          text
+          text {
+            id
+            nodes
+          }
         }
         prophylaxen {
           id
           link
           name
-          text
+          text {
+            id
+            nodes
+          }
         }
         persons {
           id
@@ -190,7 +205,10 @@ const componentWithData = graphql(
           telefon
           fax
           eMail
-          text
+          text {
+            id
+            nodes
+          }
           image {
             id
             url

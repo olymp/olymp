@@ -4,8 +4,8 @@ import { createUpdateQuery } from 'olymp-router';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
 import { State } from 'slate';
-import { omit } from 'olymp-utils';
-import { lowerFirst } from 'lodash';
+import { omit as omit2 } from 'olymp-utils';
+import { lowerFirst, omit } from 'lodash';
 import gql from 'graphql-tag';
 
 const ok = props => () => {
@@ -17,8 +17,14 @@ const ok = props => () => {
     if (values.blocks && State.isState(values.blocks)) {
       values.blocks = values.blocks.toJSON().document;
     }
+    if (values.blocks) {
+      values.blocks = omit(values.blocks, '__typename');
+    }
     if (values.text && State.isState(values.text)) {
       values.text = values.text.toJSON().document;
+    }
+    if (values.text) {
+      values.blocks = omit(values.text, '__typename');
     }
     if (values.start && Array.isArray(values.start)) {
       values.end = values.start[1];
@@ -27,7 +33,7 @@ const ok = props => () => {
     mutate({
       variables: {
         id: item && item.id,
-        input: omit(values),
+        input: omit2(values),
       },
       refetchQueries: [`${lowerFirst(typeName)}List`],
       /* updateQueries:
