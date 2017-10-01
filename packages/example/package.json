@@ -1,5 +1,5 @@
 {
-  "version": "17.6.6",
+  "version": "17.6.7",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -38,7 +38,7 @@
     "olymp-auth": "^17.6.6",
     "olymp-crypt": "^17.5.7",
     "olymp-fela": "^17.6.6",
-    "olymp-google": "^17.6.5",
+    "olymp-google": "^17.6.7",
     "olymp-graphql": "^17.6.5",
     "olymp-icons": "^17.5.7",
     "olymp-locale": "^17.5.7",
