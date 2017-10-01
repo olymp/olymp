@@ -6,7 +6,7 @@ const defaultCenter = { lat: 59.938043, lng: 30.337157 };
 const defaultZoom = 9;
 
 const StyledMap = createComponent(
-  ({}) => ({
+  () => ({
     height: '100%',
     width: '100%',
     '& *': {
