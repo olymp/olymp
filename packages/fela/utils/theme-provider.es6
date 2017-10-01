@@ -25,11 +25,11 @@ const getTheme = (theme = {}) => ({
 
   // Spaces
   space0: 0,
-  space1: 4,
-  space2: 8,
-  space3: 16,
-  space4: 32,
-  space5: 64,
+  space1: '0.25rem',
+  space2: '0.5rem',
+  space3: '1rem',
+  space4: '2rem',
+  space5: '4rem',
 
   // Borders
   borderWidth: 1,
@@ -45,14 +45,14 @@ const getTheme = (theme = {}) => ({
   // Font
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-  fontSize: 16,
-  fontSizeSmall: 14,
-  fontSizeH1: 26,
-  fontSizeH2: 24,
-  fontSizeH3: 22,
-  fontSizeH4: 20,
-  fontSizeH5: 18,
-  fontSizeH6: 14,
+  fontSize: '1rem',
+  fontSizeSmall: '0.875rem',
+  fontSizeH1: '1.625rem',
+  fontSizeH2: '1.5rem',
+  fontSizeH3: '1.375rem',
+  fontSizeH4: '1.25rem',
+  fontSizeH5: '1.125rem',
+  fontSizeH6: '1rem',
   ...theme,
 });
 
