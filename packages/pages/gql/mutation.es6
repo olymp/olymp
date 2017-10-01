@@ -68,7 +68,15 @@ export default compose(
           href
           sorting
           parentId
-          blocks
+          blocks {
+            id
+            nodes
+            extract
+            text
+            title
+            image
+            chapters
+          }
           state
         }
       }
