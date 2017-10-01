@@ -39,16 +39,18 @@ export default {
   label: 'Überschrift',
   component: withQueryParam(
     'accordion',
-  )(({ attributes, className, children, accordion, readOnly, parent }) => (
+  )(({ attributes, className, children, accordion, editor, parent }) => (
     <Label
       className={className}
-      readOnly={readOnly}
+      readOnly={editor.props.readOnly}
       updateQuery={{
         accordion: accordion !== parent.data.get('id') ? parent.data.get('id') : undefined,
       }}
       {...attributes}
     >
-      <span>{children}</span>
+      <span onClick={!editor.props.readOnly ? x => x.stopPropagation() : undefined}>
+        {children}
+      </span>
       <Icon
         contentEditable={false}
         type={accordion === parent.data.get('id') ? 'down-square-o' : 'left-square-o'}

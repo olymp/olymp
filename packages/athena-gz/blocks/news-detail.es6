@@ -76,9 +76,11 @@ const getSubheader = (item) => {
   );
 };
 
-const component = withTheme(({ item }) => ({
-  color: item.org.color,
-}))(({ className, attributes, item }) => (
+const component = withTheme(({ item }) => (item.org.color
+  ? {
+    color: item.org.color,
+  }
+  : {}))(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}

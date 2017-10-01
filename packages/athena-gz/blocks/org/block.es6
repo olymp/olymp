@@ -81,9 +81,14 @@ const Peak = createComponent(
   p => Object.keys(p),
 );
 
-const component = withTheme(({ item }) => ({
-  color: item.color,
-}))(({ className, attributes, item }) => (
+const component = withTheme(
+  ({ item }) =>
+    (item.color
+      ? {
+        color: item.color,
+      }
+      : {}),
+)(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({

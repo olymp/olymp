@@ -81,7 +81,7 @@ export default class Link extends Component {
       <a
         className={className}
         style={style}
-        href={location ? location.url : 'javascript:;'}
+        href={location ? location.url : undefined}
         onClick={this.onClick}
         onTouchStart={this.onClick}
         {...rest}
