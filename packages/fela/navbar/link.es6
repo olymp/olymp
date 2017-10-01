@@ -34,6 +34,7 @@ const NavbarLink = createComponent(
     fontFamily: theme.fontFamily,
     textDecoration: 'none',
     ellipsis: true,
+    position: 'relative',
   }),
   ({ to, onClick, renderItemLink, ...rest }) =>
     (to || onClick ? (

@@ -10,7 +10,7 @@ const Icon = createComponent(
   ({ theme, inverse }) => ({
     fill: `${inverse ? theme.light2 : theme.color}`,
     centerY: true,
-    right: theme.space3,
+    right: theme.space2,
   }),
   ({ className, vertically, right }) =>
     (!vertically ? (
@@ -34,8 +34,8 @@ const NavItem = createComponent(
     width: vertically && '100%',
     float: !vertically && 'left',
     position: 'relative',
-    padding: theme.space3,
-    paddingRight: pages && pages.length ? theme.space4 : theme.space3,
+    paddingY: theme.space2,
+    paddingX: theme.space4,
     onHover: {
       backgroundColor: inverse && fade('#000000', 10),
       '> div': {
@@ -46,6 +46,7 @@ const NavItem = createComponent(
       float: 'none',
       display: 'block',
       width: '100%',
+      paddingX: theme.space3,
     },
   }),
   ({

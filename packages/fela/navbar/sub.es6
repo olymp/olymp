@@ -14,7 +14,7 @@ export default createComponent(
       float: 'none',
       width: '100%',
       borderRight: 0,
-      borderTop: border(theme, theme.dark4),
+      // borderTop: border(theme, theme.dark4),
       clear: 'both',
     },
     ifMediumUp: {

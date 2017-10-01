@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import createComponent from '../utils/create-component';
 
 const Div = ({ toggled, onToggle, ...props }) => <div {...props} onClick={onToggle} />;
+
 const Button = createComponent(
   ({ theme, toggled, inverse, size = 20 }) => ({
     position: 'absolute',
-    top: 10,
-    right: theme.space3,
+    top: theme.space4,
+    right: theme.space4,
     // float: 'right',
     // padding: theme.space2,
     // margin: theme.space3,
