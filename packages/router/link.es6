@@ -74,6 +74,7 @@ export default class Link extends Component {
       push,
       query,
       pathname,
+      to,
       ...rest
     } = this.props;
     return (

@@ -68,7 +68,7 @@ export default (server, options) => {
     url: URL,
   });
 
-  const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET });
+  const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET, scope: process.env.APP });
   server.use(authCache(authEngine));
 
   const algolia = process.env.ALGOLIA

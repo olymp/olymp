@@ -2,7 +2,10 @@ const replaceInline = str =>
   str
     .replace(/style="([^"]*)"/g, '')
     .replace(/autocorrect="([^"]*)"/g, '')
+    .replace(/autoCorrect="([^"]*)"/g, '')
     .replace(/contenteditable="([^"]*)"/g, '')
+    .replace(/contentEditable="([^"]*)"/g, '')
+    .replace(/spellCheck="([^"]*)"/g, '')
     .replace(/spellcheck="([^"]*)"/g, '');
 export default ({ title, meta, link, cssMarkup, root }) => `
   <!DOCTYPE html>

@@ -94,6 +94,7 @@ const GridItem = createComponent(
     paddingHuge,
     height,
     relative,
+    padding,
     ...p
   }) => Object.keys(p),
 );
