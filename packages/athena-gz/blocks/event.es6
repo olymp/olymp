@@ -33,8 +33,6 @@ const loaderSchema = [
   },
 ];
 
-const Header = HeaderBlock.component;
-
 const Container = createComponent(
   ({ theme }) => ({
     ...ContainerBlock.styles({ theme }),
@@ -100,9 +98,9 @@ const component = withTheme(
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
-      <Header subheader={getSubheader(item) || ''} color={item.org.color}>
+      <HeaderBlock subheader={getSubheader(item) || ''} color={item.org.color}>
         {item.name}
-      </Header>
+      </HeaderBlock>
       <Container className={className} color={item.org.color} {...attributes}>
         <Grid size={3}>
           <Grid.Item medium={1}>
