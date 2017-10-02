@@ -12,7 +12,7 @@ const StyledCrop = createComponent(
     },
   }),
   p => <ReactCrop {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 class Crop extends Component {
@@ -20,16 +20,29 @@ class Crop extends Component {
     isOpen: true,
   };
 
+  onChange = ({ width, height, x, y }) => {
+    const { value } = this.props;
+    this.props.onChange([
+      Math.floor(value.width / 100 * width),
+      Math.floor(value.height / 100 * height),
+      Math.floor(value.width / 100 * x),
+      Math.floor(value.height / 100 * y),
+    ]);
+  };
+
   render() {
-    const { value, onChange } = this.props;
+    const { value } = this.props;
     const crop = value.crop || [value.width, value.height, 0, 0];
     const aspect = this.props.aspect || (this.state.isSquare && 1);
     const width = crop[0] / value.width * 100;
     const height = crop[1] / value.height * 100;
     const x = crop[2] / value.width * 100;
     const y = crop[3] / value.height * 100;
+    console.log('value', value, crop, width, height, x, y);
 
-    if (!value) { return <div />; }
+    if (!value) {
+      return <div />;
+    }
 
     return (
       <div
@@ -38,18 +51,19 @@ class Crop extends Component {
       >
         <StyledCrop
           src={cloudinaryUrl({ ...value, crop: undefined })}
-          onChange={(p, { width, height, x, y }) =>
-            onChange([width, height, x, y])}
+          onChange={this.onChange}
           crop={
-            crop
-              ? {
+            crop ? (
+              {
                 width,
                 height,
                 x,
                 y,
                 aspect,
               }
-              : { aspect }
+            ) : (
+              { aspect }
+            )
           }
         />
       </div>
