@@ -7,8 +7,10 @@ import { createComponent, withTheme, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import moment from 'moment';
-import HeaderBlock from './header';
-import ContainerBlock from './container-text';
+import ContainerBlock from 'olymp-pages/blocks/container-text';
+import HeaderBlock from '../components/header';
+
+console.log(HeaderBlock, ContainerBlock);
 
 const loaderSchema = [
   {
@@ -195,6 +197,7 @@ const componentWithData = graphql(
     },
   },
 )(component);
+componentWithData.displayName = 'GzEventBlock';
 
 export default {
   type: 'GZK.Collections.TerminBlock',

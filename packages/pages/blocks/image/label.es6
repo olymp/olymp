@@ -4,6 +4,7 @@ import { createComponent } from 'olymp-fela';
 const component = createComponent(
   ({ theme }) => ({
     position: 'absolute',
+    zIndex: 1,
     bottom: 0,
     left: 0,
     width: '100%',
@@ -31,7 +32,8 @@ const component = createComponent(
 export default {
   type: 'imageLabel',
   isVoid: false,
-  kind: 'inline',
+  defaultText: 'Titel',
+  kind: 'block',
   label: 'Titel',
   component,
 };

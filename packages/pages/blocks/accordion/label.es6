@@ -1,6 +1,7 @@
 import React from 'react';
 import { createComponent, border } from 'olymp-fela';
 import { withQueryParam, Link } from 'olymp-router';
+import { Text } from 'slate';
 import { Icon } from 'antd';
 
 const Label = createComponent(
@@ -16,6 +17,7 @@ const Label = createComponent(
       '> span': {
         float: 'left',
         cursor: readOnly && 'pointer',
+        marginRight: 5,
       },
       '> i': {
         float: 'right',
@@ -37,6 +39,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Überschrift',
+  defaultText: 'Titel',
   component: withQueryParam(
     'accordion',
   )(({ attributes, className, children, accordion, editor, parent }) => (

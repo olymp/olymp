@@ -2,7 +2,7 @@ import { Text, Block, Inline } from 'slate';
 import { hasBlock } from './has';
 
 const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = value.change()) => {
-  let { defaultNodes } = node;
+  let { defaultNodes, defaultText } = node;
   const { type, initNode } = node;
   const defaultNode = 'paragraph';
 
@@ -30,7 +30,7 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
         defaultNodes = [
           {
             type: 'paragraph',
-            nodes: [Text.create()],
+            nodes: [Text.create(defaultText)],
           },
         ];
       }

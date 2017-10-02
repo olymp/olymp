@@ -2,14 +2,13 @@ import React from 'react';
 import { renderHelmet } from 'olymp-utils';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { createComponent, Grid, withTheme, SchemaLoader } from 'olymp-fela';
+import { createComponent, Grid, withTheme, SchemaLoader, Container } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
 import VCard from './vcard';
 import { ImageStyles } from '../image/block';
-import HeaderBlock from '../header';
-import ContainerBlock from '../container';
+import HeaderBlock from '../../components/header';
 
 const loaderSchema = [
   {
@@ -42,9 +41,6 @@ const loaderSchema = [
 ];
 const Label = Blocks.ImageBlockLabel.component;
 const Header = HeaderBlock.component;
-const Container = createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
-  Object.keys(p),
-);
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 
 const Content = createComponent(
@@ -90,7 +86,7 @@ const component = withTheme(
       : {}),
 )(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
-    <div>
+    <div {...attributes}>
       {renderHelmet({
         description: item.slogan,
         image: item.logo || item.image,
@@ -108,7 +104,7 @@ const component = withTheme(
           {item.slogan}
         </Header>
       )}
-      <Container className={className} color={item.color} {...attributes}>
+      <Container className={className}>
         <Grid>
           <Grid.Item large={5}>
             <VCard org={item} />
@@ -241,6 +237,7 @@ const componentWithData = graphql(
   },
 )(component);
 
+componentWithData.displayName = 'GzOrgBlock';
 export default {
   type: 'GZK.Collections.OrgBlock',
   label: 'Einrichtung',

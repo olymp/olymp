@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import shallowEqual from 'shallowequal';
 import { get } from 'lodash';
 
-export default getColorFromProps => (WrappedComponent) => {
-  class WithColorComponent extends Component {
+export default getThemeFromProps => (WrappedComponent) => {
+  class WithThemeComponent extends Component {
     static contextTypes = {
       theme: PropTypes.object,
     };
@@ -18,7 +18,7 @@ export default getColorFromProps => (WrappedComponent) => {
         return;
       }
       const { theme } = context;
-      const newTheme = getColorFromProps(props) || {};
+      const newTheme = getThemeFromProps(props) || {};
       if (!shallowEqual(newTheme, this.theme)) {
         theme.update(newTheme);
         this.theme = newTheme;
@@ -35,5 +35,5 @@ export default getColorFromProps => (WrappedComponent) => {
       return <WrappedComponent {...this.props} />;
     }
   }
-  return WithColorComponent;
+  return WithThemeComponent;
 };

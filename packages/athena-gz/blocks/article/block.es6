@@ -7,9 +7,9 @@ import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
 import { SlateMate, withBlockTypes } from 'olymp-slate';
+import ContainerBlock from 'olymp-pages/blocks/container-text';
 import { ImageStyles } from '../image/block';
-import HeaderBlock from '../header';
-import ContainerBlock from '../container-text';
+import HeaderBlock from '../../components/header';
 
 const loaderSchema = [
   {
@@ -83,11 +83,14 @@ const getSubheader = (item) => {
   );
 };
 
-const component = withTheme(({ item }) => (item.org.color
-  ? {
-    color: item.org.color,
-  }
-  : {}))(({ className, attributes, item }) => (
+const component = withTheme(
+  ({ item }) =>
+    (item.org.color
+      ? {
+        color: item.org.color,
+      }
+      : {}),
+)(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
       {renderHelmet({ description: item.description, image: item.image })}
@@ -168,6 +171,7 @@ const componentWithData = graphql(
   },
 )(component);
 
+componentWithData.displayName = 'GzArticleBlock';
 export default {
   type: 'GZK.Collections.ArticleBlock',
   label: 'Artikel',
