@@ -34,6 +34,8 @@ export const topLoaderStyles = ({ theme, loading, transparent }) => ({
   },
 });
 
-export default createComponent(topLoaderStyles, 'span', ({ loading, transparent, ...p }) =>
-  Object.keys(p),
+export default createComponent(
+  topLoaderStyles,
+  'span',
+  ({ loading, dispatch, transparent, ...p }) => Object.keys(p),
 );

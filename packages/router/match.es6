@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { onlyUpdateForKeys, compose } from 'recompose';
 
 export const matchPath = (pathname, exact, match) =>
-  (!exact && pathname.index(`${match}/`) === 0) || pathname === match;
+  (!exact && pathname.indexOf(`${match}/`) === 0) || pathname === match;
 export const matchPaths = (pathname, exact, match) => {
   for (const path of match) {
     if (matchPath(pathname, exact, path)) {

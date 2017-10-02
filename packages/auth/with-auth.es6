@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createLogout, createVerify, setAttributes } from './redux';
 
 export const auth = (options = {}) => (WrappedComponent) => {
-  const { attributes } = obj;
+  const { attributes } = options;
   if (attributes) {
     setAttributes(attributes);
   }
