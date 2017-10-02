@@ -51,7 +51,7 @@
     "react-dom": "^16.0.0-rc.3"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^16.0.31",
+    "eslint-config-olymp": "^17.5.7",
     "olymp-webpack-electron": "^17.5.7"
   },
   "electronDependencies": {},
