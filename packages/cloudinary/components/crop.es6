@@ -38,7 +38,6 @@ class Crop extends Component {
     const height = crop[1] / value.height * 100;
     const x = crop[2] / value.width * 100;
     const y = crop[3] / value.height * 100;
-    console.log('value', value, crop, width, height, x, y);
 
     if (!value) {
       return <div />;
