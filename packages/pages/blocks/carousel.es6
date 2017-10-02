@@ -1,45 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { SimpleImageEdit } from 'olymp-cloudinary';
 import Carousel from 'olymp-ui/carousel';
 
-class CarouselBlock extends Component {
-  render() {
-    const { getData, className, attributes } = this.props;
-    /* const image = getData('value', [
-      {
-        url: 'https://lorempixel.com/960/300/cats/',
-        width: 960,
-        height: 300,
-      },
-    ])[imageNumber];*/
-
-    return (
-      <div {...attributes} className={className}>
-        <Carousel
-          height={400}
-          value={getData('value', [
-            {
-              url: 'https://lorempixel.com/960/300/cats/',
-              width: 960,
-              height: 400,
-            },
-          ])}
-        >
-          {/* <Image
-        className={className}
-        onClick={setActive}
-        width="100%"
-        maxHeight={300}
-        maxResolution={500000}
-        value={image}
-      >
-        {renderHelmet({ image })}
-  </Image>*/}
-        </Carousel>
-      </div>
-    );
-  }
-}
+const CarouselBlock = ({ getData, className, attributes }) => (
+  <div {...attributes} className={className}>
+    <Carousel
+      height={400}
+      value={getData('value', [
+        {
+          url: 'https://lorempixel.com/960/300/cats/',
+          width: 960,
+          height: 400,
+        },
+      ])}
+    />
+  </div>
+);
 
 export default {
   type: 'carousel',
