@@ -10,8 +10,6 @@ import moment from 'moment';
 import ContainerBlock from 'olymp-pages/blocks/container-text';
 import HeaderBlock from '../components/header';
 
-console.log(HeaderBlock, ContainerBlock);
-
 const loaderSchema = [
   {
     height: 450,

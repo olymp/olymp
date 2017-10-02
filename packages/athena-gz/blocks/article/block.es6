@@ -32,7 +32,6 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Header = HeaderBlock.component;
 const Container = createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
   Object.keys(p),
 );
@@ -103,9 +102,9 @@ const component = withTheme(
           color={item.org.color}
         />
       ) : (
-        <Header subheader={getSubheader(item)} color={item.org.color}>
+        <HeaderBlock subheader={getSubheader(item)} color={item.org.color}>
           {item.name}
-        </Header>
+        </HeaderBlock>
       )}
       <Container className={className} color={item.org.color} {...attributes}>
         <Slate readOnly value={item.text} />

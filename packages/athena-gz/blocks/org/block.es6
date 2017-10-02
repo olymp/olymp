@@ -40,7 +40,6 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Header = HeaderBlock.component;
 const Slate = withBlockTypes(props => <SlateMate {...props} />);
 
 const Content = createComponent(
@@ -100,9 +99,9 @@ const component = withTheme(
           color={item.color}
         />
       ) : (
-        <Header subheader={item.description} color={item.color}>
+        <HeaderBlock subheader={item.description} color={item.color}>
           {item.slogan}
-        </Header>
+        </HeaderBlock>
       )}
       <Container className={className}>
         <Grid>
