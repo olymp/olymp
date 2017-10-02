@@ -15,6 +15,13 @@ const ReactModal = ({ className, ...props }) => (
   <ReactModal2 backdropClassName={className} {...props} />
 );
 
+const getLogo = (x) => {
+  if (typeof x === 'function') {
+    return x();
+  }
+  return <img src={x} alt="logo" />;
+};
+
 export const Modal = getContext({
   theme: PropTypes.object,
 })(
@@ -60,7 +67,7 @@ export const Modal = getContext({
           <AntModal visible={false} />
           {theme.logoWhite && (
             <div className="logo">
-              <img src={theme.logoWhite} />
+              {getLogo(theme.logoWhite)}
               {theme.logoTitle && <h3>{theme.logoTitle}</h3>}
             </div>
           )}

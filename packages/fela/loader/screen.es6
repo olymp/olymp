@@ -5,6 +5,12 @@ import { getContext } from 'recompose';
 import tinycolor from 'tinycolor2';
 import Portal from '../portal';
 
+const getLogo = (x) => {
+  if (typeof x === 'function') {
+    return x();
+  }
+  return <img src={x} alt="logo" />;
+};
 const Modal = getContext({
   theme: PropTypes.object,
 })(
@@ -12,11 +18,7 @@ const Modal = getContext({
     (show ? (
       <Portal>
         <div className={className}>
-          {theme.get().logoWhite && (
-            <div className="logo">
-              <img src={theme.get().logoWhite} />
-            </div>
-          )}
+          {theme.get().logoWhite && <div className="logo">{getLogo(theme.get().logoWhite)}</div>}
         </div>
       </Portal>
     ) : null),
@@ -64,6 +66,23 @@ const component = createComponent(
         },
       },
       '> img': {
+        height: 75,
+        center: true,
+        animationDuration: '2.5s',
+        animationIterationCount: 'infinite',
+        animationName: {
+          '0%': {
+            opacity: 0.33,
+          },
+          '70%': {
+            opacity: 0.45,
+          },
+          '100%': {
+            opacity: 0.33,
+          },
+        },
+      },
+      '> svg': {
         height: 75,
         center: true,
         animationDuration: '2.5s',
