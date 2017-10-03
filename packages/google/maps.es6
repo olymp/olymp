@@ -13,9 +13,16 @@ const StyledMap = createComponent(
       overflow: 'visible',
     },
   }),
-  ({ className, ...rest }) => (
+  ({ className, options, ...rest }) => (
     <div className={className}>
-      <ReactMap {...rest} />
+      <ReactMap
+        options={{
+          minZoomOverride: true,
+          minZoom: 2,
+          ...(options || {}),
+        }}
+        {...rest}
+      />
     </div>
   ),
   p => Object.keys(p),
