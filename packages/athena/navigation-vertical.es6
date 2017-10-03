@@ -210,7 +210,7 @@ class Navigation extends Component {
             }
           >
             <Menu.Item key="@page=form">
-              <span>Seite</span>
+              <Link to={{ pathname: '/__new', query: { '@page': 'form' } }}>Seite</Link>
             </Menu.Item>
             {collectionList.map(collection => (
               <Menu.Item key={`@${collection.name.toLowerCase()}`}>
