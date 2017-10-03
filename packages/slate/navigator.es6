@@ -132,11 +132,9 @@ class Pages extends Component {
     const dropPos = info.node.props.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
     // const dragNodesKeys = info.dragNodesKeys;
-    console.log(dropPosition, info.dropToGap, dragNode.key, dropNode.key, dropNode.nodes.size);
     if (info.dropToGap) {
       const parent = value.document.getParent(dropNode.key);
       const dropObjIndex = parent.nodes.indexOf(dropNode);
-      console.log(parent, dropObjIndex);
       if (dropPosition === -1) {
         this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex));
       } else {
