@@ -7,12 +7,11 @@ import { lowerCase } from 'lodash';
 import { reorderPage, movePage } from '../../gql';
 
 const Button = createComponent(
-  ({ theme, showOnHover }) => ({
+  ({ theme }) => ({
     borderRadius: '50%',
     size: 23,
     textAlign: 'center',
     marginLeft: 3,
-    display: showOnHover && 'none',
     '> i': {
       color: theme.color,
       margin: '0 !important',
@@ -169,7 +168,6 @@ class Pages extends Component {
               key="button"
               to={{ pathname: '/__new', query: { '@page': 'form', '@parent': item.id } }}
               type="plus"
-              showOnHover
             />,
             isBinding && <Button key="button2" to={route} type="api" />,
             this.getNodeIcon(item),
