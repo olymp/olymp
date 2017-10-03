@@ -50,7 +50,7 @@ Load.displayName = 'CmsLoadSwitch';
 
 const component = Wrapped =>
   enhance(({ theme, ...rest }) => (
-    <ThemeProvider theme={theme} xy={console.log(theme)}>
+    <ThemeProvider theme={theme}>
       <LightboxProvider>
         <Load {...rest} Wrapped={Wrapped} />
       </LightboxProvider>
