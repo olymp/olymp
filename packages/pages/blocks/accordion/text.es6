@@ -1,7 +1,6 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
 import { withQueryParam } from 'olymp-router';
-import { Text } from 'slate';
 
 const Text = createComponent(
   ({ theme, isOpen }) => ({
