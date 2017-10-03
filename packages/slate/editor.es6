@@ -21,6 +21,7 @@ import Paragrapher from './plugins/paragrapher';
 import TrailingBlock from './plugins/trailing-block';
 import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
+import NoParagraph from './plugins/no-paragraph';
 import './style.css';
 import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';
@@ -197,8 +198,9 @@ class SlateEditor extends Component {
     withAutoMarkdown(options),
     TrailingBlock({ type: 'paragraph' }),
     InsertBlockOnEnter({ type: 'paragraph' }),
-    Paragrapher({ type: 'paragraph' }),
+    // Paragrapher({ type: 'paragraph' }),
     LineToParagraph({ type: 'paragraph' }),
+    NoParagraph({ type: 'paragraph' }),
   ];
   state = { focus: false };
   static propTypes = {
@@ -256,13 +258,6 @@ class SlateEditor extends Component {
     const { focus } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
-    const undo =
-      !!value &&
-      !!value.history &&
-      !!value.history.undos &&
-      !!value.history.undos._head &&
-      value.history.undos._head.value;
-
     return (
       <div className={className} style={{ position: 'relative', ...style }}>
         {children}
@@ -296,7 +291,7 @@ class SlateEditor extends Component {
           state={value}
           spellcheck={spellcheck || false}
           readOnly={!!readOnly}
-          plugins={!!readOnly ? this.plugins : emptyArray}
+          plugins={readOnly ? emptyArray : this.plugins}
           schema={{ marks, nodes }}
           onChange={this.onChange}
           onFocus={() => this.setState({ focus: true })}

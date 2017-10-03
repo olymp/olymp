@@ -17,7 +17,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Text',
-  defaultText: 'Text',
+  defaultNodes: ['paragraph'],
   component: withQueryParam(
     'accordion',
   )(({ className, attributes, children, accordion, parent }) => (

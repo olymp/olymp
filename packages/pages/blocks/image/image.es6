@@ -1,6 +1,7 @@
 import React from 'react';
 import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
+import { Inline, Block } from 'slate';
 
 export default {
   type: 'image',
@@ -69,28 +70,46 @@ export default {
       label: <FaAlignLeft />,
       tooltip: 'Links anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('left') === 0,
-      toggle: ({ setData, getData, state, onChange, node }) => {
-        const alignment = getData('float', 'none');
+      toggle: ({ state, onChange, node }) => {
+        const alignment = node.data.get('float') || 'none';
         if (alignment === 'none') {
           onChange(
-            state.change().setNodeByKey(node.key, {
-              kind: 'inline',
-              data: { ...node.data.toJS(), float: 'left' },
-            }),
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'left'),
+                }),
+              ),
           );
         } else if (alignment === 'left') {
           onChange(
-            state.change().setNodeByKey(node.key, {
-              kind: 'inline',
-              data: { ...node.data.toJS(), float: 'left+' },
-            }),
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'left+'),
+                }),
+              ),
           );
         } else {
           onChange(
-            state.change().setNodeByKey(node.key, {
-              kind: 'block',
-              data: { ...node.data.toJS(), float: null },
-            }),
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertBlock(
+                Block.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', null),
+                }),
+              ),
           );
         }
       },
@@ -99,14 +118,48 @@ export default {
       label: <FaAlignRight />,
       tooltip: 'Rechts anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('right') === 0,
-      toggle: ({ setData, getData }) => {
-        const alignment = getData('float', 'none');
+      toggle: ({ state, onChange, node }) => {
+        const alignment = node.data.get('float') || 'right';
+
         if (alignment === 'none') {
-          setData({ float: 'right' });
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'right'),
+                }),
+              ),
+          );
         } else if (alignment === 'right') {
-          setData({ float: 'right+' });
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'right+'),
+                }),
+              ),
+          );
         } else {
-          setData({ float: null });
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertBlock(
+                Block.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', null),
+                }),
+              ),
+          );
         }
       },
     },

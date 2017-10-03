@@ -12,13 +12,13 @@ export const matchPaths = (pathname, exact, match) => {
   }
   return false;
 };
-export const getChild = ({ render, component: Component, match, children, ...rest }) => {
+export const getChild = ({ render, component: Component, ...rest }) => {
   if (Component) {
     return <Component {...rest} />;
   } else if (render) {
     return render(rest);
-  } else if (children) {
-    return Children.only(children);
+  } else if (rest.children) {
+    return Children.only(rest.children);
   }
   return null;
 };
@@ -125,14 +125,14 @@ export const SwitchPathname = compose(
   for (let index = 0; index < routes.length; index++) {
     const route = routes[index];
     const { displayName } = route.type;
-    const { match, exact, ...rest } = route.props;
-    if (displayName === 'Match' && match === true) {
+    const { exact, ...rest } = route.props;
+    if (displayName === 'Match' && route.props.match === true) {
       matched = getChild(rest);
-    } else if (displayName === 'Match' && match === undefined) {
+    } else if (displayName === 'Match' && route.props.match === undefined) {
       notFound = getChild(rest);
-    } else if (displayName === 'MatchPath' && matchPath(pathname, exact, match)) {
+    } else if (displayName === 'MatchPath' && matchPath(pathname, exact, route.props.match)) {
       matched = getChild(rest);
-    } else if (displayName === 'MatchPaths' && matchPaths(pathname, exact, match)) {
+    } else if (displayName === 'MatchPaths' && matchPaths(pathname, exact, route.props.match)) {
       matched = getChild(rest);
     }
     if (matched) {
@@ -143,9 +143,9 @@ export const SwitchPathname = compose(
 });
 SwitchPathname.displayName = 'SwitchPathname';
 
-export const Match = ({ match, ...rest }) => {
-  if (match === true) {
-    return getChild(rest);
+export const Match = (props) => {
+  if (props.match === true) {
+    return getChild(props);
   }
   return null;
 };

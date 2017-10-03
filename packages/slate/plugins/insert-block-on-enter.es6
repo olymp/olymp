@@ -43,6 +43,15 @@ function InsertBlockOnEnterPlugin(...args) {
       const { state } = change;
       const { document, startKey, startBlock } = state;
 
+      if (startBlock && !startBlock.isVoid && startBlock.type !== 'paragraph') {
+        const nextBlock = document.getNextBlock(startKey);
+        const prevBlock = document.getPreviousBlock(startKey);
+        const blockToInsert = Block.create(blockInputProps);
+        return change
+          .collapseToEndOf(startBlock)
+          .insertBlock(blockToInsert)
+          .collapseToEnd();
+      }
       if (startBlock && startBlock.isVoid) {
         const nextBlock = document.getNextBlock(startKey);
         const prevBlock = document.getPreviousBlock(startKey);

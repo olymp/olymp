@@ -27,12 +27,7 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
       if (defaultNodes && typeof defaultNodes === 'function') {
         defaultNodes = defaultNodes({ value, node, blockTypes, parentKey, index, transform });
       } else if (!defaultNodes && !block.isVoid) {
-        defaultNodes = [
-          {
-            type: 'paragraph',
-            nodes: [Text.create(defaultText)],
-          },
-        ];
+        defaultNodes = [Text.create(defaultText)];
       }
 
       if (block && block.kind === 'block') {
@@ -58,6 +53,8 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
             );
           } else if (item.type && blockTypes[item.type]) {
             transform = addBlock(value, item, blockTypes, block.key, index, transform);
+          } else if (Text.isText(item) || Block.isBlock(item) || Inline.isInline(item)) {
+            transform = transform.insertNodeByKey(block.key, index, item);
           } else {
             transform =
               block.kind === 'block'
@@ -70,6 +67,7 @@ const addBlock = (value, node, blockTypes, parentKey, index = 0, transform = val
   } else {
     // Handle the extra wrapping required for list buttons.
     const isList = hasBlock(value, 'bulleted-list-item') || hasBlock(value, 'numbered-list-item');
+    console.log(isList);
     const isType = blocks.some(
       block => !!document.getClosest(block, parent => parent.type === type),
     );

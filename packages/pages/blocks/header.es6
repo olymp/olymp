@@ -43,6 +43,7 @@ export default {
   label: 'Überschrift',
   category: 'Text',
   component: withRouter(HeaderBlock),
+  defaultText: 'Titel',
   styles: ({ theme }) => ({
     backgroundColor: '#ddd',
     minHeight: 100,

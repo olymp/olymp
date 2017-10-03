@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ThemeProvider as FelaThemeProvider } from 'react-fela';
 
 const getTheme = (theme = {}) => ({

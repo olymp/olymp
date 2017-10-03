@@ -18,6 +18,7 @@ export default {
   type: 'Pages.Template.Columns.Column.Text',
   isVoid: false,
   kind: 'block',
+  defaultNodes: ['paragraph'],
   label: 'Text',
   component: Text,
 };
