@@ -20,7 +20,7 @@ const ParentSelect = ({
 }) => (
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
-      initialValue: item ? item[field] : initialValue,
+      initialValue: item && item[field] ? item[field] : initialValue,
       rules: getRules(rules, label),
     })(
       <NullableTree

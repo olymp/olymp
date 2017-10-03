@@ -81,6 +81,7 @@ class PageForm extends Component {
             label="Menü"
             placeholder="Übergeordnetes Menü"
             size="large"
+            initialValue={form.getFieldValue('parentId')}
           />
         )}
         {(form.getFieldValue('type') || item.type) === 'LINK' && (

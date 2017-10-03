@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Prompt, withQueryActions, Link } from 'olymp-router';
+import { Prompt, withQueryActions } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
-import Actions from 'olymp-ui/actions';
 import { withPropsOnChange, withProps } from 'recompose';
-import { Form, Icon, Button } from 'antd';
+import { Form } from 'antd';
 import { StatelessSlateMate, withJsonState, withDebounceState } from 'olymp-slate';
+import { get } from 'lodash';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
 
@@ -22,11 +22,15 @@ const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChan
 @Form.create()
 @mutatePage
 @withQueryActions
-@withPropsOnChange(['item', 'flatNavigation'], ({ item, flatNavigation, form, ...rest }) => {
-  item = item || flatNavigation.find(page => page.slug === '/');
-  form.getFieldDecorator('parent', { initialValue: rest['@parent'] || item.parent });
+@withPropsOnChange(['item', 'flatNavigation'], ({ flatNavigation, form, ...rest }) => {
+  const item = rest.item || flatNavigation.find(page => page.slug === '/');
+
+  form.getFieldDecorator('parentId', {
+    initialValue: get(rest, 'query.["@parent"]') || item.parentId,
+  });
   form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
   form.getFieldDecorator('blocks', { initialValue: item.blocks });
+
   return {
     id: item.id || null,
     item,
@@ -79,18 +83,18 @@ export default class PageSidebar extends Component {
         bindingObj={bindingObj}
       />
     );
+
     return (
       <SplitView maxWidth={maxWidth} center>
         <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
 
-        <Sidebar isOpen padding={0} title={title} subtitle={description} 
-        rightButtons={
-          <Sidebar.Button
-            onClick={save}
-            shape="circle"
-            icon="save"
-          />
-        }>
+        <Sidebar
+          isOpen
+          padding={0}
+          title={title}
+          subtitle={description}
+          rightButtons={<Sidebar.Button onClick={save} shape="circle" icon="save" />}
+        >
           <PageForm
             value={value}
             onChange={onChange}
