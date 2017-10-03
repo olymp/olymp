@@ -1,11 +1,46 @@
 import React, { Component } from 'react';
 import { Icon, AutoComplete, Input } from 'antd';
 import { throttleInput } from 'olymp-utils';
-import { withApollo } from 'react-apollo';
+import { withApollo, graphql } from 'react-apollo';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 
 @withApollo
-export default class GeosuggestEdit extends Component {
+@graphql(
+  gql`
+    query geocodeList($address: String!) {
+      geocodeList(address: $address, region: "DE") {
+        id
+        streetNumber
+        route
+        locality
+        administrativeAreaLevel1
+        administrativeAreaLevel2
+        country
+        postalCode
+        formattedAddress
+        lat
+        lng
+        locationType
+        partialMatch
+        types
+      }
+    }
+  `,
+  {
+    options: ({ lat, lng }) => ({
+      skip: lat === undefined || lng === undefined,
+      variables: {
+        address: `${lat}, ${lng}`,
+      },
+    }),
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      value: get(data, 'geocodeList[0]', {}),
+    }),
+  },
+)
+export default class GeocodeEditor extends Component {
   static defaultProps = {
     value: null,
   };
@@ -88,7 +123,7 @@ export default class GeosuggestEdit extends Component {
         <Input
           placeholder={placeholder || 'Suche ...'}
           size={size}
-          addonAfter={<Icon type="search" />}
+          prefix={<Icon type="environment-o" />}
         />
       </AutoComplete>
     );

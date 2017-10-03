@@ -64,6 +64,13 @@ export default ({ theme }) => {
     },
     '& .ant-select-auto-complete.ant-select .ant-select-selection__rendered': {
       lineHeight: '32px',
+      '> ul': {
+        listStyle: 'none',
+        margin: 0,
+        '> li': {
+          margin: 0,
+        },
+      },
     },
     '& form.ant-form.ant-form-horizontal .ant-row.ant-form-item': {
       marginBottom: 10,

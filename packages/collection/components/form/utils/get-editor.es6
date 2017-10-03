@@ -8,8 +8,8 @@ import {
   TimeRangesEditor,
   TagsEditor,
   SuggestEditor,
-  GeocodeEditor,
 } from 'olymp-ui';
+import { GeocodeEditor } from 'olymp-google';
 import { StatelessSlateMate, withDebounceState } from 'olymp-slate';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';

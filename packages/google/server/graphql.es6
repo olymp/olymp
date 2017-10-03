@@ -1,7 +1,7 @@
-import createMaps from './maps';
 import google from 'googleapis';
 import bluebird from 'bluebird';
 import shortID from 'shortid';
+import createMaps from './maps';
 import { metricsObj, dimensionsObj } from '../definitions';
 
 // https://ga-dev-tools.appspot.com/query-explorer/
@@ -29,7 +29,7 @@ export default (mapsKey, mail, key) => {
     });
   }
   return {
-    name: 'geocode',
+    name: 'google',
     queries: `
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
