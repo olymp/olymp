@@ -1,12 +1,12 @@
 import React from 'react';
-import { Switch, Match } from 'olymp-router';
+import { Switch, Match, createUpdateQuery } from 'olymp-router';
 import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
 import { withUA } from 'olymp-utils';
 import EditableRoute from 'olymp-pages/editable';
 import PageRoute from 'olymp-pages/route';
 import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute, withCollections } from 'olymp-collection';
-import { createComponent, getAntStyle, TopLoader } from 'olymp-fela';
+import { createComponent, getAntStyle, TopLoader, Modal } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
@@ -70,7 +70,7 @@ const enhance = compose(
       query: location.query,
     }),
     dispatch => ({
-      // updateQuery: createUpdateQuery(dispatch),
+      updateQuery: createUpdateQuery(dispatch),
     }),
   ),
   withState('deviceWidth', 'setDeviceWidth', undefined),
@@ -82,8 +82,8 @@ const component = enhance((props) => {
     ua,
     deviceWidth,
     setDeviceWidth,
-    // updateQuery,
     flatNavigation,
+    updateQuery,
   } = props;
   const collection = collectionList.filter(
     ({ name }) => query[`@${name.toLowerCase()}`] !== undefined,
@@ -99,20 +99,18 @@ const component = enhance((props) => {
       <Lightbox />
       <Hotjar id={process.env.HOTJAR} />
       <AuthModals />
-      {/*! !collection &&
-        query.modal === null &&
-        <CollectionModal
-          {...props}
-          open={!!collection && query.modal === null}
-          id={collectionId}
-          typeName={collectionName}
-          onClose={() => updateQuery({ [`@${collectionName.toLowerCase()}`]: undefined, modal: undefined })}
-      /> */}
+      <Modal
+        open={!!collection && query.modal === null}
+        onClose={() =>
+          updateQuery({ [`@${collectionName.toLowerCase()}`]: undefined, modal: undefined })}
+      >
+        <CollectionRoute {...props} id={collectionId} typeName={collectionName} />
+      </Modal>
       <NavigationVertical collectionList={collectionList} setDeviceWidth={setDeviceWidth} />
       <SwitchContainer>
         <Switch>
           <Match
-            match={!!collection}
+            match={!!collection && query.modal !== null}
             render={() => (
               <CollectionRoute {...props} id={collectionId} typeName={collectionName} />
             )}
