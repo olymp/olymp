@@ -12,6 +12,7 @@
   "dependencies": {
     "immutable": "^3.8.1",
     "slate": "0.25.3",
+    "slate-edit-list": "^0.8.0",
     "slate-hyperscript": "^0.1.10",
     "slate-plain-serializer": "^0.1.11",
     "slate-react": "^0.2.1"

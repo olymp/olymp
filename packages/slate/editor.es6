@@ -18,6 +18,7 @@ import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import Paragrapher from './plugins/paragrapher';
+import EditList from 'slate-edit-list';
 import TrailingBlock from './plugins/trailing-block';
 import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
@@ -32,6 +33,11 @@ const getIdByTag = (children) => {
   const id = getId(Children.map(children, x => x.props.node));
   return `${id}`;
 };
+
+const editList = EditList({
+  types: ['numbered-list', 'bulleted-list'],
+  typeItem: 'list-item',
+});
 
 const emptyArray = [];
 const options = {
@@ -64,8 +70,20 @@ const options = {
       ],
     },
     { type: 'block-quote', label: <I icon={FaIndent} /> },
-    { type: 'numbered-list', label: <I icon={FaListOl} /> },
-    { type: 'bulleted-list', label: <I icon={FaListUl} /> },
+    {
+      type: 'numbered-list',
+      label: <I icon={FaListOl} />,
+      onClick: ({ state, onChange }) => {
+        onChange(state.change().call(plugin.changes.wrapInList));
+      },
+    },
+    {
+      type: 'bulleted-list',
+      label: <I icon={FaListUl} />,
+      onClick: ({ state, onChange }) => {
+        onChange(state.change().call(plugin.changes.wrapInList));
+      },
+    },
   ],
   toolbarActions: [
     {
@@ -144,6 +162,7 @@ const options = {
         {children}
       </h6>
     ),
+    'list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
     'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
     'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
   },
@@ -201,6 +220,7 @@ class SlateEditor extends Component {
     // Paragrapher({ type: 'paragraph' }),
     LineToParagraph({ type: 'paragraph' }),
     NoParagraph({ type: 'paragraph' }),
+    editList,
   ];
   state = { focus: false };
   static propTypes = {
