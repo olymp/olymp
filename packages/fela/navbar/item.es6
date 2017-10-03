@@ -9,8 +9,8 @@ import { FaAngleDown, FaAngleLeft, FaAngleRight } from 'olymp-icons';
 const Icon = createComponent(
   ({ theme, inverse }) => ({
     fill: `${inverse ? theme.light2 : theme.color}`,
-    centerY: true,
-    right: theme.space2,
+    // centerY: true,
+    // right: theme.space2,
   }),
   ({ className, vertically, right }) =>
     (!vertically ? (
@@ -35,7 +35,7 @@ const NavItem = createComponent(
     float: !vertically && 'left',
     position: 'relative',
     paddingY: theme.space2,
-    paddingX: theme.space4,
+    paddingX: theme.space2,
     onHover: {
       backgroundColor: inverse && fade('#000000', 10),
       '> div': {
@@ -46,7 +46,7 @@ const NavItem = createComponent(
       float: 'none',
       display: 'block',
       width: '100%',
-      paddingX: theme.space3,
+      paddingX: theme.space1,
     },
   }),
   ({
