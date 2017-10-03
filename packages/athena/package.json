@@ -1,5 +1,5 @@
 {
-  "version": "17.7.3",
+  "version": "17.7.4",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -24,7 +24,7 @@
     "olymp-mail": "^17.5.7",
     "olymp-pages": "^17.7.3",
     "olymp-scrape": "^17.7.3",
-    "olymp-slate": "^17.7.2",
+    "olymp-slate": "^17.7.4",
     "olymp-ui": "^17.7.2",
     "olymp-utils": "^17.5.7",
     "olymp-webpack-babel": "^17.6.9",
