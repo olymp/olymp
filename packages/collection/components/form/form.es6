@@ -4,7 +4,8 @@ import { SplitView, Sidebar } from 'olymp-ui';
 import { withState, withProps, compose } from 'recompose';
 import { withJsonState } from 'olymp-slate';
 import { createComponent, Container, Grid } from 'olymp-fela';
-import Navigator from 'olymp-slate/navigator';
+// import Navigator from 'olymp-slate/navigator';
+import Blocks from 'olymp-slate/blocks';
 import FormItem from './item';
 
 const TabPane = createComponent(
@@ -93,8 +94,11 @@ const FormComponent = enhance(
                     ))}
                   </Form>
                 </TabPane>
-                <TabPane tab="Editor" key="tree">
+                {/* <TabPane tab="Editor" key="tree">
                   <Navigator value={value} onChange={onChange} base64={base64} />
+                  </TabPane> */}
+                <TabPane tab="Blöcke" key="tree">
+                  <Blocks />
                 </TabPane>
               </Tabs>
               <Buttons>{children}</Buttons>

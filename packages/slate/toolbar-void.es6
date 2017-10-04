@@ -1,7 +1,7 @@
 import React from 'react';
-import Toolbar, { Button } from './toolbar';
 import { Menu } from 'antd';
 import { sortBy } from 'lodash';
+import Toolbar, { Button } from './toolbar';
 import addBlock from './utils/add-block';
 
 export default (props) => {

@@ -24,9 +24,10 @@ import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
 import NoParagraph from './plugins/no-paragraph';
 import './style.css';
-import ToolbarBlock from './toolbar-block';
+// import ToolbarBlock from './toolbar-block';
 import ToolbarText from './toolbar-text';
-import ToolbarVoid from './toolbar-void';
+// import ToolbarVoid from './toolbar-void';
+import addBlock from './utils/add-block';
 import I from './icon';
 
 const getIdByTag = (children) => {
@@ -259,6 +260,35 @@ class SlateEditor extends Component {
     return undefined;
   };
 
+  onPaste = (ev, data, change, x) => {
+    const { blockTypes } = this.props;
+    if (data.text && blockTypes[data.text]) {
+      return addBlock(
+        change.state,
+        blockTypes[data.text].slate,
+        blockTypes,
+        null,
+        null,
+        change.select(data.target),
+      );
+    }
+  };
+
+  onDrop = (ev, data, change, x) => {
+    const { blockTypes } = this.props;
+    const type = ev.dataTransfer.getData('x-slatemate');
+    if (type) {
+      return addBlock(
+        change.state,
+        blockTypes[type].slate,
+        blockTypes,
+        null,
+        null,
+        change.select(data.target),
+      );
+    }
+  };
+
   onChange = change => this.props.onChange(change.state);
 
   render = () => {
@@ -279,9 +309,13 @@ class SlateEditor extends Component {
     const value = this.props.value || Plain.deserialize('');
 
     return (
-      <div className={className} style={{ position: 'relative', ...style }}>
+      <div
+        className={className}
+        onDragEnter={() => this.setState({ focus: true })}
+        style={{ position: 'relative', ...style }}
+      >
         {children}
-        {readOnly !== true && (
+        {/* readOnly !== true && (
           <ToolbarBlock
             show={focus}
             state={value}
@@ -296,7 +330,7 @@ class SlateEditor extends Component {
             blockTypes={blockTypes}
             onChange={this.onChange}
           />
-        )}
+        ) */}
         {readOnly !== true && (
           <ToolbarText
             show={focus}
@@ -311,6 +345,8 @@ class SlateEditor extends Component {
           state={value}
           spellcheck={spellcheck || false}
           readOnly={!!readOnly}
+          onDrop={this.onDrop}
+          onPaste={this.onPaste}
           plugins={readOnly ? emptyArray : this.plugins}
           schema={{ marks, nodes }}
           onChange={this.onChange}

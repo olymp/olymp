@@ -10,8 +10,8 @@ export default WrappedComponent =>
         const top = e.target.scrollTop;
         this.setState({ top });
       },
-      100,
-      { trailing: true, leading: true }
+      10,
+      { trailing: true, leading: true },
     );
     componentDidMount() {
       document.addEventListener('scroll', this.onScroll, true);

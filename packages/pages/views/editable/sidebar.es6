@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Collapse } from 'antd';
 import { createComponent } from 'olymp-fela';
-import Navigator from 'olymp-slate/navigator';
+// import Navigator from 'olymp-slate/navigator';
+import Blocks from 'olymp-slate/blocks';
 import Tree from './tree';
 import PageForm from './page';
 
@@ -46,8 +47,11 @@ const PageTree = ({ form, item, items, navigation, tab, onTabClick, value, onCha
     <TabPane tab="Seite" key="form">
       <PageForm item={item} items={items} form={form} />
     </TabPane>
-    <TabPane tab="Editor" key="tree">
+    {/* <TabPane tab="Editor" key="tree">
       <Navigator value={value} onChange={onChange} base64={base64} />
+</TabPane> */}
+    <TabPane tab="Blöcke" key="tree">
+      <Blocks />
     </TabPane>
   </Tabs>
 );

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
+import { Dropdown, Menu } from 'antd';
+import { FaCog, FaChevronDown, FaChevronUp } from 'olymp-icons';
+import Toolbar from '../toolbar';
+import { Action } from '../toolbar-block';
 // import dnd from './dnd';
 
-export default (options = {}) => (Block) => {
-  const { isVoid, props } = options;
-
+export default options => (Block) => {
   const StyledBlock = createComponent(
     ({ isSelected }) => ({
-      outline: isSelected && '2px solid rgba(48, 48, 48, 0.67)',
+      outline: isSelected && options.category && '2px solid rgba(48, 48, 48, 0.67)',
     }),
     p => <Block {...p} />,
     p => Object.keys(p),
@@ -16,6 +18,186 @@ export default (options = {}) => (Block) => {
   // @dnd
   class BaseDecorator extends Component {
     static slate = options;
+
+    getActions = () => {
+      const actions = [...(options.actions || [])];
+      const { editor, node } = this.props;
+      const state = editor.getState();
+      if (options.category) {
+        actions.push({
+          component: ({ onChange, state, node }) => (
+            <div>
+              <FaChevronUp
+                onMouseDown={(e) => {
+                  onChange(
+                    state
+                      .change()
+                      .moveNodeByKey(
+                        node.key,
+                        state.document.getParent(node.key).key,
+                        state.document.getParent(node.key).nodes.indexOf(node) - 1,
+                      ),
+                  );
+                  e.preventDefault();
+                }}
+              />
+              <FaChevronDown
+                onMouseDown={(e) => {
+                  onChange(
+                    state
+                      .change()
+                      .moveNodeByKey(
+                        node.key,
+                        state.document.getParent(node.key).key,
+                        state.document.getParent(node.key).nodes.indexOf(node) + 1,
+                      ),
+                  );
+                  e.preventDefault();
+                }}
+              />
+            </div>
+          ),
+        });
+        /* if (state.document.getParent(node.key).nodes.indexOf(node) > 0) {
+          actions.push({
+            label: <FaArrowUp />,
+            toggle: ({ onChange, state, node }) =>
+              onChange(
+                state
+                  .change()
+                  .moveNodeByKey(
+                    node.key,
+                    state.document.getParent(node.key).key,
+                    state.document.getParent(node.key).nodes.indexOf(node) - 1,
+                  ),
+              ),
+          });
+        }
+        if (
+          state.document.getParent(node.key).nodes.size >
+          state.document.getParent(node.key).nodes.indexOf(node)
+        ) {
+          actions.push({
+            label: <FaArrowDown />,
+            toggle: ({ onChange, state, node }) =>
+              onChange(
+                state
+                  .change()
+                  .moveNodeByKey(
+                    node.key,
+                    state.document.getParent(node.key).key,
+                    state.document.getParent(node.key).nodes.indexOf(node) + 1,
+                  ),
+              ),
+          });
+        } */
+        actions.push({
+          component: ({ state, onChange, node }) => (
+            <Dropdown
+              overlay={
+                <Menu style={{ minWidth: 200 }}>
+                  <Menu.Item>
+                    <span
+                      onMouseDown={(e) => {
+                        onChange(state.change().removeNodeByKey(node.key));
+                        e.preventDefault();
+                      }}
+                    >
+                      Löschen
+                    </span>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <span
+                      onMouseDown={(e) => {
+                        onChange(
+                          state
+                            .change()
+                            .moveToRangeOf(node)
+                            .focus(),
+                        );
+                        setTimeout(() => document.execCommand('copy'), 1);
+                        e.preventDefault();
+                      }}
+                    >
+                      Kopieren
+                    </span>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <span
+                      onMouseDown={(e) => {
+                        onChange(
+                          state
+                            .change()
+                            .moveToRangeOf(node)
+                            .focus(),
+                        );
+                        setTimeout(() => document.execCommand('cut'), 1);
+                        e.preventDefault();
+                      }}
+                    >
+                      Ausschneiden
+                    </span>
+                  </Menu.Item>
+                  <Menu.Divider />
+                  {node.kind === 'block' && (
+                    <Menu.Item>
+                      <span
+                        onMouseDown={(e) => {
+                          onChange(state.change().unwrapBlockByKey(node.key));
+                          e.preventDefault();
+                        }}
+                      >
+                        Auspacken
+                      </span>
+                    </Menu.Item>
+                  )}
+                  <Menu.Divider />
+                  <Menu.Item>
+                    <span
+                      onMouseDown={(e) => {
+                        onChange(
+                          state.change().insertNodeByKey(node.key, node.nodes.size, {
+                            type: 'paragraph',
+                            kind: 'block',
+                          }),
+                        );
+                        e.preventDefault();
+                      }}
+                    >
+                      Leere Zeile (Ende)
+                    </span>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <span
+                      onMouseDown={(e) => {
+                        onChange(
+                          state
+                            .change()
+                            .insertNodeByKey(
+                              state.document.getParent(node.key).key,
+                              state.document.getParent(node.key).nodes.indexOf(node) + 1,
+                              {
+                                type: 'paragraph',
+                                kind: 'block',
+                              },
+                            ),
+                        );
+                        e.preventDefault();
+                      }}
+                    >
+                      Leere Zeile (Nach)
+                    </span>
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <FaCog />
+            </Dropdown>
+          ),
+        });
+      }
+      return actions;
+    };
 
     setData = (data) => {
       const { node, editor } = this.props;
@@ -41,14 +223,8 @@ export default (options = {}) => (Block) => {
     };
 
     render() {
-      const { editor, children } = this.props;
-      const blockProps = (props || []).reduce((state, prop) => {
-        const data = this.getData(prop);
-        if (data !== undefined) {
-          state[prop] = data;
-        }
-        return state;
-      }, {});
+      const { editor, children, isSelected, node } = this.props;
+      const actions = this.getActions();
 
       return (
         <StyledBlock
@@ -57,9 +233,17 @@ export default (options = {}) => (Block) => {
           setData={this.setData}
           setActive={this.setActive}
           readOnly={editor.props.readOnly}
-          {...blockProps}
         >
-          {isVoid === false ? [children] : []}
+          {isSelected &&
+            !!actions &&
+            !!actions.length && (
+              <Toolbar show isOpened parent={`[data-key="${node.key}"]`}>
+                {actions.map(
+                  Action({ state: editor.props.value, onChange: editor.props.onChange, node }),
+                )}
+              </Toolbar>
+            )}
+          {options.isVoid === false ? [children] : []}
         </StyledBlock>
       );
     }

@@ -1,9 +1,9 @@
 import React from 'react';
-import Toolbar, { Button } from './toolbar';
 import { Menu } from 'antd';
 import { get } from 'lodash';
+import Toolbar, { Button } from './toolbar';
 
-const Action = ({ node, state, onChange, blockTypes }) => (
+export const Action = ({ node, state, onChange, blockTypes }) => (
   { toggle, active, label, component, ...rest },
   i,
 ) => {
@@ -31,7 +31,7 @@ const Action = ({ node, state, onChange, blockTypes }) => (
     return (
       <Menu.Item key={i}>
         <Button onMouseDown={onClick} tooltip={tooltip}>
-          <Com setData={setData} getData={getData} />
+          <Com setData={setData} getData={getData} state={state} onChange={onChange} node={node} />
         </Button>
       </Menu.Item>
     );

@@ -9,7 +9,7 @@ export default {
   kind: 'block',
   label: 'Bild',
   category: 'Medien',
-  component: ({ getData, className, editor, attributes }) => {
+  component: ({ getData, className, editor, attributes, children }) => {
     const Img = editor.props.readOnly === true ? LightboxImage : Image;
     return (
       <Img
@@ -21,7 +21,9 @@ export default {
           width: 400,
           height: 300,
         })}
-      />
+      >
+        {children}
+      </Img>
     );
   },
   styles: ({ theme, getData }) => {
@@ -77,6 +79,7 @@ export default {
             state
               .change()
               .removeNodeByKey(node.key)
+              .collapseToStartOfNextBlock()
               .insertInline(
                 Inline.create({
                   type: node.type,
