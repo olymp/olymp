@@ -1,24 +1,79 @@
 import React, { Component } from 'react';
 import { Tree } from 'antd';
-import TRANSFER_TYPES from 'slate-react/lib/constants/transfer-types';
-import setTransferData from 'slate-react/lib/utils/set-transfer-data';
 import { Inline, Block } from 'slate';
 import { sortBy } from 'lodash';
-import Base64 from 'slate-base64-serializer';
 import withBlockTypes from './decorators/with-block-types';
 
 @withBlockTypes
 class Blocks extends Component {
   dragStart = type => (ev) => {
     const blockTypes = this.props.blockTypes;
-    const block = blockTypes[type];
     return ev.dataTransfer.setData('x-slatemate', type);
-    if (block.kind === 'inline') {
-      const encoded = Base64.serializeNode(Inline.create({ type }));
-      setTransferData(ev.dataTransfer, TRANSFER_TYPES.FRAGMENT, encoded);
-    } else {
-      const encoded = Base64.serializeNode(Block.create({ type }));
-      setTransferData(ev.dataTransfer, TRANSFER_TYPES.FRAGMENT, encoded);
+  };
+
+  applyTemplate = (type) => {
+    const { value } = this.props;
+    if (type === 'image') {
+      this.onChange(
+        value
+          .change()
+          .selectAll()
+          .delete()
+          .insertNodeByKey(value.document.key, 0, {
+            type: 'image',
+            kind: 'block',
+            isVoid: true,
+          })
+          .insertNodeByKey(value.document.key, 1, {
+            type: 'containerText',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Text.create('Text')],
+          })
+          .focus(),
+      );
+    } else if (type === 'banner') {
+      this.onChange(
+        value
+          .change()
+          .selectAll()
+          .delete()
+          .insertNodeByKey(value.document.key, 0, {
+            type: 'banner',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+          })
+          .insertNodeByKey(value.document.key, 1, {
+            type: 'containerText',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Text')] })],
+          })
+          .focus(),
+      );
+    } else if (type === 'carousel') {
+      this.onChange(
+        value
+          .change()
+          .selectAll()
+          .delete()
+          .insertNodeByKey(value.document.key, 0, { type: 'carousel', kind: 'block', isVoid: true })
+          .insertNodeByKey(value.document.key, 1, {
+            type: 'banner',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+          })
+          .insertNodeByKey(value.document.key, 2, Block.create({ type: 'paragraph' }))
+          .insertNodeByKey(value.document.key, 3, {
+            type: 'containerText',
+            kind: 'block',
+            isVoid: false,
+            nodes: [Text.create('Text')],
+          })
+          .focus(),
+      );
     }
   };
   getItems = (block) => {

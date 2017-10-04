@@ -12,8 +12,9 @@ const styles = props => ({
   minHeight: 20,
   minWidth: 20,
 });
-const component = ({ className, image, title, loading, description, value }) => (
-  <div className={className}>
+const component = ({ image, title, loading, description, value, children, ...rest }) => (
+  <div {...rest}>
+    {children}
     {image && (
       <Image
         width={80}
@@ -37,7 +38,7 @@ const component = ({ className, image, title, loading, description, value }) => 
 const card = graphql(
   gql`
     query scrape($url: String) {
-      item: scrape(url: $url) {
+      scrape(url: $url) {
         id
         author
         date
@@ -50,19 +51,20 @@ const card = graphql(
     }
   `,
   {
-    options: ({ value, url }) => ({
+    options: ({ value }) => ({
       variables: {
-        url: value || url,
+        xxy: console.log(value),
+        url: value,
       },
     }),
     props: ({ ownProps, data }) => ({
       ...ownProps,
       data,
       loading: data.loading,
-      value: ownProps.url || ownProps.value,
-      ...(data.item || {}),
+      value: ownProps.value,
+      ...(data.scrape || {}),
     }),
   },
-)(component);
+)(createComponent(styles, component, p => Object.keys(p)));
 
-export default createComponent(styles, card, p => Object.keys(p));
+export default card;

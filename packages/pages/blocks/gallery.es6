@@ -41,9 +41,10 @@ export default {
   isVoid: true,
   kind: 'block',
   label: 'Galerie',
-  category: 'Medien',
-  component: ({ getData, setActive, className, attributes }) => (
+  category: 'Bilder',
+  component: ({ getData, setActive, className, attributes, children }) => (
     <Container {...attributes}>
+      {children}
       {getData('value', [
         {
           url: 'https://lorempixel.com/400/300/cats/',

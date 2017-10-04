@@ -15,7 +15,7 @@ export default {
   kind: 'block',
   label: 'Banner',
   defaultText: 'Titel',
-  category: 'Text',
+  category: 'Kopf',
   styles: ({ theme }) => ({
     backgroundColor: '#ddd',
     minHeight: 75,

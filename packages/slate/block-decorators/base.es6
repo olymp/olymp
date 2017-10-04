@@ -2,9 +2,54 @@ import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
 import { Dropdown, Menu } from 'antd';
 import { FaCog, FaChevronDown, FaChevronUp } from 'olymp-icons';
-import Toolbar from '../toolbar';
-import { Action } from '../toolbar-block';
+import Toolbar, { Button } from '../toolbar';
 // import dnd from './dnd';
+
+const Action = ({ node, state, onChange, blockTypes }) => (
+  { toggle, active, label, component, ...rest },
+  i,
+) => {
+  const setData = (data) => {
+    const transform = state
+      .change()
+      .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } });
+    onChange(transform);
+    return Promise.resolve();
+  };
+
+  const getData = (name, defaultValue) => node.data.get(name) || defaultValue;
+
+  const tooltip = typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
+
+  const onClick = (e) => {
+    e.preventDefault();
+    if (toggle) {
+      toggle({ setData, getData, state, onChange, blockTypes, node });
+    }
+  };
+
+  if (component) {
+    const Com = component;
+    return (
+      <Menu.Item key={i}>
+        <Button onMouseDown={onClick} tooltip={tooltip}>
+          <Com setData={setData} getData={getData} state={state} onChange={onChange} node={node} />
+        </Button>
+      </Menu.Item>
+    );
+  }
+  return (
+    <Menu.Item key={i}>
+      <Button
+        active={!!active && active({ getData, state })}
+        onMouseDown={onClick}
+        tooltip={tooltip}
+      >
+        {label}
+      </Button>
+    </Menu.Item>
+  );
+};
 
 export default options => (Block) => {
   const StyledBlock = createComponent(

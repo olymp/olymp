@@ -9,8 +9,9 @@ const YoutubeContainer = createComponent(
     display: 'block',
     marginX: 'auto',
   }),
-  ({ attributes, className, getData, setActive }) => (
+  ({ attributes, className, getData, setActive, children }) => (
     <div onMouseEnter={setActive} className={className} {...attributes}>
+      {children}
       {getData('href') ? (
         <iframe
           title="Unser Video"
@@ -33,7 +34,7 @@ export default {
   isVoid: true,
   kind: 'block',
   label: 'Youtube',
-  category: 'Medien',
+  category: 'Sonstiges',
   component: YoutubeContainer,
   actions: [
     {

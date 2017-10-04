@@ -8,7 +8,7 @@ export default {
   kind: 'block',
   defaultNodes: () => [Image, Label],
   label: 'Bild mit Text',
-  category: 'Medien',
+  category: 'Bilder',
   styles: () => ({
     position: 'relative',
   }),

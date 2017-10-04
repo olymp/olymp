@@ -19,6 +19,7 @@ import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
 import Paragrapher from './plugins/paragrapher';
 import EditList from 'slate-edit-list';
+import { createComponent } from 'olymp-fela';
 import TrailingBlock from './plugins/trailing-block';
 import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
@@ -39,6 +40,14 @@ const editList = EditList({
   types: ['numbered-list', 'bulleted-list'],
   typeItem: 'list-item',
 });
+
+const getOutlinedOnSelected = Wrapped => createComponent(
+  ({ isSelected }) => ({
+    outline: isSelected && '2px solid rgba(48, 48, 48, 0.67)',
+  }),
+  p => <Wrapped {...p} />,
+  p => Object.keys(p),
+);
 
 const emptyArray = [];
 const options = {
@@ -117,55 +126,56 @@ const options = {
   ],
   sidebarTypes: [],
   nodes: {
-    paragraph: ({ children, attributes }) => <div {...attributes}>{children}</div>,
-    link: ({ node, attributes, children }) => (
+    paragraph: getOutlinedOnSelected(({ children, attributes, className }) => <div {...attributes} className={className}>{children}</div>),
+    link: getOutlinedOnSelected(({ node, attributes, children, className }) => (
       <a
         {...attributes}
         href={node.data.get('href')}
+        className={className}
         target={node.data.get('target')}
         rel="noopener noreferrer"
       >
         {children}
       </a>
-    ),
-    'block-quote': ({ children, attributes }) => (
-      <blockquote {...attributes}>{children}</blockquote>
-    ),
-    'bulleted-list': ({ children, attributes }) => <ul {...attributes}>{children}</ul>,
-    'numbered-list': ({ children, attributes }) => <ol {...attributes}>{children}</ol>,
-    'heading-one': ({ children, attributes }) => (
-      <h1 {...attributes} id={getIdByTag(children)}>
+    )),
+    'block-quote': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <blockquote {...attributes} className={className}>{children}</blockquote>
+    )),
+    'bulleted-list': getOutlinedOnSelected(({ children, attributes, className }) => <ul {...attributes} className={className}>{children}</ul>),
+    'numbered-list': getOutlinedOnSelected(({ children, attributes, className }) => <ol {...attributes} className={className}>{children}</ol>),
+    'heading-one': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <h1 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
       </h1>
-    ),
-    'heading-two': ({ children, attributes }) => (
-      <h2 {...attributes} id={getIdByTag(children)}>
+    )),
+    'heading-two': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <h2 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
       </h2>
-    ),
-    'heading-three': ({ children, attributes }) => (
-      <h3 {...attributes} id={getIdByTag(children)}>
+    )),
+    'heading-three': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <h3 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
       </h3>
-    ),
-    'heading-four': ({ children, attributes }) => (
-      <h4 {...attributes} id={getIdByTag(children)}>
+    )),
+    'heading-four': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <h4 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
       </h4>
-    ),
-    'heading-five': ({ children, attributes }) => (
-      <h5 {...attributes} id={getIdByTag(children)}>
+    )),
+    'heading-five': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <h5 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
       </h5>
-    ),
-    'heading-six': ({ children, attributes }) => (
-      <h6 {...attributes} id={getIdByTag(children)}>
+    )),
+    'heading-six': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <h6 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
       </h6>
-    ),
-    'list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
-    'bulleted-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
-    'numbered-list-item': ({ children, attributes }) => <li {...attributes}>{children}</li>,
+    )),
+    'list-item': getOutlinedOnSelected(({ children, attributes, className }) => <li {...attributes} className={className}>{children}</li>),
+    'bulleted-list-item': getOutlinedOnSelected(({ children, attributes, className }) => <li {...attributes} className={className}>{children}</li>),
+    'numbered-list-item': getOutlinedOnSelected(({ children, attributes, className }) => <li {...attributes} className={className}>{children}</li>),
   },
   marks: {
     bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,

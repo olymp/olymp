@@ -139,7 +139,7 @@ export default {
   isVoid: true,
   kind: 'block',
   label: 'Linie',
-  category: 'Template',
+  category: 'Layout',
   component,
   actions: [
     {

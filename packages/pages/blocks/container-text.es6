@@ -4,7 +4,7 @@ export default {
   ...Container,
   type: 'containerText',
   label: 'Container schmal',
-  category: 'Template',
+  category: 'Layout',
   defaultNodes: () => ['paragraph'],
   styles: () => ({
     maxWidth: '100%',

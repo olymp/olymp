@@ -25,7 +25,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Spalten-Layout',
-  category: 'Template',
+  category: 'Layout',
   defaultNodes: () => [Column, Column, Column, Column],
   component: ({ className, children, attributes, getData }) => (
     <Ctn {...attributes} className={className}>

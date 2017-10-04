@@ -9,7 +9,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Akkordeon',
-  category: 'Text',
+  category: 'Layout',
   component: ({ className, attributes, children }) => (
     <Container className={className} {...attributes}>
       {children}

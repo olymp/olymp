@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Toolbar, { Button } from './toolbar';
 import { Icon, Menu } from 'antd';
+import Toolbar, { Button } from './toolbar';
 import { hasMark, hasBlock } from './utils/has';
 
 export default class ToolbarText extends Component {
@@ -64,8 +64,19 @@ export default class ToolbarText extends Component {
     const { state, toolbarMarks, toolbarTypes, toolbarActions, show } = this.props;
     const display = !state.isBlurred && !state.isCollapsed;
 
+    let node = null;
+    if (state.blocks.size) {
+      node = state.blocks.get(0);
+    } else if (state.inlines.size) {
+      node = state.inlines.get(0);
+    }
+
+    if (!node) {
+      return null;
+    }
+
     return (
-      <Toolbar isOpened={!!display} show={show}>
+      <Toolbar isOpened={!!display} show={show} parent={`[data-key="${node.key}"]`}>
         {toolbarMarks.map(this.renderMarkButton)}
         {toolbarTypes.map(this.renderBlockButton)}
         {toolbarActions.map(this.renderActionButton)}

@@ -455,7 +455,7 @@ component.displayName = 'GZKBlock';
 export default {
   type: 'pathfinder',
   label: 'Wegblock',
-  category: 'Sammlungen',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component,

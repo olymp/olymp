@@ -6,7 +6,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Container',
-  category: 'Template',
+  category: 'Layout',
   defaultNodes: () => ['paragraph'],
   component: ({ attributes, className, children }) => (
     <Container {...attributes} className={className}>

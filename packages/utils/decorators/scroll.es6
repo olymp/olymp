@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { throttle } from 'lodash';
+import { throttle, debounce } from 'lodash';
 import cn from 'classnames';
 
 export default WrappedComponent =>
@@ -10,7 +10,7 @@ export default WrappedComponent =>
         const top = e.target.scrollTop;
         this.setState({ top });
       },
-      10,
+      100,
       { trailing: true, leading: true },
     );
     componentDidMount() {
@@ -26,5 +26,41 @@ export default WrappedComponent =>
         className = cn(className, top && 'is-scrolled');
       }
       return <WrappedComponent {...this.props} scrollTop={top} />;
+    }
+  };
+
+export const withScrollHide = WrappedComponent =>
+  class WithScroll extends Component {
+    state = { top: 0, scrolling: false };
+    onScrollDebounce = debounce(
+      (e) => {
+        const top = e.target.scrollTop;
+        this.setState({ top, scrolling: false });
+      },
+      100,
+      { trailing: true, leading: false },
+    );
+    onScroll = (e) => {
+      if (!this.state.scrolling) {
+        this.setState({ scrolling: true });
+      }
+      this.onScrollDebounce(e);
+    };
+    componentDidMount() {
+      document.addEventListener('scroll', this.onScroll, true);
+    }
+    componentWillUnmount() {
+      document.removeEventListener('scroll', this.onScroll, true);
+    }
+    render() {
+      let { className } = this.state;
+      const { top, scrolling } = this.state;
+      if (scrolling) {
+        return null;
+      }
+      if (top && false) {
+        className = cn(className, top && 'is-scrolled');
+      }
+      return <WrappedComponent {...this.props} scrollTop={top} scrolling={scrolling} />;
     }
   };

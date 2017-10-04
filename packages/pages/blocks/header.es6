@@ -41,7 +41,7 @@ export default {
   isVoid: false,
   kind: 'block',
   label: 'Überschrift',
-  category: 'Text',
+  category: 'Kopf',
   component: withRouter(HeaderBlock),
   defaultText: 'Titel',
   styles: ({ theme }) => ({

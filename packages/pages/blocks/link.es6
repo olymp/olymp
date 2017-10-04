@@ -8,30 +8,45 @@ const CardContainer = createComponent(
     position: 'relative',
     display: 'block',
   }),
-  ({ attributes, className, getData }) => (
-    <Card className={className} value={getData('href')} {...attributes} />
+  ({ attributes, className, node, children }) => (
+    <Card
+      {...attributes}
+      className={className}
+      xy={console.log(node.data.get('value'))}
+      value={node.data.get('value')}
+    >
+      {children}
+    </Card>
   ),
   p => Object.keys(p),
 );
 
 export default {
-  type: 'Pages.Media.LinkBlock',
+  type: 'cardLink',
   isVoid: true,
   kind: 'block',
-  label: 'Link',
-  category: 'Medien',
+  label: 'Reichhaltiger Link',
+  category: 'Sonstiges',
   component: CardContainer,
   actions: [
     {
       type: 'small',
       icon: 'chain',
       label: 'Link',
-      toggle: ({ setData }) => {
+      toggle: ({ onChange, state, node }) => {
         const href = window.prompt('Link');
         if (href) {
-          setData({ href });
+          onChange(
+            state.change().setNodeByKey(node.key, {
+              data: node.data.set('value', href),
+            }),
+          );
         } else {
-          setData({ href: null });
+          onChange(
+            state.change().setNodeByKey(node.key, {
+              data: node.data.set('value', null),
+            }),
+          );
         }
       },
     },

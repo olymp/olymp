@@ -8,7 +8,7 @@ export default {
   isVoid: true,
   kind: 'block',
   label: 'Bild',
-  category: 'Medien',
+  category: 'Bilder',
   component: ({ getData, className, editor, attributes, children }) => {
     const Img = editor.props.readOnly === true ? LightboxImage : Image;
     return (
@@ -122,7 +122,7 @@ export default {
       tooltip: 'Rechts anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('right') === 0,
       toggle: ({ state, onChange, node }) => {
-        const alignment = node.data.get('float') || 'right';
+        const alignment = node.data.get('float') || 'none';
 
         if (alignment === 'none') {
           onChange(

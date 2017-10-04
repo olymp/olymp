@@ -2,7 +2,7 @@ import React from 'react';
 import { SimpleImageEdit } from 'olymp-cloudinary';
 import Carousel from 'olymp-ui/carousel';
 
-const CarouselBlock = ({ getData, className, attributes }) => (
+const CarouselBlock = ({ getData, className, children, attributes }) => (
   <div {...attributes} className={className}>
     <Carousel
       height={400}
@@ -14,6 +14,7 @@ const CarouselBlock = ({ getData, className, attributes }) => (
         },
       ])}
     />
+    {children}
   </div>
 );
 
@@ -22,7 +23,7 @@ export default {
   isVoid: true,
   kind: 'block',
   label: 'Bildershow',
-  category: 'Medien',
+  category: 'Bilder',
   component: CarouselBlock,
   actions: [
     {

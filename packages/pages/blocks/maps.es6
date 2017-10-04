@@ -12,8 +12,9 @@ const MapContainer = createComponent(
     position: 'relative',
     display: 'block',
   }),
-  ({ attributes, className, getData }) => (
+  ({ attributes, className, getData, children }) => (
     <div className={className}>
+      {children}
       <Maps
         center={{ lat: getData('lat', 59.724465), lng: getData('lng', 30.080121) }}
         zoom={15}
@@ -76,8 +77,8 @@ export default {
   type: 'Pages.Media.MapsBlock',
   isVoid: true,
   kind: 'block',
-  label: 'Karte',
-  category: 'Medien',
+  label: 'Google-Karte',
+  category: 'Sonstiges',
   component: MapContainer,
   actions: [
     {

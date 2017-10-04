@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import { withPropsOnChange } from 'recompose';
-import { withScroll } from 'olymp-utils';
+import { withScrollHide } from 'olymp-utils';
 import Portal from './portal';
 
 export const Button = createComponent(
@@ -47,16 +47,19 @@ const WrappedMenu = createComponent(
     },
     '> li': {
       padding: 0,
+      '> div': {
+        paddingX: 5,
+        lineHeight: '25px',
+      },
     },
   }),
   props => <Menu {...props} />,
   p => Object.keys(p),
 );
 
-const ScrollPortal = withScroll(
-  withPropsOnChange(['scrollTop'], ({ scrollTop, parentEl }) => {
+const ScrollPortal = withScrollHide(
+  withPropsOnChange(['scrollTop', 'scrolling'], ({ scrollTop, parentEl }) => {
     const parent = document.querySelector(parentEl);
-    console.log(parent, parentEl);
     if (!parent) {
       return null;
     }
@@ -69,7 +72,7 @@ const ScrollPortal = withScroll(
       left: left + parent.offsetWidth / 2,
       top,
     };
-  })(({ children, top, left }) => (
+  })(({ children, top, left, display }) => (
     <Portal>
       <WrappedMenu
         style={{
