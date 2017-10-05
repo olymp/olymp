@@ -267,15 +267,13 @@ class CloudinaryView extends Component {
           setTags={setTags}
           setSearch={setSearch}
         />
-        <Dragzone uploading={uploading} clickable={false} {...upload}>
-          <Gallery
-            key={filteredItems.length}
-            selection={selection}
-            items={filteredItems}
-            onClick={this.onClick}
-            onRemove={this.onRemove}
-          />
-        </Dragzone>
+        <Gallery
+          key={filteredItems.length}
+          selection={selection}
+          items={filteredItems}
+          onClick={this.onClick}
+          onRemove={this.onRemove}
+        />
         <SelectionSidebar
           items={selectedItems}
           active={active}
@@ -288,4 +286,6 @@ class CloudinaryView extends Component {
     );
   }
 }
+// * /<Dragzone uploading={uploading} clickable={false} {...upload}> */}
+// * </Dragzone> */}
 export default CloudinaryView;

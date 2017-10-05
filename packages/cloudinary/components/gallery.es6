@@ -38,19 +38,16 @@ export default MediaList;
 import React, { PureComponent } from 'react';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
-import WindowScroller from 'react-virtualized/dist/es/WindowScroller';
 import createCellPositioner from 'react-virtualized/dist/es/Masonry/createCellPositioner';
 import Masonry from 'react-virtualized/dist/es/Masonry/Masonry';
 import Thumb from './thumb';
 
 const columnWidth = 200;
 const gutterSize = 10;
-const windowScrollerEnabled = false;
 export default class GridExample extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._height = 300;
     this._columnCount = 0;
     this._columnHeights = {};
     this._cache = new CellMeasurerCache({
@@ -61,10 +58,11 @@ export default class GridExample extends PureComponent {
   }
 
   render() {
-    if (windowScrollerEnabled) {
-      return <WindowScroller>{this._renderAutoSizer}</WindowScroller>;
-    }
-    return this._renderAutoSizer({ height: 300 });
+    return (
+      <AutoSizer onResize={this._onResize} scrollTop={this._scrollTop}>
+        {this._renderMasonry}
+      </AutoSizer>
+    );
   }
 
   _calculateColumnCount = () => {
@@ -76,7 +74,6 @@ export default class GridExample extends PureComponent {
 
     const item = items[index];
 
-    console.log(index, style);
     return (
       <CellMeasurer cache={this._cache} index={index} key={key} parent={parent}>
         <div
@@ -131,32 +128,22 @@ export default class GridExample extends PureComponent {
     this._masonry.recomputeCellPositions();
   };
 
-  _renderAutoSizer = ({ height, scrollTop }) => {
-    this._height = height;
-    this._scrollTop = scrollTop;
-
-    return (
-      <AutoSizer disableHeight onResize={this._onResize} scrollTop={this._scrollTop}>
-        {this._renderMasonry}
-      </AutoSizer>
-    );
-  };
-
-  _renderMasonry = ({ width }) => {
+  _renderMasonry = ({ width, height }) => {
     const { items } = this.props;
     this._width = width;
+    console.log(width, height);
 
     this._calculateColumnCount();
     this._initCellPositioner();
 
     return (
       <Masonry
-        autoHeight={windowScrollerEnabled}
+        autoHeight={false}
         cellCount={items.length}
         cellMeasurerCache={this._cache}
         cellPositioner={this._cellPositioner}
         cellRenderer={this._cellRenderer}
-        height={this._height}
+        height={height}
         ref={this._setMasonryRef}
         scrollTop={this._scrollTop}
         width={width}

@@ -20,7 +20,7 @@ export const SplitView = createComponent(
       position: 'relative',
       // borderX: center && border(theme),
       maxWidth,
-      maxHeight: '100%',
+      height: '100%',
     },
   }),
   'div',
