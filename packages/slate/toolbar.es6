@@ -30,17 +30,18 @@ export const Button = createComponent(
 );
 
 const WrappedMenu = createComponent(
-  ({ theme }) => ({
+  ({ theme, color }) => ({
     position: 'fixed',
-    top: 0,
+    top: -2,
     zIndex: 100,
     left: '50%',
     transform: 'translateX(-50%)',
     // width: '100%',
-    // boxShadow: 'inset 0 -10px 10px -10px #000000',
-    backgroundColor: theme.dark,
+    // boxShadow: theme.boxShadow,
+    backgroundColor: color === true ? theme.color : theme.dark,
     color: theme.light,
     paddingX: theme.space2,
+    borderBottom: 0,
     hasFlex: {
       justifyContent: 'center',
       display: 'flex',
@@ -50,6 +51,10 @@ const WrappedMenu = createComponent(
       '> div': {
         paddingX: 5,
         lineHeight: '25px',
+        '> div': {
+          paddingX: 5,
+          lineHeight: '25px',
+        },
       },
     },
   }),
@@ -72,11 +77,12 @@ const ScrollPortal = withScrollHide(
       left: left + parent.offsetWidth / 2,
       top,
     };
-  })(({ children, top, left, display }) => (
+  })(({ children, top, left, display, color }) => (
     <Portal>
       <WrappedMenu
+        color={color}
         style={{
-          top,
+          top: top - 2,
           left,
           transform: 'translate3d(-50%, -100%, 0px)',
           position: 'absolute',
@@ -92,19 +98,23 @@ const ScrollPortal = withScrollHide(
 );
 
 export default (props) => {
-  const { isOpened, parent, children } = props;
+  const { isOpened, parent, children, color } = props;
 
   if (!isOpened) {
     return <div />;
   }
 
   if (parent) {
-    return <ScrollPortal parentEl={parent}>{children}</ScrollPortal>;
+    return (
+      <ScrollPortal parentEl={parent} color={color}>
+        {children}
+      </ScrollPortal>
+    );
   }
 
   return (
     <Portal>
-      <WrappedMenu selectedKeys={[]} mode="horizontal" theme="dark">
+      <WrappedMenu color={color} selectedKeys={[]} mode="horizontal" theme="dark">
         {children}
       </WrappedMenu>
     </Portal>
