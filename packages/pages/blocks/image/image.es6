@@ -17,7 +17,6 @@ export default {
         className={className}
         width={`${100 / getData('size', 4)}%`}
         value={getData('value', {
-          url: 'https://lorempixel.com/400/300/cats/',
           width: 400,
           height: 300,
         })}

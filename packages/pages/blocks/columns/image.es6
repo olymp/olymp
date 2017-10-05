@@ -26,7 +26,6 @@ export default {
       value={
         image ||
         getData('value', {
-          url: 'https://lorempixel.com/360/270/cats/',
           width: 360,
           height: 270,
         })

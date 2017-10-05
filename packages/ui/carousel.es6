@@ -9,13 +9,20 @@ if (process.env.IS_WEB) {
   const Element = require('rc-banner-anim').Element;
 
   InnerComponent = ({ value }) => (
-    <BannerAnim prefixCls="custom-arrow-thumb" autoPlay type={['grid', 'gridBar']} duration={800}>
-      {value.map(image => (
-        <Element prefixCls="banner-user-elem" key={image.url}>
+    <BannerAnim
+      prefixCls="custom-arrow-thumb"
+      autoPlay
+      type={['grid', 'gridBar']}
+      key={1}
+      duration={800}
+    >
+      {value.map((image, index) => (
+        <Element prefixCls="banner-user-elem" key={image.id || image.url || index}>
           <Element.BgElement
             key="bg"
             className="bg"
             style={{
+              backgroundColor: 'gray',
               backgroundImage: `url(${cloudinaryUrl(image)})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',

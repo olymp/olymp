@@ -19,13 +19,15 @@ export const parseURI = (uri) => {
 export const transform = (image) => {
   const newImage = {};
   Object.keys(image).forEach((key) => {
-    if (key === 'public_id') {
-      newImage.id = image.public_id;
+    const originalKey = key;
+    key = lodash.camelCase(key);
+    if (key === 'publicId') {
+      newImage.publicId = image.public_id;
       return;
     } else if (key === 'secureUrl') {
       return;
     } else if (key === 'url') {
-      newImage.url = image.secureUrl || image.url;
+      newImage.url = image.secure_url || image.url;
       return;
     } else if (key === 'colors') {
       return;
@@ -43,7 +45,28 @@ export const transform = (image) => {
       newImage.pages = image.pages;
       return;
     }
-    newImage[lodash.camelCase(key)] = image[key];
+    if (
+      [
+        'id',
+        'format',
+        'version',
+        'resourceType',
+        'type',
+        'createdAt',
+        'height',
+        'width',
+        'bytes',
+        'url',
+        'caption',
+        'source',
+        'removed',
+        'pages',
+        'colors',
+        'tags',
+      ].indexOf(key) !== -1
+    ) {
+      newImage[key] = image[key];
+    }
   });
   return newImage;
 };
@@ -94,7 +117,7 @@ export const getImageById = (config, id) =>
     cloudinary.api.resource(
       id,
       (result) => {
-        yay(transform(result));
+        yay(result);
       },
       Object.assign({}, config, {
         tags: true,
@@ -105,7 +128,7 @@ export const getImageById = (config, id) =>
         prefix: APP && APP !== 'gzk' ? `${APP}/` : '',
       }),
     ),
-  );
+  ).then(transform);
 
 export const getSignedRequest = config =>
   transformSignature(
@@ -137,12 +160,12 @@ export const updateImage = (id, tags, source, caption, config, removed) => {
   return new Promise((yay) => {
     cloudinary.api.update(
       id,
-      result => yay(transform(result)),
+      result => yay(result),
       Object.assign({}, config, {
         prefix: APP ? `${APP}/` : '',
         tags: (tags || []).join(','),
         context: context.join('|'),
       }),
     );
-  });
+  }).then(transform);
 };

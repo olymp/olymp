@@ -1,8 +1,8 @@
 import React from 'react';
 import { object, func, number, bool } from 'prop-types';
 import { Icon } from 'antd';
-import Image from './image';
 import { createComponent } from 'olymp-fela';
+import Image from './image';
 
 const ImageContainer = createComponent(
   ({ theme, isActive }) => ({
@@ -90,14 +90,16 @@ const Thumb = ({ item, onClick, onRemove, isActive, height }) =>
       ) : (
         undefined
       )}
-      {isActive ? onRemove ? (
-        <CloseLabel onClick={onRemove}>
-          <Icon type="close" />
-        </CloseLabel>
-      ) : (
-        <CheckLabel>
-          <Icon type="check" />
-        </CheckLabel>
+      {isActive ? (
+        onRemove ? (
+          <CloseLabel onClick={onRemove}>
+            <Icon type="close" />
+          </CloseLabel>
+        ) : (
+          <CheckLabel>
+            <Icon type="check" />
+          </CheckLabel>
+        )
       ) : (
         undefined
       )}

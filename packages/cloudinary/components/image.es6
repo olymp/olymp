@@ -44,13 +44,17 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, maxResolution, ..
     <Image
       {...rest}
       maxResolution={maxResolution > 6000000 ? 6000000 : maxResolution}
-      src={(w, h) =>
-        cloudinaryUrl(value, {
-          w,
-          h,
-          g: avatar ? 'face' : 'center',
-          ...options,
-        })}
+      src={
+        value && value.url
+          ? (w, h) =>
+            cloudinaryUrl(value, {
+              w,
+              h,
+              g: avatar ? 'face' : 'center',
+              ...options,
+            })
+          : undefined
+      }
       alt={alt || value.caption}
       ratio={ratio || height / width}
       srcRatio={height / width}

@@ -31,7 +31,7 @@ export default WrappedComponent =>
 
 export const withScrollHide = WrappedComponent =>
   class WithScroll extends Component {
-    state = { top: 0, scrolling: false };
+    state = { top: 0, scrolling: true };
     onScrollDebounce = debounce(
       (e) => {
         const top = e.target.scrollTop;
@@ -48,6 +48,7 @@ export const withScrollHide = WrappedComponent =>
     };
     componentDidMount() {
       document.addEventListener('scroll', this.onScroll, true);
+      this.onScroll({ target: document });
     }
     componentWillUnmount() {
       document.removeEventListener('scroll', this.onScroll, true);

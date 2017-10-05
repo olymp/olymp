@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-// import LazyLoad from './lazy';
-import { ContentLoaderStyles } from '../loader';
 
 const containerStyle = ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight, rounded }) => ({
   position: 'relative',
@@ -20,7 +18,7 @@ const containerStyle = ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight
     height: 0,
     paddingTop: `${ratio * 100}%`,
   },
-  '> img': {
+  '> *': {
     center: true,
     borderRadius: rounded && '50%',
   },
@@ -43,34 +41,8 @@ const Container = createComponent(
   }) => Object.keys(p),
 );
 
-const LazyContainer = createComponent(
-  ({ visible, ...rest }) => ({
-    ...containerStyle(rest),
-    ...(!visible ? ContentLoaderStyles : {}),
-  }),
-  p => <LazyLoad {...p} />,
-  ({
-    ratio,
-    rounded,
-    visible,
-    width,
-    maxResolution,
-    srcRatio,
-    minWidth,
-    minHeight,
-    maxWidth,
-    maxHeight,
-    ...p
-  }) => Object.keys(p),
-);
-
 class ImageContainer extends Component {
-  // state = { visible: false, canHandleState: false };
   static defaultProps = { attributes: {} };
-
-  componentDidMount() {
-    // this.setState({ canHandleState: true });
-  }
 
   render() {
     const {
@@ -83,9 +55,6 @@ class ImageContainer extends Component {
       attributes,
       ...containerProps
     } = this.props;
-    // const { visible, canHandleState } = this.state;
-
-    // if (!canHandleState || !lazy) {
     return (
       <Container
         {...containerProps}
@@ -98,25 +67,9 @@ class ImageContainer extends Component {
         {children}
       </Container>
     );
-    // }
-
-    /* return (
-      <LazyContainer
-        {...containerProps}
-        attributes={attributes}
-        className={className}
-        width={width}
-        ratio={ratio}
-        rounded={rounded}
-        visible={visible}
-        onContentVisible={() => this.setState({ visible: true })}
-      >
-        {children}
-      </LazyContainer>
-    ); */
   }
 }
-ImageContainer.displayName = 'Image.Container';
+ImageContainer.displayName = 'ImageContainer';
 ImageContainer.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ratio: PropTypes.number.isRequired,

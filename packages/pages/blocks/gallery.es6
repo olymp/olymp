@@ -47,12 +47,19 @@ export default {
       {children}
       {getData('value', [
         {
-          url: 'https://lorempixel.com/400/300/cats/',
+          width: 400,
+          height: 300,
+        },
+        {
+          width: 400,
+          height: 300,
+        },
+        {
           width: 400,
           height: 300,
         },
       ]).map((image, i) => (
-        <ImageContainer size={getData('size', 4)} key={image.id || i}>
+        <ImageContainer size={getData('size', 3)} key={image.id || i}>
           <LightboxImage className={className} onClick={setActive} width="100%" value={image} />
         </ImageContainer>
       ))}
@@ -78,7 +85,7 @@ export default {
       label: <FaPlus />,
       tooltip: 'Spalte hinzufügen',
       toggle: ({ setData, getData }) => {
-        const size = getData('size', 4);
+        const size = getData('size', 3);
         setData({
           size: size < 8 ? size + 1 : 8,
         });
@@ -88,7 +95,7 @@ export default {
       label: <FaMinus />,
       tooltip: 'Spalte entfernen',
       toggle: ({ setData, getData }) => {
-        const size = getData('size', 4);
+        const size = getData('size', 3);
         setData({
           size: size > 1 ? size - 1 : 1,
         });

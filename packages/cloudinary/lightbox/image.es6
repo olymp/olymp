@@ -92,12 +92,12 @@ export default class Lightbox extends Component {
   };
 
   render() {
-    const { value, onClick, search, dispatch, attributes, updateQuery, ...rest } = this.props;
+    const { value, onClick, search, dispatch, updateQuery, ...rest } = this.props;
 
     if (!value || !value.url) {
-      return <div {...attributes} />;
+      return <Img {...rest} value={value} />;
     }
 
-    return <Img attributes={attributes} onClick={this.onClick} value={value} {...rest} />;
+    return <Img {...rest} onClick={this.onClick} value={value} />;
   }
 }

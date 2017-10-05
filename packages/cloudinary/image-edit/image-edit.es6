@@ -6,7 +6,6 @@ export default createEdit(v => (
   <Image
     value={
       v[0] || {
-        url: 'https://lorempixel.com/600/450/cats/',
         width: 600,
         height: 450,
       }

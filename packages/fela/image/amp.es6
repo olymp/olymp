@@ -1,28 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ImageAmp = ({ width, height, src, alt, layout, children, ...rest }) =>
-  (<amp-img
-    layout={layout || 'responsive'}
-    src={src}
-    alt={alt}
-    width={width}
-    height={height}
-    {...rest}
-  >
-    <noscript>
-      {children}
-    </noscript>
-  </amp-img>);
-ImageAmp.displayName = 'Image.Amp';
-ImageAmp.propTypes = {
+const AmpImage = ({ width, height, src, alt, layout, children }) => (
+  <amp-img layout={layout} src={src} alt={alt} width={width} height={height}>
+    <noscript>{children}</noscript>
+  </amp-img>
+);
+AmpImage.displayName = 'AmpImage';
+AmpImage.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   src: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired,
+  layout: PropTypes.oneOf(['fill', 'fixed-height', 'responsive']),
   alt: PropTypes.string,
 };
-ImageAmp.defaultProps = {
+AmpImage.defaultProps = {
   alt: '',
+  layout: 'responsive',
 };
-export default ImageAmp;
+export default AmpImage;

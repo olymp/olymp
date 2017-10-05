@@ -1,6 +1,6 @@
-import { intersection } from 'lodash';
 import { adaptQuery } from 'olymp-collection/server';
-import { parseURI, getImageById, getImages, getSignedRequest, updateImage } from './cloudinary';
+import ShortId from 'shortid';
+import { parseURI, getImageById, getSignedRequest, updateImage } from './cloudinary';
 
 export default (uri) => {
   const config = parseURI(uri);
@@ -15,10 +15,8 @@ export default (uri) => {
     `,
     resolvers: {
       queries: {
-        file: (source, args, { monk, app }) =>
-          monk
-            .collection('item')
-            .findOne({ id: args.id })
+        file: (source, args, { monk, app }) => monk.collection('item').findOne({ id: args.id }),
+        /*
             .then((item) => {
               if (item) {
                 return item;
@@ -34,9 +32,29 @@ export default (uri) => {
                   .catch(err => console.error(err));
                 return image;
               });
-            }),
-        fileList: (source, { query }, { monk, app }) => {
+            }), */
+        fileList: (source, { query }, { monk, app, user }) => {
           const mongoQuery = adaptQuery(query);
+          mongoQuery._appId = { $in: user._appIds };
+          mongoQuery._type = 'file';
+          mongoQuery.state = { $ne: 'REMOVED' };
+          return monk.collection('item').find(mongoQuery);
+          /* return monk
+            .collection('item')
+            .find(mongoQuery)
+            .then((x) => {
+              x.url = x.secureUrl;
+              x.secureUrl = null;
+              x.map(item =>
+                monk
+                  .collection('item')
+                  .update(
+                    { id: item.id },
+                    { ...item, _type: 'file', _appId: app.id },
+                    { upsert: true },
+                  ),
+              );
+            });
           const tags = mongoQuery.tags && mongoQuery.tags.$in;
           const getFiltered = items =>
             (tags // eslint-disable-line
@@ -57,7 +75,7 @@ export default (uri) => {
               ),
             ).catch(err => console.error(err));
             return filtered;
-          });
+          }); */
         },
         cloudinaryRequest: () => {
           const signed = getSignedRequest(config);
@@ -67,8 +85,40 @@ export default (uri) => {
         },
       },
       mutations: {
-        file: (source, args) => {
-          // imagesCache = null;
+        file: (source, args, { monk, app }) => {
+          if (args.operationType === 'REMOVE') {
+            args.input.state = 'REMOVED';
+          }
+          return monk
+            .collection('item')
+            .findOne({ id: args.input.id })
+            .then((item) => {
+              setTimeout(() => {
+                if (args.operationType && args.operationType === 'REMOVE') {
+                  return updateImage(
+                    item.publicId,
+                    args.input.tags,
+                    args.input.source,
+                    args.input.caption,
+                    config,
+                    true,
+                  );
+                }
+
+                return updateImage(
+                  item.publicId,
+                  args.input.tags,
+                  args.input.source,
+                  args.input.caption,
+                  config,
+                );
+              }, 10);
+              return monk
+                .collection('item')
+                .update({ id: args.input.id }, args.input, { upsert: true })
+                .then(() => args.input);
+            });
+          /* // imagesCache = null;
           // imageCache = null;
 
           if (args.operationType && args.operationType === 'REMOVE') {
@@ -88,12 +138,22 @@ export default (uri) => {
             args.input.source,
             args.input.caption,
             config,
-          );
+          ); */
         },
-        cloudinaryRequestDone: (source, args) => {
+        cloudinaryRequestDone: (source, args, { monk, app }) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
             invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
-            return getImageById(config, args.id).then(image => image);
+            return getImageById(config, args.id)
+              .then(image =>
+                monk
+                  .collection('item')
+                  .update(
+                    { publicId: args.id },
+                    { ...image, id: ShortId.generate(), _type: 'file', _appId: app.id },
+                    { upsert: true },
+                  ),
+              )
+              .then(x => monk.collection('item').findOne({ publicId: args.id }));
           }
           throw new Error('Invalid');
         },
