@@ -172,7 +172,7 @@ class SelectionSidebar extends Component {
               <StyledGallery
                 items={items}
                 itemHeight={60}
-                selected={[activeItem]}
+                selection={[activeItem]}
                 onClick={(id, index) => onClick(index)}
                 onRemove={this.onRemove}
                 justifyContent="space-around"

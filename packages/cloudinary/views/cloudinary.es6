@@ -170,7 +170,7 @@ class CloudinaryView extends Component {
     onClose: PropTypes.func,
     handleSelection: PropTypes.func,
     onSelect: PropTypes.func,
-    selected: PropTypes.arrayOf(
+    selection: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string,
         crop: PropTypes.arrayOf(PropTypes.number),
@@ -182,7 +182,7 @@ class CloudinaryView extends Component {
   static defaultProps = {
     onSelect: undefined,
     onClose: undefined,
-    selected: [],
+    selection: [],
     items: [],
     multi: true,
     format: undefined,
@@ -230,25 +230,25 @@ class CloudinaryView extends Component {
   };
 
   onRemove = (id) => {
-    const { selected, selection } = this.state;
-    const index = selected.findIndex(({ id: itemId }) => itemId === id);
+    /* const { selection } = this.props;
+    const index = selection.findIndex(({ id: itemId }) => itemId === id);
 
     if (index < selection || (index === selection && index === selected.length - 1)) {
       this.setState({ selection: selection - 1 });
     }
 
-    this.onSelect([{ id, crop: undefined }]);
+    this.onSelect([{ id, crop: undefined }]); */
   };
 
   render() {
     const {
       selectedItems,
+      items,
       filteredItems,
       onClose,
       setSearch,
       selection,
       setTags,
-      uploading,
       directories,
       search,
       active,
@@ -270,7 +270,6 @@ class CloudinaryView extends Component {
         />
         <div>
           <Gallery
-            key={filteredItems.length}
             selection={selection}
             items={filteredItems}
             onClick={this.onClick}

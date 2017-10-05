@@ -1,45 +1,7 @@
-/*
-
-export const MediaList = ({ items, itemHeight, selection, onClick, onRemove, ...rest }) => (
-  <Thumbs {...rest}>
-    {(items || []).map((item, index) => (
-      <Thumb
-        item={item}
-        onClick={e => onClick(item.id, index, e)}
-        onRemove={() => onRemove(item.id)}
-        isActive={selection.findIndex(({ id }) => id === item.id) >= 0}
-        height={itemHeight}
-        key={item.id}
-      />
-    ))}
-  </Thumbs>
-);
-MediaList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object),
-  itemHeight: PropTypes.number,
-  selection: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      crop: PropTypes.arrayOf(PropTypes.number),
-    }),
-  ),
-  onClick: PropTypes.func,
-  onRemove: PropTypes.func,
-};
-MediaList.defaultProps = {
-  items: [],
-  itemHeight: 80,
-  selection: [],
-  onClick: () => {},
-  onRemove: () => {},
-};
-export default MediaList;
-*/ /** @flow */
 import React, { PureComponent } from 'react';
-import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
-import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
-import createCellPositioner from 'react-virtualized/dist/es/Masonry/createCellPositioner';
-import Masonry from 'react-virtualized/dist/es/Masonry/Masonry';
+import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import Masonry, { createCellPositioner } from 'react-virtualized/dist/commonjs/Masonry';
 import Thumb from './thumb';
 
 const columnWidth = 200;
@@ -57,16 +19,15 @@ export default class GridExample extends PureComponent {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.masonry) {
-      console.log(this.masonry);
-      this.masonry.forceUpdate();
-    }
-  }
-
   render() {
+    const { items, selection } = this.props;
     return (
-      <AutoSizer onResize={this.onResize} scrollTop={this.scrollTop}>
+      <AutoSizer
+        onResize={this.onResize}
+        scrollTop={this.scrollTop}
+        items={items}
+        selection={selection}
+      >
         {this.renderMasonry}
       </AutoSizer>
     );
@@ -80,6 +41,8 @@ export default class GridExample extends PureComponent {
     const { items, onClick, selection, onRemove } = this.props;
 
     const item = items[index];
+
+    console.log(selection, this.props);
 
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
@@ -105,10 +68,9 @@ export default class GridExample extends PureComponent {
           <Thumb
             item={item}
             width={columnWidth}
-            onClick={e => onClick(item.id, index, e)}
+            onClick={e => onClick(item.id, e)}
             onRemove={() => onRemove(item.id)}
             isActive={selection.findIndex(({ id }) => id === item.id) >= 0}
-            key={item.id}
           />
         </div>
       </CellMeasurer>
@@ -145,6 +107,7 @@ export default class GridExample extends PureComponent {
     return (
       <Masonry
         selection={selection}
+        items={items}
         autoHeight={false}
         cellCount={items.length}
         cellMeasurerCache={this.cache}
