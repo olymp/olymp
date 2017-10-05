@@ -48,34 +48,41 @@ export default class GridExample extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._columnCount = 0;
-    this._columnHeights = {};
-    this._cache = new CellMeasurerCache({
+    this.columnCount = 0;
+    this.columnHeights = {};
+    this.cache = new CellMeasurerCache({
       defaultHeight: 250,
       defaultWidth: 200,
       fixedWidth: true,
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.masonry) {
+      console.log(this.masonry);
+      this.masonry.forceUpdate();
+    }
+  }
+
   render() {
     return (
-      <AutoSizer onResize={this._onResize} scrollTop={this._scrollTop}>
-        {this._renderMasonry}
+      <AutoSizer onResize={this.onResize} scrollTop={this.scrollTop}>
+        {this.renderMasonry}
       </AutoSizer>
     );
   }
 
-  _calculateColumnCount = () => {
-    this._columnCount = Math.floor(this._width / (columnWidth + gutterSize));
+  calculateColumnCount = () => {
+    this.columnCount = Math.floor(this.width / (columnWidth + gutterSize));
   };
 
-  _cellRenderer = ({ index, key, parent, style }) => {
+  cellRenderer = ({ index, key, parent, style }) => {
     const { items, onClick, selection, onRemove } = this.props;
 
     const item = items[index];
 
     return (
-      <CellMeasurer cache={this._cache} index={index} key={key} parent={parent}>
+      <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
         <div
           style={{
             ...style,
@@ -108,58 +115,58 @@ export default class GridExample extends PureComponent {
     );
   };
 
-  _initCellPositioner = () => {
-    if (typeof this._cellPositioner === 'undefined') {
-      this._cellPositioner = createCellPositioner({
-        cellMeasurerCache: this._cache,
-        columnCount: this._columnCount,
+  initCellPositioner = () => {
+    if (typeof this.cellPositioner === 'undefined') {
+      this.cellPositioner = createCellPositioner({
+        cellMeasurerCache: this.cache,
+        columnCount: this.columnCount,
         columnWidth,
         spacer: gutterSize,
       });
     }
   };
 
-  _onResize = ({ width }) => {
-    this._width = width;
+  onResize = ({ width }) => {
+    this.width = width;
 
-    this._columnHeights = {};
-    this._calculateColumnCount();
-    this._resetCellPositioner();
-    this._masonry.recomputeCellPositions();
+    this.columnHeights = {};
+    this.calculateColumnCount();
+    this.resetCellPositioner();
+    this.masonry.recomputeCellPositions();
   };
 
-  _renderMasonry = ({ width, height }) => {
-    const { items } = this.props;
-    this._width = width;
-    console.log(width, height);
+  renderMasonry = ({ width, height }) => {
+    const { items, selection } = this.props;
+    this.width = width;
 
-    this._calculateColumnCount();
-    this._initCellPositioner();
+    this.calculateColumnCount();
+    this.initCellPositioner();
 
     return (
       <Masonry
+        selection={selection}
         autoHeight={false}
         cellCount={items.length}
-        cellMeasurerCache={this._cache}
-        cellPositioner={this._cellPositioner}
-        cellRenderer={this._cellRenderer}
+        cellMeasurerCache={this.cache}
+        cellPositioner={this.cellPositioner}
+        cellRenderer={this.cellRenderer}
         height={height}
-        ref={this._setMasonryRef}
-        scrollTop={this._scrollTop}
+        ref={this.setMasonryRef}
+        scrollTop={this.scrollTop}
         width={width}
       />
     );
   };
 
-  _resetCellPositioner = () => {
-    this._cellPositioner.reset({
-      columnCount: this._columnCount,
+  resetCellPositioner = () => {
+    this.cellPositioner.reset({
+      columnCount: this.columnCount,
       columnWidth,
       spacer: gutterSize,
     });
   };
 
-  _setMasonryRef = (ref) => {
-    this._masonry = ref;
+  setMasonryRef = (ref) => {
+    this.masonry = ref;
   };
 }

@@ -5,7 +5,7 @@ import { withState, withPropsOnChange } from 'recompose';
 import { SplitView } from 'olymp-ui';
 import { intersection, upperFirst } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
-import { Dragzone, Gallery } from '../components';
+import { Gallery } from '../components';
 import ListSidebar from './list';
 import SelectionSidebar from './selection';
 
@@ -219,6 +219,7 @@ class CloudinaryView extends Component {
   onClick = (id, e) => {
     const { selection, setActive } = this.props;
     const index = selection.findIndex(({ id: selectedId }) => selectedId === id);
+    console.log(index, e.shiftKey);
     if (index === -1) {
       setActive(selection.length);
       this.onSelect([{ id, crop: undefined }], e.shiftKey);
@@ -267,13 +268,15 @@ class CloudinaryView extends Component {
           setTags={setTags}
           setSearch={setSearch}
         />
-        <Gallery
-          key={filteredItems.length}
-          selection={selection}
-          items={filteredItems}
-          onClick={this.onClick}
-          onRemove={this.onRemove}
-        />
+        <div>
+          <Gallery
+            key={filteredItems.length}
+            selection={selection}
+            items={filteredItems}
+            onClick={this.onClick}
+            onRemove={this.onRemove}
+          />
+        </div>
         <SelectionSidebar
           items={selectedItems}
           active={active}
