@@ -22,7 +22,7 @@ export default type => (WrappedComponent) => {
         <Link
           to={{
             pathname,
-            query: { ...query, [`@${type}`]: 'new', modal: null },
+            query: { ...query, [`@${type}`]: 'new' },
           }}
           className={className}
         >

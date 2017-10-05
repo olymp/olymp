@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
-import LazyLoad from './lazy';
+// import LazyLoad from './lazy';
 import { ContentLoaderStyles } from '../loader';
 
 const containerStyle = ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight, rounded }) => ({
@@ -65,11 +65,11 @@ const LazyContainer = createComponent(
 );
 
 class ImageContainer extends Component {
-  state = { visible: false, canHandleState: false };
+  // state = { visible: false, canHandleState: false };
   static defaultProps = { attributes: {} };
 
   componentDidMount() {
-    this.setState({ canHandleState: true });
+    // this.setState({ canHandleState: true });
   }
 
   render() {
@@ -83,24 +83,24 @@ class ImageContainer extends Component {
       attributes,
       ...containerProps
     } = this.props;
-    const { visible, canHandleState } = this.state;
+    // const { visible, canHandleState } = this.state;
 
-    if (!canHandleState || !lazy) {
-      return (
-        <Container
-          {...containerProps}
-          {...attributes}
-          className={className}
-          width={width}
-          ratio={ratio}
-          rounded={rounded}
-        >
-          {children}
-        </Container>
-      );
-    }
-
+    // if (!canHandleState || !lazy) {
     return (
+      <Container
+        {...containerProps}
+        {...attributes}
+        className={className}
+        width={width}
+        ratio={ratio}
+        rounded={rounded}
+      >
+        {children}
+      </Container>
+    );
+    // }
+
+    /* return (
       <LazyContainer
         {...containerProps}
         attributes={attributes}
@@ -113,7 +113,7 @@ class ImageContainer extends Component {
       >
         {children}
       </LazyContainer>
-    );
+    ); */
   }
 }
 ImageContainer.displayName = 'Image.Container';

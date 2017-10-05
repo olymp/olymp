@@ -18,7 +18,7 @@ const CreateButton = branch(
     }),
     ({ className, typeName }) => (
       <Link
-        updateQuery={{ [`@${getType(typeName)}`]: 'new', modal: null }}
+        updateQuery={{ [`@${getType(typeName)}`]: 'new' }}
         className={cn('block-create-button', className)}
       >
         <Button type="primary" shape="circle" icon="plus" />

@@ -22,7 +22,7 @@ const EditButton = branch(
     }),
     ({ className, typeName, id }) => (
       <Link
-        updateQuery={{ [`@${getType(typeName)}`]: id, modal: null }}
+        updateQuery={{ [`@${getType(typeName)}`]: id }}
         className={cn('block-edit-button', className)}
       >
         <Button type="primary" shape="circle" icon="edit" />

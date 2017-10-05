@@ -4,9 +4,7 @@ import shortId from 'shortid';
 import diff from 'deep-diff';
 
 const fetchType = createTypeFetcher(
-  (node, name) =>
-    get(node, 'kind') === 'ObjectTypeDefinition' &&
-    get(node, 'name.value') === name
+  (node, name) => get(node, 'kind') === 'ObjectTypeDefinition' && get(node, 'name.value') === name,
 );
 
 export default {
@@ -16,22 +14,24 @@ export default {
       const typeName = get(resolverAST, 'returnType.name');
       const type = fetchType(ast, typeName);
       const directive = get(type, 'directives', []).find(
-        d => get(d, 'name.value') === 'collection'
+        d => get(d, 'name.value') === 'collection',
       );
       if (type && directive) {
         const { input, id } = variables;
-        if (!input) {return undefined;}
+        if (!input) {
+          return undefined;
+        }
         const user = context && context.user;
         const monk = context && context.monk;
-        if (!user) {throw new Error('Not authorized');}
-        if (typeName === 'Page' && !user.isAdmin)
-          {throw new Error('Not authorized');}
-        if (
-          !user.isAdmin &&
-          user.orgId !== input.orgId &&
-          user.orgId !== input.id
-        )
-          {throw new Error('Not authorized');}
+        if (!user) {
+          throw new Error('Not authorized');
+        }
+        if (typeName === 'Page' && !user.isAdmin) {
+          throw new Error('Not authorized');
+        }
+        if (!user.isAdmin && user.orgId !== input.orgId && user.orgId !== input.id) {
+          throw new Error('Not authorized');
+        }
 
         if (id) {
           return monk
@@ -50,10 +50,12 @@ export default {
       const typeName = get(resolverAST, 'returnType.name');
       const type = fetchType(ast, typeName);
       const directive = get(type, 'directives', []).find(
-        d => get(d, 'name.value') === 'collection'
+        d => get(d, 'name.value') === 'collection',
       );
       if (type && directive && old !== undefined && !isArray(value)) {
-        if (!old && !value) {return;}
+        if (!old && !value) {
+          return;
+        }
         const appId = context && context.app && context.app.id;
         const userId = context && context.user && context.user.id;
         const id = shortId.generate();
@@ -64,7 +66,7 @@ export default {
           targetId: value.id,
           appId,
           userId,
-          date: +new Date(),
+          date: new Date(),
           diff: diffe.map((x, i) => ({
             ...x,
             id: `${id}${i}`,
@@ -80,10 +82,10 @@ export default {
   resolvers: {
     queries: {
       changelog: (source, { id }, { monk, app, user }) => {
-        if (!user) {return;}
-        return monk
-          .collection('changelog')
-          .find({ targetId: id, appId: app.id });
+        if (!user) {
+          return;
+        }
+        return monk.collection('changelog').find({ targetId: id, appId: app.id });
       },
     },
   },

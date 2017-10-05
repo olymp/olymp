@@ -14,12 +14,12 @@ import {
   FaItalic,
   FaUnderline,
 } from 'olymp-icons';
+import EditList from 'slate-edit-list';
+import { createComponent } from 'olymp-fela';
 import { withSlateState, withAutoMarkdown, useBlocks } from './editor-decorators';
 import { withBlockTypes } from './decorators';
 import { getId } from './utils/get-text';
-import Paragrapher from './plugins/paragrapher';
-import EditList from 'slate-edit-list';
-import { createComponent } from 'olymp-fela';
+// import Paragrapher from './plugins/paragrapher';
 import TrailingBlock from './plugins/trailing-block';
 import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
@@ -41,11 +41,20 @@ const editList = EditList({
   typeItem: 'list-item',
 });
 
-const getOutlinedOnSelected = Wrapped => createComponent(
-  ({ isSelected }) => ({
-    outline: isSelected && '2px solid rgba(48, 48, 48, 0.67)',
+const getOutlinedOnSelected = Wrapped =>
+  createComponent(
+    ({ isSelected, theme }) => ({
+      outline: isSelected && `2px solid ${theme.color}`,
+    }),
+    p => <Wrapped {...p} />,
+    p => Object.keys(p),
+  );
+
+const Center = createComponent(
+  ({ isSelected, theme }) => ({
+    textAlign: 'center',
   }),
-  p => <Wrapped {...p} />,
+  'div',
   p => Object.keys(p),
 );
 
@@ -56,7 +65,7 @@ const options = {
     { type: 'bold', label: <I icon={FaBold} /> },
     { type: 'italic', label: <I icon={FaItalic} /> },
     { type: 'underlined', label: <I icon={FaUnderline} /> },
-    { type: 'center', label: <I icon={FaAlignCenter} /> },
+    // { type: 'center', label: <I icon={FaAlignCenter} /> },
     { type: 'code', label: <I icon={FaCode} /> },
   ],
   toolbarTypes: [
@@ -123,10 +132,37 @@ const options = {
       },
       isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
     },
+    {
+      type: 'center',
+      label: <I icon={FaAlignCenter} />,
+      description: 'Center',
+      onClick: ({ state, onChange }, isActive) => {
+        if (isActive) {
+          onChange(state.change().unwrapBlock('center'));
+        } else {
+          onChange(
+            state
+              .change()
+              .wrapBlock({ type: 'center' })
+              .collapseToEnd(),
+          );
+        }
+      },
+      isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
+    },
   ],
   sidebarTypes: [],
   nodes: {
-    paragraph: getOutlinedOnSelected(({ children, attributes, className }) => <div {...attributes} className={className}>{children}</div>),
+    center: getOutlinedOnSelected(({ children, attributes, className }) => (
+      <center {...attributes} className={className}>
+        {children}
+      </center>
+    )),
+    paragraph: getOutlinedOnSelected(({ children, attributes, className }) => (
+      <div {...attributes} className={className}>
+        {children}
+      </div>
+    )),
     link: getOutlinedOnSelected(({ node, attributes, children, className }) => (
       <a
         {...attributes}
@@ -139,10 +175,20 @@ const options = {
       </a>
     )),
     'block-quote': getOutlinedOnSelected(({ children, attributes, className }) => (
-      <blockquote {...attributes} className={className}>{children}</blockquote>
+      <blockquote {...attributes} className={className}>
+        {children}
+      </blockquote>
     )),
-    'bulleted-list': getOutlinedOnSelected(({ children, attributes, className }) => <ul {...attributes} className={className}>{children}</ul>),
-    'numbered-list': getOutlinedOnSelected(({ children, attributes, className }) => <ol {...attributes} className={className}>{children}</ol>),
+    'bulleted-list': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <ul {...attributes} className={className}>
+        {children}
+      </ul>
+    )),
+    'numbered-list': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <ol {...attributes} className={className}>
+        {children}
+      </ol>
+    )),
     'heading-one': getOutlinedOnSelected(({ children, attributes, className }) => (
       <h1 {...attributes} id={getIdByTag(children)} className={className}>
         {children}
@@ -173,16 +219,28 @@ const options = {
         {children}
       </h6>
     )),
-    'list-item': getOutlinedOnSelected(({ children, attributes, className }) => <li {...attributes} className={className}>{children}</li>),
-    'bulleted-list-item': getOutlinedOnSelected(({ children, attributes, className }) => <li {...attributes} className={className}>{children}</li>),
-    'numbered-list-item': getOutlinedOnSelected(({ children, attributes, className }) => <li {...attributes} className={className}>{children}</li>),
+    'list-item': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <li {...attributes} className={className}>
+        {children}
+      </li>
+    )),
+    'bulleted-list-item': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <li {...attributes} className={className}>
+        {children}
+      </li>
+    )),
+    'numbered-list-item': getOutlinedOnSelected(({ children, attributes, className }) => (
+      <li {...attributes} className={className}>
+        {children}
+      </li>
+    )),
   },
   marks: {
     bold: ({ children, attributes }) => <strong {...attributes}>{children}</strong>,
     code: ({ children, attributes }) => <code {...attributes}>{children}</code>,
     italic: ({ children, attributes }) => <em {...attributes}>{children}</em>,
     underlined: ({ children, attributes }) => <u {...attributes}>{children}</u>,
-    center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
+    // center: ({ children, attributes }) => <center {...attributes}>{children}</center>,
   },
   getMarkdownType: (chars) => {
     switch (chars) {

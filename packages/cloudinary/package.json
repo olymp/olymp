@@ -10,7 +10,7 @@
   "dependencies": {
     "cloudinary": "^1.9.0",
     "olymp-collection": "^17.7.5",
-    "react-image-crop": "^3.0.0",
+    "react-image-crop": "^3.0.1",
     "recompose": "^0.25.1"
   }
 }

@@ -130,7 +130,12 @@ const styles = theme => ({
 
 const component = createComponent(
   ({ getData, theme }) => styles(theme)[getData('type', 'style1')],
-  ({ attributes, className }) => <hr {...attributes} className={className} />,
+  ({ attributes, className, children }) => (
+    <span {...attributes}>
+      {children}
+      <hr className={className} />
+    </span>
+  ),
   p => Object.keys(p),
 );
 
@@ -149,8 +154,19 @@ export default {
       component: ({ setData }) => (
         <Dropdown
           overlay={
-            <Menu onClick={({ key }) => setData({ type: key })} style={{ minWidth: 200 }}>
-              {Object.keys(styles({})).map(key => <Menu.Item key={key}>{key}</Menu.Item>)}
+            <Menu style={{ minWidth: 200 }}>
+              {Object.keys(styles({})).map(key => (
+                <Menu.Item key={key}>
+                  <span
+                    onMouseDown={(e) => {
+                      setData({ type: key });
+                      e.preventDefault();
+                    }}
+                  >
+                    {key}
+                  </span>
+                </Menu.Item>
+              ))}
             </Menu>
           }
         >

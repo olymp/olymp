@@ -11,6 +11,7 @@ module.exports = (config, options) => {
     isLinked,
     modifyVars,
     folder,
+    isDev,
     target,
     ExtractCssChunks,
   } = options;
@@ -44,7 +45,7 @@ module.exports = (config, options) => {
         },
         {
           loader: 'style-loader',
-          options: { insertAt: 'top' },
+          options: { insertAt: 'before', hmr: isDev },
         },
         {
           loader: 'css-loader',

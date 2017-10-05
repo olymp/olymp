@@ -21,7 +21,7 @@ export default typeProp => (WrappedComponent) => {
         <Link
           to={{
             pathname,
-            query: { ...query, [`@${type}`]: id || 'new', modal: null },
+            query: { ...query, [`@${type}`]: id || 'new' },
           }}
           className={className}
         >

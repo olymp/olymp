@@ -10,7 +10,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "immutable": "^3.8.1",
+    "immutable": "^3.8.2",
     "slate": "0.25.3",
     "slate-base64-serializer": "^0.1.10",
     "slate-edit-list": "^0.8.0",

@@ -10,7 +10,7 @@ import {
   SuggestEditor,
 } from 'olymp-ui';
 import { GeocodeEditor } from 'olymp-google';
-import { StatelessSlateMate, withDebounceState } from 'olymp-slate';
+import { StatelessSlateMate, withJsonState } from 'olymp-slate';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
@@ -21,7 +21,7 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChange }) => (
+const SlateEditor = withJsonState({ debounce: 800 })(({ label, value, onChange }) => (
   <StatelessSlateMate
     onChange={onChange}
     value={value}
@@ -30,17 +30,7 @@ const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChan
   />
 ));
 
-export default ({
-  className,
-  editorClassName,
-  style,
-  editorStyle,
-  field,
-  label,
-  key,
-  value,
-  onChange,
-}) => {
+export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -111,7 +101,7 @@ export default ({
 
   switch (type.name) {
     case 'Blocks':
-      return <SlateEditor {...editProps} label={label} value={value} onChange={onChange} />;
+      return <SlateEditor {...editProps} label={label} />;
     case 'Image':
       return <ImageEdit {...editProps} style={{ maxWith: '100%' }} width="100%" />;
     case 'Boolean':
