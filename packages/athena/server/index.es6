@@ -101,6 +101,13 @@ export default (server, options) => {
     ...options.auth,
     getQueries: queries => ({
       ...queries,
+      verify: async (root, args, context) => {
+        const user = await queries.verify(root, args, context);
+        if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
+          return user;
+        }
+        throw new Error('No permission');
+      },
       invitationList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
@@ -126,13 +133,6 @@ export default (server, options) => {
       ...mutations,
       login: async (root, args, context) => {
         const user = await mutations.login(root, args, context);
-        if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
-          return user;
-        }
-        throw new Error('No permission');
-      },
-      verify: async (root, args, context) => {
-        const user = await mutations.verify(root, args, context);
         if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
           return user;
         }
