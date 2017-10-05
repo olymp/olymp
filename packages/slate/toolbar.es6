@@ -63,7 +63,7 @@ const WrappedMenu = createComponent(
 );
 
 const ScrollPortal = withScrollHide(
-  withPropsOnChange(['scrollTop', 'scrolling'], ({ scrollTop, parentEl }) => {
+  withPropsOnChange(['scrollTop', 'scrolling'], ({ scrolling, parentEl }) => {
     const parent = document.querySelector(parentEl);
     if (!parent) {
       return null;
@@ -75,9 +75,10 @@ const ScrollPortal = withScrollHide(
     const left = scrollX + tooltipPosition.left;
     return {
       left: left + parent.offsetWidth / 2,
+      display: scrolling ? 'none' : 'block',
       top,
     };
-  })(({ children, top, left, display, color }) => (
+  })(({ children, top, left, color }) => (
     <Portal>
       <WrappedMenu
         color={color}

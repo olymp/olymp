@@ -54,14 +54,8 @@ export const withScrollHide = WrappedComponent =>
       document.removeEventListener('scroll', this.onScroll, true);
     }
     render() {
-      let { className } = this.state;
+      const { className } = this.state;
       const { top, scrolling } = this.state;
-      if (scrolling) {
-        return null;
-      }
-      if (top && false) {
-        className = cn(className, top && 'is-scrolled');
-      }
       return <WrappedComponent {...this.props} scrollTop={top} scrolling={scrolling} />;
     }
   };
