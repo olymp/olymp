@@ -9,6 +9,8 @@ import Amp from './amp';
 
 const initVals = ({ width, height, maxResolution, ratio }) => {
   let isPercentage = false;
+  const originalWidth = width;
+  const originalHeight = height;
 
   if (!ratio) {
     ratio = 0.75;
@@ -35,6 +37,8 @@ const initVals = ({ width, height, maxResolution, ratio }) => {
   }
 
   return {
+    originalWidth,
+    originalHeight,
     width,
     ratio,
     isPercentage,
@@ -68,7 +72,7 @@ const limitWidth = ({
   }
 
   // maxResolution
-  if (width ** 2 * ratio > maxResolution) {
+  if (width * 2 * ratio > maxResolution) {
     width = Math.sqrt(maxResolution / ratio);
   }
 
@@ -131,6 +135,8 @@ const Image = enhance((props) => {
     w,
     h,
     url,
+    originalWidth,
+    originalHeight,
     ...containerProps
   } = props;
   const image = url ? (
@@ -151,7 +157,7 @@ const Image = enhance((props) => {
       {...containerProps}
       attributes={attributes}
       className={className}
-      width={isPercentage ? props.width : w}
+      width={isPercentage ? originalWidth : w}
       ratio={ratio}
     >
       {amp && image ? (
