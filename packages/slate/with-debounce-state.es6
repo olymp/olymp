@@ -11,10 +11,12 @@ const stateWrapper = options => WrappedComponent =>
     }
     componentWillReceiveProps(newProps) {
       if (newProps.value !== this.props.value) {
+        console.log('with-debounce', 'will-receive');
         this.setState({ value: newProps.value });
       }
     }
     propagateChange = (value) => {
+      console.log('with-debounce', 'onChange');
       this.props.onChange(value);
       /* this.props.onChange(
           JSON.parse(
@@ -41,6 +43,7 @@ const stateWrapper = options => WrappedComponent =>
       });
     };
     render() {
+      console.log('with-debounce', 'render');
       const { value } = this.state;
       return <WrappedComponent {...this.props} value={value} onChange={this.onChange} />;
     }
@@ -49,6 +52,7 @@ const stateWrapper = options => WrappedComponent =>
 export default options =>
   compose(
     withPropsOnChange(['value'], ({ value }) => {
+      console.log('with-debounce', 'withPropsOnChange');
       const state = value || Plain.deserialize('');
       return {
         value: state,

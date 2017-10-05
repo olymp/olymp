@@ -16,6 +16,7 @@ const stateWrapper = options => WrappedComponent =>
     }
     componentWillReceiveProps(newProps) {
       if (newProps.base64 !== this.base64 && this.state.value !== newProps.value) {
+        console.log('with-json', 'will receive - ok');
         this.base64 = newProps.base64;
         this.state.value = newProps.value;
       }
@@ -62,6 +63,7 @@ const stateWrapper = options => WrappedComponent =>
         const count = 355;
         const extract = text.slice(0, count) + (text.length > count ? '...' : '');
         // image, title, chapters
+        console.log('with-json', 'onChange');
         return this.props.onChange({ nodes, text, extract, title, image, chapters });
       }
       this.first = true;
@@ -85,6 +87,7 @@ const stateWrapper = options => WrappedComponent =>
     };
     render() {
       const { value } = this.state;
+      console.log('with-json', 'render');
       return (
         <WrappedComponent
           {...this.props}
@@ -99,6 +102,7 @@ const stateWrapper = options => WrappedComponent =>
 export default options =>
   compose(
     withPropsOnChange(['value', 'id'], ({ value }) => {
+      console.log('with-json', 'withPropsOnChange');
       const state = value
         ? State.fromJSON({
           document: {
