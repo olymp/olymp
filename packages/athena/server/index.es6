@@ -98,11 +98,14 @@ export default (server, options) => {
   });
 
   modules.auth = authGraphQL({
-    ...options.auth,
+    attributes: `${options.auth.attributes || ''} _appIds:[String]`,
     getQueries: queries => ({
       ...queries,
       verify: async (root, args, context) => {
         const user = await queries.verify(root, args, context);
+        if (!user) {
+          return user;
+        }
         if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
           return user;
         }

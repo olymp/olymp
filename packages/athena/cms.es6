@@ -10,6 +10,7 @@ import { LightboxProvider } from 'olymp-cloudinary';
 import { asyncComponent } from 'react-async-component';
 // import HTML5Backend from 'react-dnd-html5-backend';
 import { withNavigation } from 'olymp-pages/with-data';
+import { get } from 'lodash';
 import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
 import { withRedux } from './redux';
@@ -21,6 +22,19 @@ const IfAuth = asyncComponent({
 
 const enhance = compose(
   // DragDropContext(HTML5Backend),
+  withPropsOnChange(['auth'], ({ auth }) => ({
+    auth: {
+      attributes: `
+        id
+        name
+        email
+        isAdmin
+        token
+        _appIds
+        ${get(auth, 'attributes', '')}
+      `,
+    },
+  })),
   useAuth,
   withRedux,
   useBlockTypes,
