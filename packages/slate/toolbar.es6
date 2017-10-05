@@ -78,12 +78,13 @@ const ScrollPortal = withScrollHide(
       display: scrolling ? 'none' : 'block',
       top,
     };
-  })(({ children, top, left, color }) => (
+  })(({ children, top, left, color, display }) => (
     <Portal>
       <WrappedMenu
         color={color}
         style={{
           top: top - 2,
+          display,
           left,
           transform: 'translate3d(-50%, -100%, 0px)',
           position: 'absolute',
