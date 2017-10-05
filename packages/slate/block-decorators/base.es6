@@ -53,8 +53,8 @@ const Action = ({ node, state, onChange, blockTypes }) => (
 
 export default options => (Block) => {
   const StyledBlock = createComponent(
-    ({ isSelected }) => ({
-      outline: isSelected && options.category && '2px solid rgba(48, 48, 48, 0.67)',
+    ({ isSelected, theme }) => ({
+      outline: isSelected && options.category && `2px solid ${theme.color}`,
     }),
     p => <Block {...p} />,
     p => Object.keys(p),
