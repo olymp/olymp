@@ -72,7 +72,7 @@ const limitWidth = ({
   }
 
   // maxResolution
-  if (width * 2 * ratio > maxResolution) {
+  if (width ** 2 * ratio > maxResolution) {
     width = Math.sqrt(maxResolution / ratio);
   }
 
