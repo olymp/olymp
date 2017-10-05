@@ -1,148 +1,55 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Upload } from 'antd';
+import { compose, onlyUpdateForPropTypes, setPropTypes, withPropsOnChange } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { Image } from '../components';
-import { intersection, upperFirst, orderBy } from 'lodash';
 
-class ListSidebar extends Component {
-  getTags = (items) => {
-    const { search } = this.props;
-    const tags = { 'Ohne Schlagworte': [] };
-
-    items.forEach((item) => {
-      if (!item.tags.length) {
-        tags['Ohne Schlagworte'].push(item);
-      } else {
-        item.tags.forEach((tag) => {
-          if (
-            !search ||
-            tag.toLowerCase().indexOf(search.toLowerCase()) !== -1
-          ) {
-            if (!tags[tag]) {
-              tags[tag] = [];
-            }
-            tags[tag].push(item);
-          }
-        });
-      }
-    });
-
-    return tags;
-  };
-
-  getDirectories = () => {
-    const { filter, onFilter } = this.props;
-    const items = this.props.items.map(item => ({
-      ...item,
-      tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
-    }));
-    const tags = this.getTags(items);
-
-    return Object.keys(tags).map((tag) => {
-      const active = !!filter.find(x => x === tag);
-      const filteredTags = !active
-        ? [...filter, tag]
-        : filter.filter(x => x !== tag);
-      const filteredItems = items.filter(
-        item =>
-          intersection(item.tags, filteredTags).length === filteredTags.length
-      );
-      const countFilter = (this.getTags(filteredItems)[tag] || []).length;
-      const countAll = tags[tag].length;
-      const disabled = !countFilter;
-      const text = `${countAll} Dateien`;
-
-      return {
-        active,
-        disabled,
-        onClick: () => onFilter(filteredTags, filteredItems),
-        label: upperFirst(tag),
-        description:
-          countFilter === countAll ? text : `${countFilter} von ${text}`,
-        image: tags[tag][0],
-        countFilter,
-        countAll,
-        key: tag,
-      };
-    });
-  };
-
-  image = ({ image }) => <Image value={image} width={37} height={37} />;
-
-  render() {
-    const {
-      items,
-      upload,
-      onClose,
-      search,
-      onSearch,
-      onFilter,
-      filter,
-    } = this.props;
-    const directories = orderBy(
+/* const directories = orderBy(
       this.getDirectories(),
       ['active', 'disabled', 'countFilter', 'countAll', 'label'],
-      ['desc', 'asc', 'desc', 'desc', 'asc']
-    );
+      ['desc', 'asc', 'desc', 'desc', 'asc'],
+    ); */
 
-    return (
-      <Sidebar
-        header={
-          <List.Filter
-            placeholder="Filter ..."
-            onChange={onSearch}
-            value={search}
-          />
-        }
-        leftButtons={
-          onClose &&
-          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-        }
-        rightButtons={
-          <Upload {...upload}>
-            <Sidebar.Button shape="circle" icon="plus" />
-          </Upload>
-        }
-        isOpen
-        padding={0}
-        title="Mediathek"
-        subtitle="Medien sichten und verwalten"
-      >
-        {directories.find(dir => dir.disabled)
-          ? <List.Item
-            label="Zurück"
-            icon="left"
-            onClick={() => onFilter(filter.slice(0, -1), items)}
-          />
-          : null}
-        {directories
-          .filter(dir => !dir.active)
-          .map(
-            dir =>
-              !dir.disabled
-                ? <List.Item {...dir} image={this.image(dir)} />
-                : null
-          )}
-      </Sidebar>
-    );
-  }
-}
-ListSidebar.propTypes = {
-  onClose: PropTypes.func,
-  onSearch: PropTypes.func,
-  onFilter: PropTypes.func,
-  items: PropTypes.arrayOf(PropTypes.object),
-  upload: PropTypes.object,
-  search: PropTypes.string,
-  filter: PropTypes.array,
-};
-ListSidebar.defaultProps = {
-  onClose: null,
-  onSearch: () => {},
-  onFilter: () => {},
-  items: [],
-  upload: {},
-  filter: [],
-};
-export default ListSidebar;
+const image = ({ image }) => <Image value={image} width={37} height={37} />;
+
+// @withPropsOnChange(['items', 'search', 'filter'])
+const enhance = compose(
+  onlyUpdateForPropTypes,
+  setPropTypes({
+    onClose: PropTypes.func,
+    setSearch: PropTypes.func,
+    setTags: PropTypes.func,
+    directories: PropTypes.arrayOf(PropTypes.object),
+    upload: PropTypes.object,
+    search: PropTypes.string,
+    tags: PropTypes.array,
+  }),
+  withPropsOnChange(['directories'], ({ directories }) => ({
+    disabled: directories.find(dir => dir.disabled),
+    visibleItems: directories.filter(dir => !dir.active && !dir.disabled),
+  })),
+);
+
+export default enhance(
+  ({ upload, onClose, search, setSearch, setTags, tags, visibleItems, disabled }) => (
+    <Sidebar
+      header={<List.Filter placeholder="Filter ..." onChange={setSearch} value={search} />}
+      leftButtons={onClose && <Sidebar.Button shape="circle" onClick={onClose} icon="close" />}
+      rightButtons={
+        <Upload {...upload}>
+          <Sidebar.Button shape="circle" icon="plus" />
+        </Upload>
+      }
+      isOpen
+      padding={0}
+      title="Mediathek"
+      subtitle="Medien sichten und verwalten"
+    >
+      {disabled && (
+        <List.Item label="Zurück" icon="left" onClick={() => setTags(tags.slice(0, -1))} />
+      )}
+      {visibleItems.map(dir => <List.Item {...dir} image={image(dir)} />)}
+    </Sidebar>
+  ),
+);

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Button, notification } from 'antd';
 import { Sidebar, Placeholder } from 'olymp-ui';
 import { isEqual } from 'lodash';
+import { createComponent } from 'olymp-fela';
 import { mutateFile } from '../gql';
 import Detail from './detail';
 import { Gallery } from '../components';
 import { LightboxGallery } from '../lightbox';
-import { createComponent } from 'olymp-fela';
 
 const StyledGallery = createComponent(
   ({ theme }) => ({
@@ -17,7 +17,7 @@ const StyledGallery = createComponent(
     borderTop: '1px solid #eee',
   }),
   Gallery,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @mutateFile
@@ -37,8 +37,7 @@ class SelectionSidebar extends Component {
       return (
         stateItem || {
           ...propItem,
-          source:
-            source && stateItems[0] ? stateItems[0].source : propItem.source,
+          source: source && stateItems[0] ? stateItems[0].source : propItem.source,
           tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
         }
       ); // nur neue Items hinzufügen, ansonsten Items aus State verwenden
@@ -66,17 +65,14 @@ class SelectionSidebar extends Component {
   };
 
   patchItems = (type, val) => {
-    const items = this.state.items.map(item =>
-      this.patch(item, { [type]: val })
-    );
+    const items = this.state.items.map(item => this.patch(item, { [type]: val }));
     this.setState({ items, [type]: !this.state[type] });
   };
 
   notification = (key, fn) => {
     notification.open({
       message: 'Änderungen verwerfen?',
-      description:
-        'Wollen Sie wirlich die nicht gespeicherten Änderungen verwerfen?',
+      description: 'Wollen Sie wirlich die nicht gespeicherten Änderungen verwerfen?',
       btn: (
         <div>
           <Button size="small" onClick={() => notification.close(key)}>
@@ -172,8 +168,8 @@ class SelectionSidebar extends Component {
         <Sidebar
           right
           header={
-            items.length > 1
-              ? <StyledGallery
+            items.length > 1 ? (
+              <StyledGallery
                 items={items}
                 itemHeight={60}
                 selected={[activeItem]}
@@ -181,25 +177,19 @@ class SelectionSidebar extends Component {
                 onRemove={this.onRemove}
                 justifyContent="space-around"
               />
-              : null
+            ) : null
           }
           footer={
             <div>
-              {!onSelect
-                ? <Button
-                  onClick={this.onSave}
-                  type="primary"
-                  disabled={!items.length}
-                >
+              {!onSelect ? (
+                <Button onClick={this.onSave} type="primary" disabled={!items.length}>
                   {items.length > 1 ? 'Alle speichern' : 'Speichern'}
                 </Button>
-                : <Button
-                  onClick={() => onSelect(items)}
-                  type="primary"
-                  disabled={!items.length}
-                >
-                    Übernehmen
-                  </Button>}
+              ) : (
+                <Button onClick={() => onSelect(items)} type="primary" disabled={!items.length}>
+                  Übernehmen
+                </Button>
+              )}
               <Button onClick={this.onCancel} disabled={!items.length}>
                 Abbrechen
               </Button>
@@ -208,14 +198,12 @@ class SelectionSidebar extends Component {
           isOpen
           title={!onSelect ? 'Bearbeiten' : 'Auswählen'}
           subtitle={
-            !onSelect
-              ? 'Ausgewählte Medien editieren'
-              : 'Medien zur Weiterverarbeitung auswählen'
+            !onSelect ? 'Ausgewählte Medien editieren' : 'Medien zur Weiterverarbeitung auswählen'
           }
           padding="1rem"
         >
-          {items.length
-            ? <Detail
+          {items.length ? (
+            <Detail
               item={item}
               multi={items.length > 1}
               patchItem={changes => this.patchItem(item.id, changes)}
@@ -224,7 +212,9 @@ class SelectionSidebar extends Component {
               tags={tags}
               editable={!onSelect}
             />
-            : <Placeholder>Dateien auswählen</Placeholder>}
+          ) : (
+            <Placeholder>Dateien auswählen</Placeholder>
+          )}
         </Sidebar>
       </LightboxGallery>
     );

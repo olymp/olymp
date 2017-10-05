@@ -11,6 +11,7 @@
     "cloudinary": "^1.9.0",
     "olymp-collection": "^17.7.5",
     "react-image-crop": "^3.0.1",
+    "react-virtualized": "^9.10.1",
     "recompose": "^0.25.1"
   }
 }

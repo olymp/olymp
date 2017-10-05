@@ -1,52 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Thumb from './thumb';
-import { createComponent } from 'olymp-fela';
+/*
 
-const Thumbs = createComponent(
-  ({ justifyContent }) => ({
-    padding: '.5rem',
-    hasFlex: {
-      display: 'flex',
-      flexFlow: 'row wrap',
-      justifyContent: justifyContent || 'space-between',
-      alignContent: 'flex-start',
-      alignItems: 'flex-start',
-    },
-  }),
-  'div',
-  ({ justifyContent, ...p }) => Object.keys(p)
-);
-
-export const MediaList = ({
-  items,
-  itemHeight,
-  selected,
-  onClick,
-  onRemove,
-  ...rest,
-}) =>
+export const MediaList = ({ items, itemHeight, selection, onClick, onRemove, ...rest }) => (
   <Thumbs {...rest}>
-    {(items || [])
-      .map((item, index) =>
-        <Thumb
-          item={item}
-          onClick={e => onClick(item.id, index, e)}
-          onRemove={() => onRemove(item.id)}
-          isActive={selected.findIndex(({ id }) => id === item.id) >= 0}
-          height={itemHeight}
-          key={item.id}
-        />
-      )}
-  </Thumbs>;
+    {(items || []).map((item, index) => (
+      <Thumb
+        item={item}
+        onClick={e => onClick(item.id, index, e)}
+        onRemove={() => onRemove(item.id)}
+        isActive={selection.findIndex(({ id }) => id === item.id) >= 0}
+        height={itemHeight}
+        key={item.id}
+      />
+    ))}
+  </Thumbs>
+);
 MediaList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   itemHeight: PropTypes.number,
-  selected: PropTypes.arrayOf(
+  selection: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
       crop: PropTypes.arrayOf(PropTypes.number),
-    })
+    }),
   ),
   onClick: PropTypes.func,
   onRemove: PropTypes.func,
@@ -54,8 +29,150 @@ MediaList.propTypes = {
 MediaList.defaultProps = {
   items: [],
   itemHeight: 80,
-  selected: [],
+  selection: [],
   onClick: () => {},
   onRemove: () => {},
 };
 export default MediaList;
+*/ /** @flow */
+import React, { PureComponent } from 'react';
+import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
+import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
+import WindowScroller from 'react-virtualized/dist/es/WindowScroller';
+import createCellPositioner from 'react-virtualized/dist/es/Masonry/createCellPositioner';
+import Masonry from 'react-virtualized/dist/es/Masonry/Masonry';
+import Thumb from './thumb';
+
+const columnWidth = 200;
+const gutterSize = 10;
+const windowScrollerEnabled = false;
+export default class GridExample extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this._height = 300;
+    this._columnCount = 0;
+    this._columnHeights = {};
+    this._cache = new CellMeasurerCache({
+      defaultHeight: 250,
+      defaultWidth: 200,
+      fixedWidth: true,
+    });
+  }
+
+  render() {
+    if (windowScrollerEnabled) {
+      return <WindowScroller>{this._renderAutoSizer}</WindowScroller>;
+    }
+    return this._renderAutoSizer({ height: 300 });
+  }
+
+  _calculateColumnCount = () => {
+    this._columnCount = Math.floor(this._width / (columnWidth + gutterSize));
+  };
+
+  _cellRenderer = ({ index, key, parent, style }) => {
+    const { items, onClick, selection, onRemove } = this.props;
+
+    const item = items[index];
+
+    console.log(index, style);
+    return (
+      <CellMeasurer cache={this._cache} index={index} key={key} parent={parent}>
+        <div
+          style={{
+            ...style,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#f7f7f7',
+            wordBreak: 'break-all',
+            width: columnWidth,
+          }}
+        >
+          {/* <div
+            style={{
+              backgroundColor: item.color,
+              borderRadius: '0.5rem',
+              height: item.height,
+              marginBottom: '0.5rem',
+              width: '100%',
+            }}
+          /> */}
+          <Thumb
+            item={item}
+            width={columnWidth}
+            onClick={e => onClick(item.id, index, e)}
+            onRemove={() => onRemove(item.id)}
+            isActive={selection.findIndex(({ id }) => id === item.id) >= 0}
+            key={item.id}
+          />
+        </div>
+      </CellMeasurer>
+    );
+  };
+
+  _initCellPositioner = () => {
+    if (typeof this._cellPositioner === 'undefined') {
+      this._cellPositioner = createCellPositioner({
+        cellMeasurerCache: this._cache,
+        columnCount: this._columnCount,
+        columnWidth,
+        spacer: gutterSize,
+      });
+    }
+  };
+
+  _onResize = ({ width }) => {
+    this._width = width;
+
+    this._columnHeights = {};
+    this._calculateColumnCount();
+    this._resetCellPositioner();
+    this._masonry.recomputeCellPositions();
+  };
+
+  _renderAutoSizer = ({ height, scrollTop }) => {
+    this._height = height;
+    this._scrollTop = scrollTop;
+
+    return (
+      <AutoSizer disableHeight onResize={this._onResize} scrollTop={this._scrollTop}>
+        {this._renderMasonry}
+      </AutoSizer>
+    );
+  };
+
+  _renderMasonry = ({ width }) => {
+    const { items } = this.props;
+    this._width = width;
+
+    this._calculateColumnCount();
+    this._initCellPositioner();
+
+    return (
+      <Masonry
+        autoHeight={windowScrollerEnabled}
+        cellCount={items.length}
+        cellMeasurerCache={this._cache}
+        cellPositioner={this._cellPositioner}
+        cellRenderer={this._cellRenderer}
+        height={this._height}
+        ref={this._setMasonryRef}
+        scrollTop={this._scrollTop}
+        width={width}
+      />
+    );
+  };
+
+  _resetCellPositioner = () => {
+    this._cellPositioner.reset({
+      columnCount: this._columnCount,
+      columnWidth,
+      spacer: gutterSize,
+    });
+  };
+
+  _setMasonryRef = (ref) => {
+    this._masonry = ref;
+  };
+}

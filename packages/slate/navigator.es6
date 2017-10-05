@@ -103,7 +103,7 @@ const ChangeBlock = createComponent(
             <span>Löschen</span>
           </Menu.Item>
           <Menu.Item key="unwrap">
-            <span>Auspacken</span>
+            <span>Entpacken</span>
           </Menu.Item>
           <Menu.Item key="cut">
             <span>Ausschneiden</span>

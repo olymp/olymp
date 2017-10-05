@@ -192,7 +192,7 @@ export default options => (Block) => {
                           e.preventDefault();
                         }}
                       >
-                        Auspacken
+                        Entpacken
                       </span>
                     </Menu.Item>
                   )}

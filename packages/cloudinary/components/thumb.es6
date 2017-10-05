@@ -79,10 +79,14 @@ const CloseLabel = createComponent(
   p => Object.keys(p),
 );
 
-const Thumb = ({ item, onClick, onRemove, isActive, height }) =>
+const Thumb = ({ item, width, onClick, onRemove, isActive }) =>
   (item ? (
     <ImageContainer isActive={isActive}>
-      <Image value={item} height={height} maxWidth={300} onClick={onClick} />
+      <Image
+        value={{ ...item, width, height: item.height / item.width * width }}
+        width="100%"
+        onClick={onClick}
+      />
       {item.format === 'pdf' ? (
         <ImageLabel>
           <Icon type="file-pdf" />
