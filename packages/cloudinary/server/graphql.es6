@@ -39,47 +39,9 @@ export default (uri) => {
           mongoQuery._type = 'file';
           mongoQuery.state = { $ne: 'REMOVED' };
           return monk.collection('item').find(mongoQuery);
-          /* return monk
-            .collection('item')
-            .find(mongoQuery)
-            .then((x) => {
-              x.url = x.secureUrl;
-              x.secureUrl = null;
-              x.map(item =>
-                monk
-                  .collection('item')
-                  .update(
-                    { id: item.id },
-                    { ...item, _type: 'file', _appId: app.id },
-                    { upsert: true },
-                  ),
-              );
-            });
-          const tags = mongoQuery.tags && mongoQuery.tags.$in;
-          const getFiltered = items =>
-            (tags // eslint-disable-line
-              ? items.filter(item => intersection(tags, item.tags).length > 0)
-              : items);
-
-          return getImages(config).then((images) => {
-            const filtered = getFiltered(images.filter(x => !x.removed));
-            Promise.all(
-              filtered.map(item =>
-                monk
-                  .collection('item')
-                  .update(
-                    { id: item.id },
-                    { ...item, _type: 'file', _appId: app.id },
-                    { upsert: true },
-                  ),
-              ),
-            ).catch(err => console.error(err));
-            return filtered;
-          }); */
         },
         cloudinaryRequest: () => {
           const signed = getSignedRequest(config);
-          console.log(signed);
           invalidationTokens.push(signed.signature);
           return signed;
         },
@@ -118,27 +80,6 @@ export default (uri) => {
                 .update({ id: args.input.id }, args.input, { upsert: true })
                 .then(() => args.input);
             });
-          /* // imagesCache = null;
-          // imageCache = null;
-
-          if (args.operationType && args.operationType === 'REMOVE') {
-            return updateImage(
-              args.id,
-              args.input.tags,
-              args.input.source,
-              args.input.caption,
-              config,
-              true,
-            );
-          }
-
-          return updateImage(
-            args.id,
-            args.input.tags,
-            args.input.source,
-            args.input.caption,
-            config,
-          ); */
         },
         cloudinaryRequestDone: (source, args, { monk, app }) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {

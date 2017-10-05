@@ -68,7 +68,7 @@ export default (server, options) => {
     url: URL,
   });
 
-  const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET, scope: process.env.APP });
+  const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET, app: process.env.APP });
   server.use(authCache(authEngine));
 
   const algolia = process.env.ALGOLIA
@@ -97,7 +97,49 @@ export default (server, options) => {
     next();
   });
 
-  modules.auth = authGraphQL(options.auth);
+  modules.auth = authGraphQL({
+    ...options.auth,
+    getQueries: queries => ({
+      ...queries,
+      invitationList: (source, args, { user, monk }) => {
+        if (!user || !user.isAdmin) {
+          throw new Error('No permission');
+        }
+        return monk.collection('invitation').find({ _appIds: process.env.APP });
+      },
+      userList: (source, args, { user, monk }) => {
+        if (!user || !user.isAdmin) {
+          throw new Error('No permission');
+        }
+        return monk.collection('user').find({ _appIds: process.env.APP });
+      },
+      user: (source, args, { user, monk }) => {
+        if (user && user.isAdmin) {
+        } else if (user && user.id === args.id) {
+        } else {
+          throw new Error('No permission');
+        }
+        return monk.collection('user').findOne({ id: args.id, _appIds: process.env.APP });
+      },
+    }),
+    getMutations: mutations => ({
+      ...mutations,
+      login: async (root, args, context) => {
+        const user = await mutations.login(root, args, context);
+        if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
+          return user;
+        }
+        throw new Error('No permission');
+      },
+      verify: async (root, args, context) => {
+        const user = await mutations.verify(root, args, context);
+        if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
+          return user;
+        }
+        throw new Error('No permission');
+      },
+    }),
+  });
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
   modules.scrape = scrapeGraphQL();

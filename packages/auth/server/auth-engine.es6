@@ -23,7 +23,11 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
     passwordEngine,
     tokenEngine,
     checkTokenValue: (key, k) => tokenEngine.verify(key).then(c => c[k]),
-    checkToken: key => tokenEngine.readUser(key).then(() => true).catch(() => false),
+    checkToken: key =>
+      tokenEngine
+        .readUser(key)
+        .then(() => true)
+        .catch(() => false),
     getUser: id => collection.findOne({ id }).then(cleanUser),
     login: (field, pw, totp) => {
       let user = null;
