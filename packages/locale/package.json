@@ -1,5 +1,5 @@
 {
-  "version": "17.7.17",
+  "version": "17.8.0",
   "name": "olymp-locale",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "date-fns": "2.0.0-alpha.1",
-    "olymp-utils": "^17.7.17"
+    "olymp-utils": "^17.8.0"
   }
 }
