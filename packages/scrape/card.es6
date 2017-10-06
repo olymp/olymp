@@ -9,32 +9,54 @@ const styles = props => ({
     float: 'left',
     marginRight: 10,
   },
+  '> article': {
+    padding: 0,
+    '> a': {
+      fontSize: 12,
+    },
+  },
+  overflow: 'hidden',
+  border: '1px solid #d4d3d3',
+  borderRadius: 5,
   minHeight: 20,
   minWidth: 20,
+  display: 'inline-block',
 });
-const component = ({ image, title, loading, description, value, children, ...rest }) => (
+const component = ({
+  loading,
+  scrape: { image, title, description, url },
+  error,
+  children,
+  value,
+  ...rest
+}) => (
   <div {...rest}>
     {children}
-    {image && (
-      <Image
-        width={80}
-        height={80}
-        value={{
-          width: 300,
-          height: 300,
-          url: `https://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,f_auto/${image}`,
-        }}
-      />
-    )}
-    <h3>{title}</h3>
-    <p>
-      {description} <a href={value}>Mehr erfahren ...</a>
-    </p>
+    {error ? console.error(error) : null}
+    <Image
+      width={150}
+      height={150}
+      value={{
+        width: 300,
+        height: 300,
+        url: image
+          ? `https://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,f_auto/${image}`
+          : undefined,
+      }}
+    />
+    <article>
+      <a target="_blank" href={url}>
+        {url}
+      </a>
+      <h3>{title}</h3>
+      <div>
+        <span>{description}</span>
+        <br />
+      </div>
+    </article>
   </div>
 );
 
-// externe bilder:
-//
 const card = graphql(
   gql`
     query scrape($url: String) {
@@ -52,17 +74,17 @@ const card = graphql(
   `,
   {
     options: ({ value }) => ({
+      fetchPolicy: !value ? 'cache-only' : undefined,
       variables: {
-        xxy: console.log(value),
         url: value,
       },
     }),
     props: ({ ownProps, data }) => ({
       ...ownProps,
-      data,
       loading: data.loading,
       value: ownProps.value,
-      ...(data.scrape || {}),
+      error: data.error,
+      scrape: data.scrape || {},
     }),
   },
 )(createComponent(styles, component, p => Object.keys(p)));

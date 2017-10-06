@@ -49,6 +49,7 @@ class ImageContainer extends Component {
       className,
       children,
       width,
+      height,
       ratio,
       rounded,
       lazy,
@@ -60,6 +61,7 @@ class ImageContainer extends Component {
         {...containerProps}
         {...attributes}
         className={className}
+        height={height}
         width={width}
         ratio={ratio}
         rounded={rounded}
