@@ -128,6 +128,7 @@ export default (uri) => {
         pages: Int
         colors: [String]
         tags: [String]
+        folder: String
       }
       type CloudinaryRequest {
         url: String

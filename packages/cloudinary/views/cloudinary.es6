@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
-import { withState, withPropsOnChange } from 'recompose';
+import { withHandlers, withStateHandlers, withPropsOnChange } from 'recompose';
 import { SplitView } from 'olymp-ui';
-import { intersection, upperFirst } from 'lodash';
+import shortID from 'shortid';
+import { intersection, upperFirst, debounce } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
-import { Gallery } from '../components';
-import ListSidebar from './list';
-import SelectionSidebar from './selection';
+import Gallery from '../components/vgallery';
+import Sidebar from './sidebar';
 
 const getTags = (items, search, filter) => {
   const tags = { 'Ohne Schlagworte': [] };
@@ -46,7 +46,7 @@ const getTags = (items, search, filter) => {
   return tags;
 };
 
-const getDirectories = ({ items, tags: filter, setTags, search, format }) => {
+const getDirectories = ({ items, tags: filter, setTags, searchFilter: search, format }) => {
   if (format) {
     items = items.filter(x => x.format === format);
   }
@@ -62,7 +62,7 @@ const getDirectories = ({ items, tags: filter, setTags, search, format }) => {
     const filteredItems = items.filter(
       item => intersection(item.tags, filteredTags).length === filteredTags.length,
     );
-    const countFilter = (getTags(filteredItems)[tag] || []).length;
+    const countFilter = (getTags(filteredItems, null, [])[tag] || []).length;
     const countAll = tags[tag].length;
     const disabled = !countFilter;
     const text = `${countAll} Dateien`;
@@ -81,6 +81,7 @@ const getDirectories = ({ items, tags: filter, setTags, search, format }) => {
     };
   });
   return {
+    shortId: shortID.generate(),
     directories,
     filteredItems: items.filter(item => intersection(item.tags, filter).length === filter.length),
   };
@@ -89,13 +90,51 @@ const getDirectories = ({ items, tags: filter, setTags, search, format }) => {
 @queryMedias
 @cloudinaryRequest
 @cloudinaryRequestDone
-@withState('tags', 'setTags', [])
-@withState('search', 'setSearch', null)
-@withState('uploading', 'setUploading', [])
+@withStateHandlers(
+  () => ({
+    tags: [],
+    search: null,
+    searchFilter: null,
+    uploading: [],
+    selectedIds: [],
+    activeId: null,
+    tab: '',
+  }),
+  {
+    setTab: () => tab => ({ tab }),
+    addSelection: ({ selectedIds }) => id => ({
+      selectedIds: [...selectedIds, id],
+      activeId: id,
+      tab: 'select',
+    }),
+    setSelection: () => selectedIds => ({ selectedIds, activeId: selectedIds[0], tab: 'select' }),
+    removeSelection: ({ selectedIds }) => (id) => {
+      const newIds = selectedIds.filter(x => x !== id);
+      return {
+        selectedIds: newIds,
+        activeId: newIds[newIds.length - 1],
+      };
+    },
+    setActive: () => active => ({ active }),
+    setTags: () => tags => ({ tags }),
+    setSearch: () => search => ({ search }),
+    setSearchFilter: debounce(() => searchFilter => ({ searchFilter }), 500, {
+      trailing: true,
+      leading: false,
+    }),
+    setUploading: () => uploading => ({ uploading }),
+  },
+)
+@withHandlers({
+  onChange: props => (search) => {
+    props.setSearch(search);
+    props.setSearchFilter(search);
+  },
+})
 @withPropsOnChange(
-  ['tags', 'items', 'format', 'search'],
-  ({ tags, items, setTags, search, format }) =>
-    getDirectories({ items, tags, setTags, search, format }),
+  ['tags', 'items', 'format', 'searchFilter'],
+  ({ tags, items, setTags, searchFilter, format }) =>
+    getDirectories({ items, tags, setTags, searchFilter, format }),
 )
 @withPropsOnChange(['uploading'], ({ data, done, refetchKey, setUploading, uploading }) => {
   const saveProgress = file =>
@@ -160,15 +199,12 @@ const getDirectories = ({ items, tags: filter, setTags, search, format }) => {
     },
   };
 })
-@withState('selection', 'setSelection', [])
-@withState('active', 'setActive', null)
-@withPropsOnChange(['selection'], ({ selection, items }) => ({
-  selectedItems: selection.map(x => items.find(item => item.id === x.id)).filter(x => x),
+@withPropsOnChange(['selectedIds', 'items'], ({ selectedIds, items }) => ({
+  selectedItems: selectedIds.map(x => items.find(item => item.id === x)).filter(x => x),
 }))
 class CloudinaryView extends Component {
   static propTypes = {
     onClose: PropTypes.func,
-    handleSelection: PropTypes.func,
     onSelect: PropTypes.func,
     selection: PropTypes.arrayOf(
       PropTypes.shape({
@@ -188,102 +224,72 @@ class CloudinaryView extends Component {
     format: undefined,
   };
 
-  handleSelection = (selection) => {
-    const { setSelection, handleSelection } = this.props;
-    setSelection(selection);
-    if (handleSelection) {
-      handleSelection(selection);
-    }
-  };
-
-  onSelect = (selections, isPush) => {
-    const { multi, selection } = this.props;
-    let selected = [...selection];
-
-    selections.forEach(({ id: selectionId }) => {
-      const itemIndex = selected.findIndex(({ id }) => id === selectionId);
-      if (itemIndex < 0) {
-        if (multi && isPush) {
-          selected.push({ id: selectionId, crop: undefined }); // select multi
-        } else {
-          selected = [{ id: selectionId, crop: undefined }]; // select single
-        }
-      } else {
-        selected.splice(itemIndex, 1); // remove/deselect
-      }
-    });
-
-    this.handleSelection(selected);
-  };
-
   onClick = (id, e) => {
-    const { selection, setActive } = this.props;
-    const index = selection.findIndex(({ id: selectedId }) => selectedId === id);
-    console.log(index, e.shiftKey);
-    if (index === -1) {
-      setActive(selection.length);
-      this.onSelect([{ id, crop: undefined }], e.shiftKey);
+    const { selection, addSelection, setSelection, setActive } = this.props;
+    const exists = selection.indexOf(id) !== -1;
+    if (!exists) {
+      if (e.shiftKey) {
+        addSelection(id);
+      } else {
+        setSelection([id]);
+      }
     } else {
-      setActive(index);
-      this.handleSelection([{ id, crop: undefined }]);
+      setActive(id);
     }
   };
 
   onRemove = (id) => {
-    /* const { selection } = this.props;
-    const index = selection.findIndex(({ id: itemId }) => itemId === id);
-
-    if (index < selection || (index === selection && index === selected.length - 1)) {
-      this.setState({ selection: selection - 1 });
-    }
-
-    this.onSelect([{ id, crop: undefined }]); */
+    const { removeSelection } = this.props;
+    removeSelection(id);
   };
 
   render() {
     const {
       selectedItems,
-      items,
       filteredItems,
       onClose,
       setSearch,
-      selection,
       setTags,
       directories,
       search,
-      active,
+      searchFilter,
+      activeId,
       setActive,
+      selectedIds,
+      setTab,
+      tab,
       tags,
       upload,
+      shortId,
     } = this.props;
 
     return (
       <SplitView background>
-        <ListSidebar
+        <Sidebar
           directories={directories}
           upload={upload}
           tags={tags}
           search={search}
+          searchFilter={searchFilter}
           onClose={onClose}
           setTags={setTags}
           setSearch={setSearch}
+          items={selectedItems}
+          activeId={activeId}
+          onClick={setActive}
+          onRemove={this.onRemove}
+          tab={tab}
+          setTab={setTab}
         />
         <div>
           <Gallery
-            selection={selection}
+            key={shortId}
+            selectedIds={selectedIds}
             items={filteredItems}
             onClick={this.onClick}
             onRemove={this.onRemove}
           />
         </div>
-        <SelectionSidebar
-          items={selectedItems}
-          active={active}
-          onClick={index => this.setState({ selection: index })}
-          onRemove={this.onRemove}
-          // onCancel={() => this.onSelect(selected)}
-          onSelect={setActive}
-        />
       </SplitView>
     );
   }

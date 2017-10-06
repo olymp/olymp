@@ -1,135 +1,49 @@
-import React, { PureComponent } from 'react';
-import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
-import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import Masonry, { createCellPositioner } from 'react-virtualized/dist/commonjs/Masonry';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { createComponent } from 'olymp-fela';
 import Thumb from './thumb';
 
-const columnWidth = 200;
-const gutterSize = 10;
-export default class GridExample extends PureComponent {
-  constructor(props) {
-    super(props);
+const Thumbs = createComponent(
+  ({ justifyContent }) => ({
+    padding: '.5rem',
+    hasFlex: {
+      display: 'flex',
+      flexFlow: 'row wrap',
+      justifyContent: justifyContent || 'space-between',
+      alignContent: 'flex-start',
+      alignItems: 'flex-start',
+    },
+  }),
+  'div',
+  ({ justifyContent, ...p }) => Object.keys(p),
+);
 
-    this.columnCount = 0;
-    this.columnHeights = {};
-    this.cache = new CellMeasurerCache({
-      defaultHeight: 250,
-      defaultWidth: 200,
-      fixedWidth: true,
-    });
-  }
-
-  render() {
-    const { items, selection } = this.props;
-    return (
-      <AutoSizer
-        onResize={this.onResize}
-        scrollTop={this.scrollTop}
-        items={items}
-        selection={selection}
-      >
-        {this.renderMasonry}
-      </AutoSizer>
-    );
-  }
-
-  calculateColumnCount = () => {
-    this.columnCount = Math.floor(this.width / (columnWidth + gutterSize));
-  };
-
-  cellRenderer = ({ index, key, parent, style }) => {
-    const { items, onClick, selection, onRemove } = this.props;
-
-    const item = items[index];
-
-    console.log(selection, this.props);
-
-    return (
-      <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
-        <div
-          style={{
-            ...style,
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#f7f7f7',
-            wordBreak: 'break-all',
-            width: columnWidth,
-          }}
-        >
-          {/* <div
-            style={{
-              backgroundColor: item.color,
-              borderRadius: '0.5rem',
-              height: item.height,
-              marginBottom: '0.5rem',
-              width: '100%',
-            }}
-          /> */}
-          <Thumb
-            item={item}
-            width={columnWidth}
-            onClick={e => onClick(item.id, e)}
-            onRemove={() => onRemove(item.id)}
-            isActive={selection.findIndex(({ id }) => id === item.id) >= 0}
-          />
-        </div>
-      </CellMeasurer>
-    );
-  };
-
-  initCellPositioner = () => {
-    if (typeof this.cellPositioner === 'undefined') {
-      this.cellPositioner = createCellPositioner({
-        cellMeasurerCache: this.cache,
-        columnCount: this.columnCount,
-        columnWidth,
-        spacer: gutterSize,
-      });
-    }
-  };
-
-  onResize = ({ width }) => {
-    this.width = width;
-
-    this.columnHeights = {};
-    this.calculateColumnCount();
-    this.resetCellPositioner();
-    this.masonry.recomputeCellPositions();
-  };
-
-  renderMasonry = ({ width, height }) => {
-    const { items, selection } = this.props;
-    this.width = width;
-
-    this.calculateColumnCount();
-    this.initCellPositioner();
-
-    return (
-      <Masonry
-        selection={selection}
-        items={items}
-        autoHeight={false}
-        cellCount={items.length}
-        cellMeasurerCache={this.cache}
-        cellPositioner={this.cellPositioner}
-        cellRenderer={this.cellRenderer}
-        height={height}
-        ref={this.setMasonryRef}
-        scrollTop={this.scrollTop}
-        width={width}
+export const MediaList = ({ items, itemHeight, selectedIds, onClick, onRemove, ...rest }) => (
+  <Thumbs {...rest}>
+    {(items || []).map(item => (
+      <Thumb
+        item={item}
+        onClick={e => onClick(item.id, e)}
+        onRemove={() => onRemove(item.id)}
+        isActive={selectedIds.indexOf(item.id) !== -1}
+        height={itemHeight}
+        key={item.id}
       />
-    );
-  };
-
-  resetCellPositioner = () => {
-    this.cellPositioner.reset({
-      columnCount: this.columnCount,
-      columnWidth,
-      spacer: gutterSize,
-    });
-  };
-
-  setMasonryRef = (ref) => {
-    this.masonry = ref;
-  };
-}
+    ))}
+  </Thumbs>
+);
+MediaList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+  itemHeight: PropTypes.number,
+  selectedIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onClick: PropTypes.func,
+  onRemove: PropTypes.func,
+};
+MediaList.defaultProps = {
+  items: [],
+  itemHeight: 80,
+  selected: [],
+  onClick: () => {},
+  onRemove: () => {},
+};
+export default MediaList;

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
-import { cloudinaryUrl } from './image';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import { cloudinaryUrl } from './image';
 
 const StyledCrop = createComponent(
   ({ theme }) => ({
+    maxHeight: 200,
     '> .ReactCrop--crop-wrapper': {
       backgroundColor: 'white',
     },
@@ -52,17 +53,15 @@ class Crop extends Component {
           src={cloudinaryUrl({ ...value, crop: undefined })}
           onChange={this.onChange}
           crop={
-            crop ? (
-              {
+            crop
+              ? {
                 width,
                 height,
                 x,
                 y,
                 aspect,
               }
-            ) : (
-              { aspect }
-            )
+              : { aspect }
           }
         />
       </div>

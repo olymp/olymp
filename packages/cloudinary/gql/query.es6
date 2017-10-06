@@ -8,6 +8,7 @@ export default graphql(
         id
         url
         tags
+        folder
         colors
         width
         height
@@ -38,6 +39,7 @@ export const queryMedias = graphql(
         id
         url
         tags
+        folder
         colors
         width
         height

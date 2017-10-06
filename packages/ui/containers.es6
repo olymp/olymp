@@ -72,6 +72,7 @@ export const Placeholder = createComponent(
     fontWeight: 200,
     fontSize: '200%',
     opacity: 0.5,
+    minHeight: 300,
     top: '50%',
     left: '50%',
     position: 'absolute',

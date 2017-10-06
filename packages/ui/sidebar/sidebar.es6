@@ -3,10 +3,10 @@ import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
 
 const StyledInner = createComponent(
-  ({ theme, padding, paddingX, paddingY, width, minWidth, maxWidth, right }) => ({
+  ({ theme, padding, paddingX, paddingY, width, right }) => ({
     width,
-    minWidth,
-    maxWidth,
+    minWidth: width,
+    maxWidth: width,
     height: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRight: '1px solid #eee',
@@ -172,6 +172,6 @@ const Sidebar = ({
       </div>
     </StyledInner>
   ));
-Sidebar.defaultProps = { width: 350, minWidth: 350, padding: 0, isOpen: true };
+Sidebar.defaultProps = { width: 350, padding: 0, isOpen: true };
 
 export default Sidebar;

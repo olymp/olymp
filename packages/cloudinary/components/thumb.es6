@@ -79,11 +79,15 @@ const CloseLabel = createComponent(
   p => Object.keys(p),
 );
 
-const Thumb = ({ item, width, onClick, onRemove, isActive }) =>
+const Thumb = ({ item, width, height, onClick, onRemove, isActive }) =>
   (item ? (
     <ImageContainer isActive={isActive}>
       <Image
-        value={{ ...item, width, height: item.height / item.width * width }}
+        value={
+          width
+            ? { ...item, width, height: item.height / item.width * width }
+            : { ...item, height, width: item.width / item.height * height }
+        }
         width="100%"
         onClick={onClick}
       />
