@@ -6,8 +6,10 @@ export default graphql(
     query file($id: String) {
       item: file(id: $id) {
         id
+        publicId
         url
         tags
+        folder
         colors
         width
         height
@@ -36,8 +38,10 @@ export const queryMedias = graphql(
     query fileList {
       items: fileList {
         id
+        publicId
         url
         tags
+        folder
         colors
         width
         height
@@ -78,7 +82,7 @@ export const cloudinaryRequest = graphql(
     props: ({ ownProps, data }) => ({
       ...ownProps,
       refetchKey: data.refetch,
-      data,
+      cloudinaryRequest: data.cloudinaryRequest,
     }),
   },
 );

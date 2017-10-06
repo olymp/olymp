@@ -47,15 +47,15 @@ export default (uri) => {
         },
       },
       mutations: {
-        file: (source, args, { monk, app }) => {
+        file: (source, args, { db, app }) => {
           if (args.operationType === 'REMOVE') {
             args.input.state = 'REMOVED';
           }
-          return monk
+          return db
             .collection('item')
             .findOne({ id: args.input.id })
-            .then((item) => {
-              setTimeout(() => {
+            .then(item =>
+              /* setTimeout(() => {
                 if (args.operationType && args.operationType === 'REMOVE') {
                   return updateImage(
                     item.publicId,
@@ -74,12 +74,12 @@ export default (uri) => {
                   args.input.caption,
                   config,
                 );
-              }, 10);
-              return monk
+              }, 10); */
+              db
                 .collection('item')
-                .update({ id: args.input.id }, args.input, { upsert: true })
-                .then(() => args.input);
-            });
+                .updateOne({ id: args.input.id }, { $set: args.input }, { upsert: true })
+                .then(() => db.collection('item').findOne({ id: args.input.id })),
+            );
         },
         cloudinaryRequestDone: (source, args, { monk, app }) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
@@ -113,6 +113,7 @@ export default (uri) => {
       }
       type File @collection {
         id: String
+        publicId: String
         format: String
         version: Int
         resourceType: String
@@ -128,6 +129,7 @@ export default (uri) => {
         pages: Int
         colors: [String]
         tags: [String]
+        folder: String
       }
       type CloudinaryRequest {
         url: String

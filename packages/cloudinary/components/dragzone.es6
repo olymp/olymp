@@ -8,23 +8,25 @@ const Dragger = createComponent(
     '> .ant-upload': {
       border: 0,
       cursor: clickable ? 'pointer' : 'default',
-      height: 'auto',
+      height: '100%',
     },
   }),
   Upload.Dragger,
-  ({ clickable, ...p }) => Object.keys(p)
+  ({ clickable, ...p }) => Object.keys(p),
 );
 
 const ProgressWrapper = createComponent(
   ({ theme }) => ({
     position: 'relative',
+    height: '100%',
   }),
-  ({ onClick, children, className, disabled, ...p }) =>
-    (<div className={className} onClick={onClick}>
+  ({ onClick, children, className, disabled, ...p }) => (
+    <div className={className} onClick={onClick}>
       {!disabled && <Progress {...p} />}
       {children}
-    </div>),
-  p => Object.keys(p)
+    </div>
+  ),
+  p => Object.keys(p),
 );
 
 const Progress = createComponent(
@@ -41,11 +43,12 @@ const Progress = createComponent(
       transform: 'translate(-50%, -50%)',
     },
   }),
-  ({ className, ...p }) =>
-    (<div className={className}>
+  ({ className, ...p }) => (
+    <div className={className}>
       <AntProgress {...p} />
-    </div>),
-  p => Object.keys(p)
+    </div>
+  ),
+  p => Object.keys(p),
 );
 
 class DragZone extends Component {

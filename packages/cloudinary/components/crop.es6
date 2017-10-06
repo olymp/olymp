@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
-import { cloudinaryUrl } from './image';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import { cloudinaryUrl } from './image';
 
 const StyledCrop = createComponent(
   ({ theme }) => ({
+    maxHeight: 200,
     '> .ReactCrop--crop-wrapper': {
       backgroundColor: 'white',
     },
@@ -21,27 +22,22 @@ class Crop extends Component {
   };
 
   onChange = ({ width, height, x, y }) => {
-    const { value } = this.props;
     this.props.onChange([
-      Math.floor(value.width / 100 * width),
-      Math.floor(value.height / 100 * height),
-      Math.floor(value.width / 100 * x),
-      Math.floor(value.height / 100 * y),
+      Math.floor(this.props.width / 100 * width),
+      Math.floor(this.props.height / 100 * height),
+      Math.floor(this.props.width / 100 * x),
+      Math.floor(this.props.height / 100 * y),
     ]);
   };
 
   render() {
     const { value } = this.props;
-    const crop = value.crop || [value.width, value.height, 0, 0];
+    const crop = value || [this.props.width, this.props.height, 0, 0];
     const aspect = this.props.aspect || (this.state.isSquare && 1);
-    const width = crop[0] / value.width * 100;
-    const height = crop[1] / value.height * 100;
-    const x = crop[2] / value.width * 100;
-    const y = crop[3] / value.height * 100;
-
-    if (!value) {
-      return <div />;
-    }
+    const width = crop[0] / this.props.width * 100;
+    const height = crop[1] / this.props.height * 100;
+    const x = crop[2] / this.props.width * 100;
+    const y = crop[3] / this.props.height * 100;
 
     return (
       <div
@@ -49,20 +45,18 @@ class Crop extends Component {
         onKeyUp={e => this.setState({ isSquare: false })}
       >
         <StyledCrop
-          src={cloudinaryUrl({ ...value, crop: undefined })}
+          src={cloudinaryUrl({ ...this.props, crop: undefined })}
           onChange={this.onChange}
           crop={
-            crop ? (
-              {
+            crop
+              ? {
                 width,
                 height,
                 x,
                 y,
                 aspect,
               }
-            ) : (
-              { aspect }
-            )
+              : { aspect }
           }
         />
       </div>
@@ -70,12 +64,10 @@ class Crop extends Component {
   }
 }
 Crop.propTypes = {
-  value: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    crop: PropTypes.arrayOf(PropTypes.number),
-  }).isRequired,
+  url: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  value: PropTypes.arrayOf(PropTypes.number),
   aspect: PropTypes.number,
   onChange: PropTypes.func,
 };

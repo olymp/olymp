@@ -13,11 +13,10 @@ const Layout = createComponent(
     minHeight: '100%',
     maxHeight: affix && '100vh',
   }),
-  ({ children, affix, ...rest }) =>
-    <div {...rest}>
-      {Children.map(children, child => child && cloneElement(child, { affix }))}
-    </div>,
-  ({ fullHeight, ...p }) => Object.keys(p)
+  ({ children, affix, ...rest }) => (
+    <div {...rest}>{Children.map(children, child => child && cloneElement(child, { affix }))}</div>
+  ),
+  ({ fullHeight, ...p }) => Object.keys(p),
 );
 Layout.displayName = 'Layout';
 Layout.propTypes = {

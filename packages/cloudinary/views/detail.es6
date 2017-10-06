@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TagsEditor } from 'olymp-ui';
-import { Form, Input, Checkbox, Popconfirm } from 'antd';
-import moment from 'moment';
+import { Form, Input, Select, Icon } from 'antd';
+import { format } from 'date-fns';
+import { ContentLoader } from 'olymp-fela';
 import { Crop } from '../components';
 import { LightboxImage } from '../lightbox';
-import { createComponent, ContentLoader } from 'olymp-fela';
-
-const DangerCheckbox = createComponent(
-  ({ theme, checked }) => ({
-    color: checked ? 'red' : 'rgba(0, 0, 0, .65)',
-  }),
-  Checkbox,
-  p => Object.keys(p)
-);
 
 const FormItemLayout = {
   labelCol: { span: 8 },
@@ -30,182 +22,146 @@ const FormForFullLayout = {
   style: { marginBottom: 5 },
 };
 
-@Form.create()
-class MediaDetail extends Component {
-  render() {
-    const {
-      item,
-      patchItem,
-      patchItems,
-      multi,
-      source,
-      tags,
-      editable,
-      ...rest
-    } = this.props;
+const MediaDetail = ({ item, multi, source, tags, editable, form, ...rest }) => {
+  if (!editable) {
+    form.getFieldDecorator('id', { initialValue: item.id });
     return (
       <ContentLoader isLoading={!item}>
         <Form>
-          <Form.Item key="crop" {...FormForFullLayout}>
-            {!editable
-              ? <Crop value={item} onChange={crop => patchItem({ crop })} />
-              : <LightboxImage value={item} width="100%" />}
+          <Form.Item {...FormForFullLayout}>
+            {form.getFieldDecorator('crop', {
+              initialValue: item.crop,
+            })(<Crop url={item.url} height={item.height} width={item.width} />)}
           </Form.Item>
-          <Form.Item key="id" label="ID" {...FormItemLayout}>
-            <Input value={item.id} disabled placeholder="ID" />
+        </Form>
+      </ContentLoader>
+    );
+  } else if (multi) {
+    return (
+      <ContentLoader isLoading={!item}>
+        <Form>
+          <Form.Item label="Ordner" {...FormItemLayout}>
+            {form.getFieldDecorator('folder', {
+              initialValue: item.folder,
+            })(<Input disabled={!editable} placeholder="Ordner" />)}
           </Form.Item>
-          <Form.Item key="caption" label="Bezeichnung" {...FormItemLayout}>
-            <Input
-              value={item.caption}
-              onChange={event => patchItem({ caption: event.target.value })}
-              disabled={!editable}
-              placeholder="Bezeichnung"
-            />
+          <Form.Item label="Bezeichnung" {...FormItemLayout}>
+            {form.getFieldDecorator('caption', {
+              initialValue: item.caption,
+            })(<Input disabled={!editable} placeholder="Bezeichnung" />)}
           </Form.Item>
-
-          <Form.Item key="source" label="Quelle" {...FormItemLayout}>
-            <Input
-              value={item.source}
-              onChange={event => patchItem({ source: event.target.value })}
-              placeholder="Quelle"
-              disabled={(source && multi) || !editable}
-            />
+          {form.getFieldDecorator('source', {
+            initialValue: item.source,
+          })(
+            <Form.Item label="Quelle" {...FormItemLayout}>
+              <Input placeholder="Quelle" disabled={(source && multi) || !editable} />
+            </Form.Item>,
+          )}
+          <Form.Item label="Schlagworte" {...FormItemLayout}>
+            {form.getFieldDecorator('tags', {
+              initialValue: item.tags,
+            })(
+              <TagsEditor
+                {...rest}
+                disabled={(tags && multi) || !editable}
+                searchPlaceholder="Suche ..."
+                placeholder="Schlagworte"
+                style={{ width: '100%' }}
+              />,
+            )}
           </Form.Item>
-          {multi && editable
-            ? <Form.Item key="sourceForAll" {...FormForAllLayout}>
-              {!source
-                  ? <Popconfirm
-                    title="'Quelle' für alle ausgewählten Medien überschreiben?"
-                    onConfirm={() => patchItems('source', item.source)}
-                    okText="Ja"
-                    cancelText="Abbrechen"
-                  >
-                    <Checkbox checked={source}>
-                        Für alle Ausgewählten
-                      </Checkbox>
-                  </Popconfirm>
-                  : <Checkbox
-                    checked={source}
-                    onChange={() => patchItems('source', item.source)}
-                  >
-                      Für alle Ausgewählten
-                    </Checkbox>}
-            </Form.Item>
-            : null}
-
-          <Form.Item key="tags" label="Schlagworte" {...FormItemLayout}>
-            <TagsEditor
-              {...rest}
-              value={item.tags || []}
-              onChange={val => patchItem({ tags: val })}
-              disabled={(tags && multi) || !editable}
-              searchPlaceholder="Suche ..."
-              placeholder="Schlagworte"
-              style={{ width: '100%' }}
-            />
+          <Form.Item label="Zustand" {...FormItemLayout}>
+            {form.getFieldDecorator('state', {
+              initialValue: item.state,
+            })(
+              <Select style={{ width: '100%' }}>
+                <Select.Option value="DRAFT">
+                  <b style={{ color: 'blue' }}>
+                    <Icon type="inbox" />
+                  </b>{' '}
+                  Ablage
+                </Select.Option>
+                <Select.Option value="PUBLISHED">
+                  <b style={{ color: 'green' }}>
+                    <Icon type="check" />
+                  </b>{' '}
+                  Veröffentlicht
+                </Select.Option>
+                <Select.Option value="REMOVED">
+                  <b style={{ color: 'red' }}>
+                    <Icon type="delete" />
+                  </b>{' '}
+                  Gelöscht
+                </Select.Option>
+              </Select>,
+            )}
           </Form.Item>
-          {multi && editable
-            ? <Form.Item key="tagsForAll" {...FormForAllLayout}>
-              {!tags
-                  ? <Popconfirm
-                    title="'Schlagworte' für alle ausgewählten Medien überschreiben?"
-                    onConfirm={() => patchItems('tags', item.tags)}
-                    okText="Ja"
-                    cancelText="Abbrechen"
-                  >
-                    <Checkbox checked={tags}>Für alle Ausgewählten</Checkbox>
-                  </Popconfirm>
-                  : <Checkbox
-                    checked={tags}
-                    onChange={() => patchItems('tags', item.tags)}
-                  >
-                      Für alle Ausgewählte
-                    </Checkbox>}
-            </Form.Item>
-            : null}
-
-          <Form.Item key="size" label="Größe" {...FormItemLayout}>
-            <Input
-              disabled
-              placeholder="Größe"
-              value={`${item.width}x${item.height}`}
-            />
-          </Form.Item>
-          <Form.Item key="date" label="Hinzugefügt" {...FormItemLayout}>
-            <Input
-              disabled
-              placeholder="Hinzugefügt"
-              value={`${moment(item.createdAt).format(
-                'DD. MMMM YYYY, HH:mm:ss'
-              )} Uhr`}
-            />
-          </Form.Item>
-          <Form.Item key="format" label="Format" {...FormItemLayout}>
-            <Input disabled placeholder="Format" value={item.format} />
-          </Form.Item>
-          {item.format === 'pdf'
-            ? <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
-              <Input disabled placeholder="Seiten" value={item.pages} />
-            </Form.Item>
-            : undefined}
-          <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
-            <Input
-              disabled
-              placeholder="Dateigröße"
-              value={`${item.bytes / 1000} kB`}
-            />
-          </Form.Item>
-          {!multi && editable
-            ? <Form.Item key="delete" label="Löschen" {...FormItemLayout}>
-              {!item.removed
-                  ? <Popconfirm
-                    title="Datei wirklich löschen?"
-                    onConfirm={() => patchItem({ removed: true })}
-                    okText="Löschen"
-                    cancelText="Abbrechen"
-                  >
-                    <DangerCheckbox checked={false}>
-                        Datei wird nicht gelöscht
-                      </DangerCheckbox>
-                  </Popconfirm>
-                  : <DangerCheckbox
-                    onChange={() => patchItem({ removed: null })}
-                    checked
-                  >
-                      Datei wird gelöscht
-                    </DangerCheckbox>}
-            </Form.Item>
-            : null}
-          {multi && editable
-            ? <Form.Item
-              key="deleteAll"
-              label="Alle löschen"
-              {...FormItemLayout}
-            >
-              {!item.removed
-                  ? <Popconfirm
-                    title="Alle ausgewählten Dateien wirklich löschen?"
-                    onConfirm={() => patchItems('removed', true)}
-                    okText="Alle löschen"
-                    cancelText="Abbrechen"
-                  >
-                    <DangerCheckbox checked={false}>
-                        Dateien werden nicht gelöscht
-                      </DangerCheckbox>
-                  </Popconfirm>
-                  : <DangerCheckbox
-                    onChange={() => patchItems('removed', null)}
-                    checked
-                  >
-                      Dateien werden gelöscht
-                    </DangerCheckbox>}
-            </Form.Item>
-            : null}
         </Form>
       </ContentLoader>
     );
   }
-}
+  form.getFieldDecorator('id', { initialValue: item.id });
+  return (
+    <ContentLoader isLoading={!item}>
+      <Form>
+        <Form.Item {...FormForFullLayout}>
+          <LightboxImage value={item} width="100%" maxHeight={200} />
+        </Form.Item>
+        <Form.Item label="Ordner" {...FormItemLayout}>
+          {form.getFieldDecorator('folder', {
+            initialValue: item.folder,
+          })(<Input disabled={!editable} placeholder="Ordner" />)}
+        </Form.Item>
+        <Form.Item key="caption" label="Bezeichnung" {...FormItemLayout}>
+          {form.getFieldDecorator('caption', {
+            initialValue: item.caption,
+          })(<Input disabled={!editable} placeholder="Bezeichnung" />)}
+        </Form.Item>
+        <Form.Item key="source" label="Quelle" {...FormItemLayout}>
+          {form.getFieldDecorator('source', {
+            initialValue: item.source,
+          })(<Input placeholder="Quelle" disabled={(source && multi) || !editable} />)}
+        </Form.Item>
+        <Form.Item key="tags" label="Schlagworte" {...FormItemLayout}>
+          {form.getFieldDecorator('tags', {
+            initialValue: item.tags,
+          })(
+            <TagsEditor
+              {...rest}
+              disabled={(tags && multi) || !editable}
+              searchPlaceholder="Suche ..."
+              placeholder="Schlagworte"
+              style={{ width: '100%' }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item key="size" label="Größe" {...FormItemLayout}>
+          <Input disabled placeholder="Größe" value={`${item.width}x${item.height}`} />
+        </Form.Item>
+        <Form.Item key="date" label="Hinzugefügt" {...FormItemLayout}>
+          <Input
+            disabled
+            placeholder="Hinzugefügt"
+            value={`${format(item.createdAt, 'DD. MMMM YYYY, HH:mm:ss')} Uhr`}
+          />
+        </Form.Item>
+        <Form.Item key="format" label="Format" {...FormItemLayout}>
+          <Input disabled placeholder="Format" value={item.format} />
+        </Form.Item>
+        {item.format === 'pdf' ? (
+          <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
+            <Input disabled placeholder="Seiten" value={item.pages} />
+          </Form.Item>
+        ) : (
+          undefined
+        )}
+        <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
+          <Input disabled placeholder="Dateigröße" value={`${item.bytes / 1000} kB`} />
+        </Form.Item>
+      </Form>
+    </ContentLoader>
+  );
+};
 MediaDetail.propTypes = {
   item: PropTypes.object,
   patchItem: PropTypes.func,

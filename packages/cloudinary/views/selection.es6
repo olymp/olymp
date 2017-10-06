@@ -1,234 +1,85 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, notification } from 'antd';
-import { Sidebar, Placeholder } from 'olymp-ui';
-import { isEqual } from 'lodash';
+import { Button, Form } from 'antd';
+import { withProps, withPropsOnChange } from 'recompose';
 import { mutateFile } from '../gql';
 import Detail from './detail';
-import { Gallery } from '../components';
-import { LightboxGallery } from '../lightbox';
-import { createComponent } from 'olymp-fela';
-
-const StyledGallery = createComponent(
-  ({ theme }) => ({
-    maxHeight: 250,
-    overflow: 'auto',
-    padding: '.5rem 0',
-    borderTop: '1px solid #eee',
-  }),
-  Gallery,
-  p => Object.keys(p)
-);
+import Gallery from '../components/gallery';
+import LightboxGallery from '../lightbox/gallery';
 
 @mutateFile
+@Form.create()
+@withProps(({ onChange, items }) => ({
+  editable: !onChange,
+  multi: items.length > 1,
+}))
+@withPropsOnChange(['editable', 'items', 'activeId'], ({ editable, items, activeId }) => ({
+  selectedIds: editable ? items.map(x => x.id) : [activeId].filter(x => x),
+}))
 class SelectionSidebar extends Component {
-  state = {
-    items: [],
-    source: false,
-    tags: false,
-  };
-
-  componentWillReceiveProps = (props) => {
-    const { items: stateItems, source, tags } = this.state;
-    const propItems = props.items;
-    const items = propItems.map((propItem) => {
-      const stateItem = stateItems.find(item => item.id === propItem.id);
-
-      return (
-        stateItem || {
-          ...propItem,
-          source:
-            source && stateItems[0] ? stateItems[0].source : propItem.source,
-          tags: tags && stateItems[0] ? stateItems[0].tags : propItem.tags,
-        }
-      ); // nur neue Items hinzufügen, ansonsten Items aus State verwenden
-    });
-
-    this.setState({ items });
-  };
-
-  patch = (item, changes) => {
-    const newItem = { ...item };
-    Object.keys(changes).forEach(key => (newItem[key] = changes[key]));
-
-    return newItem;
-  };
-
-  patchItem = (id, changes) => {
-    const items = this.state.items.map((item) => {
-      if (item.id === id) {
-        return this.patch(item, changes);
-      }
-      return item;
-    });
-
-    this.setState({ items });
-  };
-
-  patchItems = (type, val) => {
-    const items = this.state.items.map(item =>
-      this.patch(item, { [type]: val })
-    );
-    this.setState({ items, [type]: !this.state[type] });
-  };
-
-  notification = (key, fn) => {
-    notification.open({
-      message: 'Änderungen verwerfen?',
-      description:
-        'Wollen Sie wirlich die nicht gespeicherten Änderungen verwerfen?',
-      btn: (
-        <div>
-          <Button size="small" onClick={() => notification.close(key)}>
-            Abbrechen
-          </Button>&nbsp;
-          <Button
-            type="primary"
-            size="small"
-            onClick={() => {
-              fn();
-              notification.close(key);
-            }}
-          >
-            Verwerfen
-          </Button>
-        </div>
-      ),
-      key,
-      onClose: notification.close(key),
-      duration: 0,
-    });
-  };
-
-  isEqual = (obj1, obj2) => {
-    // null, undefined, false, '' => null
-    const nulize = (obj) => {
-      const clone = {};
-      Object.keys(obj).forEach((key) => {
-        if (obj[key]) {
-          clone[key] = obj[key];
-        } else {
-          clone[key] = null;
-        }
-      });
-
-      return clone;
-    };
-
-    return isEqual(nulize(obj1), nulize(obj2));
-  };
-
-  onSave = () => {
-    const { items } = this.state;
-    const { save } = this.props;
-
-    items.forEach(item => save(item));
-  };
-
-  onRemove = (id) => {
-    const { onRemove, items: propItems } = this.props;
-    const { items: stateItems } = this.state;
-
-    const propItem = propItems.find(item => item.id === id);
-    const stateItem = stateItems.find(item => item.id === id);
-
-    if (this.isEqual(propItem, stateItem)) {
-      onRemove(id);
-    } else {
-      this.notification(`open${Date.now()}`, () => onClick(id));
+  save = () => {
+    const { form, items, multi, save, onChange } = this.props;
+    if (onChange) {
+      return onChange(items);
     }
-  };
-
-  onCancel = () => {
-    const { onCancel, items: propItems } = this.props;
-    const { items: stateItems } = this.state;
-    let changes = false;
-
-    stateItems.forEach((stateItem) => {
-      const propItem = propItems.find(item => item.id === stateItem.id);
-
-      if (!this.isEqual(propItem, stateItem)) {
-        changes = true;
+    form.validateFields((err, values) => {
+      if (err) {
+        return console.error(err);
       }
-    });
-
-    if (changes) {
-      this.notification(`open${Date.now()}`, onCancel);
-    } else {
-      onCancel();
-    }
-  };
-
-  render = () => {
-    const { activeItem, onClick, onSelect } = this.props;
-    const { items, source, tags } = this.state;
-    const item = {
-      ...items.find(item => item.id === activeItem.id),
-      crop: activeItem.crop,
-    };
-
-    return (
-      <LightboxGallery>
-        <Sidebar
-          right
-          header={
-            items.length > 1
-              ? <StyledGallery
-                items={items}
-                itemHeight={60}
-                selected={[activeItem]}
-                onClick={(id, index) => onClick(index)}
-                onRemove={this.onRemove}
-                justifyContent="space-around"
-              />
-              : null
+      let promise;
+      if (multi) {
+        const changed = Object.keys(values).reduce((state, key) => {
+          if (form.isFieldTouched(key) && key !== 'id') {
+            state[key] = values[key];
           }
-          footer={
-            <div>
-              {!onSelect
-                ? <Button
-                  onClick={this.onSave}
-                  type="primary"
-                  disabled={!items.length}
-                >
-                  {items.length > 1 ? 'Alle speichern' : 'Speichern'}
-                </Button>
-                : <Button
-                  onClick={() => onSelect(items)}
-                  type="primary"
-                  disabled={!items.length}
-                >
-                    Übernehmen
-                  </Button>}
-              <Button onClick={this.onCancel} disabled={!items.length}>
+          return state;
+        }, {});
+        promise = Promise.all(items.map(item => save({ id: item.id, ...changed }))).then(x =>
+          form.resetFields(),
+        );
+      } else {
+        promise = save(values).then(x => form.resetFields());
+      }
+    });
+  };
+  componentWillReceiveProps({ selectedIds, form }) {
+    if (this.props.selectedIds !== selectedIds) {
+      if (selectedIds.length === 1) {
+        // form.resetFields();
+      }
+    }
+  }
+  render() {
+    const { selectedIds, onClick, form, items, editable, onRemove, onCancel, multi } = this.props;
+    return (
+      <div style={{ padding: 10 }}>
+        <LightboxGallery>
+          {items.length > 1 ? (
+            <Gallery
+              items={items}
+              width={60}
+              selectedIds={selectedIds}
+              onClick={onClick}
+              onRemove={onRemove}
+              justifyContent="space-around"
+            />
+          ) : null}
+          <Detail form={form} item={items[0]} multi={multi} editable={editable} />
+          <div>
+            <Button onClick={this.save} type="primary" disabled={!items.length}>
+              {items.length > 1 ? 'Alle speichern' : 'Speichern'}
+            </Button>
+            &nbsp;
+            {onCancel && (
+              <Button onClick={onCancel} disabled={!items.length}>
                 Abbrechen
               </Button>
-            </div>
-          }
-          isOpen
-          title={!onSelect ? 'Bearbeiten' : 'Auswählen'}
-          subtitle={
-            !onSelect
-              ? 'Ausgewählte Medien editieren'
-              : 'Medien zur Weiterverarbeitung auswählen'
-          }
-          padding="1rem"
-        >
-          {items.length
-            ? <Detail
-              item={item}
-              multi={items.length > 1}
-              patchItem={changes => this.patchItem(item.id, changes)}
-              patchItems={this.patchItems}
-              source={source}
-              tags={tags}
-              editable={!onSelect}
-            />
-            : <Placeholder>Dateien auswählen</Placeholder>}
-        </Sidebar>
-      </LightboxGallery>
+            )}
+          </div>
+        </LightboxGallery>
+      </div>
     );
-  };
+  }
 }
 SelectionSidebar.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
@@ -244,9 +95,6 @@ SelectionSidebar.propTypes = {
 SelectionSidebar.defaultProps = {
   items: [],
   activeItem: {},
-  onClick: () => {},
   onSelect: undefined,
-  onRemove: () => {},
-  onCancel: () => {},
 };
 export default SelectionSidebar;

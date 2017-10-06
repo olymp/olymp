@@ -5,6 +5,7 @@ import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';
 import { scrapeGraphQL } from 'olymp-scrape/server';
+import { MongoClient } from 'mongodb';
 /* import createSitemap from 'olymp-sitemap/server'; */
 import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
@@ -77,7 +78,16 @@ export default (server, options) => {
 
   const responseCache = createResponseCache();
   let cachedApp = null;
+
+  let db = null;
+  MongoClient.connect(MONGODB_URI, (err, d) => {
+    if (err) {
+      console.error(err);
+    }
+    db = d;
+  });
   server.use((req, res, next) => {
+    req.db = db;
     req.mail = mail;
     req.monk = monk;
     req.schema = schema;
