@@ -5,10 +5,15 @@ import Thumb from './thumb';
 
 const Thumbs = createComponent(
   ({ justifyContent }) => ({
-    padding: '.5rem',
+    padding: '.5rem 0',
+    borderTop: '1px solid #eee',
+    maxHeight: 100,
+    maxWidth: '100%',
+    overflowY: 'hidden',
+    overflowX: 'scroll',
     hasFlex: {
       display: 'flex',
-      flexFlow: 'row wrap',
+      flexFlow: 'column wrap',
       justifyContent: justifyContent || 'space-between',
       alignContent: 'flex-start',
       alignItems: 'flex-start',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
+import { onlyUpdateForKeys } from 'recompose';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 import { Inline, Block } from 'slate';
 
@@ -59,7 +60,6 @@ export default {
       tooltip: getData => `Bild ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) => (
         <SimpleImageEdit
-          {...p}
           onChange={value => setData({ value })}
           value={getData('value', {})}
           multi={false}

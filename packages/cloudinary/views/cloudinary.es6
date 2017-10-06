@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
-import { withHandlers, withStateHandlers, withPropsOnChange } from 'recompose';
+import { withStateHandlers, withPropsOnChange } from 'recompose';
 import { SplitView } from 'olymp-ui';
 import shortID from 'shortid';
-import { intersection, upperFirst, debounce } from 'lodash';
+import { intersection, upperFirst, orderBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import Gallery from '../components/vgallery';
 import Sidebar from './sidebar';
@@ -46,15 +46,45 @@ const getTags = (items, search, filter) => {
   return tags;
 };
 
-const getDirectories = ({ items, tags: filter, setTags, searchFilter: search, format }) => {
+const getDirectories = ({ items, tags: filter, setTags, folder, setFolder, search, format }) => {
   if (format) {
     items = items.filter(x => x.format === format);
   }
-  items = items.map(item => ({
+
+  const folders = {};
+  items.forEach((item) => {
+    const app =
+      item.publicId && item.publicId.indexOf('/') !== -1 ? item.publicId.split('/')[0] : 'gzk';
+    const folder = item.folder ? `[${app}] ${item.folder}` : `[${app}]`;
+    if (!folders[folder]) {
+      folders[folder] = [];
+    }
+    folders[folder].push(item);
+  });
+
+  if (!folder) {
+    const directories = Object.keys(folders).map(name => ({
+      active: false,
+      disabled: false,
+      onClick: () => setFolder(name),
+      label: upperFirst(name),
+      description: folders[name].length,
+      image: folders[name][0],
+      countFilter: folders[name].length,
+      countAll: folders[name].length,
+      key: name,
+    }));
+    return {
+      goBack: null,
+      shortId: shortID.generate(),
+      directories: orderBy(directories, ['countFilter'], ['desc']),
+      filteredItems: items,
+    };
+  }
+  items = (folders[folder] || []).map(item => ({
     ...item,
     tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
   }));
-
   const tags = getTags(items, search, filter);
   const directories = Object.keys(tags).map((tag) => {
     const active = !!filter.find(x => x === tag);
@@ -70,7 +100,6 @@ const getDirectories = ({ items, tags: filter, setTags, searchFilter: search, fo
     return {
       active,
       disabled,
-      items: filteredItems,
       onClick: () => setTags(filteredTags),
       label: upperFirst(tag),
       description: countFilter === countAll ? text : `${countFilter} von ${text}`,
@@ -81,8 +110,9 @@ const getDirectories = ({ items, tags: filter, setTags, searchFilter: search, fo
     };
   });
   return {
+    goBack: filter.length ? () => setTags(filter.slice(0, -1)) : () => setFolder(),
     shortId: shortID.generate(),
-    directories,
+    directories: orderBy(directories, ['countFilter'], ['desc']),
     filteredItems: items.filter(item => intersection(item.tags, filter).length === filter.length),
   };
 };
@@ -93,8 +123,8 @@ const getDirectories = ({ items, tags: filter, setTags, searchFilter: search, fo
 @withStateHandlers(
   () => ({
     tags: [],
+    folder: null,
     search: null,
-    searchFilter: null,
     uploading: [],
     selectedIds: [],
     activeId: null,
@@ -117,95 +147,90 @@ const getDirectories = ({ items, tags: filter, setTags, searchFilter: search, fo
     },
     setActive: () => active => ({ active }),
     setTags: () => tags => ({ tags }),
+    setFolder: () => folder => ({ folder }),
     setSearch: () => search => ({ search }),
-    setSearchFilter: debounce(() => searchFilter => ({ searchFilter }), 500, {
-      trailing: true,
-      leading: false,
-    }),
     setUploading: () => uploading => ({ uploading }),
   },
 )
-@withHandlers({
-  onChange: props => (search) => {
-    props.setSearch(search);
-    props.setSearchFilter(search);
-  },
-})
 @withPropsOnChange(
-  ['tags', 'items', 'format', 'searchFilter'],
-  ({ tags, items, setTags, searchFilter, format }) =>
-    getDirectories({ items, tags, setTags, searchFilter, format }),
+  ['tags', 'items', 'format', 'search', 'folder'],
+  ({ tags, items, setTags, folder, setFolder, search, format }) =>
+    getDirectories({ items, tags, setTags, setFolder, folder, search, format }),
 )
-@withPropsOnChange(['uploading'], ({ data, done, refetchKey, setUploading, uploading }) => {
-  const saveProgress = file =>
-    setUploading([
-      ...this.state.uploading.filter(x => x.name !== file.name),
-      {
-        name: file.name,
-        percent: file.percent,
-        size: file.size,
-        status: file.status,
-        response: file.response,
-      },
-    ]);
+@withPropsOnChange(
+  ['uploading', 'cloudinaryRequest'],
+  ({ cloudinaryRequest, done, refetchKey, setUploading, uploading, setSelection }) => {
+    const saveProgress = file =>
+      setUploading([
+        ...uploading.filter(x => x.name !== file.name),
+        {
+          name: file.name,
+          percent: file.percent,
+          size: file.size,
+          status: file.status,
+          response: file.response,
+        },
+      ]);
 
-  if (!data || !data.cloudinaryRequest) {
-    return {};
-  }
+    console.log(cloudinaryRequest);
+    if (!cloudinaryRequest) {
+      return {};
+    }
 
-  const { apiKey, signature, timestamp, url, folder } = data.cloudinaryRequest;
-  return {
-    upload: {
-      showUploadList: false,
-      multiple: true,
-      data: {
-        api_key: apiKey,
-        signature,
-        timestamp,
-        folder,
-      },
-      action: url,
-      onChange: ({ file }) => {
-        if (file.status === 'uploading') {
-          // save upload-state to state
-          saveProgress(file);
-        } else if (file.status === 'done') {
-          if (uploading.find(x => x.name === file.name) !== file.status) {
-            // show message if a file uploaded
+    const { apiKey, signature, timestamp, url, folder } = cloudinaryRequest;
+    return {
+      upload: {
+        showUploadList: false,
+        multiple: true,
+        data: {
+          api_key: apiKey,
+          signature,
+          timestamp,
+          folder,
+        },
+        action: url,
+        onChange: ({ file }) => {
+          if (file.status === 'uploading') {
+            // save upload-state to state
             saveProgress(file);
-            message.success(`${file.name} erfolgreich hochgeladen.`);
-          }
+          } else if (file.status === 'done') {
+            if (uploading.find(x => x.name === file.name) !== file.status) {
+              // show message if a file uploaded
+              saveProgress(file);
+              message.success(`${file.name} erfolgreich hochgeladen.`);
+            }
 
-          if (!uploading.find(file => file.percent < 100)) {
-            // Write data in DB
-            uploading.forEach((f) => {
-              const response = { ...file.response };
-              response.id = response.public_id;
-              done({ id: response.id, token: signature }).then(({ data }) => {
-                // remove file from uploading
-                setUploading(uploading.filter(x => x.name !== file.name));
-                if (data && data.cloudinaryRequestDone) {
-                  this.onSelect([{ id: data.cloudinaryRequestDone.id, crop: undefined }]);
-                  refetchKey();
-                }
+            if (!uploading.find(file => file.percent < 100)) {
+              // Write data in DB
+              uploading.forEach((f) => {
+                const response = { ...file.response };
+                response.id = response.public_id;
+                done({ id: response.id, token: signature }).then(({ data }) => {
+                  // remove file from uploading
+                  setUploading(uploading.filter(x => x.name !== file.name));
+                  if (data && data.cloudinaryRequestDone) {
+                    setSelection([data.cloudinaryRequestDone.id]);
+                    refetchKey();
+                  }
+                });
               });
-            });
+            }
+          } else if (file.status === 'error') {
+            console.log('error');
+            message.error(`${file.name} file upload failed.`);
           }
-        } else if (file.status === 'error') {
-          console.log('error');
-          message.error(`${file.name} file upload failed.`);
-        }
+        },
       },
-    },
-  };
-})
+    };
+  },
+)
 @withPropsOnChange(['selectedIds', 'items'], ({ selectedIds, items }) => ({
   selectedItems: selectedIds.map(x => items.find(item => item.id === x)).filter(x => x),
 }))
 class CloudinaryView extends Component {
   static propTypes = {
     onClose: PropTypes.func,
-    onSelect: PropTypes.func,
+    onChange: PropTypes.func,
     selection: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string,
@@ -216,12 +241,9 @@ class CloudinaryView extends Component {
     multi: PropTypes.bool,
   };
   static defaultProps = {
-    onSelect: undefined,
-    onClose: undefined,
     selection: [],
     items: [],
     multi: true,
-    format: undefined,
   };
 
   onClick = (id, e) => {
@@ -238,29 +260,25 @@ class CloudinaryView extends Component {
     }
   };
 
-  onRemove = (id) => {
-    const { removeSelection } = this.props;
-    removeSelection(id);
-  };
-
   render() {
     const {
       selectedItems,
       filteredItems,
       onClose,
       setSearch,
-      setTags,
+      goBack,
       directories,
       search,
-      searchFilter,
       activeId,
       setActive,
       selectedIds,
+      removeSelection,
       setTab,
       tab,
       tags,
       upload,
       shortId,
+      onChange,
     } = this.props;
 
     return (
@@ -270,16 +288,16 @@ class CloudinaryView extends Component {
           upload={upload}
           tags={tags}
           search={search}
-          searchFilter={searchFilter}
           onClose={onClose}
-          setTags={setTags}
+          goBack={goBack}
           setSearch={setSearch}
           items={selectedItems}
           activeId={activeId}
           onClick={setActive}
-          onRemove={this.onRemove}
+          onRemove={removeSelection}
           tab={tab}
           setTab={setTab}
+          onChange={onChange}
         />
         <div>
           <Gallery
@@ -287,7 +305,7 @@ class CloudinaryView extends Component {
             selectedIds={selectedIds}
             items={filteredItems}
             onClick={this.onClick}
-            onRemove={this.onRemove}
+            onRemove={removeSelection}
           />
         </div>
       </SplitView>

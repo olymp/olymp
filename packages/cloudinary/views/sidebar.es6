@@ -46,17 +46,15 @@ export default enhance(
     onClose,
     search,
     setSearch,
-    setTags,
-    tags,
+    goBack,
+    onChange,
     tab,
     setTab,
     visibleItems,
-    disabled,
     items,
     activeId,
     onClick,
     onRemove,
-    onSelect,
   }) => (
     <Sidebar
       width={280}
@@ -78,20 +76,19 @@ export default enhance(
       >
         <Tabs.TabPane tab="Navigation" key="">
           <List.Filter placeholder="Filter ..." onChange={setSearch} value={search} />
-          {disabled && (
-            <List.Item label="Zurück" icon="left" onClick={() => setTags(tags.slice(0, -1))} />
-          )}
+          {goBack && <List.Item label="Zurück" icon="left" onClick={goBack} />}
           {visibleItems.map(dir => <List.Item {...dir} image={image(dir)} />)}
         </Tabs.TabPane>
         {items.length ? (
           <Tabs.TabPane tab={`Auswahl (${items.length})`} key="select" disabled={!items.length}>
             <Selection
               items={items}
+              key={items.map(x => x.id).join(';')}
               activeId={activeId}
               onClick={onClick}
               onRemove={onRemove}
               // onCancel={() => this.onSelect(selected)}
-              onSelect={onSelect}
+              onChange={onChange}
             />
           </Tabs.TabPane>
         ) : null}

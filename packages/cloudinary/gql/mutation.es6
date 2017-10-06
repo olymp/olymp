@@ -7,7 +7,7 @@ const ok = (item, mutate) => {
     variables: {
       id: item.id,
       input: { ...item, __typename: undefined },
-      operationType: item.removed ? 'REMOVE' : null,
+      operationType: item.removed ? 'REMOVE' : 'UPDATE',
     },
     updateQueries: item.removed
       ? {
@@ -33,6 +33,7 @@ export default graphql(
     mutation file($id: String, $input: FileInput, $operationType: MUTATION_TYPE) {
       item: file(id: $id, input: $input, type: $operationType) {
         id
+        publicId
         format
         version
         resourceType
@@ -46,6 +47,7 @@ export default graphql(
         caption
         source
         removed
+        folder
         pages
         colors
       }
@@ -65,6 +67,7 @@ export const cloudinaryRequestDone = graphql(
     mutation cloudinaryRequestDone($id: String, $token: String) {
       cloudinaryRequestDone(id: $id, token: $token) {
         id
+        publicId
         url
         tags
         colors
@@ -72,6 +75,7 @@ export const cloudinaryRequestDone = graphql(
         height
         createdAt
         caption
+        folder
         source
         format
         bytes

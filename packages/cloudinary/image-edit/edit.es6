@@ -12,12 +12,8 @@ const transform = ({ id, url, crop, width, height, caption, source }) => ({
   caption,
   source,
 });
-export default (renderFn) => {
-  return withState(
-    'isOpen',
-    'setOpen',
-    false
-  )(({ onChange, value, isOpen, setOpen, multi }) => {
+export default renderFn =>
+  withState('isOpen', 'setOpen', false)(({ onChange, value, isOpen, setOpen, multi }) => {
     let v = [];
     if (!multi && value) {
       v = [value];
@@ -33,11 +29,11 @@ export default (renderFn) => {
         <Modal open={isOpen} onClose={() => setOpen(false)}>
           <Cloudinary
             multi={multi}
-            onSelect={onChange ? (value = []) => {
+            onChange={(value = []) => {
               const v = value.map(transform);
               onChange(multi ? v : v[0]);
               setOpen(false);
-            } : undefined}
+            }}
             onClose={() => setOpen(false)}
             selected={v.map(({ id, crop }) => ({ id, crop }))}
           />
@@ -45,5 +41,3 @@ export default (renderFn) => {
       </div>
     );
   });
-};
-
