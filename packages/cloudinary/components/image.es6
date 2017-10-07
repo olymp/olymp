@@ -19,17 +19,25 @@ export const cloudinaryUrl = (value, options) => {
     return '';
   }
 
-  const newUrl = value.url.split('ttp://res.cloudinary.com/').join('ttps://res.cloudinary.com/');
+  const newUrl =
+    value.url.indexOf('http://res.cloudinary.com/') === 0
+      ? `https${value.url.substr(4)}`
+      : value.url;
 
   const crop =
     value.crop && value.crop.length
       ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value.crop[3]},c_crop/`
       : '';
 
-  let query = '';
-  Object.keys(newOptions).forEach(key => (query = `${query}${key}_${newOptions[key]},`));
+  const query = Object.keys(newOptions)
+    .map(key => `${key}_${newOptions[key]}`)
+    .join(',');
 
-  return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
+  if (newUrl.indexOf('/upload/') !== -1) {
+    return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
+  } else if (newUrl.indexOf('/fetch/') !== -1) {
+    return newUrl.replace('/fetch/', `/fetch/${crop}${query}/`);
+  }
 };
 
 const CloudinaryImage = ({ options, value, ratio, avatar, alt, maxResolution, ...rest }) => {
@@ -50,7 +58,7 @@ const CloudinaryImage = ({ options, value, ratio, avatar, alt, maxResolution, ..
             cloudinaryUrl(value, {
               w,
               h,
-              g: avatar ? 'face' : 'center',
+              g: avatar ? 'face' : 'auto',
               ...options,
             })
           : undefined

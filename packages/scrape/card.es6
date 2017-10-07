@@ -5,13 +5,25 @@ import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 
 const styles = props => ({
-  '> div': {
+  '> a': {
     float: 'left',
     marginRight: 10,
   },
   '> article': {
     padding: 0,
+    '> h3 > a': {
+      color: '#022d5e',
+    },
+    '> div > a': {
+      color: '#022d5e',
+    },
     '> a': {
+      color: '#022d5e',
+      '> div': {
+        marginTop: 7,
+        marginRight: 5,
+        float: 'left',
+      },
       fontSize: 12,
     },
   },
@@ -24,7 +36,7 @@ const styles = props => ({
 });
 const component = ({
   loading,
-  scrape: { image, title, description, url },
+  scrape: { image, logo, title, description, url, origin, favicon },
   error,
   children,
   value,
@@ -33,24 +45,27 @@ const component = ({
   <div {...rest}>
     {children}
     {error ? console.error(error) : null}
-    <Image
-      width={150}
-      height={150}
-      value={{
-        width: 300,
-        height: 300,
-        url: image
-          ? `https://res.cloudinary.com/demo/image/fetch/w_300,h_300,c_fill,f_auto/${image}`
-          : undefined,
-      }}
-    />
-    <article>
+    {image && (
       <a target="_blank" href={url}>
-        {url}
+        <Image width={150} height={170} value={image} />
       </a>
-      <h3>{title}</h3>
+    )}
+    <article>
+      <a target="_blank" href={origin}>
+        {favicon && <Image width={16} height={16} value={favicon} />}
+        {origin}
+      </a>
+      <h3>
+        <a target="_blank" href={url}>
+          {title}
+        </a>
+      </h3>
       <div>
         <span>{description}</span>
+        &nbsp;
+        <a target="_blank" href={origin}>
+          Weiterlesen
+        </a>
         <br />
       </div>
     </article>
@@ -65,7 +80,22 @@ const card = graphql(
         author
         date
         description
-        image
+        origin
+        favicon {
+          url
+          width
+          height
+        }
+        image {
+          url
+          width
+          height
+        }
+        logo {
+          url
+          width
+          height
+        }
         publisher
         title
         url

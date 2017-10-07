@@ -11,7 +11,7 @@
     "algoliasearch": "^3.24.5",
     "date-fns": "2.0.0-alpha.1",
     "lodash": "^4.17.4",
-    "monk": "^6.0.1",
+    "monk": "^6.0.5",
     "olymp": "^17.8.1",
     "olymp-auth": "^17.8.1",
     "olymp-cloudinary": "^17.8.0",

@@ -10,7 +10,7 @@
   "dependencies": {
     "babel-eslint": "^8.0.1",
     "eslint": "^4.2.0",
-    "eslint-config-airbnb": "^15.0.2",
+    "eslint-config-airbnb": "^16.0.0",
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",

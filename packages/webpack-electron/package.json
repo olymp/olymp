@@ -10,7 +10,7 @@
   "dependencies": {
     "devtron": "^1.4.0",
     "electron": "^1.7.5",
-    "electron-builder": "^19.34.1",
+    "electron-builder": "^19.34.2",
     "electron-debug": "^1.4.0",
     "electron-log": "^2.2.7",
     "electron-publisher": "^0.1.6",
