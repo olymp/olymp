@@ -12,7 +12,9 @@ export const parseURI = (uri) => {
     config.cloud_name = split1[1];
     config.api_key = split3[0];
     config.api_secret = split3[1];
+    cloudinary.config(config);
   }
+
   return config;
 };
 

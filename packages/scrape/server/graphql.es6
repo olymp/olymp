@@ -1,10 +1,49 @@
 import Metascraper from 'metascraper';
 import sizeOf from 'request-image-size';
+import cloudinary from 'cloudinary';
 import { URL } from 'url';
 
+const props = {
+  image: {
+    crop: 'fill',
+    format: 'auto',
+    quality: 'auto',
+    gravity: 'auto',
+    dpr: 2,
+    width: 150,
+    height: 175,
+  },
+  logo: {
+    crop: 'fill',
+    format: 'auto',
+    quality: 'auto',
+    gravity: 'auto',
+    dpr: 2,
+    width: 75,
+    height: 75,
+  },
+  favicon: {
+    crop: 'fill',
+    format: 'auto',
+    quality: 'auto',
+    gravity: 'auto',
+    dpr: 2,
+    width: 16,
+    height: 16,
+  },
+};
 const trimLength = (str, length) => (str.length > length ? `${str.substring(0, length)}...` : str);
 const getPromise = (metadata, prop) => {
   if (metadata[prop]) {
+    return {
+      id: metadata[prop],
+      url: cloudinary.utils.url(metadata[prop], {
+        type: 'fetch',
+        transformation: props[prop],
+      }),
+      width: props[prop].width,
+      height: props[prop].height,
+    };
     return sizeOf(metadata[prop]).then(dimensions => ({
       id: metadata[prop],
       url: `https://res.cloudinary.com/demo/image/fetch/${metadata[prop]}`,
@@ -15,6 +54,28 @@ const getPromise = (metadata, prop) => {
     }));
   }
 };
+
+setTimeout(() => {
+  const url = cloudinary.utils.url(
+    'https://img-9gag-fun.9cache.com/photo/aNzQ8Kr_700b.jpg',
+    {
+      type: 'fetch',
+      transformation: {
+        crop: 'fill',
+        format: 'auto',
+        quality: 'auto',
+        gravity: 'auto',
+        dpr: 2,
+        width: 150,
+        height: 170,
+      },
+    },
+    (result) => {
+      console.log(result);
+    },
+  );
+  console.log(url);
+}, 5000);
 
 const getImages = metadata =>
   Promise.all([

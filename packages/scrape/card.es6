@@ -2,12 +2,16 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { createComponent } from 'olymp-fela';
-import { Image } from 'olymp-cloudinary';
 
 const styles = props => ({
   '> a': {
-    float: 'left',
-    marginRight: 10,
+    '> img': {
+      float: 'left',
+      marginRight: 10,
+      height: '100%',
+      maxHeight: 180,
+      width: 'auto',
+    },
   },
   '> article': {
     padding: 0,
@@ -19,10 +23,12 @@ const styles = props => ({
     },
     '> a': {
       color: '#022d5e',
-      '> div': {
+      '> img': {
         marginTop: 7,
         marginRight: 5,
         float: 'left',
+        width: 16,
+        height: 16,
       },
       fontSize: 12,
     },
@@ -30,13 +36,13 @@ const styles = props => ({
   overflow: 'hidden',
   border: '1px solid #d4d3d3',
   borderRadius: 5,
-  minHeight: 20,
+  minHeight: 177,
   minWidth: 20,
   display: 'inline-block',
 });
 const component = ({
   loading,
-  scrape: { image, logo, title, description, url, origin, favicon },
+  scrape: { image, title, description, url, origin, favicon },
   error,
   children,
   value,
@@ -47,12 +53,12 @@ const component = ({
     {error ? console.error(error) : null}
     {image && (
       <a target="_blank" href={url}>
-        <Image width={150} height={170} value={image} />
+        <img src={image.url} />
       </a>
     )}
     <article>
       <a target="_blank" href={origin}>
-        {favicon && <Image width={16} height={16} value={favicon} />}
+        {favicon && <img src={favicon.url} />}
         {origin}
       </a>
       <h3>
@@ -63,8 +69,8 @@ const component = ({
       <div>
         <span>{description}</span>
         &nbsp;
-        <a target="_blank" href={origin}>
-          Weiterlesen
+        <a target="_blank" href={url}>
+          {'>'}&nbsp;Weiterlesen
         </a>
         <br />
       </div>

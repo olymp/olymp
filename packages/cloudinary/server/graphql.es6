@@ -4,6 +4,7 @@ import { parseURI, getImageById, getSignedRequest, updateImage } from './cloudin
 
 export default (uri) => {
   const config = parseURI(uri);
+
   const invalidationTokens = [];
   return {
     name: 'file',
