@@ -2,13 +2,16 @@ import { parse } from 'graphql/language';
 import { addDefinition, createTypeFetcher } from 'olymp-graphql/server';
 
 const fetch = createTypeFetcher(
-  (node, value) =>
-    node.kind !== 'NamedType' && node.name && node.name.value === value
+  (node, value) => node.kind !== 'NamedType' && node.name && node.name.value === value,
 );
 
 export default (ast, node) => {
   const getArgument = (field) => {
-    if (field.type.kind === 'ListType' && field.type.type && field.type.type.name.value === 'String') {
+    if (
+      field.type.kind === 'ListType' &&
+      field.type.type &&
+      field.type.type.name.value === 'String'
+    ) {
       addDefinition(
         ast,
         parse(`
@@ -17,7 +20,7 @@ export default (ast, node) => {
           nin: [${field.type.type.name.value}],
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: ${field.type.type.name.value}Query`;
     }
@@ -30,19 +33,19 @@ export default (ast, node) => {
         ast,
         parse(`
         input DateQuery {
-          eq: Float,
-          ne: Float,
-          lt: Float,
-          gt: Float,
-          gte: Float,
-          lte: Float,
-          day: Float,
-          year: Float,
-          month: Float,
-          between: [Float],
+          eq: DateTime,
+          ne: DateTime,
+          lt: DateTime,
+          gt: DateTime,
+          gte: DateTime,
+          lte: DateTime,
+          day: DateTime,
+          year: DateTime,
+          month: DateTime,
+          between: [DateTime],
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: DateQuery`;
     }
@@ -62,7 +65,7 @@ export default (ast, node) => {
           between: [Int],
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: IntQuery`;
     }
@@ -82,7 +85,7 @@ export default (ast, node) => {
           between: [Float],
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: IntQuery`;
     }
@@ -95,15 +98,11 @@ export default (ast, node) => {
           ne: Float,
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: BooleanQuery`;
     }
-    if (
-      ['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(
-        field.type.name.value
-      )
-    ) {
+    if (['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(field.type.name.value)) {
       addDefinition(
         ast,
         parse(`
@@ -116,7 +115,7 @@ export default (ast, node) => {
           contains: String,
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: StringQuery`;
     }
@@ -131,7 +130,7 @@ export default (ast, node) => {
           nin: [${fieldType.name.value}],
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: ${fieldType.name.value}Query`;
     }
@@ -142,7 +141,7 @@ export default (ast, node) => {
         input GenericQuery {
           null: Boolean
         }
-      `).definitions[0]
+      `).definitions[0],
       );
       return `${field.name.value}: GenericQuery`;
     }
@@ -153,10 +152,13 @@ export default (ast, node) => {
     parse(`
     input ${node.name.value}Query {
       skipqueries: Boolean
-      ${node.fields.map(getArgument).filter(x => x).join('\n')}
+      ${node.fields
+    .map(getArgument)
+    .filter(x => x)
+    .join('\n')}
       and: [${node.name.value}Query]
       or: [${node.name.value}Query]
     }
-  `).definitions[0]
+  `).definitions[0],
   );
 };
