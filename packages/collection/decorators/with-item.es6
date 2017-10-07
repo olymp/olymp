@@ -17,14 +17,14 @@ const ok = props => () => {
     if (values.blocks && State.isState(values.blocks)) {
       values.blocks = values.blocks.toJSON().document;
     }
-    if (values.blocks) {
+    if (values.blocks && values.blocks.__typena) {
       values.blocks = omit(values.blocks, '__typename');
     }
     if (values.text && State.isState(values.text)) {
       values.text = values.text.toJSON().document;
     }
-    if (values.text) {
-      values.blocks = omit(values.text, '__typename');
+    if (values.text && values.text.__typename) {
+      values.text = omit(values.text, '__typename');
     }
     if (values.start && Array.isArray(values.start)) {
       values.end = values.start[1];

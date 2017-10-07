@@ -8,10 +8,11 @@ const ImageImg = createComponent(
     height,
     borderRadius: circle ? '50%' : 0,
   }),
-  ({ width, height, src, alt, onClick, className, attributes }) => (
+  ({ width, height, src, srcSet, alt, onClick, className, attributes }) => (
     <img
       {...attributes}
       src={src}
+      srcSet={srcSet}
       alt={alt}
       className={className}
       width={width}
@@ -27,6 +28,7 @@ ImageImg.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   src: PropTypes.string.isRequired,
+  srcSet: PropTypes.string.isRequired,
   alt: PropTypes.string,
   onClick: PropTypes.func,
   circle: PropTypes.bool,

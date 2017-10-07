@@ -1,17 +1,23 @@
 import React from 'react';
 import { Grid } from 'olymp-fela';
 import { FaSquare } from 'olymp-icons';
-import Image from './image';
-import Text from './text';
+import Image from '../image/image';
 
 export default {
   type: 'Pages.Template.Columns.Column',
   isVoid: false,
   kind: 'block',
   label: 'Spalte',
-  defaultNodes: () => [Image, Text],
+  defaultNodes: () => [Image, 'paragraph'],
   styles: ({ theme }) => ({
     '> div': {
+      paddingY: 10,
+      '& .image-block': {
+        marginTop: -10,
+      },
+      '> [data-key]': {
+        paddingX: 10,
+      },
       backgroundColor: theme.dark5,
       borderRadius: theme.borderRadius,
       overflow: 'hidden',

@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import Image from './image';
 import Label from './label';
 
@@ -13,7 +14,7 @@ export default {
     position: 'relative',
   }),
   component: ({ className, children, attributes }) => (
-    <div className={className} {...attributes}>
+    <div className={cn(className, 'image-with-label-block')} {...attributes}>
       {children}
     </div>
   ),

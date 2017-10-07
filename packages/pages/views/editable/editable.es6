@@ -4,19 +4,23 @@ import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { withPropsOnChange, withProps } from 'recompose';
 import { Form } from 'antd';
-import { StatelessSlateMate, withJsonState, withDebounceState } from 'olymp-slate';
+import { StatelessSlateMate, withJsonState, withDebounceState, withBlockTypes } from 'olymp-slate';
 import { get } from 'lodash';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
 
-const SlateEditor = withDebounceState({ debounce: 800 })(({ label, value, onChange }) => (
-  <StatelessSlateMate
-    onChange={onChange}
-    value={value}
-    placeholder={label || 'Hier Text eingeben!'}
-    style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-  />
-));
+const SlateEditor = withDebounceState({ debounce: 800 })(
+  withBlockTypes(({ label, value, onChange, blockTypes }) => (
+    <StatelessSlateMate
+      blockTypes={blockTypes}
+      xy={console.log(132)}
+      onChange={onChange}
+      value={value}
+      placeholder={label || 'Hier Text eingeben!'}
+      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+    />
+  )),
+);
 
 @queryPage
 @Form.create()

@@ -1,7 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { createComponent } from 'olymp-fela';
+import { createComponent, ContentLoader } from 'olymp-fela';
 
 const styles = props => ({
   '> a': {
@@ -48,34 +48,36 @@ const component = ({
   value,
   ...rest
 }) => (
-  <div {...rest}>
-    {children}
-    {error ? console.error(error) : null}
-    {image && (
-      <a target="_blank" href={url}>
-        <img src={image.url} />
-      </a>
-    )}
-    <article>
-      <a target="_blank" href={origin}>
-        {favicon && <img src={favicon.url} />}
-        {origin}
-      </a>
-      <h3>
+  <ContentLoader height={177} isLoading={loading}>
+    <div {...rest}>
+      {children}
+      {error ? console.error(error) : null}
+      {image && (
         <a target="_blank" href={url}>
-          {title}
+          <img src={image.url} />
         </a>
-      </h3>
-      <div>
-        <span>{description}</span>
-        &nbsp;
-        <a target="_blank" href={url}>
-          {'>'}&nbsp;Weiterlesen
+      )}
+      <article>
+        <a target="_blank" href={origin}>
+          {favicon && <img src={favicon.url} />}
+          {origin}
         </a>
-        <br />
-      </div>
-    </article>
-  </div>
+        <h3>
+          <a target="_blank" href={url}>
+            {title}
+          </a>
+        </h3>
+        <div>
+          <span>{description}</span>
+          &nbsp;
+          <a target="_blank" href={url}>
+            {'>'}&nbsp;Weiterlesen
+          </a>
+          <br />
+        </div>
+      </article>
+    </div>
+  </ContentLoader>
 );
 
 const card = graphql(

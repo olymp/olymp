@@ -123,6 +123,7 @@ const Image = enhance((props) => {
     mode,
     amp,
     src,
+    srcSet,
     alt,
     onClick,
     circle,
@@ -142,6 +143,7 @@ const Image = enhance((props) => {
   const image = url ? (
     <Img
       src={url}
+      srcSet={srcSet}
       alt={alt}
       width={w >= h ? '100%' : 'auto'}
       height={w < h ? '100%' : 'auto'}

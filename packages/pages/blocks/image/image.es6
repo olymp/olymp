@@ -1,6 +1,6 @@
 import React from 'react';
 import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
-import { onlyUpdateForKeys } from 'recompose';
+import cn from 'classnames';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 import { Inline, Block } from 'slate';
 
@@ -15,7 +15,7 @@ export default {
     return (
       <Img
         attributes={attributes}
-        className={className}
+        className={cn(className, 'image-block')}
         width={`${100 / getData('size', 4)}%`}
         value={getData('value', {
           width: 400,

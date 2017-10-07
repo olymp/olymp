@@ -16,6 +16,7 @@ const convert = types =>
     result[type] = useBlockBase({
       ...slate,
       ...rest,
+      blockTypes: types,
       isVoid,
       kind,
       type,

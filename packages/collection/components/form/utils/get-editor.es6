@@ -10,7 +10,7 @@ import {
   SuggestEditor,
 } from 'olymp-ui';
 import { GeocodeEditor } from 'olymp-google';
-import { StatelessSlateMate, withJsonState } from 'olymp-slate';
+import { StatelessSlateMate, withJsonState, withBlockTypes } from 'olymp-slate';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
@@ -21,14 +21,16 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-const SlateEditor = withJsonState({ debounce: 800 })(({ label, value, onChange }) => (
-  <StatelessSlateMate
-    onChange={onChange}
-    value={value}
-    placeholder={label || 'Hier Text eingeben!'}
-    style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-  />
-));
+const SlateEditor = withJsonState({ debounce: 800 })(
+  withBlockTypes(({ label, value, onChange }) => (
+    <StatelessSlateMate
+      onChange={onChange}
+      value={value}
+      placeholder={label || 'Hier Text eingeben!'}
+      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+    />
+  )),
+);
 
 export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
   const { idField, start, suggest } = field['@'];

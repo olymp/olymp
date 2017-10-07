@@ -284,7 +284,12 @@ export default options => (Block) => {
             !!actions.length && (
               <Toolbar show isOpened parent={`[data-key="${node.key}"]`}>
                 {actions.map(
-                  Action({ state: editor.props.value, onChange: editor.props.onChange, node }),
+                  Action({
+                    state: editor.props.value,
+                    onChange: editor.props.onChange,
+                    node,
+                    blockTypes: options.blockTypes,
+                  }),
                 )}
               </Toolbar>
             )}
