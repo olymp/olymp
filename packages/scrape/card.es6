@@ -7,14 +7,13 @@ const styles = props => ({
   '> a': {
     '> img': {
       float: 'left',
-      marginRight: 10,
       height: '100%',
       maxHeight: 180,
       width: 'auto',
     },
   },
   '> article': {
-    padding: 0,
+    paddingX: 10,
     '> h3 > a': {
       color: '#022d5e',
     },

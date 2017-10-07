@@ -94,7 +94,7 @@ const getImages = metadata =>
 const getRules = (url) => {
   const wrap = rule => ($) => {
     const value = rule($);
-    if (!value) {
+    if (!value || value.endsWith('.svg')) {
       return undefined;
     }
     if (value.indexOf('http') === 0) {
