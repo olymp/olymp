@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { debounce } from 'lodash';
+import { debounce, get } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
-import { get } from 'lodash';
-import shortID from 'shortid';
 import Base64 from './plugins/base64';
 
 const stateWrapper = options => WrappedComponent =>
@@ -102,7 +100,7 @@ const stateWrapper = options => WrappedComponent =>
 export default options =>
   compose(
     withPropsOnChange(['value', 'id'], ({ value }) => {
-      console.log('with-json', 'withPropsOnChange');
+      console.log('with-json', 'withPropsOnChange', value);
       const state = value
         ? State.fromJSON({
           document: {

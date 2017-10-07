@@ -29,12 +29,6 @@ export default (props) => {
 
     initialValue = [start, end];
   }
-
-  if (wrap=== false) {
-    const editor = getEditor({ field, ...props });
-    return editor;
-  }
-
   const editor = getEditor({ field });
 
   if (!editor) {
