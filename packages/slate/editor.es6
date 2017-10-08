@@ -115,7 +115,10 @@ const options = {
         } else {
           let href = window.prompt('URL');
           if (href) {
-            if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) {
+            if (href.indexOf('mailto') === 0) {
+            } else if (href.indexOf('tel') === 0) {
+            } else if (href.indexOf('/') === 0) {
+            } else if (href.indexOf('http') !== 0 && href.indexOf('.') !== -1) {
               href = `http://${href}`;
             }
             onChange(
