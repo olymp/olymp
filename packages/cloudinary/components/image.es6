@@ -1,74 +1,110 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'olymp-fela';
+import { createComponent } from 'react-fela';
+// import { Image } from 'olymp-fela';
+import { Image, Transformation } from 'cloudinary-react';
 
-// https://github.com/cloudinary/cloudinary-react
-// http://cloudinary.com/documentation/image_transformation_reference
+const containerStyle = ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight, rounded }) => ({
+  position: 'relative',
+  overflow: 'hidden',
+  width,
+  minWidth,
+  maxWidth,
+  minHeight,
+  maxHeight,
+  borderRadius: rounded && '50%',
+  onBefore: {
+    display: 'block',
+    content: '""',
+    width: '100%',
+    height: 0,
+    paddingTop: `${ratio * 100}%`,
+  },
+  '> img': {
+    center: true,
+    borderRadius: rounded && '50%',
+  },
+});
 
-export const cloudinaryUrl = (value, options) => {
-  const newOptions = {
-    c: 'fill',
-    f: 'auto',
-    q: 'auto:eco',
-    fl: 'lossy',
-    dpr: 2,
-    ...options,
-  };
+const Container = createComponent(
+  containerStyle,
+  'div',
+  ({
+    ratio,
+    rounded,
+    width,
+    maxResolution,
+    srcRatio,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    ...p
+  }) => Object.keys(p),
+);
 
+const CloudinaryImage = ({
+  options,
+  value,
+  ratio,
+  avatar,
+  alt,
+  maxResolution,
+  styles,
+  rounded,
+  className,
+  ...rest
+}) => {
   if (!value || !value.url) {
-    return '';
-  }
-
-  const newUrl =
-    value.url.indexOf('http://res.cloudinary.com/') === 0
-      ? `https${value.url.substr(4)}`
-      : value.url;
-
-  const crop =
-    value.crop && value.crop.length
-      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value.crop[3]},c_crop/`
-      : '';
-
-  const query = Object.keys(newOptions)
-    .map(key => `${key}_${newOptions[key]}`)
-    .join(',');
-
-  if (newUrl.indexOf('/upload/') !== -1) {
-    return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
-  } else if (newUrl.indexOf('/fetch/') !== -1) {
-    return newUrl.replace('/fetch/', `/fetch/${crop}${query}/`);
-  }
-};
-
-const CloudinaryImage = ({ options, value, ratio, avatar, alt, maxResolution, ...rest }) => {
-  if (!value) {
     return <div />;
   }
 
   const width = (value.crop && value.crop[0]) || value.width;
   const height = (value.crop && value.crop[1]) || value.height;
 
+  const parts = value.url.split('/');
+  const cloud = parts[3];
+  const publicId = parts
+    .slice(7)
+    .join('/')
+    .split('.')[0];
+  ratio = ratio || height / width;
   return (
-    <Image
-      {...rest}
-      maxResolution={maxResolution > 6000000 ? 6000000 : maxResolution}
-      src={
-        value && value.url
-          ? (w, h) =>
-            cloudinaryUrl(value, {
-              w,
-              h,
-              g: avatar ? 'face' : 'auto',
-              ...options,
-            })
-          : undefined
-      }
-      alt={alt || value.caption}
-      ratio={ratio || height / width}
-      srcRatio={height / width}
-    />
+    <Container
+      width={rest.width}
+      height={rest.height}
+      ratio={ratio}
+      rounded={rounded}
+      className={className}
+    >
+      <Image
+        cloudName={cloud}
+        publicId={publicId}
+        html_width="100%"
+        html_height="auto"
+        className={options.className}
+        responsive={typeof window !== 'undefined'}
+      >
+        {typeof window === 'undefined' ? (
+          <Transformation gravity="auto" crop="fill" quality="0" format="auto" width="4" />
+        ) : (
+          <Transformation
+            gravity="auto"
+            crop="fill"
+            quality="auto"
+            format="auto"
+            dpr="auto"
+            width="auto"
+          />
+        )}
+        {/* <Transformation gravity="auto" crop="fill" quality="0" />
+      <Transformation dpr="auto" />
+  <Transformation width="auto" crop="scale" /> */}
+      </Image>
+    </Container>
   );
 };
+
 CloudinaryImage.propTypes = {
   value: PropTypes.shape({
     url: PropTypes.string,

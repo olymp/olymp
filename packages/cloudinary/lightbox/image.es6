@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createUpdateQuery } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
-import Image, { cloudinaryUrl } from '../components/image';
+import { cloudinaryUrl } from '../components/old-image';
+import Image from '../components/image';
 
 const Img = createComponent(
   ({ theme }) => ({

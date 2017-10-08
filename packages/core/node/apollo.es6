@@ -6,18 +6,19 @@ const assign = require('object-assign');
 
 export function walkTree(element, context, visitor) {
   const Component = element.type;
+  const ctx =
+    Component && Component.contextTypes
+      ? pick(context, Object.keys(Component.contextTypes))
+      : context;
   if (typeof Component === 'function') {
     const props = assign({}, Component.defaultProps, element.props);
     let childContext = context;
     let child = void 0;
     if (Component.prototype && Component.prototype.isReactComponent) {
       var _component = Component;
-      const ctx = _component.contextTypes
-        ? pick(context, Object.keys(_component.contextTypes))
-        : context;
       const instance_1 = new _component(props, ctx);
       instance_1.props = instance_1.props || props;
-      instance_1.context = instance_1.context || context;
+      instance_1.context = instance_1.context || ctx;
       instance_1.setState = function (newState) {
         instance_1.state = assign({}, instance_1.state, newState);
       };
