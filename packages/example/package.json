@@ -1,5 +1,5 @@
 {
-  "version": "17.8.10",
+  "version": "17.8.11",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "mongodb": "^2.2.31",
-    "olymp": "^17.8.10",
+    "olymp": "^17.8.11",
     "olymp-auth": "^17.8.10",
     "olymp-crypt": "^17.8.0",
     "olymp-fela": "^17.8.10",
