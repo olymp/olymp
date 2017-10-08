@@ -13,7 +13,7 @@ const MapContainer = createComponent(
     display: 'block',
   }),
   ({ attributes, className, getData, children }) => (
-    <div className={className}>
+    <div className={className} {...attributes}>
       {children}
       <Maps
         center={{ lat: getData('lat', 59.724465), lng: getData('lng', 30.080121) }}
@@ -25,7 +25,6 @@ const MapContainer = createComponent(
           scrollwheel: false,
           gestureHandling: 'none',
         })}
-        {...attributes}
       >
         <Maps.Marker lat={getData('lat', 59.724465)} lng={getData('lng', 30.080121)} />
       </Maps>
@@ -82,16 +81,13 @@ export default {
   component: MapContainer,
   actions: [
     {
-      type: 'small',
-      icon: 'align-left',
-      label: 'Stil 1',
-      component: withApollo(({ setData, getData, client }) => (
+      tooltip: getData => `Bild ${getData('value') ? 'wechseln' : 'wählen'}`,
+      component: withApollo(({ setData, getData, client, ...p }) => (
         <span onClick={onClick(setData, getData, client)}>
           <Icon type="flag" />
         </span>
       )),
-      toggle: ({ setData }) => setData({ type: 'style2' }),
-      active: ({ type }) => false,
+      toggle: () => {},
     },
   ],
 };
