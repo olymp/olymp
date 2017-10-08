@@ -30,7 +30,7 @@ const stateWrapper = options => WrappedComponent =>
       }, arr);
     propagateChange = (value) => {
       this.base64 = Base64.serialize(value);
-      if (this.base64 !== this.props.base64 && this.first) {
+      if (this.base64 !== this.props.base64) {
         const json = value.toJSON();
         const nodes = json.document.nodes;
         let text = '';
@@ -64,7 +64,6 @@ const stateWrapper = options => WrappedComponent =>
         console.log('with-json', 'onChange');
         return this.props.onChange({ nodes, text, extract, title, image, chapters });
       }
-      this.first = true;
     };
     debouncedPropagateChange = debounce(this.propagateChange, options.debounce || 1000, {
       leading: false,

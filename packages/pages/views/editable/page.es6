@@ -19,7 +19,7 @@ class PageForm extends Component {
     // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
-    form.setFieldsValue({ slug: `/${slugify(value, true)}` });
+    form.setFieldsValue({ slug: `/${slugify(value)}` });
   };
 
   handleTypeChange = (e) => {

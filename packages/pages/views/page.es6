@@ -3,12 +3,14 @@ import { object, func, bool } from 'prop-types';
 import { StatelessSlateMate, withBlockTypes, withJsonState } from 'olymp-slate';
 import { withProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
+import { renderHelmet } from 'olymp-utils';
 import { queryPage } from '../gql';
 
 const Page = withJsonState()(
   withBlockTypes(props => (
     <ContentLoader isLoading={props.isLoading}>
       <StatelessSlateMate {...props} showUndo key={props.id + (props.bindingId || '')} readOnly>
+        {renderHelmet(props.item || {}, props.pathname)}
         {props.children}
       </StatelessSlateMate>
     </ContentLoader>

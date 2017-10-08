@@ -1,9 +1,8 @@
 import React from 'react';
-import { renderHelmet } from 'olymp-utils';
 import { compose, withPropsOnChange } from 'recompose';
 import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
-import { Link, SwitchPathname, MatchPaths, Match } from 'olymp-router';
+import { Link } from 'olymp-router';
 import { connect } from 'react-redux';
 import Error404 from './views/404';
 import Page from './views/page';
@@ -38,7 +37,8 @@ const enhance = compose(
 );
 
 const PageRoute = enhance((props) => {
-  const { Wrapped, flatNavigation, publicNavigation, pathname, isAuthenticated, item } = props;
+  const { Wrapped, publicNavigation, pathname, isAuthenticated, item } = props;
+  console.log(item);
   return (
     <Wrapped navigation={publicNavigation}>
       {isAuthenticated && (
@@ -51,9 +51,9 @@ const PageRoute = enhance((props) => {
           </Link>
         </Actions>
       )}
-      {renderHelmet(item || {}, pathname)}
       {item && (
         <Page.WithData
+          pathname={pathname}
           key={item.pageId || item.aliasId || item.id}
           id={item.pageId || item.aliasId || item.id}
           bindingId={item.bindingId}

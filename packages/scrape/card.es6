@@ -1,16 +1,16 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { createComponent, ContentLoader } from 'olymp-fela';
+import { createComponent, ContentLoader, Image } from 'olymp-fela';
 
 const styles = props => ({
-  '> a': {
-    '> img': {
-      float: 'left',
-      height: '100%',
-      maxHeight: 180,
-      width: 'auto',
-    },
+  '> .card-img': {
+    float: 'left',
+    position: 'relative',
+    height: 180,
+    width: 150,
+    marginRight: 10,
+    display: 'inline-block',
   },
   '> article': {
     paddingX: 10,
@@ -35,8 +35,8 @@ const styles = props => ({
   overflow: 'hidden',
   border: '1px solid #d4d3d3',
   borderRadius: 5,
-  minHeight: 177,
-  minWidth: 20,
+  maxHeight: 180,
+  minWidth: '100%',
   display: 'inline-block',
 });
 const component = ({
@@ -51,10 +51,10 @@ const component = ({
     <div {...rest}>
       {children}
       {error ? console.error(error) : null}
-      {image && (
-        <a target="_blank" href={url}>
-          <img src={image.url} />
-        </a>
+      {image ? (
+        <img src={image.url} className="card-img" />
+      ) : (
+        <Image.Placeholder className="card-img" />
       )}
       <article>
         <a target="_blank" href={origin}>

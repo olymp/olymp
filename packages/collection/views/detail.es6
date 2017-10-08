@@ -1,6 +1,7 @@
 import React from 'react';
 import { withPropsOnChange, compose } from 'recompose';
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
+import { Prompt } from 'olymp-router';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { withItem } from '../decorators';
 import { DetailForm } from '../components';
@@ -60,26 +61,8 @@ const getFormSchema = (fields) => {
   return mappedFields;
 };
 
-const Flex = createComponent(
-  ({ theme }) => ({
-    width: '100%',
-    hasFlex: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    '> ul': {
-      zIndex: 1,
-      marginBottom: 20,
-    },
-    '> form': {
-      overflow: 'auto',
-    },
-  }),
-  'div',
-  [],
-);
-
 const enhance = compose(
+  Form.create(),
   withItem,
   withPropsOnChange(['collection'], ({ collection }) => {
     const schema = getFormSchema(collection.fields);
@@ -92,6 +75,7 @@ const enhance = compose(
 const CollectionDetail = enhance(({ id, item, schema, onSave, onClone, form, ...rest }) => (
   <ContentLoader isLoading={id && !item}>
     <DetailForm {...rest} id={id} form={form} item={item || {}} schema={schema} onCreate={onSave}>
+      <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
       <Button onClick={onSave} icon="save" type="primary">
         Speichern
       </Button>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Form } from 'antd';
 import { withSearch } from 'olymp-utils';
-import { withRouter, Prompt } from 'olymp-router';
+import { withRouter } from 'olymp-router';
 import { SplitView } from 'olymp-ui';
 import { withItems, withCollection } from '../decorators';
 import Detail from './detail';
@@ -11,7 +10,6 @@ import Sidebar from './sidebar';
 @withSearch('search')
 @withCollection
 @withItems
-@Form.create()
 export default class CollectionView extends Component {
   render() {
     const {
@@ -24,7 +22,6 @@ export default class CollectionView extends Component {
       router,
       performSearch,
       searchText,
-      form,
       id,
       refetchQuery,
     } = this.props;
@@ -32,7 +29,6 @@ export default class CollectionView extends Component {
 
     return (
       <SplitView>
-        <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
         <Sidebar
           id={id}
           collection={collection}
@@ -59,7 +55,6 @@ export default class CollectionView extends Component {
             refetchQuery={refetchQuery}
             fieldNames={fieldNames}
             collection={collection}
-            form={form}
             typeName={typeName}
           />
         )}

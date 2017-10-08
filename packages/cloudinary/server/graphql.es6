@@ -36,6 +36,9 @@ export default (uri) => {
             }), */
         fileList: (source, { query }, { monk, app, user }) => {
           const mongoQuery = adaptQuery(query);
+          if (!user) {
+            return [];
+          }
           mongoQuery._appId = { $in: user._appIds };
           mongoQuery._type = 'file';
           mongoQuery.state = { $ne: 'REMOVED' };

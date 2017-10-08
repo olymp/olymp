@@ -213,4 +213,5 @@ Image.defaultProps = {
   alt: '',
   onClick: () => {},
 };
+Image.Placeholder = Placeholder;
 export default Image;

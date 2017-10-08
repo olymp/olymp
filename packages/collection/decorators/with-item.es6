@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { createUpdateQuery } from 'olymp-router';
 import { graphql } from 'react-apollo';
 import { onSuccess, onError } from 'olymp-ui';
-import { State } from 'slate';
 import { omit as omit2 } from 'olymp-utils';
-import { lowerFirst, omit } from 'lodash';
+import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 
 const ok = props => () => {
@@ -14,28 +13,18 @@ const ok = props => () => {
     if (err) {
       return onError(err);
     }
-    if (values.blocks && State.isState(values.blocks)) {
-      values.blocks = values.blocks.toJSON().document;
-    }
-    if (values.blocks && values.blocks.__typena) {
-      values.blocks = omit(values.blocks, '__typename');
-    }
-    if (values.text && State.isState(values.text)) {
-      values.text = values.text.toJSON().document;
-    }
-    if (values.text && values.text.__typename) {
-      values.text = omit(values.text, '__typename');
-    }
+
     if (values.start && Array.isArray(values.start)) {
       values.end = values.start[1];
       values.start = values.start[0];
     }
+
     mutate({
       variables: {
         id: item && item.id,
         input: omit2(values),
       },
-      refetchQueries: [`${lowerFirst(typeName)}List`],
+      refetchQueries: [`${lowerFirst(typeName)}List`, `${lowerFirst(typeName)}`],
       /* updateQueries:
         !item || !item.id
           ? {
@@ -57,7 +46,7 @@ const ok = props => () => {
 
 const clone = props => () => {
   const { form, item, router, updateQuery, mutate, typeName } = props;
-  const cloneItem = omit(item);
+  const cloneItem = omit2(item);
   delete cloneItem.id;
   mutate({
     variables: {

@@ -58,6 +58,7 @@ export default compose(
         item: page(id: $id, input: $input) {
           id
           slug
+          description
           order
           isMega
           name
