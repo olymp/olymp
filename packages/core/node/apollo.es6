@@ -1,5 +1,6 @@
 import { Children } from 'react';
 import * as ReactDOM from 'react-dom/server';
+import { pick } from 'lodash';
 
 const assign = require('object-assign');
 
@@ -11,7 +12,10 @@ export function walkTree(element, context, visitor) {
     let child = void 0;
     if (Component.prototype && Component.prototype.isReactComponent) {
       var _component = Component;
-      const instance_1 = new _component(props, context);
+      const ctx = _component.contextTypes
+        ? pick(context, Object.keys(_component.contextTypes))
+        : context;
+      const instance_1 = new _component(props, ctx);
       instance_1.props = instance_1.props || props;
       instance_1.context = instance_1.context || context;
       instance_1.setState = function (newState) {

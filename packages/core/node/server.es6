@@ -234,6 +234,7 @@ app.get('*', (req, res) => {
 
   Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
     .then(() => {
+      console.log(1);
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const felaMarkup = renderToMarkup(renderer);
       const asyncState = asyncContext.getState();
@@ -244,6 +245,7 @@ app.get('*', (req, res) => {
       const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
       const cssHash = [];
 
+      console.log(2);
       // Generate the html res.
       const state = store.getState();
       const html = (req.isAmp ? amp : template)({
@@ -263,12 +265,14 @@ app.get('*', (req, res) => {
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
 
+      console.log(3);
       if (state.location.url !== req.originalUrl) {
         res.status(301).setHeader('Location', state.location.url);
         res.end();
         return;
       }
 
+      console.log(4);
       res.status(state.location.isMiss ? 404 : 200);
       res.send(html);
       if (req.responseCache && !req.user) {

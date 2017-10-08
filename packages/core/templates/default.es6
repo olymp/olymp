@@ -22,6 +22,7 @@ export default ({
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
+    <meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#8e44ad">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">

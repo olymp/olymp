@@ -88,6 +88,9 @@ module.exports = ({
       modules: [path.resolve(appRoot, 'node_modules')],
     },
     plugins: [
+      new webpack.LoaderOptionsPlugin({
+        debug: isDev,
+      }),
       // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
         'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
@@ -247,13 +250,13 @@ module.exports = ({
       }),
     );
     if (isDev && isServer) {
-      config.plugins.push(new StartServerPlugin('app.js'));
-      /* config.plugins.push(
-        new ReloadServerPlugin({
-          // Defaults to process.cwd() + "/server.js"
-          script: path.resolve(__dirname, 'node', 'index.js'),
-        })
-      ); */
+      console.log('INSPECT', devPort + 1);
+      config.plugins.push(
+        new StartServerPlugin({
+          name: 'app.js',
+          nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
+        }),
+      );
     }
   } else if (!isNode) {
     config.plugins.push(
@@ -291,7 +294,7 @@ module.exports = ({
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
-      /*config.plugins.push(
+      /* config.plugins.push(
         new Visualizer({
           filename: './_visualizer.html',
         }),

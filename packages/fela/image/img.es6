@@ -28,7 +28,7 @@ ImageImg.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   src: PropTypes.string.isRequired,
-  srcSet: PropTypes.string.isRequired,
+  srcSet: PropTypes.string,
   alt: PropTypes.string,
   onClick: PropTypes.func,
   circle: PropTypes.bool,

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { createComponent } from 'olymp-fela';
 import { cloudinaryUrl, Image } from 'olymp-cloudinary';
-import 'rc-banner-anim/assets/index.css';
+// import 'rc-banner-anim/assets/index.css';
 
 let InnerComponent;
-if (process.env.IS_WEB) {
+/* if (process.env.IS_WEB) {
   const BannerAnim = require('rc-banner-anim');
   const Element = require('rc-banner-anim').Element;
 
@@ -32,7 +32,7 @@ if (process.env.IS_WEB) {
       ))}
     </BannerAnim>
   );
-}
+} */
 
 class Carousel extends Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class Carousel extends Component {
     this.state = { mounted: false };
   }
   componentDidMount() {
-    this.setState({ mounted: true });
+    // this.setState({ mounted: true });
   }
   render() {
     const { value, height, ...atributes } = this.props;
@@ -64,6 +64,7 @@ class Carousel extends Component {
 }
 const styles = ({ height }) => ({
   height: height || 220,
+  overflow: 'hidden',
   position: 'relative',
   width: '100%',
   '& .custom-arrow-thumb': {
