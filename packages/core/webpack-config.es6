@@ -9,7 +9,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 // const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const appRoot = process.cwd();
 
@@ -318,6 +317,7 @@ module.exports = ({
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked) {
+      const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
       config.plugins.push(
         new BundleAnalyzerPlugin({
           reportFilename: './_report.html',
