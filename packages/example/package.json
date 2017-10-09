@@ -1,5 +1,5 @@
 {
-  "version": "17.8.16",
+  "version": "17.9.0",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -34,25 +34,25 @@
   },
   "dependencies": {
     "mongodb": "^2.2.31",
-    "olymp": "^17.8.16",
-    "olymp-auth": "^17.8.16",
-    "olymp-crypt": "^17.8.0",
-    "olymp-fela": "^17.8.16",
-    "olymp-google": "^17.8.12",
-    "olymp-graphql": "^17.8.2",
-    "olymp-icons": "^17.8.0",
-    "olymp-locale": "^17.8.7",
-    "olymp-mail": "^17.8.0",
-    "olymp-router": "^17.8.7",
-    "olymp-utils": "^17.8.7",
-    "olymp-webpack-babel": "^17.8.16",
-    "olymp-webpack-less": "^17.8.0",
+    "olymp": "^17.9.0",
+    "olymp-auth": "^17.9.0",
+    "olymp-crypt": "^17.9.0",
+    "olymp-fela": "^17.9.0",
+    "olymp-google": "^17.9.0",
+    "olymp-graphql": "^17.9.0",
+    "olymp-icons": "^17.9.0",
+    "olymp-locale": "^17.9.0",
+    "olymp-mail": "^17.9.0",
+    "olymp-router": "^17.9.0",
+    "olymp-utils": "^17.9.0",
+    "olymp-webpack-babel": "^17.9.0",
+    "olymp-webpack-less": "^17.9.0",
     "react": "^16.0.0-rc.3",
     "react-dom": "^16.0.0-rc.3"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^17.8.2",
-    "olymp-webpack-electron": "^17.8.2"
+    "eslint-config-olymp": "^17.9.0",
+    "olymp-webpack-electron": "^17.9.0"
   },
   "electronDependencies": {},
   "build": {
