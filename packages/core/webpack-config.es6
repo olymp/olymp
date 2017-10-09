@@ -9,7 +9,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
-const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
+// const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const appRoot = process.cwd();
 
@@ -257,20 +258,6 @@ module.exports = ({
       );
     }
   } else if (!isNode) {
-    config.plugins.push(
-      new StatsWriterPlugin({
-        filename: 'stats.json',
-        fields: null,
-        stats: { chunkModules: true },
-        // fields: ['assetsByChunkName', 'publicPath'],
-      }),
-    );
-    config.plugins.push(
-      new AssetsPlugin({
-        filename: 'assets.json',
-        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-      }),
-    );
     if (isElectronRenderer) {
       config.plugins.push(
         new HtmlWebpackPlugin({
@@ -328,6 +315,27 @@ module.exports = ({
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else {
+    config.plugins.push(
+      new BundleAnalyzerPlugin({
+        reportFilename: './_report.html',
+        analyzerMode: 'static',
+        // generateStatsFile: false,
+      }),
+    );
+    /* config.plugins.push(
+      new StatsWriterPlugin({
+        filename: 'stats.json',
+        fields: null,
+        stats: { chunkModules: true },
+        // fields: ['assetsByChunkName', 'publicPath'],
+      }),
+    ); */
+    config.plugins.push(
+      new AssetsPlugin({
+        filename: 'assets.json',
+        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
+      }),
+    );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
