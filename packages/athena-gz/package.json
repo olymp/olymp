@@ -1,5 +1,5 @@
 {
-  "version": "17.8.12",
+  "version": "17.8.15",
   "name": "olymp-athena-gz",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,7 +8,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-fela": "^17.8.12",
+    "olymp-fela": "^17.8.15",
     "olymp-utils": "^17.8.7",
     "react-image-gallery": "^0.8.3"
   }
