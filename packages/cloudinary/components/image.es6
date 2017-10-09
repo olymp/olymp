@@ -86,9 +86,10 @@ const CloudinaryImage = ({
         responsive={typeof window !== 'undefined'}
       >
         {typeof window === 'undefined' ? (
-          <Transformation gravity="auto" crop="fill" quality="0" format="auto" width="4" />
+          <Transformation secure gravity="auto" crop="fill" quality="0" format="auto" width="4" />
         ) : (
           <Transformation
+            secure
             gravity="auto"
             crop="fill"
             quality="auto"

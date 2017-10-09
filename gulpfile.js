@@ -38,6 +38,7 @@ const babelOptions = {
     'transform-object-rest-spread',
     'transform-react-constant-elements',
     'transform-react-pure-class-to-function',
+    'lodash',
     ['import', { libraryName: 'antd', style: true }],
     [
       'transform-imports',
@@ -45,10 +46,6 @@ const babelOptions = {
         antd: {
           transform: 'antd/lib/${member}',
           kebabCase: true,
-          preventFullImport: true,
-        },
-        lodash: {
-          transform: 'lodash/${member}',
           preventFullImport: true,
         },
         'date-fns': {

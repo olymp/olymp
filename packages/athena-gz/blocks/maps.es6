@@ -1,7 +1,7 @@
 import React from 'react';
 import { Blocks } from 'olymp-pages';
 import { createComponent } from 'olymp-fela';
-import { Maps } from 'olymp-google';
+import Maps from 'olymp-google/maps';
 import { ImageStyles } from './image/block';
 
 const Label = Blocks.ImageBlockLabel.component;

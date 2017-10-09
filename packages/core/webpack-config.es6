@@ -6,7 +6,6 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const Visualizer = require('webpack-visualizer-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
@@ -91,7 +90,6 @@ module.exports = ({
       new webpack.LoaderOptionsPlugin({
         debug: isDev,
       }),
-      // new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin({
         'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
           ? `"${process.env.GOOGLE_MAPS_KEY}"`
@@ -262,7 +260,7 @@ module.exports = ({
     config.plugins.push(
       new StatsWriterPlugin({
         filename: 'stats.json',
-        fields: ['assetsByChunkName', 'publicPath'],
+        // fields: ['assetsByChunkName', 'publicPath'],
       }),
     );
     config.plugins.push(
@@ -294,11 +292,6 @@ module.exports = ({
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
-      /* config.plugins.push(
-        new Visualizer({
-          filename: './_visualizer.html',
-        }),
-      ); */
       if (isServerless) {
         config.plugins.push(
           new HtmlWebpackPlugin({
@@ -333,6 +326,8 @@ module.exports = ({
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
     config.output.filename = '[name].js';
   } else {
+    config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(new ExtractCssChunks());
     config.plugins.push(

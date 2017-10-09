@@ -64,7 +64,7 @@ const isDeployed = `${process.env.YARN_PRODUCTION}` === 'true';
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
 const clientAssets = fs.existsSync(clientAssetsPath)
   ? JSON.parse(fs.readFileSync(clientAssetsPath))
-  : null; // eslint-disable-line import/no-dynamic-require
+  : {}; // eslint-disable-line import/no-dynamic-require
 const app = express();
 
 app.use(helmet());

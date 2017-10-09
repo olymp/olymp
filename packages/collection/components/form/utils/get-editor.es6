@@ -9,7 +9,7 @@ import {
   TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
-import { GeocodeEditor } from 'olymp-google';
+import GeocodeEditor from 'olymp-google/edits/geocode';
 import { StatelessSlateMate, withJsonState, withBlockTypes } from 'olymp-slate';
 import { cn } from 'olymp-utils';
 import { ImageEdit } from 'olymp-cloudinary';

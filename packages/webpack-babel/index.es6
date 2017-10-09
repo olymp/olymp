@@ -1,14 +1,14 @@
+const webpack = require('webpack');
 const { resolve } = require('path');
 // const BabiliPlugin = require('babili-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-
-// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default;
+// const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = (config, options) => {
   const { isProd, isWeb, isDev, isNode, appRoot, target, folder } = options;
 
   if (isProd && isWeb) {
-    // config.plugins.push(new BabiliPlugin());
+    // config.plugins.push(new LodashModuleReplacementPlugin()),
     config.plugins.push(
       new UglifyJSPlugin({
         // sourceMap: true,
@@ -16,14 +16,18 @@ module.exports = (config, options) => {
           cache: true,
           workers: 2,
         },
-        uglifyOptions: { compress: true, mangle: true },
+        uglifyOptions: {
+          compress: true,
+          mangle: true,
+          comments: false,
+          ie8: false,
+          output: {
+            comments: false,
+            beautify: false,
+          },
+        },
       }),
     );
-    /* config.plugins.push(
-      new PrepackWebpackPlugin({
-        test: /\.(js|jsx|ts|tsx)$/,
-      })
-    ); */
   }
 
   const babelOptions = {
@@ -35,7 +39,7 @@ module.exports = (config, options) => {
       'transform-decorators-legacy',
       'transform-class-properties',
       'transform-es2015-classes',
-      //  'babel-plugin-fela',
+      // 'babel-plugin-fela',
       ['import', { libraryName: 'antd', style: true }],
     ],
   };
@@ -44,7 +48,7 @@ module.exports = (config, options) => {
     {
       modules: false,
       loose: true,
-      targets: { node: 'current' },
+      targets: { node: 'current', browsers: ['last 2 versions'] },
       es2015: {
         modules: false,
         loose: true,
@@ -54,16 +58,13 @@ module.exports = (config, options) => {
   if (!isNode && isDev) {
     babelOptions.plugins.push('react-hot-loader/babel');
   } else if (!isNode && isProd) {
+    babelOptions.plugins.push('lodash');
     babelOptions.plugins.push([
       'transform-imports',
       {
         antd: {
           transform: 'antd/lib/${member}',
           kebabCase: true,
-          preventFullImport: true,
-        },
-        lodash: {
-          transform: 'lodash/${member}',
           preventFullImport: true,
         },
         'date-fns': {
