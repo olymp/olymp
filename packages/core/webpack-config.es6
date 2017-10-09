@@ -260,6 +260,7 @@ module.exports = ({
     config.plugins.push(
       new StatsWriterPlugin({
         filename: 'stats.json',
+        chunkModules: true,
         // fields: ['assetsByChunkName', 'publicPath'],
       }),
     );
