@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const { resolve } = require('path');
 // const BabiliPlugin = require('babili-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');

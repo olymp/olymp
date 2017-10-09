@@ -1,25 +1,17 @@
 const { resolve } = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
 module.exports = (config, options) => {
-  const {
-    isProd,
-    isWeb,
-    isNode,
-    appRoot,
-    isLinked,
-    modifyVars,
-    folder,
-    isDev,
-    target,
-    ExtractCssChunks,
-  } = options;
+  const { isProd, isWeb, isNode, appRoot, isLinked, modifyVars, folder, isDev, target } = options;
 
   if (isWeb && isProd) {
+    config.plugins.push(new ExtractTextPlugin());
+
     config.module.rules.push({
       test: /\.(less|css)$/,
-      loader: ExtractCssChunks.extract({
+      loader: ExtractTextPlugin.extract({
         use: [
           {
             loader: 'css-loader',

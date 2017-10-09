@@ -53,6 +53,8 @@ const CloudinaryImage = ({
   styles,
   rounded,
   className,
+  onClick,
+  onMouseEnter,
   ...rest
 }) => {
   if (!value || !value.url) {
@@ -71,6 +73,8 @@ const CloudinaryImage = ({
   ratio = ratio || height / width;
   return (
     <Container
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
       width={rest.width}
       height={rest.height}
       ratio={ratio}
