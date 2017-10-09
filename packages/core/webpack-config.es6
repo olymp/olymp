@@ -236,10 +236,6 @@ module.exports = ({
       );
     }
   }
-  if (isProd) {
-    // https://github.com/webpack/webpack/issues/5089
-    // config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-  }
   if (isNode && !isElectron) {
     config.plugins.push(
       new webpack.BannerPlugin({
@@ -316,28 +312,23 @@ module.exports = ({
     config.output.filename = '[name].js';
   } else {
     config.plugins.push(
-      new BundleAnalyzerPlugin({
-        reportFilename: './_report.html',
-        analyzerMode: 'static',
-        // generateStatsFile: false,
-      }),
-    );
-    /* config.plugins.push(
-      new StatsWriterPlugin({
-        filename: 'stats.json',
-        fields: null,
-        stats: { chunkModules: true },
-        // fields: ['assetsByChunkName', 'publicPath'],
-      }),
-    ); */
-    config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
         path: path.resolve(process.cwd(), folder, target.split('-')[0]),
       }),
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+    if (isLinked) {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          reportFilename: './_report.html',
+          analyzerMode: 'static',
+          // generateStatsFile: false,
+        }),
+      );
+    } else {
+      config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+    }
     config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(new ExtractCssChunks());
     config.plugins.push(
