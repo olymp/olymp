@@ -78,6 +78,7 @@ const CloudinaryImage = ({
       className={className}
     >
       <Image
+        secure
         cloudName={cloud}
         publicId={publicId}
         html_width="100%"
@@ -86,10 +87,9 @@ const CloudinaryImage = ({
         responsive={typeof window !== 'undefined'}
       >
         {typeof window === 'undefined' ? (
-          <Transformation secure gravity="auto" crop="fill" quality="0" format="auto" width="4" />
+          <Transformation gravity="auto" crop="fill" quality="0" format="auto" width="4" />
         ) : (
           <Transformation
-            secure
             gravity="auto"
             crop="fill"
             quality="auto"
