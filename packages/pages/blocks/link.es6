@@ -1,54 +1,69 @@
 import React from 'react';
-import { createComponent } from 'olymp-fela';
-import { Card } from 'olymp-scrape';
+import { FaExternalLink, FaLink, FaUnlink } from 'olymp-icons';
+import PrefetchLink from '../prefetch-link';
 
-const CardContainer = createComponent(
-  ({ theme }) => ({
-    width: '100%',
-    position: 'relative',
-    display: 'block',
-  }),
-  ({ attributes, className, node, children }) => (
-    <Card
-      {...attributes}
-      className={className}
-      xy={console.log(node.data.get('value'))}
-      value={node.data.get('value')}
-    >
+const LinkContainer = ({ node, attributes, children, className, editor }) => {
+  const href = node.data.get('href');
+  if (!editor.props.readOnly) {
+    return (
+      <a {...attributes} href="javascript:;" className={className}>
+        {children}
+      </a>
+    );
+  }
+  if (href && href.indexOf('/') === 0) {
+    return (
+      <PrefetchLink {...attributes} to={href} className={className}>
+        {children}
+      </PrefetchLink>
+    );
+  }
+  return (
+    <a {...attributes} href={href} className={className} target="_blank" rel="noopener noreferrer">
       {children}
-    </Card>
-  ),
-  p => Object.keys(p),
-);
+    </a>
+  );
+};
+
+const setLink = (onChange, state, node) => {
+  const href = window.prompt('Link', node.data.get('href') || '');
+  if (href) {
+    onChange(
+      state.change().setNodeByKey(node.key, {
+        data: node.data.set('href', href),
+      }),
+    );
+  }
+};
 
 export default {
-  type: 'cardLink',
-  isVoid: true,
-  kind: 'block',
-  label: 'Reichhaltiger Link',
-  category: 'Sonstiges',
-  component: CardContainer,
+  type: 'link',
+  isVoid: false,
+  kind: 'inline',
+  component: LinkContainer,
   actions: [
     {
       type: 'small',
-      icon: 'chain',
-      label: 'Link',
-      toggle: ({ onChange, state, node }) => {
-        const href = window.prompt('Link');
-        if (href) {
-          onChange(
-            state.change().setNodeByKey(node.key, {
-              data: node.data.set('value', href),
-            }),
-          );
-        } else {
-          onChange(
-            state.change().setNodeByKey(node.key, {
-              data: node.data.set('value', null),
-            }),
-          );
-        }
-      },
+      component: ({ node }) => (
+        <LinkContainer node={node} attributes={{}} editor={{ props: { readOnly: true } }}>
+          <FaExternalLink />
+        </LinkContainer>
+      ),
+      tooltip: 'Öffnen',
+    },
+    {
+      type: 'small',
+      component: ({ onChange, state, node }) => (
+        <FaLink onClick={() => setLink(onChange, state, node)} />
+      ),
+      tooltip: 'Neu verlinken',
+    },
+    {
+      type: 'small',
+      component: ({ onChange, state }) => (
+        <FaUnlink onClick={() => onChange(state.change().unwrapInline('link'))} />
+      ),
+      tooltip: 'Link entfernen',
     },
   ],
 };

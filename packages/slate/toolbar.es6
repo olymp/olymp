@@ -18,6 +18,11 @@ export const Button = createComponent(
       size: 16,
       marginBottom: -4,
     },
+    '> a > svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
   }),
   ({ onMouseDown, tooltip, children, className }) => (
     <div onMouseDown={onMouseDown} className={className}>

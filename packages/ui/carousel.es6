@@ -43,23 +43,25 @@ class Carousel extends Component {
     // this.setState({ mounted: true });
   }
   render() {
-    const { value, height, ...atributes } = this.props;
-    let inner = null;
+    const { value, height, attributes, children, style, className } = this.props;
+    return value.length > 0 ? (
+      <Image
+        width="100%"
+        value={value[0]}
+        maxHeight={height || 220}
+        className={className}
+        attributes={attributes}
+        style={style}
+      >
+        {children}
+      </Image>
+    ) : null;
+    /* let inner = null;
     if (this.state.mounted) {
       inner = <InnerComponent key={2} {...this.props} />;
     } else {
-      inner =
-        value.length > 0 ? (
-          <Image
-            key={1}
-            width="100%"
-            value={value[0]}
-            maxHeight={height || 220}
-            maxResolution={750000}
-          />
-        ) : null;
     }
-    return <div {...atributes}>{inner}</div>;
+    return <div {...attributes}>{inner}</div>; */
   }
 }
 const styles = ({ height }) => ({
@@ -103,4 +105,5 @@ const styles = ({ height }) => ({
   },
 });
 
-export default createComponent(styles, Carousel, p => Object.keys(p));
+// export default createComponent(styles, Carousel, p => Object.keys(p));
+export default Carousel;

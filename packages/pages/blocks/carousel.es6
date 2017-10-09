@@ -3,18 +3,19 @@ import { SimpleImageEdit } from 'olymp-cloudinary';
 import Carousel from 'olymp-ui/carousel';
 
 const CarouselBlock = ({ getData, className, children, attributes }) => (
-  <div {...attributes} className={className}>
-    <Carousel
-      height={400}
-      value={getData('value', [
-        {
-          width: 960,
-          height: 400,
-        },
-      ])}
-    />
+  <Carousel
+    attributes={attributes}
+    className={className}
+    height={400}
+    value={getData('value', [
+      {
+        width: 960,
+        height: 400,
+      },
+    ])}
+  >
     {children}
-  </div>
+  </Carousel>
 );
 
 export default {

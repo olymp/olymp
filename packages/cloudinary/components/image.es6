@@ -4,65 +4,53 @@ import { createComponent } from 'react-fela';
 // import { Image } from 'olymp-fela';
 import { Image, Transformation } from 'cloudinary-react';
 
-const containerStyle = ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight, rounded }) => ({
-  position: 'relative',
-  overflow: 'hidden',
-  width,
-  minWidth,
-  maxWidth,
-  minHeight,
-  maxHeight,
-  borderRadius: rounded && '50%',
-  onBefore: {
-    display: 'block',
-    content: '""',
-    width: '100%',
-    height: 0,
-    paddingTop: `${ratio * 100}%`,
-  },
-  '> img': {
-    center: true,
-    borderRadius: rounded && '50%',
-  },
-});
-
 const Container = createComponent(
-  containerStyle,
-  'div',
-  ({
-    ratio,
-    rounded,
+  ({ ratio, width, minWidth, maxWidth, minHeight, maxHeight, rounded }) => ({
+    position: 'relative',
+    overflow: 'hidden',
     width,
-    maxResolution,
-    srcRatio,
     minWidth,
-    minHeight,
     maxWidth,
+    minHeight,
     maxHeight,
-    ...p
-  }) => Object.keys(p),
+    borderRadius: rounded && '50%',
+    onBefore: {
+      display: 'block',
+      content: '""',
+      width: '100%',
+      height: 0,
+      paddingTop: `${ratio * 100}%`,
+    },
+    '> img': {
+      center: true,
+      borderRadius: rounded && '50%',
+    },
+  }),
+  ({ attributes, ...p }) => <div {...p} {...attributes} />,
+  ['onClick', 'onMouseEnter', 'attributes', 'style', 'className', 'children'],
 );
 
 const CloudinaryImage = ({
-  options,
   value,
   ratio,
-  avatar,
-  alt,
-  maxResolution,
-  styles,
   rounded,
   className,
   onClick,
   onMouseEnter,
-  ...rest
+  attributes,
+  width,
+  height,
+  maxWidth,
+  maxHeight,
+  children,
+  style,
 }) => {
   if (!value || !value.url) {
     return <div />;
   }
 
-  const width = (value.crop && value.crop[0]) || value.width;
-  const height = (value.crop && value.crop[1]) || value.height;
+  const imageWidth = (value.crop && value.crop[0]) || value.width;
+  const imageHeight = (value.crop && value.crop[1]) || value.height;
 
   const parts = value.url.split('/');
   const cloud = parts[3];
@@ -70,24 +58,27 @@ const CloudinaryImage = ({
     .slice(7)
     .join('/')
     .split('.')[0];
-  ratio = ratio || height / width;
   return (
     <Container
       onClick={onClick}
       onMouseEnter={onMouseEnter}
-      width={rest.width}
-      height={rest.height}
-      ratio={ratio}
+      width={width}
+      height={height}
+      maxWidth={maxWidth}
+      maxHeight={maxHeight}
+      ratio={ratio || imageHeight / imageWidth}
       rounded={rounded}
       className={className}
+      attributes={attributes}
+      style={style}
     >
+      {children}
       <Image
         secure
         cloudName={cloud}
         publicId={publicId}
         html_width="100%"
         html_height="auto"
-        className={options.className}
         responsive={typeof window !== 'undefined'}
       >
         {typeof window === 'undefined' ? (
@@ -102,9 +93,6 @@ const CloudinaryImage = ({
             width="auto"
           />
         )}
-        {/* <Transformation gravity="auto" crop="fill" quality="0" />
-      <Transformation dpr="auto" />
-  <Transformation width="auto" crop="scale" /> */}
       </Image>
     </Container>
   );
@@ -133,7 +121,7 @@ CloudinaryImage.propTypes = {
 CloudinaryImage.defaultProps = {
   value: undefined,
   ratio: undefined,
-  options: {},
+  attributes: {},
   avatar: false,
   alt: undefined,
 };
