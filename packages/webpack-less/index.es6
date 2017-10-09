@@ -7,8 +7,11 @@ module.exports = (config, options) => {
   const { isProd, isWeb, isNode, appRoot, isLinked, modifyVars, folder, isDev, target } = options;
 
   if (isWeb && isProd) {
-    config.plugins.push(new ExtractTextPlugin());
-
+    config.plugins.push(
+      new ExtractTextPlugin({
+        filename: '[name].[chunkhash].css',
+      }),
+    );
     config.module.rules.push({
       test: /\.(less|css)$/,
       loader: ExtractTextPlugin.extract({
@@ -37,7 +40,7 @@ module.exports = (config, options) => {
         },
         {
           loader: 'style-loader',
-          options: { insertAt: 'before', hmr: isDev },
+          options: { insertAt: 'top', hmr: isDev },
         },
         {
           loader: 'css-loader',

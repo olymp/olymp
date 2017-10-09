@@ -17,7 +17,7 @@
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
-    "lc": "del 'packages/*/package-lock.json",
+    "lc": "del 'packages/*/package-lock.json'",
     "special-elev": "lerna exec npm owner add machiaveli88",
     "special-rename": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "special-del": "del 'packages/**/*.js' '!packages/**/node_modules/**'"
@@ -73,6 +73,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.9",
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.7",
-    "eslint-config-olymp": "^17.5.7"
+    "eslint-config-olymp": "^17.5.7",
+    "webpack": "^3.6.0"
   }
 }
