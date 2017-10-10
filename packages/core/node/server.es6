@@ -13,6 +13,8 @@ import session from 'express-session';
 import bodyparser from 'body-parser';
 import createRedisStore from 'connect-redis';
 import useragent from 'express-useragent';
+import cors from 'cors';
+
 // React
 import React from 'react';
 import InMemoryCache from 'apollo-cache-inmemory';
@@ -67,6 +69,8 @@ const clientAssets = fs.existsSync(clientAssetsPath)
   : {}; // eslint-disable-line import/no-dynamic-require
 const app = express();
 
+const domain = process.env.URL ? process.env.URL.split('/')[2] : undefined;
+
 app.use(helmet());
 if (
   process.env.NODE_ENV === 'production' &&
@@ -81,6 +85,22 @@ if (
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   }); */
+}
+if (isProd) {
+  const urls = [];
+  if (process.env.URL) {
+    urls.push(new URL(process.env.URL).origin);
+  }
+  if (process.env.GRAPHQL_URL) {
+    urls.push(new URL(process.env.GRAPHQL_URL).origin);
+  }
+  app.use(
+    cors({
+      origin: urls.length ? urls : undefined,
+      credentials: true,
+      allowedHeaders: ['Authorization', 'X-Requested-With', 'Content-Type'],
+    }),
+  );
 }
 
 app.use(compression());
@@ -103,7 +123,6 @@ app.use((req, res, next) => {
 
 const trust = isDeployed ? 2 : null;
 const secure = isDeployed;
-const domain = process.env.URL ? process.env.URL.split('/')[2] : undefined;
 
 if (isDeployed) {
   app.set('trust proxy', trust);

@@ -19,6 +19,7 @@
     "cache-loader": "^1.1.0",
     "compression": "^1.7.1",
     "connect-redis": "^3.3.2",
+    "cors": "^2.8.4",
     "deep-assign": "^2.0.0",
     "deepmerge": "^1.5.2",
     "dotenv": "^4.0.0",

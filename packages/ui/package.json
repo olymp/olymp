@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "antd": "^2.13.2",
-    "moment": "2.18.1",
+    "moment": "^2.18.1",
     "multirangeslider": "^0.5.2",
     "rc-banner-anim": "^0.5.16",
     "rc-tween-one": "^1.4.5",
