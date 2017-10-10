@@ -14,7 +14,6 @@ import session from 'express-session';
 import bodyparser from 'body-parser';
 import createRedisStore from 'connect-redis';
 import useragent from 'express-useragent';
-import cors from 'cors';
 
 // React
 import React from 'react';
