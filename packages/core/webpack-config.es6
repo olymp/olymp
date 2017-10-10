@@ -113,7 +113,7 @@ module.exports = ({
         }, {}),
       }),
       // new PrepackWebpackPlugin({ }),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
       new ProgressBarPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
