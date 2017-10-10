@@ -5,6 +5,21 @@ import { FaCog, FaChevronDown, FaChevronUp } from 'olymp-icons';
 import Toolbar, { Button } from '../toolbar';
 // import dnd from './dnd';
 
+const setLink = (onChange, state, node) => {
+  const newContext = window.prompt('Context', JSON.stringify({}));
+  if (newContext) {
+    const obj = JSON.parse(newContext);
+    onChange(
+      state.change().setNodeByKey(node.key, {
+        data: Object.keys(obj).reduce(
+          (data, key) => data.set(key, { boundTo: obj[key] }),
+          node.data,
+        ),
+      }),
+    );
+  }
+};
+
 const Action = ({ node, state, onChange, blockTypes }) => (
   { toggle, active, label, component, ...rest },
   i,
@@ -144,6 +159,17 @@ export default options => (Block) => {
                   <Menu.Item>
                     <span
                       onMouseDown={(e) => {
+                        setLink(onChange, state, node);
+                        e.preventDefault();
+                      }}
+                    >
+                      Datenanbindung
+                    </span>
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item>
+                    <span
+                      onMouseDown={(e) => {
                         onChange(state.change().removeNodeByKey(node.key));
                         e.preventDefault();
                       }}
@@ -245,18 +271,15 @@ export default options => (Block) => {
     };
 
     setData = (data) => {
-      const { node, editor } = this.props;
+      const { editor } = this.props;
       const transform = editor
         .getState()
         .change()
-        .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } });
+        .setNodeByKey(this.n.key, { data: { ...this.n.data.toJS(), ...data } });
       editor.onChange(transform);
     };
 
-    getData = (name, defaultValue) => {
-      const { node } = this.props;
-      return node.data.get(name) || defaultValue;
-    };
+    getData = (name, defaultValue) => this.n.data.get(name) || defaultValue;
 
     setActive = () => {
       const { node, editor } = this.props;
@@ -268,12 +291,28 @@ export default options => (Block) => {
     };
 
     render() {
-      const { editor, children, isSelected, node } = this.props;
+      const { editor, children, isSelected } = this.props;
+      let { node } = this.props;
       const actions = this.getActions();
+      if (editor.props.binding) {
+        node = node.set(
+          'data',
+          node.data.keySeq().reduce((data, key) => {
+            const value = node.data.get(key);
+            if (value && value.boundTo) {
+              return data.set(key, editor.props.binding[value.boundTo]);
+            }
+            return data;
+          }, node.data),
+        );
+        console.log(node);
+      }
+      this.n = node;
 
       return (
         <StyledBlock
           {...this.props}
+          node={node}
           getData={this.getData}
           setData={this.setData}
           setActive={this.setActive}

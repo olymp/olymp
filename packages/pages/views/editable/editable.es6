@@ -4,23 +4,10 @@ import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { withPropsOnChange, withProps } from 'recompose';
 import { Form } from 'antd';
-import { StatelessSlateMate, withJsonState, withDebounceState, withBlockTypes } from 'olymp-slate';
 import { get } from 'lodash';
+import Page from '../page';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
-
-const SlateEditor = withDebounceState({ debounce: 800 })(
-  withBlockTypes(({ label, value, onChange, blockTypes }) => (
-    <StatelessSlateMate
-      blockTypes={blockTypes}
-      xy={console.log(132)}
-      onChange={onChange}
-      value={value}
-      placeholder={label || 'Hier Text eingeben!'}
-      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-    />
-  )),
-);
 
 @queryPage
 @Form.create()
@@ -52,15 +39,14 @@ const SlateEditor = withDebounceState({ debounce: 800 })(
 @connect(({ location }) => ({
   tab: location.query['@page'] || '',
 }))
-@withJsonState({ debounce: false })
 export default class PageSidebar extends Component {
   render() {
     const {
       form,
       save,
-      binding,
+      /* binding,
       bindingId,
-      bindingObj,
+    bindingObj, */
       navigation,
       flatNavigation,
       render,
@@ -72,19 +58,19 @@ export default class PageSidebar extends Component {
       tab,
       value,
       onChange,
-      base64,
     } = this.props;
 
     const P = (
-      <SlateEditor
+      <Page
         value={value}
         onChange={onChange}
-        base64={base64}
         style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
         readOnly={false}
+        binding={item}
+        /* item={item}
         binding={binding}
         bindingId={bindingId}
-        bindingObj={bindingObj}
+        bindingObj={bindingObj} */
       />
     );
 
@@ -100,9 +86,6 @@ export default class PageSidebar extends Component {
           rightButtons={<Sidebar.Button onClick={save} shape="circle" icon="save" />}
         >
           <PageForm
-            value={value}
-            onChange={onChange}
-            base64={base64}
             form={form}
             item={item}
             navigation={navigation}

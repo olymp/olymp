@@ -22,17 +22,18 @@ const states = {
 };
 
 const SlateEditor = withJsonState({ debounce: 800 })(
-  withBlockTypes(({ label, value, onChange }) => (
+  withBlockTypes(({ label, value, onChange, binding }) => (
     <StatelessSlateMate
       onChange={onChange}
       value={value}
+      binding={binding}
       placeholder={label || 'Hier Text eingeben!'}
       style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
     />
   )),
 );
 
-export default ({ className, editorClassName, style, editorStyle, field, label, key }) => {
+export default ({ className, editorClassName, style, editorStyle, field, label, key, form }) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -103,7 +104,7 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
 
   switch (type.name) {
     case 'Blocks':
-      return <SlateEditor {...editProps} label={label} />;
+      return <SlateEditor {...editProps} binding={form.getFieldsValue()} label={label} />;
     case 'Image':
       return <ImageEdit {...editProps} style={{ maxWith: '100%' }} width="100%" />;
     case 'Boolean':

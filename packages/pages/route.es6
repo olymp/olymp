@@ -38,7 +38,6 @@ const enhance = compose(
 
 const PageRoute = enhance((props) => {
   const { Wrapped, publicNavigation, pathname, isAuthenticated, item } = props;
-  console.log(item);
   return (
     <Wrapped navigation={publicNavigation}>
       {isAuthenticated && (

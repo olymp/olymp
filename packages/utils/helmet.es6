@@ -4,32 +4,45 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
 const getURL = () => {
+  let url;
   if (process.env.URL) {
-    return process.env.URL;
+    url = process.env.URL;
   } else if (process.env.IS_WEB) {
-    return `${window.location.protocol}//${window.location.host}`;
+    url = `${window.location.protocol}//${window.location.host}`;
   }
-  return null;
+  if (url && url.endsWith('/')) {
+    url = url.substr(0, url.length - 1);
+  }
+  return url;
 };
-export default ({ name, title, description, image, tags, keywords, pathname } = {}, pth) => {
+export default (
+  { name, title, description, image, tags, keywords, pathname, ...rest } = {},
+  pth,
+) => {
   if (pth && !pathname) {
     pathname = pth;
+  }
+  if (image && typeof image === 'object' && image.url) {
+    image = image.url;
+  }
+  if (image && typeof image === 'object' && image.src) {
+    image = image.src;
   }
   const meta = [];
   const link = [];
   name = name || title;
-  if (image && image.url) {
+  if (image) {
     meta.push({
       property: 'og:image',
-      content: image.url,
+      content: image,
     });
     meta.push({
       property: 'twitter:image',
-      content: image.url,
+      content: image,
     });
     meta.push({
       property: 'twitter:card',
-      content: image.url,
+      content: image,
     });
   }
   if (name) {

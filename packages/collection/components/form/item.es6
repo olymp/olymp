@@ -29,7 +29,7 @@ export default (props) => {
 
     initialValue = [start, end];
   }
-  const editor = getEditor({ field });
+  const editor = getEditor({ field, form });
 
   if (!editor) {
     return null;

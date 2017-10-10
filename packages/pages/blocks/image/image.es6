@@ -10,17 +10,19 @@ export default {
   kind: 'block',
   label: 'Bild',
   category: 'Bilder',
-  component: ({ getData, className, editor, attributes, children }) => {
+  component: ({ node, className, editor, attributes, children }) => {
     const Img = editor.props.readOnly === true ? LightboxImage : Image;
+    const value = node.data.get('value') || {
+      width: 400,
+      height: 300,
+    };
+    const size = node.data.get('size') || 4;
     return (
       <Img
         attributes={attributes}
         className={cn(className, 'image-block')}
-        width={`${100 / getData('size', 4)}%`}
-        value={getData('value', {
-          width: 400,
-          height: 300,
-        })}
+        width={`${100 / size}%`}
+        value={value}
       >
         {children}
       </Img>
