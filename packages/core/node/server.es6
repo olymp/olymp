@@ -92,7 +92,10 @@ if (isProd) {
     urls.push(process.env.ORIGINS);
   }
   app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', urls.join(','));
+    const origin = req.headers.origin;
+    if (urls.indexOf(origin) >= 0) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,PATCH,DELETE');
     res.setHeader(
       'Access-Control-Allow-Headers',
@@ -101,13 +104,6 @@ if (isProd) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   });
-  /* app.use(
-    cors({
-      origin: urls.length ? urls : undefined,
-      credentials: true,
-      allowedHeaders: ['Authorization', 'X-Requested-With', 'Content-Type'],
-    }),
-  ); */
 }
 
 app.use(compression());
