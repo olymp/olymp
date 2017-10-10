@@ -76,7 +76,7 @@ export default (server, options) => {
     ? algoliasearch(process.env.ALGOLIA.split('@')[1], process.env.ALGOLIA.split('@')[0])
     : null;
 
-  const responseCache = createResponseCache();
+  // const responseCache = createResponseCache();
   let cachedApp = null;
 
   let db = null;
@@ -94,7 +94,7 @@ export default (server, options) => {
     req.authEngine = authEngine;
     req.app = cachedApp;
     req.algolia = algolia;
-    // req.responseCache = responseCache;
+    /* // req.responseCache = responseCache;
     if (
       req.body &&
       req.body.query &&
@@ -103,7 +103,7 @@ export default (server, options) => {
     ) {
       console.log('reset cache');
       responseCache.clear();
-    }
+    } */
     next();
   });
 

@@ -6,6 +6,7 @@ import 'source-map-support/register';
 // Node
 import path from 'path';
 import fs from 'fs';
+import { URL } from 'url';
 // Express
 import express from 'express';
 import compression from 'compression';
@@ -51,6 +52,7 @@ import template from '../templates/default';
 import amp from '../templates/amp';
 import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
+
 // eslint
 global.fetch = fetch;
 
@@ -78,13 +80,6 @@ if (
   process.env.URL.indexOf('https:') === 0
 ) {
   app.use(sslRedirect());
-  /* app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', process.env.URL);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-  }); */
 }
 if (isProd) {
   const urls = [];
@@ -94,13 +89,26 @@ if (isProd) {
   if (process.env.GRAPHQL_URL) {
     urls.push(new URL(process.env.GRAPHQL_URL).origin);
   }
-  app.use(
+  if (process.env.ORIGINS) {
+    urls.push(process.env.ORIGINS);
+  }
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', urls.join(','));
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,PATCH,DELETE');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-Requested-With,Content-Type,Authorization,X-HTTP-Method-Override,Accept',
+    );
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+  });
+  /* app.use(
     cors({
       origin: urls.length ? urls : undefined,
       credentials: true,
       allowedHeaders: ['Authorization', 'X-Requested-With', 'Content-Type'],
     }),
-  );
+  ); */
 }
 
 app.use(compression());
