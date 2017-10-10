@@ -90,7 +90,7 @@ const CloudinaryImage = ({
                 quality: 0,
                 fetchFormat: 'auto',
                 width: 4,
-                aspectRatio: ratio || `${imageWidth}:${imageHeight}`,
+                aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
               }
               : {
                 gravity: 'auto',
@@ -99,7 +99,7 @@ const CloudinaryImage = ({
                 fetchFormat: 'auto',
                 dpr: 'auto',
                 width: 'auto',
-                aspectRatio: ratio || `${imageWidth}:${imageHeight}`,
+                aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
               }
           }
         />
