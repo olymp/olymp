@@ -1,5 +1,5 @@
 {
-  "version": "17.11.4",
+  "version": "17.11.5",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -14,7 +14,7 @@
     "monk": "^6.0.5",
     "olymp": "^17.11.4",
     "olymp-auth": "^17.11.0",
-    "olymp-cloudinary": "^17.11.0",
+    "olymp-cloudinary": "^17.11.5",
     "olymp-collection": "^17.11.0",
     "olymp-fela": "^17.11.0",
     "olymp-google": "^17.11.0",
