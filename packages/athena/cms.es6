@@ -9,6 +9,7 @@ import { asyncComponent } from 'react-async-component';
 import { withNavigation } from 'olymp-pages/with-data';
 import { get } from 'lodash';
 import NoAuth from './cms-noauth';
+import Logo from './logo';
 import { withRedux } from './redux';
 
 // import IfAuth from './cms-auth';
@@ -46,7 +47,7 @@ const enhance = compose(
   useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
     theme: {
-      logoWhite: '/logo-white.svg',
+      logoWhite: () => <Logo />,
       logoTitle: 'olymp cms',
       ...theme,
     },
