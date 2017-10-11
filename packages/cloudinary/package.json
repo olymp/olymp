@@ -1,5 +1,5 @@
 {
-  "version": "17.10.0",
+  "version": "17.11.0",
   "name": "olymp-cloudinary",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -10,7 +10,7 @@
   "dependencies": {
     "cloudinary": "^1.9.0",
     "cloudinary-react": "^1.0.4",
-    "olymp-collection": "^17.10.0",
+    "olymp-collection": "^17.11.0",
     "react-image-crop": "^3.0.1",
     "recompose": "^0.26.0"
   }
