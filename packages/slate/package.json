@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
     "immutable": "^3.8.2",

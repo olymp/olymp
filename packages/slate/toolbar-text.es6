@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Icon, Menu } from 'antd';
 import Toolbar, { Button } from './toolbar';
-import { hasMark, hasBlock } from './utils/has';
+import hasMark from './utils/has-mark';
+import hasBlock from './utils/has-block';
 
 export default class ToolbarText extends Component {
   onClickBlock = (e, props) => {

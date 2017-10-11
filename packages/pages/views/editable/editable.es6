@@ -3,11 +3,20 @@ import { Prompt, withQueryActions } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
 import { withPropsOnChange, withProps } from 'recompose';
+import { ContentLoader } from 'olymp-fela';
+import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get } from 'lodash';
-import Page from '../page';
 import { queryPage, mutatePage } from '../../gql';
 import PageForm from './sidebar';
+
+const Page = ({ children, isLoading, ...props }) => (
+  <ContentLoader isLoading={isLoading}>
+    <SlateWriter {...props} key={props.id + (props.bindingId || '')}>
+      {children}
+    </SlateWriter>
+  </ContentLoader>
+);
 
 @queryPage
 @Form.create()

@@ -84,6 +84,21 @@ module.exports = (config, options) => {
           kebabCase: true,
           preventFullImport: true,
         },
+        'olymp-cloudinary': {
+          transform: 'olymp-cloudinary/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
+        'olymp-slate': {
+          transform: 'olymp-slate/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
+        'olymp-auth': {
+          transform: 'olymp-auth/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
       },
     ]);
     babelOptions.plugins.push('transform-react-constant-elements');

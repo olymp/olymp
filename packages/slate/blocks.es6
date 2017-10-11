@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { Tree } from 'antd';
-import { Inline, Block } from 'slate';
+import { Block } from 'slate';
 import { sortBy } from 'lodash';
-import withBlockTypes from './decorators/with-block-types';
+import getSchema from './get-schema';
 
-@withBlockTypes
+@getSchema
 class Blocks extends Component {
-  dragStart = type => (ev) => {
-    const blockTypes = this.props.blockTypes;
-    return ev.dataTransfer.setData('x-slatemate', type);
-  };
+  dragStart = type => ev => ev.dataTransfer.setData('x-slatemate', type);
 
   applyTemplate = (type) => {
     const { value } = this.props;
@@ -77,9 +74,9 @@ class Blocks extends Component {
     }
   };
   getItems = (block) => {
-    const { blockTypes } = this.props;
-    const types = Object.keys(blockTypes).map(key => ({
-      ...blockTypes[key].slate,
+    const { schema } = this.props;
+    const types = Object.keys(schema.nodes).map(key => ({
+      ...schema.nodes[key].slate,
       type: key,
     }));
     const categories = {};

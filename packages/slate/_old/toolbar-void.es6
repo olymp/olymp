@@ -5,20 +5,20 @@ import Toolbar, { Button } from './toolbar';
 import addBlock from './utils/add-block';
 
 export default (props) => {
-  const { state, blockTypes, onChange, show } = props;
+  const { state, schema, onChange, show } = props;
   const node = state.blocks.get(0);
   const display = !state.isBlurred && state.isCollapsed && node.isEmpty;
 
   const categories = {};
   const menuItems = [];
-  const types = Object.keys(blockTypes).map(key => blockTypes[key].slate);
+  const types = Object.keys(schema.nodes).map(key => schema.nodes[key].slate);
   sortBy(types, ['category', 'label']).forEach((action, index) => {
     if (!action.category) {
       return;
     }
     const onMouseDown = (e) => {
       e.preventDefault();
-      onChange(addBlock(state, action, props.blockTypes));
+      onChange(addBlock(state, action, props.schema));
     };
     const item = (
       <Menu.Item key={action.type || action.tooltip || index}>

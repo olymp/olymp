@@ -3,7 +3,7 @@ import { compose, withPropsOnChange } from 'recompose';
 import withLocale from 'olymp-locale/de';
 import { connect } from 'react-redux';
 import { ThemeProvider, ScreenLoader } from 'olymp-fela';
-import { useBlockTypes } from 'olymp-slate';
+import { useSchema } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
 // import { DragDropContext } from 'react-dnd';
@@ -17,7 +17,17 @@ import { withRedux } from './redux';
 
 // import IfAuth from './cms-auth';
 const IfAuth = asyncComponent({
-  resolve: () => System.import('./cms-auth'),
+  resolve: () =>
+    new Promise(resolve =>
+      // Webpack's code splitting API w/naming
+      require.ensure(
+        [],
+        (require) => {
+          resolve(require('./cms-auth'));
+        },
+        'cms',
+      ),
+    ),
 });
 
 const enhance = compose(
@@ -37,7 +47,7 @@ const enhance = compose(
   })),
   useAuth,
   withRedux,
-  useBlockTypes,
+  useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
     theme: {
       logoWhite: '/logo-white.svg',

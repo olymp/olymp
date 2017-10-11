@@ -3,7 +3,7 @@ import { Menu } from 'antd';
 import { get } from 'lodash';
 import Toolbar, { Button } from './toolbar';
 
-export const Action = ({ node, state, onChange, blockTypes }) => (
+export const Action = ({ node, state, onChange, schema }) => (
   { toggle, active, label, component, ...rest },
   i,
 ) => {
@@ -22,7 +22,7 @@ export const Action = ({ node, state, onChange, blockTypes }) => (
   const onClick = (e) => {
     e.preventDefault();
     if (toggle) {
-      toggle({ setData, getData, state, onChange, blockTypes, node });
+      toggle({ setData, getData, state, onChange, schema, node });
     }
   };
 
@@ -50,8 +50,8 @@ export const Action = ({ node, state, onChange, blockTypes }) => (
 };
 
 const getActionsByBlock = (props, node, actions = []) => {
-  const { blockTypes, state } = props;
-  const type = blockTypes[node.type];
+  const { schema, state } = props;
+  const type = schema.nodes[node.type];
   if (type && get(type, 'slate.actions', []).length) {
     actions.push(get(type, 'slate.actions', []).map(Action({ ...props, node })));
   }
@@ -62,11 +62,11 @@ const getActionsByBlock = (props, node, actions = []) => {
   return actions;
 };
 export default (props) => {
-  const { state, blockTypes, show } = props;
+  const { state, schema, show } = props;
   let actions = [];
-  if (state.blocks.size === 1 && blockTypes[state.blocks.get(0).type]) {
+  if (state.blocks.size === 1 && schema.nodes[state.blocks.get(0).type]) {
     actions = getActionsByBlock(props, state.blocks.get(0));
-  } else if (state.inlines.size === 1 && blockTypes[state.inlines.get(0).type]) {
+  } else if (state.inlines.size === 1 && schema.nodes[state.inlines.get(0).type]) {
     actions = getActionsByBlock(props, state.inlines.get(0));
   }
 

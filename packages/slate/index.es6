@@ -1,10 +1,5 @@
-export { Block, Editor, Raw } from 'slate';
-export { default as addBlock } from './utils/add-block';
-export { default as withJsonState } from './with-json-state';
-export { default as withDebounceState } from './with-debounce-state';
-export * from './block-decorators';
-export * from './editor-decorators';
-export * from './decorators';
-export * from './editor';
-// export { default as SlateTreeEdit } from './tree';
-export { default as createBlockList } from './utils/create-list';
+export { default as addBlock } from './add-block';
+export { default as useSchema } from './use-schema';
+export { default as SlateNavigator } from './slate-navigator';
+export { default as SlateReader } from './slate-reader';
+export { default as SlateWriter } from './slate-writer';

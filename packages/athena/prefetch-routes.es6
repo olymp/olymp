@@ -2,7 +2,6 @@ import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
 import Portal from 'olymp-fela/portal';
 import { createComponent } from 'react-fela';
-import { Switch, Match, matchPaths } from 'olymp-router';
 import { connect } from 'react-redux';
 import Page from 'olymp-pages/views/page';
 

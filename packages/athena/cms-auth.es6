@@ -1,23 +1,20 @@
 import React from 'react';
 import { Switch, Match, createUpdateQuery } from 'olymp-router';
-import { AuthModals, AuthUsers, AuthUser } from 'olymp-auth';
+import { AuthModals } from 'olymp-auth';
+import { AuthUsers, AuthUser } from 'olymp-auth/admin';
 import { withUA } from 'olymp-utils';
 import EditableRoute from 'olymp-pages/editable';
 import PageRoute from 'olymp-pages/route';
-import { CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
+import { Route as CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute, withCollections } from 'olymp-collection';
 import { createComponent, getAntStyle, TopLoader, Modal } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
-import { asyncComponent } from 'react-async-component';
+import Analytics from 'olymp-google/analytics';
 import NavigationVertical from './navigation-vertical';
 import { SettingsRoute } from './settings';
 import PrefetchRoutes from './prefetch-routes';
-
-const Analytics = asyncComponent({
-  resolve: () => System.import('olymp-google/analytics'),
-});
 
 const Container = createComponent(
   ({ theme }) => ({

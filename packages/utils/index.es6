@@ -1,8 +1,5 @@
-export * from './toolbelt';
 export { default as memoize } from './memoize';
-export { default as colors } from './colors';
 export { default as purify } from './purify';
-export { default as cloudinaryUrl } from './cloudinary-url';
 export { makeTree } from './tree-utils';
 export { default as slugify } from './slugify';
 export { default as sortBy } from './sort-by';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHelmet } from 'olymp-utils';
-import { Image, SimpleImageEdit } from 'olymp-cloudinary';
+import { Image, EditText } from 'olymp-cloudinary';
 
 export default {
   type: 'GZK.Header.ImageBlock.Image',
@@ -22,7 +22,7 @@ export default {
   actions: [
     {
       component: ({ setData, getData, ...p }) => (
-        <SimpleImageEdit
+        <EditText
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', {})}

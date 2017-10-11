@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import ReactCrop from 'react-image-crop';
+import cloudinaryUrl from '../cloudinary-url';
+
 import 'react-image-crop/dist/ReactCrop.css';
-import { cloudinaryUrl } from './old-image';
 
 const StyledCrop = createComponent(
   ({ theme }) => ({

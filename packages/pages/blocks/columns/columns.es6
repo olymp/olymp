@@ -36,8 +36,8 @@ export default {
     {
       label: <FaPlus />,
       tooltip: 'Spalte hinzufügen',
-      toggle: ({ state, onChange, blockTypes, node }) => {
-        onChange(addBlock(state, Column, blockTypes, node.key, node.size));
+      toggle: ({ state, onChange, schema, node }) => {
+        onChange(addBlock(state, Column, schema, node.key, node.size));
       },
     },
     {

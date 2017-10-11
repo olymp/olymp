@@ -10,9 +10,9 @@ import {
   SuggestEditor,
 } from 'olymp-ui';
 import GeocodeEditor from 'olymp-google/edits/geocode';
-import { StatelessSlateMate, withJsonState, withBlockTypes } from 'olymp-slate';
+import { SlateWriter } from 'olymp-slate';
 import { cn } from 'olymp-utils';
-import { ImageEdit } from 'olymp-cloudinary';
+import { EditImage } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
 
 const states = {
@@ -21,16 +21,16 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-const SlateEditor = withJsonState({ debounce: 800 })(
-  withBlockTypes(({ label, value, onChange, binding }) => (
-    <StatelessSlateMate
-      onChange={onChange}
-      value={value}
-      binding={binding}
-      placeholder={label || 'Hier Text eingeben!'}
-      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-    />
-  )),
+const SlateEditor = ({ onChange, value, children, binding, label }) => (
+  <SlateWriter
+    onChange={onChange}
+    value={value}
+    binding={binding}
+    placeholder={label || 'Hier Text eingeben!'}
+    style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+  >
+    {children}
+  </SlateWriter>
 );
 
 export default ({ className, editorClassName, style, editorStyle, field, label, key, form }) => {
@@ -106,7 +106,7 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     case 'Blocks':
       return <SlateEditor {...editProps} binding={form.getFieldsValue()} label={label} />;
     case 'Image':
-      return <ImageEdit {...editProps} style={{ maxWith: '100%' }} width="100%" />;
+      return <EditImage {...editProps} style={{ maxWith: '100%' }} width="100%" />;
     case 'Boolean':
       return <Checkbox {...editProps}>{label}</Checkbox>;
     case 'Date':

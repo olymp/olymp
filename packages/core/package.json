@@ -39,6 +39,8 @@
     "olymp-fela": "^17.10.0",
     "olymp-router": "^17.10.0",
     "olymp-utils": "^17.10.0",
+    "preact": "^8.2.5",
+    "preact-compat": "^3.17.0",
     "progress-bar-webpack-plugin": "^1.10.0",
     "prop-types": "^15.5.10",
     "raw-loader": "^0.5.1",

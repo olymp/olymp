@@ -173,6 +173,8 @@ module.exports = ({
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {
     config.output.filename = '[name].[contenthash].js';
+    // config.resolve.alias.react = 'preact-compat';
+    // config.resolve.alias['react-dom'] = 'preact-compat';
   } else {
     config.output.filename = '[name].js';
   }
@@ -328,12 +330,12 @@ module.exports = ({
     } else {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     }
-    config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
+    // config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
-        names: ['app'],
+        names: 'common',
         filename: '[name].[chunkhash].js',
-        minChunks: Infinity,
+        minChunks: 2,
       }),
     );
     config.output.filename = '[name].[chunkhash].js';

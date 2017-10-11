@@ -1,24 +1,22 @@
 import React from 'react';
 import { object, func, bool } from 'prop-types';
-import { StatelessSlateMate, withBlockTypes, withJsonState } from 'olymp-slate';
+import { SlateReader } from 'olymp-slate';
 import { withProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 import { renderHelmet } from 'olymp-utils';
 import { get } from 'lodash';
 import { queryPage } from '../gql';
 
-const Page = withJsonState({ debounce: 800 })(
-  withBlockTypes(props => (
-    <ContentLoader isLoading={props.isLoading}>
-      <StatelessSlateMate {...props} showUndo key={props.id + (props.bindingId || '')}>
-        {renderHelmet(
-          { ...get(props, 'binding.blocks', {}), ...get(props, 'binding', {}) },
-          props.pathname,
-        )}
-        {props.children}
-      </StatelessSlateMate>
-    </ContentLoader>
-  )),
+const Page = ({ children, isLoading, pathname, ...props }) => (
+  <ContentLoader isLoading={isLoading}>
+    <SlateReader {...props} key={props.id + (props.bindingId || '')}>
+      {renderHelmet(
+        { ...get(props, 'binding.blocks', {}), ...get(props, 'binding', {}) },
+        pathname,
+      )}
+      {children}
+    </SlateReader>
+  </ContentLoader>
 );
 
 Page.propTypes = {

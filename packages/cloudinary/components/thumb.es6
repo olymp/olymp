@@ -1,8 +1,8 @@
 import React from 'react';
 import { object, func, number, bool } from 'prop-types';
 import { Icon } from 'antd';
-import { createComponent } from 'olymp-fela';
-import Image from './image';
+import { createComponent } from 'react-fela';
+import Image from '../image';
 
 const ImageContainer = createComponent(
   ({ theme, isActive }) => ({

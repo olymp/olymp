@@ -1,6 +1,5 @@
 import React from 'react';
-import { SimpleImageEdit } from 'olymp-cloudinary';
-import Carousel from 'olymp-ui/carousel';
+import { EditText, Carousel } from 'olymp-cloudinary';
 
 const CarouselBlock = ({ getData, className, children, attributes }) => (
   <Carousel
@@ -28,7 +27,7 @@ export default {
   actions: [
     {
       component: ({ setData, getData, ...p }) => (
-        <SimpleImageEdit
+        <EditText
           {...p}
           onChange={value => setData({ value })}
           value={getData('value', [])}

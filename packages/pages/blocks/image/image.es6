@@ -1,5 +1,5 @@
 import React from 'react';
-import { LightboxImage, Image, SimpleImageEdit } from 'olymp-cloudinary';
+import { LightboxImage, Image, EditText } from 'olymp-cloudinary';
 import cn from 'classnames';
 import { FaAlignLeft, FaAlignRight, FaPlus, FaMinus } from 'olymp-icons';
 import { Inline, Block } from 'slate';
@@ -61,7 +61,7 @@ export default {
     {
       tooltip: getData => `Bild ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) => (
-        <SimpleImageEdit
+        <EditText
           onChange={value => setData({ value })}
           value={getData('value', {})}
           multi={false}

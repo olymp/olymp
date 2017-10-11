@@ -2,8 +2,8 @@ import React from 'react';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import { withPropsOnChange } from 'recompose';
-import { withScrollHide } from 'olymp-utils';
-import Portal from './portal';
+import withScrollHide from './components/scroll-hide';
+import Portal from './components/portal';
 
 export const Button = createComponent(
   ({ theme, active }) => ({
