@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { debounce, get } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
+import shortId from 'shortid';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
 import Base64 from './plugins/base64';
@@ -60,8 +61,9 @@ const stateWrapper = WrappedComponent =>
         });
         const count = 355;
         const extract = text.slice(0, count) + (text.length > count ? '...' : '');
+        const id = (value && value.id) || shortId.generate();
         // image, title, chapters
-        return this.props.onChange({ nodes, text, extract, title, image, chapters });
+        return this.props.onChange({ id, nodes, text, extract, title, image, chapters });
       }
     };
     debouncedPropagateChange = debounce(this.propagateChange, 800, {

@@ -10,8 +10,8 @@ const cf = require('cloudflare')({
   key: process.env.CLOUDFLARE_KEY,
 });
 
-cf
-  .purgeCache(process.env.CLOUDFLARE_ZONE)
+cf.zones
+  .purgeCache(process.env.CLOUDFLARE_ZONE, { purge_everything: true })
   .then(() => {
     notifier.notify('Purged cache');
   })
