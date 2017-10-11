@@ -46,7 +46,7 @@ const ok = (props, mutate) => () => {
   });
 };
 
-export default compose(
+export const mutatePage = compose(
   withPushPathname,
   graphql(
     gql`
