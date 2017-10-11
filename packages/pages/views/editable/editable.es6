@@ -7,7 +7,8 @@ import { ContentLoader } from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get } from 'lodash';
-import { queryPage, mutatePage } from '../../gql';
+import { queryPage } from '../../gql/query';
+import { mutatePage } from '../../gql/mutation';
 import PageForm from './sidebar';
 
 const Page = ({ children, isLoading, ...props }) => (

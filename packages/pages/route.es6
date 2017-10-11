@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
-import Actions from 'olymp-ui/actions';
 import { Icon } from 'antd';
 import { Link } from 'olymp-router';
 import { connect } from 'react-redux';
@@ -41,14 +40,14 @@ const PageRoute = enhance((props) => {
   return (
     <Wrapped navigation={publicNavigation}>
       {isAuthenticated && (
-        <Actions position="left">
+        <div>
           <Link
             className="ant-btn ant-btn-circle ant-btn-lg ant-btn-icon-only"
             updateQuery={{ '@page': 'tree' }}
           >
             <Icon type="edit" />
           </Link>
-        </Actions>
+        </div>
       )}
       {item && (
         <Page.WithData

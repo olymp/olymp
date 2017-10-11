@@ -1,6 +1,6 @@
 import React from 'react';
 import { IFrame, ContentLoader } from 'olymp-fela';
-import { renderHelmet } from 'olymp-utils';
+import renderHelmet from 'olymp-utils/helmet';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Error404, EditablePage } from './views';

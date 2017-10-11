@@ -3,9 +3,9 @@ import { object, func, bool } from 'prop-types';
 import { SlateReader } from 'olymp-slate';
 import { withProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
-import { renderHelmet } from 'olymp-utils';
+import renderHelmet from 'olymp-utils/helmet';
 import { get } from 'lodash';
-import { queryPage } from '../gql';
+import { queryPage } from '../gql/query';
 
 const Page = ({ children, isLoading, pathname, ...props }) => (
   <ContentLoader isLoading={isLoading}>

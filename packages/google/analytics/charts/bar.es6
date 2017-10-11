@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Pagination } from 'antd';
 import { createComponent } from 'olymp-fela';
-import { cn } from 'olymp-utils';
+import cn from 'classnames';
 import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import XAxis from 'recharts/lib/cartesian/XAxis';
@@ -16,7 +16,7 @@ const Label = createComponent(
   ({ theme }) => ({
     fill: theme.dark,
   }),
-  ({ className, value, x, y, width, height, cursor, item }) =>
+  ({ className, value, x, y, width, height, cursor, item }) => (
     <text
       x={x + width / 2}
       y={y + height / 2}
@@ -30,8 +30,9 @@ const Label = createComponent(
       <tspan x={x + width / 2} dy="0.355em">
         {item.renderFn(value)}
       </tspan>
-    </text>,
-  p => Object.keys(p)
+    </text>
+  ),
+  p => Object.keys(p),
 );
 
 const Balken = createComponent(
@@ -48,7 +49,7 @@ const Balken = createComponent(
       cursor: clickable && 'pointer',
     };
   },
-  ({ className, x, y, width, height, cursor }) =>
+  ({ className, x, y, width, height, cursor }) => (
     <path
       width={width}
       height={height}
@@ -57,28 +58,19 @@ const Balken = createComponent(
       cursor={cursor}
       className={cn('recharts-rectangle', className)}
       d={`M ${x},${y} h ${width} v ${height} h -${width} Z`}
-    />,
-  p => Object.keys(p)
+    />
+  ),
+  p => Object.keys(p),
 );
 
 export default class BarChart2 extends Component {
   state = { page: 1 };
 
   render() {
-    const {
-      onSelect,
-      metrics,
-      dimensions,
-      selected,
-      fullSize,
-      vertical,
-    } = this.props;
+    const { onSelect, metrics, dimensions, selected, fullSize, vertical } = this.props;
     const { page } = this.state;
     const pageSize = fullSize ? 10 : 5;
-    const items = this.props.items.slice(
-      (page - 1) * pageSize,
-      page * pageSize
-    );
+    const items = this.props.items.slice((page - 1) * pageSize, page * pageSize);
 
     const xData = dimensions[0];
     const xProps = {
@@ -104,35 +96,25 @@ export default class BarChart2 extends Component {
               labelFormatter={val => dimensionsObj[xData].renderFn(val)}
               formatter={(val, label) => {
                 const metricsArr = metrics.map(x => metricsObj[x]);
-                const render = metricsArr.find(metric => metric.label === label)
-                  .renderFn;
+                const render = metricsArr.find(metric => metric.label === label).renderFn;
 
                 return render(val);
               }}
             />
-            {(metrics || [])
-              .map((metric, i) =>
-                <Bar
-                  name={metricsObj[metric].label}
-                  dataKey={metric}
-                  key={metric}
-                  onClick={onSelect && (item => onSelect(item[xData]))}
-                  label={<Label item={metricsObj[metric]} />}
-                  shape={
-                    <Balken
-                      clickable={!!onSelect}
-                      dataKey={xData}
-                      selected={selected}
-                      count={i}
-                    />
-                  }
-                />
-              )}
+            {(metrics || []).map((metric, i) => (
+              <Bar
+                name={metricsObj[metric].label}
+                dataKey={metric}
+                key={metric}
+                onClick={onSelect && (item => onSelect(item[xData]))}
+                label={<Label item={metricsObj[metric]} />}
+                shape={
+                  <Balken clickable={!!onSelect} dataKey={xData} selected={selected} count={i} />
+                }
+              />
+            ))}
             <XAxis {...(vertical ? yProps : xProps)} />
-            <YAxis
-              {...(vertical ? xProps : yProps)}
-              orientation={vertical && 'right'}
-            />
+            <YAxis {...(vertical ? xProps : yProps)} orientation={vertical && 'right'} />
           </BarChart>
         </ResponsiveContainer>
         <Pagination

@@ -1,7 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { renderHelmet } from 'olymp-utils';
+import renderHelmet from 'olymp-utils/helmet';
 import { PrefetchLink } from 'olymp-athena';
 import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
@@ -70,7 +70,7 @@ const WhiteLink = createComponent(
 const getSubheader = (item) => {
   const person = item.person && `von ${item.person.name}`;
   const org = item.org &&
-  item.org.slug && <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>;
+    item.org.slug && <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>;
 
   return (
     person &&

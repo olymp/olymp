@@ -4,7 +4,7 @@ import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Select, Icon } from 'antd';
 import { format } from 'date-fns';
 import { ContentLoader } from 'olymp-fela';
-import { Crop } from '../components';
+import Crop from '../components/crop';
 import LightboxImage from '../lightbox-image';
 
 const FormItemLayout = {

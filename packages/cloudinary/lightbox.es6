@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import LightBox from 'olymp-fela/lightbox';
 import { createUpdateQuery } from 'olymp-router';
+import { asyncComponent } from 'react-async-component';
+
+const LightBox = asyncComponent({
+  resolve: () =>
+    new Promise(resolve =>
+      // Webpack's code splitting API w/naming
+      require.ensure(
+        [],
+        (require) => {
+          resolve(require('olymp-fela/lightbox'));
+        },
+        'lightbox',
+      ),
+    ),
+});
 
 @connect(
   ({ location }) => ({

@@ -15,3 +15,4 @@ export { default as asEuro } from './as-euro';
 export { default as lorem } from './lorem';
 export * from './decorators';
 export * from './extern';
+export { default as withUA, UAProvider, UAParser } from './user-agent';

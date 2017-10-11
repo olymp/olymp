@@ -11,7 +11,7 @@ import {
 } from 'olymp-ui';
 import GeocodeEditor from 'olymp-google/edits/geocode';
 import { SlateWriter } from 'olymp-slate';
-import { cn } from 'olymp-utils';
+import cn from 'classnames';
 import { EditImage } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
 

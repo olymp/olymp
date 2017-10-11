@@ -3,7 +3,6 @@ import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { withPushPathname } from 'olymp-router';
 import { onError, onSuccess } from 'olymp-ui';
-import { State } from 'slate';
 import { omit } from 'lodash';
 
 const ok = (props, mutate) => () => {
@@ -11,9 +10,6 @@ const ok = (props, mutate) => () => {
   form.validateFields((err, values) => {
     if (err) {
       return onError(err);
-    }
-    if (values.blocks && State.isState(values.blocks)) {
-      values.blocks = values.blocks.toJSON().document;
     }
     if (values.blocks) {
       values.blocks = omit(values.blocks, '__typename');

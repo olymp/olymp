@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Collapse } from 'antd';
 import Form from './form';
-import { withCollection } from '../decorators';
+import withCollection from '../decorators/with-collection';
 
 @withCollection
 export default class SubForm extends Component {

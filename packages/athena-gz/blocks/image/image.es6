@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHelmet } from 'olymp-utils';
+import renderHelmet from 'olymp-utils/helmet';
 import { Image, EditText } from 'olymp-cloudinary';
 
 export default {

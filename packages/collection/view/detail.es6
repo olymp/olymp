@@ -2,8 +2,8 @@ import React from 'react';
 import { withPropsOnChange, compose } from 'recompose';
 import { Button, Form } from 'antd';
 import { Prompt } from 'olymp-router';
-import { ContentLoader, createComponent } from 'olymp-fela';
-import { withItem } from '../decorators';
+import { ContentLoader } from 'olymp-fela';
+import withItem from '../decorators/with-item';
 import { DetailForm } from '../components';
 
 const excludedFields = [

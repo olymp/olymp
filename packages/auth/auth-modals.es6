@@ -9,7 +9,7 @@ export default asyncComponent({
         (require) => {
           resolve(require('./views'));
         },
-        'cms',
+        'auth',
       ),
     ),
 });

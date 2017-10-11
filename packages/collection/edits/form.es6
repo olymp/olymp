@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withCollection } from '../decorators';
-import { getEditor, getInitialValue, getValidationRules } from '../components/form/utils';
 import { Button, Form } from 'antd';
 import { debounce } from 'lodash';
+import { getEditor, getInitialValue, getValidationRules } from '../components/form/utils';
+import withCollection from '../decorators/with-collection';
 
 const fieldNames = [
   'createdBy',

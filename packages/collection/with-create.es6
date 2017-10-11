@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter, Link } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
 import { createComponent } from 'olymp-fela';
-import { Button } from 'antd';
 
 // todo: withAuth auslagern!
 
@@ -26,7 +24,7 @@ export default type => (WrappedComponent) => {
           }}
           className={className}
         >
-          <Button type="primary" shape="circle" icon="plus" />
+          <div type="primary" shape="circle" icon="plus" />
         </Link>
       ),
       p => Object.keys(p),

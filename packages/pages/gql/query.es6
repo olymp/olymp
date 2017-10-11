@@ -32,7 +32,7 @@ const queryOne = gql`
     }
   }
 `;
-export default graphql(queryOne, {
+export const queryPage = graphql(queryOne, {
   options: ({ id, pageId, pathname }) => ({
     variables: { id: pageId || id },
     fetchPolicy: pathname === '/__new' ? 'cache-only' : undefined,

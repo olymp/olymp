@@ -333,9 +333,9 @@ module.exports = ({
     // config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
-        names: 'common',
+        name: 'app',
         filename: '[name].[chunkhash].js',
-        minChunks: 2,
+        // minChunks: 2,
       }),
     );
     config.output.filename = '[name].[chunkhash].js';

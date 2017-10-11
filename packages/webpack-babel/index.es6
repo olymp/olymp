@@ -99,6 +99,16 @@ module.exports = (config, options) => {
           kebabCase: true,
           preventFullImport: true,
         },
+        'olymp-pages': {
+          transform: 'olymp-pages/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
+        'olymp-collection': {
+          transform: 'olymp-collection/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
       },
     ]);
     babelOptions.plugins.push('transform-react-constant-elements');

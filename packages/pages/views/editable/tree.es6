@@ -4,7 +4,7 @@ import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Icon, Tooltip, Tree } from 'antd';
 import { lowerCase } from 'lodash';
-import { reorderPage, movePage } from '../../gql';
+import { reorderPage, movePage } from '../../gql/mutation';
 
 const Button = createComponent(
   ({ theme }) => ({

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { unflatten } from 'olymp-utils';
+import unflatten from 'olymp-utils/unflatten';
 import { get, upperFirst, lowerFirst, orderBy, sortBy } from 'lodash';
-import { queryPages } from './gql';
+import { queryPages } from './gql/query';
 
 // interpolate a string value using props
 const interpolate = (value, propsOrFunc) => {

@@ -1,17 +1,13 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
-import withLocale from 'olymp-locale/de';
 import { connect } from 'react-redux';
 import { ThemeProvider, ScreenLoader } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
-// import { DragDropContext } from 'react-dnd';
 import { asyncComponent } from 'react-async-component';
-// import HTML5Backend from 'react-dnd-html5-backend';
 import { withNavigation } from 'olymp-pages/with-data';
 import { get } from 'lodash';
-import * as LANG from './lang/de';
 import NoAuth from './cms-noauth';
 import { withRedux } from './redux';
 
@@ -55,7 +51,6 @@ const enhance = compose(
       ...theme,
     },
   })),
-  withLocale(LANG),
 );
 
 const Auth = connect(({ auth }) => ({
