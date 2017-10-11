@@ -16,13 +16,14 @@ const component = connect(({ app, location }) => ({
     location.query.forgot !== undefined ||
     location.query.reset !== undefined ||
     location.query.login !== undefined,
-}))(({ _isLoading, flatNavigation, showLightbox, showAuth, ...rest }) => [
-  <TopLoader loading={_isLoading} key={1} />,
-  showLightbox && <Lightbox key={2} />,
-  showAuth && <AuthModals key={3} />,
-  <PageRoute flatNavigation={flatNavigation} {...rest} key={4} />,
-  <PrefetchRoutes flatNavigation={flatNavigation} key={5} />,
-]);
+}))(({ _isLoading, flatNavigation, showLightbox, showAuth, ...rest }) => (
+  <div>
+    <TopLoader loading={_isLoading} key={1} />, showLightbox && <Lightbox key={2} />, showAuth &&{' '}
+    <AuthModals key={3} />,
+    <PageRoute flatNavigation={flatNavigation} {...rest} key={4} />,
+    <PrefetchRoutes flatNavigation={flatNavigation} key={5} />,
+  </div>
+));
 
 component.displayName = 'CmsNoAuth';
 export default component;
