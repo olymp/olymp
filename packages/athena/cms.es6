@@ -6,7 +6,7 @@ import { useSchema } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
 import { asyncComponent } from 'react-async-component';
-import { withNavigation } from 'olymp-pages/with-data';
+import getNavigation from 'olymp-pages/get-navigation';
 import { get } from 'lodash';
 import NoAuth from './cms-noauth';
 import Logo from './logo';
@@ -61,7 +61,8 @@ const Auth = connect(({ auth }) => ({
 );
 Auth.displayName = 'CmsAuthSwitch';
 
-const Load = withNavigation(
+console.log(getNavigation);
+const Load = getNavigation(
   connect(({ auth }, { isNavigationLoading }) => ({
     isLoading: isNavigationLoading,
   }))(({ isLoading, ...rest }) => (isLoading ? <ScreenLoader /> : <Auth {...rest} />)),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaLink, FaUnlink } from 'olymp-icons';
+import { FaLink } from 'olymp-icons';
 import { get } from 'lodash';
 
 const Binding = ({ node, attributes, children, className, editor }) => {

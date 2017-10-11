@@ -14,10 +14,11 @@ const plugins = [
     },
   },
 ];
-const Reader = ({ children, schema, className, style, value }) => (
+const Reader = ({ children, schema, className, style, value, ...rest }) => (
   <div className={className} style={{ position: 'relative', ...style }}>
     {children}
     <Editor
+      {...rest}
       state={value || Plain.deserialize('')}
       spellcheck={false}
       plugins={plugins}

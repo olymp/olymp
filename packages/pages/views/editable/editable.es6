@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Prompt, withQueryActions } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
-import { withPropsOnChange, withProps } from 'recompose';
+import { withPropsOnChange, withProps, withState } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 import { queryPage } from '../../gql/query';
 import { mutatePage } from '../../gql/mutation';
 import PageForm from './sidebar';
@@ -19,8 +19,12 @@ const Page = ({ children, isLoading, ...props }) => (
   </ContentLoader>
 );
 
+const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 @queryPage
-@Form.create()
+@withState('signal', 'setSignal', 0)
+@Form.create({
+  onValuesChange: debounce(setSignal, 800, { trailing: true, leading: false }),
+})
 @mutatePage
 @withQueryActions
 @withPropsOnChange(['item', 'flatNavigation'], ({ flatNavigation, form, ...rest }) => {
@@ -54,9 +58,8 @@ export default class PageSidebar extends Component {
     const {
       form,
       save,
-      /* binding,
       bindingId,
-    bindingObj, */
+      bindingObj,
       navigation,
       flatNavigation,
       render,
@@ -68,6 +71,7 @@ export default class PageSidebar extends Component {
       tab,
       value,
       onChange,
+      signal,
     } = this.props;
 
     const P = (
@@ -76,11 +80,10 @@ export default class PageSidebar extends Component {
         onChange={onChange}
         style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
         readOnly={false}
-        binding={item}
-        /* item={item}
-        binding={binding}
+        binding={form.isFieldsTouched() ? form.getFieldsValue() : item}
         bindingId={bindingId}
-        bindingObj={bindingObj} */
+        bindingObj={bindingObj}
+        signal={signal}
       />
     );
 

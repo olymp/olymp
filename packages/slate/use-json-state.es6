@@ -10,11 +10,17 @@ const stateWrapper = WrappedComponent =>
   class Slate extends Component {
     constructor(props) {
       super(props);
+      this.signal = props.signal;
       this.base64 = props.base64;
       this.state = { value: props.value };
     }
     componentWillReceiveProps(newProps) {
-      if (this.state.value !== newProps.value) {
+      if (
+        this.state.value !== newProps.value &&
+        this.base64 !== newProps.base64 &&
+        this.signal !== newProps.signal
+      ) {
+        this.signal = newProps.signal;
         this.base64 = newProps.base64;
         this.state.value = newProps.value;
       }
@@ -80,26 +86,19 @@ const stateWrapper = WrappedComponent =>
     };
     render() {
       const { value } = this.state;
-      return (
-        <WrappedComponent
-          {...this.props}
-          base64={this.props.base64}
-          value={value}
-          onChange={this.onChange}
-        />
-      );
+      return <WrappedComponent {...this.props} value={value} onChange={this.onChange} />;
     }
   };
 
 export default compose(
-  withPropsOnChange(['value', 'id', 'binding'], ({ value, binding }) => {
+  withPropsOnChange(['value', 'id', 'signal'], ({ value, signal }) => {
     const state = value
       ? State.fromJSON({
         document: {
           nodes: value.nodes,
           kind: 'document',
+          data: { signal },
         },
-        data: binding,
         kind: 'state',
       })
       : Plain.deserialize('');

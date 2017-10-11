@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+const emptyArray = [];
 const queryOne = gql`
   query page($id: String) {
     item: page(id: $id) {
@@ -76,7 +77,7 @@ export const queryPages = graphql(
   {
     props: ({ ownProps, data }) => ({
       ...ownProps,
-      pageList: data.pageList || [],
+      pageList: data.pageList || emptyArray,
       data,
     }),
   },

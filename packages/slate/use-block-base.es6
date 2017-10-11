@@ -304,7 +304,6 @@ export default options => (Block) => {
             return data;
           }, node.data),
         );
-        console.log(node);
       }
       this.n = node;
 

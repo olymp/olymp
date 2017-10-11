@@ -99,16 +99,12 @@ class Writer extends Component {
   onChange = change => this.props.onChange(change.state);
 
   render = () => {
-    const { children, readOnly, className, spellcheck, style, schema } = this.props;
+    const { children, readOnly, className, spellcheck, schema, ...rest } = this.props;
     const { focus } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
     return (
-      <div
-        className={className}
-        onDragEnter={() => this.setState({ focus: true })}
-        style={{ position: 'relative', ...style }}
-      >
+      <div className={className} onDragEnter={() => this.setState({ focus: true })}>
         {children}
         {readOnly !== true && (
           <ToolbarText
@@ -122,6 +118,7 @@ class Writer extends Component {
           />
         )}
         <Editor
+          {...rest}
           state={value}
           spellcheck={spellcheck || false}
           readOnly={!!readOnly}
