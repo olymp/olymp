@@ -1,6 +1,4 @@
-import { memoize } from 'olymp-utils';
-
-export default memoize((str) => {
+export default (str) => {
   const ret = {};
   if (typeof str !== 'string') {
     return ret;
@@ -24,4 +22,4 @@ export default memoize((str) => {
     }
   });
   return ret;
-});
+};

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import shallowEqual from 'shallowequal';
+import { shallowEqual } from 'recompose';
 import { get } from 'lodash';
 
 export default getThemeFromProps => (WrappedComponent) => {

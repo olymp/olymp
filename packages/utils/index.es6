@@ -1,5 +1,3 @@
-export { default as memoize } from './memoize';
-export { default as purify } from './purify';
 export { makeTree } from './tree-utils';
 export { default as slugify } from './slugify';
 export { default as sortBy } from './sort-by';
