@@ -1,0 +1,14 @@
+{
+  "version": "17.11.5",
+  "name": "olymp-cloudflare",
+  "description": "",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "bin": "./bin/olymp-cloudflare.js",
+  "scripts": {
+    "up": "npm-check -u"
+  },
+  "dependencies": {
+    "cloudflare": "^2.1.1"
+  }
+}
