@@ -22,21 +22,18 @@ module.exports = (config) => {
       minifyJS: true,
       minifyCSS: true,
       minifyURLs: true,
-    },*/
+    }, */
     }),
   );
   config.plugins.push(
     new OfflinePlugin({
-      responseStrategy: 'network-first',
+      responseStrategy: 'cache-first',
       // externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
       autoUpdate: 1000 * 60 * 5,
       caches: 'all',
       ServiceWorker: {
         events: true,
         navigateFallbackURL: '/offline.html',
-      },
-      __tests: {
-        ignoreRuntime: true,
       },
       AppCache: false,
     }),
