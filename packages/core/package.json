@@ -41,7 +41,7 @@
     "prop-types": "^15.5.10",
     "raw-loader": "^0.5.1",
     "re-reselect": "^1.0.1",
-    "react-apollo": "2.0.0-beta.0",
+    "react-apollo": "^2.0.0-beta.0",
     "react-async-bootstrapper": "^1.1.2",
     "react-async-component": "^1.0.2",
     "react-helmet": "^5.2.0",
