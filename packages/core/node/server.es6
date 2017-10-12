@@ -104,9 +104,10 @@ if (isProd) {
 app.use(compression());
 app.use(useragent.express());
 
-app.use(express.static(path.resolve(process.cwd(), 'public')));
-app.use(express.static(path.resolve(process.cwd(), '.dist', 'web')));
-app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public')));
+const maxAge = 1000 * 60 * 1 * 30 * 3; // 1 month
+app.use(express.static(path.resolve(process.cwd(), 'public'), { maxAge }));
+app.use(express.static(path.resolve(process.cwd(), '.dist', 'web'), { maxAge }));
+app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public'), { maxAge }));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
