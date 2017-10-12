@@ -1,11 +1,10 @@
 {
-  "version": "17.11.9",
+  "version": "17.12.12",
   "name": "olymp-utils",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
-  },
-  "devDependencies": {}
+  }
 }
