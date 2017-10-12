@@ -1,7 +1,5 @@
-// import Cache from 'stale-lru-cache';
 import { get } from 'lodash';
 
-// const cache = new Cache({ maxSize: 100, maxAge: 20 });
 export default auth => (req, res, next) => {
   const authorization =
     req.headers.authorization || req.params.authorization || get(req, 'session.token');
@@ -15,7 +13,6 @@ export default auth => (req, res, next) => {
         req.session.token = user.token;
       }
       req.user = user;
-      // cache.set(authorization, req.user);
       next();
     })
     .catch((e) => {

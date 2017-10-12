@@ -16,8 +16,7 @@ let attributes = `
 export const setAttributes = newAttributes => (attributes = newAttributes);
 export const getAttributes = () => attributes;
 
-const defaultState = { verifying: true };
-export const authReducer = (state = defaultState, action) => {
+export const authReducer = def => (state = def, action) => {
   if (!action || !action.type) {
     return state;
   }
@@ -76,23 +75,17 @@ export const authMiddleware = ({ dispatch, getState }) => nextDispatch => (actio
   return nextDispatch(action);
 };
 
-export const createVerify = dispatch => () => {
-  if (typeof window !== 'undefined' && !window.INITIAL_DATA) {
-    return dispatch({
-      type: VERIFY,
-      query: `
-        query verify {
-          user: verify {
-            ${attributes}
-          }
-        }
-      `,
-    });
-  }
-  return dispatch({
-    type: SKIP,
+export const createVerify = dispatch => () =>
+  dispatch({
+    type: VERIFY,
+    query: `
+    query verify {
+      user: verify {
+        ${attributes}
+      }
+    }
+  `,
   });
-};
 export const createSave = dispatch => payload =>
   dispatch({
     type: 'AUTH_SAVE',

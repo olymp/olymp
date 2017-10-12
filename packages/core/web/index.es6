@@ -168,12 +168,9 @@ store = createDynamicStore(
   {
     app: appReducer,
     location: routerReducer(history),
-    auth: authReducer,
+    auth: authReducer({ verifying: true }),
   },
-  {
-    auth: get(window.INITIAL_DATA, 'auth', undefined),
-    location: get(window.INITIAL_DATA, 'location', undefined),
-  },
+  {},
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
     applyMiddleware(routerMiddleware(history)),

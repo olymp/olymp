@@ -7,11 +7,16 @@ export const auth = (options = {}) => (WrappedComponent) => {
   if (attributes) {
     setAttributes(attributes);
   }
-  @connect(null, dispatch => ({ verify: createVerify(dispatch) }))
+  @connect(
+    ({ auth }) => ({ verifying: auth.verifying }),
+    dispatch => ({ verify: createVerify(dispatch) }),
+  )
   class WithAuth extends Component {
     constructor(props) {
       super(props);
-      props.verify();
+      if (props.verifying) {
+        props.verify();
+      }
     }
     render() {
       return <WrappedComponent {...this.props} />;

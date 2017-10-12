@@ -10,9 +10,7 @@ import { URL } from 'url';
 // Express
 import express from 'express';
 import compression from 'compression';
-import session from 'express-session';
 import bodyparser from 'body-parser';
-import createRedisStore from 'connect-redis';
 import useragent from 'express-useragent';
 
 // React
@@ -58,10 +56,7 @@ global.fetch = fetch;
 const version = +fs.statSync(__filename).mtime;
 console.log('VERSION', version);
 
-const RedisStore = createRedisStore(session);
-
 const isProd = process.env.NODE_ENV === 'production';
-const isDeployed = `${process.env.YARN_PRODUCTION}` === 'true';
 
 // Client assets
 const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
@@ -70,9 +65,8 @@ const clientAssets = fs.existsSync(clientAssetsPath)
   : {}; // eslint-disable-line import/no-dynamic-require
 const app = express();
 
-const domain = process.env.URL ? process.env.URL.split('/')[2] : undefined;
-
 app.use(helmet());
+
 if (
   process.env.NODE_ENV === 'production' &&
   process.env.URL &&
@@ -80,6 +74,7 @@ if (
 ) {
   app.use(sslRedirect());
 }
+
 if (isProd) {
   const urls = [];
   if (process.env.URL) {
@@ -124,30 +119,6 @@ app.use((req, res, next) => {
   next();
 });
 
-const trust = isDeployed ? 2 : null;
-const secure = isDeployed;
-
-if (isDeployed) {
-  app.set('trust proxy', trust);
-}
-app.use(
-  session({
-    store: process.env.REDIS_URL
-      ? new RedisStore({ url: process.env.REDIS_URL, logErrors: true })
-      : undefined,
-    resave: false,
-    saveUninitialized: true,
-    httpOnly: true,
-    proxy: isDeployed,
-    domain,
-    secret: process.env.SESSION_SECRET || 'keyboard cat',
-    cookie: {
-      secure,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    },
-  }),
-);
-
 try {
   const server = require('@root/server');
   if (server.default) {
@@ -161,15 +132,6 @@ try {
 
 // Setup server side routing.
 app.get('*', (req, res) => {
-  if (!req.user && req.responseCache) {
-    const response = req.responseCache.get(req);
-    if (response) {
-      console.log('Serving from cache');
-      res.status(response.status || 200);
-      res.send(response.html);
-      return;
-    }
-  }
   const isAmp = req.isAmp;
   if (process.env.SSR === false) {
     const html = (req.isAmp ? amp : template)({
@@ -223,9 +185,9 @@ app.get('*', (req, res) => {
     {
       app: appReducer,
       location: routerReducer(history),
-      auth: authReducer,
+      // auth: authReducer({ user: req.user }),
+      auth: authReducer({}),
     },
-    { auth: { user: req.user } },
     compose(
       applyMiddleware(dynamicMiddleware),
       applyMiddleware(routerMiddleware(history)),
@@ -256,7 +218,6 @@ app.get('*', (req, res) => {
 
   Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
     .then(() => {
-      console.log(1);
       const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
       const felaMarkup = renderToMarkup(renderer);
       const asyncState = asyncContext.getState();
@@ -265,9 +226,6 @@ app.get('*', (req, res) => {
         ? []
         : isProd ? [`${clientAssets.app.js}`] : [`${process.env.DEV_URL}/app.js`];
       const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
-      const cssHash = [];
-
-      console.log(2);
       // Generate the html res.
       const state = store.getState();
       const html = (req.isAmp ? amp : template)({
@@ -276,7 +234,6 @@ app.get('*', (req, res) => {
         fela: felaMarkup,
         scripts,
         styles,
-        cssHash,
         asyncState,
         initialState: {
           apollo: cache.data,
@@ -286,25 +243,13 @@ app.get('*', (req, res) => {
         },
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
-
-      console.log(3);
       if (state.location.url !== req.originalUrl) {
         res.status(301).setHeader('Location', state.location.url);
         res.end();
         return;
       }
-
-      console.log(4);
       res.status(state.location.isMiss ? 404 : 200);
       res.send(html);
-      if (req.responseCache && !req.user) {
-        console.log('Caching site');
-        req.responseCache.set(req, {
-          html,
-          status: state.location.isMiss ? 404 : 200,
-        });
-      }
-      // responseRenderer.toStream().pipe(response);
     })
     .catch((err) => {
       console.error(err);
