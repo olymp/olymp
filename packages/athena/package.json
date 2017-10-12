@@ -1,5 +1,5 @@
 {
-  "version": "17.12.7",
+  "version": "17.12.8",
   "name": "olymp-athena",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,7 +13,7 @@
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "monk": "^6.0.5",
-    "olymp": "^17.12.7",
+    "olymp": "^17.12.8",
     "olymp-auth": "^17.12.7",
     "olymp-cloudinary": "^17.12.1",
     "olymp-collection": "^17.12.0",
