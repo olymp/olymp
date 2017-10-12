@@ -61,11 +61,20 @@ const Auth = connect(({ auth }) => ({
 );
 Auth.displayName = 'CmsAuthSwitch';
 
-console.log(getNavigation);
 const Load = getNavigation(
-  connect(({ auth }, { isNavigationLoading }) => ({
-    isLoading: isNavigationLoading,
-  }))(({ isLoading, ...rest }) => (isLoading ? <ScreenLoader /> : <Auth {...rest} />)),
+  connect(({ auth, location }, { isNavigationLoading }) => ({
+    isLoading:
+      isNavigationLoading ||
+      (auth.verifying &&
+        typeof window !== 'undefined' &&
+        !!Object.keys(location.query).find(key => key.indexOf('@') === 0)) ||
+      (typeof window === 'undefined' &&
+        !!Object.keys(location.query).find(key => key.indexOf('@') === 0)) ||
+      false,
+  }))(({ isLoading, ...rest }) => [
+    <ScreenLoader key={0} show={isLoading} />,
+    <Auth key={1} {...rest} />,
+  ]),
 );
 Load.displayName = 'CmsLoadSwitch';
 

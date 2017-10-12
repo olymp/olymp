@@ -16,11 +16,9 @@ const Modal = getContext({
 })(
   ({ className, theme, show = true }) =>
     (show ? (
-      <Portal>
-        <div className={className}>
-          {theme.get().logoWhite && <div className="logo">{getLogo(theme.get().logoWhite)}</div>}
-        </div>
-      </Portal>
+      <div className={className}>
+        {theme.get().logoWhite && <div className="logo">{getLogo(theme.get().logoWhite)}</div>}
+      </div>
     ) : null),
 );
 

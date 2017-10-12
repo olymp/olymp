@@ -2,7 +2,7 @@ import 'babel-polyfill';
 // React
 import React from 'react';
 import { render, hydrate } from 'react-dom';
-import asyncBootstrapper from 'react-async-bootstrapper';
+// import asyncBootstrapper from 'react-async-bootstrapper';
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -144,9 +144,9 @@ function renderApp(App) {
   const method = window.INITIAL_DATA ? hydrate : render;
   const app = <App {...props} />;
   if (asyncState) {
-    return asyncBootstrapper(app).then(() => {
-      method(app, container);
-    });
+    // / return asyncBootstrapper(app).then(() => {
+    return method(app, container);
+    // });
   }
   return method(app, container);
 }
@@ -168,7 +168,7 @@ store = createDynamicStore(
   {
     app: appReducer,
     location: routerReducer(history),
-    auth: authReducer({ verifying: true }),
+    auth: authReducer({ verifying: !!localStorage.getItem('token') }),
   },
   {},
   composeWithDevTools(

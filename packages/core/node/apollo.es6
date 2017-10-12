@@ -5,12 +5,12 @@ import { pick } from 'lodash';
 const assign = require('object-assign');
 
 export function walkTree(element, context, visitor) {
-  const Component = element.type;
+  const Component = element && element.type;
   const ctx =
     Component && Component.contextTypes
       ? pick(context, Object.keys(Component.contextTypes))
       : context;
-  if (typeof Component === 'function') {
+  if (Component && typeof Component === 'function') {
     const props = assign({}, Component.defaultProps, element.props);
     let childContext = context;
     let child = void 0;
@@ -50,7 +50,7 @@ export function walkTree(element, context, visitor) {
     if (visitor(element, null, context) === false) {
       return;
     }
-    if (element.props && element.props.children) {
+    if (element && element.props && element.props.children) {
       Children.forEach(element.props.children, (child) => {
         if (child) {
           walkTree(child, context, visitor);

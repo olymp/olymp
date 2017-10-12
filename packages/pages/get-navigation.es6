@@ -23,12 +23,13 @@ const interpolate = (value, propsOrFunc) => {
 export default (Wrapped) => {
   const before = compose(
     queryPages,
-    withPropsOnChange(['pageList'], ({ pageList }) => {
+    withPropsOnChange(['pageList'], ({ pageList, data }) => {
       const deco = pageList.filter(item => item.binding);
       const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
       return {
         navKey: key,
         pageList,
+        isNavigationLoading: data.loading,
       };
     }),
     withPropsOnChange(['navKey'], ({ pageList }) => ({
@@ -67,8 +68,7 @@ export default (Wrapped) => {
                   ...ownProps.navBindingObj,
                   [value.id]: data,
                 },
-                isNavigationLoading:
-                  ownProps.data.loading || ownProps.isNavigationLoading || data.loading,
+                isNavigationLoading: ownProps.isNavigationLoading || data.loading,
               }),
             },
           )(component);
