@@ -8,7 +8,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "@google/maps": "^0.4.4",
+    "@google/maps": "^0.4.5",
     "bluebird": "^3.5.1",
     "google-map-react": "^0.24.0",
     "googleapis": "^22.1.0",

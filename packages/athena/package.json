@@ -30,7 +30,6 @@
     "olymp-utils": "^17.11.9",
     "olymp-webpack-babel": "^17.12.0",
     "olymp-webpack-less": "^17.9.1",
-    "react-async-component": "^1.0.1",
     "react-gravatar": "^2.6.3"
   }
 }
