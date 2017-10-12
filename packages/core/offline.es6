@@ -6,12 +6,11 @@ const OfflinePlugin = require(resolve(process.cwd(), 'node_modules', 'offline-pl
 const path = require('path');
 
 module.exports = (config) => {
-  config.plugins.push(
-    new HtmlWebpackPlugin({
-      filename: 'offline.html',
-      template: path.resolve(__dirname, 'templates', 'serverless.js'),
-      inject: false,
-      /* minify: {
+  config.plugins.push(new HtmlWebpackPlugin({
+    filename: 'offline.html',
+    template: path.resolve(__dirname, 'templates', 'serverless.js'),
+    inject: false,
+    /* minify: {
       removeComments: true,
       collapseWhitespace: true,
       removeRedundantAttributes: true,
@@ -23,20 +22,18 @@ module.exports = (config) => {
       minifyCSS: true,
       minifyURLs: true,
     }, */
-    }),
-  );
-  config.plugins.push(
-    new OfflinePlugin({
-      responseStrategy: 'cache-first',
-      // externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
-      autoUpdate: 1000 * 60 * 5,
-      caches: 'all',
-      ServiceWorker: {
-        events: true,
-        navigateFallbackURL: '/offline.html',
-      },
-      AppCache: false,
-    }),
-  );
+  }),);
+  config.plugins.push(new OfflinePlugin({
+    responseStrategy: 'network-first',
+    // externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
+    autoUpdate: 1000 * 60 * 1,
+    caches: 'all',
+    updateStrategy: 'all',
+    ServiceWorker: {
+      events: true,
+      navigateFallbackURL: '/offline.html',
+    },
+    AppCache: false,
+  }),);
   return config;
 };
