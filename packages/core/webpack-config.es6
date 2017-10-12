@@ -90,7 +90,7 @@ module.exports = ({
         debug: isDev,
       }),
       new webpack.DefinePlugin({
-        'process.env.BUILD_ON': `${new Date()}`,
+        'process.env.BUILD_ON': `"${new Date()}"`,
         'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
           ? `"${process.env.GOOGLE_MAPS_KEY}"`
           : false,
@@ -154,16 +154,16 @@ module.exports = ({
   }
   if (!isServer) {
     config.plugins.push(new webpack.DefinePlugin({
-        'process.env.AMP': !!process.env.AMP,
-        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? `"${process.env.GRAPHQL_URL}"` : false,
-        'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
-          ? `"${process.env.CRASHREPORT_URL}"`
-          : false,
-        'process.env.URL': process.env.URL ? `"${process.env.URL}"` : false,
-        'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-          ? `"${process.env.FILESTACK_KEY}"`
-          : false,
-      }),);
+      'process.env.AMP': !!process.env.AMP,
+      'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? `"${process.env.GRAPHQL_URL}"` : false,
+      'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
+        ? `"${process.env.CRASHREPORT_URL}"`
+        : false,
+      'process.env.URL': process.env.URL ? `"${process.env.URL}"` : false,
+      'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
+        ? `"${process.env.FILESTACK_KEY}"`
+        : false,
+    }),);
   }
 
   // inline-source-map for web-dev
@@ -226,32 +226,32 @@ module.exports = ({
     if (isDev) {
       const ElectronPlugin = require('electron-webpack-plugin');
       config.plugins.push(new ElectronPlugin({
-          test: /^.\/electron/,
-          path: path.resolve(appRoot, '.dev', 'electron'),
-        }),);
+        test: /^.\/electron/,
+        path: path.resolve(appRoot, '.dev', 'electron'),
+      }),);
     }
   }
   if (isNode && !isElectron) {
     config.plugins.push(new webpack.BannerPlugin({
-        banner: 'require("source-map-support").install();',
-        raw: true,
-        entryOnly: false,
-      }),);
+      banner: 'require("source-map-support").install();',
+      raw: true,
+      entryOnly: false,
+    }),);
     if (isDev && isServer) {
       console.log('INSPECT', devPort + 1);
       config.plugins.push(new StartServerPlugin({
-          name: 'app.js',
-          nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
-        }),);
+        name: 'app.js',
+        nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
+      }),);
     }
   } else if (!isNode) {
     if (isElectronRenderer) {
       config.plugins.push(new HtmlWebpackPlugin({
-          alwaysWriteToDisk: true,
-          filename: 'index.html',
-          template: path.resolve(__dirname, 'templates', 'electron.js'),
-          inject: false,
-          /* minify: {
+        alwaysWriteToDisk: true,
+        filename: 'index.html',
+        template: path.resolve(__dirname, 'templates', 'electron.js'),
+        inject: false,
+        /* minify: {
           removeComments: true,
           collapseWhitespace: true,
           removeRedundantAttributes: true,
@@ -263,15 +263,15 @@ module.exports = ({
           minifyCSS: true,
           minifyURLs: true,
         }, */
-        }),);
+      }),);
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
       if (isServerless) {
         config.plugins.push(new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: path.resolve(__dirname, 'templates', 'serverless.js'),
-            inject: false,
-            /* minify: {
+          filename: 'index.html',
+          template: path.resolve(__dirname, 'templates', 'serverless.js'),
+          inject: false,
+          /* minify: {
             removeComments: true,
             collapseWhitespace: true,
             removeRedundantAttributes: true,
@@ -283,7 +283,7 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           }, */
-          }),);
+        }),);
       }
     }
   }
@@ -299,26 +299,26 @@ module.exports = ({
     config.output.filename = '[name].js';
   } else {
     config.plugins.push(new AssetsPlugin({
-        filename: 'assets.json',
-        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-      }),);
+      filename: 'assets.json',
+      path: path.resolve(process.cwd(), folder, target.split('-')[0]),
+    }),);
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked) {
       const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
       config.plugins.push(new BundleAnalyzerPlugin({
-          reportFilename: './_report.html',
-          analyzerMode: 'static',
-          // generateStatsFile: false,
-        }),);
+        reportFilename: './_report.html',
+        analyzerMode: 'static',
+        // generateStatsFile: false,
+      }),);
     } else {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     }
     // config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
     config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name: 'app',
-        filename: '[name].[chunkhash].js',
-        // minChunks: 2,
-      }),);
+      name: 'app',
+      filename: '[name].[chunkhash].js',
+      // minChunks: 2,
+    }),);
     config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
   }
