@@ -25,7 +25,18 @@ const Container = createComponent(
     },
     '> img': {
       borderRadius: circle && '50%',
+      zIndex: 0,
       center: true,
+    },
+    '> img.front': {
+      zIndex: 1,
+      animationDuration: '1s',
+      animationIterationCount: 1,
+      animationTimingFunction: 'ease-out',
+      animationName: {
+        from: { opacity: 0 },
+        to: { opacity: 1 },
+      },
     },
   }),
   ({ attributes, ...p }) => <div {...p} {...attributes} />,
@@ -83,28 +94,37 @@ const CloudinaryImage = ({
           html_width="100%"
           html_height="auto"
           responsive={typeof window !== 'undefined'}
-          transformation={
-            typeof window === 'undefined'
-              ? {
-                  gravity: 'auto',
-                  crop: mode || 'fill',
-                  quality: 0,
-                  fetchFormat: 'auto',
-                  width: 4,
-                  aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
-                }
-              : {
-                  gravity: 'auto',
-                  crop: mode || 'fill',
-                  quality: 'auto',
-                  fetchFormat: 'auto',
-                  dpr: 'auto',
-                  width: 'auto',
-                  aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
-                }
-          }
+          transformation={{
+            gravity: 'auto',
+            crop: mode || 'fill',
+            quality: 0,
+            fetchFormat: 'auto',
+            width: 4,
+            aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
+          }}
         />
       )}
+      {typeof window !== 'undefined' &&
+        value.url && (
+          <Image
+            className="front"
+            secure
+            cloudName={cloud}
+            publicId={publicId}
+            html_width="100%"
+            html_height="auto"
+            responsive={typeof window !== 'undefined'}
+            transformation={{
+              gravity: 'auto',
+              crop: mode || 'fill',
+              quality: 'auto',
+              fetchFormat: 'auto',
+              dpr: 'auto',
+              width: 'auto',
+              aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
+            }}
+          />
+        )}
     </Container>
   );
 };
