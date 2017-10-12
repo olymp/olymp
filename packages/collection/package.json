@@ -9,7 +9,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "deep-diff": "0.3.6",
+    "deep-diff": "^0.3.8",
     "prop-types": "^15.5.10",
     "shortid": "^2.2.8"
   }

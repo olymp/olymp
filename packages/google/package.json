@@ -8,11 +8,11 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "@google/maps": "^0.4.2",
+    "@google/maps": "^0.4.4",
     "bluebird": "^3.5.1",
     "google-map-react": "^0.24.0",
     "googleapis": "^22.1.0",
-    "moment": "^2.18.1",
+    "moment": "^2.19.1",
     "olymp-ui": "^17.11.0",
     "olymp-utils": "^17.11.9",
     "react-smooth": "^0.3.0",

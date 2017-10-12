@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const urlUtil = require('url');
 const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
-const merge = require('deepmerge');
+const { merge } = require('lodash');
 const argv = require('minimist')(process.argv.slice(1));
 // const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 

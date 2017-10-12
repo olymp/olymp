@@ -8,10 +8,9 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.0.1",
+    "jsonwebtoken": "^8.1.0",
     "olymp-fela": "^17.11.9",
     "qrcode": "^0.9.0",
-    "speakeasy": "^2.0.0",
-    "stale-lru-cache": "^5.1.1"
+    "speakeasy": "^2.0.0"
   }
 }
