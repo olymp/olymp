@@ -2,17 +2,20 @@
 
 const argv = require('minimist')(process.argv.slice(1));
 const notifier = require('node-notifier');
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 
-const cf = require('cloudflare')({
-  email: process.env.CLOUDFLARE_EMAIL,
-  key: process.env.CLOUDFLARE_KEY,
-});
-
-cf.zones
-  .purgeCache(process.env.CLOUDFLARE_ZONE, { purge_everything: true })
-  .then(() => {
+fetch(`https://api.cloudflare.com/client/v4/zones/${process.env.CLOUDFLARE_ZONE}/purge_cache`, {
+  method: 'DELETE',
+  body: JSON.stringify({ purge_everything: true }),
+  headers: {
+    'X-Auth-Key': process.env.CLOUDFLARE_KEY,
+    'X-Auth-Email': process.env.CLOUDFLARE_EMAIL,
+  },
+})
+  .then(res => res.json())
+  .then((json) => {
     notifier.notify('Purged cache');
   })
   .catch((err) => {

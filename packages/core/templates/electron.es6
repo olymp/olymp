@@ -7,7 +7,7 @@ module.exports = templateParams => `
   <html lang="de">
     <head>
       <meta charset="utf-8">
-      ${templateParams.version ? `<meta name="version" content="${templateParams.version}">` : ''}
+      ${process.env.BUILD_ON ? `<meta name="build-on" content="${process.env.BUILD_ON}">` : ''}
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Language" content="de" />

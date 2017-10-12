@@ -54,8 +54,7 @@ import { appReducer, appMiddleware } from '../redux';
 // eslint
 global.fetch = fetch;
 
-const version = format(fs.statSync(__filename).mtime, 'YYYY-MM-DD HH:mm');
-console.log('VERSION', version);
+console.log('BUILD ON', process.env.BUILD_ON);
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -139,7 +138,7 @@ app.get('*', (req, res) => {
       gaTrackingId: process.env.GA_TRACKING_ID,
       scripts: isAmp ? [] : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`],
       styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
-      version,
+      buildOn: process.env.BUILD_ON,
     });
     res.send(html);
     return;
@@ -233,7 +232,7 @@ app.get('*', (req, res) => {
       const html = (req.isAmp ? amp : template)({
         ...Helmet.rewind(),
         root: reactAppString,
-        version,
+        buildOn: process.env.BUILD_ON,
         fela: felaMarkup,
         scripts,
         styles,

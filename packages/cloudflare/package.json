@@ -9,6 +9,6 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "cloudflare": "^2.1.1"
+    "node-fetch": "^1.7.3"
   }
 }
