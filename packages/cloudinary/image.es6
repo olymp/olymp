@@ -5,7 +5,9 @@ import { Image } from 'cloudinary-react';
 import Placeholder from 'olymp-fela/image/placeholder';
 
 const Container = createComponent(
-  ({ ratio, height, width, minWidth, maxWidth, minHeight, maxHeight, circle }) => ({
+  ({
+    ratio, height, width, minWidth, maxWidth, minHeight, maxHeight, circle
+  }) => ({
     position: 'relative',
     overflow: 'hidden',
     width,
@@ -72,7 +74,7 @@ const CloudinaryImage = ({
       style={style}
     >
       {children}
-      {!value.url && <Placeholder height={'100%'} width={'100%'} circle={circle} />}
+      {!value.url && <Placeholder height="100%" width="100%" circle={circle} />}
       {value.url && (
         <Image
           secure
@@ -84,22 +86,22 @@ const CloudinaryImage = ({
           transformation={
             typeof window === 'undefined'
               ? {
-                gravity: 'auto',
-                crop: mode || 'fill',
-                quality: 0,
-                fetchFormat: 'auto',
-                width: 4,
-                aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
-              }
+                  gravity: 'auto',
+                  crop: mode || 'fill',
+                  quality: 0,
+                  fetchFormat: 'auto',
+                  width: 4,
+                  aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
+                }
               : {
-                gravity: 'auto',
-                crop: mode || 'fill',
-                quality: 'auto',
-                fetchFormat: 'auto',
-                dpr: 'auto',
-                width: 'auto',
-                aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
-              }
+                  gravity: 'auto',
+                  crop: mode || 'fill',
+                  quality: 'auto',
+                  fetchFormat: 'auto',
+                  dpr: 'auto',
+                  width: 'auto',
+                  aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
+                }
           }
         />
       )}

@@ -17,33 +17,25 @@ require('dotenv').config();
 const createConfig = require(path.resolve(__dirname, '..', 'webpack-config.js'));
 
 const root = process.cwd();
-let olymprc =
-  jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
-    throws: false,
-  }) || {};
 const pckgOlymp =
   jsonfile.readFileSync(path.resolve(root, 'package.json'), {
     throws: false,
   }) || {};
-olymprc = Object.assign({}, pckgOlymp.olymp || {}, olymprc);
-
-if (olymprc.extends) {
-  const topFolder = path.resolve(__dirname, '..', '..');
-  const concatMerge = (destinationArray, sourceArray, options) =>
-    destinationArray.concat(sourceArray);
-  const requireFirst = name =>
-    jsonfile.readFileSync(path.resolve(topFolder, name, '.olymprc'), {
-      throws: false,
-    }) ||
-    jsonfile.readFileSync(path.resolve(topFolder, `olymp-${name}`, '.olymprc'), {
-      throws: false,
-    }) ||
-    {};
-  olymprc = olymprc.extends.reduce(
-    (rc, item) => merge(requireFirst(item), rc, { arrayMerge: concatMerge }),
-    olymprc,
-  );
-}
+const olymprc = merge(
+  {
+    app: './app',
+    server: './server',
+    plugins: ['less', 'babel'],
+    modifyVars: {
+      'font-size-base': '15px',
+      'primary-color': '#8e44ad',
+    },
+  },
+  pckgOlymp.olymp || {},
+  jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
+    throws: false,
+  }) || {},
+);
 
 const command = argv._[1];
 
@@ -51,7 +43,9 @@ if (['start', 'build'].includes(command)) {
   process.env.NODE_ENV = 'production';
 }
 
-const { SSR, SERVERLESS, NODE_ENV, PORT, URL } = process.env;
+const {
+  SSR, SERVERLESS, NODE_ENV, PORT, URL
+} = process.env;
 
 const ssr = SSR != 'false';
 const serverless = SERVERLESS == 'true';
@@ -81,20 +75,17 @@ if (command === 'dev') {
     poll: false,
     ignored: /node_modules/,
   };
-  const compiler = webpack(
-    targets.map((target, i) =>
-      createConfig({
-        target,
-        mode: 'development',
-        devPort,
-        url,
-        devUrl,
-        ssr,
-        serverless,
-        ...olymprc,
-      }),
-    ),
-  );
+  const compiler = webpack(targets.map((target, i) =>
+    createConfig({
+      target,
+      mode: 'development',
+      devPort,
+      url,
+      devUrl,
+      ssr,
+      serverless,
+      ...olymprc,
+    }), ), );
   targets.forEach((target, i) => {
     const currentCompiler = compiler.compilers[i];
     if (target === 'node' || target === 'electron-main') {
@@ -146,18 +137,15 @@ if (command === 'dev') {
   rimraf.sync(path.resolve(root, '.dist'));
   process.env.NODE_ENV = 'production';
 
-  const compiler = webpack(
-    targets.map((target, i) =>
-      createConfig({
-        target,
-        mode: 'production',
-        url,
-        ssr,
-        serverless,
-        ...olymprc,
-      }),
-    ),
-  );
+  const compiler = webpack(targets.map((target, i) =>
+    createConfig({
+      target,
+      mode: 'production',
+      url,
+      ssr,
+      serverless,
+      ...olymprc,
+    }), ), );
   compiler.run((err, compilation) => {
     if (err) {
       console.error(err);

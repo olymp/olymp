@@ -163,7 +163,7 @@ module.exports = ({
       'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
         ? `"${process.env.FILESTACK_KEY}"`
         : false,
-    }),);
+    }));
   }
 
   // inline-source-map for web-dev
@@ -222,13 +222,13 @@ module.exports = ({
 
   // webpack plugins
   if (isElectronMain) {
-    config.plugins.push(new GenerateJsonPlugin('package.json', require('./electron/package-json')()),);
+    config.plugins.push(new GenerateJsonPlugin('package.json', require('./electron/package-json')()));
     if (isDev) {
       const ElectronPlugin = require('electron-webpack-plugin');
       config.plugins.push(new ElectronPlugin({
         test: /^.\/electron/,
         path: path.resolve(appRoot, '.dev', 'electron'),
-      }),);
+      }));
     }
   }
   if (isNode && !isElectron) {
@@ -236,13 +236,13 @@ module.exports = ({
       banner: 'require("source-map-support").install();',
       raw: true,
       entryOnly: false,
-    }),);
+    }));
     if (isDev && isServer) {
       console.log('INSPECT', devPort + 1);
       config.plugins.push(new StartServerPlugin({
         name: 'app.js',
         nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
-      }),);
+      }));
     }
   } else if (!isNode) {
     if (isElectronRenderer) {
@@ -263,7 +263,7 @@ module.exports = ({
           minifyCSS: true,
           minifyURLs: true,
         }, */
-      }),);
+      }));
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
       if (isServerless) {
@@ -283,7 +283,7 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           }, */
-        }),);
+        }));
       }
     }
   }
@@ -301,7 +301,7 @@ module.exports = ({
     config.plugins.push(new AssetsPlugin({
       filename: 'assets.json',
       path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-    }),);
+    }));
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked) {
       const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -309,7 +309,7 @@ module.exports = ({
         reportFilename: './_report.html',
         analyzerMode: 'static',
         // generateStatsFile: false,
-      }),);
+      }));
     } else {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     }
@@ -318,7 +318,7 @@ module.exports = ({
       name: 'app',
       filename: '[name].[chunkhash].js',
       // minChunks: 2,
-    }),);
+    }));
     config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
   }

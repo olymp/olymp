@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
-import { Icon } from 'antd';
+import { FaPen } from 'olymp-icons';
 import { Link } from 'olymp-router';
 import { connect } from 'react-redux';
 import Error404 from './views/404';
@@ -36,16 +36,25 @@ const enhance = compose(
 );
 
 const PageRoute = enhance((props) => {
-  const { Wrapped, publicNavigation, pathname, isAuthenticated, item } = props;
+  const {
+    Wrapped, publicNavigation, pathname, isAuthenticated, item
+  } = props;
   return (
     <Wrapped navigation={publicNavigation}>
       {isAuthenticated && (
-        <div>
+        <div
+          style={{
+            position: 'absolute',
+            left: 70,
+            top: 10,
+            zIndex: 10,
+          }}
+        >
           <Link
             className="ant-btn ant-btn-circle ant-btn-lg ant-btn-icon-only"
             updateQuery={{ '@page': 'tree' }}
           >
-            <Icon type="edit" />
+            <FaPen size={12} />
           </Link>
         </div>
       )}
