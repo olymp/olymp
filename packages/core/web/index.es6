@@ -103,8 +103,7 @@ const link = ApolloLink.from([
         }).then(() =>
           apolloFetch(request)
             .then(then(observer))
-            .catch(catchError(observer)),
-        );
+            .catch(catchError(observer)));
         // Other errors.
       } else if (!observer.closed) {
         observer.error(error);
@@ -143,11 +142,11 @@ function renderApp(App) {
   };
   const method = window.INITIAL_DATA ? hydrate : render;
   const app = <App {...props} />;
-  if (asyncState) {
-    // / return asyncBootstrapper(app).then(() => {
-    return method(app, container);
-    // });
-  }
+  /* if (asyncState) {
+    return asyncBootstrapper(app).then(() => {
+      method(app, container);
+    });
+  } */
   return method(app, container);
 }
 // Get the DOM Element that will host our React application.
@@ -157,20 +156,20 @@ ua = new UAParser(window.navigator.userAgent);
 renderer = createFela(ua);
 history = createHistory();
 asyncState = window.ASYNC_STATE;
-const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true }).restore(
-  get(window.INITIAL_DATA, 'apollo', {}),
-);
+const { apollo, ...reduxInitial } = window.INITIAL_DATA || {};
+const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true })
+  .restore(apollo || {});
 client = new ApolloClient({ link, cache });
 // Redux stuff
 dynamicRedux = createDynamicRedux();
 const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
 store = createDynamicStore(
   {
-    app: appReducer,
+    app: appReducer(),
     location: routerReducer(history),
     auth: authReducer({ verifying: !!localStorage.getItem('token') }),
   },
-  {},
+  reduxInitial,
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
     applyMiddleware(routerMiddleware(history)),

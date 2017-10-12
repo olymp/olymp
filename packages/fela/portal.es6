@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { createPortal, unstable_renderSubtreeIntoContainer } from 'react-dom';
 
@@ -7,7 +7,8 @@ const portal = isReact16 ? createPortal : unstable_renderSubtreeIntoContainer;
 
 class Portal extends Component {
   componentWillMount() {
-    if (typeof document !== 'undefined' && !this.popup) {
+    const { usePortal } = this.props;
+    if (usePortal && typeof document !== 'undefined' && !this.popup) {
       this.popup = document.createElement('div');
       document.body.appendChild(this.popup);
     }
@@ -20,8 +21,12 @@ class Portal extends Component {
   }
 
   render() {
+    const { children, usePortal } = this.props;
+    if (!usePortal) {
+      return Children.only(children);
+    }
     if (this.popup) {
-      return portal(this.props.children, this.popup);
+      return portal(children, this.popup);
     }
     return null;
   }
@@ -29,6 +34,10 @@ class Portal extends Component {
 
 Portal.propTypes = {
   children: PropTypes.node, // eslint-disable-line
+  usePortal: PropTypes.bool,
+};
+Portal.defaultProps = {
+  usePortal: true,
 };
 
 export default Portal;

@@ -14,11 +14,13 @@ export default ({
   getInitialState,
   gaTrackingId,
   asyncState,
+  version,
 }) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="utf-8">
+    ${version ? `<meta name="version" content="${version}">` : ''}
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Language" content="de" />
@@ -35,10 +37,8 @@ export default ({
     ${meta ? meta.toString() : ''}
     ${link ? link.toString() : ''}
     ${styles
-    .map(
-      style =>
-        `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="${style}">`,
-    )
+    .map(style =>
+      `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="${style}">`, )
     .join('\n')}
     <noscript>
       ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`).join('\n')}

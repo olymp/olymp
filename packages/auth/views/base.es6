@@ -15,6 +15,7 @@ const def = ({
   okText,
   loading,
   saving,
+  version,
   ...props
 }) => {
   let links = null;
@@ -35,6 +36,7 @@ const def = ({
       onCancel={onCancel}
       maskClosable={false}
       loading={loading}
+      usePortal={false}
     >
       {children}
       <Modal.Footer>

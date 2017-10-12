@@ -16,7 +16,7 @@ let attributes = `
 export const setAttributes = newAttributes => (attributes = newAttributes);
 export const getAttributes = () => attributes;
 
-export const authReducer = def => (state = def, action) => {
+export const authReducer = (def = {}) => (state = def, action) => {
   if (!action || !action.type) {
     return state;
   }

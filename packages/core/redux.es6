@@ -6,31 +6,35 @@ export const LOADER_END = 'APP_LOADER_END';
 export const INTERNET_CONNECTION = 'APP_INTERNET_CONNECTION';
 export const SERVER_CONNECTION = 'APP_SERVER_CONNECTION';
 
-const defaultState = {
-  serverConnection: true,
-  internetConnection: typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
-};
-export const appReducer = (state = defaultState, action) => {
-  if (!action || !action.type) {
-    return state;
-  }
-  switch (action.type) {
-    case MANIPULATE:
-      return action.payload.reduce(
-        (store, { method = 'set', path, value }) => immutable[method](store, path, value),
-        state,
-      );
-    case LOADER_START:
-      return immutable.set(state, 'loading', true);
-    case LOADER_END:
-      return immutable.set(state, 'loading', false);
-    case INTERNET_CONNECTION:
-      return immutable.set(state, 'internetConnection', action.payload);
-    case SERVER_CONNECTION:
-      return immutable.set(state, 'serverConnection', action.payload);
-    default:
+export const appReducer = (init = {}) => {
+  const defaultState = {
+    version: undefined,
+    serverConnection: true,
+    internetConnection: typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
+    ...init,
+  };
+  return (state = defaultState, action) => {
+    if (!action || !action.type) {
       return state;
-  }
+    }
+    switch (action.type) {
+      case MANIPULATE:
+        return action.payload.reduce(
+          (store, { method = 'set', path, value }) => immutable[method](store, path, value),
+          state,
+        );
+      case LOADER_START:
+        return immutable.set(state, 'loading', true);
+      case LOADER_END:
+        return immutable.set(state, 'loading', false);
+      case INTERNET_CONNECTION:
+        return immutable.set(state, 'internetConnection', action.payload);
+      case SERVER_CONNECTION:
+        return immutable.set(state, 'serverConnection', action.payload);
+      default:
+        return state;
+    }
+  };
 };
 
 export const appMiddleware = ({ dispatch, getState }) => {

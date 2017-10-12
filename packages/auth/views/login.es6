@@ -12,7 +12,9 @@ import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './bas
 @Form.create()
 export default class AuthLogin extends Component {
   ok = () => {
-    const { login, onClose, form, onTotp } = this.props;
+    const {
+      login, onClose, form, onTotp
+    } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
@@ -33,7 +35,9 @@ export default class AuthLogin extends Component {
   };
 
   render() {
-    const { isOpen, email, form, onClose, totp } = this.props;
+    const {
+      isOpen, email, form, onClose, totp
+    } = this.props;
     const { getFieldDecorator } = form;
 
     return (
@@ -42,42 +46,36 @@ export default class AuthLogin extends Component {
           {getFieldDecorator('email', {
             initialValue: email,
             rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(
-            <Input
-              type="email"
-              placeholder="E-Mail"
-              onKeyPress={onEnterFocus(() => this.input)}
-              size="large"
-              addonAfter={<FaEnvelope size={10} />}
-            />,
-          )}
+          })(<Input
+            type="email"
+            placeholder="E-Mail"
+            onKeyPress={onEnterFocus(() => this.input)}
+            size="large"
+            addonAfter={<FaEnvelope size={10} />}
+          />,)}
         </Form.Item>
         <Form.Item key="password" label="Passwort" {...layout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(
-            <Input
-              type="password"
-              placeholder="Password"
-              onKeyPress={onEnterOk(this.ok)}
-              ref={x => (this.input = x)}
-              size="large"
-              addonAfter={<FaStar size={10} />}
-            />,
-          )}
+          })(<Input
+            type="password"
+            placeholder="Password"
+            onKeyPress={onEnterOk(this.ok)}
+            ref={x => (this.input = x)}
+            size="large"
+            addonAfter={<FaStar size={10} />}
+          />,)}
         </Form.Item>
         {totp && (
           <Form.Item key="totp" label="Token" {...layout}>
-            {getFieldDecorator('totp')(
-              <Input
-                type="text"
-                placeholder="Token"
-                onKeyPress={onEnterOk(this.ok)}
-                ref={x => (this.totp = x)}
-                size="large"
-                addonAfter={<FaStar size={10} />}
-              />,
-            )}
+            {getFieldDecorator('totp')(<Input
+              type="text"
+              placeholder="Token"
+              onKeyPress={onEnterOk(this.ok)}
+              ref={x => (this.totp = x)}
+              size="large"
+              addonAfter={<FaStar size={10} />}
+            />,)}
           </Form.Item>
         )}
 

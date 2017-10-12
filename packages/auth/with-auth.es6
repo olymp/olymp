@@ -15,7 +15,7 @@ export const auth = (options = {}) => (WrappedComponent) => {
     constructor(props) {
       super(props);
       if (props.verifying) {
-        props.verify();
+        props.verify(props.verifying);
       }
     }
     render() {
@@ -37,7 +37,7 @@ export const useAuth = (WrappedComponent) => {
         setAttributes(props.auth.attributes);
       }
       if (props.verifying) {
-        props.verify();
+        props.verify(props.verifying);
       }
     }
     render() {
