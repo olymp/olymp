@@ -1,5 +1,5 @@
 {
-  "version": "17.12.1",
+  "version": "17.12.2",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -34,11 +34,11 @@
   },
   "dependencies": {
     "mongodb": "^2.2.31",
-    "olymp": "^17.12.1",
-    "olymp-auth": "^17.12.1",
+    "olymp": "^17.12.2",
+    "olymp-auth": "^17.12.2",
     "olymp-crypt": "^17.9.1",
-    "olymp-fela": "^17.12.1",
-    "olymp-google": "^17.12.1",
+    "olymp-fela": "^17.12.2",
+    "olymp-google": "^17.12.2",
     "olymp-graphql": "^17.12.0",
     "olymp-icons": "^17.9.1",
     "olymp-locale": "^17.11.9",
