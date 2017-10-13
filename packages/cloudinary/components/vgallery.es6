@@ -50,12 +50,7 @@ export default class GridExample extends PureComponent {
   }
 
   render() {
-    const { items } = this.props;
-    return (
-      <AutoSizer onResize={this.onResize} items={items}>
-        {this.renderMasonry}
-      </AutoSizer>
-    );
+    return <AutoSizer onResize={this.onResize}>{this.renderMasonry}</AutoSizer>;
   }
 
   calculateColumnCount = () => {
@@ -69,7 +64,6 @@ export default class GridExample extends PureComponent {
     const { items, onClick, onRemove } = this.props;
 
     const item = items[index];
-
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
         <Item
@@ -117,7 +111,6 @@ export default class GridExample extends PureComponent {
 
     return (
       <Masonry
-        items={items}
         cellCount={items.length}
         cellMeasurerCache={this.cache}
         cellPositioner={this.cellPositioner}
