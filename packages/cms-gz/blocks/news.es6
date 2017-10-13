@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Grid, SchemaLoader, createComponent } from 'olymp-fela';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { PrefetchLink } from 'olymp-athena';
+import { PrefetchLink } from 'olymp-cms';
 import { withEdit, withCreate } from 'olymp-collection';
 import moment from 'moment';
 import { sortBy, range } from 'lodash';

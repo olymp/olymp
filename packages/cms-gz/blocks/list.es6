@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { sortBy } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
-import { PrefetchLink as Link } from 'olymp-athena';
+import { PrefetchLink as Link } from 'olymp-cms';
 import { withEdit, withCreate } from 'olymp-collection';
 import { createComponent, Grid } from 'olymp-fela';
 import { H2 } from '../components';

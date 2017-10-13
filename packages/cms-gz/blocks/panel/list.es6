@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PrefetchLink as Link } from 'olymp-athena';
+import { PrefetchLink as Link } from 'olymp-cms';
 import { createComponent } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import moment from 'moment';

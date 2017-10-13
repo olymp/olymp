@@ -1,7 +1,7 @@
 import React from 'react';
 import { withScroll } from 'olymp-utils';
 import { compose, withPropsOnChange } from 'recompose';
-import { Navbar } from 'olymp-athena';
+import { Navbar } from 'olymp-cms';
 import { get } from 'lodash';
 import { Layout, Container, createComponent } from 'olymp-fela';
 import { connect } from 'react-redux';

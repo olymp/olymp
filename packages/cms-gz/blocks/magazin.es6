@@ -2,7 +2,7 @@ import React from 'react';
 import { createComponent, Container, Grid, border, SchemaLoader } from 'olymp-fela';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { PrefetchLink } from 'olymp-athena';
+import { PrefetchLink } from 'olymp-cms';
 import { Image } from 'olymp-cloudinary';
 import { FaDownload } from 'olymp-icons';
 import { withEdit, withCreate } from 'olymp-collection';

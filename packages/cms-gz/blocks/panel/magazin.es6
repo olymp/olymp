@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { PrefetchLink as Link } from 'olymp-athena';
+import { PrefetchLink as Link } from 'olymp-cms';
 import { createComponent, border } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import Container from './container';

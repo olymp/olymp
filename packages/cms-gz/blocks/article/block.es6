@@ -2,7 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import renderHelmet from 'olymp-utils/helmet';
-import { PrefetchLink } from 'olymp-athena';
+import { PrefetchLink } from 'olymp-cms';
 import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Blocks } from 'olymp-pages';
