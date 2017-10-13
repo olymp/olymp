@@ -18,7 +18,9 @@ import LightboxGallery from '../lightbox-gallery';
 }))
 class SelectionSidebar extends Component {
   save = () => {
-    const { form, items, multi, save, onChange } = this.props;
+    const {
+      form, items, multi, save, onChange
+    } = this.props;
     if (onChange) {
       return onChange(items);
     }
@@ -35,8 +37,7 @@ class SelectionSidebar extends Component {
           return state;
         }, {});
         promise = Promise.all(items.map(item => save({ id: item.id, ...changed }))).then(x =>
-          form.resetFields(),
-        );
+          form.resetFields(),);
       } else {
         promise = save(values).then(x => form.resetFields());
       }
@@ -50,7 +51,9 @@ class SelectionSidebar extends Component {
     }
   }
   render() {
-    const { selectedIds, onClick, form, items, editable, onRemove, onCancel, multi } = this.props;
+    const {
+      selectedIds, onClick, form, items, editable, onRemove, onCancel, multi
+    } = this.props;
     return (
       <div style={{ padding: 10 }}>
         <LightboxGallery>
@@ -64,8 +67,7 @@ class SelectionSidebar extends Component {
               justifyContent="space-around"
             />
           ) : null}
-          <Detail form={form} item={items[0]} multi={multi} editable={editable} />
-          <div>
+          <Detail form={form} item={items[0]} multi={multi} editable={editable}>
             <Button onClick={this.save} type="primary" disabled={!items.length}>
               {items.length > 1 ? 'Alle speichern' : 'Speichern'}
             </Button>
@@ -75,7 +77,7 @@ class SelectionSidebar extends Component {
                 Abbrechen
               </Button>
             )}
-          </div>
+          </Detail>
         </LightboxGallery>
       </div>
     );

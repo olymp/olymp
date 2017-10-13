@@ -12,3 +12,4 @@ export { default as Navbar } from './navbar';
 export { default as Nav } from './nav';
 export { default as IFrame } from './iframe';
 export { default as PageTransition } from './page-transition';
+export { default as MaterialColors } from './material-colors';

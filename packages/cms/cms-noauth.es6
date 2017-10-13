@@ -20,7 +20,6 @@ const component = connect(({ app, location }) => ({
   _isLoading, flatNavigation, showLightbox, showAuth, ...rest
 }) => [
   <TopLoader loading={_isLoading} key={1} />,
-  console.log(showLightbox),
   showLightbox && <Lightbox key={2} />,
   showAuth && <AuthModals key={3} />,
   <PageRoute flatNavigation={flatNavigation} {...rest} key={4} />,

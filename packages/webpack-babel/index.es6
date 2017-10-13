@@ -4,38 +4,38 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 // const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = (config, options) => {
-  const { isProd, isWeb, isDev, isNode, appRoot, target, folder } = options;
+  const {
+    isProd, isWeb, isDev, isNode, appRoot, target, folder
+  } = options;
 
   if (isProd && isWeb) {
     // config.plugins.push(new LodashModuleReplacementPlugin()),
-    config.plugins.push(
-      new UglifyJSPlugin({
-        // sourceMap: true,
-        parallel: {
-          cache: true,
-          workers: 2,
-        },
-        uglifyOptions: {
-          mangle: true,
-          /* parse: {
+    config.plugins.push(new UglifyJSPlugin({
+      // sourceMap: true,
+      parallel: {
+        cache: true,
+        workers: 2,
+      },
+      uglifyOptions: {
+        mangle: true,
+        /* parse: {
             // ecma: 8,
             // html5_comments: false,
           }, */
-          compress: {
-            unused: true,
-            drop_debugger: true,
-            dead_code: true,
-            drop_console: true,
-            // ecma: 8,
-          },
-          output: {
-            comments: false,
-            beautify: false,
-            // ecma: 8,
-          },
+        compress: {
+          unused: true,
+          drop_debugger: true,
+          dead_code: true,
+          drop_console: true,
+          // ecma: 8,
         },
-      }),
-    );
+        output: {
+          comments: false,
+          beautify: false,
+          // ecma: 8,
+        },
+      },
+    }),);
   }
 
   const babelOptions = {

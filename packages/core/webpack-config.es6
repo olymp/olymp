@@ -241,7 +241,7 @@ module.exports = ({
       console.log('INSPECT', devPort + 1);
       config.plugins.push(new StartServerPlugin({
         name: 'app.js',
-        nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
+        // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
       }));
     }
   } else if (!isNode) {

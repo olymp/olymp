@@ -13,7 +13,7 @@ const ImageContainer = createComponent(
     // outline: isActive ? `3px solid ${theme.color}` : 'none',
     // transform: isActive ? 'scale(1.15)' : 'none',
     transition: 'all .1s ease-in-out',
-    backgroundColor: isActive ? theme.color : '#FFF',
+    backgroundColor: isActive ? theme.color : 'transparent',
     border: isActive ? `1px solid ${theme.color}` : '1px solid #ddd',
     // boxShadow: `0px 0px 10px 0px rgba(0, 0, 0, ${isActive ? 0.4 : 0.2})`,
     '> div': {
@@ -79,7 +79,9 @@ const CloseLabel = createComponent(
   p => Object.keys(p),
 );
 
-const Thumb = ({ item, width, height, onClick, onRemove, isActive }) =>
+const Thumb = ({
+  item, width, height, onClick, onRemove, isActive
+}) =>
   (item ? (
     <ImageContainer isActive={isActive}>
       {height ? <Image value={item} height={height} maxWidth={300} onClick={onClick} /> : null}

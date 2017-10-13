@@ -1,19 +1,19 @@
 /* globals define */
-
+// https://github.com/mariocasciaro/object-path-immutable
 (function (root, factory) {
-  'use strict'
+  ;
 
   /* istanbul ignore next:cant test */
   if (typeof module === 'object' && typeof module.exports === 'object') {
-    module.exports = factory()
+    module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], factory)
+    define([], factory);
   } else {
     // Browser globals
-    root.objectPath = factory()
+    root.objectPath = factory();
   }
-})(this, function () {
+}(this, function () {
   'use strict'
   var _hasOwnProperty = Object.prototype.hasOwnProperty
 
@@ -213,4 +213,4 @@
 
     return objectPathImmutable
   }, objectPathImmutable)
-})
+}));

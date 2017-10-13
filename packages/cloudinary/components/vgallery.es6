@@ -1,8 +1,37 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import Masonry, { createCellPositioner } from 'react-virtualized/dist/commonjs/Masonry';
 import Thumb from './thumb';
+
+const Item = connect(({ cloudinary }, { item }) => ({
+  isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
+}))(({
+  style, item, isActive, onClick, onRemove, width
+}) => (
+  <div
+    style={{
+      ...style,
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#f7f7f7',
+      wordBreak: 'break-all',
+      width,
+    }}
+  >
+    <Thumb
+      item={item}
+      width={width}
+      onClick={e => onClick(item.id, e)}
+      onRemove={() => onRemove(item.id)}
+      isActive={isActive}
+    />
+    <small style={{ textAlign: 'center', maxWidth: width, marginTop: '-0.5rem' }}>
+      <b>{item.caption}</b>
+    </small>
+  </div>
+));
 
 const columnWidth = 200;
 const columnHeight = 200;
@@ -21,14 +50,9 @@ export default class GridExample extends PureComponent {
   }
 
   render() {
-    const { items, selectedIds } = this.props;
+    const { items } = this.props;
     return (
-      <AutoSizer
-        onResize={this.onResize}
-        scrollTop={this.scrollTop}
-        items={items}
-        selectedIds={selectedIds}
-      >
+      <AutoSizer onResize={this.onResize} items={items}>
         {this.renderMasonry}
       </AutoSizer>
     );
@@ -39,43 +63,22 @@ export default class GridExample extends PureComponent {
     this.columnWidth = Math.floor(this.width / this.columnCount);
   };
 
-  cellRenderer = ({ index, key, parent, style }) => {
-    const { items, onClick, selectedIds, onRemove } = this.props;
+  cellRenderer = ({
+    index, key, parent, style
+  }) => {
+    const { items, onClick, onRemove } = this.props;
 
     const item = items[index];
 
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
-        <div
-          style={{
-            ...style,
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#f7f7f7',
-            wordBreak: 'break-all',
-            width: this.columnWidth,
-          }}
-        >
-          {/* <div
-            style={{
-              backgroundColor: item.color,
-              borderRadius: '0.5rem',
-              height: item.height,
-              marginBottom: '0.5rem',
-              width: '100%',
-            }}
-          /> */}
-          <Thumb
-            item={item}
-            width={this.columnWidth}
-            onClick={e => onClick(item.id, e)}
-            onRemove={() => onRemove(item.id)}
-            isActive={selectedIds.indexOf(item.id) !== -1}
-          />
-          <small style={{ textAlign: 'center', maxWidth: this.columnWidth, marginTop: '-0.5rem' }}>
-            <b>{item.caption}</b>
-          </small>
-        </div>
+        <Item
+          style={style}
+          item={item}
+          onClick={onClick}
+          onRemove={onRemove}
+          width={this.columnWidth}
+        />
       </CellMeasurer>
     );
   };
@@ -93,32 +96,34 @@ export default class GridExample extends PureComponent {
 
   onResize = ({ width }) => {
     this.width = width;
-
     this.columnHeights = {};
     this.calculateColumnCount();
     this.resetCellPositioner();
-    this.masonry.recomputeCellPositions();
+    if (this.masonry) {
+      this.masonry.recomputeCellPositions();
+    }
   };
 
   renderMasonry = ({ width, height }) => {
-    const { items, selectedIds } = this.props;
+    const { items } = this.props;
     this.width = width;
 
     this.calculateColumnCount();
     this.initCellPositioner();
 
+    if (!width || !height) {
+      return null;
+    }
+
     return (
       <Masonry
-        selectedIds={selectedIds}
         items={items}
-        autoHeight={false}
         cellCount={items.length}
         cellMeasurerCache={this.cache}
         cellPositioner={this.cellPositioner}
         cellRenderer={this.cellRenderer}
         height={height}
         ref={this.setMasonryRef}
-        scrollTop={this.scrollTop}
         width={width}
       />
     );

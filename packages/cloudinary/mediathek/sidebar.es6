@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Upload, Tabs } from 'antd';
 import { compose, onlyUpdateForPropTypes, setPropTypes, withPropsOnChange } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
+import { connect } from 'react-redux';
 import Image from '../image';
 import Selection from './selection';
 
@@ -12,13 +13,13 @@ import Selection from './selection';
       ['desc', 'asc', 'desc', 'desc', 'asc'],
     ); */
 
-const image = ({ image }) => <Image value={image} width={37} height={37} />;
+const image = ({ image }) => image && <Image value={image} width={37} height={37} />;
 
 // @withPropsOnChange(['items', 'search', 'filter'])
 const enhance = compose(
   onlyUpdateForPropTypes,
   setPropTypes({
-    directories: PropTypes.arrayOf(PropTypes.object),
+    directories: PropTypes.object,
     upload: PropTypes.object,
     search: PropTypes.string,
     tags: PropTypes.array,
@@ -34,65 +35,87 @@ const enhance = compose(
     onRemove: PropTypes.func,
     onSelect: PropTypes.func,
   }),
-  withPropsOnChange(['directories'], ({ directories }) => ({
-    disabled: directories.find(dir => dir.disabled),
-    visibleItems: directories.filter(dir => !dir.active && !dir.disabled),
-  })),
+  connect(({ cloudinary }, { items }) => ({
+    items: cloudinary.selectedIds.map(x => items.find(item => item.id === x)).filter(x => x),
+    activeId: cloudinary.activeId,
+  }))
 );
 
-export default enhance(
-  ({
-    upload,
-    onClose,
-    search,
-    setSearch,
-    goBack,
-    onChange,
-    tab,
-    setTab,
-    visibleItems,
-    items,
-    activeId,
-    onClick,
-    onRemove,
-  }) => (
-    <Sidebar
-      width={280}
-      leftButtons={onClose && <Sidebar.Button shape="circle" onClick={onClose} icon="close" />}
-      rightButtons={
-        <Upload {...upload}>
-          <Sidebar.Button shape="circle" icon="plus" />
-        </Upload>
-      }
-      isOpen
-      padding={0}
-      title="Medien"
-    >
-      <Tabs
-        activeKey={tab || ''}
-        onTabClick={setTab}
-        size="small"
-        tabBarStyle={{ marginBottom: 0 }}
+const Directory = withPropsOnChange(['items'], ({ items }) => ({
+  items: items.filter(dir => !dir.active && !dir.disabled),
+}))(({ id, items }) =>
+  (items.length ? (
+    <div>
+      {id && (
+      <div
+        style={{
+          padding: 3,
+          paddingLeft: 7,
+          paddingRight: 7,
+          backgroundColor: 'rgba(233, 233, 233, 0.47)',
+          borderBottom: '1px solid #eee',
+        }}
       >
-        <Tabs.TabPane tab="Navigation" key="">
-          <List.Filter placeholder="Filter ..." onChange={setSearch} value={search} />
-          {goBack && <List.Item label="Zurück" icon="left" onClick={goBack} />}
-          {visibleItems.map(dir => <List.Item {...dir} image={image(dir)} />)}
-        </Tabs.TabPane>
-        {items.length ? (
-          <Tabs.TabPane tab={`Auswahl (${items.length})`} key="select" disabled={!items.length}>
-            <Selection
-              items={items}
-              key={items.map(x => x.id).join(';')}
-              activeId={activeId}
-              onClick={onClick}
-              onRemove={onRemove}
+        {id || 'Allgemein'}
+      </div>
+        )}
+      {items.map(dir => <List.Item {...dir} image={image(dir)} />)}
+    </div>
+  ) : null), );
+
+export default enhance(({
+  upload,
+  onClose,
+  search,
+  setSearch,
+  goBack,
+  onChange,
+  tab,
+  setTab,
+  directories,
+  items,
+  activeId,
+  onClick,
+  onRemove,
+}) => (
+  <Sidebar
+    width={280}
+    leftButtons={onClose && <Sidebar.Button shape="circle" onClick={onClose} icon="close" />}
+    rightButtons={
+      <Upload {...upload}>
+        <Sidebar.Button shape="circle" icon="plus" />
+      </Upload>
+      }
+    isOpen
+    padding={0}
+    title="Medien"
+  >
+    <Tabs
+      activeKey={tab || ''}
+      onTabClick={setTab}
+      size="small"
+      tabBarStyle={{ marginBottom: 0 }}
+    >
+      <Tabs.TabPane tab="Navigation" key="">
+        <List.Filter placeholder="Filter ..." onChange={setSearch} value={search} />
+        {goBack && <List.Item label="Zurück" icon="left" onClick={goBack} />}
+        {Object.keys(directories).map(key => (
+          <Directory key={key} id={key} items={directories[key]} />
+          ))}
+      </Tabs.TabPane>
+      {items.length ? (
+        <Tabs.TabPane tab={`Auswahl (${items.length})`} key="select" disabled={!items.length}>
+          <Selection
+            items={items}
+            key={items.map(x => x.id).join(';')}
+            activeId={activeId}
+            onClick={onClick}
+            onRemove={onRemove}
               // onCancel={() => this.onSelect(selected)}
-              onChange={onChange}
-            />
-          </Tabs.TabPane>
+            onChange={onChange}
+          />
+        </Tabs.TabPane>
         ) : null}
-      </Tabs>
-    </Sidebar>
-  ),
-);
+    </Tabs>
+  </Sidebar>
+), );

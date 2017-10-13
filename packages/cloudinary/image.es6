@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { onlyUpdateForPropTypes } from 'recompose';
 import { createComponent } from 'react-fela';
 import { Image } from 'cloudinary-react';
 import Placeholder from 'olymp-fela/image/placeholder';
@@ -64,7 +65,6 @@ const CloudinaryImage = ({
 }) => {
   const imageWidth = (value.crop && value.crop[0]) || value.width;
   const imageHeight = (value.crop && value.crop[1]) || value.height;
-
   const parts = value.url ? value.url.split('/') : null;
   const cloud = parts && parts[3];
   const publicId =
@@ -139,27 +139,27 @@ CloudinaryImage.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
+  children: PropTypes.node,
   ratio: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  maxWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   fade: PropTypes.bool,
-  options: PropTypes.shape({
-    w: PropTypes.number,
-    h: PropTypes.number,
-    c: PropTypes.string,
-    f: PropTypes.string,
-    q: PropTypes.string,
-    fl: PropTypes.string,
-    dpr: PropTypes.number,
-    // ...
-  }),
-  avatar: PropTypes.bool,
+  circle: PropTypes.bool,
+  mode: PropTypes.string,
   alt: PropTypes.string,
+  className: PropTypes.string,
+  onClick: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  attributes: PropTypes.object,
+  style: PropTypes.object,
 };
 CloudinaryImage.defaultProps = {
   value: undefined,
   fade: false,
   ratio: undefined,
   attributes: {},
-  avatar: false,
   alt: undefined,
 };
-export default CloudinaryImage;
+export default onlyUpdateForPropTypes(CloudinaryImage);
