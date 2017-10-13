@@ -15,7 +15,7 @@ import useragent from 'express-useragent';
 
 // React
 import React from 'react';
-import InMemoryCache from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
@@ -145,7 +145,9 @@ app.get('*', (req, res) => {
     return;
   }
 
+  console.log(InMemoryCache);
   const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true });
+  console.log(222);
   const client = new ApolloClient({
     cache,
     link: ApolloLink.from([

@@ -6,7 +6,7 @@ import { render, hydrate } from 'react-dom';
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
-import InMemoryCache from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createApolloFetch } from 'apollo-fetch';
 import { print } from 'graphql/language/printer';
 // Redux
