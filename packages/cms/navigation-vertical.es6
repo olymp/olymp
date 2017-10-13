@@ -30,11 +30,7 @@ const UserIcon = createComponent(
     left: 0,
     marginX: theme.space3,
     borderRadius: '50%',
-    background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name,
-    )}.jpg?s=26&bg=${encodeURIComponent(theme.color)}&color=${encodeURIComponent(
-      theme.light,
-    )}) center center no-repeat, ${theme.color}`,
+    background: `url(https://invatar0.appspot.com/svg/${getInitials(name, )}.jpg?s=26&bg=${encodeURIComponent(theme.color)}&color=${encodeURIComponent(theme.light, )}) center center no-repeat, ${theme.color}`,
   }),
   p => (
     <i className="anticon">
@@ -260,20 +256,12 @@ class Navigation extends Component {
             <Icon type="picture" />
             <span>Medien</span>
           </Menu.Item>
-          <Menu.SubMenu
-            title={
-              <span>
-                <Icon type="database" />
-                <span>Sammlungen</span>
-              </span>
-            }
-          >
-            {collectionList.map(collection => (
-              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                {get(collection, 'decorators.label.value', collection.name)}
-              </Menu.Item>
-            ))}
-          </Menu.SubMenu>
+          {collectionList.map(collection => (
+            <Menu.Item type="database" key={`@${collection.name.toLowerCase()}`}>
+              <Icon type="database" />
+              <span>{get(collection, 'decorators.label.value', collection.name)}</span>
+            </Menu.Item>
+          ))}
           <Menu.Item key="@analytics">
             <Icon type="line-chart" />
             <span>Analytics</span>
