@@ -157,6 +157,7 @@ renderer = createFela(ua);
 history = createHistory();
 asyncState = window.ASYNC_STATE;
 const { apollo, ...reduxInitial } = window.INITIAL_DATA || {};
+console.log(apollo);
 const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true })
   .restore(apollo || {});
 client = new ApolloClient({ link, cache });

@@ -6,9 +6,7 @@ export default () => ({
   resolvers: {
     mutations: {
       reorderPages: (source, args, { monk }) =>
-        Promise.all(
-          args.ids.map((id, order) => monk.collection('page').update({ id }, { $set: { order } })),
-        ),
+        Promise.all(args.ids.map((id, order) => monk.collection('page').update({ id }, { $set: { order } })), ),
     },
   },
   schema: `
@@ -20,7 +18,6 @@ export default () => ({
       PLACEHOLDER
     }
     type Blocks {
-      id: String
       nodes: Json
       extract: String
       text: String
@@ -28,26 +25,7 @@ export default () => ({
       image: String
       chapters: [String]
     }
-    type Template @collection {
-      id: String
-      name: String
-      text: String
-    }
-    type PageHeading {
-      id: String
-      text: String
-      slug: String
-      children: [PageHeading]
-    }
-    type PageGQL {
-      id: String
-      name: String
-      attributes: [String]
-      field: String
-      prefix: String
-    }
     type PageBinding {
-      id: String
       type: String
       fields: [String]
       query: Json
@@ -60,10 +38,8 @@ export default () => ({
       binding: PageBinding
       sorting: [String]
       alias: Page @relation
-      gql: PageGQL
-      headings: [PageHeading]
-      href: String
       state: DOCUMENT_STATE
+      href: String
       parent: Page @relation(property: "children", type: "1-n")
       order: Int
       name: String

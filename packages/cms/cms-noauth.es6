@@ -8,7 +8,7 @@ import PrefetchRoutes from './prefetch-routes';
 
 const component = connect(({ app, location }) => ({
   _isLoading: app.loading,
-  showLightbox: location.query.lightbox !== undefined,
+  showLightbox: !!location.query.lightbox,
   showAuth:
     location.query.login !== undefined ||
     location.query.register !== undefined ||
@@ -16,8 +16,11 @@ const component = connect(({ app, location }) => ({
     location.query.forgot !== undefined ||
     location.query.reset !== undefined ||
     location.query.login !== undefined,
-}))(({ _isLoading, flatNavigation, showLightbox, showAuth, ...rest }) => [
+}))(({
+  _isLoading, flatNavigation, showLightbox, showAuth, ...rest
+}) => [
   <TopLoader loading={_isLoading} key={1} />,
+  console.log(showLightbox),
   showLightbox && <Lightbox key={2} />,
   showAuth && <AuthModals key={3} />,
   <PageRoute flatNavigation={flatNavigation} {...rest} key={4} />,

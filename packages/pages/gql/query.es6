@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 const emptyArray = [];
-const queryOne = gql`
+export const page = gql`
   query page($id: String) {
-    item: page(id: $id) {
+    page(id: $id) {
       id
       slug
       isMega
@@ -13,7 +13,6 @@ const queryOne = gql`
       type
       name
       binding {
-        id
         type
         query
         fields
@@ -23,7 +22,6 @@ const queryOne = gql`
       aliasId
       href
       blocks {
-        id
         nodes
         extract
         image
@@ -33,52 +31,49 @@ const queryOne = gql`
     }
   }
 `;
-export const queryPage = graphql(queryOne, {
+export const queryPage = graphql(page, {
   options: ({ id, pageId, pathname }) => ({
     variables: { id: pageId || id },
     fetchPolicy: pathname === '/__new' ? 'cache-only' : undefined,
   }),
   props: ({ ownProps, data }) => ({
     ...ownProps,
-    item: (ownProps.pathname === '/__new' ? {} : data.item) || {},
+    item: (ownProps.pathname === '/__new' ? {} : data.page) || {},
     data,
   }),
 });
 
 export const prefetchPage = (client, id) =>
   client.query({
-    query: queryOne,
+    query: page,
     variables: { id },
   });
 
-export const queryPages = graphql(
-  gql`
-    query pageList {
-      pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
-        id
-        slug
-        isMega
-        order
+export const pageList = gql`
+  query pageList {
+    pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
+      id
+      slug
+      isMega
+      order
+      type
+      name
+      binding {
         type
-        name
-        binding {
-          id
-          type
-          query
-          fields
-        }
-        parentId
-        aliasId
-        sorting
-        state
+        query
+        fields
       }
+      parentId
+      aliasId
+      sorting
+      state
     }
-  `,
-  {
-    props: ({ ownProps, data }) => ({
-      ...ownProps,
-      pageList: data.pageList || emptyArray,
-      data,
-    }),
-  },
-);
+  }
+`;
+export const queryPages = graphql(pageList, {
+  props: ({ ownProps, data }) => ({
+    ...ownProps,
+    pageList: data.pageList || emptyArray,
+    data,
+  }),
+});

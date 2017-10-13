@@ -3,36 +3,78 @@ import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { withPushPathname } from 'olymp-router';
 import { onError, onSuccess } from 'olymp-ui';
-import { omit } from 'lodash';
+import { omit } from 'olymp-utils';
+import { page, pageList } from './query';
+
+const mutateGql = gql`
+  mutation page($id: String, $input: PageInput, $type: MUTATION_TYPE) {
+    page(id: $id, input: $input, type: $type) {
+      id
+      slug
+      description
+      order
+      isMega
+      name
+      type
+      binding {
+        type
+        query
+        fields
+      }
+      aliasId
+      href
+      sorting
+      parentId
+      blocks {
+        nodes
+        extract
+        text
+        title
+        image
+        chapters
+      }
+      state
+    }
+  }
+`;
+// const fields = mutateGql.definitions[0].selectionSet.selections[0].selectionSet.selections.map(x => x.name.value,);
 
 const ok = (props, mutate) => () => {
-  const { form, item, router, query, flatNavigation, pushPathname } = props;
-  form.validateFields((err, values) => {
+  const {
+    form, item, flatNavigation, pushPathname
+  } = props;
+  form.validateFields((err, input) => {
     if (err) {
       return onError(err);
     }
-    if (values.blocks) {
-      values.blocks = omit(values.blocks, '__typename');
-    }
+    const { id } = item;
     mutate({
       variables: {
-        id: item.id,
-        input: values,
+        id,
+        type: 'UPDATE',
+        input: omit(input),
       },
-      updateQueries: !item.id
-        ? {
-          pageList: (prev, { mutationResult }) => ({
-            ...prev,
-            items: [...prev.items, mutationResult.data.item],
-          }),
-        }
-        : undefined,
+      /* optimisticResponse: {
+        __typename: 'Mutation',
+        page: {
+          __typename: 'Page',
+          ...(id ? values : fields.reduce((result, key) => ({ ...result, [key]: result[key] || null }), values)),
+        },
+      }, */
+      refetchQueries: [
+        {
+          query: page,
+          variables: { id },
+        },
+        {
+          query: pageList,
+        },
+      ],
     })
-      .then(({ data: { item } }) => {
+      .then(({ data: { page } }) => {
         onSuccess('Gespeichert', 'Die Seite wurde gespeichert');
         form.resetFields();
-        let slug = item.slug;
-        let parentId = item.parentId;
+        let { slug, parentId } = page;
         while (parentId) {
           const parent = flatNavigation.find(x => x.id === parentId) || {};
           if (parent.slug) {
@@ -48,48 +90,13 @@ const ok = (props, mutate) => () => {
 
 export const mutatePage = compose(
   withPushPathname,
-  graphql(
-    gql`
-      mutation page($id: String, $input: PageInput) {
-        item: page(id: $id, input: $input) {
-          id
-          slug
-          description
-          order
-          isMega
-          name
-          type
-          binding {
-            id
-            type
-            query
-            fields
-          }
-          aliasId
-          href
-          sorting
-          parentId
-          blocks {
-            id
-            nodes
-            extract
-            text
-            title
-            image
-            chapters
-          }
-          state
-        }
-      }
-    `,
-    {
-      props: ({ ownProps, mutate }) => ({
-        ...ownProps,
-        save: ok(ownProps, mutate),
-        mutate,
-      }),
-    },
-  ),
+  graphql(mutateGql, {
+    props: ({ ownProps, mutate }) => ({
+      ...ownProps,
+      save: ok(ownProps, mutate),
+      mutate,
+    }),
+  }),
 );
 
 export const reorderPage = graphql(

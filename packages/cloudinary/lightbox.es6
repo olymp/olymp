@@ -14,8 +14,7 @@ const LightBox = asyncComponent({
           resolve(require('olymp-fela/lightbox'));
         },
         'lightbox',
-      ),
-    ),
+      ),),
 });
 
 @connect(
@@ -40,6 +39,8 @@ export default class Lightbox extends Component {
     const currIndex = images.findIndex(img => img.ref === queryLightbox);
     const prevIndex = currIndex > 0 ? currIndex - 1 : images.length - 1;
     const nextIndex = currIndex < images.length - 1 ? currIndex + 1 : 0;
+
+    console.log(image, images, lightbox);
 
     return (
       <LightBox

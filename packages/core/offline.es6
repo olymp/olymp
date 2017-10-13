@@ -22,7 +22,7 @@ module.exports = (config) => {
       minifyCSS: true,
       minifyURLs: true,
     }, */
-  }),);
+  }), );
   config.plugins.push(new OfflinePlugin({
     responseStrategy: 'network-first',
     // externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
@@ -34,6 +34,6 @@ module.exports = (config) => {
       navigateFallbackURL: '/offline.html',
     },
     AppCache: false,
-  }),);
+  }), );
   return config;
 };

@@ -69,7 +69,12 @@ export default (server, options) => {
     url: URL,
   });
 
-  const authEngine = createAuthEngine({ monk, mail, secret: AUTH_SECRET, app: process.env.APP });
+  const authEngine = createAuthEngine({
+    monk,
+    mail,
+    secret: AUTH_SECRET,
+    app: process.env.APP,
+  });
   server.use(authCache(authEngine));
 
   const algolia = process.env.ALGOLIA
@@ -80,9 +85,13 @@ export default (server, options) => {
   let cachedApp = null;
 
   let db = null;
+  console.log(MONGODB_URI);
   MongoClient.connect(MONGODB_URI, (err, d) => {
     if (err) {
       console.error(err);
+      if (err.errors) {
+        err.errors.forEach(err => console.error(err));
+      }
     }
     db = d;
   });

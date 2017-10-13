@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { debounce, get } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
-import shortId from 'shortid';
 import Plain from 'slate-plain-serializer';
 import { State } from 'slate';
 import Base64 from './plugins/base64';
@@ -38,7 +37,7 @@ const stateWrapper = WrappedComponent =>
       this.base64 = Base64.serialize(value);
       if (this.base64 !== this.props.base64) {
         const json = value.toJSON();
-        const nodes = json.document.nodes;
+        const { nodes } = json.document;
         let text = '';
         let title = null;
         let image = null;
@@ -67,9 +66,15 @@ const stateWrapper = WrappedComponent =>
         });
         const count = 355;
         const extract = text.slice(0, count) + (text.length > count ? '...' : '');
-        const id = (value && value.id) || shortId.generate();
         // image, title, chapters
-        return this.props.onChange({ id, nodes, text, extract, title, image, chapters });
+        return this.props.onChange({
+          nodes,
+          text,
+          extract,
+          title,
+          image,
+          chapters,
+        });
       }
     };
     debouncedPropagateChange = debounce(this.propagateChange, 800, {
@@ -91,7 +96,7 @@ const stateWrapper = WrappedComponent =>
   };
 
 export default compose(
-  withPropsOnChange(['value', 'id', 'signal'], ({ value, signal }) => {
+  withPropsOnChange(['value', 'signal'], ({ value, signal }) => {
     const state = value
       ? State.fromJSON({
         document: {
