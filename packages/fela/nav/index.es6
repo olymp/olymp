@@ -2,6 +2,7 @@ import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
 import cn from 'classnames';
 
+// Based on http://w3bits.com/labs/css-responsive-nav/
 // Nav styles
 const styles = ({ theme }) => ({
   '> ul': {
