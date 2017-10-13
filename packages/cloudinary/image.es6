@@ -6,7 +6,7 @@ import Placeholder from 'olymp-fela/image/placeholder';
 
 const Container = createComponent(
   ({
-    ratio, height, width, minWidth, maxWidth, minHeight, maxHeight, circle
+    ratio, height, width, minWidth, maxWidth, minHeight, maxHeight, circle, fade
   }) => ({
     position: 'relative',
     overflow: 'hidden',
@@ -33,10 +33,12 @@ const Container = createComponent(
       animationDuration: '1s',
       animationIterationCount: 1,
       animationTimingFunction: 'ease-out',
-      animationName: {
-        from: { opacity: 0 },
-        to: { opacity: 1 },
-      },
+      animationName: fade
+        ? {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        }
+        : null,
     },
   }),
   ({ attributes, ...p }) => <div {...p} {...attributes} />,
@@ -44,6 +46,7 @@ const Container = createComponent(
 );
 
 const CloudinaryImage = ({
+  fade,
   value,
   mode,
   ratio,
@@ -72,6 +75,7 @@ const CloudinaryImage = ({
       .split('.')[0];
   return (
     <Container
+      fade={fade}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       width={width}
@@ -93,7 +97,7 @@ const CloudinaryImage = ({
           publicId={publicId}
           html_width="100%"
           html_height="auto"
-          responsive={typeof window !== 'undefined'}
+          responsive={false}
           transformation={{
             gravity: 'auto',
             crop: mode || 'fill',
@@ -136,6 +140,7 @@ CloudinaryImage.propTypes = {
     height: PropTypes.number,
   }),
   ratio: PropTypes.number,
+  fade: PropTypes.bool,
   options: PropTypes.shape({
     w: PropTypes.number,
     h: PropTypes.number,
@@ -151,6 +156,7 @@ CloudinaryImage.propTypes = {
 };
 CloudinaryImage.defaultProps = {
   value: undefined,
+  fade: false,
   ratio: undefined,
   attributes: {},
   avatar: false,
