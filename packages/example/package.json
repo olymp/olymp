@@ -1,5 +1,5 @@
 {
-  "version": "18.0.8",
+  "version": "18.0.9",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -51,7 +51,7 @@
     "react-dom": "^16.0.0-rc.3"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^18.0.8",
+    "eslint-config-olymp": "^18.0.9",
     "olymp-webpack-electron": "^18.0.6"
   },
   "electronDependencies": {},
