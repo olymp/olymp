@@ -40,9 +40,7 @@ const mutateGql = gql`
 // const fields = mutateGql.definitions[0].selectionSet.selections[0].selectionSet.selections.map(x => x.name.value,);
 
 const ok = (props, mutate) => () => {
-  const {
-    form, item, flatNavigation, pushPathname
-  } = props;
+  const { form, item, flatNavigation, pushPathname } = props;
   form.validateFields((err, input) => {
     if (err) {
       return onError(err);
@@ -54,22 +52,18 @@ const ok = (props, mutate) => () => {
         type: 'UPDATE',
         input: omit(input),
       },
-      /* optimisticResponse: {
-        __typename: 'Mutation',
-        page: {
-          __typename: 'Page',
-          ...(id ? values : fields.reduce((result, key) => ({ ...result, [key]: result[key] || null }), values)),
-        },
-      }, */
       refetchQueries: [
-        {
-          query: page,
-          variables: { id },
-        },
         {
           query: pageList,
         },
       ],
+      optimisticResponse: {
+        __typename: 'Mutation',
+        page: {
+          __typename: 'Page',
+          ...input,
+        },
+      },
     })
       .then(({ data: { page } }) => {
         onSuccess('Gespeichert', 'Die Seite wurde gespeichert');
@@ -99,12 +93,13 @@ export const mutatePage = compose(
   }),
 );
 
-export const reorderPage = graphql(
+export const reorderPage2 = graphql(
   gql`
-    mutation reorderPage($id: String, $sorting: [String]) {
-      item: page(id: $id, input: { sorting: $sorting }) {
+    mutation reorderPage($ids: [String], $parentId: String) {
+      reorderPages(ids: $ids, parentId: $parentId) {
         id
-        sorting
+        order
+        parentId
       }
     }
   `,
@@ -113,26 +108,39 @@ export const reorderPage = graphql(
       ...ownProps,
       reorder: mutate,
     }),
+    refetchQueries: [
+      {
+        query: pageList,
+      },
+    ],
   },
 );
 
-export const movePage = graphql(
-  gql`
-    mutation movePage($id: String, $parentId: String, $sorting: [String]) {
-      item: page(id: $parentId, input: { sorting: $sorting }) {
-        id
-        sorting
-      }
-      item2: page(id: $id, input: { parentId: $parentId }) {
-        id
-        parentId
-      }
-    }
-  `,
-  {
-    props: ({ ownProps, mutate }) => ({
-      ...ownProps,
-      move: mutate,
-    }),
-  },
-);
+/*
+
+
+      update: (store, { data: { absence } }) => {
+        const variables = {
+          start: +startOfMonth(absence.start),
+          end: +endOfMonth(absence.start),
+        };
+        const data = store.readQuery({
+          query: gqlList,
+          variables,
+        });
+        if (!id) {
+          data.absenceList.push(absence);
+        } else {
+          const index = data.absenceList.findIndex(x => x.id === input.id);
+          if (index >= 0) {
+            data.absenceList[index] = { ...data.absenceList[index], ...absence };
+          }
+        }
+        store.writeQuery({
+          query: gqlList,
+          data,
+          variables,
+        });
+      },
+
+*/

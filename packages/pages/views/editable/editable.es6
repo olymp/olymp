@@ -27,25 +27,28 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 })
 @mutatePage
 @withQueryActions
-@withPropsOnChange(['item', 'flatNavigation'], ({ flatNavigation, form, ...rest }) => {
-  const item = rest.item || flatNavigation.find(page => page.slug === '/');
+@withPropsOnChange(
+  ['item', 'flatNavigation'],
+  ({ flatNavigation, form, ...rest }) => {
+    const item = rest.item || flatNavigation.find(page => page.slug === '/');
 
-  form.getFieldDecorator('parentId', {
-    initialValue: get(rest, 'query.["@parent"]') || item.parentId,
-  });
-  form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
-  form.getFieldDecorator('blocks', { initialValue: item.blocks });
+    form.getFieldDecorator('parentId', {
+      initialValue: get(rest, 'query.["@parent"]') || item.parentId,
+    });
+    form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
+    form.getFieldDecorator('blocks', { initialValue: item.blocks });
 
-  return {
-    id: item.id || null,
-    item,
-    description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
-    title: !item.id ? 'Neue Seite' : item.name,
-    blocks: item.blocks,
-  };
-})
+    return {
+      id: item.id || null,
+      item,
+      description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
+      title: !item.id ? 'Neue Seite' : item.name,
+      blocks: item.blocks,
+    };
+  },
+)
 @withProps(({ form }) => ({
-  onChange: (blocks) => {
+  onChange: blocks => {
     form.setFieldsValue({ blocks });
   },
   value: form.getFieldValue('blocks'),
@@ -56,6 +59,7 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 export default class PageSidebar extends Component {
   render() {
     const {
+      id,
       form,
       save,
       bindingId,
@@ -76,6 +80,7 @@ export default class PageSidebar extends Component {
 
     const P = (
       <Page
+        key={id}
         value={value}
         onChange={onChange}
         style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
@@ -89,14 +94,19 @@ export default class PageSidebar extends Component {
 
     return (
       <SplitView maxWidth={maxWidth} center>
-        <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
 
         <Sidebar
           isOpen
           padding={0}
           title={title}
           subtitle={description}
-          rightButtons={<Sidebar.Button onClick={save} shape="circle" icon="save" />}
+          rightButtons={
+            <Sidebar.Button onClick={save} shape="circle" icon="save" />
+          }
         >
           <PageForm
             form={form}

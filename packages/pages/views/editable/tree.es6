@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withPropsOnChange, withState } from 'recompose';
+import { unflatten } from 'olymp-utils';
 import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Icon, Tooltip, Tree } from 'antd';
-import { lowerCase } from 'lodash';
-import { reorderPage, movePage } from '../../gql/mutation';
+import { lowerCase, orderBy, sortBy } from 'lodash';
+import { reorderPage2 } from '../../gql/mutation';
+import { queryPages } from '../../gql/query';
 
 const Button = createComponent(
   ({ theme }) => ({
@@ -47,46 +50,55 @@ const Badge = createComponent(
 );
 
 @withRouter
-@reorderPage
-@movePage
+@reorderPage2
+@queryPages
+@withPropsOnChange(['pageList'], ({ pageList }) => {
+  const flatNavigation = [];
+  const items = unflatten(pageList, {
+    pathProp: 'pathname',
+    sort: (children, parent) => orderBy(children, ['order'], ['asc']),
+    setPath: (current, { slug, ...rest }) => {
+      const pathname = `${current || ''}${slug || ''}`.replace('//', '/');
+      flatNavigation.push({ ...rest, slug, pathname });
+      return pathname;
+    },
+  });
+  return {
+    items,
+  };
+})
+@withState('expandedKeys', 'setExpanded', [])
 class Pages extends Component {
-  onDrop = (info) => {
-    const { reorder, move } = this.props;
-    const parent =
-      info.dropToGap && info.node.props.parent ? info.node.props.parent : info.node.props.item;
+  onDrop = info => {
+    const { reorder, items } = this.props;
     const page = info.dragNode.props.item;
-    const pageId = page.pageId || page.id; // get real pageId in case of binding
+    let parent =
+      info.dropToGap && info.node.props.parent
+        ? info.node.props.parent
+        : info.node.props.item;
+    if (parent && parent.id === page.id) {
+      parent = null;
+    }
 
     // Get all IDs of children in order
-    const childIds = (parent.children || []).map(child => child.id).filter(x => x !== page.id);
+    const childIds = (parent ? parent.children || [] : items)
+      .map(child => child.id)
+      .filter(x => x !== page.id);
     childIds.splice(info.dropPosition, 0, page.id);
 
+    console.log(parent, page, childIds);
+
     // Check if new parent is itself??
-    if (parent.id === pageId) {
+    if (parent && parent.sorting && ['+', '-'].includes(parent.sorting[0])) {
       return;
     }
-    if (parent.id !== page.parentId) {
-      // parent changed
-      move({
-        variables: {
-          id: pageId,
-          parentId: parent.id,
-          sorting: childIds,
-        },
-      });
-    } else {
-      // just moved inside existing parent
-      // Disallow sort if parent has fixed sorting
-      if (parent.sorting && ['+', '-'].includes(parent.sorting[0])) {
-        return;
-      }
-      reorder({
-        variables: {
-          id: parent.id,
-          sorting: childIds,
-        },
-      });
-    }
+    // parent changed
+    reorder({
+      variables: {
+        ids: childIds,
+        parentId: parent ? parent.id : null,
+      },
+    });
   };
 
   getParent = (tree, levels) => {
@@ -102,11 +114,15 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
-  getNodeIcon = (item) => {
+  getNodeIcon = item => {
     if (item.sorting && item.sorting[0] === '+') {
-      return <Badge key="badge" type="arrow-up" tooltip="Austeigend sortiert" />;
+      return (
+        <Badge key="badge" type="arrow-up" tooltip="Austeigend sortiert" />
+      );
     } else if (item.sorting && item.sorting[0] === '-') {
-      return <Badge key="badge" type="arrow-down" tooltip="Absteigend sortiert" />;
+      return (
+        <Badge key="badge" type="arrow-down" tooltip="Absteigend sortiert" />
+      );
     } else if (item.slug === '/') {
       return <Badge key="badge" type="home" tooltip="Startseite" />;
     } else if (item.type === 'ALIAS') {
@@ -124,27 +140,29 @@ class Pages extends Component {
   };
 
   getItems = (data, parent) =>
-    data.map((item) => {
+    data.map(item => {
       const { query } = this.props;
       const children =
-        item.children && item.children.length ? this.getItems(item.children, item) : undefined;
+        item.children && item.children.length
+          ? this.getItems(item.children, item)
+          : undefined;
       const isBinding = item.bindingId && item.binding && item.binding.type;
       const route =
         item.pathname && item.type === 'PAGE'
           ? {
-            pathname: item.pathname,
-            query: {
-              ...query,
-              parent: undefined,
-            },
-          }
+              pathname: item.pathname,
+              query: {
+                ...query,
+                parent: undefined,
+              },
+            }
           : {
-            pathname: `/page_id/${item.pageId || item.id}`,
-            query: {
-              ...query,
-              parent: undefined,
-            },
-          };
+              pathname: `/page_id/${item.pageId || item.id}`,
+              query: {
+                ...query,
+                parent: undefined,
+              },
+            };
       const bindingRoute = {
         pathname: item.pathname,
         query: {
@@ -166,7 +184,10 @@ class Pages extends Component {
             </Link>,
             <Button
               key="button"
-              to={{ pathname: '/__new', query: { '@page': 'form', '@parent': item.id } }}
+              to={{
+                pathname: '/__new',
+                query: { '@page': 'form', '@parent': item.id },
+              }}
               type="plus"
             />,
             isBinding && <Button key="button2" to={route} type="api" />,
@@ -179,7 +200,7 @@ class Pages extends Component {
     });
 
   render() {
-    const { items, selected } = this.props;
+    const { items, selected, expandedKeys, setExpanded } = this.props;
 
     if (items.length === 0) {
       return null;
@@ -190,7 +211,8 @@ class Pages extends Component {
         selectedKeys={selected}
         draggable
         className="draggable-tree"
-        defaultExpandedKeys={items.filter((x, i) => i === 0).map(item => item.id || item.pathname)}
+        expandedKeys={expandedKeys}
+        onExpand={x => setExpanded(x)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
@@ -208,3 +230,9 @@ Pages.defaultProps = {
   selected: [],
 };
 export default Pages;
+
+/*
+items
+          .filter((x, i) => i === 0)
+          .map(item => item.id || item.pathname)
+*/

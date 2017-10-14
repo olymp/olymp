@@ -12,16 +12,19 @@ const enhance = compose(
   })),
 );
 
-export default enhance((props) => {
+export default enhance(props => {
   const { Wrapped, flatNavigation, pathname, loading, deviceWidth } = props;
   const match =
     pathname.indexOf('/page_id/') === 0
       ? flatNavigation.find(
-        item => pathname.substr('/page_id/'.length) === (item.pageId || item.id),
-      )
+          item =>
+            pathname.substr('/page_id/'.length) === (item.pageId || item.id),
+        )
       : flatNavigation.find(
-        item => pathname === item.pathname || decodeURI(unescape(item.pathname)) === pathname,
-      );
+          item =>
+            pathname === item.pathname ||
+            decodeURI(unescape(item.pathname)) === pathname,
+        );
   const { id, binding, pageId, aliasId, bindingId } = match || {};
 
   if (!match && pathname !== '/__new') {

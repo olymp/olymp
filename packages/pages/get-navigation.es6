@@ -16,11 +16,14 @@ const interpolate = (value, propsOrFunc) => {
   }
   return value.replace(
     /\{\{?\:?(.+?)\}?\}/g,
-    (m, v) => (typeof propsOrFunc === 'function' ? propsOrFunc(v, v) : get(propsOrFunc, v, v)),
+    (m, v) =>
+      typeof propsOrFunc === 'function'
+        ? propsOrFunc(v, v)
+        : get(propsOrFunc, v, v),
   );
 };
 
-export default (Wrapped) => {
+export default Wrapped => {
   const before = compose(
     queryPages,
     withPropsOnChange(['pageList'], ({ pageList, data }) => {
@@ -39,10 +42,10 @@ export default (Wrapped) => {
           const { type, fields, query = {} } = value.binding;
           const sort = value.sorting
             ? value.sorting.reduce((result, item) => {
-              const [c, ...rest] = item.split('');
-              result[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
-              return result;
-            }, {})
+                const [c, ...rest] = item.split('');
+                result[rest.join('')] = c === '-' ? 'DESC' : 'ASC';
+                return result;
+              }, {})
             : {};
           return graphql(
             gql`
@@ -68,7 +71,8 @@ export default (Wrapped) => {
                   ...ownProps.navBindingObj,
                   [value.id]: data,
                 },
-                isNavigationLoading: ownProps.isNavigationLoading || data.loading,
+                isNavigationLoading:
+                  ownProps.isNavigationLoading || data.loading,
               }),
             },
           )(component);
@@ -92,8 +96,10 @@ export default (Wrapped) => {
           const newChildren = children.reduce((state, child) => {
             const data = navBindingObj[child.id];
             if (data) {
-              (data.items || []).forEach((item) => {
-                const slug = child.slug ? interpolate(child.slug, item) : item.slug;
+              (data.items || []).forEach(item => {
+                const slug = child.slug
+                  ? interpolate(child.slug, item)
+                  : item.slug;
                 state.push({
                   ...child,
                   pageId: child.id,
@@ -109,19 +115,7 @@ export default (Wrapped) => {
             }
             return state;
           }, []);
-          if (!parent || !parent.sorting) {
-            return orderBy(newChildren, ['order'], ['asc']);
-          }
-          const sortIndex = parent.sorting;
-          return sortBy(newChildren, [
-            (o) => {
-              const index = sortIndex.indexOf(o.id);
-              if (index === -1) {
-                return 99;
-              }
-              return index;
-            },
-          ]);
+          return orderBy(newChildren, ['order'], ['asc']);
         },
         setPath: (current, { slug, ...rest }) => {
           const pathname = `${current || ''}${slug || ''}`.replace('//', '/');
@@ -136,7 +130,8 @@ export default (Wrapped) => {
     },
   );
 
-  return compose(before, renderComponent(({ Component, ...rest }) => <Component {...rest} />))(
-    () => null,
-  );
+  return compose(
+    before,
+    renderComponent(({ Component, ...rest }) => <Component {...rest} />),
+  )(() => null);
 };

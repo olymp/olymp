@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TagsEditor } from 'olymp-ui';
-import { Form, Input, Select, Icon, Collapse } from 'antd';
+import { Form, Input, Select, Icon, Collapse, Tag } from 'antd';
 import { format } from 'date-fns';
 import { ContentLoader } from 'olymp-fela';
 import Crop from '../components/crop';
@@ -13,13 +13,22 @@ const FormItemLayout = {
   style: { marginBottom: 4 },
 };
 
+const tagsFromServer = ['Movies', 'Books', 'Music', 'Sports'];
+
 const FormForFullLayout = {
   wrapperCol: { span: 24, offset: 0 },
   style: { marginBottom: 4 },
 };
 
 const MediaDetail = ({
-  item, multi, source, tags, editable, form, children, ...rest
+  item,
+  multi,
+  source,
+  tags,
+  editable,
+  form,
+  children,
+  ...rest
 }) => {
   if (!editable) {
     form.getFieldDecorator('id', { initialValue: item.id });
@@ -47,47 +56,71 @@ const MediaDetail = ({
           <Form.Item label="Bezeichnung" {...FormItemLayout}>
             {form.getFieldDecorator('caption', {
               initialValue: item.caption,
-            })(<Input disabled={!editable} placeholder="Bezeichnung" />)}
+            })(
+              <Input.TextArea
+                rows={3}
+                disabled={!editable}
+                placeholder="Bezeichnung"
+              />,
+            )}
           </Form.Item>
           {form.getFieldDecorator('source', {
             initialValue: item.source,
-          })(<Form.Item label="Quelle" {...FormItemLayout}>
-            <Input placeholder="Quelle" disabled={(source && multi) || !editable} />
-          </Form.Item>, )}
+          })(
+            <Form.Item label="Quelle" {...FormItemLayout}>
+              <Input
+                placeholder="Quelle"
+                disabled={(source && multi) || !editable}
+              />
+            </Form.Item>,
+          )}
           <Form.Item label="Schlagworte" {...FormItemLayout}>
             {form.getFieldDecorator('tags', {
               initialValue: item.tags,
-            })(<TagsEditor
-              {...rest}
-              disabled={(tags && multi) || !editable}
-              searchPlaceholder="Suche ..."
-              placeholder="Schlagworte"
-              style={{ width: '100%' }}
-            />, )}
+            })(
+              <TagsEditor
+                {...rest}
+                disabled={(tags && multi) || !editable}
+                searchPlaceholder="Suche ..."
+                placeholder="Schlagworte"
+                style={{ width: '100%' }}
+              />,
+            )}
           </Form.Item>
+          {tagsFromServer.map(tag => (
+            <Tag.CheckableTag
+              key={tag}
+              checked={false}
+              onChange={checked => this.handleChange(tag, checked)}
+            >
+              {tag}
+            </Tag.CheckableTag>
+          ))}
           <Form.Item label="Zustand" {...FormItemLayout}>
             {form.getFieldDecorator('state', {
               initialValue: item.state,
-            })(<Select style={{ width: '100%' }}>
-              <Select.Option value="DRAFT">
-                <b style={{ color: 'blue' }}>
-                  <Icon type="inbox" />
-                </b>{' '}
+            })(
+              <Select style={{ width: '100%' }}>
+                <Select.Option value="DRAFT">
+                  <b style={{ color: 'blue' }}>
+                    <Icon type="inbox" />
+                  </b>{' '}
                   Ablage
-              </Select.Option>
-              <Select.Option value="PUBLISHED">
-                <b style={{ color: 'green' }}>
-                  <Icon type="check" />
-                </b>{' '}
+                </Select.Option>
+                <Select.Option value="PUBLISHED">
+                  <b style={{ color: 'green' }}>
+                    <Icon type="check" />
+                  </b>{' '}
                   Veröffentlicht
-              </Select.Option>
-              <Select.Option value="REMOVED">
-                <b style={{ color: 'red' }}>
-                  <Icon type="delete" />
-                </b>{' '}
+                </Select.Option>
+                <Select.Option value="REMOVED">
+                  <b style={{ color: 'red' }}>
+                    <Icon type="delete" />
+                  </b>{' '}
                   Gelöscht
-              </Select.Option>
-               </Select>, )}
+                </Select.Option>
+              </Select>,
+            )}
           </Form.Item>
           {children}
         </Form>
@@ -109,24 +142,46 @@ const MediaDetail = ({
         <Form.Item key="source" label="Quelle" {...FormForFullLayout}>
           {form.getFieldDecorator('source', {
             initialValue: item.source,
-          })(<Input placeholder="Quelle" disabled={(source && multi) || !editable} />)}
+          })(
+            <Input
+              placeholder="Quelle"
+              disabled={(source && multi) || !editable}
+            />,
+          )}
         </Form.Item>
         <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
           {form.getFieldDecorator('caption', {
             initialValue: item.caption,
-          })(<Input disabled={!editable} placeholder="Bezeichnung" />)}
+          })(
+            <Input.TextArea
+              rows={3}
+              disabled={!editable}
+              placeholder="Bezeichnung"
+            />,
+          )}
         </Form.Item>
         <Form.Item key="tags" label="Schlagworte" {...FormForFullLayout}>
           {form.getFieldDecorator('tags', {
             initialValue: item.tags,
-          })(<TagsEditor
-            {...rest}
-            disabled={(tags && multi) || !editable}
-            searchPlaceholder="Suche ..."
-            placeholder="Schlagworte"
-            style={{ width: '100%' }}
-          />, )}
+          })(
+            <TagsEditor
+              {...rest}
+              disabled={(tags && multi) || !editable}
+              searchPlaceholder="Suche ..."
+              placeholder="Schlagworte"
+              style={{ width: '100%' }}
+            />,
+          )}
         </Form.Item>
+        {tagsFromServer.map(tag => (
+          <Tag.CheckableTag
+            key={tag}
+            checked={false}
+            onChange={checked => this.handleChange(tag, checked)}
+          >
+            {tag}
+          </Tag.CheckableTag>
+        ))}
         {/* <Form.Item key="tecnical" {...FormForFullLayout}>
           <Collapse bordered={false} defaultActiveKey={[]}>
             <Collapse.Panel header="Technische Infos" key="1">
@@ -155,7 +210,7 @@ const MediaDetail = ({
               </Form.Item>
             </Collapse.Panel>
           </Collapse>
-        </Form.Item>*/}
+        </Form.Item> */}
         {children}
       </Form>
     </ContentLoader>

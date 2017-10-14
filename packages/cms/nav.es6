@@ -9,23 +9,35 @@ const toggleComponent = ({ toggled, onToggle, ...props }) => (
 );
 
 const fromPages = items =>
-  items.map((item) => {
+  items.map(item => {
     if (item.children && item.children.length) {
       return (
-        <Nav.Menu title={item.name} key={item.id}>
+        <Nav.Menu
+          pathname={item.pathname || undefined}
+          renderLabel={PrefetchLink}
+          title={item.name}
+          key={item.id}
+        >
           {fromPages(item.children)}
         </Nav.Menu>
       );
     }
     return (
-      <Nav.Item pathname={item.pathname} key={item.id} renderLabel={PrefetchLink}>
+      <Nav.Item
+        pathname={item.pathname}
+        key={item.id}
+        renderLabel={PrefetchLink}
+      >
         {item.name}
       </Nav.Item>
     );
   });
 
 const PrefetchItem = props => (
-  <Nav.Item {...props} renderLabel={props.pathname ? PrefetchLink : undefined} />
+  <Nav.Item
+    {...props}
+    renderLabel={props.pathname ? PrefetchLink : undefined}
+  />
 );
 
 const CmsNav = connect(({ location }) => ({

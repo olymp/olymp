@@ -1,8 +1,14 @@
 import { adaptQuery } from 'olymp-collection/server';
 import ShortId from 'shortid';
-import { parseURI, getImageById, getSignedRequest, updateImage } from './cloudinary';
+import { flatMap, uniq, sortBy } from 'lodash';
+import {
+  parseURI,
+  getImageById,
+  getSignedRequest,
+  updateImage,
+} from './cloudinary';
 
-export default (uri) => {
+export default uri => {
   const config = parseURI(uri);
 
   const invalidationTokens = [];
@@ -10,13 +16,15 @@ export default (uri) => {
     name: 'file',
     queries: `
       cloudinaryRequest: CloudinaryRequest
+      fileTags: [String]
     `,
     mutations: `
       cloudinaryRequestDone(id: String, token: String): File
     `,
     resolvers: {
       queries: {
-        file: (source, args, { monk, app }) => monk.collection('item').findOne({ id: args.id }),
+        file: (source, args, { monk, app }) =>
+          monk.collection('item').findOne({ id: args.id }),
         /*
             .then((item) => {
               if (item) {
@@ -43,6 +51,23 @@ export default (uri) => {
           mongoQuery._type = 'file';
           mongoQuery.state = { $ne: 'REMOVED' };
           return monk.collection('item').find(mongoQuery);
+        },
+        fileTags: (source, { folder }, { monk, user }) => {
+          if (!user) {
+            return [];
+          }
+          mongoQuery._appId = { $in: user._appIds };
+          mongoQuery._type = 'file';
+          if (folder) {
+            mongoQuery.folder = folder;
+          }
+          console.log(mongoQuery);
+          return monk
+            .collection('item')
+            .find(mongoQuery)
+            .then(items =>
+              sortBy(uniq(flatMap(items, item => item.tags)), x => x),
+            );
         },
         cloudinaryRequest: () => {
           const signed = getSignedRequest(config);
@@ -81,24 +106,38 @@ export default (uri) => {
               }, 10); */
               db
                 .collection('item')
-                .updateOne({ id: args.input.id }, { $set: args.input }, { upsert: true })
-                .then(() => db.collection('item').findOne({ id: args.input.id })),
+                .updateOne(
+                  { id: args.input.id },
+                  { $set: args.input },
+                  { upsert: true },
+                )
+                .then(() =>
+                  db.collection('item').findOne({ id: args.input.id }),
+                ),
             );
         },
         cloudinaryRequestDone: (source, args, { monk, app }) => {
           if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
-            invalidationTokens.splice(invalidationTokens.indexOf(args.token), 1);
+            invalidationTokens.splice(
+              invalidationTokens.indexOf(args.token),
+              1,
+            );
             return getImageById(config, args.id)
               .then(image =>
-                monk
-                  .collection('item')
-                  .update(
-                    { publicId: args.id },
-                    { ...image, id: ShortId.generate(), _type: 'file', _appId: app.id },
-                    { upsert: true },
-                  ),
+                monk.collection('item').update(
+                  { publicId: args.id },
+                  {
+                    ...image,
+                    id: ShortId.generate(),
+                    _type: 'file',
+                    _appId: app.id,
+                  },
+                  { upsert: true },
+                ),
               )
-              .then(x => monk.collection('item').findOne({ publicId: args.id }));
+              .then(x =>
+                monk.collection('item').findOne({ publicId: args.id }),
+              );
           }
           throw new Error('Invalid');
         },
@@ -148,7 +187,8 @@ export default (uri) => {
 
 export const uploadTest = (config = {}) => (req, res) => {
   res.send(`
-    <form action="${config.endpoint || '/upload'}" method="post" enctype="multipart/form-data">
+    <form action="${config.endpoint ||
+      '/upload'}" method="post" enctype="multipart/form-data">
       <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>

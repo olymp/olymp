@@ -1,12 +1,19 @@
 export default () => ({
   name: 'page',
   mutations: `
-    reorderPages(id: String, ids: [String], order: [Int]): [Page]
+    reorderPages(ids: [String], parentId: String): [Page]
   `,
   resolvers: {
     mutations: {
-      reorderPages: (source, args, { monk }) =>
-        Promise.all(args.ids.map((id, order) => monk.collection('page').update({ id }, { $set: { order } })), ),
+      reorderPages: (source, { ids, parentId }, { monk }) =>
+        Promise.all(
+          ids.map((id, order) =>
+            monk
+              .collection('item')
+              .update({ id, _type: 'page' }, { $set: { order, parentId } })
+              .then(() => ({ id, order, parentId })),
+          ),
+        ),
     },
   },
   schema: `
@@ -36,12 +43,12 @@ export default () => ({
       menu: String
       isMega: Boolean
       binding: PageBinding
+      order: Int
       sorting: [String]
       alias: Page @relation
       state: DOCUMENT_STATE
       href: String
       parent: Page @relation(property: "children", type: "1-n")
-      order: Int
       name: String
       description: String
       slug: String
