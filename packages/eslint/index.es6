@@ -16,7 +16,8 @@ module.exports = {
     },
   },
   rules: {
-    /*'prettier/prettier': 'error',
+    'react/jsx-filename-extension': 0,
+    /* 'prettier/prettier': 'error',
     'no-duplicate-imports': 0,
     'react/jsx-filename-extension': 0,
     'react/sort-comp': 0,
@@ -33,6 +34,6 @@ module.exports = {
     'consistent-return': 1,
     'no-use-before-define': 1,
     'jsx-a11y/href-no-hash': 'off',
-    'jsx-a11y/anchor-is-valid': ['warn', { aspects: ['invalidHref'] }],*/
+    'jsx-a11y/anchor-is-valid': ['warn', { aspects: ['invalidHref'] }], */
   },
 };
