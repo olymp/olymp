@@ -26,7 +26,7 @@ const ImageContainer = createComponent(
     },
   }),
   'div',
-  ({ height, isActive, ...p }) => Object.keys(p),
+  ({ height, isActive, ...p }) => Object.keys(p)
 );
 
 const ImageLabel = createComponent(
@@ -46,7 +46,7 @@ const ImageLabel = createComponent(
     // boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.75)",
   }),
   'span',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const CheckLabel = createComponent(
@@ -65,7 +65,7 @@ const CheckLabel = createComponent(
     lineHeight: 1,
   }),
   'span',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const CloseLabel = createComponent(
@@ -76,15 +76,15 @@ const CloseLabel = createComponent(
     },
   }),
   CheckLabel,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
-const Thumb = ({
-  item, width, height, onClick, onRemove, isActive
-}) =>
-  (item ? (
+const Thumb = ({ item, width, height, onClick, onRemove, isActive }) =>
+  item ? (
     <ImageContainer isActive={isActive}>
-      {height ? <Image value={item} height={height} maxWidth={300} onClick={onClick} /> : null}
+      {height ? (
+        <Image value={item} height={height} maxWidth={300} onClick={onClick} />
+      ) : null}
       {width ? (
         <Image
           value={{ ...item, width, height: item.height / item.width * width }}
@@ -113,7 +113,7 @@ const Thumb = ({
         undefined
       )}
     </ImageContainer>
-  ) : null);
+  ) : null;
 Thumb.propTypes = {
   item: object,
   onClick: func,

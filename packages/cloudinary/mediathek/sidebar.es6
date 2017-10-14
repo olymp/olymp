@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Tabs } from 'antd';
-import { compose, onlyUpdateForPropTypes, setPropTypes, withPropsOnChange } from 'recompose';
+import {
+  compose,
+  onlyUpdateForPropTypes,
+  setPropTypes,
+  withPropsOnChange,
+} from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { connect } from 'react-redux';
 import Image from '../image';
@@ -13,7 +18,8 @@ import Selection from './selection';
       ['desc', 'asc', 'desc', 'desc', 'asc'],
     ); */
 
-const image = ({ image }) => image && <Image value={image} width={37} height={37} />;
+const image = ({ image }) =>
+  image && <Image value={image} width={37} height={37} />;
 
 // @withPropsOnChange(['items', 'search', 'filter'])
 const enhance = compose(
@@ -36,86 +42,104 @@ const enhance = compose(
     onSelect: PropTypes.func,
   }),
   connect(({ cloudinary }, { items }) => ({
-    items: cloudinary.selectedIds.map(x => items.find(item => item.id === x)).filter(x => x),
+    items: cloudinary.selectedIds
+      .map(x => items.find(item => item.id === x))
+      .filter(x => x),
     activeId: cloudinary.activeId,
-  }))
+  })),
 );
 
 const Directory = withPropsOnChange(['items'], ({ items }) => ({
   items: items.filter(dir => !dir.active && !dir.disabled),
-}))(({ id, items }) =>
-  (items.length ? (
-    <div>
-      {id && (
-      <div
-        style={{
-          padding: 3,
-          paddingLeft: 7,
-          paddingRight: 7,
-          backgroundColor: 'rgba(233, 233, 233, 0.47)',
-          borderBottom: '1px solid #eee',
-        }}
-      >
-        {id || 'Allgemein'}
-      </div>
+}))(
+  ({ id, items }) =>
+    items.length ? (
+      <div>
+        {id && (
+          <div
+            style={{
+              padding: 3,
+              paddingLeft: 7,
+              paddingRight: 7,
+              backgroundColor: 'rgba(233, 233, 233, 0.47)',
+              borderBottom: '1px solid #eee',
+            }}
+          >
+            {id || 'Allgemein'}
+          </div>
         )}
-      {items.map(dir => <List.Item {...dir} image={image(dir)} />)}
-    </div>
-  ) : null), );
+        {items.map(dir => <List.Item {...dir} image={image(dir)} />)}
+      </div>
+    ) : null,
+);
 
-export default enhance(({
-  upload,
-  onClose,
-  search,
-  setSearch,
-  goBack,
-  onChange,
-  tab,
-  setTab,
-  directories,
-  items,
-  activeId,
-  onClick,
-  onRemove,
-}) => (
-  <Sidebar
-    width={280}
-    leftButtons={onClose && <Sidebar.Button shape="circle" onClick={onClose} icon="close" />}
-    rightButtons={
-      <Upload {...upload}>
-        <Sidebar.Button shape="circle" icon="plus" />
-      </Upload>
+export default enhance(
+  ({
+    upload,
+    onClose,
+    search,
+    setSearch,
+    goBack,
+    onChange,
+    tab,
+    setTab,
+    directories,
+    items,
+    activeId,
+    onClick,
+    onRemove,
+  }) => (
+    <Sidebar
+      width={280}
+      leftButtons={
+        onClose && (
+          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
+        )
       }
-    isOpen
-    padding={0}
-    title="Medien"
-  >
-    <Tabs
-      activeKey={tab || ''}
-      onTabClick={setTab}
-      size="small"
-      tabBarStyle={{ marginBottom: 0 }}
+      rightButtons={
+        <Upload {...upload}>
+          <Sidebar.Button shape="circle" icon="plus" />
+        </Upload>
+      }
+      isOpen
+      padding={0}
+      title="Medien"
     >
-      <Tabs.TabPane tab="Navigation" key="">
-        <List.Filter placeholder="Filter ..." onChange={setSearch} value={search} />
-        {goBack && <List.Item label="Zurück" icon="left" onClick={goBack} />}
-        {Object.keys(directories).map(key => (
-          <Directory key={key} id={key} items={directories[key]} />
-          ))}
-      </Tabs.TabPane>
-      {items.length ? (
-        <Tabs.TabPane tab={`Auswahl (${items.length})`} key="select" disabled={!items.length}>
-          <Selection
-            items={items}
-            key={items.map(x => x.id).join(';')}
-            activeId={activeId}
-            onClick={onClick}
-            onRemove={onRemove}
-              // onCancel={() => this.onSelect(selected)}
-            onChange={onChange}
+      <Tabs
+        activeKey={tab || ''}
+        onTabClick={setTab}
+        size="small"
+        tabBarStyle={{ marginBottom: 0 }}
+      >
+        <Tabs.TabPane tab="Navigation" key="">
+          <List.Filter
+            placeholder="Filter ..."
+            onChange={setSearch}
+            value={search}
           />
+          {goBack && <List.Item label="Zurück" icon="left" onClick={goBack} />}
+          {Object.keys(directories).map(key => (
+            <Directory key={key} id={key} items={directories[key]} />
+          ))}
         </Tabs.TabPane>
+        {items.length ? (
+          <Tabs.TabPane
+            tab={`Auswahl (${items.length})`}
+            key="select"
+            disabled={!items.length}
+          >
+            <Selection
+              items={items}
+              key={items.map(x => x.id).join(';')}
+              activeId={activeId}
+              onClick={onClick}
+              onRemove={onRemove}
+              // onCancel={() => this.onSelect(selected)}
+              onChange={onChange}
+            />
+          </Tabs.TabPane>
         ) : null}
-    </Tabs>
-  </Sidebar>
-), );
+      </Tabs>
+    </Sidebar>
+  ),
+);

@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
+import {
+  CellMeasurer,
+  CellMeasurerCache,
+} from 'react-virtualized/dist/commonjs/CellMeasurer';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import Masonry, { createCellPositioner } from 'react-virtualized/dist/commonjs/Masonry';
+import Masonry, {
+  createCellPositioner,
+} from 'react-virtualized/dist/commonjs/Masonry';
 import Thumb from './thumb';
 
 const Item = connect(({ cloudinary }, { item }) => ({
   isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
-}))(({
-  style, item, isActive, onClick, onRemove, width
-}) => (
+}))(({ style, item, isActive, onClick, onRemove, width }) => (
   <div
     style={{
       ...style,
@@ -27,7 +30,9 @@ const Item = connect(({ cloudinary }, { item }) => ({
       onRemove={() => onRemove(item.id)}
       isActive={isActive}
     />
-    <small style={{ textAlign: 'center', maxWidth: width, marginTop: '-0.5rem' }}>
+    <small
+      style={{ textAlign: 'center', maxWidth: width, marginTop: '-0.5rem' }}
+    >
       <b>{item.caption}</b>
     </small>
   </div>
@@ -58,9 +63,7 @@ export default class GridExample extends PureComponent {
     this.columnWidth = Math.floor(this.width / this.columnCount);
   };
 
-  cellRenderer = ({
-    index, key, parent, style
-  }) => {
+  cellRenderer = ({ index, key, parent, style }) => {
     const { items, onClick, onRemove } = this.props;
 
     const item = items[index];
@@ -130,7 +133,7 @@ export default class GridExample extends PureComponent {
     });
   };
 
-  setMasonryRef = (ref) => {
+  setMasonryRef = ref => {
     this.masonry = ref;
   };
 }

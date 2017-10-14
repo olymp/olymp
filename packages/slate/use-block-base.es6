@@ -23,7 +23,7 @@ const Action = ({ node, state, onChange, schema }) => (
   { toggle, active, label, component, ...rest },
   i,
 ) => {
-  const setData = (data) => {
+  const setData = data => {
     const transform = state
       .change()
       .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } });
@@ -33,12 +33,20 @@ const Action = ({ node, state, onChange, schema }) => (
 
   const getData = (name, defaultValue) => node.data.get(name) || defaultValue;
 
-  const tooltip = typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
+  const tooltip =
+    typeof rest.tooltip === 'function' ? rest.tooltip(getData) : rest.tooltip;
 
-  const onClick = (e) => {
+  const onClick = e => {
     e.preventDefault();
     if (toggle) {
-      toggle({ setData, getData, state, onChange, schema, node });
+      toggle({
+        setData,
+        getData,
+        state,
+        onChange,
+        schema,
+        node,
+      });
     }
   };
 
@@ -47,11 +55,18 @@ const Action = ({ node, state, onChange, schema }) => (
     return (
       <Menu.Item key={i}>
         <Button onMouseDown={onClick} tooltip={tooltip}>
-          <Com setData={setData} getData={getData} state={state} onChange={onChange} node={node} />
+          <Com
+            setData={setData}
+            getData={getData}
+            state={state}
+            onChange={onChange}
+            node={node}
+          />
         </Button>
       </Menu.Item>
     );
   }
+
   return (
     <Menu.Item key={i}>
       <Button
@@ -65,7 +80,7 @@ const Action = ({ node, state, onChange, schema }) => (
   );
 };
 
-export default options => (Block) => {
+export default options => Block => {
   const StyledBlock = createComponent(
     ({ isSelected, theme }) => ({
       outline: isSelected && options.category && `2px solid ${theme.color}`,
@@ -87,28 +102,30 @@ export default options => (Block) => {
           component: ({ onChange, state, node }) => (
             <div>
               <FaChevronUp
-                onMouseDown={(e) => {
+                onMouseDown={e => {
                   onChange(
                     state
                       .change()
                       .moveNodeByKey(
                         node.key,
                         state.document.getParent(node.key).key,
-                        state.document.getParent(node.key).nodes.indexOf(node) - 1,
+                        state.document.getParent(node.key).nodes.indexOf(node) -
+                          1,
                       ),
                   );
                   e.preventDefault();
                 }}
               />
               <FaChevronDown
-                onMouseDown={(e) => {
+                onMouseDown={e => {
                   onChange(
                     state
                       .change()
                       .moveNodeByKey(
                         node.key,
                         state.document.getParent(node.key).key,
-                        state.document.getParent(node.key).nodes.indexOf(node) + 1,
+                        state.document.getParent(node.key).nodes.indexOf(node) +
+                          1,
                       ),
                   );
                   e.preventDefault();
@@ -150,6 +167,7 @@ export default options => (Block) => {
               ),
           });
         } */
+
         actions.push({
           component: ({ state, onChange, node }) => (
             <Dropdown
@@ -157,7 +175,7 @@ export default options => (Block) => {
                 <Menu style={{ minWidth: 200 }}>
                   <Menu.Item>
                     <span
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         setLink(onChange, state, node);
                         e.preventDefault();
                       }}
@@ -168,7 +186,7 @@ export default options => (Block) => {
                   <Menu.Divider />
                   <Menu.Item>
                     <span
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         onChange(state.change().removeNodeByKey(node.key));
                         e.preventDefault();
                       }}
@@ -178,7 +196,7 @@ export default options => (Block) => {
                   </Menu.Item>
                   <Menu.Item>
                     <span
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         onChange(
                           state
                             .change()
@@ -194,7 +212,7 @@ export default options => (Block) => {
                   </Menu.Item>
                   <Menu.Item>
                     <span
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         onChange(
                           state
                             .change()
@@ -212,7 +230,7 @@ export default options => (Block) => {
                   {node.kind === 'block' && (
                     <Menu.Item>
                       <span
-                        onMouseDown={(e) => {
+                        onMouseDown={e => {
                           onChange(state.change().unwrapBlockByKey(node.key));
                           e.preventDefault();
                         }}
@@ -224,12 +242,14 @@ export default options => (Block) => {
                   <Menu.Divider />
                   <Menu.Item>
                     <span
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         onChange(
-                          state.change().insertNodeByKey(node.key, node.nodes.size, {
-                            type: 'paragraph',
-                            kind: 'block',
-                          }),
+                          state
+                            .change()
+                            .insertNodeByKey(node.key, node.nodes.size, {
+                              type: 'paragraph',
+                              kind: 'block',
+                            }),
                         );
                         e.preventDefault();
                       }}
@@ -239,13 +259,15 @@ export default options => (Block) => {
                   </Menu.Item>
                   <Menu.Item>
                     <span
-                      onMouseDown={(e) => {
+                      onMouseDown={e => {
                         onChange(
                           state
                             .change()
                             .insertNodeByKey(
                               state.document.getParent(node.key).key,
-                              state.document.getParent(node.key).nodes.indexOf(node) + 1,
+                              state.document
+                                .getParent(node.key)
+                                .nodes.indexOf(node) + 1,
                               {
                                 type: 'paragraph',
                                 kind: 'block',
@@ -269,7 +291,7 @@ export default options => (Block) => {
       return actions;
     };
 
-    setData = (data) => {
+    setData = data => {
       const { editor } = this.props;
       const transform = editor
         .getState()
@@ -330,7 +352,7 @@ export default options => (Block) => {
                 )}
               </Toolbar>
             )}
-          {options.isVoid === false ? [children] : []}
+          {options.isVoid === false ? children : []}
         </StyledBlock>
       );
     }

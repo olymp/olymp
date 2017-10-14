@@ -1,7 +1,7 @@
 module.exports = {
   parser: 'babel-eslint',
-  extends: ['prettier', 'prettier/react', 'airbnb'],
-  plugins: ['react', 'prettier'],
+  extends: ['airbnb', 'prettier'],
+  plugins: ['react', 'jsx-a11y', 'import', 'prettier'],
   env: {
     browser: true,
     es6: true,
@@ -9,13 +9,14 @@ module.exports = {
     jest: true,
   },
   parserOptions: {
-    ecmaVersion: 2016,
+    ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
     },
   },
   rules: {
+    /*'prettier/prettier': 'error',
     'no-duplicate-imports': 0,
     'react/jsx-filename-extension': 0,
     'react/sort-comp': 0,
@@ -32,6 +33,6 @@ module.exports = {
     'consistent-return': 1,
     'no-use-before-define': 1,
     'jsx-a11y/href-no-hash': 'off',
-    'jsx-a11y/anchor-is-valid': ['warn', { aspects: ['invalidHref'] }],
+    'jsx-a11y/anchor-is-valid': ['warn', { aspects: ['invalidHref'] }],*/
   },
 };
