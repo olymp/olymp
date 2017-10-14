@@ -4,6 +4,8 @@ import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Select, Icon, Collapse, Tag } from 'antd';
 import { format } from 'date-fns';
 import { ContentLoader } from 'olymp-fela';
+import { connect } from 'react-redux';
+import { queryTags } from '../gql/query';
 import Crop from '../components/crop';
 import LightboxImage from '../lightbox-image';
 
@@ -12,8 +14,6 @@ const FormItemLayout = {
   wrapperCol: { span: 16 },
   style: { marginBottom: 4 },
 };
-
-const tagsFromServer = ['Movies', 'Books', 'Music', 'Sports'];
 
 const FormForFullLayout = {
   wrapperCol: { span: 24, offset: 0 },
@@ -26,6 +26,7 @@ const MediaDetail = ({
   source,
   tags,
   editable,
+  fileTags,
   form,
   children,
   ...rest
@@ -87,15 +88,6 @@ const MediaDetail = ({
               />,
             )}
           </Form.Item>
-          {tagsFromServer.map(tag => (
-            <Tag.CheckableTag
-              key={tag}
-              checked={false}
-              onChange={checked => this.handleChange(tag, checked)}
-            >
-              {tag}
-            </Tag.CheckableTag>
-          ))}
           <Form.Item label="Zustand" {...FormItemLayout}>
             {form.getFieldDecorator('state', {
               initialValue: item.state,
@@ -173,11 +165,16 @@ const MediaDetail = ({
             />,
           )}
         </Form.Item>
-        {tagsFromServer.map(tag => (
+        {fileTags.map(tag => (
           <Tag.CheckableTag
             key={tag}
-            checked={false}
-            onChange={checked => this.handleChange(tag, checked)}
+            checked={(form.getFieldValue('tags') || []).indexOf(tag) !== -1}
+            onChange={checked =>
+              form.setFieldsValue({
+                tags: checked
+                  ? [...form.getFieldValue('tags'), tag]
+                  : form.getFieldValue('tags').filter(x => x !== tag),
+              })}
           >
             {tag}
           </Tag.CheckableTag>
@@ -233,4 +230,6 @@ MediaDetail.defaultProps = {
   tags: false,
   editable: true,
 };
-export default MediaDetail;
+export default connect(({ cloudinary }) => ({
+  folder: cloudinary.folder,
+}))(queryTags(MediaDetail));

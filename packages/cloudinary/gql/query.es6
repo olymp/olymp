@@ -62,6 +62,30 @@ export const queryMedias = graphql(
     }),
   },
 );
+export const queryTags = graphql(
+  gql`
+    query fileTags($folder: String) {
+      fileTags(folder: $folder)
+    }
+  `,
+  {
+    options: ({ folder }) => ({
+      variables: {
+        folder: folder
+          ? folder
+              .split('/')
+              .filter((x, i) => i !== 0)
+              .join('/')
+          : undefined,
+      },
+    }),
+    props: ({ ownProps, data }) => ({
+      ...ownProps,
+      fileTags: data.fileTags || [],
+      data,
+    }),
+  },
+);
 
 export const cloudinaryRequest = graphql(
   gql`

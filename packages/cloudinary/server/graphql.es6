@@ -16,7 +16,7 @@ export default uri => {
     name: 'file',
     queries: `
       cloudinaryRequest: CloudinaryRequest
-      fileTags: [String]
+      fileTags(folder: String): [String]
     `,
     mutations: `
       cloudinaryRequestDone(id: String, token: String): File
@@ -56,17 +56,20 @@ export default uri => {
           if (!user) {
             return [];
           }
-          mongoQuery._appId = { $in: user._appIds };
-          mongoQuery._type = 'file';
+          const mongoQuery = {
+            _appId: { $in: user._appIds },
+            _type: 'file',
+          };
           if (folder) {
             mongoQuery.folder = folder;
           }
-          console.log(mongoQuery);
           return monk
             .collection('item')
             .find(mongoQuery)
             .then(items =>
-              sortBy(uniq(flatMap(items, item => item.tags)), x => x),
+              sortBy(uniq(flatMap(items, item => item.tags)), x => x).filter(
+                x => x,
+              ),
             );
         },
         cloudinaryRequest: () => {
