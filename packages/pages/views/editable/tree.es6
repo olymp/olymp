@@ -6,7 +6,7 @@ import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Icon, Tooltip, Tree } from 'antd';
 import { lowerCase, orderBy, sortBy } from 'lodash';
-import { reorderPage2 } from '../../gql/mutation';
+import { reorderPage } from '../../gql/mutation';
 import { queryPages } from '../../gql/query';
 
 const Button = createComponent(
@@ -50,7 +50,7 @@ const Badge = createComponent(
 );
 
 @withRouter
-@reorderPage2
+@reorderPage
 @queryPages
 @withPropsOnChange(['pageList'], ({ pageList }) => {
   const flatNavigation = [];
@@ -85,8 +85,6 @@ class Pages extends Component {
       .map(child => child.id)
       .filter(x => x !== page.id);
     childIds.splice(info.dropPosition, 0, page.id);
-
-    console.log(parent, page, childIds);
 
     // Check if new parent is itself??
     if (parent && parent.sorting && ['+', '-'].includes(parent.sorting[0])) {

@@ -93,7 +93,7 @@ export const mutatePage = compose(
   }),
 );
 
-export const reorderPage2 = graphql(
+export const reorderPage = graphql(
   gql`
     mutation reorderPage($ids: [String], $parentId: String) {
       reorderPages(ids: $ids, parentId: $parentId) {
@@ -108,11 +108,6 @@ export const reorderPage2 = graphql(
       ...ownProps,
       reorder: mutate,
     }),
-    refetchQueries: [
-      {
-        query: pageList,
-      },
-    ],
   },
 );
 

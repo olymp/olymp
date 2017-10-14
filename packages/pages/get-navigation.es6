@@ -28,6 +28,7 @@ export default Wrapped => {
     queryPages,
     withPropsOnChange(['pageList'], ({ pageList, data }) => {
       const deco = pageList.filter(item => item.binding);
+      console.log('REFRESH', pageList);
       const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
       return {
         navKey: key,
@@ -35,7 +36,7 @@ export default Wrapped => {
         isNavigationLoading: data.loading,
       };
     }),
-    withPropsOnChange(['navKey'], ({ pageList }) => ({
+    withPropsOnChange(['navKey', 'pageList'], ({ pageList }) => ({
       Component: pageList
         .filter(item => item.binding && item.binding.type)
         .reduce((component, value) => {
@@ -81,7 +82,7 @@ export default Wrapped => {
   );
 
   const after = withPropsOnChange(
-    ['isNavigationLoading'],
+    ['isNavigationLoading', 'pageList'],
     ({ pageList, isNavigationLoading, navBindingObj }) => {
       const flatNavigation = [];
       if (isNavigationLoading) {
