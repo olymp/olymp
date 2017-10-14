@@ -15,6 +15,6 @@
     "slate-edit-list": "^0.8.0",
     "slate-hyperscript": "^0.1.13",
     "slate-plain-serializer": "^0.1.14",
-    "slate-react": "^0.3.3"
+    "slate-react": "^0.3.4"
   }
 }

@@ -13,9 +13,6 @@ export default ({ theme }) => {
     .toRgbString();
 
   return {
-    '& div[data-slate-editor="true"][contenteditable="false"] [data-slate-void="true"] > div > span > span[data-offset-key]': {
-      display: 'none',
-    },
     '& ::selection': {
       background: color,
     },
