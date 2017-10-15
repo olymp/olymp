@@ -1,12 +1,7 @@
 import { adaptQuery } from 'olymp-collection/server';
 import ShortId from 'shortid';
 import { flatMap, uniq, sortBy } from 'lodash';
-import {
-  parseURI,
-  getImageById,
-  getSignedRequest,
-  updateImage,
-} from './cloudinary';
+import { parseURI, getImageById, getSignedRequest } from './cloudinary';
 
 export default uri => {
   const config = parseURI(uri);
@@ -19,7 +14,7 @@ export default uri => {
       fileTags(folder: String): [String]
     `,
     mutations: `
-      cloudinaryRequestDone(id: String, token: String): File
+      cloudinaryRequestDone(id: String, token: String, folder: String, tags: [String]): File
     `,
     resolvers: {
       queries: {
@@ -119,28 +114,29 @@ export default uri => {
                 ),
             );
         },
-        cloudinaryRequestDone: (source, args, { monk, app }) => {
-          if (args.token && invalidationTokens.indexOf(args.token) !== -1) {
-            invalidationTokens.splice(
-              invalidationTokens.indexOf(args.token),
-              1,
-            );
-            return getImageById(config, args.id)
+        cloudinaryRequestDone: (
+          source,
+          { token, id, folder, tags },
+          { monk, app },
+        ) => {
+          if (token && invalidationTokens.indexOf(token) !== -1) {
+            invalidationTokens.splice(invalidationTokens.indexOf(token), 1);
+            return getImageById(config, id)
               .then(image =>
                 monk.collection('item').update(
-                  { publicId: args.id },
+                  { publicId: id },
                   {
                     ...image,
                     id: ShortId.generate(),
                     _type: 'file',
                     _appId: app.id,
+                    tags,
+                    folder: folder || null,
                   },
                   { upsert: true },
                 ),
               )
-              .then(x =>
-                monk.collection('item').findOne({ publicId: args.id }),
-              );
+              .then(x => monk.collection('item').findOne({ publicId: id }));
           }
           throw new Error('Invalid');
         },

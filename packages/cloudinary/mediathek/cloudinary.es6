@@ -10,15 +10,19 @@ import { withRedux, withActions } from './redux';
 import Gallery from '../components/vgallery';
 import Sidebar from './sidebar';
 
-const getItems = items => items.map(item => ({ ...item, tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags }));
+const getItems = items =>
+  items.map(item => ({
+    ...item,
+    tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
+  }));
 
 const getTags = (items, search) => {
   const tags = { 'Ohne Schlagworte': [] };
-  items.forEach((item) => {
+  items.forEach(item => {
     if (!item.tags.length) {
       tags['Ohne Schlagworte'].push(item);
     } else {
-      item.tags.forEach((tag) => {
+      item.tags.forEach(tag => {
         if (search && tag.toLowerCase().indexOf(search.toLowerCase()) === -1) {
           return;
         }
@@ -33,13 +37,23 @@ const getTags = (items, search) => {
 };
 
 const getDirectories = ({
-  items, tags: filter, setTags, folder, setFolder, search, format
+  items,
+  tags: filter,
+  setTags,
+  folder,
+  setFolder,
+  search,
+  format,
 }) => {
   const folders = {};
-  items.forEach((item) => {
-    if (format && item.format !== format) { return; }
+  items.forEach(item => {
+    if (format && item.format !== format) {
+      return;
+    }
     const app =
-      item.publicId && item.publicId.indexOf('/') !== -1 ? item.publicId.split('/')[0] : 'gzk';
+      item.publicId && item.publicId.indexOf('/') !== -1
+        ? item.publicId.split('/')[0]
+        : 'gzk';
     const folder = item.folder ? `${app}/${item.folder}` : `${app}/Allgemein`;
     if (!folders[folder]) {
       folders[folder] = [];
@@ -48,7 +62,7 @@ const getDirectories = ({
   });
 
   if (!folder) {
-    const directories = Object.keys(folders).map((name) => {
+    const directories = Object.keys(folders).map(name => {
       const label = last(name.split('/').filter(x => x));
       return {
         active: false,
@@ -66,17 +80,25 @@ const getDirectories = ({
     return {
       goBack: null,
       shortId: shortID.generate(),
-      directories: groupBy(orderBy(directories, ['countFilter'], ['desc']), 'group'),
+      directories: groupBy(
+        orderBy(directories, ['countFilter'], ['desc']),
+        'group',
+      ),
       filteredItems: items,
     };
   }
 
-  items = (folders[folder] || []);
+  items = folders[folder] || [];
   const tags = getTags(items, search);
-  const directories = Object.keys(tags).map((tag) => {
+  const directories = Object.keys(tags).map(tag => {
     const active = !!filter.find(x => x === tag);
-    const filteredTags = !active ? [...filter, tag] : filter.filter(x => x !== tag);
-    const filteredItems = items.filter(item => intersection(item.tags, filteredTags).length === filteredTags.length,);
+    const filteredTags = !active
+      ? [...filter, tag]
+      : filter.filter(x => x !== tag);
+    const filteredItems = items.filter(
+      item =>
+        intersection(item.tags, filteredTags).length === filteredTags.length,
+    );
     const countFilter = (getTags(filteredItems)[tag] || []).length;
     const countAll = tags[tag].length;
     const disabled = !countFilter;
@@ -86,10 +108,14 @@ const getDirectories = ({
     return {
       active,
       disabled,
-      group: label !== tag ? tag.substr(0, tag.length - label.length - 1) : 'Allgemein',
+      group:
+        label !== tag
+          ? tag.substr(0, tag.length - label.length - 1)
+          : 'Allgemein',
       onClick: () => setTags(filteredTags),
       label,
-      description: countFilter === countAll ? text : `${countFilter} von ${text}`,
+      description:
+        countFilter === countAll ? text : `${countFilter} von ${text}`,
       image: tags[tag][0],
       countFilter,
       countAll,
@@ -98,35 +124,50 @@ const getDirectories = ({
   });
 
   return {
-    goBack: filter.length ? () => setTags(filter.slice(0, -1)) : () => setFolder(),
+    goBack: filter.length
+      ? () => setTags(filter.slice(0, -1))
+      : () => setFolder(),
     shortId: shortID.generate(),
-    directories: groupBy(orderBy(directories, ['countFilter'], ['desc']), 'group'),
-    filteredItems: items.filter(item => intersection(item.tags, filter).length === filter.length),
+    directories: groupBy(
+      orderBy(directories, ['countFilter'], ['desc']),
+      'group',
+    ),
+    filteredItems: items.filter(
+      item => intersection(item.tags, filter).length === filter.length,
+    ),
   };
 };
 
 @withRedux
 @queryMedias
-@withPropsOnChange(
-  ['items'],
-  ({ items }) => ({ items: getItems(items) }),
-)
+@withPropsOnChange(['items'], ({ items }) => ({ items: getItems(items) }))
 @cloudinaryRequest
 @cloudinaryRequestDone
 @withActions
 @withPropsOnChange(
   ['tags', 'items', 'format', 'search', 'folder'],
-  ({
-    tags, items, setTags, folder, setFolder, search, format
-  }) =>
+  ({ tags, items, setTags, folder, setFolder, search, format }) =>
     getDirectories({
-      items, tags, setTags, setFolder, folder, search, format
+      items,
+      tags,
+      setTags,
+      setFolder,
+      folder,
+      search,
+      format,
     }),
 )
 @withPropsOnChange(
-  ['uploading', 'cloudinaryRequest'],
+  ['uploading', 'cloudinaryRequest', 'folder', 'tags'],
   ({
-    cloudinaryRequest, done, refetchKey, setUploading, uploading, setSelection
+    cloudinaryRequest,
+    done,
+    folder: folder2,
+    tags,
+    refetchKey,
+    setUploading,
+    uploading,
+    setSelection,
   }) => {
     const saveProgress = file =>
       setUploading([
@@ -144,9 +185,9 @@ const getDirectories = ({
       return {};
     }
 
-    const {
-      apiKey, signature, timestamp, url, folder
-    } = cloudinaryRequest;
+    console.log(tags);
+
+    const { apiKey, signature, timestamp, url, folder } = cloudinaryRequest;
     return {
       upload: {
         showUploadList: false,
@@ -168,13 +209,22 @@ const getDirectories = ({
               saveProgress(file);
               message.success(`${file.name} erfolgreich hochgeladen.`);
             }
-
             if (!uploading.find(file => file.percent < 100)) {
               // Write data in DB
-              uploading.forEach((f) => {
+              uploading.forEach(f => {
                 const response = { ...file.response };
                 response.id = response.public_id;
-                done({ id: response.id, token: signature }).then(({ data }) => {
+                done({
+                  id: response.id,
+                  token: signature,
+                  tags,
+                  folder: folder2
+                    ? folder2
+                        .split('/')
+                        .filter((x, i) => i !== 0)
+                        .join('/')
+                    : null,
+                }).then(({ data }) => {
                   // remove file from uploading
                   setUploading(uploading.filter(x => x.name !== file.name));
                   if (data && data.cloudinaryRequestDone) {
@@ -197,10 +247,12 @@ class CloudinaryView extends Component {
   static propTypes = {
     onClose: PropTypes.func,
     onChange: PropTypes.func,
-    selection: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string,
-      crop: PropTypes.arrayOf(PropTypes.number),
-    }),),
+    selection: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        crop: PropTypes.arrayOf(PropTypes.number),
+      }),
+    ),
     format: PropTypes.string,
     multi: PropTypes.bool,
   };
@@ -211,9 +263,7 @@ class CloudinaryView extends Component {
   };
 
   onClick = (id, e) => {
-    const {
-      selection, addSelection, setSelection, setActive
-    } = this.props;
+    const { selection, addSelection, setSelection, setActive } = this.props;
     const exists = selection.indexOf(id) !== -1;
     if (!exists) {
       if (e.shiftKey) {

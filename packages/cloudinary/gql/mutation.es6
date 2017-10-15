@@ -11,11 +11,13 @@ const ok = (item, mutate) => {
     },
     updateQueries: item.removed
       ? {
-        fileList: (prev, { mutationResult }) => ({
-          ...prev,
-          items: prev.items.filter(item => item.id !== mutationResult.data.item.id),
-        }),
-      }
+          fileList: (prev, { mutationResult }) => ({
+            ...prev,
+            items: prev.items.filter(
+              item => item.id !== mutationResult.data.item.id,
+            ),
+          }),
+        }
       : undefined,
   })
     .then(({ data: { item } }) => {
@@ -30,7 +32,11 @@ const ok = (item, mutate) => {
 
 export default graphql(
   gql`
-    mutation file($id: String, $input: FileInput, $operationType: MUTATION_TYPE) {
+    mutation file(
+      $id: String
+      $input: FileInput
+      $operationType: MUTATION_TYPE
+    ) {
       item: file(id: $id, input: $input, type: $operationType) {
         id
         publicId
@@ -64,8 +70,18 @@ export default graphql(
 
 export const cloudinaryRequestDone = graphql(
   gql`
-    mutation cloudinaryRequestDone($id: String, $token: String) {
-      cloudinaryRequestDone(id: $id, token: $token) {
+    mutation cloudinaryRequestDone(
+      $id: String
+      $token: String
+      $folder: String
+      $tags: [String]
+    ) {
+      cloudinaryRequestDone(
+        id: $id
+        token: $token
+        folder: $folder
+        tags: $tags
+      ) {
         id
         publicId
         url
@@ -86,9 +102,9 @@ export const cloudinaryRequestDone = graphql(
   {
     props({ ownProps, mutate }) {
       return {
-        done({ id, token }) {
+        done({ id, token, folder, tags }) {
           return mutate({
-            variables: { id, token },
+            variables: { id, token, folder, tags },
             updateQueries: {
               fileList: (prev, { mutationResult }) => {
                 const newData = mutationResult.data.cloudinaryRequestDone;
