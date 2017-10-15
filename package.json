@@ -55,6 +55,7 @@
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.7",
     "eslint-config-olymp": "^18.0.13",
+    "lb": "0.0.1",
     "webpack": "^3.7.1"
   },
   "devDependencies": {
