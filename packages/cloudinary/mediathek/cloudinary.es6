@@ -185,8 +185,6 @@ const getDirectories = ({
       return {};
     }
 
-    console.log(tags);
-
     const { apiKey, signature, timestamp, url, folder } = cloudinaryRequest;
     return {
       upload: {
