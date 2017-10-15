@@ -13,14 +13,23 @@ import LightboxGallery from '../lightbox-gallery';
   editable: !onChange,
   multi: items.length > 1,
 }))
-@withPropsOnChange(['editable', 'items', 'activeId'], ({ editable, items, activeId }) => ({
-  selectedIds: editable ? items.map(x => x.id) : [activeId].filter(x => x),
-}))
+@withPropsOnChange(
+  ['editable', 'items', 'activeId'],
+  ({ editable, items, activeId }) => ({
+    selectedIds: editable ? items.map(x => x.id) : [activeId].filter(x => x),
+  }),
+)
 class SelectionSidebar extends Component {
+  componentWillReceiveProps({ selectedIds, form }) {
+    if (this.props.selectedIds !== selectedIds) {
+      if (selectedIds.length === 1) {
+        // form.resetFields();
+      }
+    }
+  }
+
   save = () => {
-    const {
-      form, items, multi, save, onChange
-    } = this.props;
+    const { form, items, multi, save, onChange } = this.props;
     if (onChange) {
       return onChange(items);
     }
@@ -36,23 +45,25 @@ class SelectionSidebar extends Component {
           }
           return state;
         }, {});
-        promise = Promise.all(items.map(item => save({ id: item.id, ...changed }))).then(x =>
-          form.resetFields(),);
+        promise = Promise.all(
+          items.map(item => save({ id: item.id, ...changed })),
+        ).then(x => form.resetFields());
       } else {
         promise = save(values).then(x => form.resetFields());
       }
     });
   };
-  componentWillReceiveProps({ selectedIds, form }) {
-    if (this.props.selectedIds !== selectedIds) {
-      if (selectedIds.length === 1) {
-        // form.resetFields();
-      }
-    }
-  }
+
   render() {
     const {
-      selectedIds, onClick, form, items, editable, onRemove, onCancel, multi
+      selectedIds,
+      onClick,
+      form,
+      items,
+      editable,
+      onRemove,
+      onCancel,
+      multi,
     } = this.props;
     return (
       <div style={{ padding: 10 }}>
@@ -85,18 +96,14 @@ class SelectionSidebar extends Component {
 }
 SelectionSidebar.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
-  activeItem: PropTypes.shape({
-    id: PropTypes.string,
-    crop: PropTypes.arrayOf(PropTypes.number),
-  }),
   onClick: PropTypes.func,
-  onSelect: PropTypes.func,
   onRemove: PropTypes.func,
   onCancel: PropTypes.func,
 };
 SelectionSidebar.defaultProps = {
   items: [],
-  activeItem: {},
-  onSelect: undefined,
+  onClick: undefined,
+  onRemove: undefined,
+  onCancel: undefined,
 };
 export default SelectionSidebar;

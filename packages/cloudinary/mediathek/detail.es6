@@ -1,13 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TagsEditor } from 'olymp-ui';
-import { Form, Input, Select, Icon, Collapse, Tag } from 'antd';
-import { format } from 'date-fns';
-import { ContentLoader } from 'olymp-fela';
+import { Form, Input, Select, Icon, Tag } from 'antd';
+import { ContentLoader, createComponent } from 'olymp-fela';
 import { connect } from 'react-redux';
 import { queryTags } from '../gql/query';
 import Crop from '../components/crop';
 import LightboxImage from '../lightbox-image';
+
+const TagContainer = createComponent(
+  ({ theme }) => ({
+    paddingX: theme.space1,
+    marginBottom: theme.space2,
+    hasFlex: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+    },
+    '> div': {
+      marginBottom: theme.space1,
+      ellipsis: true,
+      ':not(.ant-tag-checkable-checked)': {
+        backgroundColor: theme.dark5,
+      },
+    },
+  }),
+  'div',
+  [],
+);
 
 const FormItemLayout = {
   labelCol: { span: 8 },
@@ -161,24 +181,26 @@ const MediaDetail = ({
               disabled={(tags && multi) || !editable}
               searchPlaceholder="Suche ..."
               placeholder="Schlagworte"
-              style={{ width: '100%' }}
+              style={{ width: '100%', display: 'none' }}
             />,
           )}
         </Form.Item>
-        {fileTags.map(tag => (
-          <Tag.CheckableTag
-            key={tag}
-            checked={(form.getFieldValue('tags') || []).indexOf(tag) !== -1}
-            onChange={checked =>
-              form.setFieldsValue({
-                tags: checked
-                  ? [...form.getFieldValue('tags'), tag]
-                  : form.getFieldValue('tags').filter(x => x !== tag),
-              })}
-          >
-            {tag}
-          </Tag.CheckableTag>
-        ))}
+        <TagContainer>
+          {fileTags.map(tag => (
+            <Tag.CheckableTag
+              key={tag}
+              checked={(form.getFieldValue('tags') || []).indexOf(tag) !== -1}
+              onChange={checked =>
+                form.setFieldsValue({
+                  tags: checked
+                    ? [...form.getFieldValue('tags'), tag]
+                    : form.getFieldValue('tags').filter(x => x !== tag),
+                })}
+            >
+              {tag}
+            </Tag.CheckableTag>
+          ))}
+        </TagContainer>
         {/* <Form.Item key="tecnical" {...FormForFullLayout}>
           <Collapse bordered={false} defaultActiveKey={[]}>
             <Collapse.Panel header="Technische Infos" key="1">
