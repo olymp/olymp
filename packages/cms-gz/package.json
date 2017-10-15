@@ -1,5 +1,5 @@
 {
-  "version": "18.0.15",
+  "version": "18.0.16",
   "name": "olymp-cms-gz",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,7 +8,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-fela": "^18.0.15",
+    "olymp-fela": "^18.0.16",
     "olymp-utils": "^18.0.5",
     "react-image-gallery": "^0.8.3"
   }
