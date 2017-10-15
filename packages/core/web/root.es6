@@ -9,7 +9,7 @@ import App from '@app';
 import { DynamicReduxProvider } from '../redux-dynamic';
 
 export default ({ client, renderer, store, ua, dynamicRedux, asyncState }) => (
-  <AppContainer>
+  <AppContainer warnings={false}>
     <AsyncComponentProvider rehydrateState={asyncState}>
       <DynamicReduxProvider dynamicRedux={dynamicRedux}>
         <ReduxProvider store={store}>

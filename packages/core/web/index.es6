@@ -15,7 +15,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
 import { UAParser } from 'olymp-utils';
 import { createFela } from 'olymp-fela';
-import { createHistory, routerMiddleware, routerReducer, attachHistory } from 'olymp-router';
+import {
+  createHistory,
+  routerMiddleware,
+  routerReducer,
+  attachHistory,
+} from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
 // Local
@@ -45,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
     },
   });
 } else if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
     for (const registration of registrations) {
       registration.unregister();
     }
@@ -53,7 +58,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const apolloFetch = createApolloFetch({
-  uri: process.env.GRAPHQL_URL || (process.env.URL && `${process.env.URL}graphql`) || '/graphql',
+  uri:
+    process.env.GRAPHQL_URL ||
+    (process.env.URL && `${process.env.URL}graphql`) ||
+    '/graphql',
   opts: {
     credentials: 'same-origin',
   },
@@ -80,7 +88,7 @@ const link = ApolloLink.from([
       ...operation,
       query: print(operation.query),
     };
-    const then = observer => (data) => {
+    const then = observer => data => {
       if (!store.getState().app.serverConnection) {
         createServerConnection(store.dispatch)(true);
       }
@@ -89,7 +97,7 @@ const link = ApolloLink.from([
         observer.complete();
       }
     };
-    const catchError = observer => (error) => {
+    const catchError = observer => error => {
       stopLoading(store.dispatch);
       const status = error.response ? error.response.status : 500;
       if (status === 404) {
@@ -98,18 +106,19 @@ const link = ApolloLink.from([
         if (store.getState().app.serverConnection) {
           createServerConnection(store.dispatch)(false);
         }
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           setTimeout(resolve, 10000);
         }).then(() =>
           apolloFetch(request)
             .then(then(observer))
-            .catch(catchError(observer)));
+            .catch(catchError(observer)),
+        );
         // Other errors.
       } else if (!observer.closed) {
         observer.error(error);
       }
     };
-    return new Observable((observer) => {
+    return new Observable(observer => {
       apolloFetch(request)
         .then(then(observer))
         .catch(catchError(observer));
@@ -157,8 +166,10 @@ renderer = createFela(ua);
 history = createHistory();
 asyncState = window.ASYNC_STATE;
 const { apollo, ...reduxInitial } = window.INITIAL_DATA || {};
-const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true })
-  .restore(apollo || {});
+const cache = new InMemoryCache({
+  dataIdFromObject: o => o.id,
+  addTypename: true,
+}).restore(apollo || {});
 client = new ApolloClient({ link, cache });
 // Redux stuff
 dynamicRedux = createDynamicRedux();
