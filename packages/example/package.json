@@ -1,5 +1,5 @@
 {
-  "version": "18.1.0",
+  "version": "18.1.1",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "mongodb": "^2.2.31",
-    "olymp": "^18.1.0",
+    "olymp": "^18.1.1",
     "olymp-auth": "^18.1.0",
     "olymp-crypt": "^17.9.1",
     "olymp-fela": "^18.1.0",
@@ -51,8 +51,8 @@
     "react-dom": "^16.0.0-rc.3"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^18.0.13",
-    "olymp-webpack-electron": "^18.0.12"
+    "eslint-config-olymp": "^18.1.1",
+    "olymp-webpack-electron": "^18.1.1"
   },
   "electronDependencies": {},
   "build": {
