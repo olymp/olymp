@@ -5,8 +5,9 @@ import renderHelmet from 'olymp-utils/helmet';
 import { PrefetchLink } from 'olymp-cms';
 import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import { Blocks } from 'olymp-pages';
-import { SlateMate, withBlockTypes } from 'olymp-slate';
+import * as Blocks from 'olymp-pages/blocks';
+import { withBlockTypes } from 'olymp-slate/decorators';
+import { SlateReader } from 'olymp-slate';
 import ContainerBlock from 'olymp-pages/blocks/container-text';
 import { ImageStyles } from '../image/block';
 import HeaderBlock from '../../components/header';
@@ -32,10 +33,12 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Container = createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
-  Object.keys(p),
+const Container = createComponent(
+  ContainerBlock.styles,
+  ContainerBlock.component,
+  p => Object.keys(p)
 );
-const Slate = withBlockTypes(props => <SlateMate {...props} />);
+const Slate = withBlockTypes(props => <SlateReader {...props} />);
 
 const Peak = createComponent(
   props => ({
@@ -44,7 +47,13 @@ const Peak = createComponent(
   }),
   ({ className, header, subheader, value, title }) => (
     <div className={className}>
-      <Image value={value} alt={title} width="100%" maxHeight={450} maxResolution={750000} />
+      <Image
+        value={value}
+        alt={title}
+        width="100%"
+        maxHeight={450}
+        maxResolution={750000}
+      />
       {(header || subheader) && (
         <Label>
           <h1>{header}</h1>
@@ -53,7 +62,7 @@ const Peak = createComponent(
       )}
     </div>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const WhiteLink = createComponent(
@@ -64,10 +73,10 @@ const WhiteLink = createComponent(
     },
   }),
   p => <PrefetchLink {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
-const getSubheader = (item) => {
+const getSubheader = item => {
   const person = item.person && `von ${item.person.name}`;
   const org = item.org &&
     item.org.slug && <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>;
@@ -84,11 +93,11 @@ const getSubheader = (item) => {
 
 const component = withTheme(
   ({ item }) =>
-    (item.org.color
+    item.org.color
       ? {
-        color: item.org.color,
-      }
-      : {}),
+          color: item.org.color,
+        }
+      : {}
 )(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
@@ -167,7 +176,7 @@ const componentWithData = graphql(
         },
       };
     },
-  },
+  }
 )(component);
 
 componentWithData.displayName = 'GzArticleBlock';

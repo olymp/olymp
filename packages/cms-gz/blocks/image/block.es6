@@ -1,7 +1,6 @@
 import React from 'react';
 import { fade } from 'olymp-fela';
-import { createBlockList } from 'olymp-slate';
-import { Blocks } from 'olymp-pages';
+import * as Blocks from 'olymp-pages/blocks';
 import Image from './image';
 
 export const ImageStyles = ({ theme, color = theme.color }) => ({
@@ -88,7 +87,7 @@ export default {
   isVoid: false,
   kind: 'block',
   styles: ImageStyles,
-  defaultNodes: () => createBlockList([Image, Blocks.ImageBlockLabel]),
+  defaultNodes: () => [Image, Blocks.ImageBlockLabel],
   component: ({ className, children, attributes }) => (
     <div className={className} {...attributes}>
       {children}

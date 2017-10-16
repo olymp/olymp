@@ -2,10 +2,17 @@ import React from 'react';
 import renderHelmet from 'olymp-utils/helmet';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { createComponent, Grid, withTheme, SchemaLoader, Container } from 'olymp-fela';
+import {
+  createComponent,
+  Grid,
+  withTheme,
+  SchemaLoader,
+  Container,
+} from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import { Blocks } from 'olymp-pages';
-import { SlateMate, withBlockTypes } from 'olymp-slate';
+import * as Blocks from 'olymp-pages/blocks';
+import { withBlockTypes } from 'olymp-slate/decorators';
+import { SlateReader } from 'olymp-slate';
 import VCard from './vcard';
 import { ImageStyles } from '../image/block';
 import HeaderBlock from '../../components/header';
@@ -40,7 +47,7 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Slate = withBlockTypes(props => <SlateMate {...props} />);
+const Slate = withBlockTypes(props => <SlateReader {...props} />);
 
 const Content = createComponent(
   ({ theme }) => ({
@@ -54,7 +61,7 @@ const Content = createComponent(
     },
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Peak = createComponent(
@@ -64,7 +71,13 @@ const Peak = createComponent(
   }),
   ({ className, header, subheader, value, title }) => (
     <div className={className}>
-      <Image value={value} alt={title} width="100%" maxHeight={450} maxResolution={750000} />
+      <Image
+        value={value}
+        alt={title}
+        width="100%"
+        maxHeight={450}
+        maxResolution={750000}
+      />
       {(header || subheader) && (
         <Label>
           <h1>{header}</h1>
@@ -73,16 +86,16 @@ const Peak = createComponent(
       )}
     </div>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const component = withTheme(
   ({ item }) =>
-    (item.color
+    item.color
       ? {
-        color: item.color,
-      }
-      : {}),
+          color: item.color,
+        }
+      : {}
 )(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div {...attributes}>
@@ -233,7 +246,7 @@ const componentWithData = graphql(
       data,
       item: data.item || {},
     }),
-  },
+  }
 )(component);
 
 componentWithData.displayName = 'GzOrgBlock';

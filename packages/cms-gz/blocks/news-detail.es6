@@ -5,7 +5,8 @@ import renderHelmet from 'olymp-utils/helmet';
 import { PrefetchLink as Link } from 'olymp-cms';
 import { createComponent, withTheme, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import { SlateMate, withBlockTypes } from 'olymp-slate';
+import { withBlockTypes } from 'olymp-slate/decorators';
+import { SlateReader } from 'olymp-slate';
 import ContainerBlock from 'olymp-pages/blocks/container-text';
 import HeaderBlock from '../components/header';
 
@@ -36,17 +37,17 @@ const Container = createComponent(
     paddingTop: theme.space3,
   }),
   ContainerBlock.component,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
-const Slate = withBlockTypes(props => <SlateMate {...props} />);
+const Slate = withBlockTypes(props => <SlateReader {...props} />);
 
 const Content = createComponent(
   ({ theme }) => ({
     paddingLeft: theme.space3,
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const WhiteLink = createComponent(
@@ -57,12 +58,14 @@ const WhiteLink = createComponent(
     },
   }),
   p => <Link {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
-const getSubheader = (item) => {
+const getSubheader = item => {
   const person = item.person && `von ${item.person.name}`;
-  const org = item.org && <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>;
+  const org = item.org && (
+    <WhiteLink to={item.org.slug}>{item.org.name}</WhiteLink>
+  );
 
   return (
     person &&
@@ -76,11 +79,11 @@ const getSubheader = (item) => {
 
 const component = withTheme(
   ({ item }) =>
-    (item.org.color
+    item.org.color
       ? {
-        color: item.org.color,
-      }
-      : {}),
+          color: item.org.color,
+        }
+      : {}
 )(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
@@ -91,7 +94,9 @@ const component = withTheme(
       <Container className={className} color={item.org.color} {...attributes}>
         <Grid size={3}>
           <Grid.Item medium={1}>
-            {item.image && <Image value={item.image} alt={item.image.caption} width="100%" />}
+            {item.image && (
+              <Image value={item.image} alt={item.image.caption} width="100%" />
+            )}
           </Grid.Item>
           <Content medium={2}>
             <Slate readOnly value={item.text} />
@@ -158,7 +163,7 @@ const componentWithData = graphql(
         },
       };
     },
-  },
+  }
 )(component);
 componentWithData.displayName = 'GzNewsDetailBlock';
 export default {

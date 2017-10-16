@@ -1,5 +1,5 @@
 import React from 'react';
-import { Blocks } from 'olymp-pages';
+import * as Blocks from 'olymp-pages/blocks';
 import { createComponent } from 'olymp-fela';
 import Maps from 'olymp-google/maps';
 import { ImageStyles } from './image/block';
@@ -50,7 +50,7 @@ const MapContainer = createComponent(
       <Label>{children}</Label>
     </div>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export default {

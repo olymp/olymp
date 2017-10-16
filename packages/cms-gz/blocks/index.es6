@@ -1,6 +1,5 @@
 import { fade } from 'olymp-fela';
-import { Blocks } from 'olymp-pages';
-
+import * as Blocks from 'olymp-pages/blocks';
 import * as PanelBlocks from './panel';
 import * as OrgBlocks from './org';
 import * as ArticleBlocks from './article';

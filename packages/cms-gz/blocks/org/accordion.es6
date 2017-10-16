@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { createComponent, border } from 'olymp-fela';
 import { FaAngleRight, FaAngleLeft } from 'olymp-icons';
-import { SlateMate } from 'olymp-slate';
+import { SlateReader } from 'olymp-slate';
 
 const Icon = createComponent(
   ({ theme }) => ({
     float: 'right',
   }),
-  ({ className, children }) =>
-    <span className={className}>
-      {children}
-    </span>,
+  ({ className, children }) => <span className={className}>{children}</span>,
   p => Object.keys(p)
 );
 
@@ -27,16 +24,19 @@ const Link = createComponent(
       marginX: `-${theme.space2}`,
     },
   }),
-  ({ className, children, color, active, onClick }) =>
+  ({ className, children, color, active, onClick }) => (
     <div className={className} onClick={onClick}>
       {children}
 
       <Icon>
-        {!active
-          ? <FaAngleRight size={14} color={color} />
-          : <FaAngleLeft size={14} color={color} />}
+        {!active ? (
+          <FaAngleRight size={14} color={color} />
+        ) : (
+          <FaAngleLeft size={14} color={color} />
+        )}
       </Icon>
-    </div>,
+    </div>
+  ),
   p => Object.keys(p)
 );
 
@@ -48,10 +48,11 @@ const Text = createComponent(
     hyphens: 'auto',
     textAlign: 'justify',
   }),
-  ({ className, children }) =>
+  ({ className, children }) => (
     <div className={className}>
-      <SlateMate value={children} readOnly />
-    </div>,
+      <SlateReader value={children} readOnly />
+    </div>
+  ),
   p => Object.keys(p)
 );
 
@@ -59,15 +60,14 @@ const Container = createComponent(
   ({ theme }) => ({
     marginY: 0,
   }),
-  ({ className, name, color, text, active, onClick }) =>
+  ({ className, name, color, text, active, onClick }) => (
     <div className={className}>
       <Link onClick={onClick} color={color} active={active}>
         {name}
       </Link>
-      <Text active={active}>
-        {text}
-      </Text>
-    </div>,
+      <Text active={active}>{text}</Text>
+    </div>
+  ),
   p => Object.keys(p)
 );
 
