@@ -4,9 +4,23 @@ import { TagsEditor } from 'olymp-ui';
 import { Form, Input, Select, Icon, Tag } from 'antd';
 import { ContentLoader, createComponent } from 'olymp-fela';
 import { connect } from 'react-redux';
+import { groupBy } from 'lodash';
 import { queryTags } from '../gql/query';
 import Crop from '../components/crop';
 import LightboxImage from '../lightbox-image';
+
+const CheckableTag = createComponent(
+  ({ theme, checked, marked }) => ({
+    marginBottom: theme.space1,
+    ellipsis: true,
+    ':not(.ant-tag-checkable-checked)': {
+      backgroundColor: !checked && marked ? theme.dark2 : theme.dark5,
+      color: !checked && marked && theme.light,
+    },
+  }),
+  p => <Tag.CheckableTag {...p} />,
+  p => Object.keys(p),
+);
 
 const TagContainer = createComponent(
   ({ theme }) => ({
@@ -17,16 +31,27 @@ const TagContainer = createComponent(
       flexWrap: 'wrap',
       justifyContent: 'space-around',
     },
-    '> div': {
-      marginBottom: theme.space1,
-      ellipsis: true,
-      ':not(.ant-tag-checkable-checked)': {
-        backgroundColor: theme.dark5,
-      },
-    },
   }),
-  'div',
-  [],
+  ({ className, tags, selectedTags, form }) => (
+    <div className={className}>
+      {(tags || []).map(tag => (
+        <CheckableTag
+          key={tag}
+          checked={(form.getFieldValue('tags') || []).indexOf(tag) !== -1}
+          marked={selectedTags.filter(sTag => sTag === tag).length > 0}
+          onChange={checked =>
+            form.setFieldsValue({
+              tags: checked
+                ? [...form.getFieldValue('tags'), tag]
+                : form.getFieldValue('tags').filter(x => x !== tag),
+            })}
+        >
+          {tag}
+        </CheckableTag>
+      ))}
+    </div>
+  ),
+  ['tags', 'selectedTags', 'form'],
 );
 
 const FormItemLayout = {
@@ -41,7 +66,7 @@ const FormForFullLayout = {
 };
 
 const MediaDetail = ({
-  item,
+  items,
   multi,
   source,
   tags,
@@ -52,31 +77,42 @@ const MediaDetail = ({
   ...rest
 }) => {
   if (!editable) {
-    form.getFieldDecorator('id', { initialValue: item.id });
+    form.getFieldDecorator('id', { initialValue: items[0].id });
+
     return (
-      <ContentLoader isLoading={!item}>
+      <ContentLoader isLoading={!items[0]}>
         <Form>
           <Form.Item {...FormForFullLayout}>
             {form.getFieldDecorator('crop', {
-              initialValue: item.crop,
-            })(<Crop url={item.url} height={item.height} width={item.width} />)}
+              initialValue: items[0].crop,
+            })(
+              <Crop
+                url={items[0].url}
+                height={items[0].height}
+                width={items[0].width}
+              />,
+            )}
           </Form.Item>
           {children}
         </Form>
       </ContentLoader>
     );
   } else if (multi) {
+    const selectedTags = [];
+    items.forEach(item => item.tags.forEach(tag => selectedTags.push(tag)));
+    const groupedTags = groupBy(selectedTags);
+
     return (
-      <ContentLoader isLoading={!item}>
+      <ContentLoader isLoading={!items[0]}>
         <Form>
           <Form.Item label="Ordner" {...FormItemLayout}>
             {form.getFieldDecorator('folder', {
-              initialValue: item.folder,
+              initialValue: items[0].folder,
             })(<Input disabled={!editable} placeholder="Ordner" />)}
           </Form.Item>
           <Form.Item label="Bezeichnung" {...FormItemLayout}>
             {form.getFieldDecorator('caption', {
-              initialValue: item.caption,
+              initialValue: items[0].caption,
             })(
               <Input.TextArea
                 rows={3}
@@ -86,7 +122,7 @@ const MediaDetail = ({
             )}
           </Form.Item>
           {form.getFieldDecorator('source', {
-            initialValue: item.source,
+            initialValue: items[0].source,
           })(
             <Form.Item label="Quelle" {...FormItemLayout}>
               <Input
@@ -95,22 +131,9 @@ const MediaDetail = ({
               />
             </Form.Item>,
           )}
-          <Form.Item label="Schlagworte" {...FormItemLayout}>
-            {form.getFieldDecorator('tags', {
-              initialValue: item.tags,
-            })(
-              <TagsEditor
-                {...rest}
-                disabled={(tags && multi) || !editable}
-                searchPlaceholder="Suche ..."
-                placeholder="Schlagworte"
-                style={{ width: '100%' }}
-              />,
-            )}
-          </Form.Item>
           <Form.Item label="Zustand" {...FormItemLayout}>
             {form.getFieldDecorator('state', {
-              initialValue: item.state,
+              initialValue: items[0].state,
             })(
               <Select style={{ width: '100%' }}>
                 <Select.Option value="DRAFT">
@@ -134,26 +157,48 @@ const MediaDetail = ({
               </Select>,
             )}
           </Form.Item>
+          <Form.Item label="Schlagworte" {...FormItemLayout}>
+            {form.getFieldDecorator('tags', {
+              initialValue: Object.keys(groupedTags).filter(
+                key => groupedTags[key].length === items.length,
+              ),
+            })(
+              <TagsEditor
+                {...rest}
+                disabled={(tags && multi) || !editable}
+                searchPlaceholder="Suche ..."
+                placeholder="Schlagworte"
+                style={{ display: 'none' }}
+              />,
+            )}
+          </Form.Item>
+          <TagContainer
+            tags={fileTags}
+            selectedTags={selectedTags}
+            form={form}
+          />
           {children}
         </Form>
       </ContentLoader>
     );
   }
-  form.getFieldDecorator('id', { initialValue: item.id });
+
+  form.getFieldDecorator('id', { initialValue: items[0].id });
+
   return (
-    <ContentLoader isLoading={!item}>
+    <ContentLoader isLoading={!items[0]}>
       <Form>
         <Form.Item {...FormForFullLayout}>
-          <LightboxImage value={item} width="100%" maxHeight={200} />
+          <LightboxImage value={items[0]} width="100%" maxHeight={200} />
         </Form.Item>
         <Form.Item label="Ordner" {...FormForFullLayout}>
           {form.getFieldDecorator('folder', {
-            initialValue: item.folder,
+            initialValue: items[0].folder,
           })(<Input disabled={!editable} placeholder="Ordner" />)}
         </Form.Item>
         <Form.Item key="source" label="Quelle" {...FormForFullLayout}>
           {form.getFieldDecorator('source', {
-            initialValue: item.source,
+            initialValue: items[0].source,
           })(
             <Input
               placeholder="Quelle"
@@ -163,7 +208,7 @@ const MediaDetail = ({
         </Form.Item>
         <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
           {form.getFieldDecorator('caption', {
-            initialValue: item.caption,
+            initialValue: items[0].caption,
           })(
             <Input.TextArea
               rows={3}
@@ -174,7 +219,7 @@ const MediaDetail = ({
         </Form.Item>
         <Form.Item key="tags" label="Schlagworte" {...FormForFullLayout}>
           {form.getFieldDecorator('tags', {
-            initialValue: item.tags,
+            initialValue: items[0].tags,
           })(
             <TagsEditor
               {...rest}
@@ -185,47 +230,32 @@ const MediaDetail = ({
             />,
           )}
         </Form.Item>
-        <TagContainer>
-          {fileTags.map(tag => (
-            <Tag.CheckableTag
-              key={tag}
-              checked={(form.getFieldValue('tags') || []).indexOf(tag) !== -1}
-              onChange={checked =>
-                form.setFieldsValue({
-                  tags: checked
-                    ? [...form.getFieldValue('tags'), tag]
-                    : form.getFieldValue('tags').filter(x => x !== tag),
-                })}
-            >
-              {tag}
-            </Tag.CheckableTag>
-          ))}
-        </TagContainer>
+        <TagContainer tags={fileTags} selectedTags={[]} form={form} />
         {/* <Form.Item key="tecnical" {...FormForFullLayout}>
           <Collapse bordered={false} defaultActiveKey={[]}>
             <Collapse.Panel header="Technische Infos" key="1">
               <Form.Item key="size" label="Größe" {...FormItemLayout}>
-                <Input disabled placeholder="Größe" value={`${item.width}x${item.height}`} />
+                <Input disabled placeholder="Größe" value={`${items[0].width}x${items[0].height}`} />
               </Form.Item>
               <Form.Item key="date" label="Hinzugefügt" {...FormItemLayout}>
                 <Input
                   disabled
                   placeholder="Hinzugefügt"
-                  value={`${format(item.createdAt, 'DD. MMMM YYYY, HH:mm:ss')} Uhr`}
+                  value={`${format(items[0].createdAt, 'DD. MMMM YYYY, HH:mm:ss')} Uhr`}
                 />
               </Form.Item>
               <Form.Item key="format" label="Format" {...FormItemLayout}>
-                <Input disabled placeholder="Format" value={item.format} />
+                <Input disabled placeholder="Format" value={items[0].format} />
               </Form.Item>
-              {item.format === 'pdf' ? (
+              {items[0].format === 'pdf' ? (
                 <Form.Item key="pages" label="Seiten" {...FormItemLayout}>
-                  <Input disabled placeholder="Seiten" value={item.pages} />
+                  <Input disabled placeholder="Seiten" value={items[0].pages} />
                 </Form.Item>
           ) : (
             undefined
           )}
               <Form.Item key="bytes" label="Dateigröße" {...FormItemLayout}>
-                <Input disabled placeholder="Dateigröße" value={`${item.bytes / 1000} kB`} />
+                <Input disabled placeholder="Dateigröße" value={`${items[0].bytes / 1000} kB`} />
               </Form.Item>
             </Collapse.Panel>
           </Collapse>
@@ -236,7 +266,7 @@ const MediaDetail = ({
   );
 };
 MediaDetail.propTypes = {
-  item: PropTypes.object,
+  items: PropTypes.array.isRequired,
   patchItem: PropTypes.func,
   patchItems: PropTypes.func,
   multi: PropTypes.bool,
