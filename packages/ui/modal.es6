@@ -103,17 +103,15 @@ const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
     ...getAntStyle({ theme }),
     backgroundColor: theme.color,
-    background: `linear-gradient(0deg, ${theme.colorEnd ||
-      tinycolor(theme.color)
-        .darken(6)
-        .spin(-6)
-        .setAlpha(bottomTransparency || 1)
-        .toRgbString()}, ${theme.colorStart ||
-      tinycolor(theme.color)
-        .lighten(6)
-        .spin(12)
-        .setAlpha(topTransparency || 1)
-        .toRgbString()})`,
+    background: `linear-gradient(0deg, ${tinycolor('black')
+      .darken(6)
+      .spin(-6)
+      .setAlpha(bottomTransparency || 1)
+      .toRgbString()}, ${tinycolor('black')
+      .lighten(6)
+      .spin(12)
+      .setAlpha(topTransparency || 1)
+      .toRgbString()})`,
     hasFlex: {
       display: 'flex',
     },

@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "immutable": "^3.8.2",
-    "slate": "^0.27.0",
-    "slate-base64-serializer": "^0.1.14",
+    "slate": "^0.27.2",
+    "slate-base64-serializer": "^0.1.16",
     "slate-edit-list": "^0.8.0",
-    "slate-hyperscript": "^0.2.0",
-    "slate-plain-serializer": "^0.2.0",
-    "slate-react": "^0.4.0"
+    "slate-hyperscript": "^0.2.2",
+    "slate-plain-serializer": "^0.2.2",
+    "slate-react": "^0.6.0"
   }
 }
