@@ -6,7 +6,6 @@ import { PrefetchLink } from 'olymp-cms';
 import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import * as Blocks from 'olymp-pages/blocks';
-import { withBlockTypes } from 'olymp-slate/decorators';
 import { SlateReader } from 'olymp-slate';
 import ContainerBlock from 'olymp-pages/blocks/container-text';
 import { ImageStyles } from '../image/block';
@@ -38,7 +37,6 @@ const Container = createComponent(
   ContainerBlock.component,
   p => Object.keys(p)
 );
-const Slate = withBlockTypes(props => <SlateReader {...props} />);
 
 const Peak = createComponent(
   props => ({
@@ -116,7 +114,7 @@ const component = withTheme(
         </HeaderBlock>
       )}
       <Container className={className} color={item.org.color} {...attributes}>
-        <Slate readOnly value={item.text} />
+        <SlateReader readOnly value={item.text} />
         <PrefetchLink to="/magazin">Zurück zur Übersicht</PrefetchLink>
       </Container>
     </div>

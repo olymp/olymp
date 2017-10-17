@@ -11,7 +11,6 @@ import {
 } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import * as Blocks from 'olymp-pages/blocks';
-import { withBlockTypes } from 'olymp-slate/decorators';
 import { SlateReader } from 'olymp-slate';
 import VCard from './vcard';
 import { ImageStyles } from '../image/block';
@@ -47,7 +46,6 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Slate = withBlockTypes(props => <SlateReader {...props} />);
 
 const Content = createComponent(
   ({ theme }) => ({
@@ -122,7 +120,7 @@ const component = withTheme(
             <VCard org={item} />
           </Grid.Item>
           <Content large={7}>
-            <Slate readOnly value={item.text} />
+            <SlateReader readOnly value={item.text} />
             {/* children */}
           </Content>
         </Grid>

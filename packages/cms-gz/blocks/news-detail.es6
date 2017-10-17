@@ -5,7 +5,6 @@ import renderHelmet from 'olymp-utils/helmet';
 import { PrefetchLink as Link } from 'olymp-cms';
 import { createComponent, withTheme, SchemaLoader, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
-import { withBlockTypes } from 'olymp-slate/decorators';
 import { SlateReader } from 'olymp-slate';
 import ContainerBlock from 'olymp-pages/blocks/container-text';
 import HeaderBlock from '../components/header';
@@ -39,8 +38,6 @@ const Container = createComponent(
   ContainerBlock.component,
   p => Object.keys(p)
 );
-
-const Slate = withBlockTypes(props => <SlateReader {...props} />);
 
 const Content = createComponent(
   ({ theme }) => ({
@@ -99,7 +96,7 @@ const component = withTheme(
             )}
           </Grid.Item>
           <Content medium={2}>
-            <Slate readOnly value={item.text} />
+            <SlateReader readOnly value={item.text} />
             <Link to="/news">Zurück zur Übersicht</Link>
           </Content>
         </Grid>
