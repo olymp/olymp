@@ -1,8 +1,12 @@
 {
-  "version": "18.1.1",
+  "version": "18.1.2",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
@@ -13,23 +17,23 @@
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "monk": "^6.0.5",
-    "olymp": "^18.1.1",
-    "olymp-auth": "^18.1.0",
-    "olymp-cloudinary": "^18.1.1",
-    "olymp-collection": "^17.12.0",
-    "olymp-fela": "^18.1.0",
-    "olymp-google": "^18.0.15",
-    "olymp-graphql": "^18.0.6",
+    "olymp": "^18.1.2",
+    "olymp-auth": "^18.1.2",
+    "olymp-cloudinary": "^18.1.2",
+    "olymp-collection": "^18.1.2",
+    "olymp-fela": "^18.1.2",
+    "olymp-google": "^18.1.2",
+    "olymp-graphql": "^18.1.2",
     "olymp-icons": "^17.9.1",
-    "olymp-locale": "^18.0.5",
-    "olymp-mail": "^17.9.1",
-    "olymp-pages": "^18.1.0",
-    "olymp-scrape": "^18.1.0",
-    "olymp-slate": "^18.1.1",
-    "olymp-ui": "^18.0.15",
-    "olymp-utils": "^18.0.5",
-    "olymp-webpack-babel": "^18.1.0",
-    "olymp-webpack-less": "^17.9.1",
+    "olymp-locale": "^18.1.2",
+    "olymp-mail": "^18.1.2",
+    "olymp-pages": "^18.1.2",
+    "olymp-scrape": "^18.1.2",
+    "olymp-slate": "^18.1.2",
+    "olymp-ui": "^18.1.2",
+    "olymp-utils": "^18.1.2",
+    "olymp-webpack-babel": "^18.1.2",
+    "olymp-webpack-less": "^18.1.2",
     "react-gravatar": "^2.6.3"
   }
 }

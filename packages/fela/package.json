@@ -1,8 +1,12 @@
 {
-  "version": "18.1.0",
+  "version": "18.1.2",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u",
@@ -22,7 +26,7 @@
     "fela-plugin-prefixer": "^5.0.11",
     "fela-plugin-remove-undefined": "^5.0.10",
     "fela-plugin-unit": "^5.0.10",
-    "olymp-utils": "^18.0.5",
+    "olymp-utils": "^18.1.2",
     "react-fela": "^6.0.2",
     "react-frame-component": "^2.0.0",
     "react-scrolllock": "^1.0.9",
@@ -30,7 +34,7 @@
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
-    "olymp-webpack-babel": "^18.1.0",
+    "olymp-webpack-babel": "^18.1.2",
     "raw-loader": "^0.5.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

@@ -1,15 +1,19 @@
 {
-  "version": "18.1.0",
+  "version": "18.1.2",
   "name": "olymp-cms-gz",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-fela": "^18.1.0",
-    "olymp-utils": "^18.0.5",
+    "olymp-fela": "^18.1.2",
+    "olymp-utils": "^18.1.2",
     "react-image-gallery": "^0.8.3"
   }
 }

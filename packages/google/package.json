@@ -1,8 +1,12 @@
 {
-  "version": "18.0.15",
+  "version": "18.1.2",
   "name": "olymp-google",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
@@ -13,8 +17,8 @@
     "google-map-react": "^0.24.0",
     "googleapis": "^22.1.0",
     "moment": "^2.19.1",
-    "olymp-ui": "^18.0.15",
-    "olymp-utils": "^18.0.5",
+    "olymp-ui": "^18.1.2",
+    "olymp-utils": "^18.1.2",
     "react-smooth": "^0.3.0",
     "recharts": "^1.0.0-apha.5",
     "shortid": "^2.2.8",

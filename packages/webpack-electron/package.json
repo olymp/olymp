@@ -1,8 +1,12 @@
 {
-  "version": "18.1.1",
+  "version": "18.1.2",
   "name": "olymp-webpack-electron",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"

@@ -1,15 +1,19 @@
 {
-  "version": "18.0.5",
+  "version": "18.1.2",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
   },
   "dependencies": {
     "history": "^4.7.2",
-    "olymp-utils": "^18.0.5",
+    "olymp-utils": "^18.1.2",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "route-parser": "^0.0.5"

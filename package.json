@@ -5,38 +5,40 @@
   "description": "",
   "main": "./packages/core",
   "scripts": {
-    "favicon": "real-favicon generate faviconDescription.json faviconData.json ./packages/core/public/",
+    "favicon":
+      "real-favicon generate faviconDescription.json faviconData.json ./packages/core/public/",
     "up": "npm-check -u",
     "init": "lerna init --independent",
     "watch": "gulp watch",
     "test": "jest && codecov",
     "es": "eslint packages/** --quiet",
     "esa": "eslint packages/**",
-    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
+    "prettier":
+      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
-    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lpf":
+      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
     "lc": "del 'packages/*/package-lock.json'",
     "special-elev": "lerna exec npm owner add machiaveli88",
-    "special-rename": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
+    "special-rename":
+      "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "special-del": "del 'packages/**/*.js' '!packages/**/node_modules/**'"
   },
   "engines": {},
   "bin": "./packages/app/bin/olymp-app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/olymp/olymp.git"
+    "url": "https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/olymp/olymp/issues"
