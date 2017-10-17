@@ -19,7 +19,10 @@ export default class AuthForgot extends Component {
       }
       forgot({ email: values.email })
         .then(({ name }) => {
-          onSuccess('E-Mail abgeschickt', 'Bitte bestätigen Sie die Zurücksetzung');
+          onSuccess(
+            'E-Mail abgeschickt',
+            'Bitte bestätigen Sie die Zurücksetzung'
+          );
           onOk({ email: values.email });
         })
         .catch(onError);
@@ -31,23 +34,31 @@ export default class AuthForgot extends Component {
     const { getFieldDecorator } = form;
 
     return (
-      <Base isOpen={isOpen} title="Zurücksetzen" onOk={this.ok} onCancel={onClose}>
+      <Base
+        isOpen={isOpen}
+        title="Zurücksetzen"
+        onOk={this.ok}
+        onCancel={onClose}
+      >
         <Form.Item hasFeedback key="email" label="E-Mail" {...layout}>
           {getFieldDecorator('email', {
             initialValue: email,
-            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
+            rules: [
+              { required: true, message: 'Bitte geben Sie Ihre E-Mail an!' },
+            ],
           })(
             <Input
               type="email"
               placeholder="E-Mail"
               onKeyPress={onEnterOk(this.ok)}
-              size="large"
               addonAfter={<FaEnvelope size={10} />}
-            />,
+            />
           )}
         </Form.Item>
         <Base.Links>
-          <Link updateQuery={{ login: null, forgot: undefined }}>Zur Anmeldung</Link>
+          <Link updateQuery={{ login: null, forgot: undefined }}>
+            Zur Anmeldung
+          </Link>
         </Base.Links>
       </Base>
     );

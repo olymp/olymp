@@ -1,61 +1,71 @@
 import React, { Children } from 'react';
+import PropTypes from 'prop-types';
+import { getContext } from 'recompose';
 import { createComponent } from 'olymp-fela';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
+import Form from 'olymp-ui/form';
 import { notification } from 'antd';
 
-const def = ({
-  showLogo,
-  isOpen,
-  title,
-  pathname,
-  onCancel,
-  onOk,
-  cancelText,
-  okText,
-  loading,
-  saving,
-  version,
-  ...props
-}) => {
-  let links = null;
-  const children = Children.toArray(props.children).filter((child) => {
-    if (child.type && child.type === def.Links) {
-      links = child;
-      return false;
-    }
+const def = getContext({
+  theme: PropTypes.object,
+})(
+  ({
+    showLogo,
+    isOpen,
+    title,
+    pathname,
+    onCancel,
+    onOk,
+    cancelText,
+    okText,
+    loading,
+    saving,
+    version,
+    ...props
+  }) => {
+    let links = null;
+    const theme = props.theme.get();
+    const children = Children.toArray(props.children).filter(child => {
+      if (child.type && child.type === def.Links) {
+        links = child;
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    });
 
-  return (
-    <Modal
-      showLogo={showLogo !== false}
-      isOpen={isOpen}
-      title={title}
-      onCancel={onCancel}
-      maskClosable={false}
-      loading={loading}
-      usePortal={false}
-    >
-      {children}
-      <Modal.Footer>
-        <Modal.Button onClick={onCancel}>{cancelText || 'Abbruch'}</Modal.Button>
-        {onOk && (
-          <Modal.Button type="primary" onClick={onOk} loading={saving}>
-            {okText || title}
+    return (
+      <Modal
+        showLogo={showLogo !== false}
+        isOpen={isOpen}
+        title={title}
+        onCancel={onCancel}
+        maskClosable={false}
+        loading={loading}
+        usePortal={false}
+      >
+        <Form>{children}</Form>
+        <Modal.Footer>
+          <Modal.Button onClick={onCancel}>
+            {cancelText || 'Abbruch'}
           </Modal.Button>
-        )}
-      </Modal.Footer>
-      <Modal.Copyright>
-        {links && <def.Links>{links}</def.Links>}
-        <Link to={{ pathname, query: { register: null, login: undefined } }}>
-          {'made with ❤ by olymp'}
-        </Link>
-      </Modal.Copyright>
-    </Modal>
-  );
-};
+          {onOk && (
+            <Modal.Button type="primary" onClick={onOk} loading={saving}>
+              {okText || title}
+            </Modal.Button>
+          )}
+        </Modal.Footer>
+        <Modal.Copyright>
+          {links && <def.Links>{links}</def.Links>}
+          <Link to={{ pathname, query: { register: null, login: undefined } }}>
+            {theme.copyright || 'made with ❤ by olymp'}
+          </Link>
+        </Modal.Copyright>
+      </Modal>
+    );
+  }
+);
 def.Links = createComponent(
   ({ theme }) => ({
     textAlign: 'center',
@@ -70,12 +80,12 @@ def.Links = createComponent(
       },
     },
   }),
-  'div',
+  'div'
 );
 
 export default def;
 
-export const onError = (err) => {
+export const onError = err => {
   let description;
   if (err && err.message) {
     description = err.message;
@@ -99,14 +109,14 @@ export const onSuccess = (message, description) => {
 
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
-export const onEnterFocus = ref => (e) => {
+export const onEnterFocus = ref => e => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   }
   return false;
 };
 
-export const onEnterOk = onOk => (e) => {
+export const onEnterOk = onOk => e => {
   if (e.key === 'Enter') {
     onOk();
   }

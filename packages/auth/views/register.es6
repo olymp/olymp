@@ -75,24 +75,30 @@ export default class AuthRegister extends Component {
         loading={loading ? 'Prüfe Token ...' : false}
       >
         {!valid &&
-        token && (
+          token && (
             <p style={{ textAlign: 'center' }}>
-            Das Token ist ungültig oder abgelaufen. Bitte{' '}
-          <Link
-                query={({ confirm, ...query }) => ({ ...query, feedback: null })}
+              Das Token ist ungültig oder abgelaufen. Bitte{' '}
+              <Link
+                query={({ confirm, ...query }) => ({
+                  ...query,
+                  feedback: null,
+                })}
               >
-              kontaktieren Sie den Support
+                kontaktieren Sie den Support
               </Link>.
             </p>
           )}
         {!valid &&
-        !token && (
+          !token && (
             <p style={{ textAlign: 'center' }}>
-            Sie benötigen eine gültige Einladung um sich zu registrieren.{' '}
-          <Link
-                query={({ confirm, ...query }) => ({ ...query, feedback: null })}
+              Sie benötigen eine gültige Einladung um sich zu registrieren.{' '}
+              <Link
+                query={({ confirm, ...query }) => ({
+                  ...query,
+                  feedback: null,
+                })}
               >
-              Kontaktieren Sie den Support
+                Kontaktieren Sie den Support
               </Link>.
             </p>
           )}
@@ -107,7 +113,6 @@ export default class AuthRegister extends Component {
                 type="text"
                 placeholder="Name"
                 onKeyPress={onEnterFocus(() => this.mail)}
-                size="large"
               />
             )}
           </Form.Item>
@@ -126,7 +131,6 @@ export default class AuthRegister extends Component {
                 placeholder="E-Mail"
                 onKeyPress={onEnterFocus(() => this.pw1)}
                 ref={x => (this.mail = x)}
-                size="large"
                 addonAfter={<FaEnvelope size={10} />}
               />
             )}
@@ -144,7 +148,6 @@ export default class AuthRegister extends Component {
                 placeholder="Password"
                 onKeyPress={onEnterFocus(() => this.pw2)}
                 ref={x => (this.pw1 = x)}
-                size="large"
                 addonAfter={<FaStar size={10} />}
               />
             )}
@@ -165,20 +168,19 @@ export default class AuthRegister extends Component {
                 placeholder="Password wiederholen"
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.pw2 = x)}
-                size="large"
                 addonAfter={<FaStar size={10} />}
               />
             )}
           </Form.Item>
         )}
-        {valid && extraFields ? (
-          extraFields({
-            layout,
-            getFieldDecorator,
-            state: this.state,
-            setState: this.setState,
-          })
-        ) : null}
+        {valid && extraFields
+          ? extraFields({
+              layout,
+              getFieldDecorator,
+              state: this.state,
+              setState: this.setState,
+            })
+          : null}
         <Base.Links>
           <Link query={({ register, ...query }) => ({ ...query, login: null })}>
             Zur Anmeldung

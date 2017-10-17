@@ -5,7 +5,13 @@ import { graphql } from 'react-apollo';
 import { Link } from 'olymp-router';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
-import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
+import Base, {
+  onEnterFocus,
+  onEnterOk,
+  layout,
+  onError,
+  onSuccess,
+} from './base';
 import { createReset } from '../redux';
 
 @connect(null, dispatch => ({
@@ -25,7 +31,7 @@ import { createReset } from '../redux';
         token,
       },
     }),
-  },
+  }
 )
 export default class AuthReset extends Component {
   ok = () => {
@@ -39,7 +45,10 @@ export default class AuthReset extends Component {
       }
       reset({ token, password: values.password })
         .then(({ email }) => {
-          onSuccess('Zurücksetzung erfolgreich', 'Sie können sich jetzt anmelden');
+          onSuccess(
+            'Zurücksetzung erfolgreich',
+            'Sie können sich jetzt anmelden'
+          );
           onOk({ email });
         })
         .catch(onError);
@@ -63,15 +72,16 @@ export default class AuthReset extends Component {
         {valid && (
           <Form.Item key="password" label="Passwort" {...layout}>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
+              rules: [
+                { required: true, message: 'Bitte das Passwort angeben!' },
+              ],
             })(
               <Input
                 type="password"
                 placeholder="Password"
                 onKeyPress={onEnterFocus(() => this.input)}
-                size="large"
                 addonAfter={<FaStar size={10} />}
-              />,
+              />
             )}
           </Form.Item>
         )}
@@ -90,9 +100,8 @@ export default class AuthReset extends Component {
                 placeholder="Password wiederholen"
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.input = x)}
-                size="large"
                 addonAfter={<FaStar size={10} />}
-              />,
+              />
             )}
           </Form.Item>
         )}
@@ -109,7 +118,9 @@ export default class AuthReset extends Component {
           </p>
         )}
         <Base.Links>
-          <Link updateQuery={{ login: null, reset: undefined }}>Zur Anmeldung</Link>
+          <Link updateQuery={{ login: null, reset: undefined }}>
+            Zur Anmeldung
+          </Link>
         </Base.Links>
       </Base>
     );

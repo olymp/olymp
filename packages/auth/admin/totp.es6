@@ -20,7 +20,7 @@ import { onEnterFocus, onError, onSuccess } from '../views/base';
       fetchPolicy: 'network-only',
       skip: !isOpen,
     }),
-  },
+  }
 )
 export default class AuthTotp extends Component {
   static defaultProps = { data: {} };
@@ -70,23 +70,19 @@ export default class AuthTotp extends Component {
           >
             Google Authenticator
           </a>{' '}
-          App. Geben Sie anschließend einen generierten Code unten ein um die Nutzung der 2-Faktor
-          Authentifizierung zu bestätigen.
+          App. Geben Sie anschließend einen generierten Code unten ein um die
+          Nutzung der 2-Faktor Authentifizierung zu bestätigen.
         </p>
         <Form.Item key="token">
-          {getFieldDecorator(
-            'token',
-            {
-              // rules: [{ required: true, message: 'Bitte geben Sie ein Token an!' }],
-            },
-          )(
+          {getFieldDecorator('token', {
+            // rules: [{ required: true, message: 'Bitte geben Sie ein Token an!' }],
+          })(
             <Input
               type="text"
               placeholder="Token"
               onKeyPress={onEnterFocus(() => this.ok)}
-              size="large"
               addonAfter={<FaStar size={10} />}
-            />,
+            />
           )}
         </Form.Item>
       </div>

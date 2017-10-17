@@ -3,7 +3,14 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Button, Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
-import { Modal, Panel, onEnterFocus, layout, onError, onSuccess } from 'olymp-ui';
+import {
+  Modal,
+  Panel,
+  onEnterFocus,
+  layout,
+  onError,
+  onSuccess,
+} from 'olymp-ui';
 import { withAuth } from '../with-auth';
 
 @graphql(
@@ -18,7 +25,7 @@ import { withAuth } from '../with-auth';
   `,
   {
     options: ({ isOpen }) => ({ skip: !isOpen }),
-  },
+  }
 )
 export default class AuthInvitations extends Component {
   static defaultProps = { data: {} };
@@ -47,7 +54,8 @@ export default class AuthInvitations extends Component {
     let items = data.items || [];
     if (search) {
       items = items.filter(
-        ({ name }) => name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1,
+        ({ name }) =>
+          name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1
       );
     }
 
@@ -82,7 +90,7 @@ export default class AuthInvitations extends Component {
       fetchPolicy: !id ? 'cache-only' : undefined,
       variables: { id },
     }),
-  },
+  }
 )
 @Form.create()
 class AuthInviationDetail extends Component {
@@ -114,29 +122,31 @@ class AuthInviationDetail extends Component {
         <Form.Item key="name" label="Name" {...layout}>
           {getFieldDecorator('name', {
             initialValue: item.name,
-            rules: [{ required: true, message: 'Bitte geben Sie Ihren Namen an' }],
+            rules: [
+              { required: true, message: 'Bitte geben Sie Ihren Namen an' },
+            ],
           })(
             <Input
               type="text"
               placeholder="Name"
               onKeyPress={onEnterFocus(() => this.mail)}
-              size="large"
-            />,
+            />
           )}
         </Form.Item>
         <Form.Item key="email" label="E-Mail" {...layout}>
           {getFieldDecorator('email', {
             initialValue: item.email,
-            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
+            rules: [
+              { required: true, message: 'Bitte geben Sie Ihre E-Mail an!' },
+            ],
           })(
             <Input
               type="email"
               placeholder="E-Mail"
               onKeyPress={onEnterFocus(() => this.pw1)}
               ref={x => (this.mail = x)}
-              size="large"
               addonAfter={<FaEnvelope size={10} />}
-            />,
+            />
           )}
         </Form.Item>
         <Button onClick={this.ok}>Speichern</Button>

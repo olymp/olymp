@@ -25,6 +25,18 @@ export default ({ theme }) => {
     '& p a': {
       color: theme.color,
     },
+    '& .ant-slider-dot-active': {
+      borderColor: transparent,
+    },
+    '& .ant-slider > .ant-slider-track': {
+      backgroundColor: transparent,
+    },
+    '& .ant-slider-handle': {
+      borderColor: transparent,
+    },
+    '& .ant-slider:hover .ant-slider-handle': {
+      borderColor: theme.color,
+    },
     '& .ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-active': {
       backgroundColor: transparent3,
     },

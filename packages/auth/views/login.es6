@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
-import { Form, Input } from 'antd';
-import { FaEnvelope, FaStar } from 'olymp-icons';
+import { Input } from 'antd';
+import Form, { defaultLayout } from 'olymp-ui/form';
+import { FaUser, FaUnlock } from 'olymp-icons';
 import { createLogin } from '../redux';
-import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './base';
+import Base, { onEnterFocus, onEnterOk, onError, onSuccess } from './base';
 
 @connect(null, dispatch => ({
   login: createLogin(dispatch),
@@ -12,9 +13,7 @@ import Base, { onEnterFocus, onEnterOk, layout, onError, onSuccess } from './bas
 @Form.create()
 export default class AuthLogin extends Component {
   ok = () => {
-    const {
-      login, onClose, form, onTotp
-    } = this.props;
+    const { login, onClose, form, onTotp } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
@@ -24,7 +23,7 @@ export default class AuthLogin extends Component {
           onSuccess('Anmeldung erfolgreich', `Willkommen, ${name}`);
           onClose();
         })
-        .catch((err) => {
+        .catch(err => {
           if (err.message.indexOf('Please provide a totp token') !== -1) {
             onTotp();
           } else {
@@ -35,52 +34,60 @@ export default class AuthLogin extends Component {
   };
 
   render() {
-    const {
-      isOpen, email, form, onClose, totp
-    } = this.props;
+    const { isOpen, email, form, onClose, totp } = this.props;
     const { getFieldDecorator } = form;
 
     return (
       <Base isOpen={isOpen} title="Anmelden" onOk={this.ok} onCancel={onClose}>
-        <Form.Item key="email" label="E-Mail" {...layout}>
+        <Form.Item key="email" label="E-Mail" {...defaultLayout}>
           {getFieldDecorator('email', {
             initialValue: email,
-            rules: [{ required: true, message: 'Bitte geben Sie Ihre E-Mail an!' }],
-          })(<Input
-            type="email"
-            placeholder="E-Mail"
-            onKeyPress={onEnterFocus(() => this.input)}
-            size="large"
-            addonAfter={<FaEnvelope size={10} />}
-          />,)}
+            rules: [
+              { required: true, message: 'Bitte geben Sie Ihre E-Mail an!' },
+            ],
+          })(
+            <Input
+              type="email"
+              placeholder="E-Mail"
+              onKeyPress={onEnterFocus(() => this.input)}
+              suffix={<FaUser size={14} />}
+            />
+          )}
         </Form.Item>
-        <Form.Item key="password" label="Passwort" {...layout}>
+        <Form.Item key="password" label="Passwort" {...defaultLayout}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Bitte das Passwort angeben!' }],
-          })(<Input
-            type="password"
-            placeholder="Password"
-            onKeyPress={onEnterOk(this.ok)}
-            ref={x => (this.input = x)}
-            size="large"
-            addonAfter={<FaStar size={10} />}
-          />,)}
+          })(
+            <Input
+              type="password"
+              placeholder="Password"
+              onKeyPress={onEnterOk(this.ok)}
+              ref={x => (this.input = x)}
+              suffix={<FaUnlock size={14} />}
+            />
+          )}
         </Form.Item>
         {totp && (
-          <Form.Item key="totp" label="Token" {...layout}>
-            {getFieldDecorator('totp')(<Input
-              type="text"
-              placeholder="Token"
-              onKeyPress={onEnterOk(this.ok)}
-              ref={x => (this.totp = x)}
-              size="large"
-              addonAfter={<FaStar size={10} />}
-            />,)}
+          <Form.Item key="totp" label="Token" {...defaultLayout}>
+            {getFieldDecorator('totp')(
+              <Input
+                type="text"
+                placeholder="Token"
+                onKeyPress={onEnterOk(this.ok)}
+                ref={x => (this.totp = x)}
+                suffix={<FaUnlock size={14} />}
+              />
+            )}
           </Form.Item>
         )}
 
         <Base.Links>
-          <Link query={({ login, totp, ...query }) => ({ ...query, register: null })}>
+          <Link
+            query={({ login, totp, ...query }) => ({
+              ...query,
+              register: null,
+            })}
+          >
             Zur Registrierung
           </Link>
           <Link

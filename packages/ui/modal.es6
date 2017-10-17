@@ -157,7 +157,7 @@ const component = createComponent(
           '> .ant-modal-header > .ant-modal-title': {
             color: theme.color,
             fontSize: 40,
-            fontWeight: 200,
+            // fontWeight: 200,
             padding: 10,
             lineHeight: '30px',
             paddingTop: 0,
