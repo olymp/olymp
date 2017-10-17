@@ -16,7 +16,7 @@ const SubHeader = createComponent(
     marginBottom: 6,
   }),
   'p',
-  [],
+  []
 );
 
 const Link = createComponent(
@@ -27,7 +27,7 @@ const Link = createComponent(
     },
   }),
   x => <PrefetchLink {...x} />,
-  [],
+  []
 );
 
 const loaderSchema = [
@@ -65,11 +65,12 @@ const RightItem = ({ item, title }) => (
 const RightNewsItem = withEdit('news')(RightItem);
 const RightEventsItem = withEdit('events')(RightItem);
 
-const NewsItem = withEdit(({ type }) => type)((props) => {
+const NewsItem = withEdit(({ type }) => type)(props => {
   const { art, date, name, description, org, slug } = props;
 
   const defaultImage = {
-    url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    url:
+      'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
     width: 400,
     height: 300,
   };
@@ -79,7 +80,9 @@ const NewsItem = withEdit(({ type }) => type)((props) => {
     <Grid>
       <Panel
         accent={org.color}
-        title={<PrefetchLink to={{ pathname: `/news${slug}` }}>{name}</PrefetchLink>}
+        title={
+          <PrefetchLink to={{ pathname: `/news${slug}` }}>{name}</PrefetchLink>
+        }
         subtitle={`${art} vom ${moment(date).format('DD.MM.YYYY')}`}
       >
         <Img value={image} width={100} avatar />
@@ -93,19 +96,23 @@ const NewsItem = withEdit(({ type }) => type)((props) => {
 
 const NewsListing = withCreate('news')(({ children }) => <div>{children}</div>);
 
-const EventsListing = withCreate('events')(({ children }) => <div>{children}</div>);
+const EventsListing = withCreate('events')(({ children }) => (
+  <div>{children}</div>
+));
 
 @graphql(
   gql`
     query newsList {
-      news: newsList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
+      news: newsList(
+        sort: { date: DESC }
+        query: { state: { eq: PUBLISHED } }
+      ) {
         id
         date
         art
         name
         description
         text {
-          id
           nodes
         }
         slug
@@ -142,12 +149,15 @@ const EventsListing = withCreate('events')(({ children }) => <div>{children}</di
       isLoading: data.loading,
       news: data.news || [],
     }),
-  },
+  }
 )
 @graphql(
   gql`
     query eventList {
-      events: eventList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
+      events: eventList(
+        sort: { date: DESC }
+        query: { state: { eq: PUBLISHED } }
+      ) {
         id
         date
         art
@@ -192,7 +202,7 @@ const EventsListing = withCreate('events')(({ children }) => <div>{children}</di
       isLoading: data.loading,
       events: data.events || [],
     }),
-  },
+  }
 )
 class News extends Component {
   render() {

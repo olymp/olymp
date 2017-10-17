@@ -152,7 +152,6 @@ const componentWithData = graphql(
         fachrichtungen
         tags
         text {
-          id
           nodes
         }
         image {
@@ -178,7 +177,6 @@ const componentWithData = graphql(
           link
           name
           text {
-            id
             nodes
           }
         }
@@ -187,7 +185,6 @@ const componentWithData = graphql(
           link
           name
           text {
-            id
             nodes
           }
         }
@@ -196,7 +193,6 @@ const componentWithData = graphql(
           link
           name
           text {
-            id
             nodes
           }
         }
@@ -205,7 +201,6 @@ const componentWithData = graphql(
           link
           name
           text {
-            id
             nodes
           }
         }
@@ -217,7 +212,6 @@ const componentWithData = graphql(
           fax
           eMail
           text {
-            id
             nodes
           }
           image {

@@ -159,7 +159,6 @@ const componentWithData = graphql(
         description
         tags
         text {
-          id
           nodes
         }
         person {
