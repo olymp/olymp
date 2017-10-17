@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, AutoComplete, Input } from 'antd';
 import { throttleInput } from 'olymp-utils';
+import { FaMapMarkerAlt } from 'olymp-icons';
 import { withApollo, graphql } from 'react-apollo';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
@@ -38,7 +39,7 @@ import gql from 'graphql-tag';
       ...ownProps,
       value: get(data, 'geocodeList[0]', {}),
     }),
-  },
+  }
 )
 export default class GeocodeEditor extends Component {
   static defaultProps = {
@@ -50,7 +51,7 @@ export default class GeocodeEditor extends Component {
   };
   throttle = throttleInput(500);
 
-  performSearch = (address) => {
+  performSearch = address => {
     const { client } = this.props;
 
     return client
@@ -85,7 +86,7 @@ export default class GeocodeEditor extends Component {
       });
   };
 
-  onAdd = (code) => {
+  onAdd = code => {
     const { onChange, value } = this.props;
     const { items } = this.state;
     this.text = null;
@@ -95,11 +96,13 @@ export default class GeocodeEditor extends Component {
 
   renderOption = ({ id, formattedAddress }) => (
     <AutoComplete.Option key={id} text={formattedAddress}>
-      <div style={{ whiteSpace: 'initial', display: 'flex' }}>{formattedAddress}</div>
+      <div style={{ whiteSpace: 'initial', display: 'flex' }}>
+        {formattedAddress}
+      </div>
     </AutoComplete.Option>
   );
 
-  handleSearch = (term) => {
+  handleSearch = term => {
     const { items, value, onChange, refetch } = this.props;
     this.text = term;
     this.throttle(() => {
@@ -123,7 +126,7 @@ export default class GeocodeEditor extends Component {
         <Input
           placeholder={placeholder || 'Suche ...'}
           size={size}
-          prefix={<Icon type="environment-o" />}
+          suffix={<FaMapMarkerAlt size={14} />}
         />
       </AutoComplete>
     );

@@ -1,6 +1,15 @@
+import 'babel-polyfill';
+
 const elecApp = require('@electron');
 const { autoUpdater } = require('electron-updater');
-const { Menu, app, BrowserWindow, crashReporter, dialog, shell } = require('electron');
+const {
+  Menu,
+  app,
+  BrowserWindow,
+  crashReporter,
+  dialog,
+  shell,
+} = require('electron');
 require('electron-debug')({ enabled: true });
 const log = require('electron-log');
 const { machineIdSync } = require('node-machine-id');
@@ -49,12 +58,20 @@ const template = [
     label: 'Bearbeiten',
     submenu: [
       { label: 'Rückgängig', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
-      { label: 'Wiederholen', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+      {
+        label: 'Wiederholen',
+        accelerator: 'Shift+CmdOrCtrl+Z',
+        selector: 'redo:',
+      },
       { type: 'separator' },
       { label: 'Ausschneiden', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
       { label: 'Kopieren', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
       { label: 'Einfügen', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
-      { label: 'Alles Einfügen', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+      {
+        label: 'Alles Einfügen',
+        accelerator: 'CmdOrCtrl+A',
+        selector: 'selectAll:',
+      },
     ],
   },
   {
@@ -85,7 +102,7 @@ function createWindow() {
       .then(() => {
         log.info('Promise fulfilled');
       })
-      .catch((reason) => {
+      .catch(reason => {
         log.info(`Handle rejected promise (${reason.stack || reason}) here.`);
       });
   }
@@ -99,7 +116,7 @@ function createWindow() {
     minHeight: 450,
     center: true,
     webPreferences: {
-      nodeIntegrationInWorker: true
+      nodeIntegrationInWorker: true,
     },
     // frame: false,
     // titleBarStyle: 'hidden',
@@ -131,7 +148,7 @@ function createWindow() {
   /* // Open the DevTools.
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
-  }*/
+  } */
   const selectionMenu = Menu.buildFromTemplate([
     { role: 'copy' },
     { type: 'separator' },

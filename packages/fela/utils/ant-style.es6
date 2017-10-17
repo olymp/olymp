@@ -16,76 +16,53 @@ export default ({ theme }) => {
     '& ::selection': {
       background: color,
     },
+    '& .ant-input.ant-select-search__field': {
+      height: 32,
+    },
+    '& .ant-form-item-control .ant-input-suffix > svg': {
+      fill: theme.dark2,
+    },
     '& p a': {
       color: theme.color,
     },
-    '& ul.ant-tree.draggable-tree': {
-      paddingRight: 8,
-      paddingLeft: 13,
-      paddingY: 0,
-      '& .ant-tree-title': {
-        hasFlex: {
-          display: 'flex',
-          '> a:first-child': {
-            flex: '1 1 0%',
-          },
-        },
-        '> a': {
-          // color: disabled ? theme.dark3 : theme.dark1,
-          color: theme.dark1,
-        },
-      },
-      '& .anticon': {
-        marginLeft: 3,
-      },
-      '& li': {
-        padding: 0,
-        paddingTop: '0.7rem !important',
-        '> .ant-tree-switcher': {
-          position: 'relative',
-          width: 0,
-          onAfter: {
-            left: -8,
-            zIndex: 1,
-            top: 2,
-            position: 'absolute',
-          },
-        },
-        '> .ant-tree-node-content-wrapper': {
-          width: '100%',
-          paddingLeft: 10,
-        },
-      },
+    '& .ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-active': {
+      backgroundColor: transparent3,
     },
-    '& .ant-modal-body': {},
-    '& .ant-form': {},
-    '& .ant-select-selection--single': {
-      height: 'initial',
+    '& .ant-calendar-today-btn': {
+      color: theme.color,
     },
-    '& .ant-select-auto-complete.ant-select .ant-select-selection__rendered': {
-      lineHeight: '32px',
-      '> ul': {
-        listStyle: 'none',
-        margin: 0,
-        '> li': {
-          margin: 0,
-        },
-      },
+    '& a.ant-dropdown-link': {
+      color: theme.color,
+    },
+    '& .ant-calendar-selected-day > .ant-calendar-date': {
+      backgroundColor: theme.color,
+    },
+    '& .ant-input-number:focus': {
+      borderColor: theme.color,
+    },
+    '& .ant-input-number:hover': {
+      borderColor: theme.color,
+    },
+    '& .ant-time-picker-input:hover': {
+      borderColor: theme.color,
+    },
+    '& .ant-select-selection:hover': {
+      borderColor: theme.color,
+    },
+    '& .ant-select-selection:focus': {
+      borderColor: theme.color,
+    },
+    '& .ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled)': {
+      borderColor: theme.color,
+    },
+    '& .ant-select-auto-complete.ant-select input.ant-input:focus': {
+      borderColor: theme.color,
+    },
+    '& .ant-select-auto-complete.ant-select input.ant-input:hover': {
+      borderColor: theme.color,
     },
     '& form.ant-form.ant-form-horizontal .ant-row.ant-form-item': {
       marginBottom: 10,
-    },
-    '& form.ant-form.ant-form-horizontal': {},
-    '& .ant-pagination-item > a': {
-      // color: theme.light,
-    },
-    '& .ant-menu-item > a > .anticon': {
-      overflow: 'visible',
-      lineHeight: 0.6,
-    },
-    '& .ant-menu-submenu-title > span > .anticon': {
-      overflow: 'visible',
-      lineHeight: 0.6,
     },
     '& .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected': {
       backgroundColor: transparent3,

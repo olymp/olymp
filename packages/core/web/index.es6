@@ -24,7 +24,6 @@ import {
 import { apolloMiddleware } from 'olymp-graphql';
 import { authMiddleware, authReducer } from 'olymp-auth';
 // Local
-import { get } from 'lodash';
 import createDynamicRedux from '../redux-dynamic';
 import { startLoading, stopLoading } from './loader';
 import { appReducer, appMiddleware, createServerConnection } from '../redux';

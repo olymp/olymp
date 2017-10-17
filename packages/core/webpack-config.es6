@@ -18,7 +18,9 @@ const nodeModules = isLinked
   ? path.resolve(__dirname, 'node_modules')
   : path.resolve(__dirname, '..');
 process.noDeprecation = true;
-const allPackages = !isLinked ? [] : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
+const allPackages = !isLinked
+  ? []
+  : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
 const pluginsFolder = !isLinked ? nodeModules : topFolder;
 
 module.exports = ({
@@ -63,14 +65,21 @@ module.exports = ({
     },
     resolve: {
       extensions: ['.js'],
-      modules: [path.resolve(appRoot, 'node_modules'), path.resolve(appRoot, 'app')],
+      modules: [
+        path.resolve(appRoot, 'node_modules'),
+        path.resolve(appRoot, 'app'),
+      ],
       alias: {
         '@root': appRoot,
         '@electron':
-          isElectron && fs.existsSync(path.resolve(appRoot, 'electron', 'index.js'))
+          isElectron &&
+          fs.existsSync(path.resolve(appRoot, 'electron', 'index.js'))
             ? path.resolve(appRoot, 'electron', 'index.js')
             : path.resolve(__dirname, 'noop'),
-        '@app': isServer && !isSSR ? path.resolve(__dirname, 'noop') : path.resolve(appRoot, 'app'),
+        '@app':
+          isServer && !isSSR
+            ? path.resolve(__dirname, 'noop')
+            : path.resolve(appRoot, 'app'),
         ...allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
           if (item === 'core') {
@@ -97,7 +106,9 @@ module.exports = ({
         'process.env.URL': url ? `"${url}"` : false,
         'process.env.DEV_PORT': devPort || false,
         'process.env.DEV_URL': devUrl ? `"${devUrl.origin}"` : false,
-        'process.env.HOTJAR': process.env.HOTJAR ? `"${process.env.HOTJAR}"` : false,
+        'process.env.HOTJAR': process.env.HOTJAR
+          ? `"${process.env.HOTJAR}"`
+          : false,
         'process.env.NODE_ENV': `"${mode}"`,
         'process.env.SSR': isSSR,
         'process.env.SERVERLESS': isServerless,
@@ -153,21 +164,27 @@ module.exports = ({
     config.plugins.push(new webpack.NamedModulesPlugin());
   }
   if (!isServer) {
-    config.plugins.push(new webpack.DefinePlugin({
-      'process.env.AMP': !!process.env.AMP,
-      'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL ? `"${process.env.GRAPHQL_URL}"` : false,
-      'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
-        ? `"${process.env.CRASHREPORT_URL}"`
-        : false,
-      'process.env.URL': process.env.URL ? `"${process.env.URL}"` : false,
-      'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-        ? `"${process.env.FILESTACK_KEY}"`
-        : false,
-    }));
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.AMP': !!process.env.AMP,
+        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
+          ? `"${process.env.GRAPHQL_URL}"`
+          : false,
+        'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
+          ? `"${process.env.CRASHREPORT_URL}"`
+          : false,
+        'process.env.URL': process.env.URL ? `"${process.env.URL}"` : false,
+        'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
+          ? `"${process.env.FILESTACK_KEY}"`
+          : false,
+      }),
+    );
   }
 
   // inline-source-map for web-dev
-  config.devtool = isProd ? 'cheap-module-source-map' : 'eval-cheap-module-source-map';
+  config.devtool = isProd
+    ? 'cheap-module-source-map'
+    : 'eval-cheap-module-source-map';
 
   // inline-source-map for web-dev
   if (isProd && isWeb && !isElectron) {
@@ -222,36 +239,48 @@ module.exports = ({
 
   // webpack plugins
   if (isElectronMain) {
-    config.plugins.push(new GenerateJsonPlugin('package.json', require('./electron/package-json')()));
+    config.plugins.push(
+      new GenerateJsonPlugin(
+        'package.json',
+        require('./electron/package-json')(),
+      ),
+    );
     if (isDev) {
       const ElectronPlugin = require('electron-webpack-plugin');
-      config.plugins.push(new ElectronPlugin({
-        test: /^.\/electron/,
-        path: path.resolve(appRoot, '.dev', 'electron'),
-      }));
+      config.plugins.push(
+        new ElectronPlugin({
+          test: /^.\/electron/,
+          path: path.resolve(appRoot, '.dev', 'electron'),
+        }),
+      );
     }
   }
   if (isNode && !isElectron) {
-    config.plugins.push(new webpack.BannerPlugin({
-      banner: 'require("source-map-support").install();',
-      raw: true,
-      entryOnly: false,
-    }));
+    config.plugins.push(
+      new webpack.BannerPlugin({
+        banner: 'require("source-map-support").install();',
+        raw: true,
+        entryOnly: false,
+      }),
+    );
     if (isDev && isServer) {
       console.log('INSPECT', devPort + 1);
-      config.plugins.push(new StartServerPlugin({
-        name: 'app.js',
-        // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
-      }));
+      config.plugins.push(
+        new StartServerPlugin({
+          name: 'app.js',
+          // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
+        }),
+      );
     }
   } else if (!isNode) {
     if (isElectronRenderer) {
-      config.plugins.push(new HtmlWebpackPlugin({
-        alwaysWriteToDisk: true,
-        filename: 'index.html',
-        template: path.resolve(__dirname, 'templates', 'electron.js'),
-        inject: false,
-        /* minify: {
+      config.plugins.push(
+        new HtmlWebpackPlugin({
+          alwaysWriteToDisk: true,
+          filename: 'index.html',
+          template: path.resolve(__dirname, 'templates', 'electron.js'),
+          inject: false,
+          /* minify: {
           removeComments: true,
           collapseWhitespace: true,
           removeRedundantAttributes: true,
@@ -263,15 +292,17 @@ module.exports = ({
           minifyCSS: true,
           minifyURLs: true,
         }, */
-      }));
+        }),
+      );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
       if (isServerless) {
-        config.plugins.push(new HtmlWebpackPlugin({
-          filename: 'index.html',
-          template: path.resolve(__dirname, 'templates', 'serverless.js'),
-          inject: false,
-          /* minify: {
+        config.plugins.push(
+          new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.resolve(__dirname, 'templates', 'serverless.js'),
+            inject: false,
+            /* minify: {
             removeComments: true,
             collapseWhitespace: true,
             removeRedundantAttributes: true,
@@ -283,7 +314,8 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           }, */
-        }));
+          }),
+        );
       }
     }
   }
@@ -295,30 +327,39 @@ module.exports = ({
 
   // LimitChunkCount on all but production-web
   if (isNode || isElectron || isDev) {
-    config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }));
+    config.plugins.push(
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    );
     config.output.filename = '[name].js';
   } else {
-    config.plugins.push(new AssetsPlugin({
-      filename: 'assets.json',
-      path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-    }));
+    config.plugins.push(
+      new AssetsPlugin({
+        filename: 'assets.json',
+        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
+      }),
+    );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked) {
-      const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-      config.plugins.push(new BundleAnalyzerPlugin({
-        reportFilename: './_report.html',
-        analyzerMode: 'static',
-        // generateStatsFile: false,
-      }));
+      const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+        .BundleAnalyzerPlugin;
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          reportFilename: './_report.html',
+          analyzerMode: 'static',
+          // generateStatsFile: false,
+        }),
+      );
     } else {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     }
     // config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
-    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-      name: 'app',
-      filename: '[name].[chunkhash].js',
-      // minChunks: 2,
-    }));
+    config.plugins.push(
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'app',
+        filename: '[name].[chunkhash].js',
+        // minChunks: 2,
+      }),
+    );
     config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
   }
@@ -335,7 +376,10 @@ module.exports = ({
         /\.(css|scss|sass|sss|less)$/,
         v => v.indexOf('webpack/hot/poll') === 0,
         v => v === 'antd' || v.indexOf('antd/') === 0,
-        v => v === 'olymp' || v.indexOf('olymp-') === 0 || v.indexOf('olymp/') === 0,
+        v =>
+          v === 'olymp' ||
+          v.indexOf('olymp-') === 0 ||
+          v.indexOf('olymp/') === 0,
       ],
     });
     if (isElectron) {
@@ -351,7 +395,9 @@ module.exports = ({
         require.resolve(path.resolve(__dirname, 'web', 'index.js')),
       ];
     } else {
-      config.entry.app = [require.resolve(path.resolve(__dirname, 'web', 'index.js'))];
+      config.entry.app = [
+        require.resolve(path.resolve(__dirname, 'web', 'index.js')),
+      ];
     }
   } else if (isElectronMain) {
     if (isDev) {
@@ -360,7 +406,9 @@ module.exports = ({
         require.resolve(path.resolve(__dirname, 'electron', 'main.js')),
       ];
     } else {
-      config.entry.main = [require.resolve(path.resolve(__dirname, 'electron', 'main.js'))];
+      config.entry.main = [
+        require.resolve(path.resolve(__dirname, 'electron', 'main.js')),
+      ];
     }
   } else if (isNode) {
     if (isDev) {
@@ -369,7 +417,9 @@ module.exports = ({
         require.resolve(path.resolve(__dirname, 'node', 'index.js')),
       ];
     } else {
-      config.entry.app = [require.resolve(path.resolve(__dirname, 'node', 'index.js'))];
+      config.entry.app = [
+        require.resolve(path.resolve(__dirname, 'node', 'index.js')),
+      ];
     }
   }
 

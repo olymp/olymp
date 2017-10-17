@@ -8,6 +8,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
+    "babel-eslint": "^8.0.1",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-config-prettier": "^2.3.0",

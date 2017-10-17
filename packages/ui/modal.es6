@@ -85,9 +85,6 @@ export const Modal = getContext({
                   <TitleButtons right>{rightButtons}</TitleButtons>
                 )}
                 <div className="ant-modal-title">{title}</div>
-                {subtitle && (
-                  <div className="ant-modal-subtitle">{subtitle}</div>
-                )}
               </div>
               {Children.toArray(children).length > 0 && (
                 <div className="ant-modal-body">{children}</div>
@@ -99,7 +96,7 @@ export const Modal = getContext({
         </ReactModal>
       </Portal>
     );
-  },
+  }
 );
 
 const component = createComponent(
@@ -183,7 +180,7 @@ const component = createComponent(
     },
   }),
   Modal,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 // Copyright
@@ -202,7 +199,7 @@ component.Copyright = createComponent(
       },
     },
   }),
-  'div',
+  'div'
 );
 
 component.Footer = ({ children, className }) => (
@@ -220,11 +217,9 @@ const TitleButtons = createComponent(
     color: theme.color,
     fontSize: 40,
     fontWeight: 200,
-    padding: 10,
-    top: 14,
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p),
+  ({ left, right, ...p }) => Object.keys(p)
 );
 
 export default component;

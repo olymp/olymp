@@ -20,7 +20,10 @@ export default Wrapped =>
       marginRight,
       marginTop,
       marginBottom,
-      fill: color === true ? theme.color : typeof color === 'string' ? color : theme.dark,
+      fill:
+        color === true
+          ? theme.color
+          : typeof color === 'string' ? theme[color] || color : theme.dark,
     }),
     Wrapped,
     [
@@ -32,5 +35,5 @@ export default Wrapped =>
       'onMouseLeave',
       'onMouseOver',
       'onMouseDown',
-    ],
+    ]
   );

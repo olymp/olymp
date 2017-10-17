@@ -11,7 +11,7 @@ class PrintWindow extends Component {
   componentWillUnmount() {
     document.getElementById('app').style.display = 'initial';
   }
-  onOpen = (element) => {
+  componentDidMount() {
     document.getElementById('app').style.display = 'none';
     const { onClose, pdf } = this.props;
     setTimeout(() => {
@@ -22,11 +22,11 @@ class PrintWindow extends Component {
       }
       setTimeout(onClose, 200);
     }, 1000);
-  };
+  }
   render() {
     const { children, className } = this.props;
     return (
-      <Portal ref={this.onOpen}>
+      <Portal>
         <div className={className}>{children}</div>
       </Portal>
     );

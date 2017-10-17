@@ -70,9 +70,15 @@ export const SwitchLocation = compose(
       matched = getChild(rest);
     } else if (displayName === 'Match' && match === undefined) {
       notFound = getChild(rest);
-    } else if (displayName === 'MatchPath' && matchPath(pathname, exact, match)) {
+    } else if (
+      displayName === 'MatchPath' &&
+      matchPath(pathname, exact, match)
+    ) {
       matched = getChild(rest);
-    } else if (displayName === 'MatchPaths' && matchPaths(pathname, exact, match)) {
+    } else if (
+      displayName === 'MatchPaths' &&
+      matchPaths(pathname, exact, match)
+    ) {
       matched = getChild(rest);
     } else if (displayName === 'MatchQuery' && matchQuery(query, match)) {
       matched = getChild(rest);
@@ -127,13 +133,19 @@ export const SwitchPathname = compose(
     const { displayName } = route.type;
     const { exact, ...rest } = route.props;
     if (displayName === 'Match' && route.props.match === true) {
-      matched = getChild(rest);
+      matched = getChild({ ...rest, pathname });
     } else if (displayName === 'Match' && route.props.match === undefined) {
-      notFound = getChild(rest);
-    } else if (displayName === 'MatchPath' && matchPath(pathname, exact, route.props.match)) {
-      matched = getChild(rest);
-    } else if (displayName === 'MatchPaths' && matchPaths(pathname, exact, route.props.match)) {
-      matched = getChild(rest);
+      notFound = getChild({ ...rest, pathname });
+    } else if (
+      displayName === 'MatchPath' &&
+      matchPath(pathname, exact, route.props.match)
+    ) {
+      matched = getChild({ ...rest, pathname });
+    } else if (
+      displayName === 'MatchPaths' &&
+      matchPaths(pathname, exact, route.props.match)
+    ) {
+      matched = getChild({ ...rest, pathname });
     }
     if (matched) {
       break;
@@ -143,7 +155,7 @@ export const SwitchPathname = compose(
 });
 SwitchPathname.displayName = 'SwitchPathname';
 
-export const Match = (props) => {
+export const Match = props => {
   if (props.match === true) {
     return getChild(props);
   }
@@ -166,4 +178,5 @@ export const MatchQuery = connect(({ location }, { match }) => ({
 }))(Match);
 MatchQuery.displayName = 'MatchQuery';
 
-export const MatchPathParams = ({ exact, match, ...rest }) => Match({ match: true, ...rest });
+export const MatchPathParams = ({ exact, match, ...rest }) =>
+  Match({ match: true, ...rest });
