@@ -165,7 +165,6 @@ const EventsListing = withCreate('events')(({ children }) => (
         ort
         description
         text {
-          id
           nodes
         }
         slug
