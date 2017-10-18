@@ -96,11 +96,12 @@ export default ({
   color,
   label,
   description,
-  to,
   onClick,
   active,
   disabled,
   icon,
+  to,
+  updateQuery,
 }) =>
   onClick || disabled ? (
     <a
@@ -119,7 +120,12 @@ export default ({
       />
     </a>
   ) : (
-    <Link className={className} to={to} disabled={disabled}>
+    <Link
+      className={className}
+      to={to}
+      updateQuery={updateQuery}
+      disabled={disabled}
+    >
       <Content
         image={image}
         color={color}

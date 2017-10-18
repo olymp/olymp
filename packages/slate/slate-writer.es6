@@ -51,7 +51,7 @@ class Writer extends Component {
   onKeyDown = (e, change) => {
     if (e.shiftKey && e.key === 'enter') {
       return change.insertText('\n');
-    } else if (daeta.key === 'backspace') {
+    } else if (e.key === 'backspace') {
     } else if (e.metaKey || e.ctrlKey) {
       switch (e.key) {
         case 'b':

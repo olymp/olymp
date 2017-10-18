@@ -18,7 +18,7 @@
     "electron-debug": "^1.4.0",
     "electron-log": "^2.2.7",
     "electron-publisher": "^0.1.6",
-    "electron-publisher-s3": "^19.37.0",
+    "electron-publisher-s3": "^19.39.0",
     "electron-updater": "^2.13.0",
     "electron-webpack-plugin": "^2.0.0",
     "node-machine-id": "^1.1.9"
