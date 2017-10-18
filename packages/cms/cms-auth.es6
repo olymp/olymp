@@ -13,7 +13,7 @@ import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
 import Analytics from 'olymp-google/analytics';
-import NavigationVertical from './navigation-vertical';
+import Navigation from './navigation';
 import { SettingsRoute } from './settings';
 import PrefetchRoutes from './prefetch-routes';
 import * as LANG from './lang/de';
@@ -29,7 +29,7 @@ const Container = createComponent(
     backgroundColor: '#Cf5f5f5',
   }),
   'div',
-  [],
+  []
 );
 
 const SwitchContainer = createComponent(
@@ -43,7 +43,7 @@ const SwitchContainer = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Footer = createComponent(
@@ -54,7 +54,7 @@ const Footer = createComponent(
     textAlign: 'center',
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Load = connect(({ app }) => ({
@@ -71,11 +71,11 @@ const enhance = compose(
     }),
     dispatch => ({
       updateQuery: createUpdateQuery(dispatch),
-    }),
+    })
   ),
-  withState('deviceWidth', 'setDeviceWidth', undefined),
+  withState('deviceWidth', 'setDeviceWidth', undefined)
 );
-const component = enhance((props) => {
+const component = enhance(props => {
   const {
     query,
     collectionList,
@@ -86,11 +86,12 @@ const component = enhance((props) => {
     updateQuery,
   } = props;
   const collection = collectionList.filter(
-    ({ name }) => query[`@${name.toLowerCase()}`] !== undefined,
+    ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
   )[0];
   const collectionName = collection && collection.name;
   const collectionId =
-    (collectionName && query && query[`@${collectionName.toLowerCase()}`]) || 'new';
+    (collectionName && query && query[`@${collectionName.toLowerCase()}`]) ||
+    'new';
 
   return (
     <Container>
@@ -102,22 +103,38 @@ const component = enhance((props) => {
       <Modal
         open={!!collection && query.modal === null}
         onClose={() =>
-          updateQuery({ [`@${collectionName.toLowerCase()}`]: undefined, modal: undefined })}
+          updateQuery({
+            [`@${collectionName.toLowerCase()}`]: undefined,
+            modal: undefined,
+          })}
       >
-        <CollectionRoute {...props} id={collectionId} typeName={collectionName} />
+        <CollectionRoute
+          {...props}
+          id={collectionId}
+          typeName={collectionName}
+        />
       </Modal>
-      <NavigationVertical collectionList={collectionList} setDeviceWidth={setDeviceWidth} />
+      <Navigation
+        collectionList={collectionList}
+        setDeviceWidth={setDeviceWidth}
+      />
       <SwitchContainer>
         <Switch>
           <Match
             match={!!collection && query.modal !== null}
             render={() => (
-              <CollectionRoute {...props} id={collectionId} typeName={collectionName} />
+              <CollectionRoute
+                {...props}
+                id={collectionId}
+                typeName={collectionName}
+              />
             )}
           />
           <Match
             match={query['@page'] !== undefined}
-            render={() => <EditableRoute {...props} deviceWidth={deviceWidth} />}
+            render={() => (
+              <EditableRoute {...props} deviceWidth={deviceWidth} />
+            )}
           />
           <Match
             match={query['@media'] !== undefined}
@@ -131,16 +148,26 @@ const component = enhance((props) => {
             match={query['@analytics'] !== undefined}
             render={() => <Analytics {...props} />}
           />
-          <Match match={query['@users'] !== undefined} render={() => <AuthUsers {...props} />} />
-          <Match match={query['@user'] !== undefined} render={() => <AuthUser {...props} />} />
-          <Match render={rest => <PageRoute {...rest} {...props} key={location.key} />} />
+          <Match
+            match={query['@users'] !== undefined}
+            render={() => <AuthUsers {...props} />}
+          />
+          <Match
+            match={query['@user'] !== undefined}
+            render={() => <AuthUser {...props} />}
+          />
+          <Match
+            render={rest => (
+              <PageRoute {...rest} {...props} key={location.key} />
+            )}
+          />
         </Switch>
       </SwitchContainer>
       {ua.getBrowser().name === 'IE' && (
         <Footer>
           <p>
-            Wir empfehlen für die Verwendung von Olymp (und darüber hinaus) die Verwendung des
-            Browsers{' '}
+            Wir empfehlen für die Verwendung von Olymp (und darüber hinaus) die
+            Verwendung des Browsers{' '}
             <a href="https://www.google.de/chrome" rel="noopener noreferrer">
               Chrome
             </a>.
