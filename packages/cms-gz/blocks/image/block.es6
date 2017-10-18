@@ -83,7 +83,7 @@ export const ImageStyles = ({ theme, color = theme.color }) => ({
 export default {
   type: 'GZK.Header.ImageBlock',
   label: 'Bild',
-  category: 'Kopfleiste',
+  category: 'Kopf',
   isVoid: false,
   kind: 'block',
   styles: ImageStyles,

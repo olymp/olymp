@@ -180,7 +180,7 @@ componentWithData.displayName = 'GzArticleBlock';
 export default {
   type: 'GZK.Collections.ArticleBlock',
   label: 'Artikel',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component: componentWithData,

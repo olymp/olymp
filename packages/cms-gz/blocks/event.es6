@@ -199,7 +199,7 @@ componentWithData.displayName = 'GzEventBlock';
 export default {
   type: 'GZK.Collections.TerminBlock',
   label: 'Termin-Detail',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component: componentWithData,

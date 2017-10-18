@@ -245,7 +245,7 @@ componentWithData.displayName = 'GzOrgBlock';
 export default {
   type: 'GZK.Collections.OrgBlock',
   label: 'Einrichtung',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component: componentWithData,

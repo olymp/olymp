@@ -56,7 +56,7 @@ const MapContainer = createComponent(
 export default {
   type: 'GZK.Header.MapsBlock',
   label: 'Karte',
-  category: 'Kopfleiste',
+  category: 'Kopf',
   isVoid: false,
   kind: 'block',
   component: p => <MapContainer {...p} />,

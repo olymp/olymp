@@ -165,7 +165,7 @@ componentWithData.displayName = 'GzNewsDetailBlock';
 export default {
   type: 'GZK.Collections.NewsDetailBlock',
   label: 'Neuigkeit-Detail',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component: componentWithData,

@@ -8,11 +8,11 @@
   <a href="https://www.npmjs.com/package/olymp">
     <img src="https://img.shields.io/npm/dm/olymp.svg?style=flat-square" alt="Downloads">
   </a>
-  <a href="https://www.npmjs.com/package/olymp">
-    <img src="https://img.shields.io/npm/v/olymp.svg?style=flat-square" alt="Version">
-  </a>
   <a href="https://github.com/olymp/olymp">
     <img src="https://img.shields.io/github/issues/olymp/olymp.svg?style=flat-square" alt="Issues">
+  </a>
+  <a href="https://www.npmjs.com/package/olymp">
+    <img src="https://img.shields.io/npm/v/olymp.svg?style=flat-square" alt="Version">
   </a>
   <a href="https://github.com/olymp/olymp">
     <img src="https://img.shields.io/github/forks/olymp/olymp.svg?style=flat-square" alt="Forks">

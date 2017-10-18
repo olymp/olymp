@@ -27,7 +27,7 @@ const StyledLink = createComponent(
     },
   }),
   p => <Link {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const MarginContainer = createComponent(
@@ -35,7 +35,7 @@ const MarginContainer = createComponent(
     marginY: theme.space3,
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Item = withEdit('org')(
@@ -68,8 +68,8 @@ const Item = withEdit('org')(
         <Phone href={`tel:${number}`}>{number}</Phone>
       </div>
     ),
-    p => Object.keys(p),
-  ),
+    p => Object.keys(p)
+  )
 );
 
 const Phone = createComponent(
@@ -78,7 +78,7 @@ const Phone = createComponent(
     color: theme.dark,
   }),
   'a',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Info = createComponent(
@@ -87,7 +87,7 @@ const Info = createComponent(
     paddingBottom: theme.space3,
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const component = withCreate('org')(
@@ -111,7 +111,7 @@ const component = withCreate('org')(
         isLoading: data.loading,
         items: data.items || [],
       }),
-    },
+    }
   )(({ attributes, items, isLoading }) => (
     <MarginContainer {...attributes}>
       <H1>Telefonnummern</H1>
@@ -119,7 +119,12 @@ const component = withCreate('org')(
       <SchemaLoader isLoading={isLoading} schema={loaderSchema}>
         <div>
           {items.map(item => (
-            <Item number={item.telefon} key={item.id} id={item.id} color={item.color}>
+            <Item
+              number={item.telefon}
+              key={item.id}
+              id={item.id}
+              color={item.color}
+            >
               <Logo color={item.color} icon={16} />
               <StyledLink to={item.slug}>{item.title || item.name}</StyledLink>
             </Item>
@@ -127,13 +132,13 @@ const component = withCreate('org')(
         </div>
       </SchemaLoader>
     </MarginContainer>
-  )),
+  ))
 );
 
 export default {
   type: 'GZK.Collections.PhoneBlock',
   label: 'Telefon',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component,
