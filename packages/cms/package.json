@@ -1,5 +1,5 @@
 {
-  "version": "18.1.8",
+  "version": "18.1.9",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -26,14 +26,14 @@
     "olymp-graphql": "^18.1.5",
     "olymp-icons": "^18.1.3",
     "olymp-locale": "^18.1.7",
-    "olymp-mail": "^18.1.2",
+    "olymp-mail": "^18.1.9",
     "olymp-pages": "^18.1.7",
     "olymp-scrape": "^18.1.7",
     "olymp-slate": "^18.1.7",
     "olymp-ui": "^18.1.7",
     "olymp-utils": "^18.1.7",
     "olymp-webpack-babel": "^18.1.7",
-    "olymp-webpack-less": "^18.1.2",
+    "olymp-webpack-less": "^18.1.9",
     "react-gravatar": "^2.6.3"
   }
 }
