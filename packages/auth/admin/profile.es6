@@ -4,7 +4,7 @@ import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
 import { onError, onSuccess, onEnterFocus } from '../views/base';
-import { withAuth } from '../with-auth';
+import withAuth from '../with-auth';
 
 const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
@@ -14,7 +14,7 @@ const UserPic = createComponent(
     marginTop: theme.space2,
   }),
   p => <Avatar {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export const H1 = createComponent(
@@ -24,7 +24,7 @@ export const H1 = createComponent(
     fontWeight: 200,
   }),
   'h1',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export const H3 = createComponent(
@@ -33,7 +33,7 @@ export const H3 = createComponent(
     fontWeight: 200,
   }),
   'h3',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export const FormItem = createComponent(
@@ -46,7 +46,7 @@ export const FormItem = createComponent(
     },
   }),
   Form.Item,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 @withAuth
@@ -98,7 +98,7 @@ export default class AuthProfile extends Component {
                 type="text"
                 placeholder="Name"
                 onKeyPress={onEnterFocus(() => this.mail)}
-              />,
+              />
             )}
           </FormItem>
           <FormItem key="email" label="E-Mail" {...layout}>
@@ -116,7 +116,7 @@ export default class AuthProfile extends Component {
                 placeholder="E-Mail"
                 ref={x => (this.mail = x)}
                 addonAfter={<FaEnvelope size={10} />}
-              />,
+              />
             )}
           </FormItem>
           <FormItem key="avatar" label="Avatar" {...layout}>

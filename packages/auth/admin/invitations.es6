@@ -11,7 +11,7 @@ import {
   onError,
   onSuccess,
 } from 'olymp-ui';
-import { withAuth } from '../with-auth';
+import withAuth from '../with-auth';
 
 @graphql(
   gql`
