@@ -35,7 +35,7 @@ const Content = createComponent(
     },
     padding: '5px 6px',
     width: '100%',
-    minHeight: 51,
+    // minHeight: 51,
     color: disabled ? theme.dark3 : theme.dark1,
     background: active && 'rgba(0, 0, 0, 0.03)',
     lineHeight: '20px',
@@ -70,15 +70,16 @@ const Content = createComponent(
   }),
   ({ image, color, label, description, className, disabled, icon }) => (
     <div className={className}>
-      {image && (
-        <ImgContainer>
-          {image &&
-            typeof image === 'string' && (
-              <img src={image} width={37} height={37} />
-            )}
-          {image && typeof image !== 'string' && image}
-        </ImgContainer>
-      )}
+      {false &&
+        image && (
+          <ImgContainer>
+            {image &&
+              typeof image === 'string' && (
+                <img src={image} width={37} height={37} />
+              )}
+            {image && typeof image !== 'string' && image}
+          </ImgContainer>
+        )}
       <div>
         <Header color={color}>{label}</Header>
         {description}

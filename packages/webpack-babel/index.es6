@@ -34,7 +34,7 @@ module.exports = (config, options) => {
             // ecma: 8,
           },
         },
-      }),
+      })
     );
   }
 
@@ -95,11 +95,11 @@ module.exports = (config, options) => {
           kebabCase: true,
           preventFullImport: true,
         },
-        'olymp-auth': {
+        /*'olymp-auth': {
           transform: 'olymp-auth/${member}',
           kebabCase: true,
           preventFullImport: true,
-        },
+        },*/
         'olymp-pages': {
           transform: 'olymp-pages/${member}',
           kebabCase: true,
@@ -130,7 +130,7 @@ module.exports = (config, options) => {
               appRoot,
               folder,
               'cache',
-              `${target}-babel`,
+              `${target}-babel`
             ),
           },
         },

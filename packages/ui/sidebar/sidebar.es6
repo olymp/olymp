@@ -78,7 +78,8 @@ const StyledInner = createComponent(
     },
   }),
   ({ children, className }) => <div className={className}>{children}</div>,
-  ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) => Object.keys(p),
+  ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) =>
+    Object.keys(p)
 );
 
 const Title = createComponent(
@@ -88,12 +89,11 @@ const Title = createComponent(
     '> .ant-modal-title': {
       color: theme.color,
       fontSize: 40,
-      fontWeight: 200,
       padding: 10,
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const TitleButtons = createComponent(
@@ -104,7 +104,6 @@ const TitleButtons = createComponent(
     left: left && 0,
     right: right && 0,
     fontSize: 40,
-    fontWeight: 200,
     padding: '0 1rem',
     top: '50%',
     transform: 'translateY(-50%)',
@@ -115,7 +114,7 @@ const TitleButtons = createComponent(
     },
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p),
+  ({ left, right, ...p }) => Object.keys(p)
 );
 
 const Sidebar = ({
@@ -136,7 +135,7 @@ const Sidebar = ({
   footer,
   ...props
 }) =>
-  (isOpen ? (
+  isOpen ? (
     <StyledInner {...props}>
       <div className="ant-modal-content">
         {leftButtons || rightButtons || title || subtitle || header ? (
@@ -144,9 +143,13 @@ const Sidebar = ({
             {leftButtons || rightButtons || title || subtitle ? (
               <Title>
                 {leftButtons && <TitleButtons left>{leftButtons}</TitleButtons>}
-                {rightButtons && <TitleButtons right>{rightButtons}</TitleButtons>}
+                {rightButtons && (
+                  <TitleButtons right>{rightButtons}</TitleButtons>
+                )}
                 <div className="ant-modal-title">{title}</div>
-                {subtitle && <div className="ant-modal-subtitle">{subtitle}</div>}
+                {subtitle && (
+                  <div className="ant-modal-subtitle">{subtitle}</div>
+                )}
               </Title>
             ) : null}
 
@@ -154,7 +157,9 @@ const Sidebar = ({
           </div>
         ) : null}
 
-        {Children.toArray(children).length > 0 && <div className="ant-modal-body">{children}</div>}
+        {Children.toArray(children).length > 0 && (
+          <div className="ant-modal-body">{children}</div>
+        )}
 
         {footer ? <div className="ant-modal-footer">{footer}</div> : null}
       </div>
@@ -171,7 +176,7 @@ const Sidebar = ({
         </div>
       </div>
     </StyledInner>
-  ));
+  );
 Sidebar.defaultProps = { width: 350, padding: 0, isOpen: true };
 
 export default Sidebar;

@@ -216,7 +216,6 @@ const TitleButtons = createComponent(
     right: right && 16,
     color: theme.color,
     fontSize: 40,
-    fontWeight: 200,
   }),
   'div',
   ({ left, right, ...p }) => Object.keys(p)

@@ -15,7 +15,7 @@ export const H = createComponent(
     center,
   }) => ({
     color: (colored || color) && theme.color,
-    fontWeight: light && 200,
+    // fontWeight: light && 200,
     textAlign: center ? 'center' : textAlign,
     padding,
     fontSize,
@@ -32,19 +32,23 @@ export const H = createComponent(
     },
   }),
   ({ level, children, ...rest }) => {
-    if (!level) { level = 1; }
+    if (!level) {
+      level = 1;
+    }
     return React.createElement(`h${level}`, rest, children);
   },
   ['level', 'itemProp']
 );
 
-export const SectionH = ({ title, description }) =>
-  (<div key={0}>
+export const SectionH = ({ title, description }) => (
+  <div key={0}>
     <H marginBottom={0} textAlign="center" level={3} light color>
       {title}
     </H>
-    {description &&
+    {description && (
       <H marginTop={0} textAlign="center" level={5} fontSize={12} light>
         {description}
-      </H>}
-  </div>);
+      </H>
+    )}
+  </div>
+);

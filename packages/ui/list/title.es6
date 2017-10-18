@@ -7,7 +7,6 @@ export default createComponent(
     ellipsis: true,
     borderBottom: noBorder || '1px solid #e9e9e9',
     fontSize: '1.17em',
-    fontWeight: bold ? 'bold' : thin ? 200 : undefined,
     color: color || theme.color,
     textAlign: center ? 'center' : undefined,
     flexShrink: 0,
@@ -21,5 +20,5 @@ export default createComponent(
       <div>{buttons}</div>
     </div>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
