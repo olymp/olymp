@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { withAuth } from '../with-auth';
-import { createComponent, Grid } from 'olymp-fela';
+import { createComponent, Grid, Avatar } from 'olymp-fela';
 import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
 import { onError, onSuccess, onEnterFocus } from '../views/base';
+import { withAuth } from '../with-auth';
 
 const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
+
+const UserPic = createComponent(
+  ({ theme }) => ({
+    float: 'right',
+    marginTop: theme.space2,
+  }),
+  p => <Avatar {...p} />,
+  p => Object.keys(p),
+);
 
 export const H1 = createComponent(
   ({ theme }) => ({
@@ -15,16 +24,16 @@ export const H1 = createComponent(
     fontWeight: 200,
   }),
   'h1',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const H3 = createComponent(
-  ({ theme }) => ({
+  () => ({
     textAlign: 'center',
     fontWeight: 200,
   }),
   'h3',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const FormItem = createComponent(
@@ -37,7 +46,7 @@ export const FormItem = createComponent(
     },
   }),
   Form.Item,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withAuth
@@ -79,14 +88,17 @@ export default class AuthProfile extends Component {
             {form.getFieldDecorator('name', {
               initialValue: user.name,
               rules: [
-                { required: true, message: 'Bitte geben Sie Ihren Namen an' },
+                {
+                  required: true,
+                  message: 'Bitte geben Sie Ihren Namen an',
+                },
               ],
             })(
               <Input
                 type="text"
                 placeholder="Name"
                 onKeyPress={onEnterFocus(() => this.mail)}
-              />
+              />,
             )}
           </FormItem>
           <FormItem key="email" label="E-Mail" {...layout}>
@@ -104,8 +116,22 @@ export default class AuthProfile extends Component {
                 placeholder="E-Mail"
                 ref={x => (this.mail = x)}
                 addonAfter={<FaEnvelope size={10} />}
-              />
+              />,
             )}
+          </FormItem>
+          <FormItem key="avatar" label="Avatar" {...layout}>
+            <a
+              href="https://en.gravatar.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Avatar
+                email={user.email}
+                name={user.name}
+                size={100}
+                default="blank"
+              />
+            </a>
           </FormItem>
           {auth.user.isAdmin && (
             <FormItem key="isAdmin" label="Administrator" {...layout}>

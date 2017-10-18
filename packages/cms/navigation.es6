@@ -3,51 +3,21 @@ import { withLang } from 'olymp-utils';
 import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent, border } from 'olymp-fela';
+import { createComponent, border, Avatar } from 'olymp-fela';
 import { withState } from 'recompose';
-import Gravatar from 'react-gravatar';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import Logo from './logo';
 
-const getInitials = name => {
-  if (name) {
-    const array = name.split(' ');
-
-    switch (array.length) {
-      case 1:
-        return array[0].charAt(0).toUpperCase();
-      default:
-        return (
-          array[0].charAt(0).toUpperCase() +
-          array[array.length - 1].charAt(0).toUpperCase()
-        );
-    }
-  }
-  return false;
-};
-
-const UserIcon = createComponent(
-  ({ theme, name }) => ({
+export const UserPic = createComponent(
+  ({ theme }) => ({
     position: 'absolute',
     centerY: true,
     left: 0,
     marginX: theme.space3,
-    borderRadius: '50%',
-    background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name
-    )}.jpg?s=26&bg=${encodeURIComponent(
-      theme.color
-    )}&color=${encodeURIComponent(
-      theme.light
-    )}) center center no-repeat, ${theme.color}`,
   }),
-  p => (
-    <i className="anticon">
-      <Gravatar {...p} size={30} />
-    </i>
-  ),
-  p => Object.keys(p)
+  p => <Avatar {...p} />,
+  p => Object.keys(p),
 );
 
 const VerticalMenu = createComponent(
@@ -132,7 +102,7 @@ const VerticalMenu = createComponent(
       {children}
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 @withLang
@@ -146,7 +116,7 @@ const VerticalMenu = createComponent(
   dispatch => ({
     setQuery: createReplaceQuery(dispatch),
     logout: createLogout(dispatch),
-  })
+  }),
 )
 @withState('collapsed', 'setCollapsed', true)
 class Navigation extends Component {
@@ -214,28 +184,13 @@ class Navigation extends Component {
           <Menu.SubMenu
             title={
               <span>
-                <Icon type="plus" />
-                <span>Hinzufügen</span>
-              </span>
-            }
-          >
-            <Menu.Item key="@page=form">
-              <Link to={{ pathname: '/__new', query: { '@page': 'form' } }}>
-                Seite
-              </Link>
-            </Menu.Item>
-            {collectionList.map(collection => (
-              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
-                <span>
-                  {get(collection, 'decorators.label.value', collection.name)}
-                </span>
-              </Menu.Item>
-            ))}
-          </Menu.SubMenu>
-          <Menu.SubMenu
-            title={
-              <span>
-                <UserIcon email={user.email} name={user.name} default="blank" />
+                <i className="anticon">
+                  <UserPic
+                    email={user.email}
+                    name={user.name}
+                    default="blank"
+                  />
+                </i>
                 <span>{user.name}</span>
               </span>
             }
@@ -266,6 +221,27 @@ class Navigation extends Component {
               </a>
             </Menu.Item>
           </Menu.SubMenu>
+          <Menu.SubMenu
+            title={
+              <span>
+                <Icon type="plus" />
+                <span>Hinzufügen</span>
+              </span>
+            }
+          >
+            <Menu.Item key="@page=form">
+              <Link to={{ pathname: '/__new', query: { '@page': 'form' } }}>
+                Seite
+              </Link>
+            </Menu.Item>
+            {collectionList.map(collection => (
+              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+                <span>
+                  {get(collection, 'decorators.label.value', collection.name)}
+                </span>
+              </Menu.Item>
+            ))}
+          </Menu.SubMenu>
           <Menu.Item key="@page">
             <Icon type="bars" />
             <span>Frontend</span>
@@ -273,6 +249,16 @@ class Navigation extends Component {
           <Menu.Item key="@media">
             <Icon type="picture" />
             <span>Medien</span>
+          </Menu.Item>
+          {isAdmin && (
+            <Menu.Item key="@users">
+              <Icon type="team" />
+              <span>Benutzer</span>
+            </Menu.Item>
+          )}
+          <Menu.Item key="@analytics">
+            <Icon type="line-chart" />
+            <span>Statistiken</span>
           </Menu.Item>
           {collectionList.map(collection => (
             <Menu.Item
@@ -285,16 +271,6 @@ class Navigation extends Component {
               </span>
             </Menu.Item>
           ))}
-          <Menu.Item key="@analytics">
-            <Icon type="line-chart" />
-            <span>Analytics</span>
-          </Menu.Item>
-          {isAdmin && (
-            <Menu.Item key="@users">
-              <Icon type="team" />
-              <span>Benutzer</span>
-            </Menu.Item>
-          )}
         </Menu>
       </VerticalMenu>
     );
