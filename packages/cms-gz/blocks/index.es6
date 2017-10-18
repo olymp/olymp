@@ -4,8 +4,6 @@ import * as PanelBlocks from './panel';
 import * as OrgBlocks from './org';
 import * as ArticleBlocks from './article';
 import GZKMapsBlock from './maps';
-// export { default as GZKContainerBlock } from './container';
-// export { default as GZKContainerTextBlock } from './container-text';
 import GZKMagazinBlock from './magazin';
 import GZKNewsBlock from './news';
 import GZKNumbersBlock from './phone';
@@ -16,7 +14,6 @@ import GZKNewsDetailBlock from './news-detail';
 import GZKBlock from './gzk';
 
 import { getHeaderStyles } from '../components/header';
-// import { default as CarouselBlock } from './carousel';
 
 export default {
   ...Blocks,
@@ -24,7 +21,6 @@ export default {
   ...OrgBlocks,
   ...ArticleBlocks,
   GZKMapsBlock,
-  // GZKHeaderBlock,
   GZKMagazinBlock,
   GZKNewsBlock,
   GZKNumbersBlock,
@@ -59,21 +55,6 @@ export default {
           width: '100%',
           margin: 0,
         },
-        /* onAfter: {
-          content: '""',
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          width: 100,
-          height: 100,
-          zIndex: 5,
-          backgroundImage: 'url(/img/edge.png)',
-          backgroundSize: 'cover',
-          ifSmallDown: {
-            width: 50,
-            height: 50,
-          },
-        }, */
       },
       ifMediumUp: {
         '> div:nth-child(1) > div > div > img': {
@@ -124,39 +105,4 @@ export default {
       ...getHeaderStyles({ theme }),
     }),
   },
-  /* ColumnsColumnBlock: {
-    ...Blocks.ColumnsColumnBlock,
-    styles: ({ theme, node }) => ({
-      '> div': {
-        ...Blocks.ColumnsColumnBlock.styles({ theme })['> div'],
-        backgroundColor: node.data.get('bordered', true) && '#FFFFFF',
-        boxShadow:
-          node.data.get('bordered', true) && '0 1px 5px rgba(45, 45, 45, 0.09)',
-      },
-    }),
-  },
-  ContainerBlock: {
-    ...Blocks.ContainerBlock,
-    styles: ({ theme }) => ({
-      backgroundColor: '#FFFFFF',
-    }),
-  },
-  AccordionBlock: {
-    ...Blocks.AccordionBlock,
-  },
-  HeaderBlock: {
-    ...Blocks.HeaderBlock,
-    type: 'QKG.Template.Header',
-    styles: ({ theme }) => ({
-      ...Blocks.HeaderBlock.styles({ theme }),
-      ...getHeaderStyle({ theme }),
-    }),
-  },
-  BannerBlock: {
-    ...Blocks.BannerBlock,
-    styles: ({ theme }) => ({
-      ...Blocks.BannerBlock.styles({ theme }),
-      ...getHeaderStyle({ theme }),
-    }),
-  }, */
 };
