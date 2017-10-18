@@ -63,6 +63,11 @@ const VerticalMenu = createComponent(
     '> ul.ant-menu-inline-collapsed > li.ant-menu-item.logo': {
       padding: '0 10px',
       marginX: -15,
+      '> a': {
+        '> svg': {
+          width: 45,
+        },
+      },
     },
     '> ul': {
       backgroundColor: '#404040',
@@ -82,8 +87,7 @@ const VerticalMenu = createComponent(
             display: 'flex',
             height: '100%',
             '> svg': {
-              height: 52,
-              width: 66,
+              width: 75,
               margin: 'auto',
             },
           },
@@ -204,7 +208,7 @@ class Navigation extends Component {
         >
           <Menu.Item className="logo">
             <Link to={{ query: {} }}>
-              <Logo size={33} margin="0 0 -7px 0" />
+              <Logo />
             </Link>
           </Menu.Item>
           <Menu.SubMenu
