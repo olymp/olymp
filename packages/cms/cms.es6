@@ -19,11 +19,11 @@ const IfAuth = asyncComponent({
       // Webpack's code splitting API w/naming
       require.ensure(
         [],
-        (require) => {
+        require => {
           resolve(require('./cms-auth'));
         },
-        'cms',
-      ),
+        'cms'
+      )
     ),
 });
 
@@ -47,17 +47,18 @@ const enhance = compose(
   useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
     theme: {
-      logoWhite: () => <Logo />,
+      logoWhite: () => <Logo clean />,
       logoTitle: 'olymp cms',
       ...theme,
     },
-  })),
+  }))
 );
 
 const Auth = connect(({ auth }) => ({
   isAuthenticated: !!auth.user,
 }))(
-  ({ isAuthenticated, ...rest }) => (isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />),
+  ({ isAuthenticated, ...rest }) =>
+    isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />
 );
 Auth.displayName = 'CmsAuthSwitch';
 
@@ -74,7 +75,7 @@ const Load = getNavigation(
   }))(({ isLoading, ...rest }) => [
     <ScreenLoader key={0} show={isLoading} />,
     <Auth key={1} {...rest} />,
-  ]),
+  ])
 );
 Load.displayName = 'CmsLoadSwitch';
 
