@@ -20,12 +20,12 @@ const getInitials = name => {
 };
 
 export default createComponent(
-  ({ theme, name }) => ({
+  ({ theme, name, size }) => ({
     display: 'block',
     borderRadius: '50%',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
       name,
-    )}.jpg?s=26&bg=${encodeURIComponent(
+    )}.jpg?s=${Math.round((size || 30) * 0.8)}&bg=${encodeURIComponent(
       theme.color,
     )}&color=${encodeURIComponent(
       theme.light,
