@@ -1,5 +1,11 @@
 import React from 'react';
-import { createComponent, Container, Grid, border, SchemaLoader } from 'olymp-fela';
+import {
+  createComponent,
+  Container,
+  Grid,
+  border,
+  SchemaLoader,
+} from 'olymp-fela';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { PrefetchLink } from 'olymp-cms';
@@ -43,7 +49,7 @@ export const Column = createComponent(
     },
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export const Content = createComponent(
@@ -63,7 +69,7 @@ export const Content = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export const Img = createComponent(
@@ -73,7 +79,7 @@ export const Img = createComponent(
     alignSelf: 'flex-start',
   }),
   p => <Image {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export const Li = createComponent(
@@ -88,7 +94,7 @@ export const Li = createComponent(
     },
   }),
   'li',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const DownloadLink = createComponent(
@@ -99,15 +105,16 @@ const DownloadLink = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
-const Item = withEdit('article')((props) => {
+const Item = withEdit('article')(props => {
   const { name, description, slug, org, date, person } = props;
 
   const image = props.image ||
-  org.logo || {
-      url: 'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
+    org.logo || {
+      url:
+        'https://res.cloudinary.com/djyenzorc/image/upload/v1499270971/kdmxe7pl54cqtdfc7ggy.jpg',
       width: 400,
       height: 300,
     };
@@ -116,8 +123,13 @@ const Item = withEdit('article')((props) => {
     <Grid>
       <Panel
         accent={org.color}
-        title={<PrefetchLink to={{ pathname: `/magazin${slug}` }}>{name}</PrefetchLink>}
-        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name || 'Redaktion'}`}
+        title={
+          <PrefetchLink to={{ pathname: `/magazin${slug}` }}>
+            {name}
+          </PrefetchLink>
+        }
+        subtitle={`${moment(date).format('DD. MMMM YYYY')}, ${person.name ||
+          'Redaktion'}`}
       >
         <Img value={image} width={160} avatar />
         <Content>
@@ -131,7 +143,12 @@ const Item = withEdit('article')((props) => {
 const Listing = withCreate('article')(({ items }) => (
   <div>
     {items.map(item => (
-      <Item {...item} org={item.org || {}} person={item.person || {}} key={item.id} />
+      <Item
+        {...item}
+        org={item.org || {}}
+        person={item.person || {}}
+        key={item.id}
+      />
     ))}
   </div>
 ));
@@ -145,7 +162,7 @@ const TagContainer = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Tag = createComponent(
@@ -166,13 +183,16 @@ const Tag = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const component = graphql(
   gql`
     query articleList {
-      items: articleList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
+      items: articleList(
+        sort: { date: DESC }
+        query: { state: { eq: PUBLISHED } }
+      ) {
         id
         name
         description
@@ -219,10 +239,10 @@ const component = graphql(
       items: data.items || [],
       pdfs: data.pdfs || [],
     }),
-  },
+  }
 )(({ attributes, items, pdfs, isLoading }) => {
   const tags = items.reduce((tags, item) => {
-    (item.tags || []).forEach((tag) => {
+    (item.tags || []).forEach(tag => {
       const index = tags.findIndex(item => item.tag === tag);
 
       if (index === -1) {
@@ -252,7 +272,11 @@ const component = graphql(
             <H2 right>Ausgaben als PDFs</H2>
             {pdfs.map((pdf, i) => (
               <ListItem key={i}>
-                <DownloadLink rel="noopener noreferrer" href={pdf.url} target="_blank">
+                <DownloadLink
+                  rel="noopener noreferrer"
+                  href={pdf.url}
+                  target="_blank"
+                >
                   Gesund im Zentrum - <b>{pdf.caption}</b>
                   <FaDownload size={15} />
                 </DownloadLink>
@@ -277,7 +301,7 @@ const component = graphql(
 export default {
   type: 'GZK.Collections.MagazinBlock',
   label: 'Magazin',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component,

@@ -42,16 +42,29 @@ const Item = withEdit('org')(
         },
       },
     }),
-    ({ className, slug, name, kurz, org, telefon, onMouseEnter, onMouseLeave }) => (
+    ({
+      className,
+      slug,
+      name,
+      kurz,
+      org,
+      telefon,
+      onMouseEnter,
+      onMouseLeave,
+    }) => (
       <li className={className}>
-        <Link to={slug || '/'} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <Link
+          to={slug || '/'}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
           <span>{kurz || name}</span>
           <span>{org || telefon}</span>
         </Link>
       </li>
     ),
-    p => Object.keys(p),
-  ),
+    p => Object.keys(p)
+  )
 );
 
 @withRouter
@@ -79,7 +92,7 @@ const Item = withEdit('org')(
   `,
   {
     options: () => ({}),
-  },
+  }
 )
 @withCreate('org')
 class VerzeichnisBlock extends Component {
@@ -120,7 +133,7 @@ class VerzeichnisBlock extends Component {
       return <div />;
     }
 
-    data.items.forEach((item) => {
+    data.items.forEach(item => {
       if (item.persons) {
         item.persons.forEach(person =>
           persons.push({
@@ -131,7 +144,7 @@ class VerzeichnisBlock extends Component {
             color: item.color,
             org: item.kurz || item.name,
             slug: item.slug,
-          }),
+          })
         );
       }
       if (item.fachrichtungen) {
@@ -144,14 +157,17 @@ class VerzeichnisBlock extends Component {
             color: item.color,
             org: item.kurz || item.name,
             slug: item.slug,
-          }),
+          })
         );
       }
     });
 
     return (
       <Grid size={3} {...attributes}>
-        {this.renderSection('Einrichtungen', sortBy(data.items, x => x.name || x.title))}
+        {this.renderSection(
+          'Einrichtungen',
+          sortBy(data.items, x => x.name || x.title)
+        )}
         {this.renderSection('Spezialitäten', sortBy(spezial, 'name'))}
         {this.renderSection('Ärzte & Dienstleister', sortBy(persons, 'name'))}
         {children}
@@ -163,7 +179,7 @@ class VerzeichnisBlock extends Component {
 export default {
   type: 'GZK.Collections.VerzeichnisBlock',
   label: 'Verzeichnis',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component: VerzeichnisBlock,

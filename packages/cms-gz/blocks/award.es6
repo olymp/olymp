@@ -13,7 +13,7 @@ const Img = createComponent(
     transition: 'opacity .4s ease,filter .4s ease',
   }),
   p => <Image {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Link = createComponent(
@@ -29,7 +29,7 @@ const Link = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Span = createComponent(
@@ -37,7 +37,7 @@ const Span = createComponent(
     color: theme.color,
   }),
   'span',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Content = createComponent(
@@ -54,7 +54,7 @@ const Content = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Inner = createComponent(
@@ -71,7 +71,7 @@ const Inner = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Item = createComponent(
@@ -84,7 +84,13 @@ const Item = createComponent(
   ({ className, website, name, tags, image }) => (
     <Grid.Item className={className} mini={5} medium={2} gridSize={10}>
       <Link href={website} rel="noopener noreferrer">
-        <Img value={image} maxResolution={40000} width="70%" ratio={1} mode="padded" />
+        <Img
+          value={image}
+          maxResolution={40000}
+          width="70%"
+          ratio={1}
+          mode="padded"
+        />
         <Content>
           <Inner>
             <h3>{name}</h3>
@@ -94,7 +100,7 @@ const Item = createComponent(
       </Link>
     </Grid.Item>
   ),
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const component = graphql(
@@ -124,7 +130,7 @@ const component = graphql(
       data,
       items: data.items || [],
     }),
-  },
+  }
 )(
   createComponent(
     ({ theme }) => ({
@@ -135,18 +141,20 @@ const component = graphql(
     ({ className, attributes, items }) => (
       <div className={className} {...attributes}>
         <Container>
-          <Grid size={10}>{items.map(item => <Item {...item} key={item.id} />)}</Grid>
+          <Grid size={10}>
+            {items.map(item => <Item {...item} key={item.id} />)}
+          </Grid>
         </Container>
       </div>
     ),
-    p => Object.keys(p),
-  ),
+    p => Object.keys(p)
+  )
 );
 
 export default {
   type: 'GZK.Panel.Network',
   label: 'Netzwerk',
-  category: 'Panel',
+  category: 'Kacheln',
   isVoid: true,
   kind: 'block',
   component,

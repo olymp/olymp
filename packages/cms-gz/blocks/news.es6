@@ -279,7 +279,7 @@ class News extends Component {
 export default {
   type: 'GZK.Collections.NewsBlock',
   label: 'Neuigkeiten',
-  category: 'Collections',
+  category: 'Daten',
   isVoid: true,
   kind: 'block',
   component: News,

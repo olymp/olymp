@@ -26,13 +26,16 @@ const MagazinItem = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 @graphql(
   gql`
     query articleList {
-      items: articleList(sort: { date: DESC }, query: { state: { eq: PUBLISHED } }) {
+      items: articleList(
+        sort: { date: DESC }
+        query: { state: { eq: PUBLISHED } }
+      ) {
         id
         date
         name
@@ -84,7 +87,7 @@ const MagazinItem = createComponent(
       items: data.items || [],
       pdfs: data.pdfs || [],
     }),
-  },
+  }
 )
 class Magazin extends Component {
   render() {
@@ -126,7 +129,7 @@ class Magazin extends Component {
 export default {
   type: 'GZK.Panel.Magazin',
   label: 'Magazin',
-  category: 'Panel',
+  category: 'Kacheln',
   isVoid: true,
   kind: 'block',
   component: Magazin,
