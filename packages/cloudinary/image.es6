@@ -7,7 +7,15 @@ import Placeholder from 'olymp-fela/image/placeholder';
 
 const Container = createComponent(
   ({
-    ratio, height, width, minWidth, maxWidth, minHeight, maxHeight, circle, fade
+    ratio,
+    height,
+    width,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
+    circle,
+    fade,
   }) => ({
     position: 'relative',
     overflow: 'hidden',
@@ -36,14 +44,14 @@ const Container = createComponent(
       animationTimingFunction: 'ease-out',
       animationName: fade
         ? {
-          from: { opacity: 0 },
-          to: { opacity: 1 },
-        }
+            from: { opacity: 0 },
+            to: { opacity: 1 },
+          }
         : null,
     },
   }),
   ({ attributes, ...p }) => <div {...p} {...attributes} />,
-  ['onClick', 'onMouseEnter', 'attributes', 'style', 'className', 'children'],
+  ['onClick', 'onMouseEnter', 'attributes', 'style', 'className', 'children']
 );
 
 const CloudinaryImage = ({
@@ -63,6 +71,9 @@ const CloudinaryImage = ({
   children,
   style,
 }) => {
+  if (!value) {
+    value = {};
+  }
   const imageWidth = (value.crop && value.crop[0]) || value.width;
   const imageHeight = (value.crop && value.crop[1]) || value.height;
   const parts = value.url ? value.url.split('/') : null;
@@ -73,6 +84,7 @@ const CloudinaryImage = ({
       .slice(7)
       .join('/')
       .split('.')[0];
+
   return (
     <Container
       fade={fade}
@@ -104,7 +116,8 @@ const CloudinaryImage = ({
             quality: 0,
             fetchFormat: 'auto',
             width: 4,
-            aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
+            aspectRatio:
+              ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
           }}
         />
       )}
@@ -125,7 +138,8 @@ const CloudinaryImage = ({
               fetchFormat: 'auto',
               dpr: 'auto',
               width: 'auto',
-              aspectRatio: ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
+              aspectRatio:
+                ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
             }}
           />
         )}

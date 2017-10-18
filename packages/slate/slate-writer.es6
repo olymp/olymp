@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Editor } from 'slate-react';
+import { Editor, getEventRange } from 'slate-react';
 import Plain from 'slate-plain-serializer';
 import EditList from 'slate-edit-list';
 import getSchema from './get-schema';
@@ -48,12 +48,12 @@ class Writer extends Component {
     className: PropTypes.string,
   };
 
-  onKeyDown = (e, data, change) => {
-    if (e.shiftKey && data.key === 'enter') {
+  onKeyDown = (e, change) => {
+    if (e.shiftKey && e.key === 'enter') {
       return change.insertText('\n');
-    } else if (data.key === 'backspace') {
+    } else if (daeta.key === 'backspace') {
     } else if (e.metaKey || e.ctrlKey) {
-      switch (data.key) {
+      switch (e.key) {
         case 'b':
           return change.toggleMark('bold');
         case 'u':
@@ -67,31 +67,33 @@ class Writer extends Component {
     return undefined;
   };
 
-  onPaste = (ev, data, change, x) => {
+  onPaste = (ev, change) => {
     const { schema } = this.props;
-    if (data.text && schema.nodes[data.text]) {
+    if (ev.text && schema.nodes[ev.text]) {
+      const range = getEventRange(ev, change.state);
       return addBlock(
         change.state,
-        schema.nodes[data.text].slate,
+        schema.nodes[ev.text].slate,
         schema,
         null,
         null,
-        change.select(data.target),
+        change.select(ev)
       );
     }
   };
 
-  onDrop = (ev, data, change, x) => {
+  onDrop = (ev, change) => {
     const { schema } = this.props;
     const type = ev.dataTransfer.getData('x-slatemate');
     if (type) {
+      const range = getEventRange(ev, change.state);
       return addBlock(
         change.state,
         schema.nodes[type].slate,
         schema,
         null,
         null,
-        change.select(data.target),
+        change.select(range)
       );
     }
   };
@@ -99,12 +101,22 @@ class Writer extends Component {
   onChange = change => this.props.onChange(change.state);
 
   render = () => {
-    const { children, readOnly, className, spellcheck, schema, ...rest } = this.props;
+    const {
+      children,
+      readOnly,
+      className,
+      spellcheck,
+      schema,
+      ...rest
+    } = this.props;
     const { focus } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
     return (
-      <div className={className} onDragEnter={() => this.setState({ focus: true })}>
+      <div
+        className={className}
+        onDragEnter={() => this.setState({ focus: true })}
+      >
         {children}
         {readOnly !== true && (
           <ToolbarText
