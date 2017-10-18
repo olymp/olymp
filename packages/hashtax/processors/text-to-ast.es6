@@ -1,11 +1,11 @@
 // convert #componentName key=value# to object { type: componentName, args: { key: value } }
-export const parseComponent = (raw) => {
+export const parseComponent = raw => {
   const [text, ...decos] = raw.split('@');
   const [type, ...rest] = text.split(' ');
   const decorators = decos.map(parseComponent);
   const args = {};
   let currentKey = 'value';
-  rest.forEach((frag) => {
+  rest.forEach(frag => {
     if (!frag) {
       return;
     }
@@ -65,8 +65,8 @@ export const processLines = (lines, result = []) => {
   }
   return processLines(rest, result);
 };
-export default (text) => {
-  if (!text || typeof text !== 'string') {
+export default text => {
+  if (!text || typeof text !== 'string' || !text.split) {
     return [];
   }
   return processLines(text.split('\n')).result;

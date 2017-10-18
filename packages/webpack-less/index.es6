@@ -4,13 +4,24 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeModules = resolve(__dirname, 'node_modules');
 
 module.exports = (config, options) => {
-  const { isProd, isWeb, isNode, appRoot, isLinked, modifyVars, folder, isDev, target } = options;
+  const {
+    isProd,
+    isWeb,
+    isNode,
+    appRoot,
+    isLinked,
+    modifyVars,
+    folder,
+    isDev,
+    target,
+  } = options;
 
   if (isWeb && isProd) {
     config.plugins.push(
       new ExtractTextPlugin({
         filename: '[name].[chunkhash].css',
-      }),
+        allChunks: true,
+      })
     );
     config.module.rules.push({
       test: /\.(less|css)$/,
