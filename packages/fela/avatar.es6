@@ -21,23 +21,16 @@ const getInitials = name => {
 
 export default createComponent(
   ({ theme, name }) => ({
-    position: 'absolute',
-    centerY: true,
-    left: 0,
-    marginX: theme.space3,
+    display: 'block',
     borderRadius: '50%',
     background: `url(https://invatar0.appspot.com/svg/${getInitials(
-      name
+      name,
     )}.jpg?s=26&bg=${encodeURIComponent(
-      theme.color
+      theme.color,
     )}&color=${encodeURIComponent(
-      theme.light
+      theme.light,
     )}) center center no-repeat, ${theme.color}`,
   }),
-  p => (
-    <i className="anticon">
-      <Gravatar {...p} size={30} />
-    </i>
-  ),
-  p => Object.keys(p)
+  ({ size, ...p }) => <Gravatar {...p} size={size || 30} />,
+  p => Object.keys(p),
 );
