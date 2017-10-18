@@ -1,5 +1,5 @@
 {
-  "version": "18.1.7",
+  "version": "18.1.8",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -18,7 +18,7 @@
     "lodash": "^4.17.4",
     "monk": "^6.0.5",
     "olymp": "^18.1.7",
-    "olymp-auth": "^18.1.7",
+    "olymp-auth": "^18.1.8",
     "olymp-cloudinary": "^18.1.7",
     "olymp-collection": "^18.1.7",
     "olymp-fela": "^18.1.7",
