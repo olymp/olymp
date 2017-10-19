@@ -1,3 +1,4 @@
+require('babel-polyfill').default;
 const { autoUpdater } = require('electron-updater');
 const {
   Menu,

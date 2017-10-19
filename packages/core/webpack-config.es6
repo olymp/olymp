@@ -177,7 +177,7 @@ module.exports = ({
         'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
           ? `"${process.env.FILESTACK_KEY}"`
           : false,
-      }),
+      })
     );
   }
 
@@ -242,8 +242,8 @@ module.exports = ({
     config.plugins.push(
       new GenerateJsonPlugin(
         'package.json',
-        require('./electron/package-json')(),
-      ),
+        require('./electron/package-json')()
+      )
     );
     if (isDev) {
       const ElectronPlugin = require('electron-webpack-plugin');
@@ -251,7 +251,7 @@ module.exports = ({
         new ElectronPlugin({
           test: /^.\/electron/,
           path: path.resolve(appRoot, '.dev', 'electron'),
-        }),
+        })
       );
     }
   }
@@ -261,7 +261,7 @@ module.exports = ({
         banner: 'require("source-map-support").install();',
         raw: true,
         entryOnly: false,
-      }),
+      })
     );
     if (isDev && isServer) {
       console.log('INSPECT', devPort + 1);
@@ -269,7 +269,7 @@ module.exports = ({
         new StartServerPlugin({
           name: 'app.js',
           // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
-        }),
+        })
       );
     }
   } else if (!isNode) {
@@ -292,7 +292,7 @@ module.exports = ({
           minifyCSS: true,
           minifyURLs: true,
         }, */
-        }),
+        })
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
@@ -314,7 +314,7 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           }, */
-          }),
+          })
         );
       }
     }
@@ -328,7 +328,7 @@ module.exports = ({
   // LimitChunkCount on all but production-web
   if (isNode || isElectron || isDev) {
     config.plugins.push(
-      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
     );
     config.output.filename = '[name].js';
   } else {
@@ -336,7 +336,7 @@ module.exports = ({
       new AssetsPlugin({
         filename: 'assets.json',
         path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-      }),
+      })
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked) {
@@ -347,7 +347,7 @@ module.exports = ({
           reportFilename: './_report.html',
           analyzerMode: 'static',
           // generateStatsFile: false,
-        }),
+        })
       );
     } else {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
@@ -358,7 +358,7 @@ module.exports = ({
         name: 'app',
         filename: '[name].[chunkhash].js',
         // minChunks: 2,
-      }),
+      })
     );
     config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
@@ -370,6 +370,7 @@ module.exports = ({
       whitelist: [
         '.bin',
         'source-map-support/register',
+        'babel-polyfill',
         /\.(eot|woff|woff2|ttf|otf)$/,
         /\.(svg|png|jpg|jpeg|gif|ico)$/,
         /\.(mp4|mp3|ogg|swf|webp)$/,
@@ -442,7 +443,7 @@ module.exports = ({
   const final = plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
-      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`,
+      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`
     ));
     return req(config, options, webpack) || config;
   }, config);
