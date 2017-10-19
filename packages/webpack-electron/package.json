@@ -12,6 +12,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "devtron": "^1.4.0",
     "electron": "^1.7.9",
     "electron-builder": "^19.37.2",
