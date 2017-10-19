@@ -33,7 +33,7 @@ const stateWrapper = WrappedComponent =>
         }
         return arr;
       }, arr);
-    propagateChange = (value) => {
+    propagateChange = value => {
       this.base64 = Base64.serialize(value);
       if (this.base64 !== this.props.base64) {
         const json = value.toJSON();
@@ -45,12 +45,18 @@ const stateWrapper = WrappedComponent =>
         const all = this.getAllBlocks(value.document.nodes, (node, parent) => {
           if (
             node.type === 'paragraph' &&
-            (!parent || (parent.type && parent.type.indexOf('heading') === -1)) &&
+            (!parent ||
+              (parent.type && parent.type.indexOf('heading') === -1)) &&
             node.text
           ) {
             text += `${node.text}\n`;
           }
-          if (!title && node.type && node.type.indexOf('heading-') === 0 && node.text) {
+          if (
+            !title &&
+            node.type &&
+            node.type.indexOf('heading-') === 0 &&
+            node.text
+          ) {
             title = node.text;
           }
           if (node.type && node.type.indexOf('heading-one') === 0) {
@@ -58,14 +64,16 @@ const stateWrapper = WrappedComponent =>
           }
           if (!image && node.data && node.data.get('value')) {
             const url =
-              get(node.data.get('value'), '[0].url') || get(node.data.get('value'), 'url');
+              get(node.data.get('value'), '[0].url') ||
+              get(node.data.get('value'), 'url');
             if (url && url.indexOf('cloudinary') !== -1) {
               image = url;
             }
           }
         });
         const count = 355;
-        const extract = text.slice(0, count) + (text.length > count ? '...' : '');
+        const extract =
+          text.slice(0, count) + (text.length > count ? '...' : '');
         // image, title, chapters
         return this.props.onChange({
           nodes,
@@ -81,7 +89,7 @@ const stateWrapper = WrappedComponent =>
       leading: false,
       trailing: true,
     });
-    onChange = (value) => {
+    onChange = value => {
       if (!this.props.onChange) {
         return;
       }
@@ -91,22 +99,29 @@ const stateWrapper = WrappedComponent =>
     };
     render() {
       const { value } = this.state;
-      return <WrappedComponent {...this.props} value={value} onChange={this.onChange} />;
+      return (
+        <WrappedComponent
+          {...this.props}
+          value={value}
+          onChange={this.onChange}
+        />
+      );
     }
   };
 
 export default compose(
   withPropsOnChange(['value', 'signal'], ({ value, signal }) => {
-    const state = value
-      ? State.fromJSON({
-        document: {
-          nodes: value.nodes,
-          kind: 'document',
-          data: { signal },
-        },
-        kind: 'state',
-      })
-      : Plain.deserialize('');
+    const state =
+      value && value.nodes
+        ? State.fromJSON({
+            document: {
+              nodes: value.nodes,
+              kind: 'document',
+              data: { signal },
+            },
+            kind: 'state',
+          })
+        : Plain.deserialize('');
     return {
       value: state,
       base64: Base64.serialize(state),
