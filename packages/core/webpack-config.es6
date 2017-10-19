@@ -370,7 +370,7 @@ module.exports = ({
       whitelist: [
         '.bin',
         'source-map-support/register',
-        'babel-polyfill',
+        // 'babel-polyfill',
         /\.(eot|woff|woff2|ttf|otf)$/,
         /\.(svg|png|jpg|jpeg|gif|ico)$/,
         /\.(mp4|mp3|ogg|swf|webp)$/,

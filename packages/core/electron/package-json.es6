@@ -19,7 +19,8 @@ module.exports = () => ({
       'electron-debug': dependecies['electron-debug'],
       'electron-log': dependecies['electron-log'],
       'electron-updater': dependecies['electron-updater'],
+      'babel-polyfill': dependecies['babel-polyfill'],
     },
-    get(packageJson, 'electronDependencies', {}),
+    get(packageJson, 'electronDependencies', {})
   ),
 });
