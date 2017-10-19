@@ -25,7 +25,7 @@ module.exports = (config, options) => {
             unused: true,
             drop_debugger: true,
             dead_code: true,
-            drop_console: true,
+            // drop_console: true,
             // ecma: 8,
           },
           output: {
@@ -115,7 +115,7 @@ module.exports = (config, options) => {
     babelOptions.plugins.push('transform-react-constant-elements');
     babelOptions.plugins.push('transform-react-pure-class-to-function');
     // babelOptions.plugins.push('transform-react-inline-elements');
-    babelOptions.plugins.push('transform-react-remove-prop-types');
+    // babelOptions.plugins.push('transform-react-remove-prop-types');
     // babelOptions.presets.push(['react-optimize']);
   }
 
