@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 const elecApp = require('@electron');
 const { autoUpdater } = require('electron-updater');
 const {
@@ -142,7 +140,7 @@ function createWindow() {
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file:',
       slashes: true,
-    }),
+    })
   );
 
   /* // Open the DevTools.
