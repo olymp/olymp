@@ -1,32 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { createComponent, Grid, Container } from 'olymp-fela';
-import { camelCase } from 'lodash';
-import { withPropsOnChange, withState, compose } from 'recompose';
+import { withPropsOnChange, compose } from 'recompose';
 import tinycolor from 'tinycolor2';
+import { createUpdateQuery } from 'olymp-router';
+import { connect } from 'react-redux';
+import { sortBy } from 'lodash';
 
 const H2 = createComponent(
   () => ({
     textAlign: 'center',
   }),
   'h2',
-  []
+  [],
 );
 
 const Item = createComponent(
-  ({ theme, color, isActive, margin, onMouseEnter }) => ({
+  ({ theme, color, isActive, onMouseEnter }) => ({
     color: isActive ? theme.light : color,
     backgroundColor: isActive && color,
     borderRadius: theme.borderRadius,
     width: '80%',
     cursor: !!onMouseEnter && 'pointer',
     opacity: !!onMouseEnter && 0.8,
-    marginTop: margin && theme.space3,
     position: 'relative',
     padding: theme.space1,
     paddingLeft: theme.space4,
-    // marginLeft: theme.space2,
+    clear: 'both',
+    '> span': {
+      float: 'right',
+    },
     onHover: !!onMouseEnter && {
       opacity: 1,
     },
@@ -38,16 +42,16 @@ const Item = createComponent(
     },
   }),
   'li',
-  ({ color, active, margin, ...p }) => Object.keys(p)
+  ({ color, isActive, ...p }) => Object.keys(p),
 );
 
 const Map = createComponent(
-  ({ theme, items, activeItem }) => {
+  ({ theme, level, room, items }) => {
     const activeItemObj = items.find(
-      item => camelCase(item.name) === activeItem
+      ({ lageplan }) => lageplan.toLowerCase() === room,
     );
-    const neben = !!activeItemObj && activeItemObj.etage.includes('Neben');
-    const animation = {
+    const neben = !!activeItemObj && activeItemObj.lageplan.includes('N');
+    const entryAnimation = {
       userSelect: 'none',
       animationName: {
         '0%': {
@@ -67,66 +71,104 @@ const Map = createComponent(
       animationIterationCount: 'infinite',
       animationTimingFunction: 'linear',
     };
-    const gStyles = {
-      '> #buildingBg': {
-        fill: '#aaaaaa',
-      },
-      '> #textBuilding1': {
-        fill: activeItem && !neben ? theme.color : theme.dark,
-      },
-      '> #textBuilding2': {
-        fill: activeItem && neben ? theme.color : theme.dark,
-      },
-      '> #stairs': {
-        opacity: items.find(item => camelCase(item.name) === activeItem)
-          ? 1
-          : 0,
-        transition: 'opacity 0.3s ease-in-out',
-      },
-      '> #standort > text': {
-        opacity: items.find(item => camelCase(item.name) === activeItem)
-          ? 0
-          : 1,
-        transition: 'opacity 0.3s ease-in-out',
-      },
-    };
 
-    items.forEach(item => {
-      gStyles[`> #${camelCase(item.name)}`] = {
+    const levelStyles = {};
+    const pathStyles = {};
+    const entryStyles = {};
+    items.forEach(({ lageplan, color }) => {
+      levelStyles[`> #${lageplan.toLowerCase()}`] = {
         '> #room': {
-          fill: tinycolor(item.color)
-            .setAlpha(activeItem === camelCase(item.name) ? 1 : 0.5)
+          fill: tinycolor(color)
+            .setAlpha(room === lageplan.toLowerCase() ? 1 : 0.5)
             .toRgbString(),
           cursor: 'pointer',
           position: 'relative',
           onHover: {
-            fill: item.color,
+            fill: color,
           },
         },
-        '> #path': {
-          opacity: activeItem === camelCase(item.name) ? 1 : 0,
-          stroke: theme.color,
-          transition: 'opacity 0.3s ease-in-out',
-        },
-        '> #entry': {
-          display: activeItem !== camelCase(item.name) && 'none',
-          fill: theme.color,
-          ...animation,
-        },
         '> #text': {
-          opacity: activeItem === camelCase(item.name) ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out',
+          opacity: room === lageplan.toLowerCase() && 1,
         },
+      };
+      pathStyles[`> #${lageplan.toLowerCase()}_p`] = {
+        opacity: room === lageplan.toLowerCase() && 1,
+        stroke: theme.color,
+      };
+      entryStyles[`> #${lageplan.toLowerCase()}_e`] = {
+        fill: theme.color,
+        ...(room === lageplan.toLowerCase() ? entryAnimation : {}),
       };
     });
 
     return {
       width: '100%',
       marginTop: theme.space2,
-      '> g': gStyles,
+      '> #gzk': {
+        '& text': {
+          fontSize: 64,
+          fontFamily: theme.fontFamily,
+        },
+        '> #l0': {
+          display: 'none',
+        },
+        '> #l1': {
+          display: 'none',
+        },
+        '> #l2': {
+          display: 'none',
+        },
+        '> #l3': {
+          display: 'none',
+        },
+        [`> #${level}`]: {
+          display: 'block',
+          '> g > #text': {
+            opacity: !room ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out',
+          },
+          ...levelStyles,
+        },
+        '> #top': {
+          display: level === 'l0' && 'none',
+          '> #stairs': {
+            opacity: room ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out',
+          },
+        },
+        '> #top_l0': {
+          display: level !== 'l0' && 'none',
+        },
+        '> #stuff': {
+          '> #textBuilding1': {
+            fill: room && !neben ? theme.color : theme.dark,
+          },
+          '> #textBuilding2': {
+            fill: room && neben ? theme.color : theme.dark,
+          },
+          '> #standort > text': {
+            opacity: room ? 0 : 1,
+            transition: 'opacity 0.3s ease-in-out',
+          },
+        },
+        '> #entry': {
+          '> circle': {
+            opacity: 0,
+            transition: 'opacity 0.3s ease-in-out',
+          },
+          ...entryStyles,
+        },
+        '> #path': {
+          '> *': {
+            opacity: 0,
+            transition: 'opacity 0.3s ease-in-out',
+          },
+          ...pathStyles,
+        },
+      },
     };
   },
-  ({ className, setActiveItem, activeItem, ...p }) => (
+  ({ className, setActiveItem }) => (
     <svg
       width="100%"
       viewBox="0 0 2305 1808"
@@ -156,53 +198,39 @@ const Map = createComponent(
           id="path-5"
         />
       </defs>
-      <g
-        id="gzk"
-        stroke="none"
-        stroke-width="1"
-        fill="none"
-        fill-rule="evenodd"
-      >
+      <g id="gzk" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g id="l0" transform="translate(7.000000, 11.000000)">
           <g
-            id="6"
-            onMouseEnter={() => setActiveItem('l0.6')}
+            id="l06"
+            onMouseEnter={() => setActiveItem('l06')}
             transform="translate(475.000000, 1243.000000)"
           >
             <path
               d="M2.93259202,254.524791 L25.3314485,167.100129 L69.5350575,70.0155677 L113.857586,0.205938488 L719.271563,0.205938488 L719.271563,90.296219 L1229.78865,90.296219 L1229.78865,544.737891 L267.335573,544.737891 C186.507815,544.737891 136.879696,535.255184 118.451214,516.28977 C108.741044,506.296686 34.4323844,441.445262 13.5736497,393.532999 C1.08825328,364.854194 -2.45876596,318.518124 2.93259202,254.524791 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="393" y="289">
                 Apotheke
               </tspan>
             </text>
           </g>
-          <g id="5" transform="translate(1845.000000, 1174.000000)">
+          <g
+            id="l05"
+            onMouseEnter={() => setActiveItem('l05')}
+            transform="translate(1845.000000, 1174.000000)"
+          >
             <path
               d="M34.0807461,0.410287359 L0.51597852,99.6264176 L0.51597852,615.279134 C116.419724,615.675559 194.17414,613.384635 233.779228,608.406362 C273.384315,603.42809 313.695807,592.604076 354.713703,575.934322 C372.419885,567.549584 384.760645,560.211051 391.735984,553.918724 C398.711322,547.626398 405.116962,538.054143 410.952901,525.201961 C421.620356,505.700808 428.603703,490.258927 431.902943,478.876317 C435.202184,467.493706 437.852799,449.697741 439.85479,425.488419 L439.85479,244.951385 L422.288797,0.410287359 L34.0807461,0.410287359 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="93.71875" y="325">
                 Sanitäts-
               </tspan>
@@ -211,41 +239,49 @@ const Map = createComponent(
               </tspan>
             </text>
           </g>
-          <g id="4" transform="translate(1879.000000, 826.000000)">
+          <g
+            id="l04"
+            onMouseEnter={() => setActiveItem('l04')}
+            transform="translate(1879.000000, 826.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="0.0807460769 348.410287 0.0807460769 7.13247875 346.662905 0.778119725 385.334176 348.410287"
             />
             <text
               id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
+              fontFamily="Helvetica"
+              fontSize="64"
+              fontWeight="normal"
               fill="#FFFFFF"
             >
-              <tspan x="29.28125" y="194">
-                Radiologie
+              <tspan x="92.5" y="120">
+                Offene
+              </tspan>
+              <tspan x="51.046875" y="197">
+                Kernspin-
+              </tspan>
+              <tspan x="10.109375" y="274">
+                tomographie
               </tspan>
             </text>
           </g>
-          <g id="3" transform="translate(1771.000000, 69.000000)">
+          <g
+            id="l03"
+            onMouseEnter={() => setActiveItem('l03')}
+            transform="translate(1771.000000, 69.000000)"
+          >
             <path
               d="M459.515519,763.676918 L435.527346,542.297563 C426.550273,422.381274 420.163069,340.834172 416.365733,297.656257 C406.991851,191.069767 399.987266,119.345108 379.73598,82.6501867 C346.212849,21.9069502 265.234408,-5.30616686 136.800658,1.01083557 L136.800658,351.275504 L0.211332322,351.275504 L0.211332322,535.231258 C22.4897802,540.618507 38.200207,545.604728 47.3426126,550.189922 C56.4850182,554.775115 65.5428068,562.210906 74.5159785,572.497293 L101.202852,639.566346 L108.080746,763.676918 L459.515519,763.676918 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="114.40625" y="444">
                 Psycho-
               </tspan>
@@ -254,41 +290,37 @@ const Map = createComponent(
               </tspan>
             </text>
           </g>
-          <g id="2" transform="translate(1191.000000, 67.000000)">
+          <g
+            id="l02"
+            onMouseEnter={() => setActiveItem('l02')}
+            transform="translate(1191.000000, 67.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="175.968968 669.169323 248.146869 615.088738 310.927647 587.440061 408.777689 555.604094 489.364444 542.762311 581.558093 542.762311 581.558093 360.490293 717.479382 360.490293 717.479382 0.702102936 575.200943 45.6509563 368.430042 146.180875 229.895314 244.819246 48.4765734 406.981026 0.217078807 458.889333"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="257" y="397">
                 Dia???
               </tspan>
             </text>
           </g>
-          <g id="1" transform="translate(1033.000000, 525.000000)">
+          <g
+            id="l01"
+            onMouseEnter={() => setActiveItem('l01')}
+            transform="translate(1033.000000, 525.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="333.968968 211.169323 273.798006 280.320801 226.93394 389.13586 0.159746483 151.785319 158.217079 0.889333008"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="93.953125" y="126">
                 Fuß-
               </tspan>
@@ -297,143 +329,154 @@ const Map = createComponent(
               </tspan>
             </text>
           </g>
-          <g id="n1">
+          <g
+            id="l0n2"
+            onMouseEnter={() => setActiveItem('l0n2')}
+            transform="translate(610.000000, 11.000000)"
+          >
             <path
-              d="M691.330113,730.428224 L795.67055,662.539784 L893.856674,588.448637 C1002.34239,470.542965 1072.80508,380.147203 1105.24475,317.261351 C1153.90427,222.932572 1183.1614,146.243387 1185.53794,132.73122 C1192.49168,93.1947539 1192.50861,78.4629175 1161.63727,51.1047834 C1141.05638,32.8660274 1106.30059,22.2140506 1057.36988,19.1488531 L623.304302,12.8022248 L126.141623,0.45959858 L69.3743456,5.47945033 C54.1377518,7.43938853 41.5025277,12.3291894 31.4686733,20.1488531 C21.4348189,27.9685167 14.5552246,38.2871602 10.8298903,51.1047834 L2.70666313,93.1947539 C-0.880285642,105.559838 -0.505876575,122.454578 3.82989033,143.878976 C8.16565724,165.303373 20.0247234,195.727638 39.4070888,235.151769 L219.600257,659.84412 L290.241486,831.37446 C299.587224,848.89295 312.038452,860.750068 327.595172,866.945814 C350.930253,876.239433 398.851427,874.133019 442.814977,861.765155 C472.124011,853.519913 497.229589,843.389682 518.131713,831.37446 L691.330113,730.428224 Z"
+              d="M60.887044,611.288181 L145.695433,631.401539 L188.744116,660.142796 L281.406035,585.684205 L373.755905,488.090718 C447.955204,392.740367 499.149028,317.51736 527.337377,262.421696 C558.537964,201.43845 561.554987,167.106904 567.136149,146.860092 C580.422769,98.6601466 568.907425,72.5760745 567.136149,67.8667039 C561.788251,53.648004 544.939013,39.2433603 516.588437,24.6527728 L455.333738,15.1488531 L6.93256295,0.132239337 L0.920761394,531.47778 L60.887044,611.288181 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
             <text
               id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
+              fontFamily="Helvetica"
+              fontSize="64"
+              fontWeight="normal"
               fill="#FFFFFF"
             >
-              <tspan x="480" y="370">
+              <tspan x="148.4375" y="237">
+                DOC’S
+              </tspan>
+              <tspan x="71.875" y="314">
+                Pflegedienst
+              </tspan>
+            </text>
+          </g>
+          <g id="l0n1" onMouseEnter={() => setActiveItem('l0n1')}>
+            <polygon
+              id="room"
+              stroke="#000000"
+              strokeWidth="8"
+              fill="#979797"
+              points="689.330113 737.428224 793.67055 669.539784 746.52401 635.176841 669.603213 620.316283 612.158053 545.551987 621.304302 19.8022248 133.785918 0.0711230138 49.6002648 19.8022248 25.1448952 26.1488531 8.82989033 58.1047834 0.706663129 100.194754 0.706663129 139.73122 31.4686733 219.078355 217.600257 666.84412 288.241486 838.37446 325.887103 868.765155 382.578317 875.945814 430.814977 868.765155 516.131713 838.37446"
+            />
+            <text
+              id="text"
+              fontFamily="Helvetica"
+              fontSize="64"
+              fontWeight="normal"
+              fill="#FFFFFF"
+            >
+              <tspan x="275" y="350">
                 Bistro
               </tspan>
             </text>
           </g>
         </g>
         <g id="l1" transform="translate(9.000000, 4.000000)">
-          <g id="5" transform="translate(475.000000, 890.000000)">
+          <g
+            id="l15"
+            onMouseEnter={() => setActiveItem('l15')}
+            transform="translate(475.000000, 890.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="0.932592024 614.524791 23.3314485 527.100129 67.5350575 430.015568 170.246468 259.701998 238.334193 162.640287 355.738247 0.404244469 426.24037 80.2067849 462.990196 126.590507 531.296004 212.188531 639.719872 348.966097 531.296004 430.015568 371.789154 430.015568 371.789154 614.524791"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="267" y="324">
                 ???
               </tspan>
             </text>
           </g>
-          <g id="4" transform="translate(469.000000, 1238.000000)">
+          <g
+            id="l14"
+            onMouseEnter={() => setActiveItem('l14')}
+            transform="translate(469.000000, 1238.000000)"
+          >
             <path
               d="M1438.06203,560.269831 L878.100153,553.276996 L237.153534,553.276996 L159.548723,545.993512 L107.650327,513.683404 L51.9131061,448.269146 L19.140283,398.627202 L0.803040134,332.338926 L6.93259202,266.524791 L376.438684,266.524791 L376.438684,82.0578985 L536.558728,82.0578985 L645.719872,0.966096896 L701.434243,63.7297377 L786.488202,95.4228914 L878.100153,102.84062 L1017.8288,102.84062 L1160.82502,102.84062 L1272.56795,102.84062 C1270.30097,115.868728 1270.30097,126.750918 1272.56795,135.487189 C1280.21189,164.944711 1301.54797,200.451436 1326.37479,226.869618 C1402.39455,294.478789 1439.62363,328.165096 1438.06203,327.928538 L1438.06203,560.269831 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="643" y="354">
                 Hautmedizin
               </tspan>
             </text>
           </g>
-          <g id="3" transform="translate(1738.000000, 1181.000000)">
+          <g
+            id="l13"
+            onMouseEnter={() => setActiveItem('l13')}
+            transform="translate(1738.000000, 1181.000000)"
+          >
             <path
               d="M139.080746,0.410287359 C130.786121,39.8173325 119.597865,72.8893759 105.515979,99.6264176 C89.6595093,114.13556 80.5547726,123.320627 40.830534,142.239357 C19.9848986,149.615894 17.1027697,152.018168 5.81411989,160.017048 C-20.3995958,207.578325 57.892951,297.305458 167.974312,385.301952 C167.974312,416.609285 167.974312,492.377075 167.974312,612.605322 C242.239168,614.784288 299.17414,613.384635 338.779228,608.406362 C378.384315,603.42809 418.695807,592.604076 459.713703,575.934322 C477.419885,567.549584 489.760645,560.211051 496.735984,553.918724 C503.711322,547.626398 510.116962,538.054143 515.952901,525.201961 C526.620356,505.700808 533.603703,490.258927 536.902943,478.876317 C540.202184,467.493706 542.852799,449.697741 544.85479,425.488419 L544.85479,244.951385 L527.288797,0.410287359 L139.080746,0.410287359 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="182.484375" y="292">
                 Diakonie
               </tspan>
             </text>
           </g>
-          <g id="2" transform="translate(1843.000000, 607.000000)">
+          <g
+            id="l12"
+            onMouseEnter={() => setActiveItem('l12')}
+            transform="translate(1843.000000, 607.000000)"
+          >
             <path
               d="M34.0807461,376.935608 L34.0807461,573.217421 L415.223636,573.217421 L396.895378,383.773514 L378.895174,152.912768 L361.527346,11.2975634 C203.924968,-10.1288956 83.5878456,-0.0623189526 0.51597852,41.4972934 C4.83768425,50.9757258 13.7333087,73.3320767 27.2028519,108.566346 L34.0807461,232.676918 L34.0807461,376.935608 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="164.109375" y="301">
                 ???
               </tspan>
             </text>
           </g>
-          <g id="1" transform="translate(901.000000, 73.000000)">
+          <g
+            id="l11"
+            onMouseEnter={() => setActiveItem('l11')}
+            transform="translate(901.000000, 73.000000)"
+          >
             <path
               d="M81.2331432,814.767079 L206.082695,694.753345 L358.887655,850.581483 L389.711703,770.435768 L422.998654,718.594497 L463.968968,670.169323 L536.146869,616.088738 L598.927647,588.440061 L696.777689,556.604094 L777.364444,543.762311 C823.579026,539.88066 856.685102,539.88066 876.682672,543.762311 C896.680242,547.643962 918.043638,558.216819 940.772858,575.480884 L955.653531,569.497289 L1017.61975,547.917746 L1102.40731,535.1449 L1210.98457,535.1449 L1303.23506,543.762311 L1284.87147,378.513715 L1284.87147,279.694427 L1271.04309,147.180875 L1241.69815,79.4606118 L1189.08642,32.0716409 L1112.99163,7.83648019 L1051.94214,0.305762303 L970.853767,4.14052135 L863.200943,46.6509563 L656.430042,147.180875 L517.895314,245.819246 L336.476573,407.981026 L163.535237,569.497289 L65.0910919,670.169323 L0.0767763706,732.559384 L81.2331432,814.767079 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="598" y="383">
                 Innere Medizin
               </tspan>
             </text>
           </g>
-          <g id="n1">
+          <g id="l1n1" onMouseEnter={() => setActiveItem('l1n1')}>
             <path
               d="M689.330113,737.428224 L793.67055,669.539784 L891.856674,595.448637 C1000.34239,477.542965 1070.80508,387.147203 1103.24475,324.261351 C1151.90427,229.932572 1181.1614,153.243387 1183.53794,139.73122 C1190.49168,100.194754 1190.50861,85.4629175 1159.63727,58.1047834 C1139.05638,39.8660274 1104.30059,29.2140506 1055.36988,26.1488531 L621.304302,19.8022248 L133.785918,0.0711230138 L49.6002648,19.8022248 L25.1448952,26.1488531 L8.82989033,58.1047834 L0.706663129,100.194754 L0.706663129,139.73122 L31.4686733,219.078355 L217.600257,666.84412 L288.241486,838.37446 L325.887103,868.765155 L382.578317,875.945814 L430.814977,868.765155 L516.131713,838.37446 L689.330113,737.428224 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="363" y="389">
                 Zahnmedizin
               </tspan>
@@ -441,41 +484,37 @@ const Map = createComponent(
           </g>
         </g>
         <g id="l2" transform="translate(9.000000, 4.000000)">
-          <g id="3" transform="translate(469.000000, 890.000000)">
+          <g
+            id="l23"
+            onMouseEnter={() => setActiveItem('l23')}
+            transform="translate(469.000000, 890.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="1784.56548 819.256394 1732.19294 861.683404 1620.26721 893.993512 1463.36668 901.276996 878.100153 901.276996 237.153534 901.276996 159.548723 893.993512 107.650327 861.683404 51.9131061 796.269146 19.140283 746.627202 0.803040134 680.338926 6.93259202 614.524791 29.3314485 527.100129 73.5350575 430.015568 176.246468 259.701998 244.334193 162.640287 361.738247 0.404244469 432.24037 80.2067849 468.990196 126.590507 537.296004 212.188531 645.719872 348.966097 701.434243 411.729738 786.488202 443.422891 878.100153 450.84062 1017.8288 450.84062 1160.82502 450.84062 1272.56795 450.84062 1324.79767 430.015568 1375.26222 394.23795"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="813" y="682">
                 Orthopädie
               </tspan>
             </text>
           </g>
-          <g id="2" transform="translate(1563.000000, 65.000000)">
+          <g
+            id="l22"
+            onMouseEnter={() => setActiveItem('l22')}
+            transform="translate(1563.000000, 65.000000)"
+          >
             <path
               d="M314.080746,918.935608 C314.080746,1024.37685 314.080746,1090.20174 314.080746,1116.41029 C314.080746,1142.61883 302.89249,1175.69087 280.515979,1215.62642 C524.394155,1469.75919 661.206462,1611.6177 690.952901,1641.20196 C710.220827,1594.82707 719.85479,1561.58922 719.85479,1541.48842 L719.85479,1360.95138 L709.195158,1195.55646 L676.895378,925.773514 L658.895174,694.912768 L631.34361,454.232172 L620.095625,274.57228 L591.721455,97.0386763 L535.664333,40.7130644 L453.986483,11.704803 L370.269257,0.845270691 L295.943442,18.6283975 L112.662414,86.4933336 L0.268254456,154.375407 L180.847252,441.013362 L118.917642,547.089456 L217.051977,553.297563 L280.515979,583.497293 L307.202852,650.566346 L314.080746,774.676918 L314.080746,918.935608 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="367.671875" y="653">
                 Chirurgie
               </tspan>
@@ -490,41 +529,33 @@ const Map = createComponent(
               </tspan>
             </text>
           </g>
-          <g id="1" transform="translate(901.000000, 220.000000)">
+          <g
+            id="l21"
+            onMouseEnter={() => setActiveItem('l21')}
+            transform="translate(901.000000, 220.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="81.2331432 667.767079 206.082695 547.753345 358.887655 703.581483 389.711703 623.435768 422.998654 571.594497 463.968968 523.169323 536.146869 469.088738 598.927647 441.440061 696.777689 409.604094 777.364444 396.762311 841.727595 286.001937 656.430042 0.180874982 517.895314 98.8192464 336.476573 260.981026 163.535237 422.497289 65.0910919 523.169323 0.0767763706 585.559384"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="355" y="332">
                 Physiotherapie
               </tspan>
             </text>
           </g>
-          <g id="n1">
+          <g id="l2n1" onMouseEnter={() => setActiveItem('l2n1')}>
             <path
               d="M689.330113,737.428224 L793.67055,669.539784 L891.856674,595.448637 C1000.34239,477.542965 1070.80508,387.147203 1103.24475,324.261351 C1151.90427,229.932572 1181.1614,153.243387 1183.53794,139.73122 C1190.49168,100.194754 1190.50861,85.4629175 1159.63727,58.1047834 C1139.05638,39.8660274 1104.30059,29.2140506 1055.36988,26.1488531 L621.304302,19.8022248 L133.785918,0.0711230138 L49.6002648,19.8022248 L25.1448952,26.1488531 L8.82989033,58.1047834 L0.706663129,100.194754 L0.706663129,139.73122 L31.4686733,219.078355 L217.600257,666.84412 L288.241486,838.37446 L325.887103,868.765155 L382.578317,875.945814 L430.814977,868.765155 L516.131713,838.37446 L689.330113,737.428224 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="455" y="387">
                 GefiZ
               </tspan>
@@ -532,39 +563,35 @@ const Map = createComponent(
           </g>
         </g>
         <g id="l3" transform="translate(9.000000, 4.000000)">
-          <g id="3" transform="translate(469.000000, 890.000000)">
+          <g
+            id="l33"
+            onMouseEnter={() => setActiveItem('l33')}
+            transform="translate(469.000000, 890.000000)"
+          >
             <polygon
               id="room"
               fill="#979797"
               points="1410.07442 92.3043307 1773.80877 100.704964 1817.78388 579.221314 1817.78388 727.850094 1784.56548 819.256394 1732.19294 861.683404 1620.26721 893.993512 1463.36668 901.276996 878.100153 901.276996 237.153534 901.276996 159.548723 893.993512 107.650327 861.683404 51.9131061 796.269146 19.140283 746.627202 0.803040134 680.338926 6.93259202 614.524791 29.3314485 527.100129 73.5350575 430.015568 176.246468 259.701998 244.334193 162.640287 361.738247 0.404244469 432.24037 80.2067849 468.990196 126.590507 537.296004 212.188531 645.719872 348.966097 701.434243 411.729738 786.488202 443.422891 878.100153 450.84062 1017.8288 450.84062 1160.82502 450.84062 1272.56795 450.84062 1324.79767 430.015568 1375.26222 394.23795 1403.69352 327.012818 1403.69352 266.25999 1410.07442 182.91408"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="813" y="682">
                 OP-Zentrum
               </tspan>
             </text>
           </g>
-          <g id="2" transform="translate(1563.000000, 65.000000)">
+          <g
+            id="l32"
+            onMouseEnter={() => setActiveItem('l32')}
+            transform="translate(1563.000000, 65.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="314.080746 918.935608 676.895378 925.773514 658.895174 694.912768 631.34361 454.232172 620.095625 274.57228 591.721455 97.0386763 535.664333 40.7130644 453.986483 11.704803 370.269257 0.845270691 295.943442 18.6283975 112.662414 86.4933336 0.268254456 154.375407 180.847252 441.013362 118.917642 547.089456 217.051977 553.297563 280.515979 583.497293 307.202852 650.566346 314.080746 774.676918"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="320.046875" y="435">
                 Privat-
               </tspan>
@@ -573,41 +600,37 @@ const Map = createComponent(
               </tspan>
             </text>
           </g>
-          <g id="1" transform="translate(901.000000, 220.000000)">
+          <g
+            id="l31"
+            onMouseEnter={() => setActiveItem('l31')}
+            transform="translate(901.000000, 220.000000)"
+          >
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="81.2331432 667.767079 206.158006 549.582314 357.408342 700.058029 389.711703 623.435768 422.998654 571.594497 463.968968 523.169323 536.146869 469.088738 598.927647 441.440061 696.777689 409.604094 777.364444 396.762311 841.727595 286.001937 656.430042 0.180874982 517.895314 98.8192464 336.476573 260.981026 163.535237 422.497289 65.0910919 523.169323 0.0767763706 585.559384"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="382" y="371">
                 Urologie
               </tspan>
             </text>
           </g>
-          <g id="n2" transform="translate(610.000000, 11.000000)">
+          <g
+            id="l3n2"
+            onMouseEnter={() => setActiveItem('l3n2')}
+            transform="translate(610.000000, 11.000000)"
+          >
             <path
               d="M60.887044,611.288181 L145.695433,631.401539 L188.744116,660.142796 L281.406035,585.684205 L373.755905,488.090718 C447.955204,392.740367 499.149028,317.51736 527.337377,262.421696 C558.537964,201.43845 561.554987,167.106904 567.136149,146.860092 C580.422769,98.6601466 568.907425,72.5760745 567.136149,67.8667039 C561.788251,53.648004 544.939013,39.2433603 516.588437,24.6527728 L455.333738,15.1488531 L6.93256295,0.132239337 L0.920761394,531.47778 L60.887044,611.288181 Z"
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="118.1875" y="237">
                 Seminar-
               </tspan>
@@ -616,21 +639,15 @@ const Map = createComponent(
               </tspan>
             </text>
           </g>
-          <g id="n1">
+          <g id="l3n1" onMouseEnter={() => setActiveItem('l3n1')}>
             <polygon
               id="room"
               stroke="#000000"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#979797"
               points="689.330113 737.428224 793.67055 669.539784 746.52401 635.176841 669.603213 620.316283 612.158053 545.551987 621.304302 19.8022248 133.785918 0.0711230138 49.6002648 19.8022248 25.1448952 26.1488531 8.82989033 58.1047834 0.706663129 100.194754 0.706663129 139.73122 31.4686733 219.078355 217.600257 666.84412 288.241486 838.37446 325.887103 868.765155 382.578317 875.945814 430.814977 868.765155 516.131713 838.37446"
             />
-            <text
-              id="text"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-              fill="#FFFFFF"
-            >
+            <text id="text" fill="#FFFFFF">
               <tspan x="188" y="350">
                 Hautklinik
               </tspan>
@@ -639,10 +656,10 @@ const Map = createComponent(
         </g>
         <g id="top_l0">
           <g id="floor-EG">
-            <use fill="#DDDDDD" fill-rule="evenodd" xlink:href="#path-1" />
+            <use fill="#DDDDDD" fillRule="evenodd" xlinkHref="#path-1" />
             <path
               stroke="#000000"
-              stroke-width="12"
+              strokeWidth="12"
               d="M913.847076,811.173551 L802.144975,955.092269 L694.462335,1107.9357 L694.293081,1108.13618 C674.232534,1131.89696 657.965613,1153.4458 645.495863,1172.76595 C633.881452,1190.76087 618.03264,1218.48289 597.980968,1255.88832 L1200.71079,1255.88832 L1200.71079,1342.79136 L1715.48792,1342.79136 L1715.48792,1463.10451 C1715.48792,1594.13651 1715.48792,1596.42902 1715.48792,1795.23456 L1846.78172,1800.04395 L1846.78172,1283.7019 L1883.44023,1202.59164 C1885.00349,1199.13278 1885.34912,1198.36805 1885.61522,1197.77927 L1885.31614,812.910442 L1885.32422,812.754932 C1885.3314,812.616585 1885.34496,812.324313 1885.36282,811.884689 C1885.39313,811.138279 1885.42358,810.257606 1885.45209,809.24925 C1886.22362,781.961397 1884.32688,748.952498 1877.55266,717.439323 C1867.92458,672.650254 1850.24751,641.684112 1823.34072,630.236492 C1785.49796,614.136111 1713.75804,611.604658 1637.45621,625.659359 C1547.69174,642.193862 1460.45193,679.091951 1389.95063,734.750259 C1347.61065,768.17619 1318.70981,805.823299 1295.6142,852.959229 C1289.61865,865.195571 1284.01082,878.027813 1278.03968,892.912224 C1275.62395,898.933988 1273.18609,905.191299 1270.29067,912.764971 C1268.6987,916.929153 1263.37209,930.971592 1262.82096,932.419042 C1252.12064,960.521877 1245.22512,977.031188 1236.66159,993.809537 C1225.75863,1015.1715 1213.71794,1033.06114 1199.10242,1048.76136 C1185.43138,1063.44701 1158.7923,1057.52022 1133.93083,1037.75858 C1108.68072,1017.68802 1035.52527,942.349592 913.847123,811.173602 L913.847076,811.173551 Z"
             />
           </g>
@@ -653,7 +670,7 @@ const Map = createComponent(
           >
             <polygon
               id="strairwell"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#AAAAAA"
               points="0.87420928 128.59645 125.503017 0.392313599 319.240932 208.153811 353.598462 242.568277 319.240932 316.960498 296.607861 350.487376 271.884003 371.555211 248.896755 371.555211 219.951331 357.36527"
             />
@@ -661,9 +678,9 @@ const Map = createComponent(
               id="icon"
               opacity="0.496433424"
               transform="translate(157.000000, 169.000000)"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M72,50 L72,16.444 L72,50 Z" id="Path" />
               <path d="M92,34 L92,0 L92,34 Z" id="Path" />
@@ -680,10 +697,10 @@ const Map = createComponent(
             </g>
           </g>
           <g id="stairwell">
-            <use fill="#AAAAAA" fill-rule="evenodd" xlink:href="#path-2" />
+            <use fill="#AAAAAA" fillRule="evenodd" xlinkHref="#path-2" />
             <path
               stroke="#000000"
-              stroke-width="12"
+              strokeWidth="12"
               d="M1760.79129,809.863666 C1760.77473,809.835322 1760.75788,809.806629 1760.74074,809.777589 C1760.10017,808.691858 1759.26005,807.451921 1758.20089,806.09349 C1755.07862,802.088989 1750.84266,798.036476 1745.32418,794.213821 C1729.14169,783.004217 1705.74601,776.194106 1673.66241,776.194106 C1591.38356,776.194106 1507.65212,815.900862 1437.63169,895.814102 C1403.94655,934.258436 1379.58144,984.846193 1363.98759,1042.65768 C1351.8953,1087.48777 1345.87783,1134.47544 1345.87783,1170.64118 C1345.87783,1193.39771 1360.98949,1205.97456 1387.61815,1211.03312 C1400.62966,1213.50487 1414.59918,1213.8079 1427.34689,1212.82997 C1428.75429,1212.722 1430.00691,1212.60677 1431.08667,1212.49223 C1431.71834,1212.42523 1432.14162,1212.37481 1432.33853,1212.34898 L1432.72706,1212.29802 L1674.0184,1212.29802 L1674.3719,1212.34011 C1674.59018,1212.36611 1675.10252,1212.41381 1675.88199,1212.46435 C1688.78952,1213.30122 1704.51547,1211.23832 1719.45379,1203.90061 C1727.23235,1200.07977 1734.22675,1195.00869 1740.27229,1188.54206 C1749.20118,1178.99127 1755.22211,1162.81724 1758.51798,1141.93391 C1761.38767,1123.75086 1761.92603,1104.39144 1761.12075,1087.1309 C1761.05187,1085.65442 1760.97826,1084.34631 1760.90494,1083.22244 C1760.87954,1082.83315 1760.8561,1082.49582 1760.83524,1082.21243 C1760.82315,1082.04818 1760.81489,1081.94181 1760.8111,1081.89528 L1760.79129,1081.65211 L1760.79129,809.863659 Z"
             />
           </g>
@@ -691,24 +708,36 @@ const Map = createComponent(
             d="M726.53969,1052.83773 L750.413156,1025.3846 C792.734395,1000.83214 827.649226,1000.83214 855.15765,1025.3846 C896.420286,1062.2133 881.068101,1072.98487 895.891921,1091.28515 C910.715741,1109.58542 969.000677,1097.90671 976.024201,1140.75401 C980.706551,1169.31888 964.224173,1183.45465 926.577066,1183.16133 L861.322925,1183.16133 C815.288898,1189.44306 778.318975,1180.45317 750.413156,1156.19164 C722.507338,1131.93012 714.549516,1097.47882 726.53969,1052.83773 Z"
             id="lobby"
             stroke="#000000"
-            stroke-width="8"
+            strokeWidth="8"
             fill="#AAAAAA"
+          />
+          <path
+            d="M918.44513,800.109734 L845.995394,887.644821 C823.444524,915.279803 805.648363,939.083107 792.619447,959.023307 C779.438017,979.196923 768.932748,994.084254 729.866068,1048.58457 C693.665394,1099.08664 672.706895,1128.90242 649.400595,1163.67992 C602.777423,1233.25072 565.960587,1295.39583 537.953004,1354.27453 C505.274606,1422.97242 486.031003,1484.60925 481.910048,1538.94576 C477.314507,1599.53989 491.626104,1650.14755 526.924884,1690.37211 C531.032619,1695.05306 553.465625,1722.03145 560.488214,1729.95132 C577.564509,1749.20947 592.930626,1763.34899 609.769827,1774.19427 C630.121826,1787.30197 651.703155,1794.75882 675.666663,1796.0109 C742.336646,1799.49437 803.446197,1799.47595 957.901984,1797.3226 C993.407772,1796.82759 1011.54699,1796.59049 1032.53781,1796.3658 C1078.15972,1795.87745 1115.99293,1795.73607 1151.55941,1796.00022 C1320.576,1797.2555 1490.20964,1797.24978 1674.13687,1796.48596 C1700.3753,1796.377 1772.54821,1796.03415 1782.34254,1796.00005 C1795.7622,1795.95332 1794.29056,1795.91505 1848.45622,1797.51863 C1921.54682,1799.68249 1970.2053,1799.7777 2022.14368,1796.53804 C2101.49985,1791.58819 2165.00605,1779.0048 2210.35996,1756.64878 C2250.1129,1737.0536 2274.2601,1703.72309 2286.41929,1656.98534 C2296.08102,1619.84735 2297.91513,1578.40533 2295.00955,1518.98991 C2290.21916,1421.03241 2282.16872,1310.68555 2271.07951,1186.30245 C2264.11733,1108.21052 2256.10389,1026.11327 2246.58601,934.125046 C2241.95971,889.412868 2237.17552,844.218999 2231.17645,788.307432 C2229.75675,775.075782 2219.66492,681.361945 2216.94444,655.904063 C2206.34298,556.696875 2200.3881,497.214493 2196.72924,451.740041 C2196.70969,451.497088 2196.70044,451.280776 2196.6914,450.971541 C2196.69727,451.172318 2196.50353,438.356645 2196.32815,430.759905 C2196.00699,416.848643 2195.49596,402.132723 2194.7248,386.418296 C2192.54838,342.067789 2188.73261,298.299998 2182.83347,257.426343 C2179.0643,231.310748 2174.54431,207.192356 2169.21739,185.472118 C2162.6714,158.781206 2141.48588,135.57491 2108.78712,116.0785 C2083.23292,100.841984 2052.26611,88.8693725 2021.73942,80.8388487 C1982.63547,70.5519444 1940.33068,70.9169563 1893.58043,80.6884739 C1865.82456,86.4898735 1836.69576,95.543055 1804.77543,107.910087 C1778.91504,117.929288 1752.99804,129.329127 1718.01872,145.69501 C1711.16899,148.899818 1674.49456,166.223277 1664.30277,170.965259 C1523.93981,236.272592 1350.52777,377.046628 1108.43392,616.724648 C1069.29976,655.468299 1005.97581,716.590971 918.445131,800.109733 Z"
+            id="building"
+            stroke="#000000"
+            strokeWidth="16"
+          />
+          <path
+            d="M8.35570017,150.442244 L293.499148,832.982581 C294.647768,835.205309 297.699225,841.423867 298.304438,842.607648 C300.33933,846.58784 302.18998,849.780247 304.295106,852.806671 C311.596981,863.304176 321.502988,870.840996 336.779032,875.743497 C356.482293,882.066813 383.966101,883.389703 420.985724,878.638876 C475.741345,871.611941 593.811995,814.952349 690.69321,748.839958 C694.51902,746.2292 732.435529,722.316444 805.548427,676.398246 L894.61872,603.42089 C939.843807,555.298757 964.976549,528.455992 969.835847,523.087644 C1099.3165,380.042842 1194.7249,204.474826 1194.7249,110.782685 C1194.7249,73.2922139 1166.64398,50.1797848 1118.08642,38.4245453 C1102.73415,34.7079312 1086.25156,32.4076257 1069.48251,31.2708456 C1057.98792,30.4916235 1047.82915,30.3418431 1039.83247,30.5502419 C1039.17786,30.5673016 1038.6096,30.5854641 1038.13148,30.603462 C1037.85516,30.6138637 1037.67652,30.6215665 1037.59936,30.6253011 L1037.30297,30.6396464 L1037.00632,30.6319944 L164.992297,8.13764398 C164.891168,8.13394547 164.673,8.12682015 164.342753,8.11738073 C163.77942,8.10127902 163.113874,8.08508566 162.351079,8.06991199 C141.32786,7.65171411 115.842591,8.69991415 91.538635,12.4261667 C68.3635827,15.979337 49.8305185,21.5961515 37.8626137,29.3489483 C24.9965678,37.68356 16.2235519,57.6935096 11.6316981,85.8464845 C8.27628313,106.418768 7.51185772,128.254212 8.21730491,147.271259 C8.26158272,148.464875 8.30866541,149.525147 8.35570017,150.442244 Z"
+            id="buildingN"
+            stroke="#000000"
+            strokeWidth="16"
           />
         </g>
         <g id="top">
           <g id="floor">
-            <use fill="#DDDDDD" fill-rule="evenodd" xlink:href="#path-3" />
+            <use fill="#DDDDDD" fillRule="evenodd" xlinkHref="#path-3" />
             <path
               stroke="#000000"
-              stroke-width="12"
+              strokeWidth="12"
               d="M796.404531,684.301702 C778.988408,697.353112 744.611449,718.613328 693.089227,748.224168 C709.170189,758.191273 724.97856,771.534723 740.527147,788.236886 C745.89024,793.997876 752.869054,801.664119 763.432696,813.368162 C764.642182,814.708219 785.890416,838.287819 792.392772,845.47841 C793.024142,846.176607 793.647216,846.865368 794.26296,847.545754 C812.686309,867.903234 826.194653,882.575996 836.714656,893.540784 C862.94846,920.883751 923.971489,994.774252 1007.50123,1099.09896 C1037.27048,1136.27933 1068.04323,1175.01559 1098.00663,1212.948 C1117.47497,1237.59409 1135.84758,1260.95747 1142.39205,1269.33261 C1160.82776,1292.9253 1186.27398,1310.48027 1217.03312,1322.74879 C1239.42237,1331.67892 1263.45636,1337.36043 1287.70149,1340.40722 C1296.56297,1341.52081 1304.94933,1342.2131 1312.68174,1342.5638 C1317.8663,1342.79894 1322.04347,1342.853 1325.03504,1342.80645 C1325.35194,1342.80152 1325.55762,1342.7968 1325.64812,1342.79408 L1325.82864,1342.79136 L1752.91002,1342.79136 C1753.02497,1342.75087 1753.14565,1342.70823 1753.272,1342.66344 C1754.34799,1342.28203 1755.60004,1341.82851 1757.01336,1341.30485 C1761.0655,1339.80345 1765.58656,1338.04462 1770.45811,1336.04422 C1784.37124,1330.3311 1798.28042,1323.83854 1811.22968,1316.70334 C1820.02606,1311.85643 1828.07024,1306.87439 1835.1926,1301.7882 C1847.10557,1293.28094 1858.01723,1276.7301 1867.53252,1254.54954 C1872.78591,1242.30363 1877.28028,1229.13918 1881.00751,1215.96914 C1882.31293,1211.35649 1883.4282,1207.07604 1884.3537,1203.24053 C1884.67627,1201.90371 1884.95169,1200.71997 1885.18004,1199.70335 C1885.23249,1199.46984 1885.27785,1199.26581 1885.31614,1199.09209 L1885.31614,812.910442 L1885.32422,812.754932 C1885.3314,812.616585 1885.34496,812.324313 1885.36282,811.884689 C1885.39313,811.138279 1885.42358,810.257606 1885.45209,809.24925 C1886.22362,781.961397 1884.32688,748.952498 1877.55266,717.439323 C1867.92458,672.650254 1850.24751,641.684112 1823.34072,630.236492 C1785.49796,614.136111 1713.75804,611.604658 1637.45621,625.659359 C1547.69174,642.193862 1460.45193,679.091951 1389.95063,734.750259 C1347.61065,768.17619 1318.70981,805.823299 1295.6142,852.959229 C1289.61865,865.195571 1284.01082,878.027813 1278.03968,892.912224 C1275.62395,898.933988 1273.18609,905.191299 1270.29067,912.764971 C1268.6987,916.929153 1263.37209,930.971592 1262.82096,932.419042 C1252.12064,960.521877 1245.22512,977.031188 1236.66159,993.809537 C1225.75863,1015.1715 1213.71794,1033.06114 1199.10242,1048.76136 C1185.43138,1063.44701 1158.7923,1057.52022 1133.93083,1037.75858 C1110.44607,1019.09124 1009.60646,915.566882 913.555023,812.854362 C887.509215,785.002301 828.849139,719.568164 834.085818,725.258595 C825.842287,716.300773 805.63972,693.801493 803.053717,691.020197 C800.095973,687.839085 797.949728,685.668978 796.404531,684.301702 Z"
             />
           </g>
           <g id="stairwell">
-            <use fill="#AAAAAA" fill-rule="evenodd" xlink:href="#path-4" />
+            <use fill="#AAAAAA" fillRule="evenodd" xlinkHref="#path-4" />
             <path
               stroke="#000000"
-              stroke-width="12"
+              strokeWidth="12"
               d="M1760.79129,809.863666 C1760.77473,809.835322 1760.75788,809.806629 1760.74074,809.777589 C1760.10017,808.691858 1759.26005,807.451921 1758.20089,806.09349 C1755.07862,802.088989 1750.84266,798.036476 1745.32418,794.213821 C1729.14169,783.004217 1705.74601,776.194106 1673.66241,776.194106 C1591.38356,776.194106 1507.65212,815.900862 1437.63169,895.814102 C1403.94655,934.258436 1379.58144,984.846193 1363.98759,1042.65768 C1351.8953,1087.48777 1345.87783,1134.47544 1345.87783,1170.64118 C1345.87783,1193.39771 1360.98949,1205.97456 1387.61815,1211.03312 C1400.62966,1213.50487 1414.59918,1213.8079 1427.34689,1212.82997 C1428.75429,1212.722 1430.00691,1212.60677 1431.08667,1212.49223 C1431.71834,1212.42523 1432.14162,1212.37481 1432.33853,1212.34898 L1432.72706,1212.29802 L1674.0184,1212.29802 L1674.3719,1212.34011 C1674.59018,1212.36611 1675.10252,1212.41381 1675.88199,1212.46435 C1688.78952,1213.30122 1704.51547,1211.23832 1719.45379,1203.90061 C1727.23235,1200.07977 1734.22675,1195.00869 1740.27229,1188.54206 C1749.20118,1178.99127 1755.22211,1162.81724 1758.51798,1141.93391 C1761.38767,1123.75086 1761.92603,1104.39144 1761.12075,1087.1309 C1761.05187,1085.65442 1760.97826,1084.34631 1760.90494,1083.22244 C1760.87954,1082.83315 1760.8561,1082.49582 1760.83524,1082.21243 C1760.82315,1082.04818 1760.81489,1081.94181 1760.8111,1081.89528 L1760.79129,1081.65211 L1760.79129,809.863659 Z"
             />
           </g>
@@ -719,7 +748,7 @@ const Map = createComponent(
           >
             <polygon
               id="strairwell"
-              stroke-width="8"
+              strokeWidth="8"
               fill="#AAAAAA"
               points="0.321326899 120.153811 127.172097 0.767269479 244.240932 120.153811 278.598462 154.568277 244.240932 228.960498 221.607861 262.487376 196.884003 283.555211 173.896755 283.555211 144.951331 269.36527"
             />
@@ -727,9 +756,9 @@ const Map = createComponent(
               id="icon"
               opacity="0.496433424"
               transform="translate(82.000000, 81.000000)"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M72,50 L72,16.444 L72,50 Z" id="Path" />
               <path d="M92,34 L92,0 L92,34 Z" id="Path" />
@@ -749,17 +778,17 @@ const Map = createComponent(
             d="M8.35570017,150.442244 L293.499148,832.982581 C294.647768,835.205309 297.699225,841.423867 298.304438,842.607648 C300.33933,846.58784 302.18998,849.780247 304.295106,852.806671 C311.596981,863.304176 321.502988,870.840996 336.779032,875.743497 C356.482293,882.066813 383.966101,883.389703 420.985724,878.638876 C475.741345,871.611941 593.811995,814.952349 690.69321,748.839958 C694.553863,746.205423 698.492999,746.778924 702.530812,748.837996 C704.803712,749.997055 707.308847,751.784216 710.212081,754.22902 C715.13445,758.374132 721.405901,764.600282 729.275683,773.055129 C740.939017,785.585553 743.177411,788.15397 780.751181,831.688616 C781.753912,832.850426 782.707664,833.954839 783.631397,835.023754 C806.182169,861.118807 820.481391,877.128551 832.820474,889.724371 C836.832515,893.819889 837.209718,899.171789 835.061713,904.528161 C833.723054,907.866309 831.39684,911.382294 827.833933,915.818026 C825.171988,919.132084 809.377974,936.954009 804.763763,942.60623 C800.109807,948.307138 796.114553,953.674196 792.619447,959.023307 C779.438017,979.196923 768.932748,994.084254 729.866068,1048.58457 C693.665394,1099.08664 672.706895,1128.90242 649.400595,1163.67992 C602.777423,1233.25072 565.960587,1295.39583 537.953004,1354.27453 C505.274606,1422.97242 486.031003,1484.60925 481.910048,1538.94576 C477.314507,1599.53989 491.626104,1650.14755 526.924884,1690.37211 C531.032619,1695.05306 553.465625,1722.03145 560.488214,1729.95132 C577.564509,1749.20947 592.930626,1763.34899 609.769827,1774.19427 C630.121826,1787.30197 651.703155,1794.75882 675.666663,1796.0109 C742.336646,1799.49437 803.446197,1799.47595 957.901984,1797.3226 C993.407772,1796.82759 1011.54699,1796.59049 1032.53781,1796.3658 C1078.15972,1795.87745 1115.99293,1795.73607 1151.55941,1796.00022 C1320.576,1797.2555 1490.20964,1797.24978 1674.13687,1796.48596 C1700.3753,1796.377 1772.54821,1796.03415 1782.34254,1796.00005 C1795.7622,1795.95332 1794.29056,1795.91505 1848.45622,1797.51863 C1921.54682,1799.68249 1970.2053,1799.7777 2022.14368,1796.53804 C2101.49985,1791.58819 2165.00605,1779.0048 2210.35996,1756.64878 C2250.1129,1737.0536 2274.2601,1703.72309 2286.41929,1656.98534 C2296.08102,1619.84735 2297.91513,1578.40533 2295.00955,1518.98991 C2290.21916,1421.03241 2282.16872,1310.68555 2271.07951,1186.30245 C2264.11733,1108.21052 2256.10389,1026.11327 2246.58601,934.125046 C2241.95971,889.412868 2237.17552,844.218999 2231.17645,788.307432 C2229.75675,775.075782 2219.66492,681.361945 2216.94444,655.904063 C2206.34298,556.696875 2200.3881,497.214493 2196.72924,451.740041 C2196.70969,451.497088 2196.70044,451.280776 2196.6914,450.971541 C2196.69727,451.172318 2196.50353,438.356645 2196.32815,430.759905 C2196.00699,416.848643 2195.49596,402.132723 2194.7248,386.418296 C2192.54838,342.067789 2188.73261,298.299998 2182.83347,257.426343 C2179.0643,231.310748 2174.54431,207.192356 2169.21739,185.472118 C2162.6714,158.781206 2141.48588,135.57491 2108.78712,116.0785 C2083.23292,100.841984 2052.26611,88.8693725 2021.73942,80.8388487 C1982.63547,70.5519444 1940.33068,70.9169563 1893.58043,80.6884739 C1865.82456,86.4898735 1836.69576,95.543055 1804.77543,107.910087 C1778.91504,117.929288 1752.99804,129.329127 1718.01872,145.69501 C1711.16899,148.899818 1674.49456,166.223277 1664.30277,170.965259 C1591.56177,204.809807 1502.83887,265.667774 1400.90929,349.20549 C1356.50198,385.600078 1310.12197,425.867384 1261.83556,469.704826 C1184.18316,540.202565 1111.38846,610.590425 1022.56424,699.351096 C1015.66422,706.24618 1008.82098,713.096442 1000.27569,721.659413 C999.811948,722.124113 984.397186,737.57439 980.267928,741.710176 C965.310289,756.691459 955.835137,766.13217 947.782444,774.052273 C938.183361,783.493303 931.261337,790.114625 926.367551,794.504821 C923.638992,796.9526 921.49751,798.746767 919.831089,799.95814 C918.726525,800.761082 917.75733,801.369204 916.757569,801.827411 C915.833289,802.251024 914.891538,802.552914 913.77113,802.676451 C911.418625,802.935841 908.924316,802.313108 906.910231,800.288248 C873.151547,766.348947 838.894103,728.949225 804.135811,688.08886 L798.855682,681.881766 L894.61872,603.42089 C939.843807,555.298757 964.976549,528.455992 969.835847,523.087644 C1099.3165,380.042842 1194.7249,204.474826 1194.7249,110.782685 C1194.7249,73.2922139 1166.64398,50.1797848 1118.08642,38.4245453 C1102.73415,34.7079312 1086.25156,32.4076257 1069.48251,31.2708456 C1057.98792,30.4916235 1047.82915,30.3418431 1039.83247,30.5502419 C1039.17786,30.5673016 1038.6096,30.5854641 1038.13148,30.603462 C1037.85516,30.6138637 1037.67652,30.6215665 1037.59936,30.6253011 L1037.30297,30.6396464 L1037.00632,30.6319944 L164.992297,8.13764398 C164.891168,8.13394547 164.673,8.12682015 164.342753,8.11738073 C163.77942,8.10127902 163.113874,8.08508566 162.351079,8.06991199 C141.32786,7.65171411 115.842591,8.69991415 91.538635,12.4261667 C68.3635827,15.979337 49.8305185,21.5961515 37.8626137,29.3489483 C24.9965678,37.68356 16.2235519,57.6935096 11.6316981,85.8464845 C8.27628313,106.418768 7.51185772,128.254212 8.21730491,147.271259 C8.26158272,148.464875 8.30866541,149.525147 8.35570017,150.442244 Z"
             id="building"
             stroke="#000000"
-            stroke-width="16"
+            strokeWidth="16"
           />
           <g id="stairs" transform="translate(1389.000000, 778.000000)">
             <polyline
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
               points="0.101283904 201.109113 97.2256682 201.109113 97.2256682 166.983942 152.833165 166.983942 152.833165 131.057428 212.41126 131.057428 212.41126 89.4927592 273.83848 89.4927592 273.83848 40.1159015 373.457031 40.1159015 436.375016 40.1159015"
             />
             <polygon
-              id="Triangle-Copy-5"
+              id="Triangle-5"
               fill="#F5A623"
               transform="translate(369.692004, 40.692004) rotate(-271.000000) translate(-369.692004, -40.692004) "
               points="369.692004 0.692004064 409.692004 80.6920041 329.692004 80.6920041"
@@ -767,363 +796,363 @@ const Map = createComponent(
           </g>
         </g>
         <g id="path" transform="translate(737.000000, 632.000000)">
-          <g id="l3.3" transform="translate(1041.000000, 174.000000)">
+          <g id="l33_p" transform="translate(1041.000000, 174.000000)">
             <polyline
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
               points="41.2287511 0.153606761 41.2287511 219.331683 104.483444 219.331683"
             />
             <polygon
-              id="Triangle-Copy-5"
+              id="Triangle-5"
               fill="#F5A623"
               points="40 209 0 129 80 129"
             />
           </g>
           <polyline
-            id="l3.2"
+            id="l32_p"
             stroke="#F5A623"
-            stroke-width="24"
+            strokeWidth="24"
             points="1080.23942 174.860997 1080.23942 323.6537 1145.23185 323.6537"
           />
-          <g id="l3.1" transform="translate(612.000000, 23.000000)">
+          <g id="l31_p" transform="translate(612.000000, 23.000000)">
             <path
               d="M467.852054,174.732669 C467.852054,162.759569 467.852054,144.331628 467.852054,119.448846 C467.852054,82.1246734 434.022591,50.0799771 383.802699,45.0752661 C333.582807,40.0705551 252.805553,56.5919521 211.755007,69.4790829 C178.269998,79.9911402 118.918786,107.143008 77.6704642,141.019766 C40.7646569,171.330068 16.0684689,127.931699 0.183910807,119.448846"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-6"
+              id="Triangle-6"
               fill="#F5A623"
               transform="translate(386.000000, 48.000000) rotate(103.000000) translate(-386.000000, -48.000000) "
               points="386 88 346 8 426 8"
             />
             <polygon
-              id="Triangle-Copy-7"
+              id="Triangle-7"
               fill="#F5A623"
               transform="translate(133.972845, 104.972845) rotate(61.000000) translate(-133.972845, -104.972845) "
               points="133.972845 144.972845 93.9728448 64.9728448 173.972845 64.9728448"
             />
           </g>
-          <g id="l3.n2" transform="translate(0.000000, 68.000000)">
+          <g id="l3n2_p" transform="translate(0.000000, 68.000000)">
             <path
               d="M1025.45703,118.115901 L1088.37502,118.115901 L1088.37502,440.255223 C1077.74853,532.230411 1034.51153,578.218005 958.664008,578.218005 C844.892733,578.218005 768.490957,578.218005 652.101284,578.218005 C598.510416,578.218005 543.211927,565.914481 502.76663,539.496305 C455.372058,508.538981 425.417747,468.763338 398.221861,440.255223 C364.619095,405.03109 231.967964,258.609483 0.268468663,0.990401742"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy"
+              id="Triangle"
               fill="#F5A623"
               transform="translate(86.308303, 98.183699) rotate(-39.000000) translate(-86.308303, -98.183699) "
               points="86.3083035 58.1836989 126.308303 138.183699 46.3083035 138.183699"
             />
             <polygon
-              id="Triangle-Copy-2"
+              id="Triangle-2"
               fill="#F5A623"
               transform="translate(366.258654, 410.258654) rotate(-39.000000) translate(-366.258654, -410.258654) "
               points="366.258654 370.258654 406.258654 450.258654 326.258654 450.258654"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(859.258654, 577.258654) rotate(-91.000000) translate(-859.258654, -577.258654) "
               points="859.258654 537.258654 899.258654 617.258654 819.258654 617.258654"
             />
             <polygon
-              id="Triangle-Copy-4"
+              id="Triangle-4"
               fill="#F5A623"
               transform="translate(1088.371613, 354.371613) rotate(-183.000000) translate(-1088.371613, -354.371613) "
               points="1088.37161 314.371613 1128.37161 394.371613 1048.37161 394.371613"
             />
           </g>
-          <g id="l3.n1" transform="translate(0.000000, 68.000000)">
+          <g id="l3n1_p" transform="translate(0.000000, 68.000000)">
             <path
               d="M1025.45703,118.115901 L1088.37502,118.115901 L1088.37502,440.255223 C1077.74853,532.230411 1034.51153,578.218005 958.664008,578.218005 C844.892733,578.218005 768.490957,578.218005 652.101284,578.218005 C598.510416,578.218005 543.211927,565.914481 502.76663,539.496305 C455.372058,508.538981 425.417747,468.763338 398.221861,440.255223 C364.619095,405.03109 231.967964,258.609483 0.268468663,0.990401742"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy"
+              id="Triangle"
               fill="#F5A623"
               transform="translate(86.308303, 98.183699) rotate(-39.000000) translate(-86.308303, -98.183699) "
               points="86.3083035 58.1836989 126.308303 138.183699 46.3083035 138.183699"
             />
             <polygon
-              id="Triangle-Copy-2"
+              id="Triangle-2"
               fill="#F5A623"
               transform="translate(366.258654, 410.258654) rotate(-39.000000) translate(-366.258654, -410.258654) "
               points="366.258654 370.258654 406.258654 450.258654 326.258654 450.258654"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(859.258654, 577.258654) rotate(-91.000000) translate(-859.258654, -577.258654) "
               points="859.258654 537.258654 899.258654 617.258654 819.258654 617.258654"
             />
             <polygon
-              id="Triangle-Copy-4"
+              id="Triangle-4"
               fill="#F5A623"
               transform="translate(1088.371613, 354.371613) rotate(-183.000000) translate(-1088.371613, -354.371613) "
               points="1088.37161 314.371613 1128.37161 394.371613 1048.37161 394.371613"
             />
           </g>
-          <g id="l2.1" transform="translate(612.000000, 23.000000)">
+          <g id="l21_p" transform="translate(612.000000, 23.000000)">
             <path
               d="M467.852054,174.732669 C467.852054,162.759569 467.852054,144.331628 467.852054,119.448846 C467.852054,82.1246734 434.022591,50.0799771 383.802699,45.0752661 C333.582807,40.0705551 252.805553,56.5919521 211.755007,69.4790829 C178.269998,79.9911402 118.918786,107.143008 77.6704642,141.019766 C40.7646569,171.330068 16.0684689,127.931699 0.183910807,119.448846"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-6"
+              id="Triangle-6"
               fill="#F5A623"
               transform="translate(386.000000, 48.000000) rotate(103.000000) translate(-386.000000, -48.000000) "
               points="386 88 346 8 426 8"
             />
             <polygon
-              id="Triangle-Copy-7"
+              id="Triangle-7"
               fill="#F5A623"
               transform="translate(133.972845, 104.972845) rotate(61.000000) translate(-133.972845, -104.972845) "
               points="133.972845 144.972845 93.9728448 64.9728448 173.972845 64.9728448"
             />
           </g>
-          <g id="l2.n1" transform="translate(0.000000, 68.000000)">
+          <g id="l2n1_p" transform="translate(0.000000, 68.000000)">
             <path
               d="M1025.45703,118.115901 L1088.37502,118.115901 L1088.37502,440.255223 C1077.74853,532.230411 1034.51153,578.218005 958.664008,578.218005 C844.892733,578.218005 768.490957,578.218005 652.101284,578.218005 C598.510416,578.218005 543.211927,565.914481 502.76663,539.496305 C455.372058,508.538981 425.417747,468.763338 398.221861,440.255223 C364.619095,405.03109 231.967964,258.609483 0.268468663,0.990401742"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy"
+              id="Triangle"
               fill="#F5A623"
               transform="translate(86.308303, 98.183699) rotate(-39.000000) translate(-86.308303, -98.183699) "
               points="86.3083035 58.1836989 126.308303 138.183699 46.3083035 138.183699"
             />
             <polygon
-              id="Triangle-Copy-2"
+              id="Triangle-2"
               fill="#F5A623"
               transform="translate(366.258654, 410.258654) rotate(-39.000000) translate(-366.258654, -410.258654) "
               points="366.258654 370.258654 406.258654 450.258654 326.258654 450.258654"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(859.258654, 577.258654) rotate(-91.000000) translate(-859.258654, -577.258654) "
               points="859.258654 537.258654 899.258654 617.258654 819.258654 617.258654"
             />
             <polygon
-              id="Triangle-Copy-4"
+              id="Triangle-4"
               fill="#F5A623"
               transform="translate(1088.371613, 354.371613) rotate(-183.000000) translate(-1088.371613, -354.371613) "
               points="1088.37161 314.371613 1128.37161 394.371613 1048.37161 394.371613"
             />
           </g>
-          <g id="l2.2" transform="translate(1040.000000, 174.000000)">
+          <g id="l22_p" transform="translate(1040.000000, 174.000000)">
             <polyline
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
               points="40.2394153 0 40.2394153 448.6537 105.231846 448.6537"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(40.000000, 316.000000) rotate(180.000000) translate(-40.000000, -316.000000) "
               points="40 276 80 356 0 356"
             />
           </g>
-          <g id="l2.3" transform="translate(1041.000000, 174.000000)">
+          <g id="l23_p" transform="translate(1041.000000, 174.000000)">
             <path
               d="M41.2287511,0.153606761 L41.2287511,511"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-5"
+              id="Triangle-5"
               fill="#F5A623"
               points="40 389 0 309 80 309"
             />
           </g>
-          <g id="l1.n1" transform="translate(0.000000, 68.000000)">
+          <g id="l1n1_p" transform="translate(0.000000, 68.000000)">
             <path
               d="M1025.45703,118.115901 L1088.37502,118.115901 L1088.37502,440.255223 C1077.74853,532.230411 1034.51153,578.218005 958.664008,578.218005 C844.892733,578.218005 768.490957,578.218005 652.101284,578.218005 C598.510416,578.218005 543.211927,565.914481 502.76663,539.496305 C455.372058,508.538981 425.417747,468.763338 398.221861,440.255223 C364.619095,405.03109 231.967964,258.609483 0.268468663,0.990401742"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy"
+              id="Triangle"
               fill="#F5A623"
               transform="translate(86.308303, 98.183699) rotate(-39.000000) translate(-86.308303, -98.183699) "
               points="86.3083035 58.1836989 126.308303 138.183699 46.3083035 138.183699"
             />
             <polygon
-              id="Triangle-Copy-2"
+              id="Triangle-2"
               fill="#F5A623"
               transform="translate(366.258654, 410.258654) rotate(-39.000000) translate(-366.258654, -410.258654) "
               points="366.258654 370.258654 406.258654 450.258654 326.258654 450.258654"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(859.258654, 577.258654) rotate(-91.000000) translate(-859.258654, -577.258654) "
               points="859.258654 537.258654 899.258654 617.258654 819.258654 617.258654"
             />
             <polygon
-              id="Triangle-Copy-4"
+              id="Triangle-4"
               fill="#F5A623"
               transform="translate(1088.371613, 354.371613) rotate(-183.000000) translate(-1088.371613, -354.371613) "
               points="1088.37161 314.371613 1128.37161 394.371613 1048.37161 394.371613"
             />
           </g>
-          <g id="l1.1" transform="translate(612.000000, 23.000000)">
+          <g id="l11_p" transform="translate(612.000000, 23.000000)">
             <path
               d="M467.852054,174.732669 C467.852054,162.759569 467.852054,144.331628 467.852054,119.448846 C467.852054,82.1246734 434.022591,50.0799771 383.802699,45.0752661 C333.582807,40.0705551 252.805553,56.5919521 211.755007,69.4790829 C178.269998,79.9911402 118.918786,107.143008 77.6704642,141.019766 C40.7646569,171.330068 16.0684689,127.931699 0.183910807,119.448846"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-6"
+              id="Triangle-6"
               fill="#F5A623"
               transform="translate(386.000000, 48.000000) rotate(103.000000) translate(-386.000000, -48.000000) "
               points="386 88 346 8 426 8"
             />
             <polygon
-              id="Triangle-Copy-7"
+              id="Triangle-7"
               fill="#F5A623"
               transform="translate(133.972845, 104.972845) rotate(61.000000) translate(-133.972845, -104.972845) "
               points="133.972845 144.972845 93.9728448 64.9728448 173.972845 64.9728448"
             />
           </g>
           <polyline
-            id="l1.2"
+            id="l12_p"
             stroke="#F5A623"
-            stroke-width="24"
+            strokeWidth="24"
             points="1080.23942 174 1080.23942 363 1145.23185 363"
           />
-          <g id="l1.3" transform="translate(1040.000000, 174.000000)">
+          <g id="l13_p" transform="translate(1040.000000, 174.000000)">
             <polyline
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
               points="40.2394153 0 40.2394153 448.6537 105.231846 448.6537"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(40.000000, 316.000000) rotate(180.000000) translate(-40.000000, -316.000000) "
               points="40 276 80 356 0 356"
             />
           </g>
-          <g id="l1.4" transform="translate(430.000000, 174.000000)">
+          <g id="l14_p" transform="translate(430.000000, 174.000000)">
             <path
               d="M652.228751,0.153606761 C652.228751,271.285772 652.228751,411.758269 652.228751,421.571098 C652.228751,436.290341 633.831288,464.747153 576.90003,464.747153 C519.968771,464.747153 212.099422,469.199662 159.647105,464.747153 C107.194788,460.294644 91.5529702,421.571098 68.2690555,421.571098 C52.7464457,421.571098 30.2756947,441.757153 0.856802555,482.129262"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-5"
+              id="Triangle-5"
               fill="#F5A623"
               points="651 389 611 309 691 309"
             />
             <polygon
-              id="Triangle-Copy-8"
+              id="Triangle-8"
               fill="#F5A623"
               transform="translate(307.000000, 466.000000) rotate(90.000000) translate(-307.000000, -466.000000) "
               points="307 506 267 426 347 426"
             />
           </g>
-          <g id="l1.5" transform="translate(350.000000, 174.000000)">
+          <g id="l15_p" transform="translate(350.000000, 174.000000)">
             <path
               d="M738.228751,0.153606761 C738.228751,271.285772 738.228751,411.758269 738.228751,421.571098 C738.228751,436.290341 719.831288,464.747153 662.90003,464.747153 C605.968771,464.747153 298.099422,469.199662 245.647105,464.747153 C210.678894,461.778813 180.219544,447.386795 154.269056,421.571098 C114.388519,378.063227 84.8168002,356.043935 65.5538993,355.513223 C46.2909983,354.98251 24.5444186,367.437408 0.314160273,392.877915"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-5"
+              id="Triangle-5"
               fill="#F5A623"
               points="737 389 697 309 777 309"
             />
             <polygon
-              id="Triangle-Copy-8"
+              id="Triangle-8"
               fill="#F5A623"
               transform="translate(393.000000, 466.000000) rotate(90.000000) translate(-393.000000, -466.000000) "
               points="393 506 353 426 433 426"
             />
           </g>
-          <g id="l0.6" transform="translate(313.000000, 344.000000)">
+          <g id="l06_p" transform="translate(313.000000, 344.000000)">
             <path
               d="M337.583761,0.153606761 C371.543176,0.153606761 359.73788,0.153606761 302.167873,0.153606761 C215.812863,0.153606761 207.102314,118.160427 175.450926,146.845856 C140.783797,178.264429 106.9099,168.236719 54.2103663,178.709972 C19.0773442,185.692141 1.04590374,218.826584 0.116045085,278.113302"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-5"
+              id="Triangle-5"
               fill="#F5A623"
               transform="translate(108.488705, 171.488705) rotate(80.000000) translate(-108.488705, -171.488705) "
               points="108.488705 211.488705 68.4887049 131.488705 148.488705 131.488705"
             />
           </g>
-          <g id="l0.5" transform="translate(1040.000000, 174.000000)">
-            <polyline
+          <g id="l05_p" transform="translate(481.000000, 344.000000)">
+            <path
+              d="M166.141624,0.782282886 C36.102716,105.874035 -17.3593713,182.950603 5.75536165,232.011989 C17.0531224,255.991665 39.9293066,302.535396 166.141624,309.890352 C211.763846,312.548962 301.930233,322.327467 435.890393,309.890352 C468.377106,306.874224 533.207095,298.342806 630.38036,284.296098"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
-              points="40.2394153 0 40.2394153 448.6537 105.231846 448.6537"
+              strokeWidth="24"
             />
             <polygon
               id="Triangle-Copy-3"
               fill="#F5A623"
-              transform="translate(40.000000, 316.000000) rotate(180.000000) translate(-40.000000, -316.000000) "
-              points="40 276 80 356 0 356"
+              transform="translate(275.000000, 316.000000) rotate(90.000000) translate(-275.000000, -316.000000) "
+              points="275 276 315 356 235 356"
             />
           </g>
-          <g id="l0.4" transform="translate(592.000000, 50.000000)">
+          <g id="l04_p" transform="translate(592.000000, 50.000000)">
             <path
               d="M51.4786937,288.6537 C25.0158119,286.963086 9.23234652,276.402593 4.12829765,256.972222 C-3.52777567,227.826666 1.94726049,228.430293 26.6063751,193.968405 C51.2654896,159.506517 144.341051,87.1574554 207.521229,49.4428115 C270.701408,11.7281676 404.253785,-33.4684966 460.583978,40.6514569 C516.914171,114.77141 482.019741,241.217795 498.250524,269.884023 C509.071045,288.994842 527.318348,295.251401 552.992431,288.6537"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(171.641016, 74.641016) rotate(55.000000) translate(-171.641016, -74.641016) "
               points="171.641016 34.6410162 211.641016 114.641016 131.641016 114.641016"
             />
           </g>
-          <g id="l0.3" transform="translate(592.000000, 0.000000)">
+          <g id="l03_p" transform="translate(592.000000, 0.000000)">
             <path
               d="M51.4786937,338.6537 C25.0158119,336.963086 9.23234652,326.402593 4.12829765,306.972222 C-3.52777567,277.826666 1.94726049,278.430293 26.6063751,243.968405 C51.2654896,209.506517 144.341051,137.157455 207.521229,99.4428115 C270.701408,61.7281676 371.275573,73.6405866 416.322581,74.9178716 C446.353919,75.7693949 468.755395,50.9362676 483.527009,0.418489907"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-3"
+              id="Triangle-3"
               fill="#F5A623"
               transform="translate(171.641016, 124.641016) rotate(55.000000) translate(-171.641016, -124.641016) "
               points="171.641016 84.6410162 211.641016 164.641016 131.641016 164.641016"
             />
           </g>
-          <g id="l0.2" transform="translate(595.000000, 66.000000)">
+          <g id="l02_p" transform="translate(595.000000, 66.000000)">
             <path
               d="M52.6191594,277.75696 C16.4955849,267.37709 -0.739292839,250.127509 0.914526106,226.008215 C3.39525452,189.829274 124.904634,97.0132609 128.46666,76.4803668 C136.516403,30.0785356 108.829899,4.85394009 101.488691,0.933504551"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
-              id="Triangle-Copy-7"
+              id="Triangle-7"
               fill="#F5A623"
               transform="translate(73.534082, 139.534082) rotate(223.000000) translate(-73.534082, -139.534082) "
               points="73.5340825 179.534082 33.5340825 99.5340825 113.534082 99.5340825"
@@ -1131,16 +1160,16 @@ const Map = createComponent(
           </g>
           <path
             d="M647.22504,328.990691 C634.59731,339.361696 611.467802,308.491622 618.387259,271.336507 C622.510676,249.195171 646.981337,226.717867 647.22504,206.291171 C647.767594,160.815365 619.394541,146.299549 612.183911,142.448846"
-            id="l0.1"
+            id="l01_p"
             stroke="#F5A623"
-            stroke-width="24"
+            strokeWidth="24"
           />
-          <g id="l0.n1" transform="translate(0.000000, 68.000000)">
+          <g id="l0n1_p" transform="translate(0.000000, 67.000000)">
             <path
               d="M643.457317,276.077617 C621.111065,275.240346 601.556313,278.334689 584.793062,285.360647 C559.648184,295.899584 550.593992,363.12769 517.209189,415.868172 C486.098694,465.015759 471.57431,483.350503 422.89853,466.895438 C368.661645,448.560417 227.784958,293.258739 0.268468663,0.990401742"
               id="path"
               stroke="#F5A623"
-              stroke-width="24"
+              strokeWidth="24"
             />
             <polygon
               id="Triangle-Copy"
@@ -1155,42 +1184,63 @@ const Map = createComponent(
               points="334.353282 356.353282 374.353282 436.353282 294.353282 436.353282"
             />
           </g>
+          <g id="l0n2_p" transform="translate(78.000000, -111.000000)">
+            <path
+              d="M565.457317,448.077617 C543.111065,447.240346 523.556313,450.334689 506.793062,457.360647 C481.648184,467.899584 472.593992,535.12769 439.209189,587.868172 C408.098694,637.015759 393.57431,655.350503 344.89853,638.895438 C299.183137,623.441146 176.174311,484.533364 7.3518818,274.46229 C-30.2277082,213.417161 105.577646,201.566155 150.670268,114.460054 C164.55019,87.6479999 164.55019,49.615305 150.670268,0.361969716"
+              id="path"
+              stroke="#F5A623"
+              strokeWidth="24"
+            />
+            <polygon
+              id="Triangle-Copy"
+              fill="#F5A623"
+              transform="translate(80.258654, 183.258654) rotate(58.000000) translate(-80.258654, -183.258654) "
+              points="80.2586541 143.258654 120.258654 223.258654 40.2586541 223.258654"
+            />
+            <polygon
+              id="Triangle-Copy-2"
+              fill="#F5A623"
+              transform="translate(256.353282, 568.353282) rotate(-50.000000) translate(-256.353282, -568.353282) "
+              points="256.353282 528.353282 296.353282 608.353282 216.353282 608.353282"
+            />
+          </g>
         </g>
         <g
           id="entry"
           transform="translate(714.000000, 607.000000)"
           fill="#F5A623"
         >
-          <circle id="l1.n1" cx="25" cy="93" r="25" />
-          <circle id="l2.3" cx="1105" cy="703" r="25" />
-          <circle id="l2.2" cx="1152" cy="646" r="25" />
-          <circle id="l2.n1" cx="35" cy="104" r="25" />
-          <circle id="l3.3" cx="1172" cy="419" r="25" />
-          <circle id="l3.2" cx="1172" cy="347" r="25" />
-          <circle id="l3.1" cx="635" cy="163" r="25" />
-          <circle id="l3.n2" cx="35" cy="104" r="25" />
-          <circle id="l3.n1" cx="35" cy="104" r="25" />
-          <circle id="l2.1" cx="635" cy="163" r="25" />
-          <circle id="l1.1" cx="635" cy="163" r="25" />
-          <circle id="l1.2" cx="1169" cy="387" r="25" />
-          <circle id="l1.3" cx="1152" cy="646" r="25" />
-          <circle id="l1.4" cx="452" cy="683" r="25" />
-          <circle id="l1.5" cx="373" cy="594" r="25" />
-          <circle id="l0.6" cx="336" cy="646" r="25" />
-          <circle id="l0.5" cx="1152" cy="646" r="25" />
-          <circle id="l0.4" cx="1168" cy="367" r="25" />
-          <circle id="l0.3" cx="1099" cy="25" r="25" />
-          <circle id="l0.2" cx="716" cy="88" r="25" />
-          <circle id="l0.1" cx="635" cy="163" r="25" />
-          <circle id="l0.n1" cx="34" cy="107" r="25" />
+          <circle id="l1n1_e" cx="25" cy="93" r="25" />
+          <circle id="l23_e" cx="1105" cy="703" r="25" />
+          <circle id="l22_e" cx="1152" cy="646" r="25" />
+          <circle id="l2n1_e" cx="35" cy="104" r="25" />
+          <circle id="l33_e" cx="1172" cy="419" r="25" />
+          <circle id="l32_e" cx="1172" cy="347" r="25" />
+          <circle id="l31_e" cx="635" cy="163" r="25" />
+          <circle id="l3n2_e" cx="35" cy="104" r="25" />
+          <circle id="l3n1_e" cx="35" cy="104" r="25" />
+          <circle id="l21_e" cx="635" cy="163" r="25" />
+          <circle id="l11_e" cx="635" cy="163" r="25" />
+          <circle id="l12_e" cx="1169" cy="387" r="25" />
+          <circle id="l13_e" cx="1152" cy="646" r="25" />
+          <circle id="l14_e" cx="452" cy="683" r="25" />
+          <circle id="l15_e" cx="373" cy="594" r="25" />
+          <circle id="l06_e" cx="336" cy="646" r="25" />
+          <circle id="l05_e" cx="1152" cy="646" r="25" />
+          <circle id="l04_e" cx="1168" cy="367" r="25" />
+          <circle id="l03_e" cx="1099" cy="25" r="25" />
+          <circle id="l02_e" cx="716" cy="88" r="25" />
+          <circle id="l01_e" cx="635" cy="163" r="25" />
+          <circle id="l0n1_e" cx="34" cy="101" r="25" />
+          <circle id="l0n2_e" cx="250" cy="-86" r="25" />
         </g>
         <g id="stuff" transform="translate(0.000000, 718.000000)">
           <g id="elevator" transform="translate(1339.000000, 335.000000)">
             <g>
-              <use fill="#AAAAAA" fill-rule="evenodd" xlink:href="#path-5" />
+              <use fill="#AAAAAA" fillRule="evenodd" xlinkHref="#path-5" />
               <path
                 stroke="#000000"
-                stroke-width="12"
+                strokeWidth="12"
                 d="M20.8042516,6.14869008 C11.5196144,42.619155 6.87782805,79.7794638 6.87782805,117.641178 C6.87782805,140.397708 21.9894905,152.974564 48.6181504,158.03312 C61.6296646,160.504874 75.5991781,160.807905 88.3468868,159.82997 C89.754289,159.722002 91.0069052,159.606771 92.0866682,159.492233 C92.7183418,159.425228 93.1416246,159.374814 93.3385257,159.348985 L93.7270608,159.298016 L217.063209,159.298016 L217.063209,6.14869008 L20.8042516,6.14869008 Z"
               />
             </g>
@@ -1198,7 +1248,7 @@ const Map = createComponent(
               id="icon"
               opacity="0.49756567"
               transform="translate(60.000000, 25.000000)"
-              stroke-width="4"
+              strokeWidth="4"
               stroke="#000000"
             >
               <polygon
@@ -1222,24 +1272,13 @@ const Map = createComponent(
             fill="#D0021B"
           >
             <circle id="start" stroke="#D0021B" cx="25" cy="45" r="25" />
-            <text
-              id="Standort"
-              font-family="Helvetica"
-              font-size="64"
-              font-weight="normal"
-            >
+            <text id="text">
               <tspan x="50" y="62">
                 Standort
               </tspan>
             </text>
           </g>
-          <text
-            id="textBuilding2"
-            font-family="Helvetica"
-            font-size="64"
-            font-weight="normal"
-            fill="#D0021B"
-          >
+          <text id="textBuilding2" fill="#D0021B">
             <tspan x="0" y="62">
               Neben-
             </tspan>
@@ -1247,13 +1286,7 @@ const Map = createComponent(
               gebäude
             </tspan>
           </text>
-          <text
-            id="textBuilding1"
-            font-family="Helvetica"
-            font-size="64"
-            font-weight="normal"
-            fill="#D0021B"
-          >
+          <text id="textBuilding1" fill="#D0021B">
             <tspan x="184" y="486">
               Hauptgebäude
             </tspan>
@@ -1262,21 +1295,18 @@ const Map = createComponent(
       </g>
     </svg>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
-const enhance = compose(
+const enhanceData = compose(
   graphql(
     gql`
       query orgList {
-        items: orgList(query: { state: { eq: PUBLISHED } }) {
+        items: orgList(
+          query: { state: { eq: PUBLISHED }, lageplan: { null: false } }
+        ) {
           id
           name
-          art
-          logo {
-            id
-            url
-          }
           color
           etage
           lageplan
@@ -1285,27 +1315,97 @@ const enhance = compose(
     `,
     {
       options: () => ({}),
-      props: ({ ownProps, data }) => ({
-        ...ownProps,
-        items: data.items || [],
-      }),
-    }
+      props: ({ ownProps, data }) => {
+        let items = [
+          ...(data.items || []),
+          {
+            id: 1,
+            name: 'Seminarraum',
+            color: 'red',
+            etage: 'Nebengebäude 3. Stock',
+            lageplan: 'L3N2',
+          },
+        ];
+        items = sortBy(items, 'name');
+
+        return {
+          ...ownProps,
+          items,
+        };
+      },
+    },
   ),
-  withPropsOnChange(['items'], ({ items }) => ({
-    // groupedItems: groupBy(items, 'art'),
-    // filteredItems: items.filter(({ etage }) => etage.includes('3. Stock')),
-  })),
-  withState('activeItem', 'setActiveItem')
+  withPropsOnChange(['items'], ({ items, query, updateQuery }) => {
+    const room = query['@room'];
+    const level = room ? room.slice(0, 2) : `l${query['@level']}` || 'l0';
+
+    if (room) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+
+      this.timer = setTimeout(() => {
+        updateQuery({ '@room': undefined });
+      }, 20000);
+    }
+
+    return {
+      level,
+      room,
+      filteredItems: items.filter(({ lageplan }) =>
+        lageplan.includes(level.toUpperCase()),
+      ),
+    };
+  }),
 );
 
-const component = enhance(
-  ({ attributes, className, items, activeItem, setActiveItem }) => {
-    // groupedItems, // filteredItems,
-    const etage = ((items.find(item => camelCase(item.name) === activeItem) ||
-      {}
-    ).etage || 'Erdgeschoss'
-    ).replace('Nebengebäude ', '');
-    const filteredItems = items.filter(item => item.etage.includes(etage));
+const enhanceQuery = connect(
+  ({ location }) => ({
+    pathname: location.pathname,
+    query: location.query,
+  }),
+  dispatch => ({
+    updateQuery: createUpdateQuery(dispatch),
+  }),
+);
+
+@enhanceQuery
+@enhanceData
+class component extends Component {
+  displayName = 'GZKBlock';
+
+  render() {
+    const {
+      attributes,
+      className,
+      items,
+      filteredItems,
+      level,
+      room,
+      updateQuery,
+    } = this.props;
+
+    let etage;
+    switch (level) {
+      case 'l0':
+        etage = 'Erdgeschoss';
+        break;
+
+      case 'l1':
+        etage = '1. Obergeschoss';
+        break;
+
+      case 'l2':
+        etage = '2. Obergeschoss';
+        break;
+
+      case 'l3':
+        etage = '3. Obergeschoss';
+        break;
+
+      default:
+        etage = 'Erdgeschoss';
+    }
 
     return (
       <Container>
@@ -1315,11 +1415,12 @@ const component = enhance(
               {items.map(item => (
                 <Item
                   color={item.color}
-                  isActive={activeItem === camelCase(item.name)}
-                  onMouseEnter={() => setActiveItem(camelCase(item.name))}
+                  isActive={room === item.lageplan.toLowerCase()}
+                  onMouseEnter={() =>
+                    updateQuery({ '@room': item.lageplan.toLowerCase() })}
                   key={item.id}
                 >
-                  {item.name}
+                  {item.name} <span>[{item.etage}]</span>
                 </Item>
               ))}
             </ul>
@@ -1327,17 +1428,17 @@ const component = enhance(
           <Grid.Item medium={2}>
             <H2>{etage}</H2>
             <Map
-              activeItem={activeItem}
-              setActiveItem={id => setActiveItem(id)}
+              setActiveItem={room => updateQuery({ '@room': room })}
               items={filteredItems}
+              level={level}
+              room={room}
             />
           </Grid.Item>
         </Grid>
       </Container>
     );
   }
-);
-component.displayName = 'GZKBlock';
+}
 
 export default {
   type: 'pathfinder',
