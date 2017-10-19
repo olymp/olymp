@@ -1,4 +1,3 @@
-const elecApp = require('@electron');
 const { autoUpdater } = require('electron-updater');
 const {
   Menu,
@@ -12,6 +11,7 @@ require('electron-debug')({ enabled: true });
 const log = require('electron-log');
 const { machineIdSync } = require('node-machine-id');
 const os = require('os');
+const elecApp = require('@electron');
 
 log.transports.file.level = 'info';
 global.MACHINE_ID_ORIGINAL = machineIdSync({ original: true });
