@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { compose, withPropsOnChange, renderComponent } from 'recompose';
 import unflatten from 'olymp-utils/unflatten';
-import { get, upperFirst, lowerFirst, orderBy, sortBy } from 'lodash';
+import { get, upperFirst, lowerFirst, orderBy } from 'lodash';
 import { queryPages } from './gql/query';
 
 // interpolate a string value using props
@@ -28,7 +28,6 @@ export default Wrapped => {
     queryPages,
     withPropsOnChange(['pageList'], ({ pageList, data }) => {
       const deco = pageList.filter(item => item.binding);
-      console.log('REFRESH', pageList);
       const key = deco.map(x => `${x.id}-${x.binding}`).join('|');
       return {
         navKey: key,
