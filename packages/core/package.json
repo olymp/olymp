@@ -1,5 +1,5 @@
 {
-  "version": "18.1.16",
+  "version": "18.1.17",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -67,7 +67,7 @@
     "worker-loader": "^1.0.0"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^18.1.7",
+    "olymp-webpack-electron": "^18.1.17",
     "webpack-bundle-analyzer": "^2.9.0"
   }
 }
