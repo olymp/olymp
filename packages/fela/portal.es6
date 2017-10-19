@@ -11,6 +11,8 @@ class Portal extends Component {
     if (usePortal && typeof document !== 'undefined' && !this.popup) {
       this.popup = document.createElement('div');
       document.body.appendChild(this.popup);
+      this.popup.style.width = '100%';
+      this.popup.style.height = '100%';
     }
   }
 

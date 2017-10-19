@@ -16,6 +16,10 @@ export default ({ theme }) => {
     '& ::selection': {
       background: color,
     },
+    '& .ant-tree li .ant-tree-node-content-wrapper': {
+      height: 'initial',
+      lineHeight: 'initial',
+    },
     '& .ant-input.ant-select-search__field': {
       height: 32,
     },

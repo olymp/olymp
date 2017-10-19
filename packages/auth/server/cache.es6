@@ -5,14 +5,12 @@ export default auth => (req, res, next) => {
     req.headers.authorization ||
     req.params.authorization ||
     get(req, 'session.token');
-  console.log(authorization, req.params);
   if (!authorization) {
     return next();
   }
   auth
     .verify(authorization)
     .then(user => {
-      console.log(user);
       if (req.session) {
         req.session.token = user.token;
       }

@@ -110,7 +110,7 @@ const link = ApolloLink.from([
         }).then(() =>
           apolloFetch(request)
             .then(then(observer))
-            .catch(catchError(observer)),
+            .catch(catchError(observer))
         );
         // Other errors.
       } else if (!observer.closed) {
@@ -169,7 +169,7 @@ const cache = new InMemoryCache({
   dataIdFromObject: o => o.id,
   addTypename: true,
 }).restore(apollo || {});
-client = new ApolloClient({ link, cache });
+client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
 // Redux stuff
 dynamicRedux = createDynamicRedux();
 const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
@@ -185,8 +185,8 @@ store = createDynamicStore(
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(apolloMiddleware(client)),
     applyMiddleware(authMiddleware),
-    applyMiddleware(appMiddleware),
-  ),
+    applyMiddleware(appMiddleware)
+  )
 );
 
 attachHistory(history, store);
