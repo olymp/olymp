@@ -7,12 +7,10 @@ const portal = isReact16 ? createPortal : unstable_renderSubtreeIntoContainer;
 
 class Portal extends Component {
   componentWillMount() {
-    const { usePortal } = this.props;
+    const { usePortal, noScroll } = this.props;
     if (usePortal && typeof document !== 'undefined' && !this.popup) {
       this.popup = document.createElement('div');
       document.body.appendChild(this.popup);
-      this.popup.style.width = '100%';
-      this.popup.style.height = '100%';
     }
   }
 
