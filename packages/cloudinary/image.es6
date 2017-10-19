@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { onlyUpdateForPropTypes } from 'recompose';
+import { onlyUpdateForKeys } from 'recompose';
 import { createComponent } from 'react-fela';
 import { Image } from 'cloudinary-react';
 import Placeholder from 'olymp-fela/image/placeholder';
@@ -176,4 +176,21 @@ CloudinaryImage.defaultProps = {
   attributes: {},
   alt: undefined,
 };
-export default onlyUpdateForPropTypes(CloudinaryImage);
+export default onlyUpdateForKeys([
+  'value',
+  'children',
+  'ratio',
+  'width',
+  'height',
+  'maxWidth',
+  'maxHeight',
+  'fade',
+  'circle',
+  'mode',
+  'alt',
+  'className',
+  'onClick',
+  'onMouseEnter',
+  'attributes',
+  'style',
+])(CloudinaryImage);

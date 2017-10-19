@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Upload, Tabs } from 'antd';
 import {
   compose,
-  onlyUpdateForPropTypes,
+  onlyUpdateForKeys,
   setPropTypes,
   withPropsOnChange,
 } from 'recompose';
@@ -23,7 +23,22 @@ const image = ({ image }) =>
 
 // @withPropsOnChange(['items', 'search', 'filter'])
 const enhance = compose(
-  onlyUpdateForPropTypes,
+  onlyUpdateForKeys([
+    'directories',
+    'upload',
+    'search',
+    'tags',
+    'onClose',
+    'setSearch',
+    'setTags',
+    'setTab',
+    'tab',
+    'items',
+    'activeItems',
+    'onClick',
+    'onRemove',
+    'onSelect',
+  ]),
   setPropTypes({
     directories: PropTypes.object,
     upload: PropTypes.object,
@@ -46,7 +61,7 @@ const enhance = compose(
       .map(x => items.find(item => item.id === x))
       .filter(x => x),
     activeId: cloudinary.activeId,
-  })),
+  }))
 );
 
 const Directory = withPropsOnChange(['items'], ({ items }) => ({
@@ -70,7 +85,7 @@ const Directory = withPropsOnChange(['items'], ({ items }) => ({
         )}
         {items.map(dir => <List.Item {...dir} image={image(dir)} />)}
       </div>
-    ) : null,
+    ) : null
 );
 
 export default enhance(
@@ -141,5 +156,5 @@ export default enhance(
         ) : null}
       </Tabs>
     </Sidebar>
-  ),
+  )
 );
