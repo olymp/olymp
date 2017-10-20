@@ -8,16 +8,17 @@ const Avatar = createComponent(
     margin: theme.space2,
     marginRight: `-${theme.space3}`,
   }),
-  ({ className, value }) =>
-    (<LightboxImage
+  ({ className, value }) => (
+    <LightboxImage
       className={className}
       value={value}
       width={100}
       ratio={1}
       avatar
-      rounded
-    />),
-  p => Object.keys(p)
+      circle
+    />
+  ),
+  p => Object.keys(p),
 );
 
 const H3 = createComponent(
@@ -27,7 +28,7 @@ const H3 = createComponent(
     paddingRight: theme.space1,
   }),
   'h3',
-  ({ color, ...p }) => Object.keys(p)
+  ({ color, ...p }) => Object.keys(p),
 );
 
 export default createComponent(
@@ -41,15 +42,12 @@ export default createComponent(
       textAlign: 'justify',
     },
   }),
-  ({ className, name, image, description, color }) =>
-    (<div className={className}>
-      <Avatar value={image} />
-      <H3 color={color}>
-        {name}
-      </H3>
-      <p>
-        {description}
-      </p>
-    </div>),
-  p => Object.keys(p)
+  ({ className, name, image, description, color }) => (
+    <div className={className}>
+      {!!image && <Avatar value={image} />}
+      <H3 color={color}>{name}</H3>
+      <p>{description}</p>
+    </div>
+  ),
+  p => Object.keys(p),
 );
