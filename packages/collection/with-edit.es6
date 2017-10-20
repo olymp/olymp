@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'olymp-router';
+import { withRouter } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
-import { createComponent } from 'olymp-fela';
+import { createComponent, Button } from 'olymp-fela';
 
 // todo: withAuth auslagern!
 
-export default typeProp => (WrappedComponent) => {
+export default typeProp => WrappedComponent => {
   const EditButton = withRouter(
     createComponent(
       () => ({
@@ -16,16 +16,11 @@ export default typeProp => (WrappedComponent) => {
         transform: 'translate(50%, -50%)',
         zIndex: 2,
       }),
-      ({ className, id, pathname, query, type }) => (
-        <Link
-          to={{
-            pathname,
-            query: { ...query, [`@${type}`]: id || 'new' },
-          }}
+      ({ className, id, type }) => (
+        <Button.Edit
+          updateQuery={{ [`@${type}`]: id || 'new' }}
           className={className}
-        >
-          <div type="primary" shape="circle" icon="edit" />
-        </Link>
+        />
       ),
       p => Object.keys(p),
     ),
@@ -64,7 +59,10 @@ export default typeProp => (WrappedComponent) => {
         },
       }),
       ({ className, id, auth, logout, ...p }) => {
-        const type = typeof typeProp === 'function' ? typeProp({ id, auth, ...p }) : typeProp;
+        const type =
+          typeof typeProp === 'function'
+            ? typeProp({ id, auth, ...p })
+            : typeProp;
 
         if (!auth || !auth.user || !type) {
           return <WrappedComponent id={id} {...p} />;

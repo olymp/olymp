@@ -1,11 +1,11 @@
 import React from 'react';
-import { withRouter, Link } from 'olymp-router';
+import { withRouter } from 'olymp-router';
 import { withAuth } from 'olymp-auth';
-import { createComponent } from 'olymp-fela';
+import { createComponent, Button } from 'olymp-fela';
 
 // todo: withAuth auslagern!
 
-export default type => (WrappedComponent) => {
+export default type => WrappedComponent => {
   const CreateButton = withRouter(
     createComponent(
       ({ top }) => ({
@@ -16,16 +16,11 @@ export default type => (WrappedComponent) => {
         transform: top ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
         zIndex: 2,
       }),
-      ({ className, pathname, query }) => (
-        <Link
-          to={{
-            pathname,
-            query: { ...query, [`@${type}`]: 'new' },
-          }}
+      ({ className }) => (
+        <Button.Edit
+          updateQuery={{ [`@${type}`]: 'new' }}
           className={className}
-        >
-          <div type="primary" shape="circle" icon="plus" />
-        </Link>
+        />
       ),
       p => Object.keys(p),
     ),
@@ -71,7 +66,7 @@ export default type => (WrappedComponent) => {
         },
       }),
       ({ className, auth, logout, ...p }) =>
-        (auth && auth.user ? (
+        auth && auth.user ? (
           <div className={className}>
             <CreateButton top />
             <WrappedComponent {...p} />
@@ -79,7 +74,7 @@ export default type => (WrappedComponent) => {
           </div>
         ) : (
           <WrappedComponent {...p} />
-        )),
+        ),
       p => Object.keys(p),
     ),
   );

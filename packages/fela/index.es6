@@ -12,3 +12,5 @@ export { default as Avatar } from './avatar';
 export { default as IFrame } from './iframe';
 export { default as PageTransition } from './page-transition';
 export { default as MaterialColors } from './material-colors';
+export { default as LightBox } from './lightbox';
+export { default as Button } from './button';
