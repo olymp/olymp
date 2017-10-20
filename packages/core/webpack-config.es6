@@ -99,16 +99,14 @@ module.exports = ({
         debug: isDev,
       }),
       new webpack.DefinePlugin({
-        'process.env.BUILD_ON': `"${new Date()}"`,
         'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
           ? `"${process.env.GOOGLE_MAPS_KEY}"`
           : false,
         'process.env.URL': url ? `"${url}"` : false,
         'process.env.DEV_PORT': devPort || false,
         'process.env.DEV_URL': devUrl ? `"${devUrl.origin}"` : false,
-        'process.env.HOTJAR': process.env.HOTJAR
-          ? `"${process.env.HOTJAR}"`
-          : false,
+
+        'process.env.BUILD_ON': `"${new Date()}"`,
         'process.env.NODE_ENV': `"${mode}"`,
         'process.env.SSR': isSSR,
         'process.env.SERVERLESS': isServerless,

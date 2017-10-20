@@ -5,26 +5,22 @@
   "description": "",
   "main": "./packages/core",
   "scripts": {
-    "favicon":
-      "real-favicon generate faviconDescription.json faviconData.json ./packages/core/public/",
+    "favicon": "real-favicon generate faviconDescription.json faviconData.json ./packages/core/public/",
     "up": "npm-check -u",
     "init": "lerna init --independent",
     "watch": "gulp watch",
     "test": "jest && codecov",
     "es": "eslint packages/** --quiet",
     "esa": "eslint packages/**",
-    "prettier":
-      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"packages/**/*.js\"",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
-    "lpf":
-      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
     "lc": "del 'packages/*/package-lock.json'",
     "special-elev": "lerna exec npm owner add machiaveli88",
-    "special-rename":
-      "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
+    "special-rename": "renamer --find '.js' --replace '.ts' 'packages/app/**/*.js'",
     "special-del": "del 'packages/**/*.js' '!packages/**/node_modules/**'"
   },
   "engines": {},
@@ -33,7 +29,13 @@
     "type": "git",
     "url": "https://github.com/olymp/olymp.git"
   },
-  "keywords": ["react", "universal", "javascript", "express", "webpack"],
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
     "Benjamin Kniffler <bkniffler@me.com>",
@@ -56,11 +58,11 @@
     "cli-real-favicon": "0.0.6",
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.7",
-    "eslint-config-olymp": "^18.0.13",
-    "webpack": "^3.7.1"
+    "eslint-config-olymp": "^18.1.10",
+    "webpack": "^3.8.1"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.6.1",
+    "babel-plugin-import": "^1.6.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",

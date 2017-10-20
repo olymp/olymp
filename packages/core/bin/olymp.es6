@@ -14,7 +14,11 @@ const argv = require('minimist')(process.argv.slice(1));
 
 require('dotenv').config();
 
-const createConfig = require(path.resolve(__dirname, '..', 'webpack-config.js'));
+const createConfig = require(path.resolve(
+  __dirname,
+  '..',
+  'webpack-config.js'
+));
 
 const root = process.cwd();
 const pckgOlymp =
@@ -34,7 +38,7 @@ const olymprc = merge(
   pckgOlymp.olymp || {},
   jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
     throws: false,
-  }) || {},
+  }) || {}
 );
 
 const command = argv._[1];
@@ -43,9 +47,7 @@ if (['start', 'build'].includes(command)) {
   process.env.NODE_ENV = 'production';
 }
 
-const {
-  SSR, SERVERLESS, NODE_ENV, PORT, URL
-} = process.env;
+const { SSR, SERVERLESS, NODE_ENV, PORT, URL } = process.env;
 
 const ssr = SSR != 'false';
 const serverless = SERVERLESS == 'true';
@@ -68,24 +70,29 @@ if (command === 'dev') {
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
 
   const devPort = SERVERLESS ? port : port + 1;
-  const devUrl = serverless ? url : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
+  const devUrl = serverless
+    ? url
+    : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
   const watch = {
     aggregateTimeout: 300,
     poll: false,
     ignored: /node_modules/,
   };
-  const compiler = webpack(targets.map((target, i) =>
-    createConfig({
-      target,
-      mode: 'development',
-      devPort,
-      url,
-      devUrl,
-      ssr,
-      serverless,
-      ...olymprc,
-    }), ), );
+  const compiler = webpack(
+    targets.map((target, i) =>
+      createConfig({
+        target,
+        mode: 'development',
+        devPort,
+        url,
+        devUrl,
+        ssr,
+        serverless,
+        ...olymprc,
+      })
+    )
+  );
   targets.forEach((target, i) => {
     const currentCompiler = compiler.compilers[i];
     if (target === 'node' || target === 'electron-main') {
@@ -134,18 +141,21 @@ if (command === 'dev') {
 } else if (command === 'build') {
   const port = parseInt(PORT, 10);
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
-  rimraf.sync(path.resolve(root, '.dist'));
+  targets.map(target => rimraf.sync(path.resolve(root, '.dist', target)));
   process.env.NODE_ENV = 'production';
 
-  const compiler = webpack(targets.map((target, i) =>
-    createConfig({
-      target,
-      mode: 'production',
-      url,
-      ssr,
-      serverless,
-      ...olymprc,
-    }), ), );
+  const compiler = webpack(
+    targets.map((target, i) =>
+      createConfig({
+        target,
+        mode: 'production',
+        url,
+        ssr,
+        serverless,
+        ...olymprc,
+      })
+    )
+  );
   compiler.run((err, compilation) => {
     if (err) {
       console.error(err);

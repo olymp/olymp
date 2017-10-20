@@ -7,7 +7,7 @@ const getURL = () => {
   let url;
   if (process.env.URL) {
     url = process.env.URL;
-  } else if (process.env.IS_WEB) {
+  } else if (typeof window !== 'undefined') {
     url = `${window.location.protocol}//${window.location.host}`;
   }
   if (url && url.endsWith('/')) {
@@ -17,7 +17,7 @@ const getURL = () => {
 };
 export default (
   { name, title, description, image, tags, keywords, pathname, ...rest } = {},
-  pth,
+  pth
 ) => {
   if (pth && !pathname) {
     pathname = pth;
