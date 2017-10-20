@@ -218,7 +218,7 @@ module.exports = ({
     };
   }
 
-  if (isDev && isWeb) {
+  if (isDev && isWeb && devUrl) {
     config.output.publicPath = devUrl.href;
   } else {
     config.output.publicPath = '/';

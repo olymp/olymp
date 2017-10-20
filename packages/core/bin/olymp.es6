@@ -68,9 +68,8 @@ if (argv.targets) {
 }
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
-  const url = new urlUtil.URL(URL || `http://localhost:${port}`);
-
-  const devPort = IS_SERVERLESS ? port : port + 1;
+  const url = new urlUtil.URL(`http://localhost:${port}`);
+  const devPort = isServerless ? port : port + 1;
   const devUrl = isServerless
     ? url
     : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
@@ -85,10 +84,8 @@ if (command === 'dev') {
       createConfig({
         target,
         mode: 'development',
-        devPort,
-        url,
-        devUrl,
         isSSR,
+        devUrl,
         isServerless,
         ...olymprc,
       }),
