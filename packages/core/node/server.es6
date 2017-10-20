@@ -21,11 +21,14 @@ import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import {
+  AsyncComponentProvider,
+  createAsyncContext,
+} from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 // Etc
 import fetch from 'isomorphic-fetch';
-import sslRedirect from 'heroku-ssl-redirect';
+// import sslRedirect from 'heroku-ssl-redirect';
 import { format } from 'date-fns';
 // Apollo
 import { graphql } from 'graphql';
@@ -51,6 +54,8 @@ import amp from '../templates/amp';
 import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
 
+const port = parseInt(process.env.PORT || 3000, 10);
+const devPort = port + 1;
 // eslint
 global.fetch = fetch;
 
@@ -67,31 +72,20 @@ const app = express();
 
 app.use(helmet());
 
-if (
-  process.env.NODE_ENV === 'production' &&
-  process.env.URL &&
-  process.env.URL.indexOf('https:') === 0
-) {
-  app.use(sslRedirect());
+const origins = process.env.ORIGINS ? process.env.ORIGINS.split(',') : [];
+if (process.env.GRAPHQL_URL) {
+  origins.push(process.env.GRAPHQL_URL);
 }
-
-if (isProd) {
-  const urls = [];
-  if (process.env.URL) {
-    urls.push(new URL(process.env.URL).origin);
-  }
-  if (process.env.GRAPHQL_URL) {
-    urls.push(new URL(process.env.GRAPHQL_URL).origin);
-  }
-  if (process.env.ORIGINS) {
-    urls.push(process.env.ORIGINS);
-  }
+if (isProd && origins.length) {
   app.use((req, res, next) => {
     const origin = req.headers.origin;
-    if (urls.indexOf(origin) >= 0) {
+    if (origins.indexOf(origin) >= 0) {
       res.setHeader('Access-Control-Allow-Origin', origin);
     }
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,PATCH,DELETE');
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET,POST,OPTIONS,PUT,PATCH,DELETE',
+    );
     res.setHeader(
       'Access-Control-Allow-Headers',
       'X-Requested-With,Content-Type,Authorization,X-HTTP-Method-Override,Accept',
@@ -106,13 +100,24 @@ app.use(useragent.express());
 
 const maxAge = 1000 * 60 * 1 * 30 * 3; // 1 month
 app.use(express.static(path.resolve(process.cwd(), 'public'), { maxAge }));
-app.use(express.static(path.resolve(process.cwd(), '.dist', 'web'), { maxAge }));
-app.use(express.static(path.resolve(process.cwd(), 'node_modules', 'olymp', 'public'), { maxAge }));
+app.use(
+  express.static(path.resolve(process.cwd(), '.dist', 'web'), { maxAge }),
+);
+app.use(
+  express.static(
+    path.resolve(process.cwd(), 'node_modules', 'olymp', 'public'),
+    { maxAge },
+  ),
+);
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 app.use((req, res, next) => {
-  if (req.subdomains && req.subdomains.length === 1 && req.subdomains[0] === 'amp') {
+  if (
+    req.subdomains &&
+    req.subdomains.length === 1 &&
+    req.subdomains[0] === 'amp'
+  ) {
     req.isAmp = true;
   } else if (req.query.amp !== undefined) {
     req.isAmp = true;
@@ -128,16 +133,25 @@ try {
     server(app);
   }
 } catch (err) {
-  console.log('No server.js or server/index.js file found, using default settings', err);
+  console.log(
+    'No server.js or server/index.js file found, using default settings',
+    err,
+  );
 }
 
 // Setup server side routing.
 app.get('*', (req, res) => {
   const isAmp = req.isAmp;
-  if (process.env.SSR === false) {
+  if (process.env.IS_SSR === false) {
     const html = (req.isAmp ? amp : template)({
       gaTrackingId: process.env.GA_TRACKING_ID,
-      scripts: isAmp ? [] : [isProd ? `${clientAssets.app.js}` : `${process.env.DEV_URL}/app.js`],
+      scripts: isAmp
+        ? []
+        : [
+            isProd
+              ? `${clientAssets.app.js}`
+              : `http://localhost:${devPort}/app.js`,
+          ],
       styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
       buildOn: process.env.BUILD_ON,
     });
@@ -145,18 +159,19 @@ app.get('*', (req, res) => {
     return;
   }
 
-  console.log(InMemoryCache);
-  const cache = new InMemoryCache({ dataIdFromObject: o => o.id, addTypename: true });
-  console.log(222);
+  const cache = new InMemoryCache({
+    dataIdFromObject: o => o.id,
+    addTypename: true,
+  });
   const client = new ApolloClient({
     cache,
     link: ApolloLink.from([
-      (operation) => {
+      operation => {
         const request = {
           ...operation,
           query: print(operation.query),
         };
-        return new Observable((observer) => {
+        return new Observable(observer => {
           graphql(
             req.schema.getSchema(),
             request.query,
@@ -165,13 +180,13 @@ app.get('*', (req, res) => {
             request.variables,
             request.operationName,
           )
-            .then((data) => {
+            .then(data => {
               if (!observer.closed) {
                 observer.next(data);
                 observer.complete();
               }
             })
-            .catch((error) => {
+            .catch(error => {
               if (!observer.closed) {
                 observer.error(error);
               }
@@ -222,13 +237,17 @@ app.get('*', (req, res) => {
 
   Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
     .then(() => {
-      const reactAppString = req.isAmp ? renderToStaticMarkup(reactApp) : renderToString(reactApp);
+      const reactAppString = req.isAmp
+        ? renderToStaticMarkup(reactApp)
+        : renderToString(reactApp);
       const felaMarkup = renderToMarkup(renderer);
       const asyncState = asyncContext.getState();
 
       const scripts = req.isAmp
         ? []
-        : isProd ? [`${clientAssets.app.js}`] : [`${process.env.DEV_URL}/app.js`];
+        : isProd
+          ? [`${clientAssets.app.js}`]
+          : [`http://localhost:${devPort}/app.js`];
       const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
       // Generate the html res.
       const state = store.getState();
@@ -255,7 +274,7 @@ app.get('*', (req, res) => {
       res.status(state.location.isMiss ? 404 : 200);
       res.send(html);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       res.status(500).send(err.message);
     });
