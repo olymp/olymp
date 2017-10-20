@@ -1,5 +1,5 @@
 {
-  "version": "18.1.18",
+  "version": "18.2.0",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -26,7 +26,7 @@
     "fela-plugin-prefixer": "^5.0.11",
     "fela-plugin-remove-undefined": "^5.0.10",
     "fela-plugin-unit": "^5.0.10",
-    "olymp-utils": "^18.1.7",
+    "olymp-utils": "^18.2.0",
     "react-fela": "^6.0.2",
     "react-frame-component": "^2.0.0",
     "react-scrolllock": "^1.0.9",
