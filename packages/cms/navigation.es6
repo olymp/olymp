@@ -198,7 +198,7 @@ class Navigation extends Component {
             <Menu.Item key="@user">
               <Link to={{ query: { '@user': null } }}>Profil</Link>
             </Menu.Item>
-            <Menu.SubMenu title="Ansicht">
+            {/* <Menu.SubMenu title="Ansicht">
               <Menu.Item key="@device-no">
                 <a onClick={() => setDeviceWidth()} href="javascript:;">
                   Normal
@@ -214,7 +214,7 @@ class Navigation extends Component {
                   Mobil
                 </a>
               </Menu.Item>
-            </Menu.SubMenu>
+          </Menu.SubMenu> */}
             <Menu.Item key="logout">
               <a onClick={logout} href="javascript:;">
                 Abmelden
