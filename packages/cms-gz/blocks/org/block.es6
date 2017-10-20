@@ -59,7 +59,7 @@ const Content = createComponent(
     },
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Peak = createComponent(
@@ -84,7 +84,7 @@ const Peak = createComponent(
       )}
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const component = withTheme(
@@ -93,7 +93,7 @@ const component = withTheme(
       ? {
           color: item.color,
         }
-      : {}
+      : {},
 )(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div {...attributes}>
@@ -142,6 +142,7 @@ const componentWithData = graphql(
         slogan
         description
         etage
+        lageplan
         freifeld
         openings
         eMail
@@ -238,7 +239,7 @@ const componentWithData = graphql(
       data,
       item: data.item || {},
     }),
-  }
+  },
 )(component);
 
 componentWithData.displayName = 'GzOrgBlock';
