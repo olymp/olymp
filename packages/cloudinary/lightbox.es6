@@ -43,8 +43,6 @@ export default class Lightbox extends Component {
     const prevIndex = currIndex > 0 ? currIndex - 1 : images.length - 1;
     const nextIndex = currIndex < images.length - 1 ? currIndex + 1 : 0;
 
-    console.log(lightbox, image, images);
-
     return (
       <LightBox
         images={images}
