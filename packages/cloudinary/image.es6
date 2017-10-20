@@ -7,6 +7,7 @@ import Placeholder from 'olymp-fela/image/placeholder';
 
 const Container = createComponent(
   ({
+    theme,
     ratio,
     height,
     width,
@@ -33,7 +34,7 @@ const Container = createComponent(
       paddingTop: `${ratio * 100}%`,
     },
     '> img': {
-      borderRadius: circle && '50%',
+      borderRadius: circle ? '50%' : theme.borderRadius,
       zIndex: 0,
       center: true,
     },
@@ -51,7 +52,7 @@ const Container = createComponent(
     },
   }),
   ({ attributes, ...p }) => <div {...p} {...attributes} />,
-  ['onClick', 'onMouseEnter', 'attributes', 'style', 'className', 'children']
+  ['onClick', 'onMouseEnter', 'attributes', 'style', 'className', 'children'],
 );
 
 const CloudinaryImage = ({
@@ -115,7 +116,7 @@ const CloudinaryImage = ({
             crop: mode || 'fill',
             quality: 0,
             fetchFormat: 'auto',
-            width: 4,
+            width: 50,
             aspectRatio:
               ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
           }}

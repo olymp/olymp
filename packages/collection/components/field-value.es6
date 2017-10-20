@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'olymp-fela';
+import { Image } from 'olymp-cloudinary';
 import { Checkbox } from 'antd';
 import { Plain, Raw } from 'slate';
 import moment from 'moment';
@@ -19,8 +19,9 @@ const resolveFieldValue = (value, meta, fieldProps) => {
 
       case 'DateTime':
         return (
-          !!value &&
-          <span>{`${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr`}</span>
+          !!value && (
+            <span>{`${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr`}</span>
+          )
         );
 
       case 'Boolean':
@@ -50,7 +51,7 @@ const resolveFieldValue = (value, meta, fieldProps) => {
         return (
           !!value &&
           Plain.serialize(
-            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true })
+            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true }),
           )
             .split('\n')
             .join(' ')

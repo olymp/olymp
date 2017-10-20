@@ -21,10 +21,6 @@ const Img = createComponent(
   updateQuery: createUpdateQuery(dispatch),
 }))
 export default class Lightbox extends Component {
-  ref = Math.random()
-    .toString(36)
-    .substr(2, 9);
-
   static contextTypes = {
     lightbox: PropTypes.object,
   };
@@ -55,7 +51,15 @@ export default class Lightbox extends Component {
     lightbox.remove(this.ref);
   }
 
-  add = (value) => {
+  onClick = e => {
+    const { onClick, updateQuery } = this.props;
+    updateQuery({ lightbox: this.ref });
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
+  add = value => {
     const { lightbox } = this.context;
     const width = 800;
     const getSrcSet = w =>
@@ -84,16 +88,19 @@ export default class Lightbox extends Component {
     });
   };
 
-  onClick = (e) => {
-    const { onClick, updateQuery } = this.props;
-    updateQuery({ lightbox: this.ref });
-    if (onClick) {
-      onClick(e);
-    }
-  };
+  ref = Math.random()
+    .toString(36)
+    .substr(2, 9);
 
   render() {
-    const { value, onClick, search, dispatch, updateQuery, ...rest } = this.props;
+    const {
+      value,
+      onClick,
+      search,
+      dispatch,
+      updateQuery,
+      ...rest
+    } = this.props;
 
     if (!value || !value.url) {
       return <Img {...rest} value={value} />;

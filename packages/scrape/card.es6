@@ -1,7 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { createComponent, ContentLoader, Image } from 'olymp-fela';
+import { createComponent, ContentLoader } from 'olymp-fela';
 
 const styles = props => ({
   '> .card-img': {
@@ -51,14 +51,12 @@ const component = ({
     <div {...rest}>
       {children}
       {error ? console.error(error) : null}
-      {image ? (
-        <img src={image.url} className="card-img" />
-      ) : (
-        <Image.Placeholder className="card-img" />
+      {!!image && (
+        <img src={image.url} alt={image.caption} className="card-img" />
       )}
       <article>
         <a target="_blank" href={origin}>
-          {favicon && <img src={favicon.url} />}
+          {favicon && <img src={favicon.url} alt={favicon.caption} />}
           {origin}
         </a>
         <h3>
@@ -84,26 +82,20 @@ const card = graphql(
     query scrape($url: String) {
       scrape(url: $url) {
         id
-        author
-        date
         description
         origin
         favicon {
           url
           width
           height
+          caption
         }
         image {
           url
           width
           height
+          caption
         }
-        logo {
-          url
-          width
-          height
-        }
-        publisher
         title
         url
       }

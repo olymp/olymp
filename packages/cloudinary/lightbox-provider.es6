@@ -1,16 +1,19 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'olymp-router';
+import { connect } from 'react-redux';
 
-@withRouter
+const enhanceQuery = connect(({ location }) => ({
+  query: location.query,
+}));
+
+@enhanceQuery
 export default class LightboxProvider extends Component {
-  images = [];
-  state = {
-    images: [],
-  };
-
   static childContextTypes = {
     lightbox: PropTypes.object,
+  };
+
+  state = {
+    images: [],
   };
 
   getChildContext() {
@@ -33,6 +36,8 @@ export default class LightboxProvider extends Component {
       this.setState({ images: this.images }); // save images to context
     }
   }
+
+  images = [];
 
   add = image => {
     this.images.push(image);
