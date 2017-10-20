@@ -1,4 +1,3 @@
-export * from './image';
 export * from './loader';
 export * from './heading';
 export * from './utils';
