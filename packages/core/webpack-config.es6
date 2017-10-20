@@ -26,11 +26,9 @@ const pluginsFolder = !isLinked ? nodeModules : topFolder;
 module.exports = ({
   mode,
   target,
-  url,
   devUrl,
-  devPort,
-  ssr,
-  serverless,
+  isSSR,
+  isServerless,
   plugins = [],
   sharedEnv = {},
   ...rest
@@ -43,8 +41,8 @@ module.exports = ({
   const isWeb = target !== 'node' && target !== 'electron-main';
   const isNode = target === 'node' || isElectronMain;
   const isServer = target === 'node';
-  const isServerless = serverless === true || isElectron;
-  const isSSR = !isElectronMain && ssr !== false && !serverless;
+  isServerless = isServerless === true || isElectron;
+  isSSR = !isElectronMain && isSSR !== false && !isServerless;
   const folder = isDev ? '.dev' : '.dist';
 
   const isVerbose = true;
@@ -99,17 +97,10 @@ module.exports = ({
         debug: isDev,
       }),
       new webpack.DefinePlugin({
-        'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
-          ? `"${process.env.GOOGLE_MAPS_KEY}"`
-          : false,
-        'process.env.URL': url ? `"${url}"` : false,
-        'process.env.DEV_PORT': devPort || false,
-        'process.env.DEV_URL': devUrl ? `"${devUrl.origin}"` : false,
-
         'process.env.BUILD_ON': `"${new Date()}"`,
         'process.env.NODE_ENV': `"${mode}"`,
-        'process.env.SSR': isSSR,
-        'process.env.SERVERLESS': isServerless,
+        'process.env.IS_SSR': isSSR,
+        'process.env.IS_SERVERLESS': isServerless,
         'process.env.IS_WEB': isWeb,
         'process.env.IS_NODE': isNode,
         'process.env.IS_ELECTRON': isElectron,
@@ -164,18 +155,16 @@ module.exports = ({
   if (!isServer) {
     config.plugins.push(
       new webpack.DefinePlugin({
-        'process.env.AMP': !!process.env.AMP,
+        'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
+          ? `"${process.env.GOOGLE_MAPS_KEY}"`
+          : false,
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? `"${process.env.GRAPHQL_URL}"`
           : false,
         'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
           ? `"${process.env.CRASHREPORT_URL}"`
           : false,
-        'process.env.URL': process.env.URL ? `"${process.env.URL}"` : false,
-        'process.env.FILESTACK_KEY': process.env.FILESTACK_KEY
-          ? `"${process.env.FILESTACK_KEY}"`
-          : false,
-      })
+      }),
     );
   }
 
@@ -240,8 +229,8 @@ module.exports = ({
     config.plugins.push(
       new GenerateJsonPlugin(
         'package.json',
-        require('./electron/package-json')()
-      )
+        require('./electron/package-json')(),
+      ),
     );
     if (isDev) {
       const ElectronPlugin = require('electron-webpack-plugin');
@@ -249,7 +238,7 @@ module.exports = ({
         new ElectronPlugin({
           test: /^.\/electron/,
           path: path.resolve(appRoot, '.dev', 'electron'),
-        })
+        }),
       );
     }
   }
@@ -259,15 +248,14 @@ module.exports = ({
         banner: 'require("source-map-support").install();',
         raw: true,
         entryOnly: false,
-      })
+      }),
     );
     if (isDev && isServer) {
-      console.log('INSPECT', devPort + 1);
       config.plugins.push(
         new StartServerPlugin({
           name: 'app.js',
           // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
-        })
+        }),
       );
     }
   } else if (!isNode) {
@@ -290,7 +278,7 @@ module.exports = ({
           minifyCSS: true,
           minifyURLs: true,
         }, */
-        })
+        }),
       );
       config.plugins.push(new HtmlWebpackHarddiskPlugin());
     } else if (isWeb) {
@@ -312,7 +300,7 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           }, */
-          })
+          }),
         );
       }
     }
@@ -326,7 +314,7 @@ module.exports = ({
   // LimitChunkCount on all but production-web
   if (isNode || isElectron || isDev) {
     config.plugins.push(
-      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     );
     config.output.filename = '[name].js';
   } else {
@@ -334,7 +322,7 @@ module.exports = ({
       new AssetsPlugin({
         filename: 'assets.json',
         path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-      })
+      }),
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked) {
@@ -345,7 +333,7 @@ module.exports = ({
           reportFilename: './_report.html',
           analyzerMode: 'static',
           // generateStatsFile: false,
-        })
+        }),
       );
     } else {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
@@ -356,7 +344,7 @@ module.exports = ({
         name: 'app',
         filename: '[name].[chunkhash].js',
         // minChunks: 2,
-      })
+      }),
     );
     config.output.filename = '[name].[chunkhash].js';
     config.output.chunkFilename = '[name].[chunkhash].js';
@@ -441,7 +429,7 @@ module.exports = ({
   const final = plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
-      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`
+      isLinked ? `webpack-${plugin}` : `olymp-webpack-${plugin}`,
     ));
     return req(config, options, webpack) || config;
   }, config);

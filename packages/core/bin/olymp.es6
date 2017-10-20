@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
+const fs = require('fs');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
 const urlUtil = require('url');
@@ -17,10 +18,13 @@ require('dotenv').config();
 const createConfig = require(path.resolve(
   __dirname,
   '..',
-  'webpack-config.js'
+  'webpack-config.js',
 ));
 
 const root = process.cwd();
+const hasServer = fs.existsSync(path.resolve(root, 'server'));
+const hasClient = fs.existsSync(path.resolve(root, 'app'));
+
 const pckgOlymp =
   jsonfile.readFileSync(path.resolve(root, 'package.json'), {
     throws: false,
@@ -38,7 +42,7 @@ const olymprc = merge(
   pckgOlymp.olymp || {},
   jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
     throws: false,
-  }) || {}
+  }) || {},
 );
 
 const command = argv._[1];
@@ -47,30 +51,27 @@ if (['start', 'build'].includes(command)) {
   process.env.NODE_ENV = 'production';
 }
 
-const { SSR, SERVERLESS, NODE_ENV, PORT, URL } = process.env;
+const { PORT } = process.env;
 
-const ssr = SSR != 'false';
-const serverless = SERVERLESS == 'true';
+const isSSR = !!argv.ssr;
+const isServerless = !!argv.serverless || !!argv.sls;
+
 let targets = [];
 if (argv.targets) {
   targets = argv.targets.split(',');
 } else if (argv.electron) {
-  if (SERVERLESS) {
-    targets = ['electron-main', 'electron-renderer'];
-  } else {
-    targets = ['node', 'electron-main', 'electron-renderer'];
-  }
-} else if (SERVERLESS) {
-  targets = ['web'];
+  targets = hasServer
+    ? ['node', 'electron-main', 'electron-renderer']
+    : ['electron-main', 'electron-renderer'];
 } else {
-  targets = ['node', 'web'];
+  targets = hasServer ? ['node', 'web'] : ['web'];
 }
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
   const url = new urlUtil.URL(URL || `http://localhost:${port}`);
 
-  const devPort = SERVERLESS ? port : port + 1;
-  const devUrl = serverless
+  const devPort = IS_SERVERLESS ? port : port + 1;
+  const devUrl = isServerless
     ? url
     : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
@@ -87,11 +88,11 @@ if (command === 'dev') {
         devPort,
         url,
         devUrl,
-        ssr,
-        serverless,
+        isSSR,
+        isServerless,
         ...olymprc,
-      })
-    )
+      }),
+    ),
   );
   targets.forEach((target, i) => {
     const currentCompiler = compiler.compilers[i];
@@ -139,8 +140,6 @@ if (command === 'dev') {
     }
   });
 } else if (command === 'build') {
-  const port = parseInt(PORT, 10);
-  const url = new urlUtil.URL(URL || `http://localhost:${port}`);
   targets.map(target => rimraf.sync(path.resolve(root, '.dist', target)));
   process.env.NODE_ENV = 'production';
 
@@ -149,12 +148,11 @@ if (command === 'dev') {
       createConfig({
         target,
         mode: 'production',
-        url,
-        ssr,
-        serverless,
+        isSSR,
+        isServerless,
         ...olymprc,
-      })
-    )
+      }),
+    ),
   );
   compiler.run((err, compilation) => {
     if (err) {
@@ -178,8 +176,8 @@ if (command === 'dev') {
     createConfig({
       target,
       mode: 'production',
-      ssr,
-      serverless,
+      isSSR,
+      isServerless,
       ...olymprc,
     }),
   ]);

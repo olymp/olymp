@@ -37,15 +37,19 @@ export default ({
     ${meta ? meta.toString() : ''}
     ${link ? link.toString() : ''}
     ${styles
-    .map(style =>
-      `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="${style}">`,)
-    .join('\n')}
+      .map(
+        style =>
+          `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="${style}">`,
+      )
+      .join('\n')}
     <noscript>
-      ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`).join('\n')}
+      ${styles
+        .map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)
+        .join('\n')}
     </noscript>
     ${fela || ''}
     ${gaTrackingId
-    ? `<script type="text/javascript">
+      ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -67,23 +71,29 @@ export default ({
         ga('send', 'pageview');
       }
     </script>`
-    : ''}
+      : ''}
   </head>
   <body>
     <div id="app">${root}</div>
     ${initialState
-    ? `<script type="text/javascript">window.INITIAL_DATA=${serialize(initialState)}</script>`
-    : ''}
+      ? `<script type="text/javascript">window.INITIAL_DATA=${serialize(
+          initialState,
+        )}</script>`
+      : ''}
     ${asyncState
-    ? `
-    <script type="text/javascript">window.ASYNC_STATE = ${serialize(asyncState)}</script>`
-    : ''}
+      ? `
+    <script type="text/javascript">window.ASYNC_STATE = ${serialize(
+      asyncState,
+    )}</script>`
+      : ''}
     ${cssHash ? `${cssHash}` : ''}
     ${getInitialState
-    ? `<script type="text/javascript">window.INITIAL_DATA=${() =>
-      serialize(getInitialState())}</script>`
-    : ''}
-    ${scripts.map(script => `<script async src="${script}"></script>`).join('\n')}
+      ? `<script type="text/javascript">window.INITIAL_DATA=${() =>
+          serialize(getInitialState())}</script>`
+      : ''}
+    ${scripts
+      .map(script => `<script async src="${script}"></script>`)
+      .join('\n')}
   </body>
 </html>
 `;

@@ -57,10 +57,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const apolloFetch = createApolloFetch({
-  uri:
-    process.env.GRAPHQL_URL ||
-    (process.env.URL && `${process.env.URL}graphql`) ||
-    '/graphql',
+  uri: window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql',
   opts: {
     credentials: 'same-origin',
   },
@@ -110,7 +107,7 @@ const link = ApolloLink.from([
         }).then(() =>
           apolloFetch(request)
             .then(then(observer))
-            .catch(catchError(observer))
+            .catch(catchError(observer)),
         );
         // Other errors.
       } else if (!observer.closed) {
@@ -185,8 +182,8 @@ store = createDynamicStore(
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(apolloMiddleware(client)),
     applyMiddleware(authMiddleware),
-    applyMiddleware(appMiddleware)
-  )
+    applyMiddleware(appMiddleware),
+  ),
 );
 
 attachHistory(history, store);
