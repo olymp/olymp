@@ -242,9 +242,13 @@ class Navigation extends Component {
               </Menu.Item>
             ))}
           </Menu.SubMenu>
+          <Menu.Item key="@page=tree">
+            <Icon type="edit" />
+            <span>Bearbeiten</span>
+          </Menu.Item>
           <Menu.Item key="@page">
             <Icon type="bars" />
-            <span>Frontend</span>
+            <span>Seitenmanager</span>
           </Menu.Item>
           <Menu.Item key="@media">
             <Icon type="picture" />

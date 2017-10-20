@@ -1,63 +1,49 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
-import { FaPen } from 'olymp-icons';
-import { Link } from 'olymp-router';
 import { connect } from 'react-redux';
 import Error404 from './views/404';
 import Page from './views/page';
 
 const filterPublic = pages =>
-  pages.filter(page => page.state === 'PUBLISHED').map(({ children, ...rest }) => ({
-    ...rest,
-    children: filterPublic(children),
-  }));
+  pages
+    .filter(page => page.state === 'PUBLISHED')
+    .map(({ children, ...rest }) => ({
+      ...rest,
+      children: filterPublic(children),
+    }));
 
 const enhance = compose(
-  connect(({ auth, location }) => ({
-    isAuthenticated: !!auth.user,
+  connect(({ location }) => ({
     pathname: location.pathname,
   })),
   withPropsOnChange(['navigation'], ({ navigation }) => ({
     publicNavigation: filterPublic(navigation),
   })),
-  withPropsOnChange(['flatNavigation', 'pathname'], ({ flatNavigation, pathname }) => {
-    let item;
-    for (let x = 0; x < flatNavigation.length; x++) {
-      const page = flatNavigation[x];
-      if (decodeURI(unescape(page.pathname)) === pathname || `/page_id/${page.id}` === pathname) {
-        item = page;
-        break;
+  withPropsOnChange(
+    ['flatNavigation', 'pathname'],
+    ({ flatNavigation, pathname }) => {
+      let item;
+      for (let x = 0; x < flatNavigation.length; x++) {
+        const page = flatNavigation[x];
+        if (
+          decodeURI(unescape(page.pathname)) === pathname ||
+          `/page_id/${page.id}` === pathname
+        ) {
+          item = page;
+          break;
+        }
       }
-    }
-    return {
-      item,
-    };
-  }),
+      return {
+        item,
+      };
+    },
+  ),
 );
 
-const PageRoute = enhance((props) => {
-  const {
-    Wrapped, publicNavigation, pathname, isAuthenticated, item
-  } = props;
+const PageRoute = enhance(props => {
+  const { Wrapped, publicNavigation, pathname, item } = props;
   return (
     <Wrapped navigation={publicNavigation}>
-      {isAuthenticated && (
-        <div
-          style={{
-            position: 'absolute',
-            left: 70,
-            top: 10,
-            zIndex: 10,
-          }}
-        >
-          <Link
-            className="ant-btn ant-btn-circle ant-btn-lg ant-btn-icon-only"
-            updateQuery={{ '@page': 'tree' }}
-          >
-            <FaPen size={12} />
-          </Link>
-        </div>
-      )}
       {item && (
         <Page.WithData
           pathname={pathname}
