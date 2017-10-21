@@ -12,6 +12,7 @@ import {
 import { Image } from 'olymp-cloudinary';
 import * as Blocks from 'olymp-pages/blocks';
 import { SlateReader } from 'olymp-slate';
+import { withEdit } from 'olymp-collection';
 import VCard from './vcard';
 import { ImageStyles } from '../image/block';
 import HeaderBlock from '../../components/header';
@@ -115,18 +116,21 @@ const component = withTheme(
         </HeaderBlock>
       )}
       <Container className={className}>
-        <Grid>
-          <Grid.Item large={5}>
-            <VCard org={item} />
-          </Grid.Item>
-          <Content large={7}>
-            <SlateReader readOnly value={item.text} />
-            {/* children */}
-          </Content>
-        </Grid>
+        {!!item.id && <Inner id={item.id} item={item} />}
       </Container>
     </div>
   </SchemaLoader>
+));
+
+const Inner = withEdit('org')(({ item }) => (
+  <Grid>
+    <Grid.Item large={5}>
+      <VCard org={item} />
+    </Grid.Item>
+    <Content large={7}>
+      <SlateReader readOnly value={item.text} />
+    </Content>
+  </Grid>
 ));
 
 const componentWithData = graphql(

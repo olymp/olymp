@@ -5,23 +5,22 @@ import { Link } from 'olymp-router';
 
 const Button = createComponent(
   ({ theme, size = 30 }) => ({
-    width: size,
-    height: size,
     borderRadius: '50%',
     backgroundColor: theme.color,
+    width: size,
+    height: size,
     color: theme.light,
-    position: 'relative',
-    '> div': {
+    '> svg': {
+      fill: theme.light,
+      stroke: theme.light,
+    },
+    '> *': {
       center: true,
-      '> svg': {
-        fill: theme.light,
-        stroke: theme.light,
-      },
     },
   }),
   ({ className, children, to, updateQuery }) => (
-    <Link className={className} updateQuery={updateQuery} to={to}>
-      <div>{children}</div>
+    <Link updateQuery={updateQuery} to={to}>
+      <div className={className}>{children}</div>
     </Link>
   ),
   ['className', 'to', 'updateQuery'],

@@ -49,7 +49,7 @@ export const Column = createComponent(
     },
   }),
   p => <Grid.Item {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Content = createComponent(
@@ -69,7 +69,7 @@ export const Content = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Img = createComponent(
@@ -79,7 +79,7 @@ export const Img = createComponent(
     alignSelf: 'flex-start',
   }),
   p => <Image {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export const Li = createComponent(
@@ -94,7 +94,7 @@ export const Li = createComponent(
     },
   }),
   'li',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const DownloadLink = createComponent(
@@ -105,7 +105,7 @@ const DownloadLink = createComponent(
     },
   }),
   'a',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Item = withEdit('article')(props => {
@@ -162,7 +162,7 @@ const TagContainer = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Tag = createComponent(
@@ -183,7 +183,7 @@ const Tag = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const component = graphql(
@@ -239,7 +239,7 @@ const component = graphql(
       items: data.items || [],
       pdfs: data.pdfs || [],
     }),
-  }
+  },
 )(({ attributes, items, pdfs, isLoading }) => {
   const tags = items.reduce((tags, item) => {
     (item.tags || []).forEach(tag => {

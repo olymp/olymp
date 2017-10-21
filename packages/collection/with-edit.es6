@@ -6,21 +6,44 @@ import { createComponent, Button } from 'olymp-fela';
 
 // todo: withAuth auslagern!
 
+const getPos = node => {
+  if (node) {
+    return node.getBoundingClientRect();
+  }
+
+  return {};
+};
+
 export default typeProp => WrappedComponent => {
   const EditButton = withRouter(
     createComponent(
-      () => ({
-        position: 'absolute',
-        top: '50%',
-        right: 1,
-        transform: 'translate(50%, -50%)',
-        zIndex: 2,
-      }),
+      ({ parent }) => {
+        const pos = getPos(this.button);
+
+        /* console.log(parent);
+        console.log(window.scrollX, window.scrollX); */
+
+        return {
+          /* position: 'fixed',
+          top: pos.top < parent.top ? parent.top : '50%',
+          left: parent.right,
+          transform: 'translate(-50%, -50%)', */
+          position: 'absolute',
+          top: '50%',
+          right: 1,
+          transform: 'translate(50%, -50%)',
+          zIndex: 2,
+        };
+      },
       ({ className, id, type }) => (
-        <Button.Edit
-          updateQuery={{ [`@${type}`]: id || 'new' }}
+        <div
+          ref={button => {
+            this.button = button;
+          }}
           className={className}
-        />
+        >
+          <Button.Edit updateQuery={{ [`@${type}`]: id || 'new' }} />
+        </div>
       ),
       p => Object.keys(p),
     ),
@@ -30,7 +53,7 @@ export default typeProp => WrappedComponent => {
     createComponent(
       ({ theme }) => ({
         position: 'relative',
-        '> a:last-of-type': {
+        '> *:last-of-type': {
           display: 'none',
         },
         onHover: {
@@ -53,7 +76,7 @@ export default typeProp => WrappedComponent => {
             borderRight: `2px solid ${theme.color}`,
             zIndex: 1,
           },
-          '> a:last-of-type': {
+          '> *:last-of-type': {
             display: 'block',
           },
         },
@@ -63,15 +86,21 @@ export default typeProp => WrappedComponent => {
           typeof typeProp === 'function'
             ? typeProp({ id, auth, ...p })
             : typeProp;
+        const pos = getPos(this.content);
 
         if (!auth || !auth.user || !type) {
           return <WrappedComponent id={id} {...p} />;
         }
 
         return (
-          <div className={className}>
+          <div
+            className={className}
+            ref={content => {
+              this.content = content;
+            }}
+          >
             <WrappedComponent id={id} {...p} />
-            <EditButton id={id} type={type} />
+            <EditButton id={id} type={type} parent={pos} />
           </div>
         );
       },

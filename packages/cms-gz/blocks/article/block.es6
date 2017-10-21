@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import renderHelmet from 'olymp-utils/helmet';
 import { PrefetchLink } from 'olymp-cms';
 import { createComponent, withTheme, SchemaLoader } from 'olymp-fela';
+import { withEdit } from 'olymp-collection';
 import { Image } from 'olymp-cloudinary';
 import * as Blocks from 'olymp-pages/blocks';
 import { SlateReader } from 'olymp-slate';
@@ -32,10 +33,10 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Container = createComponent(
-  ContainerBlock.styles,
-  ContainerBlock.component,
-  p => Object.keys(p)
+const Container = withEdit('article')(
+  createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
+    Object.keys(p),
+  ),
 );
 
 const Peak = createComponent(
@@ -60,7 +61,7 @@ const Peak = createComponent(
       )}
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const WhiteLink = createComponent(
@@ -71,7 +72,7 @@ const WhiteLink = createComponent(
     },
   }),
   p => <PrefetchLink {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const getSubheader = item => {
@@ -95,7 +96,7 @@ const component = withTheme(
       ? {
           color: item.org.color,
         }
-      : {}
+      : {},
 )(({ className, attributes, item }) => (
   <SchemaLoader isLoading={!item.name} schema={loaderSchema}>
     <div>
@@ -113,7 +114,12 @@ const component = withTheme(
           {item.name}
         </HeaderBlock>
       )}
-      <Container className={className} color={item.org.color} {...attributes}>
+      <Container
+        className={className}
+        id={item.id}
+        color={item.org.color}
+        {...attributes}
+      >
         <SlateReader readOnly value={item.text} />
         <PrefetchLink to="/magazin">Zurück zur Übersicht</PrefetchLink>
       </Container>
@@ -173,7 +179,7 @@ const componentWithData = graphql(
         },
       };
     },
-  }
+  },
 )(component);
 
 componentWithData.displayName = 'GzArticleBlock';
