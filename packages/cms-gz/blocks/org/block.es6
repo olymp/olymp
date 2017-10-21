@@ -116,7 +116,7 @@ const component = withTheme(
         </HeaderBlock>
       )}
       <Container className={className}>
-        {!!item.id && <Inner id={item.id} item={item} />}
+        <Inner id={item.id} item={item} />
       </Container>
     </div>
   </SchemaLoader>

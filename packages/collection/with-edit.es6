@@ -88,7 +88,7 @@ export default typeProp => WrappedComponent => {
             : typeProp;
         const pos = getPos(this.content);
 
-        if (!auth || !auth.user || !type) {
+        if (!id || !auth || !auth.user || !type) {
           return <WrappedComponent id={id} {...p} />;
         }
 
@@ -108,7 +108,7 @@ export default typeProp => WrappedComponent => {
     ),
   );
   WithEdit.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
   };
 
   return WithEdit;
