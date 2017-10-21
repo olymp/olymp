@@ -169,7 +169,9 @@ export default ({
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':
-      return <Input {...editProps} type="textarea" autosize />;
+      // 'autosize' will cause warning:
+      // `Infinity` is an invalid value for the `minHeight` css style property.
+      return <Input.TextArea {...editProps} /* autosize */ />;
     case 'Slug':
       return <Input {...editProps} />;
     case 'Email':
