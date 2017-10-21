@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { onlyUpdateForKeys } from 'recompose';
 import { createComponent } from 'react-fela';
 import { Image } from 'cloudinary-react';
-import Placeholder from 'olymp-fela/image/placeholder';
+import { Placeholder } from 'olymp-fela';
 
 const Container = createComponent(
   ({

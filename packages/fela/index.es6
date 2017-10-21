@@ -14,3 +14,4 @@ export { default as PageTransition } from './page-transition';
 export { default as MaterialColors } from './material-colors';
 export { default as LightBox } from './lightbox';
 export { default as Button } from './button';
+export { default as Placeholder } from './placeholder';
