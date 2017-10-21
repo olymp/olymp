@@ -35,7 +35,6 @@ const plugins = [
   { schema: { nodes, marks } },
 ];
 class Writer extends Component {
-  state = { focus: false };
   static propTypes = {
     readOnly: PropTypes.bool,
     showUndo: PropTypes.bool,
@@ -77,7 +76,7 @@ class Writer extends Component {
         schema,
         null,
         null,
-        change.select(ev)
+        change.select(ev),
       );
     }
   };
@@ -93,7 +92,7 @@ class Writer extends Component {
         schema,
         null,
         null,
-        change.select(range)
+        change.select(range),
       );
     }
   };
@@ -109,18 +108,14 @@ class Writer extends Component {
       schema,
       ...rest
     } = this.props;
-    const { focus } = this.state;
     const value = this.props.value || Plain.deserialize('');
 
     return (
-      <div
-        className={className}
-        onDragEnter={() => this.setState({ focus: true })}
-      >
+      <div className={className}>
         {children}
         {readOnly !== true && (
           <ToolbarText
-            show={focus}
+            show
             state={value}
             onChange={this.onChange}
             blockTypes={schema.nodes}
@@ -132,15 +127,16 @@ class Writer extends Component {
         <Editor
           {...rest}
           state={value}
+          className="slate-editor slate-writer"
+          onDragEnter={e => this.ref.focus()}
+          ref={r => (this.ref = r)}
           spellcheck={spellcheck || false}
-          readOnly={!!readOnly}
+          readOnly={false}
           onDrop={this.onDrop}
           onPaste={this.onPaste}
           plugins={readOnly ? emptyArray : plugins}
           schema={schema}
           onChange={this.onChange}
-          onFocus={() => this.setState({ focus: true })}
-          onBlur={() => this.setState({ focus: false })}
           onKeyDown={this.onKeyDown}
           placeholder={!readOnly && 'Hier Text eingeben...'}
           placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}

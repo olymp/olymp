@@ -19,6 +19,7 @@ const Reader = ({ children, schema, className, style, value, ...rest }) => (
     {children}
     <Editor
       {...rest}
+      className="slate-editor slate-reader"
       state={value || Plain.deserialize('')}
       spellcheck={false}
       plugins={plugins}
