@@ -28,7 +28,7 @@ export default class CollectionListSidebar extends Component {
     item,
     field,
     { defaultFieldName, defaultValue },
-    fieldProps
+    fieldProps,
   ) => {
     const fieldName = this.resolveFieldName(item, field, defaultFieldName);
     const meta = this.resolveField(fieldName);
@@ -164,8 +164,6 @@ export default class CollectionListSidebar extends Component {
         key={item.id}
       />
     ));
-
-    console.log(collection);
 
     return (
       <Sidebar
