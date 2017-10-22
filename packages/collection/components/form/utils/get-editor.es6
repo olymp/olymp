@@ -50,6 +50,7 @@ export default ({
   label,
   key,
   form,
+  isActiveField,
 }) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
@@ -154,14 +155,6 @@ export default ({
   }
 
   switch (type.name) {
-    case 'Blocks':
-      return (
-        <SlateEditor
-          {...editProps}
-          binding={form.getFieldsValue()}
-          label={label}
-        />
-      );
     case 'Image':
       return (
         <EditImage {...editProps} style={{ maxWith: '100%' }} width="100%" />
