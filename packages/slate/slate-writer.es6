@@ -107,6 +107,7 @@ class Writer extends Component {
       className,
       spellcheck,
       schema,
+      style = {},
       ...rest
     } = this.props;
     const value = this.props.value || Plain.deserialize('');
@@ -141,7 +142,7 @@ class Writer extends Component {
           onKeyDown={this.onKeyDown}
           placeholder={!readOnly && 'Hier Text eingeben...'}
           placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-          style={{ marginRight: 64 }}
+          style={{ marginRight: 64, ...style }}
         />
         <BlockBar />
       </div>
