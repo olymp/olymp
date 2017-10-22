@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { sortBy } from 'lodash';
+import { sortBy, get } from 'lodash';
 import getDecorators from './decorators/get-decorators';
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   @graphql(
     gql`
       query schema {
@@ -28,84 +28,79 @@ export default (WrappedComponent) => {
     `,
   )
   class WithCollectionsComponent extends Component {
-    list() {
+    list = () => {
       const { data = {} } = this.props;
       const { schema } = data;
 
       return schema && schema.types
-        ? schema.types.filter(
-          x =>
-            (x.interfaces || []).filter(
-              y => y.name === 'CollectionType' || y.name === 'CollectionInterface',
-            ).length,
-        )
+        ? schema.types
+            .filter(
+              x =>
+                (x.interfaces || []).filter(
+                  y =>
+                    y.name === 'CollectionType' ||
+                    y.name === 'CollectionInterface',
+                ).length,
+            )
+            .map(x => ({ ...x, decorators: getDecorators(x.description) }))
         : [];
-    }
+    };
 
-    group() {
-      const { data = {} } = this.props;
-      const { schema } = data;
-      const collections = this.list();
-
-      if (!schema || !collections.length) {
-        return {};
-      }
-
-      // Von Collections Attribute (icon, group, order) extrahieren und Collections gruppieren
+    group = (list = []) => {
       const groups = {};
-      collections.map(({ name, description }, i) => {
-        const attributes = {};
-        description.split('\n').forEach((x) => {
-          const y = x.split(':');
+      list.forEach(collection => {
+        const group = get(collection, 'decorators.group.value');
 
-          if (y.length === 2) {
-            attributes[y[0]] = y[1];
-          }
-        });
-
-        // Attribute verfügbar machen
-        collections[i] = {
-          ...collections[i],
-          ...attributes,
-        };
-
-        // Gruppieren
-        if (!groups[attributes.group]) {
-          groups[attributes.group] = [];
+        if (!groups[group]) {
+          groups[group] = [];
         }
-        groups[attributes.group].push(collections[i]);
+        groups[group].push(collection);
       });
 
       // Collections innerhalb Gruppe sortieren
-      Object.keys(groups).forEach((key) => {
+      Object.keys(groups).forEach(key => {
         groups[key] = sortBy(groups[key], ['order', 'name']);
       });
 
       // Undefined-Gruppe auflösen
       if (groups.undefined) {
-        groups.undefined.forEach((collection) => {
-          if (!groups[collection.name]) {
-            groups[collection.name] = [];
+        groups.undefined.forEach(collection => {
+          const name = get(
+            collection,
+            'decorators.label.value',
+            collection.name,
+          );
+
+          if (!groups[name]) {
+            groups[name] = [];
           }
 
-          groups[collection.name].push(collection);
+          groups[name].push(collection);
         });
 
         delete groups.undefined;
       }
 
-      return groups;
-    }
+      // Gruppen sortieren
+      const orderedGroups = {};
+      Object.keys(groups)
+        .sort()
+        .forEach(key => {
+          orderedGroups[key] = groups[key];
+        });
+
+      return orderedGroups;
+    };
 
     render() {
       const { data, ...rest } = this.props;
       const list = this.list();
-      const group = this.group();
+      const group = this.group(list);
 
       return (
         <WrappedComponent
           {...rest}
-          collectionList={list.map(x => ({ ...x, decorators: getDecorators(x.description) }))}
+          collectionList={list}
           collectionTree={group}
         />
       );
