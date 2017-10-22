@@ -15,7 +15,7 @@ const ImgContainer = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Header = createComponent(
@@ -24,11 +24,11 @@ const Header = createComponent(
     color,
   }),
   'span',
-  []
+  [],
 );
 
 const Content = createComponent(
-  ({ active, disabled, theme }) => ({
+  ({ active, disabled, theme, nowrap }) => ({
     hasFlex: {
       display: 'flex',
       alignItems: 'center',
@@ -36,6 +36,8 @@ const Content = createComponent(
     padding: '5px 6px',
     width: '100%',
     // minHeight: 51,
+    whiteSpace: nowrap && 'nowrap',
+    ellipsis: nowrap,
     color: disabled ? theme.dark3 : theme.dark1,
     background: active && 'rgba(0, 0, 0, 0.03)',
     lineHeight: '20px',
@@ -88,7 +90,7 @@ const Content = createComponent(
       {!disabled ? <Icon type={icon || 'right'} /> : null}
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default ({
@@ -103,6 +105,7 @@ export default ({
   icon,
   to,
   updateQuery,
+  nowrap,
 }) =>
   onClick || disabled ? (
     <a
@@ -118,6 +121,7 @@ export default ({
         active={active}
         disabled={disabled}
         icon={icon}
+        nowrap={nowrap}
       />
     </a>
   ) : (
