@@ -79,6 +79,7 @@ const component = enhance(props => {
   const {
     query,
     collectionList,
+    collectionTree,
     ua,
     deviceWidth,
     setDeviceWidth,
@@ -115,6 +116,7 @@ const component = enhance(props => {
       </Modal>
       <Navigation
         collectionList={collectionList}
+        collectionTree={collectionTree}
         setDeviceWidth={setDeviceWidth}
       />
       <SwitchContainer>

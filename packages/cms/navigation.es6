@@ -159,6 +159,7 @@ const component = enhance(
     expand,
     query,
     collectionList,
+    collectionTree,
     isAdmin,
     user = {},
     collapsed,
@@ -267,14 +268,61 @@ const component = enhance(
             <Icon type="line-chart" />
             <span>Statistiken</span>
           </MenuItem>
-          {collectionList.map(collection => (
-            <MenuItem type="database" key={`@${collection.name.toLowerCase()}`}>
-              <Icon type="database" />
-              <span>
-                {get(collection, 'decorators.label.value', collection.name)}
-              </span>
-            </MenuItem>
-          ))}
+          {Object.keys(collectionTree).map(
+            key =>
+              collectionTree[key].length > 1 ? (
+                <Menu.SubMenu
+                  title={
+                    <span>
+                      <Icon type="database" />
+                      <span>{key}</span>
+                    </span>
+                  }
+                >
+                  {collectionTree[key].map(collection => (
+                    <MenuItem
+                      type="database"
+                      key={`@${collection.name.toLowerCase()}`}
+                    >
+                      <Icon
+                        type={get(
+                          collection,
+                          'decorators.icon.value',
+                          'database',
+                        )}
+                      />
+                      <span>
+                        {get(
+                          collection,
+                          'decorators.label.value',
+                          collection.name,
+                        )}
+                      </span>
+                    </MenuItem>
+                  ))}
+                </Menu.SubMenu>
+              ) : (
+                <MenuItem
+                  type="database"
+                  key={`@${collectionTree[key][0].name.toLowerCase()}`}
+                >
+                  <Icon
+                    type={get(
+                      collectionTree[key][0],
+                      'decorators.icon.value',
+                      'database',
+                    )}
+                  />
+                  <span>
+                    {get(
+                      collectionTree[key][0],
+                      'decorators.label.value',
+                      collectionTree[key][0].name,
+                    )}
+                  </span>
+                </MenuItem>
+              ),
+          )}
         </Menu>
       </VerticalMenu>
     );
