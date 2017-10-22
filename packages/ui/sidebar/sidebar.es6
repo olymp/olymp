@@ -26,7 +26,7 @@ const StyledInner = createComponent(
       bottom: 0,
       left: 0,
       width: '100%',
-      backgroundColor: '#00000070',
+      backgroundColor: theme.dark2,
       zIndex: 1,
       display: 'block',
     },
