@@ -7,5 +7,5 @@ export default {
   selector: ({ type }) =>
     type.kind === 'LIST' && type.ofType.name === 'TimeRange',
   form: toClass(p => <FormItem {...p}>Bearbeiten</FormItem>),
-  full: toClass(p => <TimeRangesEditor {...p} />),
+  full: toClass(p => <TimeRangesEditor style={{ padding: 20 }} {...p} />),
 };

@@ -18,6 +18,26 @@ const Span = createComponent(
   [],
 );
 
+/* const Side = createComponent(
+  ({ theme, width }) => ({
+    zIndex: 10,
+    width: 64,
+    '> div': {
+      position: 'fixed',
+      top: 0,
+      bottom: 0,
+      overflow: 'hidden',
+      width,
+    },
+  }),
+  ({ className, ...rest }) => (
+    <div className={className}>
+      <Sidebar {...rest} />
+    </div>
+  ),
+  p => Object.keys(p),
+); */
+
 const enhance = compose(
   withRouter,
   withState('collapsed', 'setCollapsed', true),

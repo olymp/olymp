@@ -1,11 +1,21 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
 import { SplitView, Sidebar, List } from 'olymp-ui';
-import { compose, withState, withPropsOnChange } from 'recompose';
+import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { createComponent } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
 import { getValidationRules, getInitialValue } from './utils';
+
+const excludedFields = [
+  'id',
+  'createdBy',
+  'createdAt',
+  'updatedBy',
+  'updatedAt',
+  'updatedById',
+  'createdById',
+];
 
 const Items = ({ schema, activeField, form, item, ...rest }) =>
   Object.keys(schema).map(key => {
@@ -38,6 +48,55 @@ const getDefaultEdit = type => {
   return null;
 };
 
+const getFormSchema = fields => {
+  const mappedFields = fields.reduce(
+    (result, field) => {
+      const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
+      // EXCLUDING
+      if (excludedFields.includes(field.name) || field['@'].disabled) {
+        return result;
+      }
+
+      // RELATION
+      if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
+        if (field.name.endsWith('Id')) {
+          field['@'].idField = fields.find(
+            ({ name }) => `${name}Id` === field.name,
+          );
+        } else if (field.name.endsWith('Ids')) {
+          field['@'].idField = fields.find(
+            ({ name }) => `${name}Ids` === field.name,
+          );
+        }
+        result.rest.splice(
+          result.rest.findIndex(({ name }) => name === field['@'].idField.name),
+          1,
+        );
+      }
+
+      // RANGE
+      if (field['@'].end) {
+        return result;
+      }
+      if (field['@'].start) {
+        const end = fields.find(x => x['@'].end);
+        field['@'].endField = end;
+      }
+
+      if (field.type.name === 'Image') {
+        result.images.push(field);
+      } else if (field.type.name === 'Blocks') {
+        result.blocks.push(field);
+      } else {
+        result.rest.push(field);
+      }
+      return result;
+    },
+    { images: [], rest: [], blocks: [] },
+  );
+  return [...mappedFields.images, ...mappedFields.blocks, ...mappedFields.rest];
+};
+
 const Buttons = createComponent(
   () => ({
     '> button': {
@@ -48,9 +107,9 @@ const Buttons = createComponent(
 );
 
 const enhance = compose(
-  withState('tab', 'setTab'),
-  withState('activeField', 'setActiveField'),
-  withPropsOnChange(['schema'], ({ schema, form, ...props }) => {
+  Form.create(),
+  withPropsOnChange(['collection'], ({ collection, form, ...props }) => {
+    const schema = getFormSchema(collection.fields);
     const { getFieldDecorator } = form;
     const schemaWithEdits = {
       full: {},
@@ -78,7 +137,13 @@ const enhance = compose(
     });
     return {
       schemaWithEdits,
+      schema,
     };
+  }),
+  withState('collapsed', 'setCollapsed', true),
+  withHandlers({
+    expand: ({ setCollapsed }) => () => setCollapsed(false),
+    collapse: ({ setCollapsed }) => () => setCollapsed(true),
   }),
 );
 
@@ -98,9 +163,9 @@ const FormComponent = enhance(
     tab,
     expand,
     collapse,
-    collapsed,
     onSave,
     activeField,
+    collapsed,
     ...rest
   }) => {
     const moreChildren = [];
@@ -108,6 +173,9 @@ const FormComponent = enhance(
       const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits.full[
         activeField
       ];
+      console.log(schemaWithEdits.full[activeField]);
+      collapsed =
+        collapsed !== false && schemaWithEdits.full[activeField].collapse;
       moreChildren.push(
         fieldDecorator()(
           <Com
@@ -121,13 +189,18 @@ const FormComponent = enhance(
           />,
         ),
       );
+    } else {
+      collapsed = false;
     }
     return (
       <SplitView>
         <Sidebar
           isOpen
           padding={0}
-          width={400}
+          darkened={collapsed}
+          width={collapsed ? 64 : 400}
+          onMouseEnter={expand}
+          onMouseLeave={collapse}
           title={form.getFieldValue('name') || 'Bearbeiten'}
           rightButtons={
             <Sidebar.Button onClick={onSave} shape="circle" icon="save" />

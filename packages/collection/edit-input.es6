@@ -7,9 +7,9 @@ export default {
   isDefault: true,
   selector: ({ type }) =>
     ['Slug', 'Email', 'PhoneNumber', 'Website'].indexOf(type.name) !== -1,
-  form: toClass(p => (
+  form: toClass(({ value, onChange, ...p }) => (
     <FormItem {...p}>
-      <Input {...p} type="text" />
+      <Input value={value} onChange={onChange} type="text" />
     </FormItem>
   )),
 };

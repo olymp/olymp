@@ -246,10 +246,6 @@ const component = enhance(
               </MenuItem>
             ))}
           </Menu.SubMenu>
-          <MenuItem key="@page=tree">
-            <Icon type="edit" />
-            <span>Bearbeiten</span>
-          </MenuItem>
           <MenuItem key="@page">
             <Icon type="bars" />
             <span>Seitenmanager</span>

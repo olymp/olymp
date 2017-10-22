@@ -68,6 +68,7 @@ const enhance = compose(
   connect(
     ({ location }) => ({
       query: location.query,
+      pathname: location.pathname,
     }),
     dispatch => ({
       updateQuery: createUpdateQuery(dispatch),
@@ -85,6 +86,7 @@ const component = enhance(props => {
     setDeviceWidth,
     flatNavigation,
     updateQuery,
+    pathname,
   } = props;
   const collection = collectionList.filter(
     ({ name }) => query[`@${name.toLowerCase()}`] !== undefined,
@@ -132,12 +134,6 @@ const component = enhance(props => {
             )}
           />
           <Match
-            match={query['@page'] !== undefined}
-            render={() => (
-              <EditableRoute {...props} deviceWidth={deviceWidth} />
-            )}
-          />
-          <Match
             match={query['@media'] !== undefined}
             render={() => <CloudinaryRoute {...props} />}
           />
@@ -158,8 +154,14 @@ const component = enhance(props => {
             render={() => <AuthUser {...props} />}
           />
           <Match
+            match={query['@page'] !== undefined}
+            render={() => (
+              <EditableRoute {...props} deviceWidth={deviceWidth} />
+            )}
+          />
+          <Match
             render={rest => (
-              <PageRoute {...rest} {...props} key={location.key} />
+              <EditableRoute {...rest} {...props} key={pathname} />
             )}
           />
         </Switch>

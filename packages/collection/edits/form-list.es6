@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
+import { withState } from 'recompose';
 import { Button, Collapse } from 'antd';
 import Form from './form';
 import withCollection from '../decorators/with-collection';
 
 @withCollection
+@withState('activeField', 'setActiveField')
 export default class SubForm extends Component {
-  mouseDown = index => (e) => {
+  mouseDown = index => e => {
     e.preventDefault();
     this.removeItem(index);
   };
 
-  onRemove = (index) => {
+  onRemove = index => {
     const { onChange, value } = this.props;
     onChange((value || []).filter((x, i) => i !== index));
   };
@@ -23,7 +25,10 @@ export default class SubForm extends Component {
   getHeader = (title, index) => (
     <div>
       {title}
-      <i className="fa fa-close pull-right" onMouseDown={this.mouseDown(index)} />
+      <i
+        className="fa fa-close pull-right"
+        onMouseDown={this.mouseDown(index)}
+      />
     </div>
   );
 
@@ -34,13 +39,18 @@ export default class SubForm extends Component {
   };
 
   render() {
-    const { value, collection } = this.props;
+    const { value, collection, activeField, setActiveField } = this.props;
     return (
       <div>
         <Collapse accordion>
           {(value || []).map((value, i) => (
-            <Collapse.Panel header={this.getHeader(value.name || `Eintrag ${i}`, i)} key={i}>
+            <Collapse.Panel
+              header={this.getHeader(value.name || `Eintrag ${i}`, i)}
+              key={i}
+            >
               <Form
+                activeItem={activeField}
+                setActiveField={setActiveField}
                 onRemove={() => this.onRemove(i)}
                 collection={collection}
                 value={value}

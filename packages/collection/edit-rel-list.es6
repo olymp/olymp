@@ -1,13 +1,12 @@
 import React from 'react';
 import { toClass } from 'recompose';
 import FormItem from './form-item';
-import { FormListEdit } from './edits';
+import { DetailEdit } from './edits';
 
 export default {
-  selector: ({ type }) =>
-    type.kind === 'LIST' && type.ofType.name.indexOf('Nested') === 0,
+  selector: ({ '@': at }) => at && at.idField,
   form: toClass(p => <FormItem {...p}>Bearbeiten</FormItem>),
-  full: toClass(({ type, ...props }) => (
-    <FormListEdit {...props} typeName={type.ofType.name} type={type} />
+  full: toClass(({ items = [], '@': at, type, ...props }) => (
+    <DetailEdit {...props} typeName={at.idField.type.name} />
   )),
 };

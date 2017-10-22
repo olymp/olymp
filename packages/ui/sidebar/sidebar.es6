@@ -10,7 +10,7 @@ const StyledInner = createComponent(
     height: '100%',
     transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRight: '1px solid #eee',
+    // borderRight: '1px solid #eee',
     // boxShadow: theme.boxShadow,
     boxShadow: 'none',
     zIndex: 2,
@@ -32,6 +32,8 @@ const StyledInner = createComponent(
       display: 'block',
     },
     '> .ant-modal-content': {
+      borderRight: !right && '1px solid rgb(233, 233, 233)',
+      borderLeft: right && '1px solid rgb(233, 233, 233)',
       hasFlex: {
         display: 'flex',
         flexDirection: 'column',
@@ -107,8 +109,17 @@ const StyledInner = createComponent(
     },
   }),
   'div',
-  ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) =>
-    Object.keys(p),
+  ({
+    right,
+    padding,
+    paddingX,
+    paddingY,
+    width,
+    minWidth,
+    maxWidth,
+    darkened,
+    ...p
+  }) => Object.keys(p),
 );
 
 const Title = createComponent(
