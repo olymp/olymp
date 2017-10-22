@@ -1,9 +1,22 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
 import { SplitView, Sidebar } from 'olymp-ui';
-import { compose, withState } from 'recompose';
+import { compose, withState, withPropsOnChange } from 'recompose';
 import { createComponent } from 'olymp-fela';
 import FormItem from './item';
+import DefaultEdits from '../../default-edits';
+import { getValidationRules, getInitialValue } from './utils';
+import { toLabel } from 'olymp-utils';
+
+const getDefaultEdit = type => {
+  const find = Object.keys(DefaultEdits).find(key =>
+    DefaultEdits[key].selector(type),
+  );
+  if (find) {
+    return DefaultEdits[find];
+  }
+  return null;
+};
 
 const Buttons = createComponent(
   () => ({
@@ -17,11 +30,38 @@ const Buttons = createComponent(
 const enhance = compose(
   withState('tab', 'setTab'),
   withState('activeField', 'setActiveField'),
+  withPropsOnChange(['schema'], ({ schema, form, ...props }) => {
+    const { getFieldDecorator } = form;
+    const schemaWithEdits = {};
+    schema.forEach(field => {
+      const edit = getDefaultEdit(field) || {};
+      const title =
+        field['@'] && field['@'].label
+          ? field['@'].label.arg0
+          : toLabel(field.name);
+      const label = title.replace('-Ids', '').replace('-Id', '');
+      schemaWithEdits[field.name] = {
+        ...field,
+        ...edit,
+        title,
+        label,
+        fieldDecorator: getFieldDecorator(field.name, {
+          rules: getValidationRules(field),
+          valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
+          initialValue: getInitialValue(props, field),
+        }),
+      };
+    });
+    return {
+      schemaWithEdits,
+    };
+  }),
 );
 
 const FormComponent = enhance(
   ({
     schema,
+    schemaWithEdits,
     inline,
     vertical,
     children,
@@ -35,26 +75,28 @@ const FormComponent = enhance(
     expand,
     collapse,
     collapsed,
+    onSave,
     activeField,
     ...rest
   }) => {
     const moreChildren = [];
-    if (activeField) {
+    if (
+      activeField &&
+      schemaWithEdits[activeField] &&
+      schemaWithEdits[activeField].full
+    ) {
+      const { full: Com, fieldDecorator } = schemaWithEdits[activeField];
       moreChildren.push(
-        schema
-          .filter(x => x.name === activeField)
-          .map(field => (
-            <FormItem
-              {...rest}
-              activeField={activeField}
-              isActiveField
-              form={form}
-              field={field}
-              item={item}
-              key={field.name}
-              wrap={false}
-            />
-          )),
+        fieldDecorator(
+          <Com
+            {...rest}
+            key={activeField}
+            activeField={activeField}
+            form={form}
+            field={schemaWithEdits[activeField].type}
+            item={item}
+          />,
+        ),
       );
     }
     return (
@@ -65,25 +107,42 @@ const FormComponent = enhance(
           width={400}
           title={form.getFieldValue('name') || 'Bearbeiten'}
           rightButtons={
-            <Sidebar.Button
-              onClick={() => router.push(this.getLink({ id: null }))}
-              shape="circle"
-              icon="save"
-            />
+            <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
           }
         >
           <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            {schema.map(field => (
-              <FormItem
-                {...rest}
-                isActive={activeField === field.name}
-                activeField={activeField}
-                form={form}
-                field={field}
-                item={item}
-                key={field.name}
-              />
-            ))}
+            {Object.keys(schemaWithEdits).map(key => {
+              const field = schemaWithEdits[key];
+              const {
+                form: Com,
+                fieldDecorator,
+                ...restFields
+              } = schemaWithEdits[key];
+              return Com ? (
+                fieldDecorator(
+                  <Com
+                    {...rest}
+                    {...restFields}
+                    isActive={activeField === field.name}
+                    activeField={activeField}
+                    form={form}
+                    field={field}
+                    item={item}
+                    key={field.name}
+                  />,
+                )
+              ) : (
+                <FormItem
+                  {...rest}
+                  isActive={activeField === field.name}
+                  activeField={activeField}
+                  form={form}
+                  field={field}
+                  item={item}
+                  key={field.name}
+                />
+              );
+            })}
           </Form>
           <Buttons>{children}</Buttons>
         </Sidebar>

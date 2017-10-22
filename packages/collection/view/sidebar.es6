@@ -180,10 +180,10 @@ export default class CollectionListSidebar extends Component {
 
     return (
       <Sidebar
-        width={collapsed ? 64 : 350}
+        width={collapsed && id ? 64 : 350}
         onMouseEnter={expand}
         onMouseLeave={collapse}
-        darkened={collapsed}
+        darkened={collapsed && id}
         header={
           <List.Filter
             placeholder="Filter ..."

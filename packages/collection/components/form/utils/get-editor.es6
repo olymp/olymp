@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
+import { Sidebar } from 'olymp-ui';
 import {
   ColorEditor,
   DateEditor,
@@ -10,7 +11,6 @@ import {
   SuggestEditor,
 } from 'olymp-ui';
 import GeocodeEditor from 'olymp-google/edits/geocode';
-import { SlateWriter } from 'olymp-slate';
 import cn from 'classnames';
 import { EditImage } from 'olymp-cloudinary';
 import { FormListEdit, DetailEdit } from '../../../edits';
@@ -20,26 +20,6 @@ const states = {
   DRAFT: 'Entwurf',
   REMOVED: 'Papierkorb',
 };
-
-class SlateEditor extends Component {
-  // muss Klasse bleiben, da sonst:
-  // Stateless function components cannot be given refs. Attempts to access this ref will fail.
-  render() {
-    const { onChange, value, children, binding, label } = this.props;
-
-    return (
-      <SlateWriter
-        onChange={onChange}
-        value={value}
-        binding={binding}
-        placeholder={label || 'Hier Text eingeben!'}
-        style={{ padding: 20 }}
-      >
-        {children}
-      </SlateWriter>
-    );
-  }
-}
 
 export default ({
   className,
@@ -73,19 +53,27 @@ export default ({
   }
   if (type.kind === 'LIST') {
     if (type.ofType.name === 'TimeRange') {
-      return <TimeRangesEditor {...editProps} />;
+      return isActiveField ? <TimeRangesEditor {...editProps} /> : 'Bearbeiten';
     }
     if (type.ofType.name === 'String') {
       if (name === 'tags') {
-        return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
+        if (type.ofType.name === 'TimeRange') {
+          return isActiveField ? (
+            <Sidebar isOpen padding={0} width={400} title="Schlagworte">
+              <TagsEditor {...editProps} searchPlaceholder="Suche ..." />
+            </Sidebar>
+          ) : (
+            'Bearbeiten'
+          );
+        }
       }
-      return (
-        <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />
-      );
+      return null;
     }
     if (type.ofType.name.indexOf('Nested') === 0) {
-      return (
+      return isActiveField ? (
         <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
+      ) : (
+        'Bearbeiten'
       );
     }
     return null;
@@ -142,15 +130,9 @@ export default ({
     );
   }
 
-  if (type.name === 'Blocks' && isActiveField) {
-    return (
-      <SlateEditor
-        {...editProps}
-        binding={form.getFieldsValue()}
-        label={label}
-      />
-    );
-  } else if (type.name === 'Blocks') {
+  if (type.name === 'TimeRange' && isActiveField) {
+    return <TimeRangeEditor {...editProps} />;
+  } else if (type.name === 'TimeRange') {
     return 'Bearbeiten';
   }
 
@@ -187,8 +169,6 @@ export default ({
       return <Input {...editProps} />;
     case 'Int':
       return <InputNumber {...editProps} placeholder={label || 0} />;
-    case 'TimeRange':
-      return <TimeRangeEditor {...editProps} />;
     /* case 'user':
         return type.fields.map(field => (
           <Select.Option key={field.name} value={field.name}>{field.name}</Select.Option>

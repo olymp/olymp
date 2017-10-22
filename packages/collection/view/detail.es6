@@ -85,6 +85,7 @@ const CollectionDetail = enhance(
         form={form}
         item={item || {}}
         schema={schema}
+        onSave={onSave}
         onCreate={onSave}
       >
         <Prompt

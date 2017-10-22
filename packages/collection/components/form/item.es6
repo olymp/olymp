@@ -1,9 +1,9 @@
 import React from 'react';
 import Form, { defaultLayout } from 'olymp-ui/form';
 import { toLabel } from 'olymp-utils';
-import { getEditor, getValidationRules, getInitialValue } from './utils';
 import { createComponent } from 'react-fela';
 import { FaAngleRight } from 'olymp-icons';
+import { getEditor, getValidationRules, getInitialValue } from './utils';
 
 const Div = createComponent(
   ({ isActive }) => ({
@@ -83,7 +83,7 @@ export default props => {
     return getFieldDecorator(field.name, {
       initialValue,
       rules: getValidationRules(field),
-      valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
+      valuePropName: field.type.name === 'Boolean' ? 'checked' : undefined,
     })(editor);
   }
 
