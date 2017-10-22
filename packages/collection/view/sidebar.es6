@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'olymp-router';
-import { Dropdown, Menu, Icon, Tabs } from 'antd';
+import { Dropdown, Menu, Icon, Collapse } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
 import { compose, withState, withHandlers } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
+import { createComponent } from 'olymp-fela';
 import { FieldValue } from '../components';
 
-const states = {
-  PUBLISHED: 'Öffentlich',
-  DRAFT: 'Ablage',
-  REMOVED: 'Papierkorb',
-};
+const Span = createComponent(
+  ({ theme }) => ({
+    padding: theme.space3,
+  }),
+  'div',
+  [],
+);
 
 const enhance = compose(
   withRouter,
@@ -173,6 +176,7 @@ export default class CollectionListSidebar extends Component {
         color={item.color}
         active={item.id === id}
         label={item.name}
+        nowrap
         onClick={item.onClick}
         key={item.id}
       />
@@ -183,7 +187,7 @@ export default class CollectionListSidebar extends Component {
         width={collapsed ? 64 : 350}
         onMouseEnter={expand}
         onMouseLeave={collapse}
-        darkened={collapsed}
+        darkened={!!collapsed}
         header={
           <List.Filter
             placeholder="Filter ..."
@@ -202,22 +206,37 @@ export default class CollectionListSidebar extends Component {
         padding={0}
         title={collection.name}
       >
-        {!searchText ? (
-          <Tabs
-            size="small"
-            defaultActiveKey={query.state || 'PUBLISHED'}
-            onChange={state =>
-              router.push({ pathname, query: { ...query, state } })}
-          >
-            {Object.keys(states).map(key => (
-              <Tabs.TabPane tab={states[key]} key={key}>
-                {childs}
-              </Tabs.TabPane>
-            ))}
-          </Tabs>
-        ) : (
-          childs
-        )}
+        <Collapse
+          accordion
+          defaultActiveKey="PUBLISHED"
+          onChange={state =>
+            router.push({
+              pathname,
+              query: { ...query, state },
+            })}
+        >
+          <Collapse.Panel header="Veröffentlicht" key="PUBLISHED">
+            {childs.length ? (
+              childs
+            ) : (
+              <Span>Kein veröffentlichtes Item vorhanden!</Span>
+            )}
+          </Collapse.Panel>
+          <Collapse.Panel header="Ablage" key="DRAFT">
+            {childs.length ? (
+              childs
+            ) : (
+              <Span>Kein archiviertes Item vorhanden!</Span>
+            )}
+          </Collapse.Panel>
+          <Collapse.Panel header="Papierkorb" key="REMOVED">
+            {childs.length ? (
+              childs
+            ) : (
+              <Span>Kein gelöschtes Item vorhanden!</Span>
+            )}
+          </Collapse.Panel>
+        </Collapse>
       </Sidebar>
     );
   }
