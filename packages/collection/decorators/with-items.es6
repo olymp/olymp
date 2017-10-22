@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { lowerFirst, get } from 'lodash';
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) =>
     graphql(
@@ -23,6 +23,9 @@ export default (WrappedComponent) => {
                 query: {
                   name: {
                     contains: searchTerm,
+                  },
+                  state: {
+                    eq: get(query, 'state', 'PUBLISHED'),
                   },
                 },
               }
