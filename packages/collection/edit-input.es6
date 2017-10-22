@@ -5,7 +5,7 @@ import FormItem from './form-item';
 
 export default {
   isDefault: true,
-  selector: ({ type }) =>
+  rule: ({ type }) =>
     ['Slug', 'Email', 'PhoneNumber', 'Website'].indexOf(type.name) !== -1,
   form: toClass(({ value, onChange, ...p }) => (
     <FormItem {...p}>

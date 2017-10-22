@@ -35,7 +35,7 @@ const getHeader = (title, index) => (
 );
 export default {
   collapse: true,
-  selector: ({ type }) =>
+  rule: ({ type }) =>
     type.kind === 'LIST' && type.ofType.name.indexOf('Nested') === 0,
   form: toClass(({ value = [], ...p }) => (
     <FormItem {...p}>{value.length} Einträge</FormItem>

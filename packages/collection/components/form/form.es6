@@ -40,7 +40,7 @@ const Items = ({ schema, activeField, form, item, ...rest }) =>
 
 const getDefaultEdit = type => {
   const find =
-    Object.keys(DefaultEdits).find(key => DefaultEdits[key].selector(type)) ||
+    Object.keys(DefaultEdits).find(key => DefaultEdits[key].rule(type)) ||
     Object.keys(DefaultEdits).find(key => DefaultEdits[key].isDefault);
   if (find) {
     return DefaultEdits[find];

@@ -4,7 +4,7 @@ import { SlateWriter } from 'olymp-slate';
 import FormItem from './form-item';
 
 export default {
-  selector: ({ type }) => type.name === 'Blocks',
+  rule: ({ type }) => type.name === 'Blocks',
   form: toClass(p => <FormItem {...p}>Bearbeiten</FormItem>),
   full: toClass(({ children, onChange, value, binding, label }) => (
     <SlateWriter
