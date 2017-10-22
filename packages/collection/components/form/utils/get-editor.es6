@@ -32,6 +32,7 @@ export default ({
   form,
   isActiveField,
 }) => {
+  return null;
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -50,33 +51,6 @@ export default ({
       );
     }
     return <DetailEdit {...editProps} typeName={idField.type.name} />;
-  }
-  if (type.kind === 'LIST') {
-    if (type.ofType.name === 'TimeRange') {
-      return isActiveField ? <TimeRangesEditor {...editProps} /> : 'Bearbeiten';
-    }
-    if (type.ofType.name === 'String') {
-      if (name === 'tags') {
-        if (type.ofType.name === 'TimeRange') {
-          return isActiveField ? (
-            <Sidebar isOpen padding={0} width={400} title="Schlagworte">
-              <TagsEditor {...editProps} searchPlaceholder="Suche ..." />
-            </Sidebar>
-          ) : (
-            'Bearbeiten'
-          );
-        }
-      }
-      return null;
-    }
-    if (type.ofType.name.indexOf('Nested') === 0) {
-      return isActiveField ? (
-        <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
-      ) : (
-        'Bearbeiten'
-      );
-    }
-    return null;
   }
   if (type.kind === 'OBJECT') {
     if (type.name === 'Geocode') {
