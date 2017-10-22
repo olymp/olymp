@@ -32,7 +32,6 @@ export default ({
   form,
   isActiveField,
 }) => {
-  return null;
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -130,24 +129,8 @@ export default ({
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':
-      // 'autosize' will cause warning:
-      // `Infinity` is an invalid value for the `minHeight` css style property.
       return <Input.TextArea {...editProps} /* autosize */ />;
-    case 'Slug':
-      return <Input {...editProps} />;
-    case 'Email':
-      return <Input {...editProps} />;
-    case 'PhoneNumber':
-      return <Input {...editProps} />;
-    case 'Website':
-      return <Input {...editProps} />;
     case 'Int':
       return <InputNumber {...editProps} placeholder={label || 0} />;
-    /* case 'user':
-        return type.fields.map(field => (
-          <Select.Option key={field.name} value={field.name}>{field.name}</Select.Option>
-        )); */
-    default:
-      return <Input {...editProps} />;
   }
 };

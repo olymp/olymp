@@ -1,16 +1,37 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
-import { SplitView, Sidebar } from 'olymp-ui';
+import { SplitView, Sidebar, List } from 'olymp-ui';
 import { compose, withState, withPropsOnChange } from 'recompose';
 import { createComponent } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
 import { getValidationRules, getInitialValue } from './utils';
 
+const Items = ({ schema, activeField, form, item, ...rest }) =>
+  Object.keys(schema).map(key => {
+    const field = schema[key];
+    const { form: Com, fieldDecorator, ...restFields } = schema[key];
+    if (!Com) {
+      return null;
+    }
+    return fieldDecorator()(
+      <Com
+        {...rest}
+        {...restFields}
+        isActive={activeField === field.name}
+        activeField={activeField}
+        form={form}
+        field={field}
+        item={item}
+        key={field.name}
+      />,
+    );
+  });
+
 const getDefaultEdit = type => {
-  const find = Object.keys(DefaultEdits).find(key =>
-    DefaultEdits[key].selector(type),
-  );
+  const find =
+    Object.keys(DefaultEdits).find(key => DefaultEdits[key].selector(type)) ||
+    Object.keys(DefaultEdits).find(key => DefaultEdits[key].isDefault);
   if (find) {
     return DefaultEdits[find];
   }
@@ -31,7 +52,10 @@ const enhance = compose(
   withState('activeField', 'setActiveField'),
   withPropsOnChange(['schema'], ({ schema, form, ...props }) => {
     const { getFieldDecorator } = form;
-    const schemaWithEdits = {};
+    const schemaWithEdits = {
+      full: {},
+      etc: {},
+    };
     schema.forEach(field => {
       const edit = getDefaultEdit(field) || {};
       const title =
@@ -39,7 +63,7 @@ const enhance = compose(
           ? field['@'].label.arg0
           : toLabel(field.name);
       const label = title.replace('-Ids', '').replace('-Id', '');
-      schemaWithEdits[field.name] = {
+      schemaWithEdits[edit.full ? 'full' : 'etc'][field.name] = {
         ...field,
         ...edit,
         title,
@@ -80,15 +104,10 @@ const FormComponent = enhance(
     ...rest
   }) => {
     const moreChildren = [];
-    if (
-      activeField &&
-      schemaWithEdits[activeField] &&
-      schemaWithEdits[activeField].full
-    ) {
-      const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits[
+    if (activeField && schemaWithEdits.full[activeField]) {
+      const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits.full[
         activeField
       ];
-      console.log(rest, restFields);
       moreChildren.push(
         fieldDecorator()(
           <Com
@@ -97,7 +116,7 @@ const FormComponent = enhance(
             key={activeField}
             activeField={activeField}
             form={form}
-            field={schemaWithEdits[activeField].type}
+            field={schemaWithEdits.full[activeField].type}
             item={item}
           />,
         ),
@@ -115,29 +134,22 @@ const FormComponent = enhance(
           }
         >
           <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            {Object.keys(schemaWithEdits).map(key => {
-              const field = schemaWithEdits[key];
-              const {
-                form: Com,
-                fieldDecorator,
-                ...restFields
-              } = schemaWithEdits[key];
-              if (!Com) {
-                return null;
-              }
-              return fieldDecorator()(
-                <Com
-                  {...rest}
-                  {...restFields}
-                  isActive={activeField === field.name}
-                  activeField={activeField}
-                  form={form}
-                  field={field}
-                  item={item}
-                  key={field.name}
-                />,
-              );
-            })}
+            <List.Title>Unterpunkte</List.Title>
+            <Items
+              schema={schemaWithEdits.full}
+              activeField={activeField}
+              form={form}
+              item={item}
+              {...rest}
+            />
+            <List.Title>Eingabe</List.Title>
+            <Items
+              schema={schemaWithEdits.etc}
+              activeField={activeField}
+              form={form}
+              item={item}
+              {...rest}
+            />
           </Form>
           <Buttons>{children}</Buttons>
         </Sidebar>
