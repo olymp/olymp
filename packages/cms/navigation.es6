@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
 import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
