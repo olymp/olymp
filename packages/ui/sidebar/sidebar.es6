@@ -58,6 +58,19 @@ const StyledInner = createComponent(
         },
       },
       '> .ant-modal-body': {
+        '> .ant-collapse': {
+          border: 0,
+          borderRadius: 0,
+          '> .ant-collapse-item': {
+            borderRadius: 0,
+            '> .ant-collapse-content': {
+              padding: 0,
+              '> .ant-collapse-content-box': {
+                padding: 0,
+              },
+            },
+          },
+        },
         '> .ant-tabs > .ant-tabs-bar': {
           marginBottom: 0,
           hasFlex: {
