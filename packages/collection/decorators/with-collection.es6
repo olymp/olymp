@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withApollo, graphql } from 'react-apollo';
 import capitalize from 'lodash/upperFirst';
 import gql from 'graphql-tag';
+import getDecorators from './get-decorators';
 
 const imageFields = `
   id
@@ -94,7 +95,7 @@ export default WrappedComponent => {
           name: capitalize(routeParams.model || typeName),
         },
       }),
-    }
+    },
   )
   class WithCollectionComponent extends Component {
     static propTypes = {
@@ -191,12 +192,12 @@ export default WrappedComponent => {
                   ? specialFields[name].length
                   : index,
                 0,
-                specialField
+                specialField,
               );
             } else {
               specialFields[name] = specialField;
             }
-          }
+          },
         );
         return field;
       });
@@ -205,10 +206,11 @@ export default WrappedComponent => {
 
     render() {
       const { data, ...rest } = this.props;
-      const collection =
-        (this.props.data && this.props.data.type) ||
-        this.props.collection ||
-        null;
+      const collectionData = this.props.data && this.props.data.type;
+      const collection = !!collectionData && {
+        ...collectionData,
+        decorators: getDecorators(collectionData.description),
+      };
 
       return (
         <WrappedComponent

@@ -11,6 +11,8 @@ import { FieldValue } from '../components';
 const Span = createComponent(
   ({ theme }) => ({
     padding: theme.space3,
+    whiteSpace: 'nowrap',
+    ellipsis: true,
   }),
   'div',
   [],
@@ -204,7 +206,7 @@ export default class CollectionListSidebar extends Component {
         }
         isOpen
         padding={0}
-        title={collection.name}
+        title={get(collection, 'decorators.label.value', collection.name)}
       >
         <Collapse
           accordion

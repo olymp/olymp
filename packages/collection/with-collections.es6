@@ -94,7 +94,7 @@ export default WrappedComponent => {
 
     render() {
       const { data, ...rest } = this.props;
-      const list = this.list();
+      const list = sortBy(this.list(), ['order', 'name']);
       const group = this.group(list);
 
       return (
