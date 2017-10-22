@@ -37,7 +37,8 @@ export default class CollectionView extends Component {
           items={items}
           onClose={onClose}
           filter={[]}
-          onFilter={(filter, filteredItems) => this.setState({ filter, filteredItems })}
+          onFilter={(filter, filteredItems) =>
+            this.setState({ filter, filteredItems })}
           searchText={searchText}
           onSearch={performSearch}
           onClick={item =>
@@ -49,7 +50,7 @@ export default class CollectionView extends Component {
               },
             })}
         />
-        {id !== undefined && (
+        {id && (
           <Detail
             id={id === 'new' ? null : id}
             key={id || 'new'}

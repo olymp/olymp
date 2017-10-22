@@ -10,6 +10,6 @@ export default createEdit(v => (
         height: 450,
       }
     }
-    width="100%"
+    height={100}
   />
 ));

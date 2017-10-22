@@ -16,7 +16,7 @@ const excludedFields = [
   'createdById',
 ];
 
-const getFormSchema = (fields) => {
+const getFormSchema = fields => {
   const mappedFields = fields.reduce(
     (result, field) => {
       const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
@@ -28,9 +28,13 @@ const getFormSchema = (fields) => {
       // RELATION
       if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
         if (field.name.endsWith('Id')) {
-          field['@'].idField = fields.find(({ name }) => `${name}Id` === field.name);
+          field['@'].idField = fields.find(
+            ({ name }) => `${name}Id` === field.name,
+          );
         } else if (field.name.endsWith('Ids')) {
-          field['@'].idField = fields.find(({ name }) => `${name}Ids` === field.name);
+          field['@'].idField = fields.find(
+            ({ name }) => `${name}Ids` === field.name,
+          );
         }
         result.rest.splice(
           result.rest.findIndex(({ name }) => name === field['@'].idField.name),
@@ -58,7 +62,7 @@ const getFormSchema = (fields) => {
     },
     { images: [], rest: [], blocks: [] },
   );
-  return mappedFields;
+  return [...mappedFields.images, ...mappedFields.blocks, ...mappedFields.rest];
 };
 
 const enhance = compose(
@@ -72,19 +76,31 @@ const enhance = compose(
   }),
 );
 
-const CollectionDetail = enhance(({ id, item, schema, onSave, onClone, form, ...rest }) => (
-  <ContentLoader isLoading={id && !item}>
-    <DetailForm {...rest} id={id} form={form} item={item || {}} schema={schema} onCreate={onSave}>
-      <Prompt when={form.isFieldsTouched()} message={() => 'Änderungen verwerfen?'} />
-      <Button onClick={onSave} icon="save" type="primary">
+const CollectionDetail = enhance(
+  ({ id, item, schema, onSave, onClone, form, ...rest }) => (
+    <ContentLoader isLoading={id && !item}>
+      <DetailForm
+        {...rest}
+        id={id}
+        form={form}
+        item={item || {}}
+        schema={schema}
+        onCreate={onSave}
+      >
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
+        {/* <Button onClick={onSave} icon="save" type="primary">
         Speichern
       </Button>
       <Button onClick={onClone} icon="copy">
         Klonen
-      </Button>
-    </DetailForm>
-  </ContentLoader>
-));
+</Button> */}
+      </DetailForm>
+    </ContentLoader>
+  ),
+);
 
 CollectionDetail.displayName = 'CollectionDetail';
 export default CollectionDetail;

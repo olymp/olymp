@@ -22,18 +22,31 @@ const states = {
 };
 
 const SlateEditor = ({ onChange, value, children, binding, label }) => (
-  <SlateWriter
-    onChange={onChange}
-    value={value}
-    binding={binding}
-    placeholder={label || 'Hier Text eingeben!'}
-    style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-  >
-    {children}
-  </SlateWriter>
+  <div style={{ padding: 30 }}>
+    <SlateWriter
+      onChange={onChange}
+      value={value}
+      binding={binding}
+      placeholder={label || 'Hier Text eingeben!'}
+      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+    >
+      {children}
+    </SlateWriter>
+  </div>
 );
 
-export default ({ className, editorClassName, style, editorStyle, field, label, key, form }) => {
+export default ({
+  setActiveField,
+  isActiveField,
+  className,
+  editorClassName,
+  style,
+  editorStyle,
+  field,
+  label,
+  key,
+  form,
+}) => {
   const { idField, start, suggest } = field['@'];
   const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
@@ -47,7 +60,9 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
 
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
-      return <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />;
+      return (
+        <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />
+      );
     }
     return <DetailEdit {...editProps} typeName={idField.type.name} />;
   }
@@ -59,10 +74,14 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
       if (name === 'tags') {
         return <TagsEditor {...editProps} searchPlaceholder="Suche ..." />;
       }
-      return <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />;
+      return (
+        <Select {...editProps} mode="tags" searchPlaceholder="Suche ..." />
+      );
     }
     if (type.ofType.name.indexOf('Nested') === 0) {
-      return <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />;
+      return (
+        <FormListEdit {...editProps} typeName={type.ofType.name} type={type} />
+      );
     }
     return null;
   }
@@ -72,15 +91,31 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     }
   }
   if (suggest) {
-    return <SuggestEditor {...editProps} collection={suggest.arg0} field={suggest.arg1} />;
+    return (
+      <SuggestEditor
+        {...editProps}
+        collection={suggest.arg0}
+        field={suggest.arg1}
+      />
+    );
   }
   if (start) {
     if (type.name === 'Date') {
-      return <DateRangeEditor {...editProps} format="DD.MM.YYYY" style={{ width: '100%' }} />;
+      return (
+        <DateRangeEditor
+          {...editProps}
+          format="DD.MM.YYYY"
+          style={{ width: '100%' }}
+        />
+      );
     }
     if (type.name === 'DateTime') {
       return (
-        <DateRangeEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />
+        <DateRangeEditor
+          {...editProps}
+          format="DD.MM.YYYY HH:mm"
+          showTime={{ format: 'HH:mm' }}
+        />
       );
     }
   }
@@ -102,17 +137,35 @@ export default ({ className, editorClassName, style, editorStyle, field, label, 
     );
   }
 
+  if (type.name === 'Blocks' && isActiveField) {
+    return (
+      <SlateEditor
+        {...editProps}
+        binding={form.getFieldsValue()}
+        label={label}
+      />
+    );
+  } else if (type.name === 'Blocks') {
+    return 'Bearbeiten';
+  }
+
   switch (type.name) {
-    case 'Blocks':
-      return <SlateEditor {...editProps} binding={form.getFieldsValue()} label={label} />;
     case 'Image':
-      return <EditImage {...editProps} style={{ maxWith: '100%' }} width="100%" />;
+      return (
+        <EditImage {...editProps} style={{ maxWith: '100%', height: 50 }} />
+      );
     case 'Boolean':
       return <Checkbox {...editProps}>{label}</Checkbox>;
     case 'Date':
       return <DateEditor {...editProps} format="DD.MM.YYYY" />;
     case 'DateTime':
-      return <DateEditor {...editProps} format="DD.MM.YYYY HH:mm" showTime={{ format: 'HH:mm' }} />;
+      return (
+        <DateEditor
+          {...editProps}
+          format="DD.MM.YYYY HH:mm"
+          showTime={{ format: 'HH:mm' }}
+        />
+      );
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':

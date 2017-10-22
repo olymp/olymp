@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'olymp-router';
-import { Dropdown, Menu, Icon, Button, Tabs } from 'antd';
+import { Dropdown, Menu, Icon, Tabs } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
+import { compose, withState, withHandlers } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { FieldValue } from '../components';
 
@@ -12,7 +13,16 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-@withRouter
+const enhance = compose(
+  withRouter,
+  withState('collapsed', 'setCollapsed', true),
+  withHandlers({
+    expand: ({ setCollapsed }) => () => setCollapsed(false),
+    collapse: ({ setCollapsed }) => () => setCollapsed(true),
+  }),
+);
+
+@enhance
 export default class CollectionListSidebar extends Component {
   getLink = ({ id }) => {
     const { typeName, location } = this.props;
@@ -28,7 +38,7 @@ export default class CollectionListSidebar extends Component {
     item,
     field,
     { defaultFieldName, defaultValue },
-    fieldProps
+    fieldProps,
   ) => {
     const fieldName = this.resolveFieldName(item, field, defaultFieldName);
     const meta = this.resolveField(fieldName);
@@ -114,6 +124,9 @@ export default class CollectionListSidebar extends Component {
       onSearch,
       searchText,
       onClose,
+      expand,
+      collapse,
+      collapsed,
     } = this.props;
 
     const items = (this.props.items || []).map(item => {
@@ -165,10 +178,12 @@ export default class CollectionListSidebar extends Component {
       />
     ));
 
-    console.log(collection);
-
     return (
       <Sidebar
+        width={collapsed ? 64 : 350}
+        onMouseEnter={expand}
+        onMouseLeave={collapse}
+        darkened={collapsed}
         header={
           <List.Filter
             placeholder="Filter ..."
@@ -178,7 +193,7 @@ export default class CollectionListSidebar extends Component {
         }
         rightButtons={
           <Sidebar.Button
-            onClick={() => router.push(this.getLink({ id: null }))}
+            onClick={() => router.push(this.getLink({ id: 'new' }))}
             shape="circle"
             icon="plus"
           />

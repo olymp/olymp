@@ -98,7 +98,7 @@ if (isProd && origins.length) {
 app.use(compression());
 app.use(useragent.express());
 
-const maxAge = 1000 * 60 * 1 * 30 * 3; // 1 month
+const maxAge = isProd ? '90d' : 0; // 3 months
 app.use(express.static(path.resolve(process.cwd(), 'public'), { maxAge }));
 app.use(
   express.static(path.resolve(process.cwd(), '.dist', 'web'), { maxAge }),

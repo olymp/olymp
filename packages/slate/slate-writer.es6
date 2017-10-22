@@ -11,6 +11,7 @@ import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
 import NoParagraph from './plugins/no-paragraph';
 import ToolbarText from './toolbar-text';
+import BlockBar from './block-bar';
 import addBlock from './add-block';
 import getMarkdownType from './defaults/markdown';
 import marks from './defaults/marks';
@@ -83,12 +84,12 @@ class Writer extends Component {
 
   onDrop = (ev, change) => {
     const { schema } = this.props;
-    const type = ev.dataTransfer.getData('x-slatemate');
-    if (type) {
+    const type = ev.dataTransfer.getData('text');
+    if (type && type.indexOf('x-slate:') === 0) {
       const range = getEventRange(ev, change.state);
       return addBlock(
         change.state,
-        schema.nodes[type].slate,
+        schema.nodes[type.substr('x-slate:'.length)].slate,
         schema,
         null,
         null,
@@ -140,7 +141,9 @@ class Writer extends Component {
           onKeyDown={this.onKeyDown}
           placeholder={!readOnly && 'Hier Text eingeben...'}
           placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
+          style={{ marginRight: 64 }}
         />
+        <BlockBar />
       </div>
     );
   };

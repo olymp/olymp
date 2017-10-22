@@ -3,11 +3,12 @@ import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
 
 const StyledInner = createComponent(
-  ({ theme, padding, paddingX, paddingY, width, right }) => ({
+  ({ theme, padding, paddingX, paddingY, width, right, darkened }) => ({
     width,
     minWidth: width,
     maxWidth: width,
     height: '100%',
+    transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRight: '1px solid #eee',
     // boxShadow: theme.boxShadow,
@@ -15,6 +16,20 @@ const StyledInner = createComponent(
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
+    onAfter: {
+      content: '""',
+      opacity: darkened ? 1 : 0,
+      transition: 'opacity .4s ease',
+      pointerEvents: 'none',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      backgroundColor: '#00000070',
+      zIndex: 1,
+      display: 'block',
+    },
     '> .ant-modal-content': {
       hasFlex: {
         display: 'flex',
@@ -77,9 +92,9 @@ const StyledInner = createComponent(
       },
     },
   }),
-  ({ children, className }) => <div className={className}>{children}</div>,
+  'div',
   ({ right, padding, paddingX, paddingY, width, minWidth, maxWidth, ...p }) =>
-    Object.keys(p)
+    Object.keys(p),
 );
 
 const Title = createComponent(
@@ -93,7 +108,7 @@ const Title = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const TitleButtons = createComponent(
@@ -114,7 +129,7 @@ const TitleButtons = createComponent(
     },
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p)
+  ({ left, right, ...p }) => Object.keys(p),
 );
 
 const Sidebar = ({
@@ -165,7 +180,7 @@ const Sidebar = ({
       </div>
     </StyledInner>
   ) : (
-    <StyledInner {...props} minWidth={80}>
+    <StyledInner {...props} minWidth={64}>
       <div className="ant-modal-content">
         <div className="ant-modal-header">
           <Button.Group>

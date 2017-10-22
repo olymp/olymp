@@ -29,7 +29,7 @@ const Container = createComponent(
     backgroundColor: '#Cf5f5f5',
   }),
   'div',
-  []
+  [],
 );
 
 const SwitchContainer = createComponent(
@@ -43,7 +43,7 @@ const SwitchContainer = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Footer = createComponent(
@@ -54,7 +54,7 @@ const Footer = createComponent(
     textAlign: 'center',
   }),
   'div',
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 const Load = connect(({ app }) => ({
@@ -71,9 +71,9 @@ const enhance = compose(
     }),
     dispatch => ({
       updateQuery: createUpdateQuery(dispatch),
-    })
+    }),
   ),
-  withState('deviceWidth', 'setDeviceWidth', undefined)
+  withState('deviceWidth', 'setDeviceWidth', undefined),
 );
 const component = enhance(props => {
   const {
@@ -86,12 +86,11 @@ const component = enhance(props => {
     updateQuery,
   } = props;
   const collection = collectionList.filter(
-    ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
+    ({ name }) => query[`@${name.toLowerCase()}`] !== undefined,
   )[0];
   const collectionName = collection && collection.name;
   const collectionId =
-    (collectionName && query && query[`@${collectionName.toLowerCase()}`]) ||
-    'new';
+    collectionName && query && query[`@${collectionName.toLowerCase()}`];
 
   return (
     <Container>
