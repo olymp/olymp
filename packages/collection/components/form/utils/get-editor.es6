@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
 import {
   ColorEditor,
@@ -21,23 +21,27 @@ const states = {
   REMOVED: 'Papierkorb',
 };
 
-const SlateEditor = ({ onChange, value, children, binding, label }) => (
-  <div style={{ padding: 30 }}>
-    <SlateWriter
-      onChange={onChange}
-      value={value}
-      binding={binding}
-      placeholder={label || 'Hier Text eingeben!'}
-      style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
-    >
-      {children}
-    </SlateWriter>
-  </div>
-);
+class SlateEditor extends Component {
+  // muss Klasse bleiben, da sonst:
+  // Stateless function components cannot be given refs. Attempts to access this ref will fail.
+  render() {
+    const { onChange, value, children, binding, label } = this.props;
+
+    return (
+      <SlateWriter
+        onChange={onChange}
+        value={value}
+        binding={binding}
+        placeholder={label || 'Hier Text eingeben!'}
+        style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
+      >
+        {children}
+      </SlateWriter>
+    );
+  }
+}
 
 export default ({
-  setActiveField,
-  isActiveField,
   className,
   editorClassName,
   style,
@@ -150,9 +154,17 @@ export default ({
   }
 
   switch (type.name) {
+    case 'Blocks':
+      return (
+        <SlateEditor
+          {...editProps}
+          binding={form.getFieldsValue()}
+          label={label}
+        />
+      );
     case 'Image':
       return (
-        <EditImage {...editProps} style={{ maxWith: '100%', height: 50 }} />
+        <EditImage {...editProps} style={{ maxWith: '100%' }} width="100%" />
       );
     case 'Boolean':
       return <Checkbox {...editProps}>{label}</Checkbox>;
@@ -169,7 +181,9 @@ export default ({
     case 'Color':
       return <ColorEditor {...editProps} />;
     case 'Markdown':
-      return <Input {...editProps} type="textarea" autosize />;
+      // 'autosize' will cause warning:
+      // `Infinity` is an invalid value for the `minHeight` css style property.
+      return <Input.TextArea {...editProps} /* autosize */ />;
     case 'Slug':
       return <Input {...editProps} />;
     case 'Email':

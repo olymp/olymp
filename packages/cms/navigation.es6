@@ -20,6 +20,14 @@ export const UserPic = createComponent(
   p => Object.keys(p),
 );
 
+class MenuItem extends Component {
+  // fix warning:
+  // Stateless function components cannot be given refs.
+  render() {
+    return <Menu.Item {...this.props} />;
+  }
+}
+
 const VerticalMenu = createComponent(
   ({ theme }) => ({
     zIndex: 11,
@@ -171,11 +179,11 @@ const component = enhance(
           onClick={handleClick}
           inlineCollapsed={collapsed}
         >
-          <Menu.Item className="logo">
+          <MenuItem className="logo">
             <Link to={{ query: {} }}>
               <Logo />
             </Link>
-          </Menu.Item>
+          </MenuItem>
           <Menu.SubMenu
             title={
               <span>
@@ -190,43 +198,82 @@ const component = enhance(
               </span>
             }
           >
-            <Menu.Item key="@user">
+            <MenuItem key="@user">
               <Link to={{ query: { '@user': null } }}>Profil</Link>
-            </Menu.Item>
-            <Menu.Item key="logout">
+            </MenuItem>
+            {/* <Menu.SubMenu title="Ansicht">
+              <MenuItem key="@device-no">
+                <a onClick={() => setDeviceWidth()} href="javascript:;">
+                  Normal
+                </a>
+              </MenuItem>
+              <MenuItem key="@deviceWidth700">
+                <a onClick={() => setDeviceWidth(700)} href="javascript:;">
+                  Tablet
+                </a>
+              </MenuItem>
+              <MenuItem key="@deviceWidth400">
+                <a onClick={() => setDeviceWidth(400)} href="javascript:;">
+                  Mobil
+                </a>
+              </MenuItem>
+          </Menu.SubMenu> */}
+            <MenuItem key="logout">
               <a onClick={logout} href="javascript:;">
                 Abmelden
               </a>
-            </Menu.Item>
+            </MenuItem>
           </Menu.SubMenu>
-          <Menu.Item key="@page">
+          <Menu.SubMenu
+            title={
+              <span>
+                <Icon type="plus" />
+                <span>Hinzufügen</span>
+              </span>
+            }
+          >
+            <MenuItem key="@page=form">
+              <Link to={{ pathname: '/__new', query: { '@page': 'form' } }}>
+                Seite
+              </Link>
+            </MenuItem>
+            {collectionList.map(collection => (
+              <MenuItem key={`@${collection.name.toLowerCase()}`}>
+                <span>
+                  {get(collection, 'decorators.label.value', collection.name)}
+                </span>
+              </MenuItem>
+            ))}
+          </Menu.SubMenu>
+          <MenuItem key="@page=tree">
+            <Icon type="edit" />
+            <span>Bearbeiten</span>
+          </MenuItem>
+          <MenuItem key="@page">
             <Icon type="bars" />
             <span>Seitenmanager</span>
-          </Menu.Item>
-          <Menu.Item key="@media">
+          </MenuItem>
+          <MenuItem key="@media">
             <Icon type="picture" />
             <span>Medien</span>
-          </Menu.Item>
+          </MenuItem>
           {isAdmin && (
-            <Menu.Item key="@users">
+            <MenuItem key="@users">
               <Icon type="team" />
               <span>Benutzer</span>
-            </Menu.Item>
+            </MenuItem>
           )}
-          <Menu.Item key="@analytics">
+          <MenuItem key="@analytics">
             <Icon type="line-chart" />
             <span>Statistiken</span>
-          </Menu.Item>
+          </MenuItem>
           {collectionList.map(collection => (
-            <Menu.Item
-              type="database"
-              key={`@${collection.name.toLowerCase()}`}
-            >
+            <MenuItem type="database" key={`@${collection.name.toLowerCase()}`}>
               <Icon type="database" />
               <span>
                 {get(collection, 'decorators.label.value', collection.name)}
               </span>
-            </Menu.Item>
+            </MenuItem>
           ))}
         </Menu>
       </VerticalMenu>

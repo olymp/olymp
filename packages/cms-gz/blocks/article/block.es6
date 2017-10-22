@@ -121,6 +121,7 @@ const component = withTheme(
         {...attributes}
       >
         <SlateReader readOnly value={item.text} />
+        <br />
         <PrefetchLink to="/magazin">Zurück zur Übersicht</PrefetchLink>
       </Container>
     </div>
