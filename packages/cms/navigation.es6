@@ -32,7 +32,6 @@ const VerticalMenu = createComponent(
   ({ theme }) => ({
     zIndex: 11,
     width: 64,
-    // boxShadow: 'inset -6px 0 5px -5px rgb(0, 0, 0)',
     hasFlex: {
       display: 'flex',
       flexDirection: 'column',
@@ -47,7 +46,8 @@ const VerticalMenu = createComponent(
         },
       },
     },
-    '> ul': {
+    '> ul.ant-menu': {
+      boxShadow: `inset -6px 0 5px -5px #333`,
       backgroundColor: '#404040',
       position: 'fixed',
       top: 0,
@@ -56,7 +56,7 @@ const VerticalMenu = createComponent(
       zIndex: 11,
       overflow: 'hidden',
       '> .ant-menu-item': {
-        textAlign: 'left !important',
+        textAlign: 'left',
         '&.logo': {
           height: 80,
           backgroundColor: theme.dark4,

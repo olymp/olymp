@@ -45,8 +45,9 @@ const CmsToolbar = createComponent(
         },
       },
     },
-    '> ul': {
+    '> ul.ant-menu': {
       backgroundColor: theme.color,
+      boxShadow: `inset 6px 0 5px -5px ${theme.dark3}`,
       position: 'fixed',
       top: 0,
       right: 0,
