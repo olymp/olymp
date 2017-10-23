@@ -15,7 +15,11 @@ const Link = createComponent(
     },
   }),
   ({ inverse, onClick, renderItemLink: LinkComponent, ...rest }) =>
-    (onClick ? <span onClick={onClick} {...rest} /> : <LinkComponent {...rest} />),
+    onClick ? (
+      <span onClick={onClick} {...rest} />
+    ) : (
+      <LinkComponent {...rest} />
+    ),
   p => Object.keys(p),
 );
 
@@ -37,11 +41,16 @@ const NavbarLink = createComponent(
     position: 'relative',
   }),
   ({ to, onClick, renderItemLink, ...rest }) =>
-    (to || onClick ? (
-      <Link to={to} renderItemLink={renderItemLink} onClick={onClick} {...rest} />
+    to || onClick ? (
+      <Link
+        to={to}
+        renderItemLink={renderItemLink}
+        onClick={onClick}
+        {...rest}
+      />
     ) : (
-      <Placeholder href="javascript:;" {...rest} />
-    )),
+      <Placeholder {...rest} />
+    ),
   p => Object.keys(p),
 );
 NavbarLink.displayName = 'Navbar.Link';

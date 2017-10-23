@@ -48,12 +48,14 @@ const styles = theme => ({
   },
   style11: {
     height: 6,
-    background: 'url(http://ibrahimjabbari.com/english/images/hr-11.png) repeat-x 0 0',
+    background:
+      'url(http://ibrahimjabbari.com/english/images/hr-11.png) repeat-x 0 0',
     border: 0,
   },
   style12: {
     height: 6,
-    background: 'url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0',
+    background:
+      'url(http://ibrahimjabbari.com/english/images/hr-12.png) repeat-x 0 0',
     border: 0,
   },
   style13: {
@@ -158,7 +160,7 @@ export default {
               {Object.keys(styles({})).map(key => (
                 <Menu.Item key={key}>
                   <span
-                    onMouseDown={(e) => {
+                    onMouseDown={e => {
                       setData({ type: key });
                       e.preventDefault();
                     }}
@@ -170,7 +172,7 @@ export default {
             </Menu>
           }
         >
-          <a href="javascript:;">Stil</a>
+          <a>Stil</a>
         </Dropdown>
       ),
       toggle: ({ setData }) => setData({ type: 'style2' }),

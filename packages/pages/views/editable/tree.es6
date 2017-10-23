@@ -41,7 +41,7 @@ const Badge = createComponent(
   }),
   ({ className, type, tooltip }) => (
     <Tooltip title={tooltip}>
-      <a href="javascript:;" className={className}>
+      <a className={className}>
         <Icon type={type} />
       </a>
     </Tooltip>

@@ -6,12 +6,12 @@ import withBlockTypes from './decorators/with-block-types';
 
 @withBlockTypes
 class Blocks extends Component {
-  dragStart = type => (ev) => {
+  dragStart = type => ev => {
     const schema = this.props.schema;
     return ev.dataTransfer.setData('x-slatemate', type);
   };
 
-  applyTemplate = (type) => {
+  applyTemplate = type => {
     const { value } = this.props;
     if (type === 'image') {
       this.onChange(
@@ -42,13 +42,20 @@ class Blocks extends Component {
             type: 'banner',
             kind: 'block',
             isVoid: false,
-            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+            nodes: [
+              Block.create({
+                type: 'paragraph',
+                nodes: [Text.create('Titel')],
+              }),
+            ],
           })
           .insertNodeByKey(value.document.key, 1, {
             type: 'containerText',
             kind: 'block',
             isVoid: false,
-            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Text')] })],
+            nodes: [
+              Block.create({ type: 'paragraph', nodes: [Text.create('Text')] }),
+            ],
           })
           .focus(),
       );
@@ -58,14 +65,27 @@ class Blocks extends Component {
           .change()
           .selectAll()
           .delete()
-          .insertNodeByKey(value.document.key, 0, { type: 'carousel', kind: 'block', isVoid: true })
+          .insertNodeByKey(value.document.key, 0, {
+            type: 'carousel',
+            kind: 'block',
+            isVoid: true,
+          })
           .insertNodeByKey(value.document.key, 1, {
             type: 'banner',
             kind: 'block',
             isVoid: false,
-            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+            nodes: [
+              Block.create({
+                type: 'paragraph',
+                nodes: [Text.create('Titel')],
+              }),
+            ],
           })
-          .insertNodeByKey(value.document.key, 2, Block.create({ type: 'paragraph' }))
+          .insertNodeByKey(
+            value.document.key,
+            2,
+            Block.create({ type: 'paragraph' }),
+          )
           .insertNodeByKey(value.document.key, 3, {
             type: 'containerText',
             kind: 'block',
@@ -76,7 +96,7 @@ class Blocks extends Component {
       );
     }
   };
-  getItems = (block) => {
+  getItems = block => {
     const { blockTypes } = this.props;
     const types = Object.keys(blockTypes).map(key => ({
       ...blockTypes[key].slate,
@@ -84,12 +104,12 @@ class Blocks extends Component {
     }));
     const categories = {};
     const menuItems = [];
-    sortBy(types, ['category', 'label']).forEach((action) => {
+    sortBy(types, ['category', 'label']).forEach(action => {
       const item = (
         <Tree.TreeNode
           key={action.type}
           title={[
-            <a draggable onDragStart={this.dragStart(action.type)} key="link" href="javascript:;">
+            <a draggable onDragStart={this.dragStart(action.type)} key="link">
               {action.label || action.type}
             </a>,
           ]}
@@ -109,7 +129,7 @@ class Blocks extends Component {
         <Tree.TreeNode
           key={key}
           title={[
-            <a draggable onDragStart={this.dragStart(key)} key="link" href="javascript:;">
+            <a draggable onDragStart={this.dragStart(key)} key="link">
               {key}
             </a>,
           ]}

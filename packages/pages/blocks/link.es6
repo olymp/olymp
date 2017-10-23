@@ -6,7 +6,7 @@ const LinkContainer = ({ node, attributes, children, className, editor }) => {
   const href = node.data.get('href');
   if (!editor.props.readOnly) {
     return (
-      <a {...attributes} href="javascript:;" className={className}>
+      <a {...attributes} className={className}>
         {children}
       </a>
     );
@@ -19,7 +19,13 @@ const LinkContainer = ({ node, attributes, children, className, editor }) => {
     );
   }
   return (
-    <a {...attributes} href={href} className={className} target="_blank" rel="noopener noreferrer">
+    <a
+      {...attributes}
+      href={href}
+      className={className}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {children}
     </a>
   );
@@ -45,7 +51,11 @@ export default {
     {
       type: 'small',
       component: ({ node }) => (
-        <LinkContainer node={node} attributes={{}} editor={{ props: { readOnly: true } }}>
+        <LinkContainer
+          node={node}
+          attributes={{}}
+          editor={{ props: { readOnly: true } }}
+        >
           <FaExternalLink />
         </LinkContainer>
       ),
@@ -61,7 +71,9 @@ export default {
     {
       type: 'small',
       component: ({ onChange, state }) => (
-        <FaUnlink onClick={() => onChange(state.change().unwrapInline('link'))} />
+        <FaUnlink
+          onClick={() => onChange(state.change().unwrapInline('link'))}
+        />
       ),
       tooltip: 'Link entfernen',
     },

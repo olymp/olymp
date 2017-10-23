@@ -220,9 +220,7 @@ const component = enhance(
               </MenuItem>
           </Menu.SubMenu> */}
             <MenuItem key="logout">
-              <a onClick={logout} href="javascript:;">
-                Abmelden
-              </a>
+              <a onClick={logout}>Abmelden</a>
             </MenuItem>
           </Menu.SubMenu>
           <Menu.SubMenu
