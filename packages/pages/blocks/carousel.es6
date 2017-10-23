@@ -1,11 +1,8 @@
 import React from 'react';
 import { EditText, Carousel } from 'olymp-cloudinary';
 
-const CarouselBlock = ({
-  getData, className, children, attributes
-}) => (
+const CarouselBlock = ({ getData, className, children, attributes }) => (
   <Carousel
-    fade
     attributes={attributes}
     className={className}
     height={400}

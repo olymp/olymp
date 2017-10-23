@@ -43,11 +43,15 @@ class Carousel extends Component {
   }
   render() {
     const {
-      value, height, attributes, children, style, className, fade
+      value,
+      height,
+      attributes,
+      children,
+      style,
+      className,
     } = this.props;
     return value.length > 0 ? (
       <Image
-        fade={fade}
         width="100%"
         value={value[0]}
         maxHeight={height || 220}

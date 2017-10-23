@@ -19,7 +19,6 @@ export default {
     const size = node.data.get('size') || 4;
     return (
       <Img
-        fade
         attributes={attributes}
         className={cn(className, 'image-block')}
         width={`${100 / size}%`}
