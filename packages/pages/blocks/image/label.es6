@@ -33,7 +33,7 @@ export default {
   type: 'imageLabel',
   isVoid: false,
   defaultText: 'Titel',
-  kind: 'inline',
+  kind: 'block',
   label: 'Titel',
   component,
 };

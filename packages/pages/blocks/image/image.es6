@@ -10,9 +10,7 @@ export default {
   kind: 'block',
   label: 'Bild',
   category: 'Bilder',
-  component: ({
-    node, className, editor, attributes, children
-  }) => {
+  component: ({ node, className, editor, attributes, children }) => {
     const Img = editor.props.readOnly === true ? LightboxImage : Image;
     const value = node.data.get('value') || {
       width: 400,
@@ -79,33 +77,45 @@ export default {
       toggle: ({ state, onChange, node }) => {
         const alignment = node.data.get('float') || 'none';
         if (alignment === 'none') {
-          onChange(state
-            .change()
-            .removeNodeByKey(node.key)
-            .collapseToStartOfNextBlock()
-            .insertInline(Inline.create({
-              type: node.type,
-              isVoid: node.isVoid,
-              data: node.data.set('float', 'left'),
-            }), ), );
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .collapseToStartOfNextBlock()
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'left'),
+                }),
+              ),
+          );
         } else if (alignment === 'left') {
-          onChange(state
-            .change()
-            .removeNodeByKey(node.key)
-            .insertInline(Inline.create({
-              type: node.type,
-              isVoid: node.isVoid,
-              data: node.data.set('float', 'left+'),
-            }), ), );
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'left+'),
+                }),
+              ),
+          );
         } else {
-          onChange(state
-            .change()
-            .removeNodeByKey(node.key)
-            .insertBlock(Block.create({
-              type: node.type,
-              isVoid: node.isVoid,
-              data: node.data.set('float', null),
-            }), ), );
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertBlock(
+                Block.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', null),
+                }),
+              ),
+          );
         }
       },
     },
@@ -117,32 +127,44 @@ export default {
         const alignment = node.data.get('float') || 'none';
 
         if (alignment === 'none') {
-          onChange(state
-            .change()
-            .removeNodeByKey(node.key)
-            .insertInline(Inline.create({
-              type: node.type,
-              isVoid: node.isVoid,
-              data: node.data.set('float', 'right'),
-            }), ), );
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'right'),
+                }),
+              ),
+          );
         } else if (alignment === 'right') {
-          onChange(state
-            .change()
-            .removeNodeByKey(node.key)
-            .insertInline(Inline.create({
-              type: node.type,
-              isVoid: node.isVoid,
-              data: node.data.set('float', 'right+'),
-            }), ), );
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertInline(
+                Inline.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', 'right+'),
+                }),
+              ),
+          );
         } else {
-          onChange(state
-            .change()
-            .removeNodeByKey(node.key)
-            .insertBlock(Block.create({
-              type: node.type,
-              isVoid: node.isVoid,
-              data: node.data.set('float', null),
-            }), ), );
+          onChange(
+            state
+              .change()
+              .removeNodeByKey(node.key)
+              .insertBlock(
+                Block.create({
+                  type: node.type,
+                  isVoid: node.isVoid,
+                  data: node.data.set('float', null),
+                }),
+              ),
+          );
         }
       },
     },
