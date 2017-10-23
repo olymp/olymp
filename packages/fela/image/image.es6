@@ -169,6 +169,10 @@ class Image extends Component {
       ...containerProps
     } = this.props;
 
+    if (!w) {
+      return <div />;
+    }
+
     const image = url ? (
       <Img
         src={url}
