@@ -145,7 +145,7 @@ const getDirectories = ({
 @cloudinaryRequestDone
 @withActions
 @withPropsOnChange(
-  ['tags', 'items', 'format', 'search', 'folder'],
+  ['tags', 'format', 'search', 'folder'],
   ({ tags, items, setTags, folder, setFolder, search, format }) =>
     getDirectories({
       items,
