@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
-import ReactCrop from 'react-image-crop';
+import ReactCrop from './cropper';
 import cloudinaryUrl from '../cloudinary-url';
-
-import 'react-image-crop/dist/ReactCrop.css';
 
 const StyledCrop = createComponent(
   ({ theme }) => ({
@@ -23,6 +21,7 @@ class Crop extends Component {
   };
 
   onChange = ({ width, height, x, y }) => {
+    console.log(width, height, x, y);
     this.props.onChange([
       Math.floor(this.props.width / 100 * width),
       Math.floor(this.props.height / 100 * height),
@@ -51,12 +50,12 @@ class Crop extends Component {
           crop={
             crop
               ? {
-                width,
-                height,
-                x,
-                y,
-                aspect,
-              }
+                  width,
+                  height,
+                  x,
+                  y,
+                  aspect,
+                }
               : { aspect }
           }
         />
