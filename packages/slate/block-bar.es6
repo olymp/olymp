@@ -21,7 +21,6 @@ const CmsToolbar = createComponent(
   ({ theme }) => ({
     zIndex: 11,
     width: 64,
-    // boxShadow: 'inset -6px 0 5px -5px rgb(0, 0, 0)',
     hasFlex: {
       display: 'flex',
       flexDirection: 'column',
@@ -47,7 +46,7 @@ const CmsToolbar = createComponent(
     },
     '> ul.ant-menu': {
       backgroundColor: theme.color,
-      boxShadow: `inset 6px 0 5px -5px ${theme.dark3}`,
+      boxShadow: `inset 6px 0 5px -5px ${theme.dark4}`,
       position: 'fixed',
       top: 0,
       right: 0,
@@ -118,7 +117,6 @@ const dragStart = type => ev => {
 };
 
 const getIcon = key => {
-  console.log(key);
   if (key === 'Bilder') {
     return 'picture';
   }
@@ -126,16 +124,16 @@ const getIcon = key => {
     return 'database';
   }
   if (key === 'Kacheln') {
-    return 'database';
+    return 'appstore-o';
   }
   if (key === 'Kopf') {
-    return 'database';
+    return 'to-top';
   }
   if (key === 'Layout') {
-    return 'database';
+    return 'file';
   }
   if (key === 'Sonstiges') {
-    return 'database';
+    return 'ellipsis';
   }
   return 'plus';
 };
@@ -161,9 +159,8 @@ const getIcon = key => {
   const menuItems = [];
   sortBy(types, ['category', 'label']).forEach(action => {
     const item = (
-      <Menu.Item type="database" key={action.type}>
+      <Menu.Item key={action.type}>
         <span draggable onDragStart={dragStart(action.type)}>
-          <Icon type="database" />
           <span>{action.label || action.type}</span>
         </span>
       </Menu.Item>
