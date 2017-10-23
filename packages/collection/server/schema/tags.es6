@@ -8,30 +8,41 @@ export default {
   `,
   resolvers: {
     queries: {
-      tags: (source, args, { monk }) =>
+      tags: (source, args, { monk, app }) =>
         monk
           .collection('item')
-          .find({}, { tags: 1 })
-          .then(array => array.map(({ tags }) => tags))
-          .then((array) => {
-            const grouped = groupBy(array);
-            const result = Object.keys(grouped).reduce((result, item) => {
-              if (item === 'undefined' || !item || item === 'null') {
-                return result;
+          .find({ _appId: app.id, state: { $ne: 'REMOVED' } }, { tags: 1 })
+          .then(array => {
+            let tags = array.map(({ tags }) => tags).reduce((result, tags) => {
+              if (tags) {
+                tags.forEach(tag => {
+                  if (tag && tag !== 'undefined' && tag !== 'null') {
+                    if (!result[tag]) {
+                      result[tag] = [];
+                    }
+                    result[tag].push(tag);
+                  }
+                });
               }
-              result.push({
-                id: item,
-                count: grouped[item].length,
-              });
               return result;
-            }, []);
-            return orderBy(result, ['count', 'id'], ['desc', 'asc']);
+            }, {});
+            tags = Object.keys(tags).map(key => ({
+              id: key,
+              count: tags[key].length,
+            }));
+            console.log(tags);
+            return orderBy(tags, ['count', 'id'], ['desc', 'asc']);
           }),
-      suggestions: (source, { collection, field = 'tags' }, { monk }) =>
+      suggestions: (source, { collection, field = 'tags' }, { monk, app }) =>
         monk
           .collection('item')
-          .find(collection ? { _type: lowerFirst(collection) } : {}, { [field]: 1 })
-          .then((array) => {
+          .find(
+            collection ? { _type: lowerFirst(collection), _appId: app.id } : {},
+            {
+              [field]: 1,
+            },
+          )
+          .then(array => {
             const grouped = groupBy(array, field);
             const result = Object.keys(grouped).reduce((result, item) => {
               if (item === 'undefined' || !item || item === 'null') {

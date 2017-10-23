@@ -3,9 +3,17 @@ import Form from 'olymp-ui/form';
 import { SplitView, Sidebar, List } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { createComponent } from 'olymp-fela';
+import { Collapse } from 'antd';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
 import { getValidationRules, getInitialValue } from './utils';
+
+const getHeader = (title, index) => (
+  <div>
+    {title}
+    <i className="fa fa-close pull-right" />
+  </div>
+);
 
 const excludedFields = [
   'id',
@@ -17,14 +25,14 @@ const excludedFields = [
   'createdById',
 ];
 
-const Items = ({ schema, activeField, form, item, ...rest }) =>
+const Items = ({ index, schema, activeField, form, item, ...rest }) =>
   Object.keys(schema).map(key => {
     const field = schema[key];
     const { form: Com, fieldDecorator, ...restFields } = schema[key];
     if (!Com) {
       return null;
     }
-    return fieldDecorator()(
+    return fieldDecorator(index)(
       <Com
         {...rest}
         {...restFields}
@@ -108,7 +116,7 @@ const Buttons = createComponent(
 
 const enhance = compose(
   Form.create(),
-  withPropsOnChange(['collection'], ({ collection, form, ...props }) => {
+  withPropsOnChange(['collection'], ({ collection, form, items, ...props }) => {
     const schema = getFormSchema(collection.fields);
     const { getFieldDecorator } = form;
     const schemaWithEdits = {
@@ -127,11 +135,11 @@ const enhance = compose(
         ...edit,
         title,
         label,
-        fieldDecorator: () =>
-          getFieldDecorator(field.name, {
+        fieldDecorator: index =>
+          getFieldDecorator(`${index}.${field.name}`, {
             rules: getValidationRules(field),
             // valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
-            initialValue: getInitialValue(props, field),
+            initialValue: getInitialValue({ item: items[index], form }, field),
           }),
       };
     });
@@ -141,6 +149,8 @@ const enhance = compose(
     };
   }),
   withState('collapsed', 'setCollapsed', true),
+  withState('activeField', 'setActiveField'),
+  withState('activeItem', 'setActiveItem'),
   withHandlers({
     expand: ({ setCollapsed }) => () => setCollapsed(false),
     collapse: ({ setCollapsed }) => () => setCollapsed(true),
@@ -154,7 +164,7 @@ const FormComponent = enhance(
     inline,
     vertical,
     children,
-    item,
+    items,
     className,
     validateFields,
     form,
@@ -165,33 +175,41 @@ const FormComponent = enhance(
     collapse,
     onSave,
     activeField,
+    activeItem,
+    setActiveItem,
     collapsed,
     header = true,
     ...rest
   }) => {
     const moreChildren = [];
-    if (activeField && schemaWithEdits.full[activeField]) {
+    if (
+      activeField &&
+      activeItem &&
+      schemaWithEdits.full[activeField] &&
+      items[activeItem]
+    ) {
       const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits.full[
         activeField
       ];
       collapsed =
         collapsed !== false && schemaWithEdits.full[activeField].collapse;
       moreChildren.push(
-        fieldDecorator()(
+        fieldDecorator(activeItem)(
           <Com
             {...rest}
             {...restFields}
-            key={activeField}
+            key={activeField + activeItem}
             activeField={activeField}
             form={form}
             field={schemaWithEdits.full[activeField].type}
-            item={item}
+            item={items[activeItem]}
           />,
         ),
       );
     } else {
       collapsed = false;
     }
+
     return (
       <SplitView>
         <Sidebar
@@ -208,25 +226,42 @@ const FormComponent = enhance(
             )
           }
         >
-          <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            <List.Title>Unterpunkte</List.Title>
-            <Items
-              schema={schemaWithEdits.full}
-              activeField={activeField}
-              form={form}
-              item={item}
-              {...rest}
-            />
-            <List.Title>Eingabe</List.Title>
-            <Items
-              schema={schemaWithEdits.etc}
-              activeField={activeField}
-              form={form}
-              item={item}
-              {...rest}
-            />
-          </Form>
-          <Buttons>{children}</Buttons>
+          <Collapse
+            accordion
+            activeKeys={[activeItem]}
+            onChange={setActiveItem}
+          >
+            {(items || []).map((item, i) => (
+              <Collapse.Panel
+                header={getHeader(item.name || `Eintrag ${i}`, i)}
+                key={i}
+              >
+                <Form
+                  layout={(vertical && 'vertical') || (inline && 'inline')}
+                  key={activeItem}
+                >
+                  <List.Title>Unterpunkte</List.Title>
+                  <Items
+                    index={i}
+                    schema={schemaWithEdits.full}
+                    activeField={activeField}
+                    form={form}
+                    item={item}
+                    {...rest}
+                  />
+                  <List.Title>Eingabe</List.Title>
+                  <Items
+                    index={i}
+                    schema={schemaWithEdits.etc}
+                    activeField={activeField}
+                    form={form}
+                    item={item}
+                    {...rest}
+                  />
+                </Form>
+              </Collapse.Panel>
+            ))}
+          </Collapse>
         </Sidebar>
         {children}
         {moreChildren}

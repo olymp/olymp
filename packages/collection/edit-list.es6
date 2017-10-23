@@ -6,9 +6,9 @@ import {
   withState,
   withHandlers,
 } from 'recompose';
-import { Sidebar } from 'olymp-ui';
+import { SplitView, Sidebar } from 'olymp-ui';
 import { Collapse, Button } from 'antd';
-import Form from './components/form';
+import Form from './components/form/form-list';
 import FormItem from './form-item';
 import withCollection from './decorators/with-collection';
 
@@ -41,39 +41,15 @@ export default {
     <FormItem {...p}>{value.length} Einträge</FormItem>
   )),
   full: enhance(
-    ({
-      collection,
-      '@': at,
-      type,
-      value,
-      label,
-      onChange,
-      activeField,
-      setActiveField,
-      onChangeItem,
-      ...props
-    }) => (
-      <Sidebar isOpen padding={0} width={400} title={label}>
-        <Collapse>
-          {(value || []).map((value, i) => (
-            <Collapse.Panel
-              header={getHeader(value.name || `Eintrag ${i}`, i)}
-              key={i}
-            >
-              <Form
-                activeField={activeField}
-                setActiveField={setActiveField}
-                onRemove={() => this.onRemove(i)}
-                collection={collection}
-                value={value}
-                onChange={item => onChangeItem(i, item)}
-              />
-            </Collapse.Panel>
-          ))}
-        </Collapse>
-        <Button onClick={this.createItem}>Erstellen</Button>
-      </Sidebar>
-    ),
+    ({ collection, value, name, title, label, id, ...props }) =>
+      collection ? (
+        <Form
+          {...props}
+          items={value || []}
+          collection={collection}
+          label={id}
+        />
+      ) : null,
   ),
 };
 
