@@ -23,7 +23,14 @@ const Thumbs = createComponent(
   ({ justifyContent, ...p }) => Object.keys(p),
 );
 
-export const MediaList = ({ items, itemHeight, selectedIds, onClick, onRemove, ...rest }) => (
+export const MediaList = ({
+  items,
+  itemHeight,
+  selectedIds,
+  onClick,
+  onRemove,
+  ...rest
+}) => (
   <Thumbs {...rest}>
     {(items || []).map(item => (
       <Thumb
@@ -40,14 +47,14 @@ export const MediaList = ({ items, itemHeight, selectedIds, onClick, onRemove, .
 MediaList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   itemHeight: PropTypes.number,
-  selectedIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedIds: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func,
   onRemove: PropTypes.func,
 };
 MediaList.defaultProps = {
   items: [],
   itemHeight: 80,
-  selected: [],
+  selectedIds: [],
   onClick: () => {},
   onRemove: () => {},
 };
