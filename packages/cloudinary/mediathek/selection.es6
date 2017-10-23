@@ -30,12 +30,15 @@ class SelectionSidebar extends Component {
 
   save = () => {
     const { form, items, multi, save, onChange } = this.props;
-    if (onChange) {
-      return onChange(items);
-    }
     form.validateFields((err, values) => {
       if (err) {
         return console.error(err);
+      }
+      if (onChange) {
+        if (values.crop && items.length) {
+          items[0].crop = values.crop;
+        }
+        return multi ? onChange([items]) : onChange(items);
       }
       let promise;
       if (multi) {
