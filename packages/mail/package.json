@@ -1,5 +1,5 @@
 {
-  "version": "18.1.9",
+  "version": "18.2.2",
   "name": "olymp-mail",
   "description": "",
   "main": "./src",
@@ -14,6 +14,6 @@
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "olymp-hashtax": "^18.1.9"
+    "olymp-hashtax": "^18.2.2"
   }
 }
