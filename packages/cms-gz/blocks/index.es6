@@ -38,6 +38,7 @@ export default {
       position: 'relative',
       overflow: 'hidden',
       '> div:nth-child(1) > div > div': {
+        marginY: 0,
         width: '100%',
       },
       '> div:nth-child(2)': {
