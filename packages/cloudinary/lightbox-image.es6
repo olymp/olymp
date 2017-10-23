@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createUpdateQuery } from 'olymp-router';
 import { createComponent } from 'react-fela';
+import { lightboxActions } from './lightbox-redux';
 import cloudinaryUrl from './cloudinary-url';
 import Image from './image';
 
@@ -19,11 +20,13 @@ const Img = createComponent(
 
 @connect(null, dispatch => ({
   updateQuery: createUpdateQuery(dispatch),
+  ...lightboxActions(dispatch),
 }))
 export default class Lightbox extends Component {
   static contextTypes = {
-    lightbox: PropTypes.object,
+    gallery: PropTypes.number,
   };
+
   static defaultProps = {
     attributes: {},
   };
@@ -37,18 +40,18 @@ export default class Lightbox extends Component {
   }
 
   componentWillReceiveProps({ value }) {
-    const { lightbox } = this.context;
-
+    const { removeFromLightbox } = this.props;
+    const { gallery } = this.context;
     if (value.id !== this.props.value.id) {
-      lightbox.remove(this.ref);
+      removeFromLightbox(this.ref, gallery);
       this.add(value);
     }
   }
 
   componentWillUnmount() {
-    const { lightbox } = this.context;
-
-    lightbox.remove(this.ref);
+    const { removeFromLightbox } = this.props;
+    const { gallery } = this.context;
+    removeFromLightbox(this.ref, gallery);
   }
 
   onClick = e => {
@@ -60,32 +63,35 @@ export default class Lightbox extends Component {
   };
 
   add = value => {
-    const { lightbox } = this.context;
+    const { addToLightbox } = this.props;
+    const { gallery } = this.context;
     const width = 800;
     const getSrcSet = w =>
       `${cloudinaryUrl(value, {
         w: Math.floor(w),
       })} ${Math.floor(w)}w`;
 
-    lightbox.add({
-      ref: this.ref,
-      gallery: lightbox.gallery,
-      src: cloudinaryUrl(value, { w: width }),
-      srcset: [
-        getSrcSet(width),
-        getSrcSet(width / 4 * 3),
-        getSrcSet(width / 2),
-        getSrcSet(width / 4),
-      ],
-      thumbnail: cloudinaryUrl(value, {
-        w: 50,
-        h: 50,
-      }),
-      caption:
-        value.caption && value.source
-          ? `${value.caption} - ${value.source}`
-          : value.caption || value.source || '',
-    });
+    addToLightbox(
+      {
+        ref: this.ref,
+        src: cloudinaryUrl(value, { w: width }),
+        srcset: [
+          getSrcSet(width),
+          getSrcSet(width / 4 * 3),
+          getSrcSet(width / 2),
+          getSrcSet(width / 4),
+        ],
+        thumbnail: cloudinaryUrl(value, {
+          w: 50,
+          h: 50,
+        }),
+        caption:
+          value.caption && value.source
+            ? `${value.caption} - ${value.source}`
+            : value.caption || value.source || '',
+      },
+      gallery,
+    );
   };
 
   ref = Math.random()

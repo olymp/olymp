@@ -4,9 +4,9 @@ import FormItem from './form-item';
 import { DetailEdit } from './edits';
 
 export default {
-  rule: ({ '@': at }) => at && at.idField,
+  rule: ({ '@': at }) => at && at.idField && at.idField.type.kind === 'LIST',
   form: toClass(p => <FormItem {...p}>Bearbeiten</FormItem>),
-  full: toClass(({ items = [], '@': at, type, ...props }) => (
+  full: toClass(({ '@': at, type, ...props }) => (
     <DetailEdit {...props} typeName={at.idField.type.name} />
   )),
 };
