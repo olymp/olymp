@@ -108,11 +108,7 @@ export default ({
   nowrap,
 }) =>
   onClick || disabled ? (
-    <a
-      className={className}
-      href="javascript:;"
-      onClick={disabled ? () => {} : onClick}
-    >
+    <a className={className} onClick={disabled ? () => {} : onClick}>
       <Content
         image={image}
         color={color}

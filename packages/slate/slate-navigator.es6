@@ -16,9 +16,11 @@ const getMenuItems = (schema, prefix) => {
   }));
   const categories = {};
   const menuItems = [];
-  sortBy(types, ['category', 'label']).forEach((action) => {
+  sortBy(types, ['category', 'label']).forEach(action => {
     const item = (
-      <Menu.Item key={`${prefix}${action.type}`}>{action.label || action.type}</Menu.Item>
+      <Menu.Item key={`${prefix}${action.type}`}>
+        {action.label || action.type}
+      </Menu.Item>
     );
     if (action.category) {
       if (!categories[action.category]) {
@@ -72,7 +74,7 @@ const BlockMenu = createComponent(
         </Menu>
       }
     >
-      <a href="javascript:;" className={className} onClick={onClick}>
+      <a className={className} onClick={onClick}>
         <Icon type={type} />
       </a>
     </Dropdown>
@@ -94,8 +96,12 @@ const ChangeBlock = createComponent(
     <Dropdown
       overlay={
         <Menu onClick={onClick}>
-          <Menu.SubMenu title="Umwandeln">{getMenuItems(schema, 'transform')}</Menu.SubMenu>
-          <Menu.SubMenu title="Einpacken">{getMenuItems(schema, 'wrap')}</Menu.SubMenu>
+          <Menu.SubMenu title="Umwandeln">
+            {getMenuItems(schema, 'transform')}
+          </Menu.SubMenu>
+          <Menu.SubMenu title="Einpacken">
+            {getMenuItems(schema, 'wrap')}
+          </Menu.SubMenu>
           <Menu.Item key="duplicate">
             <span>Duplizieren</span>
           </Menu.Item>
@@ -114,7 +120,7 @@ const ChangeBlock = createComponent(
         </Menu>
       }
     >
-      <a href="javascript:;" className={className} onClick={onClick}>
+      <a className={className} onClick={onClick}>
         <Icon type={type} />
       </a>
     </Dropdown>
@@ -125,23 +131,32 @@ const ChangeBlock = createComponent(
 @getSchema
 @onlyUpdateForKeys(['base64'])
 class Pages extends Component {
-  onDrop = (info) => {
+  onDrop = info => {
     const { value } = this.props;
     const dropNode = info.node.props.node;
     const dragNode = info.dragNode.props.node;
     const dropPos = info.node.props.pos.split('-');
-    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+    const dropPosition =
+      info.dropPosition - Number(dropPos[dropPos.length - 1]);
     // const dragNodesKeys = info.dragNodesKeys;
     if (info.dropToGap) {
       const parent = value.document.getParent(dropNode.key);
       const dropObjIndex = parent.nodes.indexOf(dropNode);
       if (dropPosition === -1) {
-        this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex));
+        this.onChange(
+          value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex),
+        );
       } else {
-        this.onChange(value.change().moveNodeByKey(dragNode.key, parent.key, dropObjIndex - 1));
+        this.onChange(
+          value
+            .change()
+            .moveNodeByKey(dragNode.key, parent.key, dropObjIndex - 1),
+        );
       }
     } else {
-      this.onChange(value.change().moveNodeByKey(dragNode.key, dropNode.key, 0));
+      this.onChange(
+        value.change().moveNodeByKey(dragNode.key, dropNode.key, 0),
+      );
     }
     /* return;
     const { value } = this.props;
@@ -177,7 +192,7 @@ class Pages extends Component {
 
   onChange = change => this.props.onChange(change.state);
 
-  applyTemplate = (type) => {
+  applyTemplate = type => {
     const { value } = this.props;
     if (type === 'image') {
       this.onChange(
@@ -208,13 +223,20 @@ class Pages extends Component {
             type: 'banner',
             kind: 'block',
             isVoid: false,
-            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+            nodes: [
+              Block.create({
+                type: 'paragraph',
+                nodes: [Text.create('Titel')],
+              }),
+            ],
           })
           .insertNodeByKey(value.document.key, 1, {
             type: 'containerText',
             kind: 'block',
             isVoid: false,
-            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Text')] })],
+            nodes: [
+              Block.create({ type: 'paragraph', nodes: [Text.create('Text')] }),
+            ],
           })
           .focus(),
       );
@@ -224,14 +246,27 @@ class Pages extends Component {
           .change()
           .selectAll()
           .delete()
-          .insertNodeByKey(value.document.key, 0, { type: 'carousel', kind: 'block', isVoid: true })
+          .insertNodeByKey(value.document.key, 0, {
+            type: 'carousel',
+            kind: 'block',
+            isVoid: true,
+          })
           .insertNodeByKey(value.document.key, 1, {
             type: 'banner',
             kind: 'block',
             isVoid: false,
-            nodes: [Block.create({ type: 'paragraph', nodes: [Text.create('Titel')] })],
+            nodes: [
+              Block.create({
+                type: 'paragraph',
+                nodes: [Text.create('Titel')],
+              }),
+            ],
           })
-          .insertNodeByKey(value.document.key, 2, Block.create({ type: 'paragraph' }))
+          .insertNodeByKey(
+            value.document.key,
+            2,
+            Block.create({ type: 'paragraph' }),
+          )
           .insertNodeByKey(value.document.key, 3, {
             type: 'containerText',
             kind: 'block',
@@ -265,7 +300,9 @@ class Pages extends Component {
           .wrapBlock(actionType.split(':')[1]),
       );
     } else if (actionType.indexOf('transform:') === 0) {
-      this.onChange(value.change().setNodeByKey(node.key, actionType.split(':')[1]));
+      this.onChange(
+        value.change().setNodeByKey(node.key, actionType.split(':')[1]),
+      );
     } else if (actionType.indexOf('pre:') === 0) {
       this.onChange(
         value.change().insertNodeByKey(node.key, node.nodes.size, {
@@ -292,7 +329,7 @@ class Pages extends Component {
     }
   };
 
-  onClick = (node) => {
+  onClick = node => {
     const element = document.querySelector(`[data-key="${node.key}"]`);
     if (element) {
       document.querySelector(`[data-key="${node.key}"]`).scrollIntoView(true);
@@ -312,11 +349,13 @@ class Pages extends Component {
       return undefined;
     }
     const nodes = block.nodes
-      .map((item) => {
+      .map(item => {
         let label;
         if (schema.nodes[item.type]) {
           label =
-            (schema.nodes[item.type].slate && schema.nodes[item.type].slate.label) || item.type;
+            (schema.nodes[item.type].slate &&
+              schema.nodes[item.type].slate.label) ||
+            item.type;
         } else if (item.type === 'paragraph') {
           label = 'Paragraph';
         } else if (item.type === 'line') {
@@ -337,7 +376,10 @@ class Pages extends Component {
           label = 'Liste';
         } else if (item.type === 'numbered-list') {
           label = 'Nummerierte Liste';
-        } else if (item.type === 'bulleted-list-item' || item.type === 'numbered-list-item') {
+        } else if (
+          item.type === 'bulleted-list-item' ||
+          item.type === 'numbered-list-item'
+        ) {
           label = 'Listenelement';
         } else if (item.kind === 'text') {
           label = 'Text';
@@ -353,7 +395,7 @@ class Pages extends Component {
             node={item}
             parent={parent}
             title={[
-              <a key="link" href="javascript:;" onClick={() => this.onClick(item)}>
+              <a key="link" onClick={() => this.onClick(item)}>
                 {label}
               </a>,
               <ChangeBlock
@@ -390,7 +432,7 @@ class Pages extends Component {
           <Tree.TreeNode
             key="image"
             title={
-              <a key="link" href="javascript:;" onClick={() => this.applyTemplate('image')}>
+              <a key="link" onClick={() => this.applyTemplate('image')}>
                 Bild + Text
               </a>
             }
@@ -398,7 +440,7 @@ class Pages extends Component {
           <Tree.TreeNode
             key="banner"
             title={
-              <a key="link" href="javascript:;" onClick={() => this.applyTemplate('banner')}>
+              <a key="link" onClick={() => this.applyTemplate('banner')}>
                 Banner + Text
               </a>
             }
@@ -406,7 +448,7 @@ class Pages extends Component {
           <Tree.TreeNode
             key="carousel"
             title={
-              <a key="link" href="javascript:;" onClick={() => this.applyTemplate('carousel')}>
+              <a key="link" onClick={() => this.applyTemplate('carousel')}>
                 Bilder-Karusell + Text
               </a>
             }

@@ -66,7 +66,7 @@ const styles = ({ theme }) => ({
     onHover: {},
   },
   '& li.brand > a': {
-    padding: 0
+    padding: 0,
   },
   '& input[type="checkbox"]:checked + ul.sub-menu': {
     display: 'block',
@@ -116,7 +116,7 @@ const styles = ({ theme }) => ({
           left: 'initial',
           right: '100%',
         },
-      }
+      },
     },
     '& li:hover > ul': {
       display: 'block',
@@ -165,21 +165,27 @@ export const ItemLabel = ({ renderLabel: Render, ...props }) => {
   } else if (Render) {
     return <Render {...props} />;
   }
-  return <a href="javascript:;">{props.children}</a>;
+  return <a>{props.children}</a>;
 };
 
 // List Item
-export const Item = ({
-  className, style, children, level, ...rest
-}) => (
-  <li className={cn('o-nav-item', `o-nav-item-lvl-${level}`, className)} style={style}>
+export const Item = ({ className, style, children, level, ...rest }) => (
+  <li
+    className={cn('o-nav-item', `o-nav-item-lvl-${level}`, className)}
+    style={style}
+  >
     <ItemLabel {...rest}>{children}</ItemLabel>
   </li>
 );
 
 // Menu Item (Submenu)
 export const MenuItem = ({
-  className, style, children, title, level = 0, ...rest
+  className,
+  style,
+  children,
+  title,
+  level = 0,
+  ...rest
 }) => (
   <li className={className} style={style}>
     <ItemLabel {...rest}>
@@ -191,16 +197,18 @@ export const MenuItem = ({
     </ItemLabel>
     <input type="checkbox" className="sm2" />
     <ul className="sub-menu">
-      {Children.map(children, child => cloneElement(child, { level: level + 1 }))}
+      {Children.map(children, child =>
+        cloneElement(child, { level: level + 1 }),
+      )}
     </ul>
   </li>
 );
 
 // Menu Item (Submenu)
-export const Right = ({
-  children, ...rest
-}) =>
-  Children.map(children, (child, i) => cloneElement(child, { ...rest, className: 'right', key: i })).reverse();
+export const Right = ({ children, ...rest }) =>
+  Children.map(children, (child, i) =>
+    cloneElement(child, { ...rest, className: 'right', key: i }),
+  ).reverse();
 
 Nav.Item = Item;
 Nav.Menu = MenuItem;
