@@ -105,6 +105,8 @@ export default class Lightbox extends Component {
       search,
       dispatch,
       updateQuery,
+      addToLightbox,
+      removeFromLightbox,
       ...rest
     } = this.props;
 

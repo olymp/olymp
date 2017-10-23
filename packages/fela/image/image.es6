@@ -213,7 +213,7 @@ class Image extends Component {
 }
 Image.displayName = 'Image';
 Image.propTypes = {
-  src: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
+  src: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   ratio: PropTypes.number.isRequired,
   srcRatio: PropTypes.number.isRequired,
   mode: PropTypes.oneOf(['filled', 'padded']),
@@ -233,6 +233,7 @@ Image.propTypes = {
   onClick: PropTypes.func,
 };
 Image.defaultProps = {
+  src: undefined,
   // ratio: 0.75,
   // srcRatio: 0.75,
   mode: 'filled',
