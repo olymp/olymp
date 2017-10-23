@@ -3,11 +3,13 @@ import { compose } from 'recompose';
 // import { Prompt } from 'olymp-router';
 import { ContentLoader } from 'olymp-fela';
 import { connect } from 'react-redux';
+import { Form } from 'antd';
 import { createUpdateQuery } from 'olymp-router';
 import withItem from '../decorators/with-item';
 import { DetailForm } from '../components';
 
 const enhance = compose(
+  Form.create(),
   withItem,
   connect(
     ({ location }) => ({

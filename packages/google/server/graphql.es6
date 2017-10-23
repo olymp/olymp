@@ -39,7 +39,14 @@ export default (mapsKey, mail, key) => {
       queries: {
         analyticsQuery: (
           source,
-          { start, end, metrics = [], dimensions = [], sorts = [], filters = [] },
+          {
+            start,
+            end,
+            metrics = [],
+            dimensions = [],
+            sorts = [],
+            filters = [],
+          },
         ) => {
           if (!jwtClient) {
             return null;
@@ -47,21 +54,27 @@ export default (mapsKey, mail, key) => {
 
           const metricsArray = metrics.map(name => metricsObj[name].name);
 
-          const dimensionsArray = dimensions.map(name => dimensionsObj[name].name);
+          const dimensionsArray = dimensions.map(
+            name => dimensionsObj[name].name,
+          );
 
-          const sortsArray = sorts.map((sort) => {
+          const sortsArray = sorts.map(sort => {
             // ascending
             if (sort.indexOf('_ASC') !== -1) {
-              return { ...metricsObj, ...dimensionsObj }[sort.replace('_ASC', '')].name;
+              return { ...metricsObj, ...dimensionsObj }[
+                sort.replace('_ASC', '')
+              ].name;
             }
 
             // descending
-            return `-${{ ...metricsObj, ...dimensionsObj }[sort.replace('_DESC', '')].name}`;
+            return `-${{ ...metricsObj, ...dimensionsObj }[
+              sort.replace('_DESC', '')
+            ].name}`;
           });
 
           const query = {
             auth: jwtClient,
-            ids: 'ga:110941031',
+            ids: 'ga:87658937',
             sort: sortsArray,
             'start-date': start,
             'end-date': end,
@@ -69,8 +82,10 @@ export default (mapsKey, mail, key) => {
             dimensions: dimensionsArray.join(','),
           };
           if (filters.length) {
-            filters = filters.map((filter) => {
-              const name = (metricsObj[filter.metric] || dimensionsObj[filter.dimension]).name;
+            filters = filters.map(filter => {
+              const name = (metricsObj[filter.metric] ||
+                dimensionsObj[filter.dimension]
+              ).name;
 
               if (filter.operator === 'NE') {
                 return `${name}==${filter.expression}`;
@@ -89,7 +104,9 @@ export default (mapsKey, mail, key) => {
             query.filters = filters.join(','); // => OR, AND is still missing!
           }
 
-          return analytics(query).then(({ columnHeaders, rows, totalsForAllResults }) => {
+          return analytics(
+            query,
+          ).then(({ columnHeaders, rows, totalsForAllResults }) => {
             const cols = columnHeaders.map(x => x.name.substr(3));
 
             const resultRows = (rows || []).map(values =>
@@ -99,7 +116,9 @@ export default (mapsKey, mail, key) => {
               }, {}),
             );
 
-            const resultTotals = Object.keys(totalsForAllResults).reduce((o, k, i) => {
+            const resultTotals = Object.keys(
+              totalsForAllResults,
+            ).reduce((o, k, i) => {
               o[k.substr(3)] = totalsForAllResults[k];
               return o;
             }, {});
@@ -110,7 +129,8 @@ export default (mapsKey, mail, key) => {
             return resultTotals;
           });
         },
-        geocode: (source, args) => maps('geocode', args).then(result => result[0]),
+        geocode: (source, args) =>
+          maps('geocode', args).then(result => result[0]),
         geocodeList: (source, args) => maps('geocode', args),
       },
     },
@@ -134,18 +154,20 @@ export default (mapsKey, mail, key) => {
       type AnalyticsQuery {
         id: String
         ${Object.keys(metricsObj)
-    .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
-    .join('\n')}
+          .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
+          .join('\n')}
         rows: [AnalyticsQueryRows]
       }
       type AnalyticsQueryRows {
         id: String
         ${Object.keys(metricsObj)
-    .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
-    .join('\n')}
+          .map(key => `${metricsObj[key].output}: ${metricsObj[key].type}`)
+          .join('\n')}
         ${Object.keys(dimensionsObj)
-    .map(key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`)
-    .join('\n')}
+          .map(
+            key => `${dimensionsObj[key].output}: ${dimensionsObj[key].type}`,
+          )
+          .join('\n')}
       }
       input AnalyticsFilter {
         metric: ANALYTICS_METRICS

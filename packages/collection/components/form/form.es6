@@ -108,7 +108,6 @@ const Buttons = createComponent(
 );
 
 const enhance = compose(
-  Form.create(),
   withPropsOnChange(['collection'], ({ collection, form, ...props }) => {
     const schema = getFormSchema(collection.fields);
     const { getFieldDecorator } = form;
