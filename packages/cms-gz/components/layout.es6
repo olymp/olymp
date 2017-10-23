@@ -58,12 +58,11 @@ export const App = createComponent(
         fontSize: theme.fontSizeH6,
       },
     },
-    '& .paragraph': {
+    '& .slate-editor': {
       '& h1': {
         textAlign: 'left',
         position: 'relative',
-        marginTop: theme.space3,
-        marginBottom: theme.space2,
+        marginY: theme.space3,
         onAfter: {
           content: '""',
           bottom: -1,
@@ -80,8 +79,7 @@ export const App = createComponent(
       '& h2': {
         textAlign: 'left',
         position: 'relative',
-        marginTop: theme.space3,
-        marginBottom: theme.space2,
+        marginY: theme.space3,
         onAfter: {
           content: '""',
           bottom: -1,
@@ -113,10 +111,10 @@ export const App = createComponent(
       '& blockquote': {
         display: 'block',
         position: 'relative',
-        padding: theme.space3,
+        padding: theme.space2,
         paddingLeft: theme.space4,
         marginX: 'auto',
-        marginY: theme.space3,
+        marginY: theme.space2,
         fontFamily: 'Raleway, sans-serif',
         fontSize: '1.5rem',
         lineHeight: 1.2,
@@ -169,12 +167,16 @@ const enhance = compose(
       nav: get(navigation.filter(x => x.type === 'MENU')[0], 'children', []),
       footer: !isAuthenticated
         ? [
-          ...get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
-          {
-            name: 'Einloggen',
-            pathname: `${pathname}?login`,
-          },
-        ]
+            ...get(
+              navigation.filter(x => x.type === 'MENU')[1],
+              'children',
+              [],
+            ),
+            {
+              name: 'Einloggen',
+              pathname: `${pathname}?login`,
+            },
+          ]
         : get(navigation.filter(x => x.type === 'MENU')[1], 'children', []),
     }),
   ),
