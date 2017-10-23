@@ -1,4 +1,3 @@
-import React from 'react';
 import { createComponent } from 'react-fela';
 import HeaderBlock from 'olymp-pages/blocks/header';
 
