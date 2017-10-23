@@ -33,11 +33,12 @@ const loaderSchema = [
   },
 ];
 const Label = Blocks.ImageBlockLabel.component;
-const Container = withEdit('article')(
-  createComponent(ContainerBlock.styles, ContainerBlock.component, p =>
-    Object.keys(p),
-  ),
+const Container = createComponent(
+  ContainerBlock.styles,
+  ContainerBlock.component,
+  p => Object.keys(p),
 );
+const Inner = withEdit('article')(p => <div {...p} />);
 
 const Peak = createComponent(
   props => ({
@@ -114,15 +115,12 @@ const component = withTheme(
           {item.name}
         </HeaderBlock>
       )}
-      <Container
-        className={className}
-        id={item.id}
-        color={item.org.color}
-        {...attributes}
-      >
-        <SlateReader readOnly value={item.text} />
-        <br />
-        <PrefetchLink to="/magazin">Zurück zur Übersicht</PrefetchLink>
+      <Container className={className} color={item.org.color} {...attributes}>
+        <Inner id={item.id}>
+          <SlateReader readOnly value={item.text} />
+          <br />
+          <PrefetchLink to="/magazin">Zurück zur Übersicht</PrefetchLink>
+        </Inner>
       </Container>
     </div>
   </SchemaLoader>
