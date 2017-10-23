@@ -46,15 +46,10 @@ export default {
         color: theme.light,
         '> h1': {
           color: theme.light,
-        },
-        '> h2': {
-          color: theme.light,
-        },
-        '> h3': {
-          color: theme.light,
-        },
-        '> p': {
-          color: theme.light,
+          margin: 0,
+          onAfter: {
+            display: 'none',
+          },
         },
       },
       ifMediumUp: {
