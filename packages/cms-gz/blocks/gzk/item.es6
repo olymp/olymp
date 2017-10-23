@@ -22,7 +22,7 @@ export default createComponent(
     paddingLeft: theme.space4,
     paddingRight: theme.space1,
     fontWeight: 'bold',
-    clear: 'both',
+    clearfix: true,
     '> span': {
       float: 'right',
     },

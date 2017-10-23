@@ -107,7 +107,7 @@ const enhanceData = compose(
       items.push({
         ...hautmedizin,
         id: 4,
-        name: 'Hautmedizin Ästhetik',
+        name: 'Hautmedizin Ästhetikum',
         etage: '1. Stock',
         lageplan: 'L15',
       });
@@ -228,6 +228,8 @@ export default class GZKBlock extends Component {
                 <Item
                   color={item.color}
                   isActive={room === item.lageplan.toLowerCase()}
+                  onTap={() =>
+                    updateQuery({ '@room': item.lageplan.toLowerCase() })}
                   onClick={() =>
                     updateQuery({ '@room': item.lageplan.toLowerCase() })}
                   key={item.id}
