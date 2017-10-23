@@ -1,0 +1,27 @@
+{
+  "version": "18.1.2",
+  "name": "olymp-atlaskit",
+  "description": "",
+  "main": "./index.js",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "up": "npm-check -u"
+  },
+  "dependencies": {
+    "@atlaskit/avatar": "^6.4.0",
+    "@atlaskit/button": "^3.5.1",
+    "@atlaskit/css-reset": "^1.1.4",
+    "@atlaskit/dropdown-menu": "^3.4.0",
+    "@atlaskit/flag": "^3.4.1",
+    "@atlaskit/icon": "^7.0.1",
+    "@atlaskit/modal-dialog": "^2.5.0",
+    "@atlaskit/navigation": "^16.0.0",
+    "@atlaskit/page": "^4.4.0",
+    "@atlaskit/util-shared-styles": "^2.10.0"
+  }
+}
