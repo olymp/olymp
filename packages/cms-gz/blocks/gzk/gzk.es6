@@ -11,8 +11,9 @@ import Map from './map';
 import Item from './item';
 
 const H2 = createComponent(
-  () => ({
+  ({ theme }) => ({
     textAlign: 'center',
+    marginBottom: theme.space4,
   }),
   'h2',
   [],
@@ -90,7 +91,7 @@ const enhanceData = compose(
       id: 2,
       name: 'Toiletten',
       color: 'red',
-      etage: 'Erdgeschoss',
+      etage: 'EG',
       lageplan: 'L05',
     });
     // Ästhetik + Hautmedizin privat
@@ -117,7 +118,7 @@ const enhanceData = compose(
       items.push({
         ...diakonie,
         id: 5,
-        etage: 'Erdgeschoss',
+        etage: 'EG',
         lageplan: 'L02',
       });
     }
@@ -133,7 +134,7 @@ const enhanceData = compose(
         levelStyles[`> #${lageplan.toLowerCase()}`] = {
           '> #room': {
             fill: tinycolor(color)
-              .lighten(room === lageplan.toLowerCase() ? 0 : 36)
+              .setAlpha(room === lageplan.toLowerCase() ? 1 : 0.5)
               .toRgbString(),
             cursor: 'pointer',
             position: 'relative',
@@ -231,7 +232,8 @@ export default class GZKBlock extends Component {
                     updateQuery({ '@room': item.lageplan.toLowerCase() })}
                   key={item.id}
                 >
-                  {item.name} <span>[{item.etage}]</span>
+                  {item.name}{' '}
+                  <span>[{item.etage.replace('Nebengebäude ', '')}]</span>
                 </Item>
               ))}
             </ul>
