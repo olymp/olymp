@@ -1,197 +1,110 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { onlyUpdateForKeys } from 'recompose';
-import { createComponent } from 'react-fela';
-import { Image } from 'cloudinary-react';
-import { Placeholder } from 'olymp-fela';
+import { Image } from 'olymp-fela';
 
-const Container = createComponent(
-  ({
-    theme,
-    ratio,
-    height,
-    width,
-    minWidth,
-    maxWidth,
-    minHeight,
-    maxHeight,
-    circle,
-    fade,
-  }) => ({
-    position: 'relative',
-    overflow: 'hidden',
-    width,
-    height,
-    minWidth,
-    maxWidth,
-    minHeight,
-    maxHeight,
-    onBefore: {
-      display: 'block',
-      content: '""',
-      width: '100%',
-      height: 0,
-      paddingTop: `${ratio * 100}%`,
-    },
-    '> img': {
-      borderRadius: circle ? '50%' : theme.borderRadius,
-      zIndex: 0,
-      center: true,
-    },
-    '> img.front': {
-      zIndex: 1,
-      animationDuration: '1s',
-      animationIterationCount: 1,
-      animationTimingFunction: 'ease-out',
-      animationName: fade
-        ? {
-            from: { opacity: 0 },
-            to: { opacity: 1 },
-          }
-        : null,
-    },
-  }),
-  ({ attributes, ...p }) => <div {...p} {...attributes} />,
-  ['onClick', 'onMouseEnter', 'attributes', 'style', 'className', 'children'],
-);
+// https://github.com/cloudinary/cloudinary-react
+// http://cloudinary.com/documentation/image_transformation_reference
 
-const CloudinaryImage = ({
-  fade,
-  value,
-  mode,
-  ratio,
-  circle,
-  className,
-  onClick,
-  onMouseEnter,
-  attributes,
-  width,
-  height,
-  maxWidth,
-  maxHeight,
-  children,
-  style,
-}) => {
-  if (!value) {
-    value = {};
+export const cloudinaryUrl = (value, options) => {
+  const newOptions = {
+    c: 'fill',
+    f: 'auto',
+    q: 'auto:eco',
+    fl: 'lossy',
+    dpr: 2,
+    ...options,
+  };
+
+  if (!value || !value.url) {
+    return '';
   }
-  const imageWidth = (value.crop && value.crop[0]) || value.width;
-  const imageHeight = (value.crop && value.crop[1]) || value.height;
-  const parts = value.url ? value.url.split('/') : null;
-  const cloud = parts && parts[3];
-  const publicId =
-    parts &&
-    parts
-      .slice(7)
-      .join('/')
-      .split('.')[0];
 
-  return (
-    <Container
-      fade={fade}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      width={width}
-      height={height}
-      maxWidth={maxWidth}
-      maxHeight={maxHeight}
-      ratio={ratio || imageHeight / imageWidth}
-      circle={circle}
-      className={className}
-      attributes={attributes}
-      style={style}
-    >
-      {children}
-      {!value.url && <Placeholder height="100%" width="100%" circle={circle} />}
-      {value.url && (
-        <Image
-          secure
-          cloudName={cloud}
-          publicId={publicId}
-          html_width="100%"
-          html_height="auto"
-          responsive={false}
-          transformation={{
-            gravity: 'auto',
-            crop: mode || 'fill',
-            quality: 0,
-            fetchFormat: 'auto',
-            width: 50,
-            aspectRatio:
-              ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
-          }}
-        />
-      )}
-      {typeof window !== 'undefined' &&
-        value.url && (
-          <Image
-            className="front"
-            secure
-            cloudName={cloud}
-            publicId={publicId}
-            html_width="100%"
-            html_height="auto"
-            responsive={typeof window !== 'undefined'}
-            transformation={{
-              gravity: 'auto',
-              crop: mode || 'fill',
-              quality: 'auto',
-              fetchFormat: 'auto',
-              dpr: 'auto',
-              width: 'auto',
-              aspectRatio:
-                ratio || `${Math.floor(imageWidth)}:${Math.floor(imageHeight)}`,
-            }}
-          />
-        )}
-    </Container>
-  );
+  const newUrl =
+    value.url.indexOf('http://res.cloudinary.com/') === 0
+      ? `https${value.url.substr(4)}`
+      : value.url;
+
+  const crop =
+    value.crop && value.crop.length
+      ? `w_${value.crop[0]},h_${value.crop[1]},x_${value.crop[2]},y_${value
+          .crop[3]},c_crop/`
+      : '';
+
+  const query = Object.keys(newOptions)
+    .map(key => `${key}_${newOptions[key]}`)
+    .join(',');
+
+  if (newUrl.indexOf('/upload/') !== -1) {
+    return newUrl.replace('/upload/', `/upload/${crop}${query}/`);
+  } else if (newUrl.indexOf('/fetch/') !== -1) {
+    return newUrl.replace('/fetch/', `/fetch/${crop}${query}/`);
+  }
 };
 
+const CloudinaryImage = ({
+  options,
+  value,
+  ratio,
+  avatar,
+  alt,
+  maxResolution,
+  ...rest
+}) => {
+  if (!value) {
+    return <div />;
+  }
+
+  const width = (value.crop && value.crop[0]) || value.width;
+  const height = (value.crop && value.crop[1]) || value.height;
+
+  return (
+    <Image
+      {...rest}
+      maxResolution={maxResolution > 6000000 ? 6000000 : maxResolution}
+      src={
+        value && value.url
+          ? (w, h) =>
+              cloudinaryUrl(value, {
+                w,
+                h,
+                g: avatar ? 'face' : 'auto',
+                ...options,
+              })
+          : undefined
+      }
+      alt={alt || value.caption}
+      ratio={ratio || height / width}
+      srcRatio={height / width}
+    />
+  );
+};
 CloudinaryImage.propTypes = {
   value: PropTypes.shape({
     url: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
   }),
-  children: PropTypes.node,
   ratio: PropTypes.number,
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  maxWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  fade: PropTypes.bool,
-  circle: PropTypes.bool,
-  mode: PropTypes.string,
+  maxResolution: PropTypes.number,
+  options: PropTypes.shape({
+    w: PropTypes.number,
+    h: PropTypes.number,
+    c: PropTypes.string,
+    f: PropTypes.string,
+    q: PropTypes.string,
+    fl: PropTypes.string,
+    dpr: PropTypes.number,
+    // ...
+  }),
+  avatar: PropTypes.bool,
   alt: PropTypes.string,
-  className: PropTypes.string,
-  onClick: PropTypes.func,
-  onMouseEnter: PropTypes.func,
-  attributes: PropTypes.object,
-  style: PropTypes.object,
 };
 CloudinaryImage.defaultProps = {
   value: undefined,
-  fade: false,
   ratio: undefined,
-  attributes: {},
+  maxResolution: 111000, // 333*333px
+  options: {},
+  avatar: false,
   alt: undefined,
 };
-export default onlyUpdateForKeys([
-  'value',
-  'children',
-  'ratio',
-  'width',
-  'height',
-  'maxWidth',
-  'maxHeight',
-  'fade',
-  'circle',
-  'mode',
-  'alt',
-  'className',
-  'onClick',
-  'onMouseEnter',
-  'attributes',
-  'style',
-])(CloudinaryImage);
+export default CloudinaryImage;

@@ -4,13 +4,12 @@ import { getContext } from 'recompose';
 import { withAmp } from 'olymp-utils';
 import { createComponent } from 'react-fela';
 
-const Placeholder = createComponent(
-  ({ width, height, theme, circle, onClick }) => ({
+const Image = createComponent(
+  ({ width, height, theme, circle }) => ({
     width,
     height,
-    backgroundColor: theme.dark1,
+    backgroundColor: theme.light,
     borderRadius: circle ? '50%' : 0,
-    cursor: onClick ? 'pointer' : undefined,
     '> img': {
       opacity: 0.4,
       center: true,
@@ -33,10 +32,8 @@ const Placeholder = createComponent(
     },
   }),
   withAmp(
-    getContext({
-      theme: PropTypes.object,
-    })(({ className, theme, onClick, amp }) => (
-      <div className={className} onClick={onClick}>
+    getContext({ theme: PropTypes.object })(({ className, theme, amp }) => (
+      <div className={className}>
         {!amp &&
           typeof theme.get().logoWhite === 'string' && (
             <img src={theme.get().logoWhite} alt="placeholder" />
@@ -49,17 +46,15 @@ const Placeholder = createComponent(
   ),
   ['onClick', 'amp'],
 );
-Placeholder.displayName = 'Placeholder';
-Placeholder.propTypes = {
+Image.displayName = 'Placeholder';
+Image.propTypes = {
   circle: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  onClick: PropTypes.func,
 };
-Placeholder.defaultProps = {
+Image.defaultProps = {
   circle: false,
-
   width: undefined,
   height: undefined,
 };
-export default Placeholder;
+export default Image;

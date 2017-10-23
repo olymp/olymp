@@ -9,8 +9,8 @@ import { Image } from 'olymp-cloudinary';
 import * as Blocks from 'olymp-pages/blocks';
 import { SlateReader } from 'olymp-slate';
 import ContainerBlock from 'olymp-pages/blocks/container-text';
-import { ImageStyles } from '../image/block';
-import HeaderBlock from '../../components/header';
+import { ImageStyles } from './image/block';
+import HeaderBlock from '../components/header';
 
 const loaderSchema = [
   {
