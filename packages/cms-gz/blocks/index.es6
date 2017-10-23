@@ -29,11 +29,17 @@ export default {
   GZKTerminBlock,
   GZKNewsDetailBlock,
   GZKBlock,
-  ImageBlock: {
+  GZKHeaderImageBlock: {
     ...Blocks.ImageBlock,
+    type: 'GZK.Header.ImageBlock',
+    label: 'Bild mit Text',
+    category: 'Kopf',
     styles: ({ theme, color = theme.color }) => ({
       position: 'relative',
       overflow: 'hidden',
+      '> div:nth-child(1) > div > div': {
+        width: '100%',
+      },
       '> div:nth-child(2)': {
         backgroundColor: fade(color, 90),
         color: theme.light,
@@ -48,12 +54,6 @@ export default {
         },
         '> p': {
           color: theme.light,
-        },
-      },
-      '> div:nth-child(1)': {
-        '& .LazyLoad': {
-          width: '100%',
-          margin: 0,
         },
       },
       ifMediumUp: {
@@ -100,7 +100,7 @@ export default {
   HeaderBlock: {
     ...Blocks.HeaderBlock,
     type: 'pageHeader',
-    styles: ({ theme, color }) => ({
+    styles: ({ theme }) => ({
       ...Blocks.HeaderBlock.styles({ theme }),
       ...getHeaderStyles({ theme }),
     }),
