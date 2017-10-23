@@ -32,8 +32,8 @@ const component = createComponent(
 export default {
   type: 'imageLabel',
   isVoid: false,
-  defaultText: 'Titel',
   kind: 'block',
   label: 'Titel',
+  defaultNodes: ['paragraph'],
   component,
 };
