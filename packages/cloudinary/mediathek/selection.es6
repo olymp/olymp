@@ -78,24 +78,24 @@ class SelectionSidebar extends Component {
               justifyContent="space-around"
             />
           ) : null}
-          <Detail
-            form={form}
-            item={items[0]}
-            items={items}
-            multi={multi}
-            editable={editable}
-          >
-            <Button onClick={this.save} type="primary" disabled={!items.length}>
-              {items.length > 1 ? 'Alle speichern' : 'Speichern'}
-            </Button>
-            &nbsp;
-            {onCancel && (
-              <Button onClick={onCancel} disabled={!items.length}>
-                Abbrechen
-              </Button>
-            )}
-          </Detail>
         </LightboxGallery>
+        <Detail
+          form={form}
+          item={items[0]}
+          items={items}
+          multi={multi}
+          editable={editable}
+        >
+          <Button onClick={this.save} type="primary" disabled={!items.length}>
+            {items.length > 1 ? 'Alle speichern' : 'Speichern'}
+          </Button>
+          &nbsp;
+          {onCancel && (
+            <Button onClick={onCancel} disabled={!items.length}>
+              Abbrechen
+            </Button>
+          )}
+        </Detail>
       </div>
     );
   }
