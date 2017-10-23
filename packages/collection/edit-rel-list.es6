@@ -4,10 +4,18 @@ import FormItem from './form-item';
 import { DetailEdit } from './edits';
 
 export default {
-  rule: ({ '@': at }) =>
-    console.log(at) || (at && at.idField && at.idField.type.kind === 'LIST'),
-  form: toClass(p => <FormItem {...p}>Bearbeiten</FormItem>),
-  full: toClass(({ '@': at, type, ...props }) => (
-    <DetailEdit {...props} typeName={at.idField.type.name} />
+  rule: ({ '@': at, type }) =>
+    (at && at.idField && at.idField.type.kind === 'LIST') ||
+    (type.kind === 'LIST' &&
+      type.ofType.kind === 'OBJECT' &&
+      type.ofType.name.indexOf('Nested') === -1),
+  form: toClass(({ '@': at, type, value, onChange, ...props }) => (
+    <FormItem {...props}>
+      <DetailEdit
+        tags
+        onChange={onChange}
+        typeName={at.idField ? at.idField.type.name : type.ofType.name}
+      />
+    </FormItem>
   )),
 };

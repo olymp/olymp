@@ -17,7 +17,7 @@ const excludedFields = [
   'createdById',
 ];
 
-const Items = ({ schema, activeField, form, item, ...rest }) =>
+const Items = ({ schema, activeField, form, item, value, ...rest }) =>
   Object.keys(schema).map(key => {
     const field = schema[key];
     const { form: Com, fieldDecorator, ...restFields } = schema[key];
@@ -57,6 +57,7 @@ const getFormSchema = fields => {
         return result;
       }
 
+      field.innerType = field.type.ofType || field.type;
       // RELATION
       if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
         if (field.name.endsWith('Id')) {

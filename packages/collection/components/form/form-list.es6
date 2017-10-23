@@ -46,9 +46,9 @@ const Items = ({ index, schema, activeField, form, item, ...rest }) =>
     );
   });
 
-const getDefaultEdit = type => {
+const getDefaultEdit = field => {
   const find =
-    Object.keys(DefaultEdits).find(key => DefaultEdits[key].rule(type)) ||
+    Object.keys(DefaultEdits).find(key => DefaultEdits[key].rule(field)) ||
     Object.keys(DefaultEdits).find(key => DefaultEdits[key].isDefault);
   if (find) {
     return DefaultEdits[find];
@@ -64,6 +64,8 @@ const getFormSchema = fields => {
       if (excludedFields.includes(field.name) || field['@'].disabled) {
         return result;
       }
+
+      field.innerType = field.type.ofType || field.type;
 
       // RELATION
       if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
