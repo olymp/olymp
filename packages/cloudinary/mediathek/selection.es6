@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form } from 'antd';
-import { withProps, withPropsOnChange } from 'recompose';
+import { Button as AntButton, Form } from 'antd';
+import { withProps } from 'recompose';
+import { createComponent } from 'olymp-fela';
 import { mutateFile } from '../gql';
 import Detail from './detail';
-import Gallery from '../components/gallery';
-import LightboxGallery from '../lightbox-gallery';
+
+const Button = createComponent(
+  ({ theme }) => ({
+    marginRight: theme.space1,
+  }),
+  p => <AntButton {...p} />,
+  p => Object.keys(p),
+);
 
 @mutateFile
 @Form.create()
@@ -13,21 +20,7 @@ import LightboxGallery from '../lightbox-gallery';
   editable: !onChange,
   multi: items.length > 1,
 }))
-@withPropsOnChange(
-  ['editable', 'items', 'activeId'],
-  ({ editable, items, activeId }) => ({
-    selectedIds: editable ? items.map(x => x.id) : [activeId].filter(x => x),
-  }),
-)
 class SelectionSidebar extends Component {
-  componentWillReceiveProps({ selectedIds, form }) {
-    if (this.props.selectedIds !== selectedIds) {
-      if (selectedIds.length === 1) {
-        // form.resetFields();
-      }
-    }
-  }
-
   save = () => {
     const { form, items, multi, save, onChange } = this.props;
     form.validateFields((err, values) => {
@@ -59,7 +52,6 @@ class SelectionSidebar extends Component {
 
   render() {
     const {
-      selectedIds,
       onClick,
       form,
       items,
@@ -67,34 +59,31 @@ class SelectionSidebar extends Component {
       onRemove,
       onCancel,
       multi,
+      activeId,
     } = this.props;
     return (
-      <div style={{ padding: 10 }}>
-        <LightboxGallery>
-          {items.length > 1 ? (
-            <Gallery
-              items={items}
-              width={60}
-              selectedIds={selectedIds}
-              onClick={onClick}
-              onRemove={onRemove}
-              justifyContent="space-around"
-            />
-          ) : null}
-        </LightboxGallery>
+      <div>
         <Detail
           form={form}
           item={items[0]}
           items={items}
           multi={multi}
           editable={editable}
+          activeId={activeId}
+          onClick={onClick}
+          onRemove={onRemove}
         >
-          <Button onClick={this.save} type="primary" disabled={!items.length}>
-            {items.length > 1 ? 'Alle speichern' : 'Speichern'}
-          </Button>
-          &nbsp;
+          {editable ? (
+            <Button onClick={this.save} type="primary" disabled={!items.length}>
+              {items.length > 1 ? 'Alle speichern' : 'Speichern'}
+            </Button>
+          ) : (
+            <Button onClick={this.save} type="primary" disabled={!items.length}>
+              Einfügen
+            </Button>
+          )}
           {onCancel && (
-            <Button onClick={onCancel} disabled={!items.length}>
+            <Button onClick={onCancel} disabled={!onCancel}>
               Abbrechen
             </Button>
           )}

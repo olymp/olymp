@@ -2,17 +2,17 @@ import { withDynamicRedux, immutable } from 'olymp';
 import { connect } from 'react-redux';
 
 const defaultState = {
-  tab: '',
   tags: [],
   folder: null,
   search: null,
   uploading: [],
   selectedIds: [],
   activeId: null,
+  sortByName: false,
 };
 const name = 'cloudinary';
 
-export const SET_TAB = 'CLOUDINARY_SET_TAB';
+export const TOGGLE_SORT = 'CLOUDINARY_TOGGLE_SORT';
 export const ADD_SELECTION = 'CLOUDINARY_ADD_SELECTION';
 export const SET_SELECTION = 'CLOUDINARY_SET_SELECTION';
 export const REMOVE_SELECTION = 'CLOUDINARY_REMOVE_SELECTION';
@@ -27,9 +27,9 @@ const reducer = (state = defaultState, action) => {
     return state;
   }
   switch (action.type) {
-    case SET_TAB:
+    case TOGGLE_SORT:
       return immutable(state)
-        .set('tab', action.payload)
+        .set('sortByName', action.payload)
         .value();
     case SET_ACTIVE:
       return immutable(state)
@@ -52,45 +52,45 @@ const reducer = (state = defaultState, action) => {
         .set('uploading', action.payload)
         .value();
     case ADD_SELECTION:
+      if (state.selectedIds.findIndex(item => item === action.payload) !== -1) {
+        return reducer(state, {
+          payload: action.payload,
+          type: REMOVE_SELECTION,
+        });
+      }
+
       return immutable(state)
         .push('selectedIds', action.payload)
         .set('activeId', action.payload)
-        .set('tab', 'select')
         .value();
     case SET_SELECTION:
       return immutable(state)
         .set('selectedIds', action.payload)
         .set('activeId', action.payload[0])
-        .set('tab', 'select')
         .value();
     case REMOVE_SELECTION:
       return immutable(state)
         .set('selectedIds', state.selectedIds.filter(x => x !== action.payload))
         .set('activeId', state.selectedIds[state.selectedIds.length - 1])
-        .set('tab', 'select')
         .value();
     default:
       return state;
   }
 };
 export const withActions = connect(
-  ({
-    cloudinary: {
-      tags, folder, search, uploading, tab
-    }
-  }) => ({
+  ({ cloudinary: { tags, folder, search, uploading, sortByName } }) => ({
     tags,
     folder,
     search,
     uploading,
-    tab,
+    sortByName,
   }),
   dispatch => ({
-    setTab: payload => dispatch({ type: SET_TAB, payload }),
+    toggleSort: payload => dispatch({ type: TOGGLE_SORT, payload }),
+    setActive: payload => dispatch({ type: SET_ACTIVE, payload }),
     addSelection: payload => dispatch({ type: ADD_SELECTION, payload }),
     setSelection: payload => dispatch({ type: SET_SELECTION, payload }),
     removeSelection: payload => dispatch({ type: REMOVE_SELECTION, payload }),
-    setActive: payload => dispatch({ type: SET_ACTIVE, payload }),
     setTags: payload => dispatch({ type: SET_TAGS, payload }),
     setFolder: payload => dispatch({ type: SET_FOLDER, payload }),
     setSearch: payload => dispatch({ type: SET_SEARCH, payload }),

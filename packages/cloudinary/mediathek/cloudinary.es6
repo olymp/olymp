@@ -44,17 +44,28 @@ const getDirectories = ({
   setFolder,
   search,
   format,
+  sortByName,
 }) => {
   const folders = {};
   items.forEach(item => {
     if (format && item.format !== format) {
       return;
     }
+
     const app =
       item.publicId && item.publicId.indexOf('/') !== -1
         ? item.publicId.split('/')[0]
         : 'gzk';
     const folder = item.folder ? `${app}/${item.folder}` : `${app}/Allgemein`;
+
+    if (
+      folder &&
+      search &&
+      folder.toLowerCase().indexOf(search.toLowerCase()) === -1
+    ) {
+      return;
+    }
+
     if (!folders[folder]) {
       folders[folder] = [];
     }
@@ -75,13 +86,18 @@ const getDirectories = ({
         countFilter: folders[name].length,
         countAll: folders[name].length,
         key: name,
+        isFolder: true,
       };
     });
     return {
       goBack: null,
       shortId: shortID.generate(),
       directories: groupBy(
-        orderBy(directories, ['countFilter'], ['desc']),
+        orderBy(
+          directories,
+          [sortByName ? 'label' : 'countFilter'],
+          [sortByName ? 'asc' : 'desc'],
+        ),
         'group',
       ),
       filteredItems: items,
@@ -119,6 +135,7 @@ const getDirectories = ({
       image: tags[tag][0],
       countFilter,
       countAll,
+      isFolder: false,
       key: tag,
     };
   });
@@ -129,7 +146,11 @@ const getDirectories = ({
       : () => setFolder(),
     shortId: shortID.generate(),
     directories: groupBy(
-      orderBy(directories, ['countFilter'], ['desc']),
+      orderBy(
+        directories,
+        [sortByName ? 'label' : 'countFilter'],
+        [sortByName ? 'asc' : 'desc'],
+      ),
       'group',
     ),
     filteredItems: items.filter(
@@ -145,8 +166,8 @@ const getDirectories = ({
 @cloudinaryRequestDone
 @withActions
 @withPropsOnChange(
-  ['tags', 'format', 'search', 'folder'],
-  ({ tags, items, setTags, folder, setFolder, search, format }) =>
+  ['tags', 'format', 'search', 'folder', 'sortByName'],
+  ({ tags, items, setTags, folder, setFolder, search, format, sortByName }) =>
     getDirectories({
       items,
       tags,
@@ -155,6 +176,7 @@ const getDirectories = ({
       folder,
       search,
       format,
+      sortByName,
     }),
 )
 @withPropsOnChange(
@@ -254,6 +276,7 @@ class CloudinaryView extends Component {
     format: PropTypes.string,
     multi: PropTypes.bool,
   };
+
   static defaultProps = {
     selection: [],
     items: [],
@@ -263,6 +286,7 @@ class CloudinaryView extends Component {
   onClick = (id, e) => {
     const { selection, addSelection, setSelection, setActive } = this.props;
     const exists = selection.indexOf(id) !== -1;
+
     if (!exists) {
       if (e.shiftKey) {
         addSelection(id);
@@ -286,13 +310,18 @@ class CloudinaryView extends Component {
       setActive,
       selectedIds,
       removeSelection,
-      setTab,
-      tab,
       tags,
+      setTags,
+      folder,
+      setFolder,
       upload,
       shortId,
       onChange,
+      sortByName,
+      toggleSort,
     } = this.props;
+
+    console.log(this.props);
 
     return (
       <SplitView background>
@@ -300,6 +329,9 @@ class CloudinaryView extends Component {
           directories={directories}
           upload={upload}
           tags={tags}
+          setTags={setTags}
+          folder={folder}
+          setFolder={setFolder}
           search={search}
           onClose={onClose}
           goBack={goBack}
@@ -307,9 +339,9 @@ class CloudinaryView extends Component {
           items={items}
           onClick={setActive}
           onRemove={removeSelection}
-          tab={tab}
-          setTab={setTab}
           onChange={onChange}
+          sortByName={sortByName}
+          toggleSort={toggleSort}
         />
         <div>
           <Gallery
