@@ -1,11 +1,14 @@
 import shortID from 'shortid';
 import mails from './mails';
 
-export default ({ attributes = '', schema = '', getQueries, getMutations, User = {} } = {}) => {
+export default (
+  { attributes = '', schema = '', getQueries, getMutations, User = {} } = {},
+) => {
   let queries = {
     checkTokenMail: (source, args, { authEngine }) =>
       authEngine.checkTokenValue(args.token, 'email'),
-    checkToken: (source, args, { authEngine }) => authEngine.checkToken(args.token),
+    checkToken: (source, args, { authEngine }) =>
+      authEngine.checkToken(args.token),
     verify: (source, x, { user }) => user,
     // verify: (source, args) => auth.verify(args.token),
     invitationList: (source, args, { user, monk }) => {
@@ -21,6 +24,7 @@ export default ({ attributes = '', schema = '', getQueries, getMutations, User =
       return monk.collection('invitation').findOne({ id: args.id });
     },
     userList: (source, args, { user, monk }) => {
+      console.log(user);
       if (!user || !user.isAdmin) {
         throw new Error('No permission');
       }
@@ -34,14 +38,17 @@ export default ({ attributes = '', schema = '', getQueries, getMutations, User =
       }
       return monk.collection('user').findOne({ id: args.id });
     },
-    totp: (source, args, { session, authEngine }) => authEngine.totp(session.userId).then(x => x),
+    totp: (source, args, { session, authEngine }) =>
+      authEngine.totp(session.userId).then(x => x),
   };
   if (getQueries) {
     queries = getQueries(queries);
   }
   let mutations = {
     register: (source, args, { authEngine }) =>
-      authEngine.register(args.input, args.password, args.token).then(x => x.user),
+      authEngine
+        .register(args.input, args.password, args.token)
+        .then(x => x.user),
     forgot: (source, args, { authEngine }) => authEngine.forgot(args.email),
     reset: (source, args, { authEngine }) =>
       authEngine.reset(args.token, args.password).then(({ user }) => user),
@@ -64,6 +71,7 @@ export default ({ attributes = '', schema = '', getQueries, getMutations, User =
     confirm: (source, args, { authEngine }) =>
       authEngine.confirm(args.token).then(({ user }) => user),
     user: (source, { id, input, type }, { user, monk }) => {
+      console.log(user);
       if (user && user.isAdmin) {
       } else if (user && user.id === id) {
       } else {
@@ -80,7 +88,7 @@ export default ({ attributes = '', schema = '', getQueries, getMutations, User =
       if (id) {
         return monk
           .collection('user')
-          .update({ id }, input, { upsert: true })
+          .update({ id }, { $set: input }, { upsert: true })
           .then(x => input);
       }
       return monk
@@ -106,7 +114,7 @@ export default ({ attributes = '', schema = '', getQueries, getMutations, User =
       return monk
         .collection('invitation')
         .insert(args)
-        .then((u) => {
+        .then(u => {
           if (mail) {
             mail(mails.invite, {
               to: u.email,

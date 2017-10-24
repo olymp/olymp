@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withPush, withPathname } from './decorators';
+import { withLocation } from './link';
 
+@withLocation
 class Redirect extends React.Component {
   static propTypes = {
     from: PropTypes.string,
@@ -30,12 +32,12 @@ class Redirect extends React.Component {
   }
 
   perform() {
-    const { push, to, from, pathname } = this.props;
+    const { push, location, from, pathname } = this.props;
 
     if (from && from !== pathname) {
       return;
     }
-    push(to);
+    push(location);
   }
 
   render() {

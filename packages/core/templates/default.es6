@@ -53,7 +53,7 @@ export default ({
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
+        window[disableStr] = true;
       }
       function gaOptout() {
         document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
@@ -61,12 +61,11 @@ export default ({
       }
     </script>
     <script>
-      if(navigator.userAgent.indexOf("Speed Insights") == -1) {
+      if(navigator.userAgent.indexOf("Speed Insights") == -1 && !/bot|google|baidu|bing|msn|duckduckgo|teoma|slurp|yandex/i.test(navigator.userAgent)) {
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
         ga('create', '${gaTrackingId}', 'auto');
         ga('send', 'pageview');
       }

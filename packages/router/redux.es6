@@ -9,7 +9,7 @@ export const LOCATION_MISS = 'LOCATION_MISS';
 
 export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 
-export const routerReducer = (history) => {
+export const routerReducer = history => {
   const defaultState = urlToLocation(history.location);
   return (state = defaultState, action) => {
     if (!action || !action.type) {
@@ -35,10 +35,13 @@ export const routerMiddleware = history => ({ getState, dispatch }) => {
     const newLocation = !patch
       ? urlToLocation({ ...currentLocation, ...raw })
       : urlToLocation({
-        ...currentLocation,
-        ...raw,
-        query: { ...get(currentLocation, 'query', {}), ...get(raw, 'query', {}) },
-      });
+          ...currentLocation,
+          ...raw,
+          query: {
+            ...get(currentLocation, 'query', {}),
+            ...get(raw, 'query', {}),
+          },
+        });
     const oldKey = history.location.key;
     history[method](newLocation);
     if (oldKey !== history.location.key) {
@@ -46,29 +49,31 @@ export const routerMiddleware = history => ({ getState, dispatch }) => {
       cb(newLocation);
     }
   };
-  return nextDispatch => (action) => {
+  return nextDispatch => action => {
     if (action.type === LOCATION_REPLACE) {
-      return updateHistory(action.payload, false, 'replace', payload =>
+      updateHistory(action.payload, false, 'replace', payload =>
         dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
-    }
-    if (action.type === LOCATION_PUSH) {
-      return updateHistory(action.payload, false, 'push', payload =>
+    } else if (action.type === LOCATION_PUSH) {
+      updateHistory(action.payload, false, 'push', payload =>
         dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
-    }
-    if (action.type === LOCATION_PATCH) {
-      return updateHistory(action.payload, true, 'push', payload =>
+    } else if (action.type === LOCATION_PATCH) {
+      updateHistory(action.payload, true, 'push', payload =>
         dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
+    } else if (action.type === LOCATION_CORRECT) {
+      dispatch({
+        ...action,
+        type: LOCATION_CHANGE,
+        payload: urlToLocation(action.payload),
+      });
+    } else {
+      if (action.type === LOCATION_CHANGE && process.env.IS_ELECTRON) {
+        localStorage.setItem('location', JSON.stringify(action.payload));
+      }
+      return nextDispatch(action);
     }
-    if (action.type === LOCATION_CORRECT) {
-      return dispatch({ ...action, type: LOCATION_CHANGE, payload: urlToLocation(action.payload) });
-    }
-    if (action.type === LOCATION_CHANGE && process.env.IS_ELECTRON) {
-      localStorage.setItem('location', JSON.stringify(action.payload));
-    }
-    return nextDispatch(action);
   };
 };
 
@@ -81,8 +86,11 @@ export const createUpdateQuery = dispatch => query =>
 export const createReplaceQuery = dispatch => query =>
   dispatch({ type: LOCATION_PUSH, payload: { query } });
 
-export const createPush = dispatch => payload => dispatch({ type: LOCATION_PUSH, payload });
+export const createPush = dispatch => payload =>
+  dispatch({ type: LOCATION_PUSH, payload });
 
-export const createMiss = dispatch => payload => dispatch({ type: LOCATION_MISS, payload });
+export const createMiss = dispatch => payload =>
+  dispatch({ type: LOCATION_MISS, payload });
 
-export const createReplace = dispatch => payload => dispatch({ type: LOCATION_REPLACE, payload });
+export const createReplace = dispatch => payload =>
+  dispatch({ type: LOCATION_REPLACE, payload });

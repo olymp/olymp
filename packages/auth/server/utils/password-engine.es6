@@ -1,5 +1,5 @@
 const { randomBytesAsync, pbkdf2Async } = require('bluebird').promisifyAll(
-  require('crypto')
+  require('crypto'),
 );
 
 export default (config = {}) => {
@@ -8,27 +8,32 @@ export default (config = {}) => {
   const ITERATIONS = config.iterations || 4096; // more.. http://stackoverflow.com/questions/6054082/recommended-of-iterations-when-using-pbkdf2-sha256
 
   const setPassword = (user, password) => {
-    if (!password) { throw new Error('Missing password'); }
+    if (!password) {
+      throw new Error('Missing password');
+    }
     return randomBytesAsync(SALT_LENGTH)
       .then(salt => salt.toString('hex'))
-      .then((salt) => {
+      .then(salt => {
         user.salt = salt;
         return pbkdf2Async(password, salt, ITERATIONS, KEY_LENGTH, 'SHA1');
       })
-      .then((crypt) => {
+      .then(crypt => {
         user.hash = new Buffer(crypt, 'binary').toString('hex');
         return user;
       });
   };
 
   const matchPassword = (user, password) => {
-    if (!password) { throw new Error('Missing password'); }
+    console.log(user, password);
+    if (!password) {
+      throw new Error('Missing password');
+    }
     return pbkdf2Async(
       password,
       user.salt,
       ITERATIONS,
       KEY_LENGTH,
-      'SHA1'
+      'SHA1',
     ).then(crypt => new Buffer(crypt, 'binary').toString('hex') === user.hash);
   };
 

@@ -51,8 +51,8 @@
     "olymp-utils": "^18.2.0",
     "olymp-webpack-babel": "^18.2.2",
     "olymp-webpack-less": "^18.1.9",
-    "react": "^16.0.0-rc.3",
-    "react-dom": "^16.0.0-rc.3"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "eslint-config-olymp": "^18.1.10",

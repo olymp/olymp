@@ -5,7 +5,7 @@ import { pick } from 'lodash';
 import { urlToLocation } from './utils';
 import { createPush } from './redux';
 
-const getLocation = (props) => {
+export const getLocation = props => {
   if (props.location) {
     return props.location;
   }
@@ -36,7 +36,7 @@ const getLocation = (props) => {
   }
 };
 
-const withLocation = compose(
+export const withLocation = compose(
   connect(
     ({ location }) => ({
       currentPathname: location.pathname,
@@ -53,7 +53,7 @@ const withLocation = compose(
 
 @withLocation
 export default class Link extends Component {
-  onClick = (e) => {
+  onClick = e => {
     const { location, push, onClick } = this.props;
     e.preventDefault();
     if (onClick) {

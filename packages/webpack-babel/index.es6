@@ -41,7 +41,6 @@ module.exports = (config, options) => {
   const babelOptions = {
     presets: ['react'],
     plugins: [
-      'graphql-tag',
       'syntax-dynamic-import',
       'transform-object-rest-spread',
       // 'transform-es2015-destructuring',
@@ -64,6 +63,9 @@ module.exports = (config, options) => {
       },
     },
   ]);
+  if (!isDev) {
+    babelOptions.plugins.push('graphql-tag');
+  }
   if (!isNode && isDev) {
     babelOptions.plugins.push('extract-hoc/babel');
     babelOptions.plugins.push('react-hot-loader/babel');
