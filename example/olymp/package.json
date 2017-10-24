@@ -9,9 +9,8 @@
   ],
   "private": true,
   "engines": {
-    "node": "8.1.4",
-    "npm": "4.6.1",
-    "yarn": "1.0.2"
+    "node": "8.7.0",
+    "npm": "5.5.1"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
