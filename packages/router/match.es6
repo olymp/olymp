@@ -1,6 +1,13 @@
 import React, { Children } from 'react';
 import { connect } from 'react-redux';
-import { onlyUpdateForKeys, compose } from 'recompose';
+import PropTypes from 'prop-types';
+import {
+  onlyUpdateForKeys,
+  compose,
+  withPropsOnChange,
+  withContext,
+  getContext,
+} from 'recompose';
 
 export const matchPath = (pathname, exact, match) =>
   (!exact && pathname.indexOf(`${match}/`) === 0) || pathname === match;
@@ -57,38 +64,59 @@ export const SwitchLocation = compose(
     query: location.query,
     pathname: location.query,
   })),
-  onlyUpdateForKeys(['query', 'pathname']),
-)(({ children, pathname, query }) => {
-  let notFound = null;
-  let matched = null;
-  const routes = Children.toArray(children);
-  for (let index = 0; index < routes.length; index++) {
-    const route = routes[index];
-    const { displayName } = route.type;
-    const { match, exact, ...rest } = route.props;
-    if (displayName === 'Match' && match === true) {
-      matched = getChild(rest);
-    } else if (displayName === 'Match' && match === undefined) {
-      notFound = getChild(rest);
-    } else if (
-      displayName === 'MatchPath' &&
-      matchPath(pathname, exact, match)
-    ) {
-      matched = getChild(rest);
-    } else if (
-      displayName === 'MatchPaths' &&
-      matchPaths(pathname, exact, match)
-    ) {
-      matched = getChild(rest);
-    } else if (displayName === 'MatchQuery' && matchQuery(query, match)) {
-      matched = getChild(rest);
-    }
-    if (matched) {
-      break;
-    }
-  }
-  return matched || notFound || null;
-});
+  getContext({
+    matches: PropTypes.array,
+    match: PropTypes.object,
+  }),
+  withPropsOnChange(
+    ['query', 'pathname'],
+    ({ query, pathname, matches, children }) => {
+      let notFound = null;
+      let matched = null;
+      const matchProps = null;
+      const routes = Children.toArray(children);
+      for (let index = 0; index < routes.length; index++) {
+        const route = routes[index];
+        const { displayName } = route.type;
+        const { match, exact, ...rest } = route.props;
+        if (displayName === 'Match' && match === true) {
+          matched = getChild(rest);
+        } else if (displayName === 'Match' && match === undefined) {
+          notFound = getChild(rest);
+        } else if (
+          displayName === 'MatchPath' &&
+          matchPath(pathname, exact, match)
+        ) {
+          matched = getChild(rest);
+        } else if (
+          displayName === 'MatchPaths' &&
+          matchPaths(pathname, exact, match)
+        ) {
+          matched = getChild(rest);
+        } else if (displayName === 'MatchQuery' && matchQuery(query, match)) {
+          matched = getChild(rest);
+        }
+        if (matched) {
+          matchProps = { pathname, query };
+          break;
+        }
+      }
+      return {
+        component: matched || notFound || null,
+        match: matchProps,
+        matches: [...matches, matchProps],
+      };
+    },
+  ),
+  withContext(
+    {
+      matches: PropTypes.array,
+    },
+    ({ matches }) => ({
+      matches,
+    }),
+  ),
+)(({ component }) => component);
 SwitchLocation.displayName = 'SwitchLocation';
 
 export const SwitchQuery = compose(
@@ -123,36 +151,55 @@ export const SwitchPathname = compose(
   connect(({ location }) => ({
     pathname: location.pathname,
   })),
+  getContext({
+    matches: PropTypes.array,
+    match: PropTypes.object,
+  }),
+  withPropsOnChange(['pathname'], ({ pathname, children, matches }) => {
+    let notFound = null;
+    let matched = null;
+    let matchProps = null;
+    const routes = Children.toArray(children);
+    for (let index = 0; index < routes.length; index++) {
+      const route = routes[index];
+      const { displayName } = route.type;
+      const { exact, ...rest } = route.props;
+      if (displayName === 'Match' && route.props.match === true) {
+        matched = getChild({ ...rest, pathname });
+      } else if (displayName === 'Match' && route.props.match === undefined) {
+        notFound = getChild({ ...rest, pathname });
+      } else if (
+        displayName === 'MatchPath' &&
+        matchPath(pathname, exact, route.props.match)
+      ) {
+        matched = getChild({ ...rest, pathname });
+      } else if (
+        displayName === 'MatchPaths' &&
+        matchPaths(pathname, exact, route.props.match)
+      ) {
+        matched = getChild({ ...rest, pathname });
+      }
+      if (matched) {
+        matchProps = { pathname };
+        break;
+      }
+    }
+    return {
+      component: matched || notFound || null,
+      match: matchProps,
+      matches: [...matches, matchProps],
+    };
+  }),
   onlyUpdateForKeys(['pathname']),
-)(({ children, pathname }) => {
-  let notFound = null;
-  let matched = null;
-  const routes = Children.toArray(children);
-  for (let index = 0; index < routes.length; index++) {
-    const route = routes[index];
-    const { displayName } = route.type;
-    const { exact, ...rest } = route.props;
-    if (displayName === 'Match' && route.props.match === true) {
-      matched = getChild({ ...rest, pathname });
-    } else if (displayName === 'Match' && route.props.match === undefined) {
-      notFound = getChild({ ...rest, pathname });
-    } else if (
-      displayName === 'MatchPath' &&
-      matchPath(pathname, exact, route.props.match)
-    ) {
-      matched = getChild({ ...rest, pathname });
-    } else if (
-      displayName === 'MatchPaths' &&
-      matchPaths(pathname, exact, route.props.match)
-    ) {
-      matched = getChild({ ...rest, pathname });
-    }
-    if (matched) {
-      break;
-    }
-  }
-  return matched || notFound || null;
-});
+  withContext(
+    {
+      matches: PropTypes.array,
+    },
+    ({ matches }) => ({
+      matches,
+    }),
+  ),
+)(({ component }) => component);
 SwitchPathname.displayName = 'SwitchPathname';
 
 export const Match = props => {
