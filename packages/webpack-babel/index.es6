@@ -61,12 +61,14 @@ module.exports = (config, options) => {
       },
     },
   ]);
+  if (isProd) {
+    babelOptions.plugins.push('graphql-tag');
+  }
   if (!isNode && isDev) {
     babelOptions.plugins.push('extract-hoc/babel');
     babelOptions.plugins.push('react-hot-loader/babel');
   } else if (!isNode && isProd) {
     babelOptions.plugins.push('lodash');
-    // babelOptions.plugins.push('graphql-tag');
     babelOptions.plugins.push([
       'transform-imports',
       {
