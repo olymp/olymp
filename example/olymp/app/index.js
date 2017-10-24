@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SwitchLocation, MatchPath, Match, Redirect, Link } from 'olymp-router';
+import { SwitchPathname, MatchPath, Match, Redirect, Link } from 'olymp-router';
 import withLocale from 'olymp-locale/de';
 import { ScreenLoader, TopLoader, Offline } from 'olymp-fela';
 import { auth } from 'olymp-auth';
@@ -38,7 +38,7 @@ export default class App extends Component {
         <Off />
         <ScreenLoader show={verifying} />
         {!verifying && (
-          <SwitchLocation>
+          <SwitchPathname>
             <MatchPath match="/" exact component={Hello} />
             <MatchPath match="/bye" exact component={Bye} />
             <MatchPath
@@ -47,7 +47,7 @@ export default class App extends Component {
               render={() => <Redirect to={{ pathname: '/browser' }} />}
             />
             <Match render={() => 'Error'} />
-          </SwitchLocation>
+          </SwitchPathname>
         )}
       </div>
     );
