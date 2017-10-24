@@ -70,7 +70,7 @@ export const SwitchLocation = compose(
   }),
   withPropsOnChange(
     ['query', 'pathname'],
-    ({ query, pathname, matches, children }) => {
+    ({ query, pathname, matches = [], children }) => {
       let notFound = null;
       let matched = null;
       let matchProps = null;
@@ -155,7 +155,7 @@ export const SwitchPathname = compose(
     matches: PropTypes.array,
     match: PropTypes.object,
   }),
-  withPropsOnChange(['pathname'], ({ pathname, children, matches }) => {
+  withPropsOnChange(['pathname'], ({ pathname, children, matches = [] }) => {
     let notFound = null;
     let matched = null;
     let matchProps = null;
