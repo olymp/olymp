@@ -2,9 +2,10 @@ import React from 'react';
 import Form from 'olymp-ui/form';
 import { SplitView, Sidebar, List } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { createComponent } from 'olymp-fela';
+import { Container, createComponent } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
+import FormItem from '../../form-item';
 import { getValidationRules, getInitialValue } from './utils';
 
 const excludedFields = [
@@ -165,6 +166,7 @@ const FormComponent = enhance(
     collapse,
     onSave,
     activeField,
+    setActiveField,
     collapsed,
     header = true,
     ...rest
@@ -190,6 +192,19 @@ const FormComponent = enhance(
         ),
       );
     } else {
+      moreChildren.push(
+        <Sidebar isOpen padding={0} width="100%" title="Formular">
+          <Container size="small">
+            <Items
+              schema={schemaWithEdits.etc}
+              activeField={activeField}
+              form={form}
+              item={item}
+              {...rest}
+            />
+          </Container>
+        </Sidebar>,
+      );
       collapsed = false;
     }
     return (
@@ -209,20 +224,22 @@ const FormComponent = enhance(
           }
         >
           <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+            <FormItem
+              isActive={!activeField}
+              setActiveField={setActiveField}
+              field={{}}
+              label="Formular"
+              full
+            >
+              {Object.keys(schemaWithEdits.etc).length} Felder
+            </FormItem>
             <List.Title>Unterpunkte</List.Title>
             <Items
               schema={schemaWithEdits.full}
               activeField={activeField}
               form={form}
               item={item}
-              {...rest}
-            />
-            <List.Title>Eingabe</List.Title>
-            <Items
-              schema={schemaWithEdits.etc}
-              activeField={activeField}
-              form={form}
-              item={item}
+              setActiveField={setActiveField}
               {...rest}
             />
           </Form>

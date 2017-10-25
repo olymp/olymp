@@ -1,5 +1,5 @@
-import { default as Sidebar } from './sidebar';
-import { default as Button } from './button';
+import Sidebar from './sidebar';
+import Button from './button';
 
 Sidebar.Button = Button;
 

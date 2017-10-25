@@ -1,11 +1,12 @@
 import React, { Children } from 'react';
 import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
+import { FaChevronDoubleDown } from 'olymp-icons';
 
 const StyledInner = createComponent(
   ({ theme, padding, paddingX, paddingY, width, right, darkened }) => ({
-    width,
-    minWidth: width,
+    width: width === '100%' ? undefined : width,
+    minWidth: width === '100%' ? undefined : width,
     maxWidth: width,
     height: '100%',
     transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
@@ -15,10 +16,28 @@ const StyledInner = createComponent(
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
+    '& .expander': {
+      opacity: 0,
+      pointerEvents: 'none',
+      position: 'absolute',
+      left: -45,
+      fontSize: 30,
+      top: '50%',
+      color: 'white',
+      transform: 'rotate(270deg)',
+      // transition: 'opacity .4s ease',
+      zIndex: 2,
+      '> svg': {
+        float: 'right',
+        position: 'absolute',
+        top: 12,
+        right: -35,
+      },
+    },
     onAfter: {
       content: '""',
       opacity: darkened ? 1 : 0,
-      transition: 'opacity .4s ease',
+      // transition: 'opacity .4s ease',
       pointerEvents: 'none',
       position: 'absolute',
       top: 0,
@@ -186,7 +205,6 @@ const Sidebar = ({
                 )}
               </Title>
             ) : null}
-
             {header}
           </div>
         ) : null}
@@ -194,6 +212,10 @@ const Sidebar = ({
         {Children.toArray(children).length > 0 && (
           <div className="ant-modal-body">{children}</div>
         )}
+
+        <span className="expander">
+          Ausklappen <FaChevronDoubleDown color="white" size="30" />
+        </span>
 
         {footer ? <div className="ant-modal-footer">{footer}</div> : null}
       </div>
