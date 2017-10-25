@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import shortId from 'shortid';
+import omit from './omit-type';
 /* import WebworkerPromise from 'webworker-promise';
 import Worker from 'worker-loader?inline!./worker.js';
 
@@ -12,7 +13,7 @@ worker
   })
   .catch((error) => {
     // handle error
-  });*/
+  }); */
 export const APOLLO_MUTATE = 'APOLLO_MUTATE';
 export const APOLLO_QUERY = 'APOLLO_QUERY';
 
@@ -24,7 +25,9 @@ export const pending = action => `${action}${ACTION_SUFFIX_PENDING}`;
 export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
-export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (action) => {
+export const apolloMiddleware = client => ({
+  dispatch,
+}) => nextDispatch => action => {
   if (action.type && (action.mutation || action.query)) {
     const requestId = shortId.generate();
     dispatch({
@@ -32,20 +35,27 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
       payload: action.payload,
       requestId,
     });
+    console.log(omit(action.payload || action.variables));
     const invoker = action.mutation
       ? () =>
-        client.mutate({
-          mutation: typeof action.mutation === 'string' ? gql(action.mutation) : action.mutation,
-          variables: action.payload || action.variables,
-          refetchQueries: action.refetchQueries,
-          optimisticResponse: action.optimisticResponse,
-          update: action.update,
-        })
+          client.mutate({
+            mutation:
+              typeof action.mutation === 'string'
+                ? gql(action.mutation)
+                : action.mutation,
+            variables: omit(action.payload || action.variables),
+            refetchQueries: action.refetchQueries,
+            optimisticResponse: action.optimisticResponse,
+            update: action.update,
+          })
       : () =>
-        client.query({
-          query: typeof action.query === 'string' ? gql(action.query) : action.query,
-          variables: action.payload || action.variables,
-        });
+          client.query({
+            query:
+              typeof action.query === 'string'
+                ? gql(action.query)
+                : action.query,
+            variables: omit(action.payload || action.variables),
+          });
     return invoker()
       .then(({ data, errors, ...xy }) => {
         if (errors) {
@@ -63,7 +73,7 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
         }
         return data[Object.keys(data)[0]];
       })
-      .catch((err) => {
+      .catch(err => {
         dispatch({
           type: rejected(action.type),
           requestId,
@@ -75,7 +85,12 @@ export const apolloMiddleware = client => ({ dispatch }) => nextDispatch => (act
   nextDispatch(action);
 };
 
-export const createMutation = dispatch => ({ mutation, variables, refetchQueries, update }) =>
+export const createMutation = dispatch => ({
+  mutation,
+  variables,
+  refetchQueries,
+  update,
+}) =>
   dispatch({
     type: APOLLO_MUTATE,
     mutation,
