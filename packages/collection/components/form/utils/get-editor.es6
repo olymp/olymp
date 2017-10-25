@@ -46,7 +46,11 @@ export default ({
   if (idField && idField.type) {
     if (idField.type.kind === 'LIST' && idField.type.ofType) {
       return (
-        <DetailEdit {...editProps} tags typeName={idField.type.ofType.name} />
+        <DetailEdit
+          {...editProps}
+          mode="tags"
+          typeName={idField.type.ofType.name}
+        />
       );
     }
     return <DetailEdit {...editProps} typeName={idField.type.name} />;
@@ -132,5 +136,8 @@ export default ({
       return <Input.TextArea {...editProps} /* autosize */ />;
     case 'Int':
       return <InputNumber {...editProps} placeholder={label || 0} />;
+
+    default:
+      return <div />;
   }
 };
