@@ -1,5 +1,5 @@
 {
-  "version": "18.2.5",
+  "version": "18.2.13",
   "name": "olymp-google",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@google/maps": "^0.4.5",
     "bluebird": "^3.5.1",
-    "google-map-react": "^0.24.0",
+    "google-map-react": "^0.25.0",
     "googleapis": "^22.1.0",
     "moment": "^2.19.1",
     "olymp-ui": "^18.2.3",

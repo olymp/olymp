@@ -1,5 +1,5 @@
 {
-  "version": "18.1.17",
+  "version": "18.2.13",
   "name": "olymp-webpack-electron",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -15,12 +15,12 @@
     "babel-polyfill": "^6.26.0",
     "devtron": "^1.4.0",
     "electron": "^1.7.9",
-    "electron-builder": "^19.37.2",
+    "electron-builder": "^19.40.0",
     "electron-debug": "^1.4.0",
-    "electron-log": "^2.2.7",
+    "electron-log": "^2.2.10",
     "electron-publisher": "^0.1.6",
-    "electron-publisher-s3": "^19.39.0",
-    "electron-updater": "^2.13.0",
+    "electron-publisher-s3": "^19.40.0",
+    "electron-updater": "^2.15.0",
     "electron-webpack-plugin": "^2.0.0",
     "node-machine-id": "^1.1.9"
   }

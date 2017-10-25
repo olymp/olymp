@@ -11,10 +11,8 @@ module.exports = (config, options) => {
     config.plugins.push(
       new UglifyJSPlugin({
         // sourceMap: true,
-        parallel: {
-          cache: true,
-          workers: 2,
-        },
+        cache: true,
+        parallel: 2,
         uglifyOptions: {
           mangle: true,
           /* parse: {
@@ -63,7 +61,7 @@ module.exports = (config, options) => {
       },
     },
   ]);
-  if (!isDev) {
+  if (isProd) {
     babelOptions.plugins.push('graphql-tag');
   }
   if (!isNode && isDev) {
