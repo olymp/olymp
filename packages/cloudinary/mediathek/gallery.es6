@@ -8,7 +8,7 @@ import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import Masonry, {
   createCellPositioner,
 } from 'react-virtualized/dist/commonjs/Masonry';
-import Thumb from './thumb';
+import Thumb from '../components/thumb';
 
 const Item = connect(({ cloudinary }, { item }) => ({
   isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
@@ -54,10 +54,6 @@ export default class GridExample extends PureComponent {
     });
   }
 
-  render() {
-    return <AutoSizer onResize={this.onResize}>{this.renderMasonry}</AutoSizer>;
-  }
-
   calculateColumnCount = () => {
     this.columnCount = Math.floor(this.width / (columnWidth + gutterSize));
     this.columnWidth = Math.floor(this.width / this.columnCount);
@@ -66,7 +62,7 @@ export default class GridExample extends PureComponent {
   cellRenderer = ({ index, key, parent, style }) => {
     const { items, onClick, onRemove } = this.props;
 
-    const item = items[index];
+    const item = (items || [])[index];
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
         <Item
@@ -114,7 +110,7 @@ export default class GridExample extends PureComponent {
 
     return (
       <Masonry
-        cellCount={items.length}
+        cellCount={(items || []).length}
         cellMeasurerCache={this.cache}
         cellPositioner={this.cellPositioner}
         cellRenderer={this.cellRenderer}
@@ -136,4 +132,8 @@ export default class GridExample extends PureComponent {
   setMasonryRef = ref => {
     this.masonry = ref;
   };
+
+  render() {
+    return <AutoSizer onResize={this.onResize}>{this.renderMasonry}</AutoSizer>;
+  }
 }

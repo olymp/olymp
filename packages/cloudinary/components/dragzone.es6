@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Progress as AntProgress } from 'antd';
 import { createComponent } from 'olymp-fela';
 
 const Dragger = createComponent(
-  ({ theme, clickable }) => ({
+  ({ clickable }) => ({
     '> .ant-upload': {
       border: 0,
       cursor: clickable ? 'pointer' : 'default',
-      height: '100%',
+      // height: '100%',
+      '> .ant-upload > .ant-upload-drag-container': {
+        verticalAlign: 'inherit',
+      },
     },
   }),
   Upload.Dragger,
@@ -16,7 +19,7 @@ const Dragger = createComponent(
 );
 
 const ProgressWrapper = createComponent(
-  ({ theme }) => ({
+  () => ({
     position: 'relative',
     height: '100%',
   }),
@@ -30,7 +33,7 @@ const ProgressWrapper = createComponent(
 );
 
 const Progress = createComponent(
-  ({ theme }) => ({
+  () => ({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, .4)',
@@ -51,26 +54,23 @@ const Progress = createComponent(
   p => Object.keys(p),
 );
 
-class DragZone extends Component {
-  render() {
-    const { clickable, uploading, children, ...rest } = this.props;
-    const progress = uploading.reduce((a, x) => a + x.percent * x.size, 0);
-    const size = uploading.reduce((a, x) => a + x.size, 0);
+const DragZone = ({ clickable, uploading, children, ...rest }) => {
+  const progress = uploading.reduce((a, x) => a + x.percent * x.size, 0);
+  const size = uploading.reduce((a, x) => a + x.size, 0);
 
-    return (
-      <ProgressWrapper
-        type="circle"
-        percent={Math.round(progress / size) || 0}
-        onClick={e => (clickable ? {} : e.preventDefault())}
-        disabled={!uploading.length}
-      >
-        <Dragger clickable={clickable} {...rest}>
-          {children}
-        </Dragger>
-      </ProgressWrapper>
-    );
-  }
-}
+  return (
+    <ProgressWrapper
+      type="circle"
+      percent={Math.round(progress / size) || 0}
+      onClick={e => (clickable ? {} : e.preventDefault())}
+      disabled={!uploading.length}
+    >
+      <Dragger clickable={clickable} {...rest}>
+        {children}
+      </Dragger>
+    </ProgressWrapper>
+  );
+};
 DragZone.propTypes = {
   clickable: PropTypes.bool,
   uploading: PropTypes.array,

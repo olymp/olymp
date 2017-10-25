@@ -52,13 +52,6 @@ const reducer = (state = defaultState, action) => {
         .set('uploading', action.payload)
         .value();
     case ADD_SELECTION:
-      if (state.selectedIds.findIndex(item => item === action.payload) !== -1) {
-        return reducer(state, {
-          payload: action.payload,
-          type: REMOVE_SELECTION,
-        });
-      }
-
       return immutable(state)
         .push('selectedIds', action.payload)
         .set('activeId', action.payload)
@@ -77,13 +70,26 @@ const reducer = (state = defaultState, action) => {
       return state;
   }
 };
+
 export const withActions = connect(
-  ({ cloudinary: { tags, folder, search, uploading, sortByName } }) => ({
+  ({
+    cloudinary: {
+      tags,
+      folder,
+      search,
+      uploading,
+      sortByName,
+      selectedIds,
+      activeId,
+    },
+  }) => ({
     tags,
     folder,
     search,
     uploading,
     sortByName,
+    selectedIds,
+    activeId,
   }),
   dispatch => ({
     toggleSort: payload => dispatch({ type: TOGGLE_SORT, payload }),

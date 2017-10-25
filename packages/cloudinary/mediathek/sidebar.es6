@@ -1,52 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Icon } from 'antd';
-import {
-  compose,
-  onlyUpdateForKeys,
-  setPropTypes,
-  withPropsOnChange,
-} from 'recompose';
+import { compose, onlyUpdateForKeys, setPropTypes, withProps } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
-import { createComponent } from 'olymp-fela';
 import { connect } from 'react-redux';
-import Image from '../image';
+import { withActions } from './redux';
 import Selection from './selection';
-
-const Header = createComponent(
-  ({ theme }) => ({
-    padding: 3,
-    paddingLeft: 7,
-    paddingRight: 7,
-    width: '100%',
-    backgroundColor: 'rgba(233, 233, 233, 0.47)',
-    borderBottom: '1px solid #eee',
-    color: theme.dark1,
-    clearfix: true,
-    '> div': {
-      float: 'right',
-      color: theme.dark3,
-      cursor: 'pointer',
-      onHover: {
-        color: theme.dark2,
-      },
-      '> i': {
-        fontSize: 11,
-      },
-    },
-  }),
-  'div',
-  [],
-);
-
-const image = ({ image }) =>
-  image && <Image value={image} width={37} height={37} />;
+import Directory from './directory';
 
 const onCancel = (items, onRemove) => () => {
   items.forEach(item => onRemove(item.id));
 };
 
 const enhance = compose(
+  withActions,
+  withProps(({ setActive, removeSelection }) => ({
+    onClick: setActive,
+    onRemove: removeSelection,
+  })),
   onlyUpdateForKeys([
     'directories',
     'upload',
@@ -73,63 +44,54 @@ const enhance = compose(
     onClick: PropTypes.func,
     onRemove: PropTypes.func,
   }),
-  connect(({ cloudinary }, { items }) => ({
-    items: cloudinary.selectedIds
+  connect(({ cloudinary }, { items, selected }) => {
+    let newItems = cloudinary.selectedIds
       .map(x => items.find(item => item.id === x))
-      .filter(x => x),
-    activeId: cloudinary.activeId,
-  })),
-);
+      .filter(x => x);
 
-const Directory = withPropsOnChange(['items'], ({ items }) => ({
-  items: items.filter(dir => !dir.active && !dir.disabled),
-}))(({ id, items, sortByName, toggleSort }) => (
-  <div>
-    {id && (
-      <Header>
-        {id}
-        <div onClick={() => toggleSort(!sortByName)}>
-          {sortByName ? 'Name' : 'Anzahl'} <Icon type="caret-up" />
-        </div>
-      </Header>
-    )}
-    {items.length ? (
-      items.map(dir => (
-        <List.Item
-          {...dir}
-          image={image(dir)}
-          icon={dir.isFolder ? 'folder' : 'tag-o'}
-        />
-      ))
-    ) : (
-      <List.Item
-        disabled
-        label="Keine weiteren Unterordner vorhanden"
-        image={<Icon type="exclamation-circle-o" />}
-      />
-    )}
-  </div>
-));
+    if (selected && selected.length) {
+      newItems = selected
+        .map(s => {
+          const item = items.find(i => i.id === s.id);
+
+          return {
+            ...item,
+            ...s,
+          };
+        })
+        .filter(x => x);
+    }
+
+    return {
+      items: newItems,
+      activeId: cloudinary.activeId,
+      sortByName: cloudinary.sortByName,
+      tags: cloudinary.tags,
+      folder: cloudinary.folder,
+      search: cloudinary.search,
+    };
+  }),
+);
 
 export default enhance(
   ({
+    activeId,
+    sortByName,
+    tags,
+    folder,
+    search,
+    toggleSort,
+    setTags,
+    setFolder,
+    setSearch,
     upload,
     onClose,
-    search,
-    setSearch,
     goBack,
     onChange,
     directories,
     items,
-    activeId,
     onClick,
     onRemove,
-    sortByName,
-    toggleSort,
-    tags,
-    setTags,
-    folder,
-    setFolder,
   }) => (
     <Sidebar
       width={280}
@@ -156,6 +118,13 @@ export default enhance(
       isOpen
       padding={0}
       title="Medien"
+      subtitle={
+        onChange || items.length
+          ? `Datei${items.length > 1 ? 'en' : ''} ${onChange
+              ? 'einfügen'
+              : 'bearbeiten'}`
+          : 'Medien verwalten'
+      }
     >
       {items.length ? (
         <div>
@@ -197,7 +166,7 @@ export default enhance(
                 icon="close"
                 image={<Icon type="tag-o" />}
                 key={tag}
-                onClick={() => setTags(tags.filter((tag, j) => i !== j))}
+                onClick={() => setTags(tags.filter((t, j) => i !== j))}
               />
             ))}
           {Object.keys(directories).map(key => (

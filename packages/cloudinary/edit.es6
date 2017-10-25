@@ -25,8 +25,6 @@ export default renderFn =>
       v = value;
     }
 
-    console.log(v);
-
     return (
       <div onClick={() => setOpen(true)}>
         {renderFn(v, multi)}
