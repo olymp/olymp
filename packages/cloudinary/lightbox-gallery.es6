@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default class LightboxGallery extends Component {
   static childContextTypes = {
-    gallery: PropTypes.number,
+    gallery: PropTypes.string,
   };
 
   getChildContext() {

@@ -1,28 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Upload, Tabs } from 'antd';
-import {
-  compose,
-  onlyUpdateForKeys,
-  setPropTypes,
-  withPropsOnChange,
-} from 'recompose';
+import { Upload, Icon } from 'antd';
+import { compose, onlyUpdateForKeys, setPropTypes, withProps } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { connect } from 'react-redux';
-import Image from '../image';
+import { withActions } from './redux';
 import Selection from './selection';
+import Directory from './directory';
 
-/* const directories = orderBy(
-      this.getDirectories(),
-      ['active', 'disabled', 'countFilter', 'countAll', 'label'],
-      ['desc', 'asc', 'desc', 'desc', 'asc'],
-    ); */
+const onCancel = (items, onRemove) => () => {
+  items.forEach(item => onRemove(item.id));
+};
 
-const image = ({ image }) =>
-  image && <Image value={image} width={37} height={37} />;
-
-// @withPropsOnChange(['items', 'search', 'filter'])
 const enhance = compose(
+  withActions,
+  withProps(({ setActive, removeSelection }) => ({
+    onClick: setActive,
+    onRemove: removeSelection,
+  })),
   onlyUpdateForKeys([
     'directories',
     'upload',
@@ -31,13 +26,10 @@ const enhance = compose(
     'onClose',
     'setSearch',
     'setTags',
-    'setTab',
-    'tab',
     'items',
     'activeItems',
     'onClick',
     'onRemove',
-    'onSelect',
   ]),
   setPropTypes({
     directories: PropTypes.object,
@@ -47,69 +39,76 @@ const enhance = compose(
     onClose: PropTypes.func,
     setSearch: PropTypes.func,
     setTags: PropTypes.func,
-    setTab: PropTypes.func,
-
-    tab: PropTypes.string,
     items: PropTypes.array,
     activeItem: PropTypes.object,
     onClick: PropTypes.func,
     onRemove: PropTypes.func,
-    onSelect: PropTypes.func,
   }),
-  connect(({ cloudinary }, { items }) => ({
-    items: cloudinary.selectedIds
+  connect(({ cloudinary }, { items, selected }) => {
+    let newItems = cloudinary.selectedIds
       .map(x => items.find(item => item.id === x))
-      .filter(x => x),
-    activeId: cloudinary.activeId,
-  }))
-);
+      .filter(x => x);
 
-const Directory = withPropsOnChange(['items'], ({ items }) => ({
-  items: items.filter(dir => !dir.active && !dir.disabled),
-}))(
-  ({ id, items }) =>
-    items.length ? (
-      <div>
-        {id && (
-          <div
-            style={{
-              padding: 3,
-              paddingLeft: 7,
-              paddingRight: 7,
-              backgroundColor: 'rgba(233, 233, 233, 0.47)',
-              borderBottom: '1px solid #eee',
-            }}
-          >
-            {id || 'Allgemein'}
-          </div>
-        )}
-        {items.map(dir => <List.Item {...dir} image={image(dir)} />)}
-      </div>
-    ) : null
+    if (selected && selected.length) {
+      newItems = selected
+        .map(s => {
+          const item = items.find(i => i.id === s.id);
+
+          return {
+            ...item,
+            ...s,
+          };
+        })
+        .filter(x => x);
+    }
+
+    return {
+      items: newItems,
+      activeId: cloudinary.activeId,
+      sortByName: cloudinary.sortByName,
+      tags: cloudinary.tags,
+      folder: cloudinary.folder,
+      search: cloudinary.search,
+    };
+  }),
 );
 
 export default enhance(
   ({
+    activeId,
+    sortByName,
+    tags,
+    folder,
+    search,
+    toggleSort,
+    setTags,
+    setFolder,
+    setSearch,
     upload,
     onClose,
-    search,
-    setSearch,
     goBack,
     onChange,
-    tab,
-    setTab,
     directories,
     items,
-    activeId,
     onClick,
     onRemove,
   }) => (
     <Sidebar
       width={280}
       leftButtons={
-        onClose && (
+        (!!onClose && (
           <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-        )
+        )) ||
+        ((!!items.length && (
+          <Sidebar.Button
+            shape="circle"
+            onClick={onCancel(items, onRemove)}
+            icon="close"
+          />
+        )) ||
+          (!!goBack && (
+            <Sidebar.Button shape="circle" onClick={goBack} icon="arrow-left" />
+          )))
       }
       rightButtons={
         <Upload {...upload}>
@@ -119,42 +118,68 @@ export default enhance(
       isOpen
       padding={0}
       title="Medien"
+      subtitle={
+        onChange || items.length
+          ? `Datei${items.length > 1 ? 'en' : ''} ${onChange
+              ? 'einfügen'
+              : 'bearbeiten'}`
+          : 'Medien verwalten'
+      }
     >
-      <Tabs
-        activeKey={tab || ''}
-        onTabClick={setTab}
-        size="small"
-        tabBarStyle={{ marginBottom: 0 }}
-      >
-        <Tabs.TabPane tab="Navigation" key="">
+      {items.length ? (
+        <div>
+          <Selection
+            items={items}
+            key={items.map(x => x.id).join(';')}
+            activeId={activeId}
+            onClick={onClick}
+            onRemove={onRemove}
+            onCancel={onCancel(items, onRemove)}
+            onChange={onChange}
+          />
+        </div>
+      ) : (
+        <div>
           <List.Filter
-            placeholder="Filter ..."
+            placeholder="Ordner filtern ..."
             onChange={setSearch}
             value={search}
+            bordered={false}
           />
-          {goBack && <List.Item label="Zurück" icon="left" onClick={goBack} />}
-          {Object.keys(directories).map(key => (
-            <Directory key={key} id={key} items={directories[key]} />
-          ))}
-        </Tabs.TabPane>
-        {items.length ? (
-          <Tabs.TabPane
-            tab={`Auswahl (${items.length})`}
-            key="select"
-            disabled={!items.length}
-          >
-            <Selection
-              items={items}
-              key={items.map(x => x.id).join(';')}
-              activeId={activeId}
-              onClick={onClick}
-              onRemove={onRemove}
-              // onCancel={() => this.onSelect(selected)}
-              onChange={onChange}
+          {!!folder && (
+            <List.Item
+              label={folder}
+              icon="close"
+              image={<Icon type="folder" />}
+              key={folder}
+              onClick={() => {
+                setFolder();
+                setTags([]);
+              }}
             />
-          </Tabs.TabPane>
-        ) : null}
-      </Tabs>
+          )}
+          {!!tags &&
+            !!tags.length &&
+            tags.map((tag, i) => (
+              <List.Item
+                label={tag}
+                icon="close"
+                image={<Icon type="tag-o" />}
+                key={tag}
+                onClick={() => setTags(tags.filter((t, j) => i !== j))}
+              />
+            ))}
+          {Object.keys(directories).map(key => (
+            <Directory
+              key={key}
+              id={key}
+              items={directories[key]}
+              toggleSort={toggleSort}
+              sortByName={sortByName}
+            />
+          ))}
+        </div>
+      )}
     </Sidebar>
-  )
+  ),
 );

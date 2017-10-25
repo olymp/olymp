@@ -4,14 +4,27 @@ import { Button as AntButton } from 'antd';
 
 const Button = createComponent(
   ({ theme }) => ({
-    display: 'block!important',
-    // boxShadow: theme.boxShadow,
+    // display: 'block!important',
     paddingTop: 1,
-    backgroundColor: theme.light,
-    color: theme.dark2,
+    backgroundColor: theme.dark5,
+    borderWidth: 0,
+    // borderColor: theme.dark5,
+    color: theme.color,
+    onHover: {
+      borderWidth: 1,
+    },
+    onActive: {
+      borderWidth: 1,
+    },
+    onFocus: {
+      borderWidth: 1,
+    },
+    '> *': {
+      marginTop: 1,
+    },
   }),
   p => <AntButton size="large" {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 export default Button;

@@ -31,7 +31,8 @@
     "react-frame-component": "^2.0.0",
     "react-scrolllock": "^1.0.9",
     "shortid": "^2.2.8",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "react-gravatar": "^2.6.3"
   },
   "devDependencies": {
     "olymp-webpack-babel": "^18.2.14",

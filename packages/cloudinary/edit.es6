@@ -13,18 +13,21 @@ const transform = ({ id, url, crop, width, height, caption, source }) => ({
   source,
 });
 export default renderFn =>
-  withState('isOpen', 'setOpen', false)(({ onChange, value, isOpen, setOpen, multi }) => {
+  withState(
+    'isOpen',
+    'setOpen',
+    false,
+  )(({ onChange, value, isOpen, setOpen, multi }) => {
     let v = [];
-    if (!multi && value) {
+    if ((!multi && value) || (multi && !Array.isArray(value))) {
       v = [value];
-    }
-    if (multi && value) {
+    } else if (multi && value) {
       v = value;
     }
 
     return (
       <div onClick={() => setOpen(true)}>
-        {renderFn(v)}
+        {renderFn(v, multi)}
 
         <Modal open={isOpen} onClose={() => setOpen(false)}>
           <Mediathek
@@ -35,7 +38,12 @@ export default renderFn =>
               setOpen(false);
             }}
             onClose={() => setOpen(false)}
-            selected={v.map(({ id, crop }) => ({ id, crop }))}
+            selected={v.map(({ id, crop, caption, source }) => ({
+              id,
+              crop,
+              caption,
+              source,
+            }))}
           />
         </Modal>
       </div>

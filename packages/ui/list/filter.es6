@@ -13,7 +13,7 @@ class FilterComponent extends Component {
     this.changed = debounce(this.props.onChange, 300);
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     // React event weirdness requires storing
     // the synthetic event
     const val = e.target.value;
@@ -32,7 +32,10 @@ class FilterComponent extends Component {
     const { className, children, placeholder } = this.props;
     const { value } = this.state;
     const suffix = value ? (
-      <Icon type="close-circle" onClick={() => this.handleChange({ target: { value: null } })} />
+      <Icon
+        type="close-circle"
+        onClick={() => this.handleChange({ target: { value: null } })}
+      />
     ) : null;
     return (
       <div className={className}>
@@ -48,9 +51,9 @@ class FilterComponent extends Component {
   }
 }
 export default createComponent(
-  () => ({
+  ({ bordered }) => ({
     padding: 6,
-    borderTop: '1px solid #eee',
+    borderTop: bordered && '1px solid #eee',
     backgroundColor: 'rgba(233, 233, 233, 0.47)',
   }),
   FilterComponent,

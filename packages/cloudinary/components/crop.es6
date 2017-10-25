@@ -21,7 +21,6 @@ class Crop extends Component {
   };
 
   onChange = ({ width, height, x, y }) => {
-    console.log(width, height, x, y);
     this.props.onChange([
       Math.floor(this.props.width / 100 * width),
       Math.floor(this.props.height / 100 * height),

@@ -33,7 +33,6 @@
     "olymp-ui": "^18.2.3",
     "olymp-utils": "^18.2.0",
     "olymp-webpack-babel": "^18.2.14",
-    "olymp-webpack-less": "^18.2.13",
-    "react-gravatar": "^2.6.3"
+    "olymp-webpack-less": "^18.2.13"
   }
 }

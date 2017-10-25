@@ -11,8 +11,7 @@ const StyledInner = createComponent(
     transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     // borderRight: '1px solid #eee',
-    // boxShadow: theme.boxShadow,
-    boxShadow: 'none',
+    boxShadow: theme.boxShadow,
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
@@ -147,11 +146,6 @@ const TitleButtons = createComponent(
     padding: '0 1rem',
     top: '50%',
     transform: 'translateY(-50%)',
-    '> *': {
-      hasFlex: {
-        display: 'flex', // verhindert unschönen Abstand
-      },
-    },
   }),
   'div',
   ({ left, right, ...p }) => Object.keys(p),
