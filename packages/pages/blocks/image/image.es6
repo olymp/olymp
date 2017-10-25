@@ -62,7 +62,7 @@ export default {
       tooltip: getData => `Bild ${getData('value') ? 'wechseln' : 'wählen'}`,
       component: ({ setData, getData, ...p }) => (
         <EditText
-          onChange={value => console.log(value) || setData({ value })}
+          onChange={value => setData({ value })}
           value={getData('value', {})}
           multi={false}
         />
