@@ -3,12 +3,11 @@ import { withLang } from 'olymp-utils';
 import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent, border } from 'olymp-fela';
+import { createComponent, border, Avatar } from 'olymp-fela';
 import { compose, withState, withHandlers } from 'recompose';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import Logo from './logo';
-import Avatar from './avatar';
 
 export const UserPic = createComponent(
   ({ theme }) => ({
@@ -53,7 +52,7 @@ const VerticalMenu = createComponent(
       position: 'fixed',
       top: 0,
       bottom: 0,
-      maxWidth: 200,
+      maxWidth: 240,
       zIndex: 11,
       overflow: 'hidden',
       '> .ant-menu-item': {
