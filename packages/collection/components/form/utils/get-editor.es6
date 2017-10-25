@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Input, Select, Checkbox, InputNumber } from 'antd';
-import { Sidebar } from 'olymp-ui';
 import {
   ColorEditor,
   DateEditor,
   DateRangeEditor,
   TimeRangeEditor,
-  TimeRangesEditor,
-  TagsEditor,
   SuggestEditor,
 } from 'olymp-ui';
 import GeocodeEditor from 'olymp-google/edits/geocode';
 import cn from 'classnames';
 import { EditImage } from 'olymp-cloudinary';
-import { FormListEdit, DetailEdit } from '../../../edits';
+import { DetailEdit } from '../../../edits';
 
 const states = {
   PUBLISHED: 'Öffentlich',
