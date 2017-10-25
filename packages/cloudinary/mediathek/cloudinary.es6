@@ -81,7 +81,7 @@ const getItems = items =>
           setSelection([]);
         },
         onChange: ({ file }) => {
-          if (file.status === 'uploading') {
+          if (file.status === 'uploading' && file.percent < 100) {
             // save upload-state to state
             saveProgress(file);
           } else if (file.status === 'done') {
@@ -99,13 +99,6 @@ const getItems = items =>
                     .join('/')
                 : null,
             }).then(({ data }) => {
-              console.log(
-                uploading,
-                uploading.filter(x => x.name !== file.name),
-                file.name,
-              );
-              // remove file from uploading
-              setUploading(uploading.filter(x => x.name !== file.name));
               if (data && data.cloudinaryRequestDone) {
                 addSelection(data.cloudinaryRequestDone.id);
                 refetchKey();
@@ -114,6 +107,8 @@ const getItems = items =>
                 saveProgress(file);
                 message.success(`${file.name} erfolgreich hochgeladen.`);
               }
+              // remove file from uploading
+              setUploading(uploading.filter(x => x.name !== file.name));
             });
           } else if (file.status === 'error') {
             console.log('error');
