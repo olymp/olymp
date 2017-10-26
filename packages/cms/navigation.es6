@@ -3,11 +3,10 @@ import { withLang } from 'olymp-utils';
 import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Menu, Icon } from 'antd';
-import { createComponent, border, Avatar } from 'olymp-fela';
+import { createComponent, border, Avatar, Logo } from 'olymp-fela';
 import { compose, withState, withHandlers } from 'recompose';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
-import Logo from './logo';
 
 export const UserPic = createComponent(
   ({ theme }) => ({
