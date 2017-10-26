@@ -30,7 +30,7 @@ const Button = createComponent(
 
 const StyledForm = createComponent(
   ({ theme }) => ({
-    padding: theme.space1,
+    padding: theme.space2,
   }),
   p => <Form {...p} />,
   [],
@@ -178,23 +178,17 @@ class MediaDetail extends Component {
     );
     const stateField = (
       <Form.Item label="Zustand" {...FormForFullLayout}>
-        {form.getFieldDecorator('state', {
-          initialValue: item.state,
+        {form.getFieldDecorator('removed', {
+          initialValue: item.removed,
         })(
-          <Select style={{ width: '100%' }}>
-            <Select.Option value="DRAFT">
-              <b style={{ color: 'blue' }}>
-                <Icon type="inbox" />
-              </b>{' '}
-              Ablage
-            </Select.Option>
-            <Select.Option value="PUBLISHED">
+          <Select initialValue={false} style={{ width: '100%' }}>
+            <Select.Option value={false}>
               <b style={{ color: 'green' }}>
                 <Icon type="check" />
               </b>{' '}
               Veröffentlicht
             </Select.Option>
-            <Select.Option value="REMOVED">
+            <Select.Option value>
               <b style={{ color: 'red' }}>
                 <Icon type="delete" />
               </b>{' '}

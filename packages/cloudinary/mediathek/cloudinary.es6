@@ -14,6 +14,7 @@ const getItems = items =>
   items.map(item => ({
     ...item,
     tags: !item.tags || !item.tags.length ? ['Ohne Schlagworte'] : item.tags,
+    removed: !!item.removed,
   }));
 
 @withRedux
@@ -35,6 +36,15 @@ const getItems = items =>
       format,
       sortByName,
     }),
+)
+@withPropsOnChange(
+  ['folder', 'filteredItems'],
+  ({ filteredItems, folder }) => ({
+    filteredItems:
+      (folder || '').indexOf('Papierkorb') === -1
+        ? (filteredItems || []).filter(x => !x.removed)
+        : filteredItems,
+  }),
 )
 @withPropsOnChange(
   ['uploading', 'cloudinaryRequest', 'folder', 'tags'],
