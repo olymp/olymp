@@ -8,20 +8,10 @@ const ImageImg = createComponent(
     height,
     borderRadius: circle ? '50%' : 0,
   }),
-  ({
-    width,
-    height,
-    src,
-    srcSet,
-    blob,
-    alt,
-    className,
-    attributes,
-    onLoad,
-  }) => (
+  ({ width, height, src, srcSet, alt, className, attributes, onLoad }) => (
     <img
       {...attributes}
-      src={blob ? window.URL.createObjectURL(blob) : src}
+      src={src}
       srcSet={srcSet}
       alt={alt}
       className={className}
@@ -37,14 +27,13 @@ ImageImg.displayName = 'Image.Img';
 ImageImg.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  src: PropTypes.string,
+  src: PropTypes.string.isRequired,
   srcSet: PropTypes.string,
   alt: PropTypes.string,
   onClick: PropTypes.func,
   circle: PropTypes.bool,
 };
 ImageImg.defaultProps = {
-  src: '',
   alt: '',
   onClick: () => {},
   circle: false,
