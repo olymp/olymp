@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
 import { connect } from 'react-redux';
-import { ThemeProvider, ScreenLoader } from 'olymp-fela';
+import { ThemeProvider, ScreenLoader, Logo } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
@@ -9,7 +9,6 @@ import { asyncComponent } from 'react-async-component';
 import getNavigation from 'olymp-pages/get-navigation';
 import { get } from 'lodash';
 import NoAuth from './cms-noauth';
-import Logo from './logo';
 import { withRedux } from './redux';
 
 // import IfAuth from './cms-auth';
@@ -22,8 +21,8 @@ const IfAuth = asyncComponent({
         require => {
           resolve(require('./cms-auth'));
         },
-        'cms'
-      )
+        'cms',
+      ),
     ),
 });
 
@@ -51,14 +50,14 @@ const enhance = compose(
       logoTitle: 'olymp cms',
       ...theme,
     },
-  }))
+  })),
 );
 
 const Auth = connect(({ auth }) => ({
   isAuthenticated: !!auth.user,
 }))(
   ({ isAuthenticated, ...rest }) =>
-    isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />
+    isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />,
 );
 Auth.displayName = 'CmsAuthSwitch';
 
@@ -75,7 +74,7 @@ const Load = getNavigation(
   }))(({ isLoading, ...rest }) => [
     <ScreenLoader key={0} show={isLoading} />,
     <Auth key={1} {...rest} />,
-  ])
+  ]),
 );
 Load.displayName = 'CmsLoadSwitch';
 

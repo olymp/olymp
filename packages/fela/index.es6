@@ -15,3 +15,4 @@ export { default as MaterialColors } from './material-colors';
 export { default as LightBox } from './lightbox';
 export { default as Button } from './button';
 export { default as Avatar } from './avatar';
+export { default as Logo } from './logo';
