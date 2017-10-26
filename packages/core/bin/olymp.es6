@@ -68,7 +68,7 @@ if (argv.targets) {
 }
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
-  const url = new urlUtil.URL(`http://localhost:${port}`);
+  const url = new urlUtil.URL(`http://0.0.0.0:${port}`);
   const devPort = isServerless ? port : port + 1;
   const devUrl = isServerless
     ? url

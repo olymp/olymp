@@ -9,8 +9,10 @@ import relList from './edit-rel-list';
 import input from './edit-input';
 import image from './edit-image';
 import color from './edit-color';
+import textarea from './edit-textarea';
 
 export default {
+  textarea,
   color,
   date,
   enu,

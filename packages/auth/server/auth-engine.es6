@@ -31,9 +31,10 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
     getUser: id => collection.findOne({ id }).then(cleanUser),
     login: (field, pw, totp) => {
       let user = null;
+
       return collection
         .findOne({ [loginBy]: field })
-        .then((usr) => {
+        .then(usr => {
           user = usr;
           if (!user) {
             throw new Error('No user matched.');
@@ -43,7 +44,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           }
           return passwordEngine.match(user, pw);
         })
-        .then((isValid) => {
+        .then(isValid => {
           if (!isValid) {
             throw new Error('Wrong password.');
           }
@@ -67,21 +68,21 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           };
         });
     },
-    verify: (key) => {
+    verify: key => {
       // TODO remove!
       if (!key) {
         throw new Error('No Key');
       }
       return tokenEngine
         .readUser(key)
-        .then((item) => {
+        .then(item => {
           const { id } = item;
           if (!id) {
             throw new Error('Error.');
           }
           return collection.findOne({ id });
         })
-        .then((user) => {
+        .then(user => {
           if (!user) {
             throw new Error('No user matched.');
           }
@@ -102,11 +103,14 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
       }
       const init = key ? tokenEngine.verify(key) : Promise.resolve(filter);
       return init
-        .then((user) => {
+        .then(user => {
           if (user[loginBy] !== rawUser[loginBy]) {
             throw new Error('Unexpected name');
           }
-          return Promise.all([collection.findOne(filter), passwordEngine.set(rawUser, pwd)]);
+          return Promise.all([
+            collection.findOne(filter),
+            passwordEngine.set(rawUser, pwd),
+          ]);
         })
         .then(([currentUser, user]) => {
           if (currentUser) {
@@ -114,7 +118,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           }
           return collection.insert(user);
         })
-        .then((result) => {
+        .then(result => {
           let confirmationToken;
           if (!result.confirmed) {
             confirmationToken = tokenEngine.createFromUser(result);
@@ -138,7 +142,10 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           if (!id) {
             throw new Error('Error.');
           }
-          return Promise.all([id, collection.update({ id }, { $set: { confirmed: true } })]);
+          return Promise.all([
+            id,
+            collection.update({ id }, { $set: { confirmed: true } }),
+          ]);
         })
         .then(([id]) => collection.findOne({ id }))
         .then(user => ({
@@ -146,12 +153,12 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           user: cleanUser(user),
         })),
     //
-    totp: (id) => {
+    totp: id => {
       const secret = speakeasy.generateSecret({ length: 20 }).base32;
       let user = null;
       return monk
         .read('user', { id })
-        .then((currentUser) => {
+        .then(currentUser => {
           if (!currentUser) {
             throw new Error('No user matched.');
           }
@@ -165,7 +172,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           user = currentUser;
           return qr(user[loginBy], secret, issuer);
         })
-        .then((qr) => {
+        .then(qr => {
           if (typeof qr === 'object') {
             return qr;
           }
@@ -181,7 +188,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
       let secret;
       return tokenEngine
         .verify(t)
-        .then((untoken) => {
+        .then(untoken => {
           if (!untoken) {
             throw new Error('TOTP token error');
           }
@@ -201,16 +208,19 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           }
           return monk.read('user', { id });
         })
-        .then((currentUser) => {
+        .then(currentUser => {
           if (!currentUser) {
             throw new Error('No user matched.');
           }
-          return collection.update({ id: currentUser.id }, { $set: { totp: secret } });
+          return collection.update(
+            { id: currentUser.id },
+            { $set: { totp: secret } },
+          );
         })
         .then(user => true);
     },
     forgot: field =>
-      collection.findOne({ [loginBy]: field }).then((user) => {
+      collection.findOne({ [loginBy]: field }).then(user => {
         if (!user) {
           throw new Error('No user matched.');
         }
@@ -235,7 +245,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           }
           return collection.findOne({ id });
         })
-        .then((user) => {
+        .then(user => {
           if (!user) {
             throw new Error('No user matched.');
           }
@@ -246,7 +256,10 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
           return passwordEngine.set(user, pwd);
         })
         .then(user =>
-          collection.update({ id: user.id }, { $set: { salt: user.salt, hash: user.hash } }),
+          collection.update(
+            { id: user.id },
+            { $set: { salt: user.salt, hash: user.hash } },
+          ),
         )
         .then(user => ({
           token: tokenEngine.createFromUser(user),

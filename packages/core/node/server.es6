@@ -143,6 +143,7 @@ try {
 app.get('*', (req, res) => {
   const isAmp = req.isAmp;
   if (process.env.IS_SSR === false) {
+    const url = new URL(req.originalUrl);
     const html = (req.isAmp ? amp : template)({
       gaTrackingId: process.env.GA_TRACKING_ID,
       scripts: isAmp
@@ -150,7 +151,7 @@ app.get('*', (req, res) => {
         : [
             isProd
               ? `${clientAssets.app.js}`
-              : `http://localhost:${devPort}/app.js`,
+              : `${url.protocol}://${url.host}:${devPort}/app.js`,
           ],
       styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
       buildOn: process.env.BUILD_ON,
@@ -243,11 +244,12 @@ app.get('*', (req, res) => {
       const felaMarkup = renderToMarkup(renderer);
       const asyncState = asyncContext.getState();
 
+      const url = new URL(req.originalUrl);
       const scripts = req.isAmp
         ? []
         : isProd
           ? [`${clientAssets.app.js}`]
-          : [`http://localhost:${devPort}/app.js`];
+          : [`${url.protocol}://${url.host}:${devPort}/app.js`];
       const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
       // Generate the html res.
       const state = store.getState();
