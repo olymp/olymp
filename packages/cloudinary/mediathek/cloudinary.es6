@@ -38,7 +38,7 @@ const getItems = items =>
     }),
 )
 @withPropsOnChange(
-  ['folder', 'filteredItems'],
+  ['folder', 'filteredItems', 'items'],
   ({ filteredItems, folder }) => ({
     filteredItems:
       (folder || '').indexOf('Papierkorb') === -1
