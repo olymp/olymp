@@ -172,7 +172,7 @@ export default enhance(
           {Object.keys(directories).map(key => (
             <Directory
               key={key}
-              id={key}
+              id={key === 'PAPIERKORB' ? 'Papierkorb' : key}
               items={directories[key]}
               toggleSort={toggleSort}
               sortByName={sortByName}

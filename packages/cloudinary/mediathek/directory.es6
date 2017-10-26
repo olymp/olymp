@@ -44,9 +44,11 @@ export const getDirectories = ({
     }
 
     const app =
-      item.publicId && item.publicId.indexOf('/') !== -1
-        ? item.publicId.split('/')[0]
-        : 'gzk';
+      (item.removed && 'Papierkorb') ||
+      (!!item.publicId &&
+        item.publicId.indexOf('/') !== -1 &&
+        item.publicId.split('/')[0]) ||
+      'gzk';
     const folder = item.folder ? `${app}/${item.folder}` : `${app}/Allgemein`;
 
     if (
