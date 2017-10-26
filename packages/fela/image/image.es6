@@ -160,6 +160,7 @@ class Image extends Component {
       w,
       h,
       url,
+      blob,
       originalWidth,
       originalHeight,
       cWidth,
@@ -173,19 +174,21 @@ class Image extends Component {
       return <div />;
     }
 
-    const image = url ? (
-      <Img
-        src={url}
-        srcSet={srcSet}
-        alt={alt}
-        width={w >= h ? '100%' : 'auto'}
-        height={w < h ? '100%' : 'auto'}
-        circle={circle}
-        onLoad={() => setIsLoaded(true)}
-      />
-    ) : (
-      <Placeholder height="100%" width="100%" circle={circle} />
-    );
+    const image =
+      url || blob ? (
+        <Img
+          src={url}
+          srcSet={srcSet}
+          blob={blob}
+          alt={alt}
+          width={w >= h ? '100%' : 'auto'}
+          height={w < h ? '100%' : 'auto'}
+          circle={circle}
+          onLoad={() => setIsLoaded(true)}
+        />
+      ) : (
+        <Placeholder height="100%" width="100%" circle={circle} />
+      );
 
     return (
       <Container
