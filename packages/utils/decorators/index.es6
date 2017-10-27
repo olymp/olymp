@@ -5,5 +5,4 @@ export { default as withAmp, AmpProvider } from './amp';
 export { default as Websocket } from './websocket';
 export { default as withSearch } from './search';
 export { default as withLang, withLangProvider, LangProvider } from './lang';
-export { default as withLocale, LocaleProvider } from './locale';
 export { default as withScroll, withScrollHide } from './scroll';
