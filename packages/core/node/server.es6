@@ -21,11 +21,14 @@ import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
+// Universal
 import {
   AsyncComponentProvider,
   createAsyncContext,
 } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
+/* import flushChunks from 'webpack-flush-chunks';
+import { flushChunkNames } from 'react-universal-component/server'; */
 // Etc
 import fetch from 'isomorphic-fetch';
 // import sslRedirect from 'heroku-ssl-redirect';
@@ -54,8 +57,6 @@ import amp from '../templates/amp';
 import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
 
-const port = parseInt(process.env.PORT || 3000, 10);
-const devPort = port + 1;
 // eslint
 global.fetch = fetch;
 
@@ -146,15 +147,7 @@ app.get('*', (req, res) => {
     console.log(req.originalUrl);
     const html = (req.isAmp ? amp : template)({
       gaTrackingId: process.env.GA_TRACKING_ID,
-      scripts: isAmp
-        ? []
-        : [
-            isProd
-              ? `${clientAssets.app.js}`
-              : `${req.protocol}://${req
-                  .get('host')
-                  .split(':')[0]}:${devPort}/app.js`,
-          ],
+      scripts: isAmp ? [] : [isProd ? `${clientAssets.app.js}` : `/app.js`],
       styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
       buildOn: process.env.BUILD_ON,
     });
@@ -248,13 +241,7 @@ app.get('*', (req, res) => {
 
       const scripts = req.isAmp
         ? []
-        : isProd
-          ? [`${clientAssets.app.js}`]
-          : [
-              `${req.protocol}://${req
-                .get('host')
-                .split(':')[0]}:${devPort}/app.js`,
-            ];
+        : isProd ? [`${clientAssets.app.js}`] : [`/app.js`];
       const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
       // Generate the html res.
       const state = store.getState();

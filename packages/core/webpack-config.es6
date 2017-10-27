@@ -26,7 +26,7 @@ const pluginsFolder = !isLinked ? nodeModules : topFolder;
 module.exports = ({
   mode,
   target,
-  devUrl,
+  port,
   isSSR,
   isServerless,
   plugins = [],
@@ -144,6 +144,7 @@ module.exports = ({
       ],
     },
     output: {
+      publicPath: '/',
       path: path.resolve(appRoot, folder, target.split('-')[0]),
     },
     entry: {},
@@ -164,6 +165,12 @@ module.exports = ({
         'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
           ? `"${process.env.CRASHREPORT_URL}"`
           : false,
+      }),
+    );
+  } else if (port) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.PORT': `"${port}"`,
       }),
     );
   }
@@ -216,12 +223,6 @@ module.exports = ({
       __dirname: true,
       __filename: true,
     };
-  }
-
-  if (isDev && isWeb && devUrl) {
-    config.output.publicPath = devUrl.href;
-  } else {
-    config.output.publicPath = '/';
   }
 
   // webpack plugins
