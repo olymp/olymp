@@ -3,9 +3,6 @@ import LRU from 'lru-cache';
 
 const cache = LRU({
   max: 500,
-  dispose(key, n) {
-    n.close();
-  },
   maxAge: 1000 * 60 * 5,
 });
 
