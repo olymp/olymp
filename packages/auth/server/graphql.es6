@@ -44,24 +44,25 @@ export default (
       }
       return db.collection('user').findOne({ id: args.id });
     },
-    totp: (source, args, { session, authEngine }) =>
-      authEngine.totp(session.userId).then(x => x),
+    totp: (source, args, { session, authEngine, db }) =>
+      authEngine.totp(db, session.userId).then(x => x),
   };
   if (getQueries) {
     queries = getQueries(queries);
   }
   let mutations = {
-    register: (source, args, { authEngine }) =>
+    register: (source, args, { authEngine, db }) =>
       authEngine
-        .register(args.input, args.password, args.token)
+        .register(db, args.input, args.password, args.token)
         .then(x => x.user),
-    forgot: (source, args, { authEngine }) => authEngine.forgot(args.email),
-    reset: (source, args, { authEngine }) =>
-      authEngine.reset(args.token, args.password).then(({ user }) => user),
-    totpConfirm: (source, args, { authEngine }) =>
-      authEngine.totpConfirm(args.token, args.totp).then(x => x),
-    login: (source, { email, password, totp }, { authEngine, session }) =>
-      authEngine.login(email, password, totp).then(({ user, token }) => {
+    forgot: (source, args, { authEngine, db }) =>
+      authEngine.forgot(db, args.email),
+    reset: (source, args, { authEngine, db }) =>
+      authEngine.reset(db, args.token, args.password).then(({ user }) => user),
+    totpConfirm: (source, args, { authEngine, db }) =>
+      authEngine.totpConfirm(db, args.token, args.totp).then(x => x),
+    login: (source, { email, password, totp }, { authEngine, db, session }) =>
+      authEngine.login(db, email, password, totp).then(({ user, token }) => {
         if (session) {
           session.token = token;
         }
@@ -74,8 +75,8 @@ export default (
       } // eslint-disable-line no-param-reassign
       return true;
     },
-    confirm: (source, args, { authEngine }) =>
-      authEngine.confirm(args.token).then(({ user }) => user),
+    confirm: (source, args, { authEngine, db }) =>
+      authEngine.confirm(db, args.token).then(({ user }) => user),
     user: (source, { id, input, type }, { user, db }) => {
       console.log(user);
       if (user && user.isAdmin) {

@@ -5,7 +5,7 @@ import speakeasy from 'speakeasy';
 import shortId from 'shortid';
 import qrcode from 'qrcode';
 
-export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
+export default ({ secret, mail, issuer, loginBy = 'email' }) => {
   const qr = (field, x) =>
     new Promise((yay, nay) => {
       qrcode.toString(
@@ -18,7 +18,6 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
 
   const passwordEngine = createPasswordEngine({});
   const tokenEngine = createTokenEngine({ secret });
-  const collection = db.collection('user');
   return {
     passwordEngine,
     tokenEngine,
@@ -28,11 +27,17 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
         .readUser(key)
         .then(() => true)
         .catch(() => false),
-    getUser: id => collection.findOne({ id }).then(cleanUser),
-    login: (field, pw, totp) => {
+
+    getUser: (db, id) =>
+      db
+        .collection('user')
+        .findOne({ id })
+        .then(cleanUser),
+    login: (db, field, pw, totp) => {
       let user = null;
 
-      return collection
+      return db
+        .collection('user')
         .findOne({ [loginBy]: field })
         .then(usr => {
           user = usr;
@@ -68,7 +73,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
           };
         });
     },
-    verify: key => {
+    verify: (db, key) => {
       // TODO remove!
       if (!key) {
         throw new Error('No Key');
@@ -80,7 +85,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
           if (!id) {
             throw new Error('Error.');
           }
-          return collection.findOne({ id });
+          return db.collection('user').findOne({ id });
         })
         .then(user => {
           if (!user) {
@@ -94,7 +99,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
         });
     },
     // Get user by email/realm and post new user
-    register: (rawUser, pwd, key) => {
+    register: (db, rawUser, pwd, key) => {
       const filter = { [loginBy]: rawUser[loginBy] };
       rawUser.confirmed = !!key;
       rawUser.id = shortId.generate();
@@ -108,7 +113,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
             throw new Error('Unexpected name');
           }
           return Promise.all([
-            collection.findOne(filter),
+            db.collection('user').findOne(filter),
             passwordEngine.set(rawUser, pwd),
           ]);
         })
@@ -116,7 +121,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
           if (currentUser) {
             throw new Error('USER_ALREADY_EXISTS Error.');
           }
-          return collection.insert(user);
+          return db.collection('user').insert(user);
         })
         .then(result => {
           let confirmationToken;
@@ -135,7 +140,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
         });
     },
     // Get user by id and update user
-    confirm: key =>
+    confirm: (db, key) =>
       tokenEngine
         .readUser(key)
         .then(({ id }) => {
@@ -144,16 +149,16 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
           }
           return Promise.all([
             id,
-            collection.update({ id }, { $set: { confirmed: true } }),
+            db.collection('user').update({ id }, { $set: { confirmed: true } }),
           ]);
         })
-        .then(([id]) => collection.findOne({ id }))
+        .then(([id]) => db.collection('user').findOne({ id }))
         .then(user => ({
           token: tokenEngine.createFromUser(user),
           user: cleanUser(user),
         })),
     //
-    totp: id => {
+    totp: (db, id) => {
       const secret = speakeasy.generateSecret({ length: 20 }).base32;
       let user = null;
       return db
@@ -185,7 +190,7 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
         });
     },
     //
-    totpConfirm: (t, totp) => {
+    totpConfirm: (db, t, totp) => {
       let secret;
       return tokenEngine
         .verify(t)
@@ -213,38 +218,40 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
           if (!currentUser) {
             throw new Error('No user matched.');
           }
-          return collection.update(
-            { id: currentUser.id },
-            { $set: { totp: secret } },
-          );
+          return db
+            .collection('user')
+            .update({ id: currentUser.id }, { $set: { totp: secret } });
         })
         .then(user => true);
     },
-    forgot: field =>
-      collection.findOne({ [loginBy]: field }).then(user => {
-        if (!user) {
-          throw new Error('No user matched.');
-        }
-        if (user.confirmed === false) {
-          throw new Error('User not confirmed.');
-        }
-        const requestToken = tokenEngine.createFromUser(user);
+    forgot: (db, field) =>
+      db
+        .collection('user')
+        .findOne({ [loginBy]: field })
+        .then(user => {
+          if (!user) {
+            throw new Error('No user matched.');
+          }
+          if (user.confirmed === false) {
+            throw new Error('User not confirmed.');
+          }
+          const requestToken = tokenEngine.createFromUser(user);
 
-        if (mail && user.email) {
-          mail(mails.forgot, { to: user.email, token: requestToken })
-            .then(x => console.log('Mail success'))
-            .catch(err => console.error(err));
-        }
-        return true;
-      }),
-    reset: (key, pwd) =>
+          if (mail && user.email) {
+            mail(mails.forgot, { to: user.email, token: requestToken })
+              .then(x => console.log('Mail success'))
+              .catch(err => console.error(err));
+          }
+          return true;
+        }),
+    reset: (db, key, pwd) =>
       tokenEngine
         .readUser(key)
         .then(({ id }) => {
           if (!id) {
             throw new Error('Error.');
           }
-          return collection.findOne({ id });
+          return db.collection('user').findOne({ id });
         })
         .then(user => {
           if (!user) {
@@ -257,10 +264,12 @@ export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
           return passwordEngine.set(user, pwd);
         })
         .then(user =>
-          collection.update(
-            { id: user.id },
-            { $set: { salt: user.salt, hash: user.hash } },
-          ),
+          db
+            .collection('user')
+            .update(
+              { id: user.id },
+              { $set: { salt: user.salt, hash: user.hash } },
+            ),
         )
         .then(user => ({
           token: tokenEngine.createFromUser(user),

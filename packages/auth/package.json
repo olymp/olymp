@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.1.0",
+    "lru-cache": "^4.1.1",
     "olymp-fela": "^18.2.16",
     "qrcode": "^0.9.0",
     "speakeasy": "^2.0.0"

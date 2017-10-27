@@ -29,7 +29,7 @@ const {
 
 const createResponseCache = () => {
   let cache = {};
-  const getKey = (req) => {
+  const getKey = req => {
     if (req.isAmp) {
       return `${req.originalUrl}|amp`;
     }
@@ -48,6 +48,17 @@ const createResponseCache = () => {
 
 export default (server, options) => {
   const monk = createMonk(MONGODB_URI);
+  let db = null;
+  console.log(MONGODB_URI);
+  MongoClient.connect(MONGODB_URI, (err, d) => {
+    if (err) {
+      console.error(err);
+      if (err.errors) {
+        err.errors.forEach(err => console.error(err));
+      }
+    }
+    db = d;
+  });
 
   const schema = createSchema({ directives });
   const modules = {
@@ -70,7 +81,7 @@ export default (server, options) => {
   });
 
   const authEngine = createAuthEngine({
-    monk,
+    db,
     mail,
     secret: AUTH_SECRET,
     app: process.env.APP,
@@ -78,23 +89,15 @@ export default (server, options) => {
   server.use(authCache(authEngine));
 
   const algolia = process.env.ALGOLIA
-    ? algoliasearch(process.env.ALGOLIA.split('@')[1], process.env.ALGOLIA.split('@')[0])
+    ? algoliasearch(
+        process.env.ALGOLIA.split('@')[1],
+        process.env.ALGOLIA.split('@')[0],
+      )
     : null;
 
   // const responseCache = createResponseCache();
   let cachedApp = null;
 
-  let db = null;
-  console.log(MONGODB_URI);
-  MongoClient.connect(MONGODB_URI, (err, d) => {
-    if (err) {
-      console.error(err);
-      if (err.errors) {
-        err.errors.forEach(err => console.error(err));
-      }
-    }
-    db = d;
-  });
   server.use((req, res, next) => {
     req.db = db;
     req.mail = mail;
@@ -148,7 +151,9 @@ export default (server, options) => {
         } else {
           throw new Error('No permission');
         }
-        return monk.collection('user').findOne({ id: args.id, _appIds: process.env.APP });
+        return monk
+          .collection('user')
+          .findOne({ id: args.id, _appIds: process.env.APP });
       },
     }),
     getMutations: mutations => ({
@@ -165,7 +170,11 @@ export default (server, options) => {
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
   modules.scrape = scrapeGraphQL();
-  modules.google = googleGraphQL(GOOGLE_MAPS_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY);
+  modules.google = googleGraphQL(
+    GOOGLE_MAPS_KEY,
+    GOOGLE_CLIENT_EMAIL,
+    GOOGLE_PRIVATE_KEY,
+  );
   /*
   createSitemap(schema, options.sitemap);
   googleGraphQL(schema, GM_KEY, options.google);
@@ -204,7 +213,7 @@ export default (server, options) => {
   monk
     .collection('app')
     .findOne({ id: APP })
-    .then((app) => {
+    .then(app => {
       if (!app) {
         throw new Error('App not found');
       }

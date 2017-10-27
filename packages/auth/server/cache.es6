@@ -1,4 +1,13 @@
 import { get } from 'lodash';
+import LRU from 'lru-cache';
+
+const cache = LRU({
+  max: 500,
+  dispose(key, n) {
+    n.close();
+  },
+  maxAge: 1000 * 60 * 5,
+});
 
 export default auth => (req, res, next) => {
   const authorization =
@@ -8,13 +17,19 @@ export default auth => (req, res, next) => {
   if (!authorization) {
     return next();
   }
+  const cached = cache.get(authorization);
+  if (cached) {
+    req.user = cached;
+    return next();
+  }
   auth
-    .verify(authorization)
+    .verify(req.db, authorization)
     .then(user => {
       if (req.session) {
         req.session.token = user.token;
       }
       req.user = user;
+      cache.set(authorization, user);
       next();
     })
     .catch(e => {
@@ -24,6 +39,7 @@ export default auth => (req, res, next) => {
       }
       delete req.headers.authorization;
       delete req.params.authorization;
+      cache.del(authorization);
       next();
     });
 };
