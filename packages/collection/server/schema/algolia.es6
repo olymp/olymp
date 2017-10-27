@@ -1,5 +1,6 @@
 import { get, isArray } from 'lodash';
 import { createTypeFetcher } from 'olymp-graphql/server';
+
 const fetchType = createTypeFetcher((node, name) => get(node, 'kind') === 'ObjectTypeDefinition' && get(node, 'name.value') === name);
 
 export default {
@@ -27,7 +28,7 @@ export default {
   },
   resolvers: {
     queries: {
-      algolia: (source, { text }, { monk, app, algolia }) => {
+      algolia: (source, { text }, { app, algolia }) => {
         const index = algolia.initIndex(app.id);
         return new Promise((resolve, reject) => {
           index.search(text, (err, content) => {

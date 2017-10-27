@@ -23,7 +23,7 @@ export default {
       const relationType = get(
         argRelationType,
         'value.value',
-        isList ? '1-n' : '1-1'
+        isList ? '1-n' : '1-1',
       );
 
       const leftType = ancestors[ancestors.length - 1].name.value;
@@ -39,7 +39,7 @@ export default {
       const rightNode = createTypeFetcher(
         node =>
           get(node, 'name.value') === rightType &&
-          get(node, 'kind') === 'ObjectTypeDefinition'
+          get(node, 'kind') === 'ObjectTypeDefinition',
       )(ast);
 
       // one-to-one / one-to-many
@@ -47,17 +47,17 @@ export default {
       if (relationType === '1-1') {
         addFields(ast, leftNode, `${leftField}Id: String`);
         if (rightType === 'User') {
-          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-            monk.collection(rightTable).findOne({
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
+            db.collection(rightTable).findOne({
               id: source[`${leftField}Id`],
-            })
+            }),
           );
         } else {
-          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-            monk.collection('item').findOne({
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
+            db.collection('item').findOne({
               id: source[`${leftField}Id`],
               _type: rightTable,
-            })
+            }),
           );
         }
       } else if (relationType === 'embedsMany') {
@@ -65,12 +65,15 @@ export default {
         set(
           resolvers,
           `${leftType}.${leftField}`,
-          (source, args, { monk }) =>
+          (source, args, { db }) =>
             source[`${leftField}Ids`] &&
-            monk.collection('item').find({
-              id: { $in: source[`${leftField}Ids`] || [] },
-              _type: rightTable,
-            })
+            db
+              .collection('item')
+              .find({
+                id: { $in: source[`${leftField}Ids`] || [] },
+                _type: rightTable,
+              })
+              .toArray(),
         );
       } else if (relationType === '1-n') {
         // Add list accessor and xxxIds field since dealing with many
@@ -79,28 +82,31 @@ export default {
           ast,
           node,
           `query: ${rightType}Query, sort: ${rightType}Sort, limit: Int, skip: Int`
-        );*/
+        ); */
         addFields(ast, leftNode, `${leftField}Id: String`);
         if (rightType === 'User') {
-          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-            monk.collection(rightTable).findOne({
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
+            db.collection(rightTable).findOne({
               id: source[`${leftField}Id`],
-            })
+            }),
           );
         } else {
-          set(resolvers, `${leftType}.${leftField}`, (source, args, { monk }) =>
-            monk.collection('item').findOne({
+          set(resolvers, `${leftType}.${leftField}`, (source, args, { db }) =>
+            db.collection('item').findOne({
               id: source[`${leftField}Id`],
               _type: rightTable,
-            })
+            }),
           );
         }
         addFields(ast, rightNode, `${rightField}: [${leftType}]`);
-        set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
-          monk.collection('item').find({
-            [`${leftField}Id`]: source.id,
-            _type: leftTable,
-          })
+        set(resolvers, `${rightType}.${rightField}`, (source, args, { db }) =>
+          db
+            .collection('item')
+            .find({
+              [`${leftField}Id`]: source.id,
+              _type: leftTable,
+            })
+            .toArray(),
         );
       }
 
@@ -111,16 +117,16 @@ export default {
 
         if (relationType === '1-n') {
           addFields(ast, rightNode, `${rightField}: [${leftType}]`);
-          set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
-            monk.collection(leftTable).find({})
+          set(resolvers, `${rightType}.${rightField}`, (source, args, { db }) =>
+            db.collection(leftTable).find({}).toArray()
           );
         } else if (relationType === '1-1') {
           addFields(ast, rightNode, `${rightField}: ${leftType}`);
-          set(resolvers, `${rightType}.${rightField}`, (source, args, { monk }) =>
-            monk.collection(leftTable).findOne({})
+          set(resolvers, `${rightType}.${rightField}`, (source, args, { db }) =>
+            db.collection(leftTable).findOne({})
           );
         }
-      }*/
+      } */
     },
   },
 };

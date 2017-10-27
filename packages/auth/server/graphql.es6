@@ -11,32 +11,38 @@ export default (
       authEngine.checkToken(args.token),
     verify: (source, x, { user }) => user,
     // verify: (source, args) => auth.verify(args.token),
-    invitationList: (source, args, { user, monk }) => {
+    invitationList: (source, args, { user, db }) => {
       if (!user || !user.isAdmin) {
         throw new Error('No permission');
       }
-      return monk.collection('invitation').find({});
+      return db
+        .collection('invitation')
+        .find({})
+        .toArray();
     },
-    invitation: (source, args, { user, monk }) => {
+    invitation: (source, args, { user, db }) => {
       if (!user || !user.isAdmin) {
         throw new Error('No permission');
       }
-      return monk.collection('invitation').findOne({ id: args.id });
+      return db.collection('invitation').findOne({ id: args.id });
     },
-    userList: (source, args, { user, monk }) => {
+    userList: (source, args, { user, db }) => {
       console.log(user);
       if (!user || !user.isAdmin) {
         throw new Error('No permission');
       }
-      return monk.collection('user').find({});
+      return db
+        .collection('user')
+        .find({})
+        .toArray();
     },
-    user: (source, args, { user, monk }) => {
+    user: (source, args, { user, db }) => {
       if (user && user.isAdmin) {
       } else if (user && user.id === args.id) {
       } else {
         throw new Error('No permission');
       }
-      return monk.collection('user').findOne({ id: args.id });
+      return db.collection('user').findOne({ id: args.id });
     },
     totp: (source, args, { session, authEngine }) =>
       authEngine.totp(session.userId).then(x => x),
@@ -70,7 +76,7 @@ export default (
     },
     confirm: (source, args, { authEngine }) =>
       authEngine.confirm(args.token).then(({ user }) => user),
-    user: (source, { id, input, type }, { user, monk }) => {
+    user: (source, { id, input, type }, { user, db }) => {
       console.log(user);
       if (user && user.isAdmin) {
       } else if (user && user.id === id) {
@@ -79,31 +85,30 @@ export default (
       }
       // eslint-disable-line no-shadow
       if (type && type === 'REMOVE') {
-        return monk
+        return db
           .collection('user')
           .remove({ id })
           .then(x => ({ id }));
       }
       input.id = id || shortID.generate();
       if (id) {
-        return monk
+        return db
           .collection('user')
           .update({ id }, { $set: input }, { upsert: true })
           .then(x => input);
       }
-      return monk
+      return db
         .collection('user')
         .insert(input)
         .then(x => input);
     },
-    invitation: (source, args, { user, monk, mail, authEngine }) => {
+    invitation: (source, args, { user, db, mail, authEngine }) => {
       if (!user || !user.isAdmin) {
         throw new Error('No permission');
       }
-      const collection = monk.collection('invitation');
       // eslint-disable-line no-shadow
       if (args.type && args.type === 'REMOVE') {
-        return monk.remove('invitation', Object.assign({}, args));
+        return db.remove('invitation', Object.assign({}, args));
       } else if (args.input) {
         args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
         delete args.input; // eslint-disable-line no-param-reassign
@@ -111,7 +116,7 @@ export default (
       delete args.type; // eslint-disable-line no-param-reassign
       args.expiry = +new Date();
       args.token = authEngine.tokenEngine.create({ email: args.email });
-      return monk
+      return db
         .collection('invitation')
         .insert(args)
         .then(u => {

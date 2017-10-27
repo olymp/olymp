@@ -5,7 +5,7 @@ import speakeasy from 'speakeasy';
 import shortId from 'shortid';
 import qrcode from 'qrcode';
 
-export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
+export default ({ db, secret, mail, issuer, loginBy = 'email' }) => {
   const qr = (field, x) =>
     new Promise((yay, nay) => {
       qrcode.toString(
@@ -18,7 +18,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
 
   const passwordEngine = createPasswordEngine({});
   const tokenEngine = createTokenEngine({ secret });
-  const collection = monk.collection('user');
+  const collection = db.collection('user');
   return {
     passwordEngine,
     tokenEngine,
@@ -156,8 +156,9 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
     totp: id => {
       const secret = speakeasy.generateSecret({ length: 20 }).base32;
       let user = null;
-      return monk
-        .read('user', { id })
+      return db
+        .collection('user')
+        .findOne({ id })
         .then(currentUser => {
           if (!currentUser) {
             throw new Error('No user matched.');
@@ -206,7 +207,7 @@ export default ({ monk, secret, mail, issuer, loginBy = 'email' }) => {
               throw new Error('TOTP token error');
             }
           }
-          return monk.read('user', { id });
+          return db.collection('user').findOne({ id });
         })
         .then(currentUser => {
           if (!currentUser) {

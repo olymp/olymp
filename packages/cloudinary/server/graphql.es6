@@ -18,15 +18,15 @@ export default uri => {
     `,
     resolvers: {
       queries: {
-        file: (source, args, { monk, app }) =>
-          monk.collection('item').findOne({ id: args.id }),
+        file: (source, args, { db, app }) =>
+          db.collection('item').findOne({ id: args.id }),
         /*
             .then((item) => {
               if (item) {
                 return item;
               }
               return getImageById(config, args.id).then((image) => {
-                monk
+                db
                   .collection('item')
                   .update(
                     { id: args.id },
@@ -37,7 +37,7 @@ export default uri => {
                 return image;
               });
             }), */
-        fileList: (source, { query }, { monk, app, user }) => {
+        fileList: (source, { query }, { db, app, user }) => {
           const mongoQuery = adaptQuery(query);
           if (!user) {
             return [];
@@ -45,9 +45,12 @@ export default uri => {
           mongoQuery._appId = { $in: user._appIds };
           mongoQuery._type = 'file';
           mongoQuery.state = { $ne: 'REMOVED' };
-          return monk.collection('item').find(mongoQuery);
+          return db
+            .collection('item')
+            .find(mongoQuery)
+            .toArray();
         },
-        fileTags: (source, { folder }, { monk, user }) => {
+        fileTags: (source, { folder }, { db, user }) => {
           if (!user) {
             return [];
           }
@@ -58,9 +61,10 @@ export default uri => {
           if (folder) {
             mongoQuery.folder = folder;
           }
-          return monk
+          return db
             .collection('item')
             .find(mongoQuery)
+            .toArray()
             .then(items =>
               sortBy(uniq(flatMap(items, item => item.tags)), x => x).filter(
                 x => x,
@@ -117,13 +121,13 @@ export default uri => {
         cloudinaryRequestDone: (
           source,
           { token, id, folder, tags },
-          { monk, app },
+          { db, app },
         ) => {
           if (token && invalidationTokens.indexOf(token) !== -1) {
             invalidationTokens.splice(invalidationTokens.indexOf(token), 1);
             return getImageById(config, id)
               .then(image =>
-                monk.collection('item').update(
+                db.collection('item').update(
                   { publicId: id },
                   {
                     ...image,
@@ -136,7 +140,7 @@ export default uri => {
                   { upsert: true },
                 ),
               )
-              .then(x => monk.collection('item').findOne({ publicId: id }));
+              .then(x => db.collection('item').findOne({ publicId: id }));
           }
           throw new Error('Invalid');
         },
