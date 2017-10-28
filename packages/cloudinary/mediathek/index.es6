@@ -1,15 +1,3 @@
-import { asyncComponent } from 'react-async-component';
+import universal from 'react-universal-component';
 
-export default asyncComponent({
-  resolve: () =>
-    new Promise(resolve =>
-      // Webpack's code splitting API w/naming
-      require.ensure(
-        [],
-        (require) => {
-          resolve(require('./cloudinary'));
-        },
-        'cms',
-      ),
-    ),
-});
+export default universal(import('./cloudinary'));

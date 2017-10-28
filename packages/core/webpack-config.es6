@@ -8,7 +8,6 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-// const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 
 const appRoot = process.cwd();
 
@@ -313,7 +312,7 @@ module.exports = ({
   }
 
   // LimitChunkCount on all but production-web
-  if (isNode || isElectron || isDev) {
+  if (isNode || isElectron) {
     config.plugins.push(
       new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     );
@@ -326,7 +325,7 @@ module.exports = ({
       }),
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-    if (isLinked) {
+    if (isLinked && isProd) {
       const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
         .BundleAnalyzerPlugin;
       config.plugins.push(
@@ -336,19 +335,20 @@ module.exports = ({
           // generateStatsFile: false,
         }),
       );
-    } else {
+    } else if (isProd) {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
     }
     // config.plugins.push(new webpack.optimize.LimitChunkCountPlugin({ minChunkSize: 10000 }));
+    const filename = isProd ? '[name].[hash].js' : '[name].js';
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
         name: 'app',
-        filename: '[name].[chunkhash].js',
+        filename,
         // minChunks: 2,
       }),
     );
-    config.output.filename = '[name].[chunkhash].js';
-    config.output.chunkFilename = '[name].[chunkhash].js';
+    config.output.filename = filename;
+    config.output.chunkFilename = filename;
   }
 
   if (isNode) {
@@ -368,6 +368,9 @@ module.exports = ({
           v === 'olymp' ||
           v.indexOf('olymp-') === 0 ||
           v.indexOf('olymp/') === 0,
+        v =>
+          v.indexOf('babel-plugin-universal-import') === 0 ||
+          v.indexOf('react-universal-component') === 0,
       ],
     });
     if (isElectron) {
@@ -409,6 +412,39 @@ module.exports = ({
         require.resolve(path.resolve(__dirname, 'node', 'index.js')),
       ];
     }
+  }
+
+  if (isWeb) {
+    config.plugins.push({
+      apply(compiler) {
+        compiler.plugin('after-emit', (compilation, done) => {
+          const stats = compilation.getStats().toJson({
+            hash: true,
+            version: true,
+            timings: false,
+            assets: true,
+            chunks: false,
+            chunkModules: false,
+            chunkOrigins: false,
+            modules: false,
+            cached: false,
+            reasons: false,
+            children: false,
+            source: false,
+            errors: false,
+            errorDetails: false,
+            warnings: false,
+            publicPath: true,
+          });
+          delete stats.assets;
+          fs.writeFile(
+            path.resolve(config.output.path, '..', 'node', 'stats.json'),
+            JSON.stringify(stats),
+            done,
+          );
+        });
+      },
+    });
   }
 
   const options = {

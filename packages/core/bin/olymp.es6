@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
-const urlUtil = require('url');
 const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
 const { merge } = require('lodash');

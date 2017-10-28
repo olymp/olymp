@@ -5,26 +5,13 @@ import { ThemeProvider, ScreenLoader, Logo } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
-import { asyncComponent } from 'react-async-component';
 import getNavigation from 'olymp-pages/get-navigation';
+import universal from 'react-universal-component';
 import { get } from 'lodash';
 import NoAuth from './cms-noauth';
 import { withRedux } from './redux';
 
-// import IfAuth from './cms-auth';
-const IfAuth = asyncComponent({
-  resolve: () =>
-    new Promise(resolve =>
-      // Webpack's code splitting API w/naming
-      require.ensure(
-        [],
-        require => {
-          resolve(require('./cms-auth'));
-        },
-        'cms',
-      ),
-    ),
-});
+const IfAuth = universal(import('./cms-auth'));
 
 const enhance = compose(
   // DragDropContext(HTML5Backend),
