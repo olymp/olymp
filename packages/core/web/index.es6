@@ -124,7 +124,6 @@ const link = ApolloLink.from([
 
 let client,
   mountNode,
-  asyncState,
   container,
   renderer,
   store,
@@ -143,15 +142,9 @@ function renderApp(App) {
     ua,
     rehydrateState,
     history,
-    asyncState,
   };
   const method = window.INITIAL_DATA ? hydrate : render;
   const app = <App {...props} />;
-  /* if (asyncState) {
-    return asyncBootstrapper(app).then(() => {
-      method(app, container);
-    });
-  } */
   return method(app, container);
 }
 // Get the DOM Element that will host our React application.
@@ -160,7 +153,6 @@ mountNode = document.getElementById('css-markup');
 ua = new UAParser(window.navigator.userAgent);
 renderer = createFela(ua);
 history = createHistory();
-asyncState = window.ASYNC_STATE;
 const { apollo, ...reduxInitial } = window.INITIAL_DATA || {};
 const cache = new InMemoryCache({
   dataIdFromObject: o => o.id,

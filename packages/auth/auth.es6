@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createLogout, createVerify, setAttributes } from './redux';
+import { createVerify, setAttributes } from './redux';
 
 export default (options = {}) => WrappedComponent => {
   const { attributes } = options;

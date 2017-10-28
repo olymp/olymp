@@ -7,6 +7,7 @@ import 'source-map-support/register';
 import path from 'path';
 import fs from 'fs';
 import { URL } from 'url';
+import jsonfile from 'jsonfile';
 // Express
 import express from 'express';
 import compression from 'compression';
@@ -21,11 +22,9 @@ import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
-import {
-  AsyncComponentProvider,
-  createAsyncContext,
-} from 'react-async-component';
-import asyncBootstrapper from 'react-async-bootstrapper';
+// Universal
+import flushChunks from 'webpack-flush-chunks';
+import { flushChunkNames } from 'react-universal-component/server';
 // Etc
 import fetch from 'isomorphic-fetch';
 // import sslRedirect from 'heroku-ssl-redirect';
@@ -54,8 +53,6 @@ import amp from '../templates/amp';
 import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
 
-const port = parseInt(process.env.PORT || 3000, 10);
-const devPort = port + 1;
 // eslint
 global.fetch = fetch;
 
@@ -139,22 +136,23 @@ try {
   );
 }
 
+let stats;
+const getStats = () => {
+  if (!stats || !isProd) {
+    stats = jsonfile.readFileSync(path.resolve(__dirname, 'stats.json')) || {};
+  }
+  return stats;
+};
+
 // Setup server side routing.
 app.get('*', (req, res) => {
   const isAmp = req.isAmp;
+  const stats = getStats();
   if (process.env.IS_SSR === false) {
     console.log(req.originalUrl);
     const html = (req.isAmp ? amp : template)({
       gaTrackingId: process.env.GA_TRACKING_ID,
-      scripts: isAmp
-        ? []
-        : [
-            isProd
-              ? `${clientAssets.app.js}`
-              : `${req.protocol}://${req
-                  .get('host')
-                  .split(':')[0]}:${devPort}/app.js`,
-          ],
+      scripts: isAmp ? [] : [isProd ? `${clientAssets.app.js}` : `/app.js`],
       styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
       buildOn: process.env.BUILD_ON,
     });
@@ -219,43 +217,34 @@ app.get('*', (req, res) => {
     ),
   );
 
-  const asyncContext = createAsyncContext();
   const reactApp = (
-    <AsyncComponentProvider asyncContext={asyncContext}>
-      <DynamicReduxProvider dynamicRedux={dynamicRedux}>
-        <ReduxProvider store={store}>
-          <ApolloProvider client={client}>
-            <Provider renderer={renderer}>
-              <UAProvider ua={ua}>
-                <AmpProvider amp={req.isAmp}>
-                  <App />
-                </AmpProvider>
-              </UAProvider>
-            </Provider>
-          </ApolloProvider>
-        </ReduxProvider>
-      </DynamicReduxProvider>
-    </AsyncComponentProvider>
+    <DynamicReduxProvider dynamicRedux={dynamicRedux}>
+      <ReduxProvider store={store}>
+        <ApolloProvider client={client}>
+          <Provider renderer={renderer}>
+            <UAProvider ua={ua}>
+              <AmpProvider amp={req.isAmp}>
+                <App />
+              </AmpProvider>
+            </UAProvider>
+          </Provider>
+        </ApolloProvider>
+      </ReduxProvider>
+    </DynamicReduxProvider>
   );
 
-  Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
+  getDataFromTree(reactApp)
     .then(() => {
       const reactAppString = req.isAmp
         ? renderToStaticMarkup(reactApp)
         : renderToString(reactApp);
       const felaMarkup = renderToMarkup(renderer);
-      const asyncState = asyncContext.getState();
+      const { scripts, stylesheets, cssHash } = flushChunks(stats, {
+        before: ['app'],
+        after: [],
+        chunkNames: flushChunkNames(),
+      });
 
-      const scripts = req.isAmp
-        ? []
-        : isProd
-          ? [`${clientAssets.app.js}`]
-          : [
-              `${req.protocol}://${req
-                .get('host')
-                .split(':')[0]}:${devPort}/app.js`,
-            ];
-      const styles = req.isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [];
       // Generate the html res.
       const state = store.getState();
       const html = (req.isAmp ? amp : template)({
@@ -263,9 +252,9 @@ app.get('*', (req, res) => {
         root: reactAppString,
         buildOn: process.env.BUILD_ON,
         fela: felaMarkup,
-        scripts,
-        styles,
-        asyncState,
+        scripts: req.isAmp ? [] : scripts,
+        styles: req.isAmp ? [] : stylesheets,
+        cssHash,
         initialState: {
           apollo: cache.data,
           // auth: state.auth,

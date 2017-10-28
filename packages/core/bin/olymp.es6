@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
-const urlUtil = require('url');
 const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
 const { merge } = require('lodash');
@@ -68,11 +67,6 @@ if (argv.targets) {
 }
 if (command === 'dev') {
   const port = parseInt(PORT, 10);
-  const url = new urlUtil.URL(`http://0.0.0.0:${port}`);
-  const devPort = isServerless ? port : port + 1;
-  const devUrl = isServerless
-    ? url
-    : new urlUtil.URL(`${url.protocol}//${url.hostname}:${devPort}`);
 
   const watch = {
     aggregateTimeout: 300,
@@ -85,7 +79,7 @@ if (command === 'dev') {
         target,
         mode: 'development',
         isSSR,
-        devUrl,
+        port: port + 1,
         isServerless,
         ...olymprc,
       }),
@@ -109,10 +103,13 @@ if (command === 'dev') {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
+        proxy: {
+          '**': `http://localhost:${port + 1}`,
+        },
         watchOptions: watch,
         inline: false,
-        host: devUrl.hostname,
-        port: devUrl.port,
+        host: '0.0.0.0',
+        port,
         disableHostCheck: true,
         historyApiFallback: true,
         hot: true,
@@ -133,7 +130,7 @@ if (command === 'dev') {
           publicPath: false,
         },
       });
-      server.listen(devPort);
+      server.listen(port);
     }
   });
 } else if (command === 'build') {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createLogout, createVerify, setAttributes } from './redux';
+import { createVerify, setAttributes } from './redux';
 
 export default WrappedComponent => {
   @connect(
     ({ auth }) => ({ verifying: auth.verifying }),
-    dispatch => ({ verify: createVerify(dispatch) })
+    dispatch => ({ verify: createVerify(dispatch) }),
   )
   class WithAuth extends Component {
     constructor(props) {

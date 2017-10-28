@@ -45,6 +45,12 @@ module.exports = (config, options) => {
       'transform-decorators-legacy',
       'transform-class-properties',
       'transform-es2015-classes',
+      [
+        'universal-import',
+        {
+          babelServer: !isWeb,
+        },
+      ],
       // 'babel-plugin-fela',
       ['import', { libraryName: 'antd', style: true }],
     ],

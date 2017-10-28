@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createLogout, createVerify, setAttributes } from './redux';
+import { createLogout } from './redux';
 
 export default connect(
   ({ auth }) => ({ auth }),
-  dispatch => ({ logout: createLogout(dispatch) })
+  dispatch => ({ logout: createLogout(dispatch) }),
 );
