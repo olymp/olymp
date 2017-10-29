@@ -31,6 +31,22 @@ module.exports = (config, options) => {
             options: { modules: false },
           },
           {
+            loader: 'string-replace-loader',
+            query: {
+              search: '@font-face',
+              replace: '@font-face2',
+              flags: 'g',
+            },
+          },
+          {
+            loader: 'string-replace-loader',
+            query: {
+              search: 'font-family',
+              replace: 'font-family2',
+              flags: 'g',
+            },
+          },
+          {
             loader: 'less-loader',
             options: { modifyVars },
           },
@@ -55,6 +71,22 @@ module.exports = (config, options) => {
         {
           loader: 'css-loader',
           options: { modules: false, sourceMap: true },
+        },
+        {
+          loader: 'string-replace-loader',
+          query: {
+            search: '@font-face',
+            replace: '@font-face2',
+            flags: 'g',
+          },
+        },
+        {
+          loader: 'string-replace-loader',
+          query: {
+            search: 'font-family',
+            replace: 'font-family2',
+            flags: 'g',
+          },
         },
         {
           loader: 'less-loader',
