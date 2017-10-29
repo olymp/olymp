@@ -1,5 +1,5 @@
 {
-  "version": "18.3.1",
+  "version": "18.3.2",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -33,6 +33,6 @@
     "olymp-ui": "^18.2.16",
     "olymp-utils": "^18.3.0",
     "olymp-webpack-babel": "^18.3.0",
-    "olymp-webpack-less": "^18.3.0"
+    "olymp-webpack-less": "^18.3.2"
   }
 }
