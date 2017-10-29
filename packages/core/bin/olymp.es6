@@ -34,6 +34,10 @@ const olymprc = merge(
     server: './server',
     plugins: ['less', 'babel'],
     modifyVars: {
+      'font-family-no-number':
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+      'font-family':
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
       'font-size-base': '15px',
       'primary-color': '#8e44ad',
     },

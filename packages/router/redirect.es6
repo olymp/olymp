@@ -9,7 +9,6 @@ class Redirect extends React.Component {
     from: PropTypes.string,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     pathname: PropTypes.string,
-    on: PropTypes.bool,
   };
 
   componentWillMount() {
@@ -25,22 +24,16 @@ class Redirect extends React.Component {
   }
 
   perform() {
-    const { push, location, from, pathname, on } = this.props;
+    const { push, location, from, pathname } = this.props;
 
     if (from && from !== pathname) {
-      return;
-    }
-    if (on !== undefined && on !== true) {
       return;
     }
     push(location);
   }
 
   render() {
-    const { children, component: Comp, on, ...rest } = this.props;
-    if (Comp) {
-      return <Comp {...rest}>{children}</Comp>;
-    }
+    const { children } = this.props;
     return children || null;
   }
 }
