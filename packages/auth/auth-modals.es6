@@ -1,3 +1,6 @@
-import universal from 'react-universal-component';
+import { asyncComponent } from 'react-async-component';
 
-export default universal(import('./views'));
+export default asyncComponent({
+  name: 'auth',
+  resolve: () => System.import('./views'),
+});

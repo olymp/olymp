@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { getContext } from 'recompose';
 import PropTypes from 'prop-types';
 import { createUpdateQuery } from 'olymp-router';
-import universal from 'react-universal-component';
+import { asyncComponent } from 'react-async-component';
 
-const LightBox = universal(import('olymp-fela/lightbox'));
+const LightBox = asyncComponent({
+  name: 'lightbox',
+  resolve: () => System.import('olymp-fela/lightbox'),
+});
 
 @getContext({
   gallery: PropTypes.number,

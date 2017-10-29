@@ -6,12 +6,15 @@ import { useSchema } from 'olymp-slate';
 import { useAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
 import getNavigation from 'olymp-pages/get-navigation';
-import universal from 'react-universal-component';
+import { asyncComponent } from 'react-async-component';
 import { get } from 'lodash';
 import NoAuth from './cms-noauth';
 import { withRedux } from './redux';
 
-const IfAuth = universal(import('./cms-auth'));
+const IfAuth = asyncComponent({
+  name: 'cms',
+  resolve: () => System.import('./cms-auth'),
+});
 
 const enhance = compose(
   // DragDropContext(HTML5Backend),

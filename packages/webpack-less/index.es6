@@ -1,5 +1,5 @@
 const { resolve } = require('path');
-const ExtractTextPlugin = require('extract-css-chunks-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const nodeModules = resolve(__dirname, 'node_modules');
 

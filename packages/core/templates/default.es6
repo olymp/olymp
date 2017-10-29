@@ -39,14 +39,12 @@ export default ({
     ${styles
       .map(
         style =>
-          `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="/${style}">`,
+          `<link rel="stylesheet" type="text/css" media="none" onload="if(media!='all')media='all'" href="${style}">`,
       )
       .join('\n')}
     <noscript>
       ${styles
-        .map(
-          style => `<link rel="stylesheet" type="text/css" href="/${style}">`,
-        )
+        .map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)
         .join('\n')}
     </noscript>
     ${fela || ''}
@@ -93,7 +91,7 @@ export default ({
           serialize(getInitialState())}</script>`
       : ''}
     ${scripts
-      .map(script => `<script async src="/${script}"></script>`)
+      .map(script => `<script async src="${script}"></script>`)
       .join('\n')}
   </body>
 </html>

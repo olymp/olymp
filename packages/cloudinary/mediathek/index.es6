@@ -1,3 +1,6 @@
-import universal from 'react-universal-component';
+import { asyncComponent } from 'react-async-component';
 
-export default universal(import('./cloudinary'));
+export default asyncComponent({
+  name: 'cloudinary',
+  resolve: () => System.import('./cloudinary'),
+});

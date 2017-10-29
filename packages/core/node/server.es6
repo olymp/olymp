@@ -6,14 +6,12 @@ import 'source-map-support/register';
 // Node
 import path from 'path';
 import fs from 'fs';
-import { URL } from 'url';
 import jsonfile from 'jsonfile';
 // Express
 import express from 'express';
 import compression from 'compression';
 import bodyparser from 'body-parser';
 import useragent from 'express-useragent';
-
 // React
 import React from 'react';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -22,9 +20,11 @@ import { renderToMarkup } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
-// Universal
-import flushChunks from 'webpack-flush-chunks';
-import { flushChunkNames } from 'react-universal-component/server';
+import {
+  AsyncComponentProvider,
+  createAsyncContext,
+} from 'react-async-component'; // 👈
+import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
 // Etc
 import fetch from 'isomorphic-fetch';
 // import sslRedirect from 'heroku-ssl-redirect';
@@ -61,10 +61,6 @@ console.log('BUILD ON', process.env.BUILD_ON);
 const isProd = process.env.NODE_ENV === 'production';
 
 // Client assets
-const clientAssetsPath = path.resolve(__dirname, '..', 'web', 'assets.json');
-const clientAssets = fs.existsSync(clientAssetsPath)
-  ? JSON.parse(fs.readFileSync(clientAssetsPath))
-  : {}; // eslint-disable-line import/no-dynamic-require
 const app = express();
 
 app.use(helmet());
@@ -136,24 +132,26 @@ try {
   );
 }
 
-let stats;
-const getStats = () => {
-  if (!stats || !isProd) {
-    stats = jsonfile.readFileSync(path.resolve(__dirname, 'stats.json')) || {};
+let $assets;
+const getAssets = () => {
+  if (!$assets || !isProd) {
+    $assets =
+      jsonfile.readFileSync(
+        path.resolve(__dirname, '..', 'web', 'assets.json'),
+      ) || {};
   }
-  return stats;
+  return $assets;
 };
 
 // Setup server side routing.
 app.get('*', (req, res) => {
   const isAmp = req.isAmp;
-  const stats = getStats();
+  const assets = getAssets();
   if (process.env.IS_SSR === false) {
-    console.log(req.originalUrl);
     const html = (req.isAmp ? amp : template)({
       gaTrackingId: process.env.GA_TRACKING_ID,
-      scripts: isAmp ? [] : [isProd ? `${clientAssets.app.js}` : `/app.js`],
-      styles: isAmp ? [] : isProd ? [`${clientAssets.app.css}`] : [],
+      scripts: isAmp ? [] : [assets.app.js],
+      styles: isAmp ? [] : [assets.app.css],
       buildOn: process.env.BUILD_ON,
     });
     res.send(html);
@@ -217,34 +215,32 @@ app.get('*', (req, res) => {
     ),
   );
 
+  const asyncContext = createAsyncContext();
   const reactApp = (
-    <DynamicReduxProvider dynamicRedux={dynamicRedux}>
-      <ReduxProvider store={store}>
-        <ApolloProvider client={client}>
-          <Provider renderer={renderer}>
-            <UAProvider ua={ua}>
-              <AmpProvider amp={req.isAmp}>
-                <App />
-              </AmpProvider>
-            </UAProvider>
-          </Provider>
-        </ApolloProvider>
-      </ReduxProvider>
-    </DynamicReduxProvider>
+    <AsyncComponentProvider asyncContext={asyncContext}>
+      <DynamicReduxProvider dynamicRedux={dynamicRedux}>
+        <ReduxProvider store={store}>
+          <ApolloProvider client={client}>
+            <Provider renderer={renderer}>
+              <UAProvider ua={ua}>
+                <AmpProvider amp={req.isAmp}>
+                  <App />
+                </AmpProvider>
+              </UAProvider>
+            </Provider>
+          </ApolloProvider>
+        </ReduxProvider>
+      </DynamicReduxProvider>
+    </AsyncComponentProvider>
   );
 
-  getDataFromTree(reactApp)
+  Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
     .then(() => {
       const reactAppString = req.isAmp
         ? renderToStaticMarkup(reactApp)
         : renderToString(reactApp);
       const felaMarkup = renderToMarkup(renderer);
-      const { scripts, stylesheets, cssHash } = flushChunks(stats, {
-        before: ['app'],
-        after: [],
-        chunkNames: flushChunkNames(),
-      });
-
+      const asyncState = asyncContext.getState();
       // Generate the html res.
       const state = store.getState();
       const html = (req.isAmp ? amp : template)({
@@ -252,9 +248,9 @@ app.get('*', (req, res) => {
         root: reactAppString,
         buildOn: process.env.BUILD_ON,
         fela: felaMarkup,
-        scripts: req.isAmp ? [] : scripts,
-        styles: req.isAmp ? [] : stylesheets,
-        cssHash,
+        scripts: isAmp ? [] : [assets.app.js].filter(x => x),
+        styles: isAmp ? [] : [assets.app.css].filter(x => x),
+        asyncState,
         initialState: {
           apollo: cache.data,
           // auth: state.auth,

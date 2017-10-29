@@ -2,7 +2,11 @@ import 'babel-polyfill';
 // React
 import React from 'react';
 import { render, hydrate } from 'react-dom';
-// import asyncBootstrapper from 'react-async-bootstrapper';
+import {
+  AsyncComponentProvider,
+  createAsyncContext,
+} from 'react-async-component'; // 👈
+import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -145,7 +149,7 @@ function renderApp(App) {
   };
   const method = window.INITIAL_DATA ? hydrate : render;
   const app = <App {...props} />;
-  return method(app, container);
+  asyncBootstrapper(app).then(() => method(app, container));
 }
 // Get the DOM Element that will host our React application.
 container = document.getElementById('app');
@@ -153,6 +157,7 @@ mountNode = document.getElementById('css-markup');
 ua = new UAParser(window.navigator.userAgent);
 renderer = createFela(ua);
 history = createHistory();
+rehydrateState = window.ASYNC_STATE;
 const { apollo, ...reduxInitial } = window.INITIAL_DATA || {};
 const cache = new InMemoryCache({
   dataIdFromObject: o => o.id,
