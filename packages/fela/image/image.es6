@@ -250,7 +250,7 @@ Image.defaultProps = {
 
   lazy: true,
   alt: '',
-  onClick: () => {},
+  onClick: undefined,
 };
 Image.Placeholder = Placeholder;
 export default Image;
