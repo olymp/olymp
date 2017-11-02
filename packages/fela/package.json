@@ -1,5 +1,5 @@
 {
-  "version": "18.5.1",
+  "version": "18.5.4",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -26,7 +26,7 @@
     "fela-plugin-prefixer": "^5.0.13",
     "fela-plugin-remove-undefined": "^5.0.12",
     "fela-plugin-unit": "^5.0.12",
-    "olymp-utils": "^18.5.1",
+    "olymp-utils": "^18.5.4",
     "react-fela": "^6.0.5",
     "react-frame-component": "^2.0.0",
     "react-gravatar": "^2.6.3",
@@ -35,7 +35,7 @@
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
-    "olymp-webpack-babel": "^18.5.1",
+    "olymp-webpack-babel": "^18.5.4",
     "raw-loader": "^0.5.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
