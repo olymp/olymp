@@ -82,7 +82,7 @@ module.exports = (config, options) => {
           preventFullImport: true,
         },
         'olymp-icons': {
-          transform: 'olymp-icons/fa5/lib/${member}',
+          transform: 'olymp-icons/fa4/lib/${member}',
           kebabCase: true,
           preventFullImport: true,
         },
