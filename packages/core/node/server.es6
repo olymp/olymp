@@ -190,7 +190,7 @@ app.get('*', (req, res) => {
         };
         return new Observable(observer => {
           graphql(
-            req.schema.getSchema(),
+            req.schema,
             request.query,
             null,
             req,

@@ -34,6 +34,10 @@ export default ({ modules = null, directives = {} }) => {
     apply(modules);
   }
   return {
+    middleware: graphqlExpress(context => ({
+      schema: context.schema,
+      context,
+    })),
     express: graphqlExpress(context => ({ schema, context })),
     graphi: graphiqlExpress({ endpointURL: '/graphql' }),
     apply: m => apply(m),
