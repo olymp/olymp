@@ -57,18 +57,27 @@ import { appReducer, appMiddleware } from '../redux';
 // eslint
 global.fetch = fetch;
 
-console.log('BUILD ON', process.env.BUILD_ON);
+const {
+  ORIGINS,
+  GRAPHQL_URL,
+  IS_SSR,
+  GA_TRACKING_ID,
+  BUILD_ON,
+  NODE_ENV,
+} = process.env;
 
-const isProd = process.env.NODE_ENV === 'production';
+console.log('BUILD ON', BUILD_ON);
+
+const isProd = NODE_ENV === 'production';
 
 // Client assets
 const app = express();
 
 app.use(helmet());
 
-const origins = process.env.ORIGINS ? process.env.ORIGINS.split(',') : [];
-if (process.env.GRAPHQL_URL) {
-  origins.push(process.env.GRAPHQL_URL);
+const origins = ORIGINS ? ORIGINS.split(',') : [];
+if (GRAPHQL_URL) {
+  origins.push(GRAPHQL_URL);
 }
 if (isProd && origins.length) {
   app.use((req, res, next) => {
@@ -153,15 +162,15 @@ const getAssets = () => {
 
 // Setup server side routing.
 app.get('*', (req, res) => {
-  const isAmp = req.isAmp;
+  const { isAmp } = req;
   const assets = getAssets();
   const renderTemplate = req.isAmp ? amp : req.isBot ? botTemplate : template;
-  if (process.env.IS_SSR === false) {
+  if (IS_SSR === false) {
     const html = renderTemplate({
-      gaTrackingId: process.env.GA_TRACKING_ID,
+      gaTrackingId: GA_TRACKING_ID,
       scripts: isAmp ? [] : [assets.app.js],
       styles: isAmp ? [] : [assets.app.css],
-      buildOn: process.env.BUILD_ON,
+      buildOn: BUILD_ON,
     });
     res.send(html);
     return;
@@ -256,7 +265,7 @@ app.get('*', (req, res) => {
         ...Helmet.rewind(),
         isBot: req.isBot,
         root: reactAppString,
-        buildOn: process.env.BUILD_ON,
+        buildOn: BUILD_ON,
         fela: felaMarkup,
         scripts: isAmp ? [] : [assets.app.js].filter(x => x),
         styles: isAmp ? [] : [assets.app.css].filter(x => x),
@@ -266,7 +275,7 @@ app.get('*', (req, res) => {
           // auth: state.auth,
           // location: state.location,
         },
-        gaTrackingId: process.env.GA_TRACKING_ID,
+        gaTrackingId: GA_TRACKING_ID,
       });
       if (state.location.url !== url) {
         res.status(301).setHeader('Location', encodeURI(state.location.url));

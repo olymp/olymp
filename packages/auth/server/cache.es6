@@ -11,14 +11,18 @@ export default auth => (req, res, next) => {
     req.headers.authorization ||
     req.params.authorization ||
     get(req, 'session.token');
+
   if (!authorization) {
     return next();
   }
+
   const cached = cache.get(authorization);
+
   if (cached) {
     req.user = cached;
     return next();
   }
+
   auth
     .verify(req.db, authorization)
     .then(user => {

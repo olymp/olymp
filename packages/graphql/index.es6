@@ -35,7 +35,6 @@ export const apolloMiddleware = client => ({
       payload: action.payload,
       requestId,
     });
-    console.log(omit(action.payload || action.variables));
     const invoker = action.mutation
       ? () =>
           client.mutate({

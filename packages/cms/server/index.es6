@@ -16,6 +16,7 @@ const {
   APP,
   URL,
   MONGODB_URI,
+  ALGOLIA,
   POSTMARK_KEY,
   POSTMARK_FROM,
   CLOUDINARY_URI,
@@ -27,29 +28,10 @@ const {
   GOOGLE_PRIVATE_KEY,
 } = process.env;
 
-const createResponseCache = () => {
-  let cache = {};
-  const getKey = req => {
-    if (req.isAmp) {
-      return `${req.originalUrl}|amp`;
-    }
-    return `${req.originalUrl}`;
-  };
-  return {
-    get: req => cache[getKey(req)],
-    set: (req, res) => {
-      cache[getKey(req)] = res;
-    },
-    clear: () => {
-      cache = {};
-    },
-  };
-};
-
 export default (server, options) => {
   const monk = createMonk(MONGODB_URI);
   let db = null;
-  console.log(MONGODB_URI);
+
   MongoClient.connect(MONGODB_URI, (err, d) => {
     if (err) {
       console.error(err);
@@ -84,15 +66,11 @@ export default (server, options) => {
     db,
     mail,
     secret: AUTH_SECRET,
-    app: process.env.APP,
+    app: APP,
   });
-  server.use(authCache(authEngine));
 
-  const algolia = process.env.ALGOLIA
-    ? algoliasearch(
-        process.env.ALGOLIA.split('@')[1],
-        process.env.ALGOLIA.split('@')[0],
-      )
+  const algolia = ALGOLIA
+    ? algoliasearch(ALGOLIA.split('@')[1], ALGOLIA.split('@')[0])
     : null;
 
   // const responseCache = createResponseCache();
@@ -118,6 +96,7 @@ export default (server, options) => {
     } */
     next();
   });
+  server.use(authCache(authEngine));
 
   modules.auth = authGraphQL({
     attributes: `${options.auth.attributes || ''} _appIds:[String]`,
@@ -128,7 +107,7 @@ export default (server, options) => {
         if (!user) {
           return user;
         }
-        if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
+        if (user._appIds && user._appIds.indexOf(APP) !== -1) {
           return user;
         }
         throw new Error('No permission');
@@ -137,13 +116,13 @@ export default (server, options) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
         }
-        return monk.collection('invitation').find({ _appIds: process.env.APP });
+        return monk.collection('invitation').find({ _appIds: APP });
       },
       userList: (source, args, { user, monk }) => {
         if (!user || !user.isAdmin) {
           throw new Error('No permission');
         }
-        return monk.collection('user').find({ _appIds: process.env.APP });
+        return monk.collection('user').find({ _appIds: APP });
       },
       user: (source, args, { user, monk }) => {
         if (user && user.isAdmin) {
@@ -151,16 +130,14 @@ export default (server, options) => {
         } else {
           throw new Error('No permission');
         }
-        return monk
-          .collection('user')
-          .findOne({ id: args.id, _appIds: process.env.APP });
+        return monk.collection('user').findOne({ id: args.id, _appIds: APP });
       },
     }),
     getMutations: mutations => ({
       ...mutations,
       login: async (root, args, context) => {
         const user = await mutations.login(root, args, context);
-        if (user._appIds && user._appIds.indexOf(process.env.APP) !== -1) {
+        if (user._appIds && user._appIds.indexOf(APP) !== -1) {
           return user;
         }
         throw new Error('No permission');

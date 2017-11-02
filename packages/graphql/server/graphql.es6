@@ -7,7 +7,7 @@ import * as defaultDirectives from './directives';
 
 export default ({ modules = null, directives = {} }) => {
   let schema = null;
-  const apply = (modules) => {
+  const apply = modules => {
     const raw = values({ ...scalarModules, ...modules }).filter(x => x);
     const { onBefore, onAfter } = raw.reduce(
       (store, value) => {
@@ -29,13 +29,14 @@ export default ({ modules = null, directives = {} }) => {
       onAfter,
     });
   };
+
   if (modules) {
     apply(modules);
   }
   return {
     express: graphqlExpress(context => ({ schema, context })),
     graphi: graphiqlExpress({ endpointURL: '/graphql' }),
-    apply: modules => apply(modules),
+    apply: m => apply(m),
     getSchema: () => schema,
   };
 };

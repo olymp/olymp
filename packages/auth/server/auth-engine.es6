@@ -1,9 +1,9 @@
-import mails from './mails';
-import createPasswordEngine from './utils/password-engine';
-import createTokenEngine from './utils/token-engine';
 import speakeasy from 'speakeasy';
 import shortId from 'shortid';
 import qrcode from 'qrcode';
+import mails from './mails';
+import createPasswordEngine from './utils/password-engine';
+import createTokenEngine from './utils/token-engine';
 
 export default ({ secret, mail, issuer, loginBy = 'email' }) => {
   const qr = (field, x) =>
@@ -15,9 +15,9 @@ export default ({ secret, mail, issuer, loginBy = 'email' }) => {
       );
     });
   const cleanUser = ({ salt, hash, confirmed, _id, ...rest }) => rest;
-
   const passwordEngine = createPasswordEngine({});
   const tokenEngine = createTokenEngine({ secret });
+
   return {
     passwordEngine,
     tokenEngine,

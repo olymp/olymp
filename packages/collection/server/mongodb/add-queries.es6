@@ -11,16 +11,27 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
 
   if (Query) {
     // Add one query
-    addFields(ast, Query, `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`, {
-      replace: false,
-    });
+    addFields(
+      ast,
+      Query,
+      `${table}(id: String, query: ${name}Query, sort: ${name}Sort): ${name}`,
+      {
+        replace: false,
+      },
+    );
     if (!get(resolvers, `RootQuery.${table}`)) {
-      set(resolvers, `RootQuery.${table}`, (source, { id, query }, { monk, app }) => {
-        const x = id ? { id } : adaptQuery(query);
-        const q = isGeneric ? { ...x, _appId: app.id } : { ...x, _type: table, _appId: app.id };
-        // monk.collection(table).findOne(id ? { id } : adaptQuery(query))
-        return monk.collection('item').findOne(q);
-      });
+      set(
+        resolvers,
+        `RootQuery.${table}`,
+        (source, { id, query }, { monk, app }) => {
+          const x = id ? { id } : adaptQuery(query);
+          const q = isGeneric
+            ? { ...x, _appId: app.id }
+            : { ...x, _type: table, _appId: app.id };
+          // monk.collection(table).findOne(id ? { id } : adaptQuery(query))
+          return monk.collection('item').findOne(q);
+        },
+      );
     }
 
     // Add list query
@@ -44,7 +55,7 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
                 : { ...adaptQuery(query), _type: table, _appId: app.id },
               { rawCursor: true },
             )
-            .then((cursor) => {
+            .then(cursor => {
               const obj = sort || { name: 'ASC' };
               const sorting = Object.keys(obj).reduce((store, key) => {
                 store[key] = obj[key] === 'DESC' ? -1 : 1;
@@ -60,7 +71,9 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
     }
   }
 
-  const Mutation = ast.definitions.find(x => get(x, 'name.value') === 'RootMutation');
+  const Mutation = ast.definitions.find(
+    x => get(x, 'name.value') === 'RootMutation',
+  );
 
   if (Mutation) {
     // Add mutation
@@ -97,11 +110,18 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
           } else if (type === 'REPLACE') {
             promise = monk
               .collection('item')
-              .update({ _type: table, id }, { ...input, _type: table, _appId: app.id, id });
+              .update(
+                { _type: table, id },
+                { ...input, _type: table, _appId: app.id, id },
+              );
           } else {
-            promise = monk.collection('item').update({ _type: table, id }, { $set: { ...input } });
+            promise = monk
+              .collection('item')
+              .update({ _type: table, id }, { $set: { ...input } });
           }
-          return promise.then(() => monk.collection('item').findOne({ id, _type: table }));
+          return promise.then(() =>
+            monk.collection('item').findOne({ id, _type: table }),
+          );
         },
       );
     }
