@@ -22,7 +22,6 @@ const createConfig = require(path.resolve(
 
 const root = process.cwd();
 const hasServer = fs.existsSync(path.resolve(root, 'server'));
-const hasClient = fs.existsSync(path.resolve(root, 'app'));
 
 const pckgOlymp =
   jsonfile.readFileSync(path.resolve(root, 'package.json'), {

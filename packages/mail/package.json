@@ -13,7 +13,6 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1",
-    "olymp-hashtax": "^18.2.2"
+    "isomorphic-fetch": "^2.2.1"
   }
 }
