@@ -7,15 +7,17 @@ export default (urlOrString = '') => {
     let [pathname, ...search] = urlOrString.split('?');
     search = search.join('?');
     url = {
-      pathname,
-      search,
+      pathname: decodeURIComponent(pathname),
+      search: decodeURIComponent(search),
       query: parseQuery(search),
     };
   } else if (typeof urlOrString === 'object') {
-    url = urlOrString;
+    url = { ...urlOrString };
+    url.pathname = decodeURIComponent(url.pathname);
     if (url.query) {
       url.search = stringifyQuery(url.query);
     } else if (url.search) {
+      url.search = decodeURIComponent(url.search);
       url.query = parseQuery(url.search);
     }
   }

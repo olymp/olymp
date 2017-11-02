@@ -49,6 +49,7 @@ import { AmpProvider, UAProvider, UAParser } from 'olymp-utils';
 // Locale
 import App from '@app';
 import template from '../templates/default';
+import botTemplate from '../templates/bot';
 import amp from '../templates/amp';
 import createDynamicRedux, { DynamicReduxProvider } from '../redux-dynamic';
 import { appReducer, appMiddleware } from '../redux';
@@ -106,6 +107,13 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 app.use((req, res, next) => {
+  req.ua = new UAParser(req.headers['user-agent']);
+  req.isBot =
+    req.headers['user-agent'].indexOf('Speed Insights') != -1 ||
+    /bot|google|baidu|bing|msn|duckduckgo|teoma|slurp|yandex/i.test(
+      req.headers['user-agent'],
+    ) ||
+    req.query.__bot__ !== undefined;
   if (
     req.subdomains &&
     req.subdomains.length === 1 &&
@@ -147,8 +155,9 @@ const getAssets = () => {
 app.get('*', (req, res) => {
   const isAmp = req.isAmp;
   const assets = getAssets();
+  const renderTemplate = req.isAmp ? amp : req.isBot ? botTemplate : template;
   if (process.env.IS_SSR === false) {
-    const html = (req.isAmp ? amp : template)({
+    const html = renderTemplate({
       gaTrackingId: process.env.GA_TRACKING_ID,
       scripts: isAmp ? [] : [assets.app.js],
       styles: isAmp ? [] : [assets.app.css],
@@ -194,9 +203,9 @@ app.get('*', (req, res) => {
       },
     ]),
   });
-  const ua = new UAParser(req.headers['user-agent']);
-  const renderer = createFela(ua);
-  const history = createHistory({ initialEntries: [req.originalUrl] });
+  const renderer = createFela(req.ua);
+  const url = decodeURI(req.originalUrl);
+  const history = createHistory({ initialEntries: [url] });
   const dynamicRedux = createDynamicRedux();
   const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
   const store = createDynamicStore(
@@ -222,7 +231,7 @@ app.get('*', (req, res) => {
         <ReduxProvider store={store}>
           <ApolloProvider client={client}>
             <Provider renderer={renderer}>
-              <UAProvider ua={ua}>
+              <UAProvider ua={req.ua}>
                 <AmpProvider amp={req.isAmp}>
                   <App />
                 </AmpProvider>
@@ -243,8 +252,9 @@ app.get('*', (req, res) => {
       const asyncState = asyncContext.getState();
       // Generate the html res.
       const state = store.getState();
-      const html = (req.isAmp ? amp : template)({
+      const html = renderTemplate({
         ...Helmet.rewind(),
+        isBot: req.isBot,
         root: reactAppString,
         buildOn: process.env.BUILD_ON,
         fela: felaMarkup,
@@ -258,8 +268,8 @@ app.get('*', (req, res) => {
         },
         gaTrackingId: process.env.GA_TRACKING_ID,
       });
-      if (state.location.url !== req.originalUrl) {
-        res.status(301).setHeader('Location', state.location.url);
+      if (state.location.url !== url) {
+        res.status(301).setHeader('Location', encodeURI(state.location.url));
         res.end();
         return;
       }

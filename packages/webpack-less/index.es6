@@ -3,6 +3,15 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
+/* {
+  loader: 'string-replace-loader',
+  query: {
+    search: '@font-face',
+    replace: '@font-face2',
+    flags: 'g',
+  },
+}, */
+
 module.exports = (config, options) => {
   const {
     isProd,
@@ -19,6 +28,7 @@ module.exports = (config, options) => {
   if (isWeb && isProd) {
     config.plugins.push(
       new ExtractTextPlugin({
+        allChunks: true,
         filename: isProd ? '[name].[hash].css' : '[name].css',
       }),
     );
@@ -30,14 +40,6 @@ module.exports = (config, options) => {
             loader: 'css-loader',
             options: { modules: false },
           },
-          /* {
-            loader: 'string-replace-loader',
-            query: {
-              search: '@font-face',
-              replace: '@font-face2',
-              flags: 'g',
-            },
-          }, */
           {
             loader: 'less-loader',
             options: { modifyVars },
@@ -64,14 +66,6 @@ module.exports = (config, options) => {
           loader: 'css-loader',
           options: { modules: false, sourceMap: true },
         },
-        /* {
-          loader: 'string-replace-loader',
-          query: {
-            search: '@font-face',
-            replace: '@font-face2',
-            flags: 'g',
-          },
-        }, */
         {
           loader: 'less-loader',
           options: { modifyVars, sourceMap: true },

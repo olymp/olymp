@@ -5,6 +5,7 @@ import {
   onlyUpdateForKeys,
   compose,
   withPropsOnChange,
+  withProps,
   withContext,
   getContext,
 } from 'recompose';
@@ -155,7 +156,7 @@ export const SwitchPathname = compose(
     matches: PropTypes.array,
     match: PropTypes.object,
   }),
-  withPropsOnChange(['pathname'], ({ pathname, children, matches = [] }) => {
+  withProps(({ pathname, children, matches = [], ...switchRest }) => {
     let notFound = null;
     let matched = null;
     let matchProps = null;
@@ -165,7 +166,7 @@ export const SwitchPathname = compose(
       const { displayName } = route.type;
       const { exact, ...rest } = route.props;
       if (displayName === 'Match' && route.props.match === true) {
-        matched = getChild({ ...rest, pathname });
+        matched = getChild({ ...switchRest, ...rest, pathname });
       } else if (displayName === 'Match' && route.props.match === undefined) {
         notFound = getChild({ ...rest, pathname });
       } else if (

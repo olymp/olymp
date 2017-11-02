@@ -1,5 +1,5 @@
 {
-  "version": "18.3.3",
+  "version": "18.3.5",
   "name": "olymp-webpack-less",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "css-loader": "^0.28.4",
-    "extract-text-webpack-plugin": "^3.0.1",
+    "extract-text-webpack-plugin": "^3.0.2",
     "ignore-loader": "^0.1.2",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",

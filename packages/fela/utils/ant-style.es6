@@ -20,6 +20,9 @@ export default ({ theme }) => {
       height: 'initial',
       lineHeight: 'initial',
     },
+    '& .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled)': {
+      borderColor: theme.color,
+    },
     '& .ant-input.ant-select-search__field': {
       height: 32,
     },

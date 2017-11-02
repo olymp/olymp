@@ -1,4 +1,4 @@
-export default (str) => {
+export default str => {
   const ret = {};
   if (typeof str !== 'string') {
     return ret;
@@ -7,7 +7,7 @@ export default (str) => {
   if (!str) {
     return ret;
   }
-  str.split('&').forEach((param) => {
+  str.split('&').forEach(param => {
     const parts = param.replace(/\+/g, ' ').split('=');
     const key = parts.shift();
     let val = parts.length > 0 ? parts.join('=') : undefined;
