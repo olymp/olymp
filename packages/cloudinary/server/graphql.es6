@@ -20,23 +20,7 @@ export default uri => {
       queries: {
         file: (source, args, { db, app }) =>
           db.collection('item').findOne({ id: args.id }),
-        /*
-            .then((item) => {
-              if (item) {
-                return item;
-              }
-              return getImageById(config, args.id).then((image) => {
-                db
-                  .collection('item')
-                  .update(
-                    { id: args.id },
-                    { ...image, _type: 'file', _appId: app.id },
-                    { upsert: true },
-                  )
-                  .catch(err => console.error(err));
-                return image;
-              });
-            }), */
+
         fileList: (source, { query }, { db, app, user }) => {
           const mongoQuery = adaptQuery(query);
           if (!user) {

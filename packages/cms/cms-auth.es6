@@ -4,7 +4,6 @@ import { AuthModals } from 'olymp-auth';
 import { AuthUsers, AuthUser } from 'olymp-auth/admin';
 import withUA from 'olymp-utils/user-agent';
 import EditableRoute from 'olymp-pages/editable';
-import PageRoute from 'olymp-pages/route';
 import withLocale from 'olymp-locale/de';
 import { Route as CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute, withCollections } from 'olymp-collection';
