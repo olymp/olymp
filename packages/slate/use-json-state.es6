@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { debounce, get } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
 import Plain from 'slate-plain-serializer';
-import { State } from 'slate';
+import { Value } from 'slate';
 import Base64 from './plugins/base64';
 
 const stateWrapper = WrappedComponent =>
@@ -113,7 +113,7 @@ export default compose(
   withPropsOnChange(['value', 'signal'], ({ value, signal }) => {
     const state =
       value && value.nodes
-        ? State.fromJSON({
+        ? Value.fromJSON({
             document: {
               nodes: value.nodes,
               kind: 'document',

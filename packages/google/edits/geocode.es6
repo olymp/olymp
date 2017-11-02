@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Icon, AutoComplete, Input } from 'antd';
+import { AutoComplete, Input } from 'antd';
 import { throttleInput } from 'olymp-utils';
-import { FaMapMarkerAlt } from 'olymp-icons';
+import { FaMapMarker } from 'olymp-icons';
 import { withApollo, graphql } from 'react-apollo';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
@@ -39,7 +39,7 @@ import gql from 'graphql-tag';
       ...ownProps,
       value: get(data, 'geocodeList[0]', {}),
     }),
-  }
+  },
 )
 export default class GeocodeEditor extends Component {
   static defaultProps = {
@@ -126,7 +126,7 @@ export default class GeocodeEditor extends Component {
         <Input
           placeholder={placeholder || 'Suche ...'}
           size={size}
-          suffix={<FaMapMarkerAlt size={14} />}
+          suffix={<FaMapMarker size={14} />}
         />
       </AutoComplete>
     );

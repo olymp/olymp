@@ -1,4 +1,4 @@
-import { State } from 'slate';
+import { Value } from 'slate';
 
 function atob(str) {
   return new Buffer(str, 'base64').toString('binary');
@@ -49,7 +49,7 @@ function decode(string) {
 
 function deserialize(string, options) {
   const raw = decode(string);
-  const state = State.fromJSON(raw, options);
+  const state = Value.fromJSON(raw, options);
   return state;
 }
 
