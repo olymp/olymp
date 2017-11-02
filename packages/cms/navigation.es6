@@ -201,23 +201,6 @@ const component = enhance(
             <MenuItem key="@user">
               <Link to={{ query: { '@user': null } }}>Profil</Link>
             </MenuItem>
-            {/* <Menu.SubMenu title="Ansicht">
-              <MenuItem key="@device-no">
-                <a onClick={() => setDeviceWidth()} href="javascript:;">
-                  Normal
-                </a>
-              </MenuItem>
-              <MenuItem key="@deviceWidth700">
-                <a onClick={() => setDeviceWidth(700)} href="javascript:;">
-                  Tablet
-                </a>
-              </MenuItem>
-              <MenuItem key="@deviceWidth400">
-                <a onClick={() => setDeviceWidth(400)} href="javascript:;">
-                  Mobil
-                </a>
-              </MenuItem>
-          </Menu.SubMenu> */}
             <MenuItem key="logout">
               <a onClick={logout}>Abmelden</a>
             </MenuItem>

@@ -73,7 +73,6 @@ const enhance = compose(
       updateQuery: createUpdateQuery(dispatch),
     }),
   ),
-  withState('deviceWidth', 'setDeviceWidth', undefined),
 );
 const component = enhance(props => {
   const {
@@ -81,8 +80,6 @@ const component = enhance(props => {
     collectionList,
     collectionTree,
     ua,
-    deviceWidth,
-    setDeviceWidth,
     flatNavigation,
     updateQuery,
     pathname,
@@ -118,7 +115,6 @@ const component = enhance(props => {
       <Navigation
         collectionList={collectionList}
         collectionTree={collectionTree}
-        setDeviceWidth={setDeviceWidth}
       />
       <SwitchContainer>
         <Switch>
@@ -154,9 +150,7 @@ const component = enhance(props => {
           />
           <Match
             match={query['@page'] !== undefined}
-            render={() => (
-              <EditableRoute {...props} deviceWidth={deviceWidth} />
-            )}
+            render={() => <EditableRoute {...props} />}
           />
           <Match
             render={rest => (

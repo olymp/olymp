@@ -196,7 +196,6 @@ class Navigation extends Component {
   render() {
     const {
       logout,
-      setDeviceWidth,
       query,
       collectionList,
       isAdmin,

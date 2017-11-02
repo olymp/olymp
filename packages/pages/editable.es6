@@ -1,5 +1,5 @@
 import React from 'react';
-import { IFrame, ContentLoader } from 'olymp-fela';
+import { ContentLoader } from 'olymp-fela';
 import renderHelmet from 'olymp-utils/helmet';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ const enhance = compose(
 );
 
 export default enhance(props => {
-  const { Wrapped, flatNavigation, pathname, loading, deviceWidth } = props;
+  const { Wrapped, flatNavigation, pathname, loading } = props;
   const match =
     pathname.indexOf('/page_id/') === 0
       ? flatNavigation.find(
@@ -25,25 +25,22 @@ export default enhance(props => {
             pathname === item.pathname ||
             decodeURI(unescape(item.pathname)) === pathname,
         );
-  const { id, binding, pageId, aliasId, bindingId } = match || {};
+  const { id, binding, pageId, bindingId } = match || {};
 
   if (!match && pathname !== '/__new') {
     return (
       <ContentLoader height={600} isLoading={loading}>
         <EditablePage
           {...props}
-          maxWidth={deviceWidth}
           render={match => (
-            <IFrame disabled={!deviceWidth}>
-              <Wrapped {...props}>
-                {renderHelmet({
-                  name: '404',
-                  description: 'Seite wurde nicht gefunden',
-                  pathname,
-                })}
-                <Error404 />
-              </Wrapped>
-            </IFrame>
+            <Wrapped {...props}>
+              {renderHelmet({
+                name: '404',
+                description: 'Seite wurde nicht gefunden',
+                pathname,
+              })}
+              <Error404 />
+            </Wrapped>
           )}
         />
       </ContentLoader>
@@ -54,17 +51,14 @@ export default enhance(props => {
     <ContentLoader height={600} isLoading={loading}>
       <EditablePage
         {...props}
-        maxWidth={deviceWidth}
         id={pageId || id}
         bindingId={bindingId}
         binding={binding}
         render={children => (
-          <IFrame disabled={!deviceWidth}>
-            <Wrapped {...props} match={match}>
-              {renderHelmet(match, pathname)}
-              {children}
-            </Wrapped>
-          </IFrame>
+          <Wrapped {...props} match={match}>
+            {renderHelmet(match, pathname)}
+            {children}
+          </Wrapped>
         )}
       />
     </ContentLoader>
