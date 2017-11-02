@@ -57,8 +57,8 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.10",
     "cli-real-favicon": "0.0.6",
     "del-cli": "^1.1.0",
-    "electron-log": "^2.2.10",
-    "eslint-config-olymp": "^18.1.10",
+    "electron-log": "^2.2.11",
+    "eslint-config-olymp": "^18.4.2",
     "webpack": "^3.8.1"
   },
   "devDependencies": {
@@ -74,12 +74,12 @@
     "enzyme": "^3.1.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
-    "gulp-changed": "^3.1.0",
+    "gulp-changed": "^3.1.1",
     "gulp-debug": "^3.1.0",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-watch": "^4.3.11",
     "jest": "^21.2.1",
-    "lerna": "^2.4.0"
+    "lerna": "^2.5.1"
   }
 }
