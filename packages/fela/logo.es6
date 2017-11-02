@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export default getContext({
   theme: PropTypes.object,
-})(({ width, height, size, theme, clean }) => {
+})(({ width, height, size, theme, clean, className }) => {
   const color = clean ? '#FFF' : theme.get().color;
 
   return (
@@ -14,6 +14,7 @@ export default getContext({
       height={height || Math.round(size / 1001 * 790) || 79}
       viewBox="0 0 1001 790"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <defs>
         <linearGradient
