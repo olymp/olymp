@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import hashtax, { toPlain, toHtml } from 'olymp-hashtax';
+import hashtax, { toPlain, toHtml } from './hashtax';
 import htmlTemplate from './templates/default';
 
 const htmlRenderer = (name, { href, value }) => {
@@ -29,7 +29,7 @@ export default (key, options = {}) => {
     body.Subject = body.TextBody.split('\n')[0];
     body.HtmlBody = htmlTemplate(
       toHtml(hash, { minify: true, renderer: htmlRenderer }),
-      props
+      props,
     );
     return fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
