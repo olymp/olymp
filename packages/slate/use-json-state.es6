@@ -111,11 +111,19 @@ const stateWrapper = WrappedComponent =>
 
 export default compose(
   withPropsOnChange(['value', 'signal'], ({ value, signal }) => {
+    const newValue = {};
+    Object.keys(value || []).forEach(key => {
+      if (key === 'nodes') {
+        newValue[key] = getNodes(value[key]);
+      } else {
+        newValue[key] = value[key];
+      }
+    });
     const state =
-      value && value.nodes
+      newValue && newValue.nodes
         ? Value.fromJSON({
             document: {
-              nodes: value.nodes,
+              nodes: newValue.nodes,
               kind: 'document',
               data: { signal },
             },
@@ -129,3 +137,29 @@ export default compose(
   }),
   stateWrapper,
 );
+
+const getNodes = nodes =>
+  nodes.map(node => {
+    const newNode = {};
+    Object.keys(node).forEach(key => {
+      if (key === 'ranges' || key === 'text') {
+        if (!newNode.leaves) {
+          newNode.leaves = [];
+        }
+
+        if (Array.isArray(node[key])) {
+          newNode.leaves = [...newNode.leaves, ...node[key]];
+        } else {
+          newNode.leaves.push(node[key]);
+        }
+      } else {
+        newNode[key] = node[key];
+      }
+    });
+
+    if (newNode.nodes && newNode.nodes.length) {
+      newNode.nodes = getNodes(newNode.nodes);
+    }
+
+    return newNode;
+  });
