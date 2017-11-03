@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { addMinutes, startOfDay } from 'date-fns';
+import { addMinutes, startOfDay, format } from 'date-fns';
 import Slider from 'multirangeslider';
 import { createComponent } from 'olymp-fela';
 
@@ -14,7 +14,7 @@ class Elessar extends Component {
       label: value => {
         const start = addMinutes(startOfDay(new Date()), value[0]);
         const end = addMinutes(startOfDay(new Date()), value[1]);
-        return `${start.format('HH:mm')}-${end.format('HH:mm')}`;
+        return `${format(start, 'HH:mm')}-${format(end, 'HH:mm')}`;
       },
     });
     this.slider.on('change', this.onChange);
