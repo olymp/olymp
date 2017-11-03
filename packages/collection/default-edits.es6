@@ -10,8 +10,12 @@ import input from './edit-input';
 import image from './edit-image';
 import color from './edit-color';
 import textarea from './edit-textarea';
+import bool from './edit-bool';
+import geocode from './edit-geocode';
 
 export default {
+  geocode,
+  bool,
   textarea,
   color,
   date,
