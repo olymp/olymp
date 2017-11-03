@@ -16,6 +16,8 @@ arr.forEach(readFrom => {
           encoding: 'utf8',
         })
         .replace('<?xml version="1.0" encoding="utf-8"?>', '')
+        .replace(' width="2048"', '')
+        .replace(' width="2304"', '')
         .replace(' width="1792"', '')
         .replace(' height="1792"', '')
         .trim();

@@ -1,22 +1,10 @@
 const Slate = require('slate');
 
-/**
- * Focus at the end of the document
- * @param  {Slate.Transform} transform
- * @return {Slate.Transform}
- */
 function focusAtEnd(transform) {
   const { value } = transform;
   const { document } = value;
   return transform.collapseToEndOf(document);
 }
-/**
- * Slate plugin to ensure a trailing block.
- * @param {Object} [opts] Options for the plugin
- * @param {String|Function} [opts.match='paragraph'] Match last block
- * @param {String} [opts.type] The type of the trailing block to insert
- * @return {Object}
- */
 
 function TrailingBlock(opts) {
   opts = opts || {};
@@ -25,7 +13,7 @@ function TrailingBlock(opts) {
 
   return {
     schema: {
-      rules: [
+      /* rules: [
         {
           match(node) {
             return node.kind === 'document';
@@ -45,7 +33,7 @@ function TrailingBlock(opts) {
             return transform.insertNodeByKey(node.key, lastIndex, block);
           },
         },
-      ],
+      ], */
     },
 
     changes: {
