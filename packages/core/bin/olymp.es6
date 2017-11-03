@@ -33,6 +33,7 @@ const olymprc = merge(
     server: './server',
     plugins: ['less', 'babel'],
     modifyVars: {
+      'menu-collapsed-width': 64,
       'font-family-no-number':
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
       'font-family':
