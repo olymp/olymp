@@ -78,7 +78,7 @@ const StyledInner = createComponent(
         },
       },
       '> .ant-modal-body': {
-        '> .ant-collapse': {
+        '& .ant-collapse': {
           border: 0,
           borderRadius: 0,
           '> .ant-collapse-item': {
@@ -91,7 +91,7 @@ const StyledInner = createComponent(
             },
           },
         },
-        '> .ant-tabs > .ant-tabs-bar': {
+        '& .ant-tabs > .ant-tabs-bar': {
           marginBottom: 0,
           hasFlex: {
             '& .ant-tabs-nav': {
