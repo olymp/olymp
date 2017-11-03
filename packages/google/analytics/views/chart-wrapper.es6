@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+import format from 'date-fns/format'
 import Chart from './chart';
 
 export default class ChartWrapper extends Component {
@@ -19,7 +19,7 @@ export default class ChartWrapper extends Component {
     const sorts = nextState.sorts || nextProps.sorts;
 
     if (
-      !!sorts.find(sort => {
+      sorts.find(sort => {
         const endAsc = sort.search(/_ASC/);
         const endDesc = sort.search(/_DESC/);
 
@@ -46,8 +46,8 @@ export default class ChartWrapper extends Component {
     const chart = this.state.chart || this.props.chart || 'line';
     const sorts = this.state.sorts || this.props.sorts || [];
     const filters = this.state.filters || this.props.filters || [];
-    const start = moment(range[0]).format('YYYY-MM-DD');
-    const end = moment(range[1]).format('YYYY-MM-DD');
+    const start = format( new Date(range[0]), 'YYYY-MM-DD');
+    const end = format(new Date(range[1]), 'YYYY-MM-DD');
 
     return (
       <Chart

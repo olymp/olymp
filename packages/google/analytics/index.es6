@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'olymp-router';
 import { SplitView, Sidebar, List, DateRangeEditor } from 'olymp-ui';
 import { Form, Button } from 'antd';
-import moment from 'moment';
+import subDays from 'date-fns/sub-days';
 import { Charts } from './views';
 import { PaddingContainer, MetricSelect } from './components';
 
 const initState = {
   metrics: ['PAGEVIEWS', 'SESSIONS'],
-  range: [moment().subtract(180, 'days').valueOf(), moment().valueOf()],
+  range: [subDays(new Date(), 180).UTC(), new Date().UTC()],
   dimensions: ['YEAR_MONTH'],
   sorts: ['YEAR_MONTH_ASC'],
   chart: 'line',

@@ -16,7 +16,6 @@
     "bluebird": "^3.5.1",
     "google-map-react": "^0.25.0",
     "googleapis": "^22.1.0",
-    "moment": "^2.19.1",
     "olymp-ui": "^18.5.1",
     "olymp-utils": "^18.5.1",
     "react-smooth": "^0.3.0",
