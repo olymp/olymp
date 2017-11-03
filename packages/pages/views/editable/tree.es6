@@ -9,6 +9,47 @@ import { lowerCase, orderBy, sortBy } from 'lodash';
 import { reorderPage } from '../../gql/mutation';
 import { queryPages } from '../../gql/query';
 
+const StyledTree = createComponent(
+  ({ theme }) => ({
+    paddingRight: 8,
+    paddingLeft: 13,
+    paddingY: 0,
+    '& .ant-tree-title': {
+      hasFlex: {
+        display: 'flex',
+        '> a:first-child': {
+          flex: '1 1 0%',
+        },
+      },
+      '> a': {
+        // color: disabled ? theme.dark3 : theme.dark1,
+        color: theme.dark1,
+      },
+    },
+    '& .anticon': {
+      marginLeft: 3,
+    },
+    '& li': {
+      padding: 0,
+      paddingTop: '0.7rem !important',
+      position: 'relative',
+      '> .ant-tree-switcher': {
+        position: 'absolute',
+        left: -10,
+        top: 9,
+        width: 0,
+        zIndex: 1,
+      },
+      '> .ant-tree-node-content-wrapper': {
+        width: '100%',
+        paddingLeft: 10,
+      },
+    },
+  }),
+  Tree,
+  p => Object.keys(p),
+);
+
 const Button = createComponent(
   ({ theme }) => ({
     borderRadius: '50%',
@@ -146,7 +187,10 @@ class Pages extends Component {
           : undefined;
       const isBinding = item.bindingId && item.binding && item.binding.type;
       const route =
-        item.pathname && item.type === 'PAGE'
+        item.pathname &&
+        item.type === 'PAGE' &&
+        item.slug &&
+        item.slug.indexOf('{') === -1
           ? {
               pathname: item.pathname,
               query: {
@@ -205,7 +249,7 @@ class Pages extends Component {
     }
 
     return (
-      <Tree
+      <StyledTree
         selectedKeys={selected}
         draggable
         className="draggable-tree"
@@ -215,7 +259,7 @@ class Pages extends Component {
         onDrop={this.onDrop}
       >
         {this.getItems(items)}
-      </Tree>
+      </StyledTree>
     );
   }
 }

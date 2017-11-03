@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { compose, withPropsOnChange, withState } from 'recompose';
 import { withAmp } from 'olymp-utils';
+import ReactResizeDetector from 'react-resize-detector';
 import Container from './container';
 import Placeholder from './placeholder';
 import Img from './img';
@@ -132,13 +133,15 @@ const enhance = compose(
 @enhance
 class Image extends Component {
   componentDidMount() {
-    const { setCWidth } = this.props;
-    const node = ReactDOM.findDOMNode(this);
-
-    if (node) {
-      setCWidth(node.getBoundingClientRect().width);
+    this.node = ReactDOM.findDOMNode(this);
+    if (this.node) {
+      this.onResize(this.node.getBoundingClientRect().width);
     }
   }
+  onResize = width => {
+    const { setCWidth } = this.props;
+    setCWidth(width);
+  };
 
   render() {
     const {
@@ -207,6 +210,7 @@ class Image extends Component {
           image
         )}
         {children}
+        <ReactResizeDetector handleWidth onResize={this.onResize} />
       </Container>
     );
   }

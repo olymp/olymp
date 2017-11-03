@@ -1,20 +1,7 @@
-import { Raw, Block } from 'slate';
+import { Block } from 'slate';
 import Debug from 'debug';
 
-/**
- * Debug.
- *
- * @type {Function}
- */
-
 const debug = Debug('slate:insert-block-on-enter');
-
-/**
- * A Slate plugin to insert a spesific node when enter is hit on a void node.
- *
- * @param {Mixed} ...args
- * @return {Object}
- */
 
 function InsertBlockOnEnterPlugin(...args) {
   const blockArg = args[0];
@@ -31,14 +18,6 @@ function InsertBlockOnEnterPlugin(...args) {
   } else {
     blockInputProps = Object.assign({}, defaultProps, blockArg);
   }
-
-  /**
-    *
-    * @param {Event} e
-    * @param {Object} data
-    * @param {State} value
-    * @return {State}
-    */
 
   function onKeyDown(e, data, change) {
     if (data.key === 'enter') {
@@ -119,17 +98,9 @@ function InsertBlockOnEnterPlugin(...args) {
     }
   }
 
-  /**
-   * Return the plugin.
-   */
-
   return {
     onKeyDown,
   };
 }
-
-/**
- * Export.
- */
 
 export default InsertBlockOnEnterPlugin;

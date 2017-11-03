@@ -42,9 +42,9 @@ const renderMark = props => {
 };
 
 const plugins = [
-  /* AutoMarkdown({ getMarkdownType }),
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
+  /* AutoMarkdown({ getMarkdownType }),
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
   editList, */
@@ -146,6 +146,7 @@ class Writer extends Component {
           />
         )}
         <Editor
+          {...rest}
           value={value}
           className="slate-editor slate-writer"
           onDragEnter={e => this.ref.focus()}
