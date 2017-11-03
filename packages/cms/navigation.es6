@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withLang } from 'olymp-utils';
 import { Link, createReplaceQuery } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
@@ -19,14 +19,6 @@ export const UserPic = createComponent(
   p => Object.keys(p),
 );
 
-class MenuItem extends Component {
-  // fix warning:
-  // Stateless function components cannot be given refs.
-  render() {
-    return <Menu.Item {...this.props} />;
-  }
-}
-
 const VerticalMenu = createComponent(
   ({ theme }) => ({
     zIndex: 11,
@@ -36,12 +28,14 @@ const VerticalMenu = createComponent(
       flexDirection: 'column',
       justifyContent: 'space-between',
     },
-    '> ul.ant-menu-inline-collapsed > li.ant-menu-item.logo': {
-      padding: '0 10px',
-      marginY: 0,
+    '> ul.ant-menu > li.ant-menu-item:first-child': {
+      padding: `0 ${theme.space1} !important`,
+      height: 80,
+      backgroundColor: theme.dark4,
+      borderBottom: border(theme, theme.dark4),
       '> a': {
         '> svg': {
-          width: 45,
+          padding: theme.space2,
         },
       },
     },
@@ -56,19 +50,6 @@ const VerticalMenu = createComponent(
       overflow: 'hidden',
       '> .ant-menu-item': {
         textAlign: 'left',
-        '&.logo': {
-          height: 80,
-          backgroundColor: theme.dark4,
-          borderBottom: border(theme, theme.dark4),
-          '> a': {
-            display: 'flex',
-            height: '100%',
-            '> svg': {
-              width: 75,
-              margin: 'auto',
-            },
-          },
-        },
         '& .anticon': {
           fontSize: 16,
           marginRight: 8,
@@ -179,11 +160,11 @@ const component = enhance(
           onClick={handleClick}
           inlineCollapsed={collapsed}
         >
-          <MenuItem className="logo">
+          <Menu.Item>
             <Link to={{ query: {} }}>
-              <Logo />
+              <Logo width="100%" />
             </Link>
-          </MenuItem>
+          </Menu.Item>
           <Menu.SubMenu
             title={
               <span>
@@ -198,12 +179,12 @@ const component = enhance(
               </span>
             }
           >
-            <MenuItem key="@user">
+            <Menu.Item key="@user">
               <Link to={{ query: { '@user': null } }}>Profil</Link>
-            </MenuItem>
-            <MenuItem key="logout">
+            </Menu.Item>
+            <Menu.Item key="logout">
               <a onClick={logout}>Abmelden</a>
-            </MenuItem>
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu
             title={
@@ -213,37 +194,37 @@ const component = enhance(
               </span>
             }
           >
-            <MenuItem key="@page=form">
+            <Menu.Item key="@page=form">
               <Link to={{ pathname: '/__new', query: { '@page': 'form' } }}>
                 Seite
               </Link>
-            </MenuItem>
+            </Menu.Item>
             {collectionList.map(collection => (
-              <MenuItem key={`@${collection.name.toLowerCase()}`}>
+              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
                 <span>
                   {get(collection, 'decorators.label.value', collection.name)}
                 </span>
-              </MenuItem>
+              </Menu.Item>
             ))}
           </Menu.SubMenu>
-          <MenuItem key="@page">
+          <Menu.Item key="@page">
             <Icon type="bars" />
             <span>Seitenmanager</span>
-          </MenuItem>
-          <MenuItem key="@media">
+          </Menu.Item>
+          <Menu.Item key="@media">
             <Icon type="picture" />
             <span>Medien</span>
-          </MenuItem>
+          </Menu.Item>
           {isAdmin && (
-            <MenuItem key="@users">
+            <Menu.Item key="@users">
               <Icon type="team" />
               <span>Benutzer</span>
-            </MenuItem>
+            </Menu.Item>
           )}
-          <MenuItem key="@analytics">
+          <Menu.Item key="@analytics">
             <Icon type="line-chart" />
             <span>Statistiken</span>
-          </MenuItem>
+          </Menu.Item>
           {Object.keys(collectionTree).map(
             key =>
               collectionTree[key].length > 1 ? (
@@ -256,7 +237,7 @@ const component = enhance(
                   }
                 >
                   {collectionTree[key].map(collection => (
-                    <MenuItem
+                    <Menu.Item
                       type="database"
                       key={`@${collection.name.toLowerCase()}`}
                     >
@@ -274,11 +255,11 @@ const component = enhance(
                           collection.name,
                         )}
                       </span>
-                    </MenuItem>
+                    </Menu.Item>
                   ))}
                 </Menu.SubMenu>
               ) : (
-                <MenuItem
+                <Menu.Item
                   type="database"
                   key={`@${collectionTree[key][0].name.toLowerCase()}`}
                 >
@@ -296,7 +277,7 @@ const component = enhance(
                       collectionTree[key][0].name,
                     )}
                   </span>
-                </MenuItem>
+                </Menu.Item>
               ),
           )}
         </Menu>
