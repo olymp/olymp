@@ -6,15 +6,15 @@ import useJsonState from './use-json-state';
 import marks from './defaults/marks';
 import nodes from './defaults/nodes';
 
-const renderNode = ({ node }) => {
-  const X = nodes[node.type];
+const renderNode = props => {
+  const X = nodes[props.node.type];
   if (X) {
     return <X {...props} />;
   }
   return null;
 };
-const renderMark = ({ mark }) => {
-  const X = marks[mark.type];
+const renderMark = props => {
+  const X = marks[props.mark.type];
   if (X) {
     return <X {...props} />;
   }
