@@ -8,7 +8,7 @@ import { PaddingContainer, MetricSelect } from './components';
 
 const initState = {
   metrics: ['PAGEVIEWS', 'SESSIONS'],
-  range: [subDays(new Date(), 180).UTC(), new Date().UTC()],
+  range: [subDays(new Date(), 180).getUTCDate(), new Date().getUTCDate()],
   dimensions: ['YEAR_MONTH'],
   sorts: ['YEAR_MONTH_ASC'],
   chart: 'line',
