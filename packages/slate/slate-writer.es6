@@ -26,10 +26,20 @@ const editList = EditList({
   typeItem: 'list-item',
 });
 
-const renderNode = props =>
-  nodes[props.node.type] ? nodes[props.node.type](props) : null;
-const renderMark = props =>
-  marks[props.mark.type] ? nodes[props.mark.type](props) : null;
+const renderNode = ({ node }) => {
+  const X = nodes[node.type];
+  if (X) {
+    return <X {...props} />;
+  }
+  return null;
+};
+const renderMark = ({ mark }) => {
+  const X = marks[mark.type];
+  if (X) {
+    return <X {...props} />;
+  }
+  return null;
+};
 
 const plugins = [
   /* AutoMarkdown({ getMarkdownType }),
