@@ -4,5 +4,6 @@ import { compose, getContext } from 'recompose';
 export default compose(
   getContext({
     schema: PropTypes.object,
+    renderNode: PropTypes.func,
   }),
 );

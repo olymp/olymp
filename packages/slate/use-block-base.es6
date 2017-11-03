@@ -4,12 +4,12 @@ import { Dropdown, Menu } from 'antd';
 import { FaCog, FaChevronDown, FaChevronUp } from 'olymp-icons';
 import Toolbar, { Button } from './toolbar';
 
-const setLink = (onChange, state, node) => {
+const setLink = (onChange, value, node) => {
   const newContext = window.prompt('Context', JSON.stringify({}));
   if (newContext) {
     const obj = JSON.parse(newContext);
     onChange(
-      state.change().setNodeByKey(node.key, {
+      value.change().setNodeByKey(node.key, {
         data: Object.keys(obj).reduce(
           (data, key) => data.set(key, { boundTo: obj[key] }),
           node.data,
@@ -19,12 +19,12 @@ const setLink = (onChange, state, node) => {
   }
 };
 
-const Action = ({ node, state, onChange, schema }) => (
+const Action = ({ node, value, onChange, schema }) => (
   { toggle, active, label, component, ...rest },
   i,
 ) => {
   const setData = data => {
-    const transform = state
+    const transform = value
       .change()
       .setNodeByKey(node.key, { data: { ...node.data.toJS(), ...data } });
     onChange(transform);
@@ -42,7 +42,7 @@ const Action = ({ node, state, onChange, schema }) => (
       toggle({
         setData,
         getData,
-        state,
+        value,
         onChange,
         schema,
         node,
@@ -58,7 +58,7 @@ const Action = ({ node, state, onChange, schema }) => (
           <Com
             setData={setData}
             getData={getData}
-            state={state}
+            value={value}
             onChange={onChange}
             node={node}
           />
@@ -70,7 +70,7 @@ const Action = ({ node, state, onChange, schema }) => (
   return (
     <Menu.Item key={i}>
       <Button
-        active={!!active && active({ getData, state })}
+        active={!!active && active({ getData, value })}
         onMouseDown={onClick}
         tooltip={tooltip}
       >
@@ -96,20 +96,19 @@ export default options => Block => {
     getActions = () => {
       const actions = [...(options.actions || [])];
       const { editor, node } = this.props;
-      const state = editor.getState();
       if (options.category) {
         actions.push({
-          component: ({ onChange, state, node }) => (
+          component: ({ onChange, value, node }) => (
             <div>
               <FaChevronUp
                 onMouseDown={e => {
                   onChange(
-                    state
+                    value
                       .change()
                       .moveNodeByKey(
                         node.key,
-                        state.document.getParent(node.key).key,
-                        state.document.getParent(node.key).nodes.indexOf(node) -
+                        value.document.getParent(node.key).key,
+                        value.document.getParent(node.key).nodes.indexOf(node) -
                           1,
                       ),
                   );
@@ -119,12 +118,12 @@ export default options => Block => {
               <FaChevronDown
                 onMouseDown={e => {
                   onChange(
-                    state
+                    value
                       .change()
                       .moveNodeByKey(
                         node.key,
-                        state.document.getParent(node.key).key,
-                        state.document.getParent(node.key).nodes.indexOf(node) +
+                        value.document.getParent(node.key).key,
+                        value.document.getParent(node.key).nodes.indexOf(node) +
                           1,
                       ),
                   );
@@ -169,14 +168,14 @@ export default options => Block => {
         } */
 
         actions.push({
-          component: ({ state, onChange, node }) => (
+          component: ({ value, onChange, node }) => (
             <Dropdown
               overlay={
                 <Menu style={{ minWidth: 200 }}>
                   <Menu.Item>
                     <span
                       onMouseDown={e => {
-                        setLink(onChange, state, node);
+                        setLink(onChange, value, node);
                         e.preventDefault();
                       }}
                     >
@@ -187,7 +186,7 @@ export default options => Block => {
                   <Menu.Item>
                     <span
                       onMouseDown={e => {
-                        onChange(state.change().removeNodeByKey(node.key));
+                        onChange(value.change().removeNodeByKey(node.key));
                         e.preventDefault();
                       }}
                     >
@@ -198,7 +197,7 @@ export default options => Block => {
                     <span
                       onMouseDown={e => {
                         onChange(
-                          state
+                          value
                             .change()
                             .moveToRangeOf(node)
                             .focus(),
@@ -214,7 +213,7 @@ export default options => Block => {
                     <span
                       onMouseDown={e => {
                         onChange(
-                          state
+                          value
                             .change()
                             .moveToRangeOf(node)
                             .focus(),
@@ -231,7 +230,7 @@ export default options => Block => {
                     <Menu.Item>
                       <span
                         onMouseDown={e => {
-                          onChange(state.change().unwrapBlockByKey(node.key));
+                          onChange(value.change().unwrapBlockByKey(node.key));
                           e.preventDefault();
                         }}
                       >
@@ -244,7 +243,7 @@ export default options => Block => {
                     <span
                       onMouseDown={e => {
                         onChange(
-                          state
+                          value
                             .change()
                             .insertNodeByKey(node.key, node.nodes.size, {
                               type: 'paragraph',
@@ -261,11 +260,11 @@ export default options => Block => {
                     <span
                       onMouseDown={e => {
                         onChange(
-                          state
+                          value
                             .change()
                             .insertNodeByKey(
-                              state.document.getParent(node.key).key,
-                              state.document
+                              value.document.getParent(node.key).key,
+                              value.document
                                 .getParent(node.key)
                                 .nodes.indexOf(node) + 1,
                               {
@@ -293,8 +292,7 @@ export default options => Block => {
 
     setData = data => {
       const { editor } = this.props;
-      const transform = editor
-        .getState()
+      const transform = editor.value
         .change()
         .setNodeByKey(this.n.key, { data: { ...this.n.data.toJS(), ...data } });
       editor.onChange(transform);
@@ -304,10 +302,7 @@ export default options => Block => {
 
     setActive = () => {
       const { node, editor } = this.props;
-      const transform = editor
-        .getState()
-        .change()
-        .moveToRangeOf(node);
+      const transform = editor.value.change().moveToRangeOf(node);
       editor.onChange(transform);
     };
 
@@ -344,7 +339,7 @@ export default options => Block => {
               <Toolbar show isOpened parent={`[data-key="${node.key}"]`}>
                 {actions.map(
                   Action({
-                    state: editor.props.value,
+                    value: editor.props.value,
                     onChange: editor.props.onChange,
                     node,
                     schema: options.schema,

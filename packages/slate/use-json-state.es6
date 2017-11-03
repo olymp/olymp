@@ -3,7 +3,7 @@ import { debounce, get } from 'lodash';
 import { withPropsOnChange, compose } from 'recompose';
 import Plain from 'slate-plain-serializer';
 import { Value } from 'slate';
-import Base64 from './plugins/base64';
+import Base64 from 'slate-base64-serializer';
 
 const stateWrapper = WrappedComponent =>
   class Slate extends Component {
@@ -119,7 +119,7 @@ export default compose(
               kind: 'document',
               data: { signal },
             },
-            kind: 'state',
+            kind: 'value',
           })
         : Plain.deserialize('');
     return {

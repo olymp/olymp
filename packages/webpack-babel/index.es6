@@ -4,7 +4,16 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 // const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = (config, options) => {
-  const { isProd, isWeb, isDev, isNode, appRoot, target, folder } = options;
+  const {
+    isProd,
+    isWeb,
+    isDev,
+    isNode,
+    appRoot,
+    target,
+    folder,
+    transform = {},
+  } = options;
 
   if (isProd && isWeb) {
     // config.plugins.push(new LodashModuleReplacementPlugin()),
@@ -111,6 +120,7 @@ module.exports = (config, options) => {
           kebabCase: true,
           preventFullImport: true,
         },
+        ...transform,
       },
     ]);
     // babelOptions.plugins.push('transform-react-constant-elements');

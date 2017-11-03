@@ -6,8 +6,8 @@ const Slate = require('slate');
  * @return {Slate.Transform}
  */
 function focusAtEnd(transform) {
-  const { state } = transform;
-  const { document } = state;
+  const { value } = transform;
+  const { document } = value;
   return transform.collapseToEndOf(document);
 }
 /**

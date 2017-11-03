@@ -1,7 +1,7 @@
 export default (options = {}) => {
   const { getMarkdownType } = options;
   const self = {
-    getType: (chars) => {
+    getType: chars => {
       if (getMarkdownType && getMarkdownType(chars)) {
         return getMarkdownType(chars);
       }
@@ -39,10 +39,10 @@ export default (options = {}) => {
       }
     },
     onSpace: (e, change) => {
-      if (change.state.isExpanded) {
+      if (change.value.isExpanded) {
         return undefined;
       }
-      const { startText, startBlock, startOffset, selection } = change.state;
+      const { startText, startBlock, startOffset, selection } = change.value;
       const chars = startBlock.text.slice(0, startOffset).replace(/\s*/g, '');
       const type = self.getType(chars);
 
@@ -63,13 +63,13 @@ export default (options = {}) => {
       return transform.extendToStartOf(startBlock).delete();
     },
     onBackspace: (e, change) => {
-      if (change.state.isExpanded) {
+      if (change.value.isExpanded) {
         return undefined;
       }
-      if (change.state.startOffset !== 0) {
+      if (change.value.startOffset !== 0) {
         return undefined;
       }
-      const { startBlock } = change.state;
+      const { startBlock } = change.value;
 
       if (startBlock.type === 'paragraph') {
         return undefined;
@@ -84,15 +84,15 @@ export default (options = {}) => {
       return transform;
     },
     onEnter: (e, change) => {
-      if (change.state.isExpanded) {
+      if (change.value.isExpanded) {
         return undefined;
       }
-      const { startBlock, startOffset, endOffset } = change.state;
+      const { startBlock, startOffset, endOffset } = change.value;
       if (!startBlock) {
         return undefined;
       }
       if (startOffset === 0 && startBlock.size === 0) {
-        return self.onBackspace(e, change.state);
+        return self.onBackspace(e, change.value);
       }
       if (endOffset !== startBlock.size) {
         return undefined;

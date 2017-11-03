@@ -6,15 +6,27 @@ import useJsonState from './use-json-state';
 import marks from './defaults/marks';
 import nodes from './defaults/nodes';
 
+const renderNode = props =>
+  nodes[props.node.type] ? nodes[props.node.type](props) : null;
+const renderMark = props =>
+  marks[props.mark.type] ? nodes[props.mark.type](props) : null;
+
 const plugins = [
   {
-    schema: {
-      nodes,
-      marks,
-    },
+    renderNode,
+    renderMark,
   },
 ];
-const Reader = ({ children, schema, className, style, value, ...rest }) => (
+
+const Reader = ({
+  children,
+  schema,
+  renderNode,
+  className,
+  style,
+  value,
+  ...rest
+}) => (
   <div className={className} style={{ position: 'relative', ...style }}>
     {children}
     <Editor
@@ -24,7 +36,7 @@ const Reader = ({ children, schema, className, style, value, ...rest }) => (
       spellcheck={false}
       plugins={plugins}
       readOnly
-      schema={schema}
+      renderNode={renderNode}
       placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
     />
   </div>

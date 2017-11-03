@@ -6,19 +6,21 @@ import hasBlock from './utils/has-block';
 
 export default class ToolbarText extends Component {
   onClickBlock = (e, props) => {
-    const { state, onChange } = this.props;
+    const { value, onChange } = this.props;
     e.preventDefault();
-    onChange(state.change().setBlock(props.type));
+    onChange(value.change().setBlock(props.type));
   };
-  renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
+  renderBlockButton = props =>
+    this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
     e.stopPropagation();
     e.preventDefault();
-    const { state, onChange } = this.props;
-    onChange(state.change().toggleMark(type));
+    const { value, onChange } = this.props;
+    onChange(value.change().toggleMark(type));
   };
-  renderMarkButton = props => this.renderOptionButton(props, hasMark, this.onClickMark);
-  renderActionButton = (props) => {
+  renderMarkButton = props =>
+    this.renderOptionButton(props, hasMark, this.onClickMark);
+  renderActionButton = props => {
     const isActive = props.isActive ? props.isActive(this.props) : false;
     const isActiveFn = () => isActive;
     const fn = e => props.onClick(this.props, isActive, e);
@@ -26,9 +28,9 @@ export default class ToolbarText extends Component {
     return this.renderOptionButton(props, isActiveFn, fn);
   };
   renderOptionButton = (props, isActiveFn, onMouseDownFn, label) => {
-    const { state } = this.props;
+    const { value } = this.props;
     const { type } = props;
-    const isActive = isActiveFn(state, type);
+    const isActive = isActiveFn(value, type);
     const onMouseDown = e => onMouseDownFn(e, props);
 
     const icon = label || props.label || <Icon type={props.icon} />;
@@ -44,7 +46,9 @@ export default class ToolbarText extends Component {
             return this.renderOptionButton(
               { ...props, type: subType },
               isActiveFn,
-              Array.isArray(onMouseDownFn) ? onMouseDownFn[index] : onMouseDownFn,
+              Array.isArray(onMouseDownFn)
+                ? onMouseDownFn[index]
+                : onMouseDownFn,
               subLabel,
             );
           })}
@@ -62,14 +66,20 @@ export default class ToolbarText extends Component {
     this.setState({ menu });
   };
   render() {
-    const { state, toolbarMarks, toolbarTypes, toolbarActions, show } = this.props;
-    const display = !state.isBlurred && !state.isCollapsed;
+    const {
+      value,
+      toolbarMarks,
+      toolbarTypes,
+      toolbarActions,
+      show,
+    } = this.props;
+    const display = !value.isBlurred && !value.isCollapsed;
 
     let node = null;
-    if (state.blocks.size) {
-      node = state.blocks.get(0);
-    } else if (state.inlines.size) {
-      node = state.inlines.get(0);
+    if (value.blocks.size) {
+      node = value.blocks.get(0);
+    } else if (value.inlines.size) {
+      node = value.inlines.get(0);
     }
 
     if (!node) {
@@ -77,7 +87,11 @@ export default class ToolbarText extends Component {
     }
 
     return (
-      <Toolbar isOpened={!!display} show={show} parent={`[data-key="${node.key}"]`}>
+      <Toolbar
+        isOpened={!!display}
+        show={show}
+        parent={`[data-key="${node.key}"]`}
+      >
         {toolbarMarks.map(this.renderMarkButton)}
         {toolbarTypes.map(this.renderBlockButton)}
         {toolbarActions.map(this.renderActionButton)}

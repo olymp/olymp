@@ -9,11 +9,14 @@ export default (options = {}) => WrappedComponent => {
   }
   @connect(
     ({ auth }) => ({ verifying: auth.verifying }),
-    dispatch => ({ verify: createVerify(dispatch) })
+    dispatch => ({ verify: createVerify(dispatch) }),
   )
   class WithAuth extends Component {
     constructor(props) {
       super(props);
+      if (props.auth && props.auth.attributes) {
+        setAttributes(props.auth.attributes);
+      }
       if (props.verifying) {
         props.verify(props.verifying);
       }

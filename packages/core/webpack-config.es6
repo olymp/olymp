@@ -30,6 +30,7 @@ module.exports = ({
   isServerless,
   plugins = [],
   sharedEnv = {},
+  externals = [],
   ...rest
 }) => {
   const isDev = mode !== 'production';
@@ -368,6 +369,11 @@ module.exports = ({
           v === 'olymp' ||
           v.indexOf('olymp-') === 0 ||
           v.indexOf('olymp/') === 0,
+        v =>
+          v === 'hashtax' ||
+          v.indexOf('hashtax-') === 0 ||
+          v.indexOf('hashtax/') === 0,
+        ...externals.map(key => v => v === key || v.indexOf(`${key}/`) === 0),
       ],
     });
     if (isElectron) {

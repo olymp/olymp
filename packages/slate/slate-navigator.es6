@@ -190,7 +190,7 @@ class Pages extends Component {
     return this.getParent(parent.children, levels);
   };
 
-  onChange = change => this.props.onChange(change.state);
+  onChange = change => this.props.onChange(change.value);
 
   applyTemplate = type => {
     const { value } = this.props;

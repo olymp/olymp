@@ -22,7 +22,9 @@ function InsertBlockOnEnterPlugin(...args) {
   const defaultProps = { kind: 'block' };
 
   if (!blockArg) {
-    throw new Error('You must pass a block type (string) or object for the block to insert.');
+    throw new Error(
+      'You must pass a block type (string) or object for the block to insert.',
+    );
   }
   if (args[0].constructor.name === 'String') {
     blockInputProps = Object.assign({}, defaultProps, { type: blockArg });
@@ -34,14 +36,14 @@ function InsertBlockOnEnterPlugin(...args) {
     *
     * @param {Event} e
     * @param {Object} data
-    * @param {State} state
+    * @param {State} value
     * @return {State}
     */
 
   function onKeyDown(e, data, change) {
     if (data.key === 'enter') {
-      const { state } = change;
-      const { document, startKey, startBlock } = state;
+      const { value } = change;
+      const { document, startKey, startBlock } = value;
 
       if (
         startBlock &&
@@ -62,8 +64,8 @@ function InsertBlockOnEnterPlugin(...args) {
       if (startBlock && startBlock.isVoid) {
         const nextBlock = document.getNextBlock(startKey);
         const prevBlock = document.getPreviousBlock(startKey);
-        const isFocusedStart = state.selection.hasEdgeAtStartOf(startBlock);
-        const isFocusedEnd = state.selection.hasEdgeAtEndOf(startBlock);
+        const isFocusedStart = value.selection.hasEdgeAtStartOf(startBlock);
+        const isFocusedEnd = value.selection.hasEdgeAtEndOf(startBlock);
         const blockToInsert = Block.create(blockInputProps);
 
         // Void block at the end of the document

@@ -26,15 +26,24 @@ const editList = EditList({
   typeItem: 'list-item',
 });
 
+const renderNode = props =>
+  nodes[props.node.type] ? nodes[props.node.type](props) : null;
+const renderMark = props =>
+  marks[props.mark.type] ? nodes[props.mark.type](props) : null;
+
 const plugins = [
-  AutoMarkdown({ getMarkdownType }),
+  /* AutoMarkdown({ getMarkdownType }),
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
-  editList,
-  { schema: { nodes, marks } },
+  editList, */
+  {
+    renderNode,
+    renderMark,
+  },
 ];
+
 class Writer extends Component {
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -70,9 +79,8 @@ class Writer extends Component {
   onPaste = (ev, change) => {
     const { schema } = this.props;
     if (ev.text && schema.nodes[ev.text]) {
-      const range = getEventRange(ev, change.state);
       return addBlock(
-        change.state,
+        change.value,
         schema.nodes[ev.text].slate,
         schema,
         null,
@@ -86,9 +94,9 @@ class Writer extends Component {
     const { schema } = this.props;
     const type = ev.dataTransfer.getData('text');
     if (type && type.indexOf('x-slate:') === 0) {
-      const range = getEventRange(ev, change.state);
+      const range = getEventRange(ev, change.value);
       return addBlock(
-        change.state,
+        change.value,
         schema.nodes[type.substr('x-slate:'.length)].slate,
         schema,
         null,
@@ -98,7 +106,7 @@ class Writer extends Component {
     }
   };
 
-  onChange = change => this.props.onChange(change.state);
+  onChange = change => this.props.onChange(change.value);
 
   render = () => {
     const {
@@ -107,6 +115,7 @@ class Writer extends Component {
       className,
       spellcheck,
       schema,
+      renderNode,
       style = {},
       ...rest
     } = this.props;
@@ -118,7 +127,7 @@ class Writer extends Component {
         {readOnly !== true && (
           <ToolbarText
             show
-            state={value}
+            value={value}
             onChange={this.onChange}
             blockTypes={schema.nodes}
             toolbarActions={toolbarActions}
@@ -127,7 +136,6 @@ class Writer extends Component {
           />
         )}
         <Editor
-          {...rest}
           value={value}
           className="slate-editor slate-writer"
           onDragEnter={e => this.ref.focus()}
@@ -137,7 +145,7 @@ class Writer extends Component {
           onDrop={this.onDrop}
           onPaste={this.onPaste}
           plugins={readOnly ? emptyArray : plugins}
-          schema={schema}
+          renderNode={renderNode}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           placeholder={!readOnly && 'Hier Text eingeben...'}

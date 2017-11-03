@@ -26,15 +26,15 @@ export default [
   {
     type: 'numbered-list',
     label: <I icon={FaListOl} />,
-    onClick: ({ state, onChange }) => {
-      onChange(state.change().call(plugin.changes.wrapInList));
+    onClick: ({ value, onChange }) => {
+      onChange(value.change().call(plugin.changes.wrapInList));
     },
   },
   {
     type: 'bulleted-list',
     label: <I icon={FaListUl} />,
-    onClick: ({ state, onChange }) => {
-      onChange(state.change().call(plugin.changes.wrapInList));
+    onClick: ({ value, onChange }) => {
+      onChange(value.change().call(plugin.changes.wrapInList));
     },
   },
 ];

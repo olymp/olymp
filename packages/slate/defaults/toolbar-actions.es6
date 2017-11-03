@@ -7,9 +7,9 @@ export default [
     type: 'link', // ['link', 'link-page', 'link-media'],
     label: <I icon={FaLink} />,
     description: 'Link', // ['Extern', 'Intern', 'Datei'],
-    onClick: ({ state, onChange }, isActive) => {
+    onClick: ({ value, onChange }, isActive) => {
       if (isActive) {
-        onChange(state.change().unwrapInline('link'));
+        onChange(value.change().unwrapInline('link'));
       } else {
         let href = window.prompt('URL');
         if (href) {
@@ -20,7 +20,7 @@ export default [
             href = `http://${href}`;
           }
           onChange(
-            state
+            value
               .change()
               .wrapInline({
                 type: 'link',
@@ -31,24 +31,26 @@ export default [
         }
       }
     },
-    isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
+    isActive: ({ value }) =>
+      value && value.inlines.some(inline => inline.type === 'link'),
   },
   {
     type: 'center',
     label: <I icon={FaAlignCenter} />,
     description: 'Center',
-    onClick: ({ state, onChange }, isActive) => {
+    onClick: ({ value, onChange }, isActive) => {
       if (isActive) {
-        onChange(state.change().unwrapBlock('center'));
+        onChange(value.change().unwrapBlock('center'));
       } else {
         onChange(
-          state
+          value
             .change()
             .wrapBlock({ type: 'center' })
             .collapseToEnd(),
         );
       }
     },
-    isActive: ({ state }) => state && state.inlines.some(inline => inline.type === 'link'),
+    isActive: ({ value }) =>
+      value && value.inlines.some(inline => inline.type === 'link'),
   },
 ];
