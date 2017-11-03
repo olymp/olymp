@@ -12,7 +12,7 @@ export default {
   form: toClass(({ '@': at, type, value, onChange, ...props }) => (
     <FormItem {...props}>
       <DetailEdit
-        tags
+        mode="tags"
         onChange={onChange}
         typeName={at.idField ? at.idField.type.name : type.ofType.name}
       />
