@@ -37,7 +37,7 @@ const CmsToolbar = createComponent(
     },
     '> ul.ant-menu-inline-collapsed > li.ant-menu-item.logo': {
       padding: '0 10px',
-      marginX: -15,
+      marginY: 0,
       '> a': {
         '> svg': {
           width: 45,
