@@ -47,7 +47,7 @@ export default {
           }
         }
         maxHeight={100}
-        maxWidth="100%"
+        maxWidth={250}
       />
     </FormItem>
   )),
