@@ -17,7 +17,7 @@ const CheckableTag = createComponent(
     },
   }),
   p => <Tag.CheckableTag {...p} />,
-  p => Object.keys(p),
+  ({ marked, ...p }) => Object.keys(p),
 );
 
 const enhance = compose(
