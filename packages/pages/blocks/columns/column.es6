@@ -18,6 +18,9 @@ export default {
       '> [data-key]': {
         paddingX: 10,
       },
+      '> [data-slate-void]': {
+        paddingX: 0,
+      },
       backgroundColor: theme.dark5,
       borderRadius: theme.borderRadius,
       overflow: 'hidden',
