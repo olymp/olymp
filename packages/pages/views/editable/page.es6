@@ -15,14 +15,14 @@ import {
 } from '../../edits';
 
 class PageForm extends Component {
-  handleNameChange = (e) => {
+  handleNameChange = e => {
     // set slug if unset
     const { form } = this.props;
     const value = e.target.value;
     form.setFieldsValue({ slug: `/${slugify(value)}` });
   };
 
-  handleTypeChange = (e) => {
+  handleTypeChange = e => {
     // set slug if unset
     const { form } = this.props;
     if (e === 'MENU') {
@@ -52,24 +52,27 @@ class PageForm extends Component {
           onChange={this.handleNameChange}
           rules={['required']}
           type="text"
-          size="large"
         />
-        <Input form={form} item={item} field="slug" label="Slug" type="text" size="large" />
+        <Input form={form} item={item} field="slug" label="Slug" type="text" />
         <TextArea
           form={form}
           item={item}
           field="description"
           label="Beschreibung"
           type="text"
-          size="large"
         />
-        <State form={form} item={item} field="state" label="Status" rules={['required']} />
+        <State
+          form={form}
+          item={item}
+          field="state"
+          label="Status"
+          rules={['required']}
+        />
         <PageType
           form={form}
           item={item}
           field="type"
           label="Art"
-          size="large"
           onChange={this.handleTypeChange}
         />
         {(form.getFieldValue('type') || item.type) !== 'MENU' && (
@@ -80,12 +83,17 @@ class PageForm extends Component {
             field="parentId"
             label="Menü"
             placeholder="Übergeordnetes Menü"
-            size="large"
             initialValue={form.getFieldValue('parentId')}
           />
         )}
         {(form.getFieldValue('type') || item.type) === 'LINK' && (
-          <Input form={form} item={item} field="href" label="Ext. Link" type="text" size="large" />
+          <Input
+            form={form}
+            item={item}
+            field="href"
+            label="Ext. Link"
+            type="text"
+          />
         )}
         {(form.getFieldValue('type') || item.type) === 'ALIAS' && (
           <Parent
@@ -95,11 +103,13 @@ class PageForm extends Component {
             field="aliasId"
             label="Alias"
             placeholder="Alias zu.."
-            size="large"
           />
         )}
-        <Toggle form={form} item={item} field="isMega" label="Mega" size="large" />
-        <SectionH title="Erweitert" description="Datenanbindung, Sortierung Unterseiten" />
+        <Toggle form={form} item={item} field="isMega" label="Mega" />
+        <SectionH
+          title="Erweitert"
+          description="Datenanbindung, Sortierung Unterseiten"
+        />
         <Input
           form={form}
           item={item}
@@ -107,7 +117,6 @@ class PageForm extends Component {
           placeholder="typ"
           label="Bindungstyp"
           type="text"
-          size="large"
         />
         <Input
           form={form}
@@ -116,7 +125,6 @@ class PageForm extends Component {
           placeholder="group"
           label="Gruppieren"
           type="text"
-          size="large"
         />
         <TagSelect
           form={form}
@@ -125,9 +133,13 @@ class PageForm extends Component {
           field="binding.fields"
           placeholder="+name, -id"
           label="Felder"
-          size="large"
         />
-        <JsonInput form={form} item={item} field="binding.query" label="Filter" size="large" />
+        <JsonInput
+          form={form}
+          item={item}
+          field="binding.query"
+          label="Filter"
+        />
         <TagSelect
           form={form}
           item={item}
@@ -135,9 +147,13 @@ class PageForm extends Component {
           field="sorting"
           placeholder="+name, -id"
           label="Sortieren"
-          size="large"
         />
-        <InputNumber form={form} item={item} field="order" label="Reihenfolge" size="large" />
+        <InputNumber
+          form={form}
+          item={item}
+          field="order"
+          label="Reihenfolge"
+        />
       </Panel>
     );
   }
