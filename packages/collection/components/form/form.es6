@@ -193,7 +193,7 @@ const FormComponent = enhance(
       );
     } else {
       moreChildren.push(
-        <Sidebar isOpen padding={0} width="100%" title="Formular">
+        <Sidebar isOpen padding={0} width="100%" title="Formular" key={1}>
           <Container size="small">
             <Items
               schema={schemaWithEdits.etc}
