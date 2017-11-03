@@ -146,6 +146,7 @@ class Writer extends Component {
           />
         )}
         <Editor
+          {...rest}
           value={value}
           className="slate-editor slate-writer"
           onDragEnter={e => this.ref.focus()}

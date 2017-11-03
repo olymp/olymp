@@ -187,7 +187,10 @@ class Pages extends Component {
           : undefined;
       const isBinding = item.bindingId && item.binding && item.binding.type;
       const route =
-        item.pathname && item.type === 'PAGE'
+        item.pathname &&
+        item.type === 'PAGE' &&
+        item.slug &&
+        item.slug.indexOf('{') === -1
           ? {
               pathname: item.pathname,
               query: {
