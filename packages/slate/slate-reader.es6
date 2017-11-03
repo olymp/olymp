@@ -6,10 +6,20 @@ import useJsonState from './use-json-state';
 import marks from './defaults/marks';
 import nodes from './defaults/nodes';
 
-const renderNode = props =>
-  nodes[props.node.type] ? nodes[props.node.type](props) : null;
-const renderMark = props =>
-  marks[props.mark.type] ? nodes[props.mark.type](props) : null;
+const renderNode = props => {
+  const X = nodes[props.node.type];
+  if (X) {
+    return <X {...props} />;
+  }
+  return null;
+};
+const renderMark = props => {
+  const X = marks[props.mark.type];
+  if (X) {
+    return <X {...props} />;
+  }
+  return null;
+};
 
 const plugins = [
   {
