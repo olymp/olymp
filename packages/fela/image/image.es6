@@ -140,7 +140,6 @@ class Image extends Component {
   }
   onResize = width => {
     const { setCWidth } = this.props;
-    console.log(width);
     setCWidth(width);
   };
 
