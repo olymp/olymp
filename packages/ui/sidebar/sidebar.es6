@@ -1,7 +1,6 @@
 import React, { Children } from 'react';
 import { createComponent } from 'olymp-fela';
 import { Icon, Button } from 'antd';
-import { FaChevronDoubleDown } from 'olymp-icons';
 
 const StyledInner = createComponent(
   ({ theme, padding, paddingX, paddingY, width, right, darkened }) => ({
@@ -212,10 +211,6 @@ const Sidebar = ({
         {Children.toArray(children).length > 0 && (
           <div className="ant-modal-body">{children}</div>
         )}
-
-        <span className="expander">
-          Ausklappen <FaChevronDoubleDown color="white" size="30" />
-        </span>
 
         {footer ? <div className="ant-modal-footer">{footer}</div> : null}
       </div>

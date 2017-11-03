@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaHeading, FaListOl, FaIndent, FaListUl } from 'olymp-icons';
+import { FaHeader, FaListOl, FaIndent, FaListUl } from 'olymp-icons';
 import I from '../components/icon';
 
 export default [
@@ -12,7 +12,7 @@ export default [
       'heading-five',
       'heading-six',
     ],
-    label: <I icon={FaHeading} />,
+    label: <I icon={FaHeader} />,
     description: [
       'Überschrift 1',
       'Überschrift 2',

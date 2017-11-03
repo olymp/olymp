@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import hashtax, { toPlain, toHtml } from './hashtax';
+import hashtax, { toPlain, toHtml } from '../hashtax';
 import htmlTemplate from './templates/default';
 
 const htmlRenderer = (name, { href, value }) => {

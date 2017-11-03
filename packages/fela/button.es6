@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
-import { FaPen } from 'olymp-icons';
+import { FaPencil } from 'olymp-icons';
 import { Link } from 'olymp-router';
 
 const Button = createComponent(
@@ -28,7 +28,7 @@ const Button = createComponent(
 
 Button.Edit = props => (
   <Button {...props}>
-    <FaPen size={12} />
+    <FaPencil size={12} />
   </Button>
 );
 
