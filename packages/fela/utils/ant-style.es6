@@ -16,44 +16,6 @@ export default ({ theme }) => {
     '& ::selection': {
       background: color,
     },
-    '& ul.ant-tree.draggable-tree': {
-      paddingRight: 8,
-      paddingLeft: 13,
-      paddingY: 0,
-      '& .ant-tree-title': {
-        hasFlex: {
-          display: 'flex',
-          '> a:first-child': {
-            flex: '1 1 0%',
-          },
-        },
-        '> a': {
-          // color: disabled ? theme.dark3 : theme.dark1,
-          color: theme.dark1,
-        },
-      },
-      '& .anticon': {
-        marginLeft: 3,
-      },
-      '& li': {
-        padding: 0,
-        paddingTop: '0.7rem !important',
-        '> .ant-tree-switcher': {
-          position: 'relative',
-          width: 0,
-          onAfter: {
-            left: -8,
-            zIndex: 1,
-            top: -3,
-            position: 'absolute',
-          },
-        },
-        '> .ant-tree-node-content-wrapper': {
-          width: '100%',
-          paddingLeft: 10,
-        },
-      },
-    },
     '& .ant-tree li .ant-tree-node-content-wrapper': {
       height: 'initial',
       lineHeight: 'initial',
