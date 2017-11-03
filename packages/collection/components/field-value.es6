@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'olymp-cloudinary';
 import { Checkbox } from 'antd';
 import { Plain, Raw } from 'slate';
-import moment from 'moment';
+import format from 'date-fns/format';
 
 const resolveFieldValue = (value, meta, fieldProps) => {
   if (!meta) {
@@ -15,12 +15,12 @@ const resolveFieldValue = (value, meta, fieldProps) => {
   ) {
     switch (meta.type.name) {
       case 'Date':
-        return !!value && <span>{moment(value).format('DD.MM.YYYY')}</span>;
+        return !!value && <span>{format(new Date(value), 'DD.MM.YYYY')}</span>;
 
       case 'DateTime':
         return (
           !!value && (
-            <span>{`${moment(value).format('DD.MM.YYYY, HH:mm')} Uhr`}</span>
+            <span>{`${format(new Date(value), 'DD.MM.YYYY, HH:mm')} Uhr`}</span>
           )
         );
 
@@ -51,7 +51,7 @@ const resolveFieldValue = (value, meta, fieldProps) => {
         return (
           !!value &&
           Plain.serialize(
-            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true }),
+            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true })
           )
             .split('\n')
             .join(' ')

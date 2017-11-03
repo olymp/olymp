@@ -1,25 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import moment from 'moment';
+import { addMinutes, startOfDay } from 'date-fns';
 import Slider from 'multirangeslider';
 import { createComponent } from 'olymp-fela';
 
 class Elessar extends Component {
-  resetValues(newProps = this.props) {
-    this.dontChange = true;
-    this.slider.removeAll();
-    let { value } = newProps;
-    if (!value) {
-      value = [];
-    } else if (!Array.isArray(value)) {
-      value = [];
-    }
-    value.filter(item => Array.isArray(item)).forEach(item => {
-      this.slider.add(item);
-    });
-    this.dontChange = false;
-  }
-
   componentDidMount() {
     this.slider = new Slider({
       min: 7 * 60,
@@ -27,8 +12,8 @@ class Elessar extends Component {
       minWidth: 60,
       step: 30,
       label: value => {
-        const start = moment().startOf('day').add(value[0], 'minutes');
-        const end = moment().startOf('day').add(value[1], 'minutes');
+        const start = addMinutes(startOfDay(new Date()), value[0]);
+        const end = addMinutes(startOfDay(new Date()), value[1]);
         return `${start.format('HH:mm')}-${end.format('HH:mm')}`;
       },
     });
@@ -53,6 +38,21 @@ class Elessar extends Component {
     const array = keys.map(key => [e.data[key].val[0], e.data[key].val[1]]);
     onChange(array);
   };
+
+  resetValues(newProps = this.props) {
+    this.dontChange = true;
+    this.slider.removeAll();
+    let { value } = newProps;
+    if (!value) {
+      value = [];
+    } else if (!Array.isArray(value)) {
+      value = [];
+    }
+    value.filter(item => Array.isArray(item)).forEach(item => {
+      this.slider.add(item);
+    });
+    this.dontChange = false;
+  }
 
   render() {
     const { className } = this.props;
@@ -169,5 +169,5 @@ export default createComponent(
     };
   },
   x => <Elessar {...x} />,
-  x => Object.keys(x)
+  x => Object.keys(x),
 );

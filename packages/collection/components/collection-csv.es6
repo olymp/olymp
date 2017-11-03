@@ -1,9 +1,9 @@
-import moment from 'moment';
+import { format, isValid } from 'date-fns';
 import { Plain, Raw } from 'slate';
 
 const SEPERATOR = '|';
 export const collectionToCsv = (collection, items) => {
-  const fields = collection.fields.filter((field) => {
+  const fields = collection.fields.filter(field => {
     if (field.type.name === 'Image') {
       return true;
     }
@@ -21,8 +21,8 @@ export const collectionToCsv = (collection, items) => {
           if (type.name === 'String') {
             return item[name];
           } else if (['Date', 'DateTime'].includes(type.name)) {
-            return moment(item[name]).isValid()
-              ? moment(item[name]).format('YYYY-MM-DD HH:mm:ss')
+            return isValid(new Date(item[name]))
+              ? format(new Date(item[name]), 'YYYY-MM-DD HH:mm:ss')
               : '';
           } else if (type.name === 'Boolean') {
             return !type.name ? 'false' : 'true';
@@ -46,7 +46,9 @@ export const collectionToCsv = (collection, items) => {
               JSON.parse(JSON.stringify(item[name])),
               { terse: true }
             );
-            return Plain.serialize(raw).split('\n').join(' ');
+            return Plain.serialize(raw)
+              .split('\n')
+              .join(' ');
           }
           return [undefined, null].includes(item[name])
             ? ''

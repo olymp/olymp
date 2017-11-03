@@ -14,7 +14,6 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "lodash": "^4.17.4",
-    "moment": "^2.19.1",
     "simplecrawler": "^1.1.6",
     "xmlbuilder": "^9.0.1"
   }

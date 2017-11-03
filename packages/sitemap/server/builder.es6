@@ -7,7 +7,7 @@ const cheerio = require('cheerio');
 const xmlbuilder = require('xmlbuilder');
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
-const moment = require('moment');
+const format = require('date-fns/format');
 
 /**
  * Builds an URL string from a parsed URL Object.
@@ -119,10 +119,10 @@ function SitemapGenerator(uri, options) {
 
   // restrict crawler to subpages if initial page is privided
   if (this.options.restrictToBasepath) {
-    this.crawler.addFetchCondition((parsedUrl) => {
+    this.crawler.addFetchCondition(parsedUrl => {
       const baseUrlPath = url.resolve(
         self.baseUrl.hostname,
-        self.baseUrl.pathname
+        self.baseUrl.pathname,
       );
       const baseUrlRegex = new RegExp(`${baseUrlPath}.*`);
       return stringifyUrl(parsedUrl).match(baseUrlRegex);
@@ -139,7 +139,7 @@ function SitemapGenerator(uri, options) {
   this.crawler.discoverResources = this._discoverResources;
 
   // register event handlers and emit own events
-  this.crawler.on('fetch404', (queueItem) => {
+  this.crawler.on('fetch404', queueItem => {
     self.store.error.push(queueItem.url);
     self.emit('fetch', http.STATUS_CODES['404'], queueItem.url);
   });
@@ -153,7 +153,7 @@ function SitemapGenerator(uri, options) {
     self.emit('clienterror', queueError, errorData);
   });
 
-  this.crawler.on('fetchdisallowed', (queueItem) => {
+  this.crawler.on('fetchdisallowed', queueItem => {
     if (self.store.ignored.indexOf(queueItem.url) === -1) {
       self.store.ignored.push(queueItem.url);
       self.emit('ignore', queueItem.url);
@@ -161,7 +161,7 @@ function SitemapGenerator(uri, options) {
   });
 
   // fetch complete event
-  this.crawler.on('fetchcomplete', (queueItem) => {
+  this.crawler.on('fetchcomplete', queueItem => {
     self.store.found.push(queueItem.url);
     self.emit('fetch', http.STATUS_CODES['200'], queueItem.url);
   });
@@ -169,13 +169,13 @@ function SitemapGenerator(uri, options) {
   // crawler done event
   this.crawler.on(
     'complete',
-    this._buildXML.bind(this, function (sitemap) {
+    this._buildXML.bind(this, function(sitemap) {
       // update status
       this.status = 'idle';
 
       // emit done event
       this.emit('done', sitemap, this.store);
-    })
+    }),
   );
 
   EventEmitter.call(this);
@@ -186,7 +186,7 @@ util.inherits(SitemapGenerator, EventEmitter);
 /**
  * Parses response data for links.
  */
-SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
+SitemapGenerator.prototype._discoverResources = function(buffer, queueItem) {
   const $ = cheerio.load(buffer.toString('utf8'));
 
   // cancel if meta robots nofollow is present
@@ -202,7 +202,7 @@ SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
   }
 
   // parse links
-  const links = $('a[href]').map(function () {
+  const links = $('a[href]').map(function() {
     let href = $(this).attr('href');
 
     // exclude "mailto:" etc
@@ -244,7 +244,7 @@ SitemapGenerator.prototype._discoverResources = function (buffer, queueItem) {
  *
  * @param  {Function} callback Callback function to execute
  */
-SitemapGenerator.prototype._buildXML = function (callback) {
+SitemapGenerator.prototype._buildXML = function(callback) {
   let sitemap = null;
 
   if (
@@ -252,7 +252,7 @@ SitemapGenerator.prototype._buildXML = function (callback) {
     this.store.found.length !== this.crawler.noindex.length
   ) {
     // Remove urls with a robots meta tag 'noindex' before building the sitemap
-    this.crawler.noindex.forEach(function (page) {
+    this.crawler.noindex.forEach(function(page) {
       const index = this.store.found.indexOf(page);
       if (index !== -1) {
         // remove url from found array
@@ -268,10 +268,10 @@ SitemapGenerator.prototype._buildXML = function (callback) {
       .att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
     // add elements
-    forIn(this.store.found, (foundURL) => {
+    forIn(this.store.found, foundURL => {
       xml.ele('url').ele({
         loc: foundURL,
-        lastmod: moment().format('YYYY-MM-DDTHH:mm:ss-00:00'), // 2016-06-06T20:00:00-00:00
+        lastmod: format(new Date(), 'YYYY-MM-DDTHH:mm:ss-00:00'), // 2016-06-06T20:00:00-00:00
       });
     });
 
@@ -287,10 +287,10 @@ SitemapGenerator.prototype._buildXML = function (callback) {
 /**
  * Starts the crawler.
  */
-SitemapGenerator.prototype.start = function () {
+SitemapGenerator.prototype.start = function() {
   if (this.status === 'crawling') {
     throw new Error(
-      'This SitemapGenerator instance is already crawling a site.'
+      'This SitemapGenerator instance is already crawling a site.',
     );
   }
 

@@ -15,6 +15,3 @@ export default (LANG = {}) => WrappedComponent => props => (
     </LocaleProvider>
   </AntLocaleProvider>
 );
-/* export const moment = function () {
-   return momentLegacy.utc.apply(this, arguments);
-+}; */
