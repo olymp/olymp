@@ -189,20 +189,6 @@ const FormComponent = enhance(
           />,
         ),
       );
-    } else {
-      moreChildren.push(
-        <Sidebar isOpen padding={0} width="100%" title="Formular" key={1}>
-          <Container size="small">
-            <Items
-              schema={schemaWithEdits.etc}
-              activeField={activeField}
-              form={form}
-              item={item}
-              {...rest}
-            />
-          </Container>
-        </Sidebar>,
-      );
     }
     return (
       <SplitView>
@@ -218,24 +204,23 @@ const FormComponent = enhance(
           }
         >
           <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            <FormItem
-              isActive={!activeField}
-              setActiveField={setActiveField}
-              field={{}}
-              label="Formular"
-              full
-            >
-              {Object.keys(schemaWithEdits.etc).length} Felder
-            </FormItem>
-            <List.Title>Unterpunkte</List.Title>
-            <Items
-              schema={schemaWithEdits.full}
-              activeField={activeField}
-              form={form}
-              item={item}
-              setActiveField={setActiveField}
-              {...rest}
-            />
+            <Container size="small">
+              <Items
+                schema={schemaWithEdits.full}
+                setActiveField={setActiveField}
+                activeField={activeField}
+                form={form}
+                item={item}
+                {...rest}
+              />
+              <Items
+                schema={schemaWithEdits.etc}
+                activeField={activeField}
+                form={form}
+                item={item}
+                {...rest}
+              />
+            </Container>
           </Form>
           <Buttons>{children}</Buttons>
         </Sidebar>
