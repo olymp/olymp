@@ -44,23 +44,10 @@ const enhance = compose(
     onClick: PropTypes.func,
     onRemove: PropTypes.func,
   }),
-  connect(({ cloudinary }, { items, selected }) => {
-    let newItems = cloudinary.selectedIds
+  connect(({ cloudinary }, { items }) => {
+    const newItems = cloudinary.selectedIds
       .map(x => items.find(item => item.id === x))
       .filter(x => x);
-
-    if (selected && selected.length) {
-      newItems = selected
-        .map(s => {
-          const item = items.find(i => i.id === s.id);
-
-          return {
-            ...item,
-            ...s,
-          };
-        })
-        .filter(x => x);
-    }
 
     return {
       items: newItems,

@@ -176,8 +176,6 @@ const FormComponent = enhance(
       const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits.full[
         activeField
       ];
-      collapsed =
-        collapsed !== false && schemaWithEdits.full[activeField].collapse;
       moreChildren.push(
         fieldDecorator()(
           <Com
@@ -205,17 +203,13 @@ const FormComponent = enhance(
           </Container>
         </Sidebar>,
       );
-      collapsed = false;
     }
     return (
       <SplitView>
         <Sidebar
           isOpen
           padding={0}
-          darkened={collapsed}
-          width={collapsed ? 64 : 400}
-          onMouseEnter={expand}
-          onMouseLeave={collapse}
+          width={400}
           title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
           rightButtons={
             header && (

@@ -24,7 +24,6 @@ export default renderFn =>
     } else if (multi && value) {
       v = value;
     }
-
     return (
       <div onClick={() => setOpen(true)}>
         {renderFn(v, multi)}
@@ -38,6 +37,7 @@ export default renderFn =>
               setOpen(false);
             }}
             onClose={() => setOpen(false)}
+            value={v}
             selected={v.map(({ id, crop, caption, source }) => ({
               id,
               crop,
