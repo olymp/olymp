@@ -96,19 +96,19 @@ export const Modal = getContext({
         </ReactModal>
       </Portal>
     );
-  }
+  },
 );
 
 const component = createComponent(
   ({ theme, padding, width, bottomTransparency, topTransparency }) => ({
     ...getAntStyle({ theme }),
     backgroundColor: theme.color,
-    background: `linear-gradient(0deg, ${theme.colorStart ||
+    background: `linear-gradient(0deg, ${theme.colorEnd ||
       tinycolor(theme.color)
         .darken(6)
         .spin(-6)
         .setAlpha(bottomTransparency || 1)
-        .toRgbString()}, ${theme.colorEnd ||
+        .toRgbString()}, ${theme.colorStart ||
       tinycolor(theme.color)
         .lighten(6)
         .spin(12)
@@ -180,7 +180,7 @@ const component = createComponent(
     },
   }),
   Modal,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
 
 // Copyright
@@ -199,7 +199,7 @@ component.Copyright = createComponent(
       },
     },
   }),
-  'div'
+  'div',
 );
 
 component.Footer = ({ children, className }) => (
@@ -218,7 +218,7 @@ const TitleButtons = createComponent(
     fontSize: 40,
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p)
+  ({ left, right, ...p }) => Object.keys(p),
 );
 
 export default component;

@@ -2,9 +2,8 @@ import React from 'react';
 import { compose, toClass } from 'recompose';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Sidebar } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
-import { Tag } from 'antd';
+import { Tag, Select } from 'antd';
 import FormItem from './form-item';
 
 const CheckableTag = createComponent(
@@ -42,22 +41,11 @@ const enhance = compose(
 export default {
   rule: ({ type, name }) =>
     name === 'tags' && type.kind === 'LIST' && type.ofType.name === 'String',
-  form: toClass(({ value = [], ...props }) => (
-    <FormItem {...props}>{value.length} Ausgewählt</FormItem>
-  )),
-  full: enhance(({ tags = [], value = [], onChange }) => (
-    <Sidebar isOpen padding={15} width={400} title="Schlagworte">
-      {(tags || []).map(tag => (
-        <CheckableTag
-          key={tag}
-          checked={(value || []).indexOf(tag) !== -1}
-          marked={value.filter(sTag => sTag === tag).length > 0}
-          onChange={checked =>
-            onChange(checked ? [...value, tag] : value.filter(x => x !== tag))}
-        >
-          {tag}
-        </CheckableTag>
-      ))}
-    </Sidebar>
+  form: enhance(({ tags = [], ...props }) => (
+    <FormItem {...props}>
+      <Select {...props} mode="tags" style={{ width: '100%' }}>
+        {tags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
+      </Select>
+    </FormItem>
   )),
 };

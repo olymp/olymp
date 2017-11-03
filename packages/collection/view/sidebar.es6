@@ -39,14 +39,7 @@ const Span = createComponent(
   p => Object.keys(p),
 ); */
 
-const enhance = compose(
-  withRouter,
-  withState('collapsed', 'setCollapsed', true),
-  withHandlers({
-    expand: ({ setCollapsed }) => () => setCollapsed(false),
-    collapse: ({ setCollapsed }) => () => setCollapsed(true),
-  }),
-);
+const enhance = compose(withRouter);
 
 @enhance
 export default class CollectionListSidebar extends Component {
@@ -151,8 +144,6 @@ export default class CollectionListSidebar extends Component {
       searchText,
       onClose,
       expand,
-      collapse,
-      collapsed,
     } = this.props;
 
     const items = (this.props.items || []).map(item => {
@@ -239,10 +230,8 @@ export default class CollectionListSidebar extends Component {
 
     return (
       <Sidebar
-        width={collapsed && id ? 64 : 350}
+        width={350}
         onMouseEnter={expand}
-        onMouseLeave={collapse}
-        darkened={collapsed && id}
         header={
           <List.Filter
             placeholder="Filter ..."

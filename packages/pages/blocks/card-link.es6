@@ -33,17 +33,17 @@ export default {
       type: 'small',
       icon: 'chain',
       label: 'Link',
-      toggle: ({ onChange, state, node }) => {
+      toggle: ({ onChange, value, node }) => {
         const href = window.prompt('Link');
         if (href) {
           onChange(
-            state.change().setNodeByKey(node.key, {
+            value.change().setNodeByKey(node.key, {
               data: node.data.set('value', href),
             }),
           );
         } else {
           onChange(
-            state.change().setNodeByKey(node.key, {
+            value.change().setNodeByKey(node.key, {
               data: node.data.set('value', null),
             }),
           );

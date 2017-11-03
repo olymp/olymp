@@ -18,6 +18,9 @@ export default {
       '> [data-key]': {
         paddingX: 10,
       },
+      '> [data-slate-void]': {
+        paddingX: 0,
+      },
       backgroundColor: theme.dark5,
       borderRadius: theme.borderRadius,
       overflow: 'hidden',
@@ -39,10 +42,13 @@ export default {
     {
       label: <FaSquare />,
       tooltip: 'Rahmen/Rahmenlos',
-      toggle: ({ node, onChange, state }) => {
+      toggle: ({ node, onChange, value }) => {
         onChange(
-          state.change().setNodeByKey(node.key, {
-            data: node.data.set('bordered', node.data.get('bordered') === false),
+          value.change().setNodeByKey(node.key, {
+            data: node.data.set(
+              'bordered',
+              node.data.get('bordered') === false,
+            ),
           }),
         );
       },

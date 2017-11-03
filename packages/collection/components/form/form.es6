@@ -117,8 +117,6 @@ const FormComponent = enhance(
       const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits.full[
         activeField
       ];
-      collapsed =
-        collapsed !== false && schemaWithEdits.full[activeField].collapse;
       moreChildren.push(
         fieldDecorator()(
           <Com
@@ -132,31 +130,13 @@ const FormComponent = enhance(
           />,
         ),
       );
-    } else {
-      moreChildren.push(
-        <Sidebar isOpen padding={0} width="100%" title="Formular" key={1}>
-          <Container size="small">
-            <Items
-              schema={schemaWithEdits.etc}
-              activeField={activeField}
-              form={form}
-              item={item}
-              {...rest}
-            />
-          </Container>
-        </Sidebar>,
-      );
-      collapsed = false;
     }
     return (
       <SplitView>
         <Sidebar
           isOpen
           padding={0}
-          darkened={collapsed}
-          width={collapsed ? 64 : 400}
-          onMouseEnter={expand}
-          onMouseLeave={collapse}
+          width={400}
           title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
           rightButtons={
             header && (
@@ -165,24 +145,23 @@ const FormComponent = enhance(
           }
         >
           <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            <FormItem
-              isActive={!activeField}
-              setActiveField={setActiveField}
-              field={{}}
-              label="Formular"
-              full
-            >
-              {Object.keys(schemaWithEdits.etc).length} Felder
-            </FormItem>
-            <List.Title>Unterpunkte</List.Title>
-            <Items
-              schema={schemaWithEdits.full}
-              activeField={activeField}
-              form={form}
-              item={item}
-              setActiveField={setActiveField}
-              {...rest}
-            />
+            <Container size="small">
+              <Items
+                schema={schemaWithEdits.full}
+                setActiveField={setActiveField}
+                activeField={activeField}
+                form={form}
+                item={item}
+                {...rest}
+              />
+              <Items
+                schema={schemaWithEdits.etc}
+                activeField={activeField}
+                form={form}
+                item={item}
+                {...rest}
+              />
+            </Container>
           </Form>
           <Buttons>{children}</Buttons>
         </Sidebar>

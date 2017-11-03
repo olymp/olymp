@@ -73,11 +73,11 @@ export default {
       label: <FaAlignLeft />,
       tooltip: 'Links anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('left') === 0,
-      toggle: ({ state, onChange, node }) => {
+      toggle: ({ value, onChange, node }) => {
         const alignment = node.data.get('float') || 'none';
         if (alignment === 'none') {
           onChange(
-            state
+            value
               .change()
               .removeNodeByKey(node.key)
               .collapseToStartOfNextBlock()
@@ -91,7 +91,7 @@ export default {
           );
         } else if (alignment === 'left') {
           onChange(
-            state
+            value
               .change()
               .removeNodeByKey(node.key)
               .insertInline(
@@ -104,7 +104,7 @@ export default {
           );
         } else {
           onChange(
-            state
+            value
               .change()
               .removeNodeByKey(node.key)
               .insertBlock(
@@ -122,12 +122,12 @@ export default {
       label: <FaAlignRight />,
       tooltip: 'Rechts anordnen',
       active: ({ getData }) => getData('float', 'none').indexOf('right') === 0,
-      toggle: ({ state, onChange, node }) => {
+      toggle: ({ value, onChange, node }) => {
         const alignment = node.data.get('float') || 'none';
 
         if (alignment === 'none') {
           onChange(
-            state
+            value
               .change()
               .removeNodeByKey(node.key)
               .insertInline(
@@ -140,7 +140,7 @@ export default {
           );
         } else if (alignment === 'right') {
           onChange(
-            state
+            value
               .change()
               .removeNodeByKey(node.key)
               .insertInline(
@@ -153,7 +153,7 @@ export default {
           );
         } else {
           onChange(
-            state
+            value
               .change()
               .removeNodeByKey(node.key)
               .insertBlock(

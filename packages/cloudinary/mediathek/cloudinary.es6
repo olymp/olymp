@@ -187,8 +187,8 @@ class CloudinaryView extends Component {
       shortId,
       onChange,
       uploading,
+      value,
       removeSelection,
-      selected,
     } = this.props;
 
     return (
@@ -199,8 +199,8 @@ class CloudinaryView extends Component {
           onClose={onClose}
           goBack={goBack}
           items={items}
-          selected={selected}
           onChange={onChange}
+          value={value}
         />
         <Dragzone uploading={uploading} clickable={false} {...upload}>
           <Gallery

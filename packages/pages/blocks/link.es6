@@ -31,11 +31,11 @@ const LinkContainer = ({ node, attributes, children, className, editor }) => {
   );
 };
 
-const setLink = (onChange, state, node) => {
+const setLink = (onChange, value, node) => {
   const href = window.prompt('Link', node.data.get('href') || '');
   if (href) {
     onChange(
-      state.change().setNodeByKey(node.key, {
+      value.change().setNodeByKey(node.key, {
         data: node.data.set('href', href),
       }),
     );
@@ -63,16 +63,16 @@ export default {
     },
     {
       type: 'small',
-      component: ({ onChange, state, node }) => (
-        <FaLink onClick={() => setLink(onChange, state, node)} />
+      component: ({ onChange, value, node }) => (
+        <FaLink onClick={() => setLink(onChange, value, node)} />
       ),
       tooltip: 'Neu verlinken',
     },
     {
       type: 'small',
-      component: ({ onChange, state }) => (
+      component: ({ onChange, value }) => (
         <FaUnlink
-          onClick={() => onChange(state.change().unwrapInline('link'))}
+          onClick={() => onChange(value.change().unwrapInline('link'))}
         />
       ),
       tooltip: 'Link entfernen',

@@ -61,7 +61,7 @@ const styles = ({ theme }) => ({
   '& a': {
     position: 'relative',
     display: 'block',
-    padding: '1em 1.5em',
+    padding: '1em 0.5em',
     transition: 'all .125s ease-in-out',
     onHover: {},
   },

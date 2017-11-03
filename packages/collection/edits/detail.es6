@@ -10,7 +10,7 @@ export default class DetailEditor extends Component {
     const { data, collection, items, children, value, ...rest } = this.props;
 
     return items && items.length ? (
-      <Select value={value} {...rest}>
+      <Select value={value} {...rest} style={{ width: '100%' }}>
         {items.map(item => (
           <Select.Option key={item.id} value={item.id}>
             {item.name}

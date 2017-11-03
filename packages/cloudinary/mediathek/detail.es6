@@ -123,7 +123,6 @@ class MediaDetail extends Component {
         }
         return multi ? onChange([items]) : onChange(items);
       }
-      let promise;
       if (multi) {
         const changed = Object.keys(values).reduce((state, key) => {
           if (form.isFieldTouched(key) && key !== 'id') {
@@ -131,11 +130,11 @@ class MediaDetail extends Component {
           }
           return state;
         }, {});
-        promise = Promise.all(
+        Promise.all(
           items.map(item => save({ id: item.id, ...changed })),
         ).then(x => form.resetFields());
       } else {
-        promise = save(values).then(x => form.resetFields());
+        save(values).then(x => form.resetFields());
       }
     });
   };

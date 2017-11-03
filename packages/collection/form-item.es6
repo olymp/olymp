@@ -30,7 +30,10 @@ export default ({
   full,
   ...props
 }) => (
-  <Div isActive={isActive} onClick={x => setActiveField(field.name)}>
+  <Div
+    isActive={isActive}
+    onClick={setActiveField ? x => setActiveField(field.name) : null}
+  >
     <Form.Item {...defaultLayout} {...props}>
       {children}
       {full && (
