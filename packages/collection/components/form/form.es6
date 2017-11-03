@@ -6,17 +6,7 @@ import { Container, createComponent } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
 import FormItem from '../../form-item';
-import { getValidationRules, getInitialValue } from './utils';
-
-const excludedFields = [
-  'id',
-  'createdBy',
-  'createdAt',
-  'updatedBy',
-  'updatedAt',
-  'updatedById',
-  'createdById',
-];
+import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
 const Items = ({ schema, activeField, form, item, value, ...rest }) =>
   Object.keys(schema).map(key => {
@@ -25,6 +15,7 @@ const Items = ({ schema, activeField, form, item, value, ...rest }) =>
     if (!Com) {
       return null;
     }
+
     return fieldDecorator()(
       <Com
         {...rest}
@@ -47,56 +38,6 @@ const getDefaultEdit = type => {
     return DefaultEdits[find];
   }
   return null;
-};
-
-const getFormSchema = fields => {
-  const mappedFields = fields.reduce(
-    (result, field) => {
-      const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
-      // EXCLUDING
-      if (excludedFields.includes(field.name) || field['@'].disabled) {
-        return result;
-      }
-
-      field.innerType = field.type.ofType || field.type;
-      // RELATION
-      if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
-        if (field.name.endsWith('Id')) {
-          field['@'].idField = fields.find(
-            ({ name }) => `${name}Id` === field.name,
-          );
-        } else if (field.name.endsWith('Ids')) {
-          field['@'].idField = fields.find(
-            ({ name }) => `${name}Ids` === field.name,
-          );
-        }
-        result.rest.splice(
-          result.rest.findIndex(({ name }) => name === field['@'].idField.name),
-          1,
-        );
-      }
-
-      // RANGE
-      if (field['@'].end) {
-        return result;
-      }
-      if (field['@'].start) {
-        const end = fields.find(x => x['@'].end);
-        field['@'].endField = end;
-      }
-
-      if (field.type.name === 'Image') {
-        result.images.push(field);
-      } else if (field.type.name === 'Blocks') {
-        result.blocks.push(field);
-      } else {
-        result.rest.push(field);
-      }
-      return result;
-    },
-    { images: [], rest: [], blocks: [] },
-  );
-  return [...mappedFields.images, ...mappedFields.blocks, ...mappedFields.rest];
 };
 
 const Buttons = createComponent(

@@ -6,6 +6,7 @@ import { get } from 'lodash';
 import { compose, withState, withHandlers } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
+import format from 'date-fns/format';
 import { FieldValue } from '../components';
 
 const Span = createComponent(
@@ -185,6 +186,38 @@ export default class CollectionListSidebar extends Component {
       };
     });
 
+    const descriptionField = get(collection, 'fields', []).find(
+      field =>
+        field.name === get(collection, 'specialFields.description.field', ''),
+    );
+    const descriptionFieldType =
+      get(descriptionField, 'type.ofType') || get(descriptionField, 'type', {});
+    let descriptionFn;
+    switch (get(descriptionFieldType, 'name', '')) {
+      case 'Date':
+        descriptionFn = description =>
+          format(new Date(description), 'DD.MM.YYYY');
+        break;
+
+      case 'DateTime':
+        descriptionFn = description =>
+          `${format(new Date(description), 'DD.MM.YYYY,  HH:mm')} Uhr`;
+        break;
+
+      case 'Blocks':
+        descriptionFn = () => <i>Kann nicht dargestellt werden!</i>;
+        break;
+
+      default: {
+        const arg0 = get(collection, 'specialFields.description.arg0') || 'id';
+        if (get(descriptionFieldType, 'kind', '') === 'OBJECT' && arg0) {
+          descriptionFn = description => get(description, arg0, '');
+        } else {
+          descriptionFn = description => description;
+        }
+      }
+    }
+
     const childs = items.map(item => (
       <List.Item
         image={
@@ -192,9 +225,9 @@ export default class CollectionListSidebar extends Component {
             <Image value={item.image || item.bild} width={37} height={37} />
           )
         }
-        description={
-          item.item[get(collection, 'specialFields.description.field', '')]
-        }
+        description={descriptionFn(
+          item.item[get(descriptionField, 'name', '')],
+        )}
         color={item.color}
         active={item.id === id}
         label={item.name}
