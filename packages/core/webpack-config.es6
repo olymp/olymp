@@ -104,14 +104,6 @@ module.exports = ({
         'process.env.IS_WEB': isWeb,
         'process.env.IS_NODE': isNode,
         'process.env.IS_ELECTRON': isElectron,
-        ...Object.keys(sharedEnv).reduce((store, key) => {
-          if (sharedEnv[key] === true || process.env[key]) {
-            store[`process.env.${key}`] = JSON.stringify(process.env[key]);
-          } else {
-            store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);
-          }
-          return store;
-        }, {}),
       }),
       // new PrepackWebpackPlugin({ }),
       // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -165,6 +157,14 @@ module.exports = ({
         'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
           ? `"${process.env.CRASHREPORT_URL}"`
           : false,
+        ...Object.keys(sharedEnv).reduce((store, key) => {
+          if (sharedEnv[key] === true || process.env[key]) {
+            store[`process.env.${key}`] = JSON.stringify(process.env[key]);
+          } else {
+            store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);
+          }
+          return store;
+        }, {}),
       }),
     );
   } else if (port) {
