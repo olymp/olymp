@@ -36,16 +36,16 @@ export default {
     {
       label: <FaPlus />,
       tooltip: 'Spalte hinzufügen',
-      toggle: ({ state, onChange, schema, node }) => {
-        onChange(addBlock(state, Column, schema, node.key, node.size));
+      toggle: ({ value, onChange, schema, node }) => {
+        onChange(addBlock(value, Column, schema, node.key, node.size));
       },
     },
     {
       label: <FaMinus />,
       tooltip: 'Spalte entfernen',
-      toggle: ({ state, onChange, node }) => {
+      toggle: ({ value, onChange, node }) => {
         if (node.nodes.last()) {
-          onChange(state.change().removeNodeByKey(node.nodes.last().key));
+          onChange(value.change().removeNodeByKey(node.nodes.last().key));
         }
       },
     },

@@ -39,10 +39,13 @@ export default {
     {
       label: <FaSquare />,
       tooltip: 'Rahmen/Rahmenlos',
-      toggle: ({ node, onChange, state }) => {
+      toggle: ({ node, onChange, value }) => {
         onChange(
-          state.change().setNodeByKey(node.key, {
-            data: node.data.set('bordered', node.data.get('bordered') === false),
+          value.change().setNodeByKey(node.key, {
+            data: node.data.set(
+              'bordered',
+              node.data.get('bordered') === false,
+            ),
           }),
         );
       },

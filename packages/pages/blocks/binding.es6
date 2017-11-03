@@ -13,11 +13,11 @@ const Binding = ({ node, attributes, children, className, editor }) => {
   );
 };
 
-const setLink = (onChange, state, node) => {
+const setLink = (onChange, value, node) => {
   const field = window.prompt('Feld', node.data.get('field') || '');
   if (field) {
     onChange(
-      state.change().setNodeByKey(node.key, {
+      value.change().setNodeByKey(node.key, {
         data: node.data.set('field', field),
       }),
     );
@@ -34,8 +34,8 @@ export default {
   actions: [
     {
       type: 'small',
-      component: ({ onChange, state, node }) => (
-        <FaLink onClick={() => setLink(onChange, state, node)} />
+      component: ({ onChange, value, node }) => (
+        <FaLink onClick={() => setLink(onChange, value, node)} />
       ),
       tooltip: 'Neu binden',
     },
