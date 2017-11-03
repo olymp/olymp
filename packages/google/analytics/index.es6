@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'olymp-router';
 import { SplitView, Sidebar, List, DateRangeEditor } from 'olymp-ui';
 import { Form, Button } from 'antd';
-import subDays from 'date-fns/sub-days';
+import { subDays } from 'date-fns';
 import { Charts } from './views';
 import { PaddingContainer, MetricSelect } from './components';
 

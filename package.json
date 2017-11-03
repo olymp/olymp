@@ -59,6 +59,7 @@
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.11",
     "eslint-config-olymp": "^18.6.0",
+    "uglify-es": "^3.1.6",
     "webpack": "^3.8.1"
   },
   "devDependencies": {

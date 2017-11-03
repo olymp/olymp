@@ -51,7 +51,7 @@ const babelOptions = {
         'date-fns': {
           transform: 'date-fns/${member}',
           preventFullImport: true,
-          snakeCase: true,
+          camelCase: true,
         },
         'olymp-icons': {
           transform: 'olymp-icons/fa4/lib/${member}',
