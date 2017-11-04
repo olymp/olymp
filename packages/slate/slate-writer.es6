@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withState } from 'recompose';
 import { Editor, getEventRange } from 'slate-react';
 import Plain from 'slate-plain-serializer';
 import EditList from 'slate-edit-list';
@@ -19,6 +20,7 @@ import nodes from './defaults/nodes-selected';
 import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
+import Portal from './components/portal';
 
 const emptyArray = [];
 const editList = EditList({
@@ -54,6 +56,7 @@ const plugins = [
   },
 ];
 
+@withState('full', 'setFull')
 class Writer extends Component {
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -127,11 +130,13 @@ class Writer extends Component {
       schema,
       renderNode,
       style = {},
+      full,
+      setFull,
       ...rest
     } = this.props;
     const value = this.props.value || Plain.deserialize('');
 
-    return (
+    const inner = (
       <div className={className}>
         {children}
         {readOnly !== true && (
@@ -163,9 +168,13 @@ class Writer extends Component {
           placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
           style={{ marginRight: 64, height: '100%', ...style }}
         />
-        <BlockBar />
+        <BlockBar full={full} setFull={setFull} />
       </div>
     );
+    if (full) {
+      return <Portal hide>{inner}</Portal>;
+    }
+    return inner;
   };
 }
 

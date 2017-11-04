@@ -10,12 +10,18 @@ class Portal extends Component {
     if (typeof document !== 'undefined' && !this.popup) {
       this.popup = document.createElement('div');
       document.body.appendChild(this.popup);
+      if (this.props.hide) {
+        document.getElementById('app').style.display = 'none';
+      }
     }
   }
 
   componentWillUnmount() {
     if (typeof document !== 'undefined' && this.popup) {
       document.body.removeChild(this.popup);
+    }
+    if (this.props.hide) {
+      document.getElementById('app').style.display = 'block';
     }
   }
 

@@ -204,6 +204,8 @@ class Navigation extends Component {
       collapsed,
       expand,
       collapse,
+      full,
+      setFull,
     } = this.props;
     const keys = Object.keys(query);
 
@@ -220,9 +222,9 @@ class Navigation extends Component {
           inlineCollapsed={collapsed}
         >
           <Menu.Item className="logo">
-            <Link to={{ query: {} }}>
+            <a onClick={() => setFull(!full)}>
               <FaEdit color size={28} />
-            </Link>
+            </a>
           </Menu.Item>
           {items}
         </Menu>
