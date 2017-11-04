@@ -14,16 +14,27 @@ const transform = ({ id, url, crop, width, height, caption, source }) => ({
 });
 
 export default {
-  rule: ({ type }) => type.name === 'Image',
-  form: toClass(({ value, multi, onChange, ...rest }) => (
-    <FormItem {...rest}>
-      <EditImage
-        value={value}
-        multi={multi}
-        onChange={onChange}
-        maxHeight={100}
-        maxWidth={250}
-      />
-    </FormItem>
-  )),
+  rule: ({ innerType }) => innerType.name === 'Image',
+  form: toClass(
+    ({
+      value,
+      multi,
+      onChange,
+      'data-__field': dataField,
+      'data-__meta': dataMeta,
+      ...rest
+    }) => (
+      <FormItem {...rest}>
+        <EditImage
+          value={value}
+          multi={multi}
+          onChange={onChange}
+          maxHeight={100}
+          maxWidth={250}
+          data-__field={dataField}
+          data-__meta={dataMeta}
+        />
+      </FormItem>
+    ),
+  ),
 };

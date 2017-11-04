@@ -1,10 +1,10 @@
-import { addQueryInput, addSortInput, addQueries } from '../mongodb';
 import {
   addInput,
   addFields,
   addInterfaces,
   getDirectiveValue,
 } from 'olymp-graphql/server';
+import { addQueryInput, addSortInput, addQueries } from '../mongodb';
 
 export default {
   name: 'collection',
@@ -25,7 +25,7 @@ export default {
           updatedAt: DateTime
           createdBy: User @relation
           updatedBy: User @relation
-        `
+        `,
       );
       const name = getDirectiveValue(node, 'collection', 'name');
       if (name) {

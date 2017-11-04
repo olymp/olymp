@@ -39,8 +39,10 @@ const enhance = compose(
 );
 
 export default {
-  rule: ({ type, name }) =>
-    name === 'tags' && type.kind === 'LIST' && type.ofType.name === 'String',
+  rule: ({ innerType, name }) =>
+    name === 'tags' &&
+    innerType.kind === 'LIST' &&
+    innerType.ofType.name === 'String',
   form: enhance(({ tags = [], ...props }) => (
     <FormItem {...props}>
       <Select {...props} mode="tags" style={{ width: '100%' }}>

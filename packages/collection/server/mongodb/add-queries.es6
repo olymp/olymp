@@ -1,7 +1,7 @@
 import { get, set, lowerFirst } from 'lodash';
 import { addFields } from 'olymp-graphql/server';
-import adaptQuery from './adapt-query';
 import shortId from 'shortid';
+import adaptQuery from './adapt-query';
 
 export default (ast, node, resolvers, typeName, isGeneric) => {
   const name = node.name.value;

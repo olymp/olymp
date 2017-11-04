@@ -1,11 +1,11 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
-import { SplitView, Sidebar, List } from 'olymp-ui';
+import { SplitView, Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { Container, createComponent } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
+import { get } from 'lodash';
 import DefaultEdits from '../../default-edits';
-import FormItem from '../../form-item';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
 const Items = ({ schema, activeField, form, item, value, ...rest }) =>
@@ -14,6 +14,11 @@ const Items = ({ schema, activeField, form, item, value, ...rest }) =>
     const { form: Com, fieldDecorator, ...restFields } = schema[key];
     if (!Com) {
       return null;
+    }
+
+    const rule = [];
+    if (get(field, 'type.kind') === 'NON_NULL') {
+      rule.push('required');
     }
 
     return fieldDecorator()(
@@ -25,6 +30,7 @@ const Items = ({ schema, activeField, form, item, value, ...rest }) =>
         form={form}
         field={field}
         item={item}
+        rule={rule}
         key={field.name}
       />,
     );

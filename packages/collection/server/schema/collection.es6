@@ -4,7 +4,9 @@ import shortId from 'shortid';
 import diff from 'deep-diff';
 
 const fetchType = createTypeFetcher(
-  (node, name) => get(node, 'kind') === 'ObjectTypeDefinition' && get(node, 'name.value') === name,
+  (node, name) =>
+    get(node, 'kind') === 'ObjectTypeDefinition' &&
+    get(node, 'name.value') === name,
 );
 
 export default {
@@ -29,7 +31,11 @@ export default {
         if (typeName === 'Page' && !user.isAdmin) {
           throw new Error('Not authorized');
         }
-        if (!user.isAdmin && user.orgId !== input.orgId && user.orgId !== input.id) {
+        if (
+          !user.isAdmin &&
+          user.orgId !== input.orgId &&
+          user.orgId !== input.id
+        ) {
           throw new Error('Not authorized');
         }
 
@@ -46,7 +52,7 @@ export default {
   },
   onAfter: ({ keys, value, variables, context, resolverAST, ast }) => {
     if (keys[0] === 'RootMutation') {
-      const { input, old } = variables;
+      const { old } = variables;
       const typeName = get(resolverAST, 'returnType.name');
       const type = fetchType(ast, typeName);
       const directive = get(type, 'directives', []).find(
@@ -85,7 +91,7 @@ export default {
         if (!user) {
           return;
         }
-        return monk.collection('changelog').find({ targetId: id, appId: app.id });
+        monk.collection('changelog').find({ targetId: id, appId: app.id });
       },
     },
   },

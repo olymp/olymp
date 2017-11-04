@@ -1,28 +1,32 @@
 import { parse } from 'graphql/language';
 import { addDefinition, createTypeFetcher } from 'olymp-graphql/server';
+import { get } from 'lodash';
 
 const fetch = createTypeFetcher(
-  (node, value) => node.kind !== 'NamedType' && node.name && node.name.value === value,
+  (node, value) =>
+    node.kind !== 'NamedType' && node.name && node.name.value === value,
 );
 
 export default (ast, node) => {
-  const getArgument = (field) => {
-    if (
-      field.type.kind === 'ListType' &&
-      field.type.type &&
-      field.type.type.name.value === 'String'
-    ) {
+  const getArgument = field => {
+    // if field ist required
+    if (get(field, 'type.kind') === 'NonNullType') {
+      field.type = get(field, 'type.type');
+    }
+
+    const value = get(field, 'type.type.name.value');
+    if (field.type.kind === 'ListType' && value && value === 'String') {
       addDefinition(
         ast,
         parse(`
-        input ${field.type.type.name.value}Query {
-          in: [${field.type.type.name.value}],
-          nin: [${field.type.type.name.value}],
+        input ${value}Query {
+          in: [${value}],
+          nin: [${value}],
           null: Boolean
         }
       `).definitions[0],
       );
-      return `${field.name.value}: ${field.type.type.name.value}Query`;
+      return `${field.name.value}: ${value}Query`;
     }
     if (!field.type.name) {
       return null;
@@ -102,7 +106,11 @@ export default (ast, node) => {
       );
       return `${field.name.value}: BooleanQuery`;
     }
-    if (['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(field.type.name.value)) {
+    if (
+      ['String', 'Website', 'Slug', 'Markdown', 'Color'].includes(
+        field.type.name.value,
+      )
+    ) {
       addDefinition(
         ast,
         parse(`
@@ -153,9 +161,9 @@ export default (ast, node) => {
     input ${node.name.value}Query {
       skipqueries: Boolean
       ${node.fields
-    .map(getArgument)
-    .filter(x => x)
-    .join('\n')}
+        .map(getArgument)
+        .filter(x => x)
+        .join('\n')}
       and: [${node.name.value}Query]
       or: [${node.name.value}Query]
     }

@@ -55,6 +55,9 @@ export default WrappedComponent => {
                 description
                 kind
                 name
+                enumValues {
+                  name
+                }
                 fields {
                   description
                   name

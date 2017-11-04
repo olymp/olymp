@@ -26,11 +26,9 @@ export default ({
   field,
   label,
   key,
-  form,
   isActiveField,
 }) => {
   const { idField, start, suggest } = field['@'];
-  const { name } = field;
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
 
   const editProps = {

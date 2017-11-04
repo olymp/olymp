@@ -27,19 +27,24 @@ const enhance = compose(
   withCollection,
 );
 
-const getHeader = (title, index) => (
-  <div>
-    {title}
-    <i className="fa fa-close pull-right" />
-  </div>
-);
 export default {
   collapse: true,
-  rule: ({ type }) =>
-    type.kind === 'LIST' && type.ofType.name.indexOf('Nested') === 0,
-  form: toClass(({ value = [], ...p }) => (
-    <FormItem {...p}>{value.length} Einträge</FormItem>
-  )),
+  rule: ({ innerType }) =>
+    innerType.kind === 'LIST' && innerType.ofType.name.indexOf('Nested') === 0,
+  form: toClass(
+    ({
+      value = [],
+      'data-__field': dataField,
+      'data-__meta': dataMeta,
+      ...p
+    }) => (
+      <FormItem {...p}>
+        <span data-__field={dataField} data-__meta={dataMeta}>
+          {value.length} Einträge
+        </span>
+      </FormItem>
+    ),
+  ),
   full: enhance(
     ({ collection, value, name, title, label, id, ...props }) =>
       collection ? (
