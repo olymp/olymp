@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose } from 'recompose';
-// import { Prompt } from 'olymp-router';
 import { ContentLoader } from 'olymp-fela';
 import { connect } from 'react-redux';
 import { Form } from 'antd';
@@ -30,18 +29,7 @@ const CollectionDetail = enhance(({ id, item, onSave, onClone, ...rest }) => (
       item={item || {}}
       onSave={onSave}
       onCreate={onSave}
-    >
-      {/* <Prompt
-          when={form.isFieldsTouched()}
-          message={() => 'Änderungen verwerfen?'}
-  /> */}
-      {/* <Button onClick={onSave} icon="save" type="primary">
-        Speichern
-      </Button>
-      <Button onClick={onClone} icon="copy">
-        Klonen
-</Button> */}
-    </DetailForm>
+    />
   </ContentLoader>
 ));
 

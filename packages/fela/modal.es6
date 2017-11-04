@@ -44,14 +44,22 @@ const Inner = createComponent(
   [],
 );
 
-export default ({ children, open, onClose, width, header, footer, container }) =>
-  (open === undefined || open ? (
+export default ({
+  children,
+  open,
+  onClose,
+  width,
+  header,
+  footer,
+  container,
+}) =>
+  open === undefined || open ? (
     <Portal>
       <ModalBackground onClick={onClose}>
         <Modal
           width={width}
           container={container}
-          onClick={(e) => {
+          onClick={e => {
             // e.cancelBubble = true;
             if (e.stopPropagation) {
               e.stopPropagation();
@@ -59,11 +67,15 @@ export default ({ children, open, onClose, width, header, footer, container }) =
           }}
         >
           <Inner>
-            {header && <Layout.Header container={container}>{header}</Layout.Header>}
+            {header && (
+              <Layout.Header container={container}>{header}</Layout.Header>
+            )}
             <Layout.Body container={container}>{children}</Layout.Body>
-            {footer && <Layout.Footer container={container}>{footer}</Layout.Footer>}
+            {footer && (
+              <Layout.Footer container={container}>{footer}</Layout.Footer>
+            )}
           </Inner>
         </Modal>
       </ModalBackground>
     </Portal>
-  ) : null);
+  ) : null;

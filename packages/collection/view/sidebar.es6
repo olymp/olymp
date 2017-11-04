@@ -3,7 +3,7 @@ import { Link, withRouter } from 'olymp-router';
 import { Dropdown, Menu, Icon, Collapse } from 'antd';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
-import { compose, withState, withHandlers } from 'recompose';
+import { compose } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
 import format from 'date-fns/format';
@@ -18,26 +18,6 @@ const Span = createComponent(
   'div',
   [],
 );
-
-/* const Side = createComponent(
-  ({ theme, width }) => ({
-    zIndex: 10,
-    width: 64,
-    '> div': {
-      position: 'fixed',
-      top: 0,
-      bottom: 0,
-      overflow: 'hidden',
-      width,
-    },
-  }),
-  ({ className, ...rest }) => (
-    <div className={className}>
-      <Sidebar {...rest} />
-    </div>
-  ),
-  p => Object.keys(p),
-); */
 
 const enhance = compose(withRouter);
 

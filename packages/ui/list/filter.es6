@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 import { debounce } from 'lodash';
 import { Input, Icon } from 'antd';
 
@@ -13,6 +13,12 @@ class FilterComponent extends Component {
     this.changed = debounce(this.props.onChange, 300);
   }
 
+  componentWillReceiveProps({ value }) {
+    if (value !== this.state.value) {
+      this.setState({ value });
+    }
+  }
+
   handleChange = e => {
     // React event weirdness requires storing
     // the synthetic event
@@ -21,12 +27,6 @@ class FilterComponent extends Component {
       this.changed(val);
     });
   };
-
-  componentWillReceiveProps({ value }) {
-    if (value !== this.state.value) {
-      this.setState({ value });
-    }
-  }
 
   render() {
     const { className, children, placeholder } = this.props;
@@ -37,6 +37,7 @@ class FilterComponent extends Component {
         onClick={() => this.handleChange({ target: { value: null } })}
       />
     ) : null;
+
     return (
       <div className={className}>
         {children}
@@ -51,11 +52,11 @@ class FilterComponent extends Component {
   }
 }
 export default createComponent(
-  ({ bordered }) => ({
-    padding: 6,
-    borderTop: bordered && '1px solid #eee',
-    backgroundColor: 'rgba(233, 233, 233, 0.47)',
+  ({ theme }) => ({
+    padding: theme.space2,
+    borderBottom: border(theme, theme.dark5),
+    backgroundColor: theme.dark5,
   }),
-  FilterComponent,
+  p => <FilterComponent {...p} />,
   p => Object.keys(p),
 );

@@ -1,17 +1,24 @@
 import React, { Children } from 'react';
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 import { Icon, Button } from 'antd';
 
 const StyledInner = createComponent(
-  ({ theme, padding, paddingX, paddingY, width, right, darkened }) => ({
+  ({
+    theme,
+    padding,
+    paddingX,
+    paddingY,
+    width,
+    right,
+    darkened,
+    borderLess,
+  }) => ({
     width: width === '100%' ? undefined : width,
     minWidth: width === '100%' ? undefined : width,
     maxWidth: width,
     height: '100%',
     transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    // borderRight: '1px solid #eee',
-    boxShadow: theme.boxShadow,
+    boxShadow: !borderLess && theme.boxShadow,
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
@@ -49,8 +56,8 @@ const StyledInner = createComponent(
       display: 'block',
     },
     '> .ant-modal-content': {
-      borderRight: !right && '1px solid rgb(233, 233, 233)',
-      borderLeft: right && '1px solid rgb(233, 233, 233)',
+      borderRight: !borderLess && !right && '1px solid rgb(233, 233, 233)',
+      borderLeft: !borderLess && right && '1px solid rgb(233, 233, 233)',
       hasFlex: {
         display: 'flex',
         flexDirection: 'column',
@@ -67,9 +74,10 @@ const StyledInner = createComponent(
         position: 'relative',
         backgroundColor: '#FFF',
         padding: 0,
-        // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)',
         border: 0,
-        borderBottom: '1px solid #eee',
+        '> *:first-child': {
+          borderBottom: border(theme, theme.color),
+        },
         '& .ant-modal-title': {
           overflowY: 'visible',
           paddingX: '2.5rem',
@@ -117,7 +125,7 @@ const StyledInner = createComponent(
         backgroundColor: 'rgba(0, 0, 0, 0.015)',
         // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.2)',
         border: 0,
-        borderTop: '1px solid #eee',
+        borderTop: !borderLess && border(theme),
         '> div > .ant-btn': {
           width: 'calc(50% - 4px)',
           maxWidth: 200,
@@ -135,6 +143,7 @@ const StyledInner = createComponent(
     minWidth,
     maxWidth,
     darkened,
+    borderLess,
     ...p
   }) => Object.keys(p),
 );

@@ -147,7 +147,6 @@ export default enhance(
             placeholder="Ordner filtern ..."
             onChange={setSearch}
             value={search}
-            bordered={false}
           />
           {!!folder && (
             <List.Item

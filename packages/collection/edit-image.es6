@@ -3,16 +3,6 @@ import { toClass } from 'recompose';
 import { EditImage } from 'olymp-cloudinary';
 import FormItem from './form-item';
 
-const transform = ({ id, url, crop, width, height, caption, source }) => ({
-  id,
-  url,
-  crop,
-  width,
-  height,
-  caption,
-  source,
-});
-
 export default {
   rule: ({ innerType }) => innerType.name === 'Image',
   form: toClass(
