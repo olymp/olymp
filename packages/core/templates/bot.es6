@@ -1,7 +1,5 @@
 /* eslint-disable prefer-template, max-len */
-import serialize from 'serialize-javascript';
-
-export default ({ title, meta, link, fela, root = '', buildOn }) => `
+export default ({ title, meta, link, fela = [], root = '', buildOn }) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>

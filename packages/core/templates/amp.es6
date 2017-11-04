@@ -7,7 +7,7 @@ const replaceInline = str =>
     .replace(/contentEditable="([^"]*)"/g, '')
     .replace(/spellCheck="([^"]*)"/g, '')
     .replace(/spellcheck="([^"]*)"/g, '');
-export default ({ title, meta, link, fela, root, buildOn }) => `
+export default ({ title, meta, link, fela = [], root, buildOn }) => `
   <!DOCTYPE html>
   <html amp lang="de">
     <head>

@@ -5,7 +5,7 @@ export default ({
   title,
   meta,
   link,
-  fela,
+  fela = [],
   styles = [],
   scripts = [],
   root = '',
