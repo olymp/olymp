@@ -16,7 +16,7 @@ import useragent from 'express-useragent';
 import React from 'react';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import { renderToMarkup } from 'fela-dom';
+import { renderToSheetList } from 'fela-dom';
 import { Provider } from 'react-fela';
 import Helmet from 'react-helmet';
 import helmet from 'helmet';
@@ -257,7 +257,7 @@ app.get('*', (req, res) => {
       const reactAppString = req.isAmp
         ? renderToStaticMarkup(reactApp)
         : renderToString(reactApp);
-      const felaMarkup = renderToMarkup(renderer);
+      const felaMarkup = renderToSheetList(renderer);
       const asyncState = asyncContext.getState();
       // Generate the html res.
       const state = store.getState();

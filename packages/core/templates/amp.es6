@@ -7,9 +7,7 @@ const replaceInline = str =>
     .replace(/contentEditable="([^"]*)"/g, '')
     .replace(/spellCheck="([^"]*)"/g, '')
     .replace(/spellcheck="([^"]*)"/g, '');
-export default ({
-  title, meta, link, cssMarkup, root, buildOn
-}) => `
+export default ({ title, meta, link, fela, root, buildOn }) => `
   <!DOCTYPE html>
   <html amp lang="de">
     <head>
@@ -42,7 +40,9 @@ export default ({
       ${title ? title.toString() : ''}
       ${meta ? meta.toString() : ''}
       ${link ? link.toString() : ''}
-      <style amp-custom id="css-markup">${cssMarkup || ''}</style>
+      <style amp-custom id="css-markup">${fela
+        .map(x => x.css)
+        .join('\n')}</style>
     </head>
     <body>
       <div id="app"><div>${root ? replaceInline(root) : ''}</div></div>

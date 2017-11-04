@@ -22,7 +22,7 @@ export default ({ title, meta, link, fela, root = '', buildOn }) => `
     ${title ? title.toString() : ''}
     ${meta ? meta.toString() : ''}
     ${link ? link.toString() : ''}
-    ${fela || ''}
+    <style>${fela.map(x => x.css).join('\n')}</style>
   </head>
   <body>
     <div id="app">${root}</div>
