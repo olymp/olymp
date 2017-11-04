@@ -1,12 +1,29 @@
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 
 export default Wrapped =>
   createComponent(
-    ({ theme, color }) => ({
+    ({
+      theme,
+      color,
+      width,
+      height,
+      size,
+      onClick,
+      margin,
+      marginLeft,
+      marginRight,
+      marginTop,
+      marginBottom,
+    }) => ({
+      margin,
+      marginLeft,
+      marginRight,
+      marginTop,
+      marginBottom,
       fill:
         color === true
           ? theme.color
-          : typeof color === 'string' ? color : 'rgba(0, 0, 0, 0.85)',
+          : typeof color === 'string' ? theme[color] || color : theme.dark,
     }),
     Wrapped,
     [
@@ -17,5 +34,6 @@ export default Wrapped =>
       'onMouseEnter',
       'onMouseLeave',
       'onMouseOver',
+      'onMouseDown',
     ],
   );
