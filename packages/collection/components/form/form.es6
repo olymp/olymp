@@ -1,11 +1,10 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
-import { SplitView, Sidebar, List } from 'olymp-ui';
+import { SplitView, Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { Container, createComponent } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
-import FormItem from '../../form-item';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
 const Items = ({ schema, activeField, form, item, value, ...rest }) =>
