@@ -8,7 +8,9 @@ const fetch = createTypeFetcher(
 );
 
 export default (ast, node) => {
-  const getArgument = field => {
+  const getArgument = f => {
+    const field = { ...f }; // DO NOT CHANGE!!!
+
     // if field ist required
     if (get(field, 'type.kind') === 'NonNullType') {
       field.type = get(field, 'type.type');
