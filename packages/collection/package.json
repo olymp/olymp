@@ -13,6 +13,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
+    "date-fns": "^1.29.0",
     "deep-diff": "^0.3.8",
     "prop-types": "^15.5.10",
     "shortid": "^2.2.8"
