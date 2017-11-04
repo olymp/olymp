@@ -7,7 +7,7 @@ const FormForFullLayout = {
   style: { marginBottom: 4 },
 };
 
-export default ({ item, app }) => (
+export default (item, app) => (
   <Collapse.Panel header="Technische Infos" key="2">
     <Form.Item key="project" label="Projekt" {...FormForFullLayout}>
       <Input disabled placeholder="Projekt" value={app} />

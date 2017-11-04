@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import Crop from '../components/crop';
-import ImageInfo from './info';
+import getImageInfo from './info';
 import { StyledForm, FormForFullLayout } from './utils';
 
 export default ({ form, multi, item }) => {
@@ -29,7 +29,7 @@ export default ({ form, multi, item }) => {
           initialValue: item.caption,
         })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
       </Form.Item>
-      {!multi && <ImageInfo item={item} />}
+      {!multi && getImageInfo(item)}
     </StyledForm>
   );
 };

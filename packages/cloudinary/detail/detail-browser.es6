@@ -2,7 +2,7 @@ import React from 'react';
 import { Select, Form, Input, Collapse, Tag, Icon } from 'antd';
 import { TagsEditor } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
-import ImageInfo from './info';
+import getImageInfo from './info';
 import { StyledForm, FormForFullLayout } from './utils';
 import { queryTags } from '../gql';
 import LightboxImage from '../lightbox-image';
@@ -116,7 +116,7 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
         <Collapse.Panel header="Übersicht Schlagworte" key="tags">
           <TagContainer selectedTags={selectedTags} form={form} />
         </Collapse.Panel>
-        {!multi && <ImageInfo item={item} />}
+        {!multi && getImageInfo(item)}
       </Collapse>
     </StyledForm>
   );
