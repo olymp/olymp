@@ -1,6 +1,6 @@
 export { default as List } from './list';
 export * from './containers';
-export * from './modal-utils';
+export * from './notifications';
 export * from './badge';
 export { default as Modal } from './modal';
 export { default as Sidebar } from './sidebar';

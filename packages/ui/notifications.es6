@@ -1,26 +1,29 @@
 import { message } from 'antd';
 
-export const onError = (err) => {
+export const onError = err => {
   let description;
   if (err && err.message) {
     description = err.message;
+    message.error(description, 20);
   } else if (err && typeof err === 'object') {
-    description = Object.keys(err)
-      .map(key => err[key].errors.map(e => e.message).join('\n'))
-      .join('\n');
+    Object.keys(err).forEach(
+      key => message.error(err[key].errors.map(e => e.message).join('\n')),
+      20,
+    );
   }
-  message.error(description, 30);
 };
 export const onSuccess = (text, description) => {
   message.success(description || text);
 };
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
-export const onEnterFocus = ref => (e) => {
+export const onEnterFocus = ref => e => {
   if (e.key === 'Enter') {
     return ref() && ref().refs && ref().refs.input.focus();
   }
   return false;
 };
-export const onEnterOk = onOk => (e) => {
-  if (e.key === 'Enter') { onOk(); }
+export const onEnterOk = onOk => e => {
+  if (e.key === 'Enter') {
+    onOk();
+  }
 };
