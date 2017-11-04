@@ -24,7 +24,10 @@ const ok = props => () => {
         id: item && item.id,
         input: omit2(values),
       },
-      refetchQueries: [`${lowerFirst(typeName)}List`, `${lowerFirst(typeName)}`],
+      refetchQueries: [
+        `${lowerFirst(typeName)}List`,
+        `${lowerFirst(typeName)}`,
+      ],
       /* updateQueries:
         !item || !item.id
           ? {
@@ -89,11 +92,13 @@ const del = props => () => {
     .catch(onError);
 };
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`
-    mutation ${lowerFirst(typeName)}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
+    mutation ${lowerFirst(
+      typeName,
+    )}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
       item: ${lowerFirst(typeName)}(id: $id, input: $input, type: $type) {
         ${fieldNames}
       }

@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { slugify } from 'olymp-utils';
 import { get } from 'lodash';
 
