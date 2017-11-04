@@ -61,13 +61,7 @@ class PageForm extends Component {
           label="Beschreibung"
           type="text"
         />
-        <State
-          form={form}
-          item={item}
-          field="state"
-          label="Status"
-          rules={['required']}
-        />
+        <State form={form} item={item} field="state" label="Status" />
         <PageType
           form={form}
           item={item}
