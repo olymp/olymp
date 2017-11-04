@@ -161,7 +161,7 @@ const component = enhance(
           inlineCollapsed={collapsed}
         >
           <Menu.Item>
-            <Link to={{ query: {} }}>
+            <Link replaceQuery={{}}>
               <Logo width="100%" />
             </Link>
           </Menu.Item>

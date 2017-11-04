@@ -5,7 +5,7 @@ export default ({
   title,
   meta,
   link,
-  fela,
+  fela = [],
   styles = [],
   scripts = [],
   root = '',
@@ -39,7 +39,12 @@ export default ({
     ${styles
       .map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)
       .join('\n')}
-    ${fela || ''}
+    ${fela
+      .map(
+        x =>
+          `<style type="text/css" data-fela-type="${x.type}">${x.css}</style>`,
+      )
+      .join('\n')}
     ${gaTrackingId
       ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';

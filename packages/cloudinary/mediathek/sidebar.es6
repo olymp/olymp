@@ -1,11 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Upload, Icon } from 'antd';
-import { compose, onlyUpdateForKeys, setPropTypes, withProps } from 'recompose';
+import {
+  compose,
+  onlyUpdateForKeys,
+  setPropTypes,
+  withProps,
+  withState,
+} from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { connect } from 'react-redux';
 import { withActions } from './redux';
-import Selection from './selection';
+import Detail from '../detail';
+import withHandler from '../detail/with-file-form';
 import Directory from './directory';
 
 const onCancel = (items, onRemove) => () => {
@@ -44,6 +51,7 @@ const enhance = compose(
     onClick: PropTypes.func,
     onRemove: PropTypes.func,
   }),
+  withState('formState', 'setFormState'),
   connect(({ cloudinary }, { items }) => {
     const newItems = cloudinary.selectedIds
       .map(x => items.find(item => item.id === x))
@@ -58,6 +66,7 @@ const enhance = compose(
       search: cloudinary.search,
     };
   }),
+  withHandler,
 );
 
 export default enhance(
@@ -79,28 +88,34 @@ export default enhance(
     items,
     onClick,
     onRemove,
+    save,
+    form,
   }) => (
     <Sidebar
       width={280}
       leftButtons={
-        (!!onClose && (
-          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
-        )) ||
-        ((!!items.length && (
+        (!!items.length && (
           <Sidebar.Button
             shape="circle"
             onClick={onCancel(items, onRemove)}
             icon="close"
           />
         )) ||
-          (!!goBack && (
-            <Sidebar.Button shape="circle" onClick={goBack} icon="arrow-left" />
-          )))
+        (!!onClose && (
+          <Sidebar.Button shape="circle" onClick={onClose} icon="close" />
+        )) ||
+        (!!goBack && (
+          <Sidebar.Button shape="circle" onClick={goBack} icon="arrow-left" />
+        ))
       }
       rightButtons={
-        <Upload {...upload}>
-          <Sidebar.Button shape="circle" icon="plus" />
-        </Upload>
+        items.length ? (
+          <Sidebar.Button shape="circle" icon="save" onClick={save} />
+        ) : (
+          <Upload {...upload}>
+            <Sidebar.Button shape="circle" icon="plus" />
+          </Upload>
+        )
       }
       isOpen
       padding={0}
@@ -115,14 +130,15 @@ export default enhance(
     >
       {items.length ? (
         <div>
-          <Selection
-            items={items}
+          <Detail
+            form={form}
+            value={items}
             key={items.map(x => x.id).join(';')}
             activeId={activeId}
             onClick={onClick}
             onRemove={onRemove}
             onCancel={onCancel(items, onRemove)}
-            onChange={onChange}
+            editable={!onChange}
           />
         </div>
       ) : (

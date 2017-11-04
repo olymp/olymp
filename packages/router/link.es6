@@ -15,6 +15,9 @@ export const getLocation = props => {
     const pathname = props.pathname || props.currentPathname;
     const query = { ...props.currentQuery, ...props.updateQuery };
     return urlToLocation({ pathname, query });
+  } else if (props.replaceQuery) {
+    const pathname = props.pathname || props.currentPathname;
+    return urlToLocation({ pathname, query: props.replaceQuery });
   } else if (props.pathname || props.query) {
     const pathname = props.pathname || props.currentPathname;
     let query;
@@ -71,6 +74,7 @@ export default class Link extends Component {
       currentPathname,
       updateQuery,
       currentQuery,
+      replaceQuery,
       push,
       query,
       pathname,

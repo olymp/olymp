@@ -1,11 +1,14 @@
 import React from 'react';
-import { LightboxImage, EditText } from 'olymp-cloudinary';
+import {
+  LightboxImage,
+  EditText,
+} from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 import { FaPlus, FaMinus } from 'olymp-icons';
 
 const Container = createComponent(
   ({ theme }) => ({
-    paddingY: theme.space3,
+    paddingY: theme.space1,
     hasFlex: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -20,7 +23,7 @@ const ImageContainer = createComponent(
   ({ theme, size }) => {
     const style = {
       paddingRight: theme.space3,
-      paddingBottom: theme.space3,
+      paddingBottom: theme.space2,
       float: 'left',
       width: `${100 / size}%`,
       minWidth: `${100 / size}%`,
@@ -42,7 +45,14 @@ export default {
   kind: 'block',
   label: 'Galerie',
   category: 'Bilder',
-  component: ({ getData, setActive, className, attributes, children }) => (
+  component: ({
+    getData,
+    setActive,
+    className,
+    attributes,
+    children,
+    node,
+  }) => (
     <Container {...attributes}>
       {children}
       {getData('value', [
@@ -60,7 +70,12 @@ export default {
         },
       ]).map((image, i) => (
         <ImageContainer size={getData('size', 3)} key={image.id || i}>
-          <LightboxImage className={className} onClick={setActive} width="100%" value={image} />
+          <LightboxImage
+            className={className}
+            onClick={setActive}
+            width="100%"
+            value={image}
+          />
         </ImageContainer>
       ))}
     </Container>
@@ -74,7 +89,7 @@ export default {
       component: ({ setData, getData, ...p }) => (
         <EditText
           {...p}
-          onChange={value => setData({ value })}
+          onChange={value => console.log(value) || setData({ value })}
           value={getData('value', [])}
           multi
         />

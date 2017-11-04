@@ -6,11 +6,11 @@ export default WrappedComponent =>
   class WithScroll extends Component {
     state = { top: 0 };
     onScroll = throttle(
-      (e) => {
+      e => {
         const top = e.target.scrollTop;
         this.setState({ top });
       },
-      100,
+      0,
       { trailing: true, leading: true },
     );
     componentDidMount() {
@@ -33,14 +33,14 @@ export const withScrollHide = WrappedComponent =>
   class WithScroll extends Component {
     state = { top: 0, scrolling: true };
     onScrollDebounce = debounce(
-      (e) => {
+      e => {
         const top = e.target.scrollTop;
         this.setState({ top, scrolling: false });
       },
       100,
       { trailing: true, leading: false },
     );
-    onScroll = (e) => {
+    onScroll = e => {
       if (!this.state.scrolling) {
         this.setState({ scrolling: true });
       }
@@ -56,6 +56,12 @@ export const withScrollHide = WrappedComponent =>
     render() {
       const { className } = this.state;
       const { top, scrolling } = this.state;
-      return <WrappedComponent {...this.props} scrollTop={top} scrolling={scrolling} />;
+      return (
+        <WrappedComponent
+          {...this.props}
+          scrollTop={top}
+          scrolling={scrolling}
+        />
+      );
     }
   };

@@ -1,7 +1,6 @@
 import React from 'react';
 import { createComponent, border } from 'olymp-fela';
 import { withQueryParam, Link } from 'olymp-router';
-import { Text } from 'slate';
 import { Icon } from 'antd';
 
 const Label = createComponent(
@@ -47,16 +46,25 @@ export default {
       className={className}
       readOnly={editor.props.readOnly}
       updateQuery={{
-        accordion: accordion !== parent.data.get('id') ? parent.data.get('id') : undefined,
+        accordion:
+          accordion !== parent.data.get('id')
+            ? parent.data.get('id')
+            : undefined,
       }}
       {...attributes}
     >
-      <span onClick={!editor.props.readOnly ? x => x.stopPropagation() : undefined}>
+      <span
+        onClick={!editor.props.readOnly ? x => x.stopPropagation() : undefined}
+      >
         {children}
       </span>
       <Icon
         contentEditable={false}
-        type={accordion === parent.data.get('id') ? 'down-square-o' : 'left-square-o'}
+        type={
+          accordion === parent.data.get('id')
+            ? 'down-square-o'
+            : 'left-square-o'
+        }
       />
     </Label>
   )),
