@@ -1,5 +1,8 @@
 import React from 'react';
-import { LightboxImage, EditText, LightboxGallery } from 'olymp-cloudinary';
+import {
+  LightboxImage,
+  EditText,
+} from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
 import { FaPlus, FaMinus } from 'olymp-icons';
 
@@ -69,7 +72,6 @@ export default {
         <ImageContainer size={getData('size', 3)} key={image.id || i}>
           <LightboxImage
             className={className}
-            xy={console.log(image)}
             onClick={setActive}
             width="100%"
             value={image}

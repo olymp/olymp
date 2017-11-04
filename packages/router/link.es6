@@ -17,7 +17,6 @@ export const getLocation = props => {
     return urlToLocation({ pathname, query });
   } else if (props.replaceQuery) {
     const pathname = props.pathname || props.currentPathname;
-    console.log(props.replaceQuery);
     return urlToLocation({ pathname, query: props.replaceQuery });
   } else if (props.pathname || props.query) {
     const pathname = props.pathname || props.currentPathname;

@@ -1,51 +1,29 @@
 import React from 'react';
 import { Modal } from 'olymp-fela';
-import { withState } from 'recompose';
+import { withState, withPropsOnChange, compose } from 'recompose';
 import Mediathek from './mediathek';
 
-const transform = ({ id, url, crop, width, height, caption, source }) => ({
-  id,
-  url,
-  crop,
-  width,
-  height,
-  caption,
-  source,
-});
+const enhance = compose(
+  withState('isOpen', 'setOpen', false),
+  withPropsOnChange(['value'], ({ value }) => ({
+    value: Array.isArray(value) ? value : [value],
+  })),
+);
 export default renderFn =>
-  withState(
-    'isOpen',
-    'setOpen',
-    false,
-  )(({ onChange, value, isOpen, setOpen, multi }) => {
-    let v = [];
-    if ((!multi && value) || (multi && !Array.isArray(value))) {
-      v = [value];
-    } else if (multi && value) {
-      v = value;
-    }
-    return (
-      <div onClick={() => setOpen(true)}>
-        {renderFn(v, multi)}
+  enhance(({ onChange, value, isOpen, setOpen, multi }) => (
+    <div onClick={() => setOpen(true)}>
+      {renderFn(value, multi)}
 
-        <Modal open={isOpen} onClose={() => setOpen(false)}>
-          <Mediathek
-            multi={multi}
-            onChange={(value = []) => {
-              const v = value.map(transform);
-              onChange(multi ? v : v[0]);
-              setOpen(false);
-            }}
-            onClose={() => setOpen(false)}
-            value={v}
-            selected={v.map(({ id, crop, caption, source }) => ({
-              id,
-              crop,
-              caption,
-              source,
-            }))}
-          />
-        </Modal>
-      </div>
-    );
-  });
+      <Modal open={isOpen} onClose={() => setOpen(false)}>
+        <Mediathek
+          multi={multi}
+          onChange={(value = []) => {
+            onChange(multi ? value : value[0]);
+            setOpen(false);
+          }}
+          onClose={() => setOpen(false)}
+          value={value}
+        />
+      </Modal>
+    </div>
+  ));
