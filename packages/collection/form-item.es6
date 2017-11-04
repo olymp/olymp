@@ -1,18 +1,17 @@
 import React from 'react';
 import Form, { defaultLayout } from 'olymp-ui/form';
-import { createComponent } from 'react-fela';
+import { createComponent, border } from 'olymp-fela';
 import { FaAngleRight } from 'olymp-icons';
 
 const Div = createComponent(
-  ({ isActive }) => ({
-    borderBottom: '1px solid #eeeeee',
-    paddingY: 5,
-    marginBottom: 0,
-    paddingX: 8,
+  ({ theme, isActive }) => ({
+    borderBottom: border(theme),
+    paddingY: theme.space2,
+    paddingX: theme.space2,
     cursor: 'pointer',
-    backgroundColor: isActive ? '#f3f3f3' : undefined,
+    backgroundColor: isActive ? theme.dark5 : theme.light,
     onHover: {
-      backgroundColor: '#f3f3f3',
+      backgroundColor: theme.dark5,
     },
     '> div.ant-form-item.ant-row.ant-form-item.ant-form-item-no-colon': {
       marginBottom: 0,

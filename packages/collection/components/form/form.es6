@@ -1,8 +1,8 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
-import { SplitView, Sidebar } from 'olymp-ui';
+import { Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { Container, createComponent } from 'olymp-fela';
+import { createComponent, Container, border } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import { get } from 'lodash';
 import DefaultEdits from '../../default-edits';
@@ -45,6 +45,18 @@ const getDefaultEdit = type => {
   }
   return null;
 };
+
+const Div = createComponent(
+  ({ theme }) => ({
+    backgroundColor: theme.dark5,
+    '> div': {
+      height: '100%',
+      borderX: border(theme),
+      padding: 0,
+    },
+  }),
+  'div',
+);
 
 const Buttons = createComponent(
   () => ({
@@ -138,20 +150,20 @@ const FormComponent = enhance(
       );
     }
     return (
-      <SplitView>
-        <Sidebar
-          isOpen
-          padding={0}
-          width={400}
-          title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
-          rightButtons={
-            header && (
-              <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
-            )
-          }
-        >
-          <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            <Container size="small">
+      <Div>
+        <Container size="small">
+          <Sidebar
+            isOpen
+            width="100%"
+            borderLess
+            title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
+            rightButtons={
+              header && (
+                <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
+              )
+            }
+          >
+            <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
               <Items
                 schema={schemaWithEdits.full}
                 setActiveField={setActiveField}
@@ -167,13 +179,11 @@ const FormComponent = enhance(
                 item={item}
                 {...rest}
               />
-            </Container>
-          </Form>
-          <Buttons>{children}</Buttons>
-        </Sidebar>
-        {children}
-        {moreChildren}
-      </SplitView>
+            </Form>
+            <Buttons>{children}</Buttons>
+          </Sidebar>
+        </Container>
+      </Div>
     );
   },
 );

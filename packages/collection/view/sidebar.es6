@@ -122,7 +122,6 @@ export default class CollectionListSidebar extends Component {
       collection,
       onSearch,
       searchText,
-      onClose,
       expand,
     } = this.props;
 
