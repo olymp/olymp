@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Collapse } from 'antd';
 import { createComponent } from 'olymp-fela';
-// import Navigator from 'olymp-slate/navigator';
 import Tree from './tree';
 import PageForm from './page';
 
@@ -14,17 +13,15 @@ const TabPane = createComponent(
   p => Object.keys(p),
 );
 
-const PageTree = ({
-  form,
-  item,
-  items,
-  navigation,
-  tab,
-  onTabClick,
-  value,
-  onChange,
-  base64,
-}) => (
+const Padded = createComponent(
+  ({ theme }) => ({
+    padding: theme.space3,
+  }),
+  'div',
+  p => Object.keys(p),
+);
+
+const PageTree = ({ form, item, items, navigation, tab, onTabClick }) => (
   <Tabs
     activeKey={tab}
     onTabClick={onTabClick}
@@ -37,19 +34,16 @@ const PageTree = ({
           <Tree items={navigation} selected={[item.id || item.pathname]} />
         </Collapse.Panel>
         <Collapse.Panel header="Ablage" key="2">
-          Kein Item vorhanden!
+          <Padded>Kein Item vorhanden!</Padded>
         </Collapse.Panel>
         <Collapse.Panel header="Papierkorb" key="3">
-          Kein Item vorhanden!
+          <Padded>Kein Item vorhanden!</Padded>
         </Collapse.Panel>
       </Collapse>
     </TabPane>
     <TabPane tab="Seite" key="form">
       <PageForm item={item} items={items} form={form} />
     </TabPane>
-    {/* <TabPane tab="Editor" key="tree">
-      <Navigator value={value} onChange={onChange} base64={base64} />
-</TabPane> */}
   </Tabs>
 );
 PageTree.propTypes = {

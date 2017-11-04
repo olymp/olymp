@@ -5,44 +5,36 @@ import { unflatten } from 'olymp-utils';
 import { Link, withRouter } from 'olymp-router';
 import { createComponent } from 'olymp-fela';
 import { Icon, Tooltip, Tree } from 'antd';
-import { lowerCase, orderBy, sortBy } from 'lodash';
+import { lowerCase, orderBy } from 'lodash';
 import { reorderPage } from '../../gql/mutation';
 import { queryPages } from '../../gql/query';
 
 const StyledTree = createComponent(
   ({ theme }) => ({
-    paddingRight: 8,
-    paddingLeft: 13,
-    paddingY: 0,
-    '& .ant-tree-title': {
-      hasFlex: {
-        display: 'flex',
-        '> a:first-child': {
-          flex: '1 1 0%',
-        },
-      },
-      '> a': {
-        // color: disabled ? theme.dark3 : theme.dark1,
-        color: theme.dark1,
-      },
-    },
-    '& .anticon': {
-      marginLeft: 3,
-    },
+    padding: theme.space2,
+    paddingBottom: 0,
     '& li': {
-      padding: 0,
-      paddingTop: '0.7rem !important',
-      position: 'relative',
-      '> .ant-tree-switcher': {
+      marginY: theme.space1,
+      '> span.ant-tree-switcher': {
         position: 'absolute',
-        left: -10,
-        top: 9,
-        width: 0,
+        left: 0,
+        top: 3,
         zIndex: 1,
       },
-      '> .ant-tree-node-content-wrapper': {
+      '> span.ant-tree-node-content-wrapper': {
         width: '100%',
-        paddingLeft: 10,
+        paddingLeft: theme.space4,
+        '> .ant-tree-title': {
+          display: 'flex',
+          '> a:first-child': {
+            flex: '1 1 0%',
+          },
+        },
+      },
+      onHover: {
+        '> span.ant-tree-switcher.ant-tree-switcher': {
+          background: 'transparent',
+        },
       },
     },
   }),
@@ -195,6 +187,7 @@ class Pages extends Component {
               pathname: item.pathname,
               query: {
                 ...query,
+                '@page': 'form',
                 parent: undefined,
               },
             }
@@ -202,6 +195,7 @@ class Pages extends Component {
               pathname: `/page_id/${item.pageId || item.id}`,
               query: {
                 ...query,
+                '@page': 'form',
                 parent: undefined,
               },
             };
@@ -209,6 +203,7 @@ class Pages extends Component {
         pathname: item.pathname,
         query: {
           ...query,
+          '@page': 'form',
           parent: undefined,
           modal: null,
           [`@${lowerCase(item.binding && item.binding.type)}`]: item.bindingId,
@@ -252,13 +247,16 @@ class Pages extends Component {
       <StyledTree
         selectedKeys={selected}
         draggable
-        className="draggable-tree"
-        expandedKeys={expandedKeys}
+        showLine
+        autoExpand={false}
+        expandedKeys={['main', ...expandedKeys]}
         onExpand={x => setExpanded(x)}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >
-        {this.getItems(items)}
+        <Tree.TreeNode title="Webseite" key="main" disabled>
+          {this.getItems(items)}
+        </Tree.TreeNode>
       </StyledTree>
     );
   }
@@ -272,9 +270,3 @@ Pages.defaultProps = {
   selected: [],
 };
 export default Pages;
-
-/*
-items
-          .filter((x, i) => i === 0)
-          .map(item => item.id || item.pathname)
-*/
