@@ -8,7 +8,7 @@ const StateInput = ({
   label,
   layout,
   initialValue,
-  rules,
+  rules = ['required'],
   placeholder,
   form,
   ...rest
@@ -20,18 +20,26 @@ const StateInput = ({
     })(
       <Select style={{ width: '100%' }} {...rest}>
         <Select.Option value="DRAFT">
-          <b style={{ color: 'blue' }}><Icon type="inbox" /></b> Ablage
-          </Select.Option>
+          <b style={{ color: 'blue' }}>
+            <Icon type="inbox" />
+          </b>{' '}
+          Ablage
+        </Select.Option>
         <Select.Option value="PUBLISHED">
-          <b style={{ color: 'green' }}><Icon type="check" /></b>{' '}
-            Veröffentlicht
-          </Select.Option>
+          <b style={{ color: 'green' }}>
+            <Icon type="check" />
+          </b>{' '}
+          Veröffentlicht
+        </Select.Option>
         <Select.Option value="REMOVED">
-          <b style={{ color: 'red' }}><Icon type="delete" /></b> Gelöscht
-          </Select.Option>
-      </Select>
-      )}
+          <b style={{ color: 'red' }}>
+            <Icon type="delete" />
+          </b>{' '}
+          Gelöscht
+        </Select.Option>
+      </Select>,
+    )}
   </Form.Item>
-  );
+);
 StateInput.defaultProps = { layout };
 export default StateInput;
