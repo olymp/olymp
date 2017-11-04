@@ -15,12 +15,12 @@ export default {
         ast,
         node,
         `
-          id: String
-          name: String
+          id: String!
+          name: String!
           # @label("Schlagworte")
           tags: [String]
           # @label("Status")
-          state: DOCUMENT_STATE
+          state: DOCUMENT_STATE!
           createdAt: DateTime
           updatedAt: DateTime
           createdBy: User @relation
