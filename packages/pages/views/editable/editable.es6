@@ -83,7 +83,6 @@ export default class PageSidebar extends Component {
         key={id}
         value={value}
         onChange={onChange}
-        style={{ borderBottom: '1px solid #e9e9e9', flex: 1 }}
         readOnly={false}
         binding={form.isFieldsTouched() ? form.getFieldsValue() : item}
         bindingId={bindingId}
