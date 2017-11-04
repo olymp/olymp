@@ -11,8 +11,8 @@ const enhance = compose(
 );
 export default renderFn =>
   enhance(({ onChange, value, isOpen, setOpen, multi }) => (
-    <div onClick={() => setOpen(true)}>
-      {renderFn(value, multi)}
+    <div>
+      <div onClick={() => setOpen(true)}>{renderFn(value, multi)}</div>
 
       <Modal open={isOpen} onClose={() => setOpen(false)}>
         <Mediathek
