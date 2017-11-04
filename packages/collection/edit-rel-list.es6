@@ -4,11 +4,12 @@ import FormItem from './form-item';
 import { DetailEdit } from './edits';
 
 export default {
-  rule: ({ '@': at, innerType }) =>
+  rule: ({ '@': at, type, ...rest }) =>
+    console.log(type, rest) ||
     (at && at.idField && at.idField.type.kind === 'LIST') ||
-    (innerType.kind === 'LIST' &&
-      innerType.ofType.kind === 'OBJECT' &&
-      innerType.ofType.name.indexOf('Nested') === -1),
+    (type.kind === 'LIST' &&
+      type.ofType.kind === 'OBJECT' &&
+      type.ofType.name.indexOf('Nested') === -1),
   form: toClass(
     ({
       '@': at,
