@@ -12,12 +12,16 @@ export default ({ item = {}, form, auth }, field) => {
     return field['@'].default.arg0;
   } else if (name === 'state') {
     // Bei State
-    return 'DRAFT';
+    // return 'DRAFT';
+    return '';
   } else if (name === 'orgId') {
     return get(auth, 'user.orgId');
   } else if (name === 'slug' && form && form.getFieldValue('name')) {
     // Bei Slug
-    return `/${slugify(form.getFieldValue('name'), form.getFieldValue('date'))}`;
+    return `/${slugify(
+      form.getFieldValue('name'),
+      form.getFieldValue('date'),
+    )}`;
   }
 
   return undefined;
