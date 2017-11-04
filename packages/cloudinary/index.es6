@@ -6,4 +6,5 @@ export { default as cloudinaryUrl } from './cloudinary-url';
 export { default as Lightbox } from './lightbox';
 export { default as LightboxImage } from './lightbox-image';
 export { default as LightboxProvider } from './lightbox-provider';
+export { default as LightboxGallery } from './lightbox-gallery';
 export { default as Carousel } from './carousel';
