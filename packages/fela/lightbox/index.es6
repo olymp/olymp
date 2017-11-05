@@ -266,13 +266,13 @@ class Lightbox extends Component {
           <object
             name={image.caption}
             data={image.origin}
-            width={400}
+            width={500}
             height={image.height * 500 / image.width}
             type="application/pdf"
           >
             <embed
               data={image.origin}
-              width={400}
+              width={500}
               height={image.height * 500 / image.width}
               type="application/pdf"
             />
