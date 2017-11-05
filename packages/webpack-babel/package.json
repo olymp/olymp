@@ -36,6 +36,7 @@
     "extract-hoc": "0.0.4",
     "import-inspector": "^2.0.0",
     "react-hot-loader": "next",
-    "uglifyjs-webpack-plugin": "^1.0.1"
+    "uglifyjs-webpack-plugin": "^1.0.1",
+    "webpack-closure-compiler": "^2.1.5"
   }
 }
