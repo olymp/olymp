@@ -63,7 +63,7 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
         </Form.Item>
       )}
       <Collapse defaultActiveKey={['data']}>
-        <CollapsePanel header="Formular" key="data">
+        <CollapsePanel header="Meta-Daten" key="data">
           <Form.Item label="Ordner" {...FormForFullLayout}>
             {form.getFieldDecorator(`${item.id}.folder`, {
               initialValue: item.folder,

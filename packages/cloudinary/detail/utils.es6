@@ -18,9 +18,12 @@ export const Button = createComponent(
 
 export const CollapsePanel = createComponent(
   ({ theme }) => ({
-    padding: theme.space2,
-    paddingBottom: 0,
     backgroundColor: theme.light,
+    '> .ant-collapse-content': {
+      '> .ant-collapse-content-box': {
+        padding: `${theme.space2} ${theme.space2} 0 ${theme.space2} !important`,
+      },
+    },
   }),
   p => <Collapse.Panel {...p} />,
   p => Object.keys(p),
