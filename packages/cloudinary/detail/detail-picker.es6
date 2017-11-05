@@ -1,8 +1,8 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, Collapse } from 'antd';
 import Crop from '../components/crop';
 import getImageInfo from './info';
-import { StyledForm, FormForFullLayout } from './utils';
+import { FormForFullLayout } from './utils';
 
 export default ({ form, multi, item }) => {
   form.getFieldDecorator(`${item.id}.id`, { initialValue: item.id });
@@ -11,7 +11,7 @@ export default ({ form, multi, item }) => {
   form.getFieldDecorator(`${item.id}.height`, { initialValue: item.height });
 
   return (
-    <StyledForm>
+    <Form>
       <Form.Item {...FormForFullLayout}>
         {form.getFieldDecorator(`${item.id}.crop`, {
           initialValue: item.crop,
@@ -29,7 +29,9 @@ export default ({ form, multi, item }) => {
           initialValue: item.caption,
         })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
       </Form.Item>
-      {!multi && getImageInfo(item)}
-    </StyledForm>
+      {!multi && (
+        <Collapse defaultActiveKey={[]}>{getImageInfo(item)}</Collapse>
+      )}
+    </Form>
   );
 };
