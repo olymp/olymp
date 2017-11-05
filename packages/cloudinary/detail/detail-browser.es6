@@ -20,6 +20,14 @@ const CheckableTag = createComponent(
   ({ marked, ...p }) => Object.keys(p),
 );
 
+const CheckboxMargin = createComponent(
+  () => ({
+    marginY: 10,
+  }),
+  p => <Checkbox {...p} />,
+  p => Object.keys(p),
+);
+
 const TagContainer = queryTags(
   createComponent(
     ({ theme }) => ({
@@ -63,7 +71,7 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
         </Form.Item>
       )}
       <Collapse defaultActiveKey={['data']}>
-        <CollapsePanel header="Meta-Daten" key="data">
+        <CollapsePanel header="Bild" key="data">
           <Form.Item label="Ordner" {...FormForFullLayout}>
             {form.getFieldDecorator(`${item.id}.folder`, {
               initialValue: item.folder,
@@ -93,14 +101,12 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
               />,
             )}
           </Form.Item>
-          <Form.Item label="Zustand" {...FormForFullLayout}>
-            {form.getFieldDecorator(`${item.id}.removed`, {
-              initialValue: item.removed,
-              valuePropName: 'checked',
-            })(<Checkbox>Gelöscht</Checkbox>)}
-          </Form.Item>
+          {form.getFieldDecorator(`${item.id}.removed`, {
+            initialValue: item.removed,
+            valuePropName: 'checked',
+          })(<CheckboxMargin>Im Papierkorb</CheckboxMargin>)}
         </CollapsePanel>
-        <CollapsePanel header="Übersicht Schlagworte" key="tags">
+        <CollapsePanel header="Tagcloud" key="tags">
           <TagContainer selectedTags={selectedTags} form={form} />
         </CollapsePanel>
         {!multi && getImageInfo(item)}
