@@ -1,11 +1,10 @@
 import React from 'react';
 import { toClass } from 'recompose';
 import FormItem from './form-item';
-import { DetailEdit } from './edits';
+import DetailEdit from './rel-editor';
 
 export default {
-  rule: ({ '@': at, type, ...rest }) =>
-    console.log(type, rest) ||
+  rule: ({ '@': at, type }) =>
     (at && at.idField && at.idField.type.kind === 'LIST') ||
     (type.kind === 'LIST' &&
       type.ofType.kind === 'OBJECT' &&
@@ -23,6 +22,7 @@ export default {
       <FormItem {...props}>
         <DetailEdit
           mode="tags"
+          value={value.map(item => item.id)}
           onChange={onChange}
           typeName={at.idField ? at.idField.type.name : type.ofType.name}
           data-__field={dataField}
