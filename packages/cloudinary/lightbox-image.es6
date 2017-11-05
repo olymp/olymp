@@ -85,6 +85,8 @@ export default class Lightbox extends Component {
           w: 50,
           h: 50,
         }),
+        width: value.width,
+        height: value.height,
         caption:
           value.caption && value.source
             ? `${value.caption} - ${value.source}`
