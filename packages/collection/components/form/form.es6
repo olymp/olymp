@@ -5,6 +5,7 @@ import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { createComponent, Container } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import { get } from 'lodash';
+import { Popconfirm } from 'antd';
 import DefaultEdits from '../../default-edits';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
@@ -122,6 +123,7 @@ const FormComponent = enhance(
     expand,
     collapse,
     onSave,
+    onDelete,
     activeField,
     setActiveField,
     collapsed,
@@ -155,6 +157,19 @@ const FormComponent = enhance(
             width="100%"
             borderLess
             title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
+            leftButtons={
+              header && (
+                <Popconfirm
+                  placement="bottom"
+                  title="Wirklich löschen?"
+                  onConfirm={onDelete}
+                  okText="Ja"
+                  cancelText="Nein"
+                >
+                  <Sidebar.Button shape="circle" icon="delete" />
+                </Popconfirm>
+              )
+            }
             rightButtons={
               header && (
                 <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
