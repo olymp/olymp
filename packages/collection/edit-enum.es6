@@ -26,7 +26,7 @@ export default {
 
     return (
       <FormItem {...props}>
-        <Select {...props}>
+        <Select {...props} value={props.value || innerType.enumValues[0].name}>
           {innerType.enumValues.map(x => {
             const name = translation[x.name] || x.name;
 
