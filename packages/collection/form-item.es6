@@ -8,11 +8,6 @@ const Div = createComponent(
     // borderBottom: border(theme),
     paddingY: theme.space2,
     paddingX: theme.space2,
-    cursor: 'pointer',
-    backgroundColor: isActive ? theme.dark5 : theme.light,
-    onHover: {
-      backgroundColor: theme.dark5,
-    },
     '> div.ant-form-item.ant-row.ant-form-item.ant-form-item-no-colon': {
       marginBottom: 0,
     },
