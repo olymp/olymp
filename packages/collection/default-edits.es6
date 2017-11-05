@@ -12,8 +12,10 @@ import color from './edit-color';
 import textarea from './edit-textarea';
 import bool from './edit-bool';
 import geocode from './edit-geocode';
+import slug from './edit-slug';
 
 export default {
+  slug,
   geocode,
   bool,
   textarea,
