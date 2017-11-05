@@ -1,6 +1,7 @@
 const { resolve } = require('path');
-// const BabiliPlugin = require('babili-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+// const MinifyPlugin = require('babel-minify-webpack-plugin');
+const ClosureCompilerPlugin = require('webpack-closure-compiler');
 // const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = (config, options) => {
@@ -18,16 +19,23 @@ module.exports = (config, options) => {
   if (isProd && isWeb) {
     // config.plugins.push(new LodashModuleReplacementPlugin()),
     config.plugins.push(
-      new UglifyJSPlugin({
+      new ClosureCompilerPlugin({
+        compiler: {
+          language_in: 'ECMASCRIPT6',
+          language_out: 'ECMASCRIPT5',
+          compilation_level: 'ADVANCED',
+        },
+        concurrency: 3,
+      }),
+      /* new UglifyJSPlugin({
         // sourceMap: true,
         cache: true,
         parallel: 2,
         uglifyOptions: {
-          mangle: true,
-          /* parse: {
+          / parse: {
             // ecma: 8,
             // html5_comments: false,
-          }, */
+          }, *
           compress: {
             unused: true,
             drop_debugger: true,
@@ -41,7 +49,7 @@ module.exports = (config, options) => {
             // ecma: 8,
           },
         },
-      }),
+      }), */
     );
   }
 

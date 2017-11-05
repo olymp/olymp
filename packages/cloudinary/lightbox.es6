@@ -6,8 +6,17 @@ import { createUpdateQuery } from 'olymp-router';
 import { asyncComponent } from 'react-async-component';
 
 const LightBox = asyncComponent({
-  name: 'lightbox',
-  resolve: () => System.import('olymp-fela/lightbox'),
+  resolve: () =>
+    new Promise(resolve =>
+      // Webpack's code splitting API w/naming
+      require.ensure(
+        [],
+        require => {
+          resolve(require('olymp-fela/lightbox'));
+        },
+        'lightbox',
+      ),
+    ),
 });
 
 @getContext({

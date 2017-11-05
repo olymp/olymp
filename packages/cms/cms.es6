@@ -12,8 +12,17 @@ import NoAuth from './cms-noauth';
 import { withRedux } from './redux';
 
 const IfAuth = asyncComponent({
-  name: 'cms',
-  resolve: () => System.import('./cms-auth'),
+  resolve: () =>
+    new Promise(resolve =>
+      // Webpack's code splitting API w/naming
+      require.ensure(
+        [],
+        require => {
+          resolve(require('./cms-auth'));
+        },
+        'cms',
+      ),
+    ),
 });
 
 const enhance = compose(
