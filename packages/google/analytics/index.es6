@@ -60,6 +60,7 @@ export default class Analytics extends Component {
         <Sidebar
           isOpen
           padding={0}
+          borderLess
           title="Statistik"
           subtitle="Google-Analytics-Daten auswerten"
         >
@@ -149,6 +150,7 @@ export default class Analytics extends Component {
           right
           title="Einstellungen"
           subtitle="Einstellungen für alle Charts"
+          borderLess
         >
           <PaddingContainer>
             <Form.Item key="metrics" label="Messwerte">

@@ -101,6 +101,7 @@ export default class PageSidebar extends Component {
         <Sidebar
           isOpen
           padding={0}
+          borderLess
           title={title}
           subtitle={description}
           rightButtons={

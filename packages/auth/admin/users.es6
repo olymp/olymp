@@ -26,7 +26,7 @@ export default class AuthUsers extends Component {
 
     return (
       <SplitView>
-        <Sidebar title="Benutzer" subtitle="Benutzer bearbeiten">
+        <Sidebar title="Benutzer" subtitle="Benutzer bearbeiten" borderLess>
           {users.map(user => (
             <List.Item
               onClick={() => this.setState({ user })}

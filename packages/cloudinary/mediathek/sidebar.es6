@@ -93,6 +93,7 @@ export default enhance(
   }) => (
     <Sidebar
       width={280}
+      borderLess
       leftButtons={
         (!!items.length && (
           <Sidebar.Button

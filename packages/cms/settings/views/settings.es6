@@ -7,7 +7,7 @@ class Settings extends Component {
 
     return (
       <SplitView>
-        <Sidebar title="Einstellungen">
+        <Sidebar title="Einstellungen" borderLess>
           <List.Item
             to={{ pathname, query: { '@totp': null } }}
             label="Profil"

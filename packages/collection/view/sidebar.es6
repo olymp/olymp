@@ -226,6 +226,7 @@ export default class CollectionListSidebar extends Component {
           />
         }
         isOpen
+        borderLess
         padding={0}
         title={get(collection, 'decorators.label.value', collection.name)}
       >

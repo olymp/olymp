@@ -146,6 +146,7 @@ const FormComponent = enhance(
         <Sidebar
           isOpen
           padding={0}
+          borderLess
           darkened={collapsed}
           width={collapsed ? 64 : 400}
           onMouseEnter={expand}
