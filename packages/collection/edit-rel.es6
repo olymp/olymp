@@ -1,6 +1,6 @@
 import React from 'react';
 import { toClass } from 'recompose';
-import { DetailEdit } from './edits';
+import DetailEdit from './rel-editor';
 import FormItem from './form-item';
 
 export default {
