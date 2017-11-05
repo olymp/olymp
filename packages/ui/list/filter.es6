@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createComponent, border } from 'olymp-fela';
 import { debounce } from 'lodash';
-import { Input, Icon } from 'antd';
+import { Input, Icon, Select } from 'antd';
 
 class FilterComponent extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class FilterComponent extends Component {
   };
 
   render() {
-    const { className, children, placeholder } = this.props;
+    const { className, children, placeholder, sort, onSort } = this.props;
     const { value } = this.state;
     const suffix = value ? (
       <Icon
@@ -37,6 +37,20 @@ class FilterComponent extends Component {
         onClick={() => this.handleChange({ target: { value: null } })}
       />
     ) : null;
+    const addonAfter =
+      sort && sort.length ? (
+        <Select
+          defaultValue={sort[0].name}
+          placeholder="Sortieren"
+          onChange={onSort}
+        >
+          {sort.map(({ name, label }) => (
+            <Select.Option key={name} value={name}>
+              {label}
+            </Select.Option>
+          ))}
+        </Select>
+      ) : null;
 
     return (
       <div className={className}>
@@ -46,6 +60,7 @@ class FilterComponent extends Component {
           suffix={suffix}
           value={value}
           onChange={this.handleChange}
+          addonAfter={addonAfter}
         />
       </div>
     );

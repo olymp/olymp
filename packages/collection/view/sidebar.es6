@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'olymp-router';
 import { Dropdown, Menu, Icon, Collapse } from 'antd';
 import { Image } from 'olymp-cloudinary';
-import { get } from 'lodash';
-import { compose } from 'recompose';
+import { get, sortBy } from 'lodash';
+import { compose, withState, withPropsOnChange } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
 import format from 'date-fns/format';
@@ -19,7 +19,13 @@ const Span = createComponent(
   [],
 );
 
-const enhance = compose(withRouter);
+const enhance = compose(
+  withRouter,
+  withState('sortBy', 'setSortBy'),
+  withPropsOnChange(['sortBy'], ({ sortBy: sort, items }) => ({
+      items: sort ? sortBy(items, [sort]) : items,
+    })),
+);
 
 @enhance
 export default class CollectionListSidebar extends Component {
@@ -123,6 +129,7 @@ export default class CollectionListSidebar extends Component {
       onSearch,
       searchText,
       expand,
+      setSortBy,
     } = this.props;
 
     const items = (this.props.items || []).map(item => {
@@ -207,6 +214,20 @@ export default class CollectionListSidebar extends Component {
       />
     ));
 
+    const sort = collection.fields
+      .filter(
+        x =>
+          x.name.toLowerCase().indexOf('id') === -1 &&
+          (x.type.name === 'String' ||
+            x.type.name === 'Date' ||
+            x.type.name === 'DateTime' ||
+            x.type.kind === 'ENUM'),
+      )
+      .map(item => ({
+        name: item.name,
+        label: get(item, '@.label.arg0') || item.name,
+      }));
+
     return (
       <Sidebar
         width={350}
@@ -216,6 +237,8 @@ export default class CollectionListSidebar extends Component {
             placeholder="Filter ..."
             onChange={onSearch}
             value={searchText}
+            sort={sort}
+            onSort={setSortBy}
           />
         }
         rightButtons={
