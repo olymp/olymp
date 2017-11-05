@@ -16,7 +16,7 @@ export default {
         node,
         `
           id: String
-          name: String!
+          name: String
           # @label("Schlagworte")
           tags: [String]
           # @label("Status")

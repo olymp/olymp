@@ -1,6 +1,5 @@
 import { parse } from 'graphql/language';
 import { addDefinition, createTypeFetcher } from 'olymp-graphql/server';
-import { get } from 'lodash';
 
 const fetch = createTypeFetcher(
   (node, value) =>
@@ -11,19 +10,22 @@ const fetch = createTypeFetcher(
 );
 
 const getArgument = (field, ast) => {
-  const value = get(field, 'type.type.name.value');
-  if (field.type.kind === 'ListType' && value && value === 'String') {
+  if (
+    field.type.kind === 'ListType' &&
+    field.type.type.name.value &&
+    field.type.type.name.value === 'String'
+  ) {
     addDefinition(
       ast,
       parse(`
-      input ${value}Query {
-        in: [${value}],
-        nin: [${value}],
+      input ${field.type.type.name.value}Query {
+        in: [${field.type.type.name.value}],
+        nin: [${field.type.type.name.value}],
         null: Boolean
       }
     `).definitions[0],
     );
-    return `${field.name.value}: ${value}Query`;
+    return `${field.name.value}: ${field.type.type.name.value}Query`;
   }
   if (!field.type.name) {
     return null;
