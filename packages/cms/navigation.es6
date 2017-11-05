@@ -221,10 +221,10 @@ const component = enhance(
               <span>Benutzer</span>
             </Menu.Item>
           )}
-          <Menu.Item key="@analytics">
+          {/* <Menu.Item key="@analytics">
             <Icon type="line-chart" />
             <span>Statistiken</span>
-          </Menu.Item>
+        </Menu.Item> */}
           {Object.keys(collectionTree).map(
             key =>
               collectionTree[key].length > 1 ? (

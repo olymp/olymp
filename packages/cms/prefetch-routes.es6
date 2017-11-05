@@ -1,5 +1,6 @@
 import React from 'react';
-import { compose, withPropsOnChange } from 'recompose';
+import PropTypes from 'prop-types';
+import { compose, withPropsOnChange, withContext } from 'recompose';
 import Portal from 'olymp-fela/portal';
 import { createComponent } from 'react-fela';
 import { connect } from 'react-redux';
@@ -21,24 +22,38 @@ const enhance = compose(
   connect(({ cms }) => ({
     pathname: cms.prefetch && cms.prefetch.pathname,
   })),
-  withPropsOnChange(['flatNavigation', 'pathname'], ({ flatNavigation, pathname }) => {
-    let item;
-    if (pathname) {
-      for (let x = 0; x < flatNavigation.length; x++) {
-        const page = flatNavigation[x];
-        if (decodeURI(unescape(page.pathname)) === pathname || `/page_id/${page.id}` === pathname) {
-          item = page;
-          break;
+  withContext(
+    {
+      prefetch: PropTypes.bool,
+    },
+    () => ({
+      prefetch: true,
+    }),
+  ),
+  withPropsOnChange(
+    ['flatNavigation', 'pathname'],
+    ({ flatNavigation, pathname }) => {
+      let item;
+      if (pathname) {
+        for (let x = 0; x < flatNavigation.length; x++) {
+          const page = flatNavigation[x];
+          if (
+            decodeURI(unescape(page.pathname)) === pathname ||
+            `/page_id/${page.id}` === pathname
+          ) {
+            item = page;
+            break;
+          }
         }
       }
-    }
-    return {
-      item,
-    };
-  }),
+      return {
+        item,
+      };
+    },
+  ),
 );
 
-const PagePrefetchRoute = enhance((props) => {
+const PagePrefetchRoute = enhance(props => {
   const { item } = props;
   if (!item) {
     return null;
