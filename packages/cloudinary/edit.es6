@@ -10,19 +10,23 @@ const enhance = compose(
   })),
 );
 export default renderFn =>
-  enhance(({ onChange, value, isOpen, setOpen, multi }) => (
-    <div>
-      <div onClick={() => setOpen(true)}>{renderFn(value, multi)}</div>
-      <Modal open={isOpen} onClose={() => setOpen(false)}>
-        <Mediathek
-          multi={multi}
-          onChange={(value = []) => {
-            onChange(multi ? value : value[0]);
-            setOpen(false);
-          }}
-          onClose={() => setOpen(false)}
-          value={value}
-        />
-      </Modal>
-    </div>
-  ));
+  enhance(props => {
+    const { onChange, value, isOpen, setOpen, multi } = props;
+
+    return (
+      <div>
+        <div onClick={() => setOpen(true)}>{renderFn(value, props)}</div>
+        <Modal open={isOpen} onClose={() => setOpen(false)}>
+          <Mediathek
+            multi={multi}
+            onChange={(value = []) => {
+              onChange(multi ? value : value[0]);
+              setOpen(false);
+            }}
+            onClose={() => setOpen(false)}
+            value={value}
+          />
+        </Modal>
+      </div>
+    );
+  });

@@ -1,12 +1,18 @@
 import React from 'react';
 import createEdit from './edit';
-import Image from './image';
+import Thumb from './components/thumb';
 
-export default createEdit(v => (
-  <Image
-    value={v[0] || { width: 300, height: 300 }}
-    height={100}
-    maxWidth={250}
-    onClick={() => {}} // damit cursor:pointer!
-  />
-));
+export default createEdit(
+  (v, { onChange }) =>
+    console.log(v) || (
+      <Thumb
+        item={v[0] || { width: 300, height: 300 }}
+        height={100}
+        isActive={!!v[0]}
+        onRemove={e => {
+          e.stopPropagation();
+          onChange([]);
+        }}
+      />
+    ),
+);
