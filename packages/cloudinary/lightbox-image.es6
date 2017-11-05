@@ -74,6 +74,7 @@ export default class Lightbox extends Component {
     addToLightbox(
       {
         ref: this.ref,
+        origin: value.url,
         src: cloudinaryUrl(value, { w: width }),
         srcset: [
           getSrcSet(width),

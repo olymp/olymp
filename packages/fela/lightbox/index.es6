@@ -244,13 +244,7 @@ class Lightbox extends Component {
     const image = images[currentImage];
     image.srcset = image.srcSet || image.srcset;
 
-    const isPdf = image.src && image.src.indexOf('.pdf') !== -1;
-    if (isPdf) {
-      const split = image.src.split('upload/');
-      const fileName = split[1].split('/');
-
-      image.src = `${split[0]}upload/${fileName[fileName.length - 1]}`;
-    }
+    const isPdf = image.origin && image.origin.indexOf('.pdf') !== -1;
 
     let srcset;
     let sizes;
@@ -271,13 +265,13 @@ class Lightbox extends Component {
         {isPdf ? (
           <object
             name={image.caption}
-            data={image.src}
+            data={image.origin}
             width={400}
             height={image.height * 500 / image.width}
             type="application/pdf"
           >
             <embed
-              data={image.src}
+              data={image.origin}
               width={400}
               height={image.height * 500 / image.width}
               type="application/pdf"
