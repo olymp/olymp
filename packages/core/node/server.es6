@@ -7,6 +7,7 @@ import 'source-map-support/register';
 import path from 'path';
 import fs from 'fs';
 import jsonfile from 'jsonfile';
+import { URL } from 'url';
 // Express
 import express from 'express';
 import compression from 'compression';
