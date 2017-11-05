@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createComponent, border } from 'olymp-fela';
 import { debounce } from 'lodash';
-import { Input, Icon, Select } from 'antd';
+import { Input, Icon, Select, Col } from 'antd';
 
 class FilterComponent extends Component {
   constructor(props) {
@@ -37,31 +37,37 @@ class FilterComponent extends Component {
         onClick={() => this.handleChange({ target: { value: null } })}
       />
     ) : null;
-    const addonAfter =
-      sort && sort.length ? (
-        <Select
-          defaultValue={sort[0].name}
-          placeholder="Sortieren"
-          onChange={onSort}
-        >
-          {sort.map(({ name, label }) => (
-            <Select.Option key={name} value={name}>
-              {label}
-            </Select.Option>
-          ))}
-        </Select>
-      ) : null;
 
     return (
       <div className={className}>
         {children}
-        <Input
-          placeholder={placeholder || 'Filter ...'}
-          suffix={suffix}
-          value={value}
-          onChange={this.handleChange}
-          addonAfter={addonAfter}
-        />
+        <Input.Group>
+          <Col span={16}>
+            <Input
+              placeholder={placeholder || 'Filter ...'}
+              suffix={suffix}
+              value={value}
+              onChange={this.handleChange}
+            />
+          </Col>
+          <Col span={8}>
+            {!!sort &&
+              !!sort.length && (
+                <Select
+                  defaultValue={sort[0].name}
+                  placeholder="Sortieren"
+                  onChange={onSort}
+                  style={{ width: '100%' }}
+                >
+                  {sort.map(({ name, label }) => (
+                    <Select.Option key={name} value={name}>
+                      {label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
+          </Col>
+        </Input.Group>
       </div>
     );
   }
