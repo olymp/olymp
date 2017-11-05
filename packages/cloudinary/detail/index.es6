@@ -43,12 +43,14 @@ export default enhance(
           )}
         </LightboxGallery>
         {value.map(item => (
-          <div style={{ display: item.id === activeId ? 'block' : 'none' }}>
+          <div
+            key={item.id}
+            style={{ display: item.id === activeId ? 'block' : 'none' }}
+          >
             <Detail
               {...rest}
               form={form}
               id={item.id}
-              key={item.id}
               value={value}
               item={item}
             />
