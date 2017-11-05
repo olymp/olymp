@@ -76,7 +76,7 @@ const StyledInner = createComponent(
         padding: 0,
         border: 0,
         '> *:first-child': {
-          borderBottom: border(theme, theme.color),
+          borderBottom: border(theme, theme.dark4),
         },
         '& .ant-modal-title': {
           overflowY: 'visible',

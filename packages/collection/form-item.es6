@@ -5,7 +5,7 @@ import { FaAngleRight } from 'olymp-icons';
 
 const Div = createComponent(
   ({ theme, isActive }) => ({
-    borderBottom: border(theme),
+    // borderBottom: border(theme),
     paddingY: theme.space2,
     paddingX: theme.space2,
     cursor: 'pointer',

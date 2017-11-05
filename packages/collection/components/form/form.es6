@@ -48,10 +48,10 @@ const getDefaultEdit = type => {
 
 const Div = createComponent(
   ({ theme }) => ({
-    backgroundColor: theme.dark5,
+    // backgroundColor: theme.dark5,
     '> div': {
       height: '100%',
-      borderX: border(theme),
+      // borderX: border(theme),
       padding: 0,
     },
   }),
