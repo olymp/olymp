@@ -77,12 +77,13 @@ app.use(helmet());
 
 const origins = ORIGINS ? ORIGINS.split(',') : [];
 if (GRAPHQL_URL) {
-  origins.push(GRAPHQL_URL);
+  origins.push(new URL(GRAPHQL_URL).host);
 }
 if (isProd && origins.length) {
   app.use((req, res, next) => {
-    const { origin } = req.headers;
-    console.log(origin, origins);
+    const origin = req.headers.origin
+      ? new URL(req.headers.origin).host
+      : req.headers.host;
     if (origins.indexOf(origin) >= 0) {
       res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader(
