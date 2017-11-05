@@ -1,6 +1,15 @@
 import { asyncComponent } from 'react-async-component';
 
 export default asyncComponent({
-  name: 'auth',
-  resolve: () => System.import('./views'),
+  resolve: () =>
+    new Promise(resolve =>
+      // Webpack's code splitting API w/naming
+      require.ensure(
+        [],
+        require => {
+          resolve(require('./views'));
+        },
+        'auth',
+      ),
+    ),
 });
