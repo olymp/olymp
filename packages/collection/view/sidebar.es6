@@ -22,9 +22,9 @@ const Span = createComponent(
 const enhance = compose(
   withRouter,
   withState('sortBy', 'setSortBy'),
-  withPropsOnChange(['sortBy'], ({ sortBy: sort, items }) => ({
-      items: sort ? sortBy(items, [sort]) : items,
-    })),
+  withPropsOnChange(['sortBy', 'items'], ({ sortBy: sort, items }) => ({
+    items: sort ? sortBy(items, [sort]) : items,
+  })),
 );
 
 @enhance
