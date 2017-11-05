@@ -3,7 +3,7 @@ const { resolve } = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 // const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
-module.exports = (config, options) => {
+module.exports = (config, options, webpack) => {
   const {
     isProd,
     isWeb,
@@ -18,12 +18,12 @@ module.exports = (config, options) => {
   if (isProd && isWeb) {
     // config.plugins.push(new LodashModuleReplacementPlugin()),
     config.plugins.push(
-      new UglifyJSPlugin({
+      new webpack.UglifyJSPlugin({
         // sourceMap: true,
         cache: true,
         parallel: 2,
         uglifyOptions: {
-          mangle: true,
+          // mangle: true,
           /* parse: {
             // ecma: 8,
             // html5_comments: false,
