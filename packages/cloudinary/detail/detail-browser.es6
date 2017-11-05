@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, Form, Input, Collapse, Tag, Icon } from 'antd';
+import { Checkbox, Form, Input, Collapse, Tag } from 'antd';
 import { TagsEditor } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
 import getImageInfo from './info';
@@ -23,8 +23,7 @@ const CheckableTag = createComponent(
 const TagContainer = queryTags(
   createComponent(
     ({ theme }) => ({
-      paddingX: theme.space1,
-      marginBottom: theme.space2,
+      padding: theme.space2,
       hasFlex: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -95,22 +94,8 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
       <Form.Item label="Zustand" {...FormForFullLayout}>
         {form.getFieldDecorator(`${item.id}.removed`, {
           initialValue: item.removed,
-        })(
-          <Select initialValue={false} style={{ width: '100%' }}>
-            <Select.Option value={false}>
-              <b style={{ color: 'green' }}>
-                <Icon type="check" />
-              </b>{' '}
-              Veröffentlicht
-            </Select.Option>
-            <Select.Option value>
-              <b style={{ color: 'red' }}>
-                <Icon type="delete" />
-              </b>{' '}
-              Gelöscht
-            </Select.Option>
-          </Select>,
-        )}
+          valuePropName: 'checked',
+        })(<Checkbox>Gelöscht</Checkbox>)}
       </Form.Item>
       <Collapse defaultActiveKey={[]}>
         <Collapse.Panel header="Übersicht Schlagworte" key="tags">
