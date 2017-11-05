@@ -2,6 +2,7 @@ import React from 'react';
 import Form from 'olymp-ui/form';
 import { SplitView, Sidebar, List } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
+import { Prompt } from 'olymp-router';
 import { Collapse } from 'antd';
 import { toLabel } from 'olymp-utils';
 import DefaultEdits from '../../default-edits';
@@ -143,6 +144,10 @@ const FormComponent = enhance(
 
     return (
       <SplitView>
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
         <Sidebar
           isOpen
           padding={0}

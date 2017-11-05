@@ -4,6 +4,7 @@ import { Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { createComponent, Container } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
+import { Prompt } from 'olymp-router';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
 import DefaultEdits from '../../default-edits';
@@ -152,6 +153,10 @@ const FormComponent = enhance(
     return (
       <Div>
         <Container size="small">
+          <Prompt
+            when={form.isFieldsTouched()}
+            message={() => 'Änderungen verwerfen?'}
+          />
           <Sidebar
             isOpen
             width="100%"
