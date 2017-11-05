@@ -171,8 +171,8 @@ app.get('*', (req, res) => {
   if (IS_SSR === false) {
     const html = renderTemplate({
       gaTrackingId: GA_TRACKING_ID,
-      scripts: isAmp ? [] : [assets.app.js],
-      styles: isAmp ? [] : [assets.app.css],
+      scripts: isAmp || !assets.app.js ? [] : [assets.app.js],
+      styles: isAmp || !assets.app.css ? [] : [assets.app.css],
       buildOn: BUILD_ON,
     });
     res.send(html);
