@@ -7,5 +7,6 @@ export default createEdit(v => (
     value={v[0] || { width: 300, height: 300 }}
     height={100}
     maxWidth={250}
+    onClick={() => {}} // damit cursor:pointer!
   />
 ));

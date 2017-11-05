@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button as AntButton } from 'antd';
+import { Button as AntButton, Collapse } from 'antd';
 import { createComponent } from 'olymp-fela';
 
 export const FormForFullLayout = {
@@ -16,10 +16,15 @@ export const Button = createComponent(
   p => Object.keys(p),
 );
 
-export const StyledForm = createComponent(
+export const CollapsePanel = createComponent(
   ({ theme }) => ({
-    padding: theme.space2,
+    backgroundColor: theme.light,
+    '> .ant-collapse-content': {
+      '> .ant-collapse-content-box': {
+        padding: `${theme.space2} ${theme.space2} 0 ${theme.space2} !important`,
+      },
+    },
   }),
-  p => <Form {...p} />,
-  [],
+  p => <Collapse.Panel {...p} />,
+  p => Object.keys(p),
 );

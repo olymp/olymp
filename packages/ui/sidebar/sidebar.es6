@@ -64,7 +64,7 @@ const StyledInner = createComponent(
       },
       height: '100%',
       borderRadius: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.01)',
+      // backgroundColor: 'rgba(0, 0, 0, 0.01)',
       boxShadow: 'none',
       '> .ant-modal-close': {
         display: 'none',
@@ -153,7 +153,7 @@ const Title = createComponent(
     position: 'relative',
     padding: '1rem',
     '> .ant-modal-title': {
-      color: theme.dark3,
+      color: theme.dark2,
       fontSize: 40,
       padding: 10,
     },

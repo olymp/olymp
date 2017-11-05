@@ -1,9 +1,9 @@
 import React from 'react';
-import { Select, Form, Input, Collapse, Tag, Icon } from 'antd';
+import { Checkbox, Form, Input, Collapse, Tag } from 'antd';
 import { TagsEditor } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
 import getImageInfo from './info';
-import { StyledForm, FormForFullLayout } from './utils';
+import { FormForFullLayout, CollapsePanel } from './utils';
 import { queryTags } from '../gql';
 import LightboxImage from '../lightbox-image';
 
@@ -17,14 +17,13 @@ const CheckableTag = createComponent(
     },
   }),
   p => <Tag.CheckableTag {...p} />,
-  p => Object.keys(p),
+  ({ marked, ...p }) => Object.keys(p),
 );
 
 const TagContainer = queryTags(
   createComponent(
     ({ theme }) => ({
-      paddingX: theme.space1,
-      marginBottom: theme.space2,
+      padding: theme.space2,
       hasFlex: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -57,67 +56,55 @@ const TagContainer = queryTags(
 export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
   form.getFieldDecorator(`${item.id}.id`, { initialValue: item.id });
   return (
-    <StyledForm>
+    <Form>
       {value.length === 1 && (
         <Form.Item {...FormForFullLayout}>
           <LightboxImage value={item} width="100%" maxHeight={200} />
         </Form.Item>
       )}
-      <Form.Item label="Ordner" {...FormForFullLayout}>
-        {form.getFieldDecorator(`${item.id}.folder`, {
-          initialValue: item.folder,
-        })(<Input placeholder="Ordner" />)}
-      </Form.Item>
-      {
-        <Form.Item label="Quelle" {...FormForFullLayout}>
-          {form.getFieldDecorator(`${item.id}.source`, {
-            initialValue: item.source,
-          })(<Input placeholder="Quelle" />)}
-        </Form.Item>
-      }
-      <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
-        {form.getFieldDecorator(`${item.id}.caption`, {
-          initialValue: item.caption,
-        })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
-      </Form.Item>
-      <Form.Item label="Schlagworte" {...FormForFullLayout}>
-        {form.getFieldDecorator(`${item.id}.tags`, {
-          initialValue: Object.keys(groupedTags).filter(
-            key => groupedTags[key].length === value.length,
-          ),
-        })(
-          <TagsEditor
-            searchPlaceholder="Suche ..."
-            placeholder="Schlagworte"
-          />,
-        )}
-      </Form.Item>
-      <Form.Item label="Zustand" {...FormForFullLayout}>
-        {form.getFieldDecorator(`${item.id}.removed`, {
-          initialValue: item.removed,
-        })(
-          <Select initialValue={false} style={{ width: '100%' }}>
-            <Select.Option value={false}>
-              <b style={{ color: 'green' }}>
-                <Icon type="check" />
-              </b>{' '}
-              Veröffentlicht
-            </Select.Option>
-            <Select.Option value>
-              <b style={{ color: 'red' }}>
-                <Icon type="delete" />
-              </b>{' '}
-              Gelöscht
-            </Select.Option>
-          </Select>,
-        )}
-      </Form.Item>
-      <Collapse defaultActiveKey={[]}>
-        <Collapse.Panel header="Übersicht Schlagworte" key="tags">
+      <Collapse defaultActiveKey={['data']}>
+        <CollapsePanel header="Meta-Daten" key="data">
+          <Form.Item label="Ordner" {...FormForFullLayout}>
+            {form.getFieldDecorator(`${item.id}.folder`, {
+              initialValue: item.folder,
+            })(<Input placeholder="Ordner" />)}
+          </Form.Item>
+          {
+            <Form.Item label="Quelle" {...FormForFullLayout}>
+              {form.getFieldDecorator(`${item.id}.source`, {
+                initialValue: item.source,
+              })(<Input placeholder="Quelle" />)}
+            </Form.Item>
+          }
+          <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
+            {form.getFieldDecorator(`${item.id}.caption`, {
+              initialValue: item.caption,
+            })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
+          </Form.Item>
+          <Form.Item label="Schlagworte" {...FormForFullLayout}>
+            {form.getFieldDecorator(`${item.id}.tags`, {
+              initialValue: Object.keys(groupedTags).filter(
+                key => groupedTags[key].length === value.length,
+              ),
+            })(
+              <TagsEditor
+                searchPlaceholder="Suche ..."
+                placeholder="Schlagworte"
+              />,
+            )}
+          </Form.Item>
+          <Form.Item label="Zustand" {...FormForFullLayout}>
+            {form.getFieldDecorator(`${item.id}.removed`, {
+              initialValue: item.removed,
+              valuePropName: 'checked',
+            })(<Checkbox>Gelöscht</Checkbox>)}
+          </Form.Item>
+        </CollapsePanel>
+        <CollapsePanel header="Übersicht Schlagworte" key="tags">
           <TagContainer selectedTags={selectedTags} form={form} />
-        </Collapse.Panel>
+        </CollapsePanel>
         {!multi && getImageInfo(item)}
       </Collapse>
-    </StyledForm>
+    </Form>
   );
 };
