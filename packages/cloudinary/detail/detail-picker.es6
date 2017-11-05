@@ -18,7 +18,7 @@ export default ({ form, multi, item }) => {
         })(<Crop url={item.url} height={item.height} width={item.width} />)}
       </Form.Item>
       <Collapse defaultActiveKey={['data']}>
-        <CollapsePanel header="Meta-Daten" key="data">
+        <CollapsePanel header="Bild" key="data">
           {form.getFieldDecorator(`${item.id}.source`, {
             initialValue: item.source,
           })(

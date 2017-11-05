@@ -6,6 +6,7 @@ export const LOCATION_PUSH = 'LOCATION_PUSH';
 export const LOCATION_PATCH = 'LOCATION_PATCH';
 export const LOCATION_CORRECT = 'LOCATION_CORRECT';
 export const LOCATION_MISS = 'LOCATION_MISS';
+export const LOCATION_BLOCK = 'LOCATION_BLOCK';
 
 export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 
@@ -50,7 +51,9 @@ export const routerMiddleware = history => ({ getState, dispatch }) => {
     }
   };
   return nextDispatch => action => {
-    if (action.type === LOCATION_REPLACE) {
+    if (action.type === LOCATION_BLOCK) {
+      return history.block(action.payload);
+    } else if (action.type === LOCATION_REPLACE) {
       updateHistory(action.payload, false, 'replace', payload =>
         dispatch({ ...action, type: LOCATION_CHANGE, payload }),
       );
@@ -94,3 +97,6 @@ export const createMiss = dispatch => payload =>
 
 export const createReplace = dispatch => payload =>
   dispatch({ type: LOCATION_REPLACE, payload });
+
+export const createBlock = dispatch => payload =>
+  dispatch({ type: LOCATION_BLOCK, payload });

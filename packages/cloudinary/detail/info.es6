@@ -9,7 +9,7 @@ const FormForFullLayout = {
 };
 
 export default (item, app) => (
-  <CollapsePanel header="Technische Infos" key="2">
+  <CollapsePanel header="Meta-Daten" key="2">
     <Form.Item key="project" label="Projekt" {...FormForFullLayout}>
       <Input disabled placeholder="Projekt" value={app} />
     </Form.Item>
