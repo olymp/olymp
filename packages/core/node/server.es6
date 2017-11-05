@@ -81,19 +81,20 @@ if (GRAPHQL_URL) {
 }
 if (isProd && origins.length) {
   app.use((req, res, next) => {
-    const origin = req.headers.origin;
+    const { origin } = req.headers;
+    console.log(origin, origins);
     if (origins.indexOf(origin) >= 0) {
       res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET,POST,OPTIONS,PUT,PATCH,DELETE',
+      );
+      res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-Requested-With,Content-Type,Authorization,X-HTTP-Method-Override,Accept',
+      );
+      res.setHeader('Access-Control-Allow-Credentials', true);
     }
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET,POST,OPTIONS,PUT,PATCH,DELETE',
-    );
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'X-Requested-With,Content-Type,Authorization,X-HTTP-Method-Override,Accept',
-    );
-    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   });
 }
