@@ -17,7 +17,12 @@ class Lightbox extends Component {
     super(props);
     this.theme = deepMerge(defaultTheme, props.theme);
     this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
-    bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput']);
+    bindFunctions.call(this, [
+      'gotoNext',
+      'gotoPrev',
+      'closeBackdrop',
+      'handleKeyboardInput',
+    ]);
   }
   getChildContext() {
     return {
@@ -58,7 +63,11 @@ class Lightbox extends Component {
     }
 
     // add/remove event listeners
-    if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
+    if (
+      !this.props.isOpen &&
+      nextProps.isOpen &&
+      nextProps.enableKeyboardInput
+    ) {
       window.addEventListener('keydown', this.handleKeyboardInput);
     }
     if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
@@ -114,7 +123,10 @@ class Lightbox extends Component {
   closeBackdrop(event) {
     // make sure event only happens if they click the backdrop
     // and if the caption is widening the figure element let that respond too
-    if (event.target.id === 'lightboxBackdrop' || event.target.tagName === 'FIGURE') {
+    if (
+      event.target.id === 'lightboxBackdrop' ||
+      event.target.tagName === 'FIGURE'
+    ) {
       this.props.onClose();
     }
   }
@@ -186,7 +198,8 @@ class Lightbox extends Component {
 
     let offsetThumbnails = 0;
     if (showThumbnails) {
-      offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
+      offsetThumbnails =
+        this.theme.thumbnail.size + this.theme.container.gutter.vertical;
     }
 
     return (
@@ -231,6 +244,14 @@ class Lightbox extends Component {
     const image = images[currentImage];
     image.srcset = image.srcSet || image.srcset;
 
+    const isPdf = image.src && image.src.indexOf('.pdf') !== -1;
+    if (isPdf) {
+      const split = image.src.split('upload/');
+      const fileName = split[1].split('/');
+
+      image.src = `${split[0]}upload/${fileName[fileName.length - 1]}`;
+    }
+
     let srcset;
     let sizes;
 
@@ -247,23 +268,35 @@ class Lightbox extends Component {
 
     return (
       <figure className={css(this.classes.figure)}>
-        {/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
-        <img
-          className={css(this.classes.image)}
-          onClick={onClickImage ? onClickImage : undefined}
-          sizes={sizes}
-          alt={image.alt}
-          src={image.src}
-          srcSet={srcset}
-          style={{
-            cursor: this.props.onClickImage ? 'pointer' : 'auto',
-            maxHeight: `calc(100vh - ${heightOffset})`,
-          }}
-        />
+        {isPdf ? (
+          <object
+            name={image.caption}
+            data={image.src}
+            width={400}
+            height={image.height * 500 / image.width}
+            type="application/pdf"
+          >
+            <embed
+              data={image.src}
+              width={400}
+              height={image.height * 500 / image.width}
+              type="application/pdf"
+            />
+          </object>
+        ) : (
+          <img
+            className={css(this.classes.image)}
+            onClick={onClickImage || undefined}
+            sizes={sizes}
+            alt={image.alt}
+            src={image.src}
+            srcSet={srcset}
+            style={{
+              cursor: this.props.onClickImage ? 'pointer' : 'auto',
+              maxHeight: `calc(100vh - ${heightOffset})`,
+            }}
+          />
+        )}
         <Footer
           caption={images[currentImage].caption}
           countCurrent={currentImage + 1}
@@ -275,7 +308,13 @@ class Lightbox extends Component {
     );
   }
   renderThumbnails() {
-    const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+    const {
+      images,
+      currentImage,
+      onClickThumbnail,
+      showThumbnails,
+      thumbnailOffset,
+    } = this.props;
 
     if (!showThumbnails) {
       return;
