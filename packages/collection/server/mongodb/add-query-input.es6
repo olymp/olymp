@@ -11,58 +11,6 @@ const fetch = createTypeFetcher(
 );
 
 const getArgument = (field, ast) => {
-  // if field ist required
-  if (get(field, 'type.kind') === 'NonNullType') {
-    field.type.name = get(field, 'type.type.name');
-    field.type.kind = 'NamedType';
-  }
-
-  const requiredTest = {
-    /* kind: 'FieldDefinition',
-    name: {
-      kind: 'Name',
-      value: 'state',
-      loc: { start: 172, end: 177 },
-    },
-    arguments: [], */
-    type: {
-      kind: 'NonNullType',
-      type: {
-        kind: 'NamedType',
-        name: {
-          kind: 'Name',
-          value: 'DOCUMENT_STATE',
-          loc: { start: 179, end: 193 },
-        },
-        loc: { start: 179, end: 193 },
-      },
-      loc: { start: 179, end: 194 },
-    },
-    /* directives: [],
-    loc: { start: 172, end: 194 }, */
-  };
-
-  const test = {
-    /* kind: 'FieldDefinition',
-    name: {
-      kind: 'Name',
-      value: 'updatedById',
-      loc: { start: 27, end: 38 },
-    },
-    arguments: [], */
-    type: {
-      kind: 'NamedType',
-      name: {
-        kind: 'Name',
-        value: 'String',
-        loc: { start: 7641, end: 7647 },
-      },
-      loc: { start: 7641, end: 7647 },
-    },
-    /* directives: [],
-    loc: { start: 27, end: 46 }, */
-  };
-
   const value = get(field, 'type.type.name.value');
   if (field.type.kind === 'ListType' && value && value === 'String') {
     addDefinition(
@@ -202,7 +150,6 @@ const getArgument = (field, ast) => {
     );
     return `${field.name.value}: GenericQuery`;
   }
-  // if (fieldType) console.log(fieldType);
 };
 
 export default (ast, node) => {

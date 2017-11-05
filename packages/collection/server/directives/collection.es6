@@ -15,7 +15,7 @@ export default {
         ast,
         node,
         `
-          id: String!
+          id: String
           name: String!
           # @label("Schlagworte")
           tags: [String]
