@@ -1,7 +1,6 @@
 import React from 'react';
 import Form, { defaultLayout } from 'olymp-ui/form';
-import { createComponent, border } from 'olymp-fela';
-import { FaAngleRight } from 'olymp-icons';
+import { createComponent } from 'olymp-fela';
 
 const Div = createComponent(
   ({ theme, isActive }) => ({
@@ -34,17 +33,6 @@ export default ({
   >
     <Form.Item {...defaultLayout} {...props}>
       {children}
-      {full && (
-        <FaAngleRight
-          size={18}
-          color={isActive ? true : undefined}
-          style={{
-            position: 'absolute',
-            right: -3,
-            top: 7,
-          }}
-        />
-      )}
     </Form.Item>
   </Div>
 );

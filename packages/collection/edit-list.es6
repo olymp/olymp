@@ -7,19 +7,10 @@ import {
   withHandlers,
 } from 'recompose';
 import { createComponent, Modal } from 'olymp-fela';
-import { TimeRangesEditor } from 'olymp-ui';
 import { Button } from 'antd';
 import Form from './components/form/form-list';
 import FormItem from './form-item';
 import withCollection from './decorators/with-collection';
-
-const Label = createComponent(
-  () => ({
-    display: 'block',
-  }),
-  'div',
-  p => Object.keys(p),
-);
 
 const Footer = createComponent(
   ({ theme }) => ({
@@ -69,13 +60,13 @@ export default {
       ...p
     }) => (
       <FormItem {...p}>
-        <Label
+        <Button
           onClick={() => setOpen(true)}
           data-__field={dataField}
           data-__meta={dataMeta}
         >
           {value.length} Einträge
-        </Label>
+        </Button>
 
         <Modal
           footer={<Footer onClose={() => setOpen(false)} />}

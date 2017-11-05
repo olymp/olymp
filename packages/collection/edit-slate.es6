@@ -5,14 +5,6 @@ import { createComponent, Modal } from 'olymp-fela';
 import { Button } from 'antd';
 import FormItem from './form-item';
 
-const Label = createComponent(
-  () => ({
-    display: 'block',
-  }),
-  'div',
-  p => Object.keys(p),
-);
-
 const Footer = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
@@ -52,13 +44,13 @@ export default {
       ...p
     }) => (
       <FormItem {...p}>
-        <Label
+        <Button
           onClick={() => setOpen(true)}
           data-__field={dataField}
           data-__meta={dataMeta}
         >
           Bearbeiten
-        </Label>
+        </Button>
 
         <Modal
           footer={<Footer onClose={() => setOpen(false)} />}
