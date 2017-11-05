@@ -80,7 +80,7 @@ const styles = ({ theme }) => ({
   '& .drop-icon': {
     lineHeight: 1,
   },
-  ifSmall: {
+  ifSmallDown: {
     '& li': {
       width: '33.333%',
     },

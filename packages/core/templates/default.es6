@@ -41,8 +41,10 @@ export default ({
       .join('\n')}
     ${fela
       .map(
-        x =>
-          `<style type="text/css" data-fela-type="${x.type}">${x.css}</style>`,
+        ({ type, css, media }) =>
+          media
+            ? `<style type="text/css" data-fela-type="${type}" media="${media}">${css}</style>`
+            : `<style type="text/css" data-fela-type="${type}">${css}</style>`,
       )
       .join('\n')}
     ${gaTrackingId
