@@ -13,7 +13,6 @@ export default renderFn =>
   enhance(({ onChange, value, isOpen, setOpen, multi }) => (
     <div>
       <div onClick={() => setOpen(true)}>{renderFn(value, multi)}</div>
-
       <Modal open={isOpen} onClose={() => setOpen(false)}>
         <Mediathek
           multi={multi}

@@ -10,12 +10,12 @@ export default class ToolbarText extends Component {
     e.preventDefault();
     onChange(value.change().setBlock(props.type));
   };
-  renderBlockButton = props =>
-    this.renderOptionButton(props, hasBlock, this.onClickBlock);
+  renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
     e.stopPropagation();
     e.preventDefault();
     const { value, onChange } = this.props;
+    console.log(type);
     onChange(value.change().toggleMark(type));
   };
   renderMarkButton = props =>

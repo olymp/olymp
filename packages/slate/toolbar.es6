@@ -18,6 +18,11 @@ export const Button = createComponent(
       size: 16,
       marginBottom: -4,
     },
+    '> div> div > svg': {
+      fill: active ? theme.light : theme.light2,
+      size: 16,
+      marginBottom: -4,
+    },
     '> a > svg': {
       fill: active ? theme.light : theme.light2,
       size: 16,
@@ -74,8 +79,10 @@ const ScrollPortal = withScrollHide(
       return null;
     }
     const tooltipPosition = parent.getBoundingClientRect();
-    const scrollY = window.scrollY !== undefined ? window.scrollY : window.pageYOffset;
-    const scrollX = window.scrollX !== undefined ? window.scrollX : window.pageXOffset;
+    const scrollY =
+      window.scrollY !== undefined ? window.scrollY : window.pageYOffset;
+    const scrollX =
+      window.scrollX !== undefined ? window.scrollX : window.pageXOffset;
     const top = scrollY + tooltipPosition.top;
     const left = scrollX + tooltipPosition.left;
     return {
@@ -104,7 +111,7 @@ const ScrollPortal = withScrollHide(
   )),
 );
 
-export default (props) => {
+export default props => {
   const { isOpened, parent, children, color } = props;
 
   if (!isOpened) {
@@ -121,7 +128,12 @@ export default (props) => {
 
   return (
     <Portal>
-      <WrappedMenu color={color} selectedKeys={[]} mode="horizontal" theme="dark">
+      <WrappedMenu
+        color={color}
+        selectedKeys={[]}
+        mode="horizontal"
+        theme="dark"
+      >
         {children}
       </WrappedMenu>
     </Portal>
