@@ -320,6 +320,9 @@ module.exports = ({
     config.output.filename = '[name].js';
   } else {
     config.plugins.push(
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    );
+    config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
         path: path.resolve(process.cwd(), folder, target.split('-')[0]),
