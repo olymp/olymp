@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'olymp-ui/form';
 import { Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { createComponent, Container, border } from 'olymp-fela';
+import { createComponent, Container } from 'olymp-fela';
 import { toLabel } from 'olymp-utils';
 import { get } from 'lodash';
 import DefaultEdits from '../../default-edits';

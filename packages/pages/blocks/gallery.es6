@@ -2,9 +2,17 @@ import React from 'react';
 import {
   LightboxImage,
   EditText,
+  Lightbox,
+  cloudinaryUrl,
 } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
+import { withProps, withPropsOnChange, compose } from 'recompose';
 import { FaPlus, FaMinus } from 'olymp-icons';
+
+const getSrcSet = (value, w) =>
+  `${cloudinaryUrl(value, {
+    w: Math.floor(w),
+  })} ${Math.floor(w)}w`;
 
 const Container = createComponent(
   ({ theme }) => ({
@@ -23,12 +31,17 @@ const ImageContainer = createComponent(
   ({ theme, size }) => {
     const style = {
       paddingRight: theme.space3,
-      paddingBottom: theme.space2,
+      paddingBottom: theme.space1,
       float: 'left',
       width: `${100 / size}%`,
       minWidth: `${100 / size}%`,
-      hasFlex: {
-        display: 'flex',
+      '> caption': {
+        width: '100%',
+        fontSize: 12,
+        fontStyle: 'italic',
+        display: 'block',
+        textAlign: 'center',
+        padding: 0,
       },
     };
     style[`:nth-child(${size}n)`] = { paddingRight: 0 };
@@ -39,46 +52,80 @@ const ImageContainer = createComponent(
   ({ size, ...p }) => Object.keys(p),
 );
 
+const enhance = compose(
+  withProps(({ getData }) => ({
+    items: getData('value', []),
+  })),
+  withPropsOnChange(['items'], ({ items }) => ({
+    lightboxItems: items.map(value => ({
+      ref: value.id,
+      src: cloudinaryUrl(value, { w: 800 }),
+      srcset: [
+        getSrcSet(value, 800),
+        getSrcSet(value, 800 / 4 * 3),
+        getSrcSet(value, 800 / 2),
+        getSrcSet(value, 800 / 4),
+      ],
+      thumbnail: cloudinaryUrl(value, {
+        w: 50,
+        h: 50,
+      }),
+      caption:
+        value.caption && value.source
+          ? `${value.caption} - ${value.source}`
+          : value.caption || value.source || '',
+    })),
+    items: items || [
+      {
+        width: 400,
+        height: 300,
+      },
+      {
+        width: 400,
+        height: 300,
+      },
+      {
+        width: 400,
+        height: 300,
+      },
+    ],
+  })),
+);
+
 export default {
   type: 'Pages.Media.Gallery',
   isVoid: true,
   kind: 'block',
   label: 'Galerie',
   category: 'Bilder',
-  component: ({
-    getData,
-    setActive,
-    className,
-    attributes,
-    children,
-    node,
-  }) => (
-    <Container {...attributes}>
-      {children}
-      {getData('value', [
-        {
-          width: 400,
-          height: 300,
-        },
-        {
-          width: 400,
-          height: 300,
-        },
-        {
-          width: 400,
-          height: 300,
-        },
-      ]).map((image, i) => (
-        <ImageContainer size={getData('size', 3)} key={image.id || i}>
-          <LightboxImage
-            className={className}
-            onClick={setActive}
-            width="100%"
-            value={image}
-          />
-        </ImageContainer>
-      ))}
-    </Container>
+  component: enhance(
+    ({
+      getData,
+      setActive,
+      className,
+      attributes,
+      children,
+      lightboxItems,
+      items,
+    }) => (
+      <Container {...attributes}>
+        <Lightbox images={lightboxItems} />
+        {children}
+        {items.map((image, i) => (
+          <ImageContainer size={getData('size', 3)} key={image.id || i}>
+            <LightboxImage
+              insert={false}
+              imageRef={image.id}
+              className={className}
+              onClick={setActive}
+              width="100%"
+              value={image}
+            />
+            {image.caption && <caption>{image.caption}</caption>}
+          </ImageContainer>
+        ))}
+      </Container>
+    ),
   ),
   styles: ({ getData }) => ({
     float: getData('float', 'none'),
