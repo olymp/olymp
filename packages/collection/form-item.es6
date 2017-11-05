@@ -5,11 +5,10 @@ import { FaAngleRight } from 'olymp-icons';
 
 const Div = createComponent(
   ({ theme, isActive }) => ({
-    borderBottom: border(theme),
     paddingY: theme.space2,
     paddingX: theme.space2,
     cursor: 'pointer',
-    backgroundColor: isActive ? theme.dark5 : theme.light,
+    backgroundColor: isActive && theme.dark5,
     onHover: {
       backgroundColor: theme.dark5,
     },

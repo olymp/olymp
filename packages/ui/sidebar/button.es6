@@ -4,12 +4,10 @@ import { Button as AntButton } from 'antd';
 
 const Button = createComponent(
   ({ theme }) => ({
-    // display: 'block!important',
     paddingTop: 1,
     backgroundColor: theme.dark5,
     borderWidth: 0,
-    // borderColor: theme.dark5,
-    color: theme.color,
+    color: theme.dark3,
     onHover: {
       borderWidth: 1,
     },

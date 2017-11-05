@@ -18,7 +18,7 @@ const StyledInner = createComponent(
     maxWidth: width,
     height: '100%',
     transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
-    boxShadow: !borderLess && theme.boxShadow,
+    boxShadow: theme.boxShadow,
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,
@@ -76,7 +76,7 @@ const StyledInner = createComponent(
         padding: 0,
         border: 0,
         '> *:first-child': {
-          borderBottom: border(theme, theme.color),
+          borderBottom: border(theme),
         },
         '& .ant-modal-title': {
           overflowY: 'visible',
@@ -153,7 +153,7 @@ const Title = createComponent(
     position: 'relative',
     padding: '1rem',
     '> .ant-modal-title': {
-      color: theme.color,
+      color: theme.dark3,
       fontSize: 40,
       padding: 10,
     },
