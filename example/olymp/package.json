@@ -14,26 +14,26 @@
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
-    "unmockedModulePathPatterns": [
-      "react",
-      "enzyme",
-      "jasmine-enzyme"
-    ]
+    "unmockedModulePathPatterns": ["react", "enzyme", "jasmine-enzyme"]
   },
   "scripts": {
     "publish": "git push dev master",
     "up": "npm-check -u",
     "dev": "olymp dev",
+    "gql-fake":
+      "GRAPHQL_FAKE=http://localhost:9002/graphql graphql-faker ./server/mock.graphql -e http://localhost:3000/graphql",
     "build": "olymp build",
     "start": "olymp start",
     "heroku-postbuild": "olymp build",
-    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"app/**/*.js\"",
+    "prettier":
+      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"app/**/*.js\"",
     "electron": "GRAPHQL_URL=https://site.com/graphql olymp build --electron",
     "electron:dev": "olymp dev --electron",
     "electron:mac": "electron-builder",
     "electron:win": "electron-builder --win",
     "electron:win32": "electron-builder --win --ia32",
-    "electron:publish": "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
+    "electron:publish":
+      "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
   },
   "dependencies": {
     "mongodb": "^2.2.31",
@@ -67,15 +67,10 @@
       "buildResources": "public"
     },
     "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
+      "target": ["dmg", "zip"]
     },
     "win": {
-      "target": [
-        "nsis"
-      ]
+      "target": ["nsis"]
     },
     "dmg": {
       "title": "Olymp Example",
@@ -94,10 +89,7 @@
   "olymp": {
     "app": "./app",
     "server": "./server",
-    "plugins": [
-      "less",
-      "babel"
-    ],
+    "plugins": ["less", "babel"],
     "modifyVars": {
       "font-size-base": "15px",
       "primary-color": "#8e44ad"

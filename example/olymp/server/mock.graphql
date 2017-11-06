@@ -1,0 +1,12 @@
+extend type RootQuery {
+  pet: Pet
+}
+
+type Pet {
+  name: String @fake(type:firstName)
+  image: String @fake(type:imageUrl, options: {imageCategory:cats})
+}
+
+extend type User {
+  pet: [Pet]
+}

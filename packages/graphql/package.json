@@ -18,7 +18,11 @@
     "graphql-server-express": "^1.2.0",
     "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.7.2",
-    "graphql-voyager": "^1.0.0-rc.9",
     "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "graphql-faker": "^1.5.0",
+    "install": "^0.10.1",
+    "npm": "^5.5.1"
   }
 }
