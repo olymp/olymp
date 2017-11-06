@@ -8,7 +8,7 @@ const Image = createComponent(
   ({ width, height, theme, circle }) => ({
     width,
     height,
-    backgroundColor: theme.light,
+    backgroundColor: theme.dark2,
     borderRadius: circle ? '50%' : 0,
     '> img': {
       opacity: 0.4,
