@@ -1,5 +1,3 @@
-import { graphql as graphqlFn } from 'react-apollo';
-import { graphqlLodash } from 'graphql-lodash';
 import gql from 'graphql-tag';
 import shortId from 'shortid';
 import omit from './omit-type';
