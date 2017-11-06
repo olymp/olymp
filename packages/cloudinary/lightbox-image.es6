@@ -24,7 +24,7 @@ const Img = createComponent(
 }))
 export default class Lightbox extends Component {
   static contextTypes = {
-    gallery: PropTypes.number,
+    gallery: PropTypes.string,
   };
 
   static defaultProps = {

@@ -68,6 +68,20 @@ A awesome olymp example.
 
 ### Athena
 A olymp-based content-management-system. Probably the best in the world! 😉
+- SEO friendly server-side-rendering and meta tags
+- Code-Splitting for optimal bundle sizes
+- Easy CSS-in-JS styling (fela)
+- Google AMP compatible
+- Reactive images that adapt to whatever place they fill
+- In-place editing with custom blocks
+- Efficient data-fetching via apollo and graphql
+- Easy custom GraphQL datatypes 
+- Media library with folders and tags
+- Google Analytics Charts
+
+
+
+Easily scores 100% on google pagespeed 
 
 ## Usage
 Using OLYMP is very easy.

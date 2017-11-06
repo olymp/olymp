@@ -1,8 +1,9 @@
 import React from 'react';
 import {
+  Lightbox,
   LightboxImage,
   EditText,
-  Lightbox,
+  LightboxGallery,
   cloudinaryUrl,
 } from 'olymp-cloudinary';
 import { createComponent } from 'olymp-fela';
@@ -54,41 +55,25 @@ const ImageContainer = createComponent(
 
 const enhance = compose(
   withProps(({ getData }) => ({
-    items: getData('value', []),
+    items: getData('value', [
+      {
+        width: 400,
+        height: 300,
+      },
+      {
+        width: 400,
+        height: 300,
+      },
+      {
+        width: 400,
+        height: 300,
+      },
+    ]),
   })),
-  withPropsOnChange(['items'], ({ items }) => ({
-    lightboxItems: items.map(value => ({
-      ref: value.id,
-      src: cloudinaryUrl(value, { w: 800 }),
-      srcset: [
-        getSrcSet(value, 800),
-        getSrcSet(value, 800 / 4 * 3),
-        getSrcSet(value, 800 / 2),
-        getSrcSet(value, 800 / 4),
-      ],
-      thumbnail: cloudinaryUrl(value, {
-        w: 50,
-        h: 50,
-      }),
-      caption:
-        value.caption && value.source
-          ? `${value.caption} - ${value.source}`
-          : value.caption || value.source || '',
-    })),
-    items: items || [
-      {
-        width: 400,
-        height: 300,
-      },
-      {
-        width: 400,
-        height: 300,
-      },
-      {
-        width: 400,
-        height: 300,
-      },
-    ],
+  withPropsOnChange(['xyz'], ({}) => ({
+    id: Math.random()
+      .toString(36)
+      .substr(2, 9),
   })),
 );
 
@@ -99,32 +84,24 @@ export default {
   label: 'Galerie',
   category: 'Bilder',
   component: enhance(
-    ({
-      getData,
-      setActive,
-      className,
-      attributes,
-      children,
-      lightboxItems,
-      items,
-    }) => (
-      <Container {...attributes}>
-        <Lightbox images={lightboxItems} />
-        {children}
-        {items.map((image, i) => (
-          <ImageContainer size={getData('size', 3)} key={image.id || i}>
-            <LightboxImage
-              insert={false}
-              imageRef={image.id}
-              className={className}
-              onClick={setActive}
-              width="100%"
-              value={image}
-            />
-            {image.caption && <caption>{image.caption}</caption>}
-          </ImageContainer>
-        ))}
-      </Container>
+    ({ getData, setActive, className, attributes, children, items, id }) => (
+      <LightboxGallery gallery={id}>
+        <Container {...attributes}>
+          {children}
+          <Lightbox />
+          {items.map((image, i) => (
+            <ImageContainer size={getData('size', 3)} key={image.id || i}>
+              <LightboxImage
+                className={className}
+                onClick={setActive}
+                width="100%"
+                value={image}
+              />
+              {image.caption && <caption>{image.caption}</caption>}
+            </ImageContainer>
+          ))}
+        </Container>
+      </LightboxGallery>
     ),
   ),
   styles: ({ getData }) => ({
