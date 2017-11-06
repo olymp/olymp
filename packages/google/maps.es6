@@ -31,8 +31,8 @@ const StyledMap = createComponent(
 const Marker = createComponent(
   ({ theme, active, $hover, onHover }) => ({
     display: 'block',
-    fill: theme.dark2,
-    opacity: !onHover || active || $hover ? 1 : 0.5,
+    fill: active ? theme.color : theme.dark2,
+    // opacity: !onHover || active || $hover ? 1 : 0.8,
     cursor: !!onHover && 'pointer',
   }),
   ({ className, onHover }) => (
