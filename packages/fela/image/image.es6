@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { compose, withPropsOnChange, withState } from 'recompose';
+import { compose, withPropsOnChange, withState, withProps } from 'recompose';
 import { withAmp } from 'olymp-utils';
 import ReactResizeDetector from 'react-resize-detector';
 import Container from './container';
@@ -125,7 +125,7 @@ const enhance = compose(
   withPropsOnChange(['mode', 'ratio', 'srcRatio', 'cWidth'], props =>
     getMode(props),
   ),
-  withPropsOnChange(['src', 'w', 'h'], ({ src, w, h }) => ({
+  withProps(({ src, w, h }) => ({
     url: typeof src === 'function' ? src(w, h) : src,
   })),
 );

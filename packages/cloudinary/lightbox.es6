@@ -20,10 +20,10 @@ const LightBox = asyncComponent({
 });
 
 @getContext({
-  gallery: PropTypes.number,
+  gallery: PropTypes.string,
 })
 @connect(
-  ({ location, lightbox, gallery }) => {
+  ({ location, lightbox }, { gallery }) => {
     const images = (gallery ? lightbox[gallery] : lightbox.images) || [];
     const ref = location.query.lightbox;
     const index = images.findIndex(img => img.ref === ref);
@@ -35,7 +35,7 @@ const LightBox = asyncComponent({
       prev,
       next,
       index,
-      image: index >= 0 ? lightbox.images[index] : null,
+      image: index >= 0 ? images[index] : null,
     };
   },
   dispatch => ({

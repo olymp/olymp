@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'olymp-fela';
+import { withHandlers } from 'recompose';
 
 // https://github.com/cloudinary/cloudinary-react
 // http://cloudinary.com/documentation/image_transformation_reference
@@ -41,43 +42,38 @@ export const cloudinaryUrl = (value, options) => {
   }
 };
 
-const CloudinaryImage = ({
-  options,
-  value,
-  ratio,
-  avatar,
-  alt,
-  maxResolution,
-  ...rest
-}) => {
-  if (!value) {
-    return <div />;
-  }
+const enhance = withHandlers({
+  getUrl: ({ avatar, value, options }) => (w, h) =>
+    value && value.url
+      ? cloudinaryUrl(value, {
+          w,
+          h,
+          g: avatar ? 'face' : 'auto',
+          ...options,
+        })
+      : undefined,
+});
+const CloudinaryImage = enhance(
+  ({ options, value, ratio, avatar, alt, maxResolution, getUrl, ...rest }) => {
+    if (!value) {
+      return <div />;
+    }
 
-  const width = (value.crop && value.crop[0]) || value.width;
-  const height = (value.crop && value.crop[1]) || value.height;
+    const width = (value.crop && value.crop[0]) || value.width;
+    const height = (value.crop && value.crop[1]) || value.height;
 
-  return (
-    <Image
-      {...rest}
-      maxResolution={maxResolution > 6000000 ? 6000000 : maxResolution}
-      src={
-        value && value.url
-          ? (w, h) =>
-              cloudinaryUrl(value, {
-                w,
-                h,
-                g: avatar ? 'face' : 'auto',
-                ...options,
-              })
-          : undefined
-      }
-      alt={alt || value.caption}
-      ratio={ratio || height / width}
-      srcRatio={height / width}
-    />
-  );
-};
+    return (
+      <Image
+        {...rest}
+        maxResolution={maxResolution > 6000000 ? 6000000 : maxResolution}
+        src={getUrl}
+        alt={alt || value.caption}
+        ratio={ratio || height / width}
+        srcRatio={height / width}
+      />
+    );
+  },
+);
 CloudinaryImage.propTypes = {
   value: PropTypes.shape({
     url: PropTypes.string,

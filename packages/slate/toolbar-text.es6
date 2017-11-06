@@ -5,12 +5,17 @@ import hasMark from './utils/has-mark';
 import hasBlock from './utils/has-block';
 
 export default class ToolbarText extends Component {
-  onClickBlock = (e, props) => {
+  onClickBlock = (e, props, isActive) => {
     const { value, onChange } = this.props;
     e.preventDefault();
-    onChange(value.change().setBlock(props.type));
+    if (isActive) {
+      onChange(value.change().setBlock('paragraph'));
+    } else {
+      onChange(value.change().setBlock(props.type));
+    }
   };
-  renderBlockButton = props => this.renderOptionButton(props, hasBlock, this.onClickBlock);
+  renderBlockButton = props =>
+    this.renderOptionButton(props, hasBlock, this.onClickBlock);
   onClickMark = (e, type) => {
     e.stopPropagation();
     e.preventDefault();
@@ -31,7 +36,7 @@ export default class ToolbarText extends Component {
     const { value } = this.props;
     const { type } = props;
     const isActive = isActiveFn(value, type);
-    const onMouseDown = e => onMouseDownFn(e, props);
+    const onMouseDown = e => onMouseDownFn(e, props, isActive);
 
     const icon = label || props.label || <Icon type={props.icon} />;
     if (type && Array.isArray(type)) {

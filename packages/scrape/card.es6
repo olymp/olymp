@@ -41,6 +41,7 @@ const styles = props => ({
 });
 const component = ({
   loading,
+  data,
   scrape: { image, title, description, url, origin, favicon },
   error,
   children,
@@ -103,14 +104,14 @@ const card = graphql(
   `,
   {
     options: ({ value }) => ({
-      fetchPolicy: !value ? 'cache-only' : undefined,
+      fetchPolicy: !value ? 'cache-only' : 'network-only',
       variables: {
         url: value,
       },
     }),
     props: ({ ownProps, data }) => ({
       ...ownProps,
-      loading: data.loading,
+      loading: data.loading && !data.error,
       value: ownProps.value,
       error: data.error,
       scrape: data.scrape || {},
