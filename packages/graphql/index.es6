@@ -93,20 +93,3 @@ export const createQuery = dispatch => ({ query, variables }) =>
     query,
     variables,
   });
-
-export { gql };
-export const graphql = (rawQuery, config) => {
-  const { query, transform } = graphqlLodash(rawQuery);
-  const origProps = (config && config.props) || (props => props);
-
-  return comp =>
-    graphqlFn(query, {
-      ...config,
-      props: props =>
-        origProps({
-          ...props,
-          rawData: props.data,
-          data: transform(props.data),
-        }),
-    })(comp);
-};
