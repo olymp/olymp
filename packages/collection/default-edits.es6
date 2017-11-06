@@ -1,3 +1,4 @@
+import strings from './edit-strings';
 import tags from './edit-tags';
 import slate from './edit-slate';
 import openings from './edit-openings';
@@ -22,6 +23,7 @@ export default {
   color,
   date,
   enu,
+  strings,
   tags,
   slate,
   openings,
