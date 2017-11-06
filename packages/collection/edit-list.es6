@@ -8,7 +8,7 @@ import {
 } from 'recompose';
 import { createComponent, Modal } from 'olymp-fela';
 import { Button } from 'antd';
-import Form from './components/form/form-list';
+import Form from './form-list';
 import FormItem from './form-item';
 import withCollection from './decorators/with-collection';
 

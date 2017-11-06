@@ -7,7 +7,7 @@ import { toLabel } from 'olymp-utils';
 import { Prompt } from 'olymp-router';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
-import DefaultEdits from '../../default-edits';
+import DefaultEdits from './default-edits';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
 const Items = ({ schema, activeField, form, item, value, ...rest }) =>

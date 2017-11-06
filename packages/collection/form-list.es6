@@ -5,7 +5,7 @@ import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { Prompt } from 'olymp-router';
 import { Collapse } from 'antd';
 import { toLabel } from 'olymp-utils';
-import DefaultEdits from '../../default-edits';
+import DefaultEdits from './default-edits';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
 const getHeader = title => (

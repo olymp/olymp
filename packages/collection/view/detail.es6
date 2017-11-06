@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Form } from 'antd';
 import { createUpdateQuery } from 'olymp-router';
 import withItem from '../decorators/with-item';
-import { DetailForm } from '../components';
+import DetailForm from '../form';
 
 const enhance = compose(
   Form.create(),

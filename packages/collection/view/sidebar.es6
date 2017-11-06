@@ -7,7 +7,7 @@ import { compose, withState, withPropsOnChange } from 'recompose';
 import { Sidebar, List } from 'olymp-ui';
 import { createComponent } from 'olymp-fela';
 import format from 'date-fns/format';
-import { FieldValue } from '../components';
+import FieldValue from '../field-value';
 
 const Span = createComponent(
   ({ theme }) => ({
