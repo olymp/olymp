@@ -1,19 +1,9 @@
+import { graphql as graphqlFn } from 'react-apollo';
+import { graphqlLodash } from 'graphql-lodash';
 import gql from 'graphql-tag';
 import shortId from 'shortid';
 import omit from './omit-type';
-/* import WebworkerPromise from 'webworker-promise';
-import Worker from 'worker-loader?inline!./worker.js';
 
-const worker = new WebworkerPromise(new Worker());
-worker
-  .postMessage('ping')
-  .then((response) => {
-    console.log(response);
-    // handle response
-  })
-  .catch((error) => {
-    // handle error
-  }); */
 export const APOLLO_MUTATE = 'APOLLO_MUTATE';
 export const APOLLO_QUERY = 'APOLLO_QUERY';
 
@@ -103,3 +93,20 @@ export const createQuery = dispatch => ({ query, variables }) =>
     query,
     variables,
   });
+
+export { gql };
+export const graphql = (rawQuery, config) => {
+  const { query, transform } = graphqlLodash(rawQuery);
+  const origProps = (config && config.props) || (props => props);
+
+  return comp =>
+    graphqlFn(query, {
+      ...config,
+      props: props =>
+        origProps({
+          ...props,
+          rawData: props.data,
+          data: transform(props.data),
+        }),
+    })(comp);
+};
