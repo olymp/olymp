@@ -16,21 +16,6 @@ class Prompt extends React.Component {
     when: true,
   };
 
-  enable(message) {
-    if (this.unblock) {
-      this.unblock();
-    }
-
-    this.unblock = this.props.block(message);
-  }
-
-  disable() {
-    if (this.unblock) {
-      this.unblock();
-      this.unblock = null;
-    }
-  }
-
   componentWillMount() {
     if (this.props.when) {
       this.enable(this.props.message);
@@ -49,6 +34,21 @@ class Prompt extends React.Component {
 
   componentWillUnmount() {
     this.disable();
+  }
+
+  enable(message) {
+    if (this.unblock) {
+      this.unblock();
+    }
+
+    this.unblock = this.props.block(message);
+  }
+
+  disable() {
+    if (this.unblock) {
+      this.unblock();
+      this.unblock = null;
+    }
   }
 
   render() {
