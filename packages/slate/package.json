@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "immutable": "^3.8.2",
+    "react-scroll": "^1.6.4",
     "slate": "^0.30.6",
     "slate-base64-serializer": "^0.2.8",
     "slate-edit-list": "^0.8.0",
