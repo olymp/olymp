@@ -42,25 +42,26 @@ export default {
       'data-__field': dataField,
       'data-__meta': dataMeta,
       ...p
-    }) => (
-      <FormItem {...p}>
-        <Button
-          onClick={() => setOpen(true)}
-          data-__field={dataField}
-          data-__meta={dataMeta}
-        >
-          Bearbeiten
-        </Button>
+    }) =>
+      console.log(p) || (
+        <FormItem {...p}>
+          <Button
+            onClick={() => setOpen(true)}
+            data-__field={dataField}
+            data-__meta={dataMeta}
+          >
+            Bearbeiten
+          </Button>
 
-        <Modal
-          footer={<Footer onClose={() => setOpen(false)} />}
-          open={isOpen}
-          onClose={() => setOpen(false)}
-        >
-          <Slate {...p} />
-        </Modal>
-      </FormItem>
-    ),
+          <Modal
+            footer={<Footer onClose={() => setOpen(false)} />}
+            open={isOpen}
+            onClose={() => setOpen(false)}
+          >
+            <Slate {...p} />
+          </Modal>
+        </FormItem>
+      ),
   ),
   full: toClass(Slate),
 };
