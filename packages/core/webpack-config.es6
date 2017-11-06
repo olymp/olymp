@@ -154,9 +154,6 @@ module.exports = ({
         'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
           ? `"${process.env.GRAPHQL_URL}"`
           : false,
-        'process.env.GRAPHQL_FAKE': process.env.GRAPHQL_FAKE
-          ? `"${process.env.GRAPHQL_FAKE}"`
-          : false,
         'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
           ? `"${process.env.CRASHREPORT_URL}"`
           : false,

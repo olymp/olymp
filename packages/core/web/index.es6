@@ -61,11 +61,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const apolloFetch = createApolloFetch({
-  uri:
-    process.env.GRAPHQL_FAKE ||
-    window.GRAPHQL_URL ||
-    process.env.GRAPHQL_URL ||
-    '/graphql',
+  uri: window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql',
   opts: {
     credentials: 'same-origin',
   },
