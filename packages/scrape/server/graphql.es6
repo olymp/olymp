@@ -31,7 +31,8 @@ const props = {
     height: 16,
   },
 };
-const trimLength = (str, length) => (str.length > length ? `${str.substring(0, length)}...` : str);
+const trimLength = (str, length) =>
+  str.length > length ? `${str.substring(0, length)}...` : str;
 const getPromise = (metadata, prop) => {
   if (metadata[prop]) {
     try {
@@ -62,8 +63,8 @@ const getImages = metadata =>
     return metadata;
   });
 
-const getRules = (url) => {
-  const wrap = rule => ($) => {
+const getRules = url => {
+  const wrap = rule => $ => {
     const value = rule($);
     if (!value || value.endsWith('.svg')) {
       return undefined;
@@ -83,7 +84,7 @@ const getRules = (url) => {
     return value;
   };
   function wrapDescription(rule) {
-    return ($) => {
+    return $ => {
       let value = rule($);
       if (typeof value !== 'string') {
         return undefined;
@@ -117,9 +118,9 @@ const getRules = (url) => {
     image: [
       wrap(
         $ =>
-          (url.origin.indexOf('wikipedia.org') !== -1
+          url.origin.indexOf('wikipedia.org') !== -1
             ? 'https://de.wikipedia.org/static/images/project-logos/dewiki-2x.png'
-            : undefined),
+            : undefined,
       ),
       wrap($ => $('meta[property="og:image:secure_url"]').attr('content')),
       wrap($ => $('meta[property="og:image:url"]').attr('content')),
@@ -179,7 +180,8 @@ export default () => ({
           .then(metadata => ({
             ...metadata,
             id: url,
-          })),
+          }))
+          .catch(() => ({})),
     },
   },
   schema: `
