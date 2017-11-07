@@ -31,6 +31,7 @@ module.exports = ({
   plugins = [],
   sharedEnv = {},
   externals = [],
+  alias = {},
   ...rest
 }) => {
   const isDev = mode !== 'production';
@@ -87,6 +88,7 @@ module.exports = ({
           }
           return obj;
         }, {}),
+        ...alias,
       },
     },
     resolveLoader: {

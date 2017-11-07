@@ -51,9 +51,9 @@ export default (
     queries = getQueries(queries);
   }
   let mutations = {
-    register: (source, args, { authEngine, db }) =>
+    register: (source, { password, token, input }, { authEngine, db }) =>
       authEngine
-        .register(db, args.input, args.password, args.token)
+        .register(db, { ...input, confirmed: true }, password, token)
         .then(x => x.user),
     forgot: (source, args, { authEngine, db }) =>
       authEngine.forgot(db, args.email),
@@ -75,8 +75,6 @@ export default (
       } // eslint-disable-line no-param-reassign
       return true;
     },
-    confirm: (source, args, { authEngine, db }) =>
-      authEngine.confirm(db, args.token).then(({ user }) => user),
     user: (source, { id, input, type }, { user, db }) => {
       console.log(user);
       if (user && user.isAdmin) {
@@ -103,34 +101,43 @@ export default (
         .insert(input)
         .then(x => input);
     },
-    invitation: (source, args, { user, db, mail, authEngine }) => {
+    invitation: (
+      source,
+      { email, name, scope },
+      { user, db, mail, authEngine },
+    ) => {
       if (!user || !user.isAdmin) {
-        throw new Error('No permission');
+        if (process.env.NODE_ENV === 'production') {
+          throw new Error('No permission');
+        }
       }
       // eslint-disable-line no-shadow
-      if (args.type && args.type === 'REMOVE') {
-        return db.remove('invitation', Object.assign({}, args));
-      } else if (args.input) {
-        args = Object.assign({}, args, args.input); // eslint-disable-line no-param-reassign
-        delete args.input; // eslint-disable-line no-param-reassign
-      }
-      delete args.type; // eslint-disable-line no-param-reassign
-      args.expiry = +new Date();
-      args.token = authEngine.tokenEngine.create({ email: args.email });
+      const token = authEngine.tokenEngine.create(
+        scope ? { email, scope } : { email },
+      );
       return db
         .collection('invitation')
-        .insert(args)
-        .then(u => {
+        .insertOne({
+          email,
+          name,
+          scope,
+          token,
+          createdAt: new Date(),
+          createdBy: user ? user.id : undefined,
+          id: shortID.generate(),
+        })
+        .then(({ ops }) => {
+          const doc = ops[0];
           if (mail) {
             mail(mails.invite, {
-              to: u.email,
-              token: u.token,
-              name: u.name,
+              to: doc.email,
+              token: doc.token,
+              name: doc.name,
             })
               .then(x => console.log('Mail success', x.ok))
               .catch(err => console.error(err));
           }
-          return u;
+          return doc;
         });
       // if (args.id) return collection.updateOne({ id: args.id }, { $set: args });
       // else return collection.insertOne(args);
@@ -153,14 +160,13 @@ export default (
     `,
     mutations: `
       totpConfirm(token: String, totp: String): Boolean
-      confirm(token: String): User
       forgot(email: Email): Boolean
       register(input: UserInput, password: String, token: String): User
       reset(token: String, password: String): User
       login(email: Email, password: String, totp: String): User
       logout: Boolean
       user(id: String, input: UserInput, type: USER_MUTATION_TYPE): User
-      invitation(id: String, input: InvitationInput, type: USER_MUTATION_TYPE): Invitation
+      invitation(email: String!, name: String, scope: Json): Invitation
     `,
     resolvers: {
       User: {

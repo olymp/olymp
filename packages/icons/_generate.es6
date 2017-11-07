@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const { upperFirst, camelCase } = require('lodash');
 
-const base = 'fa4';
 const arr = [path.resolve(__dirname, 'svg')];
 
 let index = '';
@@ -22,12 +21,12 @@ arr.forEach(readFrom => {
         .replace(' height="1792"', '')
         .trim();
       fs.writeFileSync(
-        path.resolve(__dirname, base, 'lib', `${fileName}.es6`),
+        path.resolve(__dirname, 'lib', `${fileName}.es6`),
         generate(content, name).trim(),
       );
       index += `\nexport { default as ${name} } from './lib/${fileName}';`;
     });
-    fs.writeFileSync(path.resolve(__dirname, base, 'index.es6'), index);
+    fs.writeFileSync(path.resolve(__dirname, 'index.es6'), index);
   });
 });
 

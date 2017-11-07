@@ -31,6 +31,7 @@ export default (key, options = {}) => {
       toHtml(hash, { minify: true, renderer: htmlRenderer }),
       props,
     );
+    console.log(body);
     return fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
       body: JSON.stringify(body),

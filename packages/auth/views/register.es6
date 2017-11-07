@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Form, Input } from 'antd';
-import { FaEnvelope, FaStar } from 'olymp-icons';
+import { FaEnvelope, FaUnlock } from 'olymp-icons';
 import Base, {
   onEnterFocus,
   onEnterOk,
@@ -32,7 +32,7 @@ import { createRegister } from '../redux';
         token,
       },
     }),
-  }
+  },
 )
 export default class AuthRegister extends Component {
   ok = () => {
@@ -51,7 +51,7 @@ export default class AuthRegister extends Component {
         .then(() => {
           onSuccess(
             'Registrierung abgeschickt',
-            'Bitte checken Sie Ihre E-Mails'
+            'Bitte checken Sie Ihre E-Mails',
           );
           onOk({ email: values.email, token });
         })
@@ -113,7 +113,7 @@ export default class AuthRegister extends Component {
                 type="text"
                 placeholder="Name"
                 onKeyPress={onEnterFocus(() => this.mail)}
-              />
+              />,
             )}
           </Form.Item>
         )}
@@ -131,8 +131,8 @@ export default class AuthRegister extends Component {
                 placeholder="E-Mail"
                 onKeyPress={onEnterFocus(() => this.pw1)}
                 ref={x => (this.mail = x)}
-                addonAfter={<FaEnvelope size={10} />}
-              />
+                suffix={<FaEnvelope size={12} />}
+              />,
             )}
           </Form.Item>
         )}
@@ -148,8 +148,8 @@ export default class AuthRegister extends Component {
                 placeholder="Password"
                 onKeyPress={onEnterFocus(() => this.pw2)}
                 ref={x => (this.pw1 = x)}
-                addonAfter={<FaStar size={10} />}
-              />
+                suffix={<FaUnlock size={12} />}
+              />,
             )}
           </Form.Item>
         )}
@@ -168,8 +168,8 @@ export default class AuthRegister extends Component {
                 placeholder="Password wiederholen"
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.pw2 = x)}
-                addonAfter={<FaStar size={10} />}
-              />
+                suffix={<FaUnlock size={12} />}
+              />,
             )}
           </Form.Item>
         )}
