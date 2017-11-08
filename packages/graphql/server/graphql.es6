@@ -28,6 +28,16 @@ export default ({ modules = null, directives = {} }) => {
       onBefore,
       onAfter,
     });
+    return {
+      middleware: graphqlExpress(context => ({
+        schema: context.schema,
+        context,
+      })),
+      express: graphqlExpress(context => ({ schema, context })),
+      graphi: graphiqlExpress({ endpointURL: '/graphql' }),
+      apply: m => apply(m),
+      getSchema: () => schema,
+    };
   };
 
   if (modules) {
