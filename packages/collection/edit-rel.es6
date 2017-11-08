@@ -1,13 +1,18 @@
 import React from 'react';
 import { toClass } from 'recompose';
+import { get } from 'lodash';
 import DetailEdit from './rel-editor';
 import FormItem from './form-item';
 
 export default {
-  rule: ({ '@': at }) => at && at.idField && at.idField.type.kind !== 'LIST',
-  form: toClass(({ '@': at, ...props }) => (
+  rule: ({ specialFields }) =>
+    get(specialFields, 'idField.type.kind', 'LIST') !== 'LIST',
+  form: toClass(({ specialFields, ...props }) => (
     <FormItem {...props}>
-      <DetailEdit {...props} typeName={at.idField.type.name} />
+      <DetailEdit
+        {...props}
+        typeName={get(specialFields, 'idField.type.name')}
+      />
     </FormItem>
   )),
 };

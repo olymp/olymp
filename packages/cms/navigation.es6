@@ -202,7 +202,7 @@ const component = enhance(
             {collectionList.map(collection => (
               <Menu.Item key={`@${collection.name.toLowerCase()}`}>
                 <span>
-                  {get(collection, 'decorators.label.value', collection.name)}
+                  {get(collection, 'specialFields.label', collection.name)}
                 </span>
               </Menu.Item>
             ))}
@@ -229,6 +229,7 @@ const component = enhance(
             key =>
               collectionTree[key].length > 1 ? (
                 <Menu.SubMenu
+                  key={key}
                   title={
                     <span>
                       <Icon type="database" />
@@ -242,16 +243,12 @@ const component = enhance(
                       key={`@${collection.name.toLowerCase()}`}
                     >
                       <Icon
-                        type={get(
-                          collection,
-                          'decorators.icon.value',
-                          'database',
-                        )}
+                        type={get(collection, 'specialFields.icon', 'database')}
                       />
                       <span>
                         {get(
                           collection,
-                          'decorators.label.value',
+                          'specialFields.label',
                           collection.name,
                         )}
                       </span>
@@ -266,14 +263,14 @@ const component = enhance(
                   <Icon
                     type={get(
                       collectionTree[key][0],
-                      'decorators.icon.value',
+                      'specialFields.icon',
                       'database',
                     )}
                   />
                   <span>
                     {get(
                       collectionTree[key][0],
-                      'decorators.label.value',
+                      'specialFields.label',
                       collectionTree[key][0].name,
                     )}
                   </span>

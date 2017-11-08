@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
-import withItems from './decorators/with-items';
-import withCollection from './decorators/with-collection';
+import withItems from './with-items';
+import withCollection from './with-collection';
 
 @withCollection
 @withItems

@@ -6,14 +6,15 @@ export default ({ item = {}, form, auth }, field) => {
   if (item[name]) {
     // Wenn Item schon existiert, den vorhandenen Wert nehmen
     return item[name];
-  } else if (field['@'].default) {
+  } else if (field.specialFields.default) {
     // Wenn ein default-Wert existiert
-    return field['@'].default.arg0;
+    return field.specialFields.default;
   } else if (name === 'state') {
     // Bei State
     // return 'DRAFT';
     return '';
   } else if (name === 'orgId') {
+    // todo hartgecoded!!!
     return get(auth, 'user.orgId');
   } else if (name === 'slug' && form && form.getFieldValue('name')) {
     // Bei Slug

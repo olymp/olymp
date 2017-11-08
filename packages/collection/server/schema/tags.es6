@@ -30,7 +30,6 @@ export default {
               id: key,
               count: tags[key].length,
             }));
-            console.log(tags);
             return orderBy(tags, ['count', 'id'], ['desc', 'asc']);
           }),
       suggestions: (source, { collection, field = 'tags' }, { monk, app }) =>

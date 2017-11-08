@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withApollo, graphql } from 'react-apollo';
-import capitalize from 'lodash/upperFirst';
+import { get, upperFirst } from 'lodash';
 import gql from 'graphql-tag';
-import getDecorators from './get-decorators';
+import { getSpecialFields } from './utils';
 
 const imageFields = `
   id
@@ -95,7 +95,7 @@ export default WrappedComponent => {
       options: ({ routeParams = {}, collection, typeName }) => ({
         skip: !!collection,
         variables: {
-          name: capitalize(routeParams.model || typeName),
+          name: upperFirst(routeParams.model || typeName),
         },
       }),
     },
@@ -108,11 +108,9 @@ export default WrappedComponent => {
       includeStamps: PropTypes.bool,
     };
     getAttributes = col => {
-      const collection =
-        col ||
+      const collection = col ||
         (this.props.data && this.props.data.type) ||
-        this.props.collection ||
-        null;
+        this.props.collection || { fields: [] };
       return `${collection.fields
         .map(field => {
           if (field.type.kind === 'NON_NULL')
@@ -153,73 +151,16 @@ export default WrappedComponent => {
         .filter(x => x)
         .join(', ')}`;
     };
-    getWithSpecialFields = collection => {
-      if (!collection) return;
-      const specialFields = {};
-      const fields = collection.fields.map(item => {
-        const field = { ...item, '@': {} };
-        if (!field.description) return field;
-        field.description.replace(
-          /\@\w+(\[[0-9]+\])?(\(.+\))?/gi,
-          (match, text, urlId) => {
-            if (!match) return;
-            let [split0, values] = match.split('(');
-            let [name, index = null] = split0.split('[');
-            name = name.substr(1);
-            if (index) {
-              try {
-                index = parseInt(index.substr(index, index.length - 1));
-              } catch (err) {
-                index = null;
-              }
-            }
-            const specialValues = {};
-            try {
-              values
-                .substr(0, values.length - 1)
-                .split(',')
-                .forEach((x, i) => {
-                  specialValues[`arg${i}`] = JSON.parse(x);
-                });
-            } catch (err) {}
-            field['@'][name] = specialValues;
-            const specialField = {
-              ...specialValues,
-              field: field.name,
-            };
-
-            if (index || index === 0) {
-              if (!specialFields[name]) specialFields[name] = [];
-              specialFields[name].splice(
-                index >= specialFields[name].length
-                  ? specialFields[name].length
-                  : index,
-                0,
-                specialField,
-              );
-            } else {
-              specialFields[name] = specialField;
-            }
-          },
-        );
-        return field;
-      });
-      return { ...collection, fields, specialFields };
-    };
 
     render() {
       const { data, ...rest } = this.props;
-      const collectionData = this.props.data && this.props.data.type;
-      const collection = !!collectionData && {
-        ...collectionData,
-        decorators: getDecorators(collectionData.description),
-      };
+      const collection = getSpecialFields(get(data, 'type'));
 
       return (
         <WrappedComponent
           {...rest}
-          collection={collection && this.getWithSpecialFields(collection)}
-          fieldNames={collection && this.getAttributes()}
+          collection={collection}
+          fieldNames={this.getAttributes()}
         />
       );
     }

@@ -3,14 +3,13 @@ import Form from 'olymp-ui/form';
 import { Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { createComponent, Container } from 'olymp-fela';
-import { toLabel } from 'olymp-utils';
 import { Prompt } from 'olymp-router';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
 import DefaultEdits from './default-edits';
 import { getValidationRules, getInitialValue, getFormSchema } from './utils';
 
-const Items = ({ schema, activeField, form, item, value, ...rest }) =>
+const Items = ({ schema, form, item, value, ...rest }) =>
   Object.keys(schema).map(key => {
     const field = schema[key];
     const { form: Com, fieldDecorator, ...restFields } = schema[key];
@@ -27,8 +26,6 @@ const Items = ({ schema, activeField, form, item, value, ...rest }) =>
       <Com
         {...rest}
         {...restFields}
-        isActive={activeField === field.name}
-        activeField={activeField}
         form={form}
         field={field}
         item={item}
@@ -71,18 +68,12 @@ const enhance = compose(
   withPropsOnChange(['collection'], ({ collection, form, ...props }) => {
     const schema = getFormSchema(collection.fields);
     const { getFieldDecorator } = form;
-    const schemaWithEdits = {
-      full: {},
-      etc: {},
-    };
+    const schemaWithEdits = {};
     schema.forEach(field => {
       const edit = getDefaultEdit(field) || {};
-      const title =
-        field['@'] && field['@'].label
-          ? field['@'].label.arg0
-          : toLabel(field.name);
+      const title = get(field, 'specialFields.label');
       const label = title.replace('-Ids', '').replace('-Id', '');
-      schemaWithEdits[edit.full ? 'full' : 'etc'][field.name] = {
+      schemaWithEdits[field.name] = {
         ...field,
         ...edit,
         title,
@@ -125,85 +116,48 @@ const FormComponent = enhance(
     collapse,
     onSave,
     onDelete,
-    activeField,
-    setActiveField,
     collapsed,
     header = true,
     ...rest
-  }) => {
-    const moreChildren = [];
-    if (activeField && schemaWithEdits.full[activeField]) {
-      const { full: Com, fieldDecorator, ...restFields } = schemaWithEdits.full[
-        activeField
-      ];
-      moreChildren.push(
-        fieldDecorator()(
-          <Com
-            {...rest}
-            {...restFields}
-            key={activeField}
-            activeField={activeField}
-            form={form}
-            field={schemaWithEdits.full[activeField].type}
-            item={item}
-          />,
-        ),
-      );
-    }
-    return (
-      <Div>
-        <Container size="small">
-          <Prompt
-            when={form.isFieldsTouched()}
-            message={() => 'Änderungen verwerfen?'}
-          />
-          <Sidebar
-            isOpen
-            width="100%"
-            borderLess
-            title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
-            leftButtons={
-              header && (
-                <Popconfirm
-                  placement="bottom"
-                  title="Wirklich löschen?"
-                  onConfirm={onDelete}
-                  okText="Ja"
-                  cancelText="Nein"
-                >
-                  <Sidebar.Button shape="circle" icon="delete" />
-                </Popconfirm>
-              )
-            }
-            rightButtons={
-              header && (
-                <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
-              )
-            }
-          >
-            <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-              <Items
-                schema={schemaWithEdits.full}
-                setActiveField={setActiveField}
-                activeField={activeField}
-                form={form}
-                item={item}
-                {...rest}
-              />
-              <Items
-                schema={schemaWithEdits.etc}
-                activeField={activeField}
-                form={form}
-                item={item}
-                {...rest}
-              />
-            </Form>
-            <Buttons>{children}</Buttons>
-          </Sidebar>
-        </Container>
-      </Div>
-    );
-  },
+  }) => (
+    <Div>
+      <Container size="small">
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
+        <Sidebar
+          isOpen
+          width="100%"
+          borderLess
+          title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
+          leftButtons={
+            header && (
+              <Popconfirm
+                placement="bottom"
+                title="Wirklich löschen?"
+                onConfirm={onDelete}
+                okText="Ja"
+                cancelText="Nein"
+              >
+                <Sidebar.Button shape="circle" icon="delete" />
+              </Popconfirm>
+            )
+          }
+          rightButtons={
+            header && (
+              <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
+            )
+          }
+        >
+          <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+            <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
+          </Form>
+          <Buttons>{children}</Buttons>
+        </Sidebar>
+      </Container>
+    </Div>
+  ),
 );
 FormComponent.displayName = 'FormComponent';
 export default FormComponent;
