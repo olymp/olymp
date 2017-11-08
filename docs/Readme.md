@@ -1,1 +1,6 @@
-descriptions in schema: default, disabled, required, color, description, label, group, icon
+# Getting started
+
+## CMS
+* [CMS](cms/README.md)
+  * [Collections](cms/collections.md)
+
