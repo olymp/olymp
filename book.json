@@ -2,8 +2,8 @@
   "gitbook": "3.2.2",
   "root": "./docs",
   "structure": {
-    "readme": "Introduction.md",
-    "summary": "Readme.md"
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
   },
   "plugins": ["-highlight", "prism", "github"],
   "pluginsConfig": {
