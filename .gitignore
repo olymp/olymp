@@ -1,5 +1,6 @@
 # Environment Configuration
 .env
+.DS_Store
 
 # Build output folders
 build/

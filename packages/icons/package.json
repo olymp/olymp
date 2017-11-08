@@ -1,8 +1,8 @@
 {
-  "version": "18.6.7",
+  "version": "18.6.25",
   "name": "olymp-icons",
   "description": "",
-  "main": "./fa4",
+  "main": "./index",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "scripts": {

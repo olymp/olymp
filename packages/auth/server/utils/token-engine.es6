@@ -1,19 +1,22 @@
 const jwt = require('jsonwebtoken');
 jwt.verify = require('bluebird').promisify(jwt.verify);
 
-const getDays = (days = 1) => Math.floor(Date.now() / 1000) + 60 * 60 * 24 * days;
+const getDays = (days = 1) =>
+  Math.floor(Date.now() / 1000) + 60 * 60 * 24 * days;
 export default ({ secret } = {}) => {
   const SECRET = secret || process.env.AUTH_SECRET || 'abc';
 
-  const createFromUser = ({ id, orgId, scopes }, { days } = {}) =>
-    jwt.sign({ id, orgId, scopes, exp: getDays(days || 1) }, SECRET);
+  const createFromUser = ({ id, orgId, scopes }, { days = 1 } = {}) =>
+    jwt.sign({ id, orgId, scopes, exp: getDays(days) }, SECRET);
 
   const readUser = token =>
-    jwt.verify(token, SECRET).then(({ id, orgId, scopes }) => ({ id, orgId, scopes }));
+    jwt
+      .verify(token, SECRET)
+      .then(({ id, orgId, scopes }) => ({ id, orgId, scopes }));
 
-  const create = (data, { days }) => {
+  const create = (data, { days = 7 } = {}) => {
     if (!data.exp) {
-      data.exp = getDays(days || 1);
+      data.exp = getDays(days);
     }
     return jwt.sign(data, SECRET);
   };
