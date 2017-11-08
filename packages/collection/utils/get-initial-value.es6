@@ -14,7 +14,6 @@ export default ({ item = {}, form, auth }, field) => {
     // return 'DRAFT';
     return '';
   } else if (name === 'orgId') {
-    // todo hartgecoded!!!
     return get(auth, 'user.orgId');
   } else if (name === 'slug' && form && form.getFieldValue('name')) {
     // Bei Slug

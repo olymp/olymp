@@ -10,10 +10,10 @@ export default (value, field) => {
   }
 
   if (
-    (field.type.kind === 'SCALAR' && field.type.name !== 'Blocks') ||
-    field.type.kind === 'ENUM'
+    (field.innerType.kind === 'SCALAR' && field.innerType.name !== 'Blocks') ||
+    field.innerType.kind === 'ENUM'
   ) {
-    switch (field.type.name) {
+    switch (field.innerType.name) {
       case 'Date':
         return !!value && <span>{format(new Date(value), 'DD.MM.YYYY')}</span>;
 
@@ -34,7 +34,7 @@ export default (value, field) => {
       default:
         return <span>{value}</span>;
     }
-  } else if (field.type.kind === 'LIST') {
+  } else if (field.innerType.kind === 'LIST') {
     if (value && value.length && value.map(x => x.name).join('').length > 0) {
       return value.map(x => x.name).join(', ');
     }
@@ -43,7 +43,7 @@ export default (value, field) => {
     }
     return null;
   } else {
-    switch (field.type.name) {
+    switch (field.innerType.name) {
       case 'Image':
         return !!value && <Image value={value} />;
 
