@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { withSearch } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
 import { SplitView } from 'olymp-ui';
-import withItems from '../decorators/with-items';
-import withCollection from '../decorators/with-collection';
+import withItems from '../with-items';
+import withCollection from '../with-collection';
 import Detail from './detail';
 import Sidebar from './sidebar';
 

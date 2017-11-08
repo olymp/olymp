@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { sortBy, get } from 'lodash';
-import getDecorators from './decorators/get-decorators';
+import { getSpecialFields } from './utils';
 
 export default WrappedComponent => {
   @graphql(
@@ -17,6 +17,7 @@ export default WrappedComponent => {
             }
             fields {
               name
+              description
               type {
                 kind
                 name
@@ -33,23 +34,21 @@ export default WrappedComponent => {
       const { schema } = data;
 
       return schema && schema.types
-        ? schema.types
-            .filter(
-              x =>
-                (x.interfaces || []).filter(
-                  y =>
-                    y.name === 'CollectionType' ||
-                    y.name === 'CollectionInterface',
-                ).length,
-            )
-            .map(x => ({ ...x, decorators: getDecorators(x.description) }))
+        ? schema.types.filter(
+            x =>
+              (x.interfaces || []).filter(
+                y =>
+                  y.name === 'CollectionType' ||
+                  y.name === 'CollectionInterface',
+              ).length,
+          )
         : [];
     };
 
     group = (list = []) => {
       const groups = {};
       list.forEach(collection => {
-        const group = get(collection, 'decorators.group.value');
+        const group = get(collection, 'specialFields.group');
 
         if (!groups[group]) {
           groups[group] = [];
@@ -59,7 +58,7 @@ export default WrappedComponent => {
 
       // Collections innerhalb Gruppe sortieren
       Object.keys(groups).forEach(key => {
-        groups[key] = sortBy(groups[key], ['order', 'name']);
+        groups[key] = sortBy(groups[key], ['specialFields.order', 'name']);
       });
 
       // Undefined-Gruppe auflösen
@@ -67,7 +66,7 @@ export default WrappedComponent => {
         groups.undefined.forEach(collection => {
           const name = get(
             collection,
-            'decorators.label.value',
+            get(collection, 'specialFields.label'),
             collection.name,
           );
 
@@ -94,7 +93,8 @@ export default WrappedComponent => {
 
     render() {
       const { data, ...rest } = this.props;
-      const list = sortBy(this.list(), ['order', 'name']);
+      let list = sortBy(this.list(), ['order', 'name']);
+      list = list.map(collection => getSpecialFields(collection));
       const group = this.group(list);
 
       return (

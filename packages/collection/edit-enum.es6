@@ -12,8 +12,9 @@ const states = {
 
 export default {
   rule: ({ innerType }) => innerType.kind === 'ENUM' && innerType.enumValues,
-  form: toClass(({ innerType, '@': at, ...props }) => {
+  form: toClass(({ innerType, specialFields, ...props }) => {
     const translation = {};
+    // todo: gehört eigentlich in get-special-fields!!!
     get(innerType, 'description', '')
       .split('@')
       .filter(x => x)

@@ -10,7 +10,7 @@ import { createComponent, Modal } from 'olymp-fela';
 import { Button } from 'antd';
 import Form from './form';
 import FormItem from './form-item';
-import withCollection from './decorators/with-collection';
+import withCollection from './with-collection';
 
 const Footer = createComponent(
   ({ theme }) => ({
@@ -26,10 +26,6 @@ const Footer = createComponent(
   p => Object.keys(p),
 );
 
-const Component = ({ value, collection, id, ...props }) => (
-  <Form {...props} items={value || []} collection={collection} label={id} />
-);
-
 const enhance = compose(
   toClass,
   withProps(({ type }) => ({
@@ -41,7 +37,6 @@ const enhance = compose(
       onChange((value || []).map((x, i) => (i === index ? nestedValue : x)));
     },
   }),
-  withState('activeField', 'setActiveField'),
   withState('isOpen', 'setOpen', false),
   withCollection,
 );
@@ -57,9 +52,11 @@ export default {
       setOpen,
       'data-__field': dataField,
       'data-__meta': dataMeta,
-      ...p
+      collection,
+      id,
+      ...props
     }) => (
-      <FormItem {...p}>
+      <FormItem {...props}>
         <Button
           onClick={() => setOpen(true)}
           data-__field={dataField}
@@ -73,13 +70,14 @@ export default {
           open={isOpen}
           onClose={() => setOpen(false)}
         >
-          <Component value={value} {...p} />
+          <Form
+            {...props}
+            items={value || []}
+            collection={collection}
+            label={id}
+          />
         </Modal>
       </FormItem>
     ),
-  ),
-  full: enhance(
-    ({ collection, name, title, label, ...props }) =>
-      collection ? <Component collection={collection} {...props} /> : null,
   ),
 };

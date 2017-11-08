@@ -21,9 +21,13 @@ export default {
           tags: [String]
           # @label("Status")
           state: DOCUMENT_STATE
+          # @label("Hinzugefügt am")
           createdAt: DateTime
+          # @label("Geändert am")
           updatedAt: DateTime
+          # @label("Hinzugefügt von")
           createdBy: User @relation
+          # @label("Geändert am")
           updatedBy: User @relation
         `,
       );

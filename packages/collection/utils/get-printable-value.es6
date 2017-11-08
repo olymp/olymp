@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Image } from 'olymp-cloudinary';
 import { Checkbox } from 'antd';
 import { Plain, Raw } from 'slate';
 import format from 'date-fns/format';
 
-const resolveFieldValue = (value, meta, fieldProps) => {
-  if (!meta) {
+export default (value, field) => {
+  if (!field) {
     return null;
   }
 
   if (
-    (meta.type.kind === 'SCALAR' && meta.type.name !== 'Blocks') ||
-    meta.type.kind === 'ENUM'
+    (field.type.kind === 'SCALAR' && field.type.name !== 'Blocks') ||
+    field.type.kind === 'ENUM'
   ) {
-    switch (meta.type.name) {
+    switch (field.type.name) {
       case 'Date':
         return !!value && <span>{format(new Date(value), 'DD.MM.YYYY')}</span>;
 
@@ -26,15 +26,15 @@ const resolveFieldValue = (value, meta, fieldProps) => {
 
       case 'Boolean':
         return (
-          <Checkbox checked={value} disabled {...fieldProps}>
+          <Checkbox checked={value} disabled>
             {value ? 'Ja' : 'Nein'}
           </Checkbox>
         );
 
       default:
-        return value;
+        return <span>{value}</span>;
     }
-  } else if (meta.type.kind === 'LIST') {
+  } else if (field.type.kind === 'LIST') {
     if (value && value.length && value.map(x => x.name).join('').length > 0) {
       return value.map(x => x.name).join(', ');
     }
@@ -43,15 +43,15 @@ const resolveFieldValue = (value, meta, fieldProps) => {
     }
     return null;
   } else {
-    /* if (meta.type.kind === 'OBJECT') */ switch (meta.type.name) {
+    switch (field.type.name) {
       case 'Image':
-        return !!value && <Image value={value} {...fieldProps} />;
+        return !!value && <Image value={value} />;
 
       case 'Blocks':
         return (
           !!value &&
           Plain.serialize(
-            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true })
+            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true }),
           )
             .split('\n')
             .join(' ')
@@ -62,16 +62,3 @@ const resolveFieldValue = (value, meta, fieldProps) => {
     }
   }
 };
-
-export default class FieldValue extends Component {
-  render() {
-    const { value, meta, fieldProps } = this.props;
-
-    const content = resolveFieldValue(value, meta, fieldProps) || null;
-
-    if (typeof content === 'string') {
-      return <span>{content}</span>;
-    }
-    return content;
-  }
-}

@@ -1,3 +1,5 @@
+import { get } from 'lodash';
+
 const excludedFields = [
   'id',
   'createdBy',
@@ -10,44 +12,48 @@ const excludedFields = [
 
 export default fields => {
   const mappedFields = fields.reduce(
-    (result, field) => {
-      // const label = !!field['@'] && !!field['@'].label && field['@'].label.arg0;
+    (result, f) => {
+      const field = { ...f };
+
       // EXCLUDING
-      if (excludedFields.includes(field.name) || field['@'].disabled) {
+      if (excludedFields.includes(field.name) || field.specialFields.disabled) {
         return result;
       }
 
-      field.innerType = field.type.ofType || field.type;
-
       // RELATION
+      // todo => get-special-Fields
       if (field.name.endsWith('Id') || field.name.endsWith('Ids')) {
         if (field.name.endsWith('Id')) {
-          field['@'].idField = fields.find(
+          field.specialFields.idField = fields.find(
             ({ name }) => `${name}Id` === field.name,
           );
         } else if (field.name.endsWith('Ids')) {
-          field['@'].idField = fields.find(
+          field.specialFields.idField = fields.find(
             ({ name }) => `${name}Ids` === field.name,
           );
         }
 
-        if (field['@'].idField) {
-          field['@'] = { ...field['@'], ...field['@'].idField['@'] };
-        }
+        field.specialFields = {
+          ...field.specialFields,
+          ...get(field, 'specialFields.idField.specialFields', {}),
+        };
 
         result.rest.splice(
-          result.rest.findIndex(({ name }) => name === field['@'].idField.name),
+          result.rest.findIndex(
+            ({ name }) => name === get(field, 'specialFields.idField.name'),
+          ),
           1,
         );
       }
 
       // RANGE
-      if (field['@'].end) {
+      // todo => get-special-Fields
+      if (field.specialFields.end) {
         return result;
       }
-      if (field['@'].start) {
-        const end = fields.find(x => x['@'].end);
-        field['@'].endField = end;
+      if (field.specialFields.start) {
+        const end = fields.find(x => x.specialFields.end);
+        field.specialFields.endField = end;
       }
 
       if (field.type.name === 'Image') {

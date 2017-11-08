@@ -1,10 +1,11 @@
-import { upperFirst, get } from 'lodash';
+import { get } from 'lodash';
 
-export default (field) => {
+export default field => {
   const type = field.type.kind === 'NON_NULL' ? field.type.ofType : field.type;
   const rules = [];
-  const required = field.type.kind === 'NON_NULL' || (!!field['@'] && !!field['@'].required);
-  const label = get(field, '@.label.arg0', upperFirst(field.name));
+  const required =
+    field.type.kind === 'NON_NULL' || get(field, 'specialFields.required');
+  const label = get(field, 'specialField.label');
 
   if (field.name === 'name' && required) {
     rules.push({ required, message: `'${label}' muss angegeben werden!` });

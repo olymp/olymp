@@ -19,18 +19,6 @@ const Footer = createComponent(
   p => Object.keys(p),
 );
 
-const Slate = ({ children, onChange, value, binding, label }) => (
-  <SlateWriter
-    onChange={onChange}
-    value={value}
-    binding={binding}
-    placeholder={label || 'Hier Text eingeben!'}
-    style={{ padding: 20 }}
-  >
-    {children}
-  </SlateWriter>
-);
-
 const enhance = compose(withState('isOpen', 'setOpen', false), toClass);
 
 export default {
@@ -41,9 +29,14 @@ export default {
       setOpen,
       'data-__field': dataField,
       'data-__meta': dataMeta,
+      onChange,
+      value,
+      binding,
+      label,
+      children,
       ...p
     }) => (
-      <FormItem {...p}>
+      <FormItem label={label} {...p}>
         <Button
           onClick={() => setOpen(true)}
           data-__field={dataField}
@@ -57,10 +50,17 @@ export default {
           open={isOpen}
           onClose={() => setOpen(false)}
         >
-          <Slate {...p} />
+          <SlateWriter
+            onChange={onChange}
+            value={value}
+            binding={binding}
+            placeholder={label || 'Hier Text eingeben!'}
+            style={{ padding: 20 }}
+          >
+            {children}
+          </SlateWriter>
         </Modal>
       </FormItem>
     ),
   ),
-  full: toClass(Slate),
 };

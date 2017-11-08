@@ -19,8 +19,6 @@ const Footer = createComponent(
   p => Object.keys(p),
 );
 
-const Component = p => <TimeRangesEditor style={{ padding: 20 }} {...p} />;
-
 const enhance = compose(withState('isOpen', 'setOpen', false), toClass);
 
 export default {
@@ -47,10 +45,9 @@ export default {
           open={isOpen}
           onClose={() => setOpen(false)}
         >
-          <Component {...p} />
+          <TimeRangesEditor style={{ padding: 20 }} {...p} />
         </Modal>
       </FormItem>
     ),
   ),
-  full: toClass(Component),
 };
