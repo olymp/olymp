@@ -20,6 +20,9 @@ const Span = createComponent(
 );
 
 const enhance = compose(
+  connect(null, dispatch => ({
+    updateQuery: createUpdateQuery(dispatch),
+  })),
   withState('sortBy', 'setSortBy'),
   withPropsOnChange(['collection'], ({ collection }) => ({
     sort: collection.fields
@@ -70,9 +73,6 @@ const enhance = compose(
       )),
     }),
   ),
-  connect(null, dispatch => ({
-    updateQuery: createUpdateQuery(dispatch),
-  })),
 );
 
 @enhance
