@@ -1,6 +1,5 @@
 {
   "root": "./docs",
-  "language": "de",
   "styles": {
     "website": "docs/style.css"
   },
