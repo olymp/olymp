@@ -14,10 +14,11 @@ export default compose(
         if (onChange) {
           return onChange(items.map(item => values[item.id]));
         }
-        console.log(values);
-        Promise.all(items.map(item => save(values[item.id]))).then(x =>
-          form.resetFields(),
-        );
+        Promise.all(
+          items.map(item =>
+            save(values[item.id], !item.removed && values[item.id].removed),
+          ),
+        ).then(x => form.resetFields());
       });
     },
   }),

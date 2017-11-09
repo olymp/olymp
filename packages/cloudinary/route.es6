@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createUpdateQuery } from 'olymp-router';
-import Mediathek from './mediathek';
+import Mediathek from './views';
 
 const enhance = connect(
   ({ location }) => ({
@@ -17,7 +17,8 @@ const CloudinaryRoute = enhance(({ selected, updateQuery }) => (
       .split(',')
       .filter(x => x)
       .map(x => ({ id: x, crop: undefined }))}
-    handleSelection={selected => updateQuery({ '@media': selected.map(item => item.id).join(',') })}
+    handleSelection={selected =>
+      updateQuery({ '@media': selected.map(item => item.id).join(',') })}
   />
 ));
 CloudinaryRoute.displayName = 'CloudinaryRoute';

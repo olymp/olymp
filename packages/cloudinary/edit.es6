@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'olymp-fela';
 import { withState, withPropsOnChange, compose } from 'recompose';
-import Mediathek from './mediathek';
+import Mediathek from './views';
 
 const enhance = compose(
   withState('isOpen', 'setOpen', false),

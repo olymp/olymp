@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { onError, onSuccess } from 'olymp-ui';
 
-const ok = (item, mutate) => {
+const ok = (item, mutate, remove) => {
   mutate({
     variables: {
       id: item.id,
@@ -20,11 +20,11 @@ const ok = (item, mutate) => {
         }
       : undefined,
   })
-    .then(({ data: { item } }) => {
-      if (item.removed) {
-        onSuccess('Gelöscht', `Datei '${item.id}' wurde gelöscht`);
+    .then(({ data: { item: newItem } }) => {
+      if (remove) {
+        onSuccess('Gelöscht', `Datei '${newItem.id}' wurde gelöscht`);
       } else {
-        onSuccess('Gespeichert', `Datei '${item.id}' wurde gespeichert`);
+        onSuccess('Gespeichert', `Datei '${newItem.id}' wurde gespeichert`);
       }
     })
     .catch(onError);
@@ -62,7 +62,7 @@ export default graphql(
   {
     props: ({ ownProps, mutate }) => ({
       ...ownProps,
-      save: item => ok(item, mutate),
+      save: (item, remove) => ok(item, mutate, remove),
       mutate,
     }),
   },
