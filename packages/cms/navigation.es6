@@ -49,6 +49,7 @@ const VerticalMenu = createComponent(
       zIndex: 11,
       overflow: 'hidden',
       '> .ant-menu-item': {
+        margin: 0,
         textAlign: 'left',
         '& .anticon': {
           fontSize: 16,
@@ -61,6 +62,7 @@ const VerticalMenu = createComponent(
       },
       '> .ant-menu-submenu': {
         '> .ant-menu-submenu-title': {
+          margin: 0,
           paddingRight: theme.space4,
           textAlign: 'left !important',
           '& .anticon': {
