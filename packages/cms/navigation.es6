@@ -202,7 +202,7 @@ const component = enhance(
               </Link>
             </Menu.Item>
             {collectionList.map(collection => (
-              <Menu.Item key={`@${collection.name.toLowerCase()}`}>
+              <Menu.Item key={`@${collection.name.toLowerCase()}=new`}>
                 <span>
                   {get(collection, 'specialFields.label', collection.name)}
                 </span>

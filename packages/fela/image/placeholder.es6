@@ -8,7 +8,7 @@ const Image = createComponent(
   ({ width, height, theme, circle }) => ({
     width,
     height,
-    backgroundColor: theme.dark2,
+    backgroundColor: theme.dark5,
     borderRadius: circle ? '50%' : 0,
     '> img': {
       opacity: 0.4,
@@ -35,12 +35,10 @@ const Image = createComponent(
     getContext({ theme: PropTypes.object })(({ className, theme, amp }) => (
       <div className={className}>
         {!amp &&
-          typeof theme.get().logoWhite === 'string' && (
-            <img src={theme.get().logoWhite} alt="placeholder" />
+          typeof theme.get().logo === 'string' && (
+            <img src={theme.get().logo} alt="placeholder" />
           )}
-        {!amp &&
-          typeof theme.get().logoWhite === 'function' &&
-          theme.get().logoWhite()}
+        {!amp && typeof theme.get().logo === 'function' && theme.get().logo()}
       </div>
     )),
   ),

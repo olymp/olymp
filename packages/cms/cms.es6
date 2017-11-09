@@ -45,6 +45,7 @@ const enhance = compose(
   useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
     theme: {
+      logo: () => <Logo />,
       logoWhite: () => <Logo clean />,
       logoTitle: 'olymp cms',
       ...theme,
