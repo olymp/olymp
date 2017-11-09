@@ -1,62 +1,47 @@
 import React from 'react';
 import { Link } from 'olymp-router';
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 import { Icon } from 'antd';
-
-const ImgContainer = createComponent(
-  ({ disabled }) => ({
-    marginRight: 8,
-    maxWidth: 37,
-    maxHeight: 37,
-    opacity: disabled ? 0.667 : 1,
-    overflow: 'hidden',
-    '> *': {
-      margin: '0 auto',
-    },
-  }),
-  'div',
-  p => Object.keys(p),
-);
 
 const Header = createComponent(
   ({ color }) => ({
     fontWeight: 'bold',
     color,
   }),
-  'span',
+  'div',
   [],
 );
 
 const Content = createComponent(
-  ({ active, disabled, theme, nowrap }) => ({
+  ({ active, disabled, theme }) => ({
     hasFlex: {
       display: 'flex',
       alignItems: 'center',
     },
-    padding: '5px 6px',
+    padding: theme.space1,
     width: '100%',
-    // minHeight: 51,
-    whiteSpace: nowrap && 'nowrap',
-    ellipsis: nowrap,
+    maxWidth: '100%',
     color: disabled ? theme.dark3 : theme.dark1,
     background: active && 'rgba(0, 0, 0, 0.03)',
     lineHeight: '20px',
-    borderBottom: '1px solid rgb(233, 233, 233)',
+    borderBottom: border(theme),
     cursor: disabled ? 'not-allowed' : 'pointer',
-    '> img': {
-      marginRight: 8,
-      width: 37,
-      height: 37,
-      borderRadius: 500,
-      opacity: disabled ? 0.667 : 1,
-    },
-    '> div': {
+    '> .content': {
+      padding: theme.space1,
+      maxWidth: '100%',
       hasFlex: {
         display: 'flex',
         flexDirection: 'column',
         flex: '1 1 0%',
       },
     },
+    '> .image': {
+      opacity: disabled ? 0.667 : 1,
+      '> *': {
+        borderRadius: '50%',
+      },
+    },
+    '> .icon': {},
     onHover: !active &&
       !disabled && {
         backgroundColor: 'rgba(0, 0, 0, 0.03)',
@@ -72,21 +57,26 @@ const Content = createComponent(
   }),
   ({ image, color, label, description, className, disabled, icon }) => (
     <div className={className}>
-      {image && (
-        <ImgContainer>
-          {image &&
-            typeof image === 'string' && (
-              <img src={image} width={37} height={37} />
-            )}
-          {image && typeof image !== 'string' && image}
-        </ImgContainer>
-      )}
-      <div>
+      <div className="content">
         <Header color={color}>{label}</Header>
         {description}
       </div>
 
-      {!disabled ? <Icon type={icon || 'right'} /> : null}
+      {image && (
+        <div className="image">
+          {image &&
+            typeof image === 'string' && (
+              <img src={image} width={49} height={49} />
+            )}
+          {image && typeof image !== 'string' && image}
+        </div>
+      )}
+
+      {!image && !disabled ? (
+        <div className="icon">
+          <Icon type={icon || 'right'} />
+        </div>
+      ) : null}
     </div>
   ),
   p => Object.keys(p),
@@ -104,7 +94,6 @@ export default ({
   icon,
   to,
   updateQuery,
-  nowrap,
 }) =>
   onClick || disabled ? (
     <a className={className} onClick={disabled ? () => {} : onClick}>
@@ -116,7 +105,6 @@ export default ({
         active={active}
         disabled={disabled}
         icon={icon}
-        nowrap={nowrap}
       />
     </a>
   ) : (

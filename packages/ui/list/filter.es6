@@ -42,19 +42,18 @@ class FilterComponent extends Component {
       <div className={className}>
         {children}
         <Input.Group>
-          <Col span={16}>
+          <Col span={14}>
             <Input
-              placeholder={placeholder || 'Filter ...'}
+              placeholder={placeholder || 'Suche ...'}
               suffix={suffix}
               value={value}
               onChange={this.handleChange}
             />
           </Col>
-          <Col span={8}>
+          <Col span={10}>
             {!!sort &&
               !!sort.length && (
                 <Select
-                  defaultValue={sort[0].name}
                   placeholder="Sortieren"
                   onChange={onSort}
                   style={{ width: '100%' }}

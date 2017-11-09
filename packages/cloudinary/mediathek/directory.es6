@@ -195,7 +195,7 @@ export default withPropsOnChange(['items'], ({ items }) => ({
         <List.Item
           {...dir}
           image={
-            !!dir.image && <Image value={dir.image} width={37} height={37} />
+            !!dir.image && <Image value={dir.image} width={45} height={45} />
           }
           icon={dir.isFolder ? 'folder' : 'tag-o'}
         />

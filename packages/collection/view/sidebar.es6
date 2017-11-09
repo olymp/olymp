@@ -29,10 +29,12 @@ const enhance = compose(
       .filter(
         x =>
           x.name.toLowerCase().indexOf('id') === -1 &&
-          (x.type.name === 'String' ||
-            x.type.name === 'Date' ||
-            x.type.name === 'DateTime' ||
-            x.type.kind === 'ENUM'),
+          x.type.kind !== 'LIST' &&
+          (x.innerType.name === 'String' ||
+            x.innerType.name === 'Date' ||
+            x.innerType.name === 'DateTime' ||
+            (x.innerType.kind === 'ENUM' &&
+              x.innerType.name !== 'DOCUMENT_STATE')),
       )
       .map(item => ({
         name: item.name,
@@ -44,28 +46,29 @@ const enhance = compose(
   })),
   withPropsOnChange(
     ['collection', 'items', 'typeName', 'id'],
-    ({ collection, items = [], updateQuery, typeName, id }) => ({
+    ({ collection, items = [], updateQuery, typeName, id, sortBy }) => ({
       items: items.map(item => (
         <List.Item
           image={
             item[collection.specialFields.imageField] && (
               <Image
                 value={item[collection.specialFields.imageField]}
-                width={37}
-                height={37}
+                width={45}
+                height={45}
               />
             )
           }
           description={getPrintableValue(
-            item[collection.specialFields.descriptionField],
+            item[sortBy || collection.specialFields.descriptionField],
             collection.fields.find(
-              field => field.name === collection.specialFields.descriptionField,
+              field =>
+                field.name ===
+                (sortBy || collection.specialFields.descriptionField),
             ),
           )}
           color={item[collection.specialFields.colorField]}
           active={item.id === id}
           label={item[collection.specialFields.nameField] || 'Kein Titel'}
-          nowrap
           onClick={() =>
             updateQuery({ [`@${typeName.toLowerCase()}`]: item.id })}
           key={item.id}
