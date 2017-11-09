@@ -23,7 +23,7 @@ export default {
       <FormItem {...props}>
         <DetailEdit
           mode="tags"
-          value={value.map(item => item.id)}
+          value={(value || []).map(item => item.id)}
           onChange={onChange}
           typeName={
             specialFields.idField
