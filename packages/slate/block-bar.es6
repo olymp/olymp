@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
+import { FaExpand, FaCompress } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
-import { FaEdit } from 'olymp-icons';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Button } from 'antd';
 import { createComponent, border } from 'olymp-fela';
 import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
 import { sortBy } from 'lodash';
@@ -30,19 +30,10 @@ const CmsToolbar = createComponent(
       color: 'white',
     },
     '> ul.ant-menu .ant-menu-inline.ant-menu-sub': {
-      background: theme.color,
+      backgroundColor: theme.dark4,
     },
     '> ul.ant-menu > li.ant-menu-item.ant-menu-item-selected': {
       color: 'white',
-    },
-    '> ul.ant-menu-inline-collapsed > li.ant-menu-item.logo': {
-      padding: '0 10px',
-      marginY: 0,
-      '> a': {
-        '> svg': {
-          width: 45,
-        },
-      },
     },
     '> ul.ant-menu': {
       backgroundColor: theme.color,
@@ -58,24 +49,16 @@ const CmsToolbar = createComponent(
         margin: 0,
         textAlign: 'left !important',
         '&.logo': {
+          position: 'relative',
           height: 80,
           backgroundColor: theme.dark4,
           borderBottom: border(theme, theme.dark4),
-          '> a': {
-            display: 'flex',
-            height: '100%',
+          '> button.ant-btn.ant-btn-primary.ant-btn-circle.ant-btn-lg': {
+            center: true,
+            border: `2px solid ${theme.dark1}`,
             '> svg': {
-              width: 75,
-              margin: 'auto',
+              marginTop: 3,
             },
-          },
-        },
-        '& .anticon': {
-          fontSize: 16,
-          marginRight: 8,
-          '& + span': {
-            paddingLeft: theme.space2,
-            paddingRight: theme.space3,
           },
         },
       },
@@ -92,13 +75,6 @@ const CmsToolbar = createComponent(
               paddingRight: theme.space3,
             },
           },
-        },
-      },
-      '> .slim': {
-        height: 38,
-        '> img': {
-          display: 24,
-          height: 24,
         },
       },
     },
@@ -220,9 +196,25 @@ class Navigation extends Component {
           inlineCollapsed={collapsed}
         >
           <Menu.Item className="logo">
-            <a onClick={() => setFull(!full)}>
-              <FaEdit size={28} />
-            </a>
+            {!full ? (
+              <Button
+                onClick={() => setFull(!full)}
+                type="primary"
+                shape="circle"
+                size="large"
+              >
+                <FaExpand size={25} />
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setFull(!full)}
+                type="primary"
+                shape="circle"
+                size="large"
+              >
+                <FaCompress size={25} />
+              </Button>
+            )}
           </Menu.Item>
           {items}
         </Menu>
