@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
-import { Link, createReplaceQuery } from 'olymp-router';
+import { createReplaceQuery } from 'olymp-router';
 import { FaEdit } from 'olymp-icons';
 import { Menu, Icon } from 'antd';
 import { createComponent, border } from 'olymp-fela';
@@ -55,6 +55,7 @@ const CmsToolbar = createComponent(
       zIndex: 11,
       overflow: 'hidden',
       '> .ant-menu-item': {
+        margin: 0,
         textAlign: 'left !important',
         '&.logo': {
           height: 80,
@@ -80,6 +81,7 @@ const CmsToolbar = createComponent(
       },
       '> .ant-menu-submenu': {
         '> .ant-menu-submenu-title': {
+          margin: 0,
           paddingRight: theme.space4,
           textAlign: 'left !important',
           '& .anticon': {
@@ -195,11 +197,7 @@ const getIcon = key => {
 class Navigation extends Component {
   render() {
     const {
-      logout,
       query,
-      collectionList,
-      isAdmin,
-      user = {},
       items,
       collapsed,
       expand,
@@ -223,7 +221,7 @@ class Navigation extends Component {
         >
           <Menu.Item className="logo">
             <a onClick={() => setFull(!full)}>
-              <FaEdit color size={28} />
+              <FaEdit size={28} />
             </a>
           </Menu.Item>
           {items}

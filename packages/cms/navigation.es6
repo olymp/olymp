@@ -28,26 +28,26 @@ const VerticalMenu = createComponent(
       flexDirection: 'column',
       justifyContent: 'space-between',
     },
-    '> ul.ant-menu > li.ant-menu-item:first-child': {
-      padding: `0 ${theme.space1} !important`,
-      height: 80,
-      backgroundColor: theme.dark4,
-      borderBottom: border(theme, theme.dark4),
-      '> a': {
-        '> svg': {
-          padding: theme.space2,
-        },
-      },
-    },
     '> ul.ant-menu': {
+      backgroundColor: theme.dark,
       boxShadow: `inset -6px 0 5px -5px #333`,
-      backgroundColor: '#404040',
       position: 'fixed',
       top: 0,
       bottom: 0,
       maxWidth: 240,
       zIndex: 11,
       overflow: 'hidden',
+      '> li.ant-menu-item:first-child': {
+        padding: `0 ${theme.space1} !important`,
+        height: 80,
+        backgroundColor: theme.dark4,
+        borderBottom: border(theme, theme.dark4),
+        '> a': {
+          '> svg': {
+            padding: theme.space2,
+          },
+        },
+      },
       '> .ant-menu-item': {
         margin: 0,
         textAlign: 'left',
