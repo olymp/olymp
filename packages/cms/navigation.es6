@@ -28,6 +28,9 @@ const VerticalMenu = createComponent(
       flexDirection: 'column',
       justifyContent: 'space-between',
     },
+    '> ul.ant-menu .ant-menu-inline.ant-menu-sub': {
+      backgroundColor: theme.dark3,
+    },
     '> ul.ant-menu': {
       backgroundColor: theme.dark,
       boxShadow: `inset -6px 0 5px -5px #333`,
