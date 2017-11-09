@@ -25,7 +25,7 @@ export default {
   type: 'cardLink',
   isVoid: true,
   kind: 'block',
-  label: 'Reichhaltiger Link',
+  label: 'Meta-Link',
   category: 'Sonstiges',
   component: CardContainer,
   actions: [
