@@ -2,27 +2,30 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withApollo, graphql } from 'react-apollo';
 import { get, upperFirst } from 'lodash';
+import { compose, withPropsOnChange } from 'recompose';
 import gql from 'graphql-tag';
 import { getSpecialFields } from './utils';
 
 const imageFields = `
-  id
-  url
-  crop
-  width
-  height
-  caption
-  source
+id
+url
+crop
+width
+height
+caption
+source
 `;
+
 const userFields = `
-  id
-  email
-  token
-  name
+id
+email
+token
+name
 `;
-export default WrappedComponent => {
-  @withApollo
-  @graphql(
+
+const enhance = compose(
+  withApollo,
+  graphql(
     gql`
       query getType($name: String!) {
         type: __type(name: $name) {
@@ -99,19 +102,13 @@ export default WrappedComponent => {
         },
       }),
     },
-  )
-  class WithCollectionComponent extends Component {
-    static propTypes = {
-      client: PropTypes.object,
-      fieldNames: PropTypes.string,
-      typeName: PropTypes.string,
-      includeStamps: PropTypes.bool,
-    };
-    getAttributes = col => {
-      const collection = col ||
-        (this.props.data && this.props.data.type) ||
-        this.props.collection || { fields: [] };
-      return `${collection.fields
+  ),
+  withPropsOnChange(['data'], ({ data }) => ({
+    collection: getSpecialFields(get(data, 'type')),
+  })),
+  withPropsOnChange(['collection'], ({ collection }) => {
+    const getAttributes = (collection = { fields: [] }) =>
+      `${collection.fields
         .map(field => {
           if (field.type.kind === 'NON_NULL')
             field = { ...field, type: field.type.ofType };
@@ -130,7 +127,7 @@ export default WrappedComponent => {
             field.type.ofType.kind === 'OBJECT' &&
             field.type.ofType.fields
           )
-            return `${field.name} { ${this.getAttributes({
+            return `${field.name} { ${getAttributes({
               fields: field.type.ofType.fields,
             })} }`;
           else if (field.type.kind === 'OBJECT' && field.type.name === 'Image')
@@ -138,7 +135,7 @@ export default WrappedComponent => {
           else if (field.type.kind === 'OBJECT' && field.type.name === 'User')
             return `${field.name} { ${userFields} }`;
           else if (field.type.kind === 'OBJECT' && field.type.fields)
-            return `${field.name} { ${this.getAttributes({
+            return `${field.name} { ${getAttributes({
               fields: field.type.fields,
             })} }`;
           else if (
@@ -150,19 +147,27 @@ export default WrappedComponent => {
         })
         .filter(x => x)
         .join(', ')}`;
+
+    return {
+      fieldNames: getAttributes(collection),
+    };
+  }),
+);
+
+export default WrappedComponent => {
+  @enhance
+  class WithCollectionComponent extends Component {
+    static propTypes = {
+      client: PropTypes.object,
+      fieldNames: PropTypes.string,
+      typeName: PropTypes.string,
+      includeStamps: PropTypes.bool,
     };
 
     render() {
       const { data, ...rest } = this.props;
-      const collection = getSpecialFields(get(data, 'type'));
 
-      return (
-        <WrappedComponent
-          {...rest}
-          collection={collection}
-          fieldNames={this.getAttributes()}
-        />
-      );
+      return <WrappedComponent {...rest} />;
     }
   }
   return WithCollectionComponent;

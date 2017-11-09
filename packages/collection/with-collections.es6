@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { sortBy, get } from 'lodash';
+import { compose, withPropsOnChange } from 'recompose';
 import { getSpecialFields } from './utils';
 
-export default WrappedComponent => {
-  @graphql(
+const enhance = compose(
+  graphql(
     gql`
       query schema {
         schema: __schema {
@@ -27,14 +28,11 @@ export default WrappedComponent => {
         }
       }
     `,
-  )
-  class WithCollectionsComponent extends Component {
-    list = () => {
-      const { data = {} } = this.props;
-      const { schema } = data;
-
-      return schema && schema.types
-        ? schema.types.filter(
+  ),
+  withPropsOnChange(['data'], ({ data }) => ({
+    list: sortBy(
+      data.schema && data.schema.types
+        ? data.schema.types.filter(
             x =>
               (x.interfaces || []).filter(
                 y =>
@@ -42,10 +40,12 @@ export default WrappedComponent => {
                   y.name === 'CollectionInterface',
               ).length,
           )
-        : [];
-    };
-
-    group = (list = []) => {
+        : [],
+      ['order', 'name'],
+    ).map(collection => getSpecialFields(collection)),
+  })),
+  withPropsOnChange(['list'], ({ list = [] }) => {
+    const group = () => {
       const groups = {};
       list.forEach(collection => {
         const group = get(collection, 'specialFields.group');
@@ -91,11 +91,17 @@ export default WrappedComponent => {
       return orderedGroups;
     };
 
+    return {
+      group: group(),
+    };
+  }),
+);
+
+export default WrappedComponent => {
+  @enhance
+  class WithCollectionsComponent extends Component {
     render() {
-      const { data, ...rest } = this.props;
-      let list = sortBy(this.list(), ['order', 'name']);
-      list = list.map(collection => getSpecialFields(collection));
-      const group = this.group(list);
+      const { data, list, group, ...rest } = this.props;
 
       return (
         <WrappedComponent
