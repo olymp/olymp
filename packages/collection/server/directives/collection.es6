@@ -27,7 +27,7 @@ export default {
           updatedAt: DateTime
           # @label("Hinzugefügt von")
           createdBy: User @relation
-          # @label("Geändert am")
+          # @label("Geändert von")
           updatedBy: User @relation
         `,
       );

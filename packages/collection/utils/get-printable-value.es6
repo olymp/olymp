@@ -32,7 +32,7 @@ export default (value, field) => {
         );
 
       default:
-        return <span>{value}</span>;
+        return <span>{field.innerType.specialFields[value] || value}</span>;
     }
   } else if (field.innerType.kind === 'LIST') {
     if (value && value.length && value.map(x => x.name).join('').length > 0) {
