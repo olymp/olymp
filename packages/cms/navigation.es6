@@ -44,7 +44,8 @@ const VerticalMenu = createComponent(
         borderBottom: border(theme, theme.dark4),
         '> a': {
           '> svg': {
-            padding: theme.space2,
+            paddingX: theme.space2,
+            paddingY: theme.space3,
           },
         },
       },
@@ -73,13 +74,6 @@ const VerticalMenu = createComponent(
               paddingRight: theme.space3,
             },
           },
-        },
-      },
-      '> .slim': {
-        height: 38,
-        '> img': {
-          display: 24,
-          height: 24,
         },
       },
     },
@@ -242,7 +236,7 @@ const component = enhance(
                   {collectionTree[key].map(collection => (
                     <Menu.Item
                       type="database"
-                      key={`@${collection.name.toLowerCase()}`}
+                      key={`@${collection.name.toLowerCase()}=new`}
                     >
                       <Icon
                         type={get(collection, 'specialFields.icon', 'database')}
@@ -260,7 +254,7 @@ const component = enhance(
               ) : (
                 <Menu.Item
                   type="database"
-                  key={`@${collectionTree[key][0].name.toLowerCase()}`}
+                  key={`@${collectionTree[key][0].name.toLowerCase()}=new`}
                 >
                   <Icon
                     type={get(
