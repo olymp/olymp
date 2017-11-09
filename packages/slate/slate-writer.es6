@@ -56,7 +56,7 @@ const plugins = [
   },
 ];
 
-@withState('full', 'setFull')
+@withState('isFull', 'setIsFull')
 class Writer extends Component {
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -131,7 +131,9 @@ class Writer extends Component {
       renderNode,
       style = {},
       full,
+      isFull,
       setFull,
+      setIsFull,
       ...rest
     } = this.props;
     const value = this.props.value || Plain.deserialize('');
@@ -168,10 +170,10 @@ class Writer extends Component {
           placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
           style={{ marginRight: 64, height: '100%', ...style }}
         />
-        <BlockBar full={full} setFull={setFull} />
+        <BlockBar full={full || isFull} setFull={full ? setFull : setIsFull} />
       </div>
     );
-    if (full) {
+    if (full || isFull) {
       return <Portal hide>{inner}</Portal>;
     }
     return inner;

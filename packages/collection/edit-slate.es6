@@ -37,29 +37,29 @@ export default {
       ...p
     }) => (
       <FormItem label={label} {...p}>
-        <Button
-          onClick={() => setOpen(true)}
-          data-__field={dataField}
-          data-__meta={dataMeta}
-        >
-          Bearbeiten
-        </Button>
+        <Button.Group data-__field={dataField} data-__meta={dataMeta}>
+          <Button
+            type={isOpen === true ? 'primary' : 'default'}
+            onClick={() => setOpen(!isOpen)}
+          >
+            Bearbeiten
+          </Button>
+          <Button onClick={() => setOpen('full')}>Vollbildmodus</Button>
+        </Button.Group>
 
-        <Modal
-          footer={<Footer onClose={() => setOpen(false)} />}
-          open={isOpen}
-          onClose={() => setOpen(false)}
-        >
+        {isOpen && (
           <SlateWriter
             onChange={onChange}
             value={value}
             binding={binding}
             placeholder={label || 'Hier Text eingeben!'}
             style={{ padding: 20 }}
+            full={isOpen === 'full'}
+            setFull={() => setOpen(false)}
           >
             {children}
           </SlateWriter>
-        </Modal>
+        )}
       </FormItem>
     ),
   ),
