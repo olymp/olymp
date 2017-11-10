@@ -2,11 +2,13 @@ import React from 'react';
 import { getContext } from 'recompose';
 import tinycolor from 'tinycolor2';
 import PropTypes from 'prop-types';
+import shortId from 'shortid';
 
 export default getContext({
   theme: PropTypes.object,
-})(({ width, height, size, theme, clean, className }) => {
+})(({ width, height, size, theme, clean = false, className }) => {
   const color = clean ? '#FFF' : theme.get().color;
+  const id = shortId();
 
   return (
     <svg
@@ -22,7 +24,7 @@ export default getContext({
           y1="0%"
           x2="50%"
           y2="99.273%"
-          id="linearGradient-1"
+          id={`linearGradient-${id}-1`}
         >
           <stop
             stopColor={tinycolor(color)
@@ -46,7 +48,7 @@ export default getContext({
           y1="1.293%"
           x2="49.318%"
           y2="94.09%"
-          id="linearGradient-2"
+          id={`linearGradient-${id}-2`}
         >
           <stop
             stopColor={tinycolor(color)
@@ -70,7 +72,7 @@ export default getContext({
           y1="29.971%"
           x2="50%"
           y2="70.029%"
-          id="linearGradient-3"
+          id={`linearGradient-${id}-3`}
         >
           <stop
             stopColor={tinycolor(color)
@@ -92,7 +94,7 @@ export default getContext({
           y1="13.73%"
           x2="50%"
           y2="89.257%"
-          id="linearGradient-4"
+          id={`linearGradient-${id}-4`}
         >
           <stop
             stopColor={tinycolor(color)
@@ -118,25 +120,25 @@ export default getContext({
             <g id="Page-1">
               <polygon
                 id="left"
-                fill="url(#linearGradient-1)"
+                fill={`url(#linearGradient-${id}-1)`}
                 opacity=".7"
                 points="1 580 301.446897 60 501 790"
               />
               <polygon
                 id="inner-left"
-                fill="url(#linearGradient-2)"
+                fill={`url(#linearGradient-${id}-2)`}
                 points="1001 580 301 60 501 790"
               />
               <polygon
                 id="right"
-                fill="url(#linearGradient-3)"
+                fill={`url(#linearGradient-${id}-3)`}
                 opacity=".7"
                 transform="matrix(-1 0 0 1 1502 0)"
                 points="501 580 801 0 1001 790"
               />
               <polygon
                 id="inner-right"
-                fill="url(#linearGradient-4)"
+                fill={`url(#linearGradient-${id}-4)`}
                 transform="matrix(-1 0 0 1 701.997 0)"
                 points="701 579.999802 0.997192 0 200.997192 790"
               />
