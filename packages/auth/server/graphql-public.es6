@@ -1,5 +1,5 @@
 export default ({ attributes = '', schema = '', User = {} } = {}) => ({
-  name: 'user',
+  name: 'auth-public',
   queries: `
     checkTokenMail(token: String): String
     checkToken(token: String): Boolean
@@ -41,6 +41,12 @@ export default ({ attributes = '', schema = '', User = {} } = {}) => ({
     },
   },
   schema: `
+    enum USER_MUTATION_TYPE {
+      UPDATE
+      REPLACE
+      REMOVE
+      INSERT
+    }
     type User @input {
       isAdmin: Boolean
       id: String
@@ -49,5 +55,6 @@ export default ({ attributes = '', schema = '', User = {} } = {}) => ({
       name: String
       ${attributes}
     }
+    ${schema}
   `,
 });

@@ -24,7 +24,7 @@ export default ({ secret, mail, issuer, loginBy = 'email' }) => {
     checkTokenValue: (key, k) => tokenEngine.verify(key).then(c => c[k]),
     checkToken: key =>
       tokenEngine
-        .readUser(key)
+        .verify(key)
         .then(() => true)
         .catch(() => false),
 
@@ -79,8 +79,10 @@ export default ({ secret, mail, issuer, loginBy = 'email' }) => {
         throw new Error('No Key');
       }
       return tokenEngine
-        .readUser(key)
+        .verify(key)
+        .then(({ id, orgId, scopes }) => ({ id, orgId, scopes }))
         .then(item => {
+          console.log(item);
           const { id } = item;
           if (!id) {
             throw new Error('Error.');
@@ -142,7 +144,8 @@ export default ({ secret, mail, issuer, loginBy = 'email' }) => {
     // Get user by id and update user
     confirm: (db, key) =>
       tokenEngine
-        .readUser(key)
+        .verify(key)
+        .then(({ id, orgId, scopes }) => ({ id, orgId, scopes }))
         .then(({ id }) => {
           if (!id) {
             throw new Error('Error.');
@@ -246,7 +249,8 @@ export default ({ secret, mail, issuer, loginBy = 'email' }) => {
         }),
     reset: (db, key, pwd) =>
       tokenEngine
-        .readUser(key)
+        .verify(key)
+        .then(({ id, orgId, scopes }) => ({ id, orgId, scopes }))
         .then(({ id }) => {
           if (!id) {
             throw new Error('Error.');

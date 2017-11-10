@@ -8,7 +8,10 @@ export default props => {
   const pub = pubCreate(props);
   const user = userCreate(props);
   return {
-    name: 'user',
+    authAdmin: admin,
+    authPublic: pub,
+    authUser: user,
+    name: 'auth',
     queries: `
       ${admin.queries || ''}
       ${user.queries || ''}

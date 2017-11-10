@@ -9,7 +9,7 @@ const cache = LRU({
 export default auth => (req, res, next) => {
   const authorization =
     req.headers.authorization ||
-    req.params.authorization ||
+    req.query.authorization ||
     get(req, 'session.token');
 
   if (!authorization) {

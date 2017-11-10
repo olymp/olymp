@@ -9,11 +9,6 @@ export default ({ secret } = {}) => {
   const createFromUser = ({ id, orgId, scopes }, { days = 1 } = {}) =>
     jwt.sign({ id, orgId, scopes, exp: getDays(days) }, SECRET);
 
-  const readUser = token =>
-    jwt
-      .verify(token, SECRET)
-      .then(({ id, orgId, scopes }) => ({ id, orgId, scopes }));
-
   const create = (data, { days = 7 } = {}) => {
     if (!data.exp) {
       data.exp = getDays(days);
@@ -23,5 +18,5 @@ export default ({ secret } = {}) => {
 
   const verify = token => jwt.verify(token, SECRET);
 
-  return { createFromUser, readUser, create, verify };
+  return { createFromUser, create, verify };
 };

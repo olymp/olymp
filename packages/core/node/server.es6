@@ -77,9 +77,11 @@ const app = express();
 app.use(helmet());
 
 const origins = ORIGINS ? ORIGINS.split(',') : [];
-if (GRAPHQL_URL) {
+if (GRAPHQL_URL && GRAPHQL_URL.indexOf('/') !== 0) {
   origins.push(new URL(GRAPHQL_URL).host);
 }
+
+app.enable('trust proxy');
 if (isProd && origins.length) {
   app.use((req, res, next) => {
     const origin = req.headers.origin

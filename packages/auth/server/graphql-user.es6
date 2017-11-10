@@ -64,17 +64,10 @@ export default ({ attributes = '', schema = '', User = {} } = {}) => ({
     },
   },
   schema: `
-    enum USER_MUTATION_TYPE {
-      UPDATE
-      REPLACE
-      REMOVE
-      INSERT
-    }
     type TokenAndQR {
       enabled: Boolean
       token: String
       qr: String
     }
-    ${schema}
   `,
 });
