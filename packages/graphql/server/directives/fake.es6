@@ -15,7 +15,10 @@ export default {
         const isOne = getDirectiveValue(node, 'fake', 'one');
         if (isMany) {
           set(resolvers, `RootQuery.${isMany}`, (source, args) =>
-            Array(...{ length: 100 }).map(Number.call, Number),
+            Array(...{ length: Math.random() * (100 - 20) + 20 }).map(
+              Number.call,
+              Number,
+            ),
           );
         }
         if (isOne) {
@@ -33,7 +36,10 @@ export default {
           );
         } else if (isList) {
           set(resolvers, `${leftType}.${leftField}`, (source, args) =>
-            Array(...{ length: 10 }).map(Number.call, Number),
+            Array(...{ length: Math.random() * (10 - 3) + 3 }).map(
+              Number.call,
+              Number,
+            ),
           );
         } else {
           set(resolvers, `${leftType}.${leftField}`, (source, args) => ({}));
