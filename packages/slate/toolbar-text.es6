@@ -20,7 +20,6 @@ export default class ToolbarText extends Component {
     e.stopPropagation();
     e.preventDefault();
     const { value, onChange } = this.props;
-    console.log(type);
     onChange(value.change().toggleMark(type));
   };
   renderMarkButton = props =>

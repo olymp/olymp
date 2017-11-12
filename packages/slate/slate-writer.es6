@@ -10,7 +10,6 @@ import AutoReplace from 'slate-auto-replace';
 import CollapseOnEscape from 'slate-collapse-on-escape';
 import TrailingBlock from 'slate-trailing-block';
 import EditBlockquote from 'slate-edit-blockquote';
-import EditTable from 'slate-edit-table';
 import { Block } from 'slate';
 
 import getSchema from './get-schema';
@@ -20,7 +19,7 @@ import ToolbarText from './toolbar-text';
 import BlockBar from './block-bar';
 import addBlock from './add-block';
 import marks from './defaults/marks';
-import nodes from './defaults/nodes-selected';
+import nodes from './defaults/nodes';
 import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
@@ -144,12 +143,16 @@ class Writer extends Component {
   };
 
   onKeyDown = (e, change) => {
-    console.log(e.key);
     if (e.key === 'Enter') {
       const { value } = change;
       const { document, startKey, startBlock } = value;
-
-      if (startBlock && !startBlock.isVoid) {
+      if (
+        !startBlock ||
+        startBlock.type === 'list-item' ||
+        startBlock.type === 'paragraph'
+      ) {
+        return undefined;
+      } else if (startBlock && !startBlock.isVoid) {
         return change
           .collapseToEndOf(startBlock)
           .insertBlock(Block.create({ type: 'paragraph' }))
