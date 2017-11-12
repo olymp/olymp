@@ -8,7 +8,6 @@ import SoftBreak from 'slate-soft-break';
 import PasteLinkify from 'slate-paste-linkify';
 import AutoReplace from 'slate-auto-replace';
 import CollapseOnEscape from 'slate-collapse-on-escape';
-import InsertImages from 'slate-drop-or-paste-images';
 
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
@@ -121,17 +120,6 @@ const plugins = [
       transform.setBlock({ type: 'heading-six' }),
   }),
   CollapseOnEscape(),
-  InsertImages({
-    extensions: ['png'],
-    insertImage: (transform, file) => {
-      return console.log('DROP', file);
-      return transform.insertBlock({
-        type: 'image',
-        isVoid: true,
-        data: { file },
-      });
-    },
-  }),
   /* AutoMarkdown({ getMarkdownType }),
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
@@ -191,6 +179,7 @@ class Writer extends Component {
 
   onDrop = (ev, change) => {
     const { schema } = this.props;
+    console.log(ev, ev.dataTransfer.files);
     const type = ev.dataTransfer.getData('text');
     if (type && type.indexOf('x-slate:') === 0) {
       const range = getEventRange(ev, change.value);
