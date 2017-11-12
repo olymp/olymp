@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { createComponent } from 'olymp-fela';
 import { compose, withPropsOnChange, withContext } from 'recompose';
 import useBlockBase from './use-block-base';
+import registry from './registry';
 
 const convert = schema =>
   Object.keys(schema.nodes).reduce((result, key) => {
@@ -34,12 +35,12 @@ const convert = schema =>
   }, {});
 
 export default compose(
-  withPropsOnChange(['blockTypes'], ({ blockTypes }) => {
-    const nodes = convert({ nodes: blockTypes });
+  withPropsOnChange(['blockTypes'], ({ blockTypes = {} }) => {
+    const nodes = convert({ nodes: { ...registry.blocks, ...blockTypes } });
     return {
       schema: { nodes },
       renderNode: props => {
-        const Com = nodes[props.node.type] ? nodes[props.node.type] : null;
+        const Com = nodes[props.node.type] || null;
         if (Com) {
           return <Com {...props} />;
         }
