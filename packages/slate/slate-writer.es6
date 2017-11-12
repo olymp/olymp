@@ -46,10 +46,11 @@ const renderMark = props => {
 const plugins = [
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
+  editList,
   /* AutoMarkdown({ getMarkdownType }),
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
-  editList, */
+  , */
   {
     renderNode,
     renderMark,
