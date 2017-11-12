@@ -4,23 +4,30 @@ import { withState } from 'recompose';
 import { Editor, getEventRange } from 'slate-react';
 import Plain from 'slate-plain-serializer';
 import EditList from 'slate-edit-list';
+import SoftBreak from 'slate-soft-break';
+import PasteLinkify from 'slate-paste-linkify';
+import AutoReplace from 'slate-auto-replace';
+import CollapseOnEscape from 'slate-collapse-on-escape';
+import InsertImages from 'slate-drop-or-paste-images';
+
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
-import AutoMarkdown from './plugins/auto-markdown';
 import TrailingBlock from './plugins/trailing-block';
-import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
-import NoParagraph from './plugins/no-paragraph';
 import ToolbarText from './toolbar-text';
 import BlockBar from './block-bar';
 import addBlock from './add-block';
-import getMarkdownType from './defaults/markdown';
 import marks from './defaults/marks';
 import nodes from './defaults/nodes-selected';
 import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
 import Portal from './components/portal';
+
+/* import AutoMarkdown from './plugins/auto-markdown';
+import getMarkdownType from './defaults/markdown';
+import NoParagraph from './plugins/no-paragraph';
+import LineToParagraph from './plugins/line-to-paragraph'; */
 
 const emptyArray = [];
 
@@ -45,6 +52,30 @@ const plugins = [
   EditList({
     types: ['numbered-list', 'bulleted-list'],
     typeItem: 'list-item',
+  }),
+  SoftBreak({
+    shift: true,
+    // onlyIn: ['paragraph']
+  }),
+  PasteLinkify({
+    type: 'link',
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(>)$/,
+    transform: (transform, e, matches) => transform.setBlock({ type: 'quote' }),
+  }),
+  CollapseOnEscape(),
+  InsertImages({
+    extensions: ['png'],
+    insertImage: (transform, file) => {
+      return console.log('DROP', file);
+      return transform.insertBlock({
+        type: 'image',
+        isVoid: true,
+        data: { file },
+      });
+    },
   }),
   /* AutoMarkdown({ getMarkdownType }),
   LineToParagraph({ type: 'paragraph' }),
