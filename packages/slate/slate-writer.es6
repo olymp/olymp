@@ -46,7 +46,6 @@ const renderMark = props => {
 const plugins = [
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
-  EditTable(),
   EditList({
     types: ['numbered-list', 'bulleted-list'],
     typeItem: 'list-item',
@@ -145,15 +144,21 @@ class Writer extends Component {
   };
 
   onKeyDown = (e, change) => {
-    if (e.key === 'enter') {
-      const { state } = change;
-      const { document, startKey, startBlock } = state;
+    console.log(e.key);
+    if (e.key === 'Enter') {
+      const { value } = change;
+      const { document, startKey, startBlock } = value;
 
-      if (startBlock && startBlock.isVoid) {
+      if (startBlock && !startBlock.isVoid) {
+        return change
+          .collapseToEndOf(startBlock)
+          .insertBlock(Block.create({ type: 'paragraph' }))
+          .collapseToEnd();
+      } else if (startBlock && startBlock.isVoid) {
         const nextBlock = document.getNextBlock(startKey);
         const prevBlock = document.getPreviousBlock(startKey);
-        const isFocusedStart = state.selection.hasEdgeAtStartOf(startBlock);
-        const isFocusedEnd = state.selection.hasEdgeAtEndOf(startBlock);
+        const isFocusedStart = value.selection.hasEdgeAtStartOf(startBlock);
+        const isFocusedEnd = value.selection.hasEdgeAtEndOf(startBlock);
         const blockToInsert = Block.create({ type: 'paragraph' });
 
         // Void block at the end of the document
