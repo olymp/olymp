@@ -10,6 +10,8 @@ import AutoReplace from 'slate-auto-replace';
 import CollapseOnEscape from 'slate-collapse-on-escape';
 import TrailingBlock from 'slate-trailing-block';
 import EditBlockquote from 'slate-edit-blockquote';
+import EditTable from 'slate-edit-table';
+import { Block } from 'slate';
 
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
@@ -44,6 +46,7 @@ const renderMark = props => {
 const plugins = [
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
+  EditTable(),
   EditList({
     types: ['numbered-list', 'bulleted-list'],
     typeItem: 'list-item',
@@ -142,9 +145,58 @@ class Writer extends Component {
   };
 
   onKeyDown = (e, change) => {
-    if (e.shiftKey && e.key === 'enter') {
-      return change.insertText('\n');
-    } else if (e.key === 'backspace') {
+    if (e.key === 'enter') {
+      const { state } = change;
+      const { document, startKey, startBlock } = state;
+
+      if (startBlock && startBlock.isVoid) {
+        const nextBlock = document.getNextBlock(startKey);
+        const prevBlock = document.getPreviousBlock(startKey);
+        const isFocusedStart = state.selection.hasEdgeAtStartOf(startBlock);
+        const isFocusedEnd = state.selection.hasEdgeAtEndOf(startBlock);
+        const blockToInsert = Block.create({ type: 'paragraph' });
+
+        // Void block at the end of the document
+        if (!nextBlock) {
+          if (isFocusedEnd) {
+            return change
+              .collapseToEndOf(startBlock)
+              .insertBlock(blockToInsert)
+              .collapseToEnd();
+          }
+          if (prevBlock) {
+            const index = document.nodes.indexOf(prevBlock);
+            return change
+              .collapseToEndOf(prevBlock)
+              .insertNodeByKey(document.key, index + 1, blockToInsert)
+              .collapseToStartOf(startBlock);
+          }
+          return change
+            .collapseToStartOf(startBlock)
+            .insertNodeByKey(document.key, 0, blockToInsert);
+        }
+        // Void block between two blocks
+        if (nextBlock && prevBlock) {
+          if (isFocusedStart) {
+            const index = document.nodes.indexOf(prevBlock);
+            return change
+              .collapseToEndOf(prevBlock)
+              .insertNodeByKey(document.key, index + 1, blockToInsert)
+              .collapseToStartOf(startBlock);
+          }
+          // NOe rart skjer her
+          return change.collapseToEndOf(startBlock).insertBlock(blockToInsert);
+        }
+        // Void block in the beginning of the document
+        if (nextBlock && !prevBlock) {
+          if (isFocusedStart) {
+            return change
+              .collapseToStartOf(startBlock)
+              .insertNodeByKey(document.key, 0, blockToInsert);
+          }
+          return change.collapseToEndOf(startBlock).insertBlock(blockToInsert);
+        }
+      }
     } else if (e.metaKey || e.ctrlKey) {
       switch (e.key) {
         case 'b':
