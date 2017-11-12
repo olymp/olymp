@@ -8,10 +8,11 @@ import SoftBreak from 'slate-soft-break';
 import PasteLinkify from 'slate-paste-linkify';
 import AutoReplace from 'slate-auto-replace';
 import CollapseOnEscape from 'slate-collapse-on-escape';
+import TrailingBlock from 'slate-trailing-block';
+import EditBlockquote from 'slate-edit-blockquote';
 
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
-import TrailingBlock from './plugins/trailing-block';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
 import ToolbarText from './toolbar-text';
 import BlockBar from './block-bar';
@@ -22,11 +23,6 @@ import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
 import Portal from './components/portal';
-
-/* import AutoMarkdown from './plugins/auto-markdown';
-import getMarkdownType from './defaults/markdown';
-import NoParagraph from './plugins/no-paragraph';
-import LineToParagraph from './plugins/line-to-paragraph'; */
 
 const emptyArray = [];
 
@@ -120,10 +116,11 @@ const plugins = [
       transform.setBlock({ type: 'heading-six' }),
   }),
   CollapseOnEscape(),
-  /* AutoMarkdown({ getMarkdownType }),
+  EditBlockquote(),
+  /*
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
-  , */
+  */
   {
     renderNode,
     renderMark,
