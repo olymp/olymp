@@ -1,5 +1,5 @@
 {
-  "version": "18.6.28",
+  "version": "18.6.29",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -29,7 +29,7 @@
     "olymp-mail": "^18.6.27",
     "olymp-pages": "^18.6.28",
     "olymp-scrape": "^18.6.27",
-    "olymp-slate": "^18.6.28",
+    "olymp-slate": "^18.6.29",
     "olymp-ui": "^18.6.27",
     "olymp-utils": "^18.6.24",
     "olymp-webpack-babel": "^18.6.27",
