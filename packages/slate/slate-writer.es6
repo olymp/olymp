@@ -63,7 +63,62 @@ const plugins = [
   AutoReplace({
     trigger: 'space',
     before: /^(>)$/,
-    transform: (transform, e, matches) => transform.setBlock({ type: 'quote' }),
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'block-quote' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(\*)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'list-item' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(-)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'list-item' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(\+)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'list-item' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(#)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-one' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(##)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-two' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(###)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-three' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(####)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-four' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(#####)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-five' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(######)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-six' }),
   }),
   CollapseOnEscape(),
   InsertImages({
