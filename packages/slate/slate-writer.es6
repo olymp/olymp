@@ -23,10 +23,6 @@ import toolbarTypes from './defaults/toolbar-types';
 import Portal from './components/portal';
 
 const emptyArray = [];
-const editList = EditList({
-  types: ['numbered-list', 'bulleted-list'],
-  typeItem: 'list-item',
-});
 
 const renderNode = props => {
   const X = nodes[props.node.type];
@@ -46,7 +42,10 @@ const renderMark = props => {
 const plugins = [
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
-  editList,
+  EditList({
+    types: ['numbered-list', 'bulleted-list'],
+    typeItem: 'list-item',
+  }),
   /* AutoMarkdown({ getMarkdownType }),
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
