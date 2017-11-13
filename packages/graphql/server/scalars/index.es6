@@ -1,4 +1,5 @@
 export { default as Color } from './color';
+export { default as Cursor } from './cursor';
 export { default as DateTime } from './date-time';
 export { default as Date } from './date';
 export { default as Email } from './email';

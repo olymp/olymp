@@ -2,13 +2,13 @@ import { get } from 'lodash';
 import { createTypeFetcher } from 'olymp-graphql/server';
 import { RateLimiter } from 'limiter';
 import LRU from 'lru-cache';
-import shortId from 'short-id';
+import shortId from 'shortid';
 
 const cache = LRU({
   max: 500,
   maxAge: 1000 * 60 * 5,
 });
-const limit = 500;
+const limit = 1000;
 const per = 'hour';
 
 const fetchType = createTypeFetcher(
@@ -24,7 +24,6 @@ export default {
       d => get(d, 'name.value') === 'rateLimit',
     );
     const { ip } = context;
-    console.log('IP', ast, keys[1], type, directive);
     if (type && directive) {
       let cachedLimiter = cache.get(ip);
       if (cachedLimiter) {
@@ -38,11 +37,11 @@ export default {
       }
       cachedLimiter.cost = 1;
       cachedLimiter.limit = limit;
-      cachedLimiter.remaining = cachedLimiter.getTokensRemaining();
+      cachedLimiter.remaining = Math.floor(cachedLimiter.getTokensRemaining());
       cachedLimiter.resetAt = cachedLimiter.tokenBucket.interval;
       cachedLimiter.nodeCount = 0;
       context.rateLimit = cachedLimiter;
-      cache.put(ip, cachedLimiter, 10000);
+      cache.set(ip, cachedLimiter, 10000);
     }
   },
   queries: `

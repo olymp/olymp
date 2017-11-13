@@ -12,7 +12,7 @@ export default auth => (req, res, next) => {
     req.query.authorization ||
     get(req, 'session.token');
 
-  if (!authorization) {
+  if (!authorization || req.user) {
     return next();
   }
 
