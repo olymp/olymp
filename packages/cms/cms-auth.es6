@@ -10,7 +10,7 @@ import { CollectionRoute, withCollections } from 'olymp-collection';
 import { createComponent, getAntStyle, TopLoader, Modal } from 'olymp-fela';
 import { Hotjar } from 'olymp-ui';
 import { connect } from 'react-redux';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import Analytics from 'olymp-google/analytics';
 import Navigation from './navigation';
 import { SettingsRoute } from './settings';

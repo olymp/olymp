@@ -16,7 +16,10 @@ const MapContainer = createComponent(
     <div className={className} {...attributes}>
       {children}
       <Maps
-        center={{ lat: getData('lat', 59.724465), lng: getData('lng', 30.080121) }}
+        center={{
+          lat: getData('lat', 59.724465),
+          lng: getData('lng', 30.080121),
+        }}
         zoom={15}
         options={() => ({
           panControl: false,
@@ -26,7 +29,10 @@ const MapContainer = createComponent(
           gestureHandling: 'none',
         })}
       >
-        <Maps.Marker lat={getData('lat', 59.724465)} lng={getData('lng', 30.080121)} />
+        <Maps.Marker
+          lat={getData('lat', 59.724465)}
+          lng={getData('lng', 30.080121)}
+        />
       </Maps>
     </div>
   ),
@@ -39,8 +45,8 @@ const onClick = (setData, getData, client) => () => {
     client
       .query({
         query: gql(`
-        query geocode($address: String!, $region: String!) {
-          geocode(address: $address, region: $region) {
+        query geocode($address: String!) {
+          geocode(address: $address, region: "DE", language: "DE") {
             id
             streetNumber
             route
@@ -60,7 +66,6 @@ const onClick = (setData, getData, client) => () => {
       `),
         variables: {
           address: value,
-          region: 'DE',
         },
       })
       .then(({ data }) => {

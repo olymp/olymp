@@ -1,3 +1,5 @@
+import './register';
+
 export * from './image';
 export * from './accordion';
 export * from './columns';

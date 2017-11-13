@@ -72,14 +72,4 @@ export default {
       {children}
     </li>
   ),
-  'bulleted-list-item': ({ children, attributes, className }) => (
-    <li {...attributes} className={className}>
-      {children}
-    </li>
-  ),
-  'numbered-list-item': ({ children, attributes, className }) => (
-    <li {...attributes} className={className}>
-      {children}
-    </li>
-  ),
 };

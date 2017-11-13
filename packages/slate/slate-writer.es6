@@ -4,29 +4,28 @@ import { withState } from 'recompose';
 import { Editor, getEventRange } from 'slate-react';
 import Plain from 'slate-plain-serializer';
 import EditList from 'slate-edit-list';
+import SoftBreak from 'slate-soft-break';
+import PasteLinkify from 'slate-paste-linkify';
+import AutoReplace from 'slate-auto-replace';
+import CollapseOnEscape from 'slate-collapse-on-escape';
+import TrailingBlock from 'slate-trailing-block';
+import EditBlockquote from 'slate-edit-blockquote';
+import { Block } from 'slate';
+
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
-import AutoMarkdown from './plugins/auto-markdown';
-import TrailingBlock from './plugins/trailing-block';
-import LineToParagraph from './plugins/line-to-paragraph';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
-import NoParagraph from './plugins/no-paragraph';
 import ToolbarText from './toolbar-text';
 import BlockBar from './block-bar';
 import addBlock from './add-block';
-import getMarkdownType from './defaults/markdown';
 import marks from './defaults/marks';
-import nodes from './defaults/nodes-selected';
+import nodes from './defaults/nodes';
 import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
 import Portal from './components/portal';
 
 const emptyArray = [];
-const editList = EditList({
-  types: ['numbered-list', 'bulleted-list'],
-  typeItem: 'list-item',
-});
 
 const renderNode = props => {
   const X = nodes[props.node.type];
@@ -46,10 +45,83 @@ const renderMark = props => {
 const plugins = [
   TrailingBlock({ type: 'paragraph' }),
   InsertBlockOnEnter({ type: 'paragraph' }),
-  /* AutoMarkdown({ getMarkdownType }),
+  EditList({
+    types: ['numbered-list', 'bulleted-list'],
+    typeItem: 'list-item',
+  }),
+  SoftBreak({
+    shift: true,
+    // onlyIn: ['paragraph']
+  }),
+  PasteLinkify({
+    type: 'link',
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(>)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'block-quote' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(\*)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'list-item' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(-)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'list-item' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(\+)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'list-item' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(#)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-one' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(##)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-two' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(###)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-three' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(####)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-four' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(#####)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-five' }),
+  }),
+  AutoReplace({
+    trigger: 'space',
+    before: /^(######)$/,
+    transform: (transform, e, matches) =>
+      transform.setBlock({ type: 'heading-six' }),
+  }),
+  CollapseOnEscape(),
+  EditBlockquote(),
+  /*
   LineToParagraph({ type: 'paragraph' }),
   NoParagraph({ type: 'paragraph' }),
-  editList, */
+  */
   {
     renderNode,
     renderMark,
@@ -71,9 +143,68 @@ class Writer extends Component {
   };
 
   onKeyDown = (e, change) => {
-    if (e.shiftKey && e.key === 'enter') {
-      return change.insertText('\n');
-    } else if (e.key === 'backspace') {
+    if (e.key === 'Enter') {
+      const { value } = change;
+      const { document, startKey, startBlock } = value;
+      if (
+        !startBlock ||
+        startBlock.type === 'list-item' ||
+        startBlock.type === 'paragraph'
+      ) {
+        return undefined;
+      } else if (startBlock && !startBlock.isVoid) {
+        return change
+          .collapseToEndOf(startBlock)
+          .insertBlock(Block.create({ type: 'paragraph' }))
+          .collapseToEnd();
+      } else if (startBlock && startBlock.isVoid) {
+        const nextBlock = document.getNextBlock(startKey);
+        const prevBlock = document.getPreviousBlock(startKey);
+        const isFocusedStart = value.selection.hasEdgeAtStartOf(startBlock);
+        const isFocusedEnd = value.selection.hasEdgeAtEndOf(startBlock);
+        const blockToInsert = Block.create({ type: 'paragraph' });
+
+        // Void block at the end of the document
+        if (!nextBlock) {
+          if (isFocusedEnd) {
+            return change
+              .collapseToEndOf(startBlock)
+              .insertBlock(blockToInsert)
+              .collapseToEnd();
+          }
+          if (prevBlock) {
+            const index = document.nodes.indexOf(prevBlock);
+            return change
+              .collapseToEndOf(prevBlock)
+              .insertNodeByKey(document.key, index + 1, blockToInsert)
+              .collapseToStartOf(startBlock);
+          }
+          return change
+            .collapseToStartOf(startBlock)
+            .insertNodeByKey(document.key, 0, blockToInsert);
+        }
+        // Void block between two blocks
+        if (nextBlock && prevBlock) {
+          if (isFocusedStart) {
+            const index = document.nodes.indexOf(prevBlock);
+            return change
+              .collapseToEndOf(prevBlock)
+              .insertNodeByKey(document.key, index + 1, blockToInsert)
+              .collapseToStartOf(startBlock);
+          }
+          // NOe rart skjer her
+          return change.collapseToEndOf(startBlock).insertBlock(blockToInsert);
+        }
+        // Void block in the beginning of the document
+        if (nextBlock && !prevBlock) {
+          if (isFocusedStart) {
+            return change
+              .collapseToStartOf(startBlock)
+              .insertNodeByKey(document.key, 0, blockToInsert);
+          }
+          return change.collapseToEndOf(startBlock).insertBlock(blockToInsert);
+        }
+      }
     } else if (e.metaKey || e.ctrlKey) {
       switch (e.key) {
         case 'b':
@@ -105,6 +236,7 @@ class Writer extends Component {
 
   onDrop = (ev, change) => {
     const { schema } = this.props;
+    console.log(ev, ev.dataTransfer.files);
     const type = ev.dataTransfer.getData('text');
     if (type && type.indexOf('x-slate:') === 0) {
       const range = getEventRange(ev, change.value);

@@ -1,5 +1,5 @@
 {
-  "version": "18.6.24",
+  "version": "18.6.30",
   "name": "olymp-ui",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -14,7 +14,7 @@
   "dependencies": {
     "antd": "^3.0.0-alpha.15",
     "date-fns": "^2.0.0-alpha.1",
-    "moment": "^2.19.1",
+    "moment": "^2.19.2",
     "multirangeslider": "^0.5.2",
     "react-modal2": "^5.0.0"
   }

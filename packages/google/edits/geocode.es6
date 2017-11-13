@@ -3,95 +3,106 @@ import { AutoComplete, Input } from 'antd';
 import { throttleInput } from 'olymp-utils';
 import { FaMapMarker } from 'olymp-icons';
 import { withApollo, graphql } from 'react-apollo';
+import { compose, withState } from 'recompose';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
 
-@withApollo
-@graphql(
-  gql`
-    query geocodeList($address: String!) {
-      geocodeList(address: $address, region: "DE") {
-        id
-        streetNumber
-        route
-        locality
-        administrativeAreaLevel1
-        administrativeAreaLevel2
-        country
-        postalCode
-        formattedAddress
-        lat
-        lng
-        locationType
-        partialMatch
-        types
+const enhance = compose(
+  withApollo,
+  graphql(
+    gql`
+      query geocodeList($address: String!) {
+        geocodeList(address: $address, region: "DE", language: "DE") {
+          id
+          streetNumber
+          route
+          locality
+          administrativeAreaLevel1
+          administrativeAreaLevel2
+          country
+          postalCode
+          formattedAddress
+          lat
+          lng
+          locationType
+          partialMatch
+          types
+        }
       }
-    }
-  `,
-  {
-    options: ({ lat, lng }) => ({
-      skip: lat === undefined || lng === undefined,
-      variables: {
-        address: `${lat}, ${lng}`,
-      },
-    }),
-    props: ({ ownProps, data }) => ({
-      ...ownProps,
-      value: get(data, 'geocodeList[0]', {}),
-    }),
-  },
-)
+    `,
+    {
+      options: ({ lat, lng }) => ({
+        skip: lat === undefined || lng === undefined,
+        variables: {
+          address: `${lat}, ${lng}`,
+        },
+      }),
+      props: ({ ownProps, data }) => ({
+        ...ownProps,
+        value: get(data, 'geocodeList[0]', {}),
+      }),
+    },
+  ),
+  withState('items', 'setItems', []),
+);
+
+@enhance
 export default class GeocodeEditor extends Component {
   static defaultProps = {
     value: null,
   };
 
-  state = {
-    items: [],
+  onAdd = code => {
+    const { onChange, items } = this.props;
+
+    this.text = null;
+    const item = items.find(x => x.id === code);
+    onChange(item);
   };
   throttle = throttleInput(500);
 
+  handleSearch = term => {
+    this.text = term;
+
+    if (term) {
+      this.throttle(() => {
+        this.performSearch(term);
+      });
+    }
+  };
+
   performSearch = address => {
-    const { client } = this.props;
+    const { client, setItems } = this.props;
 
     return client
       .query({
         query: gql(`
-          query geocodeList($address: String!, $region: String!) {
-            geocodeList(address: $address, region: $region) {
-              id
-              streetNumber
-              route
-              locality
-              administrativeAreaLevel1
-              administrativeAreaLevel2
-              country
-              postalCode
-              formattedAddress
-              lat
-              lng
-              locationType
-              partialMatch
-              types
+            query geocodeList($address: String!) {
+              geocodeList(address: $address, region: "DE", language: "DE") {
+                id
+                streetNumber
+                route
+                locality
+                administrativeAreaLevel1
+                administrativeAreaLevel2
+                country
+                postalCode
+                formattedAddress
+                lat
+                lng
+                locationType
+                partialMatch
+                types
+              }
             }
-          }
-        `),
+          `),
         variables: {
           address,
-          region: 'DE',
         },
       })
       .then(({ data }) => {
-        this.setState({ items: data.geocodeList });
+        setItems(data.geocodeList);
       });
-  };
-
-  onAdd = code => {
-    const { onChange, value } = this.props;
-    const { items } = this.state;
-    this.text = null;
-    const item = items.find(x => x.id === code);
-    onChange(item);
   };
 
   renderOption = ({ id, formattedAddress }) => (
@@ -102,17 +113,10 @@ export default class GeocodeEditor extends Component {
     </AutoComplete.Option>
   );
 
-  handleSearch = term => {
-    const { items, value, onChange, refetch } = this.props;
-    this.text = term;
-    this.throttle(() => {
-      this.performSearch(term);
-    });
-  };
-
   render() {
-    const { value, size, placeholder } = this.props;
-    const { items } = this.state;
+    const { value, size, placeholder, items } = this.props;
+
+    console.log(value, items);
 
     return (
       <AutoComplete

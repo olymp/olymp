@@ -3,9 +3,8 @@ import { createComponent } from 'react-fela';
 import PropTypes from 'prop-types';
 import { getContext } from 'recompose';
 import tinycolor from 'tinycolor2';
-import Portal from '../portal';
 
-const getLogo = (x) => {
+const getLogo = x => {
   if (typeof x === 'function') {
     return x();
   }
@@ -15,11 +14,13 @@ const Modal = getContext({
   theme: PropTypes.object,
 })(
   ({ className, theme, show = true }) =>
-    (show ? (
+    show ? (
       <div className={className}>
-        {theme.get().logoWhite && <div className="logo">{getLogo(theme.get().logoWhite)}</div>}
+        {theme.get().logoWhite && (
+          <div className="logo">{getLogo(theme.get().logoWhite)}</div>
+        )}
       </div>
-    ) : null),
+    ) : null,
 );
 
 const component = createComponent(

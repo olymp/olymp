@@ -55,7 +55,9 @@ const CmsToolbar = createComponent(
           borderBottom: border(theme, theme.dark4),
           '> button.ant-btn.ant-btn-primary.ant-btn-circle.ant-btn-lg': {
             center: true,
-            border: `2px solid ${theme.dark1}`,
+            border: 0,
+            backgroundColor: 'transparent',
+            opacity: 0.7,
             '> svg': {
               marginTop: 3,
             },
@@ -203,7 +205,7 @@ class Navigation extends Component {
                 shape="circle"
                 size="large"
               >
-                <FaExpand size={25} />
+                <FaExpand size={25} color="white" />
               </Button>
             ) : (
               <Button
@@ -212,7 +214,7 @@ class Navigation extends Component {
                 shape="circle"
                 size="large"
               >
-                <FaCompress size={25} />
+                <FaCompress size={25} color="white" />
               </Button>
             )}
           </Menu.Item>

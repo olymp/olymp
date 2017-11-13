@@ -130,8 +130,15 @@ export default (mapsKey, mail, key) => {
           });
         },
         geocode: (source, args) =>
-          maps('geocode', args).then(result => result[0]),
-        geocodeList: (source, args) => maps('geocode', args),
+          maps('geocode', {
+            ...args,
+            components: { country: 'DE' },
+          }).then(result => result[0]),
+        geocodeList: (source, args) =>
+          maps('geocode', {
+            ...args,
+            components: { country: 'DE' },
+          }),
       },
     },
     schema: `
