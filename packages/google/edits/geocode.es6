@@ -9,6 +9,8 @@ import gql from 'graphql-tag';
 
 const enhance = compose(
   withApollo,
+  withState('lat', 'setLat'),
+  withState('lng', 'setLng'),
   graphql(
     gql`
       query geocodeList($address: String!) {
@@ -114,9 +116,7 @@ export default class GeocodeEditor extends Component {
   );
 
   render() {
-    const { value, size, placeholder, items } = this.props;
-
-    console.log(value, items);
+    const { value, size, placeholder, items, setLat, setLng } = this.props;
 
     return (
       <AutoComplete
@@ -130,7 +130,19 @@ export default class GeocodeEditor extends Component {
         <Input
           placeholder={placeholder || 'Suche ...'}
           size={size}
-          suffix={<FaMapMarker size={14} />}
+          suffix={
+            <FaMapMarker
+              size={14}
+              onClick={() => {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(({ coords }) => {
+                    setLat(coords.latitude);
+                    setLng(coords.longitude);
+                  });
+                }
+              }}
+            />
+          }
         />
       </AutoComplete>
     );
