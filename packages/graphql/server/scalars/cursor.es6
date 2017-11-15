@@ -22,7 +22,6 @@ export default {
     Cursor: new GraphQLScalarType({
       name: 'Cursor',
       serialize(value) {
-        console.log(value;
         if (value.value) {
           return toCursor(value);
         }

@@ -130,8 +130,8 @@ const getIcon = key => {
 )
 @enhance
 @getSchema
-@withPropsOnChange(['schema'], ({ schema }) => {
-  const types = Object.keys(schema.nodes).map(key => ({
+@withPropsOnChange(['schema'], ({ schema = {} }) => {
+  const types = Object.keys(schema.nodes || {}).map(key => ({
     ...schema.nodes[key].slate,
     type: key,
   }));

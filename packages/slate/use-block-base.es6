@@ -83,7 +83,6 @@ const Action = ({ node, value, onChange, schema }) => (
 export default options => Block => {
   const StyledBlock = createComponent(
     ({ isSelected, theme, node }) => ({
-      xy: console.log(node),
       outline: isSelected && options.category && `2px solid ${theme.color}`,
     }),
     p => <Block {...p} />,

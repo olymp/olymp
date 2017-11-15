@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withState } from 'recompose';
+import { compose, withPropsOnChange, withState } from 'recompose';
 import { Editor, getEventRange } from 'slate-react';
 import Plain from 'slate-plain-serializer';
 import EditList from 'slate-edit-list';
@@ -32,7 +32,12 @@ const renderNode = props => {
   if (X) {
     return <X {...props} />;
   }
-  return null;
+  return (
+    <div {...props.attributes}>
+      <b contentEditable={false}>Not found: {props.node.type}</b>
+      {props.children}
+    </div>
+  );
 };
 const renderMark = props => {
   const X = marks[props.mark.type];
@@ -42,93 +47,100 @@ const renderMark = props => {
   return null;
 };
 
-const plugins = [
-  TrailingBlock({ type: 'paragraph' }),
-  InsertBlockOnEnter({ type: 'paragraph' }),
-  EditList({
-    types: ['numbered-list', 'bulleted-list'],
-    typeItem: 'list-item',
-  }),
-  SoftBreak({
-    shift: true,
-    // onlyIn: ['paragraph']
-  }),
-  PasteLinkify({
-    type: 'link',
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(>)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'block-quote' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(\*)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'list-item' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(-)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'list-item' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(\+)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'list-item' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(#)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'heading-one' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(##)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'heading-two' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(###)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'heading-three' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(####)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'heading-four' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(#####)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'heading-five' }),
-  }),
-  AutoReplace({
-    trigger: 'space',
-    before: /^(######)$/,
-    transform: (transform, e, matches) =>
-      transform.setBlock({ type: 'heading-six' }),
-  }),
-  CollapseOnEscape(),
-  EditBlockquote(),
-  /*
-  LineToParagraph({ type: 'paragraph' }),
-  NoParagraph({ type: 'paragraph' }),
-  */
-  {
-    renderNode,
-    renderMark,
-  },
-];
+const enhance = compose(
+  withState('isFull', 'setIsFull'),
+  useJsonState,
+  getSchema,
+  withPropsOnChange('plugins', ({ plugins = [] }) => ({
+    plugins: [
+      ...plugins,
+      TrailingBlock({ type: 'paragraph' }),
+      InsertBlockOnEnter({ type: 'paragraph' }),
+      EditList({
+        types: ['numbered-list', 'bulleted-list'],
+        typeItem: 'list-item',
+      }),
+      SoftBreak({
+        shift: true,
+        // onlyIn: ['paragraph']
+      }),
+      PasteLinkify({
+        type: 'link',
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(>)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'block-quote' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(\*)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'list-item' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(-)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'list-item' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(\+)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'list-item' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(#)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'heading-one' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(##)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'heading-two' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(###)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'heading-three' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(####)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'heading-four' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(#####)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'heading-five' }),
+      }),
+      AutoReplace({
+        trigger: 'space',
+        before: /^(######)$/,
+        transform: (transform, e, matches) =>
+          transform.setBlock({ type: 'heading-six' }),
+      }),
+      CollapseOnEscape(),
+      EditBlockquote(),
+      /*
+      LineToParagraph({ type: 'paragraph' }),
+      NoParagraph({ type: 'paragraph' }),
+      */
+      {
+        renderNode,
+        renderMark,
+      },
+    ],
+  })),
+);
 
-@withState('isFull', 'setIsFull')
 class Writer extends Component {
   static propTypes = {
     readOnly: PropTypes.bool,
@@ -149,6 +161,8 @@ class Writer extends Component {
       if (
         !startBlock ||
         startBlock.type === 'list-item' ||
+        startBlock.type === 'code' ||
+        startBlock.type === 'code-line' ||
         startBlock.type === 'paragraph'
       ) {
         return undefined;
@@ -259,8 +273,9 @@ class Writer extends Component {
       readOnly,
       className,
       spellcheck,
-      schema,
+      schema = {},
       renderNode,
+      plugins,
       style = {},
       full,
       isFull,
@@ -312,4 +327,4 @@ class Writer extends Component {
   };
 }
 
-export default useJsonState(getSchema(Writer));
+export default enhance(Writer);

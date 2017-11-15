@@ -19,11 +19,14 @@ function InsertBlockOnEnterPlugin(...args) {
     blockInputProps = Object.assign({}, defaultProps, blockArg);
   }
 
-  function onKeyDown(e, data, change) {
-    if (data.key === 'enter') {
+  function onKeyDown(e, change) {
+    if (e.key === 'Enter') {
       const { value } = change;
       const { document, startKey, startBlock } = value;
 
+      if (startBlock && ['code', 'code-line'].includes(startBlock.type)) {
+        return change.insertBlock(startBlock.type);
+      }
       if (
         startBlock &&
         !startBlock.isVoid &&

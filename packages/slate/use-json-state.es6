@@ -111,25 +111,29 @@ const stateWrapper = WrappedComponent =>
 
 export default compose(
   withPropsOnChange(['value', 'signal'], ({ value, signal }) => {
-    const newValue = {};
-    Object.keys(value || []).forEach(key => {
-      if (key === 'nodes') {
-        newValue[key] = getNodes(value[key]);
-      } else {
-        newValue[key] = value[key];
-      }
-    });
-    const state =
-      newValue && newValue.nodes
-        ? Value.fromJSON({
-            document: {
-              nodes: newValue.nodes,
-              kind: 'document',
-              data: { signal },
-            },
-            kind: 'value',
-          })
-        : Plain.deserialize('');
+    let state;
+    if (value && Value.isValue(value)) {
+      state = value;
+    } else if (value && value.nodes) {
+      const newValue = {};
+      Object.keys(value || []).forEach(key => {
+        if (key === 'nodes') {
+          newValue[key] = getNodes(value[key]);
+        } else {
+          newValue[key] = value[key];
+        }
+      });
+      state = Value.fromJSON({
+        document: {
+          nodes: newValue.nodes,
+          kind: 'document',
+          data: { signal },
+        },
+        kind: 'value',
+      });
+    } else {
+      state = Plain.deserialize('');
+    }
     return {
       value: state,
       base64: Base64.serialize(state),

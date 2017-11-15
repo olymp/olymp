@@ -16,6 +16,10 @@ export default ({ theme }) => {
     '& ::selection': {
       background: color,
     },
+    '& .ant-menu-item svg': {
+      marginBottom: -2,
+      marginRight: -2,
+    },
     '& .ant-tree li .ant-tree-node-content-wrapper': {
       height: 'initial',
       lineHeight: 'initial',
