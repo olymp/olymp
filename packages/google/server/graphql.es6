@@ -31,10 +31,10 @@ export default (mapsKey, mail, key) => {
   return {
     name: 'google',
     queries: `
-      place(id: String!): Geocode
+      place(placeId: String!): Geocode
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
-      places(input: String!, language: String): [PlaceAutoComplete]
+      places(input: String!, lat: Float, lng: Float, language: String): [PlaceAutoComplete]
       analyticsQuery(start: String!, end: String!, metrics: [ANALYTICS_METRICS], dimensions: [ANALYTICS_DIMENSIONS], sorts: [ANALYTICS_SORT], filters: [AnalyticsFilter]): AnalyticsQuery
     `,
     resolvers: {
@@ -131,7 +131,7 @@ export default (mapsKey, mail, key) => {
             return resultTotals;
           });
         },
-        place: (source, args) => maps.placeById(args.id),
+        place: (source, args) => maps.placeById(args.placeId),
         geocode: (source, args) =>
           maps
             .geocode({
@@ -144,12 +144,17 @@ export default (mapsKey, mail, key) => {
             ...args,
             components: { country: 'DE' },
           }),
-        places: (source, args) =>
+        places: (source, { lat, lng, language, ...args }) =>
           maps.placesAutoComplete({
             ...args,
             types: 'address',
-            language: 'de',
+            language: language || 'de',
             components: { country: 'de' },
+            location:
+              lat !== undefined && lng !== undefined
+                ? `${lat},${lng}`
+                : undefined,
+            radius: lat !== undefined && lng !== undefined ? 1000 : undefined,
           }),
       },
     },
