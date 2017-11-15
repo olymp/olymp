@@ -52,9 +52,13 @@ const enhance = compose(
     onRemove: PropTypes.func,
   }),
   withState('formState', 'setFormState'),
-  connect(({ cloudinary }, { items }) => {
+  connect(({ cloudinary }, { items, value = [] }) => {
     const newItems = cloudinary.selectedIds
-      .map(x => items.find(item => item.id === x))
+      .map(
+        x =>
+          value.find(item => item.id === x) ||
+          items.find(item => item.id === x),
+      )
       .filter(x => x);
 
     return {

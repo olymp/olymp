@@ -37,6 +37,9 @@ const getItems = items =>
       sortByName,
     }),
 )
+@withPropsOnChange(['value'], ({ value, setSelection }) =>
+  setSelection(value.map(v => v.id)),
+)
 @withPropsOnChange(
   ['folder', 'filteredItems', 'items'],
   ({ filteredItems, folder }) => ({
@@ -187,8 +190,8 @@ class CloudinaryView extends Component {
       shortId,
       onChange,
       uploading,
-      value,
       removeSelection,
+      value,
     } = this.props;
 
     return (
