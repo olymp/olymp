@@ -31,10 +31,10 @@ export default (mapsKey, mail, key) => {
   return {
     name: 'google',
     queries: `
-      placeById(id: String!): Geocode
+      place(id: String!): Geocode
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
-      placesAutoComplete(input: String!, language: String): [PlaceAutoComplete]
+      places(input: String!, language: String): [PlaceAutoComplete]
       analyticsQuery(start: String!, end: String!, metrics: [ANALYTICS_METRICS], dimensions: [ANALYTICS_DIMENSIONS], sorts: [ANALYTICS_SORT], filters: [AnalyticsFilter]): AnalyticsQuery
     `,
     resolvers: {
@@ -131,7 +131,7 @@ export default (mapsKey, mail, key) => {
             return resultTotals;
           });
         },
-        placeById: (source, args) => maps.placeById(args.id),
+        place: (source, args) => maps.placeById(args.id),
         geocode: (source, args) =>
           maps
             .geocode({
@@ -144,7 +144,7 @@ export default (mapsKey, mail, key) => {
             ...args,
             components: { country: 'DE' },
           }),
-        placesAutoComplete: (source, args) =>
+        places: (source, args) =>
           maps.placesAutoComplete({
             ...args,
             types: 'address',
