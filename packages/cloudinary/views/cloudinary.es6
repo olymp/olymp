@@ -37,7 +37,7 @@ const getItems = items =>
       sortByName,
     }),
 )
-@withPropsOnChange(['value'], ({ value, setSelection }) =>
+@withPropsOnChange(['value'], ({ value = [], setSelection }) =>
   setSelection(value.map(v => v.id)),
 )
 @withPropsOnChange(
