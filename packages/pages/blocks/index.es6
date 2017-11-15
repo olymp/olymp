@@ -12,6 +12,7 @@ export { default as GalleryBlock } from './gallery';
 export { default as CardLinkBlock } from './card-link';
 export { default as LinkBlock } from './link';
 export { default as HeaderBlock } from './header';
+export { default as Header2Block } from './header2';
 export { default as CarouselBlock } from './carousel';
 export { default as BannerBlock } from './banner';
 export { default as YoutubeBlock } from './youtube';

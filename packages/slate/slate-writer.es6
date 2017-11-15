@@ -26,6 +26,20 @@ import toolbarTypes from './defaults/toolbar-types';
 import Portal from './components/portal';
 
 const emptyArray = [];
+const getType = type => {
+  if (type === 'GZK.Header.Header') {
+    return 'pageHeader';
+  } else if (type === 'GZK.Template.ContainerTextBlock') {
+    return 'containerText';
+  } else if (type === 'GZK.Template.ContainerBlock') {
+    return 'container';
+  } else if (type === 'numbered-list-item') {
+    return 'list-item';
+  } else if (type === 'Pages.Media.ImageBlock.Image') {
+    return 'image';
+  }
+  return 'paragraph';
+};
 
 const renderNode = props => {
   const X = nodes[props.node.type];
@@ -34,11 +48,29 @@ const renderNode = props => {
   }
   return (
     <div {...props.attributes}>
-      <b contentEditable={false}>Not found: {props.node.type}</b>
+      <b
+        contentEditable={false}
+        onClick={() => {
+          console.log(
+            '213',
+            props.node,
+            props.node.type,
+            getType(props.node.type),
+          );
+          props.editor.props.onChange(
+            props.editor.props.value
+              .change()
+              .setNodeByKey(props.node.key, getType(props.node.type)),
+          );
+        }}
+      >
+        Not found: {props.node.type}
+      </b>
       {props.children}
     </div>
   );
 };
+
 const renderMark = props => {
   const X = marks[props.mark.type];
   if (X) {

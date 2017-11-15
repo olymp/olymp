@@ -116,6 +116,7 @@ export default compose(
       state = value;
     } else if (value && value.nodes) {
       const newValue = {};
+      console.log(value);
       Object.keys(value || []).forEach(key => {
         if (key === 'nodes') {
           newValue[key] = getNodes(value[key]);
@@ -131,6 +132,7 @@ export default compose(
         },
         kind: 'value',
       });
+      console.log(value, newValue);
     } else {
       state = Plain.deserialize('');
     }
@@ -153,6 +155,8 @@ const getNodes = nodes =>
 
         if (Array.isArray(node[key])) {
           newNode.leaves = [...newNode.leaves, ...node[key]];
+        } else if (typeof node[key] === 'string') {
+          newNode.leaves.push({ kind: 'leaf', text: node[key] });
         } else {
           newNode.leaves.push(node[key]);
         }

@@ -22,8 +22,7 @@ export default enhance(props => {
         )
       : flatNavigation.find(
           item =>
-            pathname === item.pathname ||
-            decodeURI(unescape(item.pathname)) === pathname,
+            pathname === item.pathname || decodeURI(item.pathname) === pathname,
         );
   const { id, binding, pageId, bindingId } = match || {};
 

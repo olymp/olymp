@@ -26,7 +26,7 @@ const enhance = compose(
       for (let x = 0; x < flatNavigation.length; x++) {
         const page = flatNavigation[x];
         if (
-          decodeURI(unescape(page.pathname)) === pathname ||
+          decodeURI(page.pathname) === pathname ||
           `/page_id/${page.id}` === pathname
         ) {
           item = page;
