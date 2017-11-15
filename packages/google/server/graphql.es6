@@ -31,6 +31,7 @@ export default (mapsKey, mail, key) => {
   return {
     name: 'google',
     queries: `
+      placeById(id: String!): Geocode
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
       placesAutoComplete(input: String!, language: String): [PlaceAutoComplete]
@@ -130,6 +131,7 @@ export default (mapsKey, mail, key) => {
             return resultTotals;
           });
         },
+        placeById: (source, args) => maps.placeById(args.id),
         geocode: (source, args) =>
           maps
             .geocode({

@@ -35,6 +35,18 @@ export default key => {
     Promise,
   });
   return {
+    placeById: (id, { raw = false } = {}) =>
+      new Promise((yay, nay) => {
+        googleMapsClient.place({ placeid: id }, (err, result) => {
+          if (err) {
+            nay(err.json.error_message);
+          } else if (raw) {
+            yay(result.json.result);
+          } else {
+            yay(result.json.result ? convertGeocode(result.json.result) : null);
+          }
+        });
+      }),
     geocode: (payload, { raw = false } = {}) =>
       new Promise((yay, nay) => {
         googleMapsClient.geocode(payload, (err, result) => {
