@@ -33,6 +33,7 @@ export default (mapsKey, mail, key) => {
     queries: `
       geocode(address: String!, region: String, language: String): Geocode
       geocodeList(address: String!, region: String, language: String): [Geocode]
+      placesAutoComplete(input: String!, language: String): [PlaceAutoComplete]
       analyticsQuery(start: String!, end: String!, metrics: [ANALYTICS_METRICS], dimensions: [ANALYTICS_DIMENSIONS], sorts: [ANALYTICS_SORT], filters: [AnalyticsFilter]): AnalyticsQuery
     `,
     resolvers: {
@@ -130,14 +131,23 @@ export default (mapsKey, mail, key) => {
           });
         },
         geocode: (source, args) =>
-          maps('geocode', {
-            ...args,
-            components: { country: 'DE' },
-          }).then(result => result[0]),
+          maps
+            .geocode({
+              ...args,
+              components: { country: 'DE' },
+            })
+            .then(result => result[0]),
         geocodeList: (source, args) =>
-          maps('geocode', {
+          maps.geocode({
             ...args,
             components: { country: 'DE' },
+          }),
+        placesAutoComplete: (source, args) =>
+          maps.placesAutoComplete({
+            ...args,
+            types: 'address',
+            language: 'de',
+            components: { country: 'de' },
           }),
       },
     },
@@ -157,6 +167,12 @@ export default (mapsKey, mail, key) => {
         locationType: String
         partialMatch: Boolean
         types: [String]
+      }
+      type PlaceAutoComplete {
+        description: String,
+        id: String,
+        placeId: String,
+        reference: String
       }
       type AnalyticsQuery {
         id: String
