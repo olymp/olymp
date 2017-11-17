@@ -9,34 +9,28 @@ export default WrappedComponent =>
     componentDidMount() {
       const node = document.querySelector(this.props.parentEl);
       this.parent = parent(node);
-      this.parent.addEventListener('scroll', this.onScroll, false);
+      this.parent.addEventListener('scroll', this.requestTick, false);
     }
 
     componentWillUnmount() {
-      this.parent.removeEventListener('scroll', this.onScroll);
+      this.parent.removeEventListener('scroll', this.requestTick);
     }
-
-    onScroll = () => {
-      if (this.parent.scrollTop === this.top) {
-        return;
-      }
-      this.top = this.parent.scrollTop;
-      this.requestTick();
-    };
 
     requestTick = () => {
       if (!this.ticking) {
-        requestAnimationFrame(this.onScrollDebounce);
+        requestAnimationFrame(this.update);
       }
       this.ticking = true;
     };
 
     update = () => {
-      this.ticking = false;
-      this.setState({ top: this.top });
+      if (this.parent.scrollTop === this.top) {
+        return;
+      }
+      this.top = this.parent.scrollTop;
+      this.setState(() => ({ top: this.top }), () => (this.ticking = false));
     };
 
-    latestKnownScrollY = 0;
     ticking = false;
 
     onScrollDebounce = debounce(
