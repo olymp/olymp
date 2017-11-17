@@ -92,22 +92,17 @@ export default class PageSidebar extends Component {
     );
 
     return (
-      <SplitView maxWidth={maxWidth} center>
-        <Prompt
-          when={form.isFieldsTouched()}
-          message={() => 'Änderungen verwerfen?'}
-        />
-
-        <Sidebar
-          isOpen
-          padding={0}
-          borderLess
-          title={title}
-          subtitle={description}
-          rightButtons={
-            <Sidebar.Button onClick={save} shape="circle" icon="save" />
-          }
-        >
+      <Sidebar.Container
+        isOpen
+        padding={0}
+        borderLess
+        title={title}
+        subtitle={description}
+        rightButtons={
+          <Sidebar.Button onClick={save} shape="circle" icon="save" />
+        }
+        width={350}
+        content={
           <PageForm
             form={form}
             item={item}
@@ -116,12 +111,15 @@ export default class PageSidebar extends Component {
             tab={tab}
             onTabClick={key => replaceQuery({ '@page': key || null })}
           />
-        </Sidebar>
-        <div>
-          {render && render(P)}
-          {!render && P}
-        </div>
-      </SplitView>
+        }
+      >
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
+        {render && render(P)}
+        {!render && P}
+      </Sidebar.Container>
     );
   }
 }

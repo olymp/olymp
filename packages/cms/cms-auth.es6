@@ -20,30 +20,17 @@ import * as LANG from './lang/de';
 const Container = createComponent(
   ({ theme }) => ({
     ...getAntStyle({ theme }),
-    hasFlex: {
-      display: 'flex',
-      flexDirection: 'row',
-    },
-    height: '100%',
     backgroundColor: '#Cf5f5f5',
+    '> div': {
+      marginLeft: 64,
+      position: 'relative',
+    },
   }),
   'div',
   [],
 );
 
-const SwitchContainer = createComponent(
-  () => ({
-    hasFlex: {
-      display: 'flex',
-      flexDirection: 'column',
-      flex: '1 1 0%',
-      height: '100%',
-      overflowY: 'auto',
-    },
-  }),
-  'div',
-  p => Object.keys(p),
-);
+const SwitchContainer = createComponent(() => ({}), 'div', p => Object.keys(p));
 
 const Footer = createComponent(
   ({ theme }) => ({

@@ -133,7 +133,7 @@ const StyledInner = createComponent(
       },
     },
   }),
-  'div',
+  'aside',
   ({
     right,
     padding,
