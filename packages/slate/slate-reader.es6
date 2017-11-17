@@ -1,10 +1,12 @@
 import React from 'react';
+import { withPropsOnChange, compose, withProps } from 'recompose';
 import { Editor } from 'slate-react';
 import Plain from 'slate-plain-serializer';
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
 import marks from './defaults/marks';
 import nodes from './defaults/nodes';
+import HeadingId from './plugins/heading-id';
 
 const renderNode = props => {
   const X = nodes[props.node.type];
@@ -21,13 +23,23 @@ const renderMark = props => {
   return null;
 };
 
-const plugins = [
-  {
-    renderNode,
-    renderMark,
-  },
-];
-
+const enhance = compose(
+  useJsonState,
+  getSchema,
+  withPropsOnChange('plugins', ({ plugins = [] }) => ({
+    plugins: [
+      ...plugins,
+      HeadingId({}),
+      {
+        renderNode,
+        renderMark,
+      },
+    ],
+  })),
+  withProps(({ onChange }) => ({
+    onChange: change => onChange(change.value),
+  })),
+);
 const Reader = ({
   children,
   schema,
@@ -44,7 +56,6 @@ const Reader = ({
       className="slate-editor slate-reader"
       value={value || Plain.deserialize('')}
       spellcheck={false}
-      plugins={plugins}
       readOnly
       renderNode={renderNode}
       placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
@@ -52,4 +63,4 @@ const Reader = ({
   </div>
 );
 
-export default useJsonState(getSchema(Reader));
+export default enhance(Reader);

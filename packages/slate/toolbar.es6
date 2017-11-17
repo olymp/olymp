@@ -95,10 +95,11 @@ const ScrollPortal = withScrollHide(
       <WrappedMenu
         color={color}
         style={{
-          top: top - 2,
+          top: 0,
           display,
           left,
-          transform: 'translate3d(-50%, -100%, 0px)',
+          // transform: 'translate3d(-50%, -100%, 0px)',
+          transform: `translate3d(-50%, ${top - 26}px, 0px)`,
           position: 'absolute',
         }}
         selectedKeys={[]}

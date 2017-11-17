@@ -15,11 +15,12 @@ import { Block } from 'slate';
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
+import HeadingId from './plugins/heading-id';
 import ToolbarText from './toolbar-text';
 import BlockBar from './block-bar';
 import addBlock from './add-block';
 import marks from './defaults/marks';
-import nodes from './defaults/nodes';
+import nodes from './defaults/nodes-selected';
 import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
@@ -86,6 +87,7 @@ const enhance = compose(
   withPropsOnChange('plugins', ({ plugins = [] }) => ({
     plugins: [
       ...plugins,
+      HeadingId({}),
       TrailingBlock({ type: 'paragraph' }),
       InsertBlockOnEnter({ type: 'paragraph' }),
       EditList({
