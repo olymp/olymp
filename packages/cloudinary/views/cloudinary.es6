@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
 import { withPropsOnChange } from 'recompose';
-import { SplitView } from 'olymp-ui';
+import { Sidebar } from 'olymp-ui';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import { withRedux, withActions } from './redux';
 import { getDirectories } from './directory';
 import Gallery from './gallery';
 import Dragzone from '../components/dragzone';
-import Sidebar from './sidebar';
+import CloudinarySidebar from './sidebar';
 
 const getItems = items =>
   items.map(item => ({
@@ -195,25 +195,27 @@ class CloudinaryView extends Component {
     } = this.props;
 
     return (
-      <SplitView background>
-        <Sidebar
-          directories={directories}
-          upload={upload}
-          onClose={onClose}
-          goBack={goBack}
-          items={items}
-          onChange={onChange}
-          value={value}
-        />
-        <Dragzone uploading={uploading} clickable={false} {...upload}>
-          <Gallery
-            key={shortId}
-            items={filteredItems}
-            onClick={this.onClick}
-            onRemove={removeSelection}
+      <Sidebar.Container
+        width={280}
+        content={
+          <CloudinarySidebar
+            directories={directories}
+            upload={upload}
+            onClose={onClose}
+            goBack={goBack}
+            items={items}
+            onChange={onChange}
+            value={value}
           />
-        </Dragzone>
-      </SplitView>
+        }
+      >
+        <Gallery
+          key={shortId}
+          items={filteredItems}
+          onClick={this.onClick}
+          onRemove={removeSelection}
+        />
+      </Sidebar.Container>
     );
   }
 }

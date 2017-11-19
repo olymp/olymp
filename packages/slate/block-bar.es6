@@ -3,11 +3,12 @@ import { withLang } from 'olymp-utils';
 import { FaExpand, FaCompress } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
 import { Menu, Icon, Button } from 'antd';
-import { createComponent, border } from 'olymp-fela';
+import { createComponent } from 'react-fela';
+import { border } from 'olymp-fela';
 import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
 import { sortBy } from 'lodash';
 import { connect } from 'react-redux';
-import getSchema from 'olymp-slate/get-schema';
+import getSchema from './get-schema';
 
 const enhance = compose(
   withState('collapsed', 'setCollapsed', true),

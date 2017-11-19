@@ -110,6 +110,7 @@ export default class GridExample extends PureComponent {
 
     return (
       <Masonry
+        overscanByPixels={1000}
         cellCount={(items || []).length}
         cellMeasurerCache={this.cache}
         cellPositioner={this.cellPositioner}

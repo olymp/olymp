@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { onlyUpdateForKeys } from 'recompose';
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 import { Icon, Dropdown, Menu, Tree } from 'antd';
 import { Block, Text } from 'slate';
 import { sortBy } from 'lodash';

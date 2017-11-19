@@ -6,8 +6,10 @@ import Button from './button';
 Sidebar.Button = Button;
 Sidebar.Container = createComponent(
   ({ width }) => ({
+    height: '100%',
     '> aside': {
       position: 'fixed',
+      height: '100%',
       width,
     },
     '> nav': {
@@ -16,6 +18,7 @@ Sidebar.Container = createComponent(
     },
     '> section': {
       marginLeft: width || 350,
+      height: '100%',
       position: 'relative',
     },
   }),

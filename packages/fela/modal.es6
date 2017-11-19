@@ -54,7 +54,7 @@ export default ({
   container,
 }) =>
   open === undefined || open ? (
-    <Portal>
+    <Portal noScroll>
       <ModalBackground onClick={onClose}>
         <Modal
           width={width}

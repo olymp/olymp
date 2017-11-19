@@ -43,7 +43,7 @@ const def = getContext({
         onCancel={onCancel}
         maskClosable={false}
         loading={loading}
-        usePortal={false}
+        noPortal
       >
         <Form>{children}</Form>
         <Modal.Footer>
@@ -64,7 +64,7 @@ const def = getContext({
         </Modal.Copyright>
       </Modal>
     );
-  }
+  },
 );
 def.Links = createComponent(
   ({ theme }) => ({
@@ -80,7 +80,7 @@ def.Links = createComponent(
       },
     },
   }),
-  'div'
+  'div',
 );
 
 export default def;

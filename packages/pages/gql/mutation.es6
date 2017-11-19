@@ -31,7 +31,7 @@ const mutateGql = gql`
         text
         title
         image
-        chapters
+        toc
       }
       state
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
-import { createComponent } from 'olymp-fela';
+import { createComponent } from 'react-fela';
 import useBlockBase from './use-block-base';
 import registry from './registry';
 

@@ -21,16 +21,20 @@ const Container = createComponent(
   ({ theme }) => ({
     ...getAntStyle({ theme }),
     backgroundColor: '#Cf5f5f5',
+    height: '100%',
     '> div': {
       marginLeft: 64,
       position: 'relative',
+      height: '100%',
     },
   }),
   'div',
   [],
 );
 
-const SwitchContainer = createComponent(() => ({}), 'div', p => Object.keys(p));
+const SwitchContainer = createComponent(() => ({ height: '100%' }), 'div', p =>
+  Object.keys(p),
+);
 
 const Footer = createComponent(
   ({ theme }) => ({
@@ -103,49 +107,45 @@ const component = enhance(props => {
         collectionList={collectionList}
         collectionTree={collectionTree}
       />
-      <SwitchContainer>
-        <Switch>
-          <Match
-            match={!!collection && query.modal !== null}
-            render={() => (
-              <CollectionRoute
-                {...props}
-                id={collectionId}
-                typeName={collectionName}
-              />
-            )}
-          />
-          <Match
-            match={query['@media'] !== undefined}
-            render={() => <CloudinaryRoute {...props} />}
-          />
-          <Match
-            match={query['@settings'] !== undefined}
-            render={() => <SettingsRoute {...props} />}
-          />
-          <Match
-            match={query['@analytics'] !== undefined}
-            render={() => <Analytics {...props} />}
-          />
-          <Match
-            match={query['@users'] !== undefined}
-            render={() => <AuthUsers {...props} />}
-          />
-          <Match
-            match={query['@user'] !== undefined}
-            render={() => <AuthUser {...props} />}
-          />
-          <Match
-            match={query['@page'] !== undefined}
-            render={() => <EditableRoute {...props} />}
-          />
-          <Match
-            render={rest => (
-              <EditableRoute {...rest} {...props} key={pathname} />
-            )}
-          />
-        </Switch>
-      </SwitchContainer>
+      <Switch>
+        <Match
+          match={!!collection && query.modal !== null}
+          render={() => (
+            <CollectionRoute
+              {...props}
+              id={collectionId}
+              typeName={collectionName}
+            />
+          )}
+        />
+        <Match
+          match={query['@media'] !== undefined}
+          render={() => <CloudinaryRoute {...props} />}
+        />
+        <Match
+          match={query['@settings'] !== undefined}
+          render={() => <SettingsRoute {...props} />}
+        />
+        <Match
+          match={query['@analytics'] !== undefined}
+          render={() => <Analytics {...props} />}
+        />
+        <Match
+          match={query['@users'] !== undefined}
+          render={() => <AuthUsers {...props} />}
+        />
+        <Match
+          match={query['@user'] !== undefined}
+          render={() => <AuthUser {...props} />}
+        />
+        <Match
+          match={query['@page'] !== undefined}
+          render={() => <EditableRoute {...props} />}
+        />
+        <Match
+          render={rest => <EditableRoute {...rest} {...props} key={pathname} />}
+        />
+      </Switch>
       {ua.getBrowser().name === 'IE' && (
         <Footer>
           <p>

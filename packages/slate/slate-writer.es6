@@ -11,6 +11,7 @@ import CollapseOnEscape from 'slate-collapse-on-escape';
 import TrailingBlock from 'slate-trailing-block';
 import EditBlockquote from 'slate-edit-blockquote';
 import { Block } from 'slate';
+import Portal from 'olymp-fela/portal';
 
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
@@ -24,7 +25,6 @@ import nodes from './defaults/nodes-selected';
 import toolbarActions from './defaults/toolbar-actions';
 import toolbarMarks from './defaults/toolbar-marks';
 import toolbarTypes from './defaults/toolbar-types';
-import Portal from './components/portal';
 
 const emptyArray = [];
 const getType = type => {
@@ -58,8 +58,8 @@ const renderNode = props => {
             props.node.type,
             getType(props.node.type),
           );
-          props.editor.props.onChange(
-            props.editor.props.value
+          props.editor.onChange(
+            props.editor.value
               .change()
               .setNodeByKey(props.node.key, getType(props.node.type)),
           );
