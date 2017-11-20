@@ -4,6 +4,7 @@ import { withPropsOnChange, compose } from 'recompose';
 import Plain from 'slate-plain-serializer';
 import { Value } from 'slate';
 import Base64 from 'slate-base64-serializer';
+import createTOC from './create-toc';
 
 const stateWrapper = WrappedComponent =>
   class Slate extends Component {
@@ -41,8 +42,7 @@ const stateWrapper = WrappedComponent =>
         let text = '';
         let title = null;
         let image = null;
-        const chapters = [];
-        const all = this.getAllBlocks(value.document.nodes, (node, parent) => {
+        this.getAllBlocks(value.document.nodes, (node, parent) => {
           if (
             node.type === 'paragraph' &&
             (!parent ||
@@ -58,9 +58,6 @@ const stateWrapper = WrappedComponent =>
             node.text
           ) {
             title = node.text;
-          }
-          if (node.type && node.type.indexOf('heading-one') === 0) {
-            chapters.push(node.text);
           }
           if (!image && node.data && node.data.get('value')) {
             const url =
@@ -81,7 +78,7 @@ const stateWrapper = WrappedComponent =>
           extract,
           title,
           image,
-          chapters,
+          toc: createTOC(value),
         });
       }
     };
@@ -116,7 +113,6 @@ export default compose(
       state = value;
     } else if (value && value.nodes) {
       const newValue = {};
-      console.log(value);
       Object.keys(value || []).forEach(key => {
         if (key === 'nodes') {
           newValue[key] = getNodes(value[key]);
@@ -132,13 +128,13 @@ export default compose(
         },
         kind: 'value',
       });
-      console.log(value, newValue);
     } else {
       state = Plain.deserialize('');
     }
     return {
       value: state,
       base64: Base64.serialize(state),
+      chapters: value && value.chapters,
     };
   }),
   stateWrapper,

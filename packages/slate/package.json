@@ -1,5 +1,5 @@
 {
-  "version": "18.6.33",
+  "version": "18.6.34",
   "name": "olymp-slate",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -15,17 +15,18 @@
   "dependencies": {
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.1",
-    "slate": "^0.30.6",
+    "scrollparent": "^2.0.1",
+    "slate": "^0.31.2",
     "slate-auto-replace": "^0.9.0",
-    "slate-base64-serializer": "^0.2.8",
+    "slate-base64-serializer": "^0.2.12",
     "slate-collapse-on-escape": "^0.6.0",
     "slate-edit-blockquote": "^0.5.0",
     "slate-edit-list": "^0.10.1",
     "slate-edit-table": "^0.12.0",
-    "slate-hyperscript": "^0.4.6",
+    "slate-hyperscript": "^0.4.10",
     "slate-paste-linkify": "^0.5.0",
-    "slate-plain-serializer": "^0.4.6",
-    "slate-react": "^0.10.11",
+    "slate-plain-serializer": "^0.4.10",
+    "slate-react": "^0.10.16",
     "slate-soft-break": "^0.6.0",
     "slate-trailing-block": "^0.4.0"
   }

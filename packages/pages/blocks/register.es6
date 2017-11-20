@@ -1,8 +1,12 @@
 import { registry } from 'olymp-slate';
 
 import { ImageBlock, ImageBlockImage, ImageBlockLabel } from './image';
-import * as AccordionBlocks from './accordion';
-import * as ColumnBlocks from './columns';
+import {
+  AccordionBlock,
+  AccordionLabelBlock,
+  AccordionTextBlock,
+} from './accordion';
+import { ColumnsBlock, ColumnsColumnBlock } from './columns';
 import ContainerBlock from './container';
 import ContainerTextBlock from './container-text';
 import TextBindingBlock from './binding';
@@ -21,8 +25,11 @@ registry.add(
   ImageBlock,
   ImageBlockImage,
   ImageBlockLabel,
-  ...AccordionBlocks,
-  ...ColumnBlocks,
+  AccordionBlock,
+  AccordionLabelBlock,
+  AccordionTextBlock,
+  ColumnsBlock,
+  ColumnsColumnBlock,
   ContainerBlock,
   ContainerTextBlock,
   TextBindingBlock,

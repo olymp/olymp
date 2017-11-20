@@ -128,7 +128,7 @@ module.exports = ({
           },
         },
         {
-          test: /\.(txt|md)$/,
+          test: /\.(txt|md|pug)$/,
           loader: 'raw-loader',
         },
         {

@@ -37,33 +37,63 @@ export default {
       {children}
     </ol>
   ),
-  'heading-one': ({ children, attributes, className }) => (
-    <h1 {...attributes} className={className}>
+  'heading-one': ({ children, attributes, className, node }) => (
+    <h1
+      {...attributes}
+      className={className}
+      data-heading="1"
+      data-id={node.data.get('id')}
+    >
       {children}
     </h1>
   ),
-  'heading-two': ({ children, attributes, className }) => (
-    <h2 {...attributes} className={className}>
+  'heading-two': ({ children, attributes, className, node }) => (
+    <h2
+      {...attributes}
+      className={className}
+      data-heading="2"
+      data-id={node.data.get('id')}
+    >
       {children}
     </h2>
   ),
-  'heading-three': ({ children, attributes, className }) => (
-    <h3 {...attributes} className={className}>
+  'heading-three': ({ children, attributes, className, node }) => (
+    <h3
+      {...attributes}
+      className={className}
+      data-heading="3"
+      data-id={node.data.get('id')}
+    >
       {children}
     </h3>
   ),
-  'heading-four': ({ children, attributes, className }) => (
-    <h4 {...attributes} className={className}>
+  'heading-four': ({ children, attributes, className, node }) => (
+    <h4
+      {...attributes}
+      className={className}
+      data-heading="4"
+      data-id={node.data.get('id')}
+    >
       {children}
     </h4>
   ),
-  'heading-five': ({ children, attributes, className }) => (
-    <h5 {...attributes} className={className}>
+  'heading-five': ({ children, attributes, className, node }) => (
+    <h5
+      {...attributes}
+      className={className}
+      data-heading="5"
+      data-id={node.data.get('id')}
+    >
       {children}
     </h5>
   ),
-  'heading-six': ({ children, attributes, className }) => (
-    <h6 {...attributes} className={className}>
+  'heading-six': ({ children, attributes, className, node }) => (
+    <h6
+      {...attributes}
+      className={className}
+      data-heading="6"
+      data-id={node.data.get('id')}
+    >
       {children}
     </h6>
   ),
