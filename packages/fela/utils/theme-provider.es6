@@ -46,7 +46,7 @@ const getTheme = (theme = {}) => ({
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   fontSize: '1rem',
-  fontSizeSmall: '0.875rem',
+  fontSizeSmall: '0.8rem',
   fontSizeH1: '1.625rem',
   fontSizeH2: '1.5rem',
   fontSizeH3: '1.375rem',
