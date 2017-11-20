@@ -61,7 +61,7 @@
     "start-server-webpack-plugin": "^2.2.0",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
-    "webpack-flush-chunks": "^1.2.1",
+    "webpack-flush-chunks": "^1.2.2",
     "webpack-node-externals": "^1.6.0",
     "webpack-stats-plugin": "^0.1.5",
     "worker-loader": "^1.1.0"
