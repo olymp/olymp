@@ -4,7 +4,7 @@ import Crop from '../components/crop';
 import getImageInfo from './info';
 import { FormForFullLayout, CollapsePanel } from './utils';
 
-export default ({ form, multi, item }) => {
+export default ({ form, item }) => {
   form.getFieldDecorator(`${item.id}.id`, { initialValue: item.id });
   form.getFieldDecorator(`${item.id}.url`, { initialValue: item.url });
   form.getFieldDecorator(`${item.id}.width`, { initialValue: item.width });
@@ -32,7 +32,7 @@ export default ({ form, multi, item }) => {
             })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
           </Form.Item>
         </CollapsePanel>
-        {!multi && getImageInfo(item)}
+        {getImageInfo(item)}
       </Collapse>
     </Form>
   );
