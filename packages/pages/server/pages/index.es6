@@ -30,7 +30,7 @@ export default () => ({
       text: String
       title: String
       image: String
-      chapters: [String]
+      toc: Json
     }
     type PageBinding {
       type: String

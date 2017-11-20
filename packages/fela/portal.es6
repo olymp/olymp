@@ -1,28 +1,36 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { createPortal, unstable_renderSubtreeIntoContainer } from 'react-dom';
+import './portal.less';
 
 const isReact16 = createPortal !== undefined;
 const portal = isReact16 ? createPortal : unstable_renderSubtreeIntoContainer;
 
 class Portal extends Component {
   componentWillMount() {
-    const { usePortal, noScroll } = this.props;
-    if (usePortal && typeof document !== 'undefined' && !this.popup) {
+    const { noPortal, noScroll } = this.props;
+    if (!noPortal && typeof document !== 'undefined') {
       this.popup = document.createElement('div');
       document.body.appendChild(this.popup);
+    }
+    if (noScroll) {
+      document.getElementById('app').classList.toggle('with-portal', true);
     }
   }
 
   componentWillUnmount() {
-    if (typeof document !== 'undefined' && this.popup) {
+    const { noScroll } = this.props;
+    if (this.popup) {
       document.body.removeChild(this.popup);
+    }
+    if (noScroll) {
+      document.getElementById('app').classList.toggle('with-portal', false);
     }
   }
 
   render() {
-    const { children, usePortal } = this.props;
-    if (!usePortal) {
+    const { children, noPortal } = this.props;
+    if (noPortal) {
       return Children.only(children);
     }
     if (this.popup) {
@@ -34,10 +42,12 @@ class Portal extends Component {
 
 Portal.propTypes = {
   children: PropTypes.node, // eslint-disable-line
-  usePortal: PropTypes.bool,
+  noPortal: PropTypes.bool,
+  noScroll: PropTypes.bool,
 };
 Portal.defaultProps = {
-  usePortal: true,
+  noPortal: false,
+  noScroll: false,
 };
 
 export default Portal;

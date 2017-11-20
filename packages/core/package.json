@@ -1,5 +1,5 @@
 {
-  "version": "18.6.34",
+  "version": "18.7.0",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,16 +13,16 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "apollo-cache-inmemory": "^0.2.0-rc.4",
+    "apollo-cache-inmemory": "^1.1.1",
     "apollo-client": "^2.0.3",
     "apollo-fetch": "^0.6.0",
     "apollo-link": "^1.0.3",
-    "apollo-link-http": "^1.1.0",
+    "apollo-link-http": "^1.2.0",
     "assets-webpack-plugin": "^3.5.1",
     "babel-polyfill": "^6.23.0",
     "base64-js": "^1.2.1",
     "body-parser": "^1.17.2",
-    "cache-loader": "^1.1.0",
+    "cache-loader": "^1.2.0",
     "compression": "^1.7.1",
     "deep-assign": "^2.0.0",
     "dotenv": "^4.0.0",
@@ -39,7 +39,7 @@
     "minimist": "^1.2.0",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.3",
-    "olymp-fela": "^18.6.34",
+    "olymp-fela": "^18.7.0",
     "olymp-router": "^18.6.27",
     "olymp-utils": "^18.6.24",
     "progress-bar-webpack-plugin": "^1.10.0",
@@ -67,7 +67,7 @@
     "worker-loader": "^1.1.0"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^18.6.34",
+    "olymp-webpack-electron": "^18.7.0",
     "webpack-bundle-analyzer": "^2.9.1"
   }
 }

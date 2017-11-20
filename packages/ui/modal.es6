@@ -40,7 +40,7 @@ export const Modal = getContext({
     title,
     loading,
     theme,
-    usePortal,
+    noPortal,
     ...props
   }) => {
     let copyright = null;
@@ -58,7 +58,7 @@ export const Modal = getContext({
 
     theme = theme.get();
     return !isOpen ? null : (
-      <Portal isOpened usePortal={usePortal}>
+      <Portal noPortal={noPortal}>
         <ReactModal
           onClose={onCancel || onClose}
           closeOnEsc

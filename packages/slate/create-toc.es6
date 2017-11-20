@@ -11,10 +11,11 @@ const getAllBlocks = (nodes, mapper, parent, arr = []) =>
   }, arr);
 
 export default (value, withKeys = false) => {
+  console.log(value);
   if (!get(value, 'document.nodes')) {
     return [];
   }
-  const chapters = { children: [] };
+  const toc = { children: [] };
   const chapterPath = [-1, -1, -1, -1, -1, -1];
 
   getAllBlocks(value.document.nodes, (node, parent) => {
@@ -35,7 +36,7 @@ export default (value, withKeys = false) => {
       const path = chapterPath.slice(0, level + 1);
       const pathStr = path.reduce((result, x, i) => {
         const newResult = [result, 'children'].filter(x => x).join('.');
-        if (get(chapters, newResult)) {
+        if (get(toc, newResult)) {
           return `${newResult}[${x > 0 ? x : 0}]`;
         }
         return result;
@@ -49,8 +50,34 @@ export default (value, withKeys = false) => {
       if (withKeys) {
         n.key = node.key;
       }
-      set(chapters, pathStr, n);
+      set(toc, pathStr, n);
     }
   });
-  return chapters.children;
+  return toc.children;
+};
+
+function isElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight ||
+        document.documentElement.clientHeight) /* or $(window).height() */ &&
+    rect.right <=
+      (window.innerWidth ||
+        document.documentElement.clientWidth) /* or $(window).width() */
+  );
+}
+
+export const getVisible = toc => {
+  if (typeof window === 'undefined' || !toc.length) {
+    return;
+  }
+  const vis = toc.filter(({ key }) => {
+    const item = document.querySelector(`[data-key="${key}"]`);
+    if (!item) return false;
+    return isElementInViewport(item);
+  });
+  return (vis[Math.floor(vis.length / 2)] || vis[0] || {}).key;
 };

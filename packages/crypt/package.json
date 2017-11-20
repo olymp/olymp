@@ -1,5 +1,5 @@
 {
-  "version": "18.6.27",
+  "version": "18.7.0",
   "name": "olymp-crypt",
   "description": "",
   "main": "./index.js",
@@ -13,7 +13,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "fast-sha256": "^1.0.0",
+    "fast-sha256": "^1.1.0",
     "tweetnacl": "^1.0.0",
     "tweetnacl-util": "^0.15.0"
   }

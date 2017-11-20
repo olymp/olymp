@@ -134,7 +134,7 @@ export default compose(
     return {
       value: state,
       base64: Base64.serialize(state),
-      chapters: value && value.chapters,
+      toc: value && value.toc,
     };
   }),
   stateWrapper,

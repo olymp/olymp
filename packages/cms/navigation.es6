@@ -85,9 +85,9 @@ const VerticalMenu = createComponent(
     },
   }),
   ({ children, className, ...rest }) => (
-    <div className={className} {...rest}>
+    <nav className={className} {...rest}>
       {children}
-    </div>
+    </nav>
   ),
   p => Object.keys(p),
 );

@@ -1,9 +1,9 @@
 import React from 'react';
+import Portal from 'olymp-fela/portal';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import { withPropsOnChange } from 'recompose';
-import withScrollHide from './components/scroll-hide';
-import Portal from './components/portal';
+import withScroll from 'olymp-fela/scroll-top';
 
 export const Button = createComponent(
   ({ theme, active }) => ({
@@ -72,8 +72,9 @@ const WrappedMenu = createComponent(
   p => Object.keys(p),
 );
 
-const ScrollPortal = withScrollHide(
-  withPropsOnChange(['scrollTop', 'scrolling'], ({ scrolling, parentEl }) => {
+const ScrollPortal = withScroll(
+  withPropsOnChange(['scrollTop', 'scrolling'], ({ parentEl, scrollTop }) => {
+    console.log(parentEl, scrollTop);
     const parent = document.querySelector(parentEl);
     if (!parent) {
       return null;
@@ -87,7 +88,6 @@ const ScrollPortal = withScrollHide(
     const left = scrollX + tooltipPosition.left;
     return {
       left: left + parent.offsetWidth / 2,
-      display: scrolling ? 'none' : 'block',
       top,
     };
   })(({ children, top, left, color, display }) => (
