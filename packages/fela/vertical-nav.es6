@@ -1,13 +1,11 @@
 import React, { Component, Children, cloneElement } from 'react';
 import { createComponent } from 'olymp-fela';
 import { compose, withState } from 'recompose';
-import { FaEnvelope, FaFilm, FaMagic } from 'olymp-icons';
+import { FaEnvelope, FaFilm, FaMagic, FaPlus } from 'olymp-icons';
 import List from './list';
 
-const { Item, Title, Group } = List;
-
-const Container = createComponent(
-  ({ theme, right = true }) => ({
+const VerticalNav = createComponent(
+  ({ right = true }) => ({
     position: 'fixed',
     top: 0,
     left: !right && 0,
@@ -17,13 +15,12 @@ const Container = createComponent(
     flexShrink: 1,
     minWidth: 64,
     height: '100%',
-    transition: 'height 0.25s ease-in-out',
     zIndex: 300,
   }),
   'div',
 );
 
-const Secondary = createComponent(
+const Nav = createComponent(
   ({ theme, collapsed, secondary }) => ({
     display: 'flex',
     flexGrow: 1,
@@ -48,24 +45,27 @@ const Secondary = createComponent(
   ),
   ({ secondary, ...p }) => Object.keys(p),
 );
+VerticalNav.Nav = Nav;
+
+export default VerticalNav;
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 
 @enhance
-export default class VerticalNav extends Component {
+export class VerticalNavDemo extends Component {
   render() {
     const { collapsed, setCollapsed } = this.props;
 
     return (
-      <Container>
-        <Secondary
+      <VerticalNav>
+        <VerticalNav.Nav
           secondary
           collapsed={collapsed}
           onClick={() => setCollapsed(false)}
           onMouseLeave={() => setCollapsed(true)}
         >
-          <Group>
-            <Item
+          <List>
+            <List.Item
               large
               logo={
                 <img
@@ -76,29 +76,32 @@ export default class VerticalNav extends Component {
               subtitle="test"
             >
               Dashboard
-            </Item>
-            <Item logo={<FaEnvelope />} subtitle="test">
+            </List.Item>
+            <List.Item logo={<FaEnvelope />} extra={<FaPlus />} subtitle="test">
               Mail
-            </Item>
-            <Title>test</Title>
-            <Item logo={<FaFilm />}>Film</Item>
-            <Item logo={<FaMagic />}>Mail</Item>
-          </Group>
-          <Group>
-            <Item logo={<FaEnvelope />}>Mail</Item>
-          </Group>
-        </Secondary>
+            </List.Item>
+            <List.Title>test</List.Title>
+            <List.Item logo={<FaFilm />}>Film</List.Item>
+            <List.Divider />
+            <List.Item logo={<FaMagic />} extra={<FaPlus />}>
+              Mail
+            </List.Item>
+          </List>
+          <List>
+            <List.Item logo={<FaEnvelope />}>Mail</List.Item>
+          </List>
+        </VerticalNav.Nav>
 
-        <Secondary collapsed>
-          <Group>
-            <Item logo={<FaEnvelope />} />
-          </Group>
-          <Group>
-            <Item logo={<FaFilm />} />
-            <Item logo={<FaMagic />} />
-          </Group>
-        </Secondary>
-      </Container>
+        <VerticalNav.Nav collapsed>
+          <List>
+            <List.Item logo={<FaEnvelope />} />
+          </List>
+          <List>
+            <List.Item logo={<FaFilm />} />
+            <List.Item logo={<FaMagic />} />
+          </List>
+        </VerticalNav.Nav>
+      </VerticalNav>
     );
   }
 }

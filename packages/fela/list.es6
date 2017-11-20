@@ -1,8 +1,8 @@
 import React, { Children, cloneElement } from 'react';
-import { createComponent } from 'olymp-fela';
+import { createComponent, border } from 'olymp-fela';
 
 const Image = createComponent(
-  ({ theme, large }) => ({
+  ({ theme, large, collapsed }) => ({
     width: 54,
     '> *': {
       size: large ? 40 : 20,
@@ -13,7 +13,7 @@ const Image = createComponent(
       fill: theme.light,
     },
     '> img': {
-      borderRadius: theme.borderRadius,
+      borderRadius: collapsed ? '50%' : theme.borderRadius,
     },
   }),
   ({ children, className }) => <div className={className}>{children}</div>,
@@ -23,33 +23,42 @@ const Image = createComponent(
 const Content = createComponent(
   ({ theme }) => ({
     ellipsis: true,
+    flexGrow: 1,
     '> small': {
       display: 'block',
       marginTop: `-${theme.space1}`,
+      color: theme.light2,
     },
   }),
   'div',
   p => Object.keys(p),
 );
 
-const Group = ({ children, className, ...p }) => (
+const List = ({ children, className, ...p }) => (
   <div className={className}>
     {Children.map(children, child => (child ? cloneElement(child, p) : child))}
   </div>
 );
 
+const Divider = createComponent(
+  ({ theme }) => ({
+    width: '100%',
+    border: 'none',
+    borderTop: border(theme, theme.dark4),
+  }),
+  'hr',
+  [],
+);
+
 const Title = createComponent(
   ({ theme, collapsed }) => ({
     color: theme.light1,
-    fontWeight: 600,
-    overflowX: 'hidden',
     ellipsis: true,
     textTransform: 'uppercase',
     fontSize: theme.fontSizeSmall,
     textAlign: collapsed && 'center',
     marginTop: theme.space2,
     marginBottom: theme.space1,
-    marginX: 'auto',
     paddingX: theme.space1,
     width: '100%',
   }),
@@ -66,28 +75,33 @@ const Item = createComponent(
     display: 'flex',
     alignItems: 'center',
     cursor: 'pointer',
-    borderRadius: !large && collapsed ? '50%' : theme.borderRadius,
+    borderRadius: collapsed ? '50%' : theme.borderRadius,
     backgroundColor: active && theme.dark5,
     onHover: {
       backgroundColor: theme.dark4,
     },
   }),
-  ({ className, large, children, subtitle, logo, collapsed }) => (
+  ({ className, large, children, subtitle, logo, extra, collapsed }) => (
     <div className={className}>
-      {!!logo && <Image large={large}>{logo}</Image>}
+      {!!logo && (
+        <Image large={large} collapsed={collapsed}>
+          {logo}
+        </Image>
+      )}
       {!collapsed && (
         <Content>
           {children}
           {!!subtitle && <small>{subtitle}</small>}
         </Content>
       )}
+      {!!extra && !collapsed && <Image>{extra}</Image>}
     </div>
   ),
   p => Object.keys(p),
 );
 
-export default {
-  Title,
-  Item,
-  Group,
-};
+List.Title = Title;
+List.Item = Item;
+List.Divider = Divider;
+
+export default List;
