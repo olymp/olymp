@@ -34,7 +34,7 @@ const Header = createComponent(
     justifyContent: 'center',
     alignItems: 'center',
     '> svg': {
-      size: 40,
+      size: 60,
     },
     '> img': {
       size: 60,
