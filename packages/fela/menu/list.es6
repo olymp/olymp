@@ -3,15 +3,8 @@ import Title from './title';
 import Item from './item';
 import Divider from './divider';
 
-const List = ({
-  children,
-  className,
-  attributes = {},
-  innerRef,
-  style,
-  title,
-}) => (
-  <div className={className} ref={innerRef} style={style} {...attributes}>
+const List = ({ children, className, attributes = {}, _ref, style, title }) => (
+  <div className={className} ref={_ref} style={style} {...attributes}>
     {title && <Title>{title}</Title>}
     {children}
   </div>

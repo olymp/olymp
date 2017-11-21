@@ -41,10 +41,10 @@ export default createComponent(
     extra,
     collapsed,
     attributes = {},
-    innerRef,
+    _ref,
     style,
   }) => (
-    <div className={className} ref={innerRef} style={style} {...attributes}>
+    <div className={className} ref={_ref} style={style} {...attributes}>
       {!!icon && (
         <Image large={large} collapsed={collapsed}>
           {icon}
