@@ -116,7 +116,7 @@ const Item = createComponent(
       {!collapsed && (
         <Content>
           {children}
-          {!!subtitle && <extra>{subtitle}</extra>}
+          {!!subtitle && <small>{subtitle}</small>}
         </Content>
       )}
       {!!extra &&
