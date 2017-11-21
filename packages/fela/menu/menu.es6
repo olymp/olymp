@@ -7,6 +7,7 @@ import Image from './image';
 import List from './list';
 import Item from './item';
 import Title from './title';
+import Space from './space';
 
 const Inner = createComponent(
   () => ({
@@ -14,7 +15,7 @@ const Inner = createComponent(
     flexGrow: 1,
     flexShrink: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   }),
   'div',
 );
@@ -55,4 +56,5 @@ Component.Item = Item;
 Component.List = List;
 Component.Title = Title;
 Component.Image = Image;
+Component.Space = Space;
 export default Component;
