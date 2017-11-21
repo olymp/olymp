@@ -18,7 +18,7 @@ const StyledInner = createComponent(
     maxWidth: width,
     height: '100%',
     transition: 'width .25s ease,min-width .25s ease,max-width .25s ease',
-    boxShadow: theme.boxShadow,
+    // boxShadow: theme.boxShadow,
     zIndex: 2,
     paddingBottom: 0,
     paddingTop: 0,

@@ -13,6 +13,7 @@ import EditBlockquote from 'slate-edit-blockquote';
 import { Block } from 'slate';
 import Portal from 'olymp-fela/portal';
 
+import Pug from './pug/editor';
 import getSchema from './get-schema';
 import useJsonState from './use-json-state';
 import InsertBlockOnEnter from './plugins/insert-block-on-enter';
@@ -82,6 +83,7 @@ const renderMark = props => {
 
 const enhance = compose(
   withState('isFull', 'setIsFull'),
+  withState('isCode', 'setIsCode'),
   useJsonState,
   getSchema,
   withPropsOnChange('plugins', ({ plugins = [] }) => ({
@@ -312,13 +314,54 @@ class Writer extends Component {
       plugins,
       style = {},
       full,
-      isFull,
+      isCode,
+      setIsCode,
       setFull,
+      isFull,
       setIsFull,
       ...rest
     } = this.props;
     const value = this.props.value || Plain.deserialize('');
 
+    const editor = isCode ? (
+      <Pug
+        {...rest}
+        value={value}
+        className="slate-editor slate-writer"
+        onDragEnter={e => this.ref.focus()}
+        ref={r => (this.ref = r)}
+        spellcheck={spellcheck || false}
+        readOnly={false}
+        onDrop={this.onDrop}
+        onPaste={this.onPaste}
+        plugins={readOnly ? emptyArray : plugins}
+        renderNode={renderNode}
+        onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+        placeholder={!readOnly && 'Hier Text eingeben...'}
+        placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
+        style={{ marginRight: 64, height: '100%', ...style }}
+      />
+    ) : (
+      <Editor
+        {...rest}
+        value={value}
+        className="slate-editor slate-writer"
+        onDragEnter={e => this.ref.focus()}
+        ref={r => (this.ref = r)}
+        spellcheck={spellcheck || false}
+        readOnly={false}
+        onDrop={this.onDrop}
+        onPaste={this.onPaste}
+        plugins={readOnly ? emptyArray : plugins}
+        renderNode={renderNode}
+        onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+        placeholder={!readOnly && 'Hier Text eingeben...'}
+        placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
+        style={{ marginRight: 64, height: '100%', ...style }}
+      />
+    );
     const inner = (
       <div className={className}>
         {children}
@@ -333,29 +376,33 @@ class Writer extends Component {
             toolbarTypes={toolbarTypes}
           />
         )}
-        <Editor
-          {...rest}
-          value={value}
-          className="slate-editor slate-writer"
-          onDragEnter={e => this.ref.focus()}
-          ref={r => (this.ref = r)}
-          spellcheck={spellcheck || false}
-          readOnly={false}
-          onDrop={this.onDrop}
-          onPaste={this.onPaste}
-          plugins={readOnly ? emptyArray : plugins}
-          renderNode={renderNode}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          placeholder={!readOnly && 'Hier Text eingeben...'}
-          placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-          style={{ marginRight: 64, height: '100%', ...style }}
+        {editor}
+        <BlockBar
+          full={full || isFull}
+          setFull={full ? setFull : setIsFull}
+          code={isCode}
+          setCode={setIsCode}
         />
-        <BlockBar full={full || isFull} setFull={full ? setFull : setIsFull} />
       </div>
     );
     if (full || isFull) {
-      return <Portal hide>{inner}</Portal>;
+      return (
+        <Portal noScroll>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              minHeight: '100%',
+              zIndex: 100,
+              backgroundColor: 'white',
+              width: '100%',
+            }}
+          >
+            {inner}
+          </div>
+        </Portal>
+      );
     }
     return inner;
   };

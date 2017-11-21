@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
-import { FaExpand, FaCompress } from 'olymp-icons';
+import { FaExpand, FaCompress, FaPencil } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
 import { Menu, Icon, Button } from 'antd';
 import { createComponent } from 'react-fela';
@@ -183,6 +183,8 @@ class Navigation extends Component {
       collapse,
       full,
       setFull,
+      setCode,
+      code,
     } = this.props;
     const keys = Object.keys(query);
 
@@ -216,6 +218,27 @@ class Navigation extends Component {
                 size="large"
               >
                 <FaCompress size={25} color="white" />
+              </Button>
+            )}
+          </Menu.Item>
+          <Menu.Item className="logo">
+            {!full ? (
+              <Button
+                onClick={() => setCode(!code)}
+                type="primary"
+                shape="circle"
+                size="large"
+              >
+                <FaPencil size={25} color="white" />
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setCode(!code)}
+                type="primary"
+                shape="circle"
+                size="large"
+              >
+                <FaPencil size={25} color="white" />
               </Button>
             )}
           </Menu.Item>
