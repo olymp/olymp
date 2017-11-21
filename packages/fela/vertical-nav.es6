@@ -34,10 +34,10 @@ const Header = createComponent(
     justifyContent: 'center',
     alignItems: 'center',
     '> svg': {
-      size: 60,
+      size: 40,
     },
     '> img': {
-      size: 60,
+      size: 50,
       borderRadius: theme.borderRadius,
     },
   }),

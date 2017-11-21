@@ -11,7 +11,7 @@ const Image = createComponent(
       margin: '0 auto',
     },
     '> svg': {
-      size: large ? 40 : !extra ? 20 : 14,
+      size: large ? 32 : !extra ? 20 : 14,
       fill: inverted ? theme.light : theme.dark,
     },
     '> img': {
@@ -27,7 +27,7 @@ const Content = createComponent(
   ({ theme }) => ({
     ellipsis: true,
     flexGrow: 1,
-    '> extra': {
+    '> small': {
       display: 'block',
       marginTop: `-${theme.space1}`,
       color: theme.light2,
@@ -59,26 +59,26 @@ const Title = createComponent(
     ellipsis: true,
     textTransform: 'uppercase',
     fontSize: theme.fontSizeSmall,
-    textAlign: collapsed && 'center',
     marginTop: theme.space2,
     marginBottom: theme.space1,
     paddingX: collapsed ? theme.space1 : theme.space3,
     width: '100%',
     display: 'flex',
     flexGrow: 1,
-    justifyContent: 'space-between',
+    justifyContent: collapsed ? 'center' : 'space-between',
   }),
-  ({ extra, children, inverted, ...p }) => (
+  ({ extra, children, inverted, collapsed, ...p }) => (
     <div {...p}>
       {children}
-      {!!extra && (
-        <Image extra inverted={inverted}>
-          {extra}
-        </Image>
-      )}
+      {!!extra &&
+        !collapsed && (
+          <Image extra inverted={inverted}>
+            {extra}
+          </Image>
+        )}
     </div>
   ),
-  ({ collapsed, ...p }) => Object.keys(p),
+  p => Object.keys(p),
 );
 
 const Item = createComponent(
@@ -94,7 +94,7 @@ const Item = createComponent(
     borderRadius: collapsed ? '50%' : theme.borderRadius,
     backgroundColor: active && theme.dark5,
     onHover: {
-      backgroundColor: (!large || !collapsed) && theme.dark4,
+      backgroundColor: theme.dark4,
     },
   }),
   ({
