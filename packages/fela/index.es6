@@ -9,7 +9,7 @@ export { default as Modal } from './modal';
 export { default as Print } from './print';
 export { default as Layout } from './layout';
 export { default as Nav } from './nav';
-export { default as VerticalNav, VerticalNavDemo } from './vertical-nav';
+export { default as VerticalNav } from './vertical-nav';
 export { default as List } from './list';
 export { default as PageTransition } from './page-transition';
 export { default as MaterialColors } from './material-colors';
