@@ -33,7 +33,7 @@ const VerticalMenu = createComponent(
     },
     '> ul.ant-menu': {
       backgroundColor: theme.dark,
-      boxShadow: `inset -6px 0 5px -5px #333`,
+      // boxShadow: `inset -6px 0 5px -5px #333`,
       position: 'fixed',
       top: 0,
       bottom: 0,

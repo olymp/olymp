@@ -27,6 +27,7 @@
     "fela-plugin-remove-undefined": "^5.0.13",
     "fela-plugin-unit": "^5.0.13",
     "olymp-utils": "^18.6.24",
+    "react-beautiful-dnd": "^2.6.4",
     "react-fela": "^6.1.0",
     "react-frame-component": "^2.0.0",
     "react-gravatar": "^2.6.3",
