@@ -2,7 +2,7 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 
 export default createComponent(
-  ({ theme, noBorder, color, center, thin = true, bold }) => ({
+  ({ theme, noBorder, color, center }) => ({
     padding: '5px 6px',
     ellipsis: true,
     borderBottom: noBorder || '1px solid #e9e9e9',
@@ -20,5 +20,5 @@ export default createComponent(
       <div>{buttons}</div>
     </div>
   ),
-  p => Object.keys(p)
+  p => Object.keys(p),
 );

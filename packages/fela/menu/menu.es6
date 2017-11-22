@@ -14,7 +14,6 @@ const Inner = createComponent(
   () => ({
     display: 'flex',
     flexGrow: 1,
-    flexShrink: 1,
     flexDirection: 'column',
     // justifyContent: 'space-between',
   }),
@@ -25,7 +24,6 @@ const Menu = createComponent(
   ({ theme, color }) => ({
     display: 'flex',
     flexGrow: theme.collapsed ? 0 : 1,
-    flexShrink: 1,
     flexDirection: 'column',
     width: theme.collapsed ? 72 : theme.width,
     height: '100%',
