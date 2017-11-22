@@ -4,7 +4,7 @@ import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Avatar, Logo, Menu, Drawer } from 'olymp-fela';
-import { FaBars, FaPictureO, FaSearch, FaSignOut } from 'olymp-icons';
+import { FaSitemap, FaPictureO, FaSearch, FaSignOut } from 'olymp-icons';
 import { Icon } from 'antd';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -53,18 +53,12 @@ const enhance = compose(
 const component = enhance(
   ({
     logout,
-    collapse,
-    expand,
     query,
-    collectionList,
     collectionTree,
-    isAdmin,
     setQuery,
     user = {},
     collapsed,
     setCollapsed,
-    handleClick,
-    push,
     searchOpen,
     setSearchOpen,
   }) => {
@@ -150,7 +144,7 @@ const component = enhance(
         >
           <Menu.Item
             active={Object.keys(query).length === 0}
-            icon={<FaBars />}
+            icon={<FaSitemap />}
             onClick={() => setQuery({})}
           >
             Seitenmanager
