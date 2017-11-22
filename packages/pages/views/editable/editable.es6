@@ -92,7 +92,7 @@ export default class EditablePage extends Component {
     });
   }
 
-  renderItem = item => {
+  renderItem = (item, Icon) => {
     const { setKeys, push, pathname } = this.props;
     const hasChildren = item.children && item.children.length;
     const route =
@@ -102,18 +102,18 @@ export default class EditablePage extends Component {
       item.slug.indexOf('{') === -1
         ? item.pathname
         : `/page_id/${item.pageId || item.id}`;
-    console.log(route, pathname);
+    const Com = Icon ? Menu.Item : DndList.Item;
     return (
-      <DndList.Item
+      <Com
         key={item.id}
         active={pathname === route}
         id={item.id}
+        icon={Icon ? <Icon /> : undefined}
         onClick={hasChildren ? () => setKeys([item.id]) : () => push(route)}
-        // icon={<FaEnvelope />}
         extra={hasChildren ? <FaAngleRight /> : null}
       >
         {item.name}
-      </DndList.Item>
+      </Com>
     );
   };
   renderMenu = keys => {
@@ -122,10 +122,9 @@ export default class EditablePage extends Component {
     let children = [];
     if (!lastKey) {
       const menues = navigation.filter(x => x.type === 'MENU');
+      const pages = navigation.filter(x => x.type !== 'MENU');
       children = [
-        <Menu.Item key="home" icon={<FaHome />}>
-          Startseite
-        </Menu.Item>,
+        pages.length && this.renderItem(pages[0], FaHome),
         menues.map(menu => (
           <DndList
             key={menu.id}
@@ -133,7 +132,7 @@ export default class EditablePage extends Component {
             extra={<FaPlus />}
             onDragEnd={this.onDragEnd}
           >
-            {menu.children.map(this.renderItem)}
+            {menu.children.map(x => this.renderItem(x))}
           </DndList>
         )),
         <Menu.Space />,
@@ -169,7 +168,7 @@ export default class EditablePage extends Component {
       </Menu.Item>
     );
     return (
-      <DndList.Context onDragEnd={this.onDragEnd}>
+      <DndList.Context onDragEnd={this.onDragEnd} key={1}>
         <Menu style={{ width: 240, height: '100%' }} header={header}>
           {children}
           <Menu.Space />
