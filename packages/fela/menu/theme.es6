@@ -8,13 +8,20 @@ const enhance = compose(
     theme: PropTypes.object,
   }),
   withPropsOnChange(
-    ['theme', 'inverted', 'color', 'collapsed'],
-    ({ theme, inverted, color = '#F4F5F7', collapsed = false }) => ({
+    ['theme', 'inverted', 'color', 'collapsed', 'width'],
+    ({
+      theme,
+      inverted,
+      color = '#F4F5F7',
+      collapsed = false,
+      width = 240,
+    }) => ({
       theme: {
         color:
           (color === true && theme.get().color) || theme.get()[color] || color,
-        collapsed,
         inverted: inverted === undefined ? color === true : inverted,
+        collapsed,
+        width,
       },
     }),
   ),

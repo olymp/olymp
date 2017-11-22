@@ -2,7 +2,7 @@ import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ width = 240, right, collapsed }) => ({
+  ({ width, right, collapsed }) => ({
     height: '100%',
     '> aside': {
       position: 'fixed',
@@ -23,16 +23,13 @@ export default createComponent(
       position: 'relative',
     },
   }),
-  ({ children, className, menu, collapsed, width, ...rest }) => (
-    <div className={className}>
-      <aside {...rest}>
-        {Children.map(
-          menu,
-          child => (child ? cloneElement(child, { collapsed, width }) : child),
-        )}
-      </aside>
-      <section>{children}</section>
-    </div>
+  ({ children, menu, collapsed, width, ...rest }) => (
+    <aside {...rest}>
+      {Children.map(
+        menu,
+        child => (child ? cloneElement(child, { collapsed, width }) : child),
+      )}
+    </aside>
   ),
   p => Object.keys(p),
 );

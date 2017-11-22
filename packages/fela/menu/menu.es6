@@ -26,7 +26,7 @@ const Menu = createComponent(
     flexGrow: 1,
     flexShrink: 1,
     flexDirection: 'column',
-    width: theme.collapsed ? 72 : 240,
+    width: theme.collapsed ? 72 : theme.width,
     height: '100%',
     color: theme.inverted ? theme.light1 : theme.dark1,
     backgroundColor: theme.color,
@@ -44,8 +44,8 @@ const Menu = createComponent(
   ({ color, ...p }) => Object.keys(p),
 );
 
-const Component = ({ inverted, color, collapsed, ...props }) => (
-  <Theme inverted={inverted} color={color} collapsed={collapsed}>
+const Component = ({ inverted, color, collapsed, width, ...props }) => (
+  <Theme width={width} inverted={inverted} color={color} collapsed={collapsed}>
     <Menu {...props} />
   </Theme>
 );
