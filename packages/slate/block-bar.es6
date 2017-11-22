@@ -69,6 +69,7 @@ const getIcon = key => {
         key={action.type}
         draggable
         onDragStart={dragStart(action.type)}
+        icon={<Icon type={getIcon(action.category)} />}
       >
         {action.label || action.type}
       </Menu.Item>
@@ -96,15 +97,13 @@ class Navigation extends Component {
   render() {
     const {
       query,
-      items,
       collapsed,
-      expand,
-      collapse,
       setCollapsed,
       full,
       setFull,
       setCode,
       code,
+      items,
     } = this.props;
     const keys = Object.keys(query);
 
@@ -116,84 +115,29 @@ class Navigation extends Component {
       <Drawer open dim={false} right width={72}>
         <Menu
           collapsed={collapsed}
+          inverted
+          color="colorSecondary"
           onMouseEnter={() => setCollapsed(false)}
           onMouseLeave={() => setCollapsed(true)}
-          color
-          inverted
         >
           <Menu.Item
-            active={Object.keys(query).length === 0}
+            active={full}
             onClick={() => setFull(!full)}
             icon={<FaExpand />}
           >
             Vollbild
           </Menu.Item>
           <Menu.Item
-            active={query[`@media`] === null}
+            active={code}
             onClick={() => setCode(!code)}
             icon={<FaPencil />}
           >
-            Bearbeiten
+            Code anzeigen
           </Menu.Item>
-          <Menu.List title="Listen">{items}</Menu.List>
+          {items}
           <Menu.Space />
         </Menu>
       </Drawer>
-    );
-
-    return (
-      <CmsToolbar onMouseEnter={expand} onMouseLeave={collapse}>
-        <Menu
-          theme="dark"
-          selectedKeys={keys}
-          mode="inline"
-          inlineCollapsed={collapsed}
-        >
-          <Menu.Item className="logo">
-            {!full ? (
-              <Button
-                onClick={() => setFull(!full)}
-                type="primary"
-                shape="circle"
-                size="large"
-              >
-                <FaExpand size={25} color="white" />
-              </Button>
-            ) : (
-              <Button
-                onClick={() => setFull(!full)}
-                type="primary"
-                shape="circle"
-                size="large"
-              >
-                <FaCompress size={25} color="white" />
-              </Button>
-            )}
-          </Menu.Item>
-          <Menu.Item className="logo">
-            {!full ? (
-              <Button
-                onClick={() => setCode(!code)}
-                type="primary"
-                shape="circle"
-                size="large"
-              >
-                <FaPencil size={25} color="white" />
-              </Button>
-            ) : (
-              <Button
-                onClick={() => setCode(!code)}
-                type="primary"
-                shape="circle"
-                size="large"
-              >
-                <FaPencil size={25} color="white" />
-              </Button>
-            )}
-          </Menu.Item>
-          {items}
-        </Menu>
-      </CmsToolbar>
     );
   }
 }
