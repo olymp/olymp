@@ -224,7 +224,7 @@ const component = enhance(
           color="colorSecondary"
           style={{ height: '100%' }}
           header={
-            <Menu.Item large key="back" icon={<Logo clean />}>
+            <Menu.Item large key="back" icon={<Logo color="white" />}>
               Olymp
             </Menu.Item>
           }
