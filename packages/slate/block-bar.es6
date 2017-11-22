@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
 import { FaExpand, FaCompress, FaPencil } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
-import { Menu, Icon, Button } from 'antd';
-import { createComponent } from 'react-fela';
-import { border } from 'olymp-fela';
+import { Icon, Button } from 'antd';
+import { Logo, Menu, Drawer } from 'olymp-fela';
 import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
 import { sortBy } from 'lodash';
 import { connect } from 'react-redux';
@@ -16,81 +15,6 @@ const enhance = compose(
     expand: ({ setCollapsed }) => () => setCollapsed(false),
     collapse: ({ setCollapsed }) => () => setCollapsed(true),
   }),
-);
-
-const CmsToolbar = createComponent(
-  ({ theme }) => ({
-    zIndex: 11,
-    width: 64,
-    hasFlex: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
-    '> ul.ant-menu > li.ant-menu-submenu > .ant-menu-submenu-title:hover': {
-      color: 'white',
-    },
-    '> ul.ant-menu .ant-menu-inline.ant-menu-sub': {
-      backgroundColor: theme.dark4,
-    },
-    '> ul.ant-menu > li.ant-menu-item.ant-menu-item-selected': {
-      color: 'white',
-    },
-    '> ul.ant-menu': {
-      backgroundColor: theme.color,
-      boxShadow: `inset 6px 0 5px -5px ${theme.dark4}`,
-      position: 'fixed',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      maxWidth: 200,
-      zIndex: 11,
-      overflow: 'hidden',
-      '> .ant-menu-item': {
-        margin: 0,
-        textAlign: 'left !important',
-        '&.logo': {
-          position: 'relative',
-          height: 80,
-          backgroundColor: theme.dark4,
-          borderBottom: border(theme, theme.dark4),
-          '> button.ant-btn.ant-btn-primary.ant-btn-circle.ant-btn-lg': {
-            center: true,
-            border: 0,
-            backgroundColor: 'transparent',
-            opacity: 0.7,
-            '> svg': {
-              marginTop: 3,
-            },
-          },
-        },
-      },
-      '> .ant-menu-submenu': {
-        '> .ant-menu-submenu-title': {
-          margin: 0,
-          paddingRight: theme.space4,
-          textAlign: 'left !important',
-          '& .anticon': {
-            fontSize: 16,
-            marginRight: 8,
-            '& + span': {
-              paddingLeft: theme.space2,
-              paddingRight: theme.space3,
-            },
-          },
-        },
-      },
-    },
-    ifSmallDown: {
-      display: 'none',
-    },
-  }),
-  ({ children, className, ...rest }) => (
-    <div className={className} {...rest}>
-      {children}
-    </div>
-  ),
-  p => Object.keys(p),
 );
 
 const dragStart = type => ev => {
@@ -130,6 +54,7 @@ const getIcon = key => {
   }),
 )
 @enhance
+@withState('collapsed', 'setCollapsed', true)
 @getSchema
 @withPropsOnChange(['schema'], ({ schema = {} }) => {
   const types = Object.keys(schema.nodes || {}).map(key => ({
@@ -140,10 +65,12 @@ const getIcon = key => {
   const menuItems = [];
   sortBy(types, ['category', 'label']).forEach(action => {
     const item = (
-      <Menu.Item key={action.type}>
-        <span draggable onDragStart={dragStart(action.type)}>
-          <span>{action.label || action.type}</span>
-        </span>
+      <Menu.Item
+        key={action.type}
+        draggable
+        onDragStart={dragStart(action.type)}
+      >
+        {action.label || action.type}
       </Menu.Item>
     );
     if (action.category) {
@@ -158,17 +85,9 @@ const getIcon = key => {
   return {
     items: [
       ...Object.keys(categories).map(key => (
-        <Menu.SubMenu
-          key={key}
-          title={
-            <span>
-              <Icon type={getIcon(key)} />
-              <span>{key}</span>
-            </span>
-          }
-        >
+        <Menu.List key={key} title={key}>
           {categories[key]}
-        </Menu.SubMenu>
+        </Menu.List>
       )),
     ],
   };
@@ -181,6 +100,7 @@ class Navigation extends Component {
       collapsed,
       expand,
       collapse,
+      setCollapsed,
       full,
       setFull,
       setCode,
@@ -191,6 +111,35 @@ class Navigation extends Component {
     if (!keys.filter(x => x[0] === '@').length) {
       keys.push('@home');
     }
+
+    return (
+      <Drawer open dim={false} right>
+        <Menu
+          collapsed={collapsed}
+          onMouseEnter={() => setCollapsed(false)}
+          onMouseLeave={() => setCollapsed(true)}
+          color
+          inverted
+        >
+          <Menu.Item
+            active={Object.keys(query).length === 0}
+            onClick={() => setFull(!full)}
+            icon={<FaExpand />}
+          >
+            Vollbild
+          </Menu.Item>
+          <Menu.Item
+            active={query[`@media`] === null}
+            onClick={() => setCode(!code)}
+            icon={<FaPencil />}
+          >
+            Bearbeiten
+          </Menu.Item>
+          <Menu.List title="Listen">{items}</Menu.List>
+          <Menu.Space />
+        </Menu>
+      </Drawer>
+    );
 
     return (
       <CmsToolbar onMouseEnter={expand} onMouseLeave={collapse}>
