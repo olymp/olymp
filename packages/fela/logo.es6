@@ -4,10 +4,19 @@ import tinycolor from 'tinycolor2';
 import PropTypes from 'prop-types';
 import shortId from 'shortid';
 
+const getColor = (theme, color) => {
+  if (color === true) {
+    return theme.color;
+  } else if (typeof color === 'string') {
+    return theme[color] || color;
+  }
+  return theme.inverted ? theme.light : theme.dark;
+};
+
 export default getContext({
   theme: PropTypes.object,
-})(({ width, height, size, theme, clean = false, className }) => {
-  const color = clean ? '#FFF' : theme.get().color;
+})(({ width, height, size, theme, color: col, className }) => {
+  const color = getColor(theme.get(), col);
   const id = shortId();
 
   return (

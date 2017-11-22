@@ -30,6 +30,7 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 @queryPage
 @withState('signal', 'setSignal', 0)
 @withState('keys', 'setKeys', [])
+@withState('searchOpen', 'setSearchOpen', false)
 @Form.create({
   onValuesChange: debounce(setSignal, 800, { trailing: true, leading: false }),
 })
@@ -91,7 +92,7 @@ export default class EditablePage extends Component {
   }
 
   renderItem = (item, Icon) => {
-    const { setKeys, push, pathname } = this.props;
+    const { setKeys, keys, push, pathname } = this.props;
     const hasChildren = item.children && item.children.length;
     const route =
       item.pathname &&
@@ -107,7 +108,9 @@ export default class EditablePage extends Component {
         active={pathname === route}
         id={item.id}
         icon={Icon ? <Icon /> : undefined}
-        onClick={hasChildren ? () => setKeys([item.id]) : () => push(route)}
+        onClick={
+          hasChildren ? () => setKeys([...keys, item.id]) : () => push(route)
+        }
         extra={hasChildren ? <FaAngleRight /> : null}
       >
         {item.name}
@@ -115,9 +118,10 @@ export default class EditablePage extends Component {
     );
   };
   renderMenu = keys => {
-    const { setKeys, navigation, flatNavigation } = this.props;
+    const { setKeys, navigation, flatNavigation, searchOpen } = this.props;
     const [lastKey, ...rest] = keys.reverse();
     let children = [];
+    console.log(lastKey, rest, keys);
     if (!lastKey) {
       const menues = navigation.filter(x => x.type === 'MENU');
       const pages = navigation.filter(x => x.type !== 'MENU');
@@ -133,7 +137,6 @@ export default class EditablePage extends Component {
             {menu.children.map(x => this.renderItem(x))}
           </DndList>
         )),
-        <Menu.Space />,
       ];
     } else {
       const item = flatNavigation.find(x => x.id === lastKey);
@@ -167,7 +170,7 @@ export default class EditablePage extends Component {
     );
     return (
       <DndList.Context onDragEnd={this.onDragEnd} key={1}>
-        <Menu style={{ width: 240, height: '100%' }} header={header}>
+        <Menu color header={header}>
           {children}
           <Menu.Space />
         </Menu>

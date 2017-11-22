@@ -30,8 +30,8 @@ export default ({ children, id, onClick, ...props }) => (
           <Item
             _ref={provided.innerRef}
             style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
-            attributes={attributes}
             onClick={onClickNew}
+            {...attributes}
             {...props}
           >
             {children}

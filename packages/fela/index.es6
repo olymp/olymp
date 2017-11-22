@@ -10,7 +10,6 @@ export { default as Print } from './print';
 export { default as Layout } from './layout';
 export { default as Menu, DndList, Sidebar, Drawer, StackedMenu } from './menu';
 export { default as Nav } from './nav';
-export { default as List } from './list';
 export { default as PageTransition } from './page-transition';
 export { default as MaterialColors } from './material-colors';
 export { default as LightBox } from './lightbox';

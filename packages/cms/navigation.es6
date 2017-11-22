@@ -1,12 +1,11 @@
 import React from 'react';
+import { compose, withState, withHandlers } from 'recompose';
 import { withLang } from 'olymp-utils';
 import { Link, createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
-import { ContentLoader, Menu, DndList, StackedMenu } from 'olymp-fela';
-import { FaHome, FaBars, FaPictureO } from 'olymp-icons';
+import { createComponent, border, Avatar, Logo, Menu, Drawer } from 'olymp-fela';
+import { FaBars, FaPictureO, FaSearch } from 'olymp-icons';
 import { Icon } from 'antd';
-import { createComponent, border, Avatar, Logo } from 'olymp-fela';
-import { compose, withState, withHandlers } from 'recompose';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 
@@ -110,6 +109,7 @@ const enhance = compose(
     }),
   ),
   withState('collapsed', 'setCollapsed', true),
+  withState('searchOpen', 'setSearchOpen', false),
   withHandlers({
     expand: ({ setCollapsed }) => () => setCollapsed(false),
     collapse: ({ setCollapsed }) => () => setCollapsed(true),
@@ -149,6 +149,8 @@ const component = enhance(
     setCollapsed,
     handleClick,
     push,
+    searchOpen,
+    setSearchOpen,
   }) => {
     const keys = Object.keys(query);
 
@@ -250,7 +252,28 @@ const component = enhance(
           </Menu.List>
           {lists}
           <Menu.Space />
+          <Menu.Item onClick={() => {setSearchOpen(true);setCollapsed(true);}} icon={<FaSearch />}>Suche</Menu.Item>
         </Menu>
+        <Drawer
+          color="white"
+          open={searchOpen}
+          onClose={() => {setSearchOpen(false);}}
+        >
+          <Menu
+            color="white"
+            collapsed
+            header={
+              <Menu.Item large key="back" icon={<Logo color />}>
+                Olymp
+              </Menu.Item>
+            }
+          >
+            <Menu.Item onClick={() => setSearchOpen(false)} icon={<FaSearch />}>Suche</Menu.Item>
+          </Menu>
+          <div>
+            Test
+          </div>
+        </Drawer>
       </aside>
     );
     return (
