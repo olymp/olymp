@@ -27,7 +27,7 @@ export default createComponent(
       backgroundColor: inverted ? theme.light2 : theme.dark3,
       zIndex: 1,
       opacity: !open ? 0 : 1,
-      transition: 'opacity 200ms ease-in-out',
+      transition: 'opacity 200ms ease-out',
       pointerEvents: !open && 'none',
     },
   }),
