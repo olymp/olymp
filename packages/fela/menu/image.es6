@@ -2,9 +2,12 @@ import React from 'react';
 import { createComponent } from 'olymp-fela';
 
 export default createComponent(
-  ({ theme, large, collapsed, extra }) => ({
+  ({ theme, large, extra }) => ({
     width: !extra ? 54 : 40,
+    minWidth: !extra ? 54 : 40,
+    maxWidth: !extra ? 54 : 40,
     textAlign: extra && 'right',
+    display: extra && theme.collapsed && 'none',
     ellipsis: true,
     '> *': {
       display: 'block',
@@ -15,9 +18,9 @@ export default createComponent(
     },
     '> img': {
       size: large ? 40 : !extra ? 32 : 20,
-      borderRadius: collapsed ? '50%' : theme.borderRadius,
+      borderRadius: theme.collapsed ? '50%' : theme.borderRadius,
     },
   }),
   ({ children, className }) => <div className={className}>{children}</div>,
-  ({ large, inverted, ...p }) => Object.keys(p),
+  ({ large, ...p }) => Object.keys(p),
 );

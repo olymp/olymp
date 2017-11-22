@@ -6,6 +6,8 @@ const Content = createComponent(
   ({ theme }) => ({
     ellipsis: true,
     flexGrow: 1,
+    opacity: theme.collapsed ? 0 : 1,
+    transition: 'opacity 200ms ease-out',
     '> small': {
       display: 'block',
       marginTop: `-${theme.space1}`,
@@ -17,19 +19,18 @@ const Content = createComponent(
 );
 
 export default createComponent(
-  ({ theme, large, active, icon }) => ({
+  ({ theme, large, active, icon, onClick }) => ({
     height: large ? 54 : 40,
     width: !theme.collapsed ? '100%' : large ? 54 : 40,
-    marginX: 'auto',
     marginBottom: theme.space1,
     paddingLeft: !icon && theme.space3,
     display: 'flex',
     alignItems: 'center',
-    cursor: 'pointer',
+    cursor: !!onClick && 'pointer',
     borderRadius: theme.collapsed ? '50%' : theme.borderRadius,
     backgroundColor: active && theme.dark5,
     onHover: {
-      backgroundColor: theme.dark4,
+      backgroundColor: !!onClick && theme.dark4,
     },
   }),
   ({
@@ -39,7 +40,6 @@ export default createComponent(
     subtitle,
     icon,
     extra,
-    collapsed,
     attributes = {},
     _ref,
     style,
@@ -52,18 +52,12 @@ export default createComponent(
       onClick={onClick}
       {...attributes}
     >
-      {!!icon && (
-        <Image large={large} collapsed={collapsed}>
-          {icon}
-        </Image>
-      )}
-      {!collapsed && (
-        <Content>
-          {children}
-          {!!subtitle && <small>{subtitle}</small>}
-        </Content>
-      )}
-      {!!extra && !collapsed && <Image extra>{extra}</Image>}
+      {!!icon && <Image large={large}>{icon}</Image>}
+      <Content>
+        {children}
+        {!!subtitle && <small>{subtitle}</small>}
+      </Content>
+      {!!extra && <Image extra>{extra}</Image>}
     </div>
   ),
   p => Object.keys(p),

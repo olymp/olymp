@@ -16,15 +16,10 @@ export default createComponent(
     flexGrow: 1,
     justifyContent: theme.collapsed ? 'center' : 'space-between',
   }),
-  ({ extra, children, inverted, collapsed, ...p }) => (
+  ({ extra, children, ...p }) => (
     <div {...p}>
       {children}
-      {!!extra &&
-        !collapsed && (
-          <Image extra inverted={inverted}>
-            {extra}
-          </Image>
-        )}
+      {!!extra && <Image extra>{extra}</Image>}
     </div>
   ),
   p => Object.keys(p),
