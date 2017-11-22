@@ -4,7 +4,8 @@ import List from '../list';
 import Item from './item';
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : undefined,
+  backgroundColor: isDraggingOver ? '#88888878' : undefined,
+  borderRadius: 5,
 });
 
 const list = ({ children, onDragEnd, ...props }) => (
