@@ -96,7 +96,7 @@ export default class EditablePage extends Component {
       </DndList.Item>
     );
   };
-  renderMenu = (keys, prevKeys) => {
+  renderMenu = keys => {
     const { setKeys, navigation, flatNavigation } = this.props;
     const [lastKey, ...rest] = keys.reverse();
     if (!lastKey) {
@@ -180,8 +180,6 @@ export default class EditablePage extends Component {
         signal={signal}
       />
     );
-
-    console.log(navigation);
 
     return (
       <Sidebar.Container
