@@ -23,7 +23,7 @@ export default createComponent(
   ({ theme, large, active, icon, onClick }) => ({
     height: large ? 54 : 40,
     width: !theme.collapsed ? '100%' : large ? 54 : 40,
-    marginBottom: theme.space1,
+    marginLeft: theme.collapsed && !large && 7,
     paddingLeft: !icon && theme.space3,
     display: 'flex',
     alignItems: 'center',
@@ -34,25 +34,8 @@ export default createComponent(
       backgroundColor: !!onClick && theme.dark4,
     },
   }),
-  ({
-    className,
-    large,
-    children,
-    subtitle,
-    icon,
-    extra,
-    attributes = {},
-    _ref,
-    style,
-    onClick,
-  }) => (
-    <div
-      className={className}
-      ref={_ref}
-      style={style}
-      onClick={onClick}
-      {...attributes}
-    >
+  ({ large, children, subtitle, icon, extra, ...rest }) => (
+    <div {...rest}>
       {!!icon && <Image large={large}>{icon}</Image>}
       <Content>
         {children}
