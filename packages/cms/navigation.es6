@@ -162,7 +162,7 @@ const component = enhance(
           >
             Mediathek
           </Menu.Item>
-          <Menu.List title="Listen">{items}</Menu.List>
+          <Menu.List title="Collections">{items}</Menu.List>
           {lists}
           <Menu.Space />
           <Menu.Item
@@ -175,12 +175,16 @@ const component = enhance(
             Suche
           </Menu.Item>
           <Menu.Item
-            onClick={logout}
+            active={query[`@users`] === user.id}
+            onClick={() => setQuery({ '@users': user.id })}
             icon={
               <Avatar email={user.email} name={user.name} default="blank" />
             }
           >
-            Ausloggen
+            {user.name}
+          </Menu.Item>
+          <Menu.Item onClick={logout} icon={<FaSignOut />}>
+            Abmelden
           </Menu.Item>
         </Menu>
         <Drawer
