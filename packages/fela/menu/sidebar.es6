@@ -2,7 +2,7 @@ import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ width = 240, right, collapsed }) => ({
+  ({ width = 240, right, collapsed, pusher }) => ({
     height: '100%',
     '> aside': {
       position: 'fixed',
@@ -11,9 +11,10 @@ export default createComponent(
       right: right && 0,
       height: '100%',
       width: collapsed ? 72 : width,
+      zIndex: 1,
     },
     '> section': {
-      marginLeft: collapsed ? 72 : width,
+      marginLeft: !pusher || collapsed ? 72 : width,
       transition: 'margin 200ms ease-out',
       height: '100%',
       position: 'relative',
@@ -30,5 +31,5 @@ export default createComponent(
       <section>{children}</section>
     </div>
   ),
-  p => Object.keys(p),
+  ({ pusher, ...p }) => Object.keys(p),
 );
