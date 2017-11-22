@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 import { Prompt, withQueryActions } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
-import { FaEnvelope, FaAngleLeft, FaAngleRight, FaPlus } from 'olymp-icons';
+import {
+  FaEnvelope,
+  FaAngleLeft,
+  FaAngleRight,
+  FaPlus,
+  FaPagelines,
+  FaHome,
+} from 'olymp-icons';
 import { withPropsOnChange, withProps, withState } from 'recompose';
 import { ContentLoader, Menu, DndList, StackedMenu } from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
+import { createPushPathname } from 'olymp-router';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
 import { queryPage } from '../../gql/query';
@@ -20,7 +28,6 @@ const Page = ({ children, isLoading, ...props }) => (
   </ContentLoader>
 );
 
-console.log(StackedMenu, Menu, DndList);
 const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 @queryPage
 @withState('signal', 'setSignal', 0)
@@ -56,9 +63,15 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
   },
   value: form.getFieldValue('blocks'),
 }))
-@connect(({ location }) => ({
-  tab: location.query['@page'] || '',
-}))
+@connect(
+  ({ location }) => ({
+    tab: location.query['@page'] || '',
+    pathname: location.pathname,
+  }),
+  dispatch => ({
+    push: createPushPathname(dispatch),
+  }),
+)
 export default class EditablePage extends Component {
   onDragEnd(result) {
     // dropped outside the list
@@ -80,15 +93,22 @@ export default class EditablePage extends Component {
   }
 
   renderItem = item => {
-    const { setKeys } = this.props;
+    const { setKeys, push, pathname } = this.props;
     const hasChildren = item.children && item.children.length;
+    const route =
+      item.pathname &&
+      item.type === 'PAGE' &&
+      item.slug &&
+      item.slug.indexOf('{') === -1
+        ? item.pathname
+        : `/page_id/${item.pageId || item.id}`;
+    console.log(route, pathname);
     return (
       <DndList.Item
         key={item.id}
+        active={pathname === route}
         id={item.id}
-        onClick={
-          hasChildren ? () => setKeys([item.id]) : () => console.log(123)
-        }
+        onClick={hasChildren ? () => setKeys([item.id]) : () => push(route)}
         // icon={<FaEnvelope />}
         extra={hasChildren ? <FaAngleRight /> : null}
       >
@@ -99,36 +119,39 @@ export default class EditablePage extends Component {
   renderMenu = keys => {
     const { setKeys, navigation, flatNavigation } = this.props;
     const [lastKey, ...rest] = keys.reverse();
+    let children = [];
     if (!lastKey) {
       const menues = navigation.filter(x => x.type === 'MENU');
-      return (
-        <Menu style={{ width: 240, height: '100%' }} header="Seiten">
-          <Menu.Item icon={<FaEnvelope />}>Startseite</Menu.Item>
-          {menues.map(menu => (
-            <DndList
-              key={menu.id}
-              title={menu.name}
-              extra={<FaEnvelope />}
-              onDragEnd={this.onDragEnd}
-            >
-              {menu.children.map(this.renderItem)}
-            </DndList>
-          ))}
-          <Menu.Space />
-          <Menu.List title="Ende!">
-            <Menu.Item icon={<FaEnvelope />}>Abmelden</Menu.Item>
-          </Menu.List>
-        </Menu>
-      );
-    }
-    return (
-      <Menu style={{ width: 240, height: '100%' }} header="Seiten">
-        <Menu.Item icon={<FaAngleLeft />} onClick={() => setKeys(rest)}>
+      children = [
+        <Menu.Item key="home" icon={<FaHome />}>
+          Startseite
+        </Menu.Item>,
+        menues.map(menu => (
+          <DndList
+            key={menu.id}
+            title={menu.name}
+            extra={<FaPlus />}
+            onDragEnd={this.onDragEnd}
+          >
+            {menu.children.map(this.renderItem)}
+          </DndList>
+        )),
+        <Menu.Space />,
+      ];
+    } else {
+      const item = flatNavigation.find(x => x.id === lastKey);
+      children = [
+        <Menu.Item
+          key="back"
+          icon={<FaAngleLeft />}
+          onClick={() => setKeys(rest)}
+        >
           Zurück
-        </Menu.Item>
+        </Menu.Item>,
         <DndList
-          title={flatNavigation.find(x => x.id === lastKey).name}
-          extra={<FaEnvelope />}
+          key="pages"
+          title={item.name}
+          extra={<FaPlus />}
           onDragEnd={this.onDragEnd}
         >
           {flatNavigation.filter(x => x.parentId === lastKey).map(item =>
@@ -137,12 +160,21 @@ export default class EditablePage extends Component {
               children: flatNavigation.filter(x => x.parentId === item.id),
             }),
           )}
-        </DndList>
-        <Menu.Space />
-        <Menu.List title="Ende!">
-          <Menu.Item icon={<FaEnvelope />}>Abmelden</Menu.Item>
-        </Menu.List>
-      </Menu>
+        </DndList>,
+      ];
+    }
+    const header = (
+      <Menu.Item large icon={<FaPagelines />}>
+        Seiten
+      </Menu.Item>
+    );
+    return (
+      <DndList.Context onDragEnd={this.onDragEnd}>
+        <Menu style={{ width: 240, height: '100%' }} header={header}>
+          {children}
+          <Menu.Space />
+        </Menu>
+      </DndList.Context>
     );
   };
 
@@ -155,7 +187,6 @@ export default class EditablePage extends Component {
       navigation,
       flatNavigation,
       render,
-      maxWidth,
       item,
       replaceQuery,
       title,

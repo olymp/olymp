@@ -143,7 +143,7 @@ const component = enhance(props => {
           render={() => <EditableRoute {...props} />}
         />
         <Match
-          render={rest => <EditableRoute {...rest} {...props} key={pathname} />}
+          render={rest => <EditableRoute {...rest} {...props} />}
         />
       </Switch>
       {ua.getBrowser().name === 'IE' && (
