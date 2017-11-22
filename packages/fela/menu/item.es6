@@ -8,6 +8,7 @@ const Content = createComponent(
     flexGrow: 1,
     opacity: theme.collapsed ? 0 : 1,
     transition: 'opacity 200ms ease-out',
+    overflowY: 'hidden',
     '> small': {
       display: 'block',
       marginTop: `-${theme.space1}`,
