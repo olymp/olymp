@@ -1,34 +1,38 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
-import Sidebar from './sidebar';
-import Button from './button';
 
-Sidebar.Button = Button;
-Sidebar.Container = createComponent(
-  ({ width }) => ({
+export default createComponent(
+  ({ width, right, collapsed }) => ({
     height: '100%',
     '> aside': {
       position: 'fixed',
+      top: 0,
+      left: !right && 0,
+      right: right && 0,
       height: '100%',
-      width,
+      width: width || (collapsed ? 72 : 240),
     },
     '> nav': {
       position: 'fixed',
-      width,
+      width: width || (collapsed ? 72 : 240),
     },
     '> section': {
-      marginLeft: width || 350,
+      marginLeft: width || (collapsed ? 72 : 240),
+      transition: 'margin 200ms ease-out',
       height: '100%',
       position: 'relative',
     },
   }),
-  ({ children, className, menu, ...rest }) => (
+  ({ children, className, menu, collapsed, ...rest }) => (
     <div className={className}>
-      <aside {...rest}>{menu}</aside>
+      <aside {...rest}>
+        {Children.map(
+          menu,
+          child => (child ? cloneElement(child, { collapsed }) : child),
+        )}
+      </aside>
       <section>{children}</section>
     </div>
   ),
   p => Object.keys(p),
 );
-
-export default Sidebar;

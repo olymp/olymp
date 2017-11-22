@@ -30,7 +30,7 @@ const Menu = createComponent(
     height: '100%',
     color: theme.inverted ? theme.light1 : theme.dark1,
     backgroundColor: theme.color,
-    paddingY: theme.space3,
+    paddingY: theme.space2,
     paddingX: 9,
     overflowY: 'auto',
     transition: 'all 200ms ease-out',
