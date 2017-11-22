@@ -19,7 +19,7 @@ export default createComponent(
       position: 'relative',
     },
   }),
-  ({ children, className, menu, collapsed, width, ...rest }) => (
+  ({ children, className, menu, collapsed, width = 240, ...rest }) => (
     <div className={className}>
       <aside {...rest}>
         {Children.map(

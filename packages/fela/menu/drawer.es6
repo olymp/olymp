@@ -2,21 +2,44 @@ import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ width, right, collapsed }) => ({
-    position: 'fixed',
-    top: 0,
-    left: !right && 0,
-    right: right && 0,
+  ({ theme, width = 312, right, collapsed, inverted }) => ({
     height: '100%',
-    width: collapsed ? 72 : width,
+    '> aside': {
+      position: 'fixed',
+      top: 0,
+      left: !right && 0,
+      right: right && 0,
+      marginLeft: !right && (collapsed ? -width : 0),
+      marginRight: right && (collapsed ? -width : 0),
+      height: '100%',
+      width,
+      zIndex: 2,
+      boxShadow: theme.boxShadow,
+      transition: 'margin 200ms ease-out',
+    },
+    '> div': {
+      position: 'fixed',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      backgroundColor: inverted ? theme.light2 : theme.dark3,
+      zIndex: 1,
+      opacity: collapsed ? 0 : 1,
+      transition: 'opacity 200ms ease-in-out',
+      pointerEvents: 'none',
+    },
   }),
-  ({ children, menu, collapsed, width, ...rest }) => (
-    <aside {...rest}>
-      {Children.map(
-        menu,
-        child => (child ? cloneElement(child, { collapsed, width }) : child),
-      )}
-    </aside>
+  ({ className, children, menu, collapsed, width = 312, ...rest }) => (
+    <div className={className}>
+      <aside {...rest}>
+        {Children.map(
+          children,
+          child => (child ? cloneElement(child, { width }) : child),
+        )}
+      </aside>
+      <div />
+    </div>
   ),
-  p => Object.keys(p),
+  ({ inverted, ...p }) => Object.keys(p),
 );
