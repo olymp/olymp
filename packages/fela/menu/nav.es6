@@ -1,7 +1,7 @@
 import { createComponent } from 'olymp-fela';
 
 export default createComponent(
-  ({ right = true }) => ({
+  ({ right }) => ({
     display: 'flex',
     flexGrow: 1,
     position: 'fixed',

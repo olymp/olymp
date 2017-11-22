@@ -43,8 +43,15 @@ export default createComponent(
     attributes = {},
     _ref,
     style,
+    onClick,
   }) => (
-    <div className={className} ref={_ref} style={style} {...attributes}>
+    <div
+      className={className}
+      ref={_ref}
+      style={style}
+      onClick={onClick}
+      {...attributes}
+    >
       {!!icon && (
         <Image large={large} collapsed={collapsed}>
           {icon}
