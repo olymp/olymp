@@ -12,10 +12,6 @@ export default createComponent(
       height: '100%',
       width: collapsed ? 72 : width,
     },
-    '> nav': {
-      position: 'fixed',
-      width: collapsed ? 72 : width,
-    },
     '> section': {
       marginLeft: collapsed ? 72 : width,
       transition: 'margin 200ms ease-out',
