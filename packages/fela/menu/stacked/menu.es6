@@ -11,7 +11,7 @@ export default class StackedMenu extends Component {
     return (
       <div style={{ height: '100%' }}>
         {renderMenu(keys, this.oldKeys)}
-        {this.oldKeys && renderMenu(this.oldKeys)}
+        {/* this.oldKeys && renderMenu(this.oldKeys) */}
       </div>
     );
   }
