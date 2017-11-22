@@ -2,15 +2,15 @@ import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
-  ({ theme, width = 312, right, collapsed, inverted }) => ({
+  ({ theme, width = 312, right, open, inverted }) => ({
     height: '100%',
     '> aside': {
       position: 'fixed',
       top: 0,
       left: !right && 0,
       right: right && 0,
-      marginLeft: !right && (collapsed ? -width : 0),
-      marginRight: right && (collapsed ? -width : 0),
+      marginLeft: !right && (!open ? -width : 0),
+      marginRight: right && (!open ? -width : 0),
       height: '100%',
       width,
       zIndex: 2,
@@ -25,12 +25,12 @@ export default createComponent(
       left: 0,
       backgroundColor: inverted ? theme.light2 : theme.dark3,
       zIndex: 1,
-      opacity: collapsed ? 0 : 1,
+      opacity: !open ? 0 : 1,
       transition: 'opacity 200ms ease-in-out',
       pointerEvents: 'none',
     },
   }),
-  ({ className, children, menu, collapsed, width = 312, ...rest }) => (
+  ({ className, children, menu, open, width = 312, ...rest }) => (
     <div className={className}>
       <aside {...rest}>
         {Children.map(
