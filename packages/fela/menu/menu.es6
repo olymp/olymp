@@ -1,6 +1,7 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
-import Theme from './theme';
+import { ThemeProvider } from 'react-fela';
+import useTheme from './theme';
 import Header from './header';
 import Divider from './divider';
 import Image from './image';
@@ -21,15 +22,15 @@ const Inner = createComponent(
 );
 
 const Menu = createComponent(
-  ({ theme }) => ({
+  ({ theme, color }) => ({
     display: 'flex',
-    flexGrow: 1,
+    flexGrow: theme.collapsed ? 0 : 1,
     flexShrink: 1,
     flexDirection: 'column',
     width: theme.collapsed ? 72 : theme.width,
     height: '100%',
     color: theme.inverted ? theme.light1 : theme.dark1,
-    backgroundColor: theme.color,
+    backgroundColor: color,
     paddingY: theme.space2,
     paddingX: 9,
     overflowY: 'auto',
@@ -44,10 +45,12 @@ const Menu = createComponent(
   ({ color, ...p }) => Object.keys(p),
 );
 
-const Component = ({ inverted, color, collapsed, width, ...props }) => (
-  <Theme width={width} inverted={inverted} color={color} collapsed={collapsed}>
-    <Menu {...props} />
-  </Theme>
+const Component = useTheme(
+  ({ inverted, color, collapsed, theme, width, ...props }) => (
+    <ThemeProvider theme={theme}>
+      <Menu color={color} {...props} />
+    </ThemeProvider>
+  ),
 );
 
 Component.Header = Header;

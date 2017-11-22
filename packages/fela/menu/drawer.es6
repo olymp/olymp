@@ -1,8 +1,17 @@
 import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
 
+const getColor = (theme, color) => {
+  if (color === true) {
+    return theme.color;
+  } else if (typeof color === 'string') {
+    return theme[color] || color;
+  }
+  return theme.inverted ? theme.light : theme.dark;
+};
+
 export default createComponent(
-  ({ theme, width = 312, right, open, inverted }) => ({
+  ({ theme, color, width = 312, right, open, inverted }) => ({
     height: '100%',
     '> aside': {
       position: 'fixed',
@@ -16,7 +25,8 @@ export default createComponent(
       zIndex: 2,
       boxShadow: theme.boxShadow,
       transition: 'margin 200ms ease-out',
-      background: theme.light,
+      backgroundColor: getColor(theme, color),
+      display: 'flex',
     },
     '> div': {
       position: 'fixed',
