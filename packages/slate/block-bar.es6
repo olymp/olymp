@@ -113,7 +113,7 @@ class Navigation extends Component {
     }
 
     return (
-      <Drawer open dim={false} right>
+      <Drawer open dim={false} right width={72}>
         <Menu
           collapsed={collapsed}
           onMouseEnter={() => setCollapsed(false)}

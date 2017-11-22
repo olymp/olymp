@@ -55,5 +55,5 @@ export default createComponent(
       {!!extra && <Image extra>{extra}</Image>}
     </div>
   ),
-  p => Object.keys(p),
+  ({ active, ...p }) => Object.keys(p),
 );

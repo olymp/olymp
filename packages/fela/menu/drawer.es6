@@ -11,22 +11,23 @@ const getColor = (theme, color) => {
 };
 
 export default createComponent(
-  ({ theme, color, width = 312, right, open, inverted }) => ({
+  ({ theme, color, width = 312, right, left = 0, open, inverted }) => ({
     height: '100%',
     '> aside': {
       position: 'fixed',
       top: 0,
-      left: !right && 0,
+      left: !right && left,
       right: right && 0,
       marginLeft: !right && (!open ? -width : 0),
       marginRight: right && (!open ? -width : 0),
       height: '100%',
-      width,
+      minWidth: width,
       zIndex: 2,
       boxShadow: theme.boxShadow,
       transition: 'margin 200ms ease-out',
       backgroundColor: getColor(theme, color),
       display: 'flex',
+      justifyContent: right && 'flex-end',
     },
     '> div': {
       position: 'fixed',
@@ -61,5 +62,5 @@ export default createComponent(
       {dim && <div onClick={onClose} />}
     </div>
   ),
-  ({ inverted, ...p }) => Object.keys(p),
+  ({ inverted, width, ...p }) => Object.keys(p),
 );

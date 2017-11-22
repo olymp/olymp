@@ -4,7 +4,7 @@ import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Avatar, Logo, Menu, Drawer } from 'olymp-fela';
-import { FaBars, FaPictureO, FaSearch } from 'olymp-icons';
+import { FaBars, FaPictureO, FaSearch, FaSignOut } from 'olymp-icons';
 import { Icon } from 'antd';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
