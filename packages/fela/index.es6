@@ -8,7 +8,7 @@ export { default as Container } from './container';
 export { default as Modal } from './modal';
 export { default as Print } from './print';
 export { default as Layout } from './layout';
-export { default as Menu, DndList } from './menu';
+export { default as Menu, DndList, StackedMenu } from './menu';
 export { default as Nav } from './nav';
 export { default as List } from './list';
 export { default as PageTransition } from './page-transition';

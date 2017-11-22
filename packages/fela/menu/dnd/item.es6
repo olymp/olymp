@@ -9,20 +9,36 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   ...draggableStyle,
 });
 
-export default ({ children, id, ...props }) => (
+export default ({ children, id, onClick, ...props }) => (
   <Draggable draggableId={id}>
-    {(provided, snapshot) => (
-      <div>
-        <Item
-          _ref={provided.innerRef}
-          style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
-          attributes={provided.dragHandleProps}
-          {...props}
-        >
-          {children}
-        </Item>
-        {provided.placeholder}
-      </div>
-    )}
+    {(provided, snapshot) => {
+      const { onClick: onClickDrag, ...attributes } = provided.dragHandleProps;
+      const onClickNew = onClick
+        ? (() => {
+            // dragHandleProps might be null
+            if (!provided.dragHandleProps) {
+              return onClick;
+            }
+            return event => {
+              onClickDrag(event);
+              onClick(event);
+            };
+          })()
+        : onClickDrag;
+      return (
+        <div>
+          <Item
+            _ref={provided.innerRef}
+            style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
+            attributes={attributes}
+            onClick={onClickNew}
+            {...props}
+          >
+            {children}
+          </Item>
+          {provided.placeholder}
+        </div>
+      );
+    }}
   </Draggable>
 );
