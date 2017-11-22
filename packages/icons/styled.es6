@@ -23,7 +23,9 @@ export default Wrapped =>
       fill:
         color === true
           ? theme.color
-          : typeof color === 'string' ? theme[color] || color : theme.dark,
+          : typeof color === 'string'
+            ? theme[color] || color
+            : theme.inverted ? theme.light : theme.dark,
     }),
     Wrapped,
     [

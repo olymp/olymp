@@ -7,8 +7,8 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? 'lightblue' : undefined,
 });
 
-const list = ({ children, ...props }) => (
-  <DragDropContext onDragEnd={() => null}>
+const list = ({ children, onDragEnd, ...props }) => (
+  <DragDropContext onDragEnd={onDragEnd}>
     <Droppable droppableId="droppable">
       {(provided, snapshot) => (
         <List
