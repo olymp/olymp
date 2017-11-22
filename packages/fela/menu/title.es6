@@ -4,17 +4,18 @@ import Image from './image';
 
 export default createComponent(
   ({ theme }) => ({
-    color: theme.inverted ? theme.light1 : theme.dark1,
+    color: theme.inverted ? theme.light2 : theme.dark2,
     ellipsis: true,
     textTransform: 'uppercase',
     fontSize: theme.fontSizeSmall,
     marginTop: theme.space2,
     marginBottom: theme.space1,
-    // paddingX: theme.collapsed ? theme.space1 : theme.space3,
     width: '100%',
     display: 'flex',
     flexGrow: 1,
-    justifyContent: theme.collapsed ? 'center' : 'space-between',
+    justifyContent: 'space-between',
+    opacity: theme.collapsed ? 0 : 1,
+    transition: 'opacity 200ms ease-in-out',
   }),
   ({ extra, children, ...p }) => (
     <div {...p}>
