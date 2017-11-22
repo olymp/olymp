@@ -27,10 +27,10 @@ export default createComponent(
       zIndex: 1,
       opacity: !open ? 0 : 1,
       transition: 'opacity 200ms ease-in-out',
-      pointerEvents: 'none',
+      pointerEvents: !open && 'none',
     },
   }),
-  ({ className, children, menu, open, width = 312, ...rest }) => (
+  ({ className, children, menu, open, onClose, width = 312, ...rest }) => (
     <div className={className}>
       <aside {...rest}>
         {Children.map(
@@ -38,7 +38,7 @@ export default createComponent(
           child => (child ? cloneElement(child, { width }) : child),
         )}
       </aside>
-      <div />
+      <div onClick={onClose} />
     </div>
   ),
   ({ inverted, ...p }) => Object.keys(p),
