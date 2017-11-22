@@ -4,7 +4,8 @@ import Item from '../item';
 
 const getItemStyle = (draggableStyle, isDragging) => ({
   // change background colour if dragging
-  background: isDragging ? 'lightgreen' : undefined,
+  backgroundColor: isDragging ? '#88888878' : undefined,
+  borderRadius: 5,
   ...draggableStyle,
 });
 

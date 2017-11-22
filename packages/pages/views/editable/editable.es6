@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { Prompt, withQueryActions } from 'olymp-router';
 import { connect } from 'react-redux';
 import { Sidebar, SplitView } from 'olymp-ui';
+import { FaEnvelope } from 'olymp-icons';
 import { withPropsOnChange, withProps, withState } from 'recompose';
-import { ContentLoader } from 'olymp-fela';
+import { ContentLoader, Menu, DndList } from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
 import { queryPage } from '../../gql/query';
 import { mutatePage } from '../../gql/mutation';
-import PageForm from './sidebar';
+import PageSidebar from './sidebar';
 
 const Page = ({ children, isLoading, ...props }) => (
   <ContentLoader isLoading={isLoading}>
@@ -56,7 +57,31 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 @connect(({ location }) => ({
   tab: location.query['@page'] || '',
 }))
-export default class PageSidebar extends Component {
+export default class EditablePage extends Component {
+  onDragEnd(result) {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    return console.log(result);
+
+    const items = reorder(
+      this.state.items,
+      result.source.index,
+      result.destination.index,
+    );
+
+    this.setState({
+      items,
+    });
+  }
+
+  renderItems = key => {
+    if (!key) {
+    }
+  };
+
   render() {
     const {
       id,
@@ -76,6 +101,7 @@ export default class PageSidebar extends Component {
       value,
       onChange,
       signal,
+      ...rest
     } = this.props;
 
     const P = (
@@ -91,26 +117,65 @@ export default class PageSidebar extends Component {
       />
     );
 
+    console.log(navigation);
+
     return (
       <Sidebar.Container
         isOpen
         padding={0}
         borderLess
-        title={title}
+        /* title={title}
         subtitle={description}
         rightButtons={
           <Sidebar.Button onClick={save} shape="circle" icon="save" />
-        }
-        width={350}
+        } */
+        width={240}
         content={
-          <PageForm
-            form={form}
-            item={item}
-            navigation={navigation}
-            items={flatNavigation}
-            tab={tab}
-            onTabClick={key => replaceQuery({ '@page': key || null })}
-          />
+          <Menu style={{ width: 240, height: '100%' }} header="Seiten">
+            <Menu.Item icon={<FaEnvelope />}>Startseite</Menu.Item>
+            <DndList
+              title="Hauptmenü"
+              extra={<FaEnvelope />}
+              onDragEnd={this.onDragEnd}
+            >
+              <DndList.Item id="1" icon={<FaEnvelope />}>
+                Online-Termin
+              </DndList.Item>
+              <DndList.Item id="2" icon={<FaEnvelope />}>
+                Kontakt
+              </DndList.Item>
+              <DndList.Item id="3" icon={<FaEnvelope />}>
+                Leistungen
+              </DndList.Item>
+              <DndList.Item id="4" icon={<FaEnvelope />}>
+                Ursachen für
+              </DndList.Item>
+              <DndList.SubMenu
+                id="5"
+                icon={<FaEnvelope />}
+                title="Ursachen für"
+              >
+                <Menu.Item icon={<FaEnvelope />}>Datenschutz</Menu.Item>
+                <Menu.Item icon={<FaEnvelope />}>Impressum</Menu.Item>
+                <DndList.SubMenu
+                  id="5"
+                  icon={<FaEnvelope />}
+                  title="Ursachen für"
+                >
+                  <Menu.Item icon={<FaEnvelope />}>Datenschutz</Menu.Item>
+                  <Menu.Item icon={<FaEnvelope />}>Impressum</Menu.Item>
+                </DndList.SubMenu>
+              </DndList.SubMenu>
+            </DndList>
+            <Menu.List title="Fußmenü">
+              <Menu.Item icon={<FaEnvelope />}>Datenschutz</Menu.Item>
+              <Menu.Item icon={<FaEnvelope />}>Impressum</Menu.Item>
+            </Menu.List>
+            <Menu.Space />
+            <Menu.List title="Ende!">
+              <Menu.Item icon={<FaEnvelope />}>Abmelden</Menu.Item>
+            </Menu.List>
+          </Menu>
         }
       >
         <Prompt
@@ -123,3 +188,12 @@ export default class PageSidebar extends Component {
     );
   }
 }
+
+/* <PageSidebar
+              form={form}
+              item={item}
+              navigation={navigation}
+              items={flatNavigation}
+              tab={tab}
+              onTabClick={key => replaceQuery({ '@page': key || null })}
+        /> */
