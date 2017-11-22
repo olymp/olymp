@@ -28,7 +28,7 @@ const SlideIn = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  ({ isBack, ...p }) => Object.keys(p),
 );
 
 export default class StackedMenu extends Component {
