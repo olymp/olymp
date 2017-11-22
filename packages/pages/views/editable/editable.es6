@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Prompt, withQueryActions, createPushPathname } from 'olymp-router';
 import { connect } from 'react-redux';
-import { Sidebar } from 'olymp-ui';
 import {
   FaAngleLeft,
   FaAngleRight,
@@ -10,7 +9,7 @@ import {
   FaHome,
 } from 'olymp-icons';
 import { withPropsOnChange, withProps, withState } from 'recompose';
-import { ContentLoader, Menu, DndList, StackedMenu } from 'olymp-fela';
+import { ContentLoader, Menu, DndList, StackedMenu, Sidebar } from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
@@ -170,7 +169,7 @@ export default class EditablePage extends Component {
     );
     return (
       <DndList.Context onDragEnd={this.onDragEnd} key={1}>
-        <Menu color header={header}>
+        <Menu color="colorSecondary" inverted header={header}>
           {children}
           <Menu.Space />
         </Menu>
@@ -213,17 +212,10 @@ export default class EditablePage extends Component {
     );
 
     return (
-      <Sidebar.Container
-        isOpen
-        padding={0}
-        borderLess
-        /* title={title}
-        subtitle={description}
-        rightButtons={
-          <Sidebar.Button onClick={save} shape="circle" icon="save" />
-        } */
-        width={240}
-        content={<StackedMenu keys={keys} renderMenu={this.renderMenu} />}
+      <Sidebar
+        pusher
+        left={72}
+        menu={<StackedMenu keys={keys} renderMenu={this.renderMenu} />}
       >
         <Prompt
           when={form.isFieldsTouched()}
@@ -231,7 +223,7 @@ export default class EditablePage extends Component {
         />
         {render && render(P)}
         {!render && P}
-      </Sidebar.Container>
+      </Sidebar>
     );
   }
 }

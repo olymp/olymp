@@ -22,6 +22,7 @@ const Content = createComponent(
 export default createComponent(
   ({ theme, large, active, icon, onClick }) => ({
     height: large ? 54 : 40,
+    flexShrink: 0,
     width: !theme.collapsed ? '100%' : large ? 54 : 40,
     marginLeft: theme.collapsed && !large && 7,
     paddingLeft: !icon && theme.space3,
@@ -34,8 +35,18 @@ export default createComponent(
       backgroundColor: !!onClick && theme.dark4,
     },
   }),
-  ({ large, children, subtitle, icon, extra, ...rest }) => (
-    <div {...rest}>
+  ({
+    large,
+    children,
+    subtitle,
+    icon,
+    extra,
+    _ref,
+    innerRef,
+    ref,
+    ...rest
+  }) => (
+    <div {...rest} ref={_ref || innerRef || ref}>
       {!!icon && <Image large={large}>{icon}</Image>}
       <Content>
         {children}

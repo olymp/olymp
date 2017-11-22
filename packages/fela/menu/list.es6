@@ -6,13 +6,20 @@ import Divider from './divider';
 const List = ({
   children,
   className,
-  attributes = {},
   _ref,
+  innerRef,
+  ref,
   style,
   extra,
   title,
+  rest,
 }) => (
-  <div className={className} ref={_ref} style={style} {...attributes}>
+  <div
+    className={className}
+    ref={_ref || innerRef || ref}
+    style={style}
+    {...rest}
+  >
     {title && <Title extra={extra}>{title}</Title>}
     {children}
   </div>
