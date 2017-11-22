@@ -16,6 +16,7 @@ export default createComponent(
       zIndex: 2,
       boxShadow: theme.boxShadow,
       transition: 'margin 200ms ease-out',
+      background: theme.light,
     },
     '> div': {
       position: 'fixed',
