@@ -23,7 +23,7 @@ const Container = createComponent(
     backgroundColor: '#Cf5f5f5',
     height: '100%',
     '> div': {
-      marginLeft: 64,
+      marginLeft: 72,
       position: 'relative',
       height: '100%',
     },
@@ -31,11 +31,6 @@ const Container = createComponent(
   'div',
   [],
 );
-
-const SwitchContainer = createComponent(() => ({ height: '100%' }), 'div', p =>
-  Object.keys(p),
-);
-
 const Footer = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
@@ -142,9 +137,7 @@ const component = enhance(props => {
           match={query['@page'] !== undefined}
           render={() => <EditableRoute {...props} />}
         />
-        <Match
-          render={rest => <EditableRoute {...rest} {...props} />}
-        />
+        <Match render={rest => <EditableRoute {...rest} {...props} />} />
       </Switch>
       {ua.getBrowser().name === 'IE' && (
         <Footer>

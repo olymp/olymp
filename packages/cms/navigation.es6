@@ -1,8 +1,10 @@
 import React from 'react';
 import { withLang } from 'olymp-utils';
-import { Link, createReplaceQuery } from 'olymp-router';
+import { Link, createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
-import { Menu, Icon } from 'antd';
+import { ContentLoader, Menu, DndList, StackedMenu } from 'olymp-fela';
+import { FaHome, FaBars, FaPictureO } from 'olymp-icons';
+import { Icon } from 'antd';
 import { createComponent, border, Avatar, Logo } from 'olymp-fela';
 import { compose, withState, withHandlers } from 'recompose';
 import { get } from 'lodash';
@@ -104,6 +106,7 @@ const enhance = compose(
     dispatch => ({
       setQuery: createReplaceQuery(dispatch),
       logout: createLogout(dispatch),
+      push: createPushPathname(dispatch),
     }),
   ),
   withState('collapsed', 'setCollapsed', true),
@@ -140,9 +143,12 @@ const component = enhance(
     collectionList,
     collectionTree,
     isAdmin,
+    setQuery,
     user = {},
     collapsed,
+    setCollapsed,
     handleClick,
+    push,
   }) => {
     const keys = Object.keys(query);
 
@@ -150,6 +156,103 @@ const component = enhance(
       keys.push('@home');
     }
 
+    const lists = [];
+    const items = [];
+    Object.keys(collectionTree).forEach(
+      key =>
+        collectionTree[key].length > 1 ? lists.push(
+          <Menu.List title={key}>
+            {collectionTree[key].map(collection => (
+              <Menu.Item
+                key={key}
+                icon={
+                  <Icon
+                    type={get(
+                      collection,
+                      'specialFields.icon',
+                      'database',
+                    )}
+                  />
+                }
+                active={query[`@media`] === null}
+                onClick={() =>
+                  setQuery({[`@${collection.name.toLowerCase()}`]: 'new'})}
+              >
+                {get(collection, 'specialFields.label', collection.name)}
+              </Menu.Item>
+            ))}
+          </Menu.List>
+        ) : items.push(
+          <Menu.Item
+            icon={
+              <Icon
+                type={get(
+                  collectionTree[key][0],
+                  'specialFields.icon',
+                  'database',
+                )}
+              />
+            }
+            active={query[`@media`] === null}
+            onClick={() =>
+              setQuery({[`@${collectionTree[key][0].name.toLowerCase()}`]: 'new'})}
+          >
+            {get(
+              collectionTree[key][0],
+              'specialFields.label',
+              collectionTree[key][0].name,
+            )}
+          </Menu.Item>
+        ),
+    );
+
+    return (
+      <aside
+        style={{
+          width: collapsed ? 72 : 240,
+          height: '100%',
+          position: 'fixed',
+          zIndex: 10,
+          left: 0,
+        }}
+        onMouseEnter={() => setCollapsed(false)}
+        onMouseLeave={() => setCollapsed(true)}
+      >
+        <Menu
+          collapsed={collapsed}
+          inverted
+          color="colorSecondary"
+          style={{ height: '100%' }}
+          header={
+            <Menu.Item large key="back" icon={<Logo clean />}>
+              Olymp
+            </Menu.Item>
+          }
+        >
+          <Menu.Item
+            active={Object.keys(query).length === 0}
+            icon={<FaBars />}
+            onClick={() => setQuery({})}
+          >
+            Seitenmanager
+          </Menu.Item>
+          <Menu.Item
+            icon={<FaPictureO />}
+            active={query[`@media`] === null}
+            onClick={() => setQuery({ '@media': null })}
+          >
+            Mediathek
+          </Menu.Item>
+          <Menu.List
+            title="Listen"
+          >
+            {items}
+          </Menu.List>
+          {lists}
+          <Menu.Space />
+        </Menu>
+      </aside>
+    );
     return (
       <VerticalMenu onMouseEnter={expand} onMouseLeave={collapse}>
         <Menu

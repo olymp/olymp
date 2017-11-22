@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Prompt, withQueryActions } from 'olymp-router';
+import { Prompt, withQueryActions, createPushPathname } from 'olymp-router';
 import { connect } from 'react-redux';
-import { Sidebar, SplitView } from 'olymp-ui';
+import { Sidebar } from 'olymp-ui';
 import {
-  FaEnvelope,
   FaAngleLeft,
   FaAngleRight,
   FaPlus,
@@ -13,7 +12,6 @@ import {
 import { withPropsOnChange, withProps, withState } from 'recompose';
 import { ContentLoader, Menu, DndList, StackedMenu } from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
-import { createPushPathname } from 'olymp-router';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
 import { queryPage } from '../../gql/query';
