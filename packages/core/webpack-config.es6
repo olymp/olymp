@@ -135,6 +135,10 @@ module.exports = ({
           test: /\.json$/,
           loader: 'json-loader',
         },
+        {
+          test: /\.flow$/,
+          loader: 'ignore-loader',
+        },
       ],
     },
     output: {
