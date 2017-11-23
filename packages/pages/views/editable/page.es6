@@ -43,7 +43,7 @@ class PageForm extends Component {
     );
 
     return (
-      <Panel padding={16} alignLabel="left">
+      <Panel flex={1} padding={16} alignLabel="left">
         <Input
           form={form}
           item={item}

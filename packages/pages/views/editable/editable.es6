@@ -22,7 +22,7 @@ import {
 import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
-import PageForm from './sidebar';
+import PageForm from './page';
 import { queryPage } from '../../gql/query';
 import { mutatePage, reorderPage } from '../../gql/mutation';
 
@@ -252,8 +252,6 @@ export default class EditablePage extends Component {
       />
     );
 
-    console.log(formOpen);
-
     return (
       <Sidebar
         pusher
@@ -268,6 +266,7 @@ export default class EditablePage extends Component {
         {!render && P}
         <Drawer
           color="white"
+          width={475}
           right
           open={formOpen}
           onClose={() => setFormOpen(false)}
