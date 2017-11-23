@@ -15,7 +15,8 @@ export default createComponent(
     height: '100%',
     '> aside': {
       position: 'fixed',
-      top: top || 0,
+      top: 0,
+      paddingTop: top,
       left: !right && left,
       right: right && 0,
       height: '100%',

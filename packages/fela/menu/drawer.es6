@@ -16,7 +16,7 @@ export default createComponent(
     color,
     width = 312,
     right,
-    left = 0,
+    left,
     open,
     inverted,
     collapsed = true,
@@ -36,18 +36,26 @@ export default createComponent(
     '> aside': {
       position: 'fixed',
       top: 0,
-      left: !right && left,
-      right: right && 0,
-      marginLeft: !right && (!open ? -width : 0),
-      marginRight: right && (!open ? -width : 0),
+      extend:
+        right !== undefined
+          ? {
+              backgroundColor: 'blue',
+              right: right || 0,
+              justifyContent: 'flex-end',
+              transform: open ? null : 'translateX(100%)',
+            }
+          : {
+              backgroundColor: 'blue',
+              left: left || 0,
+              transform: open ? null : 'translateX(-100%)',
+            },
       height: '100%',
       minWidth: width,
       zIndex: 7,
       boxShadow: !collapsed ? theme.boxShadow : undefined,
-      transition: 'margin 200ms ease-out',
+      transition: 'transform 200ms ease-out',
       backgroundColor: getColor(theme, color),
       display: 'flex',
-      justifyContent: right && 'flex-end',
     },
   }),
   ({
