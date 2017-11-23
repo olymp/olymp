@@ -32,5 +32,5 @@ export default createComponent(
       <section>{children}</section>
     </div>
   ),
-  ({ pusher, ...p }) => Object.keys(p),
+  ({ pusher, zIndex, ...p }) => Object.keys(p),
 );

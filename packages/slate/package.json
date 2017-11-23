@@ -26,7 +26,7 @@
     "slate-edit-blockquote": "^0.5.0",
     "slate-edit-code": "^0.13.0",
     "slate-edit-list": "^0.10.1",
-    "slate-edit-table": "^0.12.0",
+    "slate-edit-table": "^0.13.0",
     "slate-hyperscript": "^0.4.11",
     "slate-paste-linkify": "^0.5.0",
     "slate-plain-serializer": "^0.4.11",
