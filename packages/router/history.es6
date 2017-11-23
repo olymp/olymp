@@ -17,6 +17,7 @@ export const createHistory = (options = {}) => {
   }
   return history;
 };
+
 export const attachHistory = (history, store) => {
   history.listen((location, action) => {
     if (!location.url) {

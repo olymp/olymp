@@ -40,7 +40,7 @@ const enhance = compose(
       `,
     },
   })),
-  useAuth(),
+  useAuth({}),
   withRedux,
   useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
