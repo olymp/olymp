@@ -49,6 +49,7 @@ export default createComponent(
     _ref,
     innerRef,
     ref,
+    color,
     ...rest
   }) => (
     <div {...rest} ref={_ref || innerRef || ref}>
