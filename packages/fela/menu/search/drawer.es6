@@ -60,7 +60,11 @@ export default class SearchDrawer extends Component {
             }
           >
             {results.map(item => (
-              <Menu.Item key={item.id} onClick={onClose} icon={<FaFile />}>
+              <Menu.Item
+                key={item.id}
+                onClick={onClose}
+                icon={item.icon || <FaFile />}
+              >
                 {item.name}
               </Menu.Item>
             ))}
