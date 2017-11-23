@@ -20,8 +20,19 @@ export default createComponent(
     open,
     inverted,
     collapsed = true,
+    dim = true,
   }) => ({
     height: '100%',
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: dim && (inverted ? theme.light2 : theme.dark3),
+    zIndex: 6,
+    opacity: !open ? 0 : 1,
+    transition: 'opacity 200ms ease-out',
+    pointerEvents: !open && 'none',
     '> aside': {
       position: 'fixed',
       top: 0,
@@ -38,18 +49,6 @@ export default createComponent(
       display: 'flex',
       justifyContent: right && 'flex-end',
     },
-    '> div': {
-      position: 'fixed',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      backgroundColor: inverted ? theme.light2 : theme.dark3,
-      zIndex: 6,
-      opacity: !open ? 0 : 1,
-      transition: 'opacity 200ms ease-out',
-      pointerEvents: !open && 'none',
-    },
   }),
   ({
     className,
@@ -58,18 +57,24 @@ export default createComponent(
     open,
     onClose,
     width = 312,
-    dim = true,
+    onClick,
     ...rest
   }) => (
-    <div className={className}>
-      <aside {...rest}>
+    <div className={className} onClick={onClose}>
+      <aside
+        {...rest}
+        onClick={e => {
+          e.stopPropagation();
+          if (onClick) onClick(e);
+        }}
+      >
         {Children.map(
           children,
           child => (child ? cloneElement(child, { width }) : child),
         )}
       </aside>
-      {dim && <div onClick={onClose} />}
     </div>
   ),
-  ({ inverted, width, right, top, left, collapsed, ...p }) => Object.keys(p),
+  ({ inverted, width, right, top, left, collapsed, dim, ...p }) =>
+    Object.keys(p),
 );
