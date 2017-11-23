@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
 import { withPropsOnChange } from 'recompose';
-import { Sidebar } from 'olymp-ui';
+import { Sidebar } from 'olymp-fela';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import { withRedux, withActions } from './redux';
 import { getDirectories } from './directory';
@@ -195,9 +195,10 @@ class CloudinaryView extends Component {
     } = this.props;
 
     return (
-      <Sidebar.Container
-        width={280}
-        content={
+      <Sidebar
+        left={72}
+        pusher
+        menu={
           <CloudinarySidebar
             directories={directories}
             upload={upload}
@@ -209,13 +210,15 @@ class CloudinaryView extends Component {
           />
         }
       >
-        <Gallery
-          key={shortId}
-          items={filteredItems}
-          onClick={this.onClick}
-          onRemove={removeSelection}
-        />
-      </Sidebar.Container>
+        <Dragzone {...upload}>
+          <Gallery
+            key={shortId}
+            items={filteredItems}
+            onClick={this.onClick}
+            onRemove={removeSelection}
+          />
+        </Dragzone>
+      </Sidebar>
     );
   }
 }
