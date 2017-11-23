@@ -5,11 +5,13 @@ import {
   CellMeasurerCache,
 } from 'react-virtualized/dist/commonjs/CellMeasurer';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 import Masonry, {
   createCellPositioner,
 } from 'react-virtualized/dist/commonjs/Masonry';
 import Thumb from '../components/thumb';
 
+const overscanByPixels = 1500;
 const Item = connect(({ cloudinary }, { item }) => ({
   isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
 }))(({ style, item, isActive, onClick, onRemove, width }) => (
@@ -97,27 +99,25 @@ export default class GridExample extends PureComponent {
     }
   };
 
-  renderMasonry = ({ width, height }) => {
+  renderMasonry = ({ width }) => {
     const { items } = this.props;
     this.width = width;
 
     this.calculateColumnCount();
     this.initCellPositioner();
 
-    if (!width || !height) {
-      return null;
-    }
-
     return (
       <Masonry
-        overscanByPixels={100}
+        autoHeight
+        height={this.height}
+        overscanByPixels={overscanByPixels}
         cellCount={(items || []).length}
         cellMeasurerCache={this.cache}
         cellPositioner={this.cellPositioner}
         cellRenderer={this.cellRenderer}
-        height={height}
         ref={this.setMasonryRef}
         width={width}
+        scrollTop={this.scrollTop}
       />
     );
   };
@@ -135,6 +135,26 @@ export default class GridExample extends PureComponent {
   };
 
   render() {
-    return <AutoSizer onResize={this.onResize}>{this.renderMasonry}</AutoSizer>;
+    return (
+      <WindowScroller overscanByPixels={overscanByPixels}>
+        {this.renderAutoSizer}
+      </WindowScroller>
+    );
   }
+
+  renderAutoSizer = ({ height, scrollTop }) => {
+    this.height = height;
+    this.scrollTop = scrollTop;
+    return (
+      <AutoSizer
+        disableHeight
+        height={height}
+        overscanByPixels={overscanByPixels}
+        onResize={this.onResize}
+        scrollTop={scrollTop}
+      >
+        {this.renderMasonry}
+      </AutoSizer>
+    );
+  };
 }

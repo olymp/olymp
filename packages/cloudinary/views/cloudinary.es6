@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
-import { withPropsOnChange } from 'recompose';
-import { Sidebar } from 'olymp-fela';
+import { withPropsOnChange, withState } from 'recompose';
+import { Sidebar, Menu, StackedMenu, Drawer } from 'olymp-fela';
+import { FaChevronLeft, FaPictureO } from 'olymp-icons';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import { withRedux, withActions } from './redux';
-import { getDirectories } from './directory';
+import Directory, { getDirectories } from './directory';
 import Gallery from './gallery';
-import Dragzone from '../components/dragzone';
-import CloudinarySidebar from './sidebar';
+// import Dragzone from '../components/dragzone';
 
 const getItems = items =>
   items.map(item => ({
@@ -40,6 +40,7 @@ const getItems = items =>
 @withPropsOnChange(['value'], ({ value = [], setSelection }) =>
   setSelection(value.map(v => v.id)),
 )
+@withState('collapsed', 'setCollapsed', true)
 @withPropsOnChange(
   ['folder', 'filteredItems', 'items'],
   ({ filteredItems, folder }) => ({
@@ -178,46 +179,74 @@ class CloudinaryView extends Component {
       setSelection([id]);
     }
   };
-
+  renderMenu = (keys, prevKeys) => {
+    const { sortByName, toggleSort, goBack, goRoot, directories } = this.props;
+    return (
+      <Menu
+        header={
+          <Menu.Item large onClick={goRoot} icon={<FaPictureO />}>
+            Media
+          </Menu.Item>
+        }
+      >
+        {!!goBack && (
+          <Menu.Item icon={<FaChevronLeft />} onClick={goBack}>
+            Zurück
+          </Menu.Item>
+        )}
+        {Object.keys(directories).map(key => (
+          <Directory
+            key={key}
+            id={key === 'PAPIERKORB' ? 'Papierkorb' : key}
+            items={directories[key]}
+            toggleSort={toggleSort}
+            sortByName={sortByName}
+          />
+        ))}
+      </Menu>
+    );
+  };
   render() {
     const {
-      items,
+      tags,
       filteredItems,
-      onClose,
-      goBack,
-      directories,
-      upload,
       shortId,
-      onChange,
-      uploading,
       removeSelection,
-      value,
+      collapsed,
+      setCollapsed,
     } = this.props;
 
     return (
       <Sidebar
         left={72}
         pusher
-        menu={
-          <CloudinarySidebar
-            directories={directories}
-            upload={upload}
-            onClose={onClose}
-            goBack={goBack}
-            items={items}
-            onChange={onChange}
-            value={value}
-          />
-        }
+        menu={<StackedMenu keys={tags} renderMenu={this.renderMenu} />}
       >
-        <Dragzone {...upload}>
-          <Gallery
-            key={shortId}
-            items={filteredItems}
-            onClick={this.onClick}
-            onRemove={removeSelection}
-          />
-        </Dragzone>
+        <Gallery
+          key={shortId}
+          items={filteredItems}
+          onClick={this.onClick}
+          onRemove={removeSelection}
+        />
+
+        <Drawer
+          open
+          collapsed={collapsed}
+          dim={false}
+          right
+          width={collapsed ? 72 : 240}
+        >
+          <Menu
+            collapsed={collapsed}
+            inverted
+            color="colorSecondary"
+            onMouseEnter={() => setCollapsed(false)}
+            onMouseLeave={() => setCollapsed(true)}
+          >
+            <Menu.List title="Ansicht" />
+            <Menu.Space />
+          </Menu>
+        </Drawer>
       </Sidebar>
     );
   }

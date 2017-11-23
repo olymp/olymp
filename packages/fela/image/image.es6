@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { compose, withPropsOnChange, withState, withProps } from 'recompose';
 import { withAmp } from 'olymp-utils';
-import ReactResizeDetector from 'react-resize-detector';
 import Container from './container';
 import Placeholder from './placeholder';
 import Img from './img';
@@ -127,6 +126,7 @@ const enhance = compose(
   ),
   withProps(({ src, w, h }) => ({
     url: typeof src === 'function' ? src(w, h) : src,
+    lowUrl: typeof src === 'function' ? src(10, 10) : src,
   })),
 );
 
@@ -138,6 +138,7 @@ class Image extends Component {
       this.onResize(this.node.getBoundingClientRect().width);
     }
   }
+
   onResize = width => {
     const { setCWidth } = this.props;
     setCWidth(width);
@@ -163,6 +164,7 @@ class Image extends Component {
       w,
       h,
       url,
+      lowUrl,
       originalWidth,
       originalHeight,
       cWidth,
@@ -184,12 +186,11 @@ class Image extends Component {
         width={w >= h ? '100%' : 'auto'}
         height={w < h ? '100%' : 'auto'}
         circle={circle}
-        onLoad={() => setIsLoaded(true)}
+        // onLoad={() => setIsLoaded(true)}
       />
     ) : (
       <Placeholder height="100%" width="100%" circle={circle} />
     );
-
     return (
       <Container
         {...containerProps}
@@ -199,9 +200,10 @@ class Image extends Component {
         ratio={ratio}
         onClick={onClick}
       >
-        {!isLoaded && (
-          <Placeholder height="100%" width="100%" circle={circle} />
-        )}
+        {!isLoaded &&
+          null
+          // <Placeholder height="100%" width="100%" circle={circle} />
+        }
         {amp && image ? (
           <Amp layout={layout} src={url} alt={alt} width={w} height={h}>
             {image}
@@ -210,7 +212,6 @@ class Image extends Component {
           image
         )}
         {children}
-        <ReactResizeDetector handleWidth onResize={this.onResize} />
       </Container>
     );
   }

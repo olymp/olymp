@@ -1,11 +1,9 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { Icon, Badge } from 'antd';
 import { withPropsOnChange } from 'recompose';
-import { List } from 'olymp-ui';
-import { createComponent } from 'olymp-fela';
+import { createComponent, Menu } from 'olymp-fela';
 import shortID from 'shortid';
 import { intersection, orderBy, last, groupBy } from 'lodash';
-import Image from '../image';
 
 const getTags = (items, search) => {
   const tags = { 'Ohne Schlagworte': [] };
@@ -137,6 +135,7 @@ export const getDirectories = ({
     goBack: filter.length
       ? () => setTags(filter.slice(0, -1))
       : () => setFolder(),
+    goRoot: filter.length ? () => setTags([]) : () => setFolder(),
     shortId: shortID.generate(),
     directories: groupBy(
       orderBy(
@@ -158,8 +157,6 @@ const Header = createComponent(
     paddingLeft: 7,
     paddingRight: 7,
     width: '100%',
-    backgroundColor: 'rgba(233, 233, 233, 0.47)',
-    borderBottom: '1px solid #eee',
     color: theme.dark1,
     clearfix: true,
     '> div': {
@@ -180,32 +177,33 @@ const Header = createComponent(
 
 export default withPropsOnChange(['items'], ({ items }) => ({
   items: items.filter(dir => !dir.active && !dir.disabled),
-}))(({ id, items, sortByName, toggleSort }) => (
-  <div>
-    {id && (
-      <Header>
-        {id}
-        <div onClick={() => toggleSort(!sortByName)}>
-          {sortByName ? 'Name' : 'Anzahl'} <Icon type="caret-up" />
-        </div>
-      </Header>
-    )}
-    {items.length ? (
-      items.map(dir => (
-        <List.Item
-          {...dir}
-          image={
+}))(
+  ({ id, items, sortByName, toggleSort }) =>
+    items.length ? (
+      <Menu.List
+        title={
+          id && (
+            <Header>
+              {id}
+              <div onClick={() => toggleSort(!sortByName)}>
+                {sortByName ? 'Name' : 'Anzahl'} <Icon type="caret-up" />
+              </div>
+            </Header>
+          )
+        }
+      >
+        {items.map(dir => (
+          <Menu.Item
+            /* image={
             !!dir.image && <Image value={dir.image} width={45} height={45} />
-          }
-          icon={dir.isFolder ? 'folder' : 'tag-o'}
-        />
-      ))
-    ) : (
-      <List.Item
-        disabled
-        label="Keine weiteren Unterordner vorhanden"
-        image={<Icon type="exclamation-circle-o" />}
-      />
-    )}
-  </div>
-));
+          } */
+            onClick={dir.onClick}
+            // icon={dir.isFolder ? <FaFolderO /> : <FaTag />}
+            extra={<b>{dir.countFilter}&nbsp;&nbsp;</b>}
+          >
+            {dir.label}
+          </Menu.Item>
+        ))}
+      </Menu.List>
+    ) : null,
+);
