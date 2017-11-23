@@ -3,7 +3,7 @@ import { compose, withState, withHandlers } from 'recompose';
 import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
-import { Avatar, Logo, Menu, Drawer, Sidebar } from 'olymp-fela';
+import { Avatar, Logo, Menu, Sidebar, Search } from 'olymp-fela';
 import { FaSitemap, FaPictureO, FaSearch, FaSignOut } from 'olymp-icons';
 import { Icon } from 'antd';
 import { get } from 'lodash';
@@ -26,6 +26,7 @@ const enhance = compose(
   ),
   withState('collapsed', 'setCollapsed', true),
   withState('searchOpen', 'setSearchOpen', false),
+  withState('searchText', 'setSearchText', ''),
   withHandlers({
     expand: ({ setCollapsed }) => () => setCollapsed(false),
     collapse: ({ setCollapsed }) => () => setCollapsed(true),
@@ -62,6 +63,8 @@ const component = enhance(
     searchOpen,
     setSearchOpen,
     children,
+    searchText,
+    setSearchText,
   }) => {
     const keys = Object.keys(query);
 
@@ -122,6 +125,12 @@ const component = enhance(
             ),
     );
 
+    const header = (
+      <Menu.Item large key="back" icon={<Logo />} onClick={() => setQuery({})}>
+        Olymp
+      </Menu.Item>
+    );
+
     return (
       <Sidebar
         zIndex={5}
@@ -129,20 +138,7 @@ const component = enhance(
         onMouseEnter={() => setCollapsed(false)}
         onMouseLeave={() => setCollapsed(true)}
         menu={
-          <Menu
-            color="colorSecondary"
-            inverted
-            header={
-              <Menu.Item
-                large
-                key="back"
-                icon={<Logo />}
-                onClick={() => setQuery({})}
-              >
-                Olymp
-              </Menu.Item>
-            }
-          >
+          <Menu color="colorSecondary" inverted header={header}>
             <Menu.Item
               active={Object.keys(query).length === 0}
               icon={<FaSitemap />}
@@ -186,28 +182,25 @@ const component = enhance(
       >
         {children}
 
-        <Drawer
-          color="white"
+        <Search
+          placeholder="Suche ..."
+          value={searchText}
+          onChange={setSearchText}
           open={searchOpen}
+          header={header}
+          results={
+            searchText
+              ? [
+                  { id: 1, name: 'Test 1' },
+                  { id: 2, name: 'Test 2' },
+                  { id: 3, name: 'Test 3' },
+                ]
+              : []
+          }
           onClose={() => {
             setSearchOpen(false);
           }}
-        >
-          <Menu
-            color="white"
-            collapsed
-            header={
-              <Menu.Item large key="back" icon={<Logo color />}>
-                Olymp
-              </Menu.Item>
-            }
-          >
-            <Menu.Item onClick={() => setSearchOpen(false)} icon={<FaSearch />}>
-              Suche
-            </Menu.Item>
-          </Menu>
-          <div>Test</div>
-        </Drawer>
+        />
       </Sidebar>
     );
   },
