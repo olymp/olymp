@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
-import { FaExpand, FaCompress, FaPencil } from 'olymp-icons';
+import { FaExpand, FaCompress, FaPencil, FaCode, FaSave } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
 import { Icon, Button } from 'antd';
 import { Logo, Menu, Drawer } from 'olymp-fela';
@@ -105,6 +105,7 @@ class Navigation extends Component {
       setCode,
       code,
       items,
+      children,
     } = this.props;
     const keys = Object.keys(query);
 
@@ -127,20 +128,23 @@ class Navigation extends Component {
           onMouseEnter={() => setCollapsed(false)}
           onMouseLeave={() => setCollapsed(true)}
         >
-          <Menu.Item
-            active={full}
-            onClick={() => setFull(!full)}
-            icon={<FaExpand />}
-          >
-            Vollbild
-          </Menu.Item>
-          <Menu.Item
-            active={code}
-            onClick={() => setCode(!code)}
-            icon={<FaPencil />}
-          >
-            Code anzeigen
-          </Menu.Item>
+          {children}
+          <Menu.List title="Ansicht">
+            <Menu.Item
+              active={full}
+              onClick={() => setFull(!full)}
+              icon={<FaExpand />}
+            >
+              Vollbild
+            </Menu.Item>
+            <Menu.Item
+              active={code}
+              onClick={() => setCode(!code)}
+              icon={<FaCode />}
+            >
+              Code anzeigen
+            </Menu.Item>
+          </Menu.List>
           {items}
           <Menu.Space />
         </Menu>

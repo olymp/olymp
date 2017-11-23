@@ -318,6 +318,7 @@ class Writer extends Component {
       spellcheck,
       schema = {},
       renderNode,
+      menu,
       plugins,
       style = {},
       full,
@@ -389,7 +390,9 @@ class Writer extends Component {
           setFull={full ? setFull : setIsFull}
           code={isCode}
           setCode={setIsCode}
-        />
+        >
+          {menu}
+        </BlockBar>
       </div>
     );
     if (full || isFull) {

@@ -7,6 +7,8 @@ import {
   FaPlusSquareO,
   FaSitemap,
   FaHome,
+  FaSave,
+  FaPencil,
 } from 'olymp-icons';
 import { withPropsOnChange, withProps, withState } from 'recompose';
 import { ContentLoader, Menu, DndList, StackedMenu, Sidebar } from 'olymp-fela';
@@ -105,28 +107,6 @@ export default class EditablePage extends Component {
         });
       }
     }
-
-    return;
-    if (!result.destination) {
-    }
-
-    reorder({
-      variables: {
-        ids: childIds,
-        parentId: parent ? parent.id : null,
-      },
-    });
-    return console.log(result);
-
-    /* const items = reorder(
-      this.state.items,
-      result.source.index,
-      result.destination.index,
-    );
-
-    this.setState({
-      items,
-    }); */
   };
 
   renderItem = (item, Icon) => {
@@ -140,6 +120,7 @@ export default class EditablePage extends Component {
         ? item.pathname
         : `/page_id/${item.pageId || item.id}`;
     const Com = Icon ? Menu.Item : DndList.Item;
+
     return (
       <Com
         key={item.id}
@@ -156,7 +137,7 @@ export default class EditablePage extends Component {
     );
   };
   renderMenu = keys => {
-    const { setKeys, navigation, flatNavigation, reorder } = this.props;
+    const { setKeys, navigation, flatNavigation, push } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
     if (!lastKey) {
@@ -165,7 +146,15 @@ export default class EditablePage extends Component {
       children = [
         ...pages.map(x => this.renderItem(x, FaHome)),
         ...menues.map(menu => (
-          <DndList key={menu.id} title={menu.name} extra={<FaPlusSquareO />}>
+          <DndList
+            key={menu.id}
+            title={menu.name}
+            extra={
+              <FaPlusSquareO
+                onClick={() => push(`/__new?@parent=${menu.id}`)}
+              />
+            }
+          >
             {menu.children.map(x => this.renderItem(x))}
           </DndList>
         )),
@@ -181,7 +170,13 @@ export default class EditablePage extends Component {
         >
           Zurück
         </Menu.Item>,
-        <DndList key="pages" title={item.name} extra={<FaPlusSquareO />}>
+        <DndList
+          key="pages"
+          title={item.name}
+          extra={
+            <FaPlusSquareO onClick={() => push(`/__new?@parent=${item.id}`)} />
+          }
+        >
           {items.map(item =>
             this.renderItem({
               ...item,
@@ -218,6 +213,7 @@ export default class EditablePage extends Component {
       onChange,
       signal,
       keys,
+      save,
     } = this.props;
 
     const P = (
@@ -230,6 +226,14 @@ export default class EditablePage extends Component {
         bindingId={bindingId}
         bindingObj={bindingObj}
         signal={signal}
+        menu={[
+          <Menu.Item key={1} color onClick={save} icon={<FaSave />}>
+            Speichern
+          </Menu.Item>,
+          <Menu.Item key={2} icon={<FaPencil />}>
+            Formular
+          </Menu.Item>,
+        ]}
       />
     );
 

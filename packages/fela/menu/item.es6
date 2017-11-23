@@ -20,7 +20,7 @@ const Content = createComponent(
 );
 
 export default createComponent(
-  ({ theme, large, active, icon, onClick }) => ({
+  ({ theme, large, active, icon, onClick, color }) => ({
     height: large ? 54 : 40,
     flexShrink: 0,
     width: !theme.collapsed ? '100%' : large ? 54 : 40,
@@ -30,7 +30,12 @@ export default createComponent(
     alignItems: 'center',
     cursor: !!onClick && 'pointer',
     borderRadius: theme.collapsed ? '50%' : theme.borderRadius,
-    backgroundColor: active && theme.dark4,
+    // backgroundColor: active && theme.dark4,
+    backgroundColor:
+      (color === true && theme.color) ||
+      theme[color] ||
+      color ||
+      (active && theme.dark4),
     onHover: {
       backgroundColor: !!onClick && theme.dark4,
     },
