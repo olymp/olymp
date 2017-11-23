@@ -75,7 +75,7 @@ const component = enhance(
       key =>
         collectionTree[key].length > 1
           ? lists.push(
-            <Menu.List title={key}>
+            <Menu.List title={key} key={key}>
               {collectionTree[key].map(collection => (
                 <Menu.Item
                   key={collection.id}
@@ -97,6 +97,7 @@ const component = enhance(
             )
           : items.push(
             <Menu.Item
+              key={key}
               icon={
                 <Icon
                   type={get(
