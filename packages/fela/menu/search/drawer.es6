@@ -12,6 +12,7 @@ const Input = createComponent(
     fontSize: '1.4em',
     outline: 0,
     fontStyle: 'italic',
+    width: '100%',
   }),
   'input',
   p => Object.keys(p),
