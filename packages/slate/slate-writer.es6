@@ -9,6 +9,7 @@ import PasteLinkify from 'slate-paste-linkify';
 import AutoReplace from 'slate-auto-replace';
 import CollapseOnEscape from 'slate-collapse-on-escape';
 import TrailingBlock from 'slate-trailing-block';
+import EditTable from 'slate-edit-table';
 import EditBlockquote from 'slate-edit-blockquote';
 import { Block } from 'slate';
 import Portal from 'olymp-fela/portal';
@@ -90,6 +91,12 @@ const enhance = compose(
     plugins: [
       ...plugins,
       HeadingId({}),
+      /* EditTable({
+        typeTable: 'table',
+        typeRow: 'tableRow',
+        typeCell: 'tableCell',
+        exitBlockType: 'paragraph',
+      }), */
       TrailingBlock({ type: 'paragraph' }),
       InsertBlockOnEnter({ type: 'paragraph' }),
       EditList({
