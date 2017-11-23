@@ -39,7 +39,7 @@ const getTheme = (theme = {}) => ({
 
   // Shadows
   // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.08)',
-  boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 4px, rgba(0, 0, 0, 0.05) 0px 1px 3px',
+  boxShadow: 'rgba(0, 0, 0, 0.15) 0px 1px 4px, rgba(0, 0, 0, 0.15) 0px 1px 3px',
   innerShadow: 'inset 0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
 
   // Font

@@ -117,16 +117,15 @@ export default class EditablePage extends Component {
     );
   };
   renderMenu = keys => {
-    const { setKeys, navigation, flatNavigation, searchOpen } = this.props;
-    const [lastKey, ...rest] = keys.reverse();
+    const { setKeys, navigation, flatNavigation } = this.props;
+    const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
-    console.log(lastKey, rest, keys);
     if (!lastKey) {
       const menues = navigation.filter(x => x.type === 'MENU');
       const pages = navigation.filter(x => x.type !== 'MENU');
       children = [
         pages.length && this.renderItem(pages[0], FaHome),
-        menues.map(menu => (
+        ...menues.map(menu => (
           <DndList
             key={menu.id}
             title={menu.name}
@@ -168,8 +167,8 @@ export default class EditablePage extends Component {
       </Menu.Item>
     );
     return (
-      <DndList.Context onDragEnd={this.onDragEnd} key={1}>
-        <Menu color="colorSecondary" inverted header={header}>
+      <DndList.Context onDragEnd={this.onDragEnd}>
+        <Menu header={header}>
           {children}
           <Menu.Space />
         </Menu>
@@ -183,19 +182,12 @@ export default class EditablePage extends Component {
       form,
       bindingId,
       bindingObj,
-      navigation,
-      flatNavigation,
       render,
       item,
-      replaceQuery,
-      title,
-      description,
-      tab,
       value,
       onChange,
       signal,
       keys,
-      setKeys,
     } = this.props;
 
     const P = (

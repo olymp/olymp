@@ -112,7 +112,7 @@ class Navigation extends Component {
     }
 
     return (
-      <Drawer open dim={false} right width={72}>
+      <Drawer open collapsed={collapsed} dim={false} right width={72}>
         <Menu
           collapsed={collapsed}
           inverted

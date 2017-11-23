@@ -3,7 +3,7 @@ import { compose, withState, withHandlers } from 'recompose';
 import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
-import { Avatar, Logo, Menu, Drawer } from 'olymp-fela';
+import { Avatar, Logo, Menu, Drawer, Sidebar } from 'olymp-fela';
 import { FaSitemap, FaPictureO, FaSearch, FaSignOut } from 'olymp-icons';
 import { Icon } from 'antd';
 import { get } from 'lodash';
@@ -61,6 +61,7 @@ const component = enhance(
     setCollapsed,
     searchOpen,
     setSearchOpen,
+    children,
   }) => {
     const keys = Object.keys(query);
 
@@ -121,66 +122,64 @@ const component = enhance(
     );
 
     return (
-      <aside
-        style={{
-          width: collapsed ? 72 : 240,
-          height: '100%',
-          position: 'fixed',
-          zIndex: 10,
-          left: 0,
-        }}
+      <Sidebar
+        zIndex={5}
+        collapsed={collapsed}
         onMouseEnter={() => setCollapsed(false)}
         onMouseLeave={() => setCollapsed(true)}
-      >
-        <Menu
-          collapsed={collapsed}
-          color="white"
-          style={{ height: '100%' }}
-          header={
-            <Menu.Item large key="back" icon={<Logo color />}>
-              Olymp
-            </Menu.Item>
-          }
-        >
-          <Menu.Item
-            active={Object.keys(query).length === 0}
-            icon={<FaSitemap />}
-            onClick={() => setQuery({})}
-          >
-            Seitenmanager
-          </Menu.Item>
-          <Menu.Item
-            icon={<FaPictureO />}
-            active={query[`@media`] === null}
-            onClick={() => setQuery({ '@media': null })}
-          >
-            Mediathek
-          </Menu.Item>
-          <Menu.List title="Collections">{items}</Menu.List>
-          {lists}
-          <Menu.Space />
-          <Menu.Item
-            onClick={() => {
-              setSearchOpen(true);
-              setCollapsed(true);
-            }}
-            icon={<FaSearch />}
-          >
-            Suche
-          </Menu.Item>
-          <Menu.Item
-            active={query[`@users`] === user.id}
-            onClick={() => setQuery({ '@users': user.id })}
-            icon={
-              <Avatar email={user.email} name={user.name} default="blank" />
+        menu={
+          <Menu
+            color="colorSecondary"
+            inverted
+            header={
+              <Menu.Item large key="back" icon={<Logo color />} onClick={() => setQuery({})}>
+                Olymp
+              </Menu.Item>
             }
           >
-            {user.name}
-          </Menu.Item>
-          <Menu.Item onClick={logout} icon={<FaSignOut />}>
-            Abmelden
-          </Menu.Item>
-        </Menu>
+            <Menu.Item
+              active={Object.keys(query).length === 0}
+              icon={<FaSitemap />}
+              onClick={() => setQuery({})}
+            >
+              Seitenmanager
+            </Menu.Item>
+            <Menu.Item
+              icon={<FaPictureO />}
+              active={query[`@media`] === null}
+              onClick={() => setQuery({ '@media': null })}
+            >
+              Mediathek
+            </Menu.Item>
+            <Menu.List title="Collections">{items}</Menu.List>
+            {lists}
+            <Menu.Space />
+            <Menu.Item
+              onClick={() => {
+                setSearchOpen(true);
+                setCollapsed(true);
+              }}
+              icon={<FaSearch />}
+            >
+              Suche
+            </Menu.Item>
+            <Menu.Item
+              active={query[`@users`] === user.id}
+              onClick={() => setQuery({ '@users': user.id })}
+              icon={
+                <Avatar email={user.email} name={user.name} default="blank" />
+              }
+            >
+              {user.name}
+            </Menu.Item>
+            <Menu.Item onClick={logout} icon={<FaSignOut />}>
+              Abmelden
+            </Menu.Item>
+          </Menu>
+        }
+      >
+        {children}
+
         <Drawer
           color="white"
           open={searchOpen}
@@ -203,7 +202,7 @@ const component = enhance(
           </Menu>
           <div>Test</div>
         </Drawer>
-      </aside>
+      </Sidebar>
     );
   },
 );
