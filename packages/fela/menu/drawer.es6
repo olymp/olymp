@@ -71,5 +71,5 @@ export default createComponent(
       {dim && <div onClick={onClose} />}
     </div>
   ),
-  ({ inverted, width, ...p }) => Object.keys(p),
+  ({ inverted, width, right, top, left, collapsed, ...p }) => Object.keys(p),
 );
