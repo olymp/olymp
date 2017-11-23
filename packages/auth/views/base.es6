@@ -5,7 +5,7 @@ import { createComponent } from 'olymp-fela';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import Form from 'olymp-ui/form';
-import { notification } from 'antd';
+import { message } from 'antd';
 
 const def = getContext({
   theme: PropTypes.object,
@@ -94,17 +94,11 @@ export const onError = err => {
       .map(key => err[key].errors.map(e => e.message).join('\n'))
       .join('\n');
   }
-  notification.error({
-    message: 'Fehler',
-    description,
-  });
+  message.error(description);
 };
 
 export const onSuccess = (message, description) => {
-  notification.success({
-    message,
-    description,
-  });
+  message.success(description);
 };
 
 export const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
