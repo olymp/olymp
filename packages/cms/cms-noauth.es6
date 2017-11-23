@@ -6,6 +6,7 @@ import { lifecycle, compose } from 'recompose';
 import { TopLoader } from 'olymp-fela';
 import { createReplaceQuery } from 'olymp-router';
 import { connect } from 'react-redux';
+import { message } from 'antd';
 import PrefetchRoutes from './prefetch-routes';
 
 const enhance = compose(
@@ -17,13 +18,20 @@ const enhance = compose(
       const { setQuery } = this.props;
       const keyDown = e => {
         if (e.altKey) {
+          const closeMessage = message.loading(
+            'Gedrückt halten zum Anmelden',
+            99999,
+          );
           const timer = setTimeout(() => {
             setQuery({ login: null });
-            document.onkeyup = () => null;
+            keyUp();
           }, 1000);
-          document.onkeyup = () => {
+          const keyUp = () => {
             clearTimeout(timer);
+            closeMessage();
+            document.removeEventListener('keyup', keyUp, false);
           };
+          document.addEventListener('keyup', keyUp, false);
         }
       };
       document.addEventListener('keydown', keyDown, false);
