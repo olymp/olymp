@@ -12,7 +12,7 @@ const Content = createComponent(
     '> small': {
       display: 'block',
       marginTop: `-${theme.space1}`,
-      color: theme.light2,
+      color: theme.inverted ? theme.light2 : theme.dark2,
     },
   }),
   'div',
