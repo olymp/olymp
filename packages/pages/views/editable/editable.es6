@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   FaAngleLeft,
   FaAngleRight,
-  FaPlus,
+  FaPlusSquareO,
   FaSitemap,
   FaHome,
 } from 'olymp-icons';
@@ -128,7 +128,7 @@ export default class EditablePage extends Component {
           <DndList
             key={menu.id}
             title={menu.name}
-            extra={<FaPlus />}
+            extra={<FaPlusSquareO />}
             onDragEnd={this.onDragEnd}
           >
             {menu.children.map(x => this.renderItem(x))}
@@ -148,7 +148,7 @@ export default class EditablePage extends Component {
         <DndList
           key="pages"
           title={item.name}
-          extra={<FaPlus />}
+          extra={<FaPlusSquareO />}
           onDragEnd={this.onDragEnd}
         >
           {flatNavigation.filter(x => x.parentId === lastKey).map(item =>
