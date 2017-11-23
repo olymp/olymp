@@ -30,7 +30,7 @@ export default createComponent(
     alignItems: 'center',
     cursor: !!onClick && 'pointer',
     borderRadius: theme.collapsed ? '50%' : theme.borderRadius,
-    backgroundColor: active && theme.dark5,
+    backgroundColor: active && theme.dark4,
     onHover: {
       backgroundColor: !!onClick && theme.dark4,
     },
