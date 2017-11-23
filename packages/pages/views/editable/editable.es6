@@ -167,7 +167,7 @@ export default class EditablePage extends Component {
     );
     return (
       <DndList.Context onDragEnd={this.onDragEnd}>
-        <Menu header={header} headerColor="dark5">
+        <Menu header={header}>
           {children}
           <Menu.Space />
         </Menu>
