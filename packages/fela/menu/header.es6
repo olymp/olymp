@@ -1,6 +1,9 @@
+import React from 'react';
 import { createComponent } from 'olymp-fela';
+import { ThemeProvider } from 'react-fela';
+import useTheme from './theme';
 
-export default createComponent(
+const Header = createComponent(
   ({ theme, color }) => ({
     height: 80,
     display: 'flex',
@@ -16,6 +19,7 @@ export default createComponent(
     marginBottom: theme.space2,
     paddingBottom: theme.space2,
     backgroundColor: (color === true && theme.color) || theme[color] || color,
+    color: theme.inverted ? theme.light : theme.dark,
     '> svg': {
       size: 40,
     },
@@ -26,3 +30,9 @@ export default createComponent(
   }),
   'div',
 );
+
+export default useTheme(({ inverted, color, theme, ...props }) => (
+  <ThemeProvider theme={theme}>
+    <Header color={color} {...props} />
+  </ThemeProvider>
+));

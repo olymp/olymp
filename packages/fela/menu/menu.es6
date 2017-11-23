@@ -36,9 +36,13 @@ const Menu = createComponent(
     overflowY: 'auto',
     transition: 'all 200ms ease-out',
   }),
-  ({ className, children, header, headerColor, ...p }) => (
+  ({ className, children, header, headerColor, headerInverted, ...p }) => (
     <div className={className} {...p}>
-      {header && <Header color={headerColor}>{header}</Header>}
+      {header && (
+        <Header color={headerColor} inverted={headerInverted}>
+          {header}
+        </Header>
+      )}
       <Inner>{children}</Inner>
     </div>
   ),

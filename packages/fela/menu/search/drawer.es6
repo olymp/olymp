@@ -5,10 +5,10 @@ import { createComponent } from 'react-fela';
 import { FaSearch, FaFile } from 'olymp-icons';
 
 const Input = createComponent(
-  () => ({
+  ({ theme }) => ({
     backgroundColor: 'transparent',
     border: 0,
-    color: '#42526E',
+    color: theme.inverted ? theme.light2 : theme.dark2,
     fontSize: '1.4em',
     outline: 0,
     fontStyle: 'italic',
@@ -43,33 +43,29 @@ export default class SearchDrawer extends Component {
         }}
       >
         <Menu color="white" collapsed header={header}>
-          <Menu.Item onClick={onClose} icon={<FaSearch />}>
-            Suche
-          </Menu.Item>
+          <Menu.Item onClick={onClose} icon={<FaSearch />} />
         </Menu>
-        <div>
-          <Menu
-            color="white"
-            header={
-              <Input
-                innerRef={x => (this.input = x)}
-                placeholder={placeholder}
-                value={value}
-                onChange={e => onChange(e.target.value)}
-              />
-            }
-          >
-            {results.map(item => (
-              <Menu.Item
-                key={item.id}
-                onClick={onClose}
-                icon={item.icon || <FaFile />}
-              >
-                {item.name}
-              </Menu.Item>
-            ))}
-          </Menu>
-        </div>
+        <Menu
+          color="white"
+          header={
+            <Input
+              innerRef={x => (this.input = x)}
+              placeholder={placeholder}
+              value={value}
+              onChange={e => onChange(e.target.value)}
+            />
+          }
+        >
+          {results.map(item => (
+            <Menu.Item
+              key={item.id}
+              onClick={onClose}
+              icon={item.icon || <FaFile />}
+            >
+              {item.name}
+            </Menu.Item>
+          ))}
+        </Menu>
       </Drawer>
     );
   }
