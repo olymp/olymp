@@ -5,6 +5,7 @@ export default createComponent(
     height: 80,
     paddingBottom: theme.space3,
     display: 'flex',
+    flexShrink: 0,
     alignItems: 'center',
     fontSize: '120%',
     '> svg': {
