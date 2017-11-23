@@ -4,7 +4,7 @@ import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Avatar, Logo, Menu, Sidebar, Search } from 'olymp-fela';
-import { FaSitemap, FaPictureO, FaSearch, FaSignOut } from 'olymp-icons';
+import { FaSitemap, FaPictureO, FaSearch, FaPowerOff } from 'olymp-icons';
 import { Icon } from 'antd';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -174,7 +174,7 @@ const component = enhance(
             >
               {user.name}
             </Menu.Item>
-            <Menu.Item onClick={logout} icon={<FaSignOut />}>
+            <Menu.Item onClick={logout} icon={<FaPowerOff />}>
               Abmelden
             </Menu.Item>
           </Menu>
