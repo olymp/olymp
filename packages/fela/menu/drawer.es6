@@ -32,8 +32,9 @@ export default createComponent(
     zIndex: 6,
     opacity: !open ? 0 : 1,
     transition: 'opacity 200ms ease-out',
-    pointerEvents: !open && 'none',
+    pointerEvents: !open || dim === false ? 'none' : undefined,
     '> aside': {
+      pointerEvents: 'initial',
       position: 'fixed',
       top: 0,
       extend:
