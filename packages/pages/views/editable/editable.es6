@@ -11,10 +11,18 @@ import {
   FaPencil,
 } from 'olymp-icons';
 import { withPropsOnChange, withProps, withState } from 'recompose';
-import { ContentLoader, Menu, DndList, StackedMenu, Sidebar } from 'olymp-fela';
+import {
+  ContentLoader,
+  Menu,
+  DndList,
+  StackedMenu,
+  Sidebar,
+  Drawer,
+} from 'olymp-fela';
 import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
+import PageForm from './sidebar';
 import { queryPage } from '../../gql/query';
 import { mutatePage, reorderPage } from '../../gql/mutation';
 
@@ -31,6 +39,7 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 @withState('signal', 'setSignal', 0)
 @withState('keys', 'setKeys', [])
 @withState('searchOpen', 'setSearchOpen', false)
+@withState('formOpen', 'setFormOpen', false)
 @Form.create({
   onValuesChange: debounce(setSignal, 800, { trailing: true, leading: false }),
 })
@@ -214,6 +223,8 @@ export default class EditablePage extends Component {
       signal,
       keys,
       save,
+      setFormOpen,
+      formOpen,
     } = this.props;
 
     const P = (
@@ -230,12 +241,18 @@ export default class EditablePage extends Component {
           <Menu.Item key={1} color onClick={save} icon={<FaSave />}>
             Speichern
           </Menu.Item>,
-          <Menu.Item key={2} icon={<FaPencil />}>
+          <Menu.Item
+            key={2}
+            onClick={() => setFormOpen(!formOpen)}
+            icon={<FaPencil />}
+          >
             Formular
           </Menu.Item>,
         ]}
       />
     );
+
+    console.log(formOpen);
 
     return (
       <Sidebar
@@ -249,6 +266,17 @@ export default class EditablePage extends Component {
         />
         {render && render(P)}
         {!render && P}
+        <Drawer
+          color="white"
+          right
+          open={formOpen}
+          onClose={() => setFormOpen(false)}
+        >
+          <Menu color="white" collapsed>
+            <Menu.Item onClick={setFormOpen} icon={<FaPencil />} />
+          </Menu>
+          <PageForm {...this.props} />
+        </Drawer>
       </Sidebar>
     );
   }
