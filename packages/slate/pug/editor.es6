@@ -9,7 +9,7 @@ import PluginPrism from 'slate-prism';
 import cn from 'classnames';
 
 import 'prismjs';
-import 'prismjs/themes/prism-okaidia.css';
+import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-graphql';
 import 'prismjs/components/prism-pug';
 
@@ -144,7 +144,7 @@ class Writer extends Component {
         onKeyDown={this.onKeyDown}
         placeholder={!readOnly && 'Hier Text eingeben...'}
         placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-        style={{ marginRight: 72, height: '100%', ...style }}
+        style={{ height: '100%', ...style }}
       />
     );
   };
