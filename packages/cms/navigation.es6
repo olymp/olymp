@@ -135,7 +135,7 @@ const component = enhance(
               <Menu.Item
                 large
                 key="back"
-                icon={<Logo color="white" />}
+                icon={<Logo />}
                 onClick={() => setQuery({})}
               >
                 Olymp
