@@ -11,7 +11,6 @@ const getAllBlocks = (nodes, mapper, parent, arr = []) =>
   }, arr);
 
 export default (value, withKeys = false) => {
-  console.log(value);
   if (!get(value, 'document.nodes')) {
     return [];
   }
