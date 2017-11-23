@@ -88,7 +88,9 @@ const component = enhance(
                 <Menu.Item
                   key={collection.id}
                   icon={<FaDatabase />}
-                  active={query[`@media`] === null}
+                  active={
+                      query[`@${collection.name.toLowerCase()}`] !== undefined
+                    }
                   onClick={() =>
                       setQuery({
                         [`@${collection.name.toLowerCase()}`]: 'new',
@@ -103,7 +105,10 @@ const component = enhance(
             <Menu.Item
               key={key}
               icon={<FaDatabase />}
-              active={query[`@media`] === null}
+              active={
+                  query[`@${collectionTree[key][0].name.toLowerCase()}`] !==
+                  undefined
+                }
               onClick={() =>
                   setQuery({
                     [`@${collectionTree[key][0].name.toLowerCase()}`]: 'new',
