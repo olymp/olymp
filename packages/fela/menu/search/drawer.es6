@@ -21,7 +21,6 @@ const Input = createComponent(
 export default class SearchDrawer extends Component {
   componentWillReceiveProps({ open }) {
     if (open && !this.props.open) {
-      console.log(this.input);
       this.input.focus();
     }
   }
