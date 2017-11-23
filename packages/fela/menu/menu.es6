@@ -40,6 +40,7 @@ const Menu = createComponent(
     className,
     children,
     color,
+    inverted,
     header,
     headerColor,
     headerInverted,
@@ -47,7 +48,10 @@ const Menu = createComponent(
   }) => (
     <div className={className} {...p}>
       {header && (
-        <Header color={headerColor || color} inverted={headerInverted}>
+        <Header
+          color={headerColor || color}
+          inverted={headerInverted || inverted}
+        >
           {header}
         </Header>
       )}
@@ -60,7 +64,7 @@ const Menu = createComponent(
 const Component = useTheme(
   ({ inverted, color, collapsed, theme, width, ...props }) => (
     <ThemeProvider theme={theme}>
-      <Menu color={color} {...props} />
+      <Menu color={color} inverted={inverted} {...props} />
     </ThemeProvider>
   ),
 );
