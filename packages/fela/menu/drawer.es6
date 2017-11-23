@@ -40,13 +40,13 @@ export default createComponent(
         right !== undefined
           ? {
               backgroundColor: 'blue',
-              right: right || 0,
+              right: (right !== true && right) || 0,
               justifyContent: 'flex-end',
               transform: open ? null : 'translateX(100%)',
             }
           : {
               backgroundColor: 'blue',
-              left: left || 0,
+              left: (left !== true && left) || 0,
               transform: open ? null : 'translateX(-100%)',
             },
       height: '100%',
