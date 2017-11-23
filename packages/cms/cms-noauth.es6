@@ -7,7 +7,6 @@ import { TopLoader } from 'olymp-fela';
 import { createReplaceQuery } from 'olymp-router';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import snow from 'olymp-fela/snow';
 import PrefetchRoutes from './prefetch-routes';
 
 const enhance = compose(
@@ -16,7 +15,6 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount() {
-      snow();
       const { setQuery } = this.props;
       const keyDown = e => {
         if (e.altKey) {

@@ -36,7 +36,7 @@ const ImageContainer = createComponent(
       float: 'left',
       width: `${100 / size}%`,
       minWidth: `${100 / size}%`,
-      '> caption': {
+      '> span': {
         width: '100%',
         fontSize: 12,
         fontStyle: 'italic',
@@ -97,7 +97,7 @@ export default {
                 width="100%"
                 value={image}
               />
-              {image.caption && <caption>{image.caption}</caption>}
+              {image.caption && <span>{image.caption}</span>}
             </ImageContainer>
           ))}
         </Container>
