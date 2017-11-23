@@ -1,5 +1,5 @@
 {
-  "version": "18.7.1",
+  "version": "18.8.0",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -38,7 +38,7 @@
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
-    "olymp-webpack-babel": "^18.7.1",
+    "olymp-webpack-babel": "^18.8.0",
     "raw-loader": "^0.5.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
