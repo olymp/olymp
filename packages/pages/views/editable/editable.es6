@@ -14,7 +14,7 @@ import { SlateWriter } from 'olymp-slate';
 import { Form } from 'antd';
 import { get, debounce } from 'lodash';
 import { queryPage } from '../../gql/query';
-import { mutatePage } from '../../gql/mutation';
+import { mutatePage, reorderPage } from '../../gql/mutation';
 
 const Page = ({ children, isLoading, ...props }) => (
   <ContentLoader isLoading={isLoading}>
@@ -69,16 +69,56 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
     push: createPushPathname(dispatch),
   }),
 )
+@reorderPage
 export default class EditablePage extends Component {
-  onDragEnd(result) {
+  onDragEnd = ({ source, destination, draggableId }) => {
     // dropped outside the list
-    if (!result.destination) {
-      return;
+    const { flatNavigation, navigation, reorder } = this.props;
+    const item = flatNavigation.find(x => x.id === draggableId);
+    const move = (array, old, index) => {
+      if (index >= array.length) {
+        let k = index - array.length;
+        while (k-- + 1) {
+          array.push(undefined);
+        }
+      }
+      array.splice(index, 0, array.splice(old, 1)[0]);
+      return array; // for testing purposes
+    };
+    if (item) {
+      if (item.parentId) {
+        const ids = flatNavigation
+          .filter(x => x.parentId === item.parentId)
+          .map(x => x.id);
+        reorder({
+          variables: {
+            ids: move(ids, source.index, destination.index),
+            parentId: item.parentId,
+          },
+        });
+      } else {
+        const ids = navigation.map(x => x.id);
+        reorder({
+          variables: {
+            ids: move(ids, source.index, destination.index),
+          },
+        });
+      }
     }
 
+    return;
+    if (!result.destination) {
+    }
+
+    reorder({
+      variables: {
+        ids: childIds,
+        parentId: parent ? parent.id : null,
+      },
+    });
     return console.log(result);
 
-    const items = reorder(
+    /* const items = reorder(
       this.state.items,
       result.source.index,
       result.destination.index,
@@ -86,8 +126,8 @@ export default class EditablePage extends Component {
 
     this.setState({
       items,
-    });
-  }
+    }); */
+  };
 
   renderItem = (item, Icon) => {
     const { setKeys, keys, push, pathname } = this.props;
@@ -116,27 +156,23 @@ export default class EditablePage extends Component {
     );
   };
   renderMenu = keys => {
-    const { setKeys, navigation, flatNavigation } = this.props;
+    const { setKeys, navigation, flatNavigation, reorder } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
     if (!lastKey) {
       const menues = navigation.filter(x => x.type === 'MENU');
       const pages = navigation.filter(x => x.type !== 'MENU');
       children = [
-        pages.length && this.renderItem(pages[0], FaHome),
+        ...pages.map(x => this.renderItem(x, FaHome)),
         ...menues.map(menu => (
-          <DndList
-            key={menu.id}
-            title={menu.name}
-            extra={<FaPlusSquareO />}
-            onDragEnd={this.onDragEnd}
-          >
+          <DndList key={menu.id} title={menu.name} extra={<FaPlusSquareO />}>
             {menu.children.map(x => this.renderItem(x))}
           </DndList>
         )),
       ];
     } else {
       const item = flatNavigation.find(x => x.id === lastKey);
+      const items = flatNavigation.filter(x => x.parentId === lastKey);
       children = [
         <Menu.Item
           key="back"
@@ -145,13 +181,8 @@ export default class EditablePage extends Component {
         >
           Zurück
         </Menu.Item>,
-        <DndList
-          key="pages"
-          title={item.name}
-          extra={<FaPlusSquareO />}
-          onDragEnd={this.onDragEnd}
-        >
-          {flatNavigation.filter(x => x.parentId === lastKey).map(item =>
+        <DndList key="pages" title={item.name} extra={<FaPlusSquareO />}>
+          {items.map(item =>
             this.renderItem({
               ...item,
               children: flatNavigation.filter(x => x.parentId === item.id),
