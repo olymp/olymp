@@ -15,6 +15,7 @@ const Inner = createComponent(
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
+    overflowY: 'auto',
     // justifyContent: 'space-between',
   }),
   'div',
@@ -35,9 +36,9 @@ const Menu = createComponent(
     overflowY: 'auto',
     transition: 'all 200ms ease-out',
   }),
-  ({ className, children, header, ...p }) => (
+  ({ className, children, header, headerColor, ...p }) => (
     <div className={className} {...p}>
-      {header && <Header>{header}</Header>}
+      {header && <Header color={headerColor}>{header}</Header>}
       <Inner>{children}</Inner>
     </div>
   ),

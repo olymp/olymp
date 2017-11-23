@@ -5,7 +5,7 @@ import {
   FaAngleLeft,
   FaAngleRight,
   FaPlus,
-  FaPagelines,
+  FaSitemap,
   FaHome,
 } from 'olymp-icons';
 import { withPropsOnChange, withProps, withState } from 'recompose';
@@ -15,7 +15,6 @@ import { Form } from 'antd';
 import { get, debounce } from 'lodash';
 import { queryPage } from '../../gql/query';
 import { mutatePage } from '../../gql/mutation';
-import PageSidebar from './sidebar';
 
 const Page = ({ children, isLoading, ...props }) => (
   <ContentLoader isLoading={isLoading}>
@@ -162,8 +161,8 @@ export default class EditablePage extends Component {
       ];
     }
     const header = (
-      <Menu.Item large icon={<FaPagelines />}>
-        Seiten
+      <Menu.Item large icon={<FaSitemap />}>
+        Seitenmanager
       </Menu.Item>
     );
     return (

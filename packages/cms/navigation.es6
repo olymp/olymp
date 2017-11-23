@@ -78,7 +78,7 @@ const component = enhance(
             <Menu.List title={key}>
               {collectionTree[key].map(collection => (
                 <Menu.Item
-                  key={key}
+                  key={collection.id}
                   icon={
                     <Icon
                       type={get(collection, 'specialFields.icon', 'database')}
@@ -132,7 +132,12 @@ const component = enhance(
             color="colorSecondary"
             inverted
             header={
-              <Menu.Item large key="back" icon={<Logo color />} onClick={() => setQuery({})}>
+              <Menu.Item
+                large
+                key="back"
+                icon={<Logo color="white" />}
+                onClick={() => setQuery({})}
+              >
                 Olymp
               </Menu.Item>
             }
