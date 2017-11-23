@@ -19,6 +19,7 @@ export default createComponent(
       left: !right && left,
       right: right && 0,
       height: '100%',
+      bottom: 0,
       width: collapsed ? 72 : width,
       boxShadow: !pusher && !collapsed ? theme.boxShadow : undefined,
       zIndex: zIndex || 1,
