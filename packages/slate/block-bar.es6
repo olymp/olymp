@@ -68,8 +68,9 @@ const getIcon = key => {
       <Menu.Item
         key={action.type}
         draggable
+        onClick={() => null}
         onDragStart={dragStart(action.type)}
-        icon={<Icon type={getIcon(action.category)} />}
+        // icon={<Icon type={getIcon(action.category)} />}
       >
         {action.label || action.type}
       </Menu.Item>
@@ -112,7 +113,13 @@ class Navigation extends Component {
     }
 
     return (
-      <Drawer open collapsed={collapsed} dim={false} right width={72}>
+      <Drawer
+        open
+        collapsed={collapsed}
+        dim={false}
+        right
+        width={collapsed ? 72 : 240}
+      >
         <Menu
           collapsed={collapsed}
           inverted

@@ -22,6 +22,7 @@ const Container = createComponent(
     ...getAntStyle({ theme }),
     backgroundColor: '#Cf5f5f5',
     height: '100%',
+    marginRight: 72,
     '> div': {
       position: 'relative',
       height: '100%',

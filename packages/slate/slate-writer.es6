@@ -347,7 +347,7 @@ class Writer extends Component {
         onKeyDown={this.onKeyDown}
         placeholder={!readOnly && 'Hier Text eingeben...'}
         placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-        style={{ marginRight: 64, height: '100%', ...style }}
+        style={{ height: '100%', ...style }}
       />
     ) : (
       <Editor
@@ -366,7 +366,7 @@ class Writer extends Component {
         onKeyDown={this.onKeyDown}
         placeholder={!readOnly && 'Hier Text eingeben...'}
         placeholderStyle={{ padding: '0 1rem', opacity: 0.33 }}
-        style={{ marginRight: 64, height: '100%', ...style }}
+        style={{ height: '100%', ...style }}
       />
     );
     const inner = (

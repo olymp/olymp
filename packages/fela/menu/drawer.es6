@@ -40,13 +40,11 @@ export default createComponent(
       extend:
         right !== undefined
           ? {
-              backgroundColor: 'blue',
               right: (right !== true && right) || 0,
               justifyContent: 'flex-end',
               transform: open ? null : 'translateX(100%)',
             }
           : {
-              backgroundColor: 'blue',
               left: (left !== true && left) || 0,
               transform: open ? null : 'translateX(-100%)',
             },
@@ -84,6 +82,5 @@ export default createComponent(
       </aside>
     </div>
   ),
-  ({ inverted, width, right, top, left, collapsed, dim, ...p }) =>
-    Object.keys(p),
+  ({ inverted, right, top, left, collapsed, dim, ...p }) => Object.keys(p),
 );
