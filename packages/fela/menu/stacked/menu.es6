@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
+import Menu from '../menu';
 
 const SlideIn = createComponent(
   ({ isBack }) => ({
-    height: '100%',
+    // height: '100%',
     position: 'relative',
     overflow: 'hidden',
     '> :nth-child(1)': {
@@ -11,6 +12,7 @@ const SlideIn = createComponent(
       position: 'absolute',
       top: 0,
       left: 0,
+      height: '100%',
     },
     '> :nth-child(2)': {
       position: 'absolute',
@@ -27,7 +29,7 @@ const SlideIn = createComponent(
       },
     },
   }),
-  'div',
+  p => <Menu {...p} />,
   ({ isBack, ...p }) => Object.keys(p),
 );
 
