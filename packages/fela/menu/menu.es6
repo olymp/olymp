@@ -9,6 +9,7 @@ import List from './list';
 import Item from './item';
 import Title from './title';
 import Space from './space';
+import Tooltip from './tooltip';
 
 const Inner = createComponent(
   () => ({
@@ -31,8 +32,7 @@ const Menu = createComponent(
     color: theme.inverted ? theme.light1 : theme.dark1,
     backgroundColor: color,
     paddingY: theme.space2,
-    paddingLeft: 9,
-    paddingRight: 10,
+    paddingX: 9,
     overflowY: 'auto',
     transition: 'all 200ms ease-out',
   }),
@@ -76,4 +76,5 @@ Component.List = List;
 Component.Title = Title;
 Component.Image = Image;
 Component.Space = Space;
+Component.TooltipItem = Tooltip;
 export default Component;
