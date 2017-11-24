@@ -3,7 +3,7 @@ import Portal from 'olymp-fela/portal';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import { withPropsOnChange } from 'recompose';
-import withScroll from 'olymp-fela/scroll-top';
+// import withScroll from 'olymp-fela/scroll-top';
 
 export const Button = createComponent(
   ({ theme, active }) => ({
@@ -72,7 +72,7 @@ const WrappedMenu = createComponent(
   p => Object.keys(p),
 );
 
-const ScrollPortal = withScroll(
+const ScrollPortal = (
   withPropsOnChange(['scrollTop', 'scrolling'], ({ parentEl, scrollTop }) => {
     console.log(parentEl, scrollTop);
     const parent = document.querySelector(parentEl);

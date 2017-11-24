@@ -1,6 +1,17 @@
 import React from 'react';
 import { createComponent } from 'olymp-fela';
+import { Icon } from 'antd';
 import Image from './image';
+
+const LoaderContainer = createComponent(
+  ({ theme }) => ({
+    width: 14,
+    '> i.anticon': {
+      color: theme.color,
+    },
+  }),
+  'div',
+);
 
 const Content = createComponent(
   ({ theme }) => ({
@@ -50,6 +61,7 @@ export default createComponent(
     innerRef,
     ref,
     color,
+    loading,
     ...rest
   }) => (
     <div {...rest} ref={_ref || innerRef || ref}>
@@ -58,7 +70,14 @@ export default createComponent(
         {children}
         {!!subtitle && <small>{subtitle}</small>}
       </Content>
-      {!!extra && <Image extra>{extra}</Image>}
+      {!!extra && !loading && <Image extra>{extra}</Image>}
+      {loading && (
+        <Image extra>
+          <LoaderContainer>
+            <Icon type="loading" />
+          </LoaderContainer>
+        </Image>
+      )}
     </div>
   ),
   ({ active, ...p }) => Object.keys(p),
