@@ -1,10 +1,11 @@
-import React, { Component, Children } from 'react';
+import React, { Component } from 'react';
 import { createComponent } from 'react-fela';
-import Menu from '../menu';
+import { shallowEqual } from 'recompose';
 
 const SlideIn = createComponent(
   ({ isBack }) => ({
     // height: '100%',
+    height: '100%',
     position: 'relative',
     overflow: 'hidden',
     '> :nth-child(1)': {
@@ -12,7 +13,6 @@ const SlideIn = createComponent(
       position: 'absolute',
       top: 0,
       left: 0,
-      height: '100%',
     },
     '> :nth-child(2)': {
       position: 'absolute',
@@ -29,13 +29,13 @@ const SlideIn = createComponent(
       },
     },
   }),
-  p => <Menu {...p} />,
+  'div',
   ({ isBack, ...p }) => Object.keys(p),
 );
 
 export default class StackedMenu extends Component {
   componentWillReceiveProps(newProps) {
-    if (newProps.keys !== this.props.keys) {
+    if (!shallowEqual(newProps.keys, this.props.keys)) {
       this.isBack = newProps.keys.length < this.props.keys.length;
       this.oldKeys = this.props.keys;
     }
@@ -44,16 +44,12 @@ export default class StackedMenu extends Component {
     const { renderMenu, keys, children } = this.props;
     if (renderMenu) {
       return (
-        <SlideIn key={keys} isBack={this.isBack}>
+        <SlideIn isBack={this.isBack}>
           {this.oldKeys && renderMenu(this.oldKeys)}
           {renderMenu(keys, this.oldKeys)}
         </SlideIn>
       );
     }
-    return (
-      <SlideIn key={keys} isBack={this.isBack}>
-        {children}
-      </SlideIn>
-    );
+    return <SlideIn isBack={this.isBack}>{children}</SlideIn>;
   }
 }

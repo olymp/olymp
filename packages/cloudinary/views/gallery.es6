@@ -13,14 +13,13 @@ import Thumb from '../components/thumb';
 
 const overscanByPixels = 1500;
 const Item = connect(({ cloudinary }, { item }) => ({
-  isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
+  // isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
 }))(({ style, item, isActive, onClick, onRemove, width }) => (
   <div
     style={{
       ...style,
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: '#f7f7f7',
       wordBreak: 'break-all',
       width,
     }}
@@ -65,6 +64,9 @@ export default class GridExample extends PureComponent {
     const { items, onClick, onRemove } = this.props;
 
     const item = (items || [])[index];
+    if (!item) {
+      return null;
+    }
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
         <Item
