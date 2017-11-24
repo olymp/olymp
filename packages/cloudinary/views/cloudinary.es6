@@ -329,10 +329,35 @@ class CloudinaryView extends Component {
             collapsed={collapsed}
             onMouseEnter={() => setCollapsed(false)}
             onMouseLeave={() => setCollapsed(true)}
+            header={
+              <Menu.Item
+                icon={
+                  <svg
+                    width="64"
+                    height="64"
+                    viewBox="0 0 64 64"
+                    xmlns="http://www.w3.org/2000/svg"
+                    version="1.1"
+                  >
+                    <circle cx="32" cy="32" r="31" fill="rgb(0,100,0)" />
+                    <text
+                      textAnchor="middle"
+                      x="50%"
+                      y="50%"
+                      dy=".35em"
+                      fontFamily="sans-serif"
+                      fontSize="45px"
+                      fill="white"
+                    >
+                      {selectedItems.length}
+                    </text>
+                  </svg>
+                }
+              >
+                Bearbeiten
+              </Menu.Item>
+            }
           >
-            <Menu.Item icon={<span>{selection.length}</span>} />
-            <Menu.List title="Ansicht" />
-
             <Menu.Space>
               <Detail
                 value={selectedItems || []}

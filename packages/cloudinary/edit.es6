@@ -16,8 +16,14 @@ export default renderFn =>
     return (
       <div>
         <div onClick={() => setOpen(true)}>{renderFn(value, props)}</div>
-        <Modal open={isOpen} onClose={() => setOpen(false)}>
+        <Modal
+          open={isOpen}
+          onClose={() => setOpen(false)}
+          width="90%"
+          height="90%"
+        >
           <Mediathek
+            inModal
             multi={multi}
             onChange={(value = []) => {
               onChange(multi ? value : value[0]);
