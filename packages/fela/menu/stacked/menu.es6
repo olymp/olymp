@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import { createComponent } from 'react-fela';
 
 const SlideIn = createComponent(
@@ -39,11 +39,18 @@ export default class StackedMenu extends Component {
     }
   }
   render() {
-    const { renderMenu, keys } = this.props;
+    const { renderMenu, keys, children } = this.props;
+    if (renderMenu) {
+      return (
+        <SlideIn key={keys} isBack={this.isBack}>
+          {this.oldKeys && renderMenu(this.oldKeys)}
+          {renderMenu(keys, this.oldKeys)}
+        </SlideIn>
+      );
+    }
     return (
       <SlideIn key={keys} isBack={this.isBack}>
-        {this.oldKeys && renderMenu(this.oldKeys)}
-        {renderMenu(keys, this.oldKeys)}
+        {children}
       </SlideIn>
     );
   }
