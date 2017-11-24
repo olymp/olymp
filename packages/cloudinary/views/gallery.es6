@@ -119,6 +119,7 @@ export default class GridExample extends PureComponent {
         ref={this.setMasonryRef}
         width={width}
         scrollTop={this.scrollTop}
+        style={{ outline: 0 }}
       />
     );
   };
