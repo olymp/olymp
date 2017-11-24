@@ -165,10 +165,10 @@ class CloudinaryView extends Component {
     format: undefined,
   };
 
-  onClick = (id, e) => {
+  onClick = ({ id }, multiple = false) => {
     const { selection, setSelection, multi } = this.props;
 
-    if (multi && e.shiftKey) {
+    if (multi && multiple) {
       if (selection.findIndex(sId => sId === id) === -1) {
         setSelection([...selection, id]);
       } else {
@@ -241,11 +241,11 @@ class CloudinaryView extends Component {
   render() {
     const {
       tags,
-      removeSelection,
       collapsed,
       setCollapsed,
       selection,
       tree,
+      setSelection,
     } = this.props;
 
     const [key0, key1] = tags;
@@ -272,7 +272,7 @@ class CloudinaryView extends Component {
           onClick={this.onClick}
           selection={selection}
           isActive={({ id }) => selection.indexOf(id) !== -1}
-          onRemove={removeSelection}
+          onRemove={({ id }) => setSelection(selection.filter(x => id !== x))}
         />
         <Drawer
           open

@@ -24,8 +24,8 @@ const Item = ({ style, item, isActive, onClick, onRemove, width }) => (
     <Thumb
       item={item}
       width={width}
-      onClick={e => onClick(item.id, e)}
-      onRemove={() => onRemove(item.id)}
+      onClick={e => onClick(item, e.altKey || e.shiftKey)}
+      onRemove={() => onRemove(item)}
       isActive={isActive}
     />
     <small
