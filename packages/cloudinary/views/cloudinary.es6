@@ -360,7 +360,7 @@ class CloudinaryView extends Component {
           >
             <Menu.Space>
               <Detail
-                value={selectedItems || []}
+                value={value || selectedItems || []}
                 multi={multi}
                 editable={!inModal}
                 onRemove={({ id }) =>
