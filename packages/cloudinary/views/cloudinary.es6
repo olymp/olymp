@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
 import { Sidebar, Menu, StackedMenu, Drawer } from 'olymp-fela';
-import { FaChevronLeft, FaPictureO } from 'olymp-icons';
+import { FaChevronLeft, FaPictureO, FaClose } from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import Gallery from './gallery';
@@ -11,6 +11,7 @@ import Gallery from './gallery';
 const EMPTY = 'Keine Tags';
 const TRASH = 'Papierkorb';
 const GENERAL = 'Allgemein';
+const SELECTION = '__Selection__';
 
 const addSortedChildren = (obj, sorter = 'length') => {
   if (!obj.map) {
@@ -128,16 +129,20 @@ const addSortedChildren = (obj, sorter = 'length') => {
     };
   },
 )
-@withState('collapsed', 'setCollapsed', true)
-@withState('tags', 'setTags', [])
-@withState('sorting', 'setSorting', 'length')
 @withPropsOnChange(['sorting', 'tree'], ({ tree, sorting, items }) => ({
   tree: addSortedChildren({ map: tree, items }, sorting),
 }))
-@withState('selection', 'setSelection', [])
-@withPropsOnChange(['value'], ({ value = [], setSelection }) =>
-  setSelection(value.map(v => v.id)),
+@withState('collapsed', 'setCollapsed', true)
+@withState('sorting', 'setSorting', 'length')
+@withState('tags', 'setTags', [])
+@withState(
+  'selection',
+  'setSelection',
+  ({ value }) => (value ? value.map(v => v.id) : []),
 )
+@withPropsOnChange(['selection', 'items'], ({ selection, items = [] }) => ({
+  selectedItems: items.filter(x => selection.includes(x.id)),
+}))
 class CloudinaryView extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
@@ -180,7 +185,7 @@ class CloudinaryView extends Component {
   };
 
   renderMenu = (keys = []) => {
-    const { goRoot, setTags, tags, tree } = this.props;
+    const { goRoot, setTags, tags, tree, onClose } = this.props;
     let children = [];
     if (keys.length === 0) {
       children = tree.children.map(app => (
@@ -224,7 +229,12 @@ class CloudinaryView extends Component {
       <Menu
         key={keys.join('|')}
         header={
-          <Menu.Item large onClick={goRoot} icon={<FaPictureO />}>
+          <Menu.Item
+            large
+            onClick={goRoot}
+            icon={<FaPictureO />}
+            extra={onClose && <FaClose onClick={onClose} />}
+          >
             Media
           </Menu.Item>
         }
@@ -246,6 +256,8 @@ class CloudinaryView extends Component {
       selection,
       tree,
       setSelection,
+      selectedItems,
+      inModal,
     } = this.props;
 
     const [key0, key1] = tags;
@@ -257,7 +269,7 @@ class CloudinaryView extends Component {
 
     return (
       <Sidebar
-        left={72}
+        left={inModal ? 0 : 72}
         pusher
         menu={
           <StackedMenu
@@ -267,8 +279,11 @@ class CloudinaryView extends Component {
         }
       >
         <Gallery
+          useBodyScroll={!inModal}
           key={tags.join('|')}
-          items={filteredItems}
+          items={
+            !tags.length && selectedItems.length ? selectedItems : filteredItems
+          }
           onClick={this.onClick}
           selection={selection}
           isActive={({ id }) => selection.indexOf(id) !== -1}

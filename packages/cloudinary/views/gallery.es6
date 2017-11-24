@@ -10,7 +10,7 @@ import Masonry, {
 } from 'react-virtualized/dist/commonjs/Masonry';
 import Thumb from '../components/thumb';
 
-const overscanByPixels = 1500;
+const overscanByPixels = 500;
 const Item = ({ style, item, isActive, onClick, onRemove, width }) => (
   <div
     style={{
@@ -40,6 +40,12 @@ const columnWidth = 200;
 const columnHeight = 200;
 const gutterSize = 0;
 export default class GridExample extends PureComponent {
+  height = 0;
+
+  static defaultProps = {
+    useBodyScroll: true,
+  };
+
   constructor(props) {
     super(props);
 
@@ -89,8 +95,12 @@ export default class GridExample extends PureComponent {
     }
   };
 
-  onResize = ({ width }) => {
+  onResize = ({ width, height }) => {
+    const { useBodyScroll } = this.props;
     this.width = width;
+    if (!useBodyScroll) {
+      this.height = height;
+    }
     this.columnHeights = {};
     this.calculateColumnCount();
     this.resetCellPositioner();
@@ -99,9 +109,12 @@ export default class GridExample extends PureComponent {
     }
   };
 
-  renderMasonry = ({ width }) => {
-    const { items } = this.props;
+  renderMasonry = ({ width, height }) => {
+    const { items, useBodyScroll } = this.props;
     this.width = width;
+    if (!useBodyScroll) {
+      this.height = height;
+    }
 
     this.calculateColumnCount();
     this.initCellPositioner();
@@ -109,7 +122,7 @@ export default class GridExample extends PureComponent {
     return (
       <Masonry
         selection={this.props.selection}
-        autoHeight
+        autoHeight={useBodyScroll}
         height={this.height}
         overscanByPixels={overscanByPixels}
         cellCount={(items || []).length}
@@ -136,24 +149,14 @@ export default class GridExample extends PureComponent {
     this.masonry = ref;
   };
 
-  render() {
-    return (
-      <WindowScroller
-        selection={this.props.selection}
-        overscanByPixels={overscanByPixels}
-      >
-        {this.renderAutoSizer}
-      </WindowScroller>
-    );
-  }
-
   renderAutoSizer = ({ height, scrollTop }) => {
+    const { selection, useBodyScroll } = this.props;
     this.height = height;
     this.scrollTop = scrollTop;
     return (
       <AutoSizer
-        selection={this.props.selection}
-        disableHeight
+        selection={selection}
+        disableHeight={useBodyScroll}
         height={height}
         overscanByPixels={overscanByPixels}
         onResize={this.onResize}
@@ -163,4 +166,16 @@ export default class GridExample extends PureComponent {
       </AutoSizer>
     );
   };
+
+  render() {
+    const { useBodyScroll, selection } = this.props;
+    if (!useBodyScroll) {
+      return this.renderAutoSizer({ height: this.height });
+    }
+    return (
+      <WindowScroller selection={selection} overscanByPixels={overscanByPixels}>
+        {this.renderAutoSizer}
+      </WindowScroller>
+    );
+  }
 }
