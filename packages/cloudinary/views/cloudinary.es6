@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
 import { Sidebar, Menu, StackedMenu, Drawer } from 'olymp-fela';
-import { FaChevronLeft, FaPictureO, FaClose } from 'olymp-icons';
+import { FaChevronLeft, FaPictureO, FaClose, FaSave } from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import Gallery from './gallery';
+import Detail from '../detail';
 // import Dragzone from '../components/dragzone';
 
 const EMPTY = 'Keine Tags';
 const TRASH = 'Papierkorb';
 const GENERAL = 'Allgemein';
-const SELECTION = '__Selection__';
+const INITIAL_ARRAY = [];
 
 const addSortedChildren = (obj, sorter = 'length') => {
   if (!obj.map) {
@@ -134,7 +135,7 @@ const addSortedChildren = (obj, sorter = 'length') => {
 }))
 @withState('collapsed', 'setCollapsed', true)
 @withState('sorting', 'setSorting', 'length')
-@withState('tags', 'setTags', [])
+@withState('tags', 'setTags', INITIAL_ARRAY)
 @withState(
   'selection',
   'setSelection',
@@ -170,6 +171,14 @@ class CloudinaryView extends Component {
     format: undefined,
   };
 
+  initial = true;
+  componentWillReceiveProps({ selectedItems = [] }) {
+    const thisSelection = this.props.selectedItems || [];
+    if (selectedItems.length !== thisSelection.length) {
+      this.initial = false;
+    }
+  }
+
   onClick = ({ id }, multiple = false) => {
     const { selection, setSelection, multi } = this.props;
 
@@ -185,7 +194,15 @@ class CloudinaryView extends Component {
   };
 
   renderMenu = (keys = []) => {
-    const { goRoot, setTags, tags, tree, onClose } = this.props;
+    const {
+      goRoot,
+      setTags,
+      tags,
+      tree,
+      onClose,
+      onChange,
+      selectedItems,
+    } = this.props;
     let children = [];
     if (keys.length === 0) {
       children = tree.children.map(app => (
@@ -233,7 +250,15 @@ class CloudinaryView extends Component {
             large
             onClick={goRoot}
             icon={<FaPictureO />}
-            extra={onClose && <FaClose onClick={onClose} />}
+            extra={
+              <span>
+                {onChange && (
+                  <FaSave size={18} onClick={() => onChange(selectedItems)} />
+                )}
+                &nbsp;
+                {onClose && <FaClose size={18} onClick={onClose} />}
+              </span>
+            }
           >
             Media
           </Menu.Item>
@@ -258,6 +283,8 @@ class CloudinaryView extends Component {
       setSelection,
       selectedItems,
       inModal,
+      multi,
+      value,
     } = this.props;
 
     const [key0, key1] = tags;
@@ -282,7 +309,9 @@ class CloudinaryView extends Component {
           useBodyScroll={!inModal}
           key={tags.join('|')}
           items={
-            !tags.length && selectedItems.length ? selectedItems : filteredItems
+            this.initial && !tags.length && selectedItems.length
+              ? selectedItems
+              : filteredItems
           }
           onClick={this.onClick}
           selection={selection}
@@ -298,14 +327,21 @@ class CloudinaryView extends Component {
         >
           <Menu
             collapsed={collapsed}
-            inverted
-            color="colorSecondary"
             onMouseEnter={() => setCollapsed(false)}
             onMouseLeave={() => setCollapsed(true)}
           >
             <Menu.Item icon={<span>{selection.length}</span>} />
             <Menu.List title="Ansicht" />
-            <Menu.Space />
+
+            <Menu.Space>
+              <Detail
+                value={selectedItems || []}
+                multi={multi}
+                editable={!inModal}
+                onRemove={({ id }) =>
+                  setSelection(selection.filter(x => id !== x))}
+              />
+            </Menu.Space>
           </Menu>
         </Drawer>
       </Sidebar>

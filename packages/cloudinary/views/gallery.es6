@@ -24,8 +24,8 @@ const Item = ({ style, item, isActive, onClick, onRemove, width }) => (
     <Thumb
       item={item}
       width={width}
-      onClick={e => onClick(item, e.altKey || e.shiftKey)}
-      onRemove={() => onRemove(item)}
+      onClick={onClick && (e => onClick(item, e.altKey || e.shiftKey))}
+      onRemove={onRemove && (() => onRemove(item))}
       isActive={isActive}
     />
     <small
@@ -73,7 +73,7 @@ export default class GridExample extends PureComponent {
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
         <Item
-          isActive={isActive(item)}
+          isActive={isActive && isActive(item)}
           style={style}
           item={item}
           onClick={onClick}

@@ -1,13 +1,15 @@
 import React from 'react';
+import { Form } from 'antd';
 import { groupBy } from 'lodash';
-import { connect } from 'react-redux';
-import { compose, withProps, withPropsOnChange } from 'recompose';
+import { compose, withProps, withPropsOnChange, withState } from 'recompose';
 import DetailBrowser from './detail-browser';
 import DetailPicker from './detail-picker';
 import Gallery from '../components/gallery';
 import LightboxGallery from '../lightbox-gallery';
 
 const enhance = compose(
+  Form.create(),
+  withState('activeId', 'setActive', null),
   withProps(({ value }) => ({
     multi: value.length > 1,
   })),
@@ -21,22 +23,30 @@ const enhance = compose(
 
     return { selectedTags, groupedTags };
   }),
-  connect(({ cloudinary }) => ({
-    activeId: cloudinary.activeId,
-  })),
 );
 
 export default enhance(
-  ({ form, value, activeId, multi, editable, onClick, onRemove, ...rest }) => {
+  ({
+    form,
+    value = [],
+    activeId,
+    multi,
+    editable,
+    onClick,
+    setActive,
+    onRemove,
+    ...rest
+  }) => {
     const Detail = editable ? DetailBrowser : DetailPicker;
+    const active = value.find(x => x.id === activeId) || value[0] || {};
     return (
       <div>
         <LightboxGallery>
           {multi && (
             <Gallery
               items={value}
-              selectedIds={[activeId]}
-              onClick={onClick}
+              selectedIds={[active.id]}
+              onClick={({ id }) => setActive(id)}
               onRemove={onRemove}
               justifyContent="space-around"
             />
@@ -45,7 +55,9 @@ export default enhance(
         {value.map(item => (
           <div
             key={item.id}
-            style={{ display: item.id === activeId ? 'block' : 'none' }}
+            style={{
+              display: item.id === active.id ? 'block' : 'none',
+            }}
           >
             <Detail
               {...rest}

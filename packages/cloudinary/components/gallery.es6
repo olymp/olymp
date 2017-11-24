@@ -35,8 +35,8 @@ export const MediaList = ({
     {(items || []).map(item => (
       <Thumb
         item={item}
-        onClick={e => onClick(item.id, e)}
-        onRemove={() => onRemove(item.id)}
+        onClick={() => onClick(item)}
+        onRemove={() => onRemove(item)}
         isActive={selectedIds.indexOf(item.id) !== -1}
         height={itemHeight}
         key={item.id}
