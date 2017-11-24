@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import {
   CellMeasurer,
   CellMeasurerCache,
@@ -12,9 +11,7 @@ import Masonry, {
 import Thumb from '../components/thumb';
 
 const overscanByPixels = 1500;
-const Item = connect(({ cloudinary }, { item }) => ({
-  // isActive: cloudinary.selectedIds.indexOf(item.id) !== -1,
-}))(({ style, item, isActive, onClick, onRemove, width }) => (
+const Item = ({ style, item, isActive, onClick, onRemove, width }) => (
   <div
     style={{
       ...style,
@@ -37,7 +34,7 @@ const Item = connect(({ cloudinary }, { item }) => ({
       <b>{item.caption}</b>
     </small>
   </div>
-));
+);
 
 const columnWidth = 200;
 const columnHeight = 200;
@@ -61,7 +58,7 @@ export default class GridExample extends PureComponent {
   };
 
   cellRenderer = ({ index, key, parent, style }) => {
-    const { items, onClick, onRemove } = this.props;
+    const { items, onClick, onRemove, isActive } = this.props;
 
     const item = (items || [])[index];
     if (!item) {
@@ -70,6 +67,7 @@ export default class GridExample extends PureComponent {
     return (
       <CellMeasurer cache={this.cache} index={index} key={key} parent={parent}>
         <Item
+          isActive={isActive(item)}
           style={style}
           item={item}
           onClick={onClick}
@@ -110,6 +108,7 @@ export default class GridExample extends PureComponent {
 
     return (
       <Masonry
+        selection={this.props.selection}
         autoHeight
         height={this.height}
         overscanByPixels={overscanByPixels}
@@ -137,8 +136,12 @@ export default class GridExample extends PureComponent {
   };
 
   render() {
+    console.log(this.props.selection);
     return (
-      <WindowScroller overscanByPixels={overscanByPixels}>
+      <WindowScroller
+        selection={this.props.selection}
+        overscanByPixels={overscanByPixels}
+      >
         {this.renderAutoSizer}
       </WindowScroller>
     );
@@ -149,6 +152,7 @@ export default class GridExample extends PureComponent {
     this.scrollTop = scrollTop;
     return (
       <AutoSizer
+        selection={this.props.selection}
         disableHeight
         height={height}
         overscanByPixels={overscanByPixels}

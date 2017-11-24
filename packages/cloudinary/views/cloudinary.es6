@@ -166,26 +166,20 @@ class CloudinaryView extends Component {
   };
 
   onClick = (id, e) => {
-    const {
-      selectedIds,
-      addSelection,
-      removeSelection,
-      setSelection,
-      multi,
-    } = this.props;
+    const { selection, setSelection, multi } = this.props;
 
     if (multi && e.shiftKey) {
-      if (selectedIds.findIndex(sId => sId === id) === -1) {
-        addSelection(id);
+      if (selection.findIndex(sId => sId === id) === -1) {
+        setSelection([...selection, id]);
       } else {
-        removeSelection(id);
+        setSelection(selection.filter(x => x !== id));
       }
     } else {
       setSelection([id]);
     }
   };
 
-  renderMenu = (keys = [], isPrimary) => {
+  renderMenu = (keys = []) => {
     const { goRoot, setTags, tags, tree } = this.props;
     let children = [];
     if (keys.length === 0) {
@@ -276,6 +270,8 @@ class CloudinaryView extends Component {
           key={tags.join('|')}
           items={filteredItems}
           onClick={this.onClick}
+          selection={selection}
+          isActive={({ id }) => selection.indexOf(id) !== -1}
           onRemove={removeSelection}
         />
         <Drawer
