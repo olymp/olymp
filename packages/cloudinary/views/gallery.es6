@@ -136,7 +136,6 @@ export default class GridExample extends PureComponent {
   };
 
   render() {
-    console.log(this.props.selection);
     return (
       <WindowScroller
         selection={this.props.selection}
