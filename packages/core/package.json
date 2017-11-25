@@ -26,7 +26,7 @@
     "compression": "^1.7.1",
     "deep-assign": "^2.0.0",
     "dotenv": "^4.0.0",
-    "duplicate-package-checker-webpack-plugin": "^1.2.6",
+    "duplicate-package-checker-webpack-plugin": "^2.0.1",
     "express": "^4.16.2",
     "express-useragent": "^1.0.7",
     "generate-json-webpack-plugin": "^0.2.2",
