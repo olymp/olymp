@@ -23,7 +23,7 @@ const Inner = createComponent(
 );
 
 const Menu = createComponent(
-  ({ theme, color }) => ({
+  ({ theme, color, paddingX = 9, paddingY = theme.space2 }) => ({
     display: 'flex',
     flexGrow: theme.collapsed ? 0 : 1,
     flexDirection: 'column',
@@ -31,8 +31,8 @@ const Menu = createComponent(
     height: '100%',
     color: theme.inverted ? theme.light1 : theme.dark1,
     backgroundColor: color,
-    paddingY: theme.space2,
-    paddingX: 9,
+    paddingY,
+    paddingX,
     overflowY: 'auto',
     transition: 'all 200ms ease-out',
   }),

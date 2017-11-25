@@ -12,10 +12,14 @@ export default createComponent(
     pusher,
     zIndex,
     flex,
+    grid,
+    sectionStyle = {},
   }) => ({
     height: '100%',
-    extend: flex
-      ? {
+    extend: [
+      {
+        condition: !!flex,
+        style: {
           flex: '1',
           display: 'flex',
           minHeight: 0,
@@ -29,9 +33,27 @@ export default createComponent(
             display: 'flex',
             overflow: 'auto',
             flexDirection: 'column',
+            ...sectionStyle,
           },
-        }
-      : {
+        },
+      },
+      {
+        condition: !!grid,
+        style: {
+          display: 'grid',
+          gridTemplateColumns: `${width}px auto`,
+          '> aside': {
+            gridColumn: 1,
+          },
+          '> section': {
+            gridColumn: 2,
+            ...sectionStyle,
+          },
+        },
+      },
+      {
+        condition: !flex && !grid,
+        style: {
           '> aside': {
             position: 'fixed',
             top: 0,
@@ -49,8 +71,11 @@ export default createComponent(
             transition: 'margin 200ms ease-out',
             height: '100%',
             position: 'relative',
+            ...sectionStyle,
           },
         },
+      },
+    ],
   }),
   ({ children, className, menu, collapsed, width = 240, ...rest }) => (
     <div className={className}>
@@ -63,5 +88,6 @@ export default createComponent(
       <section>{children}</section>
     </div>
   ),
-  ({ pusher, top, left, right, zIndex, flex, ...p }) => Object.keys(p),
+  ({ pusher, top, left, right, zIndex, flex, grid, sectionStyle, ...p }) =>
+    Object.keys(p),
 );
