@@ -34,7 +34,7 @@ const Menu = createComponent(
     paddingY,
     paddingX,
     overflowY: 'auto',
-    transition: 'all 200ms ease-out',
+    transition: 'width 200ms ease-out',
   }),
   ({
     className,
