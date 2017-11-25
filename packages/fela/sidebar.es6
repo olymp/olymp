@@ -1,43 +1,67 @@
-import React, { Component } from 'react';
-import createComponent from './utils/create-component';
-import Portal from './portal';
+import React, { Children, cloneElement } from 'react';
+import { createComponent } from 'react-fela';
 
-export class Sidebar extends Component {
-  componentWillUnmount() {
-    document.getElementById('app').style.display = 'initial';
-  }
-  componentDidMount() {
-    document.getElementById('app').style.display = 'none';
-    const { onClose, pdf } = this.props;
-    setTimeout(() => {
-      if (ipc && pdf) {
-        ipc.send('print-to-pdf', { name: pdf });
-      } else {
-        window.print();
-      }
-      setTimeout(onClose, 200);
-    }, 1000);
-  }
-  render() {
-    const { children, className } = this.props;
-    return (
-      <Portal>
-        <div className={className}>{children}</div>
-      </Portal>
-    );
-  }
-}
-Sidebar.Container = createComponent(
-  ({ width }) => ({
-    '> div': {
-      position: 'fixed',
-    },
-    '> article': {
-      marginLeft: width || 350,
-      position: 'relative',
-    },
+export default createComponent(
+  ({
+    theme,
+    width = 240,
+    right,
+    left = 0,
+    top,
+    collapsed,
+    pusher,
+    zIndex,
+    flex,
+  }) => ({
+    height: '100%',
+    extend: flex
+      ? {
+          flex: '1',
+          display: 'flex',
+          minHeight: 0,
+          '> aside': {
+            maxWidth: width,
+            minWidth: width,
+            display: 'flex',
+          },
+          '> section': {
+            flex: 1,
+            display: 'flex',
+            overflow: 'auto',
+            flexDirection: 'column',
+          },
+        }
+      : {
+          '> aside': {
+            position: 'fixed',
+            top: 0,
+            paddingTop: top,
+            left: !right && left,
+            right: right && 0,
+            height: '100%',
+            bottom: 0,
+            width: collapsed ? 72 : width,
+            boxShadow: !pusher && !collapsed ? theme.boxShadow : undefined,
+            zIndex: zIndex || 1,
+          },
+          '> section': {
+            marginLeft: !pusher || collapsed ? 72 : width,
+            transition: 'margin 200ms ease-out',
+            height: '100%',
+            position: 'relative',
+          },
+        },
   }),
-  'div',
-  p => Object.keys(p),
+  ({ children, className, menu, collapsed, width = 240, ...rest }) => (
+    <div className={className}>
+      <aside {...rest}>
+        {Children.map(
+          menu,
+          child => (child ? cloneElement(child, { collapsed, width }) : child),
+        )}
+      </aside>
+      <section>{children}</section>
+    </div>
+  ),
+  ({ pusher, top, left, right, zIndex, flex, ...p }) => Object.keys(p),
 );
-export default Sidebar;

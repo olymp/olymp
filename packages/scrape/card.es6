@@ -33,11 +33,18 @@ const styles = props => ({
     },
   },
   overflow: 'hidden',
-  border: '1px solid #d4d3d3',
+  position: 'relative',
+  cursor: 'pointer',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
   borderRadius: 5,
   maxHeight: 180,
   minWidth: '100%',
   display: 'inline-block',
+  ':hover': {
+    transform: 'scale(1.03, 1.03)',
+    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)',
+  },
 });
 const component = ({
   loading,

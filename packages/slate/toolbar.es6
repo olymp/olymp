@@ -3,7 +3,6 @@ import Portal from 'olymp-fela/portal';
 import { Menu, Tooltip } from 'antd';
 import { createComponent } from 'react-fela';
 import { withPropsOnChange } from 'recompose';
-// import withScroll from 'olymp-fela/scroll-top';
 
 export const Button = createComponent(
   ({ theme, active }) => ({
@@ -72,45 +71,43 @@ const WrappedMenu = createComponent(
   p => Object.keys(p),
 );
 
-const ScrollPortal = (
-  withPropsOnChange(['scrollTop', 'scrolling'], ({ parentEl, scrollTop }) => {
-    console.log(parentEl, scrollTop);
-    const parent = document.querySelector(parentEl);
-    if (!parent) {
-      return null;
-    }
-    const tooltipPosition = parent.getBoundingClientRect();
-    const scrollY =
-      window.scrollY !== undefined ? window.scrollY : window.pageYOffset;
-    const scrollX =
-      window.scrollX !== undefined ? window.scrollX : window.pageXOffset;
-    const top = scrollY + tooltipPosition.top;
-    const left = scrollX + tooltipPosition.left;
-    return {
-      left: left + parent.offsetWidth / 2,
-      top,
-    };
-  })(({ children, top, left, color, display }) => (
-    <Portal>
-      <WrappedMenu
-        color={color}
-        style={{
-          top: 0,
-          display,
-          left,
-          // transform: 'translate3d(-50%, -100%, 0px)',
-          transform: `translate3d(-50%, ${top - 26}px, 0px)`,
-          position: 'absolute',
-        }}
-        selectedKeys={[]}
-        mode="horizontal"
-        theme="dark"
-      >
-        {children}
-      </WrappedMenu>
-    </Portal>
-  )),
-);
+const enhance = withPropsOnChange(['parentEl'], ({ parentEl }) => {
+  const parent = document.querySelector(parentEl);
+  if (!parent) {
+    return null;
+  }
+  const tooltipPosition = parent.getBoundingClientRect();
+  const scrollY =
+    window.scrollY !== undefined ? window.scrollY : window.pageYOffset;
+  const scrollX =
+    window.scrollX !== undefined ? window.scrollX : window.pageXOffset;
+  const top = scrollY + tooltipPosition.top;
+  const left = scrollX + tooltipPosition.left;
+  return {
+    left: left + parent.offsetWidth / 2,
+    top,
+  };
+});
+const ScrollPortal = enhance(({ children, top, left, color, display }) => (
+  <Portal>
+    <WrappedMenu
+      color={color}
+      style={{
+        top: 0,
+        display,
+        left,
+        // transform: 'translate3d(-50%, -100%, 0px)',
+        transform: `translate3d(-50%, ${top - 26}px, 0px)`,
+        position: 'absolute',
+      }}
+      selectedKeys={[]}
+      mode="horizontal"
+      theme="dark"
+    >
+      {children}
+    </WrappedMenu>
+  </Portal>
+));
 
 export default props => {
   const { isOpened, parent, children, color } = props;
