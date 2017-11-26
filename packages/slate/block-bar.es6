@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
-import { FaExpand, FaCompress, FaPencil, FaCode, FaSave } from 'olymp-icons';
+import { FaExpand, FaCode } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
-import { Icon, Button } from 'antd';
-import { Logo, Menu, Drawer } from 'olymp-fela';
+import { Menu, Drawer } from 'olymp-fela';
 import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
 import { sortBy } from 'lodash';
 import { connect } from 'react-redux';

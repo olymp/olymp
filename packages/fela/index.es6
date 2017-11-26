@@ -10,6 +10,7 @@ export { default as Print } from './print';
 export { default as Layout } from './layout';
 export { default as Sidebar } from './sidebar';
 export { default as Drawer } from './drawer';
+export { default as scrollTop, scrollTopHelper } from './scroll-top';
 export * from './menu';
 export { default as Menu } from './menu';
 export { default as Nav } from './nav';

@@ -21,6 +21,7 @@ export default createComponent(
         condition: !!flex,
         style: {
           flex: '1',
+          marginLeft: left,
           display: 'flex',
           minHeight: 0,
           '> aside': {
@@ -41,6 +42,7 @@ export default createComponent(
         condition: !!grid,
         style: {
           display: 'grid',
+          marginLeft: left,
           gridTemplateColumns: `${width}px auto`,
           '> aside': {
             gridColumn: 1,
