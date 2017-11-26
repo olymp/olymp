@@ -1,7 +1,8 @@
 import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
+import { withState } from 'recompose';
 
-export default createComponent(
+const Sidebar = createComponent(
   ({
     theme,
     width = 240,
@@ -66,10 +67,12 @@ export default createComponent(
             bottom: 0,
             width: collapsed ? 72 : width,
             boxShadow: !pusher && !collapsed ? theme.boxShadow : undefined,
-            zIndex: zIndex || 1,
+            transition: 'all 200ms ease-out',
+            zIndex: 10,
           },
           '> section': {
-            marginLeft: !pusher || collapsed ? 72 : width,
+            marginLeft: !right && (!pusher || collapsed ? 72 : width),
+            marginRight: right && (!pusher || collapsed ? 72 : width),
             transition: 'margin 200ms ease-out',
             height: '100%',
             position: 'relative',
@@ -93,3 +96,16 @@ export default createComponent(
   ({ pusher, top, left, right, zIndex, flex, grid, sectionStyle, ...p }) =>
     Object.keys(p),
 );
+
+export default Sidebar;
+export const AutoSidebar = withState(
+  'collapsed',
+  'setCollapsed',
+  true,
+)(({ setCollapsed, ...props }) => (
+  <Sidebar
+    {...props}
+    onMouseEnter={() => setCollapsed(false)}
+    onMouseLeave={() => setCollapsed(true)}
+  />
+));

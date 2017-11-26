@@ -8,7 +8,7 @@ export { default as Container } from './container';
 export { default as Modal } from './modal';
 export { default as Print } from './print';
 export { default as Layout } from './layout';
-export { default as Sidebar } from './sidebar';
+export { default as Sidebar, AutoSidebar } from './sidebar';
 export { default as Drawer } from './drawer';
 export { default as scrollTop, scrollTopHelper } from './scroll-top';
 export * from './menu';
