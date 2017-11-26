@@ -6,12 +6,12 @@ import fallbackValue from 'fela-plugin-fallback-value';
 import unit from 'fela-plugin-unit';
 import removeUndefined from 'fela-plugin-remove-undefined';
 import friendlyPseudoClass from 'fela-plugin-friendly-pseudo-class';
-import namedMediaQuery from 'fela-plugin-named-media-query';
+import namedKeys from 'fela-plugin-named-keys';
 import monolithic from 'fela-monolithic';
 import embedded from 'fela-plugin-embedded';
 import normalize from './normalize';
 
-export default (ua) => {
+export default ua => {
   const browser = ua && ua.getBrowser && ua.getBrowser();
   const isBrowser = (type, maxVersion, minVersion) => {
     if (!browser) {
@@ -36,7 +36,7 @@ export default (ua) => {
       prefixer(),
       fallbackValue(),
       unit(),
-      namedMediaQuery({
+      namedKeys({
         // From
         ifHugeUp: '@media (min-width: 1200px)',
         ifLargeUp: '@media (min-width: 992px)',
@@ -84,80 +84,80 @@ export default (ua) => {
           borderBottom: border,
         }),
         ellipsis: ellipsis =>
-          (ellipsis === true
+          ellipsis === true
             ? {
-              whiteSpace: 'nowrap',
-              overflowX: 'hidden',
-              textOverflow: 'ellipsis',
-              maxWidth: '100%',
-            }
-            : {}),
+                whiteSpace: 'nowrap',
+                overflowX: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: '100%',
+              }
+            : {},
         clearfix: clearfix =>
-          (clearfix === true
+          clearfix === true
             ? {
-              ':after': {
-                content: '""',
-                clear: 'both',
-                display: 'block',
-                visibility: 'hidden',
-                height: 0,
-              },
-            }
-            : {}),
+                ':after': {
+                  content: '""',
+                  clear: 'both',
+                  display: 'block',
+                  visibility: 'hidden',
+                  height: 0,
+                },
+              }
+            : {},
         center: center =>
-          (center === true
+          center === true
             ? {
-              position: 'absolute',
-              ...(isBrowser('IE', 10)
-                ? {
-                  margin: 'auto',
-                  top: 0,
-                  right: 0,
-                  bottom: 0,
-                  left: 0,
-                }
-                : {
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                }),
-            }
-            : {}),
+                position: 'absolute',
+                ...(isBrowser('IE', 10)
+                  ? {
+                      margin: 'auto',
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    }
+                  : {
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                    }),
+              }
+            : {},
         centerX: center =>
-          (center === true
+          center === true
             ? {
-              position: 'absolute',
-              ...(isBrowser('IE', 10)
-                ? {
-                  marginLeft: 'auto',
-                  left: 0,
-                  marginRight: 'auto',
-                  right: 0,
-                }
-                : {
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                }),
-            }
-            : {}),
+                position: 'absolute',
+                ...(isBrowser('IE', 10)
+                  ? {
+                      marginLeft: 'auto',
+                      left: 0,
+                      marginRight: 'auto',
+                      right: 0,
+                    }
+                  : {
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                    }),
+              }
+            : {},
         centerY: center =>
-          (center === true
+          center === true
             ? {
-              position: 'absolute',
-              ...(isBrowser('IE', 10)
-                ? {
-                  marginTop: 'auto',
-                  top: 0,
-                  marginBottom: 'auto',
-                  bottom: 0,
-                }
-                : {
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                }),
-            }
-            : {}),
-        hasFlex: (styles) => {
+                position: 'absolute',
+                ...(isBrowser('IE', 10)
+                  ? {
+                      marginTop: 'auto',
+                      top: 0,
+                      marginBottom: 'auto',
+                      bottom: 0,
+                    }
+                  : {
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                    }),
+              }
+            : {},
+        hasFlex: styles => {
           if (!isBrowser('IE', 10)) {
             return styles;
           }

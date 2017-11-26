@@ -21,6 +21,7 @@ export const scrollTopHelper = (node, func) => {
   parent.addEventListener('scroll', requestTick, false);
   return () => parent.removeEventListener('scroll', requestTick);
 };
+
 export default WrappedComponent =>
   class ScrollTop extends Component {
     state = { top: 0, scrolling: false };
