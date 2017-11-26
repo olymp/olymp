@@ -25,7 +25,7 @@ export default WrappedComponent =>
   class ScrollTop extends Component {
     state = { top: 0, scrolling: false };
     componentDidMount() {
-      this.unlisten = helper(
+      this.unlisten = scrollTopHelper(
         document.querySelector(this.props.parentEl),
         this.update,
       );
