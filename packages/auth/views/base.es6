@@ -1,15 +1,12 @@
 import React, { Children } from 'react';
-import PropTypes from 'prop-types';
-import { getContext } from 'recompose';
 import { createComponent } from 'olymp-fela';
+import { withTheme } from 'react-fela';
 import { Link } from 'olymp-router';
 import { Modal } from 'olymp-ui';
 import Form from 'olymp-ui/form';
 import { message } from 'antd';
 
-const def = getContext({
-  theme: PropTypes.object,
-})(
+const def = withTheme(
   ({
     showLogo,
     isOpen,
@@ -21,11 +18,11 @@ const def = getContext({
     okText,
     loading,
     saving,
+    theme,
     version,
     ...props
   }) => {
     let links = null;
-    const theme = props.theme.get();
     const children = Children.toArray(props.children).filter(child => {
       if (child.type && child.type === def.Links) {
         links = child;

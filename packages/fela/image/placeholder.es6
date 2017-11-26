@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getContext } from 'recompose';
 import { withAmp } from 'olymp-utils';
-import { createComponent } from 'react-fela';
+import { createComponent, withTheme } from 'react-fela';
 
 const Image = createComponent(
   ({ width, height, theme, circle }) => ({
@@ -32,13 +31,13 @@ const Image = createComponent(
     },
   }),
   withAmp(
-    getContext({ theme: PropTypes.object })(({ className, theme, amp }) => (
+    withTheme(({ className, theme, amp }) => (
       <div className={className}>
         {!amp &&
-          typeof theme.get().logo === 'string' && (
-            <img src={theme.get().logo} alt="placeholder" />
+          typeof theme.logo === 'string' && (
+            <img src={theme.logo} alt="placeholder" />
           )}
-        {!amp && typeof theme.get().logo === 'function' && theme.get().logo()}
+        {!amp && typeof theme.logo === 'function' && theme.logo()}
       </div>
     )),
   ),

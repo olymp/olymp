@@ -58,7 +58,7 @@ const Menu = createComponent(
       <Inner>{children}</Inner>
     </div>
   ),
-  ({ ...p }) => Object.keys(p),
+  ({ paddingY, paddingX, ...p }) => Object.keys(p),
 );
 
 const Component = useTheme(

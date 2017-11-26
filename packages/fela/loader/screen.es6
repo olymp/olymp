@@ -1,7 +1,5 @@
 import React from 'react';
-import { createComponent } from 'react-fela';
-import PropTypes from 'prop-types';
-import { getContext } from 'recompose';
+import { createComponent, withTheme } from 'react-fela';
 import tinycolor from 'tinycolor2';
 
 const getLogo = x => {
@@ -10,14 +8,12 @@ const getLogo = x => {
   }
   return <img src={x} alt="logo" />;
 };
-const Modal = getContext({
-  theme: PropTypes.object,
-})(
+const Modal = withTheme(
   ({ className, theme, show = true }) =>
     show ? (
       <div className={className}>
-        {theme.get().logoWhite && (
-          <div className="logo">{getLogo(theme.get().logoWhite)}</div>
+        {theme.logoWhite && (
+          <div className="logo">{getLogo(theme.logoWhite)}</div>
         )}
       </div>
     ) : null,

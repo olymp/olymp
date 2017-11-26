@@ -1,10 +1,8 @@
-import PropTypes from 'prop-types';
-import { compose, getContext, withPropsOnChange } from 'recompose';
+import { compose, withPropsOnChange } from 'recompose';
+import { withTheme } from 'react-fela';
 
 const enhance = compose(
-  getContext({
-    theme: PropTypes.object,
-  }),
+  withTheme,
   withPropsOnChange(
     ['theme', 'inverted', 'color', 'collapsed', 'width'],
     ({
@@ -20,8 +18,7 @@ const enhance = compose(
         collapsed,
         width,
       },
-      color:
-        (color === true && theme.get().color) || theme.get()[color] || color,
+      color: (color === true && theme.color) || theme[color] || color,
     }),
   ),
 );

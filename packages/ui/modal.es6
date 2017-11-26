@@ -1,10 +1,9 @@
 import React, { Children } from 'react';
-import PropTypes from 'prop-types';
-import { getContext } from 'recompose';
 import { Button as AntButton, Modal as AntModal, Spin } from 'antd';
 import Portal from 'olymp-fela/portal';
 import cn from 'classnames';
 import ReactModal2 from 'react-modal2';
+import { withTheme } from 'react-fela';
 import { getAntStyle, createComponent } from 'olymp-fela';
 import tinycolor from 'tinycolor2';
 
@@ -22,9 +21,7 @@ const getLogo = x => {
   return <img src={x} alt="logo" />;
 };
 
-export const Modal = getContext({
-  theme: PropTypes.object,
-})(
+export const Modal = withTheme(
   ({
     isOpen,
     showLogo,
@@ -56,7 +53,6 @@ export const Modal = getContext({
       return true;
     });
 
-    theme = theme.get();
     return !isOpen ? null : (
       <Portal noPortal={noPortal}>
         <ReactModal
