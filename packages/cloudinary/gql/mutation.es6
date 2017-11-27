@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { onError, onSuccess } from 'olymp-ui';
+import { onError, onSuccess } from 'olymp-utils';
 
 const ok = (item, mutate, remove) => {
   mutate({
@@ -22,9 +22,9 @@ const ok = (item, mutate, remove) => {
   })
     .then(({ data: { item: newItem } }) => {
       if (remove) {
-        onSuccess('Gelöscht', `Datei '${newItem.id}' wurde gelöscht`);
+        onSuccess(`Datei '${newItem.id}' wurde gelöscht`);
       } else {
-        onSuccess('Gespeichert', `Datei '${newItem.id}' wurde gespeichert`);
+        onSuccess(`Datei '${newItem.id}' wurde gespeichert`);
       }
     })
     .catch(onError);

@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createUpdateQuery } from 'olymp-router';
 import { graphql } from 'react-apollo';
-import { onSuccess, onError } from 'olymp-ui';
-import { omit as omit2 } from 'olymp-utils';
+import { onSuccess, onError, omit as omit2 } from 'olymp-utils';
 import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 
@@ -96,9 +95,9 @@ export default WrappedComponent => {
   const cache = {};
   const bound = ({ typeName, fieldNames }) => {
     const mutation = graphql(gql`
-    mutation ${lowerFirst(
-      typeName,
-    )}($id: String, $input: ${typeName}Input, $type: MUTATION_TYPE) {
+    mutation ${lowerFirst(typeName)}($id: String, $input: ${
+      typeName
+    }Input, $type: MUTATION_TYPE) {
       item: ${lowerFirst(typeName)}(id: $id, input: $input, type: $type) {
         ${fieldNames}
       }

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
+import { onEnterOk, layout, onError, onSuccess } from 'olymp-utils';
 import { createForgot } from '../redux';
-import Base, { onEnterOk, layout, onError, onSuccess } from './base';
+import Base from './base';
 
 @connect(null, dispatch => ({
   forgot: createForgot(dispatch),
@@ -19,10 +20,7 @@ export default class AuthForgot extends Component {
       }
       forgot({ email: values.email })
         .then(({ name }) => {
-          onSuccess(
-            'E-Mail abgeschickt',
-            'Bitte bestätigen Sie die Zurücksetzung'
-          );
+          onSuccess('Bitte bestätigen Sie die Zurücksetzung');
           onOk({ email: values.email });
         })
         .catch(onError);
@@ -52,7 +50,7 @@ export default class AuthForgot extends Component {
               placeholder="E-Mail"
               onKeyPress={onEnterOk(this.ok)}
               addonAfter={<FaEnvelope size={10} />}
-            />
+            />,
           )}
         </Form.Item>
         <Base.Links>

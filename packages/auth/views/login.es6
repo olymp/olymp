@@ -4,8 +4,9 @@ import { Link } from 'olymp-router';
 import { Input } from 'antd';
 import Form, { defaultLayout } from 'olymp-ui/form';
 import { FaUser, FaUnlock } from 'olymp-icons';
+import { onEnterFocus, onEnterOk, onError, onSuccess } from 'olymp-utils';
 import { createLogin } from '../redux';
-import Base, { onEnterFocus, onEnterOk, onError, onSuccess } from './base';
+import Base from './base';
 
 @connect(null, dispatch => ({
   login: createLogin(dispatch),
@@ -20,7 +21,7 @@ export default class AuthLogin extends Component {
       }
       login(values)
         .then(({ name }) => {
-          onSuccess('Anmeldung erfolgreich', `Willkommen, ${name}`);
+          onSuccess(`Willkommen, ${name}`);
           onClose();
         })
         .catch(err => {
@@ -51,7 +52,7 @@ export default class AuthLogin extends Component {
               placeholder="E-Mail"
               onKeyPress={onEnterFocus(() => this.input)}
               suffix={<FaUser size={14} />}
-            />
+            />,
           )}
         </Form.Item>
         <Form.Item key="password" label="Passwort" {...defaultLayout}>
@@ -64,7 +65,7 @@ export default class AuthLogin extends Component {
               onKeyPress={onEnterOk(this.ok)}
               ref={x => (this.input = x)}
               suffix={<FaUnlock size={14} />}
-            />
+            />,
           )}
         </Form.Item>
         {totp && (
@@ -76,7 +77,7 @@ export default class AuthLogin extends Component {
                 onKeyPress={onEnterOk(this.ok)}
                 ref={x => (this.totp = x)}
                 suffix={<FaUnlock size={14} />}
-              />
+              />,
             )}
           </Form.Item>
         )}

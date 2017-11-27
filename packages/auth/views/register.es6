@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import { Link } from 'olymp-router';
 import { Form, Input } from 'antd';
 import { FaEnvelope, FaUnlock } from 'olymp-icons';
-import Base, {
+import {
   onEnterFocus,
   onEnterOk,
   layout,
   onError,
   onSuccess,
-} from './base';
+} from 'olymp-utils';
+import Base from './base';
 import { createRegister } from '../redux';
 
 @connect(null, dispatch => ({
@@ -49,10 +50,7 @@ export default class AuthRegister extends Component {
       delete user.password2;
       register({ user, password: values.password, token })
         .then(() => {
-          onSuccess(
-            'Registrierung abgeschickt',
-            'Bitte checken Sie Ihre E-Mails',
-          );
+          onSuccess('Bitte checken Sie Ihre E-Mails');
           onOk({ email: values.email, token });
         })
         .catch(onError);

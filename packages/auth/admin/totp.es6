@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Form, Input } from 'antd';
 import { FaStar } from 'olymp-icons';
-import { onEnterFocus, onError, onSuccess } from '../views/base';
+import { onEnterFocus, onError, onSuccess } from 'olymp-utils';
 
 @graphql(
   gql`
@@ -20,7 +20,7 @@ import { onEnterFocus, onError, onSuccess } from '../views/base';
       fetchPolicy: 'network-only',
       skip: !isOpen,
     }),
-  }
+  },
 )
 export default class AuthTotp extends Component {
   static defaultProps = { data: {} };
@@ -36,7 +36,7 @@ export default class AuthTotp extends Component {
         auth
           .totpConfirm(data.totp.token)
           .then(() => {
-            onSuccess('Gespeichert', '2-Faktor Authentifizierung deaktiviert');
+            onSuccess('2-Faktor Authentifizierung deaktiviert');
             onClose();
           })
           .catch(onError);
@@ -44,7 +44,7 @@ export default class AuthTotp extends Component {
         auth
           .totpConfirm(data.totp.token, values.token)
           .then(() => {
-            onSuccess('Gespeichert', '2-Faktor Authentifizierung aktiviert');
+            onSuccess('2-Faktor Authentifizierung aktiviert');
             onClose();
           })
           .catch(onError);
@@ -82,7 +82,7 @@ export default class AuthTotp extends Component {
               placeholder="Token"
               onKeyPress={onEnterFocus(() => this.ok)}
               addonAfter={<FaStar size={10} />}
-            />
+            />,
           )}
         </Form.Item>
       </div>

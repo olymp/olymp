@@ -2,9 +2,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { withPushPathname } from 'olymp-router';
-import { onError, onSuccess } from 'olymp-ui';
-import { omit } from 'olymp-utils';
-import { page, pageList } from './query';
+import { onError, onSuccess, omit } from 'olymp-utils';
+import { pageList } from './query';
 
 const mutateGql = gql`
   mutation page($id: String, $input: PageInput, $type: MUTATION_TYPE) {
@@ -66,7 +65,7 @@ const ok = (props, mutate) => () => {
       },
     })
       .then(({ data: { page } }) => {
-        onSuccess('Gespeichert', 'Die Seite wurde gespeichert');
+        onSuccess('Die Seite wurde gespeichert');
         form.resetFields();
         let { slug, parentId } = page;
         while (parentId) {

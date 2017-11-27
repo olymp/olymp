@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Link } from 'olymp-router';
 import { Form } from 'antd';
-import Base, { onSuccess, onError } from './base';
+import { onSuccess, onError } from 'olymp-utils';
+import Base from './base';
 import Countdown from '../countdown';
 
 @Form.create()
@@ -32,7 +33,7 @@ export default class AuthConfirm extends Component {
       auth
         .confirm(token)
         .then(({ email }) => {
-          onSuccess('Konto bestätigt', 'Sie können sich jetzt anmelden');
+          onSuccess('Sie können sich jetzt anmelden');
           onOk({ email });
         })
         .catch(onError);
