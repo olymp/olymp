@@ -1,4 +1,3 @@
-export { default as List } from './list';
 export * from './containers';
 export * from './notifications';
 export * from './badge';
