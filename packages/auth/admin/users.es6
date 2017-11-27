@@ -1,44 +1,71 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { SplitView, Sidebar, List } from 'olymp-ui';
+import { Sidebar, Menu, Avatar } from 'olymp-fela';
+import { FaUsers } from 'olymp-icons';
+import { compose, withState } from 'recompose';
 import AuthProfile from './profile';
 
-@graphql(
-  gql`
-    query userList {
-      users: userList {
-        id
-        name
-        email
-        isAdmin
+const enhance = compose(
+  graphql(
+    gql`
+      query userList {
+        users: userList {
+          id
+          name
+          email
+          isAdmin
+        }
       }
-    }
-  `,
-)
-export default class AuthUsers extends Component {
-  state = { user: undefined };
+    `,
+  ),
+  withState('user', 'setUser', {}),
+);
 
+@enhance
+export default class AuthUsers extends Component {
   render() {
-    const { extraFields, data } = this.props;
-    const { user } = this.state;
+    const { extraFields, data, query, user, setUser } = this.props;
     const users = data.users || [];
 
     return (
-      <SplitView>
-        <Sidebar title="Benutzer" subtitle="Benutzer bearbeiten" borderLess>
-          {users.map(user => (
-            <List.Item
-              onClick={() => this.setState({ user })}
-              label={user.name}
-              description={user.isAdmin ? 'Administrator' : 'Benutzer'}
-              key={user.id}
-            />
-          ))}
-        </Sidebar>
-
-        <AuthProfile user={user} extraFields={extraFields} />
-      </SplitView>
+      <Sidebar
+        flex
+        menu={
+          <Menu
+            header={
+              <Menu.Item icon={<FaUsers />} large>
+                Benutzerverwaltung
+              </Menu.Item>
+            }
+          >
+            {users.map(u => (
+              <Menu.Item
+                key={u.id}
+                onClick={() => setUser(u)}
+                icon={
+                  <Avatar
+                    email={u.email}
+                    name={u.name}
+                    size={40}
+                    default="blank"
+                  />
+                }
+                active={u.id === user.id || query['@users'] === u.id}
+                large
+              >
+                {u.name}
+                <small>{u.isAdmin ? 'Administrator' : 'Benutzer'}</small>
+              </Menu.Item>
+            ))}
+          </Menu>
+        }
+      >
+        <AuthProfile
+          user={user.id ? user : undefined}
+          extraFields={extraFields}
+        />
+      </Sidebar>
     );
   }
 }
