@@ -21,7 +21,7 @@ const getLogo = x => {
   return <img src={x} alt="logo" />;
 };
 
-export const Modal = withTheme(
+const Modal = withTheme(
   ({
     isOpen,
     showLogo,

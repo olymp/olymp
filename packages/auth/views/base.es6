@@ -2,9 +2,9 @@ import React, { Children } from 'react';
 import { createComponent } from 'olymp-fela';
 import { withTheme } from 'react-fela';
 import { Link } from 'olymp-router';
-import { Modal } from 'olymp-ui';
 import Form from 'olymp-ui/form';
 import { message } from 'antd';
+import Modal from '../modal';
 
 const def = withTheme(
   ({

@@ -3,15 +3,9 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Button, Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
-import {
-  Modal,
-  Panel,
-  onEnterFocus,
-  layout,
-  onError,
-  onSuccess,
-} from 'olymp-ui';
+import { Panel, onEnterFocus, layout, onError, onSuccess } from 'olymp-ui';
 import withAuth from '../with-auth';
+import Modal from '../modal';
 
 @graphql(
   gql`
@@ -25,7 +19,7 @@ import withAuth from '../with-auth';
   `,
   {
     options: ({ isOpen }) => ({ skip: !isOpen }),
-  }
+  },
 )
 export default class AuthInvitations extends Component {
   static defaultProps = { data: {} };
@@ -55,7 +49,7 @@ export default class AuthInvitations extends Component {
     if (search) {
       items = items.filter(
         ({ name }) =>
-          name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+          name && name.toLowerCase().indexOf(search.toLowerCase()) !== -1,
       );
     }
 
@@ -90,7 +84,7 @@ export default class AuthInvitations extends Component {
       fetchPolicy: !id ? 'cache-only' : undefined,
       variables: { id },
     }),
-  }
+  },
 )
 @Form.create()
 class AuthInviationDetail extends Component {
@@ -130,7 +124,7 @@ class AuthInviationDetail extends Component {
               type="text"
               placeholder="Name"
               onKeyPress={onEnterFocus(() => this.mail)}
-            />
+            />,
           )}
         </Form.Item>
         <Form.Item key="email" label="E-Mail" {...layout}>
@@ -146,7 +140,7 @@ class AuthInviationDetail extends Component {
               onKeyPress={onEnterFocus(() => this.pw1)}
               ref={x => (this.mail = x)}
               addonAfter={<FaEnvelope size={10} />}
-            />
+            />,
           )}
         </Form.Item>
         <Button onClick={this.ok}>Speichern</Button>
