@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Select, Icon } from 'antd';
-import { layout, getRules } from 'olymp-ui';
+import { layout } from 'olymp-ui';
+import { getRules } from 'olymp-utils';
 
 const StateInput = ({
   item,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Select } from 'antd';
-import { layout, getRules } from 'olymp-ui';
+import { layout } from 'olymp-ui';
+import { getRules } from 'olymp-utils';
 
 const PageTypeInput = ({
   item,
@@ -24,9 +25,9 @@ const PageTypeInput = ({
         <Select.Option value="PLACEHOLDER">Platzhalter</Select.Option>
         <Select.Option value="ALIAS">Alias</Select.Option>
         <Select.Option value="LINK">Externer Link</Select.Option>
-      </Select>
-      )}
+      </Select>,
+    )}
   </Form.Item>
-  );
+);
 PageTypeInput.defaultProps = { layout };
 export default PageTypeInput;

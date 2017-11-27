@@ -1,6 +1,7 @@
 import React from 'react';
 import { TreeSelect, Form } from 'antd';
-import { layout, getRules } from 'olymp-ui';
+import { layout } from 'olymp-ui';
+import { getRules } from 'olymp-utils';
 import { withPropsOnChange } from 'recompose';
 
 const NullableTree = withPropsOnChange(['onChange'], ({ onChange }) => ({

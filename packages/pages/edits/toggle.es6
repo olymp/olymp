@@ -1,7 +1,7 @@
 import React from 'react';
-import { Switch } from 'antd';
-import { Form } from 'antd';
-import { layout, getRules } from 'olymp-ui';
+import { Switch, Form } from 'antd';
+import { layout } from 'olymp-ui';
+import { getRules } from 'olymp-utils';
 import { get } from 'lodash';
 
 const Toggle = ({

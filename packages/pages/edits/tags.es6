@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select, Form } from 'antd';
-import { layout, getRules } from 'olymp-ui';
+import { layout } from 'olymp-ui';
+import { getRules } from 'olymp-utils';
 import { get } from 'lodash';
 
 const TagSelect = ({
@@ -14,8 +15,8 @@ const TagSelect = ({
   form,
   options,
   ...rest
-}) =>
-  (<Form.Item key={field} label={label} {...layout}>
+}) => (
+  <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: get(item, field || '', []) || [],
       rules: getRules(rules, label),
@@ -26,13 +27,12 @@ const TagSelect = ({
         placeholder={placeholder || label}
         {...rest}
       >
-        {options.map(value =>
-          (<Select.Option key={value}>
-            {value}
-          </Select.Option>)
-        )}
-      </Select>
+        {options.map(value => (
+          <Select.Option key={value}>{value}</Select.Option>
+        ))}
+      </Select>,
     )}
-  </Form.Item>);
+  </Form.Item>
+);
 TagSelect.defaultProps = { layout };
 export default TagSelect;
