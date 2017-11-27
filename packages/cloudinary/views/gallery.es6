@@ -173,9 +173,18 @@ export default class GridExample extends PureComponent {
       return this.renderAutoSizer({ height: this.height });
     }
     return (
-      <WindowScroller selection={selection} overscanByPixels={overscanByPixels}>
-        {this.renderAutoSizer}
-      </WindowScroller>
+      <div
+        style={{
+          marginRight: 72,
+        }}
+      >
+        <WindowScroller
+          selection={selection}
+          overscanByPixels={overscanByPixels}
+        >
+          {this.renderAutoSizer}
+        </WindowScroller>
+      </div>
     );
   }
 }

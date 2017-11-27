@@ -25,7 +25,6 @@ const Container = createComponent(
     '> div': {
       position: 'relative',
       height: '100%',
-      marginRight: 72,
     },
   }),
   'div',
@@ -89,7 +88,8 @@ const component = enhance(props => {
           updateQuery({
             [`@${collectionName.toLowerCase()}`]: undefined,
             modal: undefined,
-          })}
+          })
+        }
       >
         <CollectionRoute
           {...props}
