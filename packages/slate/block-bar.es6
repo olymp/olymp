@@ -100,8 +100,6 @@ class Navigation extends Component {
       >
         <Menu
           collapsed={collapsed}
-          inverted
-          color
           onMouseEnter={() => setCollapsed(false)}
           onMouseLeave={() => setCollapsed(true)}
           header={
@@ -109,7 +107,8 @@ class Navigation extends Component {
               Seite bearbeiten
             </Menu.Item>
           }
-          headerColor="dark4"
+          headerColor
+          headerInverted
         >
           {children}
           <Menu.Item

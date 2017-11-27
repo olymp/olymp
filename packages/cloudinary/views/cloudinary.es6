@@ -4,11 +4,19 @@ import { withPropsOnChange, withState } from 'recompose';
 import {
   Sidebar,
   Menu,
+  AntMenu,
   StackedMenu,
   Drawer,
   createComponent,
 } from 'olymp-fela';
-import { FaChevronLeft, FaPictureO, FaClose, FaSave } from 'olymp-icons';
+import {
+  FaChevronLeft,
+  FaPictureO,
+  FaClose,
+  FaSave,
+  FaThemeisle,
+  FaOptinMonster,
+} from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import Gallery from './gallery';
@@ -233,15 +241,8 @@ class CloudinaryView extends Component {
   initial = true;
 
   renderMenu = (keys = []) => {
-    const {
-      goRoot,
-      setTags,
-      tags,
-      tree,
-      onClose,
-      onChange,
-      selectedItems,
-    } = this.props;
+    const { goRoot, setTags, tags, tree } = this.props;
+
     let children = [];
     if (keys.length === 0) {
       children = tree.children.map(app => (
@@ -281,24 +282,12 @@ class CloudinaryView extends Component {
         </Menu.List>
       ));
     }
+
     return (
       <Menu
         key={keys.join('|')}
         header={
-          <Menu.Item
-            large
-            onClick={goRoot}
-            icon={<FaPictureO />}
-            extra={
-              <span>
-                {onChange && (
-                  <FaSave size={18} onClick={() => onChange(selectedItems)} />
-                )}
-                &nbsp;
-                {onClose && <FaClose size={18} onClick={onClose} />}
-              </span>
-            }
-          >
+          <Menu.Item large onClick={goRoot} icon={<FaPictureO />}>
             Media
           </Menu.Item>
         }
@@ -324,6 +313,8 @@ class CloudinaryView extends Component {
       inModal,
       multi,
       value,
+      onChange,
+      onClose,
     } = this.props;
 
     const [key0, key1] = tags;
@@ -363,13 +354,16 @@ class CloudinaryView extends Component {
           dim={false}
           right
           width={collapsed ? 72 : 240}
+          onMouseEnter={() => setCollapsed(false)}
+          onMouseLeave={() => setCollapsed(true)}
         >
           <Menu
             collapsed={collapsed}
-            onMouseEnter={() => setCollapsed(false)}
-            onMouseLeave={() => setCollapsed(true)}
             header={
-              <Menu.Item large icon={<Label>{selectedItems.length}</Label>}>
+              <Menu.Item
+                large
+                icon={collapsed && <Label>{selectedItems.length}</Label>}
+              >
                 Bearbeiten
               </Menu.Item>
             }
@@ -396,6 +390,41 @@ class CloudinaryView extends Component {
               />
             </Menu.Space>
           </Menu>
+          {!collapsed && (
+            <Menu
+              color
+              inverted
+              collapsed
+              header={
+                <Menu.Item large icon={<Label>{selectedItems.length}</Label>}>
+                  Seite bearbeiten
+                </Menu.Item>
+              }
+              headerColor="dark4"
+              headerInverted
+            >
+              <AntMenu.Tooltip onClick={() => {}} icon={<FaThemeisle />}>
+                Beni, hier soll der Speicher-Button hin der seltsamerweise nun
+                weg ist! ;)
+              </AntMenu.Tooltip>
+              <AntMenu.Tooltip onClick={() => {}} icon={<FaOptinMonster />}>
+                .. und hier könnte löschen hin anstelle der Checkbox!
+              </AntMenu.Tooltip>
+              {!!onChange && (
+                <AntMenu.Tooltip
+                  onClick={() => onChange(selectedItems)}
+                  icon={<FaSave />}
+                >
+                  Speichern
+                </AntMenu.Tooltip>
+              )}
+              {!!onClose && (
+                <AntMenu.Tooltip onClick={onClose} icon={<FaClose />}>
+                  Abbrechen
+                </AntMenu.Tooltip>
+              )}
+            </Menu>
+          )}
         </Drawer>
       </Sidebar>
     );
