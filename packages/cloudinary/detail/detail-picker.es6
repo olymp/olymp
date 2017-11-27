@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Input, Collapse } from 'antd';
+import { Form, Input } from 'antd';
+import { Menu } from 'olymp-fela';
 import Crop from '../components/crop';
 import getImageInfo from './info';
-import { FormForFullLayout, CollapsePanel } from './utils';
+import { FormForFullLayout } from './utils';
 
 export default ({ form, item }) => {
   form.getFieldDecorator(`${item.id}.id`, { initialValue: item.id });
@@ -17,23 +18,23 @@ export default ({ form, item }) => {
           initialValue: item.crop,
         })(<Crop url={item.url} height={item.height} width={item.width} />)}
       </Form.Item>
-      <Collapse defaultActiveKey={['data']}>
-        <CollapsePanel header="Bild" key="data">
-          {form.getFieldDecorator(`${item.id}.source`, {
-            initialValue: item.source,
-          })(
-            <Form.Item label="Quelle" {...FormForFullLayout}>
-              <Input placeholder="Quelle" />
-            </Form.Item>,
-          )}
-          <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
-            {form.getFieldDecorator(`${item.id}.caption`, {
-              initialValue: item.caption,
-            })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
-          </Form.Item>
-        </CollapsePanel>
-        {getImageInfo(item)}
-      </Collapse>
+
+      <Menu.List title="Bild">
+        {form.getFieldDecorator(`${item.id}.source`, {
+          initialValue: item.source,
+        })(
+          <Form.Item label="Quelle" {...FormForFullLayout}>
+            <Input placeholder="Quelle" />
+          </Form.Item>,
+        )}
+        <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
+          {form.getFieldDecorator(`${item.id}.caption`, {
+            initialValue: item.caption,
+          })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
+        </Form.Item>
+      </Menu.List>
+
+      {getImageInfo(item)}
     </Form>
   );
 };

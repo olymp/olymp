@@ -1,9 +1,9 @@
 import React from 'react';
-import { Checkbox, Form, Input, Collapse, Tag } from 'antd';
+import { Checkbox, Form, Input, Tag } from 'antd';
 import { TagsEditor } from 'olymp-ui';
-import { createComponent } from 'olymp-fela';
+import { createComponent, Menu } from 'olymp-fela';
 import getImageInfo from './info';
-import { FormForFullLayout, CollapsePanel } from './utils';
+import { FormForFullLayout } from './utils';
 import { queryTags } from '../gql';
 import LightboxImage from '../lightbox-image';
 
@@ -50,7 +50,8 @@ const TagContainer = queryTags(
                 tags: checked
                   ? [...form.getFieldValue('tags'), tag]
                   : form.getFieldValue('tags').filter(x => x !== tag),
-              })}
+              })
+            }
           >
             {tag}
           </CheckableTag>
@@ -70,47 +71,47 @@ export default ({ multi, item, form, groupedTags, value, selectedTags }) => {
           <LightboxImage value={item} width="100%" maxHeight={200} />
         </Form.Item>
       )}
-      <Collapse defaultActiveKey={['data']}>
-        <CollapsePanel header="Bild" key="data">
-          <Form.Item label="Ordner" {...FormForFullLayout}>
-            {form.getFieldDecorator(`${item.id}.folder`, {
-              initialValue: item.folder,
-            })(<Input placeholder="Ordner" />)}
+
+      <Menu.List title="Bild">
+        <Form.Item label="Ordner" {...FormForFullLayout}>
+          {form.getFieldDecorator(`${item.id}.folder`, {
+            initialValue: item.folder,
+          })(<Input placeholder="Ordner" />)}
+        </Form.Item>
+        {
+          <Form.Item label="Quelle" {...FormForFullLayout}>
+            {form.getFieldDecorator(`${item.id}.source`, {
+              initialValue: item.source,
+            })(<Input placeholder="Quelle" />)}
           </Form.Item>
-          {
-            <Form.Item label="Quelle" {...FormForFullLayout}>
-              {form.getFieldDecorator(`${item.id}.source`, {
-                initialValue: item.source,
-              })(<Input placeholder="Quelle" />)}
-            </Form.Item>
-          }
-          <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
-            {form.getFieldDecorator(`${item.id}.caption`, {
-              initialValue: item.caption,
-            })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
-          </Form.Item>
-          <Form.Item label="Schlagworte" {...FormForFullLayout}>
-            {form.getFieldDecorator(`${item.id}.tags`, {
-              initialValue: Object.keys(groupedTags).filter(
-                key => groupedTags[key].length === value.length,
-              ),
-            })(
-              <TagsEditor
-                searchPlaceholder="Suche ..."
-                placeholder="Schlagworte"
-              />,
-            )}
-          </Form.Item>
-          {form.getFieldDecorator(`${item.id}.removed`, {
-            initialValue: item.removed,
-            valuePropName: 'checked',
-          })(<CheckboxMargin>Im Papierkorb</CheckboxMargin>)}
-        </CollapsePanel>
-        <CollapsePanel header="Tagcloud" key="tags">
-          <TagContainer selectedTags={selectedTags} form={form} />
-        </CollapsePanel>
-        {!multi && getImageInfo(item)}
-      </Collapse>
+        }
+        <Form.Item key="caption" label="Bezeichnung" {...FormForFullLayout}>
+          {form.getFieldDecorator(`${item.id}.caption`, {
+            initialValue: item.caption,
+          })(<Input.TextArea rows={3} placeholder="Bezeichnung" />)}
+        </Form.Item>
+        <Form.Item label="Schlagworte" {...FormForFullLayout}>
+          {form.getFieldDecorator(`${item.id}.tags`, {
+            initialValue: Object.keys(groupedTags).filter(
+              key => groupedTags[key].length === value.length,
+            ),
+          })(
+            <TagsEditor
+              searchPlaceholder="Suche ..."
+              placeholder="Schlagworte"
+            />,
+          )}
+        </Form.Item>
+        {form.getFieldDecorator(`${item.id}.removed`, {
+          initialValue: item.removed,
+          valuePropName: 'checked',
+        })(<CheckboxMargin>Im Papierkorb</CheckboxMargin>)}
+      </Menu.List>
+
+      <Menu.List title="Tagcloud">
+        <TagContainer selectedTags={selectedTags} form={form} />
+      </Menu.List>
+      {!multi && getImageInfo(item)}
     </Form>
   );
 };

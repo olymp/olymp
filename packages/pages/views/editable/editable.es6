@@ -269,7 +269,6 @@ export default class EditablePage extends Component {
           {!render && P}
 
           <Drawer
-            color
             width={475}
             right
             open={formOpen}

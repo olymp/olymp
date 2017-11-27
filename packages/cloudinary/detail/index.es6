@@ -1,4 +1,5 @@
 import React from 'react';
+import { createComponent } from 'olymp-fela';
 import { Form } from 'antd';
 import { groupBy } from 'lodash';
 import { compose, withProps, withPropsOnChange, withState } from 'recompose';
@@ -6,6 +7,15 @@ import DetailBrowser from './detail-browser';
 import DetailPicker from './detail-picker';
 import Gallery from '../components/gallery';
 import LightboxGallery from '../lightbox-gallery';
+
+const Container = createComponent(
+  ({ collapsed, active }) => ({
+    opacity: collapsed ? 0 : 1,
+    transition: 'opacity 200ms ease-out',
+    display: active ? 'block' : 'none',
+  }),
+  'div',
+);
 
 const enhance = compose(
   Form.create(),
@@ -31,6 +41,7 @@ export default enhance(
     value = [],
     activeId,
     multi,
+    collapsed,
     editable,
     onClick,
     setActive,
@@ -39,8 +50,9 @@ export default enhance(
   }) => {
     const Detail = editable ? DetailBrowser : DetailPicker;
     const active = value.find(x => x.id === activeId) || value[0] || {};
+
     return (
-      <div>
+      <Container collapsed={collapsed} active>
         <LightboxGallery>
           {multi && (
             <Gallery
@@ -53,11 +65,10 @@ export default enhance(
           )}
         </LightboxGallery>
         {value.map(item => (
-          <div
+          <Container
             key={item.id}
-            style={{
-              display: item.id === active.id ? 'block' : 'none',
-            }}
+            collapsed={collapsed}
+            active={item.id === active.id}
           >
             <Detail
               {...rest}
@@ -66,9 +77,9 @@ export default enhance(
               value={value}
               item={item}
             />
-          </div>
+          </Container>
         ))}
-      </div>
+      </Container>
     );
   },
 );

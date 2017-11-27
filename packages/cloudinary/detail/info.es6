@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
+import { Menu } from 'olymp-fela';
 import { format } from 'date-fns';
-import { CollapsePanel } from './utils';
 
 const FormForFullLayout = {
   wrapperCol: { span: 24, offset: 0 },
@@ -9,7 +9,7 @@ const FormForFullLayout = {
 };
 
 export default (item, app) => (
-  <CollapsePanel header="Meta-Daten" key="2">
+  <Menu.List title="Meta-Daten" key="2">
     <Form.Item key="project" label="Projekt" {...FormForFullLayout}>
       <Input disabled placeholder="Projekt" value={app} />
     </Form.Item>
@@ -44,5 +44,5 @@ export default (item, app) => (
         value={`${item.bytes / 1000} kB`}
       />
     </Form.Item>
-  </CollapsePanel>
+  </Menu.List>
 );

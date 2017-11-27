@@ -1,18 +1,56 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
-import { Sidebar, Menu, StackedMenu, Drawer } from 'olymp-fela';
+import {
+  Sidebar,
+  Menu,
+  StackedMenu,
+  Drawer,
+  createComponent,
+} from 'olymp-fela';
 import { FaChevronLeft, FaPictureO, FaClose, FaSave } from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import Gallery from './gallery';
 import Detail from '../detail';
+import Image from '../image';
 // import Dragzone from '../components/dragzone';
 
 const EMPTY = 'Keine Tags';
 const TRASH = 'Papierkorb';
 const GENERAL = 'Allgemein';
 const INITIAL_ARRAY = [];
+
+const Label = createComponent(
+  ({ theme }) => ({
+    '> circle': {
+      fill: theme.dark5,
+    },
+  }),
+  ({ children, ...p }) => (
+    <svg
+      width="64"
+      height="64"
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      {...p}
+    >
+      <circle cx="32" cy="32" r="31" />
+      <text
+        textAnchor="middle"
+        x="50%"
+        y="50%"
+        dy=".35em"
+        fontFamily="sans-serif"
+        fontSize="45px"
+        fill="white"
+      >
+        {children}
+      </text>
+    </svg>
+  ),
+);
 
 const addSortedChildren = (obj, sorter = 'length') => {
   if (!obj.map) {
@@ -171,7 +209,6 @@ class CloudinaryView extends Component {
     format: undefined,
   };
 
-  initial = true;
   componentWillReceiveProps({ selectedItems = [] }) {
     const thisSelection = this.props.selectedItems || [];
     if (selectedItems.length !== thisSelection.length) {
@@ -192,6 +229,8 @@ class CloudinaryView extends Component {
       setSelection([id]);
     }
   };
+
+  initial = true;
 
   renderMenu = (keys = []) => {
     const {
@@ -330,41 +369,30 @@ class CloudinaryView extends Component {
             onMouseEnter={() => setCollapsed(false)}
             onMouseLeave={() => setCollapsed(true)}
             header={
-              <Menu.Item
-                icon={
-                  <svg
-                    width="64"
-                    height="64"
-                    viewBox="0 0 64 64"
-                    xmlns="http://www.w3.org/2000/svg"
-                    version="1.1"
-                  >
-                    <circle cx="32" cy="32" r="31" fill="rgb(0,100,0)" />
-                    <text
-                      textAnchor="middle"
-                      x="50%"
-                      y="50%"
-                      dy=".35em"
-                      fontFamily="sans-serif"
-                      fontSize="45px"
-                      fill="white"
-                    >
-                      {selectedItems.length}
-                    </text>
-                  </svg>
-                }
-              >
+              <Menu.Item large icon={<Label>{selectedItems.length}</Label>}>
                 Bearbeiten
               </Menu.Item>
             }
+            headerInverted
+            headerColor
           >
             <Menu.Space>
+              {collapsed &&
+                (value || selectedItems || []).map(v => (
+                  <Menu.Item
+                    key={v.id}
+                    large
+                    icon={<Image value={v} width={40} height={40} />}
+                  />
+                ))}
               <Detail
                 value={value || selectedItems || []}
                 multi={multi}
                 editable={!inModal}
+                collapsed={collapsed}
                 onRemove={({ id }) =>
-                  setSelection(selection.filter(x => id !== x))}
+                  setSelection(selection.filter(x => id !== x))
+                }
               />
             </Menu.Space>
           </Menu>
