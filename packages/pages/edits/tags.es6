@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, Form } from 'antd';
-import { layout } from 'olymp-ui';
+import { layout } from 'olymp-utils';
 import { get } from 'lodash';
 import getRules from '../get-rules';
 

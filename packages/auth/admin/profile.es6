@@ -3,10 +3,8 @@ import { createComponent, Grid, Avatar, SectionHeading } from 'olymp-fela';
 import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
-import { onError, onSuccess, onEnterFocus } from 'olymp-utils';
+import { onError, onSuccess, onEnterFocus, layout } from 'olymp-utils';
 import withAuth from '../with-auth';
-
-const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
 
 export const FormItem = createComponent(
   ({ theme }) => ({

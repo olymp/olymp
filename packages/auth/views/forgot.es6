@@ -13,13 +13,13 @@ import Base from './base';
 @Form.create()
 export default class AuthForgot extends Component {
   ok = () => {
-    const { forgot, onClose, onOk, form } = this.props;
+    const { forgot, onOk, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return onError(err);
       }
       forgot({ email: values.email })
-        .then(({ name }) => {
+        .then(() => {
           onSuccess('Bitte bestätigen Sie die Zurücksetzung');
           onOk({ email: values.email });
         })
@@ -28,7 +28,7 @@ export default class AuthForgot extends Component {
   };
 
   render() {
-    const { isOpen, email, form, saving, onClose } = this.props;
+    const { isOpen, email, form, onClose } = this.props;
     const { getFieldDecorator } = form;
 
     return (

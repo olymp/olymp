@@ -1,6 +1,6 @@
 import React from 'react';
 import { TreeSelect, Form } from 'antd';
-import { layout } from 'olymp-ui';
+import { layout } from 'olymp-utils';
 import { withPropsOnChange } from 'recompose';
 import getRules from '../get-rules';
 
