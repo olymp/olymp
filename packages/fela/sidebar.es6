@@ -11,7 +11,6 @@ const Sidebar = createComponent(
     top,
     collapsed,
     pusher,
-    zIndex,
     flex,
     grid,
     sectionStyle = {},
@@ -98,14 +97,12 @@ const Sidebar = createComponent(
 );
 
 export default Sidebar;
-export const AutoSidebar = withState(
-  'collapsed',
-  'setCollapsed',
-  true,
-)(({ setCollapsed, ...props }) => (
-  <Sidebar
-    {...props}
-    onMouseEnter={() => setCollapsed(false)}
-    onMouseLeave={() => setCollapsed(true)}
-  />
-));
+export const AutoSidebar = withState('collapsed', 'setCollapsed', true)(
+  ({ setCollapsed, ...props }) => (
+    <Sidebar
+      {...props}
+      onMouseEnter={() => setCollapsed(false)}
+      onMouseLeave={() => setCollapsed(true)}
+    />
+  ),
+);
