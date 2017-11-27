@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { slugify, unflatten } from 'olymp-utils';
-import { Panel, SectionH } from 'olymp-ui';
+import { SectionHeading } from 'olymp-fela';
+import { Panel } from 'olymp-ui';
 import {
   Input,
   PageType,
@@ -100,10 +101,12 @@ class PageForm extends Component {
           />
         )}
         <Toggle form={form} item={item} field="isMega" label="Mega" />
-        <SectionH
-          title="Erweitert"
+        <SectionHeading
+          level={2}
           description="Datenanbindung, Sortierung Unterseiten"
-        />
+        >
+          Erweitert
+        </SectionHeading>
         <Input
           form={form}
           item={item}

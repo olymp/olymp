@@ -31,15 +31,22 @@ export const Heading = createComponent(
   ['level', 'itemProp'],
 );
 
-export const SectionHeading = ({ title, description, children }) => (
+export const SectionHeading = ({ title, description, children, level = 0 }) => (
   <div key={0}>
-    <H1 marginBottom={0} textAlign="center" light color thin>
+    <Heading
+      level={1 + level}
+      marginBottom={0}
+      textAlign="center"
+      light
+      color
+      thin
+    >
       {title || children}
-    </H1>
+    </Heading>
     {description && (
-      <H3 marginTop={0} textAlign="center" thin>
+      <Heading level={3 + level} marginTop={0} textAlign="center" thin>
         {description}
-      </H3>
+      </Heading>
     )}
   </div>
 );
