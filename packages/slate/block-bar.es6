@@ -20,28 +20,6 @@ const dragStart = type => ev => {
   ev.dataTransfer.setData('text', `x-slate:${type}`);
 };
 
-const getIcon = key => {
-  if (key === 'Bilder') {
-    return 'picture';
-  }
-  if (key === 'Daten') {
-    return 'database';
-  }
-  if (key === 'Kacheln') {
-    return 'appstore-o';
-  }
-  if (key === 'Kopf') {
-    return 'to-top';
-  }
-  if (key === 'Layout') {
-    return 'file';
-  }
-  if (key === 'Sonstiges') {
-    return 'ellipsis';
-  }
-  return 'plus';
-};
-
 @withLang
 @connect(
   ({ location }) => ({
