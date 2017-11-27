@@ -4,10 +4,10 @@ import { shallowEqual } from 'recompose';
 
 const SlideIn = createComponent(
   ({ isBack }) => ({
-    // height: '100%',
     height: '100%',
     position: 'relative',
     overflow: 'hidden',
+    flexGrow: 1,
     '> :nth-child(1)': {
       zIndex: 0,
       position: 'absolute',
