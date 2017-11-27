@@ -84,9 +84,9 @@ const component = enhance(
         collectionTree[key].length > 1
           ? lists.push(
             <Menu.List title={key} key={key}>
-              {collectionTree[key].map(collection => (
+              {collectionTree[key].map((collection, i) => (
                 <Menu.Item
-                  key={collection.id}
+                  key={collection.id || i}
                   icon={<FaDatabase />}
                   active={
                       query[`@${collection.name.toLowerCase()}`] !== undefined
@@ -94,7 +94,8 @@ const component = enhance(
                   onClick={() =>
                       setQuery({
                         [`@${collection.name.toLowerCase()}`]: 'new',
-                      })}
+                      })
+                    }
                 >
                   {get(collection, 'specialFields.label', collection.name)}
                 </Menu.Item>
@@ -112,7 +113,8 @@ const component = enhance(
               onClick={() =>
                   setQuery({
                     [`@${collectionTree[key][0].name.toLowerCase()}`]: 'new',
-                  })}
+                  })
+                }
             >
               {get(
                   collectionTree[key][0],
