@@ -1,23 +1,9 @@
 import React from 'react';
 import { compose, toClass, withState } from 'recompose';
 import { SlateWriter } from 'olymp-slate';
-import { createComponent, Modal } from 'olymp-fela';
+import { createComponent } from 'olymp-fela';
 import { Button } from 'antd';
 import FormItem from './form-item';
-
-const Footer = createComponent(
-  ({ theme }) => ({
-    padding: theme.space2,
-  }),
-  ({ onClose, className }) => (
-    <div className={className}>
-      <Button type="primary" onClick={onClose}>
-        Übernehmen
-      </Button>
-    </div>
-  ),
-  p => Object.keys(p),
-);
 
 const enhance = compose(withState('isOpen', 'setOpen', false), toClass);
 
