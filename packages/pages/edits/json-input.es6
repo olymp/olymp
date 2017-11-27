@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Input as AntInput, Form } from 'antd';
 import { layout } from 'olymp-ui';
-import { getRules } from 'olymp-utils';
 import { get } from 'lodash';
+import getRules from '../get-rules';
 
 class JsonInput extends Component {
   state = { text: '' };

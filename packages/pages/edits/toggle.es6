@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Form } from 'antd';
 import { layout } from 'olymp-ui';
-import { getRules } from 'olymp-utils';
 import { get } from 'lodash';
+import getRules from '../get-rules';
 
 const Toggle = ({
   item,
