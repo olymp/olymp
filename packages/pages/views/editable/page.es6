@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { slugify, unflatten } from 'olymp-utils';
-import { SectionHeading } from 'olymp-fela';
-import { Panel } from 'olymp-ui';
+import { SectionHeading, Panel } from 'olymp-fela';
 import {
   Input,
   PageType,
@@ -44,7 +43,7 @@ class PageForm extends Component {
     );
 
     return (
-      <Panel flex={1} padding={16} alignLabel="left">
+      <Panel padding={16} alignLabel="left">
         <Input
           form={form}
           item={item}

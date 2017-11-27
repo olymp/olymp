@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Button, Form, Input } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
-import { Panel } from 'olymp-ui';
+import { Panel } from 'olymp-fela';
 import { onError, onSuccess, onEnterFocus, layout } from 'olymp-utils';
 import withAuth from '../with-auth';
 import Modal from '../modal';
