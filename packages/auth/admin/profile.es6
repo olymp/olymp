@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { createComponent, Grid, Avatar, SectionHeading } from 'olymp-fela';
-import { Container } from 'olymp-ui';
+import {
+  createComponent,
+  Grid,
+  Avatar,
+  SectionHeading,
+  Container,
+} from 'olymp-fela';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
 import { onError, onSuccess, onEnterFocus, layout } from 'olymp-utils';

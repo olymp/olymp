@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'olymp-ui';
+import { Container } from 'olymp-fela';
 import { createComponent } from 'react-fela';
 
 export default createComponent(
@@ -17,5 +17,5 @@ export default createComponent(
     },
   }),
   p => <Container {...p} />,
-  p => Object.keys(p)
+  p => Object.keys(p),
 );
