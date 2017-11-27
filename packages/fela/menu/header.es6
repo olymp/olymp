@@ -14,7 +14,7 @@ const Header = createComponent(
     paddingX: 9,
     marginTop: `-${theme.space2}`,
     paddingTop: theme.space2,
-    // marginBottom: theme.space2,
+    marginBottom: theme.space2,
     paddingBottom: theme.space2,
     backgroundColor: (color === true && theme.color) || theme[color] || color,
     color: theme.inverted ? theme.light : theme.dark,
