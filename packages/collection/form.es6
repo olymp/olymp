@@ -1,9 +1,9 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
-import { Sidebar } from 'olymp-ui';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { createComponent, Container } from 'olymp-fela';
+import { Container, SectionHeading, Sidebar, Menu, AntMenu } from 'olymp-fela';
 import { Prompt } from 'olymp-router';
+import { FaPencil, FaTrash, FaSave } from 'olymp-icons';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
 import DefaultEdits from './default-edits';
@@ -45,25 +45,6 @@ const getDefaultEdit = type => {
   return null;
 };
 
-const Div = createComponent(
-  ({ theme }) => ({
-    '> div': {
-      height: '100%',
-      padding: 0,
-    },
-  }),
-  'div',
-);
-
-const Buttons = createComponent(
-  () => ({
-    '> button': {
-      margin: 5,
-    },
-  }),
-  'div',
-);
-
 const enhance = compose(
   withPropsOnChange(['collection'], ({ collection, form, ...props }) => {
     const schema = getFormSchema(collection.fields);
@@ -104,7 +85,6 @@ const FormComponent = enhance(
     schemaWithEdits,
     inline,
     vertical,
-    children,
     item,
     className,
     validateFields,
@@ -120,43 +100,45 @@ const FormComponent = enhance(
     header = true,
     ...rest
   }) => (
-    <Div>
+    <Sidebar
+      right
+      collapsed
+      menu={
+        <Menu
+          header={<Menu.Item icon={<FaPencil />} large />}
+          headerColor
+          headerInverted
+        >
+          <AntMenu.Tooltip onClick={onSave} icon={<FaSave />}>
+            Speichern
+          </AntMenu.Tooltip>
+          <Popconfirm
+            placement="left"
+            title="Wirklich löschen?"
+            onConfirm={onDelete}
+            okText="Ja"
+            cancelText="Nein"
+          >
+            <AntMenu.Tooltip icon={<FaTrash />}>Löschen</AntMenu.Tooltip>
+          </Popconfirm>
+        </Menu>
+      }
+    >
       <Container size="small">
         <Prompt
           when={form.isFieldsTouched()}
           message={() => 'Änderungen verwerfen?'}
         />
-        <Sidebar
-          isOpen
-          width="100%"
-          borderLess
-          title={header ? form.getFieldValue('name') || 'Bearbeiten' : null}
-          leftButtons={
-            header && (
-              <Popconfirm
-                placement="bottom"
-                title="Wirklich löschen?"
-                onConfirm={onDelete}
-                okText="Ja"
-                cancelText="Nein"
-              >
-                <Sidebar.Button shape="circle" icon="delete" />
-              </Popconfirm>
-            )
-          }
-          rightButtons={
-            header && (
-              <Sidebar.Button onClick={onSave} shape="circle" icon="save" />
-            )
-          }
-        >
-          <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
-            <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
-          </Form>
-          <Buttons>{children}</Buttons>
-        </Sidebar>
+
+        <SectionHeading description="Profil bearbeiten">
+          {header ? form.getFieldValue('name') || 'Bearbeiten' : null}
+        </SectionHeading>
+
+        <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+          <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
+        </Form>
       </Container>
-    </Div>
+    </Sidebar>
   ),
 );
 FormComponent.displayName = 'FormComponent';
