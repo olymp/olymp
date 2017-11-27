@@ -28,19 +28,21 @@ export const Heading = createComponent(
     }
     return React.createElement(`h${level}`, rest, children);
   },
-  ['level', 'itemProp']
+  ['level', 'itemProp'],
 );
 
-export const SectionHeading = ({ title, description }) =>
-  (<div key={0}>
-    <h3 marginBottom={0} textAlign="center" level={3} light color>
-      {title}
-    </h3>
-    {description &&
-      <h5 marginTop={0} textAlign="center" level={5} fontSize={12} light>
+export const SectionHeading = ({ title, description, children }) => (
+  <div key={0}>
+    <H1 marginBottom={0} textAlign="center" light color thin>
+      {title || children}
+    </H1>
+    {description && (
+      <H3 marginTop={0} textAlign="center" thin>
         {description}
-      </h5>}
-  </div>);
+      </H3>
+    )}
+  </div>
+);
 
 export const H1 = props => <Heading {...props} level={1} />;
 export const H2 = props => <Heading {...props} level={2} />;

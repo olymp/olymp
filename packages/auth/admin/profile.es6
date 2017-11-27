@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createComponent, Grid, Avatar } from 'olymp-fela';
+import { createComponent, Grid, Avatar, SectionHeading } from 'olymp-fela';
 import { Container } from 'olymp-ui';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { FaEnvelope } from 'olymp-icons';
@@ -7,25 +7,6 @@ import { onError, onSuccess, onEnterFocus } from '../views/base';
 import withAuth from '../with-auth';
 
 const layout = { labelCol: { span: 7 }, wrapperCol: { span: 17 } };
-
-export const H1 = createComponent(
-  ({ theme }) => ({
-    color: theme.color,
-    textAlign: 'center',
-    fontWeight: 200,
-  }),
-  'h1',
-  p => Object.keys(p),
-);
-
-export const H3 = createComponent(
-  () => ({
-    textAlign: 'center',
-    fontWeight: 200,
-  }),
-  'h3',
-  p => Object.keys(p),
-);
 
 export const FormItem = createComponent(
   ({ theme }) => ({
@@ -71,8 +52,9 @@ export default class AuthProfile extends Component {
 
     return (
       <Container>
-        <H1>{user.name}</H1>
-        <H3>Profil bearbeiten</H3>
+        <SectionHeading description="Profil bearbeiten">
+          {user.name}
+        </SectionHeading>
 
         <Form onSubmit={this.ok}>
           <FormItem key="name" label="Name" {...layout}>
