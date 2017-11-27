@@ -1,8 +1,18 @@
 import React from 'react';
 import { Select, Input } from 'antd';
 import tinycolor from 'tinycolor2';
-import { withColors } from '../decorators';
-import { FaMagic } from 'olymp-icons';
+import PropTypes from 'prop-types';
+
+const withColors = WrappedComponent => {
+  const WithColors = () => (
+    <WrappedComponent colors={this.context.defaultColors} {...this.props} />
+  );
+  WithColors.contextTypes = {
+    defaultColors: PropTypes.array,
+  };
+
+  return WithColors;
+};
 
 const ColorPicker = null;
 if (typeof document !== 'undefined') {
@@ -34,7 +44,7 @@ const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
   if (value && value !== 'other') {
     const valueIndex = colors.findIndex(
       color =>
-        tinycolor(value).toRgbString() === tinycolor(color.color).toRgbString()
+        tinycolor(value).toRgbString() === tinycolor(color.color).toRgbString(),
     );
 
     isOwnColor = valueIndex === -1;
@@ -52,19 +62,20 @@ const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
         value={value && tinycolor(value).toRgbString()}
         {...rest}
         filterOption={(input, option) =>
-          option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       >
-        {newColors.map((color, i) =>
-          (<Select.Option value={tinycolor(color.color).toRgbString()} key={i}>
+        {newColors.map((color, i) => (
+          <Select.Option value={tinycolor(color.color).toRgbString()} key={i}>
             <i
               className="fa fa-square"
               style={{ color: tinycolor(color.color).toRgbString() }}
             />{' '}
             {color.name}
-          </Select.Option>)
-        )}
+          </Select.Option>
+        ))}
 
-        <Select.Option value={'other'} key={'other'}>
+        <Select.Option value="other" key="other">
           <span className="react-custom-trigger">Eigene Farbe</span>
         </Select.Option>
       </Select>
@@ -91,12 +102,8 @@ const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
 
   return (
     <div>
-      <div>
-        {select}
-      </div>
-      <div style={{ marginTop: 2 }}>
-        {picker}
-      </div>
+      <div>{select}</div>
+      <div style={{ marginTop: 2 }}>{picker}</div>
     </div>
   );
 };
