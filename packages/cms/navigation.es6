@@ -5,7 +5,7 @@ import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { createLogout } from 'olymp-auth';
 import { Avatar, Logo, Menu, Sidebar, Search } from 'olymp-fela';
 import {
-  FaSitemap,
+  FaCubes,
   FaPictureO,
   FaSearch,
   FaPowerOff,
@@ -141,7 +141,7 @@ const component = enhance(
           <Menu color="colorSecondary" inverted header={header}>
             <Menu.Item
               active={Object.keys(query).length === 0}
-              icon={<FaSitemap />}
+              icon={<FaCubes />}
               onClick={() => setQuery({})}
             >
               Seitenmanager

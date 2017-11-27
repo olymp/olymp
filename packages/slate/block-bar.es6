@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withLang } from 'olymp-utils';
-import { FaExpand, FaCode } from 'olymp-icons';
+import { FaExpand, FaCode, FaCompress, FaCube } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
 import { Menu, Drawer } from 'olymp-fela';
 import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
@@ -104,24 +104,29 @@ class Navigation extends Component {
           color="colorSecondary"
           onMouseEnter={() => setCollapsed(false)}
           onMouseLeave={() => setCollapsed(true)}
+          header={
+            <Menu.Item icon={<FaCube />} large>
+              Seite bearbeiten
+            </Menu.Item>
+          }
+          headerColor="dark4"
         >
           {children}
-          <Menu.List title="Ansicht">
-            <Menu.Item
-              active={full}
-              onClick={() => setFull(!full)}
-              icon={<FaExpand />}
-            >
-              Vollbild
-            </Menu.Item>
-            <Menu.Item
-              active={code}
-              onClick={() => setCode(!code)}
-              icon={<FaCode />}
-            >
-              Code anzeigen
-            </Menu.Item>
-          </Menu.List>
+          <Menu.Item
+            active={full}
+            onClick={() => setFull(!full)}
+            icon={full ? <FaCompress /> : <FaExpand />}
+          >
+            {full ? 'Vollbild beenden' : 'Vollbild'}
+          </Menu.Item>
+          <Menu.Item
+            active={code}
+            onClick={() => setCode(!code)}
+            icon={<FaCode />}
+          >
+            Code anzeigen
+          </Menu.Item>
+          <Menu.Divider />
           {items}
           <Menu.Space />
         </Menu>

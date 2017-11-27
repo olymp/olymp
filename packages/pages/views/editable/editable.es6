@@ -5,7 +5,7 @@ import {
   FaAngleLeft,
   FaAngleRight,
   FaPlusSquareO,
-  FaSitemap,
+  FaCubes,
   FaHome,
   FaSave,
   FaPencil,
@@ -14,6 +14,7 @@ import { withPropsOnChange, withProps, withState } from 'recompose';
 import {
   ContentLoader,
   Menu,
+  AntMenu,
   DndList,
   StackedMenu,
   Sidebar,
@@ -196,7 +197,7 @@ export default class EditablePage extends Component {
       ];
     }
     const header = (
-      <Menu.Item large icon={<FaSitemap />}>
+      <Menu.Item large icon={<FaCubes />}>
         Seitenmanager
       </Menu.Item>
     );
@@ -238,11 +239,12 @@ export default class EditablePage extends Component {
         bindingObj={bindingObj}
         signal={signal}
         menu={[
-          <Menu.Item key={1} color onClick={save} icon={<FaSave />}>
+          <Menu.Item key={1} onClick={save} icon={<FaSave />}>
             Speichern
           </Menu.Item>,
+          <Menu.Divider key={2} />,
           <Menu.Item
-            key={2}
+            key={3}
             onClick={() => setFormOpen(!formOpen)}
             icon={<FaPencil />}
           >
@@ -254,38 +256,51 @@ export default class EditablePage extends Component {
 
     return (
       <Sidebar
-        pusher
-        left={72}
+        flex
         menu={<StackedMenu keys={keys} renderMenu={this.renderMenu} />}
       >
-        <Prompt
-          when={form.isFieldsTouched()}
-          message={() => 'Änderungen verwerfen?'}
-        />
-        {render && render(P)}
-        {!render && P}
-        <Drawer
-          color="white"
-          width={475}
-          right
-          open={formOpen}
-          onClose={() => setFormOpen(false)}
-        >
-          <Menu color="white" collapsed>
-            <Menu.Item onClick={setFormOpen} icon={<FaPencil />} />
-          </Menu>
-          <PageForm {...this.props} />
-        </Drawer>
+        <div style={{ position: 'relative' }}>
+          <Prompt
+            when={form.isFieldsTouched()}
+            message={() => 'Änderungen verwerfen?'}
+          />
+
+          {render && render(P)}
+          {!render && P}
+
+          <Drawer
+            color
+            width={475}
+            right
+            open={formOpen}
+            onClose={() => setFormOpen(false)}
+          >
+            <Menu
+              header={<Menu.Item large>Seite bearbeiten</Menu.Item>}
+              headerColor
+              headerInverted
+            >
+              <PageForm {...this.props} />
+            </Menu>
+            <Menu
+              color
+              inverted
+              collapsed
+              header={
+                <Menu.Item large icon={<FaPencil />}>
+                  Seite bearbeiten
+                </Menu.Item>
+              }
+              headerColor="dark4"
+              headerInverted
+            >
+              <AntMenu.Tooltip onClick={setFormOpen} icon={<FaSave />}>
+                Speichern
+              </AntMenu.Tooltip>
+            </Menu>
+          </Drawer>
+        </div>
       </Sidebar>
     );
   }
 }
-
-/* <PageSidebar
-              form={form}
-              item={item}
-              navigation={navigation}
-              items={flatNavigation}
-              tab={tab}
-              onTabClick={key => replaceQuery({ '@page': key || null })}
-        /> */
