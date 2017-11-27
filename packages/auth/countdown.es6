@@ -49,6 +49,24 @@ export default class CountdownTimer extends Component {
     clearTimeout(this.state.timeoutId);
   }
 
+  getFormattedTime = milliseconds => {
+    if (this.props.formatFunc) {
+      return this.props.formatFunc(milliseconds);
+    }
+
+    const totalSeconds = Math.round(milliseconds / 1000);
+
+    let seconds = parseInt(totalSeconds % 60, 10);
+    let minutes = parseInt(totalSeconds / 60, 10) % 60;
+    let hours = parseInt(totalSeconds / 3600, 10);
+
+    seconds = seconds < 10 ? `0${seconds}` : seconds;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    hours = hours < 10 ? `0${hours}` : hours;
+
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
   tick = () => {
     const currentTime = Date.now();
     const dt = this.state.prevTime ? currentTime - this.state.prevTime : 0;
@@ -88,31 +106,9 @@ export default class CountdownTimer extends Component {
     }
   };
 
-  getFormattedTime = (milliseconds) => {
-    if (this.props.formatFunc) {
-      return this.props.formatFunc(milliseconds);
-    }
-
-    const totalSeconds = Math.round(milliseconds / 1000);
-
-    let seconds = parseInt(totalSeconds % 60, 10);
-    let minutes = parseInt(totalSeconds / 60, 10) % 60;
-    let hours = parseInt(totalSeconds / 3600, 10);
-
-    seconds = seconds < 10 ? `0${seconds}` : seconds;
-    minutes = minutes < 10 ? `0${minutes}` : minutes;
-    hours = hours < 10 ? `0${hours}` : hours;
-
-    return `${hours}:${minutes}:${seconds}`;
-  };
-
   render() {
     const timeRemaining = this.state.timeRemaining;
 
-    return (
-      <div className="timer">
-        {this.getFormattedTime(timeRemaining)}
-      </div>
-    );
+    return <div className="timer">{this.getFormattedTime(timeRemaining)}</div>;
   }
 }

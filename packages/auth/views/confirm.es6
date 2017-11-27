@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Link } from 'olymp-router';
-import { Countdown } from 'olymp-ui';
 import { Form } from 'antd';
 import Base, { onSuccess, onError } from './base';
+import Countdown from '../countdown';
 
 @Form.create()
 @graphql(
@@ -56,11 +56,15 @@ export default class AuthConfirm extends Component {
         {!valid && (
           <p style={{ textAlign: 'center' }}>
             Das Token ist ungültig oder abgelaufen. Bitte{' '}
-            <Link to={{ pathname, query: { register: null, confirm: undefined } }}>
+            <Link
+              to={{ pathname, query: { register: null, confirm: undefined } }}
+            >
               registrieren Sie sich erneut
             </Link>{' '}
             oder{' '}
-            <Link to={{ pathname, query: { feedback: null, confirm: undefined } }}>
+            <Link
+              to={{ pathname, query: { feedback: null, confirm: undefined } }}
+            >
               kontaktieren Sie den Support
             </Link>.
           </p>
@@ -69,12 +73,17 @@ export default class AuthConfirm extends Component {
           <div style={{ textAlign: 'center' }}>
             Automatische bestätigung in
             <h1>
-              <Countdown initialTimeRemaining={5000} completeCallback={this.ok} />
+              <Countdown
+                initialTimeRemaining={5000}
+                completeCallback={this.ok}
+              />
             </h1>
           </div>
         )}
         <Base.Links>
-          <Link to={{ pathname, query: { login: null, confirm: undefined } }}>Zur Anmeldung</Link>
+          <Link to={{ pathname, query: { login: null, confirm: undefined } }}>
+            Zur Anmeldung
+          </Link>
         </Base.Links>
       </Base>
     );
