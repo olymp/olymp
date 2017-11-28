@@ -20,10 +20,12 @@ const Drawer = createComponent(
     left,
     open,
     collapsed = true,
+    flex,
   }) => ({
     pointerEvents: 'initial',
-    position: 'fixed',
-    top,
+    position: flex ? 'absolute' : 'fixed',
+    top: 0,
+    paddingTop: top,
     extend:
       right !== undefined
         ? {
@@ -62,10 +64,11 @@ const Drawer = createComponent(
 );
 
 const Dimmer = createComponent(
-  ({ theme, open, inverted }) => ({
+  ({ theme, top = 0, open, inverted }) => ({
     height: '100%',
     position: 'fixed',
     top: 0,
+    paddingTop: top,
     right: 0,
     bottom: 0,
     left: 0,

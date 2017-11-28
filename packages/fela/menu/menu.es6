@@ -16,6 +16,7 @@ const Inner = createComponent(
     flexGrow: 1,
     flexDirection: 'column',
     overflowY: 'auto',
+    overflowX: 'hidden',
     // justifyContent: 'space-between',
   }),
   'div',
@@ -33,6 +34,7 @@ const Menu = createComponent(
     paddingY,
     paddingX,
     overflowY: 'auto',
+    overflowX: 'hidden',
     transition: 'width 200ms ease-out',
   }),
   ({

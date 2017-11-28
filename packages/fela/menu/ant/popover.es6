@@ -2,9 +2,9 @@ import React from 'react';
 import { Menu } from 'olymp-fela';
 import { Popover } from 'antd';
 
-export default ({ open, children, content, ...rest }) => (
+export default ({ open, children, content, placement = 'left', ...rest }) => (
   <Popover
-    placement="left"
+    placement={placement}
     title={content && children}
     content={content || children}
   >
