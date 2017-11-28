@@ -104,7 +104,11 @@ const FormComponent = enhance(
       right
       collapsed
       menu={
-        <Menu header={<Menu.Item icon={<FaPencil />} large />}>
+        <Menu
+          header={<Menu.Item icon={<FaPencil />} large />}
+          headerColor
+          headerInverted
+        >
           <AntMenu.Tooltip onClick={onSave} icon={<FaSave />}>
             Speichern
           </AntMenu.Tooltip>

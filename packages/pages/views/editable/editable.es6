@@ -259,6 +259,8 @@ export default class EditablePage extends Component {
         pusher
         left={72}
         menu={<StackedMenu keys={keys} renderMenu={this.renderMenu} />}
+        headerColor
+        headerInverted
       >
         <Prompt
           when={form.isFieldsTouched()}

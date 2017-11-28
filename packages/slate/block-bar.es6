@@ -102,6 +102,8 @@ class Navigation extends Component {
           collapsed={collapsed}
           onMouseEnter={() => setCollapsed(false)}
           onMouseLeave={() => setCollapsed(true)}
+          headerColor
+          headerInverted
           header={
             <Menu.Item icon={<FaCube />} large>
               Seite bearbeiten
