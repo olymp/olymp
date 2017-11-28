@@ -95,8 +95,7 @@ const component = enhance(
                   onClick={() =>
                       setQuery({
                         [`@${collection.name.toLowerCase()}`]: 'new',
-                      })
-                    }
+                      })}
                 >
                   {get(collection, 'specialFields.label', collection.name)}
                 </Menu.Item>
@@ -114,8 +113,7 @@ const component = enhance(
               onClick={() =>
                   setQuery({
                     [`@${collectionTree[key][0].name.toLowerCase()}`]: 'new',
-                  })
-                }
+                  })}
             >
               {get(
                   collectionTree[key][0],
@@ -136,6 +134,7 @@ const component = enhance(
       <Sidebar
         zIndex={11}
         collapsed={collapsed}
+        overlap
         onMouseEnter={() => setCollapsed(false)}
         onMouseLeave={() => setCollapsed(true)}
         menu={
