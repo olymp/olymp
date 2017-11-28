@@ -1,5 +1,5 @@
 {
-  "version": "18.8.2",
+  "version": "18.8.3",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -28,7 +28,7 @@
     "fela-plugin-unit": "^5.0.14",
     "install": "^0.10.2",
     "npm": "^5.5.1",
-    "olymp-utils": "^18.8.1",
+    "olymp-utils": "^18.8.3",
     "particles.js": "^2.0.0",
     "react-beautiful-dnd": "^2.6.4",
     "react-fela": "^6.1.1",
