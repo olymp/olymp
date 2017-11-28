@@ -4,8 +4,8 @@ import tinycolor from 'tinycolor2';
 import PropTypes from 'prop-types';
 
 const withColors = WrappedComponent => {
-  const WithColors = () => (
-    <WrappedComponent colors={this.context.defaultColors} {...this.props} />
+  const WithColors = (props, context) => (
+    <WrappedComponent colors={context.defaultColors} {...this.props} />
   );
   WithColors.contextTypes = {
     defaultColors: PropTypes.array,
@@ -62,8 +62,7 @@ const ColorEditor = ({ value, onChange, colors = [], ...rest }) => {
         value={value && tinycolor(value).toRgbString()}
         {...rest}
         filterOption={(input, option) =>
-          option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
+          option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       >
         {newColors.map((color, i) => (
           <Select.Option value={tinycolor(color.color).toRgbString()} key={i}>

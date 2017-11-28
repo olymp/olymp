@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
-import Portal from './portal';
+import Portal from '../portal';
 
 const ModalBackground = createComponent(
   ({ theme }) => ({
