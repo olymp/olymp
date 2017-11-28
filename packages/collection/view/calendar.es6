@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createComponent, Drawer, Menu } from 'olymp-fela';
+import { createComponent } from 'olymp-fela';
 import { get } from 'lodash';
 import { compose, withPropsOnChange } from 'recompose';
 import BigCalendar from 'react-big-calendar';
@@ -8,24 +8,6 @@ import moment from 'moment';
 import { getPrintableValue } from '../utils';
 
 BigCalendar.momentLocalizer(moment);
-
-const FlexContainer = createComponent(
-  ({ theme }) => ({
-    position: 'relative',
-    padding: theme.space3,
-    hasFlex: {
-      display: 'flex',
-      flex: '1 1 0%',
-      flexDirection: 'column',
-    },
-    '> div': {
-      flex: '1 1 0%',
-      height: 'auto !important',
-      overflow: 'auto',
-    },
-  }),
-  'div',
-);
 
 const Calendar = createComponent(
   ({ theme }) => ({
@@ -78,65 +60,29 @@ const enhance = compose(
 @enhance
 export default class CalendarView extends Component {
   render() {
-    const {
-      collection,
-      items,
-      events,
-      id,
-      children,
-      updateQuery,
-      typeName,
-    } = this.props;
-    const nameField = get(collection, 'specialFields.nameField', 'name');
+    const { collection, events, updateQuery, typeName } = this.props;
 
     return (
-      <FlexContainer>
-        <Calendar
-          events={events}
-          messages={{
-            allDay: 'Ganztägig',
-            previous: 'Zurück',
-            next: 'Vor',
-            today: 'Heute',
-            month: 'Monat',
-            week: 'Woche',
-            day: 'Tag',
-            agenda: 'Agenda',
-            date: 'Datum',
-            time: 'Zeit',
-            event: collection.name,
-            // showMore: Function
-          }}
-          onSelectEvent={event =>
-            updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
-          }
-        />
-
-        <Drawer
-          open={!!id}
-          width={475}
-          right
-          onClose={() => updateQuery({ [`@${typeName.toLowerCase()}`]: null })}
-        >
-          <Menu
-            header={
-              id === 'new' ? (
-                <Menu.Item large>{collection.name} anlegen</Menu.Item>
-              ) : (
-                <Menu.Item large>
-                  {((items || []).find(x => x.id === id) || {})[nameField] ||
-                    'Bearbeiten'}
-                  <small>{collection.name} bearbeiten</small>
-                </Menu.Item>
-              )
-            }
-            headerColor
-            headerInverted
-          >
-            {children}
-          </Menu>
-        </Drawer>
-      </FlexContainer>
+      <Calendar
+        events={events}
+        messages={{
+          allDay: 'Ganztägig',
+          previous: 'Zurück',
+          next: 'Vor',
+          today: 'Heute',
+          month: 'Monat',
+          week: 'Woche',
+          day: 'Tag',
+          agenda: 'Agenda',
+          date: 'Datum',
+          time: 'Zeit',
+          event: collection.name,
+          // showMore: Function
+        }}
+        onSelectEvent={event =>
+          updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
+        }
+      />
     );
   }
 }

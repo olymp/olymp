@@ -113,7 +113,7 @@ const component = enhance(
                 }
               onClick={() =>
                   setQuery({
-                    [`@${collectionTree[key][0].name.toLowerCase()}`]: 'new',
+                    [`@${collectionTree[key][0].name.toLowerCase()}`]: null,
                   })
                 }
             >

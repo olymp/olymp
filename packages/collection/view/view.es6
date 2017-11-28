@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { withSearch } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
-import { SectionHeading, Sidebar, StackedMenu, Menu } from 'olymp-fela';
+import {
+  createComponent,
+  Sidebar,
+  Drawer,
+  StackedMenu,
+  Menu,
+} from 'olymp-fela';
 import {
   FaDatabase,
   FaTrash,
@@ -13,6 +19,7 @@ import {
 } from 'olymp-icons';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
+import { Table } from 'antd';
 import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 import { getPrintableValue } from '../utils';
@@ -20,6 +27,35 @@ import withItems from '../with-items';
 import withCollection from '../with-collection';
 import Calendar from './calendar';
 import Detail from './detail';
+
+const FlexContainer = createComponent(
+  ({ theme }) => ({
+    position: 'relative',
+    padding: theme.space3,
+    hasFlex: {
+      display: 'flex',
+      flex: '1 1 0%',
+      flexDirection: 'column',
+    },
+    '> div': {
+      flex: '1 1 0%',
+      height: 'auto !important',
+      overflow: 'auto',
+    },
+  }),
+  'div',
+);
+
+const StyledTable = createComponent(
+  () => ({
+    '& td': {
+      minWidth: 50,
+      maxWidth: 200,
+    },
+  }),
+  p => <Table {...p} />,
+  p => Object.keys(p),
+);
 
 const enhance = compose(
   withRouter,
@@ -73,7 +109,7 @@ const enhance = compose(
 
 @enhance
 export default class CollectionView extends Component {
-  renderMenu = key => {
+  renderMenu = () => {
     const {
       collection,
       menuItems,
@@ -82,8 +118,7 @@ export default class CollectionView extends Component {
       keys,
       setKeys,
     } = this.props;
-
-    console.log(key);
+    const startField = get(collection, 'specialFields.startField');
 
     return (
       <Menu
@@ -105,15 +140,16 @@ export default class CollectionView extends Component {
             Zurück
           </Menu.Item>
         )}
-        {!keys.length && (
-          <Menu.Item
-            icon={<FaClockO />}
-            extra={<FaAngleRight />}
-            onClick={() => setKeys(['EXPIRED'])}
-          >
-            Abgelaufen
-          </Menu.Item>
-        )}
+        {!keys.length &&
+          !!startField && (
+            <Menu.Item
+              icon={<FaClockO />}
+              extra={<FaAngleRight />}
+              onClick={() => setKeys(['EXPIRED'])}
+            >
+              Abgelaufen
+            </Menu.Item>
+          )}
         {!keys.length && (
           <Menu.Item
             icon={<FaArchive />}
@@ -160,8 +196,38 @@ export default class CollectionView extends Component {
       refetchQuery,
       isLoading,
       keys,
+      items,
+      updateQuery,
     } = this.props;
+    const nameField = get(collection, 'specialFields.nameField', 'name');
     const startField = get(collection, 'specialFields.startField');
+
+    const columns = collection.fields
+      .filter(
+        x =>
+          x.name !== 'id' &&
+          x.name !== 'state' &&
+          x.name !== 'slug' &&
+          x.name.indexOf('Id') === -1 &&
+          x.name.indexOf('At') === -1 &&
+          x.name.indexOf('By') === -1 &&
+          x.innerType.kind !== 'OBJECT' &&
+          !(x.type.kind === 'LIST' && x.innerType.kind === 'SCALAR'),
+      )
+      .map(
+        field =>
+          console.log(field) || {
+            key: field.name,
+            title: field.specialFields.label,
+            dataIndex: field.name,
+            sorter: true,
+            render: value => getPrintableValue(value, field),
+          },
+      );
+    const data = items.map((item, i) => ({
+      key: i,
+      ...item,
+    }));
 
     return (
       <Sidebar
@@ -174,39 +240,41 @@ export default class CollectionView extends Component {
           />
         }
       >
-        {startField ? (
-          <Calendar {...this.props}>
-            <Detail
-              id={id === 'new' ? null : id}
-              key={id || 'new'}
-              refetchQuery={refetchQuery}
-              fieldNames={fieldNames}
-              collection={collection}
-              typeName={typeName}
+        <FlexContainer>
+          {startField ? (
+            <Calendar {...this.props} />
+          ) : (
+            <StyledTable
+              columns={columns}
+              dataSource={data}
+              onRowClick={item =>
+                updateQuery({ [`@${typeName.toLowerCase()}`]: item.id })
+              }
             />
-          </Calendar>
-        ) : (
-          <div>
-            {!id || id === 'new' ? (
-              <SectionHeading>
-                {`${get(
-                  collection,
-                  'specialFields.label',
-                  collection.name,
-                )} anlegen`}
-              </SectionHeading>
-            ) : (
-              <SectionHeading
-                description={`${get(
-                  collection,
-                  'specialFields.label',
-                  collection.name,
-                )} bearbeiten`}
-              >
-                Bearbeiten
-              </SectionHeading>
-            )}
+          )}
+        </FlexContainer>
 
+        <Drawer
+          open={!!id}
+          width={475}
+          right
+          onClose={() => updateQuery({ [`@${typeName.toLowerCase()}`]: null })}
+        >
+          <Menu
+            header={
+              id === 'new' ? (
+                <Menu.Item large>{collection.name} anlegen</Menu.Item>
+              ) : (
+                <Menu.Item large>
+                  {((items || []).find(x => x.id === id) || {})[nameField] ||
+                    'Bearbeiten'}
+                  <small>{collection.name} bearbeiten</small>
+                </Menu.Item>
+              )
+            }
+            headerColor
+            headerInverted
+          >
             <Detail
               id={id === 'new' ? null : id}
               key={id || 'new'}
@@ -215,8 +283,8 @@ export default class CollectionView extends Component {
               collection={collection}
               typeName={typeName}
             />
-          </div>
-        )}
+          </Menu>
+        </Drawer>
       </Sidebar>
     );
   }

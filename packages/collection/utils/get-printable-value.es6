@@ -1,8 +1,28 @@
 import React from 'react';
 import { Image } from 'olymp-cloudinary';
-import { Checkbox } from 'antd';
-import { Plain, Raw } from 'slate';
+import { Modal } from 'olymp-fela';
+import { Checkbox, Button } from 'antd';
+import { compose, withState } from 'recompose';
+import { Value } from 'slate';
+import Plain from 'slate-plain-serializer';
 import format from 'date-fns/format';
+
+const enhance = compose(withState('isOpen', 'setIsOpen', false));
+const Slate = enhance(({ children, isOpen, setIsOpen }) => (
+  <div>
+    <Button
+      onClick={e => {
+        e.stopPropagation();
+        setIsOpen(true);
+      }}
+    >
+      Show
+    </Button>
+    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+      {children}
+    </Modal>
+  </div>
+));
 
 export default (value, field) => {
   if (!field) {
@@ -31,6 +51,13 @@ export default (value, field) => {
           </Checkbox>
         );
 
+      case 'String':
+        return field.type.kind === 'LIST' ? (
+          <span>{(value || []).join(', ')}</span>
+        ) : (
+          <span>{field.innerType.specialFields[value] || value}</span>
+        );
+
       default:
         return <span>{field.innerType.specialFields[value] || value}</span>;
     }
@@ -45,17 +72,18 @@ export default (value, field) => {
   } else {
     switch (field.innerType.name) {
       case 'Image':
-        return !!value && <Image value={value} />;
+        return !!value && <Image value={value} width={50} height={50} />;
 
       case 'Blocks':
-        return (
+        const text =
           !!value &&
           Plain.serialize(
-            Raw.deserialize(JSON.parse(JSON.stringify(value)), { terse: true }),
-          )
-            .split('\n')
-            .join(' ')
-        );
+            Value.fromJSON({
+              document: value,
+              kind: 'value',
+            }),
+          );
+        return value && text ? <Slate>{text}</Slate> : <i>Kein Inhalt</i>;
 
       default:
         return !!value && <span>{value.name || 'Ja'}</span>;
