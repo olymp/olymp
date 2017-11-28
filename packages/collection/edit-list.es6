@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   compose,
   toClass,
@@ -6,56 +6,66 @@ import {
   withState,
   withHandlers,
 } from 'recompose';
-import { createComponent, Modal } from 'olymp-fela';
-import { Button } from 'antd';
-import Form from './form';
+import { Modal, SectionHeading, Sidebar, Menu } from 'olymp-fela';
+import { FaPlus } from 'olymp-icons';
+import { Form, Button } from 'antd';
+import { get } from 'lodash';
+import DetailForm from './form';
 import FormItem from './form-item';
 import withCollection from './with-collection';
 
-const Footer = createComponent(
-  ({ theme }) => ({
-    padding: theme.space2,
-  }),
-  ({ onClose, className }) => (
-    <div className={className}>
-      <Button type="primary" onClick={onClose}>
-        Übernehmen
-      </Button>
-    </div>
-  ),
-  p => Object.keys(p),
-);
-
 const enhance = compose(
-  toClass,
+  Form.create(),
+  withState('isOpen', 'setOpen', false),
+  withState('activeIndex', 'setActiveIndex'),
   withProps(({ type }) => ({
     typeName: type.ofType.name,
   })),
   withHandlers({
-    onChangeItem: ({ onChange, value }) => (index, nestedValue) => {
-      nestedValue = { ...(value[index] || {}), ...nestedValue };
-      onChange((value || []).map((x, i) => (i === index ? nestedValue : x)));
+    onChangeItem: ({ onChange, value, form, activeIndex }) => () => {
+      form.validateFields((err, values) => {
+        if (err) {
+          console.log(err);
+        } else if (activeIndex === undefined) {
+          onChange([...(value || []), values]);
+        } else {
+          const newValues = [...(value || [])];
+          newValues[activeIndex] = values;
+          onChange(newValues);
+        }
+      });
     },
   }),
-  withState('isOpen', 'setOpen', false),
   withCollection,
 );
 
-export default {
-  collapse: true,
-  rule: ({ type }) =>
-    type.kind === 'LIST' && type.ofType.name.indexOf('Nested') === 0,
-  form: enhance(
-    ({
+@enhance
+class EditList extends Component {
+  componentWillReceiveProps({ activeIndex, form: { resetFields } }) {
+    if (this.props.activeIndex !== activeIndex) {
+      resetFields();
+    }
+  }
+
+  render() {
+    const {
       value = [],
       isOpen,
       setOpen,
       'data-__field': dataField,
       'data-__meta': dataMeta,
       collection,
-      id,
+      label,
+      name,
+      activeIndex,
+      setActiveIndex,
+      form,
+      onChange,
+      onChangeItem,
       ...props
-    }) => (
+    } = this.props;
+
+    return (
       <FormItem {...props}>
         <Button
           onClick={() => setOpen(true)}
@@ -65,19 +75,62 @@ export default {
           {value.length} Einträge
         </Button>
 
-        <Modal
-          footer={<Footer onClose={() => setOpen(false)} />}
-          open={isOpen}
-          onClose={() => setOpen(false)}
-        >
-          <Form
-            {...props}
-            items={value || []}
-            collection={collection}
-            label={id}
-          />
+        <Modal width={800} open={isOpen} onClose={() => setOpen(false)}>
+          <Sidebar
+            menu={
+              <Menu>
+                <Menu.Item icon={<FaPlus />} onClick={() => setActiveIndex()}>
+                  Hinzufügen
+                </Menu.Item>
+                <Menu.Divider />
+                {value.map((v, i) => (
+                  <Menu.Item
+                    key={v[get(collection, 'specialFields.nameField', 'name')]}
+                    onClick={() => setActiveIndex(i)}
+                  >
+                    {v[get(collection, 'specialFields.nameField', 'name')]}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            }
+          >
+            {activeIndex === undefined ? (
+              <SectionHeading>{label || 'Item'} anlegen</SectionHeading>
+            ) : (
+              <SectionHeading description={`${label || 'Item'} bearbeiten`}>
+                Bearbeiten
+              </SectionHeading>
+            )}
+
+            <DetailForm
+              form={form}
+              item={value[activeIndex]}
+              collection={collection}
+              embedded
+              onSave={onChangeItem}
+              onDelete={
+                activeIndex !== undefined &&
+                (() => {
+                  onChange(value.filter((x, i) => i !== activeIndex));
+                  if (!activeIndex) {
+                    setActiveIndex(activeIndex - 1);
+                  } else {
+                    setActiveIndex();
+                  }
+                })
+              }
+              onClose={() => setOpen(false)}
+            />
+          </Sidebar>
         </Modal>
       </FormItem>
-    ),
-  ),
+    );
+  }
+}
+
+export default {
+  collapse: true,
+  rule: ({ type }) =>
+    type.kind === 'LIST' && type.ofType.name.indexOf('Nested') === 0,
+  form: toClass(({ form, ...props }) => <EditList {...props} />),
 };

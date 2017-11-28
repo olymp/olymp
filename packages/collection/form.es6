@@ -1,9 +1,9 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { Container, SectionHeading, Sidebar, Menu, AntMenu } from 'olymp-fela';
+import { Container, Sidebar, Menu, AntMenu } from 'olymp-fela';
 import { Prompt } from 'olymp-router';
-import { FaPencil, FaTrash, FaSave } from 'olymp-icons';
+import { FaPencil, FaTrash, FaSave, FaTimes } from 'olymp-icons';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
 import DefaultEdits from './default-edits';
@@ -96,8 +96,9 @@ const FormComponent = enhance(
     collapse,
     onSave,
     onDelete,
+    onClose,
     collapsed,
-    header = true,
+    embedded,
     ...rest
   }) => (
     <Sidebar
@@ -112,31 +113,40 @@ const FormComponent = enhance(
           <AntMenu.Tooltip onClick={onSave} icon={<FaSave />}>
             Speichern
           </AntMenu.Tooltip>
-          <Popconfirm
-            placement="left"
-            title="Wirklich löschen?"
-            onConfirm={onDelete}
-            okText="Ja"
-            cancelText="Nein"
-          >
-            <AntMenu.Tooltip icon={<FaTrash />}>Löschen</AntMenu.Tooltip>
-          </Popconfirm>
+          {!!onDelete && (
+            <Popconfirm
+              placement="left"
+              title="Wirklich löschen?"
+              onConfirm={onDelete}
+              okText="Ja"
+              cancelText="Nein"
+            >
+              <AntMenu.Tooltip icon={<FaTrash />}>Löschen</AntMenu.Tooltip>
+            </Popconfirm>
+          )}
+          {!!onClose && (
+            <AntMenu.Tooltip icon={<FaTimes />} onClick={onClose}>
+              Schließen
+            </AntMenu.Tooltip>
+          )}
         </Menu>
       }
     >
       <Container size="small">
-        <Prompt
-          when={form.isFieldsTouched()}
-          message={() => 'Änderungen verwerfen?'}
-        />
+        {!!embedded && (
+          <Prompt
+            when={form.isFieldsTouched()}
+            message={() => 'Änderungen verwerfen?'}
+          />
+        )}
 
-        <SectionHeading description="Profil bearbeiten">
-          {header ? form.getFieldValue('name') || 'Bearbeiten' : null}
-        </SectionHeading>
-
-        <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+        {embedded ? (
+          <Form layout={(vertical && 'vertical') || (inline && 'inline')}>
+            <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
+          </Form>
+        ) : (
           <Items schema={schemaWithEdits} form={form} item={item} {...rest} />
-        </Form>
+        )}
       </Container>
     </Sidebar>
   ),
