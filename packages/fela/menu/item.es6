@@ -31,7 +31,7 @@ const Content = createComponent(
 );
 
 export default createComponent(
-  ({ theme, large, active, icon, onClick, color }) => ({
+  ({ theme, large, active, icon, onClick, color, disabled }) => ({
     height: large ? 54 : 40,
     flexShrink: 0,
     width: !theme.collapsed ? '100%' : large ? 54 : 40,
@@ -39,8 +39,9 @@ export default createComponent(
     paddingLeft: !icon && theme.space3,
     display: 'flex',
     alignItems: 'center',
-    cursor: !!onClick && 'pointer',
+    cursor: !!onClick && !disabled && 'pointer',
     borderRadius: theme.collapsed ? '50%' : theme.borderRadius,
+    opacity: disabled ? 0.67 : 1,
     // backgroundColor: active && theme.dark4,
     backgroundColor:
       (color === true && theme.color) ||
@@ -48,7 +49,7 @@ export default createComponent(
       color ||
       (active && theme.dark4),
     onHover: {
-      backgroundColor: !!onClick && theme.dark4,
+      backgroundColor: !!onClick && !disabled && theme.dark4,
     },
   }),
   ({
@@ -62,9 +63,15 @@ export default createComponent(
     ref,
     color,
     loading,
+    onClick,
+    disabled,
     ...rest
   }) => (
-    <div {...rest} ref={_ref || innerRef || ref}>
+    <div
+      {...rest}
+      onClick={disabled ? () => {} : onClick}
+      ref={_ref || innerRef || ref}
+    >
       {!!icon && <Image large={large}>{icon}</Image>}
       <Content>
         {children}
