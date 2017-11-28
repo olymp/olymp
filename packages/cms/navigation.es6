@@ -134,7 +134,7 @@ const component = enhance(
 
     return (
       <Sidebar
-        zIndex={5}
+        zIndex={11}
         collapsed={collapsed}
         onMouseEnter={() => setCollapsed(false)}
         onMouseLeave={() => setCollapsed(true)}

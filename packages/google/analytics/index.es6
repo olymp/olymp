@@ -74,7 +74,8 @@ export default class Analytics extends Component {
 
     return (
       <Sidebar
-        flex
+        pusher
+        left={72}
         menu={
           <Menu
             header={
@@ -90,8 +91,7 @@ export default class Analytics extends Component {
                 router.push({
                   pathname,
                   query: { '@analytics': null, ...initState },
-                })
-              }
+                })}
               active={!query['@analytics']}
             >
               Seitenaufrufe
@@ -107,8 +107,7 @@ export default class Analytics extends Component {
                     metrics: ['TIME_ON_PAGE', 'AVG_TIME_ON_PAGE'],
                     sorts2: ['TIME_ON_PAGE_DESC'],
                   },
-                })
-              }
+                })}
               active={query['@analytics'] === 'duration'}
             >
               Verweildauer
@@ -125,8 +124,7 @@ export default class Analytics extends Component {
                     metrics: ['USERS', 'NEW_USERS'],
                     sorts2: ['USERS_DESC'],
                   },
-                })
-              }
+                })}
               key="visitors"
             >
               Besucher
@@ -148,8 +146,7 @@ export default class Analytics extends Component {
                     chart: 'pie',
                     chart2: 'barVertical',
                   },
-                })
-              }
+                })}
               key="location"
             >
               Herkunft
@@ -169,8 +166,7 @@ export default class Analytics extends Component {
                     chart: 'pie',
                     chart2: 'none',
                   },
-                })
-              }
+                })}
             >
               Geräte
             </Menu.Item>

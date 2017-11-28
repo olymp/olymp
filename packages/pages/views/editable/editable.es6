@@ -256,49 +256,48 @@ export default class EditablePage extends Component {
 
     return (
       <Sidebar
-        flex
+        pusher
+        left={72}
         menu={<StackedMenu keys={keys} renderMenu={this.renderMenu} />}
       >
-        <div style={{ position: 'relative' }}>
-          <Prompt
-            when={form.isFieldsTouched()}
-            message={() => 'Änderungen verwerfen?'}
-          />
+        <Prompt
+          when={form.isFieldsTouched()}
+          message={() => 'Änderungen verwerfen?'}
+        />
 
-          {render && render(P)}
-          {!render && P}
+        {render && render(P)}
+        {!render && P}
 
-          <Drawer
-            width={475}
-            right
-            open={formOpen}
-            onClose={() => setFormOpen(false)}
+        <Drawer
+          width={475}
+          right
+          open={formOpen}
+          onClose={() => setFormOpen(false)}
+        >
+          <Menu
+            header={<Menu.Item large>Seite bearbeiten</Menu.Item>}
+            headerColor
+            headerInverted
           >
-            <Menu
-              header={<Menu.Item large>Seite bearbeiten</Menu.Item>}
-              headerColor
-              headerInverted
-            >
-              <PageForm {...this.props} />
-            </Menu>
-            <Menu
-              color
-              inverted
-              collapsed
-              header={
-                <Menu.Item large icon={<FaPencil />}>
-                  Seite bearbeiten
-                </Menu.Item>
-              }
-              headerColor="dark4"
-              headerInverted
-            >
-              <AntMenu.Tooltip onClick={setFormOpen} icon={<FaSave />}>
-                Speichern
-              </AntMenu.Tooltip>
-            </Menu>
-          </Drawer>
-        </div>
+            <PageForm {...this.props} />
+          </Menu>
+          <Menu
+            color
+            inverted
+            collapsed
+            header={
+              <Menu.Item large icon={<FaPencil />}>
+                Seite bearbeiten
+              </Menu.Item>
+            }
+            headerColor="dark4"
+            headerInverted
+          >
+            <AntMenu.Tooltip onClick={setFormOpen} icon={<FaSave />}>
+              Speichern
+            </AntMenu.Tooltip>
+          </Menu>
+        </Drawer>
       </Sidebar>
     );
   }

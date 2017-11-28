@@ -53,7 +53,8 @@ export default class CollectionView extends Component {
 
     return (
       <Sidebar
-        flex
+        pusher
+        left={72}
         menu={
           <Menu
             header={
