@@ -75,7 +75,12 @@ export default ({
 }) =>
   open === undefined || open ? (
     <Portal noScroll={noScroll} noPortal={!portal}>
-      <ModalBackground onClick={onClose}>
+      <ModalBackground
+        onClick={e => {
+          e.stopPropagation();
+          onClose(e);
+        }}
+      >
         <Modal
           {...props}
           onClick={e => {
