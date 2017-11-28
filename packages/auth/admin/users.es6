@@ -61,12 +61,10 @@ export default class AuthUsers extends Component {
           </Menu>
         }
       >
-        <Container size="small">
-          <AuthProfile
-            user={user.id ? user : undefined}
-            extraFields={extraFields}
-          />
-        </Container>
+        <AuthProfile
+          user={user.id ? user : undefined}
+          extraFields={extraFields}
+        />
       </Sidebar>
     );
   }
