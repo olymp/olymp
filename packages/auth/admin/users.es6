@@ -52,7 +52,7 @@ export default class AuthUsers extends Component {
                     default="blank"
                   />
                 }
-                active={u.id === user.id || query['@users'] === u.id}
+                active={u.id === (user.id || query['@users'])}
                 large
               >
                 {u.name}
