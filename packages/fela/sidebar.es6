@@ -99,7 +99,7 @@ const Sidebar = createComponent(
       <section>{children}</section>
     </div>
   ),
-  ({ pusher, top, left, right, zIndex, flex, grid, sectionStyle, ...p }) =>
+  ({ top, left, right, zIndex, flex, grid, sectionStyle, overlap, ...p }) =>
     Object.keys(p),
 );
 

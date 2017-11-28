@@ -54,7 +54,7 @@ export default class AuthProfile extends Component {
     const user = (auth.user.isAdmin && this.props.user) || auth.user;
 
     return (
-      <Container>
+      <Container size="small">
         <SectionHeading description="Profil bearbeiten">
           {user.name}
         </SectionHeading>

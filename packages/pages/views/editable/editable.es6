@@ -256,7 +256,6 @@ export default class EditablePage extends Component {
 
     return (
       <Sidebar
-        pusher
         left={72}
         menu={<StackedMenu keys={keys} renderMenu={this.renderMenu} />}
       >

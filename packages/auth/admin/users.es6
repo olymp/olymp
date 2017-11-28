@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Sidebar, Menu, Avatar } from 'olymp-fela';
+import { Sidebar, Menu, Avatar, Container } from 'olymp-fela';
 import { FaUsers } from 'olymp-icons';
 import { compose, withState } from 'recompose';
 import AuthProfile from './profile';
@@ -30,7 +30,6 @@ export default class AuthUsers extends Component {
 
     return (
       <Sidebar
-        pusher
         left={72}
         menu={
           <Menu
