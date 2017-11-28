@@ -106,7 +106,7 @@ export default Sidebar;
 export const AutoSidebar = withState(
   'collapsed',
   'setCollapsed',
-  false,
+  true,
 )(({ setCollapsed, ...props }) => (
   <Sidebar
     {...props}
