@@ -30,7 +30,6 @@ export default class AuthUsers extends Component {
 
     return (
       <Sidebar
-        pusher
         left={72}
         menu={
           <Menu

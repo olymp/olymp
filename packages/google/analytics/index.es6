@@ -74,7 +74,6 @@ export default class Analytics extends Component {
 
     return (
       <Sidebar
-        pusher
         left={72}
         menu={
           <Menu

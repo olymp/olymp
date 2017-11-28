@@ -330,7 +330,6 @@ class CloudinaryView extends Component {
     return (
       <Sidebar
         left={inModal ? 0 : 72}
-        pusher
         menu={
           <StackedMenu
             keys={tags.filter((x, i) => i < 1)}
