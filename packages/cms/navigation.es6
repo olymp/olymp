@@ -10,7 +10,6 @@ import {
   FaSearch,
   FaPowerOff,
   FaDatabase,
-  FaBarChart,
 } from 'olymp-icons';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -153,13 +152,6 @@ const component = enhance(
               onClick={() => setQuery({ '@media': null })}
             >
               Mediathek
-            </Menu.Item>
-            <Menu.Item
-              icon={<FaBarChart />}
-              active={query[`@analytics`] === null}
-              onClick={() => setQuery({ '@analytics': null })}
-            >
-              Statistiken
             </Menu.Item>
             <Menu.List title="Collections">{items}</Menu.List>
             {lists}

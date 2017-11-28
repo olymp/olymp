@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp-router';
-import { DateRangeEditor } from 'olymp-ui';
-import { Sidebar, Menu, Drawer } from 'olymp-fela';
-import {
-  FaBarChart,
-  FaCogs,
-  FaClockO,
-  FaCube,
-  FaUsers,
-  FaMapMarker,
-  FaMobile,
-} from 'olymp-icons';
+import { SplitView, Sidebar, List, DateRangeEditor } from 'olymp-ui';
 import { Form, Button } from 'antd';
 import { subDays } from 'date-fns';
-import { compose, withState } from 'recompose';
 import { Charts } from './views';
-import { MetricSelect } from './components';
+import { PaddingContainer, MetricSelect } from './components';
 
 const initState = {
   metrics: ['PAGEVIEWS', 'SESSIONS'],
@@ -28,20 +17,14 @@ const initState = {
   chart2: 'barVertical',
 };
 
-const enhance = compose(
-  withRouter,
-  withState('settings', 'setSettings'),
-  Form.create(),
-);
-
-@enhance
+@withRouter
+@Form.create()
 export default class Analytics extends Component {
   ok = () => {
-    const { router, pathname, query, form, setSettings } = this.props;
+    const { router, pathname, query, form } = this.props;
 
     form.validateFields((err, values) => {
       if (!err) {
-        setSettings(false);
         router.push({
           pathname,
           query: { ...query, ...values },
@@ -51,7 +34,7 @@ export default class Analytics extends Component {
   };
 
   render() {
-    const { router, pathname, query, form, settings, setSettings } = this.props;
+    const { router, pathname, query, form } = this.props;
     const { getFieldDecorator } = form;
 
     const data = { ...initState, ...query };
@@ -73,131 +56,103 @@ export default class Analytics extends Component {
     data.range = [parseInt(data.range[0], 10), parseInt(data.range[1], 10)];
 
     return (
-      <Sidebar
-        flex
-        menu={
-          <Menu
-            header={
-              <Menu.Item icon={<FaBarChart />} large>
-                Statistik
-                <small>Google-Analytics-Daten auswerten</small>
-              </Menu.Item>
-            }
-          >
-            <Menu.Item
-              icon={<FaCube />}
-              onClick={() =>
-                router.push({
-                  pathname,
-                  query: { '@analytics': null, ...initState },
-                })
-              }
-              active={!query['@analytics']}
-            >
-              Seitenaufrufe
-            </Menu.Item>
-            <Menu.Item
-              icon={<FaClockO />}
-              onClick={() =>
-                router.push({
-                  pathname,
-                  query: {
-                    '@analytics': 'duration',
-                    ...initState,
-                    metrics: ['TIME_ON_PAGE', 'AVG_TIME_ON_PAGE'],
-                    sorts2: ['TIME_ON_PAGE_DESC'],
-                  },
-                })
-              }
-              active={query['@analytics'] === 'duration'}
-            >
-              Verweildauer
-            </Menu.Item>
-            <Menu.Item
-              icon={<FaUsers />}
-              active={query['@analytics'] === 'visitors'}
-              onClick={() =>
-                router.push({
-                  pathname,
-                  query: {
-                    '@analytics': 'visitors',
-                    ...initState,
-                    metrics: ['USERS', 'NEW_USERS'],
-                    sorts2: ['USERS_DESC'],
-                  },
-                })
-              }
-              key="visitors"
-            >
-              Besucher
-            </Menu.Item>
-            <Menu.Item
-              icon={<FaMapMarker />}
-              active={query['@analytics'] === 'location'}
-              onClick={() =>
-                router.push({
-                  pathname,
-                  query: {
-                    '@analytics': 'location',
-                    ...initState,
-                    metrics: ['USERS'],
-                    dimensions: ['REGION'],
-                    dimensions2: ['CITY'],
-                    sorts: ['USERS_DESC'],
-                    sorts2: ['USERS_DESC'],
-                    chart: 'pie',
-                    chart2: 'barVertical',
-                  },
-                })
-              }
-              key="location"
-            >
-              Herkunft
-            </Menu.Item>
-            <Menu.Item
-              icon={<FaMobile />}
-              active={query['@analytics'] === 'devices'}
-              onClick={() =>
-                router.push({
-                  pathname,
-                  query: {
-                    '@analytics': 'devices',
-                    ...initState,
-                    metrics: ['USERS'],
-                    dimensions: ['DEVICE_CATEGORY'],
-                    sorts: ['USERS_DESC'],
-                    chart: 'pie',
-                    chart2: 'none',
-                  },
-                })
-              }
-            >
-              Geräte
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item
-              icon={<FaCogs />}
-              active={query['@analytics'] === 'devices'}
-              onClick={() => setSettings(true)}
-            >
-              Einstellungen
-            </Menu.Item>
-          </Menu>
-        }
-      >
+      <SplitView background>
+        <Sidebar
+          isOpen
+          padding={0}
+          borderLess
+          title="Statistik"
+          subtitle="Google-Analytics-Daten auswerten"
+        >
+          <List.Item
+            active={!query['@analytics']}
+            label="Seitenaufrufe"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: { '@analytics': null, ...initState },
+              })}
+            key="page-views"
+          />
+          <List.Item
+            active={query['@analytics'] === 'duration'}
+            label="Verweildauer"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'duration',
+                  ...initState,
+                  metrics: ['TIME_ON_PAGE', 'AVG_TIME_ON_PAGE'],
+                  sorts2: ['TIME_ON_PAGE_DESC'],
+                },
+              })}
+            key="duration"
+          />
+          <List.Item
+            active={query['@analytics'] === 'visitors'}
+            label="Besucher"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'visitors',
+                  ...initState,
+                  metrics: ['USERS', 'NEW_USERS'],
+                  sorts2: ['USERS_DESC'],
+                },
+              })}
+            key="visitors"
+          />
+          <List.Item
+            active={query['@analytics'] === 'location'}
+            label="Herkunft"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'location',
+                  ...initState,
+                  metrics: ['USERS'],
+                  dimensions: ['REGION'],
+                  dimensions2: ['CITY'],
+                  sorts: ['USERS_DESC'],
+                  sorts2: ['USERS_DESC'],
+                  chart: 'pie',
+                  chart2: 'barVertical',
+                },
+              })}
+            key="location"
+          />
+          <List.Item
+            active={query['@analytics'] === 'devices'}
+            label="Geräte"
+            onClick={() =>
+              router.push({
+                pathname,
+                query: {
+                  '@analytics': 'devices',
+                  ...initState,
+                  metrics: ['USERS'],
+                  dimensions: ['DEVICE_CATEGORY'],
+                  sorts: ['USERS_DESC'],
+                  chart: 'pie',
+                  chart2: 'none',
+                },
+              })}
+            key="devices"
+          />
+        </Sidebar>
+
         <Charts {...data} />
 
-        <Drawer open={!!settings} onClose={() => setSettings(false)} right>
-          <Menu
-            header={
-              <Menu.Item icon={<FaCogs />} large>
-                Einstellungen
-                <small>Einstellungen für alle Charts</small>
-              </Menu.Item>
-            }
-            headerColor
-            headerInverted
-          >
+        <Sidebar
+          right
+          title="Einstellungen"
+          subtitle="Einstellungen für alle Charts"
+          borderLess
+        >
+          <PaddingContainer>
             <Form.Item key="metrics" label="Messwerte">
               {getFieldDecorator('metrics', {
                 initialValue: data.metrics,
@@ -224,9 +179,9 @@ export default class Analytics extends Component {
             <Button type="primary" size="large" onClick={this.ok}>
               Werte übernehmen
             </Button>
-          </Menu>
-        </Drawer>
-      </Sidebar>
+          </PaddingContainer>
+        </Sidebar>
+      </SplitView>
     );
   }
 }

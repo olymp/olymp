@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Analytics from 'olymp-google/analytics';
 import Navigation from './navigation';
+import { SettingsRoute } from './settings';
 import PrefetchRoutes from './prefetch-routes';
 import * as LANG from './lang/de';
 
@@ -114,6 +115,10 @@ const component = enhance(props => {
           <Match
             match={query['@media'] !== undefined}
             render={() => <CloudinaryRoute {...props} />}
+          />
+          <Match
+            match={query['@settings'] !== undefined}
+            render={() => <SettingsRoute {...props} />}
           />
           <Match
             match={query['@analytics'] !== undefined}

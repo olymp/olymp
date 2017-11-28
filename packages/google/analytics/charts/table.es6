@@ -4,20 +4,27 @@ import { createComponent } from 'olymp-fela';
 import { metricsObj, dimensionsObj } from '../../definitions';
 
 const AntTable = createComponent(
-  ({ rowSelection }) => ({
+  ({ theme, rowSelection }) => ({
     '& .ant-table-row': {
       cursor: !!rowSelection && 'pointer',
     },
   }),
   p => <Table {...p} />,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 export default class TableChart extends Component {
   state = { sortedInfo: {} };
 
   render() {
-    const { onSelect, dimensions, items, selected } = this.props;
+    const {
+      onSelect,
+      metrics,
+      dimensions,
+      items,
+      selected,
+      fullSize,
+    } = this.props;
     const { sortedInfo } = this.state;
     const xData = dimensions[0];
     const columns = [];
@@ -60,14 +67,13 @@ export default class TableChart extends Component {
         rowSelection={
           onSelect && {
             selectedRowKeys: selected.map(selection =>
-              items.findIndex(item => item[xData] === selection),
+              items.findIndex(item => item[xData] === selection)
             ),
             onSelect: item => onSelect(item[xData]),
           }
         }
         onChange={(pagination, filters, sorter) =>
-          this.setState({ sortedInfo: sorter })
-        }
+          this.setState({ sortedInfo: sorter })}
       />
     );
   }
