@@ -155,13 +155,15 @@ const component = enhance(
             >
               Mediathek
             </Menu.Item>
-            <Menu.Item
-              icon={<FaBarChart />}
-              active={query[`@analytics`] === null}
-              onClick={() => setQuery({ '@analytics': null })}
-            >
-              Statistiken
-            </Menu.Item>
+            {!!window.ga && (
+              <Menu.Item
+                icon={<FaBarChart />}
+                active={query[`@analytics`] === null}
+                onClick={() => setQuery({ '@analytics': null })}
+              >
+                Statistiken
+              </Menu.Item>
+            )}
             <Menu.List title="Collections">{items}</Menu.List>
             {lists}
             <Menu.Space />
