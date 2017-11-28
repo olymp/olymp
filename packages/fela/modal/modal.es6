@@ -1,5 +1,6 @@
 import React from 'react';
 import { createComponent } from 'react-fela';
+import { get } from 'lodash';
 import Portal from '../portal';
 
 const ModalBackground = createComponent(
@@ -12,13 +13,14 @@ const ModalBackground = createComponent(
     right: 0,
     zIndex: 1000,
     backgroundColor: theme.dark2,
+    ...get(theme, 'modalBackdrop', {}),
   }),
   'div',
   ['onClick'],
 );
 
 const Modal = createComponent(
-  ({ theme, width = 500, height, container, scroll = false }) => ({
+  ({ theme, width = 500, height, scroll = false }) => ({
     position: 'static',
     overflow: 'hidden',
     // display: 'none',
@@ -32,6 +34,16 @@ const Modal = createComponent(
     userSelect: 'text',
     willChange: 'top,left,margin,transform,opacity',
     width: width === 'fill' ? '90%' : width,
+    animationName: {
+      from: {
+        opacity: 0,
+        transform: 'translateY(60px)',
+      },
+      to: {
+        opacity: 1,
+        transform: 'translateY(0px)',
+      },
+    },
     animationIterationCount: 1,
     animationDuration: '.3s',
     animationTimingFunction: 'ease',
