@@ -39,7 +39,7 @@ const Drawer = createComponent(
           },
     height: '100%',
     minWidth: width,
-    zIndex: 7,
+    zIndex: 15,
     boxShadow: !collapsed ? theme.boxShadow : undefined,
     transition: 'transform 200ms ease-out, min-width 200ms ease-out',
     backgroundColor: getColor(theme, color),
