@@ -179,13 +179,16 @@ const addSortedChildren = (obj, sorter = 'length') => {
 @withPropsOnChange(['sorting', 'tree'], ({ tree, sorting, items }) => ({
   tree: addSortedChildren({ map: tree, items }, sorting),
 }))
+@withPropsOnChange(['value'], ({ value }) => ({
+  value: value ? value.filter(x => x) : null,
+}))
 @withState('collapsed', 'setCollapsed', true)
 @withState('sorting', 'setSorting', 'length')
 @withState('tags', 'setTags', INITIAL_ARRAY)
 @withState(
   'selection',
   'setSelection',
-  ({ value }) => (value ? value.map(v => v.id) : []),
+  ({ value }) => console.log(value) || (value ? value.map(v => v.id) : []),
 )
 @withPropsOnChange(['selection', 'items'], ({ selection, items = [] }) => ({
   selectedItems: items.filter(x => selection.includes(x.id)),
@@ -385,8 +388,7 @@ class CloudinaryView extends Component {
                 editable={!inModal}
                 collapsed={collapsed}
                 onRemove={({ id }) =>
-                  setSelection(selection.filter(x => id !== x))
-                }
+                  setSelection(selection.filter(x => id !== x))}
               />
             </Menu.Space>
           </Menu>

@@ -107,8 +107,6 @@ class Navigation extends Component {
               Seite bearbeiten
             </Menu.Item>
           }
-          headerColor
-          headerInverted
         >
           {children}
           <Menu.Item

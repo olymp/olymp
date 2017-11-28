@@ -274,11 +274,7 @@ export default class EditablePage extends Component {
           open={formOpen}
           onClose={() => setFormOpen(false)}
         >
-          <Menu
-            header={<Menu.Item large>Seite bearbeiten</Menu.Item>}
-            headerColor
-            headerInverted
-          >
+          <Menu header={<Menu.Item large>Seite bearbeiten</Menu.Item>}>
             <PageForm {...this.props} />
           </Menu>
           <Menu
@@ -290,8 +286,6 @@ export default class EditablePage extends Component {
                 Seite bearbeiten
               </Menu.Item>
             }
-            headerColor="dark4"
-            headerInverted
           >
             <AntMenu.Tooltip onClick={setFormOpen} icon={<FaSave />}>
               Speichern
