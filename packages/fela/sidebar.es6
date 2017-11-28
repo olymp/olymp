@@ -10,7 +10,7 @@ const Sidebar = createComponent(
     left = 0,
     top,
     collapsed,
-    pusher,
+    overlap,
     zIndex = 10,
     flex,
     grid,
@@ -27,8 +27,9 @@ const Sidebar = createComponent(
           flexDirection: right ? 'row-reverse' : 'row',
           minHeight: 0,
           '> aside': {
-            maxWidth: collapsed || !pusher ? 72 : width,
-            minWidth: collapsed || !pusher ? 72 : width,
+            maxWidth: collapsed || overlap ? 72 : width,
+            minWidth: collapsed || overlap ? 72 : width,
+            transition: 'min-width 200ms ease-out, max-width 200ms ease-out',
             display: 'flex',
           },
           '> section': {
@@ -46,12 +47,12 @@ const Sidebar = createComponent(
           display: 'grid',
           marginLeft: left,
           gridTemplateColumns: right
-            ? `auto ${collapsed || !pusher ? 72 : width}px`
-            : `${collapsed || !pusher ? 72 : width}px auto`,
+            ? `auto ${collapsed ? 72 : width}px`
+            : `${collapsed ? 72 : width}px auto`,
           '> aside': {
             gridColumn: right ? 2 : 1,
             zIndex,
-            boxShadow: !pusher && !collapsed ? theme.boxShadow : undefined,
+            boxShadow: overlap && !collapsed ? theme.boxShadow : undefined,
           },
           '> section': {
             gridColumn: right ? 1 : 2,
@@ -71,13 +72,13 @@ const Sidebar = createComponent(
             height: '100%',
             bottom: 0,
             width: collapsed ? 72 : width,
-            boxShadow: !pusher && !collapsed ? theme.boxShadow : undefined,
+            boxShadow: overlap && !collapsed ? theme.boxShadow : undefined,
             transition: 'all 200ms ease-out',
             zIndex,
           },
           '> section': {
-            marginLeft: !right && (!pusher || collapsed ? 72 : width),
-            marginRight: right && (!pusher || collapsed ? 72 : width),
+            marginLeft: !right && (overlap || collapsed ? 72 : width),
+            marginRight: right && (overlap || collapsed ? 72 : width),
             transition: 'margin 200ms ease-out',
             height: '100%',
             position: 'relative',
@@ -110,6 +111,7 @@ export const AutoSidebar = withState(
 )(({ setCollapsed, ...props }) => (
   <Sidebar
     {...props}
+    overlap
     onMouseEnter={() => setCollapsed(false)}
     onMouseLeave={() => setCollapsed(true)}
   />
