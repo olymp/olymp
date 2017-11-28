@@ -94,8 +94,9 @@ const component = enhance(
                     }
                   onClick={() =>
                       setQuery({
-                        [`@${collection.name.toLowerCase()}`]: 'new',
-                      })}
+                        [`@${collection.name.toLowerCase()}`]: null,
+                      })
+                    }
                 >
                   {get(collection, 'specialFields.label', collection.name)}
                 </Menu.Item>
@@ -113,7 +114,8 @@ const component = enhance(
               onClick={() =>
                   setQuery({
                     [`@${collectionTree[key][0].name.toLowerCase()}`]: 'new',
-                  })}
+                  })
+                }
             >
               {get(
                   collectionTree[key][0],

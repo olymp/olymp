@@ -89,7 +89,14 @@ const getSpecialFieldsFromCollection = c => {
         }
       });
 
-      const fields = ['description', 'color', 'image', 'start', 'end'];
+      const fields = [
+        'description',
+        'color',
+        'image',
+        'start',
+        'end',
+        'allDay',
+      ];
       fields.forEach(x => {
         if (f.specialFields[x]) {
           collection.specialFields[`${x}Field`] = f.name;
