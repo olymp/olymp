@@ -189,7 +189,7 @@ const addSortedChildren = (obj, sorter = 'length') => {
 @withState(
   'selection',
   'setSelection',
-  ({ value }) => console.log(value) || (value ? value.map(v => v.id) : []),
+  ({ value }) => (value ? value.map(v => v.id) : []),
 )
 @withPropsOnChange(['selection', 'items'], ({ selection, items = [] }) => ({
   selectedItems: items.filter(x => selection.includes(x.id)),
