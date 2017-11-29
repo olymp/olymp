@@ -3,7 +3,9 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import createComponent from '../utils/create-component';
 
-const Div = ({ toggled, onToggle, ...props }) => <div {...props} onClick={onToggle} />;
+const Div = ({ toggled, onToggle, ...props }) => (
+  <div {...props} onClick={onToggle} />
+);
 
 const Button = createComponent(
   ({ theme, toggled, inverse, size = 20 }) => ({
@@ -78,13 +80,24 @@ const Container = createComponent(
   [],
 );
 
-const Toggler = ({ className, children, toggled, toggleComponent, onToggle, ...props }) => (
+const Toggler = ({
+  className,
+  children,
+  toggled,
+  toggleComponent,
+  onToggle,
+  ...props
+}) => (
   <Container className={cn(className, 'o-nav-toggle')} toggled={toggled}>
-    <Button toggled={toggled} toggleComponent={toggleComponent} onToggle={onToggle} />
+    <Button
+      toggled={toggled}
+      toggleComponent={toggleComponent}
+      onToggle={onToggle}
+    />
     {Children.map(children, child => cloneElement(child, props))}
   </Container>
 );
-Toggler.PropTypes = {
+Toggler.propTypes = {
   toggleComponent: PropTypes.node,
   onToggle: PropTypes.func,
   toggled: PropTypes.bool,
