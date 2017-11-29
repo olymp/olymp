@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { createComponent } from 'olymp-fela';
 import { Table } from 'antd';
+import { uniq } from 'lodash';
 import { compose, withPropsOnChange } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 import { getPrintableValue } from '../utils';
@@ -36,8 +37,42 @@ const sortValue = (item, collection) => {
   return parseInt(item.specialFields.table, 10) || 10;
 };
 
+const getSorter = field =>
+  (field.innerType.name === 'String' &&
+    ((a, b) => {
+      const nameA = (a[field.name] || '').toUpperCase();
+      const nameB = (b[field.name] || '').toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      return 0;
+    })) ||
+  (field.innerType.name === 'Int' &&
+    ((a, b) => b[field.name] - a[field.name])) ||
+  (field.innerType.name === 'Date' &&
+    ((a, b) => (isAfter(a[field.name], b[field.name]) ? 1 : -1))) ||
+  (field.innerType.name === 'Bool' &&
+    ((a, b) => (a[field.name] && !b[field.name] ? 1 : -1)));
+
+const getFilters = (items, field) => {
+  if (field.type.kind === 'ENUM' || field.type.kind === 'LIST') {
+    const arr = items.map(item => item[field.name]);
+
+    return uniq(arr).map(x => ({
+      text: getPrintableValue(x, field),
+      value: x,
+    }));
+  }
+
+  return undefined;
+};
+
 const enhance = compose(
-  withPropsOnChange(['collection'], ({ collection }) => ({
+  withPropsOnChange(['collection'], ({ collection, items }) => ({
     columns: collection.fields
       .filter(
         x =>
@@ -57,26 +92,9 @@ const enhance = compose(
         key: field.name,
         title: field.specialFields.label,
         dataIndex: field.name,
-        sorter:
-          (field.innerType.name === 'String' &&
-            ((a, b) => {
-              const nameA = (a[field.name] || '').toUpperCase();
-              const nameB = (b[field.name] || '').toUpperCase();
-              if (nameA < nameB) {
-                return -1;
-              }
-              if (nameA > nameB) {
-                return 1;
-              }
-
-              return 0;
-            })) ||
-          (field.innerType.name === 'Int' &&
-            ((a, b) => b[field.name] - a[field.name])) ||
-          (field.innerType.name === 'Date' &&
-            ((a, b) => (isAfter(a[field.name], b[field.name]) ? 1 : -1))) ||
-          (field.innerType.name === 'Bool' &&
-            ((a, b) => (a[field.name] && !b[field.name] ? 1 : -1))),
+        sorter: getSorter(field),
+        filters: getFilters(items, field),
+        onFilter: (value, item) => item[field.name] === value,
         render: value => getPrintableValue(value, field),
       })),
   })),
