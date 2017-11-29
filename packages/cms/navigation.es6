@@ -127,7 +127,12 @@ const component = enhance(
     );
 
     const header = (
-      <Menu.Item large key="back" icon={<Logo />} onClick={() => setQuery({})}>
+      <Menu.Item
+        large
+        key="back"
+        icon={<Logo color />}
+        onClick={() => setQuery({})}
+      >
         Olymp
       </Menu.Item>
     );
