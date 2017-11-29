@@ -388,7 +388,7 @@ class CloudinaryView extends Component {
                   <Menu.Item
                     key={v.id}
                     large
-                    icon={<Image value={v} width={40} height={40} />}
+                    icon={<Image value={v} width={60} height={60} />}
                   />
                 ))}
               <Detail
