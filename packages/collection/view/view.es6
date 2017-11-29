@@ -19,13 +19,13 @@ import {
 } from 'olymp-icons';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
-import { Table } from 'antd';
 import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 import { getPrintableValue } from '../utils';
 import withItems from '../with-items';
 import withCollection from '../with-collection';
 import Calendar from './calendar';
+import Table from './table';
 import Detail from './detail';
 
 const FlexContainer = createComponent(
@@ -44,17 +44,6 @@ const FlexContainer = createComponent(
     },
   }),
   'div',
-);
-
-const StyledTable = createComponent(
-  () => ({
-    '& td': {
-      minWidth: 50,
-      maxWidth: 200,
-    },
-  }),
-  p => <Table {...p} />,
-  p => Object.keys(p),
 );
 
 const enhance = compose(
@@ -209,30 +198,6 @@ export default class CollectionView extends Component {
     const nameField = get(collection, 'specialFields.nameField', 'name');
     const startField = get(collection, 'specialFields.startField');
 
-    const columns = collection.fields
-      .filter(
-        x =>
-          x.name !== 'id' &&
-          x.name !== 'state' &&
-          x.name !== 'slug' &&
-          x.name.indexOf('Id') === -1 &&
-          x.name.indexOf('At') === -1 &&
-          x.name.indexOf('By') === -1 &&
-          x.innerType.kind !== 'OBJECT' &&
-          !(x.type.kind === 'LIST' && x.innerType.kind === 'SCALAR'),
-      )
-      .map(field => ({
-        key: field.name,
-        title: field.specialFields.label,
-        dataIndex: field.name,
-        sorter: true,
-        render: value => getPrintableValue(value, field),
-      }));
-    const data = items.map((item, i) => ({
-      key: i,
-      ...item,
-    }));
-
     return (
       <Sidebar
         flex
@@ -248,12 +213,9 @@ export default class CollectionView extends Component {
           {startField ? (
             <Calendar {...this.props} />
           ) : (
-            <StyledTable
-              columns={columns}
-              dataSource={data}
-              onRowClick={item =>
-                updateQuery({ [`@${typeName.toLowerCase()}`]: item.id })
-              }
+            <Table
+              {...this.props}
+              items={items.filter(x => x.state === (keys[0] || 'PUBLISHED'))}
             />
           )}
         </FlexContainer>

@@ -51,6 +51,9 @@ export default (value, field) => {
           </Checkbox>
         );
 
+      case 'Color':
+        return <span style={{ color: value }}>{value}</span>;
+
       case 'String':
         return field.type.kind === 'LIST' ? (
           <span>{(value || []).join(', ')}</span>
