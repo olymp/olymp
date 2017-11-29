@@ -150,7 +150,15 @@ export default class EditablePage extends Component {
     );
   };
   renderMenu = keys => {
-    const { setKeys, navigation, flatNavigation, push, id } = this.props;
+    const {
+      setKeys,
+      navigation,
+      flatNavigation,
+      push,
+      id,
+      title,
+      description,
+    } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
     if (!lastKey) {
@@ -238,7 +246,8 @@ export default class EditablePage extends Component {
           </Menu.Extra>
         }
       >
-        Seitenmanager
+        {title || 'Seitenmanager'}
+        {!!description && <small>{description}</small>}
       </Menu.Item>
     );
 
@@ -267,6 +276,7 @@ export default class EditablePage extends Component {
       save,
       setFormOpen,
       formOpen,
+      description,
     } = this.props;
 
     const P = (
@@ -315,7 +325,7 @@ export default class EditablePage extends Component {
           onClose={() => setFormOpen(false)}
         >
           <Menu
-            header={<Menu.Item large>Seite bearbeiten</Menu.Item>}
+            header={<Menu.Item large>{description}</Menu.Item>}
             headerColor
             headerInverted
           >
@@ -325,11 +335,7 @@ export default class EditablePage extends Component {
             color
             inverted
             collapsed
-            header={
-              <Menu.Item large icon={<FaPencil />}>
-                Seite bearbeiten
-              </Menu.Item>
-            }
+            header={<Menu.Item large icon={<FaPencil />} />}
             headerColor="dark4"
             headerInverted
           >
