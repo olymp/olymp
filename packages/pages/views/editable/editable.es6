@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Prompt, withQueryActions, createPushPathname } from 'olymp-router';
+import { Prompt, withQueryActions, createReplace } from 'olymp-router';
 import { connect } from 'react-redux';
 import {
   FaAngleLeft,
@@ -39,7 +39,6 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 @queryPage
 @withState('signal', 'setSignal', 0)
 @withState('keys', 'setKeys', [])
-@withState('searchOpen', 'setSearchOpen', false)
 @withState('formOpen', 'setFormOpen', false)
 @Form.create({
   onValuesChange: debounce(setSignal, 800, { trailing: true, leading: false }),
@@ -74,11 +73,10 @@ const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
 }))
 @connect(
   ({ location }) => ({
-    tab: location.query['@page'] || '',
     pathname: location.pathname,
   }),
   dispatch => ({
-    push: createPushPathname(dispatch),
+    push: createReplace(dispatch),
   }),
 )
 @reorderPage
@@ -138,7 +136,12 @@ export default class EditablePage extends Component {
         id={item.id}
         icon={Icon ? <Icon /> : undefined}
         onClick={
-          hasChildren ? () => setKeys([...keys, item.id]) : () => push(route)
+          hasChildren
+            ? () => {
+                push({ pathname: route, query: { '@page': null } });
+                setKeys([...keys, item.id]);
+              }
+            : () => push({ pathname: route, query: { '@page': null } })
         }
         extra={hasChildren ? <FaAngleRight /> : null}
       >
@@ -147,7 +150,7 @@ export default class EditablePage extends Component {
     );
   };
   renderMenu = keys => {
-    const { setKeys, navigation, flatNavigation, push } = this.props;
+    const { setKeys, navigation, flatNavigation, push, id } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
     if (!lastKey) {
@@ -160,7 +163,14 @@ export default class EditablePage extends Component {
             key={menu.id}
             title={menu.name}
             extra={
-              <Menu.Extra onClick={() => push(`/__new?@parent=${menu.id}`)}>
+              <Menu.Extra
+                onClick={() =>
+                  push({
+                    pathname: '__new',
+                    query: { '@page': null, '@parent': menu.id },
+                  })
+                }
+              >
                 <FaPlus />
               </Menu.Extra>
             }
@@ -172,11 +182,16 @@ export default class EditablePage extends Component {
     } else {
       const item = flatNavigation.find(x => x.id === lastKey);
       const items = flatNavigation.filter(x => x.parentId === lastKey);
+      const route = `/page_id/${item.parentId}`;
+
       children = [
         <Menu.Item
           key="back"
           icon={<FaAngleLeft />}
-          onClick={() => setKeys(rest)}
+          onClick={() => {
+            push({ pathname: route, query: { '@page': null } });
+            setKeys(rest);
+          }}
         >
           Zurück
         </Menu.Item>,
@@ -184,7 +199,14 @@ export default class EditablePage extends Component {
           key="pages"
           title={item.name}
           extra={
-            <Menu.Extra onClick={() => push(`/__new?@parent=${item.id}`)}>
+            <Menu.Extra
+              onClick={() =>
+                push({
+                  pathname: '__new',
+                  query: { '@page': null, '@parent': item.id },
+                })
+              }
+            >
               <FaPlus />
             </Menu.Extra>
           }
@@ -203,7 +225,15 @@ export default class EditablePage extends Component {
         large
         icon={<FaCubes />}
         extra={
-          <Menu.Extra onClick={() => push(`/__new`)} large>
+          <Menu.Extra
+            onClick={() =>
+              push({
+                pathname: '__new',
+                query: { '@page': null, '@parentId': id },
+              })
+            }
+            large
+          >
             <FaPlus />
           </Menu.Extra>
         }
@@ -211,6 +241,7 @@ export default class EditablePage extends Component {
         Seitenmanager
       </Menu.Item>
     );
+
     return (
       <DndList.Context onDragEnd={this.onDragEnd}>
         <Menu header={header}>
