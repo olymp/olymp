@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { createComponent } from 'olymp-fela';
-import { Table } from 'antd';
+import { Table, Input } from 'antd';
 import { uniq } from 'lodash';
-import { compose, withPropsOnChange } from 'recompose';
+import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 import { getPrintableValue } from '../utils';
 
@@ -72,37 +72,71 @@ const getFilters = (items, field) => {
 };
 
 const enhance = compose(
-  withPropsOnChange(['collection'], ({ collection, items }) => ({
-    columns: collection.fields
-      .filter(
-        x =>
-          x.specialFields.table ||
-          x.name === (collection.specialFields.nameField || 'name') ||
-          x.name ===
-            (collection.specialFields.descriptionField ||
-              'description' ||
-              'beschreibung') ||
-          x.name ===
-            (collection.specialFields.imageField || 'image' || 'bild') ||
-          x.name ===
-            (collection.specialFields.colorField || 'color' || 'farbe'),
+  withState('activeFilter', 'setActiveFilter'),
+  withState('filter', 'setFilter', {}),
+  withPropsOnChange(
+    ['collection', 'items', 'filter', 'activeFilter'],
+    ({
+      collection,
+      items,
+      filter,
+      setFilter,
+      activeFilter,
+      setActiveFilter,
+    }) => ({
+      columns: collection.fields
+        .filter(
+          x =>
+            x.specialFields.table ||
+            x.name === (collection.specialFields.nameField || 'name') ||
+            x.name ===
+              (collection.specialFields.descriptionField ||
+                'description' ||
+                'beschreibung') ||
+            x.name ===
+              (collection.specialFields.imageField || 'image' || 'bild') ||
+            x.name ===
+              (collection.specialFields.colorField || 'color' || 'farbe'),
+        )
+        .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
+        .map(field => ({
+          key: field.name,
+          title: field.specialFields.label,
+          dataIndex: field.name,
+          sorter: getSorter(field),
+          filters: getFilters(items, field),
+          filterDropdown: field.innerType.name === 'String' && (
+            <Input
+              placeholder="Filter"
+              value={filter[field.name] ? filter[field.name] : ''}
+              onChange={e =>
+                setFilter({ ...filter, [field.name]: e.target.value })
+              }
+              onPressEnter={() => setActiveFilter()}
+            />
+          ),
+          filterDropdownVisible: activeFilter === field.name,
+          onFilterDropdownVisibleChange: visible =>
+            setActiveFilter(visible && field.name),
+          onFilter: (value, item) => item[field.name] === value,
+          render: value => getPrintableValue(value, field),
+        })),
+    }),
+  ),
+  withPropsOnChange(['items', 'filter'], ({ items, filter }) => ({
+    data: items
+      .filter(item =>
+        Object.keys(filter).reduce(
+          (acc, key) =>
+            acc &&
+            item[key].toLowerCase().indexOf(filter[key].toLowerCase()) !== -1,
+          true,
+        ),
       )
-      .sort((a, b) => sortValue(b, collection) - sortValue(a, collection))
-      .map(field => ({
-        key: field.name,
-        title: field.specialFields.label,
-        dataIndex: field.name,
-        sorter: getSorter(field),
-        filters: getFilters(items, field),
-        onFilter: (value, item) => item[field.name] === value,
-        render: value => getPrintableValue(value, field),
+      .map((item, i) => ({
+        key: i,
+        ...item,
       })),
-  })),
-  withPropsOnChange(['items'], ({ items }) => ({
-    data: items.map((item, i) => ({
-      key: i,
-      ...item,
-    })),
   })),
 );
 
