@@ -18,7 +18,7 @@ class PageForm extends Component {
   handleNameChange = e => {
     // set slug if unset
     const { form } = this.props;
-    const value = e.target.value;
+    const { value } = e.target;
     form.setFieldsValue({ slug: `/${slugify(value)}` });
   };
 
@@ -99,7 +99,7 @@ class PageForm extends Component {
             placeholder="Alias zu.."
           />
         )}
-        <Toggle form={form} item={item} field="isMega" label="Mega" />
+        {/* <Toggle form={form} item={item} field="isMega" label="Mega" />
         <SectionHeading
           level={2}
           description="Datenanbindung, Sortierung Unterseiten"
@@ -143,7 +143,7 @@ class PageForm extends Component {
           field="sorting"
           placeholder="+name, -id"
           label="Sortieren"
-        />
+        /> */}
         <InputNumber
           form={form}
           item={item}
