@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { get } from 'lodash';
 
 const emptyArray = [];
 export const page = gql`
@@ -36,14 +37,21 @@ export const queryPage = graphql(page, {
     variables: { id: pageId || id },
     fetchPolicy: pathname === '/__new' ? 'cache-only' : undefined,
   }),
-  props: ({ ownProps, data }) => ({
-    ...ownProps,
-    item:
-      (ownProps.pathname === '/__new' || ownProps.pathname === '__new'
-        ? {}
-        : data.page) || {},
-    data,
-  }),
+  props: ({ ownProps, data }) => {
+    const newPage = {
+      state: 'PUBLISHED',
+      parentId: get(ownProps, 'query.@parentId'),
+    };
+
+    return {
+      ...ownProps,
+      item:
+        (ownProps.pathname === '/__new' || ownProps.pathname === '__new'
+          ? newPage
+          : data.page) || newPage,
+      data,
+    };
+  },
 });
 
 export const prefetchPage = (client, id) =>
