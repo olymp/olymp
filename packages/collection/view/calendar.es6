@@ -9,6 +9,9 @@ import { getPrintableValue } from '../utils';
 
 BigCalendar.momentLocalizer(moment);
 
+const min = new Date(0, 0, 0, 7, 0, 0, 0);
+const max = new Date(0, 0, 0, 22, 0, 0, 0);
+
 const Calendar = createComponent(
   ({ theme }) => ({
     '& .rbc-event': {
@@ -79,6 +82,8 @@ export default class CalendarView extends Component {
           event: collection.name,
           // showMore: Function
         }}
+        min={min}
+        max={max}
         onSelectEvent={event =>
           updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
         }
