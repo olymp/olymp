@@ -19,6 +19,10 @@ export default getThemeFromProps => WrappedComponent => {
     componentWillUnmount() {
       const { theme } = this.props;
 
+      if (this.skip || !theme) {
+        return;
+      }
+
       theme.update({});
     }
 
