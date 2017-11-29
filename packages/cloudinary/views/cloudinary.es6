@@ -16,6 +16,7 @@ import {
   FaSave,
   FaThemeisle,
   FaOptinMonster,
+  FaPlus,
 } from 'olymp-icons';
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
@@ -290,8 +291,17 @@ class CloudinaryView extends Component {
       <Menu
         key={keys.join('|')}
         header={
-          <Menu.Item large onClick={goRoot} icon={<FaPictureO />}>
-            Media
+          <Menu.Item
+            large
+            onClick={goRoot}
+            icon={<FaPictureO />}
+            extra={
+              <Menu.Extra onClick={() => {}} disabled={!!keys.length} large>
+                <FaPlus />
+              </Menu.Extra>
+            }
+          >
+            Mediathek
           </Menu.Item>
         }
       >
@@ -387,7 +397,8 @@ class CloudinaryView extends Component {
                 editable={!inModal}
                 collapsed={collapsed}
                 onRemove={({ id }) =>
-                  setSelection(selection.filter(x => id !== x))}
+                  setSelection(selection.filter(x => id !== x))
+                }
               />
             </Menu.Space>
           </Menu>

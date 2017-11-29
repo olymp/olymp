@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   FaAngleLeft,
   FaAngleRight,
-  FaPlusSquareO,
+  FaPlus,
   FaCubes,
   FaHome,
   FaSave,
@@ -160,9 +160,9 @@ export default class EditablePage extends Component {
             key={menu.id}
             title={menu.name}
             extra={
-              <FaPlusSquareO
-                onClick={() => push(`/__new?@parent=${menu.id}`)}
-              />
+              <Menu.Extra onClick={() => push(`/__new?@parent=${menu.id}`)}>
+                <FaPlus />
+              </Menu.Extra>
             }
           >
             {menu.children.map(x => this.renderItem(x))}
@@ -184,7 +184,9 @@ export default class EditablePage extends Component {
           key="pages"
           title={item.name}
           extra={
-            <FaPlusSquareO onClick={() => push(`/__new?@parent=${item.id}`)} />
+            <Menu.Extra onClick={() => push(`/__new?@parent=${item.id}`)}>
+              <FaPlus />
+            </Menu.Extra>
           }
         >
           {items.map(item =>
@@ -197,7 +199,15 @@ export default class EditablePage extends Component {
       ];
     }
     const header = (
-      <Menu.Item large icon={<FaCubes />}>
+      <Menu.Item
+        large
+        icon={<FaCubes />}
+        extra={
+          <Menu.Extra onClick={() => push(`/__new`)} large>
+            <FaPlus />
+          </Menu.Extra>
+        }
+      >
         Seitenmanager
       </Menu.Item>
     );

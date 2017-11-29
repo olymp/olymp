@@ -123,18 +123,25 @@ export default class CollectionView extends Component {
     return (
       <Menu
         header={
-          <Menu.Item icon={<FaDatabase />} large>
+          <Menu.Item
+            icon={<FaDatabase />}
+            large
+            extra={
+              <Menu.Extra
+                onClick={() =>
+                  updateQuery({ [`@${typeName.toLowerCase()}`]: 'new' })
+                }
+                disabled={!!keys.length}
+                large
+              >
+                <FaPlus />
+              </Menu.Extra>
+            }
+          >
             {get(collection, 'specialFields.label', collection.name)}
           </Menu.Item>
         }
       >
-        <Menu.Item
-          icon={<FaPlus />}
-          onClick={() => updateQuery({ [`@${typeName.toLowerCase()}`]: 'new' })}
-          disabled={!!keys.length}
-        >
-          Hinzufügen
-        </Menu.Item>
         {!!keys.length && (
           <Menu.Item icon={<FaChevronLeft />} onClick={() => setKeys([])}>
             Zurück
