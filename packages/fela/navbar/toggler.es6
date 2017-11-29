@@ -98,7 +98,7 @@ const Toggler = ({
   </Container>
 );
 Toggler.propTypes = {
-  toggleComponent: PropTypes.node,
+  // toggleComponent: PropTypes.node,
   onToggle: PropTypes.func,
   toggled: PropTypes.bool,
 };
