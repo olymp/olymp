@@ -9,6 +9,7 @@ import List from './list';
 import Item from './item';
 import Title from './title';
 import Space from './space';
+import Extra from './extra';
 
 const Inner = createComponent(
   () => ({
@@ -77,4 +78,5 @@ Component.List = List;
 Component.Title = Title;
 Component.Image = Image;
 Component.Space = Space;
+Component.Extra = Extra;
 export default Component;
