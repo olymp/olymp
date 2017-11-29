@@ -13,6 +13,7 @@ import {
   FaBarChart,
 } from 'olymp-icons';
 import { get } from 'lodash';
+import { Icon } from 'antd';
 import { connect } from 'react-redux';
 
 const enhance = compose(
@@ -88,7 +89,16 @@ const component = enhance(
               {collectionTree[key].map((collection, i) => (
                 <Menu.Item
                   key={collection.id || i}
-                  icon={<FaDatabase />}
+                  icon={
+                      collection.specialFields.icon ? (
+                        <Icon
+                          type={collection.specialFields.icon}
+                          style={{ fontSize: 20 }}
+                        />
+                      ) : (
+                        <FaDatabase />
+                      )
+                    }
                   active={
                       query[`@${collection.name.toLowerCase()}`] !== undefined
                     }
@@ -106,7 +116,16 @@ const component = enhance(
           : items.push(
             <Menu.Item
               key={key}
-              icon={<FaDatabase />}
+              icon={
+                  collectionTree[key][0].specialFields.icon ? (
+                    <Icon
+                      type={collectionTree[key][0].specialFields.icon}
+                      style={{ fontSize: 20 }}
+                    />
+                  ) : (
+                    <FaDatabase />
+                  )
+                }
               active={
                   query[`@${collectionTree[key][0].name.toLowerCase()}`] !==
                   undefined

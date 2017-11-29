@@ -19,6 +19,7 @@ import {
 } from 'olymp-icons';
 import { Image } from 'olymp-cloudinary';
 import { get } from 'lodash';
+import { Icon } from 'antd';
 import { compose, withPropsOnChange, withState } from 'recompose';
 import isAfter from 'date-fns/isAfter';
 import { getPrintableValue } from '../utils';
@@ -113,7 +114,16 @@ export default class CollectionView extends Component {
       <Menu
         header={
           <Menu.Item
-            icon={<FaDatabase />}
+            icon={
+              collection.specialFields.icon ? (
+                <Icon
+                  type={collection.specialFields.icon}
+                  style={{ fontSize: 32 }}
+                />
+              ) : (
+                <FaDatabase />
+              )
+            }
             large
             extra={
               <Menu.Extra
