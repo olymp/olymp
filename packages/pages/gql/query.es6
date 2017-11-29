@@ -38,7 +38,10 @@ export const queryPage = graphql(page, {
   }),
   props: ({ ownProps, data }) => ({
     ...ownProps,
-    item: (ownProps.pathname === '/__new' ? {} : data.page) || {},
+    item:
+      (ownProps.pathname === '/__new' || ownProps.pathname === '__new'
+        ? {}
+        : data.page) || {},
     data,
   }),
 });

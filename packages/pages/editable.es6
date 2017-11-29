@@ -26,12 +26,12 @@ export default enhance(props => {
         );
   const { id, binding, pageId, bindingId } = match || {};
 
-  if (!match && pathname !== '/__new') {
+  if (!match && pathname !== '__new' && pathname !== '/__new') {
     return (
       <ContentLoader height={600} isLoading={loading}>
         <EditablePage
           {...props}
-          render={match => (
+          render={() => (
             <Wrapped {...props}>
               {renderHelmet({
                 name: '404',
