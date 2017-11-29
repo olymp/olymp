@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AutoComplete, Input } from 'antd';
 import { throttleInput } from 'olymp-utils';
-import { FaMapMarker } from 'olymp-icons';
+import { FaNeuter } from 'olymp-icons';
 import { withApollo, graphql } from 'react-apollo';
 import { compose, withState } from 'recompose';
 import { get } from 'lodash';
@@ -131,7 +131,7 @@ export default class GeocodeEditor extends Component {
           placeholder={placeholder || 'Suche ...'}
           size={size}
           suffix={
-            <FaMapMarker
+            <FaNeuter
               size={14}
               onClick={() => {
                 if (navigator.geolocation) {
