@@ -1,9 +1,9 @@
 import React from 'react';
-import { compose, withPropsOnChange } from 'recompose';
+import { compose, withPropsOnChange, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import { ThemeProvider, ScreenLoader, Logo } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
-import { useAuth } from 'olymp-auth';
+import { withAuth, getAuth } from 'olymp-auth0';
 import { LightboxProvider } from 'olymp-cloudinary';
 import getNavigation from 'olymp-pages/get-navigation';
 import { asyncComponent } from 'react-async-component';
@@ -40,7 +40,7 @@ const enhance = compose(
       `,
     },
   })),
-  useAuth({}),
+  withAuth,
   withRedux,
   useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
@@ -61,8 +61,12 @@ const Auth = connect(({ auth }) => ({
 );
 Auth.displayName = 'CmsAuthSwitch';
 
+const Callback = compose(getAuth)(() => null);
+Callback.displayName = 'AuthCallback';
+
 const Load = getNavigation(
   connect(({ auth, location }, { isNavigationLoading }) => ({
+    pathname: location.pathname,
     isLoading:
       isNavigationLoading ||
       (auth.verifying &&
@@ -71,9 +75,9 @@ const Load = getNavigation(
       (typeof window === 'undefined' &&
         !!Object.keys(location.query).find(key => key.indexOf('@') === 0)) ||
       false,
-  }))(({ isLoading, ...rest }) => [
+  }))(({ isLoading, pathname, ...rest }) => [
     <ScreenLoader key={0} show={isLoading} />,
-    <Auth key={1} {...rest} />,
+    pathname === '/auth' && <Callback key={1} {...rest} />,
   ]),
 );
 Load.displayName = 'CmsLoadSwitch';

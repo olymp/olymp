@@ -1,0 +1,20 @@
+{
+  "version": "18.8.4",
+  "name": "olymp-auth0",
+  "description": "",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "up": "npm-check -u"
+  },
+  "dependencies": {
+    "auth0-js": "^8.11.3",
+    "connect-ensure-login": "^0.1.1",
+    "passport": "^0.4.0",
+    "passport-auth0": "^0.6.0"
+  }
+}

@@ -5,6 +5,7 @@ import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';
 import { scrapeGraphQL } from 'olymp-scrape/server';
+import auth0 from 'olymp-auth0/server';
 import { MongoClient } from 'mongodb';
 /* import createSitemap from 'olymp-sitemap/server'; */
 import createMonk from 'monk';
@@ -41,6 +42,8 @@ export default (server, options) => {
     }
     db = d;
   });
+
+  auth0(server);
 
   const schema = createSchema({ directives });
   const modules = {

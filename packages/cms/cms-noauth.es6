@@ -1,5 +1,4 @@
 import React from 'react';
-import { AuthModals } from 'olymp-auth';
 import PageRoute from 'olymp-pages/route';
 import { Lightbox } from 'olymp-cloudinary';
 import { lifecycle, compose } from 'recompose';
@@ -7,15 +6,17 @@ import { TopLoader } from 'olymp-fela';
 import { createReplaceQuery } from 'olymp-router';
 import { connect } from 'react-redux';
 import { message } from 'antd';
+import { getAuth } from 'olymp-auth0';
 import PrefetchRoutes from './prefetch-routes';
 
 const enhance = compose(
   connect(null, dispatch => ({
     setQuery: createReplaceQuery(dispatch),
   })),
+  getAuth,
   lifecycle({
     componentDidMount() {
-      const { setQuery } = this.props;
+      const { setQuery, auth } = this.props;
       const keyDown = e => {
         if (e.altKey) {
           const closeMessage = message.loading(
@@ -23,8 +24,9 @@ const enhance = compose(
             99999,
           );
           const timer = setTimeout(() => {
-            setQuery({ login: null });
+            // setQuery({ login: null });
             keyUp();
+            auth.login();
           }, 1500);
           const keyUp = () => {
             clearTimeout(timer);
@@ -58,7 +60,6 @@ const component = enhance(
   ({ _isLoading, flatNavigation, showLightbox, showAuth, ...rest }) => [
     <TopLoader loading={_isLoading} key={1} />,
     showLightbox && <Lightbox key={2} />,
-    showAuth && <AuthModals key={3} />,
     <PageRoute flatNavigation={flatNavigation} {...rest} key={4} />,
     <PrefetchRoutes flatNavigation={flatNavigation} key={5} />,
   ],

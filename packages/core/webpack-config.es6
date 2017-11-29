@@ -154,6 +154,12 @@ module.exports = ({
   if (!isServer) {
     config.plugins.push(
       new webpack.DefinePlugin({
+        'process.env.AUTH0_CLIENT_ID': process.env.AUTH0_CLIENT_ID
+          ? `"${process.env.AUTH0_CLIENT_ID}"`
+          : false,
+        'process.env.AUTH0_DOMAIN': process.env.AUTH0_DOMAIN
+          ? `"${process.env.AUTH0_DOMAIN}"`
+          : false,
         'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
           ? `"${process.env.GOOGLE_MAPS_KEY}"`
           : false,

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Switch, Match, createUpdateQuery } from 'olymp-router';
-import { AuthModals } from 'olymp-auth';
-import { AuthUsers, AuthUser } from 'olymp-auth/admin';
 import withUA from 'olymp-utils/user-agent';
 import EditableRoute from 'olymp-pages/editable';
 import withLocale from 'olymp-locale/de';
@@ -80,15 +78,13 @@ const component = enhance(props => {
       <Load />
       <Lightbox />
       <Hotjar id={process.env.HOTJAR} />
-      <AuthModals />
       <Modal
         open={!!collection && query.modal === null}
         onClose={() =>
           updateQuery({
             [`@${collectionName.toLowerCase()}`]: undefined,
             modal: undefined,
-          })
-        }
+          })}
       >
         <CollectionRoute
           {...props}
@@ -118,14 +114,6 @@ const component = enhance(props => {
           <Match
             match={query['@analytics'] !== undefined}
             render={() => <Analytics {...props} />}
-          />
-          <Match
-            match={query['@users'] !== undefined}
-            render={() => <AuthUsers {...props} />}
-          />
-          <Match
-            match={query['@user'] !== undefined}
-            render={() => <AuthUser {...props} />}
           />
           <Match
             match={query['@page'] !== undefined}
