@@ -3,7 +3,7 @@ import Form from 'olymp-ui/form';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { Container, Sidebar, Menu, AntMenu } from 'olymp-fela';
 import { Prompt } from 'olymp-router';
-import { FaPencil, FaTrash, FaSave, FaTimes } from 'olymp-icons';
+import { FaPencil, FaTrashO, FaSave, FaTimes } from 'olymp-icons';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
 import DefaultEdits from './default-edits';
@@ -121,7 +121,7 @@ const FormComponent = enhance(
               okText="Ja"
               cancelText="Nein"
             >
-              <AntMenu.Tooltip icon={<FaTrash />}>Löschen</AntMenu.Tooltip>
+              <AntMenu.Tooltip icon={<FaTrashO />}>Löschen</AntMenu.Tooltip>
             </Popconfirm>
           )}
           {!!onClose && (

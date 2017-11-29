@@ -10,7 +10,7 @@ import {
 } from 'olymp-fela';
 import {
   FaDatabase,
-  FaTrash,
+  FaTrashO,
   FaArchive,
   FaClockO,
   FaPlus,
@@ -168,7 +168,7 @@ export default class CollectionView extends Component {
         )}
         {!keys.length && (
           <Menu.Item
-            icon={<FaTrash />}
+            icon={<FaTrashO />}
             extra={<FaAngleRight />}
             onClick={() => setKeys(['REMOVED'])}
           >
