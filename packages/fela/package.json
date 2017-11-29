@@ -30,7 +30,7 @@
     "npm": "^5.5.1",
     "olymp-utils": "^18.8.4",
     "particles.js": "^2.0.0",
-    "react-beautiful-dnd": "^2.6.4",
+    "react-beautiful-dnd": "^3.0.0",
     "react-fela": "^6.1.1",
     "react-frame-component": "^2.0.0",
     "react-gravatar": "^2.6.3",
@@ -43,8 +43,8 @@
   "devDependencies": {
     "olymp-webpack-babel": "^18.8.4",
     "raw-loader": "^0.5.1",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-styleguidist": "^6.0.33",
     "webpack": "^3.8.1"
   }
