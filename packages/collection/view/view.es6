@@ -214,16 +214,13 @@ export default class CollectionView extends Component {
           x.innerType.kind !== 'OBJECT' &&
           !(x.type.kind === 'LIST' && x.innerType.kind === 'SCALAR'),
       )
-      .map(
-        field =>
-          console.log(field) || {
-            key: field.name,
-            title: field.specialFields.label,
-            dataIndex: field.name,
-            sorter: true,
-            render: value => getPrintableValue(value, field),
-          },
-      );
+      .map(field => ({
+        key: field.name,
+        title: field.specialFields.label,
+        dataIndex: field.name,
+        sorter: true,
+        render: value => getPrintableValue(value, field),
+      }));
     const data = items.map((item, i) => ({
       key: i,
       ...item,
