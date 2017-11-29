@@ -10,7 +10,7 @@ import {
   FaSave,
   FaPencil,
 } from 'olymp-icons';
-import { withPropsOnChange, withProps, withState } from 'recompose';
+import { withPropsOnChange, withProps, withState, compose } from 'recompose';
 import {
   ContentLoader,
   Menu,
@@ -36,50 +36,58 @@ const Page = ({ children, isLoading, ...props }) => (
 );
 
 const setSignal = (props, v) => !v.blocks && props.setSignal(props.signal + 1);
-@queryPage
-@withState('signal', 'setSignal', 0)
-@withState('keys', 'setKeys', [])
-@withState('formOpen', 'setFormOpen', false)
-@Form.create({
-  onValuesChange: debounce(setSignal, 800, { trailing: true, leading: false }),
-})
-@mutatePage
-@withQueryActions
-@withPropsOnChange(
-  ['item', 'flatNavigation'],
-  ({ flatNavigation, form, ...rest }) => {
-    const item = rest.item || flatNavigation.find(page => page.slug === '/');
 
-    form.getFieldDecorator('parentId', {
-      initialValue: get(rest, 'query.["@parent"]') || item.parentId,
-    });
-    form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
-    form.getFieldDecorator('blocks', { initialValue: item.blocks });
+const enhance = compose(
+  queryPage,
+  withState('signal', 'setSignal', 0),
+  withState('keys', 'setKeys', []),
+  withState('formOpen', 'setFormOpen', false),
+  Form.create({
+    onValuesChange: debounce(setSignal, 800, {
+      trailing: true,
+      leading: false,
+    }),
+  }),
+  mutatePage,
+  withQueryActions,
+  withPropsOnChange(
+    ['item', 'flatNavigation'],
+    ({ flatNavigation, form, ...rest }) => {
+      const item = rest.item || flatNavigation.find(page => page.slug === '/');
 
-    return {
-      id: item.id || null,
-      item,
-      description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
-      title: !item.id ? 'Neue Seite' : item.name,
-      blocks: item.blocks,
-    };
-  },
-)
-@withProps(({ form }) => ({
-  onChange: blocks => {
-    form.setFieldsValue({ blocks });
-  },
-  value: form.getFieldValue('blocks'),
-}))
-@connect(
-  ({ location }) => ({
-    pathname: location.pathname,
-  }),
-  dispatch => ({
-    push: createReplace(dispatch),
-  }),
-)
-@reorderPage
+      form.getFieldDecorator('parentId', {
+        initialValue: get(rest, 'query.["@parent"]') || item.parentId,
+      });
+      form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
+      form.getFieldDecorator('blocks', { initialValue: item.blocks });
+
+      return {
+        id: item.id || null,
+        item,
+        description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
+        title: !item.id ? 'Neue Seite' : item.name,
+        blocks: item.blocks,
+      };
+    },
+  ),
+  withProps(({ form }) => ({
+    onChange: blocks => {
+      form.setFieldsValue({ blocks });
+    },
+    value: form.getFieldValue('blocks'),
+  })),
+  connect(
+    ({ location }) => ({
+      pathname: location.pathname,
+    }),
+    dispatch => ({
+      push: createReplace(dispatch),
+    }),
+  ),
+  reorderPage,
+);
+
+@enhance
 export default class EditablePage extends Component {
   onDragEnd = ({ source, destination, draggableId }) => {
     // dropped outside the list
@@ -149,6 +157,7 @@ export default class EditablePage extends Component {
       </Com>
     );
   };
+
   renderMenu = keys => {
     const {
       setKeys,
@@ -219,10 +228,10 @@ export default class EditablePage extends Component {
             </Menu.Extra>
           }
         >
-          {items.map(item =>
+          {items.map(i =>
             this.renderItem({
-              ...item,
-              children: flatNavigation.filter(x => x.parentId === item.id),
+              ...i,
+              children: flatNavigation.filter(x => x.parentId === i.id),
             }),
           )}
         </DndList>,
@@ -277,6 +286,7 @@ export default class EditablePage extends Component {
       setFormOpen,
       formOpen,
       description,
+      pageList,
     } = this.props;
 
     const P = (
@@ -329,7 +339,7 @@ export default class EditablePage extends Component {
             headerColor
             headerInverted
           >
-            <PageForm {...this.props} />
+            <PageForm items={pageList} {...this.props} />
           </Menu>
           <Menu
             color
@@ -339,7 +349,7 @@ export default class EditablePage extends Component {
             headerColor="dark4"
             headerInverted
           >
-            <AntMenu.Tooltip onClick={setFormOpen} icon={<FaSave />}>
+            <AntMenu.Tooltip onClick={save} icon={<FaSave />}>
               Speichern
             </AntMenu.Tooltip>
           </Menu>
