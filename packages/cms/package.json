@@ -19,6 +19,7 @@
     "monk": "^6.0.5",
     "olymp": "^18.8.5",
     "olymp-auth": "^18.8.5",
+    "olymp-auth0": "^18.8.5",
     "olymp-cloudinary": "^18.8.5",
     "olymp-collection": "^18.8.5",
     "olymp-fela": "^18.8.5",
