@@ -24,10 +24,7 @@ export default class Auth {
           primaryColor: color,
         },
         auth: {
-          autoParseHash: true,
           redirect: false,
-          // sso: true,
-          scope: 'openid profile email',
         },
       });
       this.lock.on('authenticated', this.handleAuthentication);
@@ -42,23 +39,19 @@ export default class Auth {
   }
 
   handleAuthentication = authResult => {
-    console.log(authResult);
     if (authResult && authResult.accessToken) {
       this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
-        console.log(authResult, profile);
         if (error) {
           return;
         }
         this.setSession({ ...authResult, profile });
         this.lock.hide();
-        console.log('HANDLE AUTH');
         this.handler(profile);
       });
     }
   };
 
   setSession = ({ expiresIn, accessToken, profile }) => {
-    // Set the time that the access token will expire at
     const expiresAt = JSON.stringify(expiresIn * 1000 + new Date().getTime());
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('profile', JSON.stringify(profile));
@@ -73,7 +66,6 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('profile');
     localStorage.removeItem('expires_at');
-    console.log('LOGOUT');
     this.handler(null);
   };
 
