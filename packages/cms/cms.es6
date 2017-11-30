@@ -1,5 +1,5 @@
-import React from 'react';
-import { compose, withPropsOnChange, lifecycle } from 'recompose';
+import React, { Fragment } from 'react';
+import { compose, withPropsOnChange } from 'recompose';
 import { connect } from 'react-redux';
 import { ThemeProvider, ScreenLoader, Logo } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
@@ -40,7 +40,12 @@ const enhance = compose(
       `,
     },
   })),
-  withAuth,
+  withAuth({
+    title: 'olymp',
+    color: 'orange',
+    logo:
+      'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
+  }),
   withRedux,
   useSchema,
   withPropsOnChange(['theme'], ({ theme }) => ({
@@ -53,32 +58,26 @@ const enhance = compose(
   })),
 );
 
-const Auth = connect(({ auth }) => ({
-  isAuthenticated: !!auth.user,
-}))(
+const Auth = getAuth(
   ({ isAuthenticated, ...rest }) =>
     isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />,
 );
 Auth.displayName = 'CmsAuthSwitch';
 
-const Callback = compose(getAuth)(() => null);
-Callback.displayName = 'AuthCallback';
-
 const Load = getNavigation(
-  connect(({ auth, location }, { isNavigationLoading }) => ({
+  connect(({ location }, { isNavigationLoading }) => ({
     pathname: location.pathname,
     isLoading:
       isNavigationLoading ||
-      (auth.verifying &&
-        typeof window !== 'undefined' &&
-        !!Object.keys(location.query).find(key => key.indexOf('@') === 0)) ||
       (typeof window === 'undefined' &&
         !!Object.keys(location.query).find(key => key.indexOf('@') === 0)) ||
       false,
-  }))(({ isLoading, pathname, ...rest }) => [
-    <ScreenLoader key={0} show={isLoading} />,
-    pathname === '/auth' && <Callback key={1} {...rest} />,
-  ]),
+  }))(({ isLoading, pathname, ...rest }) => (
+    <Fragment>
+      <ScreenLoader show={isLoading} />
+      <Auth {...rest} />
+    </Fragment>
+  )),
 );
 Load.displayName = 'CmsLoadSwitch';
 

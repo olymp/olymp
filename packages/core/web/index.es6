@@ -2,11 +2,7 @@ import 'babel-polyfill';
 // React
 import React from 'react';
 import { render, hydrate } from 'react-dom';
-import {
-  AsyncComponentProvider,
-  createAsyncContext,
-} from 'react-async-component'; // 👈
-import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
+import asyncBootstrapper from 'react-async-bootstrapper';
 // Apollo
 import ApolloClient from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
@@ -26,7 +22,6 @@ import {
   attachHistory,
 } from 'olymp-router';
 import { apolloMiddleware } from 'olymp-graphql';
-import { authMiddleware, authReducer } from 'olymp-auth';
 // Local
 import createDynamicRedux from '../redux-dynamic';
 import { startLoading, stopLoading } from './loader';
@@ -171,14 +166,12 @@ store = createDynamicStore(
   {
     app: appReducer(),
     location: routerReducer(history),
-    auth: authReducer({ verifying: !!localStorage.getItem('token') }),
   },
   reduxInitial,
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
     applyMiddleware(routerMiddleware(history)),
     applyMiddleware(apolloMiddleware(client)),
-    applyMiddleware(authMiddleware),
     applyMiddleware(appMiddleware),
   ),
 );

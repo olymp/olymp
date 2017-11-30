@@ -1,64 +1,88 @@
-import auth0 from 'auth0-js';
+import Auth0Lock from 'auth0-lock';
 
 export default class Auth {
   constructor(
     {
+      title = 'olymp',
       domain = process.env.AUTH0_DOMAIN,
       clientID = process.env.AUTH0_CLIENT_ID,
+      color = 'green',
+      logo = 'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
     } = {},
+    handler,
   ) {
+    this.handler = handler;
     if (typeof location !== 'undefined') {
-      this.auth0 = new auth0.WebAuth({
-        domain,
-        clientID,
-        redirectUri: `${location.protocol}//${location.host}/auth`,
-        audience: `https://${domain}/userinfo`,
-        responseType: 'token id_token',
-        scope: 'openid',
+      this.lock = new Auth0Lock(clientID, domain, {
+        languageDictionary: {
+          title,
+        },
+        language: 'de',
+        allowAutocomplete: true,
+        theme: {
+          logo,
+          primaryColor: color,
+        },
+        auth: {
+          autoParseHash: true,
+          redirect: false,
+          // sso: true,
+          scope: 'openid profile email',
+        },
       });
+      this.lock.on('authenticated', this.handleAuthentication);
+      if (
+        this.isAuthenticated() &&
+        localStorage.getItem('profile') &&
+        handler
+      ) {
+        handler(JSON.parse(localStorage.getItem('profile')));
+      }
     }
   }
 
-  handleAuthentication(cb) {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-        // history.replace('/home');
-      } else if (err) {
-        // history.replace('/home');
-        console.log(err);
-      }
-      cb();
-    });
-  }
+  handleAuthentication = authResult => {
+    console.log(authResult);
+    if (authResult && authResult.accessToken) {
+      this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+        console.log(authResult, profile);
+        if (error) {
+          return;
+        }
+        this.setSession({ ...authResult, profile });
+        this.lock.hide();
+        console.log('HANDLE AUTH');
+        this.handler(profile);
+      });
+    }
+  };
 
-  setSession = authResult => {
+  setSession = ({ expiresIn, accessToken, profile }) => {
     // Set the time that the access token will expire at
-    const expiresAt = JSON.stringify(
-      authResult.expiresIn * 1000 + new Date().getTime(),
-    );
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
+    const expiresAt = JSON.stringify(expiresIn * 1000 + new Date().getTime());
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('profile', JSON.stringify(profile));
     localStorage.setItem('expires_at', expiresAt);
   };
 
   login = () => {
-    this.auth0.authorize();
+    this.lock.show();
   };
 
   logout = () => {
-    // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
+    localStorage.removeItem('profile');
     localStorage.removeItem('expires_at');
-    // navigate to the home route
-    history.replace('/home');
+    console.log('LOGOUT');
+    this.handler(null);
   };
 
   isAuthenticated = () => {
-    // Check whether the current time is past the
-    // access token's expiry time
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const exp = localStorage.getItem('expires_at');
+    if (!exp) {
+      return false;
+    }
+    const expiresAt = JSON.parse(exp);
     return new Date().getTime() < expiresAt;
   };
 }

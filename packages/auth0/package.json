@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "auth0-js": "^8.11.3",
+    "auth0-lock": "^10.24.1",
     "connect-ensure-login": "^0.1.1",
     "passport": "^0.4.0",
     "passport-auth0": "^0.6.0"

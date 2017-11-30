@@ -3,20 +3,16 @@ import PageRoute from 'olymp-pages/route';
 import { Lightbox } from 'olymp-cloudinary';
 import { lifecycle, compose } from 'recompose';
 import { TopLoader } from 'olymp-fela';
-import { createReplaceQuery } from 'olymp-router';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 import { getAuth } from 'olymp-auth0';
 import PrefetchRoutes from './prefetch-routes';
 
 const enhance = compose(
-  connect(null, dispatch => ({
-    setQuery: createReplaceQuery(dispatch),
-  })),
   getAuth,
   lifecycle({
     componentDidMount() {
-      const { setQuery, auth } = this.props;
+      const { login } = this.props;
       const keyDown = e => {
         if (e.altKey) {
           const closeMessage = message.loading(
@@ -26,7 +22,7 @@ const enhance = compose(
           const timer = setTimeout(() => {
             // setQuery({ login: null });
             keyUp();
-            auth.login();
+            login();
           }, 1500);
           const keyUp = () => {
             clearTimeout(timer);

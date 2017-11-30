@@ -8,7 +8,7 @@ export default () => {
   let stores;
   let combine;
 
-  const combineReducersRecurse = (reducers) => {
+  const combineReducersRecurse = reducers => {
     // If this is a leaf or already combined.
     if (typeof reducers === 'function') {
       return reducers;
@@ -38,17 +38,19 @@ export default () => {
       // If already set, do nothing.
       /* if (has(stores.injectedReducers, key) && force === false) {
       return;
-    }*/
+    } */
 
       set(stores.injectedReducers, name, reducer);
       stores.replaceReducer(combineReducersRecurse(stores.injectedReducers));
     },
-    dynamicMiddleware: store => next => (action) => {
+    dynamicMiddleware: store => next => action => {
       const middlewareAPI = {
         getState: store.getState,
         dispatch: store.dispatch,
       };
-      const chain = [...middlewares.values()].map(middleware => middleware(middlewareAPI));
+      const chain = [...middlewares.values()].map(middleware =>
+        middleware(middlewareAPI),
+      );
       return compose(...chain)(next)(action);
     },
     createDynamicStore: (initialReducers, ...args) => {
@@ -98,14 +100,23 @@ export class DynamicReduxProvider extends Component {
   }
 }
 
-export const withDynamicRedux = ({ name, reducer, middleware }) => (WrappedComponent) => {
+export const withDynamicRedux = ({
+  name,
+  reducer,
+  middleware,
+  init,
+}) => WrappedComponent => {
   class WithDynamicRedux extends Component {
     static contextTypes = {
       dynamicRedux: PropTypes.object,
+      store: PropTypes.object,
     };
     constructor(props, context) {
       super(props);
       const { injectReducer, injectMiddleware } = context.dynamicRedux;
+      if (context.store && init) {
+        init(context.store);
+      }
       if (reducer) {
         injectReducer(name, reducer);
       }

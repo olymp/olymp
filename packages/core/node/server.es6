@@ -41,7 +41,6 @@ import { ApolloClient } from 'apollo-client';
 import { applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 // Olymp
-import { authMiddleware, authReducer } from 'olymp-auth';
 import { createFela } from 'olymp-fela';
 import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
@@ -226,14 +225,11 @@ app.get('*', (req, res) => {
     {
       app: appReducer(),
       location: routerReducer(history),
-      // auth: authReducer({ user: req.user }),
-      auth: authReducer(),
     },
     compose(
       applyMiddleware(dynamicMiddleware),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(apolloMiddleware(client)),
-      applyMiddleware(authMiddleware),
       applyMiddleware(appMiddleware),
     ),
   );
@@ -277,7 +273,6 @@ app.get('*', (req, res) => {
         asyncState,
         initialState: {
           apollo: cache.data,
-          // auth: state.auth,
           // location: state.location,
         },
         gaTrackingId: GA_TRACKING_ID,

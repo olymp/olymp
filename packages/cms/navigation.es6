@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withState, withHandlers } from 'recompose';
 import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
-import { createLogout } from 'olymp-auth';
+import { getAuth } from 'olymp-auth0';
 import { Avatar, Logo, Menu, Sidebar, Search } from 'olymp-fela';
 import {
   FaCubes,
@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 
 const enhance = compose(
   withLang,
+  getAuth,
   connect(
     ({ location, auth }) => ({
       pathname: location.pathname,
@@ -27,7 +28,6 @@ const enhance = compose(
     }),
     dispatch => ({
       setQuery: createReplaceQuery(dispatch),
-      logout: createLogout(dispatch),
       push: createPushPathname(dispatch),
     }),
   ),
@@ -105,8 +105,7 @@ const component = enhance(
                   onClick={() =>
                       setQuery({
                         [`@${collection.name.toLowerCase()}`]: null,
-                      })
-                    }
+                      })}
                 >
                   {get(collection, 'specialFields.label', collection.name)}
                 </Menu.Item>
@@ -133,8 +132,7 @@ const component = enhance(
               onClick={() =>
                   setQuery({
                     [`@${collectionTree[key][0].name.toLowerCase()}`]: null,
-                  })
-                }
+                  })}
             >
               {get(
                   collectionTree[key][0],
