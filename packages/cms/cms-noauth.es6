@@ -1,18 +1,18 @@
 import React from 'react';
 import PageRoute from 'olymp-pages/route';
+import { getAuth } from 'olymp-auth0';
 import { Lightbox } from 'olymp-cloudinary';
 import { lifecycle, compose } from 'recompose';
 import { TopLoader } from 'olymp-fela';
 import { connect } from 'react-redux';
 import { message } from 'antd';
-import { getAuth } from 'olymp-auth0';
 import PrefetchRoutes from './prefetch-routes';
 
 const enhance = compose(
   getAuth,
   lifecycle({
     componentDidMount() {
-      const { login } = this.props;
+      const { push, login } = this.props;
       const keyDown = e => {
         if (e.altKey) {
           const closeMessage = message.loading(

@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import Portal from '../portal';
 
 const ModalBackground = createComponent(
-  ({ theme }) => ({
+  ({ theme, backgroundColor }) => ({
     position: 'fixed',
     overflow: 'auto',
     top: 0,
@@ -12,7 +12,7 @@ const ModalBackground = createComponent(
     bottom: 0,
     right: 0,
     zIndex: 1000,
-    backgroundColor: theme.dark2,
+    backgroundColor: backgroundColor || theme.dark2,
     ...get(theme, 'modalBackdrop', {}),
   }),
   'div',
@@ -71,11 +71,13 @@ export default ({
   portal = false,
   noScroll = true,
   onClose,
+  backgroundColor,
   ...props
 }) =>
   open === undefined || open ? (
     <Portal noScroll={noScroll} noPortal={!portal}>
       <ModalBackground
+        backgroundColor={backgroundColor}
         onClick={e => {
           e.stopPropagation();
           onClose(e);

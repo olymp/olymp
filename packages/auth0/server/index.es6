@@ -28,6 +28,23 @@ export default app => {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  app.get('/callback-cross-auth.html', (req, res) => {
+    res.send(`
+      <head>
+        <script src="//cdn.auth0.com/js/auth0/9.0.0-beta.7/auth0.min.js"></script>
+        <script type="text/javascript">
+          var auth0 = new auth0.WebAuth({
+            clientID: '${process.env.AUTH0_CLIENT_ID}',
+            domain: '${process.env.AUTH0_DOMAIN}',
+            redirectUri: '${process.env.AUTH0_CALLBACK_URL}',
+            responseType: 'token'
+          });
+          auth0.crossOriginVerification();
+        </script>
+      </head>
+    `);
+  });
+
   app.use(({ user }, res, next) => {
     console.log(user);
     next();
