@@ -31,7 +31,9 @@ export const withRedux = config => {
       return;
     }
     auth0 = new Auth0(config, payload => {
-      dispatch({ type: SET, payload });
+      if (payload !== false) {
+        dispatch({ type: SET, payload });
+      }
       const { pathname, query } = getState().location;
       if (pathname === '/auth') {
         dispatch({

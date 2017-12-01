@@ -45,8 +45,8 @@ export default class Auth {
         logo,
         primaryColor: color,
       },
-      
     });
+    let closing = false;
     lock.on('authenticated', authResult => {
       if (!authResult || !authResult.accessToken) {
         return;
@@ -56,9 +56,16 @@ export default class Auth {
           return;
         }
         this.setSession({ ...authResult, profile });
+        closing = true;
         lock.hide();
         this.handler(profile);
       });
+    });
+    lock.on('hide', () => {
+      if (closing) {
+        return;
+      }
+      this.handler(false);
     });
     if (login === false) {
       return;
