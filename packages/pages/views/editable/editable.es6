@@ -167,6 +167,7 @@ export default class EditablePage extends Component {
       id,
       title,
       description,
+      setFormOpen,
     } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
@@ -243,12 +244,13 @@ export default class EditablePage extends Component {
         icon={<FaCubes />}
         extra={
           <Menu.Extra
-            onClick={() =>
+            onClick={() => {
+              setFormOpen(true);
               push({
                 pathname: '__new',
                 query: { '@page': null, '@parentId': id },
-              })
-            }
+              });
+            }}
             large
           >
             <FaPlus />
