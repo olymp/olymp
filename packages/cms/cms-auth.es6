@@ -1,5 +1,10 @@
 import React from 'react';
-import { Switch, Match, createUpdateQuery } from 'olymp-router';
+import {
+  Switch,
+  Match,
+  createUpdateQuery,
+  createReplaceQuery,
+} from 'olymp-router';
 import withUA from 'olymp-utils/user-agent';
 import EditableRoute from 'olymp-pages/editable';
 import withLocale from 'olymp-locale/de';
@@ -53,6 +58,7 @@ const enhance = compose(
     }),
     dispatch => ({
       updateQuery: createUpdateQuery(dispatch),
+      replaceQuery: createReplaceQuery(dispatch),
     }),
   ),
 );
@@ -84,7 +90,8 @@ const component = enhance(props => {
           updateQuery({
             [`@${collectionName.toLowerCase()}`]: undefined,
             modal: undefined,
-          })}
+          })
+        }
       >
         <CollectionRoute
           {...props}

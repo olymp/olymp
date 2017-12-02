@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'olymp-ui/form';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { Container, Sidebar, Menu, AntMenu } from 'olymp-fela';
-import { Prompt } from 'olymp-router';
+import { withRouter, Prompt } from 'olymp-router';
 import { FaPencil, FaTrashO, FaSave, FaTimes } from 'olymp-icons';
 import { get } from 'lodash';
 import { Popconfirm } from 'antd';
@@ -46,32 +46,36 @@ const getDefaultEdit = type => {
 };
 
 const enhance = compose(
-  withPropsOnChange(['collection'], ({ collection, form, ...props }) => {
-    const schema = getFormSchema(collection.fields);
-    const { getFieldDecorator } = form;
-    const schemaWithEdits = {};
-    schema.forEach(field => {
-      const edit = getDefaultEdit(field) || {};
-      const title = get(field, 'specialFields.label');
-      const label = title.replace('-Ids', '').replace('-Id', '');
-      schemaWithEdits[field.name] = {
-        ...field,
-        ...edit,
-        title,
-        label,
-        fieldDecorator: () =>
-          getFieldDecorator(field.name, {
-            rules: getValidationRules(field),
-            // valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
-            initialValue: getInitialValue(props, field),
-          }),
+  withRouter,
+  withPropsOnChange(
+    ['collection', 'query'],
+    ({ collection, form, query, ...props }) => {
+      const schema = getFormSchema(collection.fields);
+      const { getFieldDecorator } = form;
+      const schemaWithEdits = {};
+      schema.forEach(field => {
+        const edit = getDefaultEdit(field) || {};
+        const title = get(field, 'specialFields.label');
+        const label = title.replace('-Ids', '').replace('-Id', '');
+        schemaWithEdits[field.name] = {
+          ...field,
+          ...edit,
+          title,
+          label,
+          fieldDecorator: () =>
+            getFieldDecorator(field.name, {
+              rules: getValidationRules(field),
+              // valuePropName: field.type.name === 'Boolean' ? 'checked' : 'value',
+              initialValue: query[field.name] || getInitialValue(props, field),
+            }),
+        };
+      });
+      return {
+        schemaWithEdits,
+        schema,
       };
-    });
-    return {
-      schemaWithEdits,
-      schema,
-    };
-  }),
+    },
+  ),
   withState('collapsed', 'setCollapsed', true),
   withHandlers({
     expand: ({ setCollapsed }) => () => setCollapsed(false),

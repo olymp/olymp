@@ -66,7 +66,7 @@ const enhance = compose(
         end: endField ? new Date(item[endField]) : new Date(item[startField]),
       }));
 
-      return { events };
+      return { events, startField, endField };
     },
   ),
 );
@@ -74,10 +74,18 @@ const enhance = compose(
 @enhance
 export default class CalendarView extends Component {
   render() {
-    const { collection, events, updateQuery, typeName } = this.props;
+    const {
+      collection,
+      events,
+      updateQuery,
+      typeName,
+      startField,
+      endField,
+    } = this.props;
 
     return (
       <Calendar
+        selectable
         events={events}
         messages={{
           allDay: 'Ganztägig',
@@ -119,6 +127,21 @@ export default class CalendarView extends Component {
         onSelectEvent={event =>
           updateQuery({ [`@${typeName.toLowerCase()}`]: event.id })
         }
+        onSelectSlot={slotInfo => {
+          const query = {
+            [`@${typeName.toLowerCase()}`]: 'new',
+          };
+
+          if (startField) {
+            query[startField] = slotInfo.start;
+          }
+
+          if (endField) {
+            query[endField] = slotInfo.end;
+          }
+
+          updateQuery(query);
+        }}
       />
     );
   }

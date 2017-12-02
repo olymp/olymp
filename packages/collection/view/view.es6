@@ -214,7 +214,7 @@ export default class CollectionView extends Component {
       isLoading,
       keys,
       items,
-      updateQuery,
+      replaceQuery,
     } = this.props;
     const nameField = get(collection, 'specialFields.nameField', 'name');
     const startField = get(collection, 'specialFields.startField');
@@ -245,7 +245,11 @@ export default class CollectionView extends Component {
           open={!!id}
           width={475}
           right
-          onClose={() => updateQuery({ [`@${typeName.toLowerCase()}`]: null })}
+          onClose={() =>
+            replaceQuery({
+              [`@${typeName.toLowerCase()}`]: null,
+            })
+          }
         >
           <Menu
             header={
