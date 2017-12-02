@@ -32,16 +32,27 @@ import Detail from './detail';
 const FlexContainer = createComponent(
   ({ theme }) => ({
     position: 'relative',
-    padding: theme.space3,
     hasFlex: {
       display: 'flex',
       flex: '1 1 0%',
       flexDirection: 'column',
     },
+    '> .rbc-calendar': {
+      padding: theme.space3,
+    },
     '> div': {
-      flex: '1 1 0%',
+      hasFlex: {
+        flex: '1 1 0%',
+      },
       height: 'auto !important',
       overflow: 'auto',
+      '> .rbc-toolbar': {
+        '> .rbc-toolbar-label': {
+          color: theme.color,
+          fontWeight: 200,
+          fontSize: '200%',
+        },
+      },
     },
   }),
   'div',
@@ -239,12 +250,14 @@ export default class CollectionView extends Component {
           <Menu
             header={
               id === 'new' ? (
-                <Menu.Item large>{collection.name} anlegen</Menu.Item>
+                <Menu.Item large>
+                  {collection.specialFields.label} anlegen
+                </Menu.Item>
               ) : (
                 <Menu.Item large>
                   {((items || []).find(x => x.id === id) || {})[nameField] ||
                     'Bearbeiten'}
-                  <small>{collection.name} bearbeiten</small>
+                  <small>{collection.specialFields.label} bearbeiten</small>
                 </Menu.Item>
               )
             }
