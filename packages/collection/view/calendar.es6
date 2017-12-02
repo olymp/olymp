@@ -14,7 +14,7 @@ const min = new Date(0, 0, 0, 7, 0, 0, 0);
 const max = new Date(0, 0, 0, 22, 0, 0, 0);
 
 const EventAgenda = onClick => ({ event }) => (
-  <div onClick={onClick} style={{ cursor: 'pointer' }}>
+  <div onClick={() => onClick(event)} style={{ cursor: 'pointer' }}>
     <h4>{event.title}</h4>
     {event.desc}
   </div>
