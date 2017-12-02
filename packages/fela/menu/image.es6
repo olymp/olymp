@@ -16,7 +16,7 @@ export default createComponent(
         margin: '0 auto',
       },
       '> svg': {
-        size: large ? 32 : !extra ? 20 : 14,
+        size: large ? 36 : !extra ? 20 : 14,
       },
       '> img': {
         size: large ? 40 : !extra ? 32 : 20,
