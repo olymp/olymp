@@ -6,12 +6,14 @@ import FormItem from './form-item';
 export default {
   rule: ({ innerType }) =>
     innerType.name === 'Date' || innerType.name === 'DateTime',
-  form: toClass(({ type, ...props }) => (
+  form: toClass(({ innerType, ...props }) => (
     <FormItem {...props}>
       <DateEditor
         {...props}
-        format={type.name === 'DateTime' ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY'}
-        showTime={type.name === 'DateTime' ? { format: 'HH:mm' } : null}
+        format={
+          innerType.name === 'DateTime' ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY'
+        }
+        showTime={innerType.name === 'DateTime' ? { format: 'HH:mm' } : null}
       />
     </FormItem>
   )),
