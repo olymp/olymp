@@ -11,6 +11,7 @@ import {
   FaPowerOff,
   FaDatabase,
   FaBarChart,
+  FaUsers,
 } from 'olymp-icons';
 import { get } from 'lodash';
 import { Icon } from 'antd';
@@ -176,6 +177,13 @@ const component = enhance(
               onClick={() => setQuery({ '@media': null })}
             >
               Mediathek
+            </Menu.Item>
+            <Menu.Item
+              icon={<FaUsers />}
+              active={query[`@users`] === null}
+              onClick={() => setQuery({ '@users': null })}
+            >
+              Benutzer & Gruppen
             </Menu.Item>
             {!!window.ga && (
               <Menu.Item
