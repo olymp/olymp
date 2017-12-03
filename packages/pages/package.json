@@ -1,5 +1,5 @@
 {
-  "version": "18.8.7",
+  "version": "18.8.8",
   "name": "olymp-pages",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -12,8 +12,8 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-fela": "^18.8.7",
-    "olymp-router": "^18.8.7",
+    "olymp-fela": "^18.8.8",
+    "olymp-router": "^18.8.8",
     "olymp-utils": "^18.8.4",
     "recompose": "^0.26.0"
   }
