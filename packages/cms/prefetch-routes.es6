@@ -4,7 +4,7 @@ import { compose, withPropsOnChange, withContext } from 'recompose';
 import Portal from 'olymp-fela/portal';
 import { createComponent } from 'react-fela';
 import { connect } from 'react-redux';
-import Page from 'olymp-pages/views/page';
+import Page from 'olymp-pages/reader';
 
 const Invisible = createComponent(
   () => ({

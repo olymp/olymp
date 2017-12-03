@@ -1,8 +1,8 @@
 import React from 'react';
 import { compose, withPropsOnChange } from 'recompose';
 import { connect } from 'react-redux';
-import Error404 from './views/404';
-import Page from './views/page';
+import Error404 from './404';
+import Page from './reader';
 
 const filterPublic = pages =>
   pages
