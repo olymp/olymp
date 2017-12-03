@@ -29,9 +29,13 @@ const mutateGql = gql`
         extract
         text
         title
-        image
+        image {
+          url
+          width
+          height
+          caption
+        }
         toc
-        hash
       }
       state
     }

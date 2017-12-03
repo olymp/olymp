@@ -3,6 +3,7 @@ import './register';
 export * from './image';
 export * from './accordion';
 export * from './columns';
+export { default as ChildrenBlock } from './children';
 export { default as ContainerBlock } from './container';
 export { default as ContainerTextBlock } from './container-text';
 export { default as TextBindingBlock } from './binding';

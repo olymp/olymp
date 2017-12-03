@@ -25,7 +25,12 @@ export const page = gql`
       blocks {
         nodes
         extract
-        image
+        image {
+          url
+          width
+          height
+          caption
+        }
         title
       }
       state

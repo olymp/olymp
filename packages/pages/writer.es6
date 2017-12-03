@@ -92,6 +92,7 @@ export default class EditablePage extends Component {
       formOpen,
       description,
       pageList,
+      id,
     } = this.props;
 
     return (
@@ -105,6 +106,7 @@ export default class EditablePage extends Component {
           onChange={blocks => {
             form.setFieldsValue({ blocks });
           }}
+          id={id}
           readOnly={false}
           binding={form.isFieldsTouched() ? form.getFieldsValue() : item}
           bindingId={bindingId}

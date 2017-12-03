@@ -60,12 +60,18 @@ const stateWrapper = WrappedComponent =>
             title = node.text;
           }
           if (!image && node.data && node.data.get('value')) {
-            const url =
-              get(node.data.get('value'), '[0].url') ||
-              get(node.data.get('value'), 'url');
-            if (url && url.indexOf('cloudinary') !== -1) {
-              image = url;
+            const img = Array.isArray(node.data.get('value'))
+              ? node.data.get('value')[0]
+              : node.data.get('value');
+            if (img && img.url && img.url.indexOf('cloudinary') !== -1) {
+              image = {
+                width: img.width,
+                height: img.height,
+                url: img.url,
+                crop: img.crop,
+              };
             }
+            console.log(image);
           }
         });
         const count = 355;

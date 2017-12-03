@@ -20,6 +20,7 @@ import Header2Block from './header2';
 import CarouselBlock from './carousel';
 import BannerBlock from './banner';
 import YoutubeBlock from './youtube';
+import ChildrenBlock from './children';
 
 registry.add(
   ImageBlock,
@@ -43,4 +44,5 @@ registry.add(
   CarouselBlock,
   BannerBlock,
   YoutubeBlock,
+  ChildrenBlock,
 );

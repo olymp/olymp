@@ -29,9 +29,8 @@ export default () => ({
       extract: String
       text: String
       title: String
-      image: String
+      image: Image
       toc: Json
-      hash: String
     }
     type PageBinding {
       type: String
