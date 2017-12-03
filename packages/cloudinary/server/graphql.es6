@@ -23,10 +23,10 @@ export default uri => {
 
         fileList: (source, { query }, { db, app, user }) => {
           const mongoQuery = adaptQuery(query);
-          if (!user) {
+          /* if (!user) {
             return [];
-          }
-          mongoQuery._appId = { $in: user._appIds };
+          } */
+          // mongoQuery._appId = { $in: user._appIds };
           mongoQuery._type = 'file';
           mongoQuery.state = { $ne: 'REMOVED' };
           return db
@@ -39,7 +39,7 @@ export default uri => {
             return [];
           }
           const mongoQuery = {
-            _appId: { $in: user._appIds },
+            // _appId: { $in: user._appIds },
             _type: 'file',
           };
           if (folder) {

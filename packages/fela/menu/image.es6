@@ -15,10 +15,10 @@ export default createComponent(
         display: 'block',
         margin: '0 auto',
       },
-      '> svg': {
+      '& svg': {
         size: large ? 36 : !extra ? 20 : 14,
       },
-      '> img': {
+      '& img': {
         size: large ? 40 : !extra ? 32 : 20,
         borderRadius: theme.collapsed ? '50%' : theme.borderRadius,
       },

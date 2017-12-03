@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
+import { Upload } from 'antd';
 import {
   Sidebar,
   Menu,
@@ -21,6 +22,7 @@ import {
 import { sortBy } from 'lodash';
 import { queryMedias, cloudinaryRequest, cloudinaryRequestDone } from '../gql';
 import Gallery from './gallery';
+import withUpload from './upload';
 import Detail from '../detail';
 import Image from '../image';
 // import Dragzone from '../components/dragzone';
@@ -194,6 +196,7 @@ const addSortedChildren = (obj, sorter = 'length') => {
 @withPropsOnChange(['selection', 'items'], ({ selection, items = [] }) => ({
   selectedItems: items.filter(x => selection.includes(x.id)),
 }))
+@withUpload
 class CloudinaryView extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.object),
@@ -245,7 +248,7 @@ class CloudinaryView extends Component {
   initial = true;
 
   renderMenu = (keys = []) => {
-    const { goRoot, setTags, tags, tree } = this.props;
+    const { goRoot, setTags, tags, tree, upload } = this.props;
 
     let children = [];
     if (keys.length === 0) {
@@ -297,7 +300,9 @@ class CloudinaryView extends Component {
             icon={<FaPictureO />}
             extra={
               <Menu.Extra onClick={() => {}} disabled={!!keys.length} large>
-                <FaPlus />
+                <Upload {...upload}>
+                  <FaPlus />
+                </Upload>
               </Menu.Extra>
             }
           >

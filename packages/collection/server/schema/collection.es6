@@ -25,19 +25,19 @@ export default {
         }
         const user = context && context.user;
         const monk = context && context.monk;
-        if (!user) {
-          throw new Error('Not authorized');
+        /* if (!user) {
+          // throw new Error('Not authorized');
         }
         if (typeName === 'Page' && !user.isAdmin) {
-          throw new Error('Not authorized');
+          // throw new Error('Not authorized');
         }
         if (
           !user.isAdmin &&
           user.orgId !== input.orgId &&
           user.orgId !== input.id
         ) {
-          throw new Error('Not authorized');
-        }
+          // throw new Error('Not authorized');
+        } */
 
         if (id) {
           return monk

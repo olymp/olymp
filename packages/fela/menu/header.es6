@@ -18,10 +18,10 @@ const Header = createComponent(
     paddingBottom: theme.space2,
     backgroundColor: (color === true && theme.color) || theme[color] || color,
     color: theme.inverted ? theme.light : theme.dark,
-    '> svg': {
+    '& svg': {
       size: 40,
     },
-    '> img': {
+    '& img': {
       size: 50,
       borderRadius: theme.borderRadius,
     },

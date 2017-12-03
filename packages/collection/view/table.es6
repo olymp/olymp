@@ -62,10 +62,12 @@ const getFilters = (items, field) => {
   if (field.type.kind === 'ENUM' || field.type.kind === 'LIST') {
     const arr = items.map(item => item[field.name]);
 
-    return uniq(arr).map(x => ({
-      text: getPrintableValue(x, field),
-      value: x,
-    }));
+    return uniq(arr)
+      .map(x => ({
+        text: getPrintableValue(x, field),
+        value: x,
+      }))
+      .filter(x => x.value);
   }
 
   return undefined;
