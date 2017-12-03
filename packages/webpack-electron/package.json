@@ -15,12 +15,12 @@
     "babel-polyfill": "^6.26.0",
     "devtron": "^1.4.0",
     "electron": "^1.7.9",
-    "electron-builder": "^19.46.9",
+    "electron-builder": "^19.47.1",
     "electron-debug": "^1.4.0",
     "electron-log": "^2.2.11",
     "electron-publisher": "^0.1.6",
-    "electron-publisher-s3": "^19.46.4",
-    "electron-updater": "^2.16.1",
+    "electron-publisher-s3": "^19.47.0",
+    "electron-updater": "^2.16.3",
     "electron-webpack-plugin": "^2.0.0",
     "node-machine-id": "^1.1.9"
   }

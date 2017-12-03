@@ -14,7 +14,7 @@
   "dependencies": {
     "antd": "^3.0.0-alpha.15",
     "date-fns": "^2.0.0-alpha.1",
-    "moment": "^2.19.2",
+    "moment": "^2.19.3",
     "multirangeslider": "^0.5.2",
     "react-modal2": "^5.0.0"
   }
