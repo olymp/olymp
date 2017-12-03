@@ -317,10 +317,13 @@ module.exports = ({
           }),
         );
         config.plugins.push(
-          new CopyWebpackPlugin({
-            from: path.resolve(appRoot, 'public', '**/*'),
-            to: path.resolve(appRoot, folder, target.split('-')[0]),
-          }),
+          new CopyWebpackPlugin([
+            {
+              context: path.resolve(appRoot, 'public'),
+              from: '**/*',
+              to: path.resolve(appRoot, folder, target.split('-')[0]),
+            },
+          ]),
         );
       }
     }
