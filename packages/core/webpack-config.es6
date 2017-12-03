@@ -43,6 +43,7 @@ module.exports = ({
   const isWeb = target !== 'node' && target !== 'electron-main';
   const isNode = target === 'node' || isElectronMain;
   const isServer = target === 'node';
+  const isNetlify = isSSR && isServerless;
   isServerless = isServerless === true || isElectron;
   isSSR = !isElectronMain && isSSR !== false && !isServerless;
   const folder = isDev ? '.dev' : '.dist';
@@ -103,7 +104,7 @@ module.exports = ({
         'process.env.BUILD_ON': `"${new Date()}"`,
         'process.env.NODE_ENV': `"${mode}"`,
         'process.env.IS_SSR': isSSR,
-        'process.env.IS_SERVERLESS': isServerless,
+        'process.env.IS_SERVERLESS': !isNetlify && isServerless,
         'process.env.IS_WEB': isWeb,
         'process.env.IS_NODE': isNode,
         'process.env.IS_ELECTRON': isElectron,
