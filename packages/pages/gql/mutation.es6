@@ -31,6 +31,7 @@ const mutateGql = gql`
         title
         image
         toc
+        hash
       }
       state
     }

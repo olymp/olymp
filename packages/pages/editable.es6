@@ -1,18 +1,11 @@
 import React from 'react';
-import { ContentLoader } from 'olymp-fela';
 import renderHelmet from 'olymp-utils/helmet';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { Error404, EditablePage } from './views';
+import { ContentLoader } from 'olymp-fela';
+import Writer from './writer';
+import Error404 from './404';
+import Navigation from './navigation';
 
-const enhance = compose(
-  connect(({ auth, location }) => ({
-    isAuthenticated: !!auth.user,
-    pathname: location.pathname,
-  })),
-);
-
-export default enhance(props => {
+export default props => {
   const { Wrapped, flatNavigation, pathname, loading } = props;
   const match =
     pathname.indexOf('/page_id/') === 0
@@ -26,40 +19,42 @@ export default enhance(props => {
         );
   const { id, binding, pageId, bindingId } = match || {};
 
-  if (!match && pathname !== '__new' && pathname !== '/__new') {
-    return (
-      <ContentLoader height={600} isLoading={loading}>
-        <EditablePage
-          {...props}
-          render={() => (
-            <Wrapped {...props}>
-              {renderHelmet({
-                name: '404',
-                description: 'Seite wurde nicht gefunden',
-                pathname,
-              })}
-              <Error404 />
-            </Wrapped>
-          )}
-        />
-      </ContentLoader>
-    );
-  }
+  const notFound = !match && pathname !== '__new' && pathname !== '/__new';
 
   return (
-    <ContentLoader height={600} isLoading={loading}>
-      <EditablePage
-        {...props}
-        id={pageId || id}
-        bindingId={bindingId}
-        binding={binding}
-        render={children => (
-          <Wrapped {...props} match={match}>
-            {renderHelmet(match, pathname)}
-            {children}
-          </Wrapped>
+    <Navigation {...props} left={72}>
+      <Wrapped {...props} match={match}>
+        {notFound ? (
+          <ContentLoader height={600} isLoading={loading}>
+            <Error404
+              {...props}
+              render={() => (
+                <Wrapped {...props}>
+                  {renderHelmet({
+                    name: '404',
+                    description: 'Seite wurde nicht gefunden',
+                    pathname,
+                  })}
+                  <Error404 />
+                </Wrapped>
+              )}
+            />
+          </ContentLoader>
+        ) : (
+          <ContentLoader height={600} isLoading={loading}>
+            <Writer
+              {...props}
+              match={match}
+              key={pageId || id}
+              id={pageId || id}
+              bindingId={bindingId}
+              binding={binding}
+            >
+              {renderHelmet(match, pathname)}
+            </Writer>
+          </ContentLoader>
         )}
-      />
-    </ContentLoader>
+      </Wrapped>
+    </Navigation>
   );
-});
+};

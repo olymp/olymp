@@ -58,11 +58,11 @@
     "cli-real-favicon": "0.0.6",
     "del-cli": "^1.1.0",
     "electron-log": "^2.2.11",
-    "eslint-config-olymp": "^18.8.1",
+    "eslint-config-olymp": "^18.8.7",
     "lb": "0.0.1",
     "li": "^1.2.1",
-    "uglify-es": "^3.2.0",
-    "webpack": "^3.8.1"
+    "uglify-es": "^3.2.1",
+    "webpack": "^3.9.1"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.2",

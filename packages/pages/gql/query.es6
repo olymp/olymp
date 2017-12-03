@@ -45,6 +45,7 @@ export const queryPage = graphql(page, {
 
     return {
       ...ownProps,
+      isLoading: data.loading,
       item:
         (ownProps.pathname === '/__new' || ownProps.pathname === '__new'
           ? newPage

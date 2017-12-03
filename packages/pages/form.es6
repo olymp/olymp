@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { slugify, unflatten } from 'olymp-utils';
-import { SectionHeading, Panel } from 'olymp-fela';
-import {
-  Input,
-  PageType,
-  State,
-  Parent,
-  TagSelect,
-  JsonInput,
-  Toggle,
-  InputNumber,
-  TextArea,
-} from '../../edits';
+import { Panel } from 'olymp-fela';
+import { Input, PageType, State, Parent, InputNumber, TextArea } from './edits';
 
 class PageForm extends Component {
   handleNameChange = e => {

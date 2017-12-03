@@ -31,6 +31,7 @@ export default () => ({
       title: String
       image: String
       toc: Json
+      hash: String
     }
     type PageBinding {
       type: String

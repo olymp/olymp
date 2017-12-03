@@ -5,7 +5,7 @@ import { withProps } from 'recompose';
 import { ContentLoader } from 'olymp-fela';
 import renderHelmet from 'olymp-utils/helmet';
 import { get } from 'lodash';
-import { queryPage } from '../gql/query';
+import { queryPage } from './gql/query';
 
 const Page = ({ children, isLoading, pathname, ...props }) => (
   <ContentLoader isLoading={isLoading}>

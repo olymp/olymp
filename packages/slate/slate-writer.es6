@@ -317,7 +317,6 @@ class Writer extends Component {
       className,
       spellcheck,
       schema = {},
-      renderNode,
       menu,
       plugins,
       style = {},
@@ -343,7 +342,6 @@ class Writer extends Component {
         onDrop={this.onDrop}
         onPaste={this.onPaste}
         plugins={readOnly ? emptyArray : plugins}
-        renderNode={renderNode}
         onChange={this.onChange}
         onKeyDown={this.onKeyDown}
         placeholder={!readOnly && 'Hier Text eingeben...'}
@@ -362,7 +360,6 @@ class Writer extends Component {
         onDrop={this.onDrop}
         onPaste={this.onPaste}
         plugins={readOnly ? emptyArray : plugins}
-        renderNode={renderNode}
         onChange={this.onChange}
         onKeyDown={this.onKeyDown}
         placeholder={!readOnly && 'Hier Text eingeben...'}
