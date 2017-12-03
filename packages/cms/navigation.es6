@@ -106,7 +106,8 @@ const component = enhance(
                   onClick={() =>
                       setQuery({
                         [`@${collection.name.toLowerCase()}`]: null,
-                      })}
+                      })
+                    }
                 >
                   {get(collection, 'specialFields.label', collection.name)}
                 </Menu.Item>
@@ -133,7 +134,8 @@ const component = enhance(
               onClick={() =>
                   setQuery({
                     [`@${collectionTree[key][0].name.toLowerCase()}`]: null,
-                  })}
+                  })
+                }
             >
               {get(
                   collectionTree[key][0],
@@ -194,7 +196,9 @@ const component = enhance(
                 Statistiken
               </Menu.Item>
             )}
-            <Menu.List title="Collections">{items}</Menu.List>
+            {lists.length > 0 && (
+              <Menu.List title="Collections">{items}</Menu.List>
+            )}
             {lists}
             <Menu.Space />
             <Menu.Item

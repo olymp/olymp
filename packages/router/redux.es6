@@ -7,6 +7,7 @@ export const LOCATION_PATCH = 'LOCATION_PATCH';
 export const LOCATION_CORRECT = 'LOCATION_CORRECT';
 export const LOCATION_MISS = 'LOCATION_MISS';
 export const LOCATION_BLOCK = 'LOCATION_BLOCK';
+export const LOCATION_UNBLOCK = 'LOCATION_UNBLOCK';
 
 export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 
@@ -50,9 +51,25 @@ export const routerMiddleware = history => ({ getState, dispatch }) => {
       cb(newLocation);
     }
   };
+  let blockQueue = [];
+  let unblock = null;
   return nextDispatch => action => {
     if (action.type === LOCATION_BLOCK) {
-      return history.block(action.payload);
+      blockQueue = blockQueue.filter(x => x.id !== action.payload.id);
+      if (unblock) {
+        unblock();
+      }
+      blockQueue.push(action.payload);
+      unblock = history.block(blockQueue[blockQueue.length - 1].message);
+    } else if (action.type === LOCATION_UNBLOCK) {
+      blockQueue = blockQueue.filter(x => x.id !== action.payload.id);
+      if (unblock) {
+        unblock();
+        unblock = null;
+      }
+      if (blockQueue.length > 0) {
+        unblock = history.block(blockQueue[blockQueue.length - 1].message);
+      }
     } else if (action.type === LOCATION_REPLACE) {
       updateHistory(action.payload, false, 'replace', payload =>
         dispatch({ ...action, type: LOCATION_CHANGE, payload }),
@@ -98,5 +115,8 @@ export const createMiss = dispatch => payload =>
 export const createReplace = dispatch => payload =>
   dispatch({ type: LOCATION_REPLACE, payload });
 
-export const createBlock = dispatch => payload =>
-  dispatch({ type: LOCATION_BLOCK, payload });
+export const createBlock = dispatch => (id, message) =>
+  dispatch({ type: LOCATION_BLOCK, payload: { id, message } });
+
+export const createUnblock = dispatch => id =>
+  dispatch({ type: LOCATION_UNBLOCK, payload: { id } });

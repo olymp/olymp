@@ -94,7 +94,7 @@ export default Wrapped => {
         pathProp: 'pathname',
         sort: (children, parent) => {
           const newChildren = children.reduce((state, child) => {
-            const data = navBindingObj[child.id];
+            const data = navBindingObj && navBindingObj[child.id];
             if (data) {
               (data.items || []).forEach(item => {
                 const slug = child.slug
