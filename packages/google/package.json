@@ -1,5 +1,5 @@
 {
-  "version": "18.8.5",
+  "version": "18.8.7",
   "name": "olymp-google",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -17,7 +17,7 @@
     "date-fns": "^2.0.0-alpha.1",
     "google-map-react": "^0.25.0",
     "googleapis": "^23.0.0",
-    "olymp-ui": "^18.8.4",
+    "olymp-ui": "^18.8.7",
     "olymp-utils": "^18.8.4",
     "react-smooth": "^1.0.0",
     "recharts": "^1.0.0-apha.5",
