@@ -24,6 +24,7 @@
     "body-parser": "^1.17.2",
     "cache-loader": "^1.2.0",
     "compression": "^1.7.1",
+    "copy-webpack-plugin": "^4.2.3",
     "deep-assign": "^2.0.0",
     "dotenv": "^4.0.0",
     "duplicate-package-checker-webpack-plugin": "^2.0.1",

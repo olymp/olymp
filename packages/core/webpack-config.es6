@@ -8,6 +8,7 @@ const StartServerPlugin = require('start-server-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const appRoot = process.cwd();
 
@@ -313,6 +314,12 @@ module.exports = ({
             minifyCSS: true,
             minifyURLs: true,
           }, */
+          }),
+        );
+        config.plugins.push(
+          new CopyWebpackPlugin({
+            from: path.resolve(appRoot, 'public', '**/*'),
+            to: path.resolve(appRoot, folder, target.split('-')[0]),
           }),
         );
       }

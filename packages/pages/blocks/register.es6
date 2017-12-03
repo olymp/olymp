@@ -7,6 +7,7 @@ import {
   AccordionTextBlock,
 } from './accordion';
 import { ColumnsBlock, ColumnsColumnBlock } from './columns';
+import TocBlock from './toc';
 import ContainerBlock from './container';
 import ContainerTextBlock from './container-text';
 import TextBindingBlock from './binding';
@@ -23,6 +24,7 @@ import YoutubeBlock from './youtube';
 import ChildrenBlock from './children';
 
 registry.add(
+  TocBlock,
   ImageBlock,
   ImageBlockImage,
   ImageBlockLabel,
