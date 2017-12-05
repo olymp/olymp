@@ -27,7 +27,7 @@ export const withRedux = config => {
 
   let auth0 = null;
   const init = ({ dispatch, getState }) => {
-    if (auth0) {
+    if (auth0 || !process.env.AUTH0_CLIENT_ID) {
       return;
     }
     auth0 = new Auth0(config, payload => {

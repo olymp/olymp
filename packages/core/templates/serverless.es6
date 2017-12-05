@@ -33,7 +33,7 @@ module.exports = templateParams => `
     </head>
     <body>
       <div id="app"></div>
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.app.entry', [])).map(script => `<script src="${script}"></script>`,)}
+      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.app.entry', [])).map(script => `<script async src="${script}"></script>`,)}
     </body>
   </html>
 `;
