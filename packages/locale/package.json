@@ -1,5 +1,5 @@
 {
-  "version": "18.8.5",
+  "version": "19.0.0",
   "name": "olymp-locale",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "date-fns": "2.0.0-alpha.1",
-    "olymp-utils": "^18.8.4"
+    "olymp-utils": "^19.0.0"
   }
 }
