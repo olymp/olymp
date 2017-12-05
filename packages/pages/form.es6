@@ -59,7 +59,7 @@ class PageForm extends Component {
           label="Art"
           onChange={this.handleTypeChange}
         />
-        {(form.getFieldValue('type') || item.type) !== 'MENU' && (
+        {(form.getFieldValue('kind') || item.kind) !== 'MENU' && (
           <Parent
             form={form}
             treeData={tree}

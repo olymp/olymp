@@ -72,9 +72,11 @@ export default class PageNavigation extends Component {
     } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
+    console.log(navigation, keys);
     if (!lastKey) {
-      const menues = navigation.filter(x => x.type === 'MENU');
-      const pages = navigation.filter(x => x.type !== 'MENU');
+      const menues = navigation.filter(x => x.kind === 'MENU');
+      console.log(menues);
+      const pages = navigation.filter(x => x.kind !== 'MENU');
       children = [
         ...pages.map(x => this.renderItem(x, FaHome)),
         ...menues.map(menu => (

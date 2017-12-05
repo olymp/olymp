@@ -4,36 +4,20 @@ import { get } from 'lodash';
 
 const emptyArray = [];
 export const page = gql`
-  query page($id: String) {
-    page(id: $id) {
+  query Document($id: ID!) {
+    page: Document(id: $id) {
       id
+      kind
       slug
-      isMega
       description
       order
       type
       name
-      binding {
-        type
-        query
-        fields
-      }
-      parentId
-      sorting
-      aliasId
-      href
-      blocks {
-        nodes
-        extract
-        image {
-          url
-          width
-          height
-          caption
-        }
-        title
-      }
+      parent{id}
+      nodes
+      extract
       state
+      image
     }
   }
 `;
@@ -67,22 +51,15 @@ export const prefetchPage = (client, id) =>
   });
 
 export const pageList = gql`
-  query pageList {
-    pageList(query: { state: { in: [PUBLISHED, DRAFT] } }) {
+  query allDocuments {
+    pageList: allDocuments(filter:{state_in: [PUBLISHED, DRAFT]}) {
       id
+      kind
       slug
-      isMega
       order
       type
       name
-      binding {
-        type
-        query
-        fields
-      }
-      parentId
-      aliasId
-      sorting
+      parent {id}
       state
     }
   }

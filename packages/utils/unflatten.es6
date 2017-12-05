@@ -1,4 +1,4 @@
-const sortBy = require('lodash/sortBy');
+import { get, sortBy } from 'lodash';
 
 const unflatten = (
   items,
@@ -9,7 +9,7 @@ const unflatten = (
 ) => {
   const parent = parentItem ? parentItem[id] : null;
   let children = items
-    .filter(item => item[parentId] === parent)
+    .filter(item => (get(item, parentId)||null) === (parent||null))
     .map(item =>
       mapper(item, parent ? items.find(x => x[id] === parent) : null)
     );

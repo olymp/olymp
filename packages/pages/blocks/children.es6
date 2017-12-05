@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { FaLink } from 'olymp-icons';
 import { Container, Grid } from 'olymp-fela';
 import { Image } from 'olymp-cloudinary';
 import { Card } from 'antd';
@@ -11,23 +10,16 @@ import { graphql } from 'react-apollo';
 import { get } from 'lodash';
 
 export const page = gql`
-  query page($id: String) {
-    page(id: $id) {
+  query Document($id: ID!) {
+    page: Document(id: $id) {
       id
       children {
         id
         slug
         name
         description
-        blocks {
-          extract
-          image {
-            url
-            width
-            height
-            caption
-          }
-        }
+        extract
+        image
       }
     }
   }
@@ -68,7 +60,7 @@ const BannerBlock = enhance(
                   <Image
                     width="100%"
                     maxHeight={150}
-                    value={x.image || x.blocks.image}
+                    value={x.image}
                   />
                 }
               >
@@ -76,7 +68,7 @@ const BannerBlock = enhance(
                   style={{ maxHeight: 190, overflow: 'hidden' }}
                   avatar={<img src="/favicon.ico" width="14px" height="14px" />}
                   title={x.name}
-                  description={x.description || x.blocks.extract}
+                  description={x.description || x.extract}
                 />
               </Card>
             </Grid.Item>

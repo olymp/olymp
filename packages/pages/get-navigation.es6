@@ -92,6 +92,7 @@ export default Wrapped => {
       }
       const navigation = unflatten(pageList, {
         pathProp: 'pathname',
+        parentId: 'parent.id',
         sort: (children, parent) => {
           const newChildren = children.reduce((state, child) => {
             const data = navBindingObj && navBindingObj[child.id];
@@ -123,6 +124,9 @@ export default Wrapped => {
           return pathname;
         },
       });
+      console.log(
+        navigation,
+        flatNavigation,pageList)
       return {
         navigation,
         flatNavigation,

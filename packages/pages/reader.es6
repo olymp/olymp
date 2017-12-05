@@ -30,7 +30,7 @@ Page.defaultProps = {
 };
 Page.WithData = queryPage(
   withProps(({ item, data }) => ({
-    value: item && item.blocks,
+    value: item,
     binding: item,
     readOnly: true,
     isLoading: data.loading,
