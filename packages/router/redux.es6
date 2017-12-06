@@ -31,6 +31,16 @@ export const routerReducer = history => {
   };
 };
 
+
+const scroll = () => {
+  if (typeof window !== 'undefined'){
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+}
+
 export const routerMiddleware = history => ({ getState, dispatch }) => {
   const updateHistory = (raw, patch = true, method, cb) => {
     const currentLocation = getState().location;
@@ -91,6 +101,9 @@ export const routerMiddleware = history => ({ getState, dispatch }) => {
     } else {
       if (action.type === LOCATION_CHANGE && process.env.IS_ELECTRON) {
         localStorage.setItem('location', JSON.stringify(action.payload));
+      }
+      if (action.type === LOCATION_CHANGE && action.payload.pathname !== getState().location.pathname) {
+        scroll();
       }
       return nextDispatch(action);
     }

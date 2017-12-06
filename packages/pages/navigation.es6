@@ -36,7 +36,7 @@ export default class PageNavigation extends Component {
       item.slug &&
       item.slug.indexOf('{') === -1
         ? item.pathname
-        : `/page_id/${item.pageId || item.id}`;
+        : `/${item.pageId || item.id}`;
     const Com = Icon ? Menu.Item : DndList.Item;
 
     return (
@@ -101,7 +101,7 @@ export default class PageNavigation extends Component {
     } else {
       const item = flatNavigation.find(x => x.id === lastKey);
       const items = flatNavigation.filter(x => x.parentId === lastKey);
-      const route = `/page_id/${item.parentId}`;
+      const route = `/${item.parentId}`;
 
       children = [
         <Menu.Item

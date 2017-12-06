@@ -169,7 +169,7 @@ export const ItemLabel = ({ renderLabel: Render, ...props }) => {
 };
 
 // List Item
-export const Item = ({ className, style, children, level, ...rest }) => (
+export const Item = ({ className, style, children, level = 0, ...rest }) => (
   <li
     className={cn('o-nav-item', `o-nav-item-lvl-${level}`, className)}
     style={style}
@@ -187,7 +187,7 @@ export const MenuItem = ({
   level = 0,
   ...rest
 }) => (
-  <li className={className} style={style}>
+  <li className={cn('o-nav-item', 'o-nav-subitem', `o-nav-item-lvl-${level}`, className)} style={style}>
     <ItemLabel {...rest}>
       {title}
       <span className="drop-icon">▾</span>
