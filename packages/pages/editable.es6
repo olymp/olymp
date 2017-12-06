@@ -1,29 +1,46 @@
 import React from 'react';
 import renderHelmet from 'olymp-utils/helmet';
 import { ContentLoader } from 'olymp-fela';
+import { compose, withPropsOnChange } from 'recompose';
+import { connect } from 'react-redux';
 import Writer from './writer';
 import Error404 from './404';
 import Navigation from './navigation';
 
-export default props => {
-  const { Wrapped, flatNavigation, pathname, loading } = props;
-  const match =
-    pathname.indexOf('/page_id/') === 0
-      ? flatNavigation.find(
-          item =>
-            pathname.substr('/page_id/'.length) === (item.pageId || item.id),
-        )
-      : flatNavigation.find(
-          item =>
-            pathname === item.pathname || decodeURI(item.pathname) === pathname,
-        );
-  const { id, binding, pageId, bindingId } = match || {};
+const enhance = compose(
+  connect(({ location }) => ({
+    pathname: location.pathname,
+  })),
+  withPropsOnChange(
+    ['flatNavigation', 'pathname'],
+    ({ flatNavigation, pathname }) => {
+      let item;
+      for (let x = 0; x < flatNavigation.length; x++) {
+        const page = flatNavigation[x];
+        if (
+          decodeURI(page.pathname) === pathname ||
+          `/${page.id}` === pathname
+        ) {
+          item = page;
+          break;
+        }
+      }
+      return {
+        item,
+      };
+    },
+  ),
+);
 
-  const notFound = !match && pathname !== '__new' && pathname !== '/__new';
+export default enhance(props => {
+  const { Wrapped, item, pathname, loading } = props;
+  const { id, binding, pageId, bindingId } = item || {};
+
+  const notFound = !item && pathname !== '__new' && pathname !== '/__new';
 
   return (
     <Navigation {...props} left={72}>
-      <Wrapped {...props} match={match}>
+      <Wrapped {...props} match={item}>
         {notFound ? (
           <ContentLoader height={600} isLoading={loading}>
             <Error404
@@ -44,17 +61,17 @@ export default props => {
           <ContentLoader height={600} isLoading={loading}>
             <Writer
               {...props}
-              match={match}
+              match={item}
               key={pageId || id}
               id={pageId || id}
               bindingId={bindingId}
               binding={binding}
             >
-              {renderHelmet(match, pathname)}
+              {renderHelmet(item, pathname)}
             </Writer>
           </ContentLoader>
         )}
       </Wrapped>
     </Navigation>
   );
-};
+});

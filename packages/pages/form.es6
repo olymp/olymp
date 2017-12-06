@@ -70,7 +70,7 @@ class PageForm extends Component {
             initialValue={form.getFieldValue('parentId')}
           />
         )}
-        {(form.getFieldValue('type') || item.type) === 'LINK' && (
+        {(form.getFieldValue('type') || item.kind) === 'LINK' && (
           <Input
             form={form}
             item={item}
@@ -79,7 +79,7 @@ class PageForm extends Component {
             type="text"
           />
         )}
-        {(form.getFieldValue('type') || item.type) === 'ALIAS' && (
+        {(form.getFieldValue('type') || item.kind) === 'ALIAS' && (
           <Parent
             form={form}
             treeData={tree}

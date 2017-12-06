@@ -124,9 +124,6 @@ export default Wrapped => {
           return pathname;
         },
       });
-      console.log(
-        navigation,
-        flatNavigation,pageList)
       return {
         navigation,
         flatNavigation,

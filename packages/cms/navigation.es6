@@ -167,9 +167,9 @@ const component = enhance(
         menu={
           <Menu color="colorSecondary" inverted header={header}>
             <Menu.Item
-              active={Object.keys(query).length === 0}
+              active={query[`@page`] === null}
               icon={<FaCubes />}
-              onClick={() => setQuery({})}
+              onClick={() => setQuery({ '@page': null })}
             >
               Seitenmanager
             </Menu.Item>

@@ -6,38 +6,43 @@ import { onError, onSuccess, omit } from 'olymp-utils';
 import { pageList } from './query';
 
 const mutateGql = gql`
-  mutation page($id: String, $input: PageInput, $type: MUTATION_TYPE) {
-    page(id: $id, input: $input, type: $type) {
+  mutation page(
+    $id: ID!
+    $extract: Strign
+    $nodes: Json
+    $order: Number
+    $description: String
+    $type: String
+    $kind: DOCUMENT_KIND
+    $state: DOCUMENT_STATE
+    $name: String
+    $slug: String
+    $parentId: ID
+  ) {
+    page(
+      id: $id
+      extract: $extract
+      nodes: $nodes
+      order: $order
+      description: $description
+      type: $type
+      kind: $kind
+      state: $state
+      name: $name
+      slug: $slug
+      parentId: $parentId
+    ) {
       id
-      slug
-      description
+      extract
+      nodes
       order
-      isMega
-      name
+      description
       type
-      binding {
-        type
-        query
-        fields
-      }
-      aliasId
-      href
-      sorting
-      parentId
-      blocks {
-        nodes
-        extract
-        text
-        title
-        image {
-          url
-          width
-          height
-          caption
-        }
-        toc
-      }
+      kind
       state
+      name
+      slug
+      parentId
     }
   }
 `;

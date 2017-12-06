@@ -18,6 +18,7 @@ export const page = gql`
       extract
       state
       image
+      tags
     }
   }
 `;
@@ -61,6 +62,7 @@ export const pageList = gql`
       name
       parent {id}
       state
+      tags
     }
   }
 `;

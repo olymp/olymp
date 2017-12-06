@@ -117,6 +117,15 @@ export default compose(
     let state;
     if (value && Value.isValue(value)) {
       state = value;
+    } else if (value && Array.isArray(value)) {
+      state = Value.fromJSON({
+        document: {
+          nodes: getNodes(value),
+          kind: 'document',
+          data: { signal },
+        },
+        kind: 'value',
+      });
     } else if (value && value.nodes) {
       const newValue = {};
       Object.keys(value || []).forEach(key => {

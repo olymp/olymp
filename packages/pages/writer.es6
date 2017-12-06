@@ -27,17 +27,17 @@ const enhance = compose(
   withQueryActions,
   withPropsOnChange(['item'], ({ form, item = {}, ...rest }) => {
     form.getFieldDecorator('parentId', {
-      initialValue: get(rest, 'query.["@parent"]') || item.parentId,
+      initialValue: get(rest, 'query.["@parent"]') || get(item.parent, 'id'),
     });
-    form.getFieldDecorator('type', { initialValue: item.type || 'PAGE' });
-    form.getFieldDecorator('blocks', { initialValue: item.blocks });
+    form.getFieldDecorator('type', { initialValue: item.kind || 'PAGE' });
+    form.getFieldDecorator('nodes', { initialValue: item.nodes });
 
     return {
       id: item.id || null,
       item,
       description: !item.id ? 'Neue Seite erstellen' : 'Seite bearbeiten',
       title: !item.id ? 'Neue Seite' : item.name,
-      blocks: item.blocks,
+      nodes: item.nodes,
     };
   }),
 );
@@ -102,9 +102,9 @@ export default class EditablePage extends Component {
           message={() => 'Änderungen verwerfen?'}
         />
         <SlateWriter
-          value={form.getFieldValue('blocks')}
-          onChange={blocks => {
-            form.setFieldsValue({ blocks });
+          value={form.getFieldValue('nodes')}
+          onChange={nodes => {
+            form.setFieldsValue({ nodes });
           }}
           id={id}
           readOnly={false}

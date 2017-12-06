@@ -8,6 +8,7 @@ import {
 import withUA from 'olymp-utils/user-agent';
 import EditableRoute from 'olymp-pages/editable';
 import withLocale from 'olymp-locale/de';
+import PageRoute from 'olymp-pages/route';
 import { Route as CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import { CollectionRoute, withCollections } from 'olymp-collection';
 import { createComponent, getAntStyle, TopLoader, Modal } from 'olymp-fela';
@@ -70,6 +71,7 @@ const component = enhance(props => {
     ua,
     flatNavigation,
     updateQuery,
+    pathname,
   } = props;
   const collection = collectionList.filter(
     ({ name }) => query[`@${name.toLowerCase()}`] !== undefined,
@@ -124,9 +126,9 @@ const component = enhance(props => {
           />
           <Match
             match={query['@page'] !== undefined}
-            render={() => <EditableRoute {...props} />}
+            render={rest => <EditableRoute {...rest} {...props} />}
           />
-          <Match render={rest => <EditableRoute {...rest} {...props} />} />
+          <Match render={rest => <PageRoute {...rest} {...props} />} />
         </Switch>
       </Navigation>
       {ua.getBrowser().name === 'IE' && (

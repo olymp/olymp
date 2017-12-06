@@ -39,7 +39,7 @@ const enhance = compose(
           const page = flatNavigation[x];
           if (
             decodeURI(unescape(page.pathname)) === pathname ||
-            `/page_id/${page.id}` === pathname
+            `/${page.id}` === pathname
           ) {
             item = page;
             break;

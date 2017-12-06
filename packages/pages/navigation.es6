@@ -8,6 +8,7 @@ import {
   FaHome,
   FaAngleRight,
 } from 'olymp-icons';
+import { get } from 'lodash';
 import { createReplace } from 'olymp-router';
 import { Menu, DndList, StackedMenu, Sidebar } from 'olymp-fela';
 import { reorderPage } from './gql/mutation';
@@ -32,11 +33,11 @@ export default class PageNavigation extends Component {
     const hasChildren = item.children && item.children.length;
     const route =
       item.pathname &&
-      item.type === 'PAGE' &&
+      item.kind === 'PAGE' &&
       item.slug &&
       item.slug.indexOf('{') === -1
         ? item.pathname
-        : `/page_id/${item.pageId || item.id}`;
+        : `/${item.pageId || item.id}`;
     const Com = Icon ? Menu.Item : DndList.Item;
 
     return (
@@ -72,10 +73,8 @@ export default class PageNavigation extends Component {
     } = this.props;
     const [lastKey, ...rest] = [...keys].reverse();
     let children = [];
-    console.log(navigation, keys);
     if (!lastKey) {
       const menues = navigation.filter(x => x.kind === 'MENU');
-      console.log(menues);
       const pages = navigation.filter(x => x.kind !== 'MENU');
       children = [
         ...pages.map(x => this.renderItem(x, FaHome)),
@@ -102,8 +101,8 @@ export default class PageNavigation extends Component {
       ];
     } else {
       const item = flatNavigation.find(x => x.id === lastKey);
-      const items = flatNavigation.filter(x => x.parentId === lastKey);
-      const route = `/page_id/${item.parentId}`;
+      const items = flatNavigation.filter(x =>get(x.parent, 'id') === lastKey);
+      const route = `/${get(item.parent, 'id')}`;
 
       children = [
         <Menu.Item
@@ -135,7 +134,7 @@ export default class PageNavigation extends Component {
           {items.map(i =>
             this.renderItem({
               ...i,
-              children: flatNavigation.filter(x => x.parentId === i.id),
+              children: flatNavigation.filter(x => get(x.parent, 'id') === i.id),
             }),
           )}
         </DndList>,
