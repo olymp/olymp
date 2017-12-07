@@ -420,10 +420,10 @@ class CloudinaryView extends Component {
               headerColor="dark4"
               headerInverted
             >
-              <AntMenu.Tooltip onClick={() => {}} icon={<FaThemeisle />}>
+              {/*<AntMenu.Tooltip onClick={() => {}} icon={<FaThemeisle />}>
                 Beni, hier soll der Speicher-Button hin der seltsamerweise nun
                 weg ist! ;)
-              </AntMenu.Tooltip>
+            </AntMenu.Tooltip> */}
               {/* <AntMenu.Tooltip onClick={() => {}} icon={<FaOptinMonster />}>
                 .. und hier könnte löschen hin anstelle der Checkbox!
               </AntMenu.Tooltip> */}

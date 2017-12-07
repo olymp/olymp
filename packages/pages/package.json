@@ -15,6 +15,7 @@
     "olymp-fela": "^18.8.8",
     "olymp-router": "^18.8.8",
     "olymp-utils": "^18.8.4",
-    "recompose": "^0.26.0"
+    "recompose": "^0.26.0",
+    "scrollmonitor": "^1.2.4"
   }
 }

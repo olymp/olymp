@@ -10,7 +10,7 @@ const getAllBlocks = (nodes, mapper, parent, arr = []) =>
     return arr;
   }, arr);
 
-export default (value, withKeys = false) => {
+export default (value, withKeys = true) => {
   if (!get(value, 'document.nodes')) {
     return [];
   }
@@ -32,7 +32,7 @@ export default (value, withKeys = false) => {
                 : node.type === 'heading-six' ? 5 : null;
     if (level !== null) {
       chapterPath[level] = chapterPath[level] + 1;
-      const path = chapterPath.slice(0, level + 1);
+      const path = chapterPath.slice(0, level + 1).map(x => x < 0 ? 0 : x);
       const pathStr = path.reduce((result, x, i) => {
         const newResult = [result, 'children'].filter(x => x).join('.');
         if (get(toc, newResult)) {
