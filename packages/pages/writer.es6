@@ -3,7 +3,7 @@ import { Prompt, withQueryActions } from 'olymp-router';
 import { FaSave, FaPencil } from 'olymp-icons';
 import { withPropsOnChange, withState, compose } from 'recompose';
 import { withLoader, Menu, AntMenu, Drawer } from 'olymp-fela';
-import { SlateWriter } from 'olymp-slate';
+import SlateWriter from 'olymp-slate/slate-writer';
 import { Form } from 'antd';
 import { get } from 'lodash';
 import PageForm from './form';

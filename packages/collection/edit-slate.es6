@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose, toClass, withState } from 'recompose';
-import { SlateWriter } from 'olymp-slate';
-import { createComponent } from 'olymp-fela';
+import SlateWriter from 'olymp-slate/slate-writer';
 import { Button } from 'antd';
 import FormItem from './form-item';
 
