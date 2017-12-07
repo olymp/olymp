@@ -1,5 +1,5 @@
 {
-  "version": "19.0.0",
+  "version": "19.0.1",
   "name": "olymp-cloudinary",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "cloudinary": "^1.9.1",
-    "olymp-collection": "^19.0.0",
+    "olymp-collection": "^19.0.1",
     "react-virtualized": "^9.13.0",
     "recompose": "^0.26.0"
   }

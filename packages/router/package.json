@@ -1,5 +1,5 @@
 {
-  "version": "19.0.0",
+  "version": "19.0.1",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "history": "^4.7.2",
-    "olymp-utils": "^19.0.0",
+    "olymp-utils": "^19.0.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "route-parser": "^0.0.5"
