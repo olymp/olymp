@@ -133,6 +133,9 @@ export default uri => {
     schema: `
       type Image {
         id: String
+        mime: String
+        handle: String
+        originalHandle: String
         url: String
         crop: [Int]
         width: Int

@@ -12,9 +12,11 @@
     "up": "npm-check -u"
   },
   "dependencies": {
+    "filestack-js": "^0.9.12",
     "olymp-fela": "^19.0.9",
     "olymp-router": "^19.0.3",
     "olymp-utils": "^19.0.3",
+    "react-stickynode": "^1.4.0",
     "recompose": "^0.26.0",
     "scrollmonitor": "^1.2.4"
   }
