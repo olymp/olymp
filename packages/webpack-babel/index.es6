@@ -39,13 +39,14 @@ module.exports = (config, options) => {
             // ecma: 8,
             // html5_comments: false,
           }, */
-          compress: {
+          compress: false,
+          /* compress: {
             unused: true,
             drop_debugger: true,
             dead_code: true,
             // drop_console: true,
             // ecma: 8,
-          },
+          }, */
           output: {
             comments: false,
             beautify: false,
