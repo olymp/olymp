@@ -1,5 +1,5 @@
 {
-  "version": "19.0.3",
+  "version": "19.0.4",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -17,7 +17,7 @@
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "monk": "^6.0.5",
-    "olymp": "^19.0.3",
+    "olymp": "^19.0.4",
     "olymp-auth": "^19.0.3",
     "olymp-auth0": "^19.0.3",
     "olymp-cloudinary": "^19.0.3",
