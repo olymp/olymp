@@ -1,4 +1,3 @@
-import Auth0Lock from 'auth0-lock';
 
 export default class Auth {
   constructor(config, handler) {
@@ -28,6 +27,11 @@ export default class Auth {
   };
 
   login = login => {
+    require.ensure(
+      [],
+      require => {
+        const Auth0Lock = require('auth0-lock');
+
     const {
       title = 'olymp',
       domain = process.env.AUTH0_DOMAIN,
@@ -71,6 +75,9 @@ export default class Auth {
       return;
     }
     lock.show();
+      },
+      'auth0',
+    )
   };
 
   logout = () => {
