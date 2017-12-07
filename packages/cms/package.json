@@ -1,5 +1,5 @@
 {
-  "version": "18.8.12",
+  "version": "19.0.0",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -20,20 +20,20 @@
     "olymp": "^19.0.1",
     "olymp-auth": "^19.0.1",
     "olymp-auth0": "^19.0.0",
-    "olymp-cloudinary": "^18.8.12",
-    "olymp-collection": "^18.8.7",
+    "olymp-cloudinary": "^19.0.0",
+    "olymp-collection": "^19.0.0",
     "olymp-fela": "^19.0.1",
     "olymp-google": "^19.0.0",
     "olymp-graphql": "^19.0.1",
-    "olymp-icons": "^18.8.4",
+    "olymp-icons": "^19.0.0",
     "olymp-locale": "^19.0.0",
-    "olymp-mail": "^18.8.4",
+    "olymp-mail": "^19.0.0",
     "olymp-pages": "^19.0.1",
     "olymp-scrape": "^19.0.1",
     "olymp-slate": "^19.0.1",
-    "olymp-ui": "^18.8.7",
+    "olymp-ui": "^19.0.0",
     "olymp-utils": "^19.0.0",
-    "olymp-webpack-babel": "^18.8.12",
-    "olymp-webpack-less": "^18.8.12"
+    "olymp-webpack-babel": "^19.0.0",
+    "olymp-webpack-less": "^19.0.0"
   }
 }
