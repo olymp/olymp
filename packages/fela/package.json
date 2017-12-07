@@ -1,5 +1,5 @@
 {
-  "version": "19.0.1",
+  "version": "19.0.2",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -28,7 +28,7 @@
     "fela-plugin-unit": "^5.0.14",
     "install": "^0.10.2",
     "npm": "^5.5.1",
-    "olymp-utils": "^19.0.1",
+    "olymp-utils": "^19.0.2",
     "particles.js": "^2.0.0",
     "react-beautiful-dnd": "^3.0.0",
     "react-fela": "^6.1.1",
@@ -41,7 +41,7 @@
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
-    "olymp-webpack-babel": "^19.0.1",
+    "olymp-webpack-babel": "^19.0.2",
     "raw-loader": "^0.5.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
