@@ -37,6 +37,12 @@ module.exports = (config, options) => {
       loader: ExtractTextPlugin.extract({
         use: [
           {
+            loader: 'cache-loader',
+            options: {
+              cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
+            },
+          },
+          {
             loader: 'css-loader',
             options: { modules: false },
           },

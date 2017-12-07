@@ -12,9 +12,9 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-fela": "^18.8.8",
-    "olymp-router": "^18.8.8",
-    "olymp-utils": "^18.8.4",
+    "olymp-fela": "^19.0.1",
+    "olymp-router": "^19.0.0",
+    "olymp-utils": "^19.0.0",
     "recompose": "^0.26.0",
     "scrollmonitor": "^1.2.4"
   }

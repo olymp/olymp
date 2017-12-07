@@ -31,7 +31,7 @@ module.exports = (config, options) => {
       new UglifyJSPlugin({
         // sourceMap: true,
         cache: true,
-        parallel: 2,
+        parallel: 4,
         uglifyOptions: {
           // warnings: true,
           // mangle: true,
@@ -174,6 +174,17 @@ module.exports = (config, options) => {
     config.module.rules.push({
       test: /\.js$/,
       use: [
+        {
+          loader: 'cache-loader',
+          options: {
+            cacheDirectory: resolve(
+              appRoot,
+              folder,
+              'cache',
+              `${target}-babel`,
+            ),
+          },
+        },
         {
           loader: 'babel-loader',
           options: babelOptions,

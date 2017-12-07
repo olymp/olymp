@@ -51,7 +51,7 @@ module.exports = ({
   const isVerbose = true;
   const config = {
     bail: !isDev,
-    cache: isDev,
+    cache: true,
     stats: {
       cached: isVerbose,
       cachedAssets: isVerbose,

@@ -18,7 +18,7 @@
     "graphql": "^0.11.7",
     "graphql-modules": "^0.2.2",
     "graphql-server-express": "^1.2.0",
-    "graphql-tag": "^2.5.0",
+    "graphql-tag": "^2.6.0",
     "graphql-tools": "^2.11.0",
     "limiter": "^1.1.2",
     "lodash": "^4.17.4"
