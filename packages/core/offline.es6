@@ -27,7 +27,11 @@ module.exports = (config) => {
     responseStrategy: 'network-first',
     // externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
     autoUpdate: 1000 * 60 * 1,
-    caches: 'all',
+    caches: {
+      main: ['app.*.js', 'offline.html'],
+      additional: [':externals:'],
+      optional: ['*.js']
+    },
     updateStrategy: 'all',
     ServiceWorker: {
       events: true,
