@@ -1,5 +1,5 @@
 {
-  "version": "19.0.6",
+  "version": "19.0.7",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -19,7 +19,7 @@
     "monk": "^6.0.5",
     "olymp": "^19.0.5",
     "olymp-auth": "^19.0.5",
-    "olymp-auth0": "^19.0.6",
+    "olymp-auth0": "^19.0.7",
     "olymp-cloudinary": "^19.0.6",
     "olymp-collection": "^19.0.6",
     "olymp-fela": "^19.0.5",
