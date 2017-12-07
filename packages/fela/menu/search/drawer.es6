@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Menu, Drawer } from 'olymp-fela';
+import { Drawer } from 'olymp-fela';
+import Menu from 'olymp-fela/menu';
 import { createComponent } from 'react-fela';
 // import { Menu } from 'semantic-ui-react';
 import { FaSearch, FaFile } from 'olymp-icons';

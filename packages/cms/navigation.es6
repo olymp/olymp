@@ -3,7 +3,8 @@ import { compose, withState, withHandlers } from 'recompose';
 import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { getAuth } from 'olymp-auth0';
-import { Avatar, Logo, Menu, Sidebar, Search } from 'olymp-fela';
+import { Avatar, Logo, Sidebar } from 'olymp-fela';
+import Menu, { Search } from 'olymp-fela/menu';
 import {
   FaCubes,
   FaPictureO,

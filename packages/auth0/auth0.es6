@@ -30,7 +30,7 @@ export default class Auth {
     require.ensure(
       [],
       require => {
-        const Auth0Lock = require('auth0-lock');
+        const Auth0Lock = require('auth0-lock').default;
 
         const {
           title = 'olymp',

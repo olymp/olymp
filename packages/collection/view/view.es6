@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { withSearch } from 'olymp-utils';
 import { withRouter } from 'olymp-router';
-import {
-  createComponent,
-  Sidebar,
-  Drawer,
-  StackedMenu,
-  Menu,
-} from 'olymp-fela';
+import { Sidebar, Drawer } from 'olymp-fela';
+import Menu, {StackedMenu} from 'olymp-fela/menu';
+import { createComponent } from 'react-fela';
 import {
   FaDatabase,
   FaTrashO,

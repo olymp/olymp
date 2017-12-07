@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { Menu } from 'olymp-fela';
+import Menu from 'olymp-fela/menu';
 import Crop from '../components/crop';
 import getImageInfo from './info';
 import { FormForFullLayout } from './utils';

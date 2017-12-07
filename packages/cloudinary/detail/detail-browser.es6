@@ -1,7 +1,8 @@
 import React from 'react';
 import { Checkbox, Form, Input, Tag } from 'antd';
 import { TagsEditor } from 'olymp-ui';
-import { createComponent, Menu } from 'olymp-fela';
+import { createComponent } from 'react-fela';
+import Menu from 'olymp-fela/menu';
 import getImageInfo from './info';
 import { FormForFullLayout } from './utils';
 import { queryTags } from '../gql';

@@ -2,21 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withPropsOnChange, withState } from 'recompose';
 import { Upload } from 'antd';
-import {
-  Sidebar,
-  Menu,
-  AntMenu,
-  StackedMenu,
-  Drawer,
-  createComponent,
-} from 'olymp-fela';
+import { createComponent } from 'react-fela';
+import { Sidebar, Drawer } from 'olymp-fela';
+import Menu, { StackedMenu } from 'olymp-fela/menu';
+import AntMenu from 'olymp-fela/menu/ant';
 import {
   FaChevronLeft,
   FaPictureO,
   FaClose,
   FaSave,
-  FaThemeisle,
-  FaOptinMonster,
   FaPlus,
 } from 'olymp-icons';
 import { sortBy } from 'lodash';
@@ -420,7 +414,7 @@ class CloudinaryView extends Component {
               headerColor="dark4"
               headerInverted
             >
-              {/*<AntMenu.Tooltip onClick={() => {}} icon={<FaThemeisle />}>
+              {/* <AntMenu.Tooltip onClick={() => {}} icon={<FaThemeisle />}>
                 Beni, hier soll der Speicher-Button hin der seltsamerweise nun
                 weg ist! ;)
             </AntMenu.Tooltip> */}

@@ -1,7 +1,9 @@
 import React from 'react';
 import Form from 'olymp-ui/form';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { Container, Sidebar, Menu, AntMenu } from 'olymp-fela';
+import { Container, Sidebar } from 'olymp-fela';
+import Menu from 'olymp-fela/menu';
+import AntMenu from 'olymp-fela/menu/ant';
 import { withRouter, Prompt } from 'olymp-router';
 import { FaPencil, FaTrashO, FaSave, FaTimes } from 'olymp-icons';
 import { get } from 'lodash';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'olymp-fela';
+import Menu from 'olymp-fela/menu';
 import { Tooltip } from 'antd';
 
 export default ({ open, children, ...rest }) =>

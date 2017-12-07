@@ -9,7 +9,9 @@ import {
   FaAngleRight,
 } from 'olymp-icons';
 import { createReplace } from 'olymp-router';
-import { Menu, DndList, StackedMenu, Sidebar } from 'olymp-fela';
+import { Sidebar } from 'olymp-fela';
+import Menu, { StackedMenu } from 'olymp-fela/menu';
+import DndList from 'olymp-fela/menu/dnd';
 import { reorderPage } from './gql/mutation';
 
 const enhance = compose(

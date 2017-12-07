@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'olymp-router';
 import { DateRangeEditor } from 'olymp-ui';
-import { Sidebar, Menu, Drawer } from 'olymp-fela';
+import { Sidebar, Drawer } from 'olymp-fela';
+import Menu from 'olymp-fela/menu';
 import {
   FaBarChart,
   FaCogs,
