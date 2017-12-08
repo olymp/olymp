@@ -62,7 +62,7 @@
     "lb": "0.0.1",
     "li": "^1.2.1",
     "uglify-es": "^3.2.1",
-    "webpack": "^3.9.1"
+    "webpack": "^3.10.0"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.2",
