@@ -12,7 +12,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "filestack-js": "^0.9.12",
+    "filestack-js": "^0.10.0",
     "olymp-fela": "^19.0.9",
     "olymp-router": "^19.0.3",
     "olymp-utils": "^19.0.3",

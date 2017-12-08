@@ -46,6 +46,6 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-styleguidist": "^6.0.33",
-    "webpack": "^3.9.1"
+    "webpack": "^3.10.0"
   }
 }
