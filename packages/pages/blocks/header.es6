@@ -19,7 +19,7 @@ const HeaderBlock = ({ attributes, className, children, pathname }) => {
     <div className={className} {...attributes}>
       <Container>
         <h1>{children}</h1>
-        <Breadcrumb contentEditable={false}>
+        {path.length > 0 && <Breadcrumb contentEditable={false}>
           Sie sind hier: <Link to="/">Startseite</Link>{' '}
           {path.map((p) => {
             slug = `${slug}/${p}`;
@@ -30,7 +30,7 @@ const HeaderBlock = ({ attributes, className, children, pathname }) => {
               </span>
             );
           })}
-        </Breadcrumb>
+                            </Breadcrumb>}
       </Container>
     </div>
   );

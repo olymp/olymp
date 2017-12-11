@@ -20,7 +20,6 @@ export default {
       height: 300,
     };
     const size = node.data.get('size') || 4;
-    console.log(value);
     return (
       <Image
         attributes={attributes}
