@@ -1,5 +1,5 @@
 {
-  "version": "19.1.4",
+  "version": "19.1.5",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -28,7 +28,7 @@
     "olymp-icons": "^19.0.3",
     "olymp-locale": "^19.1.1",
     "olymp-mail": "^19.0.3",
-    "olymp-pages": "^19.1.4",
+    "olymp-pages": "^19.1.5",
     "olymp-scrape": "^19.1.4",
     "olymp-slate": "^19.1.1",
     "olymp-ui": "^19.1.4",
