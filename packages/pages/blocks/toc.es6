@@ -70,7 +70,7 @@ class Com extends Component {
         <div
           className={className}
           {...attributes}
-          style={{ right: -248, top: 0 }}
+          style={{ left: -248, top: 0 }}
         >
           {children}
           {toc.map(item => (
@@ -101,7 +101,7 @@ export default {
       backgroundColor: 'rgba(255, 162, 16, 0.78)',
       background: 'linear-gradient(90deg, rgb(255, 143, 1), rgb(255, 171, 29))',
       position: 'absolute',
-      left: 0,
+      right: 0,
       bottom: 0,
       padding: 10,
       borderRadius: '60px 5px 5px',
