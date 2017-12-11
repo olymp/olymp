@@ -73,9 +73,6 @@ class Com extends Component {
           style={{ right: -248, top: 0 }}
         >
           {children}
-          <h4>
-            <u>Kapitel</u>
-          </h4>
           {toc.map(item => (
             <Item item={item} key={item.key} />
           ))}
@@ -104,7 +101,7 @@ export default {
       backgroundColor: 'rgba(255, 162, 16, 0.78)',
       background: 'linear-gradient(90deg, rgb(255, 143, 1), rgb(255, 171, 29))',
       position: 'absolute',
-      right: 0,
+      left: 0,
       bottom: 0,
       padding: 10,
       borderRadius: '60px 5px 5px',
@@ -123,7 +120,7 @@ export default {
     animationName: {
       from: {
         opacity: 0,
-        transform: 'translateX(60px)',
+        transform: 'translateX(-60px)',
       },
       to: {
         opacity: 1,
