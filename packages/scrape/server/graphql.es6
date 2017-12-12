@@ -1,4 +1,5 @@
 import Metascraper from 'metascraper';
+import got from 'got';
 import cloudinary from 'cloudinary';
 import { URL } from 'url';
 
@@ -174,14 +175,21 @@ export default () => ({
     `,
   resolvers: {
     queries: {
-      scrape: (source, { url }) =>
-        Metascraper.scrapeUrl(url, getRules(new URL(url)))
+      scrape: async (source, { url }) => {
+        const { body: html } = await got(url);
+        const metadata = await Metascraper({ html, url });
+        return {
+          ...metadata,
+          id: url,
+        };
+        return Metascraper.scrapeUrl(url, getRules(new URL(url)))
           .then(getImages)
           .then(metadata => ({
             ...metadata,
             id: url,
           }))
-          .catch(() => ({})),
+          .catch(() => ({}))
+      }
     },
   },
   schema: `

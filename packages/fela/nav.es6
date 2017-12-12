@@ -1,5 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import { createComponent } from 'react-fela';
+import { Link } from 'olymp-router';
 import cn from 'classnames';
 
 // Based on http://w3bits.com/labs/css-responsive-nav/
@@ -160,13 +161,15 @@ const Nav = createComponent(styles, ({ className, children }) => (
 // Item Label (MenuItem + Item)
 export const ItemLabel = ({ renderLabel: Render, ...props }) => {
   if (props.href) {
-    return <a href={props.href}>{props.children}</a>;
+    return <a href={props.href} onClick={props.onClick}>{props.children}</a>;
+  } else if (props.to) {
+    return <Link to={props.to} onClick={props.onClick}>{props.children}</Link>;
   } else if (Render && typeof renderLabel === 'function') {
     return Render(props);
   } else if (Render) {
     return <Render {...props} />;
   }
-  return <a>{props.children}</a>;
+  return <a onClick={props.onClick}>{props.children}</a>;
 };
 
 // List Item

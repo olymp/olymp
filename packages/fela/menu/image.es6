@@ -14,6 +14,9 @@ export default createComponent(
       '> *': {
         display: 'block',
         margin: '0 auto',
+        textAlign: 'center',
+        fontSize: 22,
+        fontWeight: 200,
       },
       '& svg': {
         size: large ? 36 : !extra ? 20 : 14,
