@@ -1,8 +1,8 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { FaLink } from 'olymp-icons';
 import { Container, Grid } from 'olymp-fela';
+import Panorama from 'olymp-fela/panorama';
 import { Image } from 'olymp-cloudinary';
 import { Card } from 'antd';
 import { createPushPathname } from 'olymp-router';
@@ -53,35 +53,13 @@ const BannerBlock = enhance(
     <div className={className} {...attributes}>
       <Container>
         {children}
-        <Grid size={4}>
-          {get(data.page, 'children', []).map(x => (
-            <Grid.Item padding={5} key={x.id} medium={1}>
-              <Card
-                onClick={() => push(`${pathname}${x.slug}`)}
-                style={{
-                  width: '100%',
-                  borderBottomRightRadius: 90,
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                }}
-                cover={
-                  <Image
-                    width="100%"
-                    maxHeight={150}
-                    value={x.image || x.blocks.image}
-                  />
-                }
-              >
-                <Card.Meta
-                  style={{ maxHeight: 190, overflow: 'hidden' }}
-                  avatar={<img src="/favicon.ico" width="14px" height="14px" />}
-                  title={x.name}
-                  description={x.description || x.blocks.extract}
-                />
-              </Card>
-            </Grid.Item>
-          ))}
-        </Grid>
+        <Panorama items={
+          get(data.page, 'children', []).map(x => ({
+            id: x.id,
+            image: get(x.blocks, 'image'),
+            name: x.name
+          }))}
+        />
       </Container>
     </div>
   ),

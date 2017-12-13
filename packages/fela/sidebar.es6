@@ -75,6 +75,9 @@ const Sidebar = createComponent(
             boxShadow: overlap && !collapsed ? theme.boxShadow : undefined,
             transition: 'all 200ms ease-out',
             zIndex,
+            ifSmallDown: {
+              width: !collapsed && '80%',
+            },
           },
           '> section': {
             marginLeft: !right && (overlap || collapsed ? 72 : width),
@@ -88,12 +91,12 @@ const Sidebar = createComponent(
       },
     ],
   }),
-  ({ children, className, menu, collapsed, width = 240, ...rest }) => (
+  ({ children, className, menu, collapsed, ...rest }) => (
     <div className={className}>
       <aside {...rest}>
         {Children.map(
           menu,
-          child => (child ? cloneElement(child, { collapsed, width }) : child),
+          child => (child ? cloneElement(child, { collapsed, width: '100%' }) : child),
         )}
       </aside>
       <section>{children}</section>

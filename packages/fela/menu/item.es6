@@ -31,10 +31,10 @@ const Content = createComponent(
 );
 
 export default createComponent(
-  ({ theme, large, active, icon, onClick, color, disabled }) => ({
-    height: large ? 54 : 40,
+  ({ theme, large, small, active, icon, onClick, color, disabled }) => ({
+    height: large ? 54 : small ? 32 : 40,
     flexShrink: 0,
-    width: !theme.collapsed ? '100%' : large ? 54 : 40,
+    width: !theme.collapsed ? '100%' : large ? 54 : small ? 32 : 40,
     marginLeft: theme.collapsed && !large && 7,
     paddingLeft: !icon && theme.space3,
     display: 'flex',
