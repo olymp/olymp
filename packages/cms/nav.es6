@@ -10,6 +10,20 @@ const toggleComponent = ({ toggled, onToggle, ...props }) => (
 
 const fromPages = items =>
   items.map(item => {
+    if (item.name === 'Leistungen') {
+      const childs = fromPages(item.children);
+      return (
+        <Nav.Mega
+          pathname={item.pathname || undefined}
+          renderLabel={PrefetchLink}
+          title={item.name}
+          key={item.id}
+          columns={childs.length}
+        >
+          {childs}
+        </Nav.Mega>
+      );
+    }
     if (item.children && item.children.length) {
       return (
         <Nav.Menu

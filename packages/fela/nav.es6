@@ -217,6 +217,36 @@ export const Right = ({ children, ...rest }) =>
 Nav.Item = Item;
 Nav.Menu = MenuItem;
 Nav.Right = Right;
+Nav.Mega = createComponent(({ columns }) => ({
+  ifMediumUp: {
+    '> ul.sub-menu.sub-menu': {
+      width: '45em',
+      '> .o-nav-item': {
+        display: 'inline-block',
+        float: 'left',
+        width: `${Math.floor(100 / (columns || 1))}%`,
+        '> a': {
+          fontWeight: 'bold',
+          '> .drop-icon': {
+            display: 'none',
+          }
+        },
+        '> ul': {
+          display: 'block',
+          position: 'relative',
+          right: 'initial',
+          width: 'initial',
+          border: 0,
+          boxShadow: 'none',
+          '& a': {
+            padding: '0em 0.5em',
+          },
+        }
+      }
+    }
+  }
+}), p => <MenuItem {...p} />, p => Object.keys(p));
+
 Nav.Example = () => (
   <Nav>
     <Nav.Item href="#">Sample</Nav.Item>
