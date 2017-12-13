@@ -139,6 +139,9 @@ const styles = ({ theme }) => ({
       '& li': {
         float: 'none',
         borderWidth: '0 0 1px',
+        '> a': {
+          padding: '0.3em 0.5em',
+        }
       },
     },
     '& input[type="checkbox"]:checked + .sub-menu': {
