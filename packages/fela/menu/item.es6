@@ -14,8 +14,8 @@ const LoaderContainer = createComponent(
 );
 
 const Content = createComponent(
-  ({ theme }) => ({
-    ellipsis: true,
+  ({ theme, ellipsis = true }) => ({
+    ellipsis,
     flexGrow: 1,
     opacity: theme.collapsed ? 0 : 1,
     transition: 'opacity 200ms ease-out',
@@ -27,7 +27,7 @@ const Content = createComponent(
     },
   }),
   'div',
-  p => Object.keys(p),
+  ({ ellipsis, ...props }) => Object.keys(props),
 );
 
 export default createComponent(
@@ -65,6 +65,7 @@ export default createComponent(
     loading,
     onClick,
     disabled,
+    ellipsis,
     ...rest
   }) => (
     <div
@@ -73,7 +74,7 @@ export default createComponent(
       ref={_ref || innerRef || ref}
     >
       {!!icon && <Image large={large}>{icon}</Image>}
-      <Content>
+      <Content ellipsis={ellipsis}>
         {children}
         {!!subtitle && <small>{subtitle}</small>}
       </Content>

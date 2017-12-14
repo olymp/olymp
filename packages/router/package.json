@@ -15,6 +15,7 @@
     "history": "^4.7.2",
     "olymp-utils": "^19.0.3",
     "react-redux": "^5.0.6",
+    "react-tappable": "^1.0.2",
     "redux": "^3.7.2",
     "route-parser": "^0.0.5"
   }

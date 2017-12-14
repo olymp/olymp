@@ -5,8 +5,10 @@ import useTheme from './theme';
 
 const Header = createComponent(
   ({ theme, color }) => ({
-    height: 80,
+    // height: 80,
+    minHeight: 80,
     display: 'flex',
+    flexDirection: 'column',
     flexShrink: 0,
     alignItems: 'center',
     fontSize: '120%',

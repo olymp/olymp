@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { compose, withPropsOnChange } from 'recompose';
 import { connect } from 'react-redux';
 import { pick } from 'lodash';
+import Tappable from 'react-tappable/lib/Tappable';
 import { urlToLocation } from './utils';
 import { createPush } from './redux';
 
@@ -56,14 +58,20 @@ export const withLocation = compose(
 
 @withLocation
 export default class Link extends Component {
+  componentDidMount() {
+    ReactDOM.findDOMNode(this).addEventListener("click", (e) => {
+      e.preventDefault();
+    }, false);
+  }
   onClick = e => {
     const { location, push, onClick } = this.props;
-    e.preventDefault();
+    console.log(e, e.type);
     if (onClick) {
       onClick(e);
     } else {
       push(location);
     }
+    e.preventDefault();
   };
   render() {
     const {
@@ -82,16 +90,17 @@ export default class Link extends Component {
       ...rest
     } = this.props;
     return (
-      <a
+      <Tappable
+        onTap={this.onClick}
+        component="a"
+        preventDefault
         className={className}
         style={style}
         href={location ? location.url : undefined}
-        onClick={this.onClick}
-        onTouchStart={this.onClick}
         {...rest}
       >
         {children}
-      </a>
+      </Tappable>
     );
   }
 }

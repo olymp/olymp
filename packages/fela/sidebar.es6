@@ -76,7 +76,7 @@ const Sidebar = createComponent(
             transition: 'all 200ms ease-out',
             zIndex,
             ifSmallDown: {
-              width: !collapsed && '80%',
+              width: !collapsed && '100%',
             },
           },
           '> section': {
