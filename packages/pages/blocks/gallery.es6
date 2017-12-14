@@ -86,7 +86,7 @@ export default {
   component: enhance(
     ({ getData, setActive, className, attributes, children, items, id }) => (
       <LightboxGallery gallery={id}>
-        <Container {...attributes}>
+        <Container {...attributes} className="gallery-block">
           {children}
           <Lightbox />
           {items.map((image, i) => (
