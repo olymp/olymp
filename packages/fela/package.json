@@ -36,6 +36,7 @@
     "react-gravatar": "^2.6.3",
     "react-resize-detector": "^1.1.0",
     "react-scrolllock": "^1.0.9",
+    "react-swipeable": "^4.2.0",
     "scrollparent": "^2.0.1",
     "shortid": "^2.2.8",
     "tinycolor2": "^1.4.1"

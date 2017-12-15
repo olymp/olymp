@@ -14,7 +14,7 @@ export const scrollTopHelper = (node, func) => {
   };
   const requestTick = () => {
     console.log('TICK')
-    if (!this.ticking) {
+    if (!ticking) {
       requestAnimationFrame(update);
     }
     ticking = true;

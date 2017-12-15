@@ -63,6 +63,13 @@ export default class Link extends Component {
       e.preventDefault();
     }, false);
   }
+  onPreload = e => {
+    const { location, onPreload } = this.props;
+    console.log('PRELOAD', e.type);
+    if (onPreload) {
+      onPreload(location);
+    }
+  };
   onClick = e => {
     const { location, push, onClick } = this.props;
     console.log(e, e.type);
@@ -92,6 +99,8 @@ export default class Link extends Component {
     return (
       <Tappable
         onTap={this.onClick}
+        onTouchStart={this.onPreload}
+        onMouseEnter={this.onPreload}
         component="a"
         preventDefault
         className={className}
