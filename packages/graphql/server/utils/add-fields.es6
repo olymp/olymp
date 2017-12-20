@@ -9,12 +9,15 @@ export default (ast, node, fieldsToAdd, { replace = false } = {}) => {
     }
   `).definitions[0];
   type.fields.forEach((field) => {
+    const has = fields.findIndex(x => get(x, 'name.value') === get(field, 'name.value'));
+    console.log(has, get(field, 'name.value') );
     if (
-      replace &&
-      fields.find(x => get(x, 'name.value') === get(field, 'name.value'))
+      has >= 0
     ) {
-      return;
+      fields[has] = field;
+    } else {
+      fields.push(field);
     }
-    fields.push(field);
   });
 };
+

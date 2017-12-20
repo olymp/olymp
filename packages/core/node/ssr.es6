@@ -67,14 +67,14 @@ const getAssets = () => {
 };
 
 // Setup server side routing.
-export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, ...context }) => {
+export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], css = [], ...context }) => {
   const assets = getAssets();
   const renderTemplate = isAmp ? amp : isBot ? botTemplate : template;
   if (IS_SSR === false && !ssr) {
     const html = renderTemplate({
       gaTrackingId: GA_TRACKING_ID,
-      scripts: isAmp || !assets.app.js ? [] : [assets.app.js],
-      styles: isAmp || !assets.app.css ? [] : [assets.app.css],
+      scripts: isAmp || !assets.app.js ? js : [...js, assets.app.js],
+      styles: isAmp || !assets.app.css ? css : [...css, assets.app.css],
       buildOn: BUILD_ON,
     });
     return Promise.resolve({ status: 200, result: html });
@@ -162,15 +162,14 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, ...context 
       const asyncState = asyncContext.getState();
       // Generate the html res.
       const state = store.getState();
-      console.log(originalUrl, reactAppString);
       const html = renderTemplate({
         ...Helmet.rewind(),
         isBot,
         root: reactAppString,
         buildOn: BUILD_ON,
         fela: felaMarkup,
-        scripts: isAmp ? [] : [assets.app.js].filter(x => x),
-        styles: isAmp ? [] : [assets.app.css].filter(x => x),
+        scripts: isAmp ? js : [...js, assets.app.js].filter(x => x),
+        styles: isAmp ? css : [...css, assets.app.css].filter(x => x),
         asyncState,
         initialState: {
           apollo: cache.data,
@@ -179,9 +178,9 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, ...context 
         gaTrackingId: GA_TRACKING_ID,
       });
       if (state.location.url !== url) {
-        return { status: 301, result: encodeURI(state.location.url) };
+        return { status: 'REDIRECT', result: encodeURI(state.location.url) };
       }
-      return { status: state.location.isMiss ? 404 : 200, result: html };
+      return { status: state.location.isMiss ? 'MISS' : 'OK', result: html };
     })
-    .catch(err => ({ status: 500, result: err.message }));
+    .catch(err => ({ status: 'ERROR', result: err.message }));
 };

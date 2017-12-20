@@ -45,27 +45,25 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
       set(
         resolvers,
         `RootQuery.${table}List`,
-        (source, { query, sort, limit, skip }, { db, app }) =>
-          // db.collection(table).find(adaptQuery(query))
-          db
+        (source, { query, sort, limit, skip }, { db, app }) => {
+
+          const obj = sort || { name: 'ASC' };
+          const sorting = Object.keys(obj).reduce((store, key) => {
+            store[key] = obj[key] === 'DESC' ? -1 : 1;
+            return store;
+          }, {});
+          return db
             .collection('item')
             .find(
               isGeneric
                 ? { ...adaptQuery(query), _appId: app.id }
                 : { ...adaptQuery(query), _type: table, _appId: app.id },
             )
-            .then(cursor => {
-              const obj = sort || { name: 'ASC' };
-              const sorting = Object.keys(obj).reduce((store, key) => {
-                store[key] = obj[key] === 'DESC' ? -1 : 1;
-                return store;
-              }, {});
-              return cursor
-                .sort(sorting)
-            })
-            .limit(limit || 100)
-            .skip(skip || 0)
-            .toArray(),
+            // .sort(sorting)
+            // .limit(limit || 100)
+            // .skip(skip || 0)
+            .toArray()
+        }
       );
     }
   }

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { compose, withPropsOnChange } from 'recompose';
 import { connect } from 'react-redux';
-import { ThemeProvider, ScreenLoader, Logo, Modal } from 'olymp-fela';
+import { ThemeProvider, ScreenLoader, Logo } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
 import { withAuth, getAuth } from 'olymp-auth0';
 import { LightboxProvider } from 'olymp-cloudinary';
