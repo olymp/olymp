@@ -24,7 +24,7 @@ export default {
           return undefined;
         }
         const user = context && context.user;
-        const monk = context && context.monk;
+        const db = context && context.db;
         /* if (!user) {
           // throw new Error('Not authorized');
         }
@@ -40,7 +40,7 @@ export default {
         } */
 
         if (id) {
-          return monk
+          return db
             .collection('item')
             .findOne({ id })
             .then(old => ({ ...variables, old: old || null }));
@@ -66,7 +66,7 @@ export default {
         const userId = context && context.user && context.user.id;
         const id = shortId.generate();
         const diffe = diff(old || {}, value) || [];
-        context.monk.collection('changelog').insert({
+        context.db.collection('changelog').insertOne({
           id,
           type: value._type,
           targetId: value.id,
@@ -87,11 +87,11 @@ export default {
   `,
   resolvers: {
     queries: {
-      changelog: (source, { id }, { monk, app, user }) => {
+      changelog: (source, { id }, { db, app, user }) => {
         if (!user) {
           return;
         }
-        monk.collection('changelog').find({ targetId: id, appId: app.id });
+        return db.collection('changelog').find({ targetId: id, appId: app.id }).toArray();
       },
     },
   },

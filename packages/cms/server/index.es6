@@ -1,6 +1,5 @@
 import createSchema from 'olymp-graphql/server';
 import createMail from 'olymp-mail/server';
-import { authGraphQL, authCache, createAuthEngine } from 'olymp-auth/server';
 import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';
@@ -8,7 +7,6 @@ import { scrapeGraphQL } from 'olymp-scrape/server';
 import auth0 from 'olymp-auth0/server';
 import { MongoClient } from 'mongodb';
 /* import createSitemap from 'olymp-sitemap/server'; */
-import createMonk from 'monk';
 import { modules as colModules, directives } from 'olymp-collection/server';
 import { get } from 'lodash';
 import algoliasearch from 'algoliasearch';
@@ -30,17 +28,18 @@ const {
 } = process.env;
 
 export default (server, options) => {
-  const monk = createMonk(MONGODB_URI);
-  let db = null;
+  server.db = null;
 
-  MongoClient.connect(MONGODB_URI, (err, d) => {
+  console.log(MONGODB_URI);
+  new MongoClient(MONGODB_URI).connect((err, mongo) => {
     if (err) {
       console.error(err);
       if (err.errors) {
         err.errors.forEach(err => console.error(err));
       }
     }
-    db = d;
+    console.log(MONGODB_URI.split('/').pop());
+    server.db = mongo.db(MONGODB_URI.split('/').pop());
   });
 
   auth0(server);
@@ -57,6 +56,17 @@ export default (server, options) => {
         },
       },
     },
+    user: {
+      schema: `
+        type User {
+          isAdmin: Boolean
+          id: String
+          email: Email
+          token: String
+          name: String
+        }
+      `,
+    },
     ...get(options, 'modules', {}),
     ...colModules,
   };
@@ -65,88 +75,24 @@ export default (server, options) => {
     url: URL,
   });
 
-  const authEngine = createAuthEngine({
-    db,
-    mail,
-    secret: AUTH_SECRET,
-    app: APP,
-  });
-
   const algolia = ALGOLIA
     ? algoliasearch(ALGOLIA.split('@')[1], ALGOLIA.split('@')[0])
     : null;
 
   // const responseCache = createResponseCache();
-  let cachedApp = null;
+  const cachedApp = null;
 
+  server.getSchema = schema.getSchema;
+  server.getDB = () => server.db;
   server.use((req, res, next) => {
-    req.db = db;
+    req.db = server.db;
     req.mail = mail;
-    req.monk = monk;
     req.schema = schema.getSchema();
-    req.authEngine = authEngine;
     req.app = cachedApp;
     req.algolia = algolia;
-    /* // req.responseCache = responseCache;
-    if (
-      req.body &&
-      req.body.query &&
-      typeof req.body.query === 'string' &&
-      req.body.query.indexOf('mutation ') === 0
-    ) {
-      console.log('reset cache');
-      responseCache.clear();
-    } */
     next();
   });
-  server.use(authCache(authEngine));
 
-  modules.auth = authGraphQL({
-    attributes: `${options.auth.attributes || ''} _appIds:[String]`,
-    getQueries: queries => ({
-      ...queries,
-      verify: async (root, args, context) => {
-        const user = await queries.verify(root, args, context);
-        if (!user) {
-          return user;
-        }
-        if (user._appIds && user._appIds.indexOf(APP) !== -1) {
-          return user;
-        }
-        throw new Error('No permission');
-      },
-      invitationList: (source, args, { user, monk }) => {
-        if (!user || !user.isAdmin) {
-          throw new Error('No permission');
-        }
-        return monk.collection('invitation').find({ _appIds: APP });
-      },
-      userList: (source, args, { user, monk }) => {
-        if (!user || !user.isAdmin) {
-          throw new Error('No permission');
-        }
-        return monk.collection('user').find({ _appIds: APP });
-      },
-      user: (source, args, { user, monk }) => {
-        if (user && user.isAdmin) {
-        } else if (user && user.id === args.id) {
-        } else {
-          throw new Error('No permission');
-        }
-        return monk.collection('user').findOne({ id: args.id, _appIds: APP });
-      },
-    }),
-    getMutations: mutations => ({
-      ...mutations,
-      login: async (root, args, context) => {
-        const user = await mutations.login(root, args, context);
-        if (user._appIds && user._appIds.indexOf(APP) !== -1) {
-          return user;
-        }
-        throw new Error('No permission');
-      },
-    }),
-  });
   modules.pages = pagesGraphQL();
   modules.cloudinary = cloudinaryGraphQL(CLOUDINARY_URI);
   modules.scrape = scrapeGraphQL();
@@ -155,42 +101,13 @@ export default (server, options) => {
     GOOGLE_CLIENT_EMAIL,
     GOOGLE_PRIVATE_KEY,
   );
-  /*
-  createSitemap(schema, options.sitemap);
-  googleGraphQL(schema, GM_KEY, options.google);
-  pagesGraphQL(schema, options.pages);
-  cloudinaryGraphQL(schema, CLOUDINARY_URI, options.cloudinary);
-
-  if (options.schemas) {
-    options.schemas({ schema, mail, authEngine, server, monk });
-  }
-
-  let cachedApp = null;
-  // Add GraphQL API
-  server.post('/graphql', (req, res, next) => {
-    if (cachedApp) {
-      return schema.express(req, res, next);
-    }
-    monk
-      .collection('apps')
-      .findOne({ id: APP })
-      .then((app) => {
-        if (!app) {
-          throw new Error('App not found');
-        }
-        cachedApp = app;
-        // attach schemata
-        // schema.addSchema();
-        schema.express(req, res, next);
-      })
-      .catch(err => next(err));
-  }); */
   server.post('/graphql', schema.express);
   if (NODE_ENV !== 'production') {
     server.get('/graphql', schema.graphi);
   }
 
-  monk
+  schema.apply(modules);
+  /* server.db
     .collection('app')
     .findOne({ id: APP })
     .then(app => {
@@ -198,8 +115,8 @@ export default (server, options) => {
         throw new Error('App not found');
       }
       cachedApp = app;
-      schema.apply(modules);
-    });
+
+    }); */
 
   /*
   const shortId = require('shortid');

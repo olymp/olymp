@@ -14,10 +14,10 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "devtron": "^1.4.0",
-    "electron": "^1.7.9",
+    "electron": "^1.7.10",
     "electron-builder": "^19.49.0",
     "electron-debug": "^1.4.0",
-    "electron-log": "^2.2.12",
+    "electron-log": "^2.2.13",
     "electron-publisher": "^0.1.6",
     "electron-publisher-s3": "^19.49.0",
     "electron-updater": "^2.17.6",

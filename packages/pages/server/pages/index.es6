@@ -5,12 +5,12 @@ export default () => ({
   `,
   resolvers: {
     mutations: {
-      reorderPages: (source, { ids, parentId }, { monk }) =>
+      reorderPages: (source, { ids, parentId }, { db }) =>
         Promise.all(
           ids.map((id, order) =>
-            monk
+            db
               .collection('item')
-              .update({ id, _type: 'page' }, { $set: { order, parentId } })
+              .updateOne({ id, _type: 'page' }, { $set: { order, parentId } })
               .then(() => ({ id, order, parentId })),
           ),
         ),

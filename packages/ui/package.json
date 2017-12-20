@@ -12,9 +12,9 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "antd": "^3.0.1",
+    "antd": "^3.0.2",
     "date-fns": "^2.0.0-alpha.1",
-    "moment": "^2.19.4",
+    "moment": "^2.20.1",
     "multirangeslider": "^0.5.2",
     "react-modal2": "^5.0.0"
   }

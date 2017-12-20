@@ -23,13 +23,13 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
       set(
         resolvers,
         `RootQuery.${table}`,
-        (source, { id, query }, { monk, app }) => {
+        (source, { id, query }, { db, app }) => {
           const x = id ? { id } : adaptQuery(query);
           const q = isGeneric
             ? { ...x, _appId: app.id }
             : { ...x, _type: table, _appId: app.id };
-          // monk.collection(table).findOne(id ? { id } : adaptQuery(query))
-          return monk.collection('item').findOne(q);
+          // db.collection(table).findOne(id ? { id } : adaptQuery(query))
+          return db.collection('item').findOne(q);
         },
       );
     }
@@ -45,15 +45,14 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
       set(
         resolvers,
         `RootQuery.${table}List`,
-        (source, { query, sort, limit, skip }, { monk, app }) =>
-          // monk.collection(table).find(adaptQuery(query))
-          monk
+        (source, { query, sort, limit, skip }, { db, app }) =>
+          // db.collection(table).find(adaptQuery(query))
+          db
             .collection('item')
             .find(
               isGeneric
                 ? { ...adaptQuery(query), _appId: app.id }
                 : { ...adaptQuery(query), _type: table, _appId: app.id },
-              { rawCursor: true },
             )
             .then(cursor => {
               const obj = sort || { name: 'ASC' };
@@ -63,10 +62,10 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
               }, {});
               return cursor
                 .sort(sorting)
-                .limit(limit || 100)
-                .skip(skip || 0)
-                .toArray();
-            }),
+            })
+            .limit(limit || 100)
+            .skip(skip || 0)
+            .toArray(),
       );
     }
   }
@@ -87,40 +86,40 @@ export default (ast, node, resolvers, typeName, isGeneric) => {
       set(
         resolvers,
         `RootMutation.${table}`,
-        /* (source, { id, input, type }, { monk }) => {
+        /* (source, { id, input, type }, { db }) => {
           if (!id) {
-            monk.collection(table).insert(input);
+            db.collection(table).insert(input);
           } else if (type === 'REPLACE') {
-            monk.collection(table).update(input);
+            db.collection(table).update(input);
           } else {
-            monk.collection(table).update({ $set: input });
+            db.collection(table).update({ $set: input });
           }
         } */
-        (source, { id, input, type }, { monk, app }) => {
+        (source, { id, input, type }, { db, app }) => {
           let promise;
           if (!id) {
             id = shortId.generate();
-            promise = monk
+            promise = db
               .collection('item')
-              .insert({ ...input, _type: table, _appId: app.id, id });
+              .insertOne({ ...input, _type: table, _appId: app.id, id });
           } else if (type === 'REMOVE') {
-            promise = monk
+            promise = db
               .collection('item')
-              .update({ _type: table, id }, { ...input, state: 'REMOVED' });
+              .updateOne({ _type: table, id }, { ...input, state: 'REMOVED' });
           } else if (type === 'REPLACE') {
-            promise = monk
+            promise = db
               .collection('item')
-              .update(
+              .updateOne(
                 { _type: table, id },
                 { ...input, _type: table, _appId: app.id, id },
               );
           } else {
-            promise = monk
+            promise = db
               .collection('item')
-              .update({ _type: table, id }, { $set: { ...input } });
+              .updateOne({ _type: table, id }, { $set: { ...input } });
           }
           return promise.then(() =>
-            monk.collection('item').findOne({ id, _type: table }),
+            db.collection('item').findOne({ id, _type: table }),
           );
         },
       );

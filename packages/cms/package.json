@@ -16,7 +16,6 @@
     "date-fns": "^2.0.0-alpha.1",
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
-    "monk": "^6.0.5",
     "olymp": "^19.1.14",
     "olymp-auth": "^19.1.14",
     "olymp-auth0": "^19.1.14",

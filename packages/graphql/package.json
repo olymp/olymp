@@ -15,11 +15,11 @@
     "assert-err": "^1.1.0",
     "base64-url": "^2.0.1",
     "faker": "^4.1.0",
-    "graphql": "^0.11.7",
+    "graphql": "^0.12.3",
     "graphql-modules": "^0.2.2",
-    "graphql-server-express": "^1.3.0",
-    "graphql-tag": "^2.6.0",
-    "graphql-tools": "^2.13.0",
+    "graphql-server-express": "^1.3.2",
+    "graphql-tag": "^2.6.1",
+    "graphql-tools": "^2.14.1",
     "limiter": "^1.1.2",
     "lodash": "^4.17.4"
   }
