@@ -1,7 +1,7 @@
 import React from 'react';
 import renderHelmet from 'olymp-utils/helmet';
 import { ContentLoader } from 'olymp-fela';
-import { compose, withPropsOnChange } from 'recompose';
+import { compose, withPropsOnChange, withState } from 'recompose';
 import { connect } from 'react-redux';
 import Writer from './writer';
 import Error404 from './404';
@@ -11,6 +11,7 @@ const enhance = compose(
   connect(({ location }) => ({
     pathname: location.pathname,
   })),
+  withState('formOpen', 'setFormOpen', false),
   withPropsOnChange(
     ['flatNavigation', 'pathname'],
     ({ flatNavigation, pathname }) => {

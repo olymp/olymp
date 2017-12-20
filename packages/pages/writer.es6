@@ -18,7 +18,6 @@ const enhance = compose(
   queryPage,
   withLoader,
   // withState('signal', 'setSignal', 0),
-  withState('formOpen', 'setFormOpen', false),
   Form.create({
     /* onValuesChange: debounce(setSignal, 800, {
       trailing: true,

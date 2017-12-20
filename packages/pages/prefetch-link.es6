@@ -10,7 +10,7 @@ export const withPrefetch = connect(null, dispatch => ({
 
 const PrefetchLink = Link.withLocation(
   withPrefetch(({ prefetch, ...props }) => (
-    <Link {...props} onMouseEnter={() => prefetch(props.location)} />
+    <Link {...props} onPreload={prefetch} />
   )),
 );
 
