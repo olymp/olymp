@@ -1,0 +1,44 @@
+import _get from 'lodash/get';
+
+import LRU from 'lru-cache';
+
+var cache = LRU({
+  max: 500,
+  maxAge: 1000 * 60 * 5
+});
+
+export default (function (auth) {
+  return function (req, res, next) {
+    var authorization = req.headers.authorization || req.query.authorization || _get(req, 'session.token');
+
+    if (!authorization || req.user) {
+      return next();
+    }
+
+    var cached = cache.get(authorization);
+
+    if (cached) {
+      req.user = cached;
+      return next();
+    }
+
+    auth.verify(req.db, authorization).then(function (user) {
+      if (req.session) {
+        req.session.token = user.token;
+      }
+      req.user = user;
+      cache.set(authorization, user);
+      next();
+    }).catch(function (e) {
+      console.log('err', e);
+      if (req.session) {
+        delete req.session.token;
+      }
+      delete req.headers.authorization;
+      delete req.params.authorization;
+      cache.del(authorization);
+      next();
+    });
+  };
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2F1dGgvc2VydmVyL2NhY2hlLmVzNiJdLCJuYW1lcyI6WyJMUlUiLCJjYWNoZSIsIm1heCIsIm1heEFnZSIsInJlcSIsInJlcyIsIm5leHQiLCJhdXRob3JpemF0aW9uIiwiaGVhZGVycyIsInF1ZXJ5IiwidXNlciIsImNhY2hlZCIsImdldCIsImF1dGgiLCJ2ZXJpZnkiLCJkYiIsInRoZW4iLCJzZXNzaW9uIiwidG9rZW4iLCJzZXQiLCJjYXRjaCIsImNvbnNvbGUiLCJsb2ciLCJlIiwicGFyYW1zIiwiZGVsIl0sIm1hcHBpbmdzIjoiOztBQUNBLE9BQU9BLEdBQVAsTUFBZ0IsV0FBaEI7O0FBRUEsSUFBTUMsUUFBUUQsSUFBSTtBQUNoQkUsT0FBSyxHQURXO0FBRWhCQyxVQUFRLE9BQU8sRUFBUCxHQUFZO0FBRkosQ0FBSixDQUFkOztBQUtBLGdCQUFlO0FBQUEsU0FBUSxVQUFDQyxHQUFELEVBQU1DLEdBQU4sRUFBV0MsSUFBWCxFQUFvQjtBQUN6QyxRQUFNQyxnQkFDSkgsSUFBSUksT0FBSixDQUFZRCxhQUFaLElBQ0FILElBQUlLLEtBQUosQ0FBVUYsYUFEVixJQUVBLEtBQUlILEdBQUosRUFBUyxlQUFULENBSEY7O0FBS0EsUUFBSSxDQUFDRyxhQUFELElBQWtCSCxJQUFJTSxJQUExQixFQUFnQztBQUM5QixhQUFPSixNQUFQO0FBQ0Q7O0FBRUQsUUFBTUssU0FBU1YsTUFBTVcsR0FBTixDQUFVTCxhQUFWLENBQWY7O0FBRUEsUUFBSUksTUFBSixFQUFZO0FBQ1ZQLFVBQUlNLElBQUosR0FBV0MsTUFBWDtBQUNBLGFBQU9MLE1BQVA7QUFDRDs7QUFFRE8sU0FDR0MsTUFESCxDQUNVVixJQUFJVyxFQURkLEVBQ2tCUixhQURsQixFQUVHUyxJQUZILENBRVEsZ0JBQVE7QUFDWixVQUFJWixJQUFJYSxPQUFSLEVBQWlCO0FBQ2ZiLFlBQUlhLE9BQUosQ0FBWUMsS0FBWixHQUFvQlIsS0FBS1EsS0FBekI7QUFDRDtBQUNEZCxVQUFJTSxJQUFKLEdBQVdBLElBQVg7QUFDQVQsWUFBTWtCLEdBQU4sQ0FBVVosYUFBVixFQUF5QkcsSUFBekI7QUFDQUo7QUFDRCxLQVRILEVBVUdjLEtBVkgsQ0FVUyxhQUFLO0FBQ1ZDLGNBQVFDLEdBQVIsQ0FBWSxLQUFaLEVBQW1CQyxDQUFuQjtBQUNBLFVBQUluQixJQUFJYSxPQUFSLEVBQWlCO0FBQ2YsZUFBT2IsSUFBSWEsT0FBSixDQUFZQyxLQUFuQjtBQUNEO0FBQ0QsYUFBT2QsSUFBSUksT0FBSixDQUFZRCxhQUFuQjtBQUNBLGFBQU9ILElBQUlvQixNQUFKLENBQVdqQixhQUFsQjtBQUNBTixZQUFNd0IsR0FBTixDQUFVbEIsYUFBVjtBQUNBRDtBQUNELEtBbkJIO0FBb0JELEdBckNjO0FBQUEsQ0FBZiIsImZpbGUiOiJwYWNrYWdlcy9hdXRoL3NlcnZlci9jYWNoZS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGdldCB9IGZyb20gJ2xvZGFzaCc7XG5pbXBvcnQgTFJVIGZyb20gJ2xydS1jYWNoZSc7XG5cbmNvbnN0IGNhY2hlID0gTFJVKHtcbiAgbWF4OiA1MDAsXG4gIG1heEFnZTogMTAwMCAqIDYwICogNSxcbn0pO1xuXG5leHBvcnQgZGVmYXVsdCBhdXRoID0+IChyZXEsIHJlcywgbmV4dCkgPT4ge1xuICBjb25zdCBhdXRob3JpemF0aW9uID1cbiAgICByZXEuaGVhZGVycy5hdXRob3JpemF0aW9uIHx8XG4gICAgcmVxLnF1ZXJ5LmF1dGhvcml6YXRpb24gfHxcbiAgICBnZXQocmVxLCAnc2Vzc2lvbi50b2tlbicpO1xuXG4gIGlmICghYXV0aG9yaXphdGlvbiB8fCByZXEudXNlcikge1xuICAgIHJldHVybiBuZXh0KCk7XG4gIH1cblxuICBjb25zdCBjYWNoZWQgPSBjYWNoZS5nZXQoYXV0aG9yaXphdGlvbik7XG5cbiAgaWYgKGNhY2hlZCkge1xuICAgIHJlcS51c2VyID0gY2FjaGVkO1xuICAgIHJldHVybiBuZXh0KCk7XG4gIH1cblxuICBhdXRoXG4gICAgLnZlcmlmeShyZXEuZGIsIGF1dGhvcml6YXRpb24pXG4gICAgLnRoZW4odXNlciA9PiB7XG4gICAgICBpZiAocmVxLnNlc3Npb24pIHtcbiAgICAgICAgcmVxLnNlc3Npb24udG9rZW4gPSB1c2VyLnRva2VuO1xuICAgICAgfVxuICAgICAgcmVxLnVzZXIgPSB1c2VyO1xuICAgICAgY2FjaGUuc2V0KGF1dGhvcml6YXRpb24sIHVzZXIpO1xuICAgICAgbmV4dCgpO1xuICAgIH0pXG4gICAgLmNhdGNoKGUgPT4ge1xuICAgICAgY29uc29sZS5sb2coJ2VycicsIGUpO1xuICAgICAgaWYgKHJlcS5zZXNzaW9uKSB7XG4gICAgICAgIGRlbGV0ZSByZXEuc2Vzc2lvbi50b2tlbjtcbiAgICAgIH1cbiAgICAgIGRlbGV0ZSByZXEuaGVhZGVycy5hdXRob3JpemF0aW9uO1xuICAgICAgZGVsZXRlIHJlcS5wYXJhbXMuYXV0aG9yaXphdGlvbjtcbiAgICAgIGNhY2hlLmRlbChhdXRob3JpemF0aW9uKTtcbiAgICAgIG5leHQoKTtcbiAgICB9KTtcbn07XG4iXX0=

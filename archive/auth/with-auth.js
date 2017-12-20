@@ -1,0 +1,10 @@
+import { connect } from 'react-redux';
+import { createLogout } from './redux';
+
+export default connect(function (_ref) {
+  var auth = _ref.auth;
+  return { auth: auth };
+}, function (dispatch) {
+  return { logout: createLogout(dispatch) };
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2F1dGgvd2l0aC1hdXRoLmVzNiJdLCJuYW1lcyI6WyJjb25uZWN0IiwiY3JlYXRlTG9nb3V0IiwiYXV0aCIsImxvZ291dCIsImRpc3BhdGNoIl0sIm1hcHBpbmdzIjoiQUFBQSxTQUFTQSxPQUFULFFBQXdCLGFBQXhCO0FBQ0EsU0FBU0MsWUFBVCxRQUE2QixTQUE3Qjs7QUFFQSxlQUFlRCxRQUNiO0FBQUEsTUFBR0UsSUFBSCxRQUFHQSxJQUFIO0FBQUEsU0FBZSxFQUFFQSxVQUFGLEVBQWY7QUFBQSxDQURhLEVBRWI7QUFBQSxTQUFhLEVBQUVDLFFBQVFGLGFBQWFHLFFBQWIsQ0FBVixFQUFiO0FBQUEsQ0FGYSxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2F1dGgvd2l0aC1hdXRoLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgY29ubmVjdCB9IGZyb20gJ3JlYWN0LXJlZHV4JztcbmltcG9ydCB7IGNyZWF0ZUxvZ291dCB9IGZyb20gJy4vcmVkdXgnO1xuXG5leHBvcnQgZGVmYXVsdCBjb25uZWN0KFxuICAoeyBhdXRoIH0pID0+ICh7IGF1dGggfSksXG4gIGRpc3BhdGNoID0+ICh7IGxvZ291dDogY3JlYXRlTG9nb3V0KGRpc3BhdGNoKSB9KSxcbik7XG4iXX0=
