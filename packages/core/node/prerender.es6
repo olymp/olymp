@@ -19,7 +19,6 @@ const prerender = ((target, urls, args) => {
     }
     return fs.outputFile(path.resolve(target, `.${pathname}.html`), result);
   }, Promise.resolve());
-})
+});
 export default prerender;
-
 
