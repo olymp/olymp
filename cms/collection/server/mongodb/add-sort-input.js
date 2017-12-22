@@ -1,0 +1,15 @@
+import { parse } from 'graphql/language';
+import { addDefinition } from 'olymp-graphql/server';
+
+export default (function (ast, node) {
+  var getSort = function getSort(field) {
+    if (!field.name) {
+      return null;
+    }
+    return field.name.value + ': SORT_DIRECTION';
+  };
+  addDefinition(ast, parse('\n    input ' + node.name.value + 'Sort {\n      skipSort: Boolean\n      ' + node.fields.map(getSort).filter(function (x) {
+    return x;
+  }).join('\n') + '\n    }\n  ').definitions[0]);
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvbGxlY3Rpb24vc2VydmVyL21vbmdvZGIvYWRkLXNvcnQtaW5wdXQuZXM2Il0sIm5hbWVzIjpbInBhcnNlIiwiYWRkRGVmaW5pdGlvbiIsImFzdCIsIm5vZGUiLCJnZXRTb3J0IiwiZmllbGQiLCJuYW1lIiwidmFsdWUiLCJmaWVsZHMiLCJtYXAiLCJmaWx0ZXIiLCJ4Iiwiam9pbiIsImRlZmluaXRpb25zIl0sIm1hcHBpbmdzIjoiQUFBQSxTQUFTQSxLQUFULFFBQXNCLGtCQUF0QjtBQUNBLFNBQVNDLGFBQVQsUUFBOEIsc0JBQTlCOztBQUVBLGdCQUFlLFVBQUNDLEdBQUQsRUFBTUMsSUFBTixFQUFlO0FBQzVCLE1BQU1DLFVBQVUsU0FBVkEsT0FBVSxDQUFDQyxLQUFELEVBQVc7QUFDekIsUUFBSSxDQUFDQSxNQUFNQyxJQUFYLEVBQWlCO0FBQ2YsYUFBTyxJQUFQO0FBQ0Q7QUFDRCxXQUFVRCxNQUFNQyxJQUFOLENBQVdDLEtBQXJCO0FBQ0QsR0FMRDtBQU1BTixnQkFDRUMsR0FERixFQUVFRix1QkFDUUcsS0FBS0csSUFBTCxDQUFVQyxLQURsQiwrQ0FHSUosS0FBS0ssTUFBTCxDQUFZQyxHQUFaLENBQWdCTCxPQUFoQixFQUF5Qk0sTUFBekIsQ0FBZ0M7QUFBQSxXQUFLQyxDQUFMO0FBQUEsR0FBaEMsRUFBd0NDLElBQXhDLENBQTZDLElBQTdDLENBSEosa0JBS0NDLFdBTEQsQ0FLYSxDQUxiLENBRkY7QUFTRCxDQWhCRCIsImZpbGUiOiJwYWNrYWdlcy9jb2xsZWN0aW9uL3NlcnZlci9tb25nb2RiL2FkZC1zb3J0LWlucHV0LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcGFyc2UgfSBmcm9tICdncmFwaHFsL2xhbmd1YWdlJztcbmltcG9ydCB7IGFkZERlZmluaXRpb24gfSBmcm9tICdvbHltcC1ncmFwaHFsL3NlcnZlcic7XG5cbmV4cG9ydCBkZWZhdWx0IChhc3QsIG5vZGUpID0+IHtcbiAgY29uc3QgZ2V0U29ydCA9IChmaWVsZCkgPT4ge1xuICAgIGlmICghZmllbGQubmFtZSkge1xuICAgICAgcmV0dXJuIG51bGw7XG4gICAgfVxuICAgIHJldHVybiBgJHtmaWVsZC5uYW1lLnZhbHVlfTogU09SVF9ESVJFQ1RJT05gO1xuICB9O1xuICBhZGREZWZpbml0aW9uKFxuICAgIGFzdCxcbiAgICBwYXJzZShgXG4gICAgaW5wdXQgJHtub2RlLm5hbWUudmFsdWV9U29ydCB7XG4gICAgICBza2lwU29ydDogQm9vbGVhblxuICAgICAgJHtub2RlLmZpZWxkcy5tYXAoZ2V0U29ydCkuZmlsdGVyKHggPT4geCkuam9pbignXFxuJyl9XG4gICAgfVxuICBgKS5kZWZpbml0aW9uc1swXVxuICApO1xufTtcbiJdfQ==

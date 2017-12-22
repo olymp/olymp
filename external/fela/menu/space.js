@@ -1,0 +1,8 @@
+import { createComponent } from 'olymp-fela';
+
+export default createComponent(function () {
+  return {
+    flex: 1
+  };
+}, 'div');
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvbWVudS9zcGFjZS5lczYiXSwibmFtZXMiOlsiY3JlYXRlQ29tcG9uZW50IiwiZmxleCJdLCJtYXBwaW5ncyI6IkFBQUEsU0FBU0EsZUFBVCxRQUFnQyxZQUFoQzs7QUFFQSxlQUFlQSxnQkFDYjtBQUFBLFNBQU87QUFDTEMsVUFBTTtBQURELEdBQVA7QUFBQSxDQURhLEVBSWIsS0FKYSxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvbWVudS9zcGFjZS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGNyZWF0ZUNvbXBvbmVudCB9IGZyb20gJ29seW1wLWZlbGEnO1xuXG5leHBvcnQgZGVmYXVsdCBjcmVhdGVDb21wb25lbnQoXG4gICgpID0+ICh7XG4gICAgZmxleDogMSxcbiAgfSksXG4gICdkaXYnLFxuKTtcbiJdfQ==

@@ -1,0 +1,32 @@
+import React from 'react';
+import FaHeader from 'olymp-icons/lib/fa-header';
+import FaListOl from 'olymp-icons/lib/fa-list-ol';
+import FaIndent from 'olymp-icons/lib/fa-indent';
+import FaListUl from 'olymp-icons/lib/fa-list-ul';
+
+import I from '../components/icon';
+
+export default [{
+  type: ['heading-one', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six'],
+  label: React.createElement(I, { icon: FaHeader }),
+  description: ['Überschrift 1', 'Überschrift 2', 'Überschrift 3', 'Überschrift 4', 'Überschrift 5', 'Überschrift 6']
+}, { type: 'block-quote', label: React.createElement(I, { icon: FaIndent }) }, {
+  type: 'numbered-list',
+  label: React.createElement(I, { icon: FaListOl }),
+  onClick: function onClick(_ref) {
+    var value = _ref.value,
+        onChange = _ref.onChange;
+
+    onChange(value.change().call(plugin.changes.wrapInList));
+  }
+}, {
+  type: 'bulleted-list',
+  label: React.createElement(I, { icon: FaListUl }),
+  onClick: function onClick(_ref2) {
+    var value = _ref2.value,
+        onChange = _ref2.onChange;
+
+    onChange(value.change().call(plugin.changes.wrapInList));
+  }
+}];
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3NsYXRlL2RlZmF1bHRzL3Rvb2xiYXItdHlwZXMuZXM2Il0sIm5hbWVzIjpbIlJlYWN0IiwiSSIsInR5cGUiLCJsYWJlbCIsIkZhSGVhZGVyIiwiZGVzY3JpcHRpb24iLCJGYUluZGVudCIsIkZhTGlzdE9sIiwib25DbGljayIsInZhbHVlIiwib25DaGFuZ2UiLCJjaGFuZ2UiLCJjYWxsIiwicGx1Z2luIiwiY2hhbmdlcyIsIndyYXBJbkxpc3QiLCJGYUxpc3RVbCJdLCJtYXBwaW5ncyI6IkFBQUEsT0FBT0EsS0FBUCxNQUFrQixPQUFsQjs7Ozs7O0FBRUEsT0FBT0MsQ0FBUCxNQUFjLG9CQUFkOztBQUVBLGVBQWUsQ0FDYjtBQUNFQyxRQUFNLENBQ0osYUFESSxFQUVKLGFBRkksRUFHSixlQUhJLEVBSUosY0FKSSxFQUtKLGNBTEksRUFNSixhQU5JLENBRFI7QUFTRUMsU0FBTyxvQkFBQyxDQUFELElBQUcsTUFBTUMsUUFBVCxHQVRUO0FBVUVDLGVBQWEsQ0FDWCxlQURXLEVBRVgsZUFGVyxFQUdYLGVBSFcsRUFJWCxlQUpXLEVBS1gsZUFMVyxFQU1YLGVBTlc7QUFWZixDQURhLEVBb0JiLEVBQUVILE1BQU0sYUFBUixFQUF1QkMsT0FBTyxvQkFBQyxDQUFELElBQUcsTUFBTUcsUUFBVCxHQUE5QixFQXBCYSxFQXFCYjtBQUNFSixRQUFNLGVBRFI7QUFFRUMsU0FBTyxvQkFBQyxDQUFELElBQUcsTUFBTUksUUFBVCxHQUZUO0FBR0VDLFdBQVMsdUJBQXlCO0FBQUEsUUFBdEJDLEtBQXNCLFFBQXRCQSxLQUFzQjtBQUFBLFFBQWZDLFFBQWUsUUFBZkEsUUFBZTs7QUFDaENBLGFBQVNELE1BQU1FLE1BQU4sR0FBZUMsSUFBZixDQUFvQkMsT0FBT0MsT0FBUCxDQUFlQyxVQUFuQyxDQUFUO0FBQ0Q7QUFMSCxDQXJCYSxFQTRCYjtBQUNFYixRQUFNLGVBRFI7QUFFRUMsU0FBTyxvQkFBQyxDQUFELElBQUcsTUFBTWEsUUFBVCxHQUZUO0FBR0VSLFdBQVMsd0JBQXlCO0FBQUEsUUFBdEJDLEtBQXNCLFNBQXRCQSxLQUFzQjtBQUFBLFFBQWZDLFFBQWUsU0FBZkEsUUFBZTs7QUFDaENBLGFBQVNELE1BQU1FLE1BQU4sR0FBZUMsSUFBZixDQUFvQkMsT0FBT0MsT0FBUCxDQUFlQyxVQUFuQyxDQUFUO0FBQ0Q7QUFMSCxDQTVCYSxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL3NsYXRlL2RlZmF1bHRzL3Rvb2xiYXItdHlwZXMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgRmFIZWFkZXIsIEZhTGlzdE9sLCBGYUluZGVudCwgRmFMaXN0VWwgfSBmcm9tICdvbHltcC1pY29ucyc7XG5pbXBvcnQgSSBmcm9tICcuLi9jb21wb25lbnRzL2ljb24nO1xuXG5leHBvcnQgZGVmYXVsdCBbXG4gIHtcbiAgICB0eXBlOiBbXG4gICAgICAnaGVhZGluZy1vbmUnLFxuICAgICAgJ2hlYWRpbmctdHdvJyxcbiAgICAgICdoZWFkaW5nLXRocmVlJyxcbiAgICAgICdoZWFkaW5nLWZvdXInLFxuICAgICAgJ2hlYWRpbmctZml2ZScsXG4gICAgICAnaGVhZGluZy1zaXgnLFxuICAgIF0sXG4gICAgbGFiZWw6IDxJIGljb249e0ZhSGVhZGVyfSAvPixcbiAgICBkZXNjcmlwdGlvbjogW1xuICAgICAgJ8OcYmVyc2NocmlmdCAxJyxcbiAgICAgICfDnGJlcnNjaHJpZnQgMicsXG4gICAgICAnw5xiZXJzY2hyaWZ0IDMnLFxuICAgICAgJ8OcYmVyc2NocmlmdCA0JyxcbiAgICAgICfDnGJlcnNjaHJpZnQgNScsXG4gICAgICAnw5xiZXJzY2hyaWZ0IDYnLFxuICAgIF0sXG4gIH0sXG4gIHsgdHlwZTogJ2Jsb2NrLXF1b3RlJywgbGFiZWw6IDxJIGljb249e0ZhSW5kZW50fSAvPiB9LFxuICB7XG4gICAgdHlwZTogJ251bWJlcmVkLWxpc3QnLFxuICAgIGxhYmVsOiA8SSBpY29uPXtGYUxpc3RPbH0gLz4sXG4gICAgb25DbGljazogKHsgdmFsdWUsIG9uQ2hhbmdlIH0pID0+IHtcbiAgICAgIG9uQ2hhbmdlKHZhbHVlLmNoYW5nZSgpLmNhbGwocGx1Z2luLmNoYW5nZXMud3JhcEluTGlzdCkpO1xuICAgIH0sXG4gIH0sXG4gIHtcbiAgICB0eXBlOiAnYnVsbGV0ZWQtbGlzdCcsXG4gICAgbGFiZWw6IDxJIGljb249e0ZhTGlzdFVsfSAvPixcbiAgICBvbkNsaWNrOiAoeyB2YWx1ZSwgb25DaGFuZ2UgfSkgPT4ge1xuICAgICAgb25DaGFuZ2UodmFsdWUuY2hhbmdlKCkuY2FsbChwbHVnaW4uY2hhbmdlcy53cmFwSW5MaXN0KSk7XG4gICAgfSxcbiAgfSxcbl07XG4iXX0=

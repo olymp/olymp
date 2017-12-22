@@ -1,0 +1,2 @@
+export * from './tweetnacl-v1';
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NyeXB0L25hY2wuZXM2Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLGNBQWMsZ0JBQWQiLCJmaWxlIjoicGFja2FnZXMvY3J5cHQvbmFjbC5qcyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCAqIGZyb20gJy4vdHdlZXRuYWNsLXYxJztcbiJdfQ==

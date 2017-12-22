@@ -1,0 +1,13 @@
+import React from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
+
+export default (function (_ref) {
+  var children = _ref.children,
+      onDragEnd = _ref.onDragEnd;
+  return React.createElement(
+    DragDropContext,
+    { onDragEnd: onDragEnd },
+    children
+  );
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvbWVudS9kbmQvY29udGV4dC5lczYiXSwibmFtZXMiOlsiUmVhY3QiLCJEcmFnRHJvcENvbnRleHQiLCJjaGlsZHJlbiIsIm9uRHJhZ0VuZCJdLCJtYXBwaW5ncyI6IkFBQUEsT0FBT0EsS0FBUCxNQUFrQixPQUFsQjtBQUNBLFNBQVNDLGVBQVQsUUFBZ0MscUJBQWhDOztBQUVBLGdCQUFlO0FBQUEsTUFBR0MsUUFBSCxRQUFHQSxRQUFIO0FBQUEsTUFBYUMsU0FBYixRQUFhQSxTQUFiO0FBQUEsU0FDYjtBQUFDLG1CQUFEO0FBQUEsTUFBaUIsV0FBV0EsU0FBNUI7QUFBd0NEO0FBQXhDLEdBRGE7QUFBQSxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvbWVudS9kbmQvY29udGV4dC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBEcmFnRHJvcENvbnRleHQgfSBmcm9tICdyZWFjdC1iZWF1dGlmdWwtZG5kJztcblxuZXhwb3J0IGRlZmF1bHQgKHsgY2hpbGRyZW4sIG9uRHJhZ0VuZCB9KSA9PiAoXG4gIDxEcmFnRHJvcENvbnRleHQgb25EcmFnRW5kPXtvbkRyYWdFbmR9PntjaGlsZHJlbn08L0RyYWdEcm9wQ29udGV4dD5cbik7XG4iXX0=

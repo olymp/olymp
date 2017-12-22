@@ -1,0 +1,20 @@
+/**
+	Bind multiple component methods:
+
+	* @param {this} context
+	* @param {Array} functions
+
+	constructor() {
+		...
+		bindFunctions.call(this, ['handleClick', 'handleOther']);
+	}
+*/
+
+export default function bindFunctions(functions) {
+	var _this = this;
+
+	functions.forEach(function (f) {
+		return _this[f] = _this[f].bind(_this);
+	});
+}
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvbGlnaHRib3gvdXRpbHMvYmluZEZ1bmN0aW9ucy5lczYiXSwibmFtZXMiOlsiYmluZEZ1bmN0aW9ucyIsImZ1bmN0aW9ucyIsImZvckVhY2giLCJmIiwiYmluZCJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7OztBQVlBLGVBQWUsU0FBU0EsYUFBVCxDQUF1QkMsU0FBdkIsRUFBa0M7QUFBQTs7QUFDL0NBLFdBQVVDLE9BQVYsQ0FBa0I7QUFBQSxTQUFNLE1BQUtDLENBQUwsSUFBVSxNQUFLQSxDQUFMLEVBQVFDLElBQVIsT0FBaEI7QUFBQSxFQUFsQjtBQUNEIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvbGlnaHRib3gvdXRpbHMvYmluZEZ1bmN0aW9ucy5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxuXHRCaW5kIG11bHRpcGxlIGNvbXBvbmVudCBtZXRob2RzOlxuXG5cdCogQHBhcmFtIHt0aGlzfSBjb250ZXh0XG5cdCogQHBhcmFtIHtBcnJheX0gZnVuY3Rpb25zXG5cblx0Y29uc3RydWN0b3IoKSB7XG5cdFx0Li4uXG5cdFx0YmluZEZ1bmN0aW9ucy5jYWxsKHRoaXMsIFsnaGFuZGxlQ2xpY2snLCAnaGFuZGxlT3RoZXInXSk7XG5cdH1cbiovXG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIGJpbmRGdW5jdGlvbnMoZnVuY3Rpb25zKSB7XG4gIGZ1bmN0aW9ucy5mb3JFYWNoKGYgPT4gKHRoaXNbZl0gPSB0aGlzW2ZdLmJpbmQodGhpcykpKTtcbn1cbiJdfQ==

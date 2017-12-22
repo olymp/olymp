@@ -1,0 +1,2 @@
+export * from './webcrypto-v1';
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NyeXB0L2luZGV4LmVzNiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxjQUFjLGdCQUFkIiwiZmlsZSI6InBhY2thZ2VzL2NyeXB0L2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0ICogZnJvbSAnLi93ZWJjcnlwdG8tdjEnO1xuIl19

@@ -1,0 +1,2 @@
+export { default } from './modal';
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvbW9kYWwvaW5kZXguZXM2Il0sIm5hbWVzIjpbImRlZmF1bHQiXSwibWFwcGluZ3MiOiJBQUFBLFNBQVNBLE9BQVQsUUFBd0IsU0FBeEIiLCJmaWxlIjoicGFja2FnZXMvZmVsYS9tb2RhbC9pbmRleC5qcyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCB7IGRlZmF1bHQgfSBmcm9tICcuL21vZGFsJztcbiJdfQ==

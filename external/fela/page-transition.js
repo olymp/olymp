@@ -1,0 +1,5 @@
+export default (function (_ref) {
+  var children = _ref.children;
+  return children;
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvcGFnZS10cmFuc2l0aW9uLmVzNiJdLCJuYW1lcyI6WyJjaGlsZHJlbiJdLCJtYXBwaW5ncyI6IkFBQUEsZ0JBQWU7QUFBQSxNQUFHQSxRQUFILFFBQUdBLFFBQUg7QUFBQSxTQUFrQkEsUUFBbEI7QUFBQSxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2ZlbGEvcGFnZS10cmFuc2l0aW9uLmpzIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGRlZmF1bHQgKHsgY2hpbGRyZW4gfSkgPT4gY2hpbGRyZW47XG4iXX0=

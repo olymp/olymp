@@ -1,0 +1,11 @@
+import React from 'react';
+import { createComponent } from 'olymp-fela';
+
+export default createComponent(function () {
+  return {
+    overflow: 'scroll'
+  };
+}, 'div', function (p) {
+  return Object.keys(p);
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3VpL2xpc3QvY29udGVudC5lczYiXSwibmFtZXMiOlsiUmVhY3QiLCJjcmVhdGVDb21wb25lbnQiLCJvdmVyZmxvdyIsIk9iamVjdCIsImtleXMiLCJwIl0sIm1hcHBpbmdzIjoiQUFBQSxPQUFPQSxLQUFQLE1BQWtCLE9BQWxCO0FBQ0EsU0FBU0MsZUFBVCxRQUFnQyxZQUFoQzs7QUFFQSxlQUFlQSxnQkFDYjtBQUFBLFNBQU87QUFDTEMsY0FBVTtBQURMLEdBQVA7QUFBQSxDQURhLEVBSWIsS0FKYSxFQUtiO0FBQUEsU0FBS0MsT0FBT0MsSUFBUCxDQUFZQyxDQUFaLENBQUw7QUFBQSxDQUxhLENBQWYiLCJmaWxlIjoicGFja2FnZXMvdWkvbGlzdC9jb250ZW50LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IGNyZWF0ZUNvbXBvbmVudCB9IGZyb20gJ29seW1wLWZlbGEnO1xuXG5leHBvcnQgZGVmYXVsdCBjcmVhdGVDb21wb25lbnQoXG4gICgpID0+ICh7XG4gICAgb3ZlcmZsb3c6ICdzY3JvbGwnLFxuICB9KSxcbiAgJ2RpdicsXG4gIHAgPT4gT2JqZWN0LmtleXMocCksXG4pO1xuIl19

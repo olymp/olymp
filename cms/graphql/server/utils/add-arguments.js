@@ -1,0 +1,10 @@
+import { parse } from 'graphql/language';
+
+export default (function (ast, node, argsToAdd) {
+  var args = node.arguments || node;
+  var type = parse('\n    type Query {\n      func(' + argsToAdd + '): Boolean\n    }\n  ').definitions[0].fields[0];
+  type.arguments.forEach(function (field) {
+    return args.push(field);
+  });
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2dyYXBocWwvc2VydmVyL3V0aWxzL2FkZC1hcmd1bWVudHMuZXM2Il0sIm5hbWVzIjpbInBhcnNlIiwiYXN0Iiwibm9kZSIsImFyZ3NUb0FkZCIsImFyZ3MiLCJhcmd1bWVudHMiLCJ0eXBlIiwiZGVmaW5pdGlvbnMiLCJmaWVsZHMiLCJmb3JFYWNoIiwicHVzaCIsImZpZWxkIl0sIm1hcHBpbmdzIjoiQUFBQSxTQUFTQSxLQUFULFFBQXNCLGtCQUF0Qjs7QUFFQSxnQkFBZSxVQUFDQyxHQUFELEVBQU1DLElBQU4sRUFBWUMsU0FBWixFQUEwQjtBQUN2QyxNQUFNQyxPQUFPRixLQUFLRyxTQUFMLElBQWtCSCxJQUEvQjtBQUNBLE1BQU1JLE9BQU9OLDBDQUVGRyxTQUZFLDRCQUlWSSxXQUpVLENBSUUsQ0FKRixFQUlLQyxNQUpMLENBSVksQ0FKWixDQUFiO0FBS0FGLE9BQUtELFNBQUwsQ0FBZUksT0FBZixDQUF1QjtBQUFBLFdBQVNMLEtBQUtNLElBQUwsQ0FBVUMsS0FBVixDQUFUO0FBQUEsR0FBdkI7QUFDRCxDQVJEIiwiZmlsZSI6InBhY2thZ2VzL2dyYXBocWwvc2VydmVyL3V0aWxzL2FkZC1hcmd1bWVudHMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBwYXJzZSB9IGZyb20gJ2dyYXBocWwvbGFuZ3VhZ2UnO1xuXG5leHBvcnQgZGVmYXVsdCAoYXN0LCBub2RlLCBhcmdzVG9BZGQpID0+IHtcbiAgY29uc3QgYXJncyA9IG5vZGUuYXJndW1lbnRzIHx8IG5vZGU7XG4gIGNvbnN0IHR5cGUgPSBwYXJzZShgXG4gICAgdHlwZSBRdWVyeSB7XG4gICAgICBmdW5jKCR7YXJnc1RvQWRkfSk6IEJvb2xlYW5cbiAgICB9XG4gIGApLmRlZmluaXRpb25zWzBdLmZpZWxkc1swXTtcbiAgdHlwZS5hcmd1bWVudHMuZm9yRWFjaChmaWVsZCA9PiBhcmdzLnB1c2goZmllbGQpKTtcbn07XG4iXX0=

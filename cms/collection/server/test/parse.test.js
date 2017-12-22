@@ -1,0 +1,8 @@
+import schema from './fixtures/schema';
+
+test('adds 1 + 2 to equal 3', function () {
+  expect({ ok: true }).toEqual({
+    ok: true
+  });
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvbGxlY3Rpb24vc2VydmVyL3Rlc3QvcGFyc2UudGVzdC5lczYiXSwibmFtZXMiOlsic2NoZW1hIiwidGVzdCIsImV4cGVjdCIsIm9rIiwidG9FcXVhbCJdLCJtYXBwaW5ncyI6IkFBQUEsT0FBT0EsTUFBUCxNQUFtQixtQkFBbkI7O0FBRUFDLEtBQUssdUJBQUwsRUFBOEIsWUFBTTtBQUNsQ0MsU0FBTyxFQUFFQyxJQUFJLElBQU4sRUFBUCxFQUFxQkMsT0FBckIsQ0FBNkI7QUFDM0JELFFBQUk7QUFEdUIsR0FBN0I7QUFHRCxDQUpEIiwiZmlsZSI6InBhY2thZ2VzL2NvbGxlY3Rpb24vc2VydmVyL3Rlc3QvcGFyc2UudGVzdC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBzY2hlbWEgZnJvbSAnLi9maXh0dXJlcy9zY2hlbWEnO1xuXG50ZXN0KCdhZGRzIDEgKyAyIHRvIGVxdWFsIDMnLCAoKSA9PiB7XG4gIGV4cGVjdCh7IG9rOiB0cnVlIH0pLnRvRXF1YWwoe1xuICAgIG9rOiB0cnVlLFxuICB9KTtcbn0pO1xuIl19

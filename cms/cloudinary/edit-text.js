@@ -1,0 +1,12 @@
+import FaImage from 'olymp-icons/lib/fa-image';
+
+import React from 'react';
+import createEdit from './edit';
+
+var _ref2 = React.createElement(FaImage, { color: 'white', size: 14 });
+
+export default createEdit(function (v, _ref) {
+  var multi = _ref.multi;
+  return _ref2;
+});
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2Nsb3VkaW5hcnkvZWRpdC10ZXh0LmVzNiJdLCJuYW1lcyI6WyJSZWFjdCIsImNyZWF0ZUVkaXQiLCJ2IiwibXVsdGkiXSwibWFwcGluZ3MiOiI7O0FBQ0EsT0FBT0EsS0FBUCxNQUFrQixPQUFsQjtBQUNBLE9BQU9DLFVBQVAsTUFBdUIsUUFBdkI7O1lBR0Usb0JBQUMsT0FBRCxJQUFTLE9BQU0sT0FBZixFQUF1QixNQUFNLEVBQTdCLEc7O0FBREYsZUFBZUEsV0FBVyxVQUFDQyxDQUFEO0FBQUEsTUFBTUMsS0FBTixRQUFNQSxLQUFOO0FBQUE7QUFBQSxDQUFYLENBQWYiLCJmaWxlIjoicGFja2FnZXMvY2xvdWRpbmFyeS9lZGl0LXRleHQuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBGYUltYWdlIH0gZnJvbSAnb2x5bXAtaWNvbnMnO1xuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCBjcmVhdGVFZGl0IGZyb20gJy4vZWRpdCc7XG5cbmV4cG9ydCBkZWZhdWx0IGNyZWF0ZUVkaXQoKHYsIHsgbXVsdGkgfSkgPT4gKFxuICA8RmFJbWFnZSBjb2xvcj1cIndoaXRlXCIgc2l6ZT17MTR9IC8+XG4pKTtcbiJdfQ==

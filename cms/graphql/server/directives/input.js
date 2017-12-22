@@ -1,0 +1,15 @@
+var _require = require('../utils'),
+    addInput = _require.addInput;
+
+export default {
+  name: 'input',
+  description: 'Marks a type as a relative.',
+  resolveStatic: {
+    enter2: function enter2(node, directive, _ref) {
+      var ast = _ref.ast;
+
+      addInput(ast, node);
+    }
+  }
+};
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2dyYXBocWwvc2VydmVyL2RpcmVjdGl2ZXMvaW5wdXQuZXM2Il0sIm5hbWVzIjpbInJlcXVpcmUiLCJhZGRJbnB1dCIsIm5hbWUiLCJkZXNjcmlwdGlvbiIsInJlc29sdmVTdGF0aWMiLCJlbnRlcjIiLCJub2RlIiwiZGlyZWN0aXZlIiwiYXN0Il0sIm1hcHBpbmdzIjoiZUFBcUJBLFFBQVEsVUFBUixDO0lBQWJDLFEsWUFBQUEsUTs7QUFFUixlQUFlO0FBQ2JDLFFBQU0sT0FETztBQUViQyxlQUFhLDZCQUZBO0FBR2JDLGlCQUFlO0FBQ2JDLFVBRGEsa0JBQ05DLElBRE0sRUFDQUMsU0FEQSxRQUNvQjtBQUFBLFVBQVBDLEdBQU8sUUFBUEEsR0FBTzs7QUFDL0JQLGVBQVNPLEdBQVQsRUFBY0YsSUFBZDtBQUNEO0FBSFk7QUFIRixDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2dyYXBocWwvc2VydmVyL2RpcmVjdGl2ZXMvaW5wdXQuanMiLCJzb3VyY2VzQ29udGVudCI6WyJjb25zdCB7IGFkZElucHV0IH0gPSByZXF1aXJlKCcuLi91dGlscycpO1xuXG5leHBvcnQgZGVmYXVsdCB7XG4gIG5hbWU6ICdpbnB1dCcsXG4gIGRlc2NyaXB0aW9uOiAnTWFya3MgYSB0eXBlIGFzIGEgcmVsYXRpdmUuJyxcbiAgcmVzb2x2ZVN0YXRpYzoge1xuICAgIGVudGVyMihub2RlLCBkaXJlY3RpdmUsIHsgYXN0IH0pIHtcbiAgICAgIGFkZElucHV0KGFzdCwgbm9kZSk7XG4gICAgfSxcbiAgfSxcbn07XG4iXX0=
