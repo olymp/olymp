@@ -7,7 +7,6 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
-import { UAParser } from 'olymp-useragent';
 // import { apolloMiddleware } from 'olymp-graphql';
 import { createFela } from 'olymp-fela';
 
@@ -26,8 +25,8 @@ import Root from './root';
 const { client } = getApollo(window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql', window.INITIAL_DATA || {});
 const container = document.getElementById('app');
 const mountNode = document.getElementById('css-markup');
-const ua = new UAParser(window.navigator.userAgent);
-const renderer = createFela(ua);
+const ua = window.navigator.userAgent;
+const renderer = createFela();
 const history = createHistory();
 const asyncState = window.ASYNC_STATE;
 // Redux stuff

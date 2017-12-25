@@ -69,7 +69,7 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], cs
   }
 
   const { cache, client } = getApollo(schema, context);
-  const renderer = createFela(ua);
+  const renderer = createFela();
   const url = decodeURI(originalUrl);
   const history = createHistory({ initialEntries: [url] });
   const dynamicRedux = createDynamicRedux();

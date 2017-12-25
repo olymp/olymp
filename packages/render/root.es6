@@ -8,6 +8,7 @@ import { AppContainer } from 'react-hot-loader';
 import { AsyncComponentProvider } from 'react-async-component';
 import App from '@app';
 import { DynamicReduxProvider } from 'olymp-redux';
+import UAParser from 'ua-parser-js';
 
 const enhance = compose(
   withContext({
@@ -15,7 +16,7 @@ const enhance = compose(
     ua: PropTypes.object,
   }, ({ isAmp, ua }) => ({
     amp: !!isAmp,
-    ua,
+    ua: ua && typeof ua === 'string' ? new UAParser(ua) : ua,
   }))
 )
 export default enhance(({
