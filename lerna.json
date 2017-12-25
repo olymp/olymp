@@ -2,9 +2,10 @@
   "packages": [
     "packages/*",
     "external/*",
-    "cms/*"
+    "cms/*",
+    "example/*"
   ],
   "npmClient": "yarn",
   "lerna": "2.0.0",
-  "version": "20.0.0-6"
+  "version": "20.0.0-7"
 }

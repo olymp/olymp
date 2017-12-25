@@ -1,5 +1,5 @@
 {
-  "version": "18.2.5",
+  "version": "20.0.0-7",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -23,7 +23,7 @@
   "scripts": {
     "publish": "git push dev master",
     "up": "yarn upgrade-interactive --latest",
-    "dev": "yarn link olymp && yarn link olymp-pwa && node index",
+    "dev": "node index",
     "gql-fake": "GRAPHQL_FAKE=http://localhost:9002/graphql graphql-faker ./server/mock.graphql -e http://localhost:3000/graphql",
     "build": "olymp build",
     "start": "olymp start",
@@ -37,16 +37,16 @@
     "electron:publish": "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
   },
   "dependencies": {
-    "olymp": "^20.0.0-6",
-    "olymp-fela": "^20.0.0-6",
-    "olymp-pwa": "^20.0.0-6",
-    "olymp-router": "^20.0.0-6",
+    "olymp": "^20.0.0-7",
+    "olymp-fela": "^20.0.0-7",
+    "olymp-pwa": "^20.0.0-7",
+    "olymp-router": "^20.0.0-7",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^19.1.15",
-    "olymp-webpack-electron": "^20.0.0-6"
+    "eslint-config-olymp": "^20.0.0-7",
+    "olymp-webpack-electron": "^20.0.0-7"
   },
   "electronDependencies": {},
   "build": {
