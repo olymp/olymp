@@ -10,5 +10,9 @@
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "redux": "^3.7.2"
   }
 }

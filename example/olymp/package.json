@@ -22,7 +22,7 @@
   },
   "scripts": {
     "publish": "git push dev master",
-    "up": "yarn upgrade-interactive --latest",
+    "up": "npm-up",
     "dev": "node index",
     "gql-fake": "GRAPHQL_FAKE=http://localhost:9002/graphql graphql-faker ./server/mock.graphql -e http://localhost:3000/graphql",
     "build": "olymp build",
@@ -46,8 +46,11 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
+    "olymp-apollo": "^20.0.0-10",
     "eslint-config-olymp": "^20.0.0-10",
-    "olymp-webpack-electron": "^20.0.0-10"
+    "olymp-webpack-electron": "^20.0.0-10",
+    "recompose": "^0.26.0",
+    "redux-devtools-extension": "^2.13.2"
   },
   "electronDependencies": {},
   "build": {
