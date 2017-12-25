@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-12",
+  "version": "20.0.0-13",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -31,7 +31,7 @@
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^20.0.0-12",
+    "olymp-webpack-electron": "^20.0.0-13",
     "webpack-bundle-analyzer": "^2.9.1"
   }
 }
