@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-10",
+  "version": "20.0.0-11",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -37,18 +37,18 @@
     "electron:publish": "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
   },
   "dependencies": {
-    "olymp": "^20.0.0-10",
-    "olymp-fela": "^20.0.0-10",
-    "olymp-pwa": "^20.0.0-10",
-    "olymp-render": "^20.0.0-10",
-    "olymp-router": "^20.0.0-10",
+    "olymp": "^20.0.0-11",
+    "olymp-fela": "^20.0.0-11",
+    "olymp-pwa": "^20.0.0-11",
+    "olymp-render": "^20.0.0-11",
+    "olymp-router": "^20.0.0-11",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "olymp-apollo": "^20.0.0-10",
-    "eslint-config-olymp": "^20.0.0-10",
-    "olymp-webpack-electron": "^20.0.0-10",
+    "eslint-config-olymp": "^20.0.0-11",
+    "olymp-apollo": "^20.0.0-11",
+    "olymp-webpack-electron": "^20.0.0-11",
     "recompose": "^0.26.0",
     "redux-devtools-extension": "^2.13.2"
   },
