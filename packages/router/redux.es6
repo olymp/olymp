@@ -55,7 +55,11 @@ export const routerMiddleware = history => ({ getState, dispatch }) => {
           },
         });
     const oldKey = history.location.key;
-    history[method](newLocation);
+    if (currentLocation.url && newLocation.url && newLocation.url === currentLocation.url) {
+      return;
+    }
+
+    history[method](newLocation.url);
     if (oldKey !== history.location.key) {
       newLocation.key = history.location.key;
       cb(newLocation);

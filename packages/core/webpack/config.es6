@@ -201,8 +201,6 @@ module.exports = ({
   config = webpackPlugins(config, options);
   config = externals(config, options);
   config = entry(config, options);
-  config = require(path.resolve(process.cwd(), 'node_modules', 'olymp-babel', 'plugin'))(config, options);
-  config = require(path.resolve(process.cwd(), 'node_modules', 'olymp-pwa', 'plugin'))(config, options);
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,

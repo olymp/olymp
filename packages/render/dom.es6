@@ -8,10 +8,13 @@ import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
 import { UAParser } from 'olymp-useragent';
+// import { apolloMiddleware } from 'olymp-graphql';
 import { createFela } from 'olymp-fela';
+
 import {
   createHistory,
   routerReducer,
+  routerMiddleware,
   attachHistory,
 } from 'olymp-router';
 import getApollo from 'olymp-apollo/remote';
@@ -37,6 +40,8 @@ const store = createDynamicStore(
   {}, // initialData
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
+    applyMiddleware(routerMiddleware(history)),
+    // applyMiddleware(apolloMiddleware(client)),
   ),
 );
 attachHistory(history, store);

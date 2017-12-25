@@ -65,14 +65,12 @@ export default class Link extends Component {
   }
   onPreload = e => {
     const { location, onPreload } = this.props;
-    console.log('PRELOAD', e.type);
     if (onPreload) {
       onPreload(location);
     }
   };
   onClick = e => {
     const { location, push, onClick } = this.props;
-    console.log(e, e.type);
     if (onClick) {
       onClick(e);
     } else {

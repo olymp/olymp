@@ -23,15 +23,15 @@ export default class App extends Component {
       <div>
         <ul>
           <li>
-            <Link to="/">Hello</Link>
+            <Link pathname="/">Hello</Link>
           </li>
           <li>
-            <Link to="/bye">Bye</Link>
+            <Link pathname="/bye">Bye</Link>
           </li>
         </ul>
-        <Load />
-        <Off />
-        <ScreenLoader show={verifying} />
+        {/* <Load /> */}
+        {/* <Off /> */}
+        {/* <ScreenLoader show={verifying} /> */}
         {!verifying && (
           <SwitchPathname>
             <MatchPath match="/" exact component={Hello} />

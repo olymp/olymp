@@ -25,7 +25,7 @@ module.exports = (config, { isWeb, isProd, isServerless, appRoot, folder, target
           minifyCSS: true,
           minifyURLs: true,
         }, */
-      }), );
+      }));
       config.plugins.push(new OfflinePlugin({
         responseStrategy: 'network-first',
         // externals: ['https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY'],
@@ -41,7 +41,7 @@ module.exports = (config, { isWeb, isProd, isServerless, appRoot, folder, target
           navigateFallbackURL: '/offline.html',
         },
         AppCache: false,
-      }), );
+      }));
     } else if (isServerless) {
       config.plugins.push(
         new HtmlWebpackPlugin({

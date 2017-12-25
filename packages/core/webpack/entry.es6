@@ -13,11 +13,11 @@ module.exports = (config, {
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
-        'olymp-pwa',
+        'olymp-pwa/entry',
       ];
     } else {
       config.entry.app = [
-        'olymp-pwa',
+        'olymp-pwa/entry',
       ];
     }
   } else if (isElectronMain) {
@@ -35,11 +35,11 @@ module.exports = (config, {
     if (isDev) {
       config.entry.app = [
         'webpack/hot/poll?1000',
-        'olymp-server',
+        'olymp-server/entry',
       ];
     } else {
       config.entry.app = [
-        'olymp-server',
+        'olymp-server/entry',
       ];
     }
   }

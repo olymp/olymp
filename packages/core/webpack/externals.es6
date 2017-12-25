@@ -7,6 +7,7 @@ module.exports = (config, {
   isNode,
 }) => {
   if (isNode) {
+    console.log('EXT', path.resolve(appRoot, 'node_modules'))
     config.externals = nodeExternals({
       modulesDir: path.resolve(appRoot, 'node_modules'),
       whitelist: [
