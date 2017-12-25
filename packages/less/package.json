@@ -1,6 +1,6 @@
 {
-  "version": "19.1.15",
-  "name": "olymp-webpack-less",
+  "version": "20.0.0-0",
+  "name": "olymp-less",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [

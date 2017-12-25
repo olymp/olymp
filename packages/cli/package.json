@@ -1,6 +1,6 @@
 {
   "version": "20.0.0-0",
-  "name": "olymp",
+  "name": "olymp-cli",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
@@ -8,6 +8,7 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
+  "bin": "./bin/olymp.js",
   "scripts": {
     "up": "npm-check -u"
   },
@@ -39,7 +40,7 @@
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "node-notifier": "^5.1.2",
-    "olymp-babel": "^20.0.0-0",
+    "offline-plugin": "^4.8.5",
     "olymp-fela": "^20.0.0-0",
     "olymp-router": "^19.1.15",
     "olymp-utils": "^19.1.14",

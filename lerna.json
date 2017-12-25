@@ -1,7 +1,9 @@
 {
   "packages": [
-    "packages/*"
+    "packages/*",
+    "external/*",
+    "cms/*"
   ],
   "lerna": "2.0.0",
-  "version": "19.1.17"
+  "version": "20.0.0-0"
 }

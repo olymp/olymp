@@ -1,6 +1,6 @@
 {
-  "version": "19.1.15",
-  "name": "olymp-webpack-babel",
+  "version": "20.0.0-0",
+  "name": "olymp-babel",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [

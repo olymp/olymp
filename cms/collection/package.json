@@ -1,5 +1,5 @@
 {
-  "version": "19.1.17",
+  "version": "20.0.0-0",
   "name": "olymp-collection",
   "description": "",
   "main": "index.js",
@@ -17,6 +17,7 @@
     "deep-diff": "^0.3.8",
     "prop-types": "^15.5.10",
     "react-big-calendar": "^0.17.0",
-    "shortid": "^2.2.8"
+    "shortid": "^2.2.8",
+    "slugify": "^1.2.8"
   }
 }
