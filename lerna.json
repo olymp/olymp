@@ -5,7 +5,6 @@
     "cms/*",
     "example/*"
   ],
-  "npmClient": "yarn",
   "lerna": "2.0.0",
-  "version": "20.0.0-9"
+  "version": "20.0.0-10"
 }

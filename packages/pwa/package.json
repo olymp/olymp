@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-9",
+  "version": "20.0.0-10",
   "name": "olymp-pwa",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -15,8 +15,8 @@
     "copy-webpack-plugin": "^4.3.1",
     "html-webpack-plugin": "^2.30.1",
     "offline-plugin": "^4.8.5",
-    "olymp": "^20.0.0-9",
-    "olymp-babel": "^20.0.0-9",
-    "olymp-render": "^20.0.0-9"
+    "olymp": "^20.0.0-10",
+    "olymp-babel": "^20.0.0-10",
+    "olymp-render": "^20.0.0-10"
   }
 }

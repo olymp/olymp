@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-9",
+  "version": "20.0.0-10",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -37,17 +37,17 @@
     "electron:publish": "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
   },
   "dependencies": {
-    "olymp": "^20.0.0-9",
-    "olymp-fela": "^20.0.0-9",
-    "olymp-pwa": "^20.0.0-9",
-    "olymp-render": "^20.0.0-9",
-    "olymp-router": "^20.0.0-9",
+    "olymp": "^20.0.0-10",
+    "olymp-fela": "^20.0.0-10",
+    "olymp-pwa": "^20.0.0-10",
+    "olymp-render": "^20.0.0-10",
+    "olymp-router": "^20.0.0-10",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^20.0.0-9",
-    "olymp-webpack-electron": "^20.0.0-9"
+    "eslint-config-olymp": "^20.0.0-10",
+    "olymp-webpack-electron": "^20.0.0-10"
   },
   "electronDependencies": {},
   "build": {
