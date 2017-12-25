@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-2",
+  "version": "20.0.0-3",
   "name": "olymp-cli",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -41,7 +41,7 @@
     "minimist": "^1.2.0",
     "node-notifier": "^5.1.2",
     "offline-plugin": "^4.8.5",
-    "olymp-fela": "^20.0.0-2",
+    "olymp-fela": "^20.0.0-3",
     "olymp-router": "^19.1.15",
     "olymp-utils": "^19.1.14",
     "progress-bar-webpack-plugin": "^1.10.0",
@@ -69,7 +69,7 @@
     "worker-loader": "^1.1.0"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^20.0.0-2",
+    "olymp-webpack-electron": "^20.0.0-3",
     "webpack-bundle-analyzer": "^2.9.1"
   }
 }
