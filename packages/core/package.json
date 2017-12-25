@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-3",
+  "version": "20.0.0-4",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -39,8 +39,8 @@
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "node-notifier": "^5.1.2",
-    "olymp-babel": "^20.0.0-3",
-    "olymp-fela": "^20.0.0-3",
+    "olymp-babel": "^20.0.0-4",
+    "olymp-fela": "^20.0.0-4",
     "olymp-router": "^19.1.15",
     "olymp-utils": "^19.1.14",
     "progress-bar-webpack-plugin": "^1.10.0",
@@ -68,7 +68,7 @@
     "worker-loader": "^1.1.0"
   },
   "devDependencies": {
-    "olymp-webpack-electron": "^20.0.0-3",
+    "olymp-webpack-electron": "^20.0.0-4",
     "webpack-bundle-analyzer": "^2.9.1"
   }
 }
