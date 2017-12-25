@@ -1,7 +1,7 @@
 import React from 'react';
 import { toClass } from 'recompose';
 import { Input } from 'antd';
-import { slugify } from 'olymp-utils';
+import slugify from 'slugify';
 import FormItem from './form-item';
 
 export default {

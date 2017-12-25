@@ -2,7 +2,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { compose } from 'recompose';
 import { withPushPathname } from 'olymp-router';
-import { onError, onSuccess, omit } from 'olymp-utils';
+import { omit } from 'olymp-apollo';
+import { message } from 'antd';
 import { pageList } from './query';
 
 const mutateGql = gql`
@@ -70,7 +71,7 @@ const ok = (props, mutate) => () => {
       },
     })
       .then(({ data: { page } }) => {
-        onSuccess('Die Seite wurde gespeichert');
+        message.success('Die Seite wurde gespeichert');
         form.resetFields();
         let { slug, parentId } = page;
         while (parentId) {
@@ -82,7 +83,7 @@ const ok = (props, mutate) => () => {
         }
         pushPathname(slug);
       })
-      .catch(onError);
+      .catch(err => message.error(err.message));
   });
 };
 

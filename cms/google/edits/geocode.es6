@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { AutoComplete, Input } from 'antd';
-import { throttleInput } from 'olymp-utils';
 import { FaNeuter } from 'olymp-icons';
 import { withApollo, graphql } from 'react-apollo';
 import { compose, withState } from 'recompose';
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 import gql from 'graphql-tag';
 
 const enhance = compose(
@@ -61,51 +60,52 @@ export default class GeocodeEditor extends Component {
     const item = items.find(x => x.id === code);
     onChange(item);
   };
-  throttle = throttleInput(500);
 
   handleSearch = term => {
     this.text = term;
 
     if (term) {
-      this.throttle(() => {
-        this.performSearch(term);
-      });
+      this.performSearch(term);
     }
   };
 
-  performSearch = address => {
-    const { client, setItems } = this.props;
+  performSearch = debounce(
+    address => {
+      const { client, setItems } = this.props;
 
-    return client
-      .query({
-        query: gql(`
-            query geocodeList($address: String!) {
-              geocodeList(address: $address, region: "DE", language: "DE") {
-                id
-                streetNumber
-                route
-                locality
-                administrativeAreaLevel1
-                administrativeAreaLevel2
-                country
-                postalCode
-                formattedAddress
-                lat
-                lng
-                locationType
-                partialMatch
-                types
+      return client
+        .query({
+          query: gql(`
+              query geocodeList($address: String!) {
+                geocodeList(address: $address, region: "DE", language: "DE") {
+                  id
+                  streetNumber
+                  route
+                  locality
+                  administrativeAreaLevel1
+                  administrativeAreaLevel2
+                  country
+                  postalCode
+                  formattedAddress
+                  lat
+                  lng
+                  locationType
+                  partialMatch
+                  types
+                }
               }
-            }
-          `),
-        variables: {
-          address,
-        },
-      })
-      .then(({ data }) => {
-        setItems(data.geocodeList);
-      });
-  };
+            `),
+          variables: {
+            address,
+          },
+        })
+        .then(({ data }) => {
+          setItems(data.geocodeList);
+        });
+    },
+    500,
+    { trailing: true, leading: false },
+  );
 
   renderOption = ({ id, formattedAddress }) => (
     <AutoComplete.Option key={id} text={formattedAddress}>

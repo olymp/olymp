@@ -1,7 +1,6 @@
 import { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { createPortal, unstable_renderSubtreeIntoContainer } from 'react-dom';
-import './portal.less';
 
 const isReact16 = createPortal !== undefined;
 const portal = isReact16 ? createPortal : unstable_renderSubtreeIntoContainer;

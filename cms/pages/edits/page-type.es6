@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Select } from 'antd';
-import { layout } from 'olymp-utils';
+import { layout } from 'olymp-antd';
 import getRules from '../get-rules';
 
 const PageTypeInput = ({

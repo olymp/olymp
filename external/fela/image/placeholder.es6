@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withAmp } from 'olymp-utils';
+import { getContext } from 'recompose';
 import { createComponent, withTheme } from 'react-fela';
 
 const Image = createComponent(
@@ -30,7 +30,9 @@ const Image = createComponent(
       },
     },
   }),
-  withAmp(
+  getContext({
+    amp: PropTypes.bool,
+  })(
     withTheme(({ className, theme, amp }) => (
       <div className={className}>
         {!amp &&

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { SwitchPathname, MatchPath, Match, Redirect, Link } from 'olymp-router';
-import withLocale from 'olymp-locale/de';
 import { ScreenLoader, TopLoader, Offline } from 'olymp-fela';
-import { auth } from 'olymp-auth';
 import { connect } from 'react-redux';
 import Hello from './hello';
 import Bye from './bye';
@@ -18,9 +16,6 @@ const Off = connect(({ app }) => ({
   transparent: true,
 }))(Offline);
 
-@withLocale({})
-@auth()
-@connect(({ auth }) => ({ verifying: auth.verifying }))
 export default class App extends Component {
   render() {
     const { verifying } = this.props;

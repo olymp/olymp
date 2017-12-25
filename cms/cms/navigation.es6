@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose, withState, withHandlers } from 'recompose';
-import { withLang } from 'olymp-utils';
 import { createReplaceQuery, createPushPathname } from 'olymp-router';
 import { getAuth } from 'olymp-auth0';
 import { Avatar, Logo, Sidebar } from 'olymp-fela';
@@ -19,7 +18,6 @@ import { Icon } from 'antd';
 import { connect } from 'react-redux';
 
 const enhance = compose(
-  withLang,
   getAuth,
   connect(
     ({ location, auth }) => ({

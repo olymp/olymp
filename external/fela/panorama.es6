@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { createComponent } from 'react-fela';
 import { Link } from 'olymp-router';
 import ReactDOM from 'react-dom';
-import { compose, withPropsOnChange, withState } from 'recompose';
-import { withAmp } from 'olymp-utils';
+import { compose, withPropsOnChange, withState, getContext } from 'recompose';
 import Grid from './grid';
 import Container from './container';
 
@@ -50,7 +50,9 @@ export const cloudinaryUrl = (value, options, responsiveSize) => {
 
 
 const enhance = compose(
-  withAmp,
+  getContext({
+    amp: PropTypes.bool,
+  }),
   withState('cWidth', 'setCWidth', undefined),
   withState('isLoaded', 'setIsLoaded', false),
   withState('responsiveSize', 'setResponsiveSize', {}),
@@ -193,7 +195,7 @@ const Item = createComponent(({ image, theme, index, deg }) => ({
       <div className="inner">
         <div className="tags">
           <span>
-            {/*<Logo icon={10} />&nbsp; Ortho */}
+            {/* <Logo icon={10} />&nbsp; Ortho */}
           </span>
           <span>Team2</span>
         </div>

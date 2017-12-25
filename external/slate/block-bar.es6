@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withLang } from 'olymp-utils';
 import { FaExpand, FaCode, FaCompress, FaCube } from 'olymp-icons';
 import { createReplaceQuery } from 'olymp-router';
 import Menu from 'olymp-fela/menu';
@@ -21,7 +20,6 @@ const dragStart = type => ev => {
   ev.dataTransfer.setData('text', `x-slate:${type}`);
 };
 
-@withLang
 @connect(
   ({ location }) => ({
     pathname: location.pathname,

@@ -1,4 +1,4 @@
-import { slugify } from 'olymp-utils';
+import slugify from 'slugify';
 import { get } from 'lodash';
 
 export default ({ item = {}, form, auth }, field) => {

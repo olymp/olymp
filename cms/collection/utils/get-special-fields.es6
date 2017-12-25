@@ -1,5 +1,4 @@
 import { get } from 'lodash';
-import { toLabel } from 'olymp-utils';
 
 const getSpecialFields = description => {
   const specialFields = {};
@@ -59,7 +58,7 @@ const getSpecialFieldsFromField = f => {
 
   // set label
   if (!field.specialFields.label) {
-    field.specialFields.label = toLabel(field.name || '');
+    field.specialFields.label = field.name || '';
   }
 
   return field;

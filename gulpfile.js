@@ -14,6 +14,20 @@ const src = [
   '!packages/*/node_modules/**/*',
   '!packages/*/node_modules/**',
   '!packages/*/node_modules',
+  'cms/**/*.es6',
+  'cms/**/.storybook/*.es6',
+  'cms/**/.stories/*.es6',
+  '!cms/*/node_modules/**/*',
+  '!cms/*/node_modules/**/*',
+  '!cms/*/node_modules/**',
+  '!cms/*/node_modules',
+  'external/**/*.es6',
+  'external/**/.storybook/*.es6',
+  'external/**/.stories/*.es6',
+  '!external/*/node_modules/**/*',
+  '!external/*/node_modules/**/*',
+  '!external/*/node_modules/**',
+  '!external/*/node_modules',
 ];
 const dest = '.';
 

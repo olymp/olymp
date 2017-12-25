@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createUpdateQuery } from 'olymp-router';
 import { graphql } from 'react-apollo';
-import { onSuccess, onError, omit as omit2 } from 'olymp-utils';
+import { message } from 'antd';
+import { omit as omit2 } from 'olymp-apollo';
 import { lowerFirst } from 'lodash';
 import gql from 'graphql-tag';
 
@@ -10,7 +11,7 @@ const ok = props => () => {
   const { form, item, updateQuery, mutate, typeName } = props;
   form.validateFields((err, values) => {
     if (err) {
-      return onError(err);
+      return message.error(err);
     }
 
     if (values.start && Array.isArray(values.start)) {
@@ -38,11 +39,11 @@ const ok = props => () => {
           : undefined, */
     })
       .then(({ data: { item } }) => {
-        onSuccess('Gespeichert');
+        message.success('Gespeichert');
         form.resetFields();
         updateQuery({ [`@${lowerFirst(typeName)}`]: item.id });
       })
-      .catch(onError);
+      .catch(err => message.error(err));
   });
 };
 
@@ -62,11 +63,11 @@ const clone = props => () => {
     },
   })
     .then(({ data: { item } }) => {
-      onSuccess('Kopiert');
+      message.success('Kopiert');
       form.resetFields();
       updateQuery({ [`@${lowerFirst(typeName)}`]: item.id });
     })
-    .catch(onError);
+    .catch(err => message.error(err));
 };
 
 const del = props => () => {
@@ -84,11 +85,11 @@ const del = props => () => {
     },
   })
     .then(({ data }) => {
-      onSuccess('Gelöscht');
+      message.success('Gelöscht');
       form.resetFields();
       updateQuery({ [`@${lowerFirst(typeName)}`]: null });
     })
-    .catch(onError);
+    .catch(err => message.error(err));
 };
 
 export default WrappedComponent => {

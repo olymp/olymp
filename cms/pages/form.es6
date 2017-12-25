@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { slugify, unflatten } from 'olymp-utils';
+import slugify from 'slugify';
+import { unflatten } from 'olymp-utils';
 import { Panel } from 'olymp-fela';
 import { Input, PageType, State, Parent, InputNumber, TextArea } from './edits';
 

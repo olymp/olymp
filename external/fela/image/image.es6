@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { compose, withPropsOnChange, withState, withProps } from 'recompose';
-import { withAmp } from 'olymp-utils';
+import { compose, withPropsOnChange, withState, withProps, getContext } from 'recompose';
 import Container from './container';
 import Placeholder from './placeholder';
 import Img from './img';
@@ -115,7 +114,9 @@ const getMode = props => {
 };
 
 const enhance = compose(
-  withAmp,
+  getContext({
+    amp: PropTypes.bool,
+  }),
   withState('cWidth', 'setCWidth', undefined),
   withState('isLoaded', 'setIsLoaded', false),
   withPropsOnChange(['width', 'height', 'maxResolution', 'ratio'], props =>

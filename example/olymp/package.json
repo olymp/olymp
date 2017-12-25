@@ -9,53 +9,44 @@
   ],
   "private": true,
   "engines": {
-    "node": "8.7.0",
-    "npm": "5.5.1"
+    "node": "^8.7.0",
+    "npm": "^5.5.1"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
-    "unmockedModulePathPatterns": ["react", "enzyme", "jasmine-enzyme"]
+    "unmockedModulePathPatterns": [
+      "react",
+      "enzyme",
+      "jasmine-enzyme"
+    ]
   },
   "scripts": {
     "publish": "git push dev master",
-    "up": "npm-check -u",
-    "dev": "olymp dev",
-    "gql-fake":
-      "GRAPHQL_FAKE=http://localhost:9002/graphql graphql-faker ./server/mock.graphql -e http://localhost:3000/graphql",
+    "up": "yarn upgrade-interactive --latest",
+    "dev": "yarn link olymp && yarn link olymp-pwa && node index",
+    "gql-fake": "GRAPHQL_FAKE=http://localhost:9002/graphql graphql-faker ./server/mock.graphql -e http://localhost:3000/graphql",
     "build": "olymp build",
     "start": "olymp start",
     "heroku-postbuild": "olymp build",
-    "prettier":
-      "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"app/**/*.js\"",
+    "prettier": "prettier-eslint --write --print-width 80 --single-quote --trailing-comma es5 \"app/**/*.js\"",
     "electron": "GRAPHQL_URL=https://site.com/graphql olymp build --electron",
     "electron:dev": "olymp dev --electron",
     "electron:mac": "electron-builder",
     "electron:win": "electron-builder --win",
     "electron:win32": "electron-builder --win --ia32",
-    "electron:publish":
-      "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
+    "electron:publish": "yarn run electron && npm version patch -m \"Upgrade to %s for reasons\" --force && electron-builder --publish always --mac --win --ia32 --x64"
   },
   "dependencies": {
-    "mongodb": "^2.2.31",
-    "olymp": "^18.2.12",
-    "olymp-auth": "^18.2.9",
-    "olymp-crypt": "^18.1.2",
-    "olymp-fela": "^18.2.9",
-    "olymp-google": "^18.2.5",
-    "olymp-graphql": "^18.1.5",
-    "olymp-icons": "^18.1.3",
-    "olymp-locale": "^18.2.0",
-    "olymp-mail": "^18.2.2",
-    "olymp-router": "^18.2.12",
-    "olymp-utils": "^18.2.0",
-    "olymp-webpack-babel": "^18.2.9",
-    "olymp-webpack-less": "^18.1.9",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "olymp": "^20.0.0-6",
+    "olymp-fela": "^20.0.0-6",
+    "olymp-pwa": "^20.0.0-6",
+    "olymp-router": "^20.0.0-6",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^18.1.10",
-    "olymp-webpack-electron": "^18.1.17"
+    "eslint-config-olymp": "^19.1.15",
+    "olymp-webpack-electron": "^20.0.0-6"
   },
   "electronDependencies": {},
   "build": {
@@ -67,10 +58,15 @@
       "buildResources": "public"
     },
     "mac": {
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "win": {
-      "target": ["nsis"]
+      "target": [
+        "nsis"
+      ]
     },
     "dmg": {
       "title": "Olymp Example",
@@ -89,7 +85,7 @@
   "olymp": {
     "app": "./app",
     "server": "./server",
-    "plugins": ["less", "babel"],
+    "plugins": [],
     "modifyVars": {
       "font-size-base": "15px",
       "primary-color": "#8e44ad"

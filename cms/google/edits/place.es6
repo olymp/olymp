@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { AutoComplete, Input } from 'antd';
-import { throttleInput } from 'olymp-utils';
+import { get, debounce } from 'lodash';
 import { FaNeuter } from 'olymp-icons';
 import { withApollo, graphql } from 'react-apollo';
 import { compose, withState } from 'recompose';
-import { get } from 'lodash';
 import gql from 'graphql-tag';
 
 const enhance = compose(
@@ -89,40 +88,42 @@ export default class GeocodeEditor extends Component {
       .then(({ data }) => onChange(data.place))
       .catch(err => console.log(err));
   };
-  throttle = throttleInput(500);
 
   handleSearch = term => {
     this.text = term;
 
     if (term) {
-      this.throttle(() => {
-        this.performSearch(term);
-      });
+      this.performSearch(term);
     }
   };
 
-  performSearch = input => {
-    const { client, setItems } = this.props;
 
-    return client
-      .query({
-        query: gql(`
-          query places($input: String!) {
-            places(input: $input, lat: 50.103053, lng: 8.677393) {
-              id
-              placeId
-              description
+  performSearch = debounce(
+    input => {
+      const { client, setItems } = this.props;
+
+      return client
+        .query({
+          query: gql(`
+            query places($input: String!) {
+              places(input: $input, lat: 50.103053, lng: 8.677393) {
+                id
+                placeId
+                description
+              }
             }
-          }
-        `),
-        variables: {
-          input,
-        },
-      })
-      .then(({ data }) => {
-        setItems(data.places);
-      });
-  };
+          `),
+          variables: {
+            input,
+          },
+        })
+        .then(({ data }) => {
+          setItems(data.places);
+        });
+    },
+    500,
+    { trailing: true, leading: false },
+  );
 
   renderOption = ({ id, description }) => (
     <AutoComplete.Option key={id} text={description}>

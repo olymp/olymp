@@ -171,5 +171,10 @@ export default ua => {
     // enhancers: process.env.NODE_ENV === 'production' ? [] : [require('fela-monolithic').default()],
   });
   renderer.renderStatic(normalize);
+  renderer.renderStatic(`
+    .with-portal {
+      overflow: hidden;
+    }
+  `);
   return renderer;
 };
