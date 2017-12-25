@@ -1,6 +1,6 @@
 {
   "version": "20.0.0-2",
-  "name": "olymp-scrape",
+  "name": "olymp-redux",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
@@ -10,13 +10,5 @@
   "license": "MIT",
   "scripts": {
     "up": "npm-check -u"
-  },
-  "dependencies": {
-    "got": "^8.0.1",
-    "metascraper": "^3.2.0",
-    "olymp-fela": "^20.0.0-2",
-    "olymp-utils": "^19.1.14",
-    "request-image-size": "^2.1.0",
-    "shortid": "^2.2.8"
   }
 }

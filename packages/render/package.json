@@ -1,6 +1,6 @@
 {
   "version": "20.0.0-2",
-  "name": "olymp-pages",
+  "name": "olymp-render",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
@@ -12,13 +12,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "filestack-js": "^0.10.1",
-    "olymp-fela": "^20.0.0-2",
-    "olymp-router": "^19.1.15",
-    "olymp-utils": "^19.1.14",
-    "react-stickynode": "^1.4.0",
-    "recompose": "^0.26.0",
-    "scrollmonitor": "^1.2.4",
-    "slugify": "^1.2.8"
+    "olymp-redux": "^20.0.0-2",
+    "olymp-useragent": "^20.0.0-2"
   }
 }
