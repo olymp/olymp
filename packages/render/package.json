@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-4",
+  "version": "20.0.0-5",
   "name": "olymp-render",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -12,8 +12,8 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-apollo": "^20.0.0-4",
-    "olymp-redux": "^20.0.0-4",
-    "olymp-useragent": "^20.0.0-4"
+    "olymp-apollo": "^20.0.0-5",
+    "olymp-redux": "^20.0.0-5",
+    "olymp-useragent": "^20.0.0-5"
   }
 }

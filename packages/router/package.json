@@ -1,5 +1,5 @@
 {
-  "version": "19.1.15",
+  "version": "20.0.0-5",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -12,6 +12,7 @@
     "up": "npm-check -u"
   },
   "dependencies": {
+    "create-react-class": "^15.6.2",
     "history": "^4.7.2",
     "olymp-utils": "^19.1.14",
     "react-redux": "^5.0.6",
