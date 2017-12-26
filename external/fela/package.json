@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-13",
+  "version": "20.0.0-14",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -27,8 +27,7 @@
     "fela-plugin-prefixer": "^5.0.16",
     "fela-plugin-remove-undefined": "^5.0.15",
     "fela-plugin-unit": "^5.0.15",
-    "olymp-icons": "^20.0.0-13",
-    "olymp-utils": "^19.1.14",
+    "olymp-icons": "^20.0.0-14",
     "particles.js": "^2.0.0",
     "react-beautiful-dnd": "^3.0.0",
     "react-fela": "^6.2.1",
