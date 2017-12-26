@@ -7,17 +7,18 @@ const webpackPlugins = require('./plugins');
 
 const appRoot = process.cwd();
 
-const topFolder = path.resolve(__dirname, '..');
+const topFolder = path.resolve(__dirname, '..', '..');
 const isLinked = path.basename(topFolder) === 'packages';
 const nodeModules = isLinked
-  ? path.resolve(__dirname, 'node_modules')
-  : path.resolve(__dirname, '..');
+  ? path.resolve(__dirname, '..', 'node_modules')
+  : path.resolve(__dirname, '..', '..');
 process.noDeprecation = true;
 const allPackages = !isLinked
   ? []
   : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
 const pluginsFolder = !isLinked ? nodeModules : topFolder;
 
+console.log(nodeModules, pluginsFolder)
 module.exports = ({
   mode,
   target,
@@ -88,10 +89,10 @@ module.exports = ({
           isElectron &&
           fs.existsSync(path.resolve(appRoot, 'electron', 'index.js'))
             ? path.resolve(appRoot, 'electron', 'index.js')
-            : path.resolve(__dirname, 'noop'),
+            : path.resolve(__dirname, '..', 'noop'),
         '@app':
           isServer && !isSSR
-            ? path.resolve(__dirname, 'noop')
+            ? path.resolve(__dirname, '..', 'noop')
             : path.resolve(appRoot, 'app'),
         ...allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
@@ -201,10 +202,12 @@ module.exports = ({
   config = webpackPlugins(config, options);
   config = externals(config, options);
   config = entry(config, options);
+  console.log(plugins);
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
       isLinked ? plugin : `olymp-${plugin}`,
+      'plugin',
     ));
     return req(config, options, webpack) || config;
   }, config);

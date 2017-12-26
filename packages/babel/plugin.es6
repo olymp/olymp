@@ -139,11 +139,12 @@ module.exports = (config, options) => {
     // babelOptions.presets.push(['react-optimize']);
   }
 
+  console.log(resolve(appRoot, 'app'));
   if (isDev) {
     config.module.rules.push({
       test: /\.js$/,
       use: [
-        {
+        /* {
           loader: 'cache-loader',
           options: {
             cacheDirectory: resolve(
@@ -153,7 +154,7 @@ module.exports = (config, options) => {
               `${target}-babel`,
             ),
           },
-        },
+        }, */
         {
           loader: 'babel-loader',
           options: babelOptions,

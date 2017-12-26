@@ -103,6 +103,7 @@ exports.build = () => {
 exports.dev = ({
   port = PORT,
   targets = TARGETS,
+  plugins = [],
 }) => {
   port = parseInt(`${port}`, 10);
   const watch = {
@@ -110,16 +111,16 @@ exports.dev = ({
     poll: false,
     ignored: /node_modules/,
   };
-  console.log(isServerless);
   const compiler = webpack(
     targets.map((target, i) =>
       createConfig({
+        ...olymprc,
         target,
         mode: 'development',
         isSSR,
         // port: port + 1,
         isServerless: true,
-        ...olymprc,
+        plugins,
       }),
     ),
   );

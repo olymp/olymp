@@ -6,9 +6,9 @@ import { Provider as FelaProvider } from 'react-fela';
 import { Provider as ReduxProvider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 import { AsyncComponentProvider } from 'react-async-component';
-import App from '@app';
 import { DynamicReduxProvider } from 'olymp-redux';
 import UAParser from 'ua-parser-js';
+import App from '@app';
 
 const enhance = compose(
   withContext({
