@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-30",
+  "version": "20.0.0-31",
   "name": "olymp-crypt",
   "description": "",
   "main": "./index.js",
