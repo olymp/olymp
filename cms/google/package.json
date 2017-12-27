@@ -15,7 +15,7 @@
     "@google/maps": "^0.4.5",
     "bluebird": "^3.5.1",
     "date-fns": "^2.0.0-alpha.1",
-    "google-map-react": "^0.25.0",
+    "google-map-react": "^0.26.0",
     "googleapis": "^23.0.0",
     "olymp-ui": "^20.0.0-20",
     "olymp-utils": "^19.1.14",

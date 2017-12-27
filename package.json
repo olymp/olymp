@@ -84,7 +84,7 @@
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-watch": "^4.3.11",
-    "jest": "^21.2.1",
+    "jest": "^22.0.4",
     "lerna": "^2.5.1"
   }
 }

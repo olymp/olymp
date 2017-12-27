@@ -36,6 +36,6 @@
     "import-inspector": "^2.0.0",
     "react-hot-loader": "next",
     "uglify-es": "^3.2.2",
-    "uglifyjs-webpack-plugin": "^1.1.4"
+    "uglifyjs-webpack-plugin": "^1.1.5"
   }
 }
