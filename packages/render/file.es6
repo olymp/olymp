@@ -1,13 +1,13 @@
 import fs from 'fs-extra';
 import path from 'path';
-import ssr from 'olymp/node/ssr';
+import ssr from './string';
 
 require('dotenv').config();
 const fetch = require('isomorphic-fetch');
 
 global.fetch = fetch;
 
-const prerender = ((target, urls, args) => {
+const prerender = ((target, urls, args = {}) => {
   if (typeof arrayOrString === 'string') {
     return prerender([urls]);
   }
@@ -17,7 +17,7 @@ const prerender = ((target, urls, args) => {
     if (!pathname || pathname === '/') {
       pathname = '/index';
     }
-    return fs.outputFile(path.resolve(target, `.${pathname}.html`), result);
+    return fs.outputFile(path.resolve(target, `.${pathname}.html`), result, 'utf8');
   }, Promise.resolve());
 });
 export default prerender;

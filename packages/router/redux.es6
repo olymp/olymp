@@ -31,13 +31,14 @@ export const routerReducer = history => {
   };
 };
 
-
 const scroll = () => {
   if (typeof window !== 'undefined'){
-    window.scroll({
-      top: 0,
-      behavior: 'smooth'
-    });
+    try {
+      window.scroll({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } catch(err) { }
   }
 }
 

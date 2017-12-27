@@ -71,32 +71,40 @@ if (argv.targets) {
 exports.start = () => {
   require(path.resolve(process.cwd(), '.dist', 'node', 'app'));
 }
-exports.build = () => {
-  TARGETS.map(target => rimraf.sync(path.resolve(root, '.dist', target)));
+exports.build = (options) => {
+  if (!Array.isArray(options)) {
+    options = [options];
+  }
   process.env.NODE_ENV = 'production';
 
   const compiler = webpack(
-    TARGETS.map((target, i) =>
-      createConfig({
-        target,
-        mode: 'production',
-        isSSR,
-        isServerless,
+    options.map((config, i) => {
+      rimraf.sync(path.resolve(root, '.dist', config.target));
+      return createConfig({
         ...olymprc,
-      }),
-    ),
+        ...config,
+        mode: 'production',
+        isSSR: config.ssr || isSSR,
+        isServerless: config.serverless || isServerless,
+      })
+    }),
   );
-  compiler.run((err, compilation) => {
-    if (err) {
-      console.error(err);
-      return process.exit(1);
-    }
-    const stats = compilation.stats || [compilation];
-    console.log('[webpack] the following asset bundles were built:');
-    stats.forEach((c, i) => {
-      console.log(c.toString());
-      // console.log('File sizes after gzip:\n');
-      // printFileSizesAfterBuild(c, null, null);
+
+  return new Promise((yay, nay) => {
+    compiler.run((err, compilation) => {
+      if (err) {
+        console.error(err);
+        nay(err);
+        return process.exit(1);
+      }
+      const stats = compilation.stats || [compilation];
+      console.log('[webpack] the following asset bundles were built:');
+      stats.forEach((c, i) => {
+        console.log(c.toString());
+        // console.log('File sizes after gzip:\n');
+        // printFileSizesAfterBuild(c, null, null);
+      });
+      yay(stats);
     });
   });
 }
@@ -104,6 +112,7 @@ exports.dev = ({
   port = PORT,
   targets = TARGETS,
   plugins = [],
+  entry,
 }) => {
   port = parseInt(`${port}`, 10);
   const watch = {
@@ -115,6 +124,8 @@ exports.dev = ({
     targets.map((target, i) =>
       createConfig({
         ...olymprc,
+        entry,
+        port,
         target,
         mode: 'development',
         isSSR,
@@ -172,4 +183,5 @@ exports.dev = ({
       server.listen(port);
     }
   });
+  return compiler;
 }

@@ -16,6 +16,7 @@
     "olymp-redux": "^20.0.0-14",
     "react-async-bootstrapper": "^1.1.2",
     "react-async-component": "^1.0.2",
+    "react-helmet": "^5.2.0",
     "recompose": "^0.26.0",
     "redux-devtools-extension": "^2.13.2",
     "ua-parser-js": "^0.7.17"

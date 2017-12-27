@@ -1,1 +1,0 @@
-require('olymp-pwa').dev();

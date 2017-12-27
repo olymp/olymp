@@ -6,42 +6,57 @@ module.exports = (config, {
   isElectronRenderer,
   isDev,
   isNode,
+  entry,
 }) => {
-  if (isWeb || isElectronRenderer) {
+  if (isWeb) {
     if (isDev) {
       config.entry.app = [
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
-        'olymp-pwa/entry',
+        entry || 'olymp-pwa/entry',
       ];
     } else {
       config.entry.app = [
-        'olymp-pwa/entry',
+        entry || 'olymp-pwa/entry',
+      ];
+    }
+  } else if (isElectronRenderer) {
+    if (isDev) {
+      config.entry.app = [
+        'react-hot-loader/patch',
+        `webpack-dev-server/client?${config.output.publicPath}`,
+        'webpack/hot/only-dev-server',
+        config.entry || 'olymp-electron/entry',
+      ];
+    } else {
+      config.entry.app = [
+        entry || 'olymp-electron/entry',
       ];
     }
   } else if (isElectronMain) {
     if (isDev) {
       config.entry.main = [
         'webpack/hot/poll?1000',
-        'olymp-electron/main',
+        entry || 'olymp-electron/main',
       ];
     } else {
       config.entry.main = [
-        'olymp-electron/main',
+        entry || 'olymp-electron/main',
       ];
     }
   } else if (isNode) {
     if (isDev) {
       config.entry.app = [
         'webpack/hot/poll?1000',
-        'olymp-server/entry',
+        entry || 'olymp-server/entry',
       ];
     } else {
       config.entry.app = [
-        'olymp-server/entry',
+        entry || 'olymp-server/entry',
       ];
     }
+    console.log(config.entry.app);
   }
   return config;
 };

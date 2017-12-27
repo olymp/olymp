@@ -18,7 +18,6 @@ const allPackages = !isLinked
   : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
 const pluginsFolder = !isLinked ? nodeModules : topFolder;
 
-console.log(nodeModules, pluginsFolder)
 module.exports = ({
   mode,
   target,
@@ -137,7 +136,7 @@ module.exports = ({
       ],
     },
     output: {
-      publicPath: '/',
+      publicPath: isProd ? '/' : `http://localhost:${port}/`,
       path: path.resolve(appRoot, folder, target.split('-')[0]),
     },
     entry: {},
@@ -202,7 +201,6 @@ module.exports = ({
   config = webpackPlugins(config, options);
   config = externals(config, options);
   config = entry(config, options);
-  console.log(plugins);
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,

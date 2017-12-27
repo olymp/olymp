@@ -66,6 +66,11 @@ module.exports = (config, { isWeb, isProd, isServerless, appRoot, folder, target
     config.plugins.push(
       new CopyWebpackPlugin([
         {
+          context: path.resolve(appRoot, 'node_modules', 'olymp', 'public'),
+          from: '**/*',
+          to: path.resolve(appRoot, folder, target.split('-')[0]),
+        },
+        {
           context: path.resolve(appRoot, 'public'),
           from: '**/*',
           to: path.resolve(appRoot, folder, target.split('-')[0]),

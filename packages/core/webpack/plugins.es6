@@ -3,12 +3,9 @@ const path = require('path');
 const AssetsPlugin = require('assets-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 module.exports = (config, {
-  mode,
   isSSR,
   isNetlify,
   isServerless,
@@ -18,11 +15,8 @@ module.exports = (config, {
   isDev,
   isServer,
   port,
-  isElectronMain,
-  isElectronRenderer,
   isProd,
   isLinked,
-  appRoot,
   folder,
   target,
   sharedEnv = {},
@@ -33,7 +27,7 @@ module.exports = (config, {
     }),
     new webpack.DefinePlugin({
       'process.env.BUILD_ON': `"${new Date()}"`,
-      'process.env.NODE_ENV': `"${mode}"`,
+      'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
       'process.env.IS_SSR': isSSR,
       'process.env.IS_SERVERLESS': !isNetlify && isServerless,
       'process.env.IS_WEB': isWeb,
@@ -87,24 +81,6 @@ module.exports = (config, {
     );
   }
 
-  // webpack plugins
-  if (isElectronMain) {
-    config.plugins.push(
-      new GenerateJsonPlugin(
-        'package.json',
-        require('./electron/package-json')(),
-      ),
-    );
-    if (isDev) {
-      const ElectronPlugin = require('electron-webpack-plugin');
-      config.plugins.push(
-        new ElectronPlugin({
-          test: /^.\/electron/,
-          path: path.resolve(appRoot, '.dev', 'electron'),
-        }),
-      );
-    }
-  }
   if (isNode && !isElectron) {
     config.plugins.push(
       new webpack.BannerPlugin({
@@ -122,29 +98,7 @@ module.exports = (config, {
       );
     }
   } else if (!isNode) {
-    if (isElectronRenderer) {
-      config.plugins.push(
-        new HtmlWebpackPlugin({
-          alwaysWriteToDisk: true,
-          filename: 'index.html',
-          template: path.resolve(__dirname, 'templates', 'electron.js'),
-          inject: false,
-          /* minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
-        }, */
-        }),
-      );
-      config.plugins.push(new HtmlWebpackHarddiskPlugin());
-    }
+    config.plugins.push(new HtmlWebpackHarddiskPlugin());
   }
 
   // Hot module replacement on dev
@@ -153,11 +107,11 @@ module.exports = (config, {
   }
 
   // LimitChunkCount on all but production-web
-  if (isNode || isElectron) {
+  if (isNode) {
     config.plugins.push(
       new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     );
-  } else {
+  } else if (isWeb) {
     config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',

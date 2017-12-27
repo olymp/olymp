@@ -1,6 +1,6 @@
 // window.Perf = require('react-addons-perf');
 if (process.env.NODE_ENV === 'production') {
-  const offline = require('cd/runtime');
+  const offline = require('offline-plugin/runtime');
   offline.install({
     onUpdating: () => {
       console.log('SW Event:', 'onUpdating');

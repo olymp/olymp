@@ -1,8 +1,7 @@
 const path = require('path');
 const { get } = require('lodash');
 
-const dir = path.dirname(require.resolve('olymp-webpack-electron'));
-const dependecies = require(path.resolve(dir, 'package.json')).dependencies;
+const dependecies = require(path.resolve(__dirname, 'package.json')).dependencies;
 const packageJson = require(path.resolve(process.cwd(), 'package.json'));
 
 module.exports = () => ({

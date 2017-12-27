@@ -1,5 +1,5 @@
 // eslint-ignore
-import 'source-map-support/register';
+// import 'source-map-support/register';
 
 // Node
 import path from 'path';
@@ -20,15 +20,15 @@ import { getDataFromTree } from 'react-apollo';
 import { applyMiddleware, compose } from 'redux';
 // Olymp
 import { createFela } from 'olymp-fela';
-import { apolloMiddleware } from 'olymp-graphql';
+// import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 import createDynamicRedux from 'olymp-redux';
 import getApollo from 'olymp-apollo/local';
 
 // Locale
-import template from '../templates/default';
-import amp from '../templates/amp';
-import { appReducer, appMiddleware } from '../redux';
+import template from './templates/default';
+import amp from './templates/amp';
+// import { appReducer, appMiddleware } from '../redux';
 import Root from './root';
 
 // eslint
@@ -56,7 +56,8 @@ const getAssets = () => {
 
 // Setup server side routing.
 export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], css = [], ...context }) => {
-  const assets = getAssets();
+  // const assets = getAssets();
+  const assets = { app: {} };
   const renderTemplate = isAmp ? amp : template;
   if (IS_SSR === false && !ssr) {
     const html = renderTemplate({
@@ -76,14 +77,14 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], cs
   const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
   const store = createDynamicStore(
     {
-      app: appReducer(),
+      // app: appReducer(),
       location: routerReducer(history),
     },
     compose(
       applyMiddleware(dynamicMiddleware),
       applyMiddleware(routerMiddleware(history)),
-      applyMiddleware(apolloMiddleware(client)),
-      applyMiddleware(appMiddleware),
+      // applyMiddleware(apolloMiddleware(client)),
+      // applyMiddleware(appMiddleware),
     ),
   );
 
@@ -106,6 +107,7 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], cs
       const reactAppString = isAmp
         ? renderToStaticMarkup(reactApp)
         : renderToString(reactApp);
+      console.log(originalUrl, reactAppString);
       const felaMarkup = renderToSheetList(renderer);
       const asyncState = asyncContext.getState();
       // Generate the html res.

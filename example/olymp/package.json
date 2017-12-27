@@ -24,6 +24,7 @@
     "publish": "git push dev master",
     "up": "npm-up",
     "dev": "node index",
+    "prerender": "node prerender",
     "gql-fake": "GRAPHQL_FAKE=http://localhost:9002/graphql graphql-faker ./server/mock.graphql -e http://localhost:3000/graphql",
     "build": "olymp build",
     "start": "olymp start",

@@ -58,12 +58,12 @@ module.exports = (config, options) => {
     config.module.rules.push({
       test: /\.(less|css)$/,
       use: [
-        {
+        /* {
           loader: 'cache-loader',
           options: {
             cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
           },
-        },
+        }, */
         {
           loader: 'style-loader',
           options: { insertAt: 'top', hmr: isDev },

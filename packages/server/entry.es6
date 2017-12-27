@@ -15,7 +15,7 @@ if (app.listenWS) {
 }
 
 if (module.hot) {
-  module.hot.accept('./server', () => {
+  module.hot.accept('./express', () => {
     server.removeListener('request', currentApp);
     if (currentApp.unlistenWS) {
       currentApp.unlistenWS();
