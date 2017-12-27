@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-16",
+  "version": "20.0.0-17",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -27,7 +27,7 @@
     "fela-plugin-prefixer": "^5.0.16",
     "fela-plugin-remove-undefined": "^5.0.15",
     "fela-plugin-unit": "^5.0.15",
-    "olymp-icons": "^20.0.0-16",
+    "olymp-icons": "^20.0.0-17",
     "particles.js": "^2.0.0",
     "react-beautiful-dnd": "^3.0.0",
     "react-fela": "^6.2.1",
@@ -39,13 +39,5 @@
     "scrollparent": "^2.0.1",
     "shortid": "^2.2.8",
     "tinycolor2": "^1.4.1"
-  },
-  "devDependencies": {
-    "olymp-webpack-babel": "^19.1.15",
-    "raw-loader": "^0.5.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-styleguidist": "^6.1.0",
-    "webpack": "^3.10.0"
   }
 }
