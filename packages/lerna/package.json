@@ -1,9 +1,9 @@
 {
-  "version": "20.0.0-37",
+  "version": "20.0.0-38",
   "name": "olymp-lerna",
   "description": "",
   "bin": {
-    "lerna": "./bin/olymp-lerna.js"
+    "olymp-lerna": "./bin/olymp-lerna.js"
   },
   "scripts": {
     "favicon": "real-favicon generate faviconDescription.json faviconData.json ./packages/core/public/",
