@@ -1,11 +1,10 @@
 const path = require('path');
 
 exports.dev = (options = {}) => require('olymp').dev({
-    entry: 'olymp-pwa/entry',
-    port: options.port || 3000,
-    targets: ['web'],
-    plugins: ['babel', 'pwa'],
-  });
+  entry: 'olymp-pwa/entry',
+  target: 'web',
+  plugins: ['babel', 'pwa'].concat(options.plugins || []),
+}, options.port || 3000);
 
 exports.prerender = (options = {}) => {
   const compiler = require('olymp').build([{

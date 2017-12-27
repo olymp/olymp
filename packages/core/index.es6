@@ -108,12 +108,10 @@ exports.build = (options) => {
     });
   });
 }
-exports.dev = ({
-  port = PORT,
-  targets = TARGETS,
-  plugins = [],
-  entry,
-}) => {
+exports.dev = (options, port) => {
+  if (!Array.isArray(options)) {
+    options = [options];
+  }
   port = parseInt(`${port}`, 10);
   const watch = {
     aggregateTimeout: 300,
@@ -121,23 +119,20 @@ exports.dev = ({
     ignored: /node_modules/,
   };
   const compiler = webpack(
-    targets.map((target, i) =>
+    options.map((config, i) =>
       createConfig({
         ...olymprc,
-        entry,
+        ...config,
+        mode: 'production',
         port,
-        target,
-        mode: 'development',
-        isSSR,
-        // port: port + 1,
-        isServerless: true,
-        plugins,
+        isSSR: config.ssr || isSSR,
+        isServerless: config.serverless || isServerless,
       }),
     ),
   );
-  targets.forEach((target, i) => {
+  options.forEach((config, i) => {
     const currentCompiler = compiler.compilers[i];
-    if (target === 'node' || target === 'electron-main') {
+    if (config.target === 'node' || config.target === 'electron-main') {
       currentCompiler.watch(watch, (err, compilation) => {
         if (err) {
           return console.log('[webpack] error:', err);
