@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-34",
+  "version": "20.0.0-35",
   "name": "olymp-render",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "olymp-apollo": "^20.0.0-34",
-    "olymp-redux": "^20.0.0-34",
+    "olymp-apollo": "^20.0.0-35",
+    "olymp-redux": "^20.0.0-35",
     "react-async-bootstrapper": "^1.1.2",
     "react-async-component": "^1.0.2",
     "react-helmet": "^5.2.0",
