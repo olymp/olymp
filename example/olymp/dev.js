@@ -1,1 +1,3 @@
-require('olymp-electron').dev();
+require('olymp-pwa').dev({
+  plugins: ['less']
+});

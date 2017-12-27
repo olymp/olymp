@@ -123,7 +123,7 @@ exports.dev = (options, port) => {
       createConfig({
         ...olymprc,
         ...config,
-        mode: 'production',
+        mode: 'development',
         port,
         isSSR: config.ssr || isSSR,
         isServerless: config.serverless || isServerless,

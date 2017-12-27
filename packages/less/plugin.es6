@@ -3,26 +3,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const nodeModules = resolve(__dirname, 'node_modules');
 
-/* {
-  loader: 'string-replace-loader',
-  query: {
-    search: '@font-face',
-    replace: '@font-face2',
-    flags: 'g',
-  },
-}, */
-
 module.exports = (config, options) => {
   const {
     isProd,
     isWeb,
     isNode,
-    appRoot,
     isLinked,
     modifyVars,
-    folder,
     isDev,
-    target,
   } = options;
 
   if (isWeb && isProd) {
@@ -88,5 +76,6 @@ module.exports = (config, options) => {
   if (isLinked) {
     config.resolveLoader.modules.push(nodeModules);
   }
+
   return config;
 };
