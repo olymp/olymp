@@ -13,7 +13,7 @@
     // Browser globals
     root.objectPath = factory();
   }
-}(this, function () {
+}(this, () => {
   'use strict'
   var _hasOwnProperty = Object.prototype.hasOwnProperty
 
