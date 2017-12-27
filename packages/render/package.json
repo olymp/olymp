@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-22",
+  "version": "20.0.0-23",
   "name": "olymp-render",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -12,8 +12,8 @@
     "up": "npm-check -u"
   },
   "dependencies": {
-    "olymp-apollo": "^20.0.0-22",
-    "olymp-redux": "^20.0.0-22",
+    "olymp-apollo": "^20.0.0-23",
+    "olymp-redux": "^20.0.0-23",
     "react-async-bootstrapper": "^1.1.2",
     "react-async-component": "^1.0.2",
     "react-helmet": "^5.2.0",
