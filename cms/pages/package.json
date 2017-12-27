@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-31",
+  "version": "20.0.0-32",
   "name": "olymp-pages",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "filestack-js": "^0.10.1",
-    "olymp-fela": "^20.0.0-31",
-    "olymp-router": "^20.0.0-31",
+    "olymp-fela": "^20.0.0-32",
+    "olymp-router": "^20.0.0-32",
     "olymp-utils": "^19.1.14",
     "react-stickynode": "^1.4.0",
     "recompose": "^0.26.0",
