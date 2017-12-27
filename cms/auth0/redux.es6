@@ -1,4 +1,4 @@
-import { withDynamicRedux } from 'olymp';
+import { withDynamicRedux } from 'olymp-redux';
 import { LOCATION_REPLACE } from 'olymp-router';
 import Auth0 from './auth0';
 

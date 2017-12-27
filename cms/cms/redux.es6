@@ -1,4 +1,4 @@
-import { immutable, withDynamicRedux } from 'olymp';
+import { immutable, withDynamicRedux } from 'olymp-redux';
 
 const defaultState = {
   prefetch: null,
