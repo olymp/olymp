@@ -39,6 +39,7 @@ module.exports = ({
   const isNetlify = isSSR && isServerless;
   isServerless = isServerless === true || isElectron;
   isSSR = !isElectronMain && isSSR !== false && !isServerless;
+  console.log(isServerless);
   const folder = isDev ? '.dev' : '.dist';
   const options = {
     target,

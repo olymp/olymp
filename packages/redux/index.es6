@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { createStore, combineReducers, compose } from 'redux';
 import { set } from 'lodash';
 
-export { default as immutable } from 'immutable';
+export { default as immutable } from './immutable';
 
 export default () => {
   const middlewares = new Map();

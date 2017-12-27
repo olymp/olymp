@@ -42,7 +42,8 @@ module.exports = (config, { isWeb, isProd, isServerless, appRoot, folder, target
         },
         AppCache: false,
       }));
-    } else if (isServerless) {
+    }
+    if (isServerless) {
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'index.html',

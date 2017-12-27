@@ -125,8 +125,8 @@ exports.dev = (options, port) => {
         ...config,
         mode: 'development',
         port,
-        isSSR: config.ssr || isSSR,
-        isServerless: config.serverless || isServerless,
+        isSSR: !config.serverless && config.ssr !== false,
+        isServerless: config.serverless || options.filter(x => x.target === 'node').length === 0,
       }),
     ),
   );
@@ -175,6 +175,7 @@ exports.dev = (options, port) => {
           publicPath: false,
         },
       });
+      console.log('Listening to', port)
       server.listen(port);
     }
   });
