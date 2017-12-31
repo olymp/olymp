@@ -1,5 +1,5 @@
 {
-  "version": "20.0.0-38",
+  "version": "20.0.0-39",
   "name": "olymp-auth0",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "auth0-lock": "^11.0.1",
+    "express-jwt": "^5.3.0",
+    "express-jwt-authz": "^1.0.0",
+    "jwks-rsa": "^1.2.1",
     "passport": "^0.4.0",
     "passport-auth0": "^0.6.0"
   }
