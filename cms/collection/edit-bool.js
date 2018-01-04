@@ -1,29 +1,45 @@
-import 'antd/lib/switch/style';
-import _Switch from 'antd/lib/switch';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _switch = require('antd/lib/switch');
+
+var _switch2 = _interopRequireDefault(_switch);
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+require('antd/lib/switch/style');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _recompose = require('recompose');
+
+var _formItem = require('./form-item');
+
+var _formItem2 = _interopRequireDefault(_formItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-import React from 'react';
-import { toClass } from 'recompose';
-
-import FormItem from './form-item';
-
-export default {
+exports.default = {
   rule: function rule(_ref) {
     var innerType = _ref.innerType;
     return innerType.name === 'Boolean';
   },
-  form: toClass(function (_ref2) {
+  form: (0, _recompose.toClass)(function (_ref2) {
     var type = _ref2.type,
         props = _objectWithoutProperties(_ref2, ['type']);
 
-    return React.createElement(
-      FormItem,
+    return _react2.default.createElement(
+      _formItem2.default,
       props,
-      React.createElement(_Switch, _extends({}, props, { checked: props.value }))
+      _react2.default.createElement(_switch2.default, _extends({}, props, { checked: props.value }))
     );
   })
 };
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvbGxlY3Rpb24vZWRpdC1ib29sLmVzNiJdLCJuYW1lcyI6WyJSZWFjdCIsInRvQ2xhc3MiLCJGb3JtSXRlbSIsInJ1bGUiLCJpbm5lclR5cGUiLCJuYW1lIiwiZm9ybSIsInR5cGUiLCJwcm9wcyIsInZhbHVlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUEsT0FBT0EsS0FBUCxNQUFrQixPQUFsQjtBQUNBLFNBQVNDLE9BQVQsUUFBd0IsV0FBeEI7O0FBRUEsT0FBT0MsUUFBUCxNQUFxQixhQUFyQjs7QUFFQSxlQUFlO0FBQ2JDLFFBQU07QUFBQSxRQUFHQyxTQUFILFFBQUdBLFNBQUg7QUFBQSxXQUFtQkEsVUFBVUMsSUFBVixLQUFtQixTQUF0QztBQUFBLEdBRE87QUFFYkMsUUFBTUwsUUFBUTtBQUFBLFFBQUdNLElBQUgsU0FBR0EsSUFBSDtBQUFBLFFBQVlDLEtBQVo7O0FBQUEsV0FDWjtBQUFDLGNBQUQ7QUFBY0EsV0FBZDtBQUNFLGdEQUFZQSxLQUFaLElBQW1CLFNBQVNBLE1BQU1DLEtBQWxDO0FBREYsS0FEWTtBQUFBLEdBQVI7QUFGTyxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2NvbGxlY3Rpb24vZWRpdC1ib29sLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IHRvQ2xhc3MgfSBmcm9tICdyZWNvbXBvc2UnO1xuaW1wb3J0IHsgU3dpdGNoIH0gZnJvbSAnYW50ZCc7XG5pbXBvcnQgRm9ybUl0ZW0gZnJvbSAnLi9mb3JtLWl0ZW0nO1xuXG5leHBvcnQgZGVmYXVsdCB7XG4gIHJ1bGU6ICh7IGlubmVyVHlwZSB9KSA9PiBpbm5lclR5cGUubmFtZSA9PT0gJ0Jvb2xlYW4nLFxuICBmb3JtOiB0b0NsYXNzKCh7IHR5cGUsIC4uLnByb3BzIH0pID0+IChcbiAgICA8Rm9ybUl0ZW0gey4uLnByb3BzfT5cbiAgICAgIDxTd2l0Y2ggey4uLnByb3BzfSBjaGVja2VkPXtwcm9wcy52YWx1ZX0gLz5cbiAgICA8L0Zvcm1JdGVtPlxuICApKSxcbn07XG4iXX0=
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNtcy9jb2xsZWN0aW9uL2VkaXQtYm9vbC5lczYiXSwibmFtZXMiOlsicnVsZSIsImlubmVyVHlwZSIsIm5hbWUiLCJmb3JtIiwidHlwZSIsInByb3BzIiwidmFsdWUiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQUE7Ozs7QUFDQTs7QUFFQTs7Ozs7Ozs7a0JBRWU7QUFDYkEsUUFBTTtBQUFBLFFBQUdDLFNBQUgsUUFBR0EsU0FBSDtBQUFBLFdBQW1CQSxVQUFVQyxJQUFWLEtBQW1CLFNBQXRDO0FBQUEsR0FETztBQUViQyxRQUFNLHdCQUFRO0FBQUEsUUFBR0MsSUFBSCxTQUFHQSxJQUFIO0FBQUEsUUFBWUMsS0FBWjs7QUFBQSxXQUNaO0FBQUE7QUFBY0EsV0FBZDtBQUNFLG1FQUFZQSxLQUFaLElBQW1CLFNBQVNBLE1BQU1DLEtBQWxDO0FBREYsS0FEWTtBQUFBLEdBQVI7QUFGTyxDIiwiZmlsZSI6ImNtcy9jb2xsZWN0aW9uL2VkaXQtYm9vbC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyB0b0NsYXNzIH0gZnJvbSAncmVjb21wb3NlJztcbmltcG9ydCB7IFN3aXRjaCB9IGZyb20gJ2FudGQnO1xuaW1wb3J0IEZvcm1JdGVtIGZyb20gJy4vZm9ybS1pdGVtJztcblxuZXhwb3J0IGRlZmF1bHQge1xuICBydWxlOiAoeyBpbm5lclR5cGUgfSkgPT4gaW5uZXJUeXBlLm5hbWUgPT09ICdCb29sZWFuJyxcbiAgZm9ybTogdG9DbGFzcygoeyB0eXBlLCAuLi5wcm9wcyB9KSA9PiAoXG4gICAgPEZvcm1JdGVtIHsuLi5wcm9wc30+XG4gICAgICA8U3dpdGNoIHsuLi5wcm9wc30gY2hlY2tlZD17cHJvcHMudmFsdWV9IC8+XG4gICAgPC9Gb3JtSXRlbT5cbiAgKSksXG59O1xuIl19

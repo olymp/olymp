@@ -26,6 +26,9 @@ module.exports = ({
   isServerless,
   alias = {},
   plugins = [],
+  appPath,
+  serverPath,
+  paths,
   ...rest
 }) => {
   const isDev = mode !== 'production';
@@ -39,7 +42,6 @@ module.exports = ({
   const isNetlify = isSSR && isServerless;
   isServerless = isServerless === true || isElectron;
   isSSR = !isElectronMain && isSSR !== false && !isServerless;
-  console.log(isServerless);
   const folder = isDev ? '.dev' : '.dist';
   const options = {
     target,
@@ -57,6 +59,7 @@ module.exports = ({
     appRoot,
     nodeModules,
     isLinked,
+    paths,
     ...rest,
   };
 
@@ -84,16 +87,19 @@ module.exports = ({
         path.resolve(appRoot, 'app'),
       ],
       alias: {
-        '@root': appRoot,
-        '@electron':
-          isElectron &&
-          fs.existsSync(path.resolve(appRoot, 'electron', 'index.js'))
-            ? path.resolve(appRoot, 'electron', 'index.js')
-            : path.resolve(__dirname, '..', 'noop'),
-        '@app':
-          isServer && !isSSR
-            ? path.resolve(__dirname, '..', 'noop')
-            : path.resolve(appRoot, 'app'),
+        '__app__': path.resolve(__dirname, '..', 'noop'),
+        '__server__': path.resolve(__dirname, '..', 'noop'),
+        '__electron__': path.resolve(__dirname, '..', 'noop'),
+        '__root__': appRoot,
+        ...Object.keys(paths || {}).reduce((obj, key) => {
+          // get all folders in src and create 'olymp-xxx' alias
+          if (path.isAbsolute(paths[key])) {
+            obj[key] = paths[key];
+          } else {
+            obj[key] = path.resolve(appRoot, paths[key]);
+          }
+          return obj;
+        }, {}),
         ...allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
           if (item === 'core') {

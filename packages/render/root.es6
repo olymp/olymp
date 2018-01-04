@@ -8,7 +8,7 @@ import { AppContainer } from 'react-hot-loader';
 import { AsyncComponentProvider } from 'react-async-component';
 import { DynamicReduxProvider } from 'olymp-redux';
 import UAParser from 'ua-parser-js';
-import App from '@app';
+import App from '__app__';
 
 const enhance = compose(
   withContext({

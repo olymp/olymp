@@ -8,7 +8,7 @@
     "favicon": "real-favicon generate faviconDescription.json faviconData.json ./packages/core/public/",
     "up": "npm-check -u",
     "init": "lerna init --independent",
-    "watch": "olymp-lerna watch",
+    "watch": "node packages/lerna/bin/olymp-lerna watch",
     "test": "jest && codecov",
     "es": "eslint packages/** --quiet",
     "esa": "eslint packages/**",

@@ -89,7 +89,7 @@ module.exports = (config, {
         entryOnly: false,
       }),
     );
-    if (isDev && isServer) {
+    if (isDev) {
       config.plugins.push(
         new StartServerPlugin({
           name: 'app.js',

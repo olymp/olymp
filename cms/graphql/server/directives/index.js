@@ -1,3 +1,26 @@
-export { default as input } from './input';
-export { default as fake } from './fake';
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2dyYXBocWwvc2VydmVyL2RpcmVjdGl2ZXMvaW5kZXguZXM2Il0sIm5hbWVzIjpbImRlZmF1bHQiLCJpbnB1dCIsImZha2UiXSwibWFwcGluZ3MiOiJBQUFBLFNBQVNBLFdBQVdDLEtBQXBCLFFBQWlDLFNBQWpDO0FBQ0EsU0FBU0QsV0FBV0UsSUFBcEIsUUFBZ0MsUUFBaEMiLCJmaWxlIjoicGFja2FnZXMvZ3JhcGhxbC9zZXJ2ZXIvZGlyZWN0aXZlcy9pbmRleC5qcyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCB7IGRlZmF1bHQgYXMgaW5wdXQgfSBmcm9tICcuL2lucHV0JztcbmV4cG9ydCB7IGRlZmF1bHQgYXMgZmFrZSB9IGZyb20gJy4vZmFrZSc7XG4iXX0=
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _input = require('./input');
+
+Object.defineProperty(exports, 'input', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_input).default;
+  }
+});
+
+var _fake = require('./fake');
+
+Object.defineProperty(exports, 'fake', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_fake).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNtcy9ncmFwaHFsL3NlcnZlci9kaXJlY3RpdmVzL2luZGV4LmVzNiJdLCJuYW1lcyI6WyJkZWZhdWx0Il0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OzswQ0FBU0EsTzs7Ozs7Ozs7O3lDQUNBQSxPIiwiZmlsZSI6ImNtcy9ncmFwaHFsL3NlcnZlci9kaXJlY3RpdmVzL2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IHsgZGVmYXVsdCBhcyBpbnB1dCB9IGZyb20gJy4vaW5wdXQnO1xuZXhwb3J0IHsgZGVmYXVsdCBhcyBmYWtlIH0gZnJvbSAnLi9mYWtlJztcbiJdfQ==

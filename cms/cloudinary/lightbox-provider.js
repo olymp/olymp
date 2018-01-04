@@ -1,6 +1,23 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _class;
+
+var _react = require('react');
+
+var _reactRedux = require('react-redux');
+
+var _lightboxRedux = require('./lightbox-redux');
+
+var _lightboxRedux2 = _interopRequireDefault(_lightboxRedux);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,18 +25,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import withRedux from './lightbox-redux';
-
-var enhanceQuery = connect(function (_ref) {
+var enhanceQuery = (0, _reactRedux.connect)(function (_ref) {
   var location = _ref.location;
   return {
     qlightbox: location.query.lightbox
   };
 });
 
-var LightboxProvider = enhanceQuery(_class = withRedux(_class = function (_Component) {
+var LightboxProvider = enhanceQuery(_class = (0, _lightboxRedux2.default)(_class = function (_Component) {
   _inherits(LightboxProvider, _Component);
 
   function LightboxProvider() {
@@ -38,7 +51,7 @@ var LightboxProvider = enhanceQuery(_class = withRedux(_class = function (_Compo
   }]);
 
   return LightboxProvider;
-}(Component)) || _class) || _class;
+}(_react.Component)) || _class) || _class;
 
-export { LightboxProvider as default };
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2Nsb3VkaW5hcnkvbGlnaHRib3gtcHJvdmlkZXIuZXM2Il0sIm5hbWVzIjpbIkNvbXBvbmVudCIsImNvbm5lY3QiLCJ3aXRoUmVkdXgiLCJlbmhhbmNlUXVlcnkiLCJsb2NhdGlvbiIsInFsaWdodGJveCIsInF1ZXJ5IiwibGlnaHRib3giLCJMaWdodGJveFByb3ZpZGVyIiwiY2hpbGRyZW4iLCJwcm9wcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7OztBQUFBLFNBQVNBLFNBQVQsUUFBMEIsT0FBMUI7QUFDQSxTQUFTQyxPQUFULFFBQXdCLGFBQXhCO0FBQ0EsT0FBT0MsU0FBUCxNQUFzQixrQkFBdEI7O0FBRUEsSUFBTUMsZUFBZUYsUUFBUTtBQUFBLE1BQUdHLFFBQUgsUUFBR0EsUUFBSDtBQUFBLFNBQW1CO0FBQzlDQyxlQUFXRCxTQUFTRSxLQUFULENBQWVDO0FBRG9CLEdBQW5CO0FBQUEsQ0FBUixDQUFyQjs7SUFNcUJDLGdCLEdBRnBCTCxZLFVBQ0FELFM7Ozs7Ozs7Ozs7OzZCQUVVO0FBQUEsVUFDQ08sUUFERCxHQUNjLEtBQUtDLEtBRG5CLENBQ0NELFFBREQ7O0FBRVAsYUFBT0EsUUFBUDtBQUNEOzs7O0VBSjJDVCxTOztTQUF6QlEsZ0IiLCJmaWxlIjoicGFja2FnZXMvY2xvdWRpbmFyeS9saWdodGJveC1wcm92aWRlci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENvbXBvbmVudCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IGNvbm5lY3QgfSBmcm9tICdyZWFjdC1yZWR1eCc7XG5pbXBvcnQgd2l0aFJlZHV4IGZyb20gJy4vbGlnaHRib3gtcmVkdXgnO1xuXG5jb25zdCBlbmhhbmNlUXVlcnkgPSBjb25uZWN0KCh7IGxvY2F0aW9uIH0pID0+ICh7XG4gIHFsaWdodGJveDogbG9jYXRpb24ucXVlcnkubGlnaHRib3gsXG59KSk7XG5cbkBlbmhhbmNlUXVlcnlcbkB3aXRoUmVkdXhcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIExpZ2h0Ym94UHJvdmlkZXIgZXh0ZW5kcyBDb21wb25lbnQge1xuICByZW5kZXIoKSB7XG4gICAgY29uc3QgeyBjaGlsZHJlbiB9ID0gdGhpcy5wcm9wcztcbiAgICByZXR1cm4gY2hpbGRyZW47XG4gIH1cbn1cbiJdfQ==
+exports.default = LightboxProvider;
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNtcy9jbG91ZGluYXJ5L2xpZ2h0Ym94LXByb3ZpZGVyLmVzNiJdLCJuYW1lcyI6WyJlbmhhbmNlUXVlcnkiLCJsb2NhdGlvbiIsInFsaWdodGJveCIsInF1ZXJ5IiwibGlnaHRib3giLCJMaWdodGJveFByb3ZpZGVyIiwiY2hpbGRyZW4iLCJwcm9wcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7QUFBQTs7QUFDQTs7QUFDQTs7Ozs7Ozs7Ozs7O0FBRUEsSUFBTUEsZUFBZSx5QkFBUTtBQUFBLE1BQUdDLFFBQUgsUUFBR0EsUUFBSDtBQUFBLFNBQW1CO0FBQzlDQyxlQUFXRCxTQUFTRSxLQUFULENBQWVDO0FBRG9CLEdBQW5CO0FBQUEsQ0FBUixDQUFyQjs7SUFNcUJDLGdCLEdBRnBCTCxZOzs7Ozs7Ozs7Ozs2QkFHVTtBQUFBLFVBQ0NNLFFBREQsR0FDYyxLQUFLQyxLQURuQixDQUNDRCxRQUREOztBQUVQLGFBQU9BLFFBQVA7QUFDRDs7Ozs7O2tCQUprQkQsZ0IiLCJmaWxlIjoiY21zL2Nsb3VkaW5hcnkvbGlnaHRib3gtcHJvdmlkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDb21wb25lbnQgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBjb25uZWN0IH0gZnJvbSAncmVhY3QtcmVkdXgnO1xuaW1wb3J0IHdpdGhSZWR1eCBmcm9tICcuL2xpZ2h0Ym94LXJlZHV4JztcblxuY29uc3QgZW5oYW5jZVF1ZXJ5ID0gY29ubmVjdCgoeyBsb2NhdGlvbiB9KSA9PiAoe1xuICBxbGlnaHRib3g6IGxvY2F0aW9uLnF1ZXJ5LmxpZ2h0Ym94LFxufSkpO1xuXG5AZW5oYW5jZVF1ZXJ5XG5Ad2l0aFJlZHV4XG5leHBvcnQgZGVmYXVsdCBjbGFzcyBMaWdodGJveFByb3ZpZGVyIGV4dGVuZHMgQ29tcG9uZW50IHtcbiAgcmVuZGVyKCkge1xuICAgIGNvbnN0IHsgY2hpbGRyZW4gfSA9IHRoaXMucHJvcHM7XG4gICAgcmV0dXJuIGNoaWxkcmVuO1xuICB9XG59XG4iXX0=

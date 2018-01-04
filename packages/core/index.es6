@@ -19,7 +19,6 @@ const createConfig = require(path.resolve(
 ));
 
 const root = process.cwd();
-const hasServer = fs.existsSync(path.resolve(root, 'server'));
 
 const pckgOlymp =
   jsonfile.readFileSync(path.resolve(root, 'package.json'), {
@@ -46,31 +45,10 @@ const olymprc = merge(
   }) || {},
 );
 
-const command = argv._[1];
-
-if (['start', 'build'].includes(command)) {
-  process.env.NODE_ENV = 'production';
-}
-
-const { PORT } = process.env;
-
-const isSSR = !!argv.ssr;
-const isServerless = !!argv.serverless || !!argv.sls;
-
-let TARGETS = [];
-if (argv.targets) {
-  TARGETS = argv.targets.split(',');
-} else if (argv.electron) {
-  TARGETS = hasServer
-    ? ['node', 'electron-main', 'electron-renderer']
-    : ['electron-main', 'electron-renderer'];
-} else {
-  TARGETS = hasServer ? ['node', 'web'] : ['web'];
-}
-
 exports.start = () => {
   require(path.resolve(process.cwd(), '.dist', 'node', 'app'));
 }
+
 exports.build = (options) => {
   if (!Array.isArray(options)) {
     options = [options];
@@ -84,8 +62,8 @@ exports.build = (options) => {
         ...olymprc,
         ...config,
         mode: 'production',
-        isSSR: config.ssr || isSSR,
-        isServerless: config.serverless || isServerless,
+        isSSR: config.ssr,
+        isServerless: config.serverless,
       })
     }),
   );
@@ -108,7 +86,9 @@ exports.build = (options) => {
     });
   });
 }
+
 exports.dev = (options, port) => {
+  const mode = process.env.NODE_ENV || 'development';
   if (!Array.isArray(options)) {
     options = [options];
   }
@@ -118,18 +98,21 @@ exports.dev = (options, port) => {
     poll: false,
     ignored: /node_modules/,
   };
+
+  const isServerless = options.filter(x => x.target === 'node').length === 0;
   const compiler = webpack(
-    options.map((config, i) =>
+    options.map((config) =>
       createConfig({
         ...olymprc,
         ...config,
-        mode: 'development',
-        port,
+        mode,
+        port: config.target === 'node' ? port  + 1 : port,
         isSSR: !config.serverless && config.ssr !== false,
-        isServerless: config.serverless || options.filter(x => x.target === 'node').length === 0,
+        isServerless: config.serverless || isServerless,
       }),
     ),
   );
+
   options.forEach((config, i) => {
     const currentCompiler = compiler.compilers[i];
     if (config.target === 'node' || config.target === 'electron-main') {
@@ -148,8 +131,9 @@ exports.dev = (options, port) => {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
-        proxy: {
-          // '**': `http://localhost:${port + 1}`,
+        proxy: isServerless ? {
+        } : {
+          '**': `http://localhost:${port + 1}`,
         },
         watchOptions: watch,
         inline: false,

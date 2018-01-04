@@ -1,13 +1,28 @@
-import 'antd/lib/popover/style';
-import _Popover from 'antd/lib/popover';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _popover = require('antd/lib/popover');
+
+var _popover2 = _interopRequireDefault(_popover);
+
+require('antd/lib/popover/style');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _menu = require('olymp-fela/menu');
+
+var _menu2 = _interopRequireDefault(_menu);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-import React from 'react';
-import Menu from 'olymp-fela/menu';
-
-
-export default (function (_ref) {
+exports.default = function (_ref) {
   var open = _ref.open,
       children = _ref.children,
       content = _ref.content,
@@ -15,18 +30,18 @@ export default (function (_ref) {
       placement = _ref$placement === undefined ? 'left' : _ref$placement,
       rest = _objectWithoutProperties(_ref, ['open', 'children', 'content', 'placement']);
 
-  return React.createElement(
-    _Popover,
+  return _react2.default.createElement(
+    _popover2.default,
     {
       placement: placement,
       title: content && children,
       content: content || children
     },
-    React.createElement(
-      Menu.Item,
+    _react2.default.createElement(
+      _menu2.default.Item,
       rest,
       children
     )
   );
-});
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2ZlbGEvbWVudS9hbnQvcG9wb3Zlci5lczYiXSwibmFtZXMiOlsiUmVhY3QiLCJNZW51Iiwib3BlbiIsImNoaWxkcmVuIiwiY29udGVudCIsInBsYWNlbWVudCIsInJlc3QiXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUEsT0FBT0EsS0FBUCxNQUFrQixPQUFsQjtBQUNBLE9BQU9DLElBQVAsTUFBaUIsaUJBQWpCOzs7QUFHQSxnQkFBZTtBQUFBLE1BQUdDLElBQUgsUUFBR0EsSUFBSDtBQUFBLE1BQVNDLFFBQVQsUUFBU0EsUUFBVDtBQUFBLE1BQW1CQyxPQUFuQixRQUFtQkEsT0FBbkI7QUFBQSw0QkFBNEJDLFNBQTVCO0FBQUEsTUFBNEJBLFNBQTVCLGtDQUF3QyxNQUF4QztBQUFBLE1BQW1EQyxJQUFuRDs7QUFBQSxTQUNiO0FBQUE7QUFBQTtBQUNFLGlCQUFXRCxTQURiO0FBRUUsYUFBT0QsV0FBV0QsUUFGcEI7QUFHRSxlQUFTQyxXQUFXRDtBQUh0QjtBQUtFO0FBQUMsVUFBRCxDQUFNLElBQU47QUFBZUcsVUFBZjtBQUFzQkg7QUFBdEI7QUFMRixHQURhO0FBQUEsQ0FBZiIsImZpbGUiOiJwYWNrYWdlcy9mZWxhL21lbnUvYW50L3BvcG92ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IE1lbnUgZnJvbSAnb2x5bXAtZmVsYS9tZW51JztcbmltcG9ydCB7IFBvcG92ZXIgfSBmcm9tICdhbnRkJztcblxuZXhwb3J0IGRlZmF1bHQgKHsgb3BlbiwgY2hpbGRyZW4sIGNvbnRlbnQsIHBsYWNlbWVudCA9ICdsZWZ0JywgLi4ucmVzdCB9KSA9PiAoXG4gIDxQb3BvdmVyXG4gICAgcGxhY2VtZW50PXtwbGFjZW1lbnR9XG4gICAgdGl0bGU9e2NvbnRlbnQgJiYgY2hpbGRyZW59XG4gICAgY29udGVudD17Y29udGVudCB8fCBjaGlsZHJlbn1cbiAgPlxuICAgIDxNZW51Lkl0ZW0gey4uLnJlc3R9PntjaGlsZHJlbn08L01lbnUuSXRlbT5cbiAgPC9Qb3BvdmVyPlxuKTtcbiJdfQ==
+};
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImV4dGVybmFsL2ZlbGEvbWVudS9hbnQvcG9wb3Zlci5lczYiXSwibmFtZXMiOlsib3BlbiIsImNoaWxkcmVuIiwiY29udGVudCIsInBsYWNlbWVudCIsInJlc3QiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBOzs7O0FBQ0E7Ozs7Ozs7O2tCQUdlO0FBQUEsTUFBR0EsSUFBSCxRQUFHQSxJQUFIO0FBQUEsTUFBU0MsUUFBVCxRQUFTQSxRQUFUO0FBQUEsTUFBbUJDLE9BQW5CLFFBQW1CQSxPQUFuQjtBQUFBLDRCQUE0QkMsU0FBNUI7QUFBQSxNQUE0QkEsU0FBNUIsa0NBQXdDLE1BQXhDO0FBQUEsTUFBbURDLElBQW5EOztBQUFBLFNBQ2I7QUFBQTtBQUFBO0FBQ0UsaUJBQVdELFNBRGI7QUFFRSxhQUFPRCxXQUFXRCxRQUZwQjtBQUdFLGVBQVNDLFdBQVdEO0FBSHRCO0FBS0U7QUFBQSxxQkFBTSxJQUFOO0FBQWVHLFVBQWY7QUFBc0JIO0FBQXRCO0FBTEYsR0FEYTtBQUFBLEMiLCJmaWxlIjoiZXh0ZXJuYWwvZmVsYS9tZW51L2FudC9wb3BvdmVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCBNZW51IGZyb20gJ29seW1wLWZlbGEvbWVudSc7XG5pbXBvcnQgeyBQb3BvdmVyIH0gZnJvbSAnYW50ZCc7XG5cbmV4cG9ydCBkZWZhdWx0ICh7IG9wZW4sIGNoaWxkcmVuLCBjb250ZW50LCBwbGFjZW1lbnQgPSAnbGVmdCcsIC4uLnJlc3QgfSkgPT4gKFxuICA8UG9wb3ZlclxuICAgIHBsYWNlbWVudD17cGxhY2VtZW50fVxuICAgIHRpdGxlPXtjb250ZW50ICYmIGNoaWxkcmVufVxuICAgIGNvbnRlbnQ9e2NvbnRlbnQgfHwgY2hpbGRyZW59XG4gID5cbiAgICA8TWVudS5JdGVtIHsuLi5yZXN0fT57Y2hpbGRyZW59PC9NZW51Lkl0ZW0+XG4gIDwvUG9wb3Zlcj5cbik7XG4iXX0=

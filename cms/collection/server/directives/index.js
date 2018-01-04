@@ -1,3 +1,26 @@
-export { default as collection } from './collection';
-export { default as relation } from './relation';
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2NvbGxlY3Rpb24vc2VydmVyL2RpcmVjdGl2ZXMvaW5kZXguZXM2Il0sIm5hbWVzIjpbImRlZmF1bHQiLCJjb2xsZWN0aW9uIiwicmVsYXRpb24iXSwibWFwcGluZ3MiOiJBQUFBLFNBQVNBLFdBQVdDLFVBQXBCLFFBQXNDLGNBQXRDO0FBQ0EsU0FBU0QsV0FBV0UsUUFBcEIsUUFBb0MsWUFBcEMiLCJmaWxlIjoicGFja2FnZXMvY29sbGVjdGlvbi9zZXJ2ZXIvZGlyZWN0aXZlcy9pbmRleC5qcyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCB7IGRlZmF1bHQgYXMgY29sbGVjdGlvbiB9IGZyb20gJy4vY29sbGVjdGlvbic7XG5leHBvcnQgeyBkZWZhdWx0IGFzIHJlbGF0aW9uIH0gZnJvbSAnLi9yZWxhdGlvbic7XG4iXX0=
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _collection = require('./collection');
+
+Object.defineProperty(exports, 'collection', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_collection).default;
+  }
+});
+
+var _relation = require('./relation');
+
+Object.defineProperty(exports, 'relation', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_relation).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNtcy9jb2xsZWN0aW9uL3NlcnZlci9kaXJlY3RpdmVzL2luZGV4LmVzNiJdLCJuYW1lcyI6WyJkZWZhdWx0Il0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OzsrQ0FBU0EsTzs7Ozs7Ozs7OzZDQUNBQSxPIiwiZmlsZSI6ImNtcy9jb2xsZWN0aW9uL3NlcnZlci9kaXJlY3RpdmVzL2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IHsgZGVmYXVsdCBhcyBjb2xsZWN0aW9uIH0gZnJvbSAnLi9jb2xsZWN0aW9uJztcbmV4cG9ydCB7IGRlZmF1bHQgYXMgcmVsYXRpb24gfSBmcm9tICcuL3JlbGF0aW9uJztcbiJdfQ==

@@ -1,2 +1,17 @@
-export { default as cloudinaryGraphQL } from './graphql';
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2Nsb3VkaW5hcnkvc2VydmVyL2luZGV4LmVzNiJdLCJuYW1lcyI6WyJkZWZhdWx0IiwiY2xvdWRpbmFyeUdyYXBoUUwiXSwibWFwcGluZ3MiOiJBQUFBLFNBQVNBLFdBQVdDLGlCQUFwQixRQUE2QyxXQUE3QyIsImZpbGUiOiJwYWNrYWdlcy9jbG91ZGluYXJ5L3NlcnZlci9pbmRleC5qcyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCB7IGRlZmF1bHQgYXMgY2xvdWRpbmFyeUdyYXBoUUwgfSBmcm9tICcuL2dyYXBocWwnO1xuIl19
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _graphql = require('./graphql');
+
+Object.defineProperty(exports, 'cloudinaryGraphQL', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_graphql).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNtcy9jbG91ZGluYXJ5L3NlcnZlci9pbmRleC5lczYiXSwibmFtZXMiOlsiZGVmYXVsdCJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7NENBQVNBLE8iLCJmaWxlIjoiY21zL2Nsb3VkaW5hcnkvc2VydmVyL2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IHsgZGVmYXVsdCBhcyBjbG91ZGluYXJ5R3JhcGhRTCB9IGZyb20gJy4vZ3JhcGhxbCc7XG4iXX0=

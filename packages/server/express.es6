@@ -14,9 +14,8 @@ import helmet from 'helmet';
 // Etc
 import fetch from 'isomorphic-fetch';
 // import sslRedirect from 'heroku-ssl-redirect';
-import { UAParser } from 'olymp-useragent';
-// Locale
-import ssr from 'olymp-render/string';
+import UAParser from 'ua-parser-js';
+import server from '__server__';
 
 // eslint
 global.fetch = fetch;
@@ -101,38 +100,7 @@ app.use((req, res, next) => {
   next();
 });
 
-try {
-  const server = require('@root/server');
-  if (server.default) {
-    server.default(app);
-  } else {
-    server(app);
-  }
-} catch (err) {
-  console.log(
-    'No server.js or server/index.js file found, using default settings',
-    err,
-  );
-}
-
-// Setup server side routing.
-app.get('*', (req, res) => {
-  const { status, result } = ssr(req.originalUrl, req);
-
-  switch (status) {
-    case 'ERROR':
-      res.status(500).send(result);
-      break;
-    case 'REDIRECT':
-      res.status(301).setHeader('Location', result);
-      res.end();
-      break;
-    case 'MISS':
-      res.status(404).send(result);
-      break;
-    default:
-      res.status(200).send(result);
-  }
-});
+console.log('1234')
+server(app);
 
 export default app;

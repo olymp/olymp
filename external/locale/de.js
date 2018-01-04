@@ -1,29 +1,55 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-import React from 'react';
-import deDE from 'antd/lib/locale-provider/de_DE';
-import moment from 'moment';
-import 'moment/locale/de';
-import AntLocaleProvider from 'antd/lib/locale-provider';
-import dateLocale from 'date-fns/locale/de';
-import LocaleProvider from './with-locale';
+var _react = require('react');
 
-moment.locale('de');
+var _react2 = _interopRequireDefault(_react);
 
-export default (function () {
+var _de_DE = require('antd/lib/locale-provider/de_DE');
+
+var _de_DE2 = _interopRequireDefault(_de_DE);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+require('moment/locale/de');
+
+var _localeProvider = require('antd/lib/locale-provider');
+
+var _localeProvider2 = _interopRequireDefault(_localeProvider);
+
+var _de = require('date-fns/locale/de');
+
+var _de2 = _interopRequireDefault(_de);
+
+var _withLocale = require('./with-locale');
+
+var _withLocale2 = _interopRequireDefault(_withLocale);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_moment2.default.locale('de');
+
+exports.default = function () {
   var LANG = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return function (WrappedComponent) {
     return function (props) {
-      return React.createElement(
-        AntLocaleProvider,
-        { locale: deDE },
-        React.createElement(
-          LocaleProvider,
-          { locale: _extends({}, LANG, dateLocale) },
-          React.createElement(WrappedComponent, props)
+      return _react2.default.createElement(
+        _localeProvider2.default,
+        { locale: _de_DE2.default },
+        _react2.default.createElement(
+          _withLocale2.default,
+          { locale: _extends({}, LANG, _de2.default) },
+          _react2.default.createElement(WrappedComponent, props)
         )
       );
     };
   };
-});
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL2xvY2FsZS9kZS5lczYiXSwibmFtZXMiOlsiUmVhY3QiLCJkZURFIiwibW9tZW50IiwiQW50TG9jYWxlUHJvdmlkZXIiLCJkYXRlTG9jYWxlIiwiTG9jYWxlUHJvdmlkZXIiLCJsb2NhbGUiLCJMQU5HIiwicHJvcHMiXSwibWFwcGluZ3MiOiI7O0FBQUEsT0FBT0EsS0FBUCxNQUFrQixPQUFsQjtBQUNBLE9BQU9DLElBQVAsTUFBaUIsZ0NBQWpCO0FBQ0EsT0FBT0MsTUFBUCxNQUFtQixRQUFuQjtBQUNBLE9BQU8sa0JBQVA7QUFDQSxPQUFPQyxpQkFBUCxNQUE4QiwwQkFBOUI7QUFDQSxPQUFPQyxVQUFQLE1BQXVCLG9CQUF2QjtBQUNBLE9BQU9DLGNBQVAsTUFBMkIsZUFBM0I7O0FBRUFILE9BQU9JLE1BQVAsQ0FBYyxJQUFkOztBQUVBLGdCQUFlO0FBQUEsTUFBQ0MsSUFBRCx1RUFBUSxFQUFSO0FBQUEsU0FBZTtBQUFBLFdBQW9CO0FBQUEsYUFDaEQ7QUFBQyx5QkFBRDtBQUFBLFVBQW1CLFFBQVFOLElBQTNCO0FBQ0U7QUFBQyx3QkFBRDtBQUFBLFlBQWdCLHFCQUFhTSxJQUFiLEVBQXNCSCxVQUF0QixDQUFoQjtBQUNFLDhCQUFDLGdCQUFELEVBQXNCSSxLQUF0QjtBQURGO0FBREYsT0FEZ0Q7QUFBQSxLQUFwQjtBQUFBLEdBQWY7QUFBQSxDQUFmIiwiZmlsZSI6InBhY2thZ2VzL2xvY2FsZS9kZS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgZGVERSBmcm9tICdhbnRkL2xpYi9sb2NhbGUtcHJvdmlkZXIvZGVfREUnO1xuaW1wb3J0IG1vbWVudCBmcm9tICdtb21lbnQnO1xuaW1wb3J0ICdtb21lbnQvbG9jYWxlL2RlJztcbmltcG9ydCBBbnRMb2NhbGVQcm92aWRlciBmcm9tICdhbnRkL2xpYi9sb2NhbGUtcHJvdmlkZXInO1xuaW1wb3J0IGRhdGVMb2NhbGUgZnJvbSAnZGF0ZS1mbnMvbG9jYWxlL2RlJztcbmltcG9ydCBMb2NhbGVQcm92aWRlciBmcm9tICcuL3dpdGgtbG9jYWxlJztcblxubW9tZW50LmxvY2FsZSgnZGUnKTtcblxuZXhwb3J0IGRlZmF1bHQgKExBTkcgPSB7fSkgPT4gV3JhcHBlZENvbXBvbmVudCA9PiBwcm9wcyA9PiAoXG4gIDxBbnRMb2NhbGVQcm92aWRlciBsb2NhbGU9e2RlREV9PlxuICAgIDxMb2NhbGVQcm92aWRlciBsb2NhbGU9e3sgLi4uTEFORywgLi4uZGF0ZUxvY2FsZSB9fT5cbiAgICAgIDxXcmFwcGVkQ29tcG9uZW50IHsuLi5wcm9wc30gLz5cbiAgICA8L0xvY2FsZVByb3ZpZGVyPlxuICA8L0FudExvY2FsZVByb3ZpZGVyPlxuKTtcbiJdfQ==
+};
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImV4dGVybmFsL2xvY2FsZS9kZS5lczYiXSwibmFtZXMiOlsibG9jYWxlIiwiTEFORyIsInByb3BzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7OztBQUFBOzs7O0FBQ0E7Ozs7QUFDQTs7OztBQUNBOztBQUNBOzs7O0FBQ0E7Ozs7QUFDQTs7Ozs7O0FBRUEsaUJBQU9BLE1BQVAsQ0FBYyxJQUFkOztrQkFFZTtBQUFBLE1BQUNDLElBQUQsdUVBQVEsRUFBUjtBQUFBLFNBQWU7QUFBQSxXQUFvQjtBQUFBLGFBQ2hEO0FBQUE7QUFBQSxVQUFtQix1QkFBbkI7QUFDRTtBQUFBO0FBQUEsWUFBZ0IscUJBQWFBLElBQWIsZUFBaEI7QUFDRSx3Q0FBQyxnQkFBRCxFQUFzQkMsS0FBdEI7QUFERjtBQURGLE9BRGdEO0FBQUEsS0FBcEI7QUFBQSxHQUFmO0FBQUEsQyIsImZpbGUiOiJleHRlcm5hbC9sb2NhbGUvZGUuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IGRlREUgZnJvbSAnYW50ZC9saWIvbG9jYWxlLXByb3ZpZGVyL2RlX0RFJztcbmltcG9ydCBtb21lbnQgZnJvbSAnbW9tZW50JztcbmltcG9ydCAnbW9tZW50L2xvY2FsZS9kZSc7XG5pbXBvcnQgQW50TG9jYWxlUHJvdmlkZXIgZnJvbSAnYW50ZC9saWIvbG9jYWxlLXByb3ZpZGVyJztcbmltcG9ydCBkYXRlTG9jYWxlIGZyb20gJ2RhdGUtZm5zL2xvY2FsZS9kZSc7XG5pbXBvcnQgTG9jYWxlUHJvdmlkZXIgZnJvbSAnLi93aXRoLWxvY2FsZSc7XG5cbm1vbWVudC5sb2NhbGUoJ2RlJyk7XG5cbmV4cG9ydCBkZWZhdWx0IChMQU5HID0ge30pID0+IFdyYXBwZWRDb21wb25lbnQgPT4gcHJvcHMgPT4gKFxuICA8QW50TG9jYWxlUHJvdmlkZXIgbG9jYWxlPXtkZURFfT5cbiAgICA8TG9jYWxlUHJvdmlkZXIgbG9jYWxlPXt7IC4uLkxBTkcsIC4uLmRhdGVMb2NhbGUgfX0+XG4gICAgICA8V3JhcHBlZENvbXBvbmVudCB7Li4ucHJvcHN9IC8+XG4gICAgPC9Mb2NhbGVQcm92aWRlcj5cbiAgPC9BbnRMb2NhbGVQcm92aWRlcj5cbik7XG4iXX0=

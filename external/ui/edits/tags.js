@@ -1,7 +1,13 @@
-import 'antd/lib/select/style';
-import _Select2 from 'antd/lib/select';
-import 'antd/lib/select/style';
-import _Select from 'antd/lib/select';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _select = require('antd/lib/select');
+
+var _select2 = _interopRequireDefault(_select);
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -11,6 +17,20 @@ var _dec, _class;
 
 var _templateObject = _taggedTemplateLiteral(['\n  query tags {\n    tags {\n      id\n    }\n  }\n'], ['\n  query tags {\n    tags {\n      id\n    }\n  }\n']);
 
+require('antd/lib/select/style');
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _graphqlTag = require('graphql-tag');
+
+var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
+
+var _reactApollo = require('react-apollo');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19,12 +39,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-import React, { Component } from 'react';
-
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
-
-var TagsEditor = (_dec = graphql(gql(_templateObject)), _dec(_class = function (_Component) {
+var TagsEditor = (_dec = (0, _reactApollo.graphql)((0, _graphqlTag2.default)(_templateObject)), _dec(_class = function (_Component) {
   _inherits(TagsEditor, _Component);
 
   function TagsEditor() {
@@ -37,12 +52,12 @@ var TagsEditor = (_dec = graphql(gql(_templateObject)), _dec(_class = function (
     key: 'render',
     value: function render() {
       var tags = this.props.data.tags || [];
-      return React.createElement(
-        _Select2,
+      return _react2.default.createElement(
+        _select2.default,
         _extends({}, this.props, { mode: 'tags' }),
         tags.map(function (tag) {
-          return React.createElement(
-            _Select.Option,
+          return _react2.default.createElement(
+            _select2.default.Option,
             { key: tag.id },
             tag.id
           );
@@ -52,6 +67,6 @@ var TagsEditor = (_dec = graphql(gql(_templateObject)), _dec(_class = function (
   }]);
 
   return TagsEditor;
-}(Component)) || _class);
-export { TagsEditor as default };
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhY2thZ2VzL3VpL2VkaXRzL3RhZ3MuZXM2Il0sIm5hbWVzIjpbIlJlYWN0IiwiQ29tcG9uZW50IiwiZ3FsIiwiZ3JhcGhxbCIsIlRhZ3NFZGl0b3IiLCJ0YWdzIiwicHJvcHMiLCJkYXRhIiwibWFwIiwidGFnIiwiaWQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLE9BQU9BLEtBQVAsSUFBZ0JDLFNBQWhCLFFBQWlDLE9BQWpDOztBQUVBLE9BQU9DLEdBQVAsTUFBZ0IsYUFBaEI7QUFDQSxTQUFTQyxPQUFULFFBQXdCLGNBQXhCOztJQVNxQkMsVSxXQVBwQkQsUUFBUUQsR0FBUixrQjs7Ozs7Ozs7Ozs7NkJBUVU7QUFDUCxVQUFNRyxPQUFPLEtBQUtDLEtBQUwsQ0FBV0MsSUFBWCxDQUFnQkYsSUFBaEIsSUFBd0IsRUFBckM7QUFDQSxhQUNFO0FBQUE7QUFBQSxxQkFBWSxLQUFLQyxLQUFqQixJQUF3QixNQUFLLE1BQTdCO0FBQ0dELGFBQUtHLEdBQUwsQ0FBUztBQUFBLGlCQUFPO0FBQUEsb0JBQVEsTUFBUjtBQUFBLGNBQWUsS0FBS0MsSUFBSUMsRUFBeEI7QUFBNkJELGdCQUFJQztBQUFqQyxXQUFQO0FBQUEsU0FBVDtBQURILE9BREY7QUFLRDs7OztFQVJxQ1QsUztTQUFuQkcsVSIsImZpbGUiOiJwYWNrYWdlcy91aS9lZGl0cy90YWdzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IENvbXBvbmVudCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IFNlbGVjdCB9IGZyb20gJ2FudGQnO1xuaW1wb3J0IGdxbCBmcm9tICdncmFwaHFsLXRhZyc7XG5pbXBvcnQgeyBncmFwaHFsIH0gZnJvbSAncmVhY3QtYXBvbGxvJztcblxuQGdyYXBocWwoZ3FsYFxuICBxdWVyeSB0YWdzIHtcbiAgICB0YWdzIHtcbiAgICAgIGlkXG4gICAgfVxuICB9XG5gKVxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgVGFnc0VkaXRvciBleHRlbmRzIENvbXBvbmVudCB7XG4gIHJlbmRlcigpIHtcbiAgICBjb25zdCB0YWdzID0gdGhpcy5wcm9wcy5kYXRhLnRhZ3MgfHwgW107XG4gICAgcmV0dXJuIChcbiAgICAgIDxTZWxlY3Qgey4uLnRoaXMucHJvcHN9IG1vZGU9XCJ0YWdzXCI+XG4gICAgICAgIHt0YWdzLm1hcCh0YWcgPT4gPFNlbGVjdC5PcHRpb24ga2V5PXt0YWcuaWR9Pnt0YWcuaWR9PC9TZWxlY3QuT3B0aW9uPil9XG4gICAgICA8L1NlbGVjdD5cbiAgICApO1xuICB9XG59XG4iXX0=
+}(_react.Component)) || _class);
+exports.default = TagsEditor;
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImV4dGVybmFsL3VpL2VkaXRzL3RhZ3MuZXM2Il0sIm5hbWVzIjpbIlRhZ3NFZGl0b3IiLCJ0YWdzIiwicHJvcHMiLCJkYXRhIiwibWFwIiwidGFnIiwiaWQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBOzs7O0FBRUE7Ozs7QUFDQTs7Ozs7Ozs7Ozs7O0lBU3FCQSxVLFdBUHBCLHFFOzs7Ozs7Ozs7Ozs2QkFRVTtBQUNQLFVBQU1DLE9BQU8sS0FBS0MsS0FBTCxDQUFXQyxJQUFYLENBQWdCRixJQUFoQixJQUF3QixFQUFyQztBQUNBLGFBQ0U7QUFBQTtBQUFBLHFCQUFZLEtBQUtDLEtBQWpCLElBQXdCLE1BQUssTUFBN0I7QUFDR0QsYUFBS0csR0FBTCxDQUFTO0FBQUEsaUJBQU87QUFBQSw2QkFBUSxNQUFSO0FBQUEsY0FBZSxLQUFLQyxJQUFJQyxFQUF4QjtBQUE2QkQsZ0JBQUlDO0FBQWpDLFdBQVA7QUFBQSxTQUFUO0FBREgsT0FERjtBQUtEOzs7OztrQkFSa0JOLFUiLCJmaWxlIjoiZXh0ZXJuYWwvdWkvZWRpdHMvdGFncy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBDb21wb25lbnQgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBTZWxlY3QgfSBmcm9tICdhbnRkJztcbmltcG9ydCBncWwgZnJvbSAnZ3JhcGhxbC10YWcnO1xuaW1wb3J0IHsgZ3JhcGhxbCB9IGZyb20gJ3JlYWN0LWFwb2xsbyc7XG5cbkBncmFwaHFsKGdxbGBcbiAgcXVlcnkgdGFncyB7XG4gICAgdGFncyB7XG4gICAgICBpZFxuICAgIH1cbiAgfVxuYClcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIFRhZ3NFZGl0b3IgZXh0ZW5kcyBDb21wb25lbnQge1xuICByZW5kZXIoKSB7XG4gICAgY29uc3QgdGFncyA9IHRoaXMucHJvcHMuZGF0YS50YWdzIHx8IFtdO1xuICAgIHJldHVybiAoXG4gICAgICA8U2VsZWN0IHsuLi50aGlzLnByb3BzfSBtb2RlPVwidGFnc1wiPlxuICAgICAgICB7dGFncy5tYXAodGFnID0+IDxTZWxlY3QuT3B0aW9uIGtleT17dGFnLmlkfT57dGFnLmlkfTwvU2VsZWN0Lk9wdGlvbj4pfVxuICAgICAgPC9TZWxlY3Q+XG4gICAgKTtcbiAgfVxufVxuIl19
