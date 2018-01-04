@@ -100,6 +100,7 @@ exports.dev = (options, port) => {
   };
 
   const isServerless = options.filter(x => x.target === 'node').length === 0;
+  console.log(isServerless, options.map(x => x.target), port);
   const compiler = webpack(
     options.map((config) =>
       createConfig({
@@ -159,7 +160,7 @@ exports.dev = (options, port) => {
           publicPath: false,
         },
       });
-      console.log('Listening to', port)
+      console.log('WebpackDevServer listening to', port, 'proxy requests to', port + 1);
       server.listen(port);
     }
   });

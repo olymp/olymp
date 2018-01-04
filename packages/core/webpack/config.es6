@@ -60,6 +60,7 @@ module.exports = ({
     nodeModules,
     isLinked,
     paths,
+    port,
     ...rest,
   };
 

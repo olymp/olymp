@@ -21,11 +21,17 @@ module.exports = (config, {
   target,
   sharedEnv = {},
 }) => {
+  const base = {};
+  if (port) {
+    base['process.env.PORT'] = `${port}`;
+  }
+  console.log(base);
   config.plugins = [
     new webpack.LoaderOptionsPlugin({
       debug: isDev,
     }),
     new webpack.DefinePlugin({
+      ...base,
       'process.env.BUILD_ON': `"${new Date()}"`,
       'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
       'process.env.IS_SSR': isSSR,

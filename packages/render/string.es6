@@ -57,7 +57,9 @@ const getAssets = () => {
 // Setup server side routing.
 export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], css = [], ...context }) => {
   // const assets = getAssets();
-  const assets = { app: {} };
+  const assets = { app: {
+    js: 'app.js',
+  } };
   const renderTemplate = isAmp ? amp : template;
   if (IS_SSR === false && !ssr) {
     const html = renderTemplate({

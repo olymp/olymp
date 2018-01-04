@@ -100,7 +100,6 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log('1234')
 server(app);
 
 export default app;

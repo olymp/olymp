@@ -1,7 +1,7 @@
 import render from 'olymp-render/string';
 
-export default ({ ssr = true } = {}) => (req, res) => {
-  const { status, result } = render(req.originalUrl, { ...req, ssr });
+export default ({ ssr = true } = {}) => async (req, res) => {
+  const { status, result } = await render(req.originalUrl, { ...req, ssr });
 
   switch (status) {
     case 'ERROR':
