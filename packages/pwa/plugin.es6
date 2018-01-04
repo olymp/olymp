@@ -3,12 +3,12 @@ const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const OfflinePlugin = require(resolve(process.cwd(), 'node_modules', 'offline-plugin'));
 const path = require('path');
 
 module.exports = (config, { isWeb, isProd, isServerless, appRoot, folder, target}) => {
   if (isWeb) {
     if (isProd) {
+      const OfflinePlugin = require(resolve(process.cwd(), 'node_modules', 'offline-plugin'));
       config.plugins.push(new HtmlWebpackPlugin({
         filename: 'offline.html',
         template: path.resolve(process.cwd(), 'node_modules', 'olymp-render', 'templates', 'serverless.js'),

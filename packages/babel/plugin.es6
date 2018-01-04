@@ -65,7 +65,7 @@ module.exports = (config, options) => {
     config.module.rules.push({
       test: /\.js$/,
       use: [
-        /* {
+        {
           loader: 'cache-loader',
           options: {
             cacheDirectory: resolve(
@@ -75,7 +75,7 @@ module.exports = (config, options) => {
               `${target}-babel`,
             ),
           },
-        }, */
+        },
         {
           loader: 'babel-loader',
           options: babelOptions,
@@ -93,7 +93,7 @@ module.exports = (config, options) => {
     config.module.rules.push({
       test: /\.js$/,
       use: [
-        /* {
+        {
           loader: 'cache-loader',
           options: {
             cacheDirectory: resolve(
@@ -103,7 +103,7 @@ module.exports = (config, options) => {
               `${target}-babel`,
             ),
           },
-        }, */
+        },
         {
           loader: 'babel-loader',
           options: babelOptions,

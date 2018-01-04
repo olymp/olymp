@@ -11,6 +11,9 @@ module.exports = (config, options) => {
     isLinked,
     modifyVars,
     isDev,
+    appRoot,
+    folder,
+    target
   } = options;
 
   if (isWeb && isProd) {
@@ -24,12 +27,12 @@ module.exports = (config, options) => {
       test: /\.(less|css)$/,
       loader: ExtractTextPlugin.extract({
         use: [
-          /* {
+          {
             loader: 'cache-loader',
             options: {
               cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
             },
-          }, */
+          },
           {
             loader: 'css-loader',
             options: { modules: false },
@@ -46,12 +49,12 @@ module.exports = (config, options) => {
     config.module.rules.push({
       test: /\.(less|css)$/,
       use: [
-        /* {
+        {
           loader: 'cache-loader',
           options: {
             cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
           },
-        }, */
+        },
         {
           loader: 'style-loader',
           options: { insertAt: 'top', hmr: isDev },
