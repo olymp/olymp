@@ -70,7 +70,7 @@ const compile = x =>
   x
     .pipe(plumber())
     .pipe(debug())
-    // .pipe(newer(dest, { extension: '.js' }))
+    .pipe(newer(dest, { extension: '.js' }))
     .pipe(sourcemaps.init())
     .pipe(babel(babelOptions))
     .pipe(sourcemaps.write())
