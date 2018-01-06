@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "lerna": "^2.5.1",
+    "olymp-eslint": "^16.0.17",
     "olymp-lerna": "^20.0.0-38"
   },
   "devDependencies": {}
