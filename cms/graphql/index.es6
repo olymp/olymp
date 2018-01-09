@@ -14,14 +14,14 @@ export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
 export const apolloMiddleware = client => ({
-  dispatch,
+  dispatch
 }) => nextDispatch => action => {
   if (action.type && (action.mutation || action.query)) {
     const requestId = shortId.generate();
     dispatch({
       type: pending(action.type),
       payload: action.payload,
-      requestId,
+      requestId
     });
     const invoker = action.mutation
       ? () =>
@@ -33,7 +33,7 @@ export const apolloMiddleware = client => ({
             variables: omit(action.payload || action.variables),
             refetchQueries: action.refetchQueries,
             optimisticResponse: action.optimisticResponse,
-            update: action.update,
+            update: action.update
           })
       : () =>
           client.query({
@@ -41,7 +41,7 @@ export const apolloMiddleware = client => ({
               typeof action.query === 'string'
                 ? gql(action.query)
                 : action.query,
-            variables: omit(action.payload || action.variables),
+            variables: omit(action.payload || action.variables)
           });
     return invoker()
       .then(({ data, errors, ...xy }) => {
@@ -49,13 +49,13 @@ export const apolloMiddleware = client => ({
           dispatch({
             type: rejected(action.type),
             requestId,
-            payload: errors,
+            payload: errors
           });
         } else {
           dispatch({
             type: resolved(action.type),
             requestId,
-            payload: data[Object.keys(data)[0]],
+            payload: data[Object.keys(data)[0]]
           });
         }
         return data[Object.keys(data)[0]];
@@ -64,7 +64,7 @@ export const apolloMiddleware = client => ({
         dispatch({
           type: rejected(action.type),
           requestId,
-          payload: err,
+          payload: err
         });
         throw err;
       });
@@ -76,18 +76,18 @@ export const createMutation = dispatch => ({
   mutation,
   variables,
   refetchQueries,
-  update,
+  update
 }) =>
   dispatch({
     type: APOLLO_MUTATE,
     mutation,
     variables,
     refetchQueries,
-    update,
+    update
   });
 export const createQuery = dispatch => ({ query, variables }) =>
   dispatch({
     type: APOLLO_QUERY,
     query,
-    variables,
+    variables
   });
