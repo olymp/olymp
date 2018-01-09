@@ -17,6 +17,7 @@
     "olymp-redux": "^20.0.1",
     "react-async-bootstrapper": "^1.1.2",
     "react-async-component": "^1.0.2",
+    "react-fela": "^6.2.4",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.0.0-beta.12",
     "recompose": "^0.26.0",
