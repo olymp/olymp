@@ -40,7 +40,7 @@ export const appReducer = (init = {}) => {
   };
 };
 
-export const appMiddleware = ({ dispatch }) => {
+export const apolloMiddleware = ({ dispatch }) => {
   if (typeof window !== 'undefined') {
     window.addEventListener('offline', () => {
       dispatch({ type: INTERNET_CONNECTION, payload: false });
