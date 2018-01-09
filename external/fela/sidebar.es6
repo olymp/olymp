@@ -44,7 +44,11 @@ export const Section = createComponent(
     marginRight: right && (overlap || collapsed ? 72 : left),
     transition: 'all 200ms cubic-bezier(0.165, 0.84, 0.44, 1)',
     height: '100%',
-    position: 'relative'
+    position: 'relative',
+    hasFlex: {
+      display: 'flex',
+      flexDirection: 'column'
+    }
   }),
   'section',
   ({
