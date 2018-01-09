@@ -14,6 +14,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "olymp-apollo": "^20.0.3",
+    "olymp-fela": "^20.0.3",
     "olymp-redux": "^20.0.3",
     "olymp-router": "^20.0.5",
     "react-async-bootstrapper": "^1.1.2",
