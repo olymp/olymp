@@ -1,23 +1,24 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import shortID from 'shortid';
 import { createBlock, createUnblock } from './redux';
 
 @connect(null, dispatch => ({
   block: createBlock(dispatch),
-  unblock: createUnblock(dispatch),
+  unblock: createUnblock(dispatch)
 }))
 class Prompt extends Component {
-  id = shortID.generate();
+  id = Math.random()
+    .toString(36)
+    .substr(2, 10);
 
   static propTypes = {
     when: PropTypes.bool,
-    message: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+    message: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired
   };
 
   static defaultProps = {
-    when: true,
+    when: true
   };
 
   componentWillMount() {
