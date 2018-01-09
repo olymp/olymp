@@ -1,5 +1,5 @@
 {
-  "version": "20.0.3",
+  "version": "20.0.4",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -22,14 +22,14 @@
     "olymp-auth0": "^20.0.1",
     "olymp-cloudinary": "^20.0.1",
     "olymp-collection": "^20.0.1",
-    "olymp-fela": "^20.0.3",
-    "olymp-google": "^20.0.1",
+    "olymp-fela": "^20.0.4",
+    "olymp-google": "^20.0.4",
     "olymp-graphql": "^20.0.1",
     "olymp-icons": "^20.0.1",
-    "olymp-pages": "^20.0.3",
-    "olymp-scrape": "^20.0.3",
+    "olymp-pages": "^20.0.4",
+    "olymp-scrape": "^20.0.4",
     "olymp-slate": "^20.0.1",
-    "olymp-ui": "^20.0.1",
+    "olymp-ui": "^20.0.4",
     "olymp-utils": "^19.1.14"
   },
   "devDependencies": {

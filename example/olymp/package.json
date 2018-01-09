@@ -1,5 +1,5 @@
 {
-  "version": "20.0.3",
+  "version": "20.0.4",
   "name": "olymp-example",
   "description": "Olymp",
   "author": "Benjamin Kniffler <benjamin@diego.one>",
@@ -39,9 +39,9 @@
   },
   "dependencies": {
     "olymp": "^20.0.3",
-    "olymp-fela": "^20.0.3",
-    "olymp-pwa": "^20.0.3",
-    "olymp-render": "^20.0.3",
+    "olymp-fela": "^20.0.4",
+    "olymp-pwa": "^20.0.4",
+    "olymp-render": "^20.0.4",
     "olymp-router": "^20.0.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
