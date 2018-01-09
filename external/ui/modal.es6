@@ -4,7 +4,8 @@ import Portal from 'olymp-fela/portal';
 import cn from 'classnames';
 import ReactModal2 from 'react-modal2';
 import { withTheme } from 'react-fela';
-import { getAntStyle, createComponent } from 'olymp-fela';
+import { createComponent } from 'olymp-fela';
+import { getAntStyle } from 'olymp-fela/antd';
 import tinycolor from 'tinycolor2';
 
 ReactModal2.getApplicationElement = () => document.getElementById('app');
@@ -92,7 +93,7 @@ export const Modal = withTheme(
         </ReactModal>
       </Portal>
     );
-  },
+  }
 );
 
 const component = createComponent(
@@ -111,7 +112,7 @@ const component = createComponent(
         .setAlpha(topTransparency || 1)
         .toRgbString()})`,
     hasFlex: {
-      display: 'flex',
+      display: 'flex'
     },
     height: '100%',
     '> .ant-modal': {
@@ -127,28 +128,28 @@ const component = createComponent(
         marginTop: -140,
         textAlign: 'center',
         '> img': {
-          height: 75,
+          height: 75
         },
         '> h3': {
           color: theme.light1,
           fontWeight: 200,
-          fontSize: 40,
-        },
+          fontSize: 40
+        }
       },
       '> div > div': {
         '> .ant-modal-content': {
           borderRadius: theme.borderRadius,
           '> .ant-modal-close': {
-            display: 'none',
+            display: 'none'
           },
           '> .ant-modal-body': {
             padding: padding === undefined ? theme.space2 : padding,
             '> *': {
-              marginY: theme.space3,
+              marginY: theme.space3
             },
             '& .ant-input-group-wrapper': {
-              width: '100%',
-            },
+              width: '100%'
+            }
           },
           '> .ant-modal-header > .ant-modal-title': {
             color: theme.color,
@@ -156,27 +157,27 @@ const component = createComponent(
             // fontWeight: 200,
             padding: 10,
             lineHeight: '30px',
-            paddingTop: 0,
+            paddingTop: 0
           },
           '> .ant-modal-header': {
-            textAlign: 'center',
+            textAlign: 'center'
           },
           '> .ant-modal-footer': {
             hasFlex: {
-              display: 'flex',
+              display: 'flex'
             },
             padding: theme.space1,
             '> .ant-btn': {
               flex: '1 1 auto',
-              margin: theme.space1,
-            },
-          },
-        },
-      },
-    },
+              margin: theme.space1
+            }
+          }
+        }
+      }
+    }
   }),
   Modal,
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 // Copyright
@@ -191,11 +192,11 @@ component.Copyright = createComponent(
       color: 'white',
       opacity: 0.3,
       onHover: {
-        opacity: 1,
-      },
-    },
+        opacity: 1
+      }
+    }
   }),
-  'div',
+  'div'
 );
 
 component.Footer = ({ children, className }) => (
@@ -211,10 +212,10 @@ const TitleButtons = createComponent(
     left: left && 16,
     right: right && 16,
     color: theme.color,
-    fontSize: 40,
+    fontSize: 40
   }),
   'div',
-  ({ left, right, ...p }) => Object.keys(p),
+  ({ left, right, ...p }) => Object.keys(p)
 );
 
 export default component;
