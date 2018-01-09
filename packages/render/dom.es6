@@ -31,6 +31,10 @@ const asyncState = window.ASYNC_STATE;
 // Redux stuff
 const dynamicRedux = createDynamicRedux();
 const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
+const { client } = getApollo({
+  url: window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql',
+  initialData: window.INITIAL_DATA || {}
+});
 const store = createDynamicStore(
   {
     location: routerReducer(history)
@@ -42,10 +46,6 @@ const store = createDynamicStore(
     applyMiddleware(apolloMiddleware(client))
   )
 );
-const { client } = getApollo({
-  url: window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql',
-  initialData: window.INITIAL_DATA || {}
-});
 attachHistory(history, store);
 
 function renderApp(App) {
