@@ -1,5 +1,5 @@
 {
-  "version": "20.0.7",
+  "version": "20.0.8",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -24,7 +24,7 @@
     "olymp-collection": "^20.0.1",
     "olymp-fela": "^20.0.4",
     "olymp-google": "^20.0.4",
-    "olymp-graphql": "^20.0.1",
+    "olymp-graphql": "^20.0.8",
     "olymp-icons": "^20.0.1",
     "olymp-pages": "^20.0.5",
     "olymp-scrape": "^20.0.4",

@@ -1,5 +1,5 @@
 {
-  "version": "20.0.6",
+  "version": "20.0.8",
   "name": "olymp-render",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "olymp-apollo": "^20.0.3",
+    "olymp-apollo": "^20.0.8",
     "olymp-fela": "^20.0.3",
     "olymp-redux": "^20.0.3",
     "olymp-router": "^20.0.5",
