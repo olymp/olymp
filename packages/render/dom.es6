@@ -7,22 +7,21 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 // Olymp
-// import { apolloMiddleware } from 'olymp-graphql';
 import { createFela } from 'olymp-fela';
 
 import {
   createHistory,
   routerReducer,
   routerMiddleware,
-  attachHistory,
+  attachHistory
 } from 'olymp-router';
 import getApollo from 'olymp-apollo/remote';
+import { apolloMiddleware } from 'olymp-apollo/redux';
 // Local
 import createDynamicRedux from 'olymp-redux';
 import Root from './root';
 
-  // Get the DOM Element that will host our React application.
-const { client } = getApollo(window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql', window.INITIAL_DATA || {});
+// Get the DOM Element that will host our React application.
 const container = document.getElementById('app');
 const mountNode = document.getElementById('css-markup');
 const ua = window.navigator.userAgent;
@@ -34,15 +33,19 @@ const dynamicRedux = createDynamicRedux();
 const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
 const store = createDynamicStore(
   {
-    location: routerReducer(history),
+    location: routerReducer(history)
   },
   {}, // initialData
   composeWithDevTools(
     applyMiddleware(dynamicMiddleware),
     applyMiddleware(routerMiddleware(history)),
-    // applyMiddleware(apolloMiddleware(client)),
-  ),
+    applyMiddleware(apolloMiddleware(client))
+  )
 );
+const { client } = getApollo({
+  url: window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql',
+  initialData: window.INITIAL_DATA || {}
+});
 attachHistory(history, store);
 
 function renderApp(App) {
@@ -55,7 +58,7 @@ function renderApp(App) {
     dynamicRedux,
     ua,
     asyncState,
-    history,
+    history
   };
   const app = <App {...props} />;
   const method = window.INITIAL_DATA ? hydrate : render;

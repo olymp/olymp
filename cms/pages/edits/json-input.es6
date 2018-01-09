@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input as AntInput, Form } from 'antd';
-import { layout } from 'olymp-antd';
+import { layout } from 'olymp-fela/antd';
 import { get } from 'lodash';
 import getRules from '../get-rules';
 
@@ -8,7 +8,7 @@ class JsonInput extends Component {
   state = { text: '' };
   componentWillReceiveProps = newProps => {
     this.setState({
-      text: newProps.value ? JSON.stringify(newProps.value) : '',
+      text: newProps.value ? JSON.stringify(newProps.value) : ''
     });
   };
   onChange = x => {
@@ -40,7 +40,7 @@ const Input = ({
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: get(item, field),
-      rules: getRules(rules, label),
+      rules: getRules(rules, label)
     })(<JsonInput placeholder={placeholder} label={label} />)}
   </Form.Item>
 );

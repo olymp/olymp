@@ -1,28 +1,21 @@
 const path = require('path');
-const fs = require('fs');
 const rimraf = require('rimraf');
 const webpack = require('webpack');
 const notifier = require('node-notifier');
 const jsonfile = require('jsonfile');
 const { merge } = require('lodash');
-const argv = require('minimist')(process.argv.slice(1));
 // const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
-
 // const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 
 require('dotenv').config();
 
-const createConfig = require(path.resolve(
-  __dirname,
-  'webpack',
-  'config.js',
-));
+const createConfig = require(path.resolve(__dirname, 'webpack', 'config.js'));
 
 const root = process.cwd();
 
 const pckgOlymp =
   jsonfile.readFileSync(path.resolve(root, 'package.json'), {
-    throws: false,
+    throws: false
   }) || {};
 const olymprc = merge(
   {
@@ -36,20 +29,20 @@ const olymprc = merge(
       'font-family':
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
       'font-size-base': '15px',
-      'primary-color': '#8e44ad',
-    },
+      'primary-color': '#8e44ad'
+    }
   },
   pckgOlymp.olymp || {},
   jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
-    throws: false,
-  }) || {},
+    throws: false
+  }) || {}
 );
 
 exports.start = () => {
   require(path.resolve(process.cwd(), '.dist', 'node', 'app'));
-}
+};
 
-exports.build = (options) => {
+exports.build = options => {
   if (!Array.isArray(options)) {
     options = [options];
   }
@@ -63,9 +56,9 @@ exports.build = (options) => {
         ...config,
         mode: 'production',
         isSSR: config.ssr,
-        isServerless: config.serverless,
-      })
-    }),
+        isServerless: config.serverless
+      });
+    })
   );
 
   return new Promise((yay, nay) => {
@@ -85,7 +78,7 @@ exports.build = (options) => {
       yay(stats);
     });
   });
-}
+};
 
 exports.dev = (options, port) => {
   const mode = process.env.NODE_ENV || 'development';
@@ -96,22 +89,22 @@ exports.dev = (options, port) => {
   const watch = {
     aggregateTimeout: 300,
     poll: false,
-    ignored: /node_modules/,
+    ignored: /node_modules/
   };
 
   const isServerless = options.filter(x => x.target === 'node').length === 0;
   console.log(isServerless, options.map(x => x.target), port);
   const compiler = webpack(
-    options.map((config) =>
+    options.map(config =>
       createConfig({
         ...olymprc,
         ...config,
         mode,
-        port: config.target === 'node' ? port  + 1 : port,
+        port: config.target === 'node' ? port + 1 : port,
         isSSR: !config.serverless && config.ssr !== false,
-        isServerless: config.serverless || isServerless,
-      }),
-    ),
+        isServerless: config.serverless || isServerless
+      })
+    )
   );
 
   options.forEach((config, i) => {
@@ -130,12 +123,13 @@ exports.dev = (options, port) => {
       const WebpackDevServer = require('webpack-dev-server');
       const server = new WebpackDevServer(currentCompiler, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': '*'
         },
-        proxy: isServerless ? {
-        } : {
-          '**': `http://localhost:${port + 1}`,
-        },
+        proxy: isServerless
+          ? {}
+          : {
+              '**': `http://localhost:${port + 1}`
+            },
         watchOptions: watch,
         inline: false,
         host: '0.0.0.0',
@@ -157,12 +151,17 @@ exports.dev = (options, port) => {
           errors: true,
           errorDetails: true,
           warnings: false,
-          publicPath: false,
-        },
+          publicPath: false
+        }
       });
-      console.log('WebpackDevServer listening to', port, 'proxy requests to', port + 1);
+      console.log(
+        'WebpackDevServer listening to',
+        port,
+        'proxy requests to',
+        port + 1
+      );
       server.listen(port);
     }
   });
   return compiler;
-}
+};

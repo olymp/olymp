@@ -1,5 +1,10 @@
 import { secretbox, randomBytes } from 'tweetnacl';
-import { decodeUTF8, encodeUTF8, encodeBase64, decodeBase64 } from 'tweetnacl-util';
+import {
+  decodeUTF8,
+  encodeUTF8,
+  encodeBase64,
+  decodeBase64
+} from 'tweetnacl-util';
 import { pbkdf2 } from 'fast-sha256';
 
 /**
@@ -15,8 +20,14 @@ const newNonce = () => randomBytes(secretbox.nonceLength);
  * @returns {string} base64 encoded key
  */
 
-export const generateRandomKey = () => encodeBase64(randomBytes(secretbox.keyLength));
-export const generatePasswordShaKey = (password, salt, rounds = 100000, len = 32) => {
+export const generateRandomKey = () =>
+  encodeBase64(randomBytes(secretbox.keyLength));
+export const generatePasswordShaKey = (
+  password,
+  salt,
+  rounds = 100000,
+  len = 32
+) => {
   const utf8Password = decodeUTF8(password);
   const utf8Salt = decodeUTF8(salt);
   const hash = pbkdf2(utf8Password, utf8Salt, rounds, len);
@@ -57,7 +68,7 @@ export const decrypt = (messageWithNonce, key) => {
   const nonce = messageWithNonceAsUint8Array.slice(0, secretbox.nonceLength);
   const message = messageWithNonceAsUint8Array.slice(
     secretbox.nonceLength,
-    messageWithNonce.length,
+    messageWithNonce.length
   );
 
   const decrypted = secretbox.open(message, nonce, keyUint8Array);
@@ -84,6 +95,6 @@ export const cachedEncryptor = () => {
         cache[pw] = await generatePasswordShaKey(pw, salt);
       }
       return decrypt(ciphertext, cache[pw]);
-    },
+    }
   };
 };

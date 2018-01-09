@@ -1,4 +1,4 @@
-export default ({ transform, isProd, isNode, isDev }) => {
+export default ({ transform = {}, isProd, isNode, isDev }) => {
   const babelOptions = {
     presets: ['react'],
     plugins: [
@@ -9,8 +9,8 @@ export default ({ transform, isProd, isNode, isDev }) => {
       'transform-class-properties',
       'transform-es2015-classes',
       // 'babel-plugin-fela',
-      ['import', { libraryName: 'antd', style: true }],
-    ],
+      ['import', { libraryName: 'antd', style: true }]
+    ]
   };
 
   babelOptions.presets.push([
@@ -21,9 +21,9 @@ export default ({ transform, isProd, isNode, isDev }) => {
       targets: { node: 'current', browsers: ['last 2 versions'] },
       es2015: {
         modules: false,
-        loose: true,
-      },
-    },
+        loose: true
+      }
+    }
   ]);
 
   if (isProd) {
@@ -41,27 +41,27 @@ export default ({ transform, isProd, isNode, isDev }) => {
         antd: {
           transform: 'antd/lib/${member}',
           kebabCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
         'date-fns': {
           transform: 'date-fns/${member}',
           camelCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
         'olymp-icons': {
           transform: 'olymp-icons/lib/${member}',
           kebabCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
         'olymp-cloudinary': {
           transform: 'olymp-cloudinary/${member}',
           kebabCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
         'olymp-slate': {
           transform: 'olymp-slate/${member}',
           kebabCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
         /* 'olymp-auth': {
           transform: 'olymp-auth/${member}',
@@ -71,15 +71,15 @@ export default ({ transform, isProd, isNode, isDev }) => {
         'olymp-pages': {
           transform: 'olymp-pages/${member}',
           kebabCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
         'olymp-collection': {
           transform: 'olymp-collection/${member}',
           kebabCase: true,
-          preventFullImport: true,
+          preventFullImport: true
         },
-        ...transform,
-      },
+        ...transform
+      }
     ]);
     // babelOptions.plugins.push('transform-react-constant-elements');
     // babelOptions.plugins.push('transform-react-pure-class-to-function');
@@ -88,4 +88,4 @@ export default ({ transform, isProd, isNode, isDev }) => {
     // babelOptions.presets.push(['react-optimize']);
   }
   return babelOptions;
-}
+};

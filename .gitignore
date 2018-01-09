@@ -42,3 +42,11 @@ flow-coverage/
 packages/**/*.js
 packages/**/.stories/*.js
 packages/**/.storybook/*.js
+
+external/**/*.js
+external/**/.stories/*.js
+external/**/.storybook/*.js
+
+cms/**/*.js
+cms/**/.stories/*.js
+cms/**/.storybook/*.js

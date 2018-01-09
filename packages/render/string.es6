@@ -1,6 +1,4 @@
 // eslint-ignore
-// import 'source-map-support/register';
-
 // Node
 import path from 'path';
 import jsonfile from 'jsonfile';
@@ -9,18 +7,16 @@ import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { renderToSheetList } from 'fela-dom';
 import Helmet from 'react-helmet';
-import { createAsyncContext } from 'react-async-component'; // 👈
-import asyncBootstrapper from 'react-async-bootstrapper'; // 👈
+import { createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
 // Etc
 import fetch from 'isomorphic-fetch';
-// import sslRedirect from 'heroku-ssl-redirect';
 // Apollo
 import { getDataFromTree } from 'react-apollo';
 // Redux
 import { applyMiddleware, compose } from 'redux';
 // Olymp
 import { createFela } from 'olymp-fela';
-// import { apolloMiddleware } from 'olymp-graphql';
 import { createHistory, routerMiddleware, routerReducer } from 'olymp-router';
 import createDynamicRedux from 'olymp-redux';
 import getApollo from 'olymp-apollo/local';
@@ -28,18 +24,12 @@ import getApollo from 'olymp-apollo/local';
 // Locale
 import template from './templates/default';
 import amp from './templates/amp';
-// import { appReducer, appMiddleware } from '../redux';
 import Root from './root';
 
 // eslint
 global.fetch = fetch;
 
-const {
-  IS_SSR,
-  GA_TRACKING_ID,
-  BUILD_ON,
-  NODE_ENV,
-} = process.env;
+const { IS_SSR, GA_TRACKING_ID, BUILD_ON, NODE_ENV } = process.env;
 
 const isProd = NODE_ENV === 'production';
 
@@ -48,25 +38,30 @@ const getAssets = () => {
   if (!$assets || !isProd) {
     $assets =
       jsonfile.readFileSync(
-        path.resolve(__dirname, '..', 'web', 'assets.json'),
+        path.resolve(__dirname, '..', 'web', 'assets.json')
       ) || {};
   }
   return $assets;
 };
 
 // Setup server side routing.
-export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], css = [], ...context }) => {
+export default (
+  originalUrl,
+  { isAmp, isBot, schema, query, ua, ssr, js = [], css = [], ...context }
+) => {
   // const assets = getAssets();
-  const assets = { app: {
-    js: 'app.js',
-  } };
+  const assets = {
+    app: {
+      js: 'app.js'
+    }
+  };
   const renderTemplate = isAmp ? amp : template;
   if (IS_SSR === false && !ssr) {
     const html = renderTemplate({
       gaTrackingId: GA_TRACKING_ID,
       scripts: isAmp || !assets.app.js ? js : [...js, assets.app.js],
       styles: isAmp || !assets.app.css ? css : [...css, assets.app.css],
-      buildOn: BUILD_ON,
+      buildOn: BUILD_ON
     });
     return Promise.resolve({ status: 200, result: html });
   }
@@ -80,14 +75,14 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], cs
   const store = createDynamicStore(
     {
       // app: appReducer(),
-      location: routerReducer(history),
+      location: routerReducer(history)
     },
     compose(
       applyMiddleware(dynamicMiddleware),
-      applyMiddleware(routerMiddleware(history)),
+      applyMiddleware(routerMiddleware(history))
       // applyMiddleware(apolloMiddleware(client)),
       // applyMiddleware(appMiddleware),
-    ),
+    )
   );
 
   const asyncContext = createAsyncContext();
@@ -100,16 +95,13 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], cs
     ua,
     isAmp
   };
-  const reactApp = (
-    <Root {...props} />
-  );
+  const reactApp = <Root {...props} />;
 
   return Promise.all([getDataFromTree(reactApp), asyncBootstrapper(reactApp)])
     .then(() => {
       const reactAppString = isAmp
         ? renderToStaticMarkup(reactApp)
         : renderToString(reactApp);
-      console.log(originalUrl, reactAppString);
       const felaMarkup = renderToSheetList(renderer);
       const asyncState = asyncContext.getState();
       // Generate the html res.
@@ -125,10 +117,10 @@ export default (originalUrl, { isAmp, isBot, schema, query, ua, ssr, js = [], cs
         styles: isAmp ? css : [...css, assets.app.css].filter(x => x),
         asyncState,
         initialState: {
-          apollo: cache.data,
+          apollo: cache.data
           // location: state.location,
         },
-        gaTrackingId: GA_TRACKING_ID,
+        gaTrackingId: GA_TRACKING_ID
       });
       if (state.location.url !== url) {
         return { status: 'REDIRECT', result: encodeURI(state.location.url) };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input as AntInput, Form } from 'antd';
-import { layout } from 'olymp-antd';
+import { layout } from 'olymp-fela/antd';
 import { get } from 'lodash';
 import getRules from '../get-rules';
 

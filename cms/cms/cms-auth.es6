@@ -3,11 +3,11 @@ import {
   Switch,
   Match,
   createUpdateQuery,
-  createReplaceQuery,
+  createReplaceQuery
 } from 'olymp-router';
 import withUA from 'olymp-utils/user-agent';
 import EditableRoute from 'olymp-pages/editable';
-import withLocale from 'olymp-locale/de';
+import withLocale from 'olymp-fela/antd/de';
 import PageRoute from 'olymp-pages/route';
 import { Route as CloudinaryRoute, Lightbox } from 'olymp-cloudinary';
 import CollectionRoute from 'olymp-collection/view';
@@ -28,25 +28,25 @@ const Container = createComponent(
     height: '100%',
     '> div': {
       position: 'relative',
-      height: '100%',
-    },
+      height: '100%'
+    }
   }),
   'div',
-  [],
+  []
 );
 const Footer = createComponent(
   ({ theme }) => ({
     padding: theme.space2,
     backgroundColor: theme.dark,
     color: theme.light,
-    textAlign: 'center',
+    textAlign: 'center'
   }),
   'div',
-  p => Object.keys(p),
+  p => Object.keys(p)
 );
 
 const Load = connect(({ app }) => ({
-  loading: app.loading,
+  loading: app.loading
 }))(TopLoader);
 
 const enhance = compose(
@@ -56,13 +56,13 @@ const enhance = compose(
   connect(
     ({ location }) => ({
       query: location.query,
-      pathname: location.pathname,
+      pathname: location.pathname
     }),
     dispatch => ({
       updateQuery: createUpdateQuery(dispatch),
-      replaceQuery: createReplaceQuery(dispatch),
-    }),
-  ),
+      replaceQuery: createReplaceQuery(dispatch)
+    })
+  )
 );
 const component = enhance(props => {
   const {
@@ -72,10 +72,10 @@ const component = enhance(props => {
     ua,
     flatNavigation,
     updateQuery,
-    pathname,
+    pathname
   } = props;
   const collection = collectionList.filter(
-    ({ name }) => query[`@${name.toLowerCase()}`] !== undefined,
+    ({ name }) => query[`@${name.toLowerCase()}`] !== undefined
   )[0];
   const collectionName = collection && collection.name;
   const collectionId =
@@ -92,7 +92,7 @@ const component = enhance(props => {
         onClose={() =>
           updateQuery({
             [`@${collectionName.toLowerCase()}`]: undefined,
-            modal: undefined,
+            modal: undefined
           })
         }
       >

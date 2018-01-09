@@ -23,7 +23,7 @@ export const attachHistory = (history, store) => {
     if (!location.url) {
       store.dispatch({
         type: 'LOCATION_CORRECT',
-        payload: location,
+        payload: location
       });
     }
   });

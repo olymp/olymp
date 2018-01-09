@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import immutable from './immutable-helper';
+import immutable from 'olymp-redux/immutable';
 
 export const MANIPULATE = 'APP_MANIPULATE';
 export const LOADER_START = 'APP_LOADER_START';
@@ -11,8 +11,9 @@ export const appReducer = (init = {}) => {
   const defaultState = {
     version: undefined,
     serverConnection: true,
-    internetConnection: typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
-    ...init,
+    internetConnection:
+      typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
+    ...init
   };
   return (state = defaultState, action) => {
     if (!action || !action.type) {
@@ -21,8 +22,9 @@ export const appReducer = (init = {}) => {
     switch (action.type) {
       case MANIPULATE:
         return action.payload.reduce(
-          (store, { method = 'set', path, value }) => immutable[method](store, path, value),
-          state,
+          (store, { method = 'set', path, value }) =>
+            immutable[method](store, path, value),
+          state
         );
       case LOADER_START:
         return immutable.set(state, 'loading', true);
@@ -38,16 +40,16 @@ export const appReducer = (init = {}) => {
   };
 };
 
-export const appMiddleware = ({ dispatch, getState }) => {
+export const appMiddleware = ({ dispatch }) => {
   if (typeof window !== 'undefined') {
-    window.addEventListener('offline', (e) => {
+    window.addEventListener('offline', () => {
       dispatch({ type: INTERNET_CONNECTION, payload: false });
     });
-    window.addEventListener('online', (e) => {
+    window.addEventListener('online', () => {
       dispatch({ type: INTERNET_CONNECTION, payload: true });
     });
   }
-  return nextDispatch => (action) => {
+  return nextDispatch => action => {
     if (action.type === MANIPULATE) {
       if (!Array.isArray(action.payload)) {
         action.payload = [action.payload];
@@ -60,19 +62,19 @@ export const appMiddleware = ({ dispatch, getState }) => {
 export const createManipulation = dispatch => payload =>
   dispatch({
     type: MANIPULATE,
-    payload,
+    payload
   });
 
 export const createLoaderStart = dispatch => payload =>
   dispatch({
     type: LOADER_START,
-    payload,
+    payload
   });
 
 export const createLoaderEnd = dispatch => payload =>
   dispatch({
     type: LOADER_END,
-    payload,
+    payload
   });
 
 export const createServerConnection = dispatch => payload =>
@@ -81,7 +83,7 @@ export const createServerConnection = dispatch => payload =>
 let pendings = [];
 let loader = null;
 const updateLoader = debounce(
-  (dispatch) => {
+  dispatch => {
     const length = pendings.length;
     if (length && !loader) {
       loader = true;
@@ -92,15 +94,15 @@ const updateLoader = debounce(
     }
   },
   300,
-  { leading: true, trailing: true },
+  { leading: true, trailing: true }
 );
 
-export const startLoading = (dispatch) => {
+export const startLoading = dispatch => {
   pendings = [...pendings, 1];
   updateLoader(dispatch);
 };
 
-export const stopLoading = (dispatch) => {
+export const stopLoading = dispatch => {
   const [first, ...remaining] = pendings;
   pendings = remaining;
   updateLoader(dispatch);

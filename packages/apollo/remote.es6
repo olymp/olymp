@@ -2,7 +2,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from "apollo-link-http";
 
-export default (url, initialData) => {
+export default ({ url, initialData, loader, tokenKey }) => {
   const link = createHttpLink({ uri: url });
 
   const cache = new InMemoryCache({
@@ -10,28 +10,36 @@ export default (url, initialData) => {
     addTypename: true,
   }).restore(initialData || {});
   const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
+  console.log(link);
+  if (tokenKey) {
+    link.use((request, next) => {
+      const token = localStorage.getItem(tokenKey);
+      if (token && token !== 'null') {
+        request.options.headers = {
+          ...request.options.headers,
+          authorization: token ? `${token}` : null,
+        };
+      }
+      request.options.credentials = 'same-origin';
+      next();
+    });
+  }
+  if (loader) {
+    link.use((request, next) => {
+      loader.start();
+      next();
+    });
+    link.useAfter((response, next) => {
+      loader.stop();
+      next();
+    });
+  }
   return { cache, client };
   /* const apolloFetch = createApolloFetch({
     uri: url,
     opts: {
       credentials: 'same-origin',
     },
-  });
-  apolloFetch.use((request, next) => {
-    const token = localStorage.getItem('token');
-    if (token && token !== 'null') {
-      request.options.headers = {
-        ...request.options.headers,
-        authorization: token ? `${token}` : null,
-      };
-    }
-    request.options.credentials = 'same-origin';
-    startLoading(store.dispatch);
-    next();
-  });
-  apolloFetch.useAfter((response, next) => {
-    stopLoading(store.dispatch);
-    next();
   });
   const link = ApolloLink.from([
     ({ context, ...operation }) => {

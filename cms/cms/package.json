@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "algoliasearch": "^3.24.8",
+    "babel-polyfill": "^6.26.0",
     "date-fns": "^2.0.0-alpha.1",
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "mongodb": "^3.0.0-rc0",
     "olymp": "^20.0.1",
-    "olymp-auth": "^19.1.15",
     "olymp-auth0": "^20.0.1",
     "olymp-cloudinary": "^20.0.1",
     "olymp-collection": "^20.0.1",
@@ -26,14 +26,14 @@
     "olymp-google": "^20.0.1",
     "olymp-graphql": "^20.0.1",
     "olymp-icons": "^20.0.1",
-    "olymp-locale": "^20.0.1",
-    "olymp-mail": "^19.1.14",
     "olymp-pages": "^20.0.1",
     "olymp-scrape": "^20.0.1",
     "olymp-slate": "^20.0.1",
     "olymp-ui": "^20.0.1",
-    "olymp-utils": "^19.1.14",
-    "olymp-webpack-babel": "^19.1.15",
-    "olymp-webpack-less": "^19.1.15"
+    "olymp-utils": "^19.1.14"
+  },
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "node-yaml-config": "0.0.4"
   }
 }

@@ -12,7 +12,7 @@ if (process.env.IS_NODE) {
   TextDecoder = window.TextDecoder;
 }
 
-export const hashPassword = (password) => {
+export const hashPassword = password => {
   const pwUtf8 = new TextEncoder().encode(password); // encode password as UTF-8
   return crypto.subtle.digest('SHA-256', pwUtf8); // hash the password
 };
@@ -24,7 +24,9 @@ const encryptWithHash = async (json, pwHash) => {
 
   const alg = { name: 'AES-GCM', iv }; // specify algorithm to use
 
-  const key = await crypto.subtle.importKey('raw', pwHash, alg, false, ['encrypt']); // generate key from pw
+  const key = await crypto.subtle.importKey('raw', pwHash, alg, false, [
+    'encrypt'
+  ]); // generate key from pw
 
   const ptUint8 = new TextEncoder().encode(plaintext); // encode plaintext as UTF-8
   const ctBuffer = await crypto.subtle.encrypt(alg, key, ptUint8); // encrypt plaintext using key
@@ -48,7 +50,9 @@ const decryptWithHash = async (ciphertext, pwHash) => {
 
   const alg = { name: 'AES-GCM', iv: new Uint8Array(iv) }; // specify algorithm to use
 
-  const key = await crypto.subtle.importKey('raw', pwHash, alg, false, ['decrypt']); // use pw to generate key
+  const key = await crypto.subtle.importKey('raw', pwHash, alg, false, [
+    'decrypt'
+  ]); // use pw to generate key
 
   const ctStr = atob(ciphertext.slice(24)); // decode base64 ciphertext
   const ctUint8 = new Uint8Array(ctStr.match(/./g).map(ch => ch.charCodeAt(0))); // ciphertext as Uint8Array
@@ -70,7 +74,7 @@ const decryptWithHash = async (ciphertext, pwHash) => {
     return encryptUntilWorks(json, password, pass + 1);
   }
   return str;
-};*/
+}; */
 
 export const encrypt = async (json, pw) => {
   const hash = hashPassword(pw);
@@ -96,6 +100,6 @@ export const cachedEncryptor = () => {
         cache[pw] = await hashPassword(pw);
       }
       return decryptWithHash(ciphertext, cache[pw]);
-    },
+    }
   };
 };

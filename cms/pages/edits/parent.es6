@@ -1,11 +1,11 @@
 import React from 'react';
 import { TreeSelect, Form } from 'antd';
-import { layout } from 'olymp-antd';
+import { layout } from 'olymp-fela/antd';
 import { withPropsOnChange } from 'recompose';
 import getRules from '../get-rules';
 
 const NullableTree = withPropsOnChange(['onChange'], ({ onChange }) => ({
-  onChange: x => onChange(x || null),
+  onChange: x => onChange(x || null)
 }))(TreeSelect);
 
 const ParentSelect = ({
@@ -22,7 +22,7 @@ const ParentSelect = ({
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: item && item[field] ? item[field] : initialValue,
-      rules: getRules(rules, label),
+      rules: getRules(rules, label)
     })(
       <NullableTree
         placeholder={placeholder || label}
@@ -31,7 +31,7 @@ const ParentSelect = ({
         onChange={x => console.log(x)}
         dropdownStyle={{ maxHeight: 400, overflowY: 'auto' }}
         {...rest}
-      />,
+      />
     )}
   </Form.Item>
 );

@@ -1,4 +1,5 @@
 import { get } from 'lodash';
+import { connect } from 'react-redux';
 import { urlToLocation } from './utils';
 
 export const LOCATION_REPLACE = 'LOCATION_UPDATE';
@@ -138,3 +139,11 @@ export const createBlock = dispatch => (id, message) =>
 
 export const createUnblock = dispatch => id =>
   dispatch({ type: LOCATION_UNBLOCK, payload: { id } });
+
+export const withRouting = connect(null, (dispatch) => ({
+  pushPathname: createPushPathname(dispatch),
+  updateQuery: createUpdateQuery(dispatch),
+  replaceQuery: createReplaceQuery(dispatch),
+  pushLocation: createPush(dispatch),
+  replaceLocation: createReplace(dispatch),
+}));

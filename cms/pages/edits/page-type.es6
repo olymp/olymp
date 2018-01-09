@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Select } from 'antd';
-import { layout } from 'olymp-antd';
+import { layout } from 'olymp-fela/antd';
 import getRules from '../get-rules';
 
 const PageTypeInput = ({
@@ -17,7 +17,7 @@ const PageTypeInput = ({
   <Form.Item key={field} label={label} {...layout}>
     {form.getFieldDecorator(field, {
       initialValue: item && item[field] ? item[field] : 'PAGE',
-      rules: getRules(rules, label),
+      rules: getRules(rules, label)
     })(
       <Select style={{ width: '100%' }} {...rest}>
         <Select.Option value="PAGE">Seite</Select.Option>
@@ -25,7 +25,7 @@ const PageTypeInput = ({
         <Select.Option value="PLACEHOLDER">Platzhalter</Select.Option>
         <Select.Option value="ALIAS">Alias</Select.Option>
         <Select.Option value="LINK">Externer Link</Select.Option>
-      </Select>,
+      </Select>
     )}
   </Form.Item>
 );

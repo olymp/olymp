@@ -10,7 +10,7 @@ export const encrypt = (m, pass) => {
 
   const key = CryptoJS.PBKDF2(pass, salt, {
     keySize: keySize / 32,
-    iterations,
+    iterations
   });
 
   const iv = CryptoJS.lib.WordArray.random(128 / 8);
@@ -18,7 +18,7 @@ export const encrypt = (m, pass) => {
   const encrypted = CryptoJS.AES.encrypt(msg, key, {
     iv,
     padding: CryptoJS.pad.Pkcs7,
-    mode: CryptoJS.mode.CBC,
+    mode: CryptoJS.mode.CBC
   });
 
   // salt, iv will be hex 32 in length
@@ -34,13 +34,13 @@ export const decrypt = (transitmessage, pass, mapper) => {
 
   const key = CryptoJS.PBKDF2(pass, salt, {
     keySize: keySize / 32,
-    iterations,
+    iterations
   });
 
   const decrypted = CryptoJS.AES.decrypt(encrypted, key, {
     iv,
     padding: CryptoJS.pad.Pkcs7,
-    mode: CryptoJS.mode.CBC,
+    mode: CryptoJS.mode.CBC
   });
   return mapper
     ? mapper(JSON.parse(decrypted.toString(CryptoJS.enc.Utf8)))
