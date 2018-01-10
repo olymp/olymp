@@ -4,7 +4,7 @@ import { pagesGraphQL } from 'olymp-pages/server';
 import { cloudinaryGraphQL } from 'olymp-cloudinary/server';
 import { googleGraphQL } from 'olymp-google/server';
 import { scrapeGraphQL } from 'olymp-scrape/server';
-import auth0 from 'olymp-auth0/server';
+import auth0 from 'olymp-auth/server';
 import { MongoClient } from 'mongodb';
 /* import createSitemap from 'olymp-sitemap/server'; */
 import { modules as colModules, directives } from 'olymp-collection/server';
@@ -28,19 +28,18 @@ const {
   NODE_ENV,
   GOOGLE_MAPS_KEY,
   GOOGLE_CLIENT_EMAIL,
-  GOOGLE_PRIVATE_KEY,
+  GOOGLE_PRIVATE_KEY
 } = process.env;
 
 export default (server, options) => {
   let db = null;
-
 
   const x1 = MONGODB_URI.split('?')[0];
   const x2 = MONGODB_URI.split('?')[1] || '';
   const op2 = querystring.parse(x2);
   new MongoClient(x1, {
     ...op2,
-    ssl: !!op2.ssl,
+    ssl: !!op2.ssl
   }).connect((err, mongo) => {
     if (err) {
       console.error(err);
@@ -61,9 +60,9 @@ export default (server, options) => {
     `,
       resolvers: {
         queries: {
-          helloWorld: () => 'Hello World!',
-        },
-      },
+          helloWorld: () => 'Hello World!'
+        }
+      }
     },
     user: {
       schema: `
@@ -74,14 +73,14 @@ export default (server, options) => {
           token: String
           name: String
         }
-      `,
+      `
     },
     ...get(options, 'modules', {}),
-    ...colModules,
+    ...colModules
   };
   const mail = createMail(POSTMARK_KEY, {
     from: POSTMARK_FROM,
-    url: URL,
+    url: URL
   });
 
   const algolia = ALGOLIA
@@ -108,7 +107,7 @@ export default (server, options) => {
   modules.google = googleGraphQL(
     GOOGLE_MAPS_KEY,
     GOOGLE_CLIENT_EMAIL,
-    GOOGLE_PRIVATE_KEY,
+    GOOGLE_PRIVATE_KEY
   );
   server.post('/graphql', schema.express);
   if (NODE_ENV !== 'production') {

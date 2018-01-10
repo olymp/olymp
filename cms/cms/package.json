@@ -19,7 +19,7 @@
     "lodash": "^4.17.4",
     "mongodb": "^3.0.0-rc0",
     "olymp": "^20.0.3",
-    "olymp-auth0": "^20.0.1",
+    "olymp-auth": "^20.0.1",
     "olymp-cloudinary": "^20.0.1",
     "olymp-collection": "^20.0.1",
     "olymp-fela": "^20.0.4",

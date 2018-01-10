@@ -1,13 +1,8 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = (config, {
-  appRoot,
-  externals = [],
-  isNode,
-}) => {
+module.exports = (config, { appRoot, externals = [], isNode }) => {
   if (isNode) {
-    console.log('EXT', path.resolve(appRoot, 'node_modules'))
     config.externals = nodeExternals({
       modulesDir: path.resolve(appRoot, 'node_modules'),
       whitelist: [
@@ -28,8 +23,8 @@ module.exports = (config, {
           v === 'hashtax' ||
           v.indexOf('hashtax-') === 0 ||
           v.indexOf('hashtax/') === 0,
-        ...externals.map(key => v => v === key || v.indexOf(`${key}/`) === 0),
-      ],
+        ...externals.map(key => v => v === key || v.indexOf(`${key}/`) === 0)
+      ]
     });
   }
   return config;

@@ -85,6 +85,7 @@ exports.dev = (options, port) => {
   if (!Array.isArray(options)) {
     options = [options];
   }
+  console.log(options);
   port = parseInt(`${port}`, 10);
   const watch = {
     aggregateTimeout: 300,
@@ -93,7 +94,6 @@ exports.dev = (options, port) => {
   };
 
   const isServerless = options.filter(x => x.target === 'node').length === 0;
-  console.log(isServerless, options.map(x => x.target), port);
   const compiler = webpack(
     options.map(config =>
       createConfig({
@@ -109,7 +109,11 @@ exports.dev = (options, port) => {
 
   options.forEach((config, i) => {
     const currentCompiler = compiler.compilers[i];
-    if (config.target === 'node' || config.target === 'electron-main') {
+    if (
+      config.target === 'node' ||
+      config.target === 'lambda' ||
+      config.target === 'electron-main'
+    ) {
       currentCompiler.watch(watch, (err, compilation) => {
         if (err) {
           return console.log('[webpack] error:', err);

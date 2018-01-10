@@ -1,6 +1,6 @@
 import React from 'react';
 import PageRoute from 'olymp-pages/route';
-import { getAuth } from 'olymp-auth0';
+import { getAuth } from 'olymp-auth';
 import { Lightbox } from 'olymp-cloudinary';
 import { lifecycle, compose } from 'recompose';
 import { TopLoader } from 'olymp-fela';
@@ -17,7 +17,7 @@ const enhance = compose(
         if (e.altKey) {
           const closeMessage = message.loading(
             'Gedrückt halten zum Anmelden',
-            99999,
+            99999
           );
           const timer = setTimeout(() => {
             // setQuery({ login: null });
@@ -38,7 +38,7 @@ const enhance = compose(
     },
     componentWillUnmount() {
       this.unload();
-    },
+    }
   }),
   connect(({ app, location }) => ({
     _isLoading: app.loading,
@@ -49,16 +49,16 @@ const enhance = compose(
       location.query.confirm !== undefined ||
       location.query.forgot !== undefined ||
       location.query.reset !== undefined ||
-      location.query.login !== undefined,
-  })),
+      location.query.login !== undefined
+  }))
 );
 const component = enhance(
   ({ _isLoading, flatNavigation, showLightbox, showAuth, ...rest }) => [
     <TopLoader loading={_isLoading} key={1} />,
     showLightbox && <Lightbox key={2} />,
     <PageRoute flatNavigation={flatNavigation} {...rest} key={4} />,
-    <PrefetchRoutes flatNavigation={flatNavigation} key={5} />,
-  ],
+    <PrefetchRoutes flatNavigation={flatNavigation} key={5} />
+  ]
 );
 
 component.displayName = 'CmsNoAuth';

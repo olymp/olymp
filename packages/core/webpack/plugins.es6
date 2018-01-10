@@ -5,46 +5,55 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
-module.exports = (config, {
-  isSSR,
-  isNetlify,
-  isServerless,
-  isWeb,
-  isNode,
-  isElectron,
-  isDev,
-  isServer,
-  port,
-  isProd,
-  isLinked,
-  folder,
-  target,
-  sharedEnv = {},
-}) => {
-  const base = {};
-  if (port) {
-    base['process.env.PORT'] = `${port}`;
+module.exports = (
+  config,
+  {
+    isSSR,
+    isNetlify,
+    isServerless,
+    isWeb,
+    isNode,
+    isElectron,
+    isDev,
+    isServer,
+    port,
+    isProd,
+    isLinked,
+    folder,
+    target,
+    env = {},
+    sharedEnv = {}
   }
-  console.log(base);
+) => {
+  if (port && !env.PORT) {
+    env.PORT = `${port}`;
+  }
   config.plugins = [
     new webpack.LoaderOptionsPlugin({
-      debug: isDev,
+      debug: isDev
     }),
     new webpack.DefinePlugin({
-      ...base,
+      ...Object.keys(env).reduce((store, key) => {
+        if (env[key] === true || process.env[key]) {
+          store[`process.env.${key}`] = JSON.stringify(process.env[key]);
+        } else {
+          store[`process.env.${key}`] = JSON.stringify(env[key]);
+        }
+        return store;
+      }, {}),
       'process.env.BUILD_ON': `"${new Date()}"`,
       'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
       'process.env.IS_SSR': isSSR,
       'process.env.IS_SERVERLESS': !isNetlify && isServerless,
       'process.env.IS_WEB': isWeb,
       'process.env.IS_NODE': isNode,
-      'process.env.IS_ELECTRON': isElectron,
+      'process.env.IS_ELECTRON': isElectron
     }),
     // new PrepackWebpackPlugin({ }),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
     new ProgressBarPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
     // new CheckerPlugin(),
   ];
 
@@ -76,14 +85,14 @@ module.exports = (config, {
             store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);
           }
           return store;
-        }, {}),
-      }),
+        }, {})
+      })
     );
   } else if (port) {
     config.plugins.push(
       new webpack.DefinePlugin({
-        'process.env.PORT': `"${port}"`,
-      }),
+        'process.env.PORT': `"${port}"`
+      })
     );
   }
 
@@ -92,15 +101,15 @@ module.exports = (config, {
       new webpack.BannerPlugin({
         banner: 'require("source-map-support").install();',
         raw: true,
-        entryOnly: false,
-      }),
+        entryOnly: false
+      })
     );
-    if (isDev) {
+    if (isDev && target !== 'lambda') {
       config.plugins.push(
         new StartServerPlugin({
-          name: 'app.js',
+          name: 'app.js'
           // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
-        }),
+        })
       );
     }
   } else if (!isNode) {
@@ -115,14 +124,14 @@ module.exports = (config, {
   // LimitChunkCount on all but production-web
   if (isNode) {
     config.plugins.push(
-      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 })
     );
   } else if (isWeb) {
     config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
-        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
-      }),
+        path: path.resolve(process.cwd(), folder, target.split('-')[0])
+      })
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     if (isLinked && isProd) {
@@ -131,9 +140,9 @@ module.exports = (config, {
       config.plugins.push(
         new BundleAnalyzerPlugin({
           reportFilename: './_report.html',
-          analyzerMode: 'static',
+          analyzerMode: 'static'
           // generateStatsFile: false,
-        }),
+        })
       );
     } else if (isProd) {
       config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
@@ -143,9 +152,9 @@ module.exports = (config, {
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
         name: 'app',
-        filename,
+        filename
         // minChunks: 2,
-      }),
+      })
     );
   }
 

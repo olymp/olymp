@@ -3,7 +3,7 @@ import { compose, withPropsOnChange } from 'recompose';
 import { connect } from 'react-redux';
 import { ThemeProvider, ScreenLoader, Logo } from 'olymp-fela';
 import { useSchema } from 'olymp-slate';
-import { withAuth, getAuth } from 'olymp-auth0';
+import { withAuth, getAuth } from 'olymp-auth';
 import { LightboxProvider } from 'olymp-cloudinary';
 import getNavigation from 'olymp-pages/get-navigation';
 import { asyncComponent } from 'react-async-component';
@@ -20,9 +20,9 @@ const IfAuth = asyncComponent({
         require => {
           resolve(require('./cms-auth'));
         },
-        'cms',
-      ),
-    ),
+        'cms'
+      )
+    )
 });
 
 const enhance = compose(
@@ -37,14 +37,14 @@ const enhance = compose(
         token
         _appIds
         ${get(auth, 'attributes', '')}
-      `,
-    },
+      `
+    }
   })),
   withAuth({
     title: 'olymp',
     color: 'orange',
     logo:
-      'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
+      'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png'
   }),
   withRedux,
   useSchema,
@@ -53,14 +53,14 @@ const enhance = compose(
       logo: () => <Logo />,
       logoWhite: () => <Logo color="white" />,
       logoTitle: 'olymp cms',
-      ...theme,
-    },
-  })),
+      ...theme
+    }
+  }))
 );
 
 const Auth = getAuth(
   ({ isAuthenticated, ...rest }) =>
-    isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />,
+    isAuthenticated ? <IfAuth {...rest} /> : <NoAuth {...rest} />
 );
 Auth.displayName = 'CmsAuthSwitch';
 
@@ -72,13 +72,13 @@ const Load = getNavigation(
       location.pathname === '/auth' ||
       (typeof window === 'undefined' &&
         !!Object.keys(location.query).find(key => key.indexOf('@') === 0)) ||
-      false,
+      false
   }))(({ isLoading, pathname, ...rest }) => (
     <Fragment>
       <ScreenLoader show={isLoading} />
       <Auth {...rest} />
     </Fragment>
-  )),
+  ))
 );
 Load.displayName = 'CmsLoadSwitch';
 

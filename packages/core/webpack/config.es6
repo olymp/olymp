@@ -4,6 +4,7 @@ const fs = require('fs');
 const externals = require('./externals');
 const entry = require('./entry');
 const webpackPlugins = require('./plugins');
+const lambda = require('./lambda');
 
 const appRoot = process.cwd();
 
@@ -36,9 +37,9 @@ module.exports = ({
   const isElectron = target.indexOf('electron') === 0;
   const isElectronMain = target === 'electron-main';
   const isElectronRenderer = target === 'electron-renderer';
-  const isWeb = target !== 'node' && target !== 'electron-main';
-  const isNode = target === 'node' || isElectronMain;
-  const isServer = target === 'node';
+  const isServer = target === 'node' || target === 'lambda';
+  const isWeb = !isServer && target !== 'node' && target !== 'electron-main';
+  const isNode = isServer || isElectronMain;
   const isNetlify = isSSR && isServerless;
   isServerless = isServerless === true || isElectron;
   isSSR = !isElectronMain && isSSR !== false && !isServerless;
@@ -209,6 +210,7 @@ module.exports = ({
   config = webpackPlugins(config, options);
   config = externals(config, options);
   config = entry(config, options);
+  config = lambda(config, options);
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(
       pluginsFolder,
