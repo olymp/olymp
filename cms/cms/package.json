@@ -1,5 +1,5 @@
 {
-  "version": "20.0.8",
+  "version": "20.0.10",
   "name": "olymp-cms",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -18,8 +18,8 @@
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "mongodb": "^3.0.0-rc0",
-    "olymp": "^20.0.3",
-    "olymp-auth": "^20.0.1",
+    "olymp": "^20.0.10",
+    "olymp-auth": "^20.0.10",
     "olymp-cloudinary": "^20.0.1",
     "olymp-collection": "^20.0.1",
     "olymp-fela": "^20.0.4",
