@@ -6,7 +6,7 @@ export const getDB = () => cachedDb;
 
 let cachedDb = null;
 let _cachedDb = null;
-const connectToDatabase = () => {
+export const connectToDatabase = () => {
   if (cachedDb && cachedDb.serverConfig.isConnected()) {
     return Promise.resolve(cachedDb);
   }
