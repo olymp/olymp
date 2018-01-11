@@ -20,11 +20,13 @@ export const connectToDatabase = connectionString => {
     return Promise.resolve(cachedDb);
   }
   const dbName = CONNECTION_STRING.split('/').pop();
-  return MongoClient.connect(CONNECTION_STRING).then(db => {
-    _cachedDb = db;
-    cachedDb = db.db(dbName);
-    return cachedDb;
-  });
+  return MongoClient.connect(CONNECTION_STRING, { authSource: 'admin' }).then(
+    db => {
+      _cachedDb = db;
+      cachedDb = db.db(dbName);
+      return cachedDb;
+    }
+  );
 };
 
 export const close = () => {
