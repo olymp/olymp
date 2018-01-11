@@ -19,9 +19,10 @@ export const connectToDatabase = connectionString => {
   if (!CONNECTION_STRING) {
     return Promise.resolve(cachedDb);
   }
+  const dbName = CONNECTION_STRING.split('/').pop();
   return MongoClient.connect(CONNECTION_STRING).then(db => {
     _cachedDb = db;
-    cachedDb = db.db('olymp');
+    cachedDb = db.db(dbName);
     return cachedDb;
   });
 };
