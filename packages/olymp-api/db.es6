@@ -1,7 +1,7 @@
 import { MongoClient, ObjectID } from 'mongodb';
 
-export const getDB = async CONNECTION_STRING => {
-  await connectToDatabase();
+export const getDB = async str => {
+  await connectToDatabase(str);
   return cachedDb;
 };
 

@@ -3,8 +3,6 @@ import { connectionString, connectToDatabase } from './db';
 export * from './db';
 
 export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
-  connectionString(mongoUri);
-
   const lambda = new GraphQLServerLambda({
     typeDefs,
     resolvers,
@@ -18,7 +16,7 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
           : context) || {};
       return {
         ...ctx,
-        db: await connectToDatabase(),
+        db: await connectToDatabase(mongoUri),
       };
     },
   });
