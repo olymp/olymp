@@ -1,38 +1,24 @@
-import 'babel-polyfill';
 import React from 'react';
+import App, { plugins } from '__resourceQuery';
 import { render, hydrate } from 'react-dom';
-import App, { plugins } from '__app__';
 
-import injectPlugins from './plugins';
+import inject from './inject';
 import enhance from './root';
 
+const { decorate, bootstrap } = inject(plugins);
 const container = document.getElementById('app');
-const ua = window.navigator.userAgent;
-
-const { decorate, bootstrap } = injectPlugins(plugins);
 
 const renderApp = async Component => {
-  const props = {
-    client,
-    mountNode,
-    container,
-    renderer,
-    store,
-    dynamicRedux,
-    ua,
-    history,
-  };
-  const app = <Component {...props} />;
+  const app = <Component ua={window.navigator.userAgent} />;
   const method = window.INITIAL_DATA ? hydrate : render;
-
   bootstrap().then(() => method(app, container));
 };
 
 renderApp(decorate(App));
 
 if (module.hot && typeof module.hot.accept === 'function') {
-  module.hot.accept('__app__', () => {
-    const NextRoot = require('__app__').default;
+  module.hot.accept('__resourceQuery', () => {
+    const NextRoot = require('__resourceQuery').default;
     renderApp(decorate(NextRoot));
   });
 }

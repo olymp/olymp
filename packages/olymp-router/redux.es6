@@ -167,8 +167,9 @@ export const withRouting = connect(null, dispatch => ({
   replaceLocation: createReplace(dispatch),
 }));
 
-export default history => withDynamicRedux({
-  'location',
-  reducer: routerReducer,
-  middleware: routerMiddleware(history),
-})
+export default history =>
+  withDynamicRedux({
+    name: 'location',
+    reducer: routerReducer,
+    middleware: routerMiddleware(history),
+  });

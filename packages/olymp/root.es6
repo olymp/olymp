@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withContext } from 'recompose';
-import { Provider as ReduxProvider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
-import { DynamicReduxProvider } from 'olymp-redux';
 import UAParser from 'ua-parser-js';
 
 const enhance = compose(
