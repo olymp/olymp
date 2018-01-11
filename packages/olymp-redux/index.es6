@@ -140,7 +140,7 @@ export const plugin = () => {
   const dynamicRedux = createDynamicRedux();
   const { dynamicMiddleware, createDynamicStore } = dynamicRedux;
   const store = createDynamicStore(
-    {},
+    { __check__: x => true },
     {}, // initialData
     composeWithDevTools(applyMiddleware(dynamicMiddleware))
   );

@@ -13,7 +13,7 @@ export * from './redux';
 
 import { createHistory, attachHistory } from './history';
 import enhance from './redux';
-export const plugin = ({ originalUrl }) => {
+export const plugin = ({ originalUrl } = {}) => {
   if (typeof window !== 'undefined') {
     const history = createHistory();
     return {

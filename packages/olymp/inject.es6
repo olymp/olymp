@@ -12,7 +12,10 @@ const reduce = (fns = [], value) => {
 
 export default (plugins = []) => {
   plugins = plugins.map(x => (typeof x === 'function' ? x() : x));
-  const decorate = plugins.map(x => x.decorate).filter(x => x);
+  const decorate = plugins
+    .map(x => x.decorate)
+    .filter(x => x)
+    .reverse();
   const bootstrap = plugins.map(x => x.bootstrap).filter(x => x);
   const template = plugins.map(x => x.template).filter(x => x);
   return {

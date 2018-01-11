@@ -1,5 +1,6 @@
 import { get } from 'lodash';
 import { connect } from 'react-redux';
+import { withDynamicRedux } from 'olymp-redux';
 import { urlToLocation } from './utils';
 
 export const LOCATION_REPLACE = 'LOCATION_UPDATE';
@@ -170,6 +171,6 @@ export const withRouting = connect(null, dispatch => ({
 export default history =>
   withDynamicRedux({
     name: 'location',
-    reducer: routerReducer,
+    reducer: routerReducer(history),
     middleware: routerMiddleware(history),
   });
