@@ -1,21 +1,25 @@
 import { MongoClient, ObjectID } from 'mongodb';
 
-let CONNECTION_STRING;
-export const connectionString = str => (CONNECTION_STRING = str);
-export const getDB = () => cachedDb;
+export const getDB = async CONNECTION_STRING => {
+  await connectToDatabase();
+  return cachedDb;
+};
 
 let cachedDb = null;
 let _cachedDb = null;
-export const connectToDatabase = () => {
+let CONNECTION_STRING;
+export const connectToDatabase = connectionString => {
   if (cachedDb && cachedDb.serverConfig.isConnected()) {
     return Promise.resolve(cachedDb);
   }
 
-  return MongoClient.connect(CONNECTION_STRING, {
-    ssl: true,
-    replicaSet: 'Cluster0-shard-0',
-    authSource: 'admin',
-  }).then(db => {
+  if (connectionString) {
+    CONNECTION_STRING = connectionString;
+  }
+  if (!CONNECTION_STRING) {
+    return Promise.resolve(cachedDb);
+  }
+  return MongoClient.connect(CONNECTION_STRING).then(db => {
     _cachedDb = db;
     cachedDb = db.db('olymp');
     return cachedDb;
@@ -30,7 +34,7 @@ export const close = () => {
 };
 
 const enhance = async (method, collection, ...args) => {
-  const db = await connectToDatabase();
+  const db = await connectToDatabase(CONNECTION_STRING);
   return db.collection(collection)[method](...args);
 };
 

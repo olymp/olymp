@@ -11,13 +11,21 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
     options: {
       endpoint: null,
     },
-    context,
+    context: async () => {
+      const ctx =
+        (typeof context === 'function'
+          ? await context({ event, context: lambdaContext })
+          : context) || {};
+      return {
+        ...ctx,
+        db: await connectToDatabase(),
+      };
+    },
   });
 
   return {
     server: async (event, context, callback) => {
       context.callbackWaitsForEmptyEventLoop = false;
-      await connectToDatabase();
       lambda.graphqlHandler(event, context, callback);
     },
     playground: lambda.playgroundHandler,
