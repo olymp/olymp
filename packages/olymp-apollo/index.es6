@@ -2,6 +2,7 @@ import getApollo from 'olymp-apollo/remote';
 import getApollo2 from 'olymp-apollo/local';
 import { apolloMiddleware } from 'olymp-apollo/redux';
 import { ApolloProvider } from 'react-apollo';
+import React from 'react';
 
 export const plugin = () => {
   if (typeof window !== 'undefined') {

@@ -22,15 +22,20 @@ export { default as Avatar } from './avatar';
 export { default as Logo } from './logo';
 export { default as Panel } from './panel';
 
-import { createFela } from './utils/create-fela';
+import React from 'react';
+import { Provider } from 'react-fela';
+import createFela from './utils/create-fela';
+import Theme from './utils/theme-provider';
 export const plugin = () => {
   const renderer = createFela();
   if (typeof window !== 'undefined') {
     return {
       decorate: App => props => (
-        <FelaProvider renderer={renderer}>
-          <App {...props} />
-        </FelaProvider>
+        <Provider renderer={renderer}>
+          <Theme>
+            <App {...props} />
+          </Theme>
+        </Provider>
       ),
     };
   } else {
@@ -41,9 +46,11 @@ export const plugin = () => {
         return fela;
       },
       decorate: App => props => (
-        <FelaProvider renderer={renderer}>
-          <App {...props} />
-        </FelaProvider>
+        <Provider renderer={renderer}>
+          <Theme>
+            <App {...props} />
+          </Theme>
+        </Provider>
       ),
       template: template => {
         const state = asyncContext.getState();

@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { set } from 'lodash';
 
@@ -146,9 +147,9 @@ export const plugin = () => {
   return {
     decorate: App => props => (
       <DynamicReduxProvider dynamicRedux={dynamicRedux}>
-        <ReduxProvider store={store}>
+        <Provider store={store}>
           <App {...props} />
-        </ReduxProvider>
+        </Provider>
       </DynamicReduxProvider>
     ),
   };
