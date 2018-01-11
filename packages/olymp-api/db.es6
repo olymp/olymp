@@ -1,4 +1,6 @@
 import { MongoClient, ObjectID } from 'mongodb';
+import { connect } from 'http2';
+import { parse } from 'querystring';
 
 export const getDB = async str => {
   await connectToDatabase(str);
@@ -19,16 +21,20 @@ export const connectToDatabase = connectionString => {
   if (!CONNECTION_STRING) {
     return Promise.resolve(cachedDb);
   }
-  const dbName = CONNECTION_STRING.split('/').pop();
-  return MongoClient.connect(CONNECTION_STRING, { authSource: 'admin' }).then(
-    db => {
-      _cachedDb = db;
-      cachedDb = db.db(dbName);
-      return cachedDb;
-    }
-  );
+  const split = CONNECTION_STRING.split('/');
+  const dbNamePart = split.pop();
+  const [dbName, queryStr] = dbNamePart.split('?');
+  const connection = split.join('/');
+  const query = (queryStr && parse(queryStr)) || {};
+  if (query.ssl == 'true') {
+    query.ssl = true;
+  }
+  return MongoClient.connect(CONNECTION_STRING, query).then(async db => {
+    _cachedDb = db;
+    cachedDb = db.db(dbName);
+    return cachedDb;
+  });
 };
-
 export const close = () => {
   if (cachedDb && cachedDb.serverConfig.isConnected()) {
     return _cachedDb.close();
