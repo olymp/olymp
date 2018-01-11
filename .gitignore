@@ -2,9 +2,6 @@
 .env
 .DS_Store
 
-# Build output folders
-build/
-
 # Logs
 logs
 *.log
@@ -39,14 +36,5 @@ flow-typed/
 # Flow Coverage Report
 flow-coverage/
 
+# Lerna
 packages/**/*.js
-packages/**/.stories/*.js
-packages/**/.storybook/*.js
-
-external/**/*.js
-external/**/.stories/*.js
-external/**/.storybook/*.js
-
-cms/**/*.js
-cms/**/.stories/*.js
-cms/**/.storybook/*.js

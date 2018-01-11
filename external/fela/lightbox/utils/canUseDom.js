@@ -1,9 +1,0 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// Return true if window + document
-
-exports.default = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImV4dGVybmFsL2ZlbGEvbGlnaHRib3gvdXRpbHMvY2FuVXNlRG9tLmVzNiJdLCJuYW1lcyI6WyJ3aW5kb3ciLCJkb2N1bWVudCIsImNyZWF0ZUVsZW1lbnQiXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUE7O2tCQUVlLENBQUMsRUFDZCxPQUFPQSxNQUFQLEtBQWtCLFdBQWxCLElBQ0FBLE9BQU9DLFFBRFAsSUFFQUQsT0FBT0MsUUFBUCxDQUFnQkMsYUFIRixDIiwiZmlsZSI6ImV4dGVybmFsL2ZlbGEvbGlnaHRib3gvdXRpbHMvY2FuVXNlRG9tLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLy8gUmV0dXJuIHRydWUgaWYgd2luZG93ICsgZG9jdW1lbnRcblxuZXhwb3J0IGRlZmF1bHQgISEoXG4gIHR5cGVvZiB3aW5kb3cgIT09ICd1bmRlZmluZWQnICYmXG4gIHdpbmRvdy5kb2N1bWVudCAmJlxuICB3aW5kb3cuZG9jdW1lbnQuY3JlYXRlRWxlbWVudFxuKTtcbiJdfQ==

@@ -1,0 +1,22 @@
+{
+  "name": "olymp-neo",
+  "version": "0.0.6",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "local": "sls offline start",
+    "update": "serverless deploy function -f graphql",
+    "deploy": "sls deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cloudinary": "^1.9.1",
+    "evernote": "^2.0.5",
+    "himalaya": "^1.0.0",
+    "js-yaml": "^3.10.0",
+    "graphql-yoga": "^1.1.4",
+    "mongodb": "^3.0.1",
+    "querystring": "^0.2.0"
+  }
+}
