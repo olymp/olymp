@@ -2,7 +2,7 @@ import { GraphQLServerLambda } from 'graphql-yoga';
 import { connectionString } from './db';
 export * from './db';
 
-export default ({ mongoUri, typeDefs = '', resolvers = {} }) => {
+export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
   connectionString(mongoUri);
 
   const lambda = new GraphQLServerLambda({
@@ -11,6 +11,7 @@ export default ({ mongoUri, typeDefs = '', resolvers = {} }) => {
     options: {
       endpoint: null,
     },
+    context,
   });
 
   return {
