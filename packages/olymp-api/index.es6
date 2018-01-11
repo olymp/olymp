@@ -1,5 +1,6 @@
 import { GraphQLServerLambda } from 'graphql-yoga';
-import { findOne, find, updateOne, connectionString } from './db';
+import { connectionString } from './db';
+export * from './db';
 
 export default ({ mongoUri, typeDefs = '', resolvers = {} }) => {
   connectionString(mongoUri);

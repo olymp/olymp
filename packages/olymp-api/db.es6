@@ -2,6 +2,7 @@ import { MongoClient, ObjectID } from 'mongodb';
 
 let CONNECTION_STRING;
 export const connectionString = str => (CONNECTION_STRING = str);
+export const getDB = () => cachedDb;
 
 let cachedDb = null;
 let _cachedDb = null;
@@ -13,7 +14,7 @@ const connectToDatabase = () => {
   return MongoClient.connect(CONNECTION_STRING, {
     ssl: true,
     replicaSet: 'Cluster0-shard-0',
-    authSource: 'admin'
+    authSource: 'admin',
   }).then(db => {
     _cachedDb = db;
     cachedDb = db.db('olymp');
@@ -69,7 +70,7 @@ export const updateOne = (collection, query, data) => {
       {
         remove: false,
         new: true,
-        upsert: true
+        upsert: true,
       }
     )
       .then(x => x.value)
