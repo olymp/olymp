@@ -1,5 +1,5 @@
 {
-  "version": "20.0.3",
+  "version": "20.1.0",
   "name": "olymp-redux",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,13 +8,10 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "lodash": "^4.17.4",
-    "redux-devtools-extension": "^2.13.2",
     "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2"
   }
 }

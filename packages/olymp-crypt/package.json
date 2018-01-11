@@ -1,5 +1,5 @@
 {
-  "version": "20.0.3",
+  "version": "20.1.0",
   "name": "olymp-crypt",
   "description": "",
   "main": "./index.js",
@@ -9,9 +9,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "fast-sha256": "^1.1.0",
     "tweetnacl": "^1.0.0",

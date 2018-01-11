@@ -1,5 +1,5 @@
 {
-  "version": "20.0.10",
+  "version": "20.1.0",
   "name": "olymp-auth",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,9 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "auth0-lock": "^11.0.1",
     "express-jwt": "^5.3.0",

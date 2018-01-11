@@ -1,5 +1,5 @@
 {
-  "version": "20.0.4",
+  "version": "20.1.0",
   "name": "olymp-fela",
   "description": "",
   "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
@@ -8,11 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u",
-    "styleguide": "styleguidist server",
-    "styleguide:build": "styleguidist build"
-  },
   "dependencies": {
     "aphrodite": "^1.2.5",
     "classnames": "^2.2.5",
@@ -27,7 +22,7 @@
     "fela-plugin-prefixer": "^5.0.16",
     "fela-plugin-remove-undefined": "^5.0.15",
     "fela-plugin-unit": "^5.0.15",
-    "olymp-icons": "^20.0.1",
+    "olymp-icons": "^20.1.0",
     "particles.js": "^2.0.0",
     "react-beautiful-dnd": "^3.0.0",
     "react-fela": "^6.2.1",

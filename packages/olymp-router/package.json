@@ -1,5 +1,5 @@
 {
-  "version": "20.0.5",
+  "version": "20.1.0",
   "name": "olymp-router",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,13 +8,9 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "create-react-class": "^15.6.2",
     "history": "^4.7.2",
-    "olymp-utils": "^19.1.14",
     "react-redux": "^5.0.6",
     "react-tappable": "^1.0.2",
     "recompose": "^0.26.0",

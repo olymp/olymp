@@ -1,11 +1,8 @@
 {
-  "version": "20.0.1",
+  "version": "20.1.0",
   "name": "olymp-icons",
   "description": "",
   "main": "./index",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  }
+  "license": "MIT"
 }

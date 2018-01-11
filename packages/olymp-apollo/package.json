@@ -1,5 +1,5 @@
 {
-  "version": "20.0.10",
+  "version": "20.1.0",
   "name": "olymp-apollo",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -8,9 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.4",
     "apollo-client": "^2.1.0",
