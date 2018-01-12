@@ -9,8 +9,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "aphrodite": "^1.2.5",
-    "classnames": "^2.2.5",
     "fela": "^6.1.1",
     "fela-monolithic": "^5.0.15",
     "fela-plugin-custom-property": "^6.0.3",
@@ -22,16 +20,7 @@
     "fela-plugin-prefixer": "^5.0.16",
     "fela-plugin-remove-undefined": "^5.0.15",
     "fela-plugin-unit": "^5.0.15",
-    "olymp-icons": "^20.1.0",
-    "particles.js": "^2.0.0",
-    "react-beautiful-dnd": "^4.0.0",
     "react-fela": "^6.2.1",
-    "react-gravatar": "^2.6.3",
-    "react-resize-detector": "^1.1.0",
-    "react-scrolllock": "^2.0.0",
-    "react-swipeable": "^4.2.0",
-    "scrollparent": "^2.0.1",
-    "shortid": "^2.2.8",
     "tinycolor2": "^1.4.1"
   }
 }
