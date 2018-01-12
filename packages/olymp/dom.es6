@@ -11,7 +11,8 @@ const container = document.getElementById('app');
 const renderApp = async Component => {
   const app = <Component ua={window.navigator.userAgent} />;
   const method = window.INITIAL_DATA ? hydrate : render;
-  bootstrap().then(() => method(app, container));
+  await bootstrap();
+  method(app, container);
 };
 
 renderApp(decorate(App));

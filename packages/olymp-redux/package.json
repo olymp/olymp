@@ -12,6 +12,7 @@
     "lodash": "^4.17.4",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "redux-devtools-extension": "^2.13.2"
+    "redux-devtools-extension": "^2.13.2",
+    "redux-dynamic-reducer": "^2.0.0"
   }
 }

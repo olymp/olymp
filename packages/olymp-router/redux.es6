@@ -46,7 +46,7 @@ const scroll = () => {
 
 export const routerMiddleware = history => {
   return ({ getState, dispatch }) => {
-    if (typeof window !== 'undefined') {
+    /*if (typeof window !== 'undefined') {
       history.listen((location, action) => {
         if (!location.url) {
           dispatch({
@@ -55,7 +55,7 @@ export const routerMiddleware = history => {
           });
         }
       });
-    }
+    }*/
     const updateHistory = (raw, patch = true, method, cb) => {
       const currentLocation = getState().location;
       const newLocation = !patch
@@ -86,6 +86,7 @@ export const routerMiddleware = history => {
     let blockQueue = [];
     let unblock = null;
     return nextDispatch => action => {
+      console.log(action.type);
       if (action.type === LOCATION_BLOCK) {
         blockQueue = blockQueue.filter(x => x.id !== action.payload.id);
         if (unblock) {
@@ -107,6 +108,7 @@ export const routerMiddleware = history => {
           dispatch({ ...action, type: LOCATION_CHANGE, payload })
         );
       } else if (action.type === LOCATION_PUSH) {
+        const state = getState();
         updateHistory(action.payload, false, 'push', payload =>
           dispatch({ ...action, type: LOCATION_CHANGE, payload })
         );

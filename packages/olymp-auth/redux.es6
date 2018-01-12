@@ -7,7 +7,7 @@ export const LOGIN = 'AUTH_LOGIN';
 export const LOGOUT = 'AUTH_LOGOUT';
 export const SET = 'AUTH_SET';
 
-export const withRedux = config => {
+export default config => {
   const name = 'auth';
   const reducer = (state = {}, action) => {
     if (!action || !action.type) {
@@ -52,7 +52,7 @@ export const withRedux = config => {
 
   const middleware = ({ dispatch, getState }) => nextDispatch => action => {
     if (!auth0) {
-      return;
+      return nextDispatch(action);
     }
     if (action.type === LOGIN) {
       const { pathname } = getState().location;
