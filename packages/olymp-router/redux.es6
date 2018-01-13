@@ -86,7 +86,6 @@ export const routerMiddleware = history => {
     let blockQueue = [];
     let unblock = null;
     return nextDispatch => action => {
-      console.log(action.type);
       if (action.type === LOCATION_BLOCK) {
         blockQueue = blockQueue.filter(x => x.id !== action.payload.id);
         if (unblock) {

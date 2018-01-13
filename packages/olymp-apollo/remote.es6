@@ -1,6 +1,6 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from "apollo-link-http";
+import { createHttpLink } from 'apollo-link-http';
 
 export default ({ url, initialData, loader, tokenKey }) => {
   const link = createHttpLink({ uri: url });
@@ -10,7 +10,6 @@ export default ({ url, initialData, loader, tokenKey }) => {
     addTypename: true,
   }).restore(initialData || {});
   const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
-  console.log(link);
   if (tokenKey) {
     link.use((request, next) => {
       const token = localStorage.getItem(tokenKey);
@@ -90,4 +89,4 @@ export default ({ url, initialData, loader, tokenKey }) => {
   }).restore(initialData || {});
   const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
   return { cache, client }; */
-}
+};

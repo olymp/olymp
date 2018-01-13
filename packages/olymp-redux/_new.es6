@@ -9,7 +9,6 @@ import { set } from 'lodash';
 export { default as immutable } from './immutable';
 
 const createDynamicRedux = () => {
-  console.log('DYNA');
   const middlewares = new Map();
   let store;
 
@@ -21,7 +20,6 @@ const createDynamicRedux = () => {
       middlewares.set(name, middleware);
     },
     injectReducer: (name, reducer) => {
-      console.log(name, reducer);
       if (name !== 'location') {
         return;
       }
@@ -35,7 +33,6 @@ const createDynamicRedux = () => {
       const chain = [...middlewares.values()].map(middleware =>
         middleware(middlewareAPI)
       );
-      console.log(chain);
       return compose(...chain)(next)(action);
     },
     createDynamicStore: (...args) => {

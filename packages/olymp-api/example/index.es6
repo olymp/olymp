@@ -14,13 +14,13 @@ connectionString(
 const upload = cloudinary({
   cloudName: 'x',
   apiKey: 'x',
-  apiSecret: 'x'
+  apiSecret: 'x',
 });
 
 const client = evernote({
   token: 'x',
   sandbox: true,
-  upload
+  upload,
 });
 
 const work = async () => {
