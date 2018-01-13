@@ -4,7 +4,6 @@ import { createHttpLink } from 'apollo-link-http';
 
 export default ({ url, initialData, loader, tokenKey }) => {
   const link = createHttpLink({ uri: url });
-
   const cache = new InMemoryCache({
     dataIdFromObject: o => o.id,
     addTypename: true,
