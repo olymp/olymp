@@ -49,19 +49,23 @@ export const withLocation = compose(
     }),
     dispatch => ({
       push: createPush(dispatch),
-    }),
+    })
   ),
   withPropsOnChange(['currentPathname', 'currentQuery'], props => ({
     location: getLocation(props),
-  })),
+  }))
 );
 
 @withLocation
 export default class Link extends Component {
   componentDidMount() {
-    ReactDOM.findDOMNode(this).addEventListener("click", (e) => {
-      e.preventDefault();
-    }, false);
+    ReactDOM.findDOMNode(this).addEventListener(
+      'click',
+      e => {
+        e.preventDefault();
+      },
+      false
+    );
   }
   onPreload = e => {
     const { location, onPreload } = this.props;
@@ -92,6 +96,7 @@ export default class Link extends Component {
       query,
       pathname,
       to,
+      onPreload,
       ...rest
     } = this.props;
     return (
