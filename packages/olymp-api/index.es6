@@ -7,7 +7,7 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
     typeDefs,
     resolvers,
     options: {
-      endpoint: null,
+      // endpoint: null,
     },
     context: async () => {
       const ctx =
