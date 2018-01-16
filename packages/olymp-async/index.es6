@@ -38,6 +38,4 @@ export const plugin = () => {
       },
     };
   }
-}
-
-export default asyncComponent;
+};

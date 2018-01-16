@@ -1,5 +1,4 @@
 import { MongoClient, ObjectID } from 'mongodb';
-import { connect } from 'http2';
 import { parse } from 'querystring';
 
 export const getDB = async str => {
