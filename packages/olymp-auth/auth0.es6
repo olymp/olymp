@@ -1,14 +1,7 @@
-
 export default class Auth {
   constructor(config, handler) {
     this.config = config;
     this.handler = handler;
-    if (process.env.IS_ELECTRON) {
-      this.config.auth = {
-        redirect: false,
-        sso: false,
-      };
-    }
     if (
       typeof localStorage !== 'undefined' &&
       this.isAuthenticated() &&
@@ -38,16 +31,31 @@ export default class Auth {
           clientID = process.env.AUTH0_CLIENT_ID,
           color = 'green',
           logo = 'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
+          // redirect = !process.env.IS_ELECTRON,
+          redirect = false,
+          // sso = !process.env.IS_ELECTRON,
+          sso = false,
+          scope = 'openid email profile',
+          audience = process.env.AUTH0_AUDIENCE,
+          language = 'de',
         } = this.config;
 
         const lock = new Auth0Lock(clientID, domain, {
           languageDictionary: {
             title,
           },
-          language: 'de',
+          language,
           theme: {
             logo,
             primaryColor: color,
+          },
+          auth: {
+            params: {
+              scope,
+              audience,
+            },
+            redirect,
+            sso,
           },
         });
         let closing = false;
@@ -76,8 +84,8 @@ export default class Auth {
         }
         lock.show();
       },
-      'auth0',
-    )
+      'auth0'
+    );
   };
 
   logout = () => {

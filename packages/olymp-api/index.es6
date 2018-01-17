@@ -9,21 +9,29 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
     options: {
       endpoint: null,
     },
-    context: async () => {
-      const ctx =
-        (typeof context === 'function'
-          ? await context({ event, context: lambdaContext })
-          : context) || {};
-      return {
-        ...ctx,
-        db: await connectToDatabase(mongoUri),
-      };
+    context: async props => {
+      return Promise.all([
+        Promise.resolve(
+          (typeof context === 'function' ? context(props) : context) || {}
+        ),
+        connectToDatabase(mongoUri),
+      ]).then(([ctx, db]) => {
+        console.log(3);
+        return {
+          ...ctx,
+          db,
+        };
+      });
     },
   });
 
   return {
     server: async (event, context, callback) => {
       context.callbackWaitsForEmptyEventLoop = false;
+      if (!context.headers) {
+        context.headers = {};
+      }
+      // context.headers['Access-Control-Allow-Credentials'] = true;
       lambda.graphqlHandler(event, context, callback);
     },
     playground: lambda.playgroundHandler,
