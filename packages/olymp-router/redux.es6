@@ -45,17 +45,19 @@ const scroll = () => {
 };
 
 export const routerMiddleware = history => {
+  let d;
+  if (typeof window !== 'undefined') {
+    history.listen((location, action) => {
+      if (action === 'POP') {
+        d({
+          type: 'LOCATION_CORRECT',
+          payload: location,
+        });
+      }
+    });
+  }
   return ({ getState, dispatch }) => {
-    /*if (typeof window !== 'undefined') {
-      history.listen((location, action) => {
-        if (!location.url) {
-          dispatch({
-            type: 'LOCATION_CORRECT',
-            payload: location,
-          });
-        }
-      });
-    }*/
+    d = dispatch;
     const updateHistory = (raw, patch = true, method, cb) => {
       const currentLocation = getState().location;
       const newLocation = !patch
