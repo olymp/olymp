@@ -59,7 +59,7 @@ export default class Auth {
           return nay(error);
         }
         this.setSession({ ...authResult, profile });
-        yay(profile);
+        setTimeout(() => yay(profile));
       });
     });
   };
