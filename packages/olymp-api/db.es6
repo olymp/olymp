@@ -1,3 +1,4 @@
+export { ObjectID } from 'mongodb';
 import { MongoClient, ObjectID } from 'mongodb';
 import { parse } from 'querystring';
 
@@ -42,8 +43,11 @@ export const close = () => {
 };
 
 const enhance = async (method, collection, ...args) => {
-  const db = await connectToDatabase(CONNECTION_STRING);
-  return db.collection(collection)[method](...args);
+  if (typeof collection === 'string') {
+    const db = await connectToDatabase(CONNECTION_STRING);
+    return db.collection(collection)[method](...args);
+  }
+  return collection()[method](...args);
 };
 
 export const transform = item => {
@@ -93,7 +97,13 @@ export const updateOne = (collection, query, data) => {
     .then(transform);
 };
 
-export const find = (collection, ...args) =>
-  enhance('find', collection, ...args)
+export const find = (collection, filter, ...args) => {
+  if (filter && Array.isArray(filter)) {
+    return enhance('find', collection, {
+      _id: { $in: filter.map(x => new ObjectID(x)) },
+    }).then(transform);
+  }
+  return enhance('find', collection, filter, ...args)
     .then(x => x.toArray())
     .then(transform);
+};

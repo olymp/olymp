@@ -1,26 +1,28 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
 
 export default ({ url, initialData, loader, tokenKey }) => {
-  const link = createHttpLink({ uri: url });
+  let link = createHttpLink({ uri: url });
   const cache = new InMemoryCache({
     dataIdFromObject: o => o.id,
     addTypename: true,
   }).restore(initialData || {});
-  const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
   if (tokenKey) {
-    link.use((request, next) => {
+    const middlewareLink = new ApolloLink((operation, forward) => {
       const token = localStorage.getItem(tokenKey);
       if (token && token !== 'null') {
-        request.options.headers = {
-          ...request.options.headers,
-          authorization: token ? `${token}` : null,
-        };
+        operation.setContext({
+          headers: {
+            authorization: token ? `Bearer ${token}` : null,
+          },
+          credentials: 'same-origin',
+        });
       }
-      request.options.credentials = 'same-origin';
-      next();
+      return forward(operation);
     });
+    link = middlewareLink.concat(link);
   }
   if (loader) {
     link.use((request, next) => {
@@ -32,6 +34,7 @@ export default ({ url, initialData, loader, tokenKey }) => {
       next();
     });
   }
+  const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
   return { cache, client };
   /* const apolloFetch = createApolloFetch({
     uri: url,

@@ -1,15 +1,29 @@
-export default class Auth {
-  constructor(config, handler) {
-    this.config = config;
-    this.handler = handler;
-    if (
-      typeof localStorage !== 'undefined' &&
-      this.isAuthenticated() &&
-      localStorage.getItem('profile') &&
-      handler
-    ) {
-      handler(JSON.parse(localStorage.getItem('profile')));
+const clearOldNonces = () => {
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith('com.auth0.auth')) {
+      localStorage.removeItem(key);
     }
+  });
+};
+
+export default class Auth {
+  constructor(config) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    this.config = {
+      domain: config.domain || process.env.AUTH0_DOMAIN,
+      clientID: config.clientID || process.env.AUTH0_CLIENT_ID,
+      logoutUrl: config.logoutUrl || window.location.origin,
+      redirectUri:
+        config.redirectUri ||
+        process.env.AUTH0_REDIRECT_URI ||
+        window.location.origin,
+      responseType:
+        config.responseType || process.env.AUTH0_RESPONSETYPE || 'token',
+      audience: config.audience || process.env.AUTH0_AUDIENCE,
+      scope: config.scope || process.env.AUTH0_SCOPE || 'openid email profile',
+    };
   }
 
   setSession = ({ expiresIn, accessToken, profile }) => {
@@ -17,82 +31,95 @@ export default class Auth {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('profile', JSON.stringify(profile));
     localStorage.setItem('expires_at', expiresAt);
+    clearOldNonces();
   };
 
-  login = login => {
-    require.ensure(
-      [],
-      require => {
-        const Auth0Lock = require('auth0-lock').default;
+  getLock = () => {
+    return new Promise(yay => {
+      if (this.lock) {
+        return yay(this.lock);
+      }
+      require.ensure(
+        [],
+        require => {
+          const { WebAuth } = require('auth0-js');
+          const auth = new WebAuth(this.config);
+          yay(auth);
+        },
+        'auth0'
+      );
+    });
+  };
 
-        const {
-          title = 'olymp',
-          domain = process.env.AUTH0_DOMAIN,
-          clientID = process.env.AUTH0_CLIENT_ID,
-          color = 'green',
-          logo = 'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
-          // redirect = !process.env.IS_ELECTRON,
-          redirect = false,
-          // sso = !process.env.IS_ELECTRON,
-          sso = false,
-          scope = 'openid email profile',
-          audience = process.env.AUTH0_AUDIENCE,
-          language = 'de',
-        } = this.config;
-
-        const lock = new Auth0Lock(clientID, domain, {
-          languageDictionary: {
-            title,
-          },
-          language,
-          theme: {
-            logo,
-            primaryColor: color,
-          },
-          auth: {
-            params: {
-              scope,
-              audience,
-            },
-            redirect,
-            sso,
-          },
-        });
-        let closing = false;
-        lock.on('authenticated', authResult => {
-          if (!authResult || !authResult.accessToken) {
-            return;
-          }
-          lock.getUserInfo(authResult.accessToken, (error, profile) => {
-            if (error) {
-              return;
-            }
-            this.setSession({ ...authResult, profile });
-            closing = true;
-            lock.hide();
-            this.handler(profile);
-          });
-        });
-        lock.on('hide', () => {
-          if (closing) {
-            return;
-          }
-          this.handler(false);
-        });
-        if (login === false) {
-          return;
+  getUserInfo = (auth, authResult) => {
+    return new Promise((yay, nay) => {
+      auth.client.userInfo(authResult.accessToken, (error, profile) => {
+        console.log(error, profile);
+        if (error) {
+          return nay(error);
         }
-        lock.show();
-      },
-      'auth0'
-    );
+        this.setSession({ ...authResult, profile });
+        yay(profile);
+      });
+    });
   };
 
-  logout = () => {
+  init = async hash => {
+    if (this.isAuthenticated()) {
+      const auth = await this.getLock();
+      return new Promise((yay, nay) => {
+        auth.checkSession({}, (error, authResult) => {
+          if (error || !authResult) {
+            return this.login()
+              .then(yay)
+              .catch(nay);
+          }
+          return this.getUserInfo(auth, authResult)
+            .then(yay)
+            .catch(nay);
+        });
+      });
+    } else if (hash) {
+      const auth = await this.getLock();
+      return new Promise((yay, nay) => {
+        auth.parseHash(
+          {
+            hash: hash,
+          },
+          (err, authResult) => {
+            if (err || !authResult) {
+              return nay(err || 'No result');
+            }
+            this.getUserInfo(auth, authResult)
+              .then(yay)
+              .catch(nay);
+          }
+        );
+      });
+    }
+  };
+
+  login = async () => {
+    const auth = await this.getLock();
+    return auth.authorize();
+  };
+
+  logout = async () => {
+    const lock = await this.getLock();
     localStorage.removeItem('access_token');
+    localStorage.removeItem('auth0.ssodata');
     localStorage.removeItem('profile');
     localStorage.removeItem('expires_at');
-    this.handler(null);
+    lock.logout({
+      returnTo: this.config.logoutUrl,
+    });
+    /*localStorage.removeItem('access_token');
+    localStorage.removeItem('auth0.ssodata');
+    localStorage.removeItem('profile');
+    localStorage.removeItem('expires_at');
+    clearOldNonces();
+
+    this.handler(null);*/
   };
 
   isAuthenticated = () => {
@@ -104,3 +131,95 @@ export default class Auth {
     return new Date().getTime() < expiresAt;
   };
 }
+
+/*return;
+
+    this.config = {
+      title: config.title || 'olymp',
+      domain: config.domain || process.env.AUTH0_DOMAIN,
+      clientID: config.clientID || process.env.AUTH0_CLIENT_ID,
+      color: config.color || 'green',
+      logo:
+        config.logo ||
+        'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
+      returnTo: config.returnTo || 'http://localhost:3010',
+      redirect: config.redirect || false,
+      sso: config.sso || false,
+      responseType: config.responseType || 'token',
+      scope: config.scope || 'openid email profile',
+      audience: config.audience || process.env.AUTH0_AUDIENCE,
+      language: 'de',
+    };
+          const Auth0Lock = require('auth0-lock').default;
+
+          this.lock = new Auth0Lock(this.config.clientID, this.config.domain, {
+            languageDictionary: {
+              title: this.config.title,
+            },
+            language: this.config.language,
+            theme: {
+              logo: this.config.logo,
+              primaryColor: this.config.color,
+            },
+            auth: {
+              params: {
+                scope: this.config.scope,
+                audience: this.config.audience,
+              },
+              redirect: this.config.redirect,
+              sso: this.config.sso,
+            },
+          });
+
+          let closing = false;
+          this.lock.on('authenticated', authResult => {
+            if (!authResult || !authResult.accessToken) {
+              return;
+            }
+            console.log(authResult);
+            this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+              if (error) {
+                return;
+              }
+              this.setSession({ ...authResult, profile });
+              console.log(profile);
+              closing = true;
+              this.lock.hide();
+              this.handler(profile);
+            });
+          });
+          this.lock.on('hide', () => {
+            if (closing) {
+              return;
+            }
+            this.handler(false);
+          });
+          yay(this.lock);*/
+/*await this.getLock();
+    this.webAuth.checkSession({}, function(err, authResult) {
+      console.log(err, authResult);
+    });*/
+/*lock.show();
+    return;
+    lock.checkSession(
+      {
+        domain: this.config.domain,
+        scope: this.config.scope,
+        clientID: this.config.clientID,
+        audience: this.config.audience,
+        responseType: 'token',
+      },
+      (error, authResult) => {
+        console.log('CHECK', authResult, error);
+        if (error || !authResult) {
+          lock.show();
+        } else {
+          // user has an active session, so we can use the accessToken directly.
+          lock.getUserInfo(authResult.accessToken, (error, profile) => {
+            console.log(error, profile);
+            this.setSession({ ...authResult, profile });
+            this.handler(profile);
+          });
+        }
+      }
+    );*/

@@ -59,7 +59,9 @@ export const routerMiddleware = history => {
     const updateHistory = (raw, patch = true, method, cb) => {
       const currentLocation = getState().location;
       const newLocation = !patch
-        ? urlToLocation({ ...currentLocation, ...raw })
+        ? urlToLocation(
+            typeof raw === 'string' ? raw : { ...currentLocation, ...raw }
+          )
         : urlToLocation({
             ...currentLocation,
             ...raw,

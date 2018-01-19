@@ -36,7 +36,9 @@ export default (urlOrString = '') => {
   } else {
     url.url = url.pathname;
   }
-  if (url.hash) {
+  if (url.hash && url.search[0] === '#') {
+    url.url = `${url.url}${url.hash}`;
+  } else if (url.hash) {
     url.url = `${url.url}#${url.hash}`;
   }
   if (!url.search) {

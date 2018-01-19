@@ -1,5 +1,5 @@
 import { withDynamicRedux } from 'olymp-redux';
-import { LOCATION_REPLACE } from 'olymp-router';
+import { LOCATION_REPLACE, LOCATION_PUSH } from 'olymp-router';
 import Auth0 from './auth0';
 
 export const INIT = 'AUTH_INIT';
@@ -30,24 +30,33 @@ export default config => {
     if (auth0 || !process.env.AUTH0_CLIENT_ID) {
       return;
     }
-    auth0 = new Auth0(config, payload => {
-      if (payload !== false) {
+    config.logoutUrl = `${window.location.origin}/logout`;
+    config.redirectUri = `${window.location.origin}/login`;
+    auth0 = new Auth0(config);
+
+    const { pathname, hash, hashQuery, url } = getState().location;
+    const auth_url = localStorage.getItem('auth_url');
+    if (pathname === '/login' && !hashQuery.access_token) {
+      auth0.login();
+    } else if (pathname === '/logout') {
+      dispatch({
+        type: LOCATION_REPLACE,
+        payload: auth_url || '/',
+      });
+    } else {
+      auth0.init(hash).then(payload => {
         dispatch({ type: SET, payload });
-      }
-      const { pathname, query } = getState().location;
-      if (pathname === '/auth') {
-        dispatch({
-          type: LOCATION_REPLACE,
-          payload: { pathname: query.pathname || '/', query: {}, hash: '' },
-        });
-      }
-    });
-    const { pathname, hashQuery } = getState().location;
-    if (pathname === '/auth' && hashQuery && hashQuery.access_token) {
-      auth0.login(false);
-    } else if (pathname === '/auth') {
-      auth0.login(true);
+        if (pathname === '/login') {
+          setTimeout(() => {
+            dispatch({
+              type: LOCATION_REPLACE,
+              payload: auth_url || '/',
+            });
+          }, 1000);
+        }
+      });
     }
+    localStorage.removeItem('auth_url');
   };
 
   const middleware = ({ dispatch, getState }) => nextDispatch => action => {
@@ -55,15 +64,22 @@ export default config => {
       return nextDispatch(action);
     }
     if (action.type === LOGIN) {
-      const { pathname } = getState().location;
+      localStorage.setItem('auth_url', getState().location.url);
       dispatch({
-        type: LOCATION_REPLACE,
-        payload: { pathname: '/auth', query: { pathname } },
+        type: LOCATION_PUSH,
+        payload: {
+          pathname: '/login',
+        },
       });
-      setTimeout(() => {
-        auth0.login();
-      });
+      auth0.login();
     } else if (action.type === LOGOUT) {
+      localStorage.setItem('auth_url', getState().location.url);
+      dispatch({
+        type: LOCATION_PUSH,
+        payload: {
+          pathname: '/logout',
+        },
+      });
       auth0.logout();
     } else {
       nextDispatch(action);

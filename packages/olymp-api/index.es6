@@ -16,7 +16,6 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
         ),
         connectToDatabase(mongoUri),
       ]).then(([ctx, db]) => {
-        console.log(3);
         return {
           ...ctx,
           db,
