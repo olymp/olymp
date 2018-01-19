@@ -9,13 +9,16 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
     options: {
       endpoint: null,
     },
-    context: async props => {
+    context: props => {
+      console.log(1);
+      return {};
       return Promise.all([
         Promise.resolve(
           (typeof context === 'function' ? context(props) : context) || {}
         ),
         connectToDatabase(mongoUri),
       ]).then(([ctx, db]) => {
+        console.log(2);
         return {
           ...ctx,
           db,
@@ -25,13 +28,17 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
   });
 
   return {
-    server: async (event, context, callback) => {
+    server: (event, context, callback) => {
+      console.log(3);
       context.callbackWaitsForEmptyEventLoop = false;
       if (!context.headers) {
         context.headers = {};
       }
       // context.headers['Access-Control-Allow-Credentials'] = true;
-      lambda.graphqlHandler(event, context, callback);
+      lambda.graphqlHandler(event, context, (...args) => {
+        console.log(args);
+        callback(...args);
+      });
     },
     playground: lambda.playgroundHandler,
   };
