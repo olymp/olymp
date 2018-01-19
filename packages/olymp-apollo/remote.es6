@@ -25,14 +25,14 @@ export default ({ url, initialData, loader, tokenKey }) => {
     link = middlewareLink.concat(link);
   }
   if (loader) {
-    link.use((request, next) => {
+    const middlewareLink = new ApolloLink((operation, forward) => {
       loader.start();
-      next();
+      return forward(operation).map(response => {
+        loader.end();
+        return response;
+      });
     });
-    link.useAfter((response, next) => {
-      loader.stop();
-      next();
-    });
+    link = middlewareLink.concat(link);
   }
   const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
   return { cache, client };

@@ -62,7 +62,7 @@ const pathMatcher = ({ pathname, query, children, ...switchRest }) => {
         matchProps = props;
         break;
       }
-    } else if (route.props.match && Array.isArray(typeof route.props.match)) {
+    } else if (route.props.match && Array.isArray(route.props.match)) {
       const props = matchPaths(pathname, exact, route.props.match);
       if (props) {
         matched = getChild({ ...rest, pathname });
@@ -70,7 +70,7 @@ const pathMatcher = ({ pathname, query, children, ...switchRest }) => {
         break;
       }
     } else if (route.props.match && typeof route.props.match === 'object') {
-      if (matchQuery(query, match)) {
+      if (matchQuery(query, route.props.match)) {
         matched = getChild(rest);
       }
     }

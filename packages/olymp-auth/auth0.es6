@@ -59,7 +59,8 @@ export default class Auth {
           return nay(error);
         }
         this.setSession({ ...authResult, profile });
-        setTimeout(() => yay(profile));
+        console.log(localStorage.getItem('access_token'));
+        setTimeout(() => yay(profile), 100);
       });
     });
   };

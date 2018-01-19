@@ -1,3 +1,4 @@
+import { withDynamicRedux } from 'olymp-redux';
 import { debounce } from 'lodash';
 import immutable from 'olymp-redux/immutable';
 
@@ -7,15 +8,15 @@ export const LOADER_END = 'APP_LOADER_END';
 export const INTERNET_CONNECTION = 'APP_INTERNET_CONNECTION';
 export const SERVER_CONNECTION = 'APP_SERVER_CONNECTION';
 
-export const appReducer = (init = {}) => {
+export default ({ loader }) => {
   const defaultState = {
     version: undefined,
     serverConnection: true,
+    initial: true,
     internetConnection:
       typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
-    ...init
   };
-  return (state = defaultState, action) => {
+  const reducer = (state = defaultState, action) => {
     if (!action || !action.type) {
       return state;
     }
@@ -29,7 +30,10 @@ export const appReducer = (init = {}) => {
       case LOADER_START:
         return immutable.set(state, 'loading', true);
       case LOADER_END:
-        return immutable.set(state, 'loading', false);
+        return immutable(state)
+          .set('loading', false)
+          .set('initial', false)
+          .value();
       case INTERNET_CONNECTION:
         return immutable.set(state, 'internetConnection', action.payload);
       case SERVER_CONNECTION:
@@ -38,43 +42,53 @@ export const appReducer = (init = {}) => {
         return state;
     }
   };
-};
 
-export const apolloMiddleware = client => ({ dispatch }) => {
-  if (typeof window !== 'undefined') {
-    window.addEventListener('offline', () => {
-      dispatch({ type: INTERNET_CONNECTION, payload: false });
-    });
-    window.addEventListener('online', () => {
-      dispatch({ type: INTERNET_CONNECTION, payload: true });
-    });
-  }
-  return nextDispatch => action => {
-    if (action.type === MANIPULATE) {
-      if (!Array.isArray(action.payload)) {
-        action.payload = [action.payload];
-      }
+  const middleware = ({ dispatch }) => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('offline', () => {
+        dispatch({ type: INTERNET_CONNECTION, payload: false });
+      });
+      window.addEventListener('online', () => {
+        dispatch({ type: INTERNET_CONNECTION, payload: true });
+      });
     }
-    nextDispatch(action);
+    if (loader) {
+      loader.start = () => startLoading(dispatch);
+      loader.end = () => stopLoading(dispatch);
+    }
+    return nextDispatch => action => {
+      if (action.type === MANIPULATE) {
+        if (!Array.isArray(action.payload)) {
+          action.payload = [action.payload];
+        }
+      }
+      nextDispatch(action);
+    };
   };
+
+  return withDynamicRedux({
+    name: 'apollo',
+    reducer,
+    middleware,
+  });
 };
 
 export const createManipulation = dispatch => payload =>
   dispatch({
     type: MANIPULATE,
-    payload
+    payload,
   });
 
 export const createLoaderStart = dispatch => payload =>
   dispatch({
     type: LOADER_START,
-    payload
+    payload,
   });
 
 export const createLoaderEnd = dispatch => payload =>
   dispatch({
     type: LOADER_END,
-    payload
+    payload,
   });
 
 export const createServerConnection = dispatch => payload =>
