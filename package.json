@@ -39,7 +39,7 @@
   "dependencies": {},
   "devDependencies": {
     "eslint-config-olymp": "^20.1.2",
-    "lerna": "^2.7.0",
-    "olymp-lerna": "^20.1.10"
+    "lerna": "^2.7.1",
+    "olymp-lerna": "^20.1.22"
   }
 }
