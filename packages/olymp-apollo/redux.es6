@@ -8,11 +8,11 @@ export const LOADER_END = 'APP_LOADER_END';
 export const INTERNET_CONNECTION = 'APP_INTERNET_CONNECTION';
 export const SERVER_CONNECTION = 'APP_SERVER_CONNECTION';
 
-export default ({ loader }) => {
+export default ({ initial = false } = {}) => {
   const defaultState = {
     version: undefined,
     serverConnection: true,
-    initial: true,
+    initial,
     internetConnection:
       typeof window !== 'undefined' ? window.navigator.onLine !== false : true,
   };
@@ -52,10 +52,6 @@ export default ({ loader }) => {
         dispatch({ type: INTERNET_CONNECTION, payload: true });
       });
     }
-    if (loader) {
-      loader.start = () => startLoading(dispatch);
-      loader.end = () => stopLoading(dispatch);
-    }
     return nextDispatch => action => {
       if (action.type === MANIPULATE) {
         if (!Array.isArray(action.payload)) {
@@ -66,11 +62,10 @@ export default ({ loader }) => {
     };
   };
 
-  return withDynamicRedux({
-    name: 'apollo',
+  return {
     reducer,
     middleware,
-  });
+  };
 };
 
 export const createManipulation = dispatch => payload =>
@@ -79,45 +74,38 @@ export const createManipulation = dispatch => payload =>
     payload,
   });
 
-export const createLoaderStart = dispatch => payload =>
-  dispatch({
-    type: LOADER_START,
-    payload,
-  });
-
-export const createLoaderEnd = dispatch => payload =>
-  dispatch({
-    type: LOADER_END,
-    payload,
-  });
-
 export const createServerConnection = dispatch => payload =>
   dispatch({ type: SERVER_CONNECTION, payload });
 
-let pendings = [];
+let pendings = {};
 let loader = null;
 const updateLoader = debounce(
-  dispatch => {
-    const length = pendings.length;
+  (dispatch, key) => {
+    const length = Object.keys(pendings).length;
     if (length && !loader) {
       loader = true;
-      createLoaderStart(dispatch)();
+      dispatch({
+        type: LOADER_START,
+        payload: null,
+      });
     } else if (!length && loader) {
       loader = false;
-      createLoaderEnd(dispatch)();
+      dispatch({
+        type: LOADER_END,
+        payload: null,
+      });
     }
   },
-  300,
+  1000,
   { leading: true, trailing: true }
 );
 
-export const startLoading = dispatch => {
-  pendings = [...pendings, 1];
-  updateLoader(dispatch);
+export const startLoading = dispatch => (key = '') => {
+  pendings = { ...pendings, [key]: true };
+  return updateLoader(dispatch, key);
 };
 
-export const stopLoading = dispatch => {
-  const [first, ...remaining] = pendings;
-  pendings = remaining;
-  updateLoader(dispatch);
+export const stopLoading = dispatch => (key = '') => {
+  delete pendings[key];
+  return updateLoader(dispatch, key);
 };

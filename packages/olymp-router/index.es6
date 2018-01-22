@@ -12,17 +12,37 @@ export * from './utils';
 export * from './redux';
 
 import { createHistory, attachHistory } from './history';
-import enhance from './redux';
-export const plugin = ({ originalUrl } = {}) => {
+import redux from './redux';
+export const plugin = ({ originalUrl } = {}) => ({ dynamicRedux, store }) => {
   if (typeof window !== 'undefined') {
     const history = createHistory();
+    const { middleware, reducer } = redux(history);
+    dynamicRedux.inject({
+      name: 'location',
+      reducer,
+      middleware,
+    });
+    history.listen((location, action) => {
+      if (!location.redux) {
+        store.dispatch({
+          type: 'LOCATION_CORRECT',
+          payload: location,
+        });
+      }
+    });
     return {
-      decorate: enhance(history),
+      context: { history },
     };
   } else {
     const history = createHistory({ initialEntries: [decodeURI(originalUrl)] });
+    const { middleware, reducer } = redux(history);
+    dynamicRedux.inject({
+      name: 'location',
+      reducer,
+      middleware,
+    });
     return {
-      decorate: enhance(history),
+      context: { history },
     };
   }
 };

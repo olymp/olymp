@@ -2,7 +2,7 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import getApollo from './remote';
 import getApollo2 from './local';
-import enhance from './redux';
+import redux, { startLoading, stopLoading } from './redux';
 
 export const APOLLO_MUTATE = 'APOLLO_MUTATE';
 export const APOLLO_QUERY = 'APOLLO_QUERY';
@@ -15,18 +15,33 @@ export const pending = action => `${action}${ACTION_SUFFIX_PENDING}`;
 export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
-export const plugin = ({ loader = {}, schema, ...context } = {}) => {
+export const plugin = () => ({ store, dynamicRedux }) => {
   if (typeof window !== 'undefined') {
-    console.log(loader);
+    const { reducer, middleware } = redux({
+      initial: !window.APOLLO_STATE,
+    });
+    dynamicRedux.inject({ reducer, middleware, name: 'apollo' });
+
+    const loader = {
+      start: startLoading(store.dispatch),
+      end: stopLoading(store.dispatch),
+    };
     const { client } = getApollo({
       loader,
       url: window.GRAPHQL_URL || process.env.GRAPHQL_URL || '/graphql',
       initialData: window.APOLLO_STATE || {},
       tokenKey: 'access_token',
     });
+
+    if (!window.APOLLO_STATE) {
+      console.log(loader);
+      loader.start();
+      loader.end();
+    }
+
     return {
+      name: 'olymp-apollo',
       decorate: App => {
-        App = enhance({ loader })(App);
         return props => (
           <ApolloProvider client={client}>
             <App {...props} />
@@ -36,7 +51,12 @@ export const plugin = ({ loader = {}, schema, ...context } = {}) => {
     };
   } else {
     const { cache, client } = getApollo2(schema, context);
+    const { reducer, middleware } = redux({
+      initial: !!window.APOLLO_STATE,
+    });
+    dynamicRedux.inject({ reducer, middleware, name: 'apollo' });
     return {
+      name: 'olymp-apollo',
       decorate: App => props => (
         <ApolloProvider client={client}>
           <App {...props} />

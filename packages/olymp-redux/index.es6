@@ -35,14 +35,20 @@ const createDynamicRedux = () => {
   };
 
   return {
+    inject: (module = {}) => {
+      const { name, reducer, middleware } = module;
+      if (reducer) {
+        set(stores.injectedReducers, name, reducer);
+        stores.replaceReducer(combineReducersRecurse(stores.injectedReducers));
+      }
+      if (middleware) {
+        middlewares.set(name, middleware);
+      }
+    },
     injectMiddleware: (name, middleware) => {
       middlewares.set(name, middleware);
     },
     injectReducer: (name, reducer, force = false) => {
-      // If already set, do nothing.
-      /* if (has(stores.injectedReducers, key) && force === false) {
-      return;
-    } */
       set(stores.injectedReducers, name, reducer);
       stores.replaceReducer(combineReducersRecurse(stores.injectedReducers));
     },
@@ -144,6 +150,8 @@ export const plugin = () => {
     composeWithDevTools(applyMiddleware(dynamicMiddleware))
   );
   return {
+    name: 'olymp-redux',
+    context: { store, dynamicRedux },
     decorate: App => props => (
       <DynamicReduxProvider dynamicRedux={dynamicRedux}>
         <Provider store={store}>

@@ -2,6 +2,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
+import { onError } from 'apollo-link-error';
 
 export default ({ url, initialData, loader, tokenKey }) => {
   let link = createHttpLink({ uri: url });
@@ -26,13 +27,18 @@ export default ({ url, initialData, loader, tokenKey }) => {
   }
   if (loader) {
     const middlewareLink = new ApolloLink((operation, forward) => {
-      loader.start();
+      let key = operation.toKey();
+      loader.start(key);
       return forward(operation).map(response => {
-        loader.end();
+        loader.end(key);
         return response;
       });
     });
-    link = middlewareLink.concat(link);
+    const errorLink = onError(({ networkError, operation }) => {
+      console.log('ERROR', networkError);
+      loader.end(operation.toKey());
+    });
+    link = middlewareLink.concat(errorLink).concat(link);
   }
   const client = new ApolloClient({ link, cache, dataIdFromObject: o => o.id });
   return { cache, client };

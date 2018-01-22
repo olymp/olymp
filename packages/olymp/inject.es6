@@ -10,8 +10,17 @@ const reduce = (fns = [], value) => {
   return value;
 };
 
-export default (plugins = []) => {
-  plugins = plugins.map(x => (typeof x === 'function' ? x() : x));
+export default (rawPlugins = []) => {
+  let context = {};
+  const plugins = rawPlugins.map(x => {
+    if (typeof x === 'function') {
+      x = x(context);
+    }
+    if (x.context) {
+      context = { ...context, ...x.context };
+    }
+    return x;
+  });
   const decorate = plugins
     .map(x => x.decorate)
     .filter(x => x)

@@ -1,6 +1,5 @@
 import { get } from 'lodash';
 import { connect } from 'react-redux';
-import { withDynamicRedux } from 'olymp-redux';
 import { urlToLocation } from './utils';
 
 export const LOCATION_REPLACE = 'LOCATION_UPDATE';
@@ -13,9 +12,9 @@ export const LOCATION_UNBLOCK = 'LOCATION_UNBLOCK';
 
 export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 
-export const routerReducer = history => {
-  const defaultState = urlToLocation(history.location);
-  return (state = defaultState, action) => {
+export default history => {
+  const defaultState = urlToLocation(location);
+  const reducer = (state = defaultState, action) => {
     if (!action || !action.type) {
       return state;
     }
@@ -31,33 +30,7 @@ export const routerReducer = history => {
         return state;
     }
   };
-};
-
-const scroll = () => {
-  if (typeof window !== 'undefined') {
-    try {
-      window.scroll({
-        top: 0,
-        behavior: 'smooth',
-      });
-    } catch (err) {}
-  }
-};
-
-export const routerMiddleware = history => {
-  let d;
-  if (typeof window !== 'undefined') {
-    history.listen((location, action) => {
-      if (action === 'POP') {
-        d({
-          type: 'LOCATION_CORRECT',
-          payload: location,
-        });
-      }
-    });
-  }
-  return ({ getState, dispatch }) => {
-    d = dispatch;
+  const middleware = ({ getState, dispatch }) => {
     const updateHistory = (raw, patch = true, method, cb) => {
       const currentLocation = getState().location;
       const newLocation = !patch
@@ -81,8 +54,8 @@ export const routerMiddleware = history => {
         return;
       }
 
-      history[method](newLocation.url);
-      if (oldKey !== history.location.key) {
+      history[method]({ ...newLocation, redux: true });
+      if (!oldKey || oldKey !== history.location.key) {
         newLocation.key = history.location.key;
         cb(newLocation);
       }
@@ -139,6 +112,17 @@ export const routerMiddleware = history => {
       }
     };
   };
+  return { reducer, middleware };
+};
+const scroll = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      window.scroll({
+        top: 0,
+        behavior: 'smooth',
+      });
+    } catch (err) {}
+  }
 };
 
 export const createPushPathname = dispatch => pathname =>
@@ -172,10 +156,3 @@ export const withRouting = connect(null, dispatch => ({
   pushLocation: createPush(dispatch),
   replaceLocation: createReplace(dispatch),
 }));
-
-export default history =>
-  withDynamicRedux({
-    name: 'location',
-    reducer: routerReducer(history),
-    middleware: routerMiddleware(history),
-  });

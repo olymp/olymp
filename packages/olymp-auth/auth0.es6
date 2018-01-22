@@ -15,6 +15,7 @@ export default class Auth {
       domain: config.domain || process.env.AUTH0_DOMAIN,
       clientID: config.clientID || process.env.AUTH0_CLIENT_ID,
       logoutUrl: config.logoutUrl || window.location.origin,
+      // prompt: 'none',
       redirectUri:
         config.redirectUri ||
         process.env.AUTH0_REDIRECT_URI ||
@@ -25,6 +26,14 @@ export default class Auth {
       scope: config.scope || process.env.AUTH0_SCOPE || 'openid email profile',
     };
   }
+
+  currentUser = () => {
+    if (this.isAuthenticated() && localStorage.getItem('profile')) {
+      return JSON.parse(localStorage.getItem('profile'));
+    } else {
+      return null;
+    }
+  };
 
   setSession = ({ expiresIn, accessToken, profile }) => {
     const expiresAt = JSON.stringify(expiresIn * 1000 + new Date().getTime());
@@ -54,12 +63,11 @@ export default class Auth {
   getUserInfo = (auth, authResult) => {
     return new Promise((yay, nay) => {
       auth.client.userInfo(authResult.accessToken, (error, profile) => {
-        console.log(error, profile);
         if (error) {
+          console.log(error, profile);
           return nay(error);
         }
         this.setSession({ ...authResult, profile });
-        console.log(localStorage.getItem('access_token'));
         setTimeout(() => yay(profile), 100);
       });
     });
@@ -81,21 +89,17 @@ export default class Auth {
         });
       });
     } else if (hash) {
+      console.log(hash);
       const auth = await this.getLock();
       return new Promise((yay, nay) => {
-        auth.parseHash(
-          {
-            hash: hash,
-          },
-          (err, authResult) => {
-            if (err || !authResult) {
-              return nay(err || 'No result');
-            }
-            this.getUserInfo(auth, authResult)
-              .then(yay)
-              .catch(nay);
+        auth.parseHash({ hash }, (err, authResult) => {
+          if (err || !authResult) {
+            return nay(err || 'No result');
           }
-        );
+          this.getUserInfo(auth, authResult)
+            .then(yay)
+            .catch(nay);
+        });
       });
     }
   };
