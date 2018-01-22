@@ -22,6 +22,6 @@ export default (plugins = []) => {
     decorate: initial => reduce(decorate, initial),
     bootstrap: initial =>
       Promise.all(bootstrap.map(x => Promise.resolve(x(initial)))),
-    template: initial => reduce(template, value),
+    template: initial => reduce(template, initial),
   };
 };

@@ -15,7 +15,7 @@ export const pending = action => `${action}${ACTION_SUFFIX_PENDING}`;
 export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
-export const plugin = ({ loader = {} } = {}) => {
+export const plugin = ({ loader = {}, schema, ...context } = {}) => {
   if (typeof window !== 'undefined') {
     console.log(loader);
     const { client } = getApollo({
@@ -45,7 +45,7 @@ export const plugin = ({ loader = {} } = {}) => {
       template: template => {
         template.body.push(`
           <script type="text/javascript">
-            window.APOLLO_STATE = ${serialize(cache.data)}
+            window.APOLLO_STATE = ${JSON.stringify(cache.data)}
           </script>
         `);
         return template;

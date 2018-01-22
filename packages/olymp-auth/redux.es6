@@ -27,7 +27,11 @@ export default config => {
 
   let auth0 = null;
   const init = ({ dispatch, getState }) => {
-    if (auth0 || !process.env.AUTH0_CLIENT_ID) {
+    if (
+      auth0 ||
+      typeof window === 'undefined' ||
+      !process.env.AUTH0_CLIENT_ID
+    ) {
       return;
     }
     config.logoutUrl = `${window.location.origin}/logout`;
@@ -60,7 +64,7 @@ export default config => {
   };
 
   const middleware = ({ dispatch, getState }) => nextDispatch => action => {
-    if (!auth0) {
+    if (!auth0 || typeof window === 'undefined') {
       return nextDispatch(action);
     }
     if (action.type === LOGIN) {

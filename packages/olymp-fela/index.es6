@@ -1,6 +1,7 @@
 export * from 'react-fela';
 export { default as color } from 'tinycolor2';
 
+import { renderToSheetList } from 'fela-dom';
 import React from 'react';
 import { Provider } from 'react-fela';
 import createFela from './create-fela';
@@ -19,12 +20,7 @@ export const plugin = () => {
       ),
     };
   } else {
-    let fela;
     return {
-      bootstrap: async app => {
-        fela = await renderToSheetList(renderer);
-        return fela;
-      },
       decorate: App => props => (
         <Provider renderer={renderer}>
           <Theme>
@@ -33,7 +29,7 @@ export const plugin = () => {
         </Provider>
       ),
       template: template => {
-        const state = asyncContext.getState();
+        const fela = renderToSheetList(renderer);
         template.header.push(`
           ${fela
             .map(

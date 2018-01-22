@@ -8,6 +8,8 @@ export default ({
   fela = [],
   styles = [],
   scripts = [],
+  header = [],
+  body = [],
   root = '',
   initialState,
   cssHash,
@@ -39,6 +41,7 @@ export default ({
     ${styles
       .map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)
       .join('\n')}
+    ${header.join('\n')}
     ${
       gaTrackingId
         ? `<script type="text/javascript">
@@ -87,6 +90,7 @@ export default ({
             serialize(getInitialState())}</script>`
         : ''
     }
+    ${body.join('\n')}
     ${scripts
       .map(script => `<script async src="${script}"></script>`)
       .join('\n')}
