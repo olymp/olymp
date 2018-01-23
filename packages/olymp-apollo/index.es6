@@ -15,7 +15,7 @@ export const pending = action => `${action}${ACTION_SUFFIX_PENDING}`;
 export const rejected = action => `${action}${ACTION_SUFFIX_REJECTED}`;
 export const resolved = action => `${action}${ACTION_SUFFIX_RESOLVED}`;
 
-export const plugin = () => ({ store, dynamicRedux }) => {
+export const plugin = ({ schema }) => ({ store, dynamicRedux }) => {
   if (typeof window !== 'undefined') {
     const { reducer, middleware } = redux({
       initial: !window.APOLLO_STATE,
