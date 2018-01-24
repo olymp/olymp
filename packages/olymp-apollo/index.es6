@@ -1,11 +1,11 @@
+export { graphql } from 'react-apollo';
+export { default as gql } from 'graphql-tag';
+
+import redux, { startLoading, stopLoading } from './redux';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import getApollo from './remote';
 import getApollo2 from './local';
-import redux, { startLoading, stopLoading } from './redux';
-
-export { graphql } from 'react-apollo';
-export { default as gql } from 'graphql-tag';
 
 export const APOLLO_MUTATE = 'APOLLO_MUTATE';
 export const APOLLO_QUERY = 'APOLLO_QUERY';
