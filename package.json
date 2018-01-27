@@ -38,8 +38,8 @@
   "homepage": "https://github.com/olymp/olymp#readme",
   "dependencies": {},
   "devDependencies": {
-    "eslint-config-olymp": "^20.1.2",
-    "lerna": "^2.7.1",
-    "olymp-lerna": "^20.1.22"
+    "eslint-config-olymp": "^20.1.28",
+    "lerna": "^2.8.0",
+    "olymp-lerna": "^20.1.28"
   }
 }
