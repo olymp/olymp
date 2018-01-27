@@ -78,14 +78,17 @@ export default class Auth {
       const auth = await this.getLock();
       return new Promise((yay, nay) => {
         auth.checkSession({}, (error, authResult) => {
-          if (error || !authResult) {
+          if (error) {
+            console.error(error);
+          } else if (!authResult) {
             return this.login()
               .then(yay)
               .catch(nay);
+          } else {
+            return this.getUserInfo(auth, authResult)
+              .then(yay)
+              .catch(nay);
           }
-          return this.getUserInfo(auth, authResult)
-            .then(yay)
-            .catch(nay);
         });
       });
     } else if (hash) {
