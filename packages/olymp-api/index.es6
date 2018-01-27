@@ -24,7 +24,6 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
       });
     },
   });
-
   return {
     server: (event, context, callback) => {
       context.callbackWaitsForEmptyEventLoop = false;
