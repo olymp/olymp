@@ -1,5 +1,6 @@
 import { GraphQLServerLambda } from 'graphql-yoga';
 import { connectionString, connectToDatabase } from './db';
+import voyager from './voyager';
 export * from './db';
 
 export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
@@ -34,5 +35,6 @@ export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
       lambda.graphqlHandler(event, context, callback);
     },
     playground: lambda.playgroundHandler,
+    voyager: voyager({}),
   };
 };
