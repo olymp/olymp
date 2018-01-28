@@ -8,24 +8,21 @@
     "init": "lerna init --independent",
     "watch": "olymp-lerna watch",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
-    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lpf":
+      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
-    "lc": "del 'packages/*/package-lock.json' 'packages/*/node_modules'"
+    "lc":
+      "lerna exec --concurrency 1 -- del 'package-lock.json' 'node_modules'",
+    "la": "npm run lc && npm run li && npm run lb"
   },
   "engines": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
     "Benjamin Kniffler <bkniffler@me.com>",
