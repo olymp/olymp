@@ -72,6 +72,9 @@ export const updateOne = (collection, query, data) => {
   if (!data) {
     data = query || {};
     query = null;
+  } else if (query && typeof query === 'string') {
+    data.id = id;
+    query = null;
   }
   const id = data.id;
   delete data.id;
