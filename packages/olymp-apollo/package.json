@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.4",
-    "apollo-client": "^2.1.0",
+    "apollo-client": "^2.2.1",
     "apollo-fetch": "^0.7.0",
     "apollo-link": "^1.0.7",
     "apollo-link-error": "^1.0.3",
