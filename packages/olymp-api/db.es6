@@ -73,17 +73,15 @@ export const updateOne = (collection, query, data) => {
     data = query || {};
     query = null;
   } else if (query && typeof query === 'string') {
-    data.id = id;
-    query = null;
+    query = { _id: new ObjectID(query) };
+  } else if (query && query instanceof ObjectID) {
+    query = { _id: query };
   }
-  const id = data.id;
-  delete data.id;
-
-  if (id || query) {
+  if (query) {
     return enhance(
       'findAndModify',
       collection,
-      query || { _id: new ObjectID(id) },
+      query,
       [],
       { $set: data },
       {
@@ -104,7 +102,7 @@ export const find = (collection, filter, ...args) => {
   if (filter && Array.isArray(filter)) {
     return enhance('find', collection, {
       _id: { $in: filter.map(x => new ObjectID(x)) },
-    }).then(transform);
+    }).then(x => x.toArray()).then(transform);
   }
   return enhance('find', collection, filter, ...args)
     .then(x => x.toArray())
