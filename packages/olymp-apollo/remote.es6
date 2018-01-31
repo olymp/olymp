@@ -1,11 +1,11 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import { createHttpLink } from 'apollo-link-http';
+import { BatchHttpLink } from 'apollo-link-batch-http';
 import { onError } from 'apollo-link-error';
 
 export default ({ url, initialData, loader, tokenKey }) => {
-  let link = createHttpLink({ uri: url });
+  let link = new BatchHttpLink({ uri: url });
   const cache = new InMemoryCache({
     dataIdFromObject: o => o.id,
     addTypename: true,
