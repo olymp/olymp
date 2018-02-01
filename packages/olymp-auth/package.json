@@ -1,5 +1,5 @@
 {
-  "version": "20.1.43",
+  "version": "20.1.45",
   "name": "olymp-auth",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -7,6 +7,5 @@
     "Benjamin Kniffler <bkniffler@me.com>",
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
-  "license": "MIT",
-  "dependencies": {}
+  "license": "MIT"
 }
