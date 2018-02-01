@@ -52,29 +52,6 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
     });
     dynamicRedux.inject({ middleware, reducer, name: 'auth' });
 
-    /*const { pathname, query, url, hash } = history.location;
-    const auth_url = localStorage.getItem('auth_url');
-    if (pathname === '/logout') {
-      if (auth0.isAuthenticated()) {
-        auth0.logout();
-      } else {
-        history.replace(auth_url || '/');
-      }
-    } else if (pathname === '/login') {
-      if (hash && hash.indexOf('access_token') !== -1 ? hash : null) {
-        history.replace(auth_url || '/');
-        auth0.init(hash).then(payload => {
-          store.dispatch({ type: SET, payload });
-        });
-      } else {
-        auth0.login();
-      }
-    } else {
-      auth0.init().then(payload => {
-        store.dispatch({ type: SET, payload });
-      });
-    }
-    localStorage.removeItem('auth_url');*/
     return {};
   } else {
     const { reducer, middleware } = redux({});

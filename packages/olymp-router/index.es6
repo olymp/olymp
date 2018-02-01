@@ -15,7 +15,14 @@ import { createHistory, attachHistory } from './history';
 import redux from './redux';
 export const plugin = ({ originalUrl } = {}) => ({ dynamicRedux, store }) => {
   if (typeof window !== 'undefined') {
-    const history = createHistory();
+    const options = {};
+    if (process.env.IS_ELECTRON) {
+      const rawLocation = localStorage.getItem('location');
+      if (rawLocation) {
+        options.initialEntries = [rawLocation];
+      }
+    }
+    const history = createHistory(options);
     const { middleware, reducer } = redux(history);
     dynamicRedux.inject({
       name: 'location',

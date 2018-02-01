@@ -13,7 +13,7 @@ export const LOCATION_UNBLOCK = 'LOCATION_UNBLOCK';
 export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 
 export default history => {
-  const defaultState = urlToLocation(location);
+  const defaultState = urlToLocation(history.location);
   const reducer = (state = defaultState, action) => {
     if (!action || !action.type) {
       return state;
@@ -100,7 +100,13 @@ export default history => {
         });
       } else {
         if (action.type === LOCATION_CHANGE && process.env.IS_ELECTRON) {
-          localStorage.setItem('location', JSON.stringify(action.payload));
+          let { search, hash, pathname } = action.payload;
+          if (search) {
+            pathname = `${pathname}?${
+              search[0] === '?' ? search.substr(1) : search
+            }`;
+          }
+          localStorage.setItem('location', pathname);
         }
         if (
           action.type === LOCATION_CHANGE &&

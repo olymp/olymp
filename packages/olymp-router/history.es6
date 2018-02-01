@@ -9,11 +9,5 @@ if (process.env.IS_NODE || process.env.IS_ELECTRON) {
 
 export const createHistory = (options = {}) => {
   const history = historyCreator(options);
-  if (process.env.IS_ELECTRON) {
-    const rawLocation = localStorage.getItem('location');
-    if (rawLocation) {
-      history.push(JSON.parse(rawLocation));
-    }
-  }
   return history;
 };
