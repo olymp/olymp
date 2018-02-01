@@ -29,7 +29,6 @@ export default ({ auth0, initialState = {} }) => {
       return nextDispatch(action);
     }
     if (action.type === LOGIN) {
-      localStorage.setItem('auth_url', getState().location.url);
       dispatch({
         type: LOCATION_PUSH,
         payload: {
@@ -37,7 +36,6 @@ export default ({ auth0, initialState = {} }) => {
         },
       });
     } else if (action.type === LOGOUT) {
-      localStorage.setItem('auth_url', getState().location.url);
       dispatch({
         type: LOCATION_PUSH,
         payload: {
@@ -48,12 +46,12 @@ export default ({ auth0, initialState = {} }) => {
       action.type === 'LOCATION_CHANGE' &&
       action.payload.pathname === '/login'
     ) {
-      auth0.login();
+      auth0.login({ state: getState().location.url });
     } else if (
       action.type === 'LOCATION_CHANGE' &&
       action.payload.pathname === '/logout'
     ) {
-      auth0.logout();
+      auth0.logout({ state: getState().location.url });
     } else {
       nextDispatch(action);
     }

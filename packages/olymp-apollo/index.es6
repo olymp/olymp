@@ -37,7 +37,6 @@ export const plugin = ({ schema } = {}) => ({ store, dynamicRedux }) => {
     });
 
     if (!window.APOLLO_STATE) {
-      console.log(loader);
       loader.start();
       loader.end();
     }

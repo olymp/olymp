@@ -1,24 +1,58 @@
 import { LOCATION_REPLACE, LOCATION_PUSH } from 'olymp-router';
-export { default as Auth0 } from './auth0';
 export { default as getAuth } from './get-auth';
-import Auth0 from './auth0';
 import redux, { SET } from './redux';
+
+let Auth0;
+if (process.env.IS_ELECTRON) {
+  Auth0 = require('./auth0-electron').default;
+} else {
+  Auth0 = require('./auth0').default;
+}
 
 export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
   if (typeof window !== 'undefined') {
     const config = {
-      logoutUrl: `${window.location.origin}/logout`,
-      redirectUri: `${window.location.origin}/login`,
-      ...options,
+      redirectUri: options.redirectUri || process.env.AUTH0_REDIRECT_URI,
+      domain: options.domain || process.env.AUTH0_DOMAIN,
+      clientID: options.clientID || process.env.AUTH0_CLIENT_ID,
+      audience: options.audience || process.env.AUTH0_AUDIENCE,
+      scope: options.scope || process.env.AUTH0_SCOPE || 'openid email profile',
     };
     const auth0 = new Auth0(config);
+    auth0.on('profile', payload => {
+      console.log('NEW PROFILE', payload, +new Date());
+      store.dispatch({ type: SET, payload });
+    });
+
+    const { pathname, query } = store.getState().location;
+    let user;
+    if (pathname === '/logout') {
+      if (user) {
+        auth0.logout();
+      } else {
+        history.replace(query.state || '/');
+      }
+    } else if (pathname === '/login') {
+      if (query.state === '/__silent') {
+      } else if (query.code) {
+        history.replace(query.state || '/');
+        auth0.login({ code: query.code });
+      } else if (query.state) {
+        history.replace(query.state || '/');
+      } else {
+        auth0.login({ state: '/' });
+      }
+    } else {
+      user = auth0.getProfile();
+    }
+
     const { reducer, middleware } = redux({
       auth0,
-      initialState: { user: auth0.currentUser(), isAuthenticated: true },
+      initialState: { user, isAuthenticated: !!user },
     });
     dynamicRedux.inject({ middleware, reducer, name: 'auth' });
 
-    const { pathname, query, url, hash } = history.location;
+    /*const { pathname, query, url, hash } = history.location;
     const auth_url = localStorage.getItem('auth_url');
     if (pathname === '/logout') {
       if (auth0.isAuthenticated()) {
@@ -40,7 +74,7 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
         store.dispatch({ type: SET, payload });
       });
     }
-    localStorage.removeItem('auth_url');
+    localStorage.removeItem('auth_url');*/
     return {};
   } else {
     const { reducer, middleware } = redux({});

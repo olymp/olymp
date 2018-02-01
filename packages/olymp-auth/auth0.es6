@@ -1,233 +1,132 @@
-const clearOldNonces = () => {
-  Object.keys(localStorage).forEach(key => {
-    if (key.startsWith('com.auth0.auth')) {
-      localStorage.removeItem(key);
-    }
-  });
-};
+// src/utils/AuthService.js
+import { EventEmitter } from 'events';
+import createIFrame from './utils/iframe';
+import parseQuery from './utils/parse-query';
 
-export default class Auth {
+export default class AuthService extends EventEmitter {
   constructor(config) {
-    if (typeof window === 'undefined') {
-      return;
+    if (!config.redirectUri) {
+      config.redirectUri = `${window.location.origin}/login`;
     }
-    this.config = {
-      domain: config.domain || process.env.AUTH0_DOMAIN,
-      clientID: config.clientID || process.env.AUTH0_CLIENT_ID,
-      logoutUrl: config.logoutUrl || window.location.origin,
-      // prompt: 'none',
-      redirectUri:
-        config.redirectUri ||
-        process.env.AUTH0_REDIRECT_URI ||
-        window.location.origin,
-      responseType:
-        config.responseType || process.env.AUTH0_RESPONSETYPE || 'token',
-      audience: config.audience || process.env.AUTH0_AUDIENCE,
-      scope: config.scope || process.env.AUTH0_SCOPE || 'openid email profile',
-    };
+    if (!config.logoutUri) {
+      config.logoutUri = `${window.location.origin}/logout`;
+    }
+    super(config);
+    this.config = config;
   }
 
-  currentUser = () => {
-    if (this.isAuthenticated() && localStorage.getItem('profile')) {
-      return JSON.parse(localStorage.getItem('profile'));
-    } else {
+  getProfile = () => {
+    const user = this.getUser();
+    if (!user) {
+      return null;
+    } else if (this.isExpired(user)) {
+      this.refreshToken();
       return null;
     }
+    return user.profile;
   };
 
-  setSession = ({ expiresIn, accessToken, profile }) => {
-    const expiresAt = JSON.stringify(expiresIn * 1000 + new Date().getTime());
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('profile', JSON.stringify(profile));
-    localStorage.setItem('expires_at', expiresAt);
-    clearOldNonces();
+  logout = ({ state }) => {
+    const user = this.getUser();
+    if (user) {
+      localStorage.removeItem('user');
+      localStorage.removeItem(`user_${user.sub}`);
+    }
+    const { clientID, audience, domain, scope, logoutUri } = this.config;
+    let href = `https://${domain}/v2/logout?client_id=${clientID}&returnTo=${logoutUri}`;
+    if (state) {
+      href = `${href}&state=${state}`;
+    }
+    window.location.href = href;
   };
 
-  getLock = () => {
-    return new Promise(yay => {
-      if (this.lock) {
-        return yay(this.lock);
+  login = ({ code, email, state } = {}) => {
+    if (code) {
+      this.handleAuth({ code });
+    } else {
+      const { clientID, audience, domain, scope, redirectUri } = this.config;
+      let href = `https://${domain}/authorize?scope=${scope}&audience=${audience}&response_type=code&client_id=${clientID}&redirect_uri=${redirectUri}`;
+      if (email) {
+        href = `${href}&email=${email}`;
       }
-      require.ensure(
-        [],
-        require => {
-          const { WebAuth } = require('auth0-js');
-          const auth = new WebAuth(this.config);
-          yay(auth);
-        },
-        'auth0'
-      );
-    });
-  };
-
-  getUserInfo = (auth, authResult) => {
-    return new Promise((yay, nay) => {
-      auth.client.userInfo(authResult.accessToken, (error, profile) => {
-        if (error) {
-          console.log(error, profile);
-          return nay(error);
-        }
-        this.setSession({ ...authResult, profile });
-        setTimeout(() => yay(profile), 100);
-      });
-    });
-  };
-
-  init = async hash => {
-    if (this.isAuthenticated()) {
-      const auth = await this.getLock();
-      return new Promise((yay, nay) => {
-        auth.checkSession({}, (error, authResult) => {
-          if (error) {
-            console.error(error);
-          } else if (!authResult) {
-            return this.login()
-              .then(yay)
-              .catch(nay);
-          } else {
-            return this.getUserInfo(auth, authResult)
-              .then(yay)
-              .catch(nay);
-          }
-        });
-      });
-    } else if (hash) {
-      console.log(hash);
-      const auth = await this.getLock();
-      return new Promise((yay, nay) => {
-        auth.parseHash({ hash }, (err, authResult) => {
-          if (err || !authResult) {
-            return nay(err || 'No result');
-          }
-          this.getUserInfo(auth, authResult)
-            .then(yay)
-            .catch(nay);
-        });
-      });
+      if (state) {
+        href = `${href}&state=${state}`;
+      }
+      window.location.href = href;
     }
   };
 
-  login = async () => {
-    const auth = await this.getLock();
-    return auth.authorize();
-  };
-
-  logout = async () => {
-    const lock = await this.getLock();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('auth0.ssodata');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('expires_at');
-    lock.logout({
-      returnTo: this.config.logoutUrl,
+  refreshToken = ({ timeout = 10000, state = '/__silent' } = {}) => {
+    console.log('REFRESH!');
+    const { clientID, audience, domain, scope, redirectUri } = this.config;
+    return createIFrame(
+      `http://${domain}/authorize?scope=${scope}&audience=${audience}&response_type=code&client_id=${clientID}&redirect_uri=${redirectUri}&state=${state}&prompt=none`
+    ).then(url => {
+      const code = (parseQuery(url.substr(url.indexOf('?'))) || {}).code;
+      if (code) {
+        this.handleAuth({ code });
+      }
     });
-    /*localStorage.removeItem('access_token');
-    localStorage.removeItem('auth0.ssodata');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('expires_at');
-    clearOldNonces();
-
-    this.handler(null);*/
   };
 
-  isAuthenticated = () => {
-    const exp = localStorage.getItem('expires_at');
-    if (!exp) {
+  handleAuth = ({ code }, verifier) => {
+    return fetch(`https://${this.config.domain}/oauth/token`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        grant_type: 'authorization_code',
+        client_id: this.config.clientID,
+        code_verifier: verifier,
+        code: code,
+        redirect_uri: this.config.redirectUri,
+      }),
+    })
+      .then(result => result.json())
+      .then(this.userInfo);
+  };
+
+  userInfo = args => {
+    return fetch(`https://${this.config.domain}/userinfo`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        access_token: args.access_token,
+      }),
+    })
+      .then(result => result.json())
+      .then(profile => this.storeAuthResult({ ...args, profile }));
+  };
+
+  storeAuthResult = ({ access_token, expires_in, refresh_token, profile }) => {
+    const user = JSON.stringify({
+      access_token,
+      expires_at: expires_in * 1000 + new Date().getTime(),
+      refresh_token,
+      profile,
+    });
+    localStorage.setItem(`user_${profile.sub}`, user);
+    localStorage.setItem('user', user);
+    localStorage.setItem('access_token', access_token);
+    this.emit('profile', profile);
+  };
+
+  isSet = () => {
+    const user = localStorage.getItem('user');
+    if (!user) {
       return false;
     }
-    const expiresAt = JSON.parse(exp);
-    return new Date().getTime() < expiresAt;
+    return true;
+  };
+
+  isExpired = user => {
+    if (!user || !user.expires_at || !user.access_token) {
+      return true;
+    }
+    return new Date().getTime() >= user.expires_at;
+  };
+
+  getUser = () => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   };
 }
-
-/*return;
-
-    this.config = {
-      title: config.title || 'olymp',
-      domain: config.domain || process.env.AUTH0_DOMAIN,
-      clientID: config.clientID || process.env.AUTH0_CLIENT_ID,
-      color: config.color || 'green',
-      logo:
-        config.logo ||
-        'http://res.cloudinary.com/djyenzorc/image/upload/v1508057396/qkg/ci3onnwcl2isotkvsvrp.png',
-      returnTo: config.returnTo || 'http://localhost:3010',
-      redirect: config.redirect || false,
-      sso: config.sso || false,
-      responseType: config.responseType || 'token',
-      scope: config.scope || 'openid email profile',
-      audience: config.audience || process.env.AUTH0_AUDIENCE,
-      language: 'de',
-    };
-          const Auth0Lock = require('auth0-lock').default;
-
-          this.lock = new Auth0Lock(this.config.clientID, this.config.domain, {
-            languageDictionary: {
-              title: this.config.title,
-            },
-            language: this.config.language,
-            theme: {
-              logo: this.config.logo,
-              primaryColor: this.config.color,
-            },
-            auth: {
-              params: {
-                scope: this.config.scope,
-                audience: this.config.audience,
-              },
-              redirect: this.config.redirect,
-              sso: this.config.sso,
-            },
-          });
-
-          let closing = false;
-          this.lock.on('authenticated', authResult => {
-            if (!authResult || !authResult.accessToken) {
-              return;
-            }
-            console.log(authResult);
-            this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
-              if (error) {
-                return;
-              }
-              this.setSession({ ...authResult, profile });
-              console.log(profile);
-              closing = true;
-              this.lock.hide();
-              this.handler(profile);
-            });
-          });
-          this.lock.on('hide', () => {
-            if (closing) {
-              return;
-            }
-            this.handler(false);
-          });
-          yay(this.lock);*/
-/*await this.getLock();
-    this.webAuth.checkSession({}, function(err, authResult) {
-      console.log(err, authResult);
-    });*/
-/*lock.show();
-    return;
-    lock.checkSession(
-      {
-        domain: this.config.domain,
-        scope: this.config.scope,
-        clientID: this.config.clientID,
-        audience: this.config.audience,
-        responseType: 'token',
-      },
-      (error, authResult) => {
-        console.log('CHECK', authResult, error);
-        if (error || !authResult) {
-          lock.show();
-        } else {
-          // user has an active session, so we can use the accessToken directly.
-          lock.getUserInfo(authResult.accessToken, (error, profile) => {
-            console.log(error, profile);
-            this.setSession({ ...authResult, profile });
-            this.handler(profile);
-          });
-        }
-      }
-    );*/
