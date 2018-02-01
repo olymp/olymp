@@ -54,11 +54,9 @@ export default class AuthServiceElectron extends AuthService {
       localStorage.removeItem(`user_${user.sub}`);
     }
     const { clientID, audience, domain, scope, redirectUri } = this.config;
-    console.log('LOGOUT1', redirectUri);
     let href = `https://${domain}/v2/logout?client_id=${clientID}&returnTo=${redirectUri}`;
     const win = window.open(href, 'oauth');
     ipcRenderer.once('oauth-callback', (event, raw) => {
-      console.log('LOGOUT');
       this.emit('profile', null);
     });
   };
