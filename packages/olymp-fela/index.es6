@@ -1,5 +1,6 @@
 export * from 'react-fela';
 export { default as color } from 'tinycolor2';
+export { default as withStyle } from './with-style';
 
 import { renderToSheetList } from 'fela-dom';
 import React from 'react';
