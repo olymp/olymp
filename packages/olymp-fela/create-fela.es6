@@ -157,6 +157,9 @@ export default ua => {
                     }),
               }
             : {},
+        flexWidth: width => {
+          return { maxWidth: width, minWidth: width, width };
+        },
         hasFlex: styles => {
           if (!isBrowser('IE', 10)) {
             return styles;
