@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { urlToLocation } from './utils';
+import isStandalone from './is-standalone';
 
 export const LOCATION_REPLACE = 'LOCATION_UPDATE';
 export const LOCATION_PUSH = 'LOCATION_PUSH';
@@ -99,7 +100,7 @@ export default history => {
           payload: urlToLocation(action.payload),
         });
       } else {
-        if (action.type === LOCATION_CHANGE && process.env.IS_ELECTRON) {
+        if (action.type === LOCATION_CHANGE && isStandalone) {
           let { search, hash, pathname } = action.payload;
           if (search) {
             pathname = `${pathname}?${

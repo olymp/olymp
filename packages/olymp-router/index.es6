@@ -10,13 +10,14 @@ export * from './decorators';
 export * from './history';
 export * from './utils';
 export * from './redux';
+import isStandalone from './is-standalone';
 
 import { createHistory, attachHistory } from './history';
 import redux from './redux';
 export const plugin = ({ originalUrl } = {}) => ({ dynamicRedux, store }) => {
   if (typeof window !== 'undefined') {
     const options = {};
-    if (process.env.IS_ELECTRON) {
+    if (isStandalone) {
       const rawLocation = localStorage.getItem('location');
       if (rawLocation) {
         options.initialEntries = [rawLocation];
