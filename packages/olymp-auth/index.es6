@@ -39,11 +39,12 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
       } else if (query.code) {
         history.replace(query.state || '/');
         auth0.login({ code: query.code });
-      } else if (query.state || process.env.IS_ELECTRON) {
-        history.replace(query.state || '/');
       } else {
+        //  if (query.state || process.env.IS_ELECTRON)
+        history.replace(query.state || '/');
+      }/* else {
         auth0.login({ state: '/' });
-      }
+      }*/
     } else {
       user = auth0.getProfile();
     }
