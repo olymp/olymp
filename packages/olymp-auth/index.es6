@@ -25,6 +25,9 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
 
     const { pathname, query } = store.getState().location;
     let user;
+    if (query.state === '/login') {
+      query.state = '/';
+    }
     if (pathname === '/logout') {
       if (user) {
         auth0.logout();
