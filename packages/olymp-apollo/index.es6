@@ -1,5 +1,6 @@
-export { graphql } from 'react-apollo';
+export * from 'react-apollo';
 export { default as gql } from 'graphql-tag';
+export { default as omit } from './omit';
 
 import redux, { startLoading, stopLoading } from './redux';
 import React from 'react';
