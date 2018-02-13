@@ -20,7 +20,6 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
     };
     const auth0 = new Auth0(config);
     auth0.on('profile', payload => {
-      console.log('NEW PROFILE', payload, +new Date());
       store.dispatch({ type: SET, payload });
     });
 
@@ -37,7 +36,7 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
       } else if (query.code) {
         history.replace(query.state || '/');
         auth0.login({ code: query.code });
-      } else if (query.state) {
+      } else if (query.state || process.env.IS_ELECTRON) {
         history.replace(query.state || '/');
       } else {
         auth0.login({ state: '/' });
