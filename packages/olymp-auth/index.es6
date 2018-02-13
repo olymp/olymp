@@ -19,10 +19,10 @@ export const plugin = (options = {}) => ({ history, store, dynamicRedux }) => {
       scope: options.scope || process.env.AUTH0_SCOPE || 'openid email profile',
     };
     const auth0 = new Auth0(config);
-    auth0.on('profile', payload => {
+    auth0.on('profile' , payload => {
       store.dispatch({ type: SET, payload });
     });
-
+    
     const { pathname, query } = store.getState().location;
     let user;
     if (query.state === '/login') {
