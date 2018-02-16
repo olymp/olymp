@@ -1,5 +1,5 @@
 {
-  "version": "20.1.59",
+  "version": "20.2.6",
   "name": "olymp",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -9,7 +9,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "fs-extra": "^5.0.0",
     "react-helmet": "^5.2.0",
     "recompose": "^0.26.0",
