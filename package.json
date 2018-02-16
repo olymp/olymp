@@ -37,10 +37,12 @@
     "url": "https://github.com/olymp/olymp/issues"
   },
   "homepage": "https://github.com/olymp/olymp#readme",
-  "dependencies": {},
+  "dependencies": {
+    "babel-core": "^6.26.0"
+  },
   "devDependencies": {
     "eslint-config-olymp": "^20.2.0",
     "lerna": "^2.9.0",
-    "olymp-lerna": "^20.2.5"
+    "olymp-lerna": "^20.2.9"
   }
 }
