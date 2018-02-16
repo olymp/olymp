@@ -3,5 +3,5 @@
     "packages/*"
   ],
   "lerna": "2.0.0",
-  "version": "20.2.1"
+  "version": "20.2.2"
 }
