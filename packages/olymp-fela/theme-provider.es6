@@ -52,7 +52,7 @@ const getTheme = (theme = {}) => ({
   fontSizeH3: '1.375rem',
   fontSizeH4: '1.25rem',
   fontSizeH5: '1.125rem',
-  fontSizeH6: '1rem',
+  fontSizeH6: '1.05rem',
   ...theme,
 });
 
