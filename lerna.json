@@ -3,5 +3,7 @@
     "packages/*"
   ],
   "lerna": "2.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "version": "20.2.8"
 }
