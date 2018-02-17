@@ -1,6 +1,7 @@
 {
-  "version": "20.2.7",
+  "version": "20.2.8",
   "name": "olymp-api",
+  "main": "./index.js",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
