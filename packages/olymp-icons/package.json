@@ -1,8 +1,0 @@
-{
-  "version": "20.2.8",
-  "name": "olymp-icons",
-  "description": "",
-  "main": "./index",
-  "author": "Benjamin Kniffler <bkniffler@me.com>",
-  "license": "MIT"
-}
