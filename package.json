@@ -41,6 +41,6 @@
   "devDependencies": {
     "eslint-config-olymp": "20.2.17",
     "lerna": "2.9.0",
-    "olymp-lerna": "20.2.24"
+    "olymp-lerna": "20.2.25"
   }
 }
