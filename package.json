@@ -7,16 +7,13 @@
   "name": "olymp",
   "description": "",
   "scripts": {
-    "up": "npm-check -u",
+    "up": "yarn upgrade-interactive --latest",
     "init": "lerna init --independent",
     "watch": "olymp-lerna watch",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
     "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
-    "lb": "lerna bootstrap",
-    "li": "lerna exec --concurrency 1 -- npm i",
-    "lu": "lerna exec --concurrency 1 -- npm-check -u",
-    "lc": "lerna exec --concurrency 1 -- del 'package-lock.json' 'node_modules'",
-    "la": "npm run lc && npm run li && npm run lb"
+    "lu": "lerna exec --concurrency 1 -- yarn upgrade-interactive --latest",
+    "lc": "lerna exec --concurrency 1 -- del 'package-lock.json' 'node_modules'"
   },
   "engines": {},
   "repository": {
@@ -40,12 +37,10 @@
     "url": "https://github.com/olymp/olymp/issues"
   },
   "homepage": "https://github.com/olymp/olymp#readme",
-  "dependencies": {
-    "babel-core": "^6.26.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "eslint-config-olymp": "^20.2.16",
-    "lerna": "^2.9.0",
-    "olymp-lerna": "^20.2.16"
+    "eslint-config-olymp": "20.2.17",
+    "lerna": "2.9.0",
+    "olymp-lerna": "20.2.20"
   }
 }
