@@ -6,7 +6,11 @@ module.exports = templateParams => `
   <html lang="de">
     <head>
       <meta charset="utf-8">
-      ${process.env.BUILD_ON ? `<meta name="build-on" content="${process.env.BUILD_ON}">` : ''}
+      ${
+        process.env.BUILD_ON
+          ? `<meta name="build-on" content="${process.env.BUILD_ON}">`
+          : ''
+      }
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta http-equiv="Content-Language" content="de" />
@@ -28,12 +32,16 @@ module.exports = templateParams => `
       <meta name="msapplication-TileColor" content="#8e44ad">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#8e44ad">
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])).map(style => `<link rel="stylesheet" type="text/css" href="${style}">`,)}
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
+      ).map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
       <style id="css-markup"></style>
     </head>
     <body>
       <div id="app"></div>
-      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.chunks.app.entry', [])).map(script => `<script async src="${script}"></script>`,)}
+      ${castArray(
+        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.js', [])
+      ).map(script => `<script async src="${script}"></script>`)}
     </body>
   </html>
 `;
