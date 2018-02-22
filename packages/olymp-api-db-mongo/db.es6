@@ -102,7 +102,9 @@ export const find = (collection, filter, ...args) => {
   if (filter && Array.isArray(filter)) {
     return enhance('find', collection, {
       _id: { $in: filter.map(x => new ObjectID(x)) },
-    }).then(x => x.toArray()).then(transform);
+    })
+      .then(x => x.toArray())
+      .then(transform);
   }
   return enhance('find', collection, filter, ...args)
     .then(x => x.toArray())

@@ -1,0 +1,9 @@
+{
+  "version": "20.2.13",
+  "name": "olymp-api-type-json",
+  "main": "./index.js",
+  "description": "",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "dependencies": {}
+}

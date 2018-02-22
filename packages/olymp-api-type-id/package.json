@@ -1,0 +1,11 @@
+{
+  "version": "20.2.13",
+  "name": "olymp-api-type-id",
+  "main": "./index.js",
+  "description": "",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "hashids": "^1.1.4"
+  }
+}

@@ -1,36 +1,40 @@
 import { GraphQLServerLambda } from 'graphql-yoga';
-import { connectionString, connectToDatabase, updateOne, findOne, find } from './db';
 import voyager from './voyager';
-export * from './db';
 
-export default ({ mongoUri, typeDefs = '', resolvers = {}, context }) => {
+const combine = plugins => async props => {
+  const contexts = await Promise.all(
+    plugins.filter(x => x.context).map(x => x.context(props))
+  );
+  return contexts.reduce((store, item) => Object.assign(store, item || {}), {});
+};
+
+export default ({ typeDefs = '', resolvers = {}, context, plugins = [] }) => {
   let lambda;
+  plugins = [{ context, typeDefs, resolvers }, ...plugins];
+
   try {
+    resolvers = plugins
+      .filter(x => x.resolvers)
+      .reduce((store, item) => Object.assign(store, item.resolvers), {});
+    typeDefs = plugins.filter(x => x.typeDefs).reduce(
+      (store, item) => `
+      ${item.typeDefs}
+      ${store}
+    `,
+      ''
+    );
+    context = combine(plugins);
+
     lambda = new GraphQLServerLambda({
       typeDefs,
       resolvers,
       options: {
         endpoint: null,
       },
-      context: async props => {
-        return Promise.all([
-          Promise.resolve(
-            (typeof context === 'function' ? context(props) : context) || {}
-          ),
-          connectToDatabase(mongoUri),
-        ]).then(([ctx, db]) => {
-          return {
-            ...ctx,
-            updateOne,
-            findOne,
-            find,
-            db,
-          };
-        });
-      },
+      context,
     });
-  } catch(err) {
-    console.error(err);
+  } catch (err) {
+    console.error('Error', err);
     lambda = new GraphQLServerLambda({
       typeDefs: '',
       resolvers: {},
