@@ -32,16 +32,16 @@ module.exports = templateParams => `
       <meta name="msapplication-TileColor" content="#8e44ad">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#8e44ad">
-      ${castArray(
-        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.css', [])
-      ).map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
+      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.css.0', [])).map(
+        style => `<link rel="stylesheet" type="text/css" href="${style}">`
+      )}
       <style id="css-markup"></style>
     </head>
     <body>
       <div id="app"></div>
-      ${castArray(
-        get(templateParams, 'htmlWebpackPlugin.files.chunks.main.js', [])
-      ).map(script => `<script async src="${script}"></script>`)}
+      ${castArray(get(templateParams, 'htmlWebpackPlugin.files.js.0', [])).map(
+        script => `<script async src="${script}"></script>`
+      )}
     </body>
   </html>
 `;
