@@ -1,9 +1,7 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "version": "15.2.8",
+  "workspaces": ["packages/*"],
+  "version": "0.9.0",
   "name": "olymp",
   "description": "",
   "scripts": {
@@ -11,7 +9,8 @@
     "init": "lerna init --independent",
     "watch": "olymp-lerna watch",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
-    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lpf":
+      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lu": "lerna exec --concurrency 1 -- yarn upgrade-interactive --latest",
     "lc": "lerna exec --concurrency 1 -- del 'package-lock.json' 'node_modules'"
   },
@@ -20,13 +19,7 @@
     "type": "git",
     "url": "https://github.com/olymp/olymp.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
     "Benjamin Kniffler <bkniffler@me.com>",
@@ -37,7 +30,9 @@
     "url": "https://github.com/olymp/olymp/issues"
   },
   "homepage": "https://github.com/olymp/olymp#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@alpacka/cli": "^0.9.19"
+  },
   "devDependencies": {
     "eslint-config-olymp": "20.2.17",
     "lerna": "2.9.0",

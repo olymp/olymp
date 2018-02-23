@@ -1,6 +1,6 @@
 {
-  "version": "20.2.13",
-  "name": "olymp-crypt",
+  "version": "0.9.0",
+  "name": "@olymp/crypt",
   "description": "",
   "main": "./index.js",
   "author": "Benjamin Kniffler <bkniffler@me.com>",

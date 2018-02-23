@@ -1,15 +1,11 @@
 {
-  "version": "20.2.13",
-  "name": "olymp-api",
-  "main": "./index.js",
+  "version": "0.9.0",
+  "name": "@olymp/auth0",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
     "Benjamin Kniffler <bkniffler@me.com>",
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "graphql-yoga": "^1.3.2"
-  }
+  "license": "MIT"
 }

@@ -1,6 +1,6 @@
 {
-  "version": "20.2.13",
-  "name": "olymp-apollo",
+  "version": "0.9.0",
+  "name": "@olymp/apollo",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [

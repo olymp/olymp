@@ -1,8 +1,8 @@
 {
-  "version": "20.2.13",
-  "name": "olymp-fela",
+  "version": "0.9.0",
+  "name": "@olymp/fela",
   "description": "",
-  "author": "Philipp Achenbach <olymp@philipp-achenbach.de>",
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
     "Benjamin Kniffler <bkniffler@me.com>",
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
