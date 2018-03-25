@@ -15,8 +15,8 @@ export default class Masonry extends Component {
 
         <div className="row">
           <div className="col-md-6">
-            <Image value={bild} lightbox cloudinary={{ width: 400 }} style={{ width: '100%' }} />
-            {!!bild.source ? <h5>Foto {!!bild.caption && <i>"{bild.caption}"</i>} von {bild.source}</h5> : null}
+            {!!bild && <Image value={bild} lightbox cloudinary={{ width: 400 }} style={{ width: '100%' }} />}
+            {!!bild && !!bild.source ? <h5>Foto {!!bild.caption && <i>"{bild.caption}"</i>} von {bild.source}</h5> : null}
           </div>
 
           <div className="col-md-6">
