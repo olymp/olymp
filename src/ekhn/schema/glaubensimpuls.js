@@ -1,6 +1,5 @@
 import cron from 'node-cron';
 import fetch from 'isomorphic-fetch';
-import get from 'lodash/get';
 
 // Url for Glaubensimpuls
 const url =
@@ -82,7 +81,7 @@ export default ({ schema }) => {
   let item = testData;
 
   // Get Losung
-  const getLosung = () => {
+  /* const get = () => {
     // Get Glaubensimpuls from url
     fetch(url)
       .then(res => {
@@ -95,12 +94,12 @@ export default ({ schema }) => {
       .catch(err => console.log(err));
   };
 
-  cron.schedule('00 00 * * * *', getLosung);
+  cron.schedule('00 00 * * * *', get);
 
   // Get initial
-  getLosung();
+  get();
 
-  if (!item || !item.data || !item.data[0]) item = testData;
+  if (!item || !item.data || !item.data[0]) item = testData; */
 
   return schema.addSchema({
     name: 'glaubensimpuls',
@@ -111,27 +110,27 @@ export default ({ schema }) => {
       Query: {
         glaubensimpuls: () => ({
           thumb: {
-            url: get(item, 'data.0.images.thumbnail.url'),
-            width: get(item, 'data.0.images.thumbnail.width'),
-            height: get(item, 'data.0.images.thumbnail.height'),
-            caption: get(item, 'data.0.caption.text'),
-            source: get(item, 'data.0.user.profile_picture'),
+            url: item.data[0].images.thumbnail.url,
+            width: item.data[0].images.thumbnail.width,
+            height: item.data[0].images.thumbnail.height,
+            caption: item.data[0].caption ? item.data[0].caption.text : '',
+            source: item.data[0].user.profile_picture,
           },
           small: {
-            url: get(item, 'data.0.images.low_resolution.url'),
-            width: get(item, 'data.0.images.low_resolution.width'),
-            height: get(item, 'data.0.images.low_resolution.height'),
-            caption: get(item, 'data.0.caption.text'),
-            source: get(item, 'data.0.user.profile_picture'),
+            url: item.data[0].images.low_resolution.url,
+            width: item.data[0].images.low_resolution.width,
+            height: item.data[0].images.low_resolution.height,
+            caption: item.data[0].caption ? item.data[0].caption.text : '',
+            source: item.data[0].user.profile_picture,
           },
           large: {
-            url: get(item, 'data.0.images.standard_resolution.url'),
-            width: get(item, 'data.0.images.standard_resolution.width'),
-            height: get(item, 'data.0.images.standard_resolution.height'),
-            caption: get(item, 'data.0.caption.text'),
-            source: get(item, 'data.0.user.profile_picture'),
+            url: item.data[0].images.standard_resolution.url,
+            width: item.data[0].images.standard_resolution.width,
+            height: item.data[0].images.standard_resolution.height,
+            caption: item.data[0].caption ? item.data[0].caption.text : '',
+            source: item.data[0].user.profile_picture,
           },
-          tags: get(item, 'data.0.tags', []),
+          tags: item.data[0].tags,
         }),
       },
     },
