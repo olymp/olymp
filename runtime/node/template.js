@@ -125,7 +125,7 @@ export const electron = ({ styles, scripts }) => `
 </html>
 `;
 
-export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrackingId }) => `
+export default ({ helmet, cssMarkup, styles, scripts, root, initialState /*, gaTrackingId */ }) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -157,7 +157,7 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrac
     ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`)}
     ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
     <style id="css-markup">${cssMarkup || ''}</style>
-    ${gaTrackingId ? `<script type="text/javascript">
+    ${/* gaTrackingId ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -176,7 +176,7 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState, gaTrac
 
       ga('create', '${gaTrackingId}', 'auto');
       ga('send', 'pageview');
-    </script>` : ''}
+    </script>` : '' */}
   </head>
   <body>
     <div id="app"><div>${root}</div></div>

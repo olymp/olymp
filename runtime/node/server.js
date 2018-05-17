@@ -181,7 +181,7 @@ app.get('*', (request, response) => {
       cssMarkup,
       helmet: Helmet.rewind(),
       initialState: { [client.reduxRootKey]: client.getInitialState() },
-      gaTrackingId: process.env.GA_TRACKING_ID,
+      // gaTrackingId: process.env.GA_TRACKING_ID,
     });
 
     // Check if the render result contains a redirect, if so we need to set
