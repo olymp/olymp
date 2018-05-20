@@ -2,7 +2,12 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { parseQuery, stringifyQuery, AmpProvider, routerQueryMiddleware } from 'olymp';
+import {
+  parseQuery,
+  stringifyQuery,
+  AmpProvider,
+  routerQueryMiddleware,
+} from 'olymp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
 import createFela from '../fela';
@@ -12,8 +17,13 @@ import { AppContainer } from 'react-hot-loader';
 
 // Redux stuff
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import createHistory from 'history/createBrowserHistory';
+import {
+  ConnectedRouter,
+  routerReducer,
+  routerMiddleware,
+  push,
+} from 'react-router-redux';
 // End Redux stuff
 
 const init = require('@app').init;
@@ -34,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     onUpdateFailed: () => {
       console.log('SW Event:', 'onUpdateFailed');
-    }
+    },
   });
 }
 /*// TODO
@@ -65,14 +75,14 @@ function renderApp() {
       <ApolloProvider store={store} client={client}>
         <ConnectedRouter history={history}>
           <FelaProvider renderer={renderer} mountNode={mountNode}>
-            <AmpProvider amp={false}>
-              <App />
-            </AmpProvider>
+            {/* <AmpProvider amp={false}> */}
+            <App />
+            {/* </AmpProvider> */}
           </FelaProvider>
         </ConnectedRouter>
       </ApolloProvider>
     </AppContainer>,
-    container,
+    container
   );
 }
 function load() {
@@ -91,15 +101,17 @@ function load() {
   store = createStore(
     combineReducers({
       apollo: client.reducer(),
-      router: routerReducer
+      router: routerReducer,
     }),
-    window.INITIAL_DATA || {},
+    window.INITIAL_DATA || {},
     compose(
       applyMiddleware(routerQueryMiddleware),
       applyMiddleware(routerMiddleware(history)),
       applyMiddleware(client.middleware()),
       // If you are using the devToolsExtension, you can add it here also
-      (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+      typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined'
+        ? window.__REDUX_DEVTOOLS_EXTENSION__()
+        : f => f
     )
   );
   // End Redux stuff
@@ -116,8 +128,5 @@ if (module.hot) {
   // Accept changes to this file for hot reloading.
   module.hot.accept('@app');
   // Any changes to our App will cause a hotload re-render.
-  module.hot.accept(
-    '@app',
-    () => renderApp(require('@app').default),
-  );
+  module.hot.accept('@app', () => renderApp(require('@app').default));
 }
