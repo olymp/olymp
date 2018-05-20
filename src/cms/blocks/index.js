@@ -6,3 +6,4 @@ export { default as Pdf } from './pdf';
 export { default as Image } from './image';
 export { default as Images } from './gallery';
 export { default as Line } from './line';
+export { default as OptOutCookieLink } from './opt-out-cookie-link';
