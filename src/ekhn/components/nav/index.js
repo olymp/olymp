@@ -23,18 +23,22 @@ export default class Nav extends Component {
     if (!showHome) {
       pages = pages.filter(page => page.slug !== '/');
     }
-    pages = pages.filter(page => page.slug !== '/impressum');
+    pages = pages.filter(
+      page => page.slug !== '/impressum' && page.slug !== '/datenschutz'
+    );
 
     const aboutUs = pages.find(page => page.name === 'Über Uns');
     if (aboutUs) {
       // Alle Rollen herausfiltern
       const rollen = {};
       personen = sortBy(personen, person => person.name.split(' ').splice(-1));
-      (personen || []).forEach(person => person.rollen.forEach((rolle) => {
-        if (!rollen[rolle.name]) rollen[rolle.name] = [];
+      (personen || []).forEach(person =>
+        person.rollen.forEach(rolle => {
+          if (!rollen[rolle.name]) rollen[rolle.name] = [];
 
-        rollen[rolle.name].push(person);
-      }));
+          rollen[rolle.name].push(person);
+        })
+      );
 
       // Rollen mit nur einer Person sollen kein Untermenü haben
       Object.keys(rollen).forEach(key => {
@@ -53,11 +57,10 @@ export default class Nav extends Component {
           children: [],
           blocks: true,
           noOrdering: true,
-        }))
-      }))
+        })),
+      }));
     }
 
     return <Navbar pages={pages} readOnly={readOnly} fill />;
   }
 }
-
