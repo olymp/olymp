@@ -138,7 +138,8 @@ export default ({
   styles,
   scripts,
   root,
-  initialState /*, gaTrackingId */,
+  initialState,
+  gaTrackingId,
 }) => `
 <!DOCTYPE html>
 <html lang="de">
@@ -185,12 +186,9 @@ export default ({
     <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
     <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
     ${scripts.map(script => `<script async src="${script}"></script>`)}
-  </body>
-</html>
-`;
-
-/* 
-${gaTrackingId ? `<script type="text/javascript">
+    ${
+      gaTrackingId
+        ? /* `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -209,5 +207,31 @@ ${gaTrackingId ? `<script type="text/javascript">
 
       ga('create', '${gaTrackingId}', 'auto');
       ga('send', 'pageview');
-    </script>` : ''}
-    */
+    </script>` */ ''
+        : ''
+    }
+    ${
+      gaTrackingId
+        ? `<script type="text/javascript">
+      const gaProperty = '${gaTrackingId}';
+      const disableStr = 'ga-disable-' + gaProperty;
+      if (document.cookie.indexOf(disableStr + '=true') > -1) {
+        window[disableStr] = true;
+      }
+
+      // Opt-out function
+      function gaOptout() {
+        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+        window[disableStr] = true;
+        alert("Google Analytics deaktiviert!");
+      }
+    </script>`
+        : `<script type="text/javascript">
+        function gaOptout() {
+          alert("Google Analytics ist auf dieser Website nicht aktiv!");
+        }
+      </script>`
+    }
+  </body>
+</html>
+`;
