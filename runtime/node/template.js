@@ -68,8 +68,13 @@ export const offline = ({ styles, scripts }) => `
     <meta name="msapplication-TileColor" content="#FBA139">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#FBA139">
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`)}
-    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
+    ${styles.map(
+      style =>
+        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
+    )}
+    ${styles.map(
+      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
+    )}
     <style id="css-markup"></style>
   </head>
   <body>
@@ -106,7 +111,9 @@ export const electron = ({ styles, scripts }) => `
     <meta name="msapplication-TileColor" content="#FBA139">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#FBA139">
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}">`)}
+    ${styles.map(
+      style => `<link rel="stylesheet" type="text/css" href="${style}">`
+    )}
     <style id="css-markup"></style>
     <style>
       body {
@@ -125,7 +132,14 @@ export const electron = ({ styles, scripts }) => `
 </html>
 `;
 
-export default ({ helmet, cssMarkup, styles, scripts, root, initialState /*, gaTrackingId */ }) => `
+export default ({
+  helmet,
+  cssMarkup,
+  styles,
+  scripts,
+  root,
+  initialState /*, gaTrackingId */,
+}) => `
 <!DOCTYPE html>
 <html lang="de">
   <head>
@@ -154,10 +168,29 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState /*, gaT
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
-    ${styles.map(style => `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`)}
-    ${styles.map(style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`)}
+    ${styles.map(
+      style =>
+        `<link rel="stylesheet" type="text/css" href="${style}" media="none" onload="if(media!='all')media='all'">`
+    )}
+    ${styles.map(
+      style => `<noscript><link rel="stylesheet" href="${style}"></noscript>`
+    )}
     <style id="css-markup">${cssMarkup || ''}</style>
-    ${/* gaTrackingId ? `<script type="text/javascript">
+  </head>
+  <body>
+    <div id="app"><div>${root}</div></div>
+    <script type='text/javascript'>window.INITIAL_DATA=${serialize(
+      initialState
+    )}</script>
+    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
+    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
+    ${scripts.map(script => `<script async src="${script}"></script>`)}
+  </body>
+</html>
+`;
+
+/* 
+${gaTrackingId ? `<script type="text/javascript">
       var gaProperty = '${gaTrackingId}';
       var disableStr = 'ga-disable-' + gaProperty;
       if (document.cookie.indexOf(disableStr + '=true') > -1) {
@@ -176,14 +209,5 @@ export default ({ helmet, cssMarkup, styles, scripts, root, initialState /*, gaT
 
       ga('create', '${gaTrackingId}', 'auto');
       ga('send', 'pageview');
-    </script>` : '' */}
-  </head>
-  <body>
-    <div id="app"><div>${root}</div></div>
-    <script type='text/javascript'>window.INITIAL_DATA=${serialize(initialState)}</script>
-    <script type='text/javascript'>function POLY() { window.POLYFILLED = true; if (window.GO) window.GO(); }</script>
-    <script async src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=POLY"></script>
-    ${scripts.map(script => `<script async src="${script}"></script>`)}
-  </body>
-</html>
-`;
+    </script>` : ''}
+    */
