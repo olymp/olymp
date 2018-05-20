@@ -124,7 +124,7 @@ const now = +moment();
       },
       tooltip,
     }, {
-      icon: 'header',
+      icon: 'heading',
       type: 'set-title',
       toggle: () => {
         const title = window.prompt('Titel', getData('title'));

@@ -1,27 +1,36 @@
 import React, { Component, PropTypes } from 'react';
-import { useBlockBase, useGenericBlock, useBlockToolbar, GenericBlock, Block } from 'olymp/slate';
+import {
+  useBlockBase,
+  useGenericBlock,
+  useBlockToolbar,
+  GenericBlock,
+  Block,
+} from 'olymp/slate';
 import { Image } from 'olymp/cms';
 
 const defaultVideo = 'https://www.youtube.com/embed/zalYJacOhpo';
-const actions = props => [{
-  type: 'youtube.url',
-  icon: 'film',
-  toggle: () => {
-    const { setData, getData } = props;
-    const currentUrl = getData('url') || defaultVideo;
-    const url = window.prompt('URL', currentUrl);
-    if (url) setData({ url });
+const actions = props => [
+  {
+    type: 'youtube.url',
+    icon: 'film',
+    toggle: () => {
+      const { setData, getData } = props;
+      const currentUrl = getData('url') || defaultVideo;
+      const url = window.prompt('URL', currentUrl);
+      if (url) setData({ url });
+    },
+    active: false,
   },
-  active: false,
-}, {
-  icon: 'header',
-  type: 'set-title',
-  toggle: () => {
-    const { setData, getData } = props;
-    const title = window.prompt('Titel', getData('title'));
-    setData({ title });
+  {
+    icon: 'heading',
+    type: 'set-title',
+    toggle: () => {
+      const { setData, getData } = props;
+      const title = window.prompt('Titel', getData('title'));
+      setData({ title });
+    },
   },
-}];
+];
 
 @useGenericBlock({
   label: 'Youtube',
@@ -36,7 +45,7 @@ export default class GzCardYoutube extends Component {
     children: PropTypes.node,
     className: PropTypes.string,
     getData: PropTypes.func,
-  }
+  };
 
   render() {
     const { children, title, url, ...rest } = this.props;
@@ -50,12 +59,21 @@ export default class GzCardYoutube extends Component {
       top: 0,
     };
     return (
-      <GenericBlock {...rest} className="gz-big-element col-md-4" toolbarStyle={{ marginLeft: -11, marginRight: -11 }}>
-        <h2>
-          {title}
-        </h2>
+      <GenericBlock
+        {...rest}
+        className="gz-big-element col-md-4"
+        toolbarStyle={{ marginLeft: -11, marginRight: -11 }}
+      >
+        <h2>{title}</h2>
         <div className="gz-panel mt-1" style={wrapper}>
-          <iframe width="100%" height="100%" src={url} frameBorder="0" allowFullScreen style={inner} />
+          <iframe
+            width="100%"
+            height="100%"
+            src={url}
+            frameBorder="0"
+            allowFullScreen
+            style={inner}
+          />
         </div>
         {children}
       </GenericBlock>
