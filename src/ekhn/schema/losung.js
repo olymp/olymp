@@ -9,14 +9,21 @@ export default ({ schema }) => {
   // Get Losung
   const get = () => {
     // Randomly
-    const date = moment().startOf('day').format().split('+')[0];
-    const losung = losungen.filter((item) => item.Datum === date);
+    const date = moment().startOf('day');
+    const losung = losungen.filter(
+      item =>
+        moment(item.Datum, 'DD.MM.YYYY').isSame(date) ||
+        moment(new Date(item.Datum)).isSame(date)
+    );
 
     if (losung.length > 0) {
-      console.log('Neue Losung nach Datum', date);
+      console.log('Neue Losung nach Datum', date.format());
       item = losung[0];
     } else {
-      console.log('Neue Losung zufällig da Datum nicht gefunden', date);
+      console.log(
+        'Neue Losung zufällig da Datum nicht gefunden',
+        date.format()
+      );
       item = losungen[Math.floor(Math.random() * losungen.length)];
     }
   };
@@ -31,18 +38,20 @@ export default ({ schema }) => {
     query: `
       losung: Losung
     `,
-    resolvers: { Query: {
-      losung: () => ({
-        id: item.Wtag,
-        datum: item.Datum,
-        tag: item.Wtag,
-        sonntag: item.Sonntag,
-        losungtext: item.Losungstext,
-        losungvers: item.Losungsvers,
-        lehrtext: item.Lehrtext,
-        lehrvers: item.Lehrtextvers,
-      }),
-    } },
+    resolvers: {
+      Query: {
+        losung: () => ({
+          id: item.Wtag,
+          datum: item.Datum,
+          tag: item.Wtag,
+          sonntag: item.Sonntag,
+          losungtext: item.Losungstext,
+          losungvers: item.Losungsvers,
+          lehrtext: item.Lehrtext,
+          lehrvers: item.Lehrtextvers,
+        }),
+      },
+    },
     schema: `
       type Losung {
         id: String
