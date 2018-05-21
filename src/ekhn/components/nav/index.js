@@ -16,7 +16,13 @@ import sortBy from 'lodash/sortBy';
 `)
 export default class Nav extends Component {
   render() {
-    const { data, showHome = true, className, readOnly } = this.props;
+    const {
+      data,
+      showHome = true,
+      className,
+      readOnly,
+      aboutUsLabel = 'Über Uns',
+    } = this.props;
     let { pages = [] } = this.props;
     let { personen } = data;
 
@@ -27,7 +33,7 @@ export default class Nav extends Component {
       page => page.slug !== '/impressum' && page.slug !== '/datenschutz'
     );
 
-    const aboutUs = pages.find(page => page.name === 'Über Uns');
+    const aboutUs = pages.find(page => page.name === aboutUsLabel);
     if (aboutUs) {
       // Alle Rollen herausfiltern
       const rollen = {};
@@ -61,6 +67,8 @@ export default class Nav extends Component {
       }));
     }
 
-    return <Navbar pages={pages} readOnly={readOnly} fill />;
+    return (
+      <Navbar pages={pages} readOnly={readOnly} className={className} fill />
+    );
   }
 }

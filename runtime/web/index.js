@@ -75,9 +75,9 @@ function renderApp() {
       <ApolloProvider store={store} client={client}>
         <ConnectedRouter history={history}>
           <FelaProvider renderer={renderer} mountNode={mountNode}>
-            {/* <AmpProvider amp={false}> */}
-            <App />
-            {/* </AmpProvider> */}
+            <AmpProvider amp={false}>
+              <App />
+            </AmpProvider>
           </FelaProvider>
         </ConnectedRouter>
       </ApolloProvider>

@@ -8,17 +8,20 @@
     text-overflow: ellipsis;
   }
 
-  .nav-item, .dropdown-item {
+  .nav-item,
+  .dropdown-item {
     max-width: 100%;
     font-size: 1.33rem;
     position: relative;
 
     &.active {
-      background-color: rgba(0, 0, 0, .33);
+      background-color: rgba(0, 0, 0, 0.33);
     }
 
-    &:hover, &:focus, &.focus {
-      background-color: rgba(0, 0, 0, .4);
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: rgba(0, 0, 0, 0.4);
 
       & > .dropdown-menu {
         display: block;
@@ -43,13 +46,13 @@
     right: 6px;
     top: 50%;
     transform: translateY(-50%);
-    color: #FFF;
-    opacity: .66;
+    color: #fff;
+    opacity: 0.66;
     font-size: 12px;
     cursor: move;
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 }

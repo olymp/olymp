@@ -269,18 +269,7 @@ export default ({
     ${scripts.map(script => `<script async src="${script}"></script>`)}
     ${
       gaTrackingId
-        ? /* `<script type="text/javascript">
-      var gaProperty = '${gaTrackingId}';
-      var disableStr = 'ga-disable-' + gaProperty;
-      if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-      }
-      function gaOptout() {
-        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-        window[disableStr] = true;
-      }
-    </script>
-    <script>
+        ? /* `<script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -291,28 +280,15 @@ export default ({
     </script>` */ ''
         : ''
     }
-    ${
-      gaTrackingId
-        ? `<script type="text/javascript">
-      const gaProperty = '${gaTrackingId}';
-      const disableStr = 'ga-disable-' + gaProperty;
-      if (document.cookie.indexOf(disableStr + '=true') > -1) {
+    <script type="text/javascript">
+      function gaOptout() {
         window[disableStr] = true;
       }
 
-      // Opt-out function
-      function gaOptout() {
-        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-        window[disableStr] = true;
-        alert("Google Analytics deaktiviert!");
-      }
-    </script>`
-        : `<script type="text/javascript">
-        function gaOptout() {
-          alert("Google Analytics ist auf dieser Website nicht aktiv!");
-        }
-      </script>`
-    }
+      const gaProperty = '${gaTrackingId}';
+      const disableStr = 'ga-disable-' + gaProperty;
+      if (document.cookie.indexOf(disableStr + '=true') > -1) gaOptout()
+    </script>
   </body>
 </html>
 `;

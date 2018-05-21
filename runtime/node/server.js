@@ -189,9 +189,9 @@ app.get('*', (request, response) => {
     <ApolloProvider store={store} client={client}>
       <ConnectedRouter history={history}>
         <Provider renderer={renderer}>
-          {/* <AmpProvider amp={request.isAmp}> */}
-          <App />
-          {/* </AmpProvider> */}
+          <AmpProvider amp={request.isAmp}>
+            <App />
+          </AmpProvider>
         </Provider>
       </ConnectedRouter>
     </ApolloProvider>
@@ -224,7 +224,7 @@ app.get('*', (request, response) => {
         cssMarkup,
         helmet: Helmet.rewind(),
         initialState: { [client.reduxRootKey]: client.getInitialState() },
-        // gaTrackingId: process.env.GA_TRACKING_ID,
+        gaTrackingId: process.env.GA_TRACKING_ID,
       });
 
       // Check if the render result contains a redirect, if so we need to set
