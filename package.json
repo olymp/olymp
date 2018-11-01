@@ -1,5 +1,5 @@
 {
-  "version": "14.2.44",
+  "version": "14.2.45",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -13,7 +13,13 @@
     "type": "git",
     "url": "git+https://github.com/olymp/olymp.git"
   },
-  "keywords": ["react", "universal", "javascript", "express", "webpack"],
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "license": "MIT",
   "bugs": {

@@ -64,6 +64,7 @@ const now = +moment();
 })
 @useGenericBlock({
   label: 'Beiträge',
+  category: 'EKHN',
   props: ['masonry', 'tags', 'placeholder', 'archive'],
   editable: false,
   tagSource: data => data.beitragList,
