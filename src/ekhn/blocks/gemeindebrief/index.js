@@ -5,10 +5,12 @@ import { useGenericBlock, GenericBlock } from 'olymp/slate';
 import { moment } from 'olymp/locale-de';
 import Items from '../../components/items';
 
-@withRouter
 @graphql(gql`
   query gemeindebriefList {
-    gemeindebriefe: gemeindebriefList(sort: {datum: DESC}, query: { state: { eq: PUBLISHED } }) {
+    gemeindebriefe: gemeindebriefList(
+      sort: { datum: DESC }
+      query: { state: { eq: PUBLISHED } }
+    ) {
       id
       name
       gemeindebrief {
@@ -28,13 +30,14 @@ import Items from '../../components/items';
   label: 'Gemeindebriefe',
   editable: false,
 })
+@withRouter
 export default class GemeindebriefeBlock extends Component {
   render() {
     const { data, children, className, style, ...rest } = this.props;
     let { gemeindebriefe = [] } = data;
 
     // Beiträge für Item-Komp. vorbereiten
-    gemeindebriefe = gemeindebriefe.map((x) => {
+    gemeindebriefe = gemeindebriefe.map(x => {
       const date = x.datum || x.createdAt || x.updatedAt;
 
       return {
@@ -42,14 +45,32 @@ export default class GemeindebriefeBlock extends Component {
         bild: x.gemeindebrief,
         date: +moment(date),
         shortText: x.zusammenfassung || x.text,
-        header: x.gemeindebrief ? <a href={x.gemeindebrief.url} target="_blank" rel="noopener noreferrer">{x.name}</a> : x.name,
-        subheader: <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr`}</span>,
+        header: x.gemeindebrief ? (
+          <a
+            href={x.gemeindebrief.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {x.name}
+          </a>
+        ) : (
+          x.name
+        ),
+        subheader: (
+          <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr`}</span>
+        ),
       };
     });
 
     return (
       <GenericBlock {...rest}>
-        <DataLoader className={className} style={style} isEmpty={data.gemeindebriefe} placeholder="Keine Gemeindebriefe vorhanden" loading="Gemeindebriefe werden geladen">
+        <DataLoader
+          className={className}
+          style={style}
+          isEmpty={data.gemeindebriefe}
+          placeholder="Keine Gemeindebriefe vorhanden"
+          loading="Gemeindebriefe werden geladen"
+        >
           <Items items={gemeindebriefe} masonry identifier="gemeindebrief" />
           {children}
         </DataLoader>

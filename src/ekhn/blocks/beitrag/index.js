@@ -8,56 +8,6 @@ import Items from '../../components/items';
 
 const now = +moment();
 
-@useGenericBlock({
-  label: 'Beiträge',
-  category: 'EKHN',
-  props: ['masonry', 'tags', 'placeholder', 'archive'],
-  editable: false,
-  tagSource: data => data.beitragList,
-  actions: props => {
-    const { setData, getData, data } = props;
-
-    return [
-      {
-        icon: 'columns',
-        type: 'toggle-masonry',
-        active: !!getData('masonry', false),
-        toggle: () => {
-          setData({ masonry: !getData('masonry', false) });
-        },
-        tooltip: !getData('masonry', false)
-          ? 'Zweispaltiges Layout (bis auf Hauptbeitrag)'
-          : 'Einspaltiges Layout',
-      },
-      {
-        icon: 'archive',
-        type: 'toggle-archiv',
-        active: getData('archive', false),
-        toggle: () => {
-          setData({ archive: !getData('archive', false) });
-        },
-        tooltip: !getData('archive', false)
-          ? 'Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)'
-          : 'Nur Beiträge aus dem aktuellen Zeitraum anzeigen',
-      },
-      {
-        icon: 'heart',
-        type: 'choose-placeholder',
-        options: (data.beitragList || []).map(beitrag => ({
-          value: beitrag.id,
-          label: beitrag.name,
-          active: getData('placeholder') === beitrag.id,
-        })),
-        toggle: ({ key }) => {
-          setData({ placeholder: key });
-        },
-        tooltip:
-          'Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre',
-      },
-    ];
-  },
-})
-@withRouter
 @graphql(
   gql`
   query beitragList($archive: Boolean) {
@@ -114,6 +64,56 @@ const now = +moment();
     },
   }
 )
+@useGenericBlock({
+  label: 'Beiträge',
+  category: 'EKHN',
+  props: ['masonry', 'tags', 'placeholder', 'archive'],
+  editable: false,
+  tagSource: data => data.beitragList,
+  actions: props => {
+    const { setData, getData, data } = props;
+
+    return [
+      {
+        icon: 'columns',
+        type: 'toggle-masonry',
+        active: !!getData('masonry', false),
+        toggle: () => {
+          setData({ masonry: !getData('masonry', false) });
+        },
+        tooltip: !getData('masonry', false)
+          ? 'Zweispaltiges Layout (bis auf Hauptbeitrag)'
+          : 'Einspaltiges Layout',
+      },
+      {
+        icon: 'archive',
+        type: 'toggle-archiv',
+        active: getData('archive', false),
+        toggle: () => {
+          setData({ archive: !getData('archive', false) });
+        },
+        tooltip: !getData('archive', false)
+          ? 'Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)'
+          : 'Nur Beiträge aus dem aktuellen Zeitraum anzeigen',
+      },
+      {
+        icon: 'heart',
+        type: 'choose-placeholder',
+        options: (data.beitragList || []).map(beitrag => ({
+          value: beitrag.id,
+          label: beitrag.name,
+          active: getData('placeholder') === beitrag.id,
+        })),
+        toggle: ({ key }) => {
+          setData({ placeholder: key });
+        },
+        tooltip:
+          'Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre',
+      },
+    ];
+  },
+})
+@withRouter
 export default class BeitragBlock extends Component {
   render() {
     const {
