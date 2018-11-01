@@ -8,8 +8,58 @@ import Items from '../../components/items';
 
 const now = +moment();
 
+@useGenericBlock({
+  label: 'Beiträge',
+  category: 'EKHN',
+  props: ['masonry', 'tags', 'placeholder', 'archive'],
+  editable: false,
+  tagSource: data => data.beitragList,
+  actions: props => {
+    const { setData, getData, data } = props;
+
+    return [
+      {
+        icon: 'columns',
+        type: 'toggle-masonry',
+        active: !!getData('masonry', false),
+        toggle: () => {
+          setData({ masonry: !getData('masonry', false) });
+        },
+        tooltip: !getData('masonry', false)
+          ? 'Zweispaltiges Layout (bis auf Hauptbeitrag)'
+          : 'Einspaltiges Layout',
+      },
+      {
+        icon: 'archive',
+        type: 'toggle-archiv',
+        active: getData('archive', false),
+        toggle: () => {
+          setData({ archive: !getData('archive', false) });
+        },
+        tooltip: !getData('archive', false)
+          ? 'Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)'
+          : 'Nur Beiträge aus dem aktuellen Zeitraum anzeigen',
+      },
+      {
+        icon: 'heart',
+        type: 'choose-placeholder',
+        options: (data.beitragList || []).map(beitrag => ({
+          value: beitrag.id,
+          label: beitrag.name,
+          active: getData('placeholder') === beitrag.id,
+        })),
+        toggle: ({ key }) => {
+          setData({ placeholder: key });
+        },
+        tooltip:
+          'Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre',
+      },
+    ];
+  },
+})
 @withRouter
-@graphql(gql`
+@graphql(
+  gql`
   query beitragList($archive: Boolean) {
     beitragList: beitragList(query: {
       and: [
@@ -55,67 +105,40 @@ const now = +moment();
       updatedAt
     }
   }
-`, {
-  options: (props, a) => {
-    // console.log(props, a);
+`,
+  {
+    options: (props, a) => {
+      // console.log(props, a);
 
-    return { variables: { archive: true } };
-  },
-})
-@useGenericBlock({
-  label: 'Beiträge',
-  category: 'EKHN',
-  props: ['masonry', 'tags', 'placeholder', 'archive'],
-  editable: false,
-  tagSource: data => data.beitragList,
-  actions: (props) => {
-    const { setData, getData, data } = props;
-
-    return [{
-      icon: 'columns',
-      type: 'toggle-masonry',
-      active: !!getData('masonry', false),
-      toggle: () => {
-        setData({ masonry: !getData('masonry', false) });
-      },
-      tooltip: !getData('masonry', false) ? 'Zweispaltiges Layout (bis auf Hauptbeitrag)' : 'Einspaltiges Layout',
+      return { variables: { archive: true } };
     },
-    {
-      icon: 'archive',
-      type: 'toggle-archiv',
-      active: getData('archive', false),
-      toggle: () => {
-        setData({ archive: !getData('archive', false) });
-      },
-      tooltip: !getData('archive', false) ? 'Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)' : 'Nur Beiträge aus dem aktuellen Zeitraum anzeigen',
-    },
-    {
-      icon: 'heart',
-      type: 'choose-placeholder',
-      options: (data.beitragList || []).map(beitrag => ({
-        value: beitrag.id,
-        label: beitrag.name,
-        active: getData('placeholder') === beitrag.id,
-      })),
-      toggle: ({ key }) => {
-        setData({ placeholder: key });
-      },
-      tooltip: 'Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre',
-    }];
-  },
-})
+  }
+)
 export default class BeitragBlock extends Component {
   render() {
-    const { filteredData, children, getData, className, style, data } = this.props;
+    const {
+      filteredData,
+      children,
+      getData,
+      className,
+      style,
+      data,
+    } = this.props;
     const masonry = getData('masonry', false);
-    const placeholder = filteredData.find(beitrag => beitrag.id === getData('placeholder'));
+    const placeholder = filteredData.find(
+      beitrag => beitrag.id === getData('placeholder')
+    );
     const archive = getData('archive', false);
     let beitraege = filteredData;
 
     // Archiv
     if (!archive) {
       beitraege = beitraege.filter(
-        beitrag => !beitrag.ende || moment(beitrag.ende).endOf('day').isAfter()
+        beitrag =>
+          !beitrag.ende ||
+          moment(beitrag.ende)
+            .endOf('day')
+            .isAfter()
       );
     }
 
@@ -125,7 +148,7 @@ export default class BeitragBlock extends Component {
     }
 
     // Beiträge für Item-Komp. vorbereiten
-    beitraege = beitraege.map((x) => {
+    beitraege = beitraege.map(x => {
       const autor = x.autor ? x.autor : x.createdBy;
       const date = x.start || x.createdAt || x.updatedAt;
       const archived = !!(x.ende && moment(x.ende).isBefore());
@@ -141,15 +164,29 @@ export default class BeitragBlock extends Component {
         text,
         leading: !!(x.hauptbeitrag && !archived),
         header: x.name,
-        subheader: !!archive && <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr - ${autor ? autor.name : 'Redaktion'}`}</span>,
+        subheader: !!archive && (
+          <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr - ${
+            autor ? autor.name : 'Redaktion'
+          }`}</span>
+        ),
         more: !!text && more,
       };
     });
-    beitraege = orderBy(beitraege, ['archived', 'leading', 'date'], ['asc', 'desc', 'desc']);
+    beitraege = orderBy(
+      beitraege,
+      ['archived', 'leading', 'date'],
+      ['asc', 'desc', 'desc']
+    );
 
     return (
       <GenericBlock {...this.props}>
-        <DataLoader className={className} style={style} isEmpty={data.beitragList} placeholder="Keine Beiträge vorhanden" loading="Beiträge werden geladen">
+        <DataLoader
+          className={className}
+          style={style}
+          isEmpty={data.beitragList}
+          placeholder="Keine Beiträge vorhanden"
+          loading="Beiträge werden geladen"
+        >
           <Items items={beitraege} masonry={masonry} identifier="beitrag" />
 
           {children}
