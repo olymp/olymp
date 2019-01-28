@@ -1,14 +1,24 @@
-import React, { Component, PropTypes } from 'react';
-import { Gateway } from 'react-gateway';
-import { Anchor as AnchorCreator, Spin, Menu, Icon, Dropdown, Button } from 'antd';
-import { withRouter, withAuth, withItemNew, Helmet, Link } from 'olymp';
-import { SlateMate } from 'olymp/slate';
-import AnchorHelper from 'antd/lib/anchor/anchorHelper';
+import React, { Component, PropTypes } from "react";
+import { Gateway } from "react-gateway";
+import { Anchor, Spin, Menu, Icon, Dropdown, Button } from "antd";
+import {
+  withRouter,
+  withAuth,
+  withItemNew,
+  Helmet,
+  Link as MenuLink
+} from "olymp";
+import { SlateMate } from "olymp/slate";
+// import AnchorHelper from 'antd/lib/anchor/anchorHelper';
 
-const Anchor = AnchorCreator.Link;
+const { Link } = Anchor;
 
 @withAuth
-@withItemNew({ typeName: 'Page', fieldNames: 'id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }' })
+@withItemNew({
+  typeName: "Page",
+  fieldNames:
+    "id, slug, order, name, parentId, blocks, headings { id, slug, text, children { id, slug, text } }"
+})
 export default class Page extends Component {
   static childContextTypes = {
     page: PropTypes.string
@@ -23,15 +33,34 @@ export default class Page extends Component {
   }
 
   render() {
-    const { id, auth, item, patch, getReadOnly, save, location, showAnchors } = this.props;
+    const {
+      id,
+      auth,
+      item,
+      patch,
+      getReadOnly,
+      save,
+      location,
+      showAnchors
+    } = this.props;
 
     if (!item) return <Spin size="large" />;
 
     // todo: einfacher
     // const readOnly = this.props.readOnly || (!auth || !auth.user);
     let readOnly = this.props.readOnly;
-    readOnly = readOnly !== undefined ? readOnly : getReadOnly ? getReadOnly(this.props) : (!auth.user || !!item.computed);
-    if (location && location.query && Object.keys(location.query).find(x => location.query[x] !== undefined)) readOnly = true;
+    readOnly =
+      readOnly !== undefined
+        ? readOnly
+        : getReadOnly
+        ? getReadOnly(this.props)
+        : !auth.user || !!item.computed;
+    if (
+      location &&
+      location.query &&
+      Object.keys(location.query).find(x => location.query[x] !== undefined)
+    )
+      readOnly = true;
 
     return (
       <div>
@@ -41,12 +70,19 @@ export default class Page extends Component {
             <PageAnchorsWrapper offsetTop={100} />
           </div>
         )}
-        <SlateMate className="frontend-editor" showUndo readOnly={readOnly} value={item.blocks || null} onChangeHeadings={headings => patch({ headings })} onChange={blocks => patch({ blocks })} />
+        <SlateMate
+          className="frontend-editor"
+          showUndo
+          readOnly={readOnly}
+          value={item.blocks || null}
+          onChangeHeadings={headings => patch({ headings })}
+          onChange={blocks => patch({ blocks })}
+        />
 
         <Gateway into="action">
           {!readOnly ? (
             <Dropdown
-              overlay={(
+              overlay={
                 <Menu>
                   <Menu.Item key="page:1">
                     <a href="javascript:;" onClick={save}>
@@ -54,9 +90,9 @@ export default class Page extends Component {
                     </a>
                   </Menu.Item>
                   <Menu.Item key="page:settings">
-                    <Link to={{ ...location, query: { '@page': item.id } }}>
+                    <MenuLink to={{ ...location, query: { "@page": item.id } }}>
                       Einstellungen
-                    </Link>
+                    </MenuLink>
                   </Menu.Item>
                   {/* <Menu.Divider />
                   <Menu.Item key="page:visitor" disabled>{false ? <Icon type="check" /> : null}Besucher-Modus</Menu.Item>
@@ -64,7 +100,7 @@ export default class Page extends Component {
                     Seite löschen
                   </Menu.Item> */}
                 </Menu>
-              )}
+              }
               overlayClassName="ant-dropdown-left"
               placement="bottomLeft"
             >
@@ -80,40 +116,46 @@ export default class Page extends Component {
 }
 
 @withRouter
-@withItemNew({ typeName: 'Page', fieldNames: 'headings { id, slug, text, children { id, slug, text } }' })
+@withItemNew({
+  typeName: "Page",
+  fieldNames: "headings { id, slug, text, children { id, slug, text } }"
+})
 class PageAnchors extends Component {
   constructor() {
     super();
-    this.anchorHelper = new AnchorHelper();
+    // this.anchorHelper = new AnchorHelper();
   }
 
   componentDidMount() {
     const { location } = this.props;
 
     if (location && location.hash) {
-      this.anchorHelper.scrollTo(location.hash);
+      // this.anchorHelper.scrollTo(location.hash);
     }
   }
 
-  createAnchors = nodes => (nodes || []).map((node, i) =>
-    <Anchor key={i} href={`#${node.slug}`} title={node.text}>
-      {this.createAnchors(node.children)}
-    </Anchor>
-  )
+  createAnchors = nodes =>
+    (nodes || []).map((node, i) => (
+      <Link key={i} href={`#${node.slug}`} title={node.text}>
+        {this.createAnchors(node.children)}
+      </Link>
+    ));
 
   render() {
     const { item, children, ...rest } = this.props;
 
     if (!item) return <Spin size="large" />;
 
-    const headings = (item.headings || []).filter(h => h.text)
+    const headings = (item.headings || []).filter(h => h.text);
 
     return headings.length > 1 ? (
-      <AnchorCreator {...rest}>
+      <Anchor {...rest}>
         {children}
         {this.createAnchors(headings)}
-      </AnchorCreator>
-    ) : <div />;
+      </Anchor>
+    ) : (
+      <div />
+    );
   }
 }
 
@@ -125,6 +167,6 @@ export class PageAnchorsWrapper extends Component {
   render() {
     const { page } = this.context;
 
-    return <PageAnchors id={page} {...this.props} />
+    return <PageAnchors id={page} {...this.props} />;
   }
 }
