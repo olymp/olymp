@@ -1,5 +1,5 @@
 {
-  "version": "14.2.52",
+  "version": "14.2.53",
   "name": "olymp",
   "description": "",
   "main": "./src/core/index.js",
@@ -103,6 +103,7 @@
     "react-gateway": "^2.7.0",
     "react-helmet": "4.0.0",
     "react-hot-loader": "next",
+    "react-iframe": "^1.3.3",
     "react-image-crop": "2.0.2",
     "react-image-gallery": "0.7.12",
     "react-loadable": "^3.0.1",
