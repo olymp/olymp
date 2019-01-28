@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { graphql, gql, withRouter } from 'olymp';
-import { DataLoader } from 'olymp/cms-core';
-import { useGenericBlock, GenericBlock } from 'olymp/slate';
-import orderBy from 'lodash/orderBy';
-import { moment } from 'olymp/locale-de';
-import Items from '../../components/items';
+import React, { Component } from "react";
+import { graphql, gql, withRouter } from "olymp";
+import { DataLoader } from "olymp/cms-core";
+import { useGenericBlock, GenericBlock } from "olymp/slate";
+import orderBy from "lodash/orderBy";
+import { moment } from "olymp/locale-de";
+import Items from "../../components/items";
 
 const now = +moment();
 
@@ -34,6 +34,7 @@ const now = +moment();
       start
       ende
       hauptbeitrag
+      typ
       text
       zusammenfassung
       autor {
@@ -61,13 +62,13 @@ const now = +moment();
       // console.log(props, a);
 
       return { variables: { archive: true } };
-    },
+    }
   }
 )
 @useGenericBlock({
-  label: 'Beiträge',
-  category: 'EKHN',
-  props: ['masonry', 'tags', 'placeholder', 'archive'],
+  label: "Beiträge",
+  category: "EKHN",
+  props: ["masonry", "tags", "placeholder", "archive"],
   editable: false,
   tagSource: data => data.beitragList,
   actions: props => {
@@ -75,43 +76,43 @@ const now = +moment();
 
     return [
       {
-        icon: 'columns',
-        type: 'toggle-masonry',
-        active: !!getData('masonry', false),
+        icon: "columns",
+        type: "toggle-masonry",
+        active: !!getData("masonry", false),
         toggle: () => {
-          setData({ masonry: !getData('masonry', false) });
+          setData({ masonry: !getData("masonry", false) });
         },
-        tooltip: !getData('masonry', false)
-          ? 'Zweispaltiges Layout (bis auf Hauptbeitrag)'
-          : 'Einspaltiges Layout',
+        tooltip: !getData("masonry", false)
+          ? "Zweispaltiges Layout (bis auf Hauptbeitrag)"
+          : "Einspaltiges Layout"
       },
       {
-        icon: 'archive',
-        type: 'toggle-archiv',
-        active: getData('archive', false),
+        icon: "archive",
+        type: "toggle-archiv",
+        active: getData("archive", false),
         toggle: () => {
-          setData({ archive: !getData('archive', false) });
+          setData({ archive: !getData("archive", false) });
         },
-        tooltip: !getData('archive', false)
-          ? 'Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)'
-          : 'Nur Beiträge aus dem aktuellen Zeitraum anzeigen',
+        tooltip: !getData("archive", false)
+          ? "Alle öffentlichen Beiträge anzeigen (auch die abgelaufenen)"
+          : "Nur Beiträge aus dem aktuellen Zeitraum anzeigen"
       },
       {
-        icon: 'heart',
-        type: 'choose-placeholder',
+        icon: "heart",
+        type: "choose-placeholder",
         options: (data.beitragList || []).map(beitrag => ({
           value: beitrag.id,
           label: beitrag.name,
-          active: getData('placeholder') === beitrag.id,
+          active: getData("placeholder") === beitrag.id
         })),
         toggle: ({ key }) => {
           setData({ placeholder: key });
         },
         tooltip:
-          'Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre',
-      },
+          "Beitrag auswählen, der angezeigt wird, falls Beitragliste leer wäre"
+      }
     ];
-  },
+  }
 })
 @withRouter
 export default class BeitragBlock extends Component {
@@ -122,13 +123,13 @@ export default class BeitragBlock extends Component {
       getData,
       className,
       style,
-      data,
+      data
     } = this.props;
-    const masonry = getData('masonry', false);
+    const masonry = getData("masonry", false);
     const placeholder = filteredData.find(
-      beitrag => beitrag.id === getData('placeholder')
+      beitrag => beitrag.id === getData("placeholder")
     );
-    const archive = getData('archive', false);
+    const archive = getData("archive", false);
     let beitraege = filteredData;
 
     // Archiv
@@ -137,7 +138,7 @@ export default class BeitragBlock extends Component {
         beitrag =>
           !beitrag.ende ||
           moment(beitrag.ende)
-            .endOf('day')
+            .endOf("day")
             .isAfter()
       );
     }
@@ -154,7 +155,7 @@ export default class BeitragBlock extends Component {
       const archived = !!(x.ende && moment(x.ende).isBefore());
       // const archivText = archived ? <span style={{ color: 'red' }}><br />Archiv, gültig bis {moment(x.ende).format('DD. MMMM YYYY, HH:mm')} Uhr</span> : null;
       const text = x.text || x.zusammenfassung;
-      const more = x.zusammenfassung ? 'Artikel weiterlesen' : false;
+      const more = x.zusammenfassung ? "Artikel weiterlesen" : false;
 
       return {
         ...x,
@@ -165,17 +166,17 @@ export default class BeitragBlock extends Component {
         leading: !!(x.hauptbeitrag && !archived),
         header: x.name,
         subheader: !!archive && (
-          <span>{`${moment(date).format('DD. MMMM YYYY, HH:mm')} Uhr - ${
-            autor ? autor.name : 'Redaktion'
+          <span>{`${moment(date).format("DD. MMMM YYYY, HH:mm")} Uhr - ${
+            autor ? autor.name : "Redaktion"
           }`}</span>
         ),
-        more: !!text && more,
+        more: !!text && more
       };
     });
     beitraege = orderBy(
       beitraege,
-      ['archived', 'leading', 'date'],
-      ['asc', 'desc', 'desc']
+      ["archived", "leading", "date"],
+      ["asc", "desc", "desc"]
     );
 
     return (

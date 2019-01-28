@@ -1,21 +1,22 @@
-module.exports = ({ schema }) => schema.addSchema({
-  // detail, title, order?, default
-  name: 'beitrag',
-  query: `
+module.exports = ({ schema }) =>
+  schema.addSchema({
+    // detail, title, order?, default
+    name: "beitrag",
+    query: `
     beitrag: Beitrag @query
     beitragList: [Beitrag] @query
   `,
-  mutation: `
+    mutation: `
     beitrag: Beitrag @mutate
   `,
-  hooks: {
-    before: (args, { model, type }, { user }) => {
-      if (type === 'MUTATION' && model === 'Beitrag' && !user) {
-        throw new Error('Please log in');
+    hooks: {
+      before: (args, { model, type }, { user }) => {
+        if (type === "MUTATION" && model === "Beitrag" && !user) {
+          throw new Error("Please log in");
+        }
       }
     },
-  },
-  schema: `
+    schema: `
     # group:inhalt
     type Beitrag implements CollectionInterface
     @collection(name: "Beitrag") @state @stamp {
@@ -27,6 +28,7 @@ module.exports = ({ schema }) => schema.addSchema({
       ende: Date
       # @color("#E6DCEA")
       hauptbeitrag: Boolean
+      typ: BeitragTyp
       autor: Person @relation
       bild: Image
       # @description
@@ -36,5 +38,12 @@ module.exports = ({ schema }) => schema.addSchema({
       # @label("Schlagworte")
       tags: [String]
     }
-  `,
-});
+    enum BeitragTyp {
+      Standard
+      Kompakt
+      Detail
+      Datei
+      Spalten
+    }
+  `
+  });
